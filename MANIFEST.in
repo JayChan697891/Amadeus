@@ -1,0 +1,9 @@
+include LICENSE README.md README.zh-CN.md CHANGELOG.md CONTRIBUTING.md SECURITY.md
+include AGENTS.md WORKFLOW.md .env.example .gitignore .gitattributes
+include requirements-lock.txt
+include requirements-dev-lock.txt
+recursive-include docs *.md *.json *.xml *.txt
+recursive-include examples *.py *.md *.json *.toml
+recursive-include tests *.py
+recursive-include .github *.yml
+global-exclude *.pyc

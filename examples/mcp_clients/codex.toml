@@ -1,0 +1,5 @@
+# Replace both placeholders with absolute local paths before adding this entry.
+# Use the SAME data directory in every client. No shell interpolation is performed.
+[mcp_servers.agentsync]
+command = "<ABSOLUTE_PYTHON_EXECUTABLE>"
+args = ["-m", "agentsync", "--data-dir", "<ABSOLUTE_SHARED_DATA_DIRECTORY>", "mcp"]

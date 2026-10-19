@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.whl binary
+*.zip binary
+*.gz binary
+# Preserve upstream notice text, including legal separators and original whitespace.
+docs/THIRD-PARTY-NOTICES.txt -whitespace
