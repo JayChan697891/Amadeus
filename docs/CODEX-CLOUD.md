@@ -1,6 +1,8 @@
 # AgentSync Codex Cloud
 
-Execution: Codex. Date: 2026-10-19. Owner-only environment; one repository:
+Execution: Codex. Date: 2026-10-19. Status: **Published**, independently observed
+in the environment settings after saving and publishing. [UI evidence](codex-cloud-published.png).
+Owner-only environment; one repository:
 `JayChan697891/agentsync`. No API keys or personal desktop integrations are needed.
 
 The prepared baseline is `fix/ruff-ci-quality` at
