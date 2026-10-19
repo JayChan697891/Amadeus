@@ -1,0 +1,12 @@
+{
+  "install_script": "#!/usr/bin/env bash\nset -euo pipefail\ncd /workspace/agentsync\npython -c 'import sys; assert sys.version_info >= (3, 11), sys.version'\npython -m venv .venv\n.venv/bin/python -m pip install -e '.[dev]'\n",
+  "repositories": [
+    {
+      "commit": "36f289acca11f4a55f7ba3b35122b0f902fcb705",
+      "host": "github.com",
+      "mount_path": "agentsync",
+      "name": "JayChan697891/agentsync"
+    }
+  ],
+  "start_skill": "Work only in /workspace/agentsync. Use the existing checkout; do not create a Git worktree unless the user explicitly requests one. Before work, read AGENTS.md, WORKFLOW.md, docs/PLAN.md, docs/PROGRESS.md, and docs/CONTRACT.md, then inspect git status and verify HEAD. The onboarding baseline is branch fix/ruff-ci-quality at 36f289acca11f4a55f7ba3b35122b0f902fcb705 (existing PR #3 / Issue #2); do not modify or merge main, repeat that repair, or open a PR for onboarding. Use /workspace/agentsync/.venv/bin/python (Python >=3.11). The editable package imports from /workspace/agentsync/src/agentsync. Keep test/runtime data in a fresh absolute directory under /tmp, never the default user data directory. Required M0-M2 checks are: `.venv/bin/python -m pytest`, `.venv/bin/python -m ruff check .`, `.venv/bin/python -m ruff format --check .`, `.venv/bin/python -m mypy`, and `.venv/bin/python -m build`. This environment requires no paid API, API key, personal desktop MCP, uploaded database, credentials, or personal configuration. Current scope is M0-M2 only; do not implement M3+. For later authorized development, create a new GitHub branch and PR and hand it to Work for acceptance; never commit directly to main."
+}

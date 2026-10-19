@@ -51,5 +51,6 @@ or publishing private runtime files.
 This desktop task depends on the computer remaining available. GitHub Actions runs
 in GitHub's hosted environment. Ongoing autonomous development after shutdown
 requires a published Codex Cloud environment; repository upload alone does not
-create one. No cloud-development environment has been provisioned by this repair.
+create one. The subsequently authorized Cloud setup and its independently read
+command evidence are recorded in CODEX-CLOUD.md and codex-cloud-verification.json.
 main is neither modified nor merged by this task.

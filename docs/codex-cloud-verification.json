@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-19",
+  "execution": "Codex",
+  "environment_id": "ccarenv_b64_Y2NhcmVudl9jNmY0MDQ2N2E5ODg4MTkxOGMyNTc4NGY4ODcxNjI5Zg",
+  "baseline_commit": "36f289acca11f4a55f7ba3b35122b0f902fcb705",
+  "verification": {
+    "pytest": 92,
+    "ruff": "passed",
+    "format": "passed",
+    "mypy_source_files": 15,
+    "build": "passed",
+    "demo": "passed",
+    "pip_check": "passed"
+  },
+  "commands": [
+    {
+      "command": "/bin/bash -lc 'mkdir -p /tmp/agentsync-cloud-validation && TMPDIR=/tmp/agentsync-cloud-validation .venv/bin/python -m pytest && .venv/bin/python -m ruff check . && .venv/bin/python -m ruff format --check . && .venv/bin/python -m mypy && .venv/bin/python -m build'",
+      "cwd": "/workspace/agentsync",
+      "exit_code": 0,
+      "output": {
+        "text": "============================= test session starts ==============================\nplatform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0\nrootdir: /workspace/agentsync\nconfigfile: pyproject.toml\ntestpaths: tests\nplugins: anyio-4.15.1, asyncio-1.4.0\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 92 items\n\ntests/concurrency/test_claims.py ......                                  [  6%]\ntests/integration/test_acceptance.py .                                   [  7%]\ntests/integration/test_host_report.py .........                          [ 17%]\ntests/integration/test_live_http.py .                                    [ 18%]\ntests/integration/test_mcp_install.py ..................                 [ 38%]\ntests/integration/test_transports.py .......                             [ 45%]\ntests/security/test_core_security.py ..........................          [ 73%]\ntests/security/test_http_boundary.py .....                               [ 79%]\ntests/unit/test_core.py ..................                               [ 98%]\ntests/unit/test_data_path.py .                                           [100%]\n\n============================== 92 passed in 6.40s ==============================\nAll checks passed!\n65 files already formatted\nSuccess: no issues found in 15 source files\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - setuptools==82.0.1\n  - wheel==0.46.3\n* Getting build dependencies for sdist...\nrunning egg_info\nwriting src/agentsync_local.egg-info/PKG-INFO\nwriting dependency_links to src/agentsync_local.egg-info/dependency_links.txt\nwriting entry points to src/agentsync_local.egg-info/entry_points.txt\nwriting requirements to src/agentsync_local.egg-i",
+        "truncated": true
+      }
+    },
+    {
+      "command": "/bin/bash -lc \"rm -rf /tmp/agentsync-cloud-validation/demo && .venv/bin/python -m agentsync --data-dir /tmp/agentsync-cloud-validation/demo demo && .venv/bin/python -c \\\"import agentsync, pathlib; print(pathlib.Path(agentsync.__file__).resolve())\\\" && .venv/bin/python -m pip check && git submodule status && realpath /workspace/agentsync && git rev-parse HEAD && git status --short --branch --untracked-files=all && git status --short --ignored | sed -n '1,80p'\"",
+      "cwd": "/workspace/agentsync",
+      "exit_code": 0,
+      "output": {
+        "text": "{\"ok\": true, \"data\": {\"project_id\": \"7403ae49-e54f-4c95-accb-6593cdcd6b1a\", \"task_id\": \"01f7095d-b77c-4a43-aae8-1dc139697a72\", \"status\": \"completed\", \"duplicate_claim_rejected\": true, \"persistence_verified\": true, \"agents\": 2, \"scope\": \"local mock workflow; no desktop host compatibility verified\"}}\n/workspace/agentsync/src/agentsync/__init__.py\nWARNING: The directory '/home/agent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\nNo broken requirements found.\n/workspace/agentsync\n36f289acca11f4a55f7ba3b35122b0f902fcb705\n## fix/ruff-ci-quality\n!! .mypy_cache/\n!! .pytest_cache/\n!! .ruff_cache/\n!! .venv/\n!! dist/\n!! examples/mcp_clients/__pycache__/\n!! src/agentsync/__pycache__/\n!! src/agentsync/core/__pycache__/\n!! src/agentsync/integrations/__pycache__/\n!! src/agentsync/sdk/__pycache__/\n!! src/agentsync/storage/__pycache__/\n!! src/agentsync_local.egg-info/\n!! tests/concurrency/__pycache__/\n!! tests/integration/__pycache__/\n!! tests/security/__pycache__/\n!! tests/unit/__pycache__/\n",
+        "truncated": false
+      }
+    },
+    {
+      "command": "/bin/bash -lc \"git status --short --branch --untracked-files=all; git rev-parse HEAD; .venv/bin/python --version; .venv/bin/python -c \\\"import agentsync; print(agentsync.__version__ if hasattr(agentsync, '__version__') else 'version attribute unavailable')\\\"; ls -l dist/agentsync_local-0.1.0a2-py3-none-any.whl dist/agentsync_local-0.1.0a2.tar.gz\"",
+      "cwd": "/workspace/agentsync",
+      "exit_code": 0,
+      "output": {
+        "text": "## fix/ruff-ci-quality\n36f289acca11f4a55f7ba3b35122b0f902fcb705\nPython 3.12.14\n0.1.0a2\n-rw------- 1 agent agent  18195 Oct 19 15:27 dist/agentsync_local-0.1.0a2-py3-none-any.whl\n-rw------- 1 agent agent 116515 Oct 19 15:27 dist/agentsync_local-0.1.0a2.tar.gz\n",
+        "truncated": false
+      }
+    }
+  ]
+}
