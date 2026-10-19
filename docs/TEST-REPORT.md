@@ -80,3 +80,9 @@ at a1, then closed for connection acceptance by the distinct a2 native and user-
 Review evidence is an attributed assertion, not automatically executed/verified by AgentSync;
 that is M5. Locks/worktrees/control adapters/BYOK and v1.0 are not claimed. Linux/macOS/3.11
 and remote GitHub Actions have not run.
+
+## Ruff CI repair verification
+
+Independent F-drive source verification: 92 passed in 7.51s, Ruff check and format
+passed, mypy 15 source files passed, wheel/sdist built. See RUFF-CI-REPAIR.md and
+the linked PR for the final nine-job GitHub Actions result.

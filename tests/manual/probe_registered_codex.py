@@ -12,33 +12,53 @@ from pathlib import Path
 
 from probe_codex_collaboration import ROOT, NativeHost
 
-EXPECTED_TOOLS = sorted([
-    "create_project", "register_agent", "heartbeat", "create_task", "list_tasks",
-    "get_project_state", "claim_task", "renew_lease", "update_task", "review_task",
-    "reclaim_expired",
-])
+EXPECTED_TOOLS = sorted(
+    [
+        "create_project",
+        "register_agent",
+        "heartbeat",
+        "create_task",
+        "list_tasks",
+        "get_project_state",
+        "claim_task",
+        "renew_lease",
+        "update_task",
+        "review_task",
+        "reclaim_expired",
+    ]
+)
 
 
 def run(binary):
     (ROOT / "work").mkdir(exist_ok=True)
-    host = NativeHost(binary, None, ROOT / "work/registered-codex-stderr.log",
-                      use_registered_config=True)
+    host = NativeHost(
+        binary, None, ROOT / "work/registered-codex-stderr.log", use_registered_config=True
+    )
     try:
         init = host.initialize()
         tid, status, tools = host.start()
         assert tools == EXPECTED_TOOLS
-        result = host.send("mcpServer/tool/call", {
-            "threadId": tid, "server": "agentsync", "tool": "get_project_state",
-            "arguments": {
-                "project_id": "registration-probe-no-project",
-                "session_id": "registration-probe-no-session",
-                "session_token": "registration-probe-invalid-credential",
+        result = host.send(
+            "mcpServer/tool/call",
+            {
+                "threadId": tid,
+                "server": "agentsync",
+                "tool": "get_project_state",
+                "arguments": {
+                    "project_id": "registration-probe-no-project",
+                    "session_id": "registration-probe-no-session",
+                    "session_token": "registration-probe-invalid-credential",
+                },
             },
-        })
+        )
         assert not result.get("isError", False)
-        expected = {"ok": False, "error": {
-            "code": "unauthorized", "message": "Invalid session credentials.",
-        }}
+        expected = {
+            "ok": False,
+            "error": {
+                "code": "unauthorized",
+                "message": "Invalid session credentials.",
+            },
+        }
         envelope = result["structuredContent"]
         assert envelope == expected
         report = {
@@ -46,10 +66,13 @@ def run(binary):
             "configuration_source": "actual shared registered configuration",
             "command_line_configuration_override": False,
             "thread_configuration_override": False,
-            "runtime_status": status, "tools": tools,
-            "verified_operation": "get_project_state", "response": envelope,
+            "runtime_status": status,
+            "tools": tools,
+            "verified_operation": "get_project_state",
+            "response": envelope,
             "client": init["userAgent"],
-            "inference_turns": 0, "ephemeral": True,
+            "inference_turns": 0,
+            "ephemeral": True,
             "project_agent_task_writes": 0,
             "global_configuration_modified": False,
             "desktop_ui_tested": False,

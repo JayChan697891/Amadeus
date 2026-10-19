@@ -1,4 +1,5 @@
 """Usage: python examples/two_mock_agents.py ABSOLUTE_DEMO_DIRECTORY."""
+
 import json
 import sys
 

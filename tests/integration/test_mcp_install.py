@@ -15,7 +15,8 @@ OK = subprocess.CompletedProcess([], 0, "", "")
 @pytest.fixture
 def installer(tmp_path, monkeypatch):
     spec = importlib.util.spec_from_file_location(
-        "agentsync_codex_installer", ROOT / "examples/mcp_clients/install_codex.py")
+        "agentsync_codex_installer", ROOT / "examples/mcp_clients/install_codex.py"
+    )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     binary = tmp_path / "Codex CLI.exe"
@@ -37,11 +38,20 @@ def installer(tmp_path, monkeypatch):
 
 
 def configured(python, data, **extra):
-    entry = {"name": "agentsync", "enabled": True, "transport": {
-        "type": "stdio", "command": str(python),
-        "args": ["-m", "agentsync", "--data-dir", str(data), "mcp"],
-        "env": None, "env_vars": [], "cwd": None},
-        "enabled_tools": None, "disabled_tools": None}
+    entry = {
+        "name": "agentsync",
+        "enabled": True,
+        "transport": {
+            "type": "stdio",
+            "command": str(python),
+            "args": ["-m", "agentsync", "--data-dir", str(data), "mcp"],
+            "env": None,
+            "env_vars": [],
+            "cwd": None,
+        },
+        "enabled_tools": None,
+        "disabled_tools": None,
+    }
     entry.update(extra)
     return subprocess.CompletedProcess([], 0, json.dumps(entry), "")
 
@@ -51,8 +61,19 @@ def test_dry_run_never_mutates_configuration_or_creates_data(installer):
     responses.append(MISSING)
     result = module.install(binary, python, data, dry_run=True)
     assert result["status"] == "dry_run"
-    assert result["planned_argv"] == [str(binary), "mcp", "add", "agentsync", "--",
-        str(python), "-m", "agentsync", "--data-dir", str(data), "mcp"]
+    assert result["planned_argv"] == [
+        str(binary),
+        "mcp",
+        "add",
+        "agentsync",
+        "--",
+        str(python),
+        "-m",
+        "agentsync",
+        "--data-dir",
+        str(data),
+        "mcp",
+    ]
     assert not data.exists()
     assert all("add" not in argv for argv in calls)
 
@@ -60,7 +81,10 @@ def test_dry_run_never_mutates_configuration_or_creates_data(installer):
 def test_identical_configuration_is_noop(installer):
     module, binary, python, data, calls, responses = installer
     responses.append(configured(python, data))
-    assert module.install(binary, python, data) == {"status": "already_configured", "changed": False}
+    assert module.install(binary, python, data) == {
+        "status": "already_configured",
+        "changed": False,
+    }
     assert all("add" not in argv for argv in calls)
 
 
@@ -83,12 +107,15 @@ def test_conflicting_configuration_is_never_overwritten(installer, difference):
     assert all("add" not in argv for argv in calls)
 
 
-@pytest.mark.parametrize("reply", [
-    subprocess.CompletedProcess([], 0, "not JSON secret", ""),
-    subprocess.CompletedProcess([], 0, "[]", ""),
-    subprocess.CompletedProcess([], 1, "", "Error: malformed config contains secret"),
-    subprocess.CompletedProcess([], 0, '{"name":"agentsync","transport":{}}', ""),
-])
+@pytest.mark.parametrize(
+    "reply",
+    [
+        subprocess.CompletedProcess([], 0, "not JSON secret", ""),
+        subprocess.CompletedProcess([], 0, "[]", ""),
+        subprocess.CompletedProcess([], 1, "", "Error: malformed config contains secret"),
+        subprocess.CompletedProcess([], 0, '{"name":"agentsync","transport":{}}', ""),
+    ],
+)
 def test_unrecognized_read_response_fails_closed(installer, reply):
     module, binary, python, data, calls, responses = installer
     responses.append(reply)
@@ -103,8 +130,21 @@ def test_registration_uses_public_argv_and_verifies_readback(installer):
     responses.extend([MISSING, MISSING, OK, configured(python, data)])
     assert module.install(binary, python, data) == {"status": "installed", "changed": True}
     adds = [argv for argv in calls if "add" in argv]
-    assert adds == [[str(binary), "mcp", "add", "agentsync", "--", str(python),
-                     "-m", "agentsync", "--data-dir", str(data), "mcp"]]
+    assert adds == [
+        [
+            str(binary),
+            "mcp",
+            "add",
+            "agentsync",
+            "--",
+            str(python),
+            "-m",
+            "agentsync",
+            "--data-dir",
+            str(data),
+            "mcp",
+        ]
+    ]
     assert calls[-1] == [str(binary), "mcp", "get", "agentsync", "--json"]
     assert not data.exists()
 
@@ -126,7 +166,8 @@ def test_relative_data_path_rejected_before_configuration_read(installer):
 
 def test_subprocess_boundary_preserves_literal_argv_and_disables_shell(monkeypatch):
     spec = importlib.util.spec_from_file_location(
-        "agentsync_codex_installer_boundary", ROOT / "examples/mcp_clients/install_codex.py")
+        "agentsync_codex_installer_boundary", ROOT / "examples/mcp_clients/install_codex.py"
+    )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     recorded = []

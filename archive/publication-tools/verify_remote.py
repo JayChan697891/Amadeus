@@ -1,22 +1,35 @@
 """Re-fetch public refs and check every published byte before local cleanup."""
+
 import hashlib
 import json
-from pathlib import Path
 import subprocess
 import tarfile
 import zipfile
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 WORK = Path(__file__).resolve().parent
 PAYLOAD = json.loads((WORK / "payload.json").read_text(encoding="ascii"))
 REPO = WORK / "remote-check"
 
+
 def git(*args, cwd=REPO):
     return subprocess.check_output(["git", "-C", str(cwd), *args])
 
+
 assert not REPO.exists(), "Use a fresh verification checkout."
-subprocess.run(["git", "-c", "core.autocrlf=false", "clone", "--no-single-branch",
-                "https://github.com/JayChan697891/agentsync.git", str(REPO)], check=True)
+subprocess.run(
+    [
+        "git",
+        "-c",
+        "core.autocrlf=false",
+        "clone",
+        "--no-single-branch",
+        "https://github.com/JayChan697891/agentsync.git",
+        str(REPO),
+    ],
+    check=True,
+)
 head = git("rev-parse", "HEAD").decode().strip()
 expected = {item["path"]: item["sha"] for item in PAYLOAD["main"]}
 actual = {}
@@ -62,11 +75,18 @@ assert not restored.exists()
 subprocess.run(["git", "clone", str(bundle), str(restored)], check=True, capture_output=True)
 for version, original_commit in PAYLOAD["publication"]["original_commits"].items():
     assert git("rev-parse", version, cwd=restored).decode().strip() == original_commit
-report = {"date": "2026-10-19", "repository": "JayChan697891/agentsync",
-          "verified_main_commit": head, "all_files_fetched_and_verified": len(expected),
-          "version_trees": version_trees, "artifacts": artifact_results,
-          "original_git_history_restore_tested": True,
-          "excluded_private_runtime_data": True,
-          "local_cleanup_precondition_satisfied": True}
-(WORK / "verification-result.json").write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
+report = {
+    "date": "2026-10-19",
+    "repository": "JayChan697891/agentsync",
+    "verified_main_commit": head,
+    "all_files_fetched_and_verified": len(expected),
+    "version_trees": version_trees,
+    "artifacts": artifact_results,
+    "original_git_history_restore_tested": True,
+    "excluded_private_runtime_data": True,
+    "local_cleanup_precondition_satisfied": True,
+}
+(WORK / "verification-result.json").write_text(
+    json.dumps(report, indent=2) + "\n", encoding="utf-8"
+)
 print(json.dumps(report))
