@@ -1,0 +1,9 @@
+{
+  "host": "installed Claude Code CLI",
+  "model_prompts": 0,
+  "isolated_config": true,
+  "credentials_provided": false,
+  "health_check_connected": true,
+  "tool_calls_tested": false,
+  "desktop_ui_tested": false
+}

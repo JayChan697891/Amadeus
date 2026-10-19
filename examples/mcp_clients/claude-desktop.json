@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "agentsync": {
+      "command": "<ABSOLUTE_PYTHON_EXECUTABLE>",
+      "args": ["-m", "agentsync", "--data-dir", "<ABSOLUTE_SHARED_DATA_DIRECTORY>", "mcp"]
+    }
+  }
+}

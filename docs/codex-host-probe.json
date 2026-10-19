@@ -1,0 +1,29 @@
+{
+  "host": "installed Codex public app-server",
+  "inference_turns": 0,
+  "ephemeral": true,
+  "runtime_status": "connected",
+  "tools": [
+    "claim_task",
+    "create_project",
+    "create_task",
+    "get_project_state",
+    "heartbeat",
+    "list_tasks",
+    "reclaim_expired",
+    "register_agent",
+    "renew_lease",
+    "review_task",
+    "update_task"
+  ],
+  "tools_error": null,
+  "verified_calls": [
+    "create_project",
+    "register_agent",
+    "create_task",
+    "list_tasks"
+  ],
+  "roundtrip_verified": true,
+  "client": "Codex Desktop/0.162.0 (Windows 10.0.26200; x86_64) dumb (agentsync-acceptance; 0.1.0)",
+  "desktop_ui_tested": false
+}

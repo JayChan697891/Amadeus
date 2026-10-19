@@ -1,0 +1,35 @@
+{
+  "host": "installed Codex public app-server",
+  "configuration_source": "actual shared registered configuration",
+  "command_line_configuration_override": false,
+  "thread_configuration_override": false,
+  "runtime_status": "connected",
+  "tools": [
+    "claim_task",
+    "create_project",
+    "create_task",
+    "get_project_state",
+    "heartbeat",
+    "list_tasks",
+    "reclaim_expired",
+    "register_agent",
+    "renew_lease",
+    "review_task",
+    "update_task"
+  ],
+  "verified_operation": "get_project_state",
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "unauthorized",
+      "message": "Invalid session credentials."
+    }
+  },
+  "client": "Codex Desktop/0.163.0-alpha.10.2 (Windows 10.0.26200; x86_64) dumb (agentsync-collaboration-acceptance; 0.1.0)",
+  "inference_turns": 0,
+  "ephemeral": true,
+  "project_agent_task_writes": 0,
+  "global_configuration_modified": false,
+  "desktop_ui_tested": false,
+  "limitations": "Native backend configuration loading only. MCP startup may initialize the shared database. No desktop UI or model development session was exercised."
+}

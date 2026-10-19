@@ -1,0 +1,188 @@
+[
+  {
+    "name": "annotated-doc",
+    "version": "0.0.5",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "annotated-types",
+    "version": "0.8.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "anyio",
+    "version": "4.15.1",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "attrs",
+    "version": "26.1.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "cffi",
+    "version": "2.1.1",
+    "license": "MIT-0",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "click",
+    "version": "8.5.0",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "cryptography",
+    "version": "50.0.2",
+    "license": "Apache-2.0 OR BSD-3-Clause",
+    "bundled_license_files": 3
+  },
+  {
+    "name": "fastapi",
+    "version": "0.147.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "h11",
+    "version": "0.16.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "httpcore2",
+    "version": "2.14.0",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "httpx2",
+    "version": "2.14.0",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "idna",
+    "version": "3.20",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "jsonschema",
+    "version": "4.26.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "jsonschema-specifications",
+    "version": "2025.9.1",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "mcp",
+    "version": "2.3.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "mcp-types",
+    "version": "2.3.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "opentelemetry-api",
+    "version": "1.45.1",
+    "license": "Apache-2.0",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "pycparser",
+    "version": "3.11",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "pydantic",
+    "version": "2.14.1",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "pydantic-core",
+    "version": "2.50.1",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "pyjwt",
+    "version": "2.15.1",
+    "license": "MIT",
+    "bundled_license_files": 2
+  },
+  {
+    "name": "python-multipart",
+    "version": "0.0.32",
+    "license": "Apache-2.0",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "pywin32",
+    "version": "312",
+    "license": "PSF",
+    "bundled_license_files": 15
+  },
+  {
+    "name": "referencing",
+    "version": "0.37.0",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "rpds-py",
+    "version": "2026.9.1",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "sse-starlette",
+    "version": "3.5.0",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 2
+  },
+  {
+    "name": "starlette",
+    "version": "1.9.0",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "truststore",
+    "version": "0.10.5",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "typing-extensions",
+    "version": "4.16.0",
+    "license": "PSF-2.0",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "typing-inspection",
+    "version": "0.4.4",
+    "license": "MIT",
+    "bundled_license_files": 1
+  },
+  {
+    "name": "uvicorn",
+    "version": "0.54.0",
+    "license": "BSD-3-Clause",
+    "bundled_license_files": 1
+  }
+]
