@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-19",
+  "repository": "JayChan697891/agentsync",
+  "authorization": "Owner explicitly requested version-organized upload and local cleanup after complete verification.",
+  "original_commits": {
+    "v0.1.0a1": "9b3a8d82b5754f4a3fea3d091f3531f1c45af092",
+    "v0.1.0a2": "27ea8af4952c4eddf726c9bca1f7f4d72fff3c25"
+  },
+  "original_trees": {
+    "v0.1.0a1": "c0ba7561356332d8a5c8732cef4cf7fe0f075bff",
+    "v0.1.0a2": "24fe25e6cf4beecb4faec0b27a1664901565cd36"
+  },
+  "snapshot_file_counts": {
+    "v0.1.0a1": 64,
+    "v0.1.0a2": 76
+  },
+  "artifacts": [
+    {
+      "path": "releases/v0.1.0a1/agentsync_local-0.1.0a1-py3-none-any.whl",
+      "size": 17809,
+      "sha256": "07b7c16817bb2d9ddc7a96dd16f13c2fe9236632c933744eb0db83abe5385838"
+    },
+    {
+      "path": "releases/v0.1.0a1/agentsync_local-0.1.0a1.tar.gz",
+      "size": 99835,
+      "sha256": "224af71e7a1ddd9bbc57f9fb499fd9869dd4963504f493ecf9f743d4526fbecc"
+    },
+    {
+      "path": "releases/v0.1.0a1/AgentSync-v0.1.0a1-source.zip",
+      "size": 117726,
+      "sha256": "78a8c321157d3e68ecaab230932392c32c3ece2bf2bab161e4c47c450b433d23"
+    },
+    {
+      "path": "releases/v0.1.0a1/AgentSync-v0.1.0a1-SHA256SUMS.txt",
+      "size": 303,
+      "sha256": "2381fdd8bc3e5811e2c04c82cb05720d763e39f8a05f099e787e5f0e711aef2b"
+    },
+    {
+      "path": "releases/v0.1.0a2/agentsync_local-0.1.0a2-py3-none-any.whl",
+      "size": 17927,
+      "sha256": "d907f241aca745654d64133a1e1cf869a54e27dc74f334ec2c819cb8a1b4c599"
+    },
+    {
+      "path": "releases/v0.1.0a2/agentsync_local-0.1.0a2.tar.gz",
+      "size": 114763,
+      "sha256": "28078bef0d4bd2a95d7c9fd2af663b23c7419cfce103034df735885970d764f5"
+    },
+    {
+      "path": "releases/v0.1.0a2/AgentSync-v0.1.0a2-source.zip",
+      "size": 141646,
+      "sha256": "70b4da047ec28a74c77e24a7466c582070de6a00c2fb0c86e7df6daffaf2d976"
+    },
+    {
+      "path": "releases/v0.1.0a2/AgentSync-v0.1.0a2-SHA256SUMS.txt",
+      "size": 303,
+      "sha256": "88f5eccc0c7b88f4014d1ca1a004455a98c23c12f1a401cb7ea651fe3267f8ef"
+    }
+  ],
+  "excluded": [
+    "virtual environments",
+    "runtime and test databases",
+    "private configuration backup",
+    "caches and raw scratch logs"
+  ],
+  "cleanup_scope": "Only this generated local project workspace; external shared AgentSync user data is preserved."
+}

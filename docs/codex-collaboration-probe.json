@@ -1,0 +1,106 @@
+{
+  "host": "installed Codex public app-server",
+  "inference_turns": 0,
+  "ephemeral": true,
+  "host_threads": 2,
+  "runtime_statuses": [
+    "connected",
+    "connected",
+    "connected"
+  ],
+  "tools": [
+    "claim_task",
+    "create_project",
+    "create_task",
+    "get_project_state",
+    "heartbeat",
+    "list_tasks",
+    "reclaim_expired",
+    "register_agent",
+    "renew_lease",
+    "review_task",
+    "update_task"
+  ],
+  "client": "Codex Desktop/0.162.0 (Windows 10.0.26200; x86_64) dumb (agentsync-collaboration-acceptance; 0.1.0)",
+  "desktop_ui_tested": false,
+  "global_configuration_modified": false,
+  "limitations": "Native isolated backend only; no desktop UI or model development session. Review evidence is an Alpha assertion, not M5 verification.",
+  "duplicate_claim": {
+    "ok": false,
+    "code": "invalid_transition",
+    "observed_version": 2
+  },
+  "task_observations": [
+    {
+      "stage": "created",
+      "status": "pending",
+      "version": 1,
+      "owner": null,
+      "result_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": null
+    },
+    {
+      "stage": "claimed",
+      "status": "claimed",
+      "version": 2,
+      "owner": "A",
+      "result_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": null
+    },
+    {
+      "stage": "running",
+      "status": "running",
+      "version": 3,
+      "owner": "A",
+      "result_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": null
+    },
+    {
+      "stage": "submitted",
+      "status": "review",
+      "version": 4,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": null
+    },
+    {
+      "stage": "accepted",
+      "status": "completed",
+      "version": 5,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": {
+        "reviewer": "B",
+        "accept": true,
+        "evidence": "Native host B read the exact submitted result and accepted version 4.",
+        "version": 5
+      }
+    },
+    {
+      "stage": "after_host_restart",
+      "status": "completed",
+      "version": 5,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": {
+        "reviewer": "B",
+        "accept": true,
+        "evidence": "Native host B read the exact submitted result and accepted version 4.",
+        "version": 5
+      }
+    },
+    {
+      "stage": "fresh_core",
+      "status": "completed",
+      "version": 5,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": {
+        "reviewer": "B",
+        "accept": true,
+        "evidence": "Native host B read the exact submitted result and accepted version 4.",
+        "version": 5
+      }
+    }
+  ]
+}
