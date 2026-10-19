@@ -43,15 +43,21 @@ def validate_report(report):
     states = report["task_observations"]
     assert [(s["stage"], s["status"], s["version"]) for s in states] == EXPECTED_STATES
     assert report["duplicate_claim"] == {
-        "ok": False, "code": "invalid_transition", "observed_version": 2
+        "ok": False,
+        "code": "invalid_transition",
+        "observed_version": 2,
     }
     expected_hash = hashlib.sha256(RESULT.encode()).hexdigest()
     for state in states[3:]:
         assert state["result_sha256"] == expected_hash
         assert state["owner"] == "A"
     for state in states[4:]:
-        assert state["review"] == {"reviewer": "B", "accept": True,
-                                    "evidence": EVIDENCE, "version": 5}
+        assert state["review"] == {
+            "reviewer": "B",
+            "accept": True,
+            "evidence": EVIDENCE,
+            "version": 5,
+        }
 
 
 class NativeHost:
@@ -72,9 +78,13 @@ class NativeHost:
             config += "}}"
             argv.extend(["-c", config])
         self.proc = subprocess.Popen(
-            argv, cwd=ROOT,
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=self.errors,
-            text=True, encoding="utf-8",
+            argv,
+            cwd=ROOT,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=self.errors,
+            text=True,
+            encoding="utf-8",
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
         threading.Thread(target=self._read, daemon=True).start()
@@ -112,38 +122,57 @@ class NativeHost:
         raise TimeoutError(f"Native host timed out: {method}")
 
     def initialize(self):
-        init = self.send("initialize", {
-            "clientInfo": {"name": "agentsync-collaboration-acceptance", "version": "0.1.0"},
-            "capabilities": {"experimentalApi": True},
-        })
+        init = self.send(
+            "initialize",
+            {
+                "clientInfo": {"name": "agentsync-collaboration-acceptance", "version": "0.1.0"},
+                "capabilities": {"experimentalApi": True},
+            },
+        )
         self.send("initialized", notification=True)
         return init
 
     def start(self):
         params = {
-            "cwd": str(ROOT), "ephemeral": True,
-            "approvalPolicy": "never", "sandbox": "read-only",
+            "cwd": str(ROOT),
+            "ephemeral": True,
+            "approvalPolicy": "never",
+            "sandbox": "read-only",
         }
         if not self.use_registered_config:
-            params["config"] = {"mcp_servers": {"agentsync": {
-                "command": sys.executable,
-                "args": ["-m", "agentsync", "--data-dir", str(self.data), "mcp"],
-            }}}
+            params["config"] = {
+                "mcp_servers": {
+                    "agentsync": {
+                        "command": sys.executable,
+                        "args": ["-m", "agentsync", "--data-dir", str(self.data), "mcp"],
+                    }
+                }
+            }
         thread = self.send("thread/start", params)
         tid = thread["thread"]["id"]
-        status = self.send("mcpServerStatus/list", {
-            "threadId": tid, "serverName": "agentsync", "detail": "toolsAndAuthOnly",
-        })
+        status = self.send(
+            "mcpServerStatus/list",
+            {
+                "threadId": tid,
+                "serverName": "agentsync",
+                "detail": "toolsAndAuthOnly",
+            },
+        )
         inventory = next(s for s in status["data"] if s["name"] == "agentsync")
         assert inventory["runtimeStatus"] == "connected"
         assert inventory["toolsError"] is None
         return tid, inventory["runtimeStatus"], sorted(inventory["tools"])
 
     def call(self, tid, operation, arguments, expect_ok=True):
-        result = self.send("mcpServer/tool/call", {
-            "threadId": tid, "server": "agentsync", "tool": operation,
-            "arguments": arguments,
-        })
+        result = self.send(
+            "mcpServer/tool/call",
+            {
+                "threadId": tid,
+                "server": "agentsync",
+                "tool": operation,
+                "arguments": arguments,
+            },
+        )
         assert not result.get("isError", False), "MCP transport/tool failure"
         envelope = result["structuredContent"]
         assert envelope["ok"] is expect_ok, f"Unexpected operation outcome: {operation}"
@@ -173,17 +202,31 @@ def run(binary):
 
     def observe(stage, task):
         assert "lease_token" not in task
-        item = {"stage": stage, "status": task["status"], "version": task["version"],
-                "owner": next((name for name, s in sessions.items()
-                               if s["session_id"] == task["owner_session_id"]), None),
-                "result_sha256": hashlib.sha256(task["result"].encode()).hexdigest(),
-                "review": None}
+        item = {
+            "stage": stage,
+            "status": task["status"],
+            "version": task["version"],
+            "owner": next(
+                (
+                    name
+                    for name, s in sessions.items()
+                    if s["session_id"] == task["owner_session_id"]
+                ),
+                None,
+            ),
+            "result_sha256": hashlib.sha256(task["result"].encode()).hexdigest(),
+            "review": None,
+        }
         review = task["latest_review"]
         if review:
             assert review["reviewer_session_id"] == sessions["B"]["session_id"]
             assert review["reviewer_agent_id"] == sessions["B"]["agent_id"]
-            item["review"] = {"reviewer": "B", "accept": review["accept"],
-                              "evidence": review["evidence"], "version": review["version"]}
+            item["review"] = {
+                "reviewer": "B",
+                "accept": review["accept"],
+                "evidence": review["evidence"],
+                "version": review["version"],
+            }
         observations.append(item)
 
     host = NativeHost(binary, data, workspace / "host-stderr.log")
@@ -193,44 +236,96 @@ def run(binary):
         tb, status_b, tools_b = host.start()
         assert ta != tb
         assert tools_a == tools_b
-        project = host.call(ta, "create_project", {
-            "name": "Native collaboration acceptance", "root_path": str(workspace)})
+        project = host.call(
+            ta,
+            "create_project",
+            {"name": "Native collaboration acceptance", "root_path": str(workspace)},
+        )
         for name, tid in (("A", ta), ("B", tb)):
-            sessions[name] = host.call(tid, "register_agent", {
-                **project, "name": f"Native acceptance agent {name}", "capabilities": []})
+            sessions[name] = host.call(
+                tid,
+                "register_agent",
+                {**project, "name": f"Native acceptance agent {name}", "capabilities": []},
+            )
         assert sessions["A"]["agent_id"] != sessions["B"]["agent_id"]
         assert sessions["A"]["session_id"] != sessions["B"]["session_id"]
-        auth = {name: {"project_id": project["project_id"],
-                       "session_id": session["session_id"],
-                       "session_token": session["session_token"]}
-                for name, session in sessions.items()}
-        task = host.call(ta, "create_task", {**auth["A"],
-            "title": "Deterministic two-session M2 fixture", "request_id": "create-1",
-            "dependencies": []})
+        auth = {
+            name: {
+                "project_id": project["project_id"],
+                "session_id": session["session_id"],
+                "session_token": session["session_token"],
+            }
+            for name, session in sessions.items()
+        }
+        task = host.call(
+            ta,
+            "create_task",
+            {
+                **auth["A"],
+                "title": "Deterministic two-session M2 fixture",
+                "request_id": "create-1",
+                "dependencies": [],
+            },
+        )
         observe("created", task)
-        claimed = host.call(ta, "claim_task", {**auth["A"], "task_id": task["id"],
-            "expected_version": task["version"], "request_id": "claim-a-1"})
+        claimed = host.call(
+            ta,
+            "claim_task",
+            {
+                **auth["A"],
+                "task_id": task["id"],
+                "expected_version": task["version"],
+                "request_id": "claim-a-1",
+            },
+        )
         lease = claimed.pop("lease_token")
         observe("claimed", claimed)
         visible = host.call(tb, "list_tasks", auth["B"])["tasks"]
         assert len(visible) == 1 and visible[0] == claimed
-        duplicate = host.call(tb, "claim_task", {**auth["B"], "task_id": task["id"],
-            "expected_version": visible[0]["version"], "request_id": "claim-b-1"}, False)
+        duplicate = host.call(
+            tb,
+            "claim_task",
+            {
+                **auth["B"],
+                "task_id": task["id"],
+                "expected_version": visible[0]["version"],
+                "request_id": "claim-b-1",
+            },
+            False,
+        )
         assert duplicate["code"] == "invalid_transition"
         unchanged = host.call(tb, "list_tasks", auth["B"])["tasks"]
         assert unchanged == visible
         current = claimed
-        for stage, status, result in (("running", "running", ""),
-                                      ("submitted", "review", RESULT)):
-            current = host.call(ta, "update_task", {**auth["A"], "task_id": task["id"],
-                "lease_token": lease, "expected_version": current["version"],
-                "status": status, "result": result, "request_id": stage + "-1"})
+        for stage, status, result in (("running", "running", ""), ("submitted", "review", RESULT)):
+            current = host.call(
+                ta,
+                "update_task",
+                {
+                    **auth["A"],
+                    "task_id": task["id"],
+                    "lease_token": lease,
+                    "expected_version": current["version"],
+                    "status": status,
+                    "result": result,
+                    "request_id": stage + "-1",
+                },
+            )
             observe(stage, current)
         submitted = host.call(tb, "list_tasks", auth["B"])["tasks"][0]
         assert submitted == current and submitted["result"] == RESULT
-        accepted = host.call(tb, "review_task", {**auth["B"], "task_id": task["id"],
-            "expected_version": submitted["version"], "accept": True, "evidence": EVIDENCE,
-            "request_id": "review-b-1"})
+        accepted = host.call(
+            tb,
+            "review_task",
+            {
+                **auth["B"],
+                "task_id": task["id"],
+                "expected_version": submitted["version"],
+                "accept": True,
+                "evidence": EVIDENCE,
+                "request_id": "review-b-1",
+            },
+        )
         observe("accepted", accepted)
     finally:
         host.close()
@@ -251,9 +346,13 @@ def run(binary):
     observe("fresh_core", fresh[0])
     report = {
         "host": "installed Codex public app-server",
-        "inference_turns": 0, "ephemeral": True, "host_threads": 2,
-        "runtime_statuses": [status_a, status_b, status_r], "tools": tools_a,
-        "client": init["userAgent"], "desktop_ui_tested": False,
+        "inference_turns": 0,
+        "ephemeral": True,
+        "host_threads": 2,
+        "runtime_statuses": [status_a, status_b, status_r],
+        "tools": tools_a,
+        "client": init["userAgent"],
+        "desktop_ui_tested": False,
         "global_configuration_modified": False,
         "limitations": "Native isolated backend only; no desktop UI or model development session. Review evidence is an Alpha assertion, not M5 verification.",
         "duplicate_claim": {"ok": False, "code": duplicate["code"], "observed_version": 2},
@@ -275,7 +374,8 @@ def main():
     if binary is None:
         binary = Path(os.environ["APPDATA"]) / (
             "npm/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/"
-            "vendor/x86_64-pc-windows-msvc/bin/codex.exe")
+            "vendor/x86_64-pc-windows-msvc/bin/codex.exe"
+        )
         if not binary.is_file():
             found = shutil.which("codex.exe")
             if found:

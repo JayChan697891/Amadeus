@@ -50,3 +50,9 @@ public pushes, published packages or public Releases were made.
 4. Next authorized batch: M3-01..04 context/FTS/version/source and structured handoff.
 5. Then M4 path boundaries, cooperative locks, isolated Git worktrees and conflict detection.
 6. Continue M5-M9 from PLAN.md; record evidence and checkpoints at each stage.
+
+## Ruff CI follow-up
+
+Issue #2: Codex repaired full-repository Ruff violations without runtime changes.
+Local 92 tests, lint, format, types and build passed. PR-head remote matrix is the
+acceptance gate; see RUFF-CI-REPAIR.md. main remains unchanged.

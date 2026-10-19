@@ -21,9 +21,18 @@ def test_saved_native_evidence_has_exact_workflow(report):
     PROBE["validate_report"](report)
 
 
-@pytest.mark.parametrize("corruption", [
-    "status", "version", "result", "reviewer", "evidence", "duplicate", "desktop_claim",
-])
+@pytest.mark.parametrize(
+    "corruption",
+    [
+        "status",
+        "version",
+        "result",
+        "reviewer",
+        "evidence",
+        "duplicate",
+        "desktop_claim",
+    ],
+)
 def test_evidence_validator_rejects_corruption(report, corruption):
     changed = copy.deepcopy(report)
     observations = changed["task_observations"]
@@ -47,8 +56,16 @@ def test_evidence_validator_rejects_corruption(report, corruption):
 
 def test_saved_evidence_contains_no_credentials_ids_or_machine_paths(report):
     serialized = json.dumps(report)
-    for forbidden in ("session_token", "admin_token", "lease_token", "session_id",
-                      "agent_id", "project_id", "root_path", "data_dir"):
+    for forbidden in (
+        "session_token",
+        "admin_token",
+        "lease_token",
+        "session_id",
+        "agent_id",
+        "project_id",
+        "root_path",
+        "data_dir",
+    ):
         assert forbidden not in serialized
     assert not re.search(r"[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}", serialized)
     assert not re.search(r"[A-Za-z]:[\\/]", serialized)

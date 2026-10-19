@@ -26,3 +26,9 @@
 - D014 (a2): Close M2-05 connection acceptance using separate evidence: actual registered native
   discovery/calls and direct user-confirmed desktop connected status. Computer Use guidance
   forbids automating ChatGPT desktop UI, so no automated UI evidence is claimed.
+
+## Full repository quality gate
+
+Keep all archived Python scripts within Ruff scope. Add format --check to every
+matrix job; retain test XML and builds in Actions artifacts. Preserve historical
+version branches and release archives, and submit repair through a PR only.

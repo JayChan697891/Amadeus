@@ -23,3 +23,9 @@
   eight fresh processes. Added bounded retry only for SQLITE_BUSY/LOCKED outside the migration
   transaction; unrelated failures still propagate. Retained race regression and expanded it to
   five fresh rounds (40 child initializers). Rebuild/reinstall verification recorded in TEST-REPORT.md.
+
+## Published archive scripts failed full-repository Ruff
+
+The nine-job run 39245887274 passed tests but failed lint because archive utilities
+were newly included. Safe fixes plus formatting and an equivalent def replacement
+resolved all violations; no rule suppression. See Issue #2 and RUFF-CI-REPAIR.md.

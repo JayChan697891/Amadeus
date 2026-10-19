@@ -1,4 +1,5 @@
 """Authenticated, loopback-only HTTP transport."""
+
 import hmac
 import ipaddress
 import os
@@ -22,8 +23,9 @@ def create_app(data_dir: str | Path | None = None, api_token: str | None = None)
     if not token or not token.strip():
         raise ValueError("A nonempty HTTP API token is required")
     core = Core(data_dir=data_dir)
-    app = FastAPI(title="AgentSync", version=__version__, docs_url=None, redoc_url=None,
-                  openapi_url=None)
+    app = FastAPI(
+        title="AgentSync", version=__version__, docs_url=None, redoc_url=None, openapi_url=None
+    )
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]"])
 
     @app.middleware("http")
@@ -34,7 +36,13 @@ def create_app(data_dir: str | Path | None = None, api_token: str | None = None)
         except ValueError:
             local = False
         if not local:
-            return JSONResponse({"ok": False, "error": {"code": "LOCAL_ONLY", "message": "Loopback connections only"}}, status_code=403)
+            return JSONResponse(
+                {
+                    "ok": False,
+                    "error": {"code": "LOCAL_ONLY", "message": "Loopback connections only"},
+                },
+                status_code=403,
+            )
         return await call_next(request)
 
     @app.get("/health")
@@ -45,13 +53,34 @@ def create_app(data_dir: str | Path | None = None, api_token: str | None = None)
     async def execute(operation: str, request: Request) -> Any:
         supplied = request.headers.get("authorization", "")
         if not hmac.compare_digest(supplied.encode(), ("Bearer " + token).encode()):
-            return JSONResponse({"ok": False, "error": {"code": "UNAUTHORIZED", "message": "Valid bearer token required"}}, status_code=401)
+            return JSONResponse(
+                {
+                    "ok": False,
+                    "error": {"code": "UNAUTHORIZED", "message": "Valid bearer token required"},
+                },
+                status_code=401,
+            )
         try:
             payload: Any = await request.json()
         except (ValueError, UnicodeDecodeError):
-            return JSONResponse({"ok": False, "error": {"code": "VALIDATION_ERROR", "message": "Request body must be JSON"}}, status_code=400)
+            return JSONResponse(
+                {
+                    "ok": False,
+                    "error": {"code": "VALIDATION_ERROR", "message": "Request body must be JSON"},
+                },
+                status_code=400,
+            )
         if not isinstance(payload, dict):
-            return JSONResponse({"ok": False, "error": {"code": "VALIDATION_ERROR", "message": "Request body must be an object"}}, status_code=400)
+            return JSONResponse(
+                {
+                    "ok": False,
+                    "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "Request body must be an object",
+                    },
+                },
+                status_code=400,
+            )
         try:
             return {"ok": True, "data": core.execute(operation, payload)}
         except AgentSyncError as error:
