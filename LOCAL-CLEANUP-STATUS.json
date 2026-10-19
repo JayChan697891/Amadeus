@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-19",
+  "repository": "JayChan697891/agentsync",
+  "remote_upload_verified": true,
+  "remotely_retrieved_and_compared_files": 98,
+  "verified_version_artifacts": 8,
+  "original_history_restore_tested": true,
+  "project_mcp_registration_removed": true,
+  "unrelated_native_configuration_preserved": true,
+  "local_project_files_deleted": false,
+  "deletion_attempt_executed": false,
+  "automatic_approval_rejection": "blocked by policy",
+  "rejection_detail": "No more specific reason was provided. The command was rejected before process creation.",
+  "local_cleanup_status": "blocked; local project files remain",
+  "external_user_data_preserved": true
+}
