@@ -249,4 +249,92 @@ def build_server(data_dir: str | Path | None = None) -> MCPServer:
             "withdraw_handoff", **{key: value for key, value in locals().items() if key != "client"}
         )
 
+    @server.tool()
+    def inspect_path(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        path: str,
+    ) -> dict[str, Any]:
+        """Inspect a project-relative ordinary file without returning its contents."""
+        return client.call(
+            "inspect_path", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def verify_file_version(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        path: str,
+        expected_sha256: str | None,
+    ) -> dict[str, Any]:
+        """Compare a bounded file's SHA-256, or verify that a resource is missing."""
+        return client.call(
+            "verify_file_version",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
+    @server.tool()
+    def acquire_file_lock(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        path: str,
+        request_id: str,
+        kind: Literal["file", "directory"] = "file",
+        lease_seconds: int = 300,
+    ) -> dict[str, Any]:
+        """Acquire an exclusive cooperative resource lease; external editors are unaffected."""
+        return client.call(
+            "acquire_file_lock",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
+    @server.tool()
+    def renew_file_lock(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        lock_id: str,
+        lease_token: str,
+        expected_version: int,
+        request_id: str,
+        lease_seconds: int = 300,
+    ) -> dict[str, Any]:
+        """Renew a currently owned, unexpired cooperative file or directory lease."""
+        return client.call(
+            "renew_file_lock", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def release_file_lock(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        lock_id: str,
+        lease_token: str,
+        expected_version: int,
+        request_id: str,
+    ) -> dict[str, Any]:
+        """Release the current session's cooperative resource lease."""
+        return client.call(
+            "release_file_lock",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
+    @server.tool()
+    def list_file_locks(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        include_expired: bool = False,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> dict[str, Any]:
+        """List this project's public lock records without credentials or token hashes."""
+        return client.call(
+            "list_file_locks", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
     return server

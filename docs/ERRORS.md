@@ -35,3 +35,11 @@ resolved all violations; no rule suppression. See Issue #2 and RUFF-CI-REPAIR.md
 Lead review found identity reservations lacked a deadline. Added a maximum 300-second
 reservation capped at a valid session expiry, with recovery/replay regressions.
 Old leases stay revoked. See M3-REPORT.md.
+
+## M4A filesystem portability
+
+Windows inode values require TEXT storage; lstat/fstat ctime semantics differ across
+Python versions. Root pinning stores full identities and file inspection compares
+ctime only within the same API. macOS conflict keys normalize NFC before casefolding.
+Local Windows symlink tests skip when privilege 1314 is unavailable; junction and
+hardlink tests execute. Platform-specific skips are never treated as passed cases.

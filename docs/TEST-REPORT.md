@@ -91,3 +91,10 @@ the linked PR for the final nine-job GitHub Actions result.
 
 142 source tests passed in 15.14s. Full Ruff lint/format, mypy (16 files) and
 wheel/sdist build passed. See M3-REPORT.md and final PR CI for package/remote gates.
+
+## M4A / Release Acceptance development checkpoint
+
+Source and clean installed wheel: 323 passed,2 skipped each; twelve runner checks
+passed. Formal product acceptance remains BLOCKED. See M4A-REPORT.md and acceptance/.
+The final published SHA and remote matrix require their own evidence; historical
+M0-M2/M3 test counts below remain version-specific.

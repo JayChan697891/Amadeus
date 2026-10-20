@@ -1,7 +1,8 @@
 # AgentSync continuation context
 
 The user explicitly revoked the earlier AGENTS.md instructions and requested continuation
-of the product plan. The current authorized stage is M3, specified in docs/M3-CONTRACT.md.
+of the product plan. M3 is saved in PR #5; current development is M4-01/02 as specified
+in docs/M4A-CONTRACT.md. The user requested continuous milestone-by-milestone work.
 Earlier M0-M2-only/no-public-push statements describe historical batches.
 
 Use the user's current instructions: work under F:\syuc, keep authored project changes

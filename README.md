@@ -5,7 +5,7 @@
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.2.0a1 M3 Alpha**. Project context has immutable revisions, source/summary
+Status: **0.2.0a2 M4-01/02 Alpha checkpoint**. Project context has immutable revisions, source/summary
 metadata and literal substring search. Structured handoffs pin context revisions,
 invalidate the sender's lease and reserve a fresh claim for the designated recipient.
 Reservations expire within 300 seconds so offline recipients cannot strand a task.
@@ -55,7 +55,11 @@ Stdio MCP hosts have local process access; Alpha is not a hostile-agent sandbox.
 
 Review evidence is stored text, not verified execution. Task submitters cannot accept their own
 work, but Alpha does not independently run or validate tests submitted by other agents.
-Context sharing and handoffs are M3. Locks, Git worktrees, control adapters, scheduling,
-BYOK models and usage remain M4-M9, recorded in [the plan](docs/PLAN.md).
+M3 context and handoffs are implemented. M4 now adds read-only path/version inspection and
+cooperative file/directory lease locks, shared across all transports. These do not enforce
+OS locking or prevent external editors. Git worktrees, merge conflict handling, independent
+evidence execution, control adapters and autonomous scheduling remain incomplete.
+See [the plan](docs/PLAN.md) and [release acceptance design](docs/acceptance/DESIGN.md).
+Passing local checks does not establish formal release acceptance.
 Model fees, if later enabled, are the user's.
 The owner authorized this public source archive on 2026-10-19; no model services were called for publication.

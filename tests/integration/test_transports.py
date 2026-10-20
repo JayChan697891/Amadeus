@@ -118,6 +118,12 @@ def test_real_mcp_stdio_tools_and_core(tmp_path):
                 "get_handoff",
                 "resolve_handoff",
                 "withdraw_handoff",
+                "inspect_path",
+                "verify_file_version",
+                "acquire_file_lock",
+                "renew_file_lock",
+                "release_file_lock",
+                "list_file_locks",
             }
             create_schema = next(
                 tool.input_schema for tool in listing.tools if tool.name == "create_task"
