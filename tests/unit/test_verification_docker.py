@@ -381,6 +381,37 @@ def test_effective_isolation_mismatch_rejects_before_start(policy_daemon, field,
     assert result["status"] == "unsupported" and result["error_code"] == "isolation_mismatch"
     assert result["cleanup_confirmed"]
     assert not any(call[0][5] == "start" for call in policy_daemon["calls"])
+    assert result["effective_isolation_checks"]
+    assert all(type(item) is bool for item in result["effective_isolation_checks"].values())
+    assert not all(result["effective_isolation_checks"].values())
+
+
+def test_failed_isolation_diagnostics_preserve_fixed_checks_without_raw_credentials(policy_daemon):
+    sentinel = "private-sentinel-do-not-persist"
+
+    def mutate(operation, result):
+        if operation == "inspect":
+            config = result[0]["Config"]
+            config["Env"] = ["OPENAI_API_KEY=" + sentinel]
+            config["Cmd"] = [sentinel]
+            config["Entrypoint"] = [sentinel]
+            config["User"] = sentinel
+            result[0]["HostConfig"]["SecurityOpt"] = [sentinel]
+            result[0]["HostConfig"]["Tmpfs"] = {"/tmp": "rw," + sentinel}
+        return result
+
+    policy_daemon["mutate"] = mutate
+    result = verify()
+    assert result["status"] == "unsupported" and result["cleanup_confirmed"]
+    checks = result["effective_isolation_checks"]
+    assert checks["environment"] is False and checks["command"] is False
+    assert checks["entrypoint"] is False and checks["security"] is False
+    assert "private-sentinel" not in json.dumps(result)
+    summary = result["effective_isolation_summary"]
+    assert summary["user"] == "other" and summary["security_options"] == ["other"]
+    assert len(summary["environment_sha256"]) == len(summary["command_sha256"]) == 64
+    assert summary["tmpfs_unknown_option_count"] == 1
+    assert summary["tmpfs_known_options"] == ["rw"]
 
 
 @pytest.mark.parametrize("change", ["seccomp", "memory", "cgroup_v1", "image", "volume", "secret"])

@@ -1,6 +1,14 @@
 # Current M5B1 verifier foundation (Issue15)
 
 Version0.3.0a2, feature/m5b-verifier based on PR14 headf1f13ded.
+PR16 first head227512a ran actual Docker gate39437105068:14 cases failed with
+isolation_mismatch before candidate execution; all reported cleanup confirmed.
+Actual backend acceptance is FAILED, not skipped/passed. Preserve this failure;
+add safe effective-control diagnostics, identify the actual mismatched control,
+repair only with evidence, then rerun the complete final-head gates. Local first
+head source715pass17skip does not erase the Docker failure. No next implementation
+stage is accepted until this gate and Work review are complete.
+
 PR14 exact head passed9/9 quality jobs in run39433390898. Lead downloaded all9
 ZIPs and verified every saved log/artifact hash, clean/stable source and matching
 tree74072e7. Source/wheel/sdist each594cases: Windows594pass, POSIX591pass3skip.

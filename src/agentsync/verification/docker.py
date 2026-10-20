@@ -209,9 +209,18 @@ class VerificationResult:
 
 
 class _Failure(Exception):
-    def __init__(self, code: str, status: str = "error"):
+    def __init__(
+        self,
+        code: str,
+        status: str = "error",
+        *,
+        isolation_checks: dict[str, bool] | None = None,
+        isolation_summary: dict[str, Any] | None = None,
+    ):
         self.code = code
         self.status = status
+        self.isolation_checks = isolation_checks
+        self.isolation_summary = isolation_summary
 
 
 @dataclass
@@ -330,6 +339,94 @@ def _inspect_json(result: _Process) -> Any:
         raise _Failure("docker_inspection_invalid") from None
 
 
+def _isolation_summary(container: dict[str, Any]) -> dict[str, Any]:
+    """Fixed-schema diagnostics, never raw daemon environment/command/config text."""
+    host = container.get("HostConfig", {})
+    config = container.get("Config", {})
+
+    def enum(value: Any, allowed: set[str]) -> str:
+        return value if isinstance(value, str) and value in allowed else "other"
+
+    def digest(value: Any) -> str:
+        return _digest(json.dumps(value, sort_keys=True, separators=(",", ":")).encode())
+
+    namespace_values = {"", "private", "host", "none", "default"}
+    security_values = {
+        "no-new-privileges",
+        "no-new-privileges=true",
+        "no-new-privileges:false",
+        "seccomp=unconfined",
+    }
+    env = config.get("Env") or []
+    tmpfs = host.get("Tmpfs") or {}
+    options = tmpfs.get("/tmp", "")
+    tokens = options.split(",") if isinstance(options, str) else []
+    known_tokens = {
+        "rw",
+        "ro",
+        "noexec",
+        "exec",
+        "nosuid",
+        "suid",
+        "nodev",
+        "dev",
+        "mode=1777",
+        "size=8388608",
+        "size=8m",
+        "size=8M",
+        "size=8192k",
+        "size=8192K",
+    }
+    return {
+        "user": enum(config.get("User"), {"65534:65534", "0", "0:0", "root"}),
+        "environment_sha256": digest(env),
+        "environment_count": len(env),
+        "expected_environment_keys_present": {
+            key: any(isinstance(item, str) and item.startswith(key + "=") for item in env)
+            for key in RUNTIME_ENV
+        },
+        "expected_environment_values_match": {
+            key: f"{key}={value}" in env for key, value in RUNTIME_ENV.items()
+        },
+        "entrypoint_sha256": digest(config.get("Entrypoint")),
+        "command_sha256": digest(config.get("Cmd")),
+        "security_options": [enum(item, security_values) for item in host.get("SecurityOpt") or []],
+        "namespaces": {
+            key: enum(host.get(key), namespace_values)
+            for key in (
+                "NetworkMode",
+                "PidMode",
+                "IpcMode",
+                "CgroupnsMode",
+                "UTSMode",
+                "UsernsMode",
+            )
+        },
+        "cap_drop": [enum(item, {"ALL", "all", "CAP_ALL"}) for item in host.get("CapDrop") or []],
+        "mount_types": [
+            enum(item.get("Type"), {"bind", "volume", "tmpfs", "image"})
+            for item in container.get("Mounts") or []
+            if isinstance(item, dict)
+        ],
+        "mounts_only_tmpfs_at_tmp": bool(container.get("Mounts"))
+        and all(
+            isinstance(item, dict)
+            and item.get("Type") == "tmpfs"
+            and item.get("Destination") == "/tmp"
+            for item in container.get("Mounts") or []
+        ),
+        "resources": {
+            key: value if type(value) is int and -1 <= value <= 2**63 - 1 else "other"
+            for key in ("Memory", "MemorySwap", "NanoCpus", "PidsLimit")
+            for value in [host.get(key)]
+        },
+        "tmpfs_paths_only_tmp": set(tmpfs) == {"/tmp"},
+        "tmpfs_known_options": sorted(set(tokens) & known_tokens),
+        "tmpfs_unknown_option_count": len([token for token in tokens if token not in known_tokens]),
+        "tmpfs_options_sha256": digest(options),
+    }
+
+
 def _isolation(container: dict[str, Any], profile: DockerProfile, owner: str) -> dict[str, Any]:
     host = container.get("HostConfig", {})
     config = container.get("Config", {})
@@ -368,7 +465,12 @@ def _isolation(container: dict[str, Any], profile: DockerProfile, owner: str) ->
         "logs": host.get("LogConfig", {}).get("Type") == "none",
     }
     if not all(checks.values()):
-        raise _Failure("isolation_mismatch", "unsupported")
+        raise _Failure(
+            "isolation_mismatch",
+            "unsupported",
+            isolation_checks=checks,
+            isolation_summary=_isolation_summary(container),
+        )
     return {
         "checks": checks,
         "memory_bytes": MEMORY,
@@ -647,6 +749,9 @@ def verify_python_json_lines(
                     evidence["errors"].append("cleanup_failed")
                     status = "error"
     except _Failure as exc:
+        if exc.isolation_checks is not None:
+            evidence["effective_isolation_checks"] = exc.isolation_checks
+            evidence["effective_isolation_summary"] = exc.isolation_summary
         evidence["errors"].append(exc.code)
         status = "error" if "cleanup_failed" in evidence["errors"] else exc.status
     except (OSError, ValueError, TypeError, KeyError, AttributeError, subprocess.SubprocessError):

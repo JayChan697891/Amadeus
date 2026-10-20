@@ -97,3 +97,10 @@ Docker CLI exit0 is also insufficient: inspect actual exited/nonrunning state an
 candidate exit code, require every external typed JSON comparison, reject OOM,
 fake JUnit, missing/extra output and enforce limits. Record policy simulations
 separately from the required real Linux container acceptance job.
+
+The first actual Docker run39437105068 (head227512a) failed14/14 cases at the
+effective isolation check: isolation_mismatch, execution_started=false, cleanup
+confirmed. Docker28.0.4/cgroup2 and the preloaded image were present, so this is
+not missing Docker. Never mark this gate passed or skip it. Safe fixed control
+booleans and bounded normalized metadata are added to identify the mismatch
+without dumping raw configuration/environment. See the failure evidence index.
