@@ -86,3 +86,8 @@ and remote GitHub Actions have not run.
 Independent F-drive source verification: 92 passed in 7.51s, Ruff check and format
 passed, mypy 15 source files passed, wheel/sdist built. See RUFF-CI-REPAIR.md and
 the linked PR for the final nine-job GitHub Actions result.
+
+## M3 checkpoint
+
+142 source tests passed in 15.14s. Full Ruff lint/format, mypy (16 files) and
+wheel/sdist build passed. See M3-REPORT.md and final PR CI for package/remote gates.

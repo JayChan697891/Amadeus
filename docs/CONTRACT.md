@@ -1,6 +1,8 @@
-# M0-M2 implementation contract
+# M0-M2 baseline contract and M3 extension
 
-Python >=3.11. Distribution name agentsync-local; import agentsync. Version 0.1.0a2.
+Python >=3.11. Distribution name agentsync-local; import agentsync. Current version 0.2.0a1.
+M3 adds the operations and states in [M3-CONTRACT.md](M3-CONTRACT.md). The baseline
+below remains applicable; schema v3 preserves its data and review semantics.
 MCP official SDK mcp==2.3.0, v2 MCPServer (verify installed API).
 
 Core is `agentsync.core.service.Core(data_dir: str | Path | None = None)`.

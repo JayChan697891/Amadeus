@@ -49,8 +49,12 @@ can reuse the sender lease. Accept, reject and withdraw all atomically increment
 version and return it to pending. Accept reserves its next claim for recipient agent;
 reject/withdraw reserve it for sender agent. Normal claim_task then issues a fresh
 lease through its unchanged idempotency path. Reservations are identity-based and
-expire on the successful claim's version change (including later lease expiry).
-Expose assigned_agent_id on public tasks where a current-version reservation exists.
+expire on the successful claim's version change (including later lease expiry), or
+after at most 300 seconds, capped at the assigned identity's currently valid session
+expiry. If the returning sender has no valid session, no reservation blocks recovery.
+After expiry any authenticated project member can claim the still-pending task.
+Expose assigned_agent_id and assignment_expires_at on public tasks where a current
+unexpired version-scoped reservation exists. Preserve the deadline in handoff history.
 A version-scoped reservation from the immutable handoff record is acceptable and
 avoids modifying historical task inserts. No extra lease token is returned by M3 calls.
 

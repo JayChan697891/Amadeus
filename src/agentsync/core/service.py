@@ -13,6 +13,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from agentsync.config import resolve_data_dir
+from agentsync.core.collaboration import CollaborationMixin, active_assignment, reservation
 from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
 from agentsync.storage.database import connect, migrate
@@ -30,7 +31,7 @@ def canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-class Core:
+class Core(CollaborationMixin):
     def __init__(self, data_dir: str | Path | None = None) -> None:
         self.data_dir = resolve_data_dir(data_dir)
         self.db_path = self.data_dir / "agentsync.db"
@@ -178,6 +179,11 @@ class Core:
             "FROM reviews WHERE task_id=? AND project_id=? ORDER BY version DESC LIMIT 1",
             (task["id"], task["project_id"]),
         ).fetchone()
+        assignment = active_assignment(db, task)
+        public["assigned_agent_id"] = assignment["assigned_agent_id"] if assignment else None
+        public["assignment_expires_at"] = (
+            assignment["reservation_expires_at"] if assignment else None
+        )
         public["latest_review"] = dict(review) if review is not None else None
         if public["latest_review"] is not None:
             public["latest_review"]["accept"] = bool(public["latest_review"]["accept"])
@@ -324,6 +330,10 @@ class Core:
         self._version(task, p)
         if task["status"] != "pending":
             raise AgentSyncError("invalid_transition", "Only pending tasks can be claimed.", 409)
+        assigned = reservation(db, task, now)
+        assert session is not None
+        if assigned is not None and assigned != session["agent_id"]:
+            raise AgentSyncError("assignment_denied", "Task is reserved for another agent.", 403)
         for dependency in json.loads(task["dependencies"]):
             row = db.execute(
                 "SELECT status FROM tasks WHERE id=? AND project_id=?",

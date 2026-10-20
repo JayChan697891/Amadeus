@@ -32,3 +32,11 @@
 Keep all archived Python scripts within Ruff scope. Add format --check to every
 matrix job; retain test XML and builds in Actions artifacts. Preserve historical
 version branches and release archives, and submit repair through a PR only.
+
+## M3 immutable context and explicit handoff ownership
+
+Use local SQLite FTS5 trigram, with escaped LIKE for queries shorter than three
+characters. Save immutable context revisions and fixed snapshots in handoffs.
+Submit revokes the old task lease; decisions reserve a fresh claim for at most
+300 seconds. No file, URL or command in a package is executed. Schema v3 upgrades
+previous data atomically. Transport wrappers dispatch only to the shared Core.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0a1 — M3 under verification
+
+- Project-scoped context revisions, source/summary metadata and literal substring search.
+- Structured, version-pinned handoffs with explicit recipient decisions and sender withdrawal.
+- Immediate lease invalidation on submission; identity-reserved next claims after resolution.
+- SQLite schema v3 preserves M0-M2 data and review history. All transports use the same Core.
+- This checkpoint covers M3; M4 file/worktree conflict protection remains planned.
+
 ## 0.1.0a2 — unreleased
 
 - Added complete inference-free two-native-session collaboration and host restart probes.

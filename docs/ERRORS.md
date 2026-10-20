@@ -29,3 +29,9 @@
 The nine-job run 39245887274 passed tests but failed lint because archive utilities
 were newly included. Safe fixes plus formatting and an equivalent def replacement
 resolved all violations; no rule suppression. See Issue #2 and RUFF-CI-REPAIR.md.
+
+## M3 accepted handoff could strand pending work
+
+Lead review found identity reservations lacked a deadline. Added a maximum 300-second
+reservation capped at a valid session expiry, with recovery/replay regressions.
+Old leases stay revoked. See M3-REPORT.md.

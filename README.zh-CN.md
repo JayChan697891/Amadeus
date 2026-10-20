@@ -3,9 +3,11 @@
 # AgentSync
 
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
-一个 SQLite 数据库。本批只实现 M0–M2，无需模型、付费 API 或云服务器。
+一个 SQLite 数据库。已从 M0–M2 继续实施 M3，无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.1.0a2 本地 Alpha 检查点**。M0–M2 第一批已完成；当前桌面 MCP 已由用户确认连接，
+当前为 **0.2.0a1 M3 Alpha**：支持上下文不可变版本、来源与摘要、中文短词检索，以及
+固定上下文版本的结构化交接、接收、拒收、撤回和重新分配。交接立即撤销旧租约；
+接收后的预约最长 300 秒，避免离线接收者让任务卡死。M0–M2 历史桌面 MCP 已由用户确认连接，
 原生工具与双会话流程已实际验证。不同证据边界、实际检查结果分别见
 [兼容性表](docs/COMPATIBILITY.md)、[测试报告](docs/TEST-REPORT.md) 和 [进度](docs/PROGRESS.md)。
 [本轮接入说明](docs/M2-CONTINUATION.zh-CN.md)包含原生安装器和完整复现步骤。
@@ -47,5 +49,10 @@ HTTP 需要单独设置 `AGENTSYNC_HTTP_TOKEN`，再执行 `python -m agentsync 
 幂等写入、结果提交与独立 Agent 验收记录、MCP/SDK/HTTP 接入。
 验收记录不等于自动验证测试证据；M5 才增加独立证据核验。
 
-共享上下文、文件锁、Git Worktree、真实 Agent 控制适配器、自主调度、多模型和费用统计
-按 M3–M9 后续实施，见 [计划](docs/PLAN.md)。没有进行付费模型调用、公开推送或公开发布。
+共享上下文和交接的完整接口见 [M3 契约](docs/M3-CONTRACT.md)。运行
+`python examples/m3_handoff.py --data-dir 绝对路径的新测试目录`，可复现三个独立 MCP
+客户端进程的 A→B→审查者接力；这是协议和进程验证，不代表模型或桌面宿主兼容性。
+
+文件锁、Git Worktree、真实 Agent 控制适配器、自主调度、多模型和费用统计
+按 M4–M9 后续实施，见 [计划](docs/PLAN.md)。用户已授权 GitHub 分支/PR 保存和云端环境；
+不会直接修改或合并 main，没有进行付费模型 API 调用。

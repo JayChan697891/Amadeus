@@ -39,6 +39,34 @@ PRAGMA user_version=2;
 """
 
 
+MIGRATION_V3 = """
+CREATE TABLE context_revisions(
+ context_id TEXT NOT NULL, project_id TEXT NOT NULL REFERENCES projects(id),
+ version INTEGER NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL, content TEXT NOT NULL,
+ summary TEXT NOT NULL, source TEXT NOT NULL,
+ author_agent_id TEXT NOT NULL REFERENCES agents(id),
+ author_session_id TEXT NOT NULL REFERENCES sessions(id),
+ created_at REAL NOT NULL, updated_at REAL NOT NULL,
+ PRIMARY KEY(context_id,version));
+CREATE INDEX contexts_project ON context_revisions(project_id,context_id,version);
+CREATE VIRTUAL TABLE context_search USING fts5(
+ context_id UNINDEXED, project_id UNINDEXED, kind UNINDEXED,
+ title, content, summary, source, tokenize='trigram');
+CREATE TABLE handoffs(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ task_id TEXT NOT NULL REFERENCES tasks(id),
+ sender_agent_id TEXT NOT NULL REFERENCES agents(id),
+ sender_session_id TEXT NOT NULL REFERENCES sessions(id),
+ recipient_agent_id TEXT NOT NULL REFERENCES agents(id),
+ package TEXT NOT NULL, contexts TEXT NOT NULL,
+ status TEXT NOT NULL, reason TEXT NOT NULL,
+ created_at REAL NOT NULL, resolved_at REAL, task_version INTEGER NOT NULL,
+ assigned_agent_id TEXT REFERENCES agents(id), reservation_expires_at REAL);
+CREATE INDEX handoffs_task ON handoffs(project_id,task_id,task_version);
+PRAGMA user_version=3;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -64,7 +92,12 @@ def migrate(path: Path) -> None:
             for statement in MIGRATION_V2.split(";"):
                 if statement.strip():
                     db.execute(statement)
-        elif version != 2:
+            version = 2
+        if version == 2:
+            for statement in MIGRATION_V3.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+        elif version != 3:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         db.commit()
     except Exception:

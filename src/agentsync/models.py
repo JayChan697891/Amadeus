@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -61,6 +61,73 @@ class ReviewTask(Auth):
     request_id: str = Field(min_length=1, max_length=200)
 
 
+ContextKind = Literal["requirement", "decision", "constraint", "progress", "note"]
+MetadataText = Annotated[str, Field(min_length=1, max_length=4000)]
+
+
+class PublishContext(Auth):
+    kind: ContextKind
+    title: str = Field(min_length=1, max_length=1000)
+    content: str = Field(min_length=1, max_length=65536)
+    summary: str = Field(default="", max_length=4000)
+    source: str = Field(default="", max_length=4000)
+    context_id: str | None = None
+    expected_version: int = Field(default=0, ge=0, le=2**63 - 2)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class GetContext(Auth):
+    context_id: str
+    version: int | None = Field(default=None, ge=1, le=2**63 - 1)
+
+
+class SearchContext(Auth):
+    query: str = Field(min_length=1, max_length=500)
+    kind: ContextKind | None = None
+    limit: int = Field(default=20, ge=1, le=100)
+    offset: int = Field(default=0, ge=0, le=10000)
+
+
+class ContextRef(StrictModel):
+    context_id: str
+    version: int = Field(ge=1, le=2**63 - 1)
+
+
+class HandoffPackage(StrictModel):
+    summary: str = Field(min_length=1, max_length=2000)
+    completed_work: str = Field(default="", max_length=20000)
+    changed_files: list[MetadataText] = Field(default_factory=list, max_length=100)
+    open_questions: list[MetadataText] = Field(default_factory=list, max_length=100)
+    evidence: list[MetadataText] = Field(default_factory=list, max_length=100)
+    context_refs: list[ContextRef] = Field(default_factory=list, max_length=100)
+
+
+class SubmitHandoff(Auth):
+    task_id: str
+    lease_token: str
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    target_agent_id: str
+    package: HandoffPackage
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class GetHandoff(Auth):
+    handoff_id: str
+
+
+class ResolveHandoff(GetHandoff):
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    accept: bool
+    reason: str = Field(default="", max_length=2000)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class WithdrawHandoff(GetHandoff):
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    reason: str = Field(min_length=1, max_length=2000)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
 OPERATIONS: dict[str, type[StrictModel]] = {
     "create_project": CreateProject,
     "register_agent": RegisterAgent,
@@ -73,4 +140,11 @@ OPERATIONS: dict[str, type[StrictModel]] = {
     "update_task": UpdateTask,
     "review_task": ReviewTask,
     "reclaim_expired": Auth,
+    "publish_context": PublishContext,
+    "get_context": GetContext,
+    "search_context": SearchContext,
+    "submit_handoff": SubmitHandoff,
+    "get_handoff": GetHandoff,
+    "resolve_handoff": ResolveHandoff,
+    "withdraw_handoff": WithdrawHandoff,
 }

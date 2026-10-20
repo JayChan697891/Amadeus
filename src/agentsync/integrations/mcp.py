@@ -6,6 +6,7 @@ from typing import Annotated, Any, Literal
 from mcp.server import MCPServer
 from pydantic import Field
 
+from agentsync.models import HandoffPackage
 from agentsync.sdk import AgentSyncClient
 
 
@@ -139,6 +140,113 @@ def build_server(data_dir: str | Path | None = None) -> MCPServer:
         """Return expired leased tasks to pending and invalidate their leases."""
         return client.call(
             "reclaim_expired", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def publish_context(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        kind: Literal["requirement", "decision", "constraint", "progress", "note"],
+        title: str,
+        content: str,
+        request_id: str,
+        summary: str = "",
+        source: str = "",
+        context_id: str | None = None,
+        expected_version: int = 0,
+    ) -> dict[str, Any]:
+        """Publish a new context or append an immutable version to an existing one."""
+        return client.call(
+            "publish_context", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def get_context(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        context_id: str,
+        version: int | None = None,
+    ) -> dict[str, Any]:
+        """Read the latest context or an explicitly pinned historical revision."""
+        return client.call(
+            "get_context", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def search_context(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        query: str,
+        kind: Literal["requirement", "decision", "constraint", "progress", "note"] | None = None,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> dict[str, Any]:
+        """Search latest context revisions using literal, project-scoped text."""
+        return client.call(
+            "search_context", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def submit_handoff(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        task_id: str,
+        lease_token: str,
+        expected_version: int,
+        target_agent_id: str,
+        package: HandoffPackage,
+        request_id: str,
+    ) -> dict[str, Any]:
+        """Release an owned task into a handoff containing fixed context snapshots."""
+        arguments = {key: value for key, value in locals().items() if key != "client"}
+        arguments["package"] = package.model_dump()
+        return client.call("submit_handoff", **arguments)
+
+    @server.tool()
+    def get_handoff(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        handoff_id: str,
+    ) -> dict[str, Any]:
+        """Read a project handoff and its immutable metadata and context snapshots."""
+        return client.call(
+            "get_handoff", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def resolve_handoff(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        handoff_id: str,
+        expected_version: int,
+        accept: bool,
+        request_id: str,
+        reason: str = "",
+    ) -> dict[str, Any]:
+        """As the addressed agent, accept or reject a pending handoff."""
+        return client.call(
+            "resolve_handoff", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def withdraw_handoff(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        handoff_id: str,
+        expected_version: int,
+        reason: str,
+        request_id: str,
+    ) -> dict[str, Any]:
+        """As the sending agent, withdraw a pending handoff with a reason."""
+        return client.call(
+            "withdraw_handoff", **{key: value for key, value in locals().items() if key != "client"}
         )
 
     return server
