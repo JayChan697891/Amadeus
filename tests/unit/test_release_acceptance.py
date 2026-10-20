@@ -528,6 +528,74 @@ def test_sdist_archive_modified_during_tests_is_not_accepted(
     assert checks[-1]["id"] == "sdist_artifact_stability" and checks[-1]["status"] == "fail"
 
 
+@pytest.mark.parametrize("change", ["replace", "delete"])
+def test_wheel_archive_changed_after_successful_installation_is_not_accepted(
+    repository, tmp_path, monkeypatch, change
+):
+    original = b"original wheel"
+
+    def simulate(check_id, command, repo, run, scratch):
+        archive = run / "artifacts/agentsync_local-0.3.0a1.whl"
+        if check_id == "build":
+            archive.write_bytes(original)
+        if "--junitxml" in command:
+            Path(command[command.index("--junitxml") + 1]).write_text(
+                "<testsuites><testsuite><testcase/></testsuite></testsuites>"
+            )
+        if check_id == "wheel_pytest":
+            if change == "replace":
+                archive.write_bytes(b"different wheel")
+            else:
+                archive.unlink()
+        log = run / "logs" / (check_id + ".log")
+        log.write_text("Unit simulation only")
+        return {
+            "id": check_id,
+            "status": "pass",
+            "exit_code": 0,
+            "log": log.relative_to(run).as_posix(),
+            "log_sha256": runner.sha256(log),
+            "provenance": "local_process",
+        }
+
+    monkeypatch.setattr(runner, "execute", simulate)
+    run = runner.collect(repository, tmp_path / "evidence", run_checks=True, package_install=True)
+    report = json.loads((run / "report.json").read_text())
+    checks = {c["id"]: c for c in report["checks"]}
+    assert checks["wheel_install"]["status"] == "pass"
+    assert checks["wheel_pytest"]["status"] == "pass"
+    assert checks["wheel_artifact_stability"]["status"] == "fail"
+    assert checks["wheel_artifact_stability"]["artifact"] == checks["wheel_install"]["artifact"]
+    assert not report["release_gate"]["local_checks_passed"]
+
+
+@pytest.mark.parametrize("check_id", ["pytest", "wheel_pytest", "sdist_pytest"])
+def test_full_suite_subprocess_cannot_inherit_pytest_selection_or_plugins(
+    repository, tmp_path, monkeypatch, check_id
+):
+    inherited = {
+        "PYTEST_ADDOPTS": "-k one_test --ignore=tests/integration",
+        "PYTEST_PLUGINS": "external_plugin",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    }
+    for name, value in inherited.items():
+        monkeypatch.setenv(name, value)
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    probe = (
+        "import os; "
+        f"assert not set({list(inherited)!r}).intersection(os.environ); "
+        "print('pytest invocation environment is isolated')"
+    )
+    result = runner.execute(
+        check_id, [runner.sys.executable, "-c", probe], repository, run, scratch
+    )
+    assert result["status"] == "pass"
+    assert all(runner.os.environ[name] == value for name, value in inherited.items())
+
+
 def test_sdist_flag_requires_run_and_is_independent_of_wheel(tmp_path, monkeypatch):
     monkeypatch.setattr(
         runner.sys, "argv", ["runner", "--output", str(tmp_path), "--sdist-install"]

@@ -25,13 +25,35 @@ def git(root, *args):
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
     result = subprocess.run(
-        [executable, "-c", "core.hooksPath=" + os.devnull, "-C", str(root), *args],
+        [
+            executable,
+            "-c",
+            "core.hooksPath=" + os.devnull,
+            # Fixture commits must finish all their writes before fingerprinting.
+            # Detached automatic maintenance can otherwise remove a captured lock.
+            "-c",
+            "gc.auto=0",
+            "-c",
+            "maintenance.auto=false",
+            "-C",
+            str(root),
+            *args,
+        ],
         env=env,
         capture_output=True,
         timeout=30,
         check=True,
     )
     return result.stdout.decode("utf-8").strip()
+
+
+def test_fixture_git_disables_automatic_maintenance_even_with_repository_overrides(tmp_path):
+    git(tmp_path, "init", "--initial-branch=fixture-main")
+    git(tmp_path, "config", "gc.auto", "1")
+    git(tmp_path, "config", "maintenance.auto", "true")
+    # Query real Git's effective configuration, including the helper's overrides.
+    assert git(tmp_path, "config", "--get", "gc.auto") == "0"
+    assert git(tmp_path, "config", "--get", "maintenance.auto") == "false"
 
 
 def fingerprint(root):

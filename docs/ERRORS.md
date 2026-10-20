@@ -58,3 +58,26 @@ Legacy members intentionally migrate to viewer; fixture writes require explicit
 owner grants instead of relaxing policy. Unknown extra-field names can themselves
 contain secrets, so validation errors report a fixed extra_field label. Audit-store
 failure regressions prove transaction rollback and revoked cache refusal.
+
+## PR14 Linux Git fixture maintenance race
+
+Run39395631073 at d8bc57107a1c5f0737316deeb80ac1c089c17ed4 passed8/9 jobs.
+Ubuntu Python3.14 source pytest failed the strict original-repository fingerprint
+assertion: an empty .git/objects/maintenance.lock existed at the initial snapshot
+and disappeared before the final snapshot. The remaining27 file hashes matched.
+That job's independent wheel and sdist suites passed; this does not erase the
+source failure. Failed artifact SHA256:
+db2e0efade433415b6500424b56a627625f4e07fde6ce4d60630638eb05891a8.
+
+Fixture Git commits allowed asynchronous automatic maintenance. Production Git
+operations already set gc.auto=0 and maintenance.auto=false. Test setup now uses
+the same per-command maintenance overrides, including when local repository
+configuration requests maintenance. Full fingerprint assertions still include
+every .git file; no lock path is ignored and no retry hides a mutation. Newhead
+local checks and all9 CI jobs must be verified independently after this repair.
+
+Independent runner review found inherited PYTEST_ADDOPTS could silently filter
+all three suites to nonempty subsets, and wheel lacked the sdist post-run archive
+stability check. Remove external pytest selection/plugin environment settings and
+fail if the originally installed wheel disappears or changes. Keep regressions
+for each suite's actual child environment and both wheel mutation modes.

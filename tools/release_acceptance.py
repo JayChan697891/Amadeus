@@ -191,6 +191,11 @@ def execute(
     env = os.environ.copy()
     env.pop("PYTHONPATH", None)
     env.pop("PYTHONHOME", None)
+    if check_id in {"pytest", "wheel_pytest", "sdist_pytest"}:
+        # A user's pytest options can silently select a nonempty subset. These
+        # runs attest the checked-in suite, with its declared plugin setup.
+        for name in ("PYTEST_ADDOPTS", "PYTEST_PLUGINS", "PYTEST_DISABLE_PLUGIN_AUTOLOAD"):
+            env.pop(name, None)
     if check_id == "build" or check_id.startswith(("sdist_", "wheel_")):
         # Preserve network/proxy settings, but don't inherit pip options that can
         # bypass build isolation or redirect writes outside this fresh venv.
@@ -600,6 +605,15 @@ def _collect(
                         installed["status"] = "fail"
                         installed["error"] = "Installed-wheel JUnit missing or invalid"
                     checks.append(installed)
+            if not wheels[0].is_file() or sha256(wheels[0]) != wheel_artifact["sha256"]:
+                checks.append(
+                    {
+                        "id": "wheel_artifact_stability",
+                        "status": "fail",
+                        "reason": "Wheel archive changed during installation or testing",
+                        "artifact": wheel_artifact,
+                    }
+                )
         else:
             checks.append(
                 {
