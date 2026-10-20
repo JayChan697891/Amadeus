@@ -48,3 +48,11 @@ cooperative exclusion. Root identity is pinned; no user files are written. Relea
 acceptance separates coverage, execution and evidence strength. Local automated
 checks cannot certify real model clients, adapters or autonomous relay. Missing or
 unverified critical requirements block formal release regardless of pass counts.
+
+## M4B Git isolation
+
+Use independent bundle-seeded bare object storage; no worktree registration in user
+.git and no import of uncommitted content. A third owned worktree checks actual merge
+conflicts. Candidates await human approval; M5 must implement separately bound
+approval before any apply endpoint. Sidecar receipts bind exact request inputs
+across SQLite rollback. Unsupported executable source config is rejected explicitly.

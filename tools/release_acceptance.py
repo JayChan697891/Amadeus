@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 import platform
+import re
 import subprocess
 import sys
 import tempfile
@@ -22,8 +23,16 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 STATUSES = {"pass", "fail", "not_run", "restricted", "unverified"}
+MAX_LOG_BYTES = 16 * 1024 * 1024
+REDACTED = "[REDACTED]"
+_CREDENTIAL_VALUE = re.compile(
+    r"""(?P<prefix>(?<![\w])(?P<keyquote>['"]?)(?:session_token|admin_token|lease_token|access_token|refresh_token|api_key|openai_api_key|anthropic_api_key|agentsync_http_token|password|authorization)(?P=keyquote)\s*[:=]\s*)(?:"(?:\\.|[^"\\\r\n])*"|'(?:\\.|[^'\\\r\n])*'|[^\s,;}\]\)]+)""",
+    re.IGNORECASE,
+)
+_BEARER = re.compile(r"(?i)(\bBearer[ \t]+)[A-Za-z0-9._~+/-]+=*")
+_API_KEY = re.compile(r"\b(?:sk-[A-Za-z0-9_-]{16,}|gh[pousr]_[A-Za-z0-9]{20,})\b")
 RELEASE_BLOCKERS = {
-    "remaining_milestones": "M4-03 through M9 implementation and acceptance remain incomplete.",
+    "remaining_milestones": "M4-05 approved application and M5-M9 implementation and acceptance remain incomplete.",
     "real_codex_adapter": "Actual Codex client adapter has not been independently verified.",
     "real_claude_adapter": "Actual Claude Code client adapter has not been independently verified.",
     "real_other_adapters": "Other planned clients, including Cursor, lack actual-client evidence.",
@@ -35,6 +44,34 @@ RELEASE_BLOCKERS = {
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def redact_credentials(text: str) -> tuple[str, int]:
+    """Best-effort bounded-pattern redaction, not a general secret-discovery claim."""
+    text, bearer_count = _BEARER.subn(lambda match: match[1] + REDACTED, text)
+    text, value_count = _CREDENTIAL_VALUE.subn(lambda match: match["prefix"] + REDACTED, text)
+    text, key_count = _API_KEY.subn(REDACTED, text)
+    return text, bearer_count + value_count + key_count
+
+
+def persist_junit(source: Path, target: Path) -> int:
+    """Persist parsed, redacted XML rather than raw failure tracebacks containing fixture auth."""
+    if source.stat().st_size > MAX_LOG_BYTES:
+        raise ValueError("JUnit evidence exceeds the bounded processing limit")
+    document = ET.parse(source)
+    count = 0
+    for node in document.iter():
+        for attribute, value in list(node.attrib.items()):
+            node.attrib[attribute], changes = redact_credentials(value)
+            count += changes
+        for field in ("text", "tail"):
+            value = getattr(node, field)
+            if value is not None:
+                clean, changes = redact_credentials(value)
+                setattr(node, field, clean)
+                count += changes
+    document.write(target, encoding="utf-8", xml_declaration=True)
+    return count
 
 
 def git_value(repo: Path, *args: str) -> str | None:
@@ -156,7 +193,9 @@ def execute(
     temporary = scratch if scratch is not None else run / "tmp"
     env.update({"TMP": str(temporary), "TEMP": str(temporary), "TMPDIR": str(temporary)})
     exit_code = None
-    with log.open("wb") as stream:
+    # Raw process output exists only in a self-deleting scratch file. It is never
+    # placed in the durable/uploadable log directory, even for failed commands.
+    with tempfile.TemporaryFile(mode="w+b", dir=temporary) as stream:
         try:
             result = subprocess.run(
                 command,
@@ -170,16 +209,25 @@ def execute(
             exit_code = result.returncode
         except (OSError, subprocess.TimeoutExpired) as exc:
             stream.write(f"\nRunner error: {type(exc).__name__}: {exc}\n".encode())
+        stream.seek(0)
+        raw = stream.read(MAX_LOG_BYTES + 1)
+    truncated = len(raw) > MAX_LOG_BYTES
+    clean, redactions = redact_credentials(raw[:MAX_LOG_BYTES].decode("utf-8", errors="replace"))
+    if truncated:
+        clean += "\n[OUTPUT TRUNCATED: evidence processing limit reached]\n"
+    log.write_text(clean, encoding="utf-8")
     return {
         "id": check_id,
         "status": "pass" if exit_code == 0 else "fail",
-        "command": command,
+        "command": [redact_credentials(argument)[0] for argument in command],
         "cwd": str(repo),
         "exit_code": exit_code,
         "started_at": started.isoformat(),
         "finished_at": datetime.now(UTC).isoformat(),
         "log": log.relative_to(run).as_posix(),
         "log_sha256": sha256(log),
+        "credential_redactions": redactions,
+        "log_truncated": truncated,
         "provenance": "local_process",
     }
 
@@ -221,7 +269,7 @@ def check_plan(python: str, run: Path, scratch: Path) -> list[tuple[str, list[st
                 "-m",
                 "pytest",
                 "--junitxml",
-                str(run / "junit.xml"),
+                str(scratch / "junit.xml"),
                 "--basetemp",
                 str(scratch / "pytest"),
             ],
@@ -264,8 +312,11 @@ def _collect(
     for check_id, command in plan:
         if run_checks:
             item = execute(check_id, command, repo, run, scratch)
-            if check_id == "pytest" and (run / "junit.xml").exists():
+            if check_id == "pytest" and (scratch / "junit.xml").exists():
                 try:
+                    item["junit_credential_redactions"] = persist_junit(
+                        scratch / "junit.xml", run / "junit.xml"
+                    )
                     item["junit"] = junit_counts(run / "junit.xml")
                     if (
                         not item["junit"]["tests"]
@@ -273,7 +324,7 @@ def _collect(
                         or item["junit"]["failures"]
                     ):
                         item["status"] = "fail"
-                except ET.ParseError:
+                except (OSError, ValueError, ET.ParseError):
                     item["status"] = "fail"
                     item["error"] = "Invalid JUnit XML"
             elif check_id == "pytest":
@@ -341,7 +392,7 @@ def _collect(
                             "pytest",
                             str(repo / "tests"),
                             "--junitxml",
-                            str(run / "wheel-junit.xml"),
+                            str(scratch / "wheel-junit.xml"),
                             "--basetemp",
                             str(scratch / "wheel-pytest"),
                         ],
@@ -350,6 +401,9 @@ def _collect(
                         scratch,
                     )
                     try:
+                        installed["junit_credential_redactions"] = persist_junit(
+                            scratch / "wheel-junit.xml", run / "wheel-junit.xml"
+                        )
                         installed["junit"] = junit_counts(run / "wheel-junit.xml")
                         if (
                             not installed["junit"]["tests"]
@@ -357,7 +411,7 @@ def _collect(
                             or installed["junit"]["errors"]
                         ):
                             installed["status"] = "fail"
-                    except (OSError, ET.ParseError):
+                    except (OSError, ValueError, ET.ParseError):
                         installed["status"] = "fail"
                         installed["error"] = "Installed-wheel JUnit missing or invalid"
                     checks.append(installed)
@@ -448,6 +502,7 @@ def _collect(
             "Current-source protocol tests are not actual model-client tests.",
             "Dirty tree and untracked paths are recorded; commit SHA alone does not describe dirty source.",
             "Hashes detect accidental evidence modification; they are not signatures or independent attestation.",
+            "Logs and JUnit redact known keyed credentials, Bearer values and recognized API-key prefixes; this is best-effort filtering, not proof that arbitrary secrets are absent.",
         ],
     }
     report["artifacts"] = [

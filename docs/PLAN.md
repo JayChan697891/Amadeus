@@ -1,10 +1,11 @@
 # AgentSync implementation plan
 
 Baseline: user-approved specification v1.0, 2026-10-19 (see SPECIFICATION.md).
-Current execution: **M4-01/02 plus Release Acceptance infrastructure**, Issues #6/#7.
-M3 is preserved at 72ab6b5 (PR #5); its nine CI jobs passed. Work approval is a
-separate gate and must be read before claiming acceptance. Version 0.2.0a2 remains
-an Alpha checkpoint: M4-03..05 and M5-M9 are not implemented. The user authorized
+Current execution: **M4B isolated worktrees/conflicts plus Release Acceptance**, Issues #7/#9.
+M3 is preserved at 72ab6b5 (PR #5); its nine CI jobs passed. Work independently accepted M3 and M4A (PR #8 comment6284092991);
+Issues #4/#6 are closed while Release Acceptance #7 remains open. M4A PR #8 at fe3ac74 passed nine CI jobs and independent artifact inspection.
+Version 0.2.0a3 remains Alpha: M4B is under verification; approved application
+and M5-M9 remain incomplete. The user authorized
 continuous staged work and GitHub PR publication, no direct main writes/merges or
 paid provider calls. See M4A-CONTRACT.md and acceptance/DESIGN.md.
 

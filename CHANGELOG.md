@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0a3 — M4B development checkpoint
+
+- Independent managed Git object store and per-task worktrees; source checkout read-only.
+- Real third-tree merge conflict detection, pinned commits and NUL-safe path reports.
+- Immutable merge candidates await human approval; no user-branch apply endpoint.
+- Schema v5, 29 shared-Core operations, source-config command-execution guards and
+  interrupted side-effect replay bindings. Formal release remains blocked.
+
+
 ## 0.2.0a2 — M4-01/02 under verification
 
 - Project-confined resource metadata and SHA-256 file version checks.

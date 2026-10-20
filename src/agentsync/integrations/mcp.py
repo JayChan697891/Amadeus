@@ -337,4 +337,77 @@ def build_server(data_dir: str | Path | None = None) -> MCPServer:
             "list_file_locks", **{key: value for key, value in locals().items() if key != "client"}
         )
 
+    @server.tool()
+    def capture_repository(
+        project_id: str, session_id: str, session_token: str, request_id: str
+    ) -> dict[str, Any]:
+        """Capture committed source objects into an independent service-owned repository."""
+        return client.call(
+            "capture_repository",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
+    @server.tool()
+    def create_worktree(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        snapshot_id: str,
+        task_id: str,
+        request_id: str,
+    ) -> dict[str, Any]:
+        """Create a task workspace without registering worktrees in the source repository."""
+        return client.call(
+            "create_worktree", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def inspect_worktree(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        worktree_id: str,
+    ) -> dict[str, Any]:
+        """Inspect current HEAD and dirty state of this project's managed workspace."""
+        return client.call(
+            "inspect_worktree", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def compare_worktrees(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        left_id: str,
+        right_id: str,
+        expected_left_head: Annotated[str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")],
+        expected_right_head: Annotated[
+            str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")
+        ],
+    ) -> dict[str, Any]:
+        """Check pinned clean commits for real merge conflicts in a third isolated tree."""
+        return client.call(
+            "compare_worktrees",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
+    @server.tool()
+    def prepare_merge_candidate(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        left_id: str,
+        right_id: str,
+        expected_left_head: Annotated[str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")],
+        expected_right_head: Annotated[
+            str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")
+        ],
+        request_id: str,
+    ) -> dict[str, Any]:
+        """Prepare an isolated merge commit awaiting human approval; never apply it to source."""
+        return client.call(
+            "prepare_merge_candidate",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
     return server

@@ -158,3 +158,11 @@ unqualified final acceptance claim. A limited alpha checkpoint may be reported
 with precise limitations, never relabeled v1.0 accepted. GitHub Release publication
 still requires its separate authorization.
 
+
+## M4B staged update
+
+M4B adds actual isolated Git worktree, conflict, immutable candidate and crash/replay
+component cases to the register. The 14/14/14 inventory above describes the initial
+audit, not the updated count. Approval/application and real client autonomous relay
+remain outstanding. The final requirement cases remain not_run until independently
+executed against the release candidate.

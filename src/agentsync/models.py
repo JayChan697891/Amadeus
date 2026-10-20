@@ -159,6 +159,33 @@ class ListFileLocks(Auth):
     offset: int = Field(default=0, ge=0, le=10000)
 
 
+class CaptureRepository(Auth):
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class CreateWorktree(CaptureRepository):
+    snapshot_id: str
+    task_id: str
+
+
+class InspectWorktree(Auth):
+    worktree_id: str
+
+
+CommitSHA = Annotated[str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")]
+
+
+class CompareWorktrees(Auth):
+    left_id: str
+    right_id: str
+    expected_left_head: CommitSHA
+    expected_right_head: CommitSHA
+
+
+class PrepareMergeCandidate(CompareWorktrees):
+    request_id: str = Field(min_length=1, max_length=200)
+
+
 OPERATIONS: dict[str, type[StrictModel]] = {
     "create_project": CreateProject,
     "register_agent": RegisterAgent,
@@ -184,4 +211,9 @@ OPERATIONS: dict[str, type[StrictModel]] = {
     "renew_file_lock": RenewFileLock,
     "release_file_lock": ReleaseFileLock,
     "list_file_locks": ListFileLocks,
+    "capture_repository": CaptureRepository,
+    "create_worktree": CreateWorktree,
+    "inspect_worktree": InspectWorktree,
+    "compare_worktrees": CompareWorktrees,
+    "prepare_merge_candidate": PrepareMergeCandidate,
 }

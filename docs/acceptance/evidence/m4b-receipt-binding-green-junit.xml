@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="2" time="5.296" timestamp="2026-10-19T22:37:52.267801-07:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_m4b_workspaces" name="test_persisted_create_receipt_cannot_rebind_snapshot_after_database_rollback" time="1.814" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_persisted_candidate_cannot_rebind_pair_after_database_rollback" time="3.381" /></testsuite></testsuites>

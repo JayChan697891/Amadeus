@@ -251,3 +251,91 @@ def test_execute_records_real_process_exit_and_log(repository, tmp_path):
     assert item["exit_code"] == 7
     assert "probe" in (run / item["log"]).read_text()
     assert item["log_sha256"] == runner.sha256(run / item["log"])
+
+
+def test_failed_subprocess_credentials_are_redacted_before_evidence_hash(repository, tmp_path):
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    secrets = [
+        "fixture-session-12345",
+        "fixture-admin-12345",
+        "fixture-lease-12345",
+        "fixture-bearer-12345",
+        "sk-proj-0123456789abcdefghijk",
+    ]
+    payload = repr(
+        {"session_token": secrets[0], "admin_token": secrets[1], "lease_token": secrets[2]}
+    )
+    script = f"print({payload!r}); print('Authorization: Bearer {secrets[3]}'); print('{secrets[4]}'); print('traceback context kept'); raise SystemExit(7)"
+    item = runner.execute(
+        "failed_probe", [runner.sys.executable, "-c", script], repository, run, scratch
+    )
+    saved = (run / item["log"]).read_text()
+    assert item["exit_code"] == 7 and item["status"] == "fail"
+    assert all(secret not in saved for secret in secrets)
+    assert "[REDACTED]" in saved and "traceback context kept" in saved
+    assert item["credential_redactions"] >= len(secrets)
+    assert item["log_sha256"] == runner.sha256(run / item["log"])
+    assert not list(scratch.iterdir()), "Raw capture must self-delete"
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "token budget exceeded; token_count = 3",
+        "def read_session_token(value): return value",
+        "assert candidate['status'] == 'awaiting_human_approval'",
+        "HTTP status 429; retry after 3 seconds",
+    ],
+)
+def test_redaction_keeps_innocent_identifiers_and_failure_context(text):
+    assert runner.redact_credentials(text) == (text, 0)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        '{"session_token": "fixture-secret"}',
+        "{'admin_token': 'fixture-secret'}",
+        "lease_token='fixture-secret'",
+        "AGENTSYNC_HTTP_TOKEN = fixture-secret",
+        "Authorization: Bearer fixture-secret",
+    ],
+)
+def test_redaction_handles_json_repr_assignment_and_bearer_forms(text):
+    clean, count = runner.redact_credentials(text)
+    assert "fixture-secret" not in clean
+    assert "[REDACTED]" in clean and count > 0
+
+
+def test_junit_redacts_traceback_and_attributes_without_losing_counts(tmp_path):
+    raw = tmp_path / "scratch.xml"
+    durable = tmp_path / "junit.xml"
+    raw.write_text(
+        '<testsuites><testsuite><testcase name="example"><failure message="admin_token=fixture-admin">'
+        "Traceback: {'session_token': 'fixture-session'}; Authorization: Bearer fixture-bearer"
+        '</failure></testcase><testcase name="skipped"><skipped/></testcase></testsuite></testsuites>'
+    )
+    before = runner.junit_counts(raw)
+    assert runner.persist_junit(raw, durable) >= 3
+    saved = durable.read_text()
+    assert all(
+        secret not in saved for secret in ("fixture-admin", "fixture-session", "fixture-bearer")
+    )
+    assert "Traceback" in saved and "[REDACTED]" in saved
+    assert runner.junit_counts(durable) == before
+
+
+def test_log_limit_is_explicit_and_hash_covers_bounded_evidence(repository, tmp_path, monkeypatch):
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    (run / "tmp").mkdir()
+    monkeypatch.setattr(runner, "MAX_LOG_BYTES", 64)
+    item = runner.execute(
+        "bounded", [runner.sys.executable, "-c", "print('x' * 200)"], repository, run
+    )
+    assert item["log_truncated"]
+    assert "OUTPUT TRUNCATED" in (run / item["log"]).read_text()
+    assert item["log_sha256"] == runner.sha256(run / item["log"])

@@ -1,0 +1,677 @@
+[
+  {
+    "artifact": "verification-macos-latest-py3.11.zip",
+    "zip_sha256": "68564384f754a1615a0d4476e89602b2262d8c8308534e00ad2a74f74bd0132e",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-macos-latest-py3.12.zip",
+    "zip_sha256": "3f898c26604a21496e0573b0246a8e87e5e7f60d4e0671ed082e1c55ef6dd262",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-macos-latest-py3.14.zip",
+    "zip_sha256": "1e1d95c92e885125e729a1f92ecac6397c812102c2a96790b35ec21d7d21f21d",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-ubuntu-latest-py3.11.zip",
+    "zip_sha256": "bcac170f8edfb41f3db02164614f53f7cc8a6a3aca1b0e59a30566166d9b88f3",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-ubuntu-latest-py3.12.zip",
+    "zip_sha256": "121faa84dab376b8355a0b44e1ef239d9687e278c4b32a6e59c031d216d78d50",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-ubuntu-latest-py3.14.zip",
+    "zip_sha256": "613e07dc610fa16a6b87df4ff7bb660c620fea3604b1b2ca69a9adf37e214853",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 3
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-windows-latest-py3.11.zip",
+    "zip_sha256": "4f596ad97adc57f080478bc38535c7135813588c497989c997af8df052fba43b",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-windows-latest-py3.12.zip",
+    "zip_sha256": "f5065f7d94abf73f4bca6b18b934e883e993ecf7b8220cd1cc716e46aca095e7",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  },
+  {
+    "artifact": "verification-windows-latest-py3.14.zip",
+    "zip_sha256": "93d886f4a0b69926d15c4c59ed6f2ff18cc284146f58c4b91736a16840984afa",
+    "tested_sha": "b96d040c1ada32bc6286483d9a337e7946dd27d9",
+    "tree_sha": "c593af08267f90db234903bd88d1b5556995c151",
+    "dirty": "",
+    "source_changed": false,
+    "checks": [
+      [
+        "pytest",
+        "pass"
+      ],
+      [
+        "ruff",
+        "pass"
+      ],
+      [
+        "format",
+        "pass"
+      ],
+      [
+        "mypy",
+        "pass"
+      ],
+      [
+        "build",
+        "pass"
+      ],
+      [
+        "pip_check",
+        "pass"
+      ],
+      [
+        "wheel_venv",
+        "pass"
+      ],
+      [
+        "wheel_install",
+        "pass"
+      ],
+      [
+        "wheel_pip_check",
+        "pass"
+      ],
+      [
+        "wheel_cli",
+        "pass"
+      ],
+      [
+        "wheel_origin_sdk",
+        "pass"
+      ],
+      [
+        "wheel_pytest",
+        "pass"
+      ]
+    ],
+    "junit": {
+      "pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "wheel_pytest": {
+        "tests": 328,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "requirements": 42,
+    "formal_gate": "blocked",
+    "bad_hashes": []
+  }
+]
