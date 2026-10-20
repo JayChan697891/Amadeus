@@ -11,6 +11,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import httpx
+from conftest import owner_grant
 from mcp import Client
 from mcp.client.stdio import StdioServerParameters
 
@@ -69,7 +70,7 @@ def test_m4b_five_mcp_operations_share_real_git_state_with_http_and_sdk(tmp_path
 
             listing = await client.list_tools()
             schemas = {tool.name: tool.input_schema for tool in listing.tools}
-            assert len(schemas) == 29
+            assert len(schemas) == 33
             for operation in (
                 "capture_repository",
                 "create_worktree",
@@ -87,6 +88,7 @@ def test_m4b_five_mcp_operations_share_real_git_state_with_http_and_sdk(tmp_path
             actors = []
             for name in ("Developer A", "Developer B"):
                 actor = await call("register_agent", **project, name=name)
+                owner_grant(AgentSyncClient(data).core, project, actor)
                 actors.append(
                     {
                         "project_id": project["project_id"],

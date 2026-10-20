@@ -51,3 +51,10 @@ status; reject these source-local configurations before status/pack. Durable sid
 receipts outlive SQLite rollback, so inputs must remain bound across crash retries;
 real RED/GREEN regressions now prevent wrong snapshot/task/ordered-pair reuse.
 Reject overlapping source and managed storage before mkdir. See M4B-REPORT.md.
+
+## M5A security migration and evidence
+
+Legacy members intentionally migrate to viewer; fixture writes require explicit
+owner grants instead of relaxing policy. Unknown extra-field names can themselves
+contain secrets, so validation errors report a fixed extra_field label. Audit-store
+failure regressions prove transaction rollback and revoked cache refusal.

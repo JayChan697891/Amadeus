@@ -5,6 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -16,6 +17,7 @@ def test_only_one_concurrent_claim_wins(tmp_path):
     actors = []
     for i in range(12):
         session = core.execute("register_agent", {**project, "name": str(i)})
+        owner_grant(core, project, session)
         actors.append(
             {
                 "project_id": project["project_id"],

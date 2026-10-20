@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -14,6 +15,7 @@ def actors(core, tmp_path):
     result = []
     for name in ("sender", "receiver"):
         registered = core.execute("register_agent", {**project, "name": name})
+        owner_grant(core, project, registered)
         auth = {key: registered[key] for key in ("session_id", "session_token")}
         result.append((auth | {"project_id": project["project_id"]}, registered["agent_id"]))
     return result

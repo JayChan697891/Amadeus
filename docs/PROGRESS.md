@@ -1,3 +1,32 @@
+# Current M5A stage (2026-10-20 America/Tijuana)
+
+Version0.3.0a1, Issue11, feature/m5a-permissions. Contract: M5A-CONTRACT.md.
+M4B exacthead98bd361c47f94b61ef03439651e2163ba6740a1f passed stable full12localchecks
+(source+cleanwheel370pass/2Windowspermission skips), then nine remote CI jobs.
+All9artifacts were downloaded and SHA256/contents checked; report trees match head
+4df79c6dead14a86396f3957a24e79e4fbd2f376. Each source/wheel has372cases; Windows372pass,
+Linux/macOS369pass/3Windows-only skips. See acceptance/evidence/m4b-ci-inspection.json.
+Work independently accepted currentM4Bhead and closedIssue9; PR10receipt6284302265.
+Approvedscope is prepare-only candidates; actualapply remainsM5B.
+
+Current work: defaultviewer membership grants, owner-only role/approval control plane,
+strict authorization before cachedresponses/objectlookup/Git, bound expiring approvals
+and whitelist structured audit. Intentional security migration makes oldmembersviewer;
+owner must explicitly regrant write/review roles. All existing tests must retain their
+original assertions with explicit owner setup, never global permission monkeypatching.
+
+No apply-to-user-branch endpoint or independent verification executor is added.
+Owner credentials are a capability boundary, not proof of a physical human against
+sameOS access. Actual unsafe submitted tests require a verifiedOSsandbox; Docker,
+Podman/runhcs are unavailable in this local runtime; WSL presence alone is not proof
+of safe isolation. M5B verifier remains blocked until proper execution isolation.
+FormalReleaseAcceptance and actualmodelautonomous relay remain unverified/BLOCKED.
+
+Next: finish exactsource/wheel/9CI/Work gates for M5A, then bounded M5B verifier
+runtime/approvalconsumption. Continue M6-M9 only with their explicit test gates.
+
+---
+
 # Current M4B checkpoint (supersedes historical entries below)
 
 Version 0.2.0a3, Issue #9, independent branch feature/m4-worktrees based on PR #8.

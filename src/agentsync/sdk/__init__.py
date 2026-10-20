@@ -20,3 +20,10 @@ class AgentSyncClient:
             return {"ok": True, "data": self.core.execute(operation, payload)}
         except AgentSyncError as error:
             return error_envelope(error)
+
+    def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
+        """Use the separate project-owner authority; never expose this as an MCP tool."""
+        try:
+            return {"ok": True, "data": self.core.execute_owner(operation, payload)}
+        except AgentSyncError as error:
+            return error_envelope(error)

@@ -56,3 +56,11 @@ Use independent bundle-seeded bare object storage; no worktree registration in u
 conflicts. Candidates await human approval; M5 must implement separately bound
 approval before any apply endpoint. Sidecar receipts bind exact request inputs
 across SQLite rollback. Unsupported executable source config is rejected explicitly.
+
+## M5A separate owner authority
+
+Persist bounded role sets and check before cached responses. Keep owner credentials
+separate from Agent sessions and exclude owner operations from MCP. Approval is
+authentication metadata only until M5B defines atomic consumed authorization and
+verified execution isolation. Audit uses a metadata whitelist rather than trusting
+freeform secrets redaction. Successful business state and audit share one transaction.

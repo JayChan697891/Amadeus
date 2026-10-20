@@ -6,6 +6,7 @@ import sqlite3
 from uuid import uuid4
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core, digest
 from agentsync.errors import AgentSyncError
@@ -20,6 +21,7 @@ def setup(tmp_path):
     actors = []
     for name in ("owner", "other"):
         registered = core.execute("register_agent", {**project, "name": name})
+        owner_grant(core, project, registered)
         actors.append({"project_id": project["project_id"], **registered})
     return core, project, actors, root
 
@@ -189,6 +191,7 @@ def test_conflicts_are_global_across_duplicate_and_overlapping_roots(setup, over
         "project_id": other_project["project_id"],
         **core.execute("register_agent", {**other_project, "name": "outsider"}),
     }
+    owner_grant(core, other_project, outsider, ("worker",))
     held = acquire(core, a, "nested/file")
     with pytest.raises(AgentSyncError) as exc:
         acquire(core, outsider, "file" if overlapping else "nested/file")

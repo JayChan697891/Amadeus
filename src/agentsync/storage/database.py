@@ -108,6 +108,33 @@ PRAGMA user_version=5;
 """
 
 
+MIGRATION_V6 = """
+CREATE TABLE agent_memberships(
+ agent_id TEXT PRIMARY KEY REFERENCES agents(id), project_id TEXT NOT NULL REFERENCES projects(id),
+ roles TEXT NOT NULL, version INTEGER NOT NULL, updated_at REAL NOT NULL);
+INSERT INTO agent_memberships SELECT id,project_id,'["viewer"]',1,created_at FROM agents;
+CREATE INDEX agent_memberships_project ON agent_memberships(project_id,agent_id);
+CREATE TABLE approvals(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ requester_agent_id TEXT NOT NULL REFERENCES agents(id), action TEXT NOT NULL,
+ subject_id TEXT NOT NULL REFERENCES merge_candidates(id), subject_sha TEXT NOT NULL,
+ subject_version INTEGER NOT NULL, version INTEGER NOT NULL, status TEXT NOT NULL,
+ created_at REAL NOT NULL, updated_at REAL NOT NULL, expires_at REAL NOT NULL, reason TEXT NOT NULL);
+CREATE INDEX approvals_requester ON approvals(project_id,requester_agent_id,created_at,id);
+CREATE TABLE owner_idempotency(
+ project_id TEXT NOT NULL REFERENCES projects(id), operation TEXT NOT NULL,
+ request_id TEXT NOT NULL, payload_hash TEXT NOT NULL, response TEXT NOT NULL,
+ PRIMARY KEY(project_id,operation,request_id));
+CREATE TABLE audit_events(
+ event_id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ actor_kind TEXT NOT NULL, actor_id TEXT NOT NULL, operation TEXT NOT NULL,
+ target_id TEXT, outcome TEXT NOT NULL, code TEXT NOT NULL,
+ pre_version INTEGER, post_version INTEGER, request_id_digest TEXT, time REAL NOT NULL);
+CREATE INDEX audit_events_project ON audit_events(project_id,time,event_id);
+PRAGMA user_version=6;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -148,7 +175,12 @@ def migrate(path: Path) -> None:
             for statement in MIGRATION_V5.split(";"):
                 if statement.strip():
                     db.execute(statement)
-        elif version != 5:
+            version = 5
+        if version == 5:
+            for statement in MIGRATION_V6.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+        elif version != 6:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         db.commit()
     except Exception:

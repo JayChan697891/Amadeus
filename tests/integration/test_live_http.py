@@ -65,6 +65,18 @@ def test_real_loopback_http_and_process_restart(tmp_path):
 
                 project = call("create_project", {"name": "Live HTTP", "root_path": str(tmp_path)})
                 session = call("register_agent", {**project, "name": "HTTP agent"})
+                granted = client.post(
+                    "/owner/v1/set_agent_roles",
+                    json={
+                        **project,
+                        "agent_id": session["agent_id"],
+                        "roles": ["worker"],
+                        "expected_version": 1,
+                        "request_id": "explicit-owner-grant",
+                    },
+                    headers={"Authorization": f"Bearer {token}"},
+                )
+                assert granted.status_code == 200 and granted.json()["ok"]
                 auth = {
                     "project_id": project["project_id"],
                     "session_id": session["session_id"],

@@ -7,6 +7,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import httpx
+from conftest import owner_grant
 from mcp import Client
 from mcp.client.stdio import StdioServerParameters
 
@@ -41,7 +42,7 @@ def test_mcp_handoff_has_explicit_nested_typed_schema(tmp_path):
         )
         async with Client(params, read_timeout_seconds=15) as client:
             listing = await client.list_tools()
-            assert len(listing.tools) == 29
+            assert len(listing.tools) == 33
             schema = next(t.input_schema for t in listing.tools if t.name == "submit_handoff")
             assert "package" in schema["required"]
             package = schema["properties"]["package"]
@@ -65,6 +66,8 @@ def test_http_m3_operations_share_sdk_core_and_fixed_snapshots(tmp_path):
 
     project = call("create_project", name="HTTP M3", root_path=str(tmp_path))
     agents = [call("register_agent", **project, name=name) for name in ("A", "B")]
+    for actor in agents:
+        owner_grant(sdk.core, project, actor)
     auth = [
         {
             "project_id": project["project_id"],

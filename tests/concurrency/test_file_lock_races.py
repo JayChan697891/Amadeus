@@ -4,6 +4,8 @@ import json
 import subprocess
 import sys
 
+from conftest import owner_grant
+
 from agentsync.core.service import Core
 
 WORKER = r"""
@@ -42,6 +44,7 @@ def test_two_independent_processes_have_exactly_one_lock_winner(tmp_path):
     try:
         for index in range(2):
             actor = core.execute("register_agent", {**project, "name": f"worker-{index}"})
+            owner_grant(core, project, actor)
             auth = {key: actor[key] for key in ("session_id", "session_token")}
             auth["project_id"] = project["project_id"]
             auths.append(auth)

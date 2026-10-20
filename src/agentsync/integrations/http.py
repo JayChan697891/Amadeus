@@ -49,8 +49,7 @@ def create_app(data_dir: str | Path | None = None, api_token: str | None = None)
     def health() -> dict[str, str]:
         return {"status": "ok", "version": __version__}
 
-    @app.post("/v1/{operation}")
-    async def execute(operation: str, request: Request) -> Any:
+    async def dispatch(operation: str, request: Request, *, owner: bool) -> Any:
         supplied = request.headers.get("authorization", "")
         if not hmac.compare_digest(supplied.encode(), ("Bearer " + token).encode()):
             return JSONResponse(
@@ -82,8 +81,17 @@ def create_app(data_dir: str | Path | None = None, api_token: str | None = None)
                 status_code=400,
             )
         try:
-            return {"ok": True, "data": core.execute(operation, payload)}
+            execute = core.execute_owner if owner else core.execute
+            return {"ok": True, "data": execute(operation, payload)}
         except AgentSyncError as error:
             return JSONResponse(error_envelope(error), status_code=error.status_code)
+
+    @app.post("/v1/{operation}")
+    async def execute(operation: str, request: Request) -> Any:
+        return await dispatch(operation, request, owner=False)
+
+    @app.post("/owner/v1/{operation}")
+    async def execute_owner(operation: str, request: Request) -> Any:
+        return await dispatch(operation, request, owner=True)
 
     return app

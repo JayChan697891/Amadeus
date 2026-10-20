@@ -7,6 +7,7 @@ import sys
 import time
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -28,6 +29,7 @@ def world(tmp_path):
                 "name": name,
             },
         )
+        owner_grant(core, project, agent)
         return {
             "project_id": project["project_id"],
             "session_id": agent["session_id"],
@@ -93,6 +95,7 @@ def test_session_and_project_credentials_are_bound(world, tmp_path):
         "session_id": foreign["session_id"],
         "session_token": foreign["session_token"],
     }
+    owner_grant(core, other, foreign)
     reject(
         core,
         "claim_task",

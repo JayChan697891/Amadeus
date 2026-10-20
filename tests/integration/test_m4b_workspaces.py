@@ -10,6 +10,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -60,6 +61,7 @@ def world(tmp_path):
     actors = []
     for name in ("Developer A", "Developer B"):
         registered = core.execute("register_agent", {**project, "name": name})
+        owner_grant(core, project, registered)
         actors.append(
             {
                 "project_id": project["project_id"],
@@ -254,6 +256,7 @@ def test_cross_project_objects_and_invalid_auth_are_rejected(world, tmp_path, mo
         "create_project", {"name": "foreign", "root_path": str(foreign_root)}
     )
     registered = core.execute("register_agent", {**foreign_project, "name": "outsider"})
+    owner_grant(core, foreign_project, registered)
     foreign = {
         "project_id": foreign_project["project_id"],
         "session_id": registered["session_id"],
