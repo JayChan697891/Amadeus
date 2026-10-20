@@ -124,6 +124,11 @@ def test_real_mcp_stdio_tools_and_core(tmp_path):
                 "renew_file_lock",
                 "release_file_lock",
                 "list_file_locks",
+                "capture_repository",
+                "create_worktree",
+                "inspect_worktree",
+                "compare_worktrees",
+                "prepare_merge_candidate",
             }
             create_schema = next(
                 tool.input_schema for tool in listing.tools if tool.name == "create_task"

@@ -1,3 +1,26 @@
+# Current M4B checkpoint (supersedes historical entries below)
+
+Version 0.2.0a3, Issue #9, independent branch feature/m4-worktrees based on PR #8.
+M4A exact head fe3ac7418413f4740f158035605ac2843b9c964d passed all12 local checks
+(source/wheel326pass2skip) and9CI jobs. Nine artifact archives were independently
+hash-verified; tested merge tree c593af08 equals head tree. Work independently accepted M3/M4A, closed Issues #4/#6 and kept #7 open.
+Receipt: PR #8 issuecomment-6284092991. No main merge.
+
+M4B implements independent Git object store/worktrees, real third-tree conflict
+checks and awaiting_human_approval candidates. No original user-repository write
+or approved apply endpoint exists. Source-config filter/include execution and
+post-crash request rebinding were found in lead review and repaired with regressions.
+Current final full source/wheel and CI evidence must be generated after edits freeze.
+M4-05 approval/application and M5-M9 remain incomplete. Formal release BLOCKED.
+All42 formal requirements remain tracked; new component coverage does not automatically
+pass full acceptance cases. No real model/client autonomous relay has been verified.
+
+Next: finish exact-SHA regression/installation/remote evidence and Work review, then
+M5 approvals/audit/independent evidence verifier, M6 actual adapters, M7/M8 scheduler/
+recovery and M9 full release run. Preserve every prior test and failure reproducer.
+
+---
+
 # Current checkpoint: M4A and Release Acceptance
 
 Date: 2026-10-19 (America/Tijuana), version 0.2.0a2.

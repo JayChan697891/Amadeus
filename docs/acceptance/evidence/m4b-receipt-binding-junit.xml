@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.217" timestamp="2026-10-19T22:37:27.465650-07:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_m4b_workspaces" name="test_persisted_create_receipt_cannot_rebind_snapshot_after_database_rollback" time="2.027"><failure message="Failed: DID NOT RAISE AgentSyncError">world = (&lt;agentsync.core.service.Core object at 0x000002E21CACEA50&gt;, {'project_id': '8c6e22ce-5a18-4567-985c-7f21df471c1f', 'a...xNfLVk--eCnRYw'}], WindowsPath('F:/syuc/work/m4b/acceptance-receipt6/test_persisted_create_receipt_0/user-repository'))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002E21CA22EA0&gt;
+
+    def test_persisted_create_receipt_cannot_rebind_snapshot_after_database_rollback(
+        world, monkeypatch
+    ):
+        from agentsync.workspaces.git import GitWorkspaceStore
+    
+        core, _, (a, _), root = world
+        first, second = capture(world), capture(world)
+        assert first["snapshot_id"] != second["snapshot_id"]
+        task = call(core, a, "create_task", title="receipt scope", request_id="receipt-task")
+        args = {
+            "snapshot_id": first["snapshot_id"],
+            "task_id": task["id"],
+            "request_id": "persist-then-crash",
+        }
+        original = source_fingerprint(root)
+        save = GitWorkspaceStore._save
+        persisted = []
+    
+        def save_receipt_then_crash(self, path, value):
+            result = save(self, path, value)
+            if path.parent.name == "receipts":
+                persisted.append(
+                    (path, path.read_bytes(), json.loads(path.read_text(encoding="utf-8")))
+                )
+                raise RuntimeError("Injected database rollback after durable receipt")
+            return result
+    
+        monkeypatch.setattr(GitWorkspaceStore, "_save", save_receipt_then_crash)
+        with pytest.raises(RuntimeError, match="durable receipt"):
+            call(core, a, "create_worktree", **args)
+        assert len(persisted) == 1
+        receipt_path, receipt_bytes, receipt = persisted[0]
+        assert receipt["snapshot_id"] == first["snapshot_id"]
+        monkeypatch.setattr(GitWorkspaceStore, "_save", save)
+&gt;       with pytest.raises(AgentSyncError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE AgentSyncError
+
+tests\integration\test_m4b_workspaces.py:570: Failed</failure></testcase></testsuite></testsuites>

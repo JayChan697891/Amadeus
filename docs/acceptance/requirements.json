@@ -657,12 +657,15 @@
       "milestone": "M4",
       "title": "Independent Git worktrees",
       "acceptance": "Worktree paths and branches differ; each sees its own edit; original worktree and user modifications remain unchanged.",
-      "coverage": "missing",
+      "coverage": "existing",
       "layers": [
         "integration",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/integration/test_m4b_workspaces.py::test_committed_only_capture_and_independent_owned_worktrees_preserve_original",
+        "tests/integration/test_m4b_workspaces.py::test_concurrent_create_request_has_one_owned_worktree_and_restart_replays"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M4-03",
@@ -685,7 +688,7 @@
       "milestone": "M4",
       "title": "File versions, diffs and merge conflict detection",
       "acceptance": "Changed hash and unstable read detected; actual conflict paths reported with base/ours/theirs evidence; no user file overwritten.",
-      "coverage": "partial",
+      "coverage": "existing",
       "layers": [
         "security",
         "integration",
@@ -693,7 +696,10 @@
       ],
       "existing_tests": [
         "tests/security/test_resource_paths.py::test_unicode_backslashes_hash_changes_missing_and_directory",
-        "tests/security/test_resource_paths.py::test_mutation_during_real_hash_read_is_explicitly_unstable"
+        "tests/security/test_resource_paths.py::test_mutation_during_real_hash_read_is_explicitly_unstable",
+        "tests/integration/test_m4b_workspaces.py::test_actual_same_line_conflict_uses_third_tree_and_preserves_both_actors",
+        "tests/integration/test_m4b_workspaces.py::test_dirty_and_stale_worktree_inputs_fail_without_discarding_edits",
+        "tests/integration/test_m4b_workspaces.py::test_nul_parsed_unicode_and_space_filenames_survive_conflict_comparison"
       ],
       "planned_cases": [
         {
@@ -717,12 +723,14 @@
       "milestone": "M4",
       "title": "Safe merge policy and human approval",
       "acceptance": "No unauthorized or stale-approved overwrite; approved merge remains confined and auditable; conflicts require resolution.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "security",
         "integration"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/integration/test_m4b_workspaces.py::test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M4-05",
@@ -1441,5 +1449,6 @@
       "execution_status": "not_run",
       "evidence": "<run>/scenarios/T16/ (planned case-specific observations; shared run evidence does not imply execution)"
     }
-  ]
+  ],
+  "coverage_checkpoint_note": "M4B adds component coverage; whole-requirement acceptance is not inferred. M4-05 actual approval/application and M5-M9 remain incomplete."
 }

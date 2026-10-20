@@ -84,6 +84,30 @@ PRAGMA user_version=4;
 """
 
 
+MIGRATION_V5 = """
+CREATE TABLE repository_snapshots(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ creator_session_id TEXT NOT NULL REFERENCES sessions(id),
+ created_at REAL NOT NULL, receipt TEXT NOT NULL);
+CREATE INDEX repository_snapshots_project ON repository_snapshots(project_id,id);
+CREATE TABLE managed_worktrees(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ snapshot_id TEXT NOT NULL REFERENCES repository_snapshots(id),
+ task_id TEXT NOT NULL REFERENCES tasks(id),
+ creator_session_id TEXT NOT NULL REFERENCES sessions(id),
+ created_at REAL NOT NULL, receipt TEXT NOT NULL);
+CREATE INDEX managed_worktrees_project ON managed_worktrees(project_id,id);
+CREATE TABLE merge_candidates(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ left_id TEXT NOT NULL REFERENCES managed_worktrees(id),
+ right_id TEXT NOT NULL REFERENCES managed_worktrees(id),
+ creator_session_id TEXT NOT NULL REFERENCES sessions(id),
+ created_at REAL NOT NULL, receipt TEXT NOT NULL);
+CREATE INDEX merge_candidates_project ON merge_candidates(project_id,id);
+PRAGMA user_version=5;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -119,7 +143,12 @@ def migrate(path: Path) -> None:
             for statement in MIGRATION_V4.split(";"):
                 if statement.strip():
                     db.execute(statement)
-        elif version != 4:
+            version = 4
+        if version == 4:
+            for statement in MIGRATION_V5.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+        elif version != 5:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         db.commit()
     except Exception:

@@ -41,7 +41,7 @@ def test_mcp_handoff_has_explicit_nested_typed_schema(tmp_path):
         )
         async with Client(params, read_timeout_seconds=15) as client:
             listing = await client.list_tools()
-            assert len(listing.tools) == 24
+            assert len(listing.tools) == 29
             schema = next(t.input_schema for t in listing.tools if t.name == "submit_handoff")
             assert "package" in schema["required"]
             package = schema["properties"]["package"]

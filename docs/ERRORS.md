@@ -43,3 +43,11 @@ Python versions. Root pinning stores full identities and file inspection compare
 ctime only within the same API. macOS conflict keys normalize NFC before casefolding.
 Local Windows symlink tests skip when privilege 1314 is unavailable; junction and
 hardlink tests execute. Platform-specific skips are never treated as passed cases.
+
+## M4B lead-review repairs
+
+Source clean/process filters and config includes could execute commands during Git
+status; reject these source-local configurations before status/pack. Durable sidecar
+receipts outlive SQLite rollback, so inputs must remain bound across crash retries;
+real RED/GREEN regressions now prevent wrong snapshot/task/ordered-pair reuse.
+Reject overlapping source and managed storage before mkdir. See M4B-REPORT.md.

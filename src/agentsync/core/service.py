@@ -15,6 +15,7 @@ from pydantic import ValidationError
 from agentsync.config import resolve_data_dir
 from agentsync.core.collaboration import CollaborationMixin, active_assignment, reservation
 from agentsync.core.resources import ResourcesMixin
+from agentsync.core.workspaces import WorkspacesMixin
 from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
 from agentsync.resources.paths import pin_root
@@ -33,7 +34,7 @@ def canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-class Core(CollaborationMixin, ResourcesMixin):
+class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin):
     def __init__(self, data_dir: str | Path | None = None) -> None:
         self.data_dir = resolve_data_dir(data_dir)
         self.db_path = self.data_dir / "agentsync.db"
@@ -88,6 +89,12 @@ class Core(CollaborationMixin, ResourcesMixin):
                         response["lease_token"] = token
                     if operation in {"acquire_file_lock", "renew_file_lock"}:
                         response = self._resource_replay(db, operation, p, response, now)
+                    if operation in {
+                        "capture_repository",
+                        "create_worktree",
+                        "prepare_merge_candidate",
+                    }:
+                        response = self._workspace_replay(db, operation, p, response)
                     db.commit()
                     return response
             response = getattr(self, "_" + operation)(db, p, now, session)
