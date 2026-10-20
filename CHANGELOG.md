@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0a2 — M4-01/02 under verification
+
+- Project-confined resource metadata and SHA-256 file version checks.
+- Cooperative exclusive file/directory leases with versioned renewal/release and replay checks.
+- Global physical-path conflicts prevent duplicate project registrations bypassing a lease.
+- Schema v4 root identity and lock history; worktrees/Git conflict reports remain the next checkpoint.
+
 ## 0.2.0a1 — M3 under verification
 
 - Project-scoped context revisions, source/summary metadata and literal substring search.

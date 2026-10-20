@@ -67,6 +67,23 @@ PRAGMA user_version=3;
 """
 
 
+MIGRATION_V4 = """
+CREATE TABLE project_resource_roots(
+ project_id TEXT PRIMARY KEY REFERENCES projects(id), root_path TEXT NOT NULL,
+ device TEXT NOT NULL, inode TEXT NOT NULL);
+CREATE TABLE file_locks(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ path TEXT NOT NULL, resource_key TEXT NOT NULL, kind TEXT NOT NULL,
+ owner_agent_id TEXT NOT NULL REFERENCES agents(id),
+ owner_session_id TEXT NOT NULL REFERENCES sessions(id),
+ version INTEGER NOT NULL, status TEXT NOT NULL, created_at REAL NOT NULL,
+ updated_at REAL NOT NULL, expires_at REAL NOT NULL, lease_hash TEXT NOT NULL);
+CREATE INDEX file_locks_active ON file_locks(status,expires_at,resource_key);
+CREATE INDEX file_locks_project ON file_locks(project_id,created_at,id);
+PRAGMA user_version=4;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -97,7 +114,12 @@ def migrate(path: Path) -> None:
             for statement in MIGRATION_V3.split(";"):
                 if statement.strip():
                     db.execute(statement)
-        elif version != 3:
+            version = 3
+        if version == 3:
+            for statement in MIGRATION_V4.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+        elif version != 4:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         db.commit()
     except Exception:

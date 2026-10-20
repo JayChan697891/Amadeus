@@ -40,3 +40,11 @@ characters. Save immutable context revisions and fixed snapshots in handoffs.
 Submit revokes the old task lease; decisions reserve a fresh claim for at most
 300 seconds. No file, URL or command in a package is executed. Schema v3 upgrades
 previous data atomically. Transport wrappers dispatch only to the shared Core.
+
+## M4A and formal release acceptance
+
+Locks use canonical global physical keys to prevent overlapping projects bypassing
+cooperative exclusion. Root identity is pinned; no user files are written. Release
+acceptance separates coverage, execution and evidence strength. Local automated
+checks cannot certify real model clients, adapters or autonomous relay. Missing or
+unverified critical requirements block formal release regardless of pass counts.

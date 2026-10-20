@@ -1,10 +1,12 @@
 # AgentSync implementation plan
 
 Baseline: user-approved specification v1.0, 2026-10-19 (see SPECIFICATION.md).
-Current execution: **M3-01..04**, authorized after Work accepted M0-M2 and the Ruff repair.
-Version 0.1.0a2 is the historical M0-M2 checkpoint; 0.2.0a1 is the M3 checkpoint under
-development. The user authorized GitHub branches/PRs and Codex Cloud setup, but no
-direct main writes/merges or paid provider calls. See M3-CONTRACT.md and Issue #4.
+Current execution: **M4-01/02 plus Release Acceptance infrastructure**, Issues #6/#7.
+M3 is preserved at 72ab6b5 (PR #5); its nine CI jobs passed. Work approval is a
+separate gate and must be read before claiming acceptance. Version 0.2.0a2 remains
+an Alpha checkpoint: M4-03..05 and M5-M9 are not implemented. The user authorized
+continuous staged work and GitHub PR publication, no direct main writes/merges or
+paid provider calls. See M4A-CONTRACT.md and acceptance/DESIGN.md.
 
 | Stage | Work packages | Acceptance / continuation |
 |---|---|---|
@@ -26,3 +28,7 @@ automatic verification of those claims is explicitly M5.
 
 At every checkpoint update PROGRESS.md, TEST-REPORT.md, ERRORS.md and DECISIONS.md.
 Never mark M2-05 complete merely because the official SDK client can call the server.
+
+Release Acceptance traces all 42 formal requirements and T01-T16. At each checkpoint
+execute the implemented subset and retain unimplemented cases as not_run. At M9 run
+the full suite, platform/package gates and separately authorized real client relay.

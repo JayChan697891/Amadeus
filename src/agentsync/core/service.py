@@ -14,8 +14,10 @@ from pydantic import ValidationError
 
 from agentsync.config import resolve_data_dir
 from agentsync.core.collaboration import CollaborationMixin, active_assignment, reservation
+from agentsync.core.resources import ResourcesMixin
 from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
+from agentsync.resources.paths import pin_root
 from agentsync.storage.database import connect, migrate
 
 
@@ -31,7 +33,7 @@ def canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-class Core(CollaborationMixin):
+class Core(CollaborationMixin, ResourcesMixin):
     def __init__(self, data_dir: str | Path | None = None) -> None:
         self.data_dir = resolve_data_dir(data_dir)
         self.db_path = self.data_dir / "agentsync.db"
@@ -84,6 +86,8 @@ class Core(CollaborationMixin):
                                 409,
                             )
                         response["lease_token"] = token
+                    if operation in {"acquire_file_lock", "renew_file_lock"}:
+                        response = self._resource_replay(db, operation, p, response, now)
                     db.commit()
                     return response
             response = getattr(self, "_" + operation)(db, p, now, session)
@@ -213,6 +217,7 @@ class Core(CollaborationMixin):
             "INSERT INTO projects VALUES(?,?,?,?,?)",
             (project_id, p["name"], str(root.resolve()), digest(token), now),
         )
+        pin_root(db, project_id, root.resolve())
         return {"project_id": project_id, "admin_token": token}
 
     def _register_agent(

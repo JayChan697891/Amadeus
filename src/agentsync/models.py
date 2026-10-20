@@ -128,6 +128,37 @@ class WithdrawHandoff(GetHandoff):
     request_id: str = Field(min_length=1, max_length=200)
 
 
+class InspectPath(Auth):
+    path: str = Field(min_length=1, max_length=4096)
+
+
+class VerifyFileVersion(InspectPath):
+    expected_sha256: str | None = Field(pattern=r"^[0-9a-fA-F]{64}$")
+
+
+class AcquireFileLock(InspectPath):
+    kind: Literal["file", "directory"] = "file"
+    lease_seconds: int = Field(default=300, ge=1, le=3600)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class ReleaseFileLock(Auth):
+    lock_id: str
+    lease_token: str
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class RenewFileLock(ReleaseFileLock):
+    lease_seconds: int = Field(default=300, ge=1, le=3600)
+
+
+class ListFileLocks(Auth):
+    include_expired: bool = False
+    limit: int = Field(default=100, ge=1, le=100)
+    offset: int = Field(default=0, ge=0, le=10000)
+
+
 OPERATIONS: dict[str, type[StrictModel]] = {
     "create_project": CreateProject,
     "register_agent": RegisterAgent,
@@ -147,4 +178,10 @@ OPERATIONS: dict[str, type[StrictModel]] = {
     "get_handoff": GetHandoff,
     "resolve_handoff": ResolveHandoff,
     "withdraw_handoff": WithdrawHandoff,
+    "inspect_path": InspectPath,
+    "verify_file_version": VerifyFileVersion,
+    "acquire_file_lock": AcquireFileLock,
+    "renew_file_lock": RenewFileLock,
+    "release_file_lock": ReleaseFileLock,
+    "list_file_locks": ListFileLocks,
 }
