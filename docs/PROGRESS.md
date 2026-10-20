@@ -1,5 +1,17 @@
 # Current M5B1 verifier foundation (Issue15)
 
+Local source regression after resume:716 passed/17 skipped (14 unavailable real
+Docker,3 Windows symlink privileges),162.81s. Ruff/format/mypy26files passed.
+See acceptance/evidence/local-only-20261020.json and redacted JUnit/log. Real Docker
+still unverified; no Actions run was requested.
+
+2026-10-20 user override: GitHub is storage only; no more Actions debugging,
+testing or benchmarks. Both workflows now have manual-only triggers and uploads
+use [skip ci]; the agent must not dispatch them. Validation is local/other
+authorized compute only. This host has no Docker/Podman and WSL reports it is not
+installed. Real Linux isolation remains unavailable here and must not be bypassed.
+Preserve historical failures; local policy/Git tests cannot certify real Docker.
+
 Version0.3.0a2, feature/m5b-verifier based on PR14 headf1f13ded.
 PR16 first head227512a ran actual Docker gate39437105068:14 cases failed with
 isolation_mismatch before candidate execution; all reported cleanup confirmed.

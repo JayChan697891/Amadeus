@@ -1,5 +1,6 @@
 name: verifier isolation
-on: [pull_request]
+# Storage-only GitHub policy: no automatic hosted tests or debugging.
+on: workflow_dispatch
 permissions:
   contents: read
 jobs:

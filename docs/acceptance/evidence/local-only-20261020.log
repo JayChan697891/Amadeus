@@ -1,0 +1,25 @@
+.............ssssssssssssss............................................. [  9%]
+........................................................................ [ 19%]
+........................................................................ [ 29%]
+........................................................................ [ 39%]
+........................................................................ [ 49%]
+...........s...................................s........................ [ 58%]
+........................................................................ [ 68%]
+........................................................................ [ 78%]
+........................................................................ [ 88%]
+........................................................................ [ 98%]
+............s                                                            [100%]
+=========================== short test summary info ===========================
+SKIPPED [1] tests\integration\test_docker_verifier.py:91: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [5] tests\integration\test_docker_verifier.py:106: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:127: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:174: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [2] tests\integration\test_docker_verifier.py:185: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:197: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:206: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:222: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:245: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\\security\\test_resource_paths.py:43: Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'F:\\\\syuc\\\\work\\\\local-only-source\\\\test_explicit_project_symlink_0\\\\actual' -> 'F:\\\\syuc\\\\work\\\\local-only-source\\\\test_explicit_project_symlink_0\\\\selected'
+SKIPPED [1] tests\\security\\test_resource_paths.py:238: Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'F:\\\\syuc\\\\work\\\\local-only-source\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'F:\\\\syuc\\\\work\\\\local-only-source\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'
+SKIPPED [1] tests\unit\test_verification_snapshot.py:352: Creating directory symlinks requires unavailable host privileges
+716 passed, 17 skipped in 162.81s (0:02:42)
