@@ -1,8 +1,10 @@
 # AgentSync implementation plan
 
 Baseline: user-approved specification v1.0, 2026-10-19 (see SPECIFICATION.md).
-Current execution: **M0 -> M1 -> M2 only**. No paid provider calls or public publication.
-Version 0.1.0a2 is the accepted local M0-M2 Alpha checkpoint; evidence levels are separately recorded.
+Current execution: **M3-01..04**, authorized after Work accepted M0-M2 and the Ruff repair.
+Version 0.1.0a2 is the historical M0-M2 checkpoint; 0.2.0a1 is the M3 checkpoint under
+development. The user authorized GitHub branches/PRs and Codex Cloud setup, but no
+direct main writes/merges or paid provider calls. See M3-CONTRACT.md and Issue #4.
 
 | Stage | Work packages | Acceptance / continuation |
 |---|---|---|

@@ -1,7 +1,13 @@
 # Progress and recovery
 
-Date: 2026-10-19 (America/Tijuana). Version: 0.1.0a2, local Alpha checkpoint.
-Current execution scope: **M0-M2**. M3-M9 have not been started.
+Date: 2026-10-19 (America/Tijuana). Version: 0.2.0a1 under development.
+Current execution scope: **M3-01..04**, Issue #4. M4-M9 remain planned.
+M3 local verification: 142 tests passed, full-repository Ruff lint/format and mypy
+(16 source files) passed; wheel/sdist built. Clean-wheel and remote CI acceptance
+are recorded in M3-REPORT.md and the associated PR before Work signs off.
+The table below records the historical M0-M2 checkpoint. Its Ruff repair PR #3 was
+independently accepted by Work at 3c429ea, with all 9 CI jobs and their artifacts
+verified. PR #3 remains unmerged. M3 development is based on that accepted branch.
 
 | Work | Evidence / status |
 |---|---|
@@ -38,17 +44,19 @@ screenshot evidence. A complete model-driven two-desktop development session rem
 end-to-end scenario; it is not needed to claim that this M2 connection gate is complete.
 See M2-CONTINUATION.zh-CN.md and the distinct probe/confirmation JSON records.
 
-Linux/macOS/3.11 and remote CI have not run here. Independent verification of submitted review
-evidence is M5. Project-enrolled identities are not external OAuth identities. No paid calls,
-public pushes, published packages or public Releases were made.
+Historical limitation updated: Windows/Linux/macOS x Python 3.11/3.12/3.14 passed
+remote CI for PR #3. Independent verification of submitted in-product review evidence
+remains M5. Project-enrolled identities are not external OAuth identities. GitHub
+publication and owner-only Codex Cloud setup were subsequently user-authorized.
+No paid provider API calls or public package Releases were made.
 
 ## Resume steps
 
 1. Read AGENTS.md, WORKFLOW.md, PLAN.md, this file, CONTRACT.md and TEST-REPORT.md; inspect Git status.
 2. Preserve verified coordination rules and the existing failure regressions.
 3. M2-05 connection gate is closed; preserve distinction between user UI confirmation and native probes.
-4. Next authorized batch: M3-01..04 context/FTS/version/source and structured handoff.
-5. Then M4 path boundaries, cooperative locks, isolated Git worktrees and conflict detection.
+4. M3-01..04 is implemented; finish its independent wheel/remote/Work acceptance gate.
+5. Continue M4 path boundaries, cooperative locks, isolated Git worktrees and conflict detection.
 6. Continue M5-M9 from PLAN.md; record evidence and checkpoints at each stage.
 
 ## Ruff CI follow-up

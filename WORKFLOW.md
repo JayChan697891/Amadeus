@@ -7,4 +7,5 @@
 5. Update progress with commands, results, limitations and exact remaining work.
 
 Ask only for missing essential requirements, external blockers or high-impact authorization.
-No public publication or paid provider calls in this batch. Do not confuse review submission with acceptance.
+The user authorized GitHub branch/PR publication and continued the plan into M3.
+Do not modify/merge main or make paid provider calls. Review submission is not acceptance.

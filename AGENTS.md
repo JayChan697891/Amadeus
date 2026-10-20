@@ -1,9 +1,11 @@
-# AgentSync development rules
+# AgentSync continuation context
 
-Read WORKFLOW.md, docs/PLAN.md, docs/PROGRESS.md, docs/CONTRACT.md and Git status before work.
-Use native same-task Codex agents for delegated coding. Lead independently inspects files,
-runs verification, fixes failures and records concrete evidence. Stay within assigned files.
-Current batch is M0-M2. Future stages require continuing the plan, not empty stub modules.
-No paid model calls, public pushes or releases. Never treat mocked/protocol tests as desktop-host evidence.
-All entrypoints share Core. Do not remove failing tests, suppress unexplained errors or claim
-automatic evidence verification when only reviewer assertions are recorded.
+The user explicitly revoked the earlier AGENTS.md instructions and requested continuation
+of the product plan. The current authorized stage is M3, specified in docs/M3-CONTRACT.md.
+Earlier M0-M2-only/no-public-push statements describe historical batches.
+
+Use the user's current instructions: work under F:\syuc, keep authored project changes
+in GitHub branches/PRs, mark PRs `执行方：Codex`, link the task Issue and hand them to Work
+for independent acceptance. Do not directly modify or merge main or make paid provider calls.
+The project lead inspects actual files and test results. All transports use one Core.
+Read the current plan, progress and operation contracts rather than inferring completion.
