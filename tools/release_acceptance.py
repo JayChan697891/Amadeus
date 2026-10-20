@@ -1,7 +1,8 @@
 """Collect reproducible local evidence without declaring unverified release acceptance.
 
 Run from any directory: python tools/release_acceptance.py --output F:/syuc/evidence
-Add --run to execute checks, and --package-install for a separate wheel environment.
+Add --run to execute checks, --package-install for a separate wheel environment,
+and --sdist-install for a separate source-distribution build and installation.
 No client credentials, model calls, workspace cleanup or Git mutations are performed.
 """
 
@@ -120,7 +121,7 @@ def source_snapshot(repo: Path) -> list[dict]:
 def requirement_results(manifest: dict | None, run: Path) -> list[dict]:
     """Attach component observations without promoting a requirement to accepted."""
     documents = {}
-    for name in ("junit.xml", "wheel-junit.xml"):
+    for name in ("junit.xml", "wheel-junit.xml", "sdist-junit.xml"):
         path = run / name
         if path.is_file():
             try:
@@ -190,6 +191,32 @@ def execute(
     env = os.environ.copy()
     env.pop("PYTHONPATH", None)
     env.pop("PYTHONHOME", None)
+    if check_id in {"pytest", "wheel_pytest", "sdist_pytest"}:
+        # A user's pytest options can silently select a nonempty subset. These
+        # runs attest the checked-in suite, with its declared plugin setup.
+        for name in ("PYTEST_ADDOPTS", "PYTEST_PLUGINS", "PYTEST_DISABLE_PLUGIN_AUTOLOAD"):
+            env.pop(name, None)
+    if check_id == "build" or check_id.startswith(("sdist_", "wheel_")):
+        # Preserve network/proxy settings, but don't inherit pip options that can
+        # bypass build isolation or redirect writes outside this fresh venv.
+        for name in (
+            "PIP_NO_BUILD_ISOLATION",
+            "PIP_NO_USE_PEP517",
+            "PIP_USE_PEP517",
+            "PIP_TARGET",
+            "PIP_PREFIX",
+            "PIP_ROOT",
+            "PIP_USER",
+            "PIP_NO_DEPS",
+            "PIP_PYTHON",
+            "PIP_LOG",
+            "PIP_REPORT",
+            "PIP_SRC",
+            "PIP_BUILD_TRACKER",
+        ):
+            env.pop(name, None)
+        env["PIP_CONFIG_FILE"] = os.devnull
+        env["PIP_CACHE_DIR"] = str((scratch if scratch is not None else run / "tmp") / "pip-cache")
     temporary = scratch if scratch is not None else run / "tmp"
     env.update({"TMP": str(temporary), "TEMP": str(temporary), "TMPDIR": str(temporary)})
     exit_code = None
@@ -282,7 +309,149 @@ def check_plan(python: str, run: Path, scratch: Path) -> list[tuple[str, list[st
     ]
 
 
-def collect(repo: Path, output: Path, *, run_checks: bool, package_install: bool) -> Path:
+def sdist_checks(
+    repo: Path, run: Path, scratch: Path, version: str, build_passed: bool
+) -> list[dict]:
+    """Install only the selected sdist in a fresh environment; never fall back to source."""
+    archives = sorted((run / "artifacts").glob("*.tar.gz"))
+    if not build_passed or len(archives) != 1:
+        return [
+            {
+                "id": "sdist_install",
+                "status": "fail",
+                "reason": "Requested sdist install requires a successful build with exactly one tar.gz archive",
+            }
+        ]
+    archive = archives[0]
+    artifact = {
+        "path": archive.relative_to(run).as_posix(),
+        "sha256": sha256(archive),
+        "size": archive.stat().st_size,
+        "kind": "sdist",
+    }
+    environment = Path(tempfile.mkdtemp(prefix="sdist-", dir=scratch))
+    checks = []
+
+    def invoke(name: str, command: list[str]) -> dict:
+        result = execute("sdist_" + name, command, run, run, scratch)
+        result["artifact"] = artifact.copy()
+        checks.append(result)
+        return result
+
+    def skipped(names: list[str], reason: str) -> None:
+        checks.extend(
+            {
+                "id": "sdist_" + name,
+                "status": "not_run",
+                "reason": reason,
+                "artifact": artifact.copy(),
+            }
+            for name in names
+        )
+
+    created = invoke("venv", [sys.executable, "-m", "venv", str(environment)])
+    if created["status"] != "pass":
+        skipped(
+            ["install", "pip_check", "cli", "origin_sdk", "pytest"],
+            "Fresh sdist environment creation failed",
+        )
+        return checks
+    python = str(environment / ("Scripts/python.exe" if os.name == "nt" else "bin/python"))
+    installed = invoke(
+        "install",
+        [
+            python,
+            "-I",
+            "-m",
+            "pip",
+            "install",
+            "--use-pep517",
+            "--no-cache-dir",
+            str(archive) + "[dev]",
+        ],
+    )
+    if installed["status"] != "pass":
+        skipped(
+            ["pip_check", "cli", "origin_sdk", "pytest"],
+            "Sdist installation failed; no fallback attempted",
+        )
+        return checks
+    invoke("pip_check", [python, "-I", "-m", "pip", "check"])
+    invoke("cli", [python, "-I", "-m", "agentsync", "--help"])
+    probe = (
+        "import agentsync, importlib.metadata, json, pathlib, tempfile; "
+        "from agentsync.sdk import AgentSyncClient; "
+        "origin = pathlib.Path(agentsync.__file__).resolve(); "
+        f"assert origin.is_relative_to(pathlib.Path({str(environment)!r}).resolve()); "
+        f"assert not origin.is_relative_to(pathlib.Path({str(repo)!r}).resolve()); "
+        f"assert importlib.metadata.version('agentsync-local') == {version!r}; "
+        "direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); "
+        f"assert direct['url'] == {archive.resolve().as_uri()!r}; "
+        f"assert (direct['archive_info'].get('hashes', {{}}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == {artifact['sha256']!r}; "
+        "assert not direct.get('dir_info', {}).get('editable', False); "
+        "print('installed sdist origin:', origin); "
+        "temporary = tempfile.TemporaryDirectory(); root = pathlib.Path(temporary.name) / 'project'; root.mkdir(); "
+        "client = AgentSyncClient(pathlib.Path(temporary.name) / 'data'); "
+        "result = client.call('create_project', name='isolated sdist smoke', root_path=str(root)); "
+        "assert result['ok'], result; print('sdist SDK smoke: pass'); temporary.cleanup()"
+    )
+    origin = invoke("origin_sdk", [python, "-I", "-c", probe])
+    if origin["status"] != "pass":
+        skipped(
+            ["pytest"],
+            "Installed sdist origin/version/SDK check failed; test results would be untrusted",
+        )
+    else:
+        tested = invoke(
+            "pytest",
+            [
+                python,
+                "-I",
+                "-m",
+                "pytest",
+                str(repo / "tests"),
+                "--junitxml",
+                str(scratch / "sdist-junit.xml"),
+                "--basetemp",
+                str(scratch / "sdist-pytest"),
+            ],
+        )
+        try:
+            tested["junit_credential_redactions"] = persist_junit(
+                scratch / "sdist-junit.xml", run / "sdist-junit.xml"
+            )
+            tested["junit"] = junit_counts(run / "sdist-junit.xml")
+            if (
+                not tested["junit"]["tests"]
+                or tested["junit"]["failures"]
+                or tested["junit"]["errors"]
+            ):
+                tested["status"] = "fail"
+        except (OSError, ValueError, ET.ParseError):
+            tested["status"] = "fail"
+            tested["error"] = "Installed-sdist JUnit missing or invalid"
+    if not archive.is_file() or sha256(archive) != artifact["sha256"]:
+        checks.append(
+            {
+                "id": "sdist_artifact_stability",
+                "status": "fail",
+                "reason": "Sdist archive changed during installation or testing",
+                "artifact": artifact,
+            }
+        )
+    return checks
+
+
+def collect(
+    repo: Path,
+    output: Path,
+    *,
+    run_checks: bool,
+    package_install: bool,
+    sdist_install: bool = False,
+) -> Path:
+    if sdist_install and not run_checks:
+        raise ValueError("--sdist-install requires --run")
     output = output.resolve()
     if output.is_relative_to(repo.resolve()):
         raise ValueError("Evidence output must be outside the source repository")
@@ -290,11 +459,18 @@ def collect(repo: Path, output: Path, *, run_checks: bool, package_install: bool
     # Test DBs/auth files and wheel environments are never durable report artifacts.
     # TemporaryDirectory cleans only this freshly created directory, even on failure.
     with tempfile.TemporaryDirectory(prefix=".scratch-", dir=output) as temporary:
-        return _collect(repo.resolve(), output, Path(temporary), run_checks, package_install)
+        return _collect(
+            repo.resolve(), output, Path(temporary), run_checks, package_install, sdist_install
+        )
 
 
 def _collect(
-    repo: Path, output: Path, scratch: Path, run_checks: bool, package_install: bool
+    repo: Path,
+    output: Path,
+    scratch: Path,
+    run_checks: bool,
+    package_install: bool,
+    sdist_install: bool = False,
 ) -> Path:
     run = output / (
         "release-" + datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
@@ -304,7 +480,9 @@ def _collect(
         (run / child).mkdir()
     project = tomllib.loads((repo / "pyproject.toml").read_text(encoding="utf-8"))
     diff = git_value(repo, "diff", "HEAD", "--binary")
-    (run / "working-tree.patch").write_text(diff or "", encoding="utf-8")
+    original_patch_sha = hashlib.sha256((diff or "").encode("utf-8")).hexdigest()
+    safe_patch, patch_redactions = redact_credentials(diff or "")
+    (run / "working-tree.patch").write_text(safe_patch, encoding="utf-8")
     source = source_snapshot(repo)
     (run / "source-snapshot.json").write_text(json.dumps(source, indent=2), encoding="utf-8")
     plan = check_plan(sys.executable, run, scratch)
@@ -336,6 +514,12 @@ def _collect(
     if package_install and run_checks:
         wheels = list((run / "artifacts").glob("*.whl"))
         if len(wheels) == 1 and next(c for c in checks if c["id"] == "build")["status"] == "pass":
+            wheel_artifact = {
+                "path": wheels[0].relative_to(run).as_posix(),
+                "sha256": sha256(wheels[0]),
+                "size": wheels[0].stat().st_size,
+                "kind": "wheel",
+            }
             # mkdtemp guarantees no existing environment or user files are reused/deleted.
             environment = Path(tempfile.mkdtemp(prefix="wheel-", dir=scratch))
             checks.append(
@@ -358,6 +542,7 @@ def _collect(
                         scratch,
                     )
                 )
+                checks[-1]["artifact"] = wheel_artifact
                 checks.append(
                     execute(
                         "wheel_pip_check", [python, "-I", "-m", "pip", "check"], run, run, scratch
@@ -369,10 +554,15 @@ def _collect(
                     )
                 )
                 probe = (
-                    "import agentsync, importlib.metadata, pathlib, tempfile; "
+                    "import agentsync, importlib.metadata, json, pathlib, tempfile; "
                     "from agentsync.sdk import AgentSyncClient; "
+                    f"assert pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path({str(environment)!r}).resolve()); "
                     f"assert not pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path({str(repo)!r})); "
                     f"assert importlib.metadata.version('agentsync-local') == {project['project']['version']!r}; "
+                    "direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); "
+                    f"assert direct['url'] == {wheels[0].resolve().as_uri()!r}; "
+                    f"assert (direct['archive_info'].get('hashes', {{}}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == {wheel_artifact['sha256']!r}; "
+                    "assert not direct.get('dir_info', {}).get('editable', False); "
                     "print('installed origin:', agentsync.__file__); "
                     "tmp = tempfile.TemporaryDirectory(); root = pathlib.Path(tmp.name) / 'project'; root.mkdir(); "
                     "client = AgentSyncClient(pathlib.Path(tmp.name) / 'data'); "
@@ -415,11 +605,20 @@ def _collect(
                         installed["status"] = "fail"
                         installed["error"] = "Installed-wheel JUnit missing or invalid"
                     checks.append(installed)
+            if not wheels[0].is_file() or sha256(wheels[0]) != wheel_artifact["sha256"]:
+                checks.append(
+                    {
+                        "id": "wheel_artifact_stability",
+                        "status": "fail",
+                        "reason": "Wheel archive changed during installation or testing",
+                        "artifact": wheel_artifact,
+                    }
+                )
         else:
             checks.append(
                 {
                     "id": "wheel_install",
-                    "status": "not_run",
+                    "status": "fail",
                     "reason": "Build produced no unique successful wheel",
                 }
             )
@@ -430,6 +629,20 @@ def _collect(
                 "status": "not_run",
                 "reason": "Requires --run --package-install",
             }
+        )
+    if sdist_install:
+        checks.extend(
+            sdist_checks(
+                repo,
+                run,
+                scratch,
+                project["project"]["version"],
+                next(c for c in checks if c["id"] == "build")["status"] == "pass",
+            )
+        )
+    else:
+        checks.append(
+            {"id": "sdist_install", "status": "not_run", "reason": "Requires --run --sdist-install"}
         )
     manifest_path = repo / "docs" / "acceptance" / "requirements.json"
     manifest = None
@@ -471,7 +684,12 @@ def _collect(
                 "reason": "Git-visible source changed during execution; rerun against a stable source snapshot",
             }
         )
-    selected_checks = [c for c in checks if c["id"] != "wheel_install" or package_install]
+    selected_checks = [
+        c
+        for c in checks
+        if (c["id"] != "wheel_install" or package_install)
+        and (c["id"] != "sdist_install" or sdist_install)
+    ]
     report = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
@@ -480,6 +698,8 @@ def _collect(
         "tree_sha": git_value(repo, "rev-parse", "HEAD^{tree}"),
         "working_tree_status": git_value(repo, "status", "--porcelain"),
         "working_tree_patch_sha256": sha256(run / "working-tree.patch"),
+        "original_working_tree_patch_sha256": original_patch_sha,
+        "working_tree_patch_redactions": patch_redactions,
         "source_snapshot_sha256": sha256(run / "source-snapshot.json"),
         "source_changed_during_execution": source_changed,
         "platform": platform.platform(),
@@ -488,6 +708,19 @@ def _collect(
         "repo": str(repo),
         "evidence_directory": str(run),
         "checks": checks,
+        "distribution_installations": [
+            {
+                "kind": "sdist" if check["id"] == "sdist_install" else "wheel",
+                "artifact": check.get("artifact"),
+                "status": check["status"],
+                "evidence_log": check.get("log"),
+                "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+                if check["id"] == "sdist_install"
+                else "Wheel installation; no sdist rebuild asserted",
+            }
+            for check in checks
+            if check["id"] in {"sdist_install", "wheel_install"}
+        ],
         "requirements_manifest_error": manifest_error,
         "requirements": requirement_results(manifest, run),
         "release_gate": release_gate(selected_checks, run),
@@ -502,6 +735,7 @@ def _collect(
             "Current-source protocol tests are not actual model-client tests.",
             "Dirty tree and untracked paths are recorded; commit SHA alone does not describe dirty source.",
             "Hashes detect accidental evidence modification; they are not signatures or independent attestation.",
+            "The saved working-tree patch is redacted; its hash differs from the original collected diff text when redactions occur. Original diff text hash and exact source-file hashes are recorded without storing unredacted diff contents.",
             "Logs and JUnit redact known keyed credentials, Bearer values and recognized API-key prefixes; this is best-effort filtering, not proof that arbitrary secrets are absent.",
         ],
     }
@@ -529,6 +763,20 @@ def _collect(
         f"| {c['id']} | {c['status']} | {c.get('log', c.get('reason', 'Not executed'))} |"
         for c in checks
     )
+    rows.extend(
+        [
+            "",
+            "## Distribution installations",
+            "",
+            "| Format | Install status | Exact artifact | SHA-256 |",
+            "| --- | --- | --- | --- |",
+        ]
+    )
+    for installation in report["distribution_installations"]:
+        artifact = installation["artifact"] or {}
+        rows.append(
+            f"| {installation['kind']} | {installation['status']} | {artifact.get('path', 'Not installed')} | {artifact.get('sha256', 'No installed artifact evidence')} |"
+        )
     rows.extend(
         [
             "",
@@ -597,14 +845,22 @@ def main() -> int:
         action="store_true",
         help="Also install built wheel in an isolated environment (may download dependencies)",
     )
+    parser.add_argument(
+        "--sdist-install",
+        action="store_true",
+        help="Build/install the sdist in another isolated environment and run its full suite (may download dependencies)",
+    )
     args = parser.parse_args()
     if args.package_install and not args.run:
         parser.error("--package-install requires --run")
+    if args.sdist_install and not args.run:
+        parser.error("--sdist-install requires --run")
     run = collect(
         Path(__file__).resolve().parents[1],
         args.output.resolve(),
         run_checks=args.run,
         package_install=args.package_install,
+        sdist_install=args.sdist_install,
     )
     print(run / "Release-Acceptance-Report.md")
     report = json.loads((run / "report.json").read_text(encoding="utf-8"))

@@ -339,3 +339,340 @@ def test_log_limit_is_explicit_and_hash_covers_bounded_evidence(repository, tmp_
     assert item["log_truncated"]
     assert "OUTPUT TRUNCATED" in (run / item["log"]).read_text()
     assert item["log_sha256"] == runner.sha256(run / item["log"])
+
+
+@pytest.fixture
+def isolated_install_plan(tmp_path, monkeypatch):
+    """Unit-only command recorder, never actual distribution/client acceptance evidence."""
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    (run / "artifacts").mkdir()
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    archive = run / "artifacts/agentsync_local-0.3.0a1.tar.gz"
+    archive.write_bytes(b"unit-only archive placeholder")
+    calls = []
+    failures = set()
+    xml = {
+        "value": '<testsuites><testsuite><testcase classname="tests.unit.example" name="test_example"/></testsuite></testsuites>'
+    }
+
+    def fake_execute(check_id, command, repo, evidence, temporary):
+        calls.append((check_id, command, repo, temporary))
+        log = evidence / "logs" / (check_id + ".log")
+        log.write_text("Unit simulation only")
+        if "--junitxml" in command and xml["value"] is not None:
+            Path(command[command.index("--junitxml") + 1]).write_text(xml["value"])
+        return {
+            "id": check_id,
+            "command": command,
+            "status": "fail" if check_id in failures else "pass",
+            "exit_code": 1 if check_id in failures else 0,
+            "log": log.relative_to(evidence).as_posix(),
+            "log_sha256": runner.sha256(log),
+            "provenance": "local_process",
+        }
+
+    monkeypatch.setattr(runner, "execute", fake_execute)
+    return run, scratch, archive, calls, failures, xml
+
+
+def test_sdist_uses_exact_archive_fresh_venv_isolated_origin_and_full_suite(
+    repository, isolated_install_plan
+):
+    run, scratch, archive, calls, _, _ = isolated_install_plan
+    checks = runner.sdist_checks(repository, run, scratch, "0.3.0a1", True)
+    assert len(checks) == 6 and all(c["status"] == "pass" for c in checks)
+    commands = {check_id: command for check_id, command, _, _ in calls}
+    install = commands["sdist_install"]
+    assert install[-1] == str(archive) + "[dev]"
+    assert "--use-pep517" in install and "--no-cache-dir" in install
+    assert not any(arg in install for arg in ("-e", "--editable", "--no-build-isolation"))
+    environment = Path(commands["sdist_venv"][-1])
+    assert environment.is_relative_to(scratch) and environment.name.startswith("sdist-")
+    assert all(command[1] == "-I" for name, command in commands.items() if name != "sdist_venv")
+    assert "origin.is_relative_to" in commands["sdist_origin_sdk"][-1]
+    assert str(repository / "tests") in commands["sdist_pytest"]
+    assert all(cwd == run for _, _, cwd, _ in calls)
+    assert checks[1]["artifact"]["sha256"] == runner.sha256(archive)
+    assert checks[-1]["junit"]["tests"] == 1
+    assert (run / "sdist-junit.xml").exists()
+
+
+@pytest.mark.parametrize("scenario", ["missing", "duplicate", "build_failed"])
+def test_requested_sdist_without_unique_successful_archive_fails(
+    repository, isolated_install_plan, scenario
+):
+    run, scratch, archive, calls, _, _ = isolated_install_plan
+    if scenario == "missing":
+        archive.unlink()
+    elif scenario == "duplicate":
+        (archive.parent / "second.tar.gz").write_bytes(b"ambiguous")
+    checks = runner.sdist_checks(repository, run, scratch, "0.3.0a1", scenario != "build_failed")
+    assert checks[0]["status"] == "fail"
+    assert not calls
+
+
+@pytest.mark.parametrize(
+    "failure,not_run",
+    [
+        ("sdist_venv", "sdist_install"),
+        ("sdist_install", "sdist_origin_sdk"),
+        ("sdist_origin_sdk", "sdist_pytest"),
+    ],
+)
+def test_sdist_install_and_origin_failures_never_fall_back(
+    repository, isolated_install_plan, failure, not_run
+):
+    run, scratch, _, calls, failures, _ = isolated_install_plan
+    failures.add(failure)
+    checks = runner.sdist_checks(repository, run, scratch, "0.3.0a1", True)
+    results = {c["id"]: c["status"] for c in checks}
+    assert results[failure] == "fail" and results[not_run] == "not_run"
+    assert not any(name == not_run for name, *_ in calls)
+
+
+@pytest.mark.parametrize(
+    "xml",
+    [
+        None,
+        "not xml",
+        "<testsuites/>",
+        "<testsuites><testsuite><testcase><failure/></testcase></testsuite></testsuites>",
+        "<testsuites><testsuite><testcase><error/></testcase></testsuite></testsuites>",
+    ],
+)
+def test_sdist_junit_missing_invalid_empty_and_failures_are_not_passes(
+    repository, isolated_install_plan, xml
+):
+    run, scratch, _, _, _, settings = isolated_install_plan
+    settings["value"] = xml
+    checks = runner.sdist_checks(repository, run, scratch, "0.3.0a1", True)
+    assert next(c for c in checks if c["id"] == "sdist_pytest")["status"] == "fail"
+
+
+@pytest.mark.parametrize(
+    "failed,package_install",
+    [
+        ("wheel_install", True),
+        ("sdist_install", True),
+        ("wheel_missing", True),
+        ("wheel_duplicate", True),
+        ("none", False),
+    ],
+)
+def test_wheel_and_sdist_results_remain_independent(
+    repository, tmp_path, monkeypatch, failed, package_install
+):
+    calls = []
+
+    def fake_execute(check_id, command, repo, run, scratch):
+        calls.append(check_id)
+        if check_id == "build":
+            if failed != "wheel_missing":
+                (run / "artifacts/agentsync_local-0.3.0a1.whl").write_bytes(b"unit wheel")
+            if failed == "wheel_duplicate":
+                (run / "artifacts/second.whl").write_bytes(b"ambiguous wheel")
+            (run / "artifacts/agentsync_local-0.3.0a1.tar.gz").write_bytes(b"unit sdist")
+        if "--junitxml" in command:
+            Path(command[command.index("--junitxml") + 1]).write_text(
+                "<testsuites><testsuite><testcase/></testsuite></testsuites>"
+            )
+        log = run / "logs" / (check_id + ".log")
+        log.write_text("Unit simulation only")
+        return {
+            "id": check_id,
+            "status": "fail" if check_id == failed else "pass",
+            "exit_code": 1 if check_id == failed else 0,
+            "log": log.relative_to(run).as_posix(),
+            "log_sha256": runner.sha256(log),
+            "provenance": "local_process",
+        }
+
+    monkeypatch.setattr(runner, "execute", fake_execute)
+    run = runner.collect(
+        repository,
+        tmp_path / "evidence",
+        run_checks=True,
+        package_install=package_install,
+        sdist_install=True,
+    )
+    report = json.loads((run / "report.json").read_text())
+    checks = {c["id"]: c["status"] for c in report["checks"]}
+    if failed == "none":
+        assert checks["sdist_install"] == "pass" and checks["wheel_install"] == "not_run"
+        assert "wheel_install" not in calls
+    else:
+        failed_id = "wheel_install" if failed.startswith("wheel_") else failed
+        other = "wheel_install" if failed == "sdist_install" else "sdist_install"
+        assert checks[failed_id] == "fail" and checks[other] == "pass"
+    assert "sdist_install" in calls
+    assert len(report["distribution_installations"]) == 2
+    assert not list((tmp_path / "evidence").glob(".scratch-*"))
+
+
+def test_sdist_archive_modified_during_tests_is_not_accepted(
+    repository, isolated_install_plan, monkeypatch
+):
+    run, scratch, archive, _, _, _ = isolated_install_plan
+    simulate = runner.execute
+
+    def mutate_after_test(check_id, *args):
+        result = simulate(check_id, *args)
+        if check_id == "sdist_pytest":
+            archive.write_bytes(b"changed archive")
+        return result
+
+    monkeypatch.setattr(runner, "execute", mutate_after_test)
+    checks = runner.sdist_checks(repository, run, scratch, "0.3.0a1", True)
+    assert checks[-1]["id"] == "sdist_artifact_stability" and checks[-1]["status"] == "fail"
+
+
+@pytest.mark.parametrize("change", ["replace", "delete"])
+def test_wheel_archive_changed_after_successful_installation_is_not_accepted(
+    repository, tmp_path, monkeypatch, change
+):
+    original = b"original wheel"
+
+    def simulate(check_id, command, repo, run, scratch):
+        archive = run / "artifacts/agentsync_local-0.3.0a1.whl"
+        if check_id == "build":
+            archive.write_bytes(original)
+        if "--junitxml" in command:
+            Path(command[command.index("--junitxml") + 1]).write_text(
+                "<testsuites><testsuite><testcase/></testsuite></testsuites>"
+            )
+        if check_id == "wheel_pytest":
+            if change == "replace":
+                archive.write_bytes(b"different wheel")
+            else:
+                archive.unlink()
+        log = run / "logs" / (check_id + ".log")
+        log.write_text("Unit simulation only")
+        return {
+            "id": check_id,
+            "status": "pass",
+            "exit_code": 0,
+            "log": log.relative_to(run).as_posix(),
+            "log_sha256": runner.sha256(log),
+            "provenance": "local_process",
+        }
+
+    monkeypatch.setattr(runner, "execute", simulate)
+    run = runner.collect(repository, tmp_path / "evidence", run_checks=True, package_install=True)
+    report = json.loads((run / "report.json").read_text())
+    checks = {c["id"]: c for c in report["checks"]}
+    assert checks["wheel_install"]["status"] == "pass"
+    assert checks["wheel_pytest"]["status"] == "pass"
+    assert checks["wheel_artifact_stability"]["status"] == "fail"
+    assert checks["wheel_artifact_stability"]["artifact"] == checks["wheel_install"]["artifact"]
+    assert not report["release_gate"]["local_checks_passed"]
+
+
+@pytest.mark.parametrize("check_id", ["pytest", "wheel_pytest", "sdist_pytest"])
+def test_full_suite_subprocess_cannot_inherit_pytest_selection_or_plugins(
+    repository, tmp_path, monkeypatch, check_id
+):
+    inherited = {
+        "PYTEST_ADDOPTS": "-k one_test --ignore=tests/integration",
+        "PYTEST_PLUGINS": "external_plugin",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    }
+    for name, value in inherited.items():
+        monkeypatch.setenv(name, value)
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    probe = (
+        "import os; "
+        f"assert not set({list(inherited)!r}).intersection(os.environ); "
+        "print('pytest invocation environment is isolated')"
+    )
+    result = runner.execute(
+        check_id, [runner.sys.executable, "-c", probe], repository, run, scratch
+    )
+    assert result["status"] == "pass"
+    assert all(runner.os.environ[name] == value for name, value in inherited.items())
+
+
+def test_sdist_flag_requires_run_and_is_independent_of_wheel(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        runner.sys, "argv", ["runner", "--output", str(tmp_path), "--sdist-install"]
+    )
+    with pytest.raises(SystemExit) as error:
+        runner.main()
+    assert error.value.code == 2
+
+
+def test_sdist_component_evidence_has_distinct_junit_source(tmp_path):
+    for name in ("junit.xml", "wheel-junit.xml", "sdist-junit.xml"):
+        (tmp_path / name).write_text(
+            '<testsuites><testsuite><testcase classname="tests.unit.example" name="test_example"/></testsuite></testsuites>'
+        )
+    manifest = {
+        "requirements": [{"id": "M9-02", "existing_tests": ["tests/unit/example.py::test_example"]}]
+    }
+    component = runner.requirement_results(manifest, tmp_path)[0]["component_evidence"][0]
+    assert [o["junit"] for o in component["observations"]] == [
+        "junit.xml",
+        "wheel-junit.xml",
+        "sdist-junit.xml",
+    ]
+
+
+def test_saved_working_tree_diff_is_redacted_with_original_hash(repository, tmp_path, monkeypatch):
+    diff = "+session_token = 'literal-fixture-secret'\n+normal_code = 3"
+    monkeypatch.setattr(runner, "git_value", lambda _repo, *args: diff if args[0] == "diff" else "")
+    run = runner.collect(repository, tmp_path / "evidence", run_checks=False, package_install=False)
+    report = json.loads((run / "report.json").read_text())
+    assert "literal-fixture-secret" not in (run / "working-tree.patch").read_text()
+    assert "normal_code = 3" in (run / "working-tree.patch").read_text()
+    assert report["working_tree_patch_redactions"] > 0
+    assert (
+        report["original_working_tree_patch_sha256"]
+        == runner.hashlib.sha256(diff.encode()).hexdigest()
+    )
+    assert report["working_tree_patch_sha256"] != report["original_working_tree_patch_sha256"]
+
+
+@pytest.mark.parametrize("prefix", ["wheel", "sdist", "build"])
+def test_installer_subprocess_cannot_inherit_external_write_targets(
+    repository, tmp_path, monkeypatch, prefix
+):
+    dangerous = [
+        "PIP_TARGET",
+        "PIP_PREFIX",
+        "PIP_ROOT",
+        "PIP_USER",
+        "PIP_PYTHON",
+        "PIP_LOG",
+        "PIP_REPORT",
+        "PIP_SRC",
+        "PIP_BUILD_TRACKER",
+        "PIP_NO_BUILD_ISOLATION",
+    ]
+    for name in dangerous:
+        monkeypatch.setenv(name, "must-not-inherit")
+    monkeypatch.setenv("PIP_CONFIG_FILE", "malicious-user-config")
+    monkeypatch.setenv("PIP_INDEX_URL", "https://packages.example.invalid/simple")
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    script = (
+        "import os; "
+        f"assert all(name not in os.environ for name in {dangerous!r}); "
+        "assert os.environ['PIP_CONFIG_FILE'] == os.devnull; "
+        "assert os.environ['PIP_INDEX_URL'] == 'https://packages.example.invalid/simple'; "
+        f"assert os.environ['PIP_CACHE_DIR'] == {str(scratch / 'pip-cache')!r}; "
+        "print('installer controls isolated')"
+    )
+    item = runner.execute(
+        "build" if prefix == "build" else prefix + "_probe",
+        [runner.sys.executable, "-I", "-c", script],
+        repository,
+        run,
+        scratch,
+    )
+    assert item["status"] == "pass"

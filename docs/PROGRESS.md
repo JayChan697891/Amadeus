@@ -1,3 +1,25 @@
+# Current Release Acceptance package-install stage (Issue13)
+
+Runtime version0.3.0a1 remains unchanged from M5A head7479dfa. Separatebranch
+feature/release-sdist-acceptance improves tooling only. ParentPR12 nineCIjobs passed;
+lead downloaded/hash-inspected all9 reports/JUnit/builds (see evidence/m5a-ci-inspection.json).
+M5A local exacthead source+freshwheel each561pass2symlinkskip; all12checkspassed.
+Work independently accepted the M5A scope at7479dfa (PR12 comment6286926323).
+M5 stages remain partial until verifier/apply.
+
+Issue13 adds fresh isolated sdistinstall/fulltests with exactarchiveSHA/PEP610origin,
+independent wheel/sdist failure gates, installer-destination isolation and redacteddiff.
+61 runner-policy unit cases passed; these mocks are not actualartifact/client proof.
+At d8bc571, actual local source/wheel/sdist each585pass2symlinkskip, all18 checks
+passed with clean stable source. Remote run39395631073 completed8/9: Ubuntu3.14
+source failed because fixture Git spawned asynchronous maintenance and its lock
+vanished between full fingerprints. Wheel/sdist passed. Fixture repair retains
+every fingerprint assertion; newhead full local and nineCI gates remain pending.
+See acceptance/INSTALLATION-REPORT.md and ERRORS.md for failure evidence.
+Formalrelease remainsBLOCKED; actualadapter/autonomousrelay/sandboxverifier unverified.
+
+---
+
 # Current M5A stage (2026-10-20 America/Tijuana)
 
 Version0.3.0a1, Issue11, feature/m5a-permissions. Contract: M5A-CONTRACT.md.
