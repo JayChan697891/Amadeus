@@ -1,4 +1,29 @@
-# Current Release Acceptance package-install stage (Issue13)
+# Current M5B1 verifier foundation (Issue15)
+
+Version0.3.0a2, feature/m5b-verifier based on PR14 headf1f13ded.
+PR14 exact head passed9/9 quality jobs in run39433390898. Lead downloaded all9
+ZIPs and verified every saved log/artifact hash, clean/stable source and matching
+tree74072e7. Source/wheel/sdist each594cases: Windows594pass, POSIX591pass3skip.
+Actual local collector18checks passed, three suites each592pass2permission skips.
+Evidence: acceptance/evidence/rat14-ci-inspection.json and
+F:/syuc/work/rat-followup/release-20261020T134712Z-3c60ae469b61. Work independent
+reacceptance requested for this exact head; do not infer its decision.
+
+M5B1 adds only an owner-controlled fixed black-box library: immutable managed Git
+objects, bounded standalone solution.py, no host execution/mounts, inspected Linux
+Docker isolation, trusted external JSON assertions and exact container cleanup.
+See M5B1-CONTRACT.md / M5B1-GUIDE.md. Preliminary local source regression passed
+703cases with16 explicit skips before the final cleanup repair; this is not final
+head evidence. Actual Docker14cases are skipped locally because no backend exists.
+Dedicated LinuxCI must execute them without skip/fallback before backend acceptance.
+
+No agent-facing verifier API, job queue, restart recovery, task auto-acceptance,
+approval consumption or source apply is added. M5B integration/M5B2, M6-M9 and
+real autonomous relay remain open. Formal release BLOCKED; main unchanged.
+
+---
+
+# Release Acceptance package-install stage (Issue13 history)
 
 Runtime version0.3.0a1 remains unchanged from M5A head7479dfa. Separatebranch
 feature/release-sdist-acceptance improves tooling only. ParentPR12 nineCIjobs passed;

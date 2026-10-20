@@ -81,3 +81,19 @@ all three suites to nonempty subsets, and wheel lacked the sdist post-run archiv
 stability check. Remove external pytest selection/plugin environment settings and
 fail if the originally installed wheel disappears or changes. Keep regressions
 for each suite's actual child environment and both wheel mutation modes.
+
+## M5B1 create-response loss and independent evidence
+
+Independent review found cleanup was marked confirmed until Docker create returned
+a usable ID. A daemon could create the container while its CLI reply timed out,
+leaving an orphan with falsely confirmed cleanup. Mark cleanup unconfirmed BEFORE
+create. Recover only by the exact random per-run name, validate its full ID/name/
+owner label, then remove only that ID. Missing or mismatched recovery evidence is
+an infrastructure error, never confirmed cleanup. Ten policy regressions cover
+lost/invalid responses and recovery refusal. Durable process-crash reconciliation
+remains future orchestration scope.
+
+Docker CLI exit0 is also insufficient: inspect actual exited/nonrunning state and
+candidate exit code, require every external typed JSON comparison, reject OOM,
+fake JUnit, missing/extra output and enforce limits. Record policy simulations
+separately from the required real Linux container acceptance job.

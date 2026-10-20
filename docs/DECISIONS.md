@@ -64,3 +64,18 @@ separate from Agent sessions and exclude owner operations from MCP. Approval is
 authentication metadata only until M5B defines atomic consumed authorization and
 verified execution isolation. Audit uses a metadata whitelist rather than trusting
 freeform secrets redaction. Successful business state and audit share one transaction.
+
+## M5B1 fixed external black-box verifier
+
+Use an owner-controlled synchronous library before integrating durable workers.
+Export bounded immutable Git objects, execute only standalone solution.py in an
+inspected Linux Docker container, and keep all expected-output comparison on the
+trusted host. Deliver source/input through stdin with no host mounts. Fixed finite
+profile success is scoped evidence, not a claim of general correctness, arbitrary
+project testing or actual model relay. Never fall back to host execution.
+
+Daemon/kernel/image/verifier/owner profile are trusted infrastructure. Containers
+do not defend against their compromise or equivalent host authority. Missing
+Docker or effective controls fail closed. Create-response loss must not falsely
+confirm cleanup; destructive cleanup requires exact full ID plus random owner.
+Durable jobs and approval consumption/application remain separate designs.

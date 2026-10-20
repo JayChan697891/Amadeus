@@ -1,0 +1,451 @@
+{
+  "pr": 14,
+  "workflow_run": 39433390898,
+  "head_sha": "f1f13ded297b32dbd04c2b414c35deb1c45c6837",
+  "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+  "artifact_count": 9,
+  "artifacts": [
+    {
+      "artifact_id": 12269671238,
+      "name": "verification-macos-latest-py3.14",
+      "zip_sha256": "56c2c9ec091f08ec470db7fffd92857cdc770660becb392ba1b9738d977549e8",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "b308d8c2ea7194db68adaa3ba3c7741b93e4f0f29ed2c937e8c046f3bf8f21ab",
+            "size": 45884,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "9e3901b552e2ab18eeed7293d7258565af0c9f5c8e93ac9eff47b66c809eade2",
+            "size": 234716,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12269417351,
+      "name": "verification-windows-latest-py3.14",
+      "zip_sha256": "1e7f4752dc3dda605b834788ab75ff29d5dfa6096861284a2987a2b2a9173b35",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "7a3da5685fdb0d447daba0b10668eeefdac315c2fd0f40646d21f0215fce3fbd",
+            "size": 45737,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "4946526ccfa3bfee9482536cd77617e95580698996f52b134a287a894a3e4fbc",
+            "size": 234807,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12269087806,
+      "name": "verification-macos-latest-py3.12",
+      "zip_sha256": "e3c0ebe4d3e93015083c4112c0a2b2209dd512d60f72b05bbffb4f84f491e4cb",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "15e2437de0e6ce7f4738ec5f7524823d0c4a8d3a24363542e5fcd1f8828d112a",
+            "size": 45884,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "4624839af5b0f644ead3f05043a4f92319d0bc1f49b5e1d1c9926f69ac7e76e3",
+            "size": 234748,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12268987531,
+      "name": "verification-macos-latest-py3.11",
+      "zip_sha256": "805643d8ddead80818f8e919e5a598357b612604c88ac8a767f5dbdfcb27f69a",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "75a95b87b775189abc639ebc92f11ec9a57346669491cd55ebc97e8b2b9fffe5",
+            "size": 45884,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "82cdde2a229d0173d9697b4aed9f70826a723de30a30484b2b66cb666d8c49df",
+            "size": 234735,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12268902802,
+      "name": "verification-ubuntu-latest-py3.11",
+      "zip_sha256": "3e4abffc2594a1ef6cb9e8bba53c426258b51cc405309ea847d71cd7cf8741bb",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "75a95b87b775189abc639ebc92f11ec9a57346669491cd55ebc97e8b2b9fffe5",
+            "size": 45884,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "fc3d78bc254cb4ce3b688912d8238cc700216fed16ad1904234ed7d82b3d5536",
+            "size": 234702,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12268668723,
+      "name": "verification-ubuntu-latest-py3.14",
+      "zip_sha256": "b4be6a7682bc3e70158f62f1fee47c8a57b7492d00f5ab8fc1330d0f3856b6f4",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "6b2959b13dcbc1573d80607d6626a9c6598b3f90311c5c3e4b67c1992a3cadba",
+            "size": 45884,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "9af4f41c4d1ae8a42e5236c42d520e78b420f41d3a5b0686f9abf21bd1a2d0f1",
+            "size": 234714,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12268469786,
+      "name": "verification-windows-latest-py3.12",
+      "zip_sha256": "b467e77b2a5c4ce7d13dd8b44dd555baf1f1857e7f510f89d1eeacc693ca1b1a",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "68bf73e2dd1d76be5846c8b8dd0b21c468f2de5b115d8d6fbf2b6a04d04d6b33",
+            "size": 45913,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "e2b376b2148f0a2687b701353b633ae3b97e8e24e435f834b7f3c5b780657f77",
+            "size": 234952,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12268179534,
+      "name": "verification-ubuntu-latest-py3.12",
+      "zip_sha256": "45c6ac6f9795bf70fa384bc627cab89ef08dc9224c9866257adfc10907625827",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 3
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "55a610aed750d6ffb156cc0ee5033a99b3376f83fb94e510fdac798b75fd3134",
+            "size": 45884,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "275113edb554967dbb25858055f6a8228ce6c4f91564727c10d1b52266705e57",
+            "size": 234699,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    },
+    {
+      "artifact_id": 12269532876,
+      "name": "verification-windows-latest-py3.11",
+      "zip_sha256": "a36db5e5ef45d0b8cb3b6c457d021ce77cb3b655530bd6c27d3d909196ec1f7e",
+      "report_commit_sha": "aa3372ccd363bee9648bdba25fa5b94e348ebc79",
+      "tree_sha": "74072e7ec8f23d2f0f762004bf3a20ba3f2ff25e",
+      "checks_passed": 18,
+      "junit": {
+        "junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        },
+        "wheel-junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        },
+        "sdist-junit.xml": {
+          "tests": 594,
+          "skipped": 0
+        }
+      },
+      "all_saved_hashes_verified": true,
+      "distribution_installations": [
+        {
+          "kind": "wheel",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1-py3-none-any.whl",
+            "sha256": "e250389719b8dcbfcf3c0d9edda578f0487c0b87d2bb16a8210496d86c23d878",
+            "size": 45913,
+            "kind": "wheel"
+          },
+          "status": "pass",
+          "evidence_log": "logs/wheel_install.log",
+          "build_isolation": "Wheel installation; no sdist rebuild asserted"
+        },
+        {
+          "kind": "sdist",
+          "artifact": {
+            "path": "artifacts/agentsync_local-0.3.0a1.tar.gz",
+            "sha256": "f5d9cca12bfae8abe4b73b00d92b38ea3aae04ae0631cf153ffd7588ed452199",
+            "size": 235000,
+            "kind": "sdist"
+          },
+          "status": "pass",
+          "evidence_log": "logs/sdist_install.log",
+          "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+        }
+      ]
+    }
+  ],
+  "scope": "Independent lead artifact/hash/JUnit/install-identity inspection. This is not whole-product acceptance."
+}

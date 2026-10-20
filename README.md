@@ -5,7 +5,15 @@
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a1 M5A Alpha checkpoint (under verification)**. Project context has immutable revisions, source/summary
+Status: **0.3.0a2 M5B1 verifier foundation (under verification)**. M5A permissions,
+approvals and audit passed their limited Work acceptance. M5B1 adds an owner-only
+fixed JSON black-box verification library, with no host execution or host mounts.
+It requires inspected Linux Docker; unavailable backends fail closed. The dedicated
+real-container CI gate is separate from simulated policy tests. See the
+[verifier scope](docs/M5B1-GUIDE.md). Verification queue/recovery, approval consumption,
+source application and actual-client relay remain incomplete.
+
+Project context has immutable revisions, source/summary
 metadata and literal substring search. Structured handoffs pin context revisions,
 invalidate the sender's lease and reserve a fresh claim for the designated recipient.
 Reservations expire within 300 seconds so offline recipients cannot strand a task.
