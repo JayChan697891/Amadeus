@@ -3,6 +3,7 @@
 import sqlite3
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core, digest
 from agentsync.storage.database import MIGRATION_V2, MIGRATION_V3, SCHEMA
@@ -86,6 +87,7 @@ def test_m4_upgrade_preserves_data_and_reopened_resource_locks(tmp_path, version
                 ),
             )
     core = Core(data_dir)
+    owner_grant(core, {"project_id": "p", "admin_token": "admin"}, {"agent_id": "a"}, ("worker",))
     auth = {"project_id": "p", "session_id": "a-session", "session_token": "token"}
     original_task = core.execute("list_tasks", auth)["tasks"][0]
     assert original_task["description"] == "Keep description"
@@ -108,7 +110,7 @@ def test_m4_upgrade_preserves_data_and_reopened_resource_locks(tmp_path, version
             context
         ]
     with sqlite3.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 5
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 6
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
         assert (
             db.execute("SELECT review_evidence FROM tasks WHERE id='t'").fetchone()[0]

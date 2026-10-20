@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class StrictModel(BaseModel):
@@ -186,6 +186,67 @@ class PrepareMergeCandidate(CompareWorktrees):
     request_id: str = Field(min_length=1, max_length=200)
 
 
+class AgentPage(Auth):
+    limit: int = Field(default=20, ge=1, le=100)
+    offset: int = Field(default=0, ge=0, le=10000)
+
+
+class RequestApproval(Auth):
+    action: Literal["apply_merge_candidate"]
+    subject_id: str
+    subject_sha: CommitSHA
+    reason: str = Field(default="", max_length=2000)
+    expires_in: int = Field(default=300, ge=1, le=3600)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class GetApproval(Auth):
+    approval_id: str
+
+
+class AdminAuth(StrictModel):
+    project_id: str
+    admin_token: str
+
+
+class OwnerPage(AdminAuth):
+    limit: int = Field(default=20, ge=1, le=100)
+    offset: int = Field(default=0, ge=0, le=10000)
+
+
+class SetAgentRoles(AdminAuth):
+    agent_id: str
+    roles: list[Literal["viewer", "worker", "reviewer"]] = Field(max_length=3)
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    request_id: str = Field(min_length=1, max_length=200)
+
+    @field_validator("roles")
+    @classmethod
+    def unique_roles(cls, values: list[str]) -> list[str]:
+        if len(set(values)) != len(values):
+            raise ValueError("Roles must be unique")
+        return sorted(values)
+
+
+class RevokeApproval(AdminAuth):
+    approval_id: str
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
+class DecideApproval(RevokeApproval):
+    accept: bool
+
+
+OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
+    "set_agent_roles": SetAgentRoles,
+    "list_members": OwnerPage,
+    "decide_approval": DecideApproval,
+    "revoke_approval": RevokeApproval,
+    "list_audit": OwnerPage,
+}
+
+
 OPERATIONS: dict[str, type[StrictModel]] = {
     "create_project": CreateProject,
     "register_agent": RegisterAgent,
@@ -216,4 +277,8 @@ OPERATIONS: dict[str, type[StrictModel]] = {
     "inspect_worktree": InspectWorktree,
     "compare_worktrees": CompareWorktrees,
     "prepare_merge_candidate": PrepareMergeCandidate,
+    "request_approval": RequestApproval,
+    "get_approval": GetApproval,
+    "list_approvals": AgentPage,
+    "list_audit": AgentPage,
 }

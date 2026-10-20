@@ -410,4 +410,56 @@ def build_server(data_dir: str | Path | None = None) -> MCPServer:
             **{key: value for key, value in locals().items() if key != "client"},
         )
 
+    @server.tool()
+    def request_approval(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        action: Literal["apply_merge_candidate"],
+        subject_id: str,
+        subject_sha: Annotated[str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")],
+        request_id: str,
+        reason: Annotated[str, Field(max_length=2000)] = "",
+        expires_in: Annotated[int, Field(ge=1, le=3600)] = 300,
+    ) -> dict[str, Any]:
+        """Request an owner decision for a pinned candidate; never execute the action."""
+        return client.call(
+            "request_approval", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def get_approval(
+        project_id: str, session_id: str, session_token: str, approval_id: str
+    ) -> dict[str, Any]:
+        """Read this requesting agent's approval record."""
+        return client.call(
+            "get_approval", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def list_approvals(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        limit: Annotated[int, Field(ge=1, le=100)] = 100,
+        offset: Annotated[int, Field(ge=0, le=10000)] = 0,
+    ) -> dict[str, Any]:
+        """List only this requesting agent's approvals."""
+        return client.call(
+            "list_approvals", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
+    @server.tool()
+    def list_audit(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        limit: Annotated[int, Field(ge=1, le=100)] = 100,
+        offset: Annotated[int, Field(ge=0, le=10000)] = 0,
+    ) -> dict[str, Any]:
+        """Read structured project audit records with the reviewer role."""
+        return client.call(
+            "list_audit", **{key: value for key, value in locals().items() if key != "client"}
+        )
+
     return server

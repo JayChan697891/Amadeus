@@ -6,6 +6,7 @@ import subprocess
 from types import SimpleNamespace
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -43,6 +44,7 @@ def test_explicit_project_symlink_root_is_canonicalized(tmp_path):
     core = Core(tmp_path / "db")
     project = core.execute("create_project", {"name": "selected", "root_path": str(alias)})
     agent = core.execute("register_agent", {**project, "name": "reader"})
+    owner_grant(core, project, agent)
     auth = {key: agent[key] for key in ("session_id", "session_token")}
     inspected = core.execute(
         "inspect_path", {**auth, "project_id": project["project_id"], "path": "."}
@@ -57,6 +59,7 @@ def setup(tmp_path):
     core = Core(tmp_path / "db")
     project = core.execute("create_project", {"name": "paths", "root_path": str(root)})
     registered = core.execute("register_agent", {**project, "name": "inspector"})
+    owner_grant(core, project, registered)
     auth = {key: registered[key] for key in ("session_id", "session_token")}
     return core, auth | {"project_id": project["project_id"]}, root
 
@@ -194,6 +197,7 @@ def test_new_ancestor_junction_rejects_even_identical_physical_root(tmp_path):
     core = Core(tmp_path / "db")
     project = core.execute("create_project", {"name": "ancestor", "root_path": str(root)})
     actor = core.execute("register_agent", {**project, "name": "owner"})
+    owner_grant(core, project, actor)
     auth = {key: actor[key] for key in ("session_id", "session_token")}
     auth["project_id"] = project["project_id"]
     saved = tmp_path / "saved-container"

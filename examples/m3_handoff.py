@@ -18,6 +18,8 @@ from uuid import uuid4
 from mcp import Client
 from mcp.client.stdio import StdioServerParameters
 
+from agentsync.sdk import AgentSyncClient
+
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -43,6 +45,17 @@ async def worker(job: dict[str, Any]) -> dict[str, Any]:
                 "create_project", name="M3 process relay", root_path=job["data_dir"]
             )
             agents = [await call("register_agent", **project, name=name) for name in ("A", "B")]
+            owner = AgentSyncClient(job["data_dir"])
+            for actor in agents:
+                granted = owner.owner_call(
+                    "set_agent_roles",
+                    **project,
+                    agent_id=actor["agent_id"],
+                    roles=["worker", "reviewer"],
+                    expected_version=1,
+                    request_id=str(uuid4()),
+                )
+                require(granted["ok"], "Explicit out-of-band owner grant failed")
             auth = [
                 {
                     "project_id": project["project_id"],

@@ -6,6 +6,7 @@ import sys
 from uuid import uuid4
 
 import httpx
+from conftest import owner_grant
 from mcp import Client
 from mcp.client.stdio import StdioServerParameters
 
@@ -28,6 +29,7 @@ def test_m4_http_sdk_share_file_versions_and_leases(tmp_path):
 
     project = call("create_project", name="M4 HTTP", root_path=str(root))
     agent = call("register_agent", **project, name="A")
+    owner_grant(sdk.core, project, agent)
     auth = {
         "project_id": project["project_id"],
         "session_id": agent["session_id"],
@@ -113,7 +115,7 @@ def test_m4_mcp_explicit_tools_and_real_resource_workflow(tmp_path):
                 return result["data"]
 
             listing = await client.list_tools()
-            assert len(listing.tools) == 29
+            assert len(listing.tools) == 33
             tools = {tool.name: tool.input_schema for tool in listing.tools}
             for name in (
                 "inspect_path",
@@ -128,6 +130,7 @@ def test_m4_mcp_explicit_tools_and_real_resource_workflow(tmp_path):
             assert "request_id" in tools["acquire_file_lock"]["required"]
             project = await call("create_project", name="M4 MCP", root_path=str(root))
             agent = await call("register_agent", **project, name="MCP A")
+            owner_grant(AgentSyncClient(data).core, project, agent)
             auth = {
                 "project_id": project["project_id"],
                 "session_id": agent["session_id"],

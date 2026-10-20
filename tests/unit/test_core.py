@@ -2,6 +2,7 @@ import json
 import sqlite3
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -14,6 +15,7 @@ def setup(tmp_path):
     actors = []
     for name in ("implementer", "reviewer"):
         actor = core.execute("register_agent", {**project, "name": name})
+        owner_grant(core, project, actor)
         actors.append(
             {
                 "project_id": project["project_id"],
@@ -275,13 +277,16 @@ def test_v1_migration_preserves_data_and_records_future_reviews(tmp_path):
         )
     core = Core(data_dir)
     auth = {"project_id": "project", "session_id": "session", "session_token": "token"}
+    owner_grant(
+        core, {"project_id": "project", "admin_token": "admin"}, {"agent_id": "agent"}, ("worker",)
+    )
     legacy = core.execute("list_tasks", auth)["tasks"][0]
     assert legacy["id"] == "task"
     assert legacy["description"] == "Keep description"
     assert legacy["result"] == "Legacy result"
     assert legacy["latest_review"] is None
     with sqlite3.connect(core.db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 5
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 6
         assert (
             db.execute("SELECT review_evidence FROM tasks WHERE id='task'").fetchone()[0]
             == "Legacy unattributed evidence"
@@ -289,6 +294,7 @@ def test_v1_migration_preserves_data_and_records_future_reviews(tmp_path):
     reviewer = core.execute(
         "register_agent", {"project_id": "project", "admin_token": "admin", "name": "New reviewer"}
     )
+    owner_grant(core, {"project_id": "project", "admin_token": "admin"}, reviewer, ("reviewer",))
     b = {
         "project_id": "project",
         "session_id": reviewer["session_id"],

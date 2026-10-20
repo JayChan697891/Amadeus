@@ -6,6 +6,7 @@ import sys
 from uuid import uuid4
 
 import httpx
+from conftest import owner_grant
 from mcp import Client
 from mcp.client.stdio import StdioServerParameters
 
@@ -99,6 +100,9 @@ def test_real_mcp_stdio_tools_and_core(tmp_path):
         async with Client(params, read_timeout_seconds=15) as client:
             listing = await client.list_tools()
             names = {tool.name for tool in listing.tools}
+            assert names.isdisjoint(
+                {"set_agent_roles", "list_members", "decide_approval", "revoke_approval"}
+            )
             assert names == {
                 "create_project",
                 "register_agent",
@@ -129,6 +133,10 @@ def test_real_mcp_stdio_tools_and_core(tmp_path):
                 "inspect_worktree",
                 "compare_worktrees",
                 "prepare_merge_candidate",
+                "request_approval",
+                "get_approval",
+                "list_approvals",
+                "list_audit",
             }
             create_schema = next(
                 tool.input_schema for tool in listing.tools if tool.name == "create_task"
@@ -146,6 +154,7 @@ def test_real_mcp_stdio_tools_and_core(tmp_path):
                 "register_agent", {**envelope["data"], "name": "Native MCP agent"}
             )
             session = registered.structured_content["data"]
+            owner_grant(AgentSyncClient(tmp_path / "mcp").core, envelope["data"], session)
             task_result = await client.call_tool(
                 "create_task",
                 {
@@ -177,6 +186,8 @@ def test_two_mcp_processes_share_atomic_claim(tmp_path):
     sdk = AgentSyncClient(data_dir)
     project = sdk.call("create_project", name="Shared", root_path=str(tmp_path))["data"]
     agents = [sdk.call("register_agent", **project, name=name)["data"] for name in ("A", "B")]
+    for agent in agents:
+        owner_grant(sdk.core, project, agent)
     auth = [
         {
             "project_id": project["project_id"],
@@ -224,6 +235,8 @@ def test_sdk_http_share_one_persistent_workflow(tmp_path):
     project = sdk.call("create_project", name="Cross transport", root_path=str(tmp_path))["data"]
     agent_a = sdk.call("register_agent", **project, name="A")["data"]
     agent_b = sdk.call("register_agent", **project, name="B")["data"]
+    owner_grant(sdk.core, project, agent_a)
+    owner_grant(sdk.core, project, agent_b)
     auth_a = {
         "project_id": project["project_id"],
         "session_id": agent_a["session_id"],

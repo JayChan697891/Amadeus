@@ -1,6 +1,7 @@
 """M0-M2 real SQLite workflow acceptance; no desktop-host claims."""
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -21,6 +22,7 @@ def test_dependency_review_rejection_rework_and_persistence(tmp_path):
                 "capabilities": ["python"],
             },
         )
+        owner_grant(core, project, result)
         return {
             "project_id": project["project_id"],
             "session_id": result["session_id"],

@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -28,6 +29,17 @@ def run_demo(data_dir: str | Path) -> dict[str, Any]:
     credentials = {"project_id": project["project_id"], "admin_token": project["admin_token"]}
     agent_a = call("register_agent", **credentials, name="Mock implementer", capabilities=["mock"])
     agent_b = call("register_agent", **credentials, name="Mock reviewer", capabilities=["review"])
+    for actor, roles in ((agent_a, ["worker"]), (agent_b, ["worker", "reviewer"])):
+        granted = client.owner_call(
+            "set_agent_roles",
+            **credentials,
+            agent_id=actor["agent_id"],
+            roles=roles,
+            expected_version=1,
+            request_id=str(uuid4()),
+        )
+        if not granted["ok"]:
+            raise RuntimeError("Demo owner role grant failed")
     auth_a = {
         "project_id": project["project_id"],
         "session_id": agent_a["session_id"],
@@ -120,6 +132,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--data-dir", default=None, help="Absolute local state directory")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("mcp", help="Run official MCP stdio server")
+    owner = commands.add_parser(
+        "owner", help="Owner operation; read credentials and payload JSON from stdin"
+    )
+    owner.add_argument("operation")
     serve = commands.add_parser("serve", help="Run authenticated loopback HTTP server")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8765)
@@ -131,7 +147,31 @@ def main(argv: list[str] | None = None) -> int:
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
-    if args.command == "demo":
+    if args.command == "owner":
+        try:
+            raw = sys.stdin.read(65537)
+            if len(raw) > 65536 or len(raw.encode("utf-8")) > 65536:
+                raise ValueError("input exceeds limit")
+            payload = json.loads(raw)
+            if not isinstance(payload, dict) or {"operation", "self"}.intersection(payload):
+                raise ValueError("object required")
+        except (ValueError, UnicodeError, RecursionError):
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "error": {
+                            "code": "validation_error",
+                            "message": "stdin must contain a bounded JSON object with valid fields",
+                        },
+                    }
+                )
+            )
+            return 1
+        response = AgentSyncClient(data_dir).owner_call(args.operation, **payload)
+        print(json.dumps(response, ensure_ascii=False))
+        return 0 if response["ok"] else 1
+    elif args.command == "demo":
         if not data_dir:
             parser.error("demo requires --data-dir PATH to avoid modifying default user state")
         print(json.dumps(run_demo(data_dir), ensure_ascii=False))

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0a1 — M5A under development
+
+- Default read-only membership and explicit project-owner role grants.
+- Separate owner control plane and bounded, resource-pinned expiring approvals.
+- Structured secret-free audit fields and authorization before cached responses.
+- Security migration requires explicit write/review regrant for existing agents.
+- No approved apply or arbitrary execution endpoint; final release remains blocked.
+
+
 ## 0.2.0a3 — M4B development checkpoint
 
 - Independent managed Git object store and per-task worktrees; source checkout read-only.

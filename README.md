@@ -5,7 +5,7 @@
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.2.0a3 M4B Alpha checkpoint**. Project context has immutable revisions, source/summary
+Status: **0.3.0a1 M5A Alpha checkpoint (under verification)**. Project context has immutable revisions, source/summary
 metadata and literal substring search. Structured handoffs pin context revisions,
 invalidate the sender's lease and reserve a fresh claim for the designated recipient.
 Reservations expire within 300 seconds so offline recipients cannot strand a task.
@@ -64,3 +64,16 @@ See [the plan](docs/PLAN.md) and [release acceptance design](docs/acceptance/DES
 Passing local checks does not establish formal release acceptance.
 Model fees, if later enabled, are the user's.
 The owner authorized this public source archive on 2026-10-19; no model services were called for publication.
+
+## Permissions and upgrade
+
+New agents and agents migrated from schema v1-v5 start with `viewer` access.
+A separate project owner must explicitly grant `worker` and/or `reviewer` before
+writes or review. Existing tasks, contexts and history remain; legacy write grants
+are not inferred. See [M5A guide](docs/M5A-GUIDE.md) before upgrading a live database.
+Owner role/approval operations use SDK `owner_call`, CLI JSON stdin or the separate
+loopback HTTP `/owner/v1/` route. They are absent from MCP discovery. Possession of
+the admin credential is an owner capability, not proof of a physical human.
+Approvals only store a pinned authorization decision: no user-repository apply or
+arbitrary command execution endpoint exists. Existing task review remains asserted
+evidence; sandboxed independent verification and formal release are still blocked.

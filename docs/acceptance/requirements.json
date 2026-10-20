@@ -753,14 +753,15 @@
       "milestone": "M5",
       "title": "Identity, project and operation authorization",
       "acceptance": "Every denied operation fails closed without mutation or secret exposure; no transport bypass.",
-      "coverage": "partial",
+      "coverage": "existing",
       "layers": [
         "security"
       ],
       "existing_tests": [
         "tests/security/test_core_security.py",
         "tests/security/test_m3_security.py",
-        "tests/security/test_file_locks.py::test_only_owning_session_can_mutate_even_for_same_agent"
+        "tests/security/test_file_locks.py::test_only_owning_session_can_mutate_even_for_same_agent",
+        "tests/security/test_m5_permissions.py"
       ],
       "planned_cases": [
         {
@@ -782,12 +783,15 @@
       "milestone": "M5",
       "title": "High-risk approvals and default read-only execution",
       "acceptance": "Default read-only; arbitrary model-supplied shell text cannot authorize execution; exact approval identity/scope checked.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "security",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/integration/test_m5_governance.py",
+        "tests/concurrency/test_m5_approval_races.py"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M5-02",
@@ -808,14 +812,16 @@
       "milestone": "M5",
       "title": "Structured redacted audit logs",
       "acceptance": "No raw synthetic secret in saved evidence; authorized audit reconstructs actor/action/version/time without credential disclosure.",
-      "coverage": "partial",
+      "coverage": "existing",
       "layers": [
         "security",
         "recovery"
       ],
       "existing_tests": [
         "tests/security/test_core_security.py::test_secrets_absent_from_state_list_and_database",
-        "tests/unit/test_core.py::test_strict_schema_and_no_secret_validation_echo"
+        "tests/unit/test_core.py::test_strict_schema_and_no_secret_validation_echo",
+        "tests/security/test_m5_audit_transactions.py",
+        "tests/integration/test_m5_governance.py"
       ],
       "planned_cases": [
         {
@@ -879,7 +885,10 @@
       "existing_tests": [
         "tests/security/test_http_boundary.py",
         "tests/security/test_core_security.py::test_strict_schemas_reject_unknown_and_coerced_fields",
-        "tests/security/test_m3_security.py::test_replayed_writes_and_reads_always_authenticate"
+        "tests/security/test_m3_security.py::test_replayed_writes_and_reads_always_authenticate",
+        "tests/security/test_m5_permissions.py",
+        "tests/integration/test_m5_migration.py",
+        "tests/security/test_m5_owner_cli_inputs.py"
       ],
       "planned_cases": [
         {
@@ -1450,5 +1459,5 @@
       "evidence": "<run>/scenarios/T16/ (planned case-specific observations; shared run evidence does not imply execution)"
     }
   ],
-  "coverage_checkpoint_note": "M4B adds component coverage; whole-requirement acceptance is not inferred. M4-05 actual approval/application and M5-M9 remain incomplete."
+  "coverage_checkpoint_note": "M5A adds defaultviewer roles, separate owner approvals/audit component coverage. Full requirement acceptance never inferred; actual approval consumption/application, sandbox verifier and M6-M9 remain incomplete."
 }

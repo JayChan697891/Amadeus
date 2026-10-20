@@ -10,10 +10,9 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from pydantic import ValidationError
-
 from agentsync.config import resolve_data_dir
 from agentsync.core.collaboration import CollaborationMixin, active_assignment, reservation
+from agentsync.core.permissions import AGENT_WRITES, PermissionsMixin
 from agentsync.core.resources import ResourcesMixin
 from agentsync.core.workspaces import WorkspacesMixin
 from agentsync.errors import AgentSyncError
@@ -34,7 +33,7 @@ def canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin):
+class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, PermissionsMixin):
     def __init__(self, data_dir: str | Path | None = None) -> None:
         self.data_dir = resolve_data_dir(data_dir)
         self.db_path = self.data_dir / "agentsync.db"
@@ -44,21 +43,17 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin):
         schema = OPERATIONS.get(operation)
         if schema is None:
             raise AgentSyncError("unknown_operation", "Unknown operation.", 404)
-        try:
-            p = schema.model_validate(payload).model_dump()
-        except ValidationError as exc:
-            # Pydantic's standard error strings include input values (credentials).
-            fields = sorted({str(e["loc"][0]) for e in exc.errors() if e["loc"]})
-            raise AgentSyncError(
-                "validation_error", "Invalid request fields: " + ", ".join(fields)
-            ) from None
+        p = self._validated_payload(schema, payload)
         db = connect(self.db_path)
+        actor = None
         try:
             db.execute("BEGIN IMMEDIATE")
             now = time.time()
             session = None
             if operation not in {"create_project", "register_agent"}:
                 session = self._authenticate(db, p, now)
+                actor = (p["project_id"], "agent", session["agent_id"])
+                self._authorize_session(db, operation, session)
             request_id = p.get("request_id")
             fingerprint = digest(canonical(p))
             if request_id:
@@ -95,9 +90,17 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin):
                         "prepare_merge_candidate",
                     }:
                         response = self._workspace_replay(db, operation, p, response)
+                    if operation == "request_approval":
+                        assert session is not None
+                        response = self._approval_replay(db, p, response, now, session)
                     db.commit()
                     return response
             response = getattr(self, "_" + operation)(db, p, now, session)
+            if operation in {"create_project", "register_agent"}:
+                project_id = (
+                    response["project_id"] if operation == "create_project" else p["project_id"]
+                )
+                actor = (project_id, "owner", project_id)
             if request_id:
                 safe_response = {k: v for k, v in response.items() if k != "lease_token"}
                 db.execute(
@@ -111,8 +114,14 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin):
                         canonical(safe_response),
                     ),
                 )
+            if operation in AGENT_WRITES and actor is not None:
+                self._audit_event(db, *actor, operation, p, "success", "ok", response)
             db.commit()
             return response
+        except AgentSyncError as exc:
+            db.rollback()
+            self._audit_denial(actor, operation, p, exc.code)
+            raise
         except UnicodeEncodeError:
             db.rollback()
             raise AgentSyncError(
@@ -239,6 +248,10 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin):
         db.execute(
             "INSERT INTO agents VALUES(?,?,?,?,?)",
             (agent_id, p["project_id"], p["name"], canonical(p["capabilities"]), now),
+        )
+        db.execute(
+            "INSERT INTO agent_memberships VALUES(?,?,?,?,?)",
+            (agent_id, p["project_id"], '["viewer"]', 1, now),
         )
         db.execute(
             "INSERT INTO sessions VALUES(?,?,?,?,?,?,?)",

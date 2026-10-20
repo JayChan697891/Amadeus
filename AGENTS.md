@@ -1,8 +1,8 @@
 # AgentSync continuation context
 
 The user explicitly revoked the earlier AGENTS.md instructions and requested continuation
-of the product plan. M3 is saved in PR #5 and M4A in PR #8; current development is M4B (Issue #9)
-as specified in docs/M4B-CONTRACT.md. The user requested continuous milestone-by-milestone work.
+of the product plan. M3 is saved in PR #5 and M4A in PR #8; current development is M5A (Issue #11)
+as specified in docs/M5A-CONTRACT.md. M4B head98bd361 passed all9 CI jobs; Work review is separate. The user requested continuous milestone-by-milestone work.
 Earlier M0-M2-only/no-public-push statements describe historical batches.
 
 Use the user's current instructions: work under F:\syuc, keep authored project changes

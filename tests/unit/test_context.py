@@ -1,6 +1,7 @@
 """Context revision and literal search regressions for M3."""
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -11,6 +12,7 @@ def context_setup(tmp_path):
     core = Core(tmp_path / "db")
     project = core.execute("create_project", {"name": "context", "root_path": str(tmp_path)})
     registered = core.execute("register_agent", {**project, "name": "author"})
+    owner_grant(core, project, registered)
     auth = {key: registered[key] for key in ("session_id", "session_token")}
     auth["project_id"] = project["project_id"]
     return core, auth

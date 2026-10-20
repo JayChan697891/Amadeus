@@ -4,6 +4,7 @@ import sqlite3
 from uuid import uuid4
 
 import pytest
+from conftest import owner_grant
 
 from agentsync.core.service import Core, digest
 from agentsync.errors import AgentSyncError
@@ -16,6 +17,7 @@ def setup(tmp_path):
     actors = []
     for name in ("sender", "recipient", "third"):
         actor = core.execute("register_agent", {**project, "name": name})
+        owner_grant(core, project, actor)
         actors.append({"project_id": project["project_id"], **actor})
     return core, project, actors
 
@@ -78,6 +80,8 @@ def test_context_and_handoff_project_isolation(setup, tmp_path):
         "project_id": other_project["project_id"],
         **core.execute("register_agent", {**other_project, "name": "other-recipient"}),
     }
+    owner_grant(core, other_project, outsider, ("worker",))
+    owner_grant(core, other_project, other_recipient, ("worker",))
     for operation, fields in (
         ("get_context", {"context_id": context["id"]}),
         ("get_handoff", {"handoff_id": transfer["id"]}),

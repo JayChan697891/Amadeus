@@ -26,6 +26,8 @@ root = Path(sys.argv[1])
 core = Core(root / "data")
 project = core.execute("create_project", {"name": "recovery", "root_path": str(root)})
 actor = core.execute("register_agent", {**project, "name": "writer"})
+core.execute_owner("set_agent_roles", {**project, "agent_id": actor["agent_id"],
+    "roles": ["worker"], "expected_version": 1, "request_id": "explicit-owner-grant"})
 auth = {"project_id": project["project_id"], "session_id": actor["session_id"],
         "session_token": actor["session_token"]}
 created = core.execute("create_task", {**auth, "title": "committed", "request_id": "create"})
