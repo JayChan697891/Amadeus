@@ -1,3 +1,15 @@
+# M5B3A2 independent Work acceptance recorded
+
+Work accepted the bounded candidate-object export stage on PR21 comment6320283524,
+reviewing product2ed3607 and evidenceheadcb176f0. Issues11/7 comments6320512727 /
+6320513992 retain open status. See acceptance/evidence/m5b3a2-work-receipt.md.
+The reviewer independently read repository bytes and recomputed saved evidence;
+it did not rerun tests or access the local Docker daemon. Later receipt changes
+are docs only. Formal Release remains BLOCKED. Next: separately design the
+candidate-aware durable job/executor binding before any verified task gate.
+
+---
+
 # Verified M5B3A2 local checkpoint
 
 Product2ed3607de761f731ce8f80385af86260e126a4f4, tree59af2cb1af025394c722d46fd3e25f3cdc503f98;0.3.0a7/schema9.

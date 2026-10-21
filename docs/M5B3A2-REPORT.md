@@ -69,3 +69,12 @@ OS/Python matrix and M9 remain incomplete. Formal Release **BLOCKED**. Issues11/
 stay open. GitHub storage only; no Actions/paid calls/main changes or merge.
 Independent Work review is separate. Later doc/evidence trees are not claimed
 to be re-executed product commits.
+
+## Independent Work receipt
+
+Bounded stage accepted in PR21 comment6320283524 after independent code/archive/
+JUnit/package/provenance review. Reviewed evidence head cb176f01e5851c74261fda427ab60c7a008f9a87;
+receipt-only descendants are not re-executed product commits. The reviewer used
+repository bytes and saved local evidence, without rerunning tests or inspecting
+the original daemon. Issues11/7 remain open; formal Release BLOCKED. Full published
+assessment: acceptance/evidence/m5b3a2-work-receipt.md.
