@@ -1,7 +1,7 @@
 # Release Acceptance Report
 
-Version: 0.3.0a7
-Commit: 2ed3607de761f731ce8f80385af86260e126a4f4
+Version: 0.3.0a8
+Commit: 37b17a3d0c27b0a34ca93e03c4944f02a7a63071
 Platform: Linux-6.18.54-0-virt-x86_64-with-musl1
 
 Formal release acceptance: **BLOCKED**
@@ -31,8 +31,8 @@ Formal release acceptance: **BLOCKED**
 
 | Format | Install status | Exact artifact | SHA-256 |
 | --- | --- | --- | --- |
-| wheel | pass | artifacts/agentsync_local-0.3.0a7-py3-none-any.whl | 6912aecc8fbcf75660adcf0842779d0c7669796a8f98fb42a137bc178cfdab04 |
-| sdist | pass | artifacts/agentsync_local-0.3.0a7.tar.gz | f8d256db5f97d4b7db20886856ab55052bdf7e57b7c641b5ead2bcd4eb927c60 |
+| wheel | pass | artifacts/agentsync_local-0.3.0a8-py3-none-any.whl | 781fe96e3372d7a7c0c8a07498fa168553c6fe7ca4ec1e4c90d30576323b9412 |
+| sdist | pass | artifacts/agentsync_local-0.3.0a8.tar.gz | 156d65d8d58c2797b5b9562f6f11b9c0744528cd850cdc6808ea2baef3077fea |
 
 ## Per-requirement acceptance
 
@@ -100,74 +100,74 @@ Run from the recorded source with the recorded commands. No actual-client or aut
 Skipped tests remain skipped in JUnit; they are not passes. No destructive user-workspace tests or paid calls are performed.
 
 
-# M5B3A2 local acceptance report
+# M5B3B0 local acceptance report
 
-Tested product `2ed3607de761f731ce8f80385af86260e126a4f4`; tree `59af2cb1af025394c722d46fd3e25f3cdc503f98`.
-Version0.3.0a7/schema9. Scope: checked object export of an existing managed
-candidate. No jobs, source execution, task gate, approvals/apply or transport changes.
+Product `37b17a3d0c27b0a34ca93e03c4944f02a7a63071`, tree `4036fc4a1b19abb57fd6559f34e14e731412c170`.
+Version 0.3.0a8, schema 9. This prerequisite extracts a private active-transaction
+metadata capture seam; it adds no queue, attempt, lease, execution or task gate.
 
-## Frozen results
+## Frozen verification
 
-All18local checks passed. Linux source/fresh wheel/isolated sdist each ran966cases:
-963passed/3Windows-only skips/0failures/errors. Windows same225-file source snapshot
-ran966cases:936passed/30skipped (26Linux Docker cases,3link privilege limits and
-1POSIX FIFO fixture). That FIFO case actually passed on Linux. All41new export/
-storage/security cases ran in each Linux environment:36implementation checks plus
-5independent adversarial cases. Some cases inject controlled races into actual
-temporary Git/SQLite workflows; they are not autonomous model-client evidence.
+All 18 local checks passed. Linux source, fresh wheel and isolated sdist each
+ran 973 cases: 970 passed, 3 Windows-only skips, zero failures/errors. Windows
+ran 973 cases: 943 passed, 30 skipped, zero failures/errors. Windows skips are
+26 Linux Docker cases, 3 link-privilege cases and 1 POSIX FIFO fixture; the FIFO
+regression actually ran on Linux. All 7 new transaction cases passed in all four
+complete suites. Development RED/GREEN and a separate independent audit are
+labelled development evidence and do not increase those frozen suite counts.
 
-Root independently inspected implementation, recomputed collector logs/artifacts
-and four full-suite JUnit files, verified install origin and compared ALL31Python
-modules from Git with wheel and sdist. Source installation binding and Windows/
-Linux source snapshots match. Development logs are explicitly separate from
-the frozen product certification; only the full frozen suites support these counts.
+The new tests use actual temporary Git-generated service records and SQLite
+transactions: uncommitted task version is visible; caller rollback restores the
+original binding; caller commit persists its own writes; uncommitted owner change
+is denied without rolling back; invalid input/no transaction fail closed; same
+binding/no database writes/no process invocation; auth precedes object lookup.
+The independent development audit additionally provoked a real sqlite.Error and
+verified the outer transaction, uncommitted writes and connection survived.
+Root reran that supplemental case against the frozen source: 1 passed, with
+module/driver/JUnit identity saved separately, outside the four full-suite counts.
 
-Two positive object cases per Linux environment preserve6actual input records:
-merged two-parent input and legitimate single-parent ancestor input. Root recomputed
-metadata fingerprints, input provenance, original input digest from manifest,
-expected literal source SHA and solution.py Git blob ID. Candidate commit differs
-from baseline; expected candidate bytes and full manifest match. These records
-say execution_verified=false and filesystem_atomicity_verified=false.
+Root checked every collector artifact/log hash and parsed all four JUnit files,
+compared all 31 Git Python modules against wheel/sdist bytes, and compared the
+233-file Windows/Linux source snapshots. Installation origin and source binding
+are saved. Both full export and snapshot execution regressions retain their scope.
+Six existing metadata and six existing candidate-object input observations have
+recomputed fingerprints/manifests/source blob IDs. They are regression evidence,
+not a new candidate execution or real autonomous client run.
 
-Six prior DB-only metadata records and78prior Docker/owner/reconciliation regression
-observations are stored separately. All78exact container IDs independently absent
-after all fixtures; the inspection issues no removal. Existing cleanup product
-removal6/fixture removal9 distinctions remain intact. This stage adds no Docker
-candidate execution and does not reclassify those regressions as new relay evidence.
+The 78 existing isolated Docker observations (42 backend, 21 owner executor,
+15 reconciliation) are separately indexed. Root independently inspected every
+exact full ID after the suites: all absent, without issuing removal. Existing
+cleanup distinctions remain: each environment 2 product removals, 2 unresolved
+receipts and 1 ineligible case; fixture cleanup is separate. An original unverified
+execution is not promoted by cleanup. No Docker capability was added in this stage.
 
-## Audit repair and trust limits
+## Scope and trust
 
-Independent audit reproduced that adding .git to a captured bare repository could
-redirect the first Git lookup while its trusted config hash stayed unchanged.
-The exporter now rejects every such entry before repository Git; implementation
-and independent guards both test that no affected Git invocation occurs. Bare
-config must also be a physical regular file before the inherited digest read,
-with a Linux FIFO regression preventing a blocking-read false result. Missing
-storage, strict receipt/intent failures, foreign common-dir/backpointer, dirty or
-changed HEAD, invalid parents and owner/task/receipt races fail closed.
+The helper validates and authenticates on the supplied active connection, then
+runs the original complete metadata checks. It never begins, commits, rolls back
+or closes the caller connection. Public capture still validates before opening
+its own connection, begins its read transaction and rolls back/closes in finally.
+The connection must come from trusted service code and the correct Core database;
+this is not authentication of arbitrary caller-created database files. Dataclass
+and unkeyed provenance digest confer no permission. Git/filesystem checks, task
+version gates, profile resolution and queue insertion are not implemented by this
+helper; no OS-level filesystem ABA atomicity claim is made.
 
-Git-object integrity and regular-file/UTF-8/manifest/root solution.py limits are
-unchanged. Fingerprints are unkeyed and dataclasses caller-constructible; they do
-not grant permission or successful execution. No missing evidence is reconstructed.
-Git uses temporary output files but creates no persistent candidate/receipt/intent/
-commit in this exporter. Service FS integrity remains trusted; repeated checks
-cannot promise atomic resistance to arbitrary OS-level ABA replacement.
+## Evidence and release conclusion
 
-## Evidence and release decision
+Archive `M5B3B0-37b17a3-local.tar.gz`: 687872 bytes,
+SHA256 `b08af5ea334dd26b32070dec338b301cb4ed0857911e548d894dee527f6686f0`. Self-excluding manifest covers 135 files. Index:
+acceptance/evidence/m5b3b0-local-inspection.json. Logs/JUnit/builds, dependencies,
+source/package identities, separate regression observations and reproduction
+scripts are preserved. No VM credentials, disks, seeds or fixture databases.
 
-Archive `M5B3A2-2ed3607-local.tar.gz`: 665943bytes,
-SHA256 `74b6c41c045d188078243f8fbd12769c7a189a8693f9b2ac03ee2e64983acfba`. Self-excluding manifest covers130files. Index:
-acceptance/evidence/m5b3a2-local-inspection.json. Preserve raw sanitized logs,
-JUnit/builds/requirements/source/package identities, metadata/input/actual
-regression observations and reproduction scripts. No VM private keys, seeds,
-disks or fixture DBs are uploaded. Source F:, debug/runtime/cache/temp D:.
+42 formal complete scenarios remain not_run. Component inventory remains
+18 existing / 13 partial / 11 missing, with 38 not_run / 4 unverified evidence
+statuses. Candidate queue/execution/task/reviewer binding, verified completion,
+approval consumption/safe apply, general recovery, real adapters/autonomous relay,
+full OS/Python matrix and M9 remain incomplete. Formal Release **BLOCKED**;
+Issues #11/#7 remain open. Independent Work acceptance is separate and pending.
+Later documentation descendants are not re-executed product commits.
 
-Formal42whole scenarios remain not_run, with component inventory18existing/
-13partial/11missing and evidence38not_run/4unverified. Existing executor jobs still
-verify their original snapshot scope; this new input library is not wired into
-candidate-aware jobs or a verified task submission/reviewer gate. Approval
-consumption/safe apply, general recovery, actual client adapters/relay, full
-OS/Python matrix and M9 remain incomplete. Formal Release **BLOCKED**. Issues11/7
-stay open. GitHub storage only; no Actions/paid calls/main changes or merge.
-Independent Work review is separate. Later doc/evidence trees are not claimed
-to be re-executed product commits.
+Source F:/syuc; debug/cache/temp D:/agentsync-debug. GitHub storage only;
+no Actions, paid calls, main changes or merge.
