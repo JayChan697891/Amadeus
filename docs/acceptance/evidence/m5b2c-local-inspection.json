@@ -1,0 +1,467 @@
+{
+  "schema_version": 1,
+  "tested_commit_sha": "c1f2e83a61af5c267e3374dd46398b2a57b6abf1",
+  "tested_tree_sha": "de68cde10628e48122fad14409983ccbab570802",
+  "module_sha256": {
+    "verification/docker.py": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+    "verification/executor.py": "73bdc926b3ed65c25777f79ad0a9cfe50ceec838cc1226b954494dbc54cc02c8",
+    "verification/jobs.py": "99531f4974ddd23c1d981c1223b0cc0a759562418e674c0fb3eb42cb5ae88bdb",
+    "verification/reconciliation.py": "27cad856d82ded185aef99b58c182281cf772d5eafc3c04715c27ceafc3f86cd",
+    "storage/database.py": "20f2c12d2909f1ae29c643f96776c2e205c6f9220849098c0a6f93c8bc1e1495",
+    "core/permissions.py": "21006bf697cc9efe02f81cc2d0f5df6801f8b36ed26fa792e677533d7e542678"
+  },
+  "checks_passed": 18,
+  "local_only": true,
+  "github_execution_used": false,
+  "linux": {
+    "source": {
+      "passed": 895,
+      "skipped": 3
+    },
+    "wheel": {
+      "passed": 895,
+      "skipped": 3
+    },
+    "sdist": {
+      "passed": 895,
+      "skipped": 3
+    }
+  },
+  "windows": {
+    "source": {
+      "passed": 869,
+      "skipped": 29
+    }
+  },
+  "real_observations": {
+    "backend": 42,
+    "owner_executor": 21,
+    "reconciliation": 15,
+    "total": 78,
+    "independent_exact_id_absence_checks": 78,
+    "cleanup_receipts_by_environment": {
+      "382440e854ad3b75": {
+        "removed_and_absent": 2,
+        "unresolved": 2,
+        "ineligible": 1
+      },
+      "9f0b670cb292e8b5": {
+        "removed_and_absent": 2,
+        "unresolved": 2,
+        "ineligible": 1
+      },
+      "f741c85d21d40424": {
+        "removed_and_absent": 2,
+        "unresolved": 2,
+        "ineligible": 1
+      }
+    }
+  },
+  "formal_release": "blocked",
+  "limitations": [
+    "Explicit one-shot owner cleanup observations only; original assessment remains unverified.",
+    "Actual executor process termination and DB reopen; lease expiry is injected into disposable fixture data.",
+    "No retry/resume of interrupted cleanup intents, no unknown/late-create recovery or historical daemon identity proof.",
+    "No task acceptance gate, approval consumption, safe apply or real client relay.",
+    "Policy fault injection is separate from actual Docker evidence."
+  ],
+  "observations": [
+    {
+      "kind": "backend",
+      "container_id": "b7466b772cd3806efac95c9bd6b15d365dc6b9890a5f6d43062ff0e440b72bd9",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_checks_all_external_cases.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "8d5c3c26004d13bffaa11fc3ab144f51bd388d3552341855cd99c8fc641a07f0",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_enforces_memory_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "8c90937dacca43d5bf84064f6757b87665cd65955ee63f889329f1e3cb4cbb86",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_enforces_output_bounds[stderr].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "6ac8c9209eb1be6bcdee294ee59bfc2a908284a3e057f0254b032b2b16aed25f",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_enforces_output_bounds[stdout].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "0298bd03a4661427a20bc608791433893471e8f7769d14b02b4a50c7a090cc90",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_enforces_pid_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "8eac34ec68ec4ad7761dcf9c61238abab07304e73652dbbfaad3b0870bd473bc",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_enforces_scratch_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "1ebe4648b0db1592a153c7e74dbc461a988f4ee12d7063745a676b54d2652f41",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_enforces_wall_time.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "3e55617283d24b3ba9a674bc4beded959c70aecfc01c55c3d59f2933ac56fe96",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_isolation_controls.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "f725a039bff5efc74bd12344541e831bdececd12f3dc2cbffe79a18c07b8cd2b",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_kernel_cgroup_limits.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "87afccb45b21649bbe0d76dfc6a21f2a32505abdde1be104fcbfe4ae74e5c691",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "2a78370bb219ead54d7789c0c162d73c148ddd7e5db4487c7bda3d5f6f782ad3",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "fd6f04c179b3aee8321260d7df123cbb86955b28aa9058fa4cceb49c0568fb4f",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "149fff0306eab3da04037a64713e2a8e2d950031bbd3f763295510c49fd22338",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "75c800d127640dea809af06f85cc4be98d910ec09f29d43738d4468713ebbc94",
+      "file": "docker\\382440e854ad3b75\\test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "33b192d7d9cc61ea2da0281a72474328554c2513f7e1b641734331ac97399cca",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_checks_all_external_cases.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "97012c98952fa88d6e6dd3c89d15eddf665de3025e2258b9c520bfb7a98b1beb",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_enforces_memory_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "17927dbef25c3aaf74f1401da2bcd282bce7227b5cd444c965a1f584099b3102",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_enforces_output_bounds[stderr].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "8b47a1c3fddafb9d867441cf310f599ea8216d003f9d20076b7ce08ab0853302",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_enforces_output_bounds[stdout].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "235b997293f5f636842b055c239ae7b2443f39e399a9ea132ede2b5b11f38d00",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_enforces_pid_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "e7e2c3d409a75ab6c51c48d1920a7bff240c9a47f68d98a8b0c3e44bc923a507",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_enforces_scratch_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "b2c07c77cf0b9ece288010f737ee67725f18c8774455592f71473da5ad3df184",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_enforces_wall_time.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "aadc9a78774b0ddc216fbb51ddebe00d4e85ff7fdd8e3a21944e79ce342283a4",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_isolation_controls.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "eda0c3c7c64fd7dcdabbfd7bb153787e4f9476479182d3dc769a4b27069a1960",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_kernel_cgroup_limits.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "b0d9c09fd9faa0fa3244f47ea6fd5b9db6ca53d5cd2123c4cc5397d1be6d6a48",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "61fcfdb617ba00e4e72a0dcb516e324d68c16b20ab34a25a64f469fd48097810",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "52258c4f7b07b77d0fc0b0a4c0c8f347c8a85aab85f1d10020536cdbdb070eba",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "3f91c9d71b1c08f5ea143dd831641811a0479082d584d98f6b5797d94db37479",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "feb1f48e2ce618efe6ff5a9f6c8888234990cfc2da62509f0a08bf43b2a41d48",
+      "file": "docker\\9f0b670cb292e8b5\\test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "b5f413e360806f676c708a333b74dc2bd7d44626b575d88419e5651c1a16736e",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_checks_all_external_cases.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "498b92f845d21674edf4e6897ba983afa57bb523db27119e27e5ee3e06e6d27f",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_enforces_memory_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "50f600d0b8d1d877b612e911850bf9f6da8d30709dc59913dfb9acb01db21054",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_enforces_output_bounds[stderr].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "0cd0fb4a056427a7b2f549cc5c4c0ae39f9f338b8696f5b2a2937598c284fd58",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_enforces_output_bounds[stdout].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "0818bf654876e6f35f00fd8603bea3e1e63c95f46ac37b1fc06384aca348e666",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_enforces_pid_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "751c6ea32fca9962ea31649efa78271507d2e8c4f1d3852bbe51fa70e1d35fc9",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_enforces_scratch_bound.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "ba3a34ee515e3ace9c5b3a0f563f28d91614bfbc985e4de28f9f8be1c1bdab49",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_enforces_wall_time.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "c65954dc5a54295dd20350626ad859dd980108e0ef797a04783009f4c582c1d8",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_isolation_controls.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "522c14acb7eb70c9a5c2133c24d32565d1614bc556179a3fcc81d5e98b6a68a3",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_kernel_cgroup_limits.json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "ea53c4960be5c9e6db463ab8a2f17c7c39f39bb5d0ba1a876f52451b247f1088",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "eae3291340857863b62e17f2d515cd43649f0f2330288ea79e86f1b5fcdd7ac5",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "92c0a302ca34aff46b970a4c0ebe9f14198189607eb88ee3882ec0d3908c4680",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "1864c7854304ef984d5523b24354d59c46700c8f3ae5c01a6b9f4435017ea244",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json"
+    },
+    {
+      "kind": "backend",
+      "container_id": "f0f567e7e9c1dff9e898fafa817c0882d2589a0a809bea5fea965d63237c957f",
+      "file": "docker\\f741c85d21d40424\\test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "918498d6bb9db830ae3613e3af0813aefb830bcebd3052c00cecf9275bc73703",
+      "file": "owner-executor\\382440e854ad3b75\\expired-lease-after-real-pass.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "6b204ee5fc71f0f4fc2d3296da2201d6b43fd27cc957dc7ccdead87f1dcd6343",
+      "file": "owner-executor\\382440e854ad3b75\\fixed-snapshot.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "144ee6ff6fd221847506fa7a8b5865ff277be5507087805f0637edd885760896",
+      "file": "owner-executor\\382440e854ad3b75\\owner-cancel-before-start.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "880bcbb801bd16aff501d007e10e76bae0932bd79080e6a817880d4fb20d32b4",
+      "file": "owner-executor\\382440e854ad3b75\\test_actual_owner_rejects_candidate_self_report[early-exit].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "872b4cafb05a538eda28c4998a3117148e9443f857b5811d8dee39b1d4cd9ada",
+      "file": "owner-executor\\382440e854ad3b75\\test_actual_owner_rejects_candidate_self_report[forged-junit].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "407b0ecef7d1b971e1e92184f877f227ae33c1d94c95b7a9c14e601e4135d383",
+      "file": "owner-executor\\382440e854ad3b75\\test_actual_owner_rejects_candidate_self_report[wrong-result].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "091779d1d746b032f875dd191854741f0081025635aa1231eeaab8df74f449ad",
+      "file": "owner-executor\\382440e854ad3b75\\wall-time.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "c46ac6716f00082a40f303bab6421f4a16087493859767826f280447bf6d4c1c",
+      "file": "owner-executor\\9f0b670cb292e8b5\\expired-lease-after-real-pass.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "a729f9b61f06cddac6b8ac5d727ca3a51147d51ea6714ed2611144b6eda263fa",
+      "file": "owner-executor\\9f0b670cb292e8b5\\fixed-snapshot.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "ee4f4fde3a09234c597a4ed9f24a0a90b8da22eae0f97d796a9956cd532355e4",
+      "file": "owner-executor\\9f0b670cb292e8b5\\owner-cancel-before-start.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "5e471c629166461f7f01a6f868a35065f7dc94e4154cfdd795124285ee9a31c3",
+      "file": "owner-executor\\9f0b670cb292e8b5\\test_actual_owner_rejects_candidate_self_report[early-exit].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "152b7e524ab862cabdbd37cc404f1d4983353feaf6a376d5a3ed3684f77de654",
+      "file": "owner-executor\\9f0b670cb292e8b5\\test_actual_owner_rejects_candidate_self_report[forged-junit].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "93c9d9c673cd6568f51c071d06452568b898b8b8365925fec13153f2957f21b1",
+      "file": "owner-executor\\9f0b670cb292e8b5\\test_actual_owner_rejects_candidate_self_report[wrong-result].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "ca6a317fbdd4c43b8875c94f9ebd7a4c50d30aa1e16a090930839d6edba8d1f2",
+      "file": "owner-executor\\9f0b670cb292e8b5\\wall-time.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "e05a03cda373fafcd07ee5774d01596470368299c5137a18d7f2ff4d46a8b22c",
+      "file": "owner-executor\\f741c85d21d40424\\expired-lease-after-real-pass.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "ae8478c007e5d95351c7de6161ae6285d4693f5b9ca2102679d4c54b6409ea67",
+      "file": "owner-executor\\f741c85d21d40424\\fixed-snapshot.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "6f470786fda9f1fbacc542d722e46f60ef583b50dfdf3c94b700ee2631e1e2e1",
+      "file": "owner-executor\\f741c85d21d40424\\owner-cancel-before-start.json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "ce1618ab174455cd8bf1ab4bdce8da2db358a9ebf05c549eed94871063f91e24",
+      "file": "owner-executor\\f741c85d21d40424\\test_actual_owner_rejects_candidate_self_report[early-exit].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "ec6b4ca5fa2116ecd35abe8916a2365b5dfab79bd1278e85826ddd8b3ec97d09",
+      "file": "owner-executor\\f741c85d21d40424\\test_actual_owner_rejects_candidate_self_report[forged-junit].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "b24f82ecc02149f079a6d40e3d05d5bea5d920b08d5c4fed10e2401a4c31b85b",
+      "file": "owner-executor\\f741c85d21d40424\\test_actual_owner_rejects_candidate_self_report[wrong-result].json"
+    },
+    {
+      "kind": "owner",
+      "container_id": "a27eb6c61f7bff7231ad66be794f98c8c7a99923d145b6277bed60f7d8d4706d",
+      "file": "owner-executor\\f741c85d21d40424\\wall-time.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "e065d97061e2f88156903c7aaf5998a29cfd6dc23850f3eccd4608495c3dc762",
+      "file": "reconciliation\\382440e854ad3b75\\hard-exit-created.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "faa30b9516b811c6b81461f02b3c6a4a83aa614183f1add543e03cdb4b361e71",
+      "file": "reconciliation\\382440e854ad3b75\\hard-exit-running.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "c2e46119ac3230e6de9f0c8e5461c6b09d052c8c7275b1b7573fe96b22be2626",
+      "file": "reconciliation\\382440e854ad3b75\\initial-absence.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "0ecefc2cbf1e2e794bc1e32477f5ef79b15b25b54d0ef8335e78c1bf0a05d30c",
+      "file": "reconciliation\\382440e854ad3b75\\lost-create-ack.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "2f386b912f9eaf3a609e8eeff3b1eb8366c91b0d01f99d2d70b76899ec463f10",
+      "file": "reconciliation\\382440e854ad3b75\\protected-renamed-object.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "815bdf51c08255e35c59130985e26b7d4b96a5c7a914de79f481e7dc36869997",
+      "file": "reconciliation\\9f0b670cb292e8b5\\hard-exit-created.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "349051b68ac54c0ae695635b9eeb4a98f813f459eac12a9a95bc1deab7e21353",
+      "file": "reconciliation\\9f0b670cb292e8b5\\hard-exit-running.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "35515faa367ea602475cc1691ad69740dfa585fca5eab3d1cef3d562e1569982",
+      "file": "reconciliation\\9f0b670cb292e8b5\\initial-absence.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "fdf2bb7f9ea262e0a76cdf5f641eb526fa34667f21be33348dfe3ecd393469f7",
+      "file": "reconciliation\\9f0b670cb292e8b5\\lost-create-ack.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "07617495a653b871194d18b73d21cc03b1d93e129a0aa160eea020ba9b56b2cc",
+      "file": "reconciliation\\9f0b670cb292e8b5\\protected-renamed-object.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "0f17c7c26b488d98516389192c7603609b606a13dc69c2e3f5fde3cda5ca9610",
+      "file": "reconciliation\\f741c85d21d40424\\hard-exit-created.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "6cbb6a723656ddf531fa99af9ed8dfc5810f88718dc2f5a34f3d6a25760474b7",
+      "file": "reconciliation\\f741c85d21d40424\\hard-exit-running.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "131f2046770a3c2e0fbb15300362326ff48f133cc39c50af09fe373d09fcc0ab",
+      "file": "reconciliation\\f741c85d21d40424\\initial-absence.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "72e93b5d25781fee8f5bf2d3010cfd41dc25f3b4f492bbfbd3628a153593ff37",
+      "file": "reconciliation\\f741c85d21d40424\\lost-create-ack.json"
+    },
+    {
+      "kind": "reconciliation",
+      "container_id": "d551e78bdfb9dd88af391a9bcdbdbd7f231df656dd836871112b1435c6151cee",
+      "file": "reconciliation\\f741c85d21d40424\\protected-renamed-object.json"
+    }
+  ],
+  "archive": {
+    "path": "docs/acceptance/evidence/M5B2C-c1f2e83-local.tar.gz",
+    "size": 609097,
+    "sha256": "6172078e1613598a6e4f537fd70d7459f8b7244373973aeeb768cd918e3fbe42",
+    "manifest_file_count": 117
+  },
+  "work_acceptance": "pending independent Work review"
+}

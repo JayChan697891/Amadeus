@@ -79,7 +79,7 @@ def test_m3_migration_preserves_legacy_rows_and_reopens(tmp_path, version):
         },
     )
     with sqlite3.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 8
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 9
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
         assert (
             db.execute("SELECT review_evidence FROM tasks WHERE id='t'").fetchone()[0]

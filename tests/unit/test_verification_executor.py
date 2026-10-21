@@ -459,7 +459,7 @@ def test_schema_seven_historical_rows_and_fk_survive_transactional_rebuild(tmp_p
     monkeypatch.setattr(database, "MIGRATION_V8", migration)
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 8
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 9
         assert all(
             [tuple(row) for row in db.execute("SELECT * FROM " + table).fetchall()] == rows
             for table, rows in before.items()

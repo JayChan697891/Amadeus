@@ -227,6 +227,34 @@ PRAGMA user_version=8;
 """
 
 
+MIGRATION_V9 = """
+CREATE UNIQUE INDEX verification_execution_reconciliation_binding ON verification_executions(id,project_id,job_id,attempt_id);
+CREATE TABLE verification_reconciliations(
+ id TEXT PRIMARY KEY,
+ project_id TEXT NOT NULL,
+ job_id TEXT NOT NULL,
+ attempt_id TEXT NOT NULL,
+ execution_id TEXT NOT NULL UNIQUE,
+ request_id TEXT NOT NULL,
+ payload_hash TEXT NOT NULL,
+ claimed_job_version INTEGER NOT NULL,
+ claimed_execution_revision INTEGER NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('intent','recorded')),
+ outcome TEXT NOT NULL CHECK(outcome IN ('unresolved','removed_and_absent')),
+ error_code TEXT NOT NULL,
+ observation_json TEXT NOT NULL,
+ observation_sha256 TEXT,
+ created_at REAL NOT NULL,
+ updated_at REAL NOT NULL,
+ FOREIGN KEY(job_id,project_id) REFERENCES verification_jobs(id,project_id),
+ FOREIGN KEY(attempt_id,project_id,job_id) REFERENCES verification_attempts(id,project_id,job_id),
+ FOREIGN KEY(execution_id,project_id,job_id,attempt_id) REFERENCES verification_executions(id,project_id,job_id,attempt_id),
+ UNIQUE(project_id,request_id));
+CREATE INDEX verification_reconciliations_project ON verification_reconciliations(project_id,created_at,id);
+PRAGMA user_version=9;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -284,8 +312,16 @@ def migrate(path: Path) -> None:
                     db.execute(statement)
             if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
                 raise RuntimeError("Database migration violated foreign-key constraints.")
-        elif version != 8:
+            version = 8
+        if version == 8:
+            for statement in MIGRATION_V9.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 9
+        if version != 9:
             raise RuntimeError("Unsupported AgentSync database schema version.")
+        if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
+            raise RuntimeError("Database migration violated foreign-key constraints.")
         db.commit()
     except Exception:
         db.rollback()

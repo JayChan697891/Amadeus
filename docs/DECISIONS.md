@@ -1,5 +1,15 @@
 # Technical decisions
 
+## M5B2C: cleanup observations do not release execution authority
+
+Persist an additive schema9 one-shot cleanup intent and revoke the old token
+before Docker. Require expired current ownership plus full create ACK; inspect
+exact ID/name/nonce/image, remove only by full ID and observe absence on the same
+daemon. A missing initial object or unknown ACK cannot prove cleanup. Save a
+separate bounded receipt, preserving the original backend result and permanently
+unverified pending job. A consumed intent is never automatically resumed; this
+bounded stage does not solve general crash reconciliation, late create or retry.
+
 - D001: Execute M0-M2, not the entire v1.0 plan, matching the user's immediate scope.
 - D002: Python >=3.11 and official `mcp==2.3.0` v2. Verify installed APIs, not v1 snippets.
 - D003: stdlib SQLite instead of an ORM; small explicit migrations and transactional claims.
