@@ -46,6 +46,7 @@ def test_v4_upgrade_preserves_resource_roots_locks_and_context(tmp_path):
         roots_before = db.execute("SELECT * FROM project_resource_roots").fetchall()
         locks_before = db.execute("SELECT * FROM file_locks").fetchall()
         for table in (
+            "verification_executions",
             "verification_requests",
             "verification_attempts",
             "verification_jobs",
@@ -68,7 +69,7 @@ def test_v4_upgrade_preserves_resource_roots_locks_and_context(tmp_path):
         == lock
     )
     with sqlite3.connect(upgraded.db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 7
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 8
         assert db.execute("SELECT * FROM project_resource_roots").fetchall() == roots_before
         assert db.execute("SELECT * FROM file_locks").fetchall() == locks_before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

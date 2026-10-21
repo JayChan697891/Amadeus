@@ -177,3 +177,13 @@ the14 actual-container cases as skipped; the required local Linux debug gate mus
 execute them. GitHub is upload/storage only under the current owner instruction;
 do not dispatch Actions or use hosted checks/benchmarks. Full M5-04 acceptance stays not_run until integrated permission, durable
 recovery, applicable independent evidence and completion gates are actually tested.
+
+## M5B2B staged update
+
+The register includes owner execution, durable binding, cancellation/fencing and
+schema migration components. Real integrated owner cases use isolated managed Git
+and local Linux Docker; policy injection tests remain separately labelled. A
+finite snapshot/profile result is not a task-completion gate or whole M5-04 pass.
+Unknown crash/create state remains pending with no automatic retry/reconciliation.
+M5B1 and M5B2A limited checkpoints passed Work review; full M5/M9 and real client
+relay remain open. All execution stays local on D:, never GitHub Actions.

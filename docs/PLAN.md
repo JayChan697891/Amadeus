@@ -1,3 +1,32 @@
+# Verified M5B2B local checkpoint
+
+Code b5504e09bf1cb1c390d56cac11e68a8176d2091d,
+tree4b0fdcba6ed826870ec19c8382ccbf7064108550, version0.3.0a4/schema8.
+D-localcollector18/18pass; source/wheel/sdist each847pass3Windows-onlyskip;
+Windows source826pass24explicit skip. 63real Docker/owner observations, all63exact
+container IDs independently absent. Owner cases preserve cancellation and expired
+authority even after passing candidate output. Root checked saved hashes, JUnit,
+origins, module/package bindings and per-file manifest. See M5B2B-REPORT.md and
+acceptance/evidence/m5b2b-local-inspection.json. Work review remains separate.
+No automatic reconciliation/retry, task acceptance, approval consumption, safe
+apply or real model relay. Full M5/release BLOCKED; GitHub storage only; main unchanged.
+
+---
+
+# Current M5B2B owner executor checkpoint
+
+Version0.3.0a4/schema8, owner single snapshot execution; no scheduler/retry/apply
+or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work review.
+Root independently inspected source and incrementally executed7actual local Linux
+owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
+timeout, cancel-after-create/no-start and real backend pass followed by lease
+expiry→pending/unverified. These development runs used unfrozen overlays, not a
+final-SHA certification. Final source/wheel/sdist collection follows code freeze.
+Strategy/ledger/migration developer subset259pass, Docker policy139pass.
+GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
+
+---
+
 # Verified M5B2A local checkpoint
 
 Version0.3.0a3/schema7, tested613c95dab054f013c6a6029949e2678ad2056e37,

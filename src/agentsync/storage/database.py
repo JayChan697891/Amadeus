@@ -165,6 +165,68 @@ PRAGMA user_version=7;
 """
 
 
+MIGRATION_V8 = """
+CREATE TABLE verification_jobs_v8(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ snapshot_id TEXT NOT NULL REFERENCES repository_snapshots(id), commit_sha TEXT NOT NULL,
+ profile_kind TEXT NOT NULL, profile_sha256 TEXT NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('queued','running','cancel_requested','cancelled','interrupted','finished','cleanup_pending')),
+ version INTEGER NOT NULL CHECK(version BETWEEN 1 AND 9223372036854775806),
+ attempt_number INTEGER NOT NULL CHECK(attempt_number BETWEEN 0 AND 9223372036854775806),
+ current_attempt_id TEXT, created_at REAL NOT NULL, updated_at REAL NOT NULL,
+ UNIQUE(id,project_id));
+CREATE TABLE verification_attempts_v8(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, job_id TEXT NOT NULL,
+ attempt_number INTEGER NOT NULL CHECK(attempt_number BETWEEN 1 AND 9223372036854775806),
+ token_hash TEXT NOT NULL, lease_expires_at REAL NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('running','cancel_requested','cancelled','interrupted','finished','cleanup_pending')),
+ reason_code TEXT NOT NULL CHECK(reason_code IN ('','owner_cancelled','lease_expired','service_interrupted','executor_finished','cleanup_uncertain')),
+ created_at REAL NOT NULL, updated_at REAL NOT NULL,
+ FOREIGN KEY(job_id,project_id) REFERENCES verification_jobs_v8(id,project_id),
+ UNIQUE(job_id,attempt_number), UNIQUE(id,project_id,job_id));
+CREATE TABLE verification_requests_v8(
+ project_id TEXT NOT NULL REFERENCES projects(id), operation TEXT NOT NULL,
+ request_id TEXT NOT NULL, payload_hash TEXT NOT NULL, job_id TEXT NOT NULL,
+ FOREIGN KEY(job_id,project_id) REFERENCES verification_jobs_v8(id,project_id),
+ PRIMARY KEY(project_id,operation,request_id));
+INSERT INTO verification_jobs_v8(id,project_id,snapshot_id,commit_sha,profile_kind,profile_sha256,status,version,attempt_number,current_attempt_id,created_at,updated_at)
+ SELECT id,project_id,snapshot_id,commit_sha,profile_kind,profile_sha256,status,version,attempt_number,current_attempt_id,created_at,updated_at FROM verification_jobs;
+INSERT INTO verification_attempts_v8(id,project_id,job_id,attempt_number,token_hash,lease_expires_at,status,reason_code,created_at,updated_at)
+ SELECT id,project_id,job_id,attempt_number,token_hash,lease_expires_at,status,reason_code,created_at,updated_at FROM verification_attempts;
+INSERT INTO verification_requests_v8(project_id,operation,request_id,payload_hash,job_id)
+ SELECT project_id,operation,request_id,payload_hash,job_id FROM verification_requests;
+DROP TABLE verification_requests;
+DROP TABLE verification_attempts;
+DROP TABLE verification_jobs;
+ALTER TABLE verification_jobs_v8 RENAME TO verification_jobs;
+ALTER TABLE verification_attempts_v8 RENAME TO verification_attempts;
+ALTER TABLE verification_requests_v8 RENAME TO verification_requests;
+CREATE INDEX verification_jobs_project ON verification_jobs(project_id,created_at,id);
+CREATE INDEX verification_attempts_expiry ON verification_attempts(status,lease_expires_at);
+CREATE TABLE verification_executions(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, job_id TEXT NOT NULL, attempt_id TEXT NOT NULL UNIQUE,
+ attempt_number INTEGER NOT NULL, claim_version INTEGER NOT NULL, revision INTEGER NOT NULL,
+ cancel_version INTEGER,
+ phase TEXT NOT NULL CHECK(phase IN ('preparing','create_intent','created','executing','finished','cleanup_pending')),
+ assessment TEXT NOT NULL CHECK(assessment IN ('unverified','passed','failed','unsupported','error','cancelled')),
+ owner_nonce TEXT, container_name TEXT, container_id TEXT,
+ create_intent INTEGER NOT NULL CHECK(create_intent IN (0,1)),
+ create_reply_complete INTEGER NOT NULL CHECK(create_reply_complete IN (0,1)),
+ cleanup_confirmed INTEGER NOT NULL CHECK(cleanup_confirmed IN (0,1)),
+ execution_started INTEGER NOT NULL CHECK(execution_started IN (0,1)),
+ start_intent INTEGER NOT NULL DEFAULT 0 CHECK(start_intent IN (0,1)),
+ tree_sha TEXT, source_sha256 TEXT, input_sha256 TEXT,
+ profile_sha256 TEXT NOT NULL, image_id TEXT NOT NULL,
+ result_json TEXT NOT NULL, result_sha256 TEXT, error_code TEXT NOT NULL,
+ created_at REAL NOT NULL, updated_at REAL NOT NULL,
+ FOREIGN KEY(job_id,project_id) REFERENCES verification_jobs(id,project_id),
+ FOREIGN KEY(attempt_id,project_id,job_id) REFERENCES verification_attempts(id,project_id,job_id),
+ UNIQUE(job_id,project_id));
+CREATE INDEX verification_executions_project ON verification_executions(project_id,created_at,id);
+PRAGMA user_version=8;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -215,7 +277,14 @@ def migrate(path: Path) -> None:
             for statement in MIGRATION_V7.split(";"):
                 if statement.strip():
                     db.execute(statement)
-        elif version != 7:
+            version = 7
+        if version == 7:
+            for statement in MIGRATION_V8.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
+                raise RuntimeError("Database migration violated foreign-key constraints.")
+        elif version != 8:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         db.commit()
     except Exception:

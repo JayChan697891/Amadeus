@@ -761,7 +761,10 @@
         "tests/security/test_core_security.py",
         "tests/security/test_m3_security.py",
         "tests/security/test_file_locks.py::test_only_owning_session_can_mutate_even_for_same_agent",
-        "tests/security/test_m5_permissions.py"
+        "tests/security/test_m5_permissions.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py"
       ],
       "planned_cases": [
         {
@@ -821,7 +824,10 @@
         "tests/security/test_core_security.py::test_secrets_absent_from_state_list_and_database",
         "tests/unit/test_core.py::test_strict_schema_and_no_secret_validation_echo",
         "tests/security/test_m5_audit_transactions.py",
-        "tests/integration/test_m5_governance.py"
+        "tests/integration/test_m5_governance.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py"
       ],
       "planned_cases": [
         {
@@ -856,7 +862,10 @@
         "tests/security/test_core_security.py::test_owner_version_and_review_identity_are_enforced",
         "tests/unit/test_verification_snapshot.py",
         "tests/unit/test_verification_docker.py",
-        "tests/integration/test_docker_verifier.py"
+        "tests/integration/test_docker_verifier.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py"
       ],
       "planned_cases": [
         {
@@ -894,7 +903,10 @@
         "tests/security/test_m5_owner_cli_inputs.py",
         "tests/unit/test_verification_snapshot.py",
         "tests/unit/test_verification_docker.py",
-        "tests/integration/test_docker_verifier.py"
+        "tests/integration/test_docker_verifier.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py"
       ],
       "planned_cases": [
         {
@@ -1210,7 +1222,11 @@
         "integration",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M8-02",

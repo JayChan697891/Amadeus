@@ -104,3 +104,14 @@ completion operation. Owner recovery invalidates a lease and records interruptio
 it does not claim container cleanup or restart safety. Database fencing alone
 cannot prevent delayed Docker create after a crash. Future execution integration
 must separately solve that ownership/reconciliation boundary.
+
+## M5B2B single execution with fail-closed uncertainty
+
+Keep fixed owner snapshot/profile authority and short transactions. Persist exact
+create intent and acknowledgement using private trusted hooks; hooks cannot choose
+commands or flags. Rebuild schema7 ledger constraints transactionally without
+dropping historical rows or disabling FK checks. Store execution phase separately
+from finite-profile assessment. Unknown create/crash/expired authority remains
+unverified and cannot be recycled by old ledger APIs. Preserve diagnostic backend
+observations without granting success-writing authority. No exactly-once or
+automatic crash cleanup guarantee is claimed.

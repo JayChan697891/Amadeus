@@ -1,3 +1,12 @@
+# Quota-aware checkpoint policy
+
+Owner instruction: choose bounded tasks and reserve enough quota for independent
+local validation, fixes, evidence upload and Work review. As the available budget
+nears its limit, finish the current reviewable checkpoint and do not start another
+implementation task. Consumption/reset timing is not exactly predictable; never
+promise exact exhaustion, burn tokens artificially or mark incomplete work done.
+Persist tested code SHA, evidence and next-step status before the boundary.
+
 # AgentSync continuation context
 
 Debug-environment location (current user instruction): D:\agentsync-debug. Keep

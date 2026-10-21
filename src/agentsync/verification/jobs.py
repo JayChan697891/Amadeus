@@ -93,6 +93,38 @@ def _public(row: sqlite3.Row) -> dict[str, Any]:
     } | {"execution_connected": False, "execution_assessment": "unverified"}
 
 
+def execution_summary(db: sqlite3.Connection, job: sqlite3.Row) -> dict[str, Any]:
+    """Safe execution-aware projection; never raw result, identity or profile cases."""
+    execution = db.execute(
+        "SELECT e.*,a.lease_expires_at FROM verification_executions e JOIN verification_attempts a ON a.id=e.attempt_id AND a.project_id=e.project_id AND a.job_id=e.job_id WHERE e.job_id=? AND e.project_id=?",
+        (job["id"], job["project_id"]),
+    ).fetchone()
+    if execution is None:
+        return _public(job)
+    now = time.time()
+    phase = execution["phase"]
+    if phase != "finished" and (
+        now >= execution["lease_expires_at"] or now < execution["updated_at"]
+    ):
+        phase = "cleanup_pending"
+    assessment = execution["assessment"] if phase == "finished" else "unverified"
+    return _public(job) | {
+        "execution_connected": True,
+        "execution_assessment": assessment,
+        "execution_id": execution["id"],
+        "phase": phase,
+        "recorded_phase": execution["phase"],
+        "assessment": assessment,
+        "execution_started": bool(execution["execution_started"]),
+        "execution_may_have_started": bool(
+            execution["start_intent"] or execution["execution_started"]
+        ),
+        "cleanup_confirmed": phase == "finished" and bool(execution["cleanup_confirmed"]),
+        "result_sha256": execution["result_sha256"],
+        "error_code": execution["error_code"],
+    }
+
+
 class VerificationJobs:
     def __init__(self, core: Core):
         self.core = core
@@ -134,6 +166,18 @@ class VerificationJobs:
             if owner:
                 self.core._authenticate_owner(db, p)
                 actor = (p["project_id"], "owner", p["project_id"])
+            if mutation and operation in {
+                "verification_claim",
+                "verification_renew",
+                "verification_cancel",
+                "verification_ack_cancel",
+                "verification_interrupt",
+            }:
+                if db.execute(
+                    "SELECT 1 FROM verification_executions WHERE job_id=? AND project_id=?",
+                    (p["job_id"], p["project_id"]),
+                ).fetchone():
+                    _error("execution_control_required", "Use the dedicated execution control.")
             response = function(db, now)
             if mutation:
                 actor = actor or (
@@ -224,7 +268,7 @@ class VerificationJobs:
             }
             cached = self._request(db, "verification_enqueue", p, binding)
             if cached is not None:
-                return _public(cached)
+                return execution_summary(db, cached)
             snapshot = db.execute(
                 "SELECT receipt FROM repository_snapshots WHERE id=? AND project_id=?",
                 (p["snapshot_id"], p["project_id"]),
@@ -249,7 +293,7 @@ class VerificationJobs:
                 ),
             )
             self._remember(db, "verification_enqueue", p, binding, job_id)
-            return _public(self._job(db, {**p, "job_id": job_id}))
+            return execution_summary(db, self._job(db, {**p, "job_id": job_id}))
 
         return self._transaction("verification_enqueue", p, write, owner=True)
 
@@ -260,7 +304,7 @@ class VerificationJobs:
         return self._transaction(
             "verification_get",
             p,
-            lambda db, _: _public(self._job(db, p)),
+            lambda db, _: execution_summary(db, self._job(db, p)),
             owner=True,
             mutation=False,
         )
@@ -283,11 +327,13 @@ class VerificationJobs:
                 "SELECT * FROM verification_jobs WHERE project_id=? ORDER BY created_at,id LIMIT ? OFFSET ?",
                 (project_id, limit + 1, offset),
             ).fetchall()
+            items = [execution_summary(db, row) for row in rows[:limit]]
+            connected = any(item["execution_connected"] for item in items)
             return {
-                "jobs": [_public(row) for row in rows[:limit]],
+                "jobs": items,
                 "has_more": len(rows) > limit,
-                "execution_connected": False,
-                "execution_assessment": "unverified",
+                "execution_connected": connected,
+                "execution_assessment": "per_job" if connected else "unverified",
             }
 
         return self._transaction("verification_list", p, read, owner=True, mutation=False)
