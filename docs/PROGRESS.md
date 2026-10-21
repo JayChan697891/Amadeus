@@ -1,3 +1,17 @@
+# Verified M5B2C local checkpoint
+
+Code c1f2e83a61af5c267e3374dd46398b2a57b6abf1, treede68cde10628e48122fad14409983ccbab570802; version0.3.0a5/schema9.
+18/18localchecks; source/wheel/sdist each895pass3skip; Windows869pass29skip.
+78real container observations and independent exact-ID absence checks. Each
+new five-case environment yields2removed receipts,2unresolved,1ineligible; all
+original executions remain unverified. Root checked saved hashes, all JUnit,
+origins, module/package bindings and the complete file manifest. See M5B2C-REPORT.md
+and acceptance/evidence/m5b2c-local-inspection.json. Work review remains separate.
+Explicit one-shot cleanup only; no retry/resume, task gate, apply or real relay.
+Full M5/release BLOCKED. D:debug, F:source, GitHub storage only; main unchanged.
+
+---
+
 # Current M5B2C development checkpoint
 
 Version0.3.0a5/schema9 adds an owner-only exact full-ID cleanup receipt. The job
