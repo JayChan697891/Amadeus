@@ -1,3 +1,16 @@
+# Verified M5B3A2 local checkpoint
+
+Product2ed3607de761f731ce8f80385af86260e126a4f4, tree59af2cb1af025394c722d46fd3e25f3cdc503f98;0.3.0a7/schema9.
+18checks pass; source/wheel/sdist each963pass3skip; Windows936pass30skip.
+41newchecks and6actual candidate input records; no new execution/task acceptance.
+Root verified31Python modules against Git/wheel/sdist, all logs/artifacts/JUnit,
+225-file source identity, metadata/input fingerprints and78old container absences.
+Bare.git redirect finding repaired and independently regressed. See
+M5B3A2-REPORT.md and acceptance/evidence/m5b3a2-local-inspection.json.
+Work review separate; full Release BLOCKED. D:debug/F:source, GitHub storage only.
+
+---
+
 # M5B3A2 development checkpoint
 
 Version0.3.0a7/schema9, owner-only checked existing candidate content export.
