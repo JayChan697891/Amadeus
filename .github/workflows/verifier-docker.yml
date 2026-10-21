@@ -1,0 +1,32 @@
+name: verifier isolation
+# Storage-only GitHub policy: no automatic hosted tests or debugging.
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  real-linux-docker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e '.[dev]'
+      - name: Preload trusted fixture image and pin its actual content ID
+        shell: bash
+        run: |
+          docker --host unix:///var/run/docker.sock pull python:3.12-slim-bookworm
+          image_id=$(docker --host unix:///var/run/docker.sock image inspect --format '{{.Id}}' python:3.12-slim-bookworm)
+          echo "AGENTSYNC_DOCKER_TEST_IMAGE=$image_id" >> "$GITHUB_ENV"
+          echo "AGENTSYNC_REQUIRE_DOCKER_TESTS=1" >> "$GITHUB_ENV"
+          echo "AGENTSYNC_VERIFIER_EVIDENCE_DIR=$RUNNER_TEMP/verifier-evidence" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/verifier-evidence"
+          docker --host unix:///var/run/docker.sock image inspect --format '{"id":{{json .Id}},"repo_digests":{{json .RepoDigests}}}' "$image_id" > "$RUNNER_TEMP/verifier-evidence/image.json"
+      - name: Execute actual isolation and external-comparison acceptance
+        run: python -m pytest tests/integration/test_docker_verifier.py -q --junitxml="${{ runner.temp }}/verifier-evidence/junit.xml" --basetemp="${{ runner.temp }}/verifier-fixtures"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-linux-docker-verifier
+          path: ${{ runner.temp }}/verifier-evidence/*

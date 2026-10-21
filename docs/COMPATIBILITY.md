@@ -1,5 +1,22 @@
 # Compatibility matrix
 
+## Current staged evidence (2026-10-20)
+
+PR14 at f1f13ded297b32dbd04c2b414c35deb1c45c6837 passed all9 OS/Python matrix
+jobs (Windows/Linux/macOS x3.11/3.12/3.14). Each actual source/wheel/sdist suite has
+594cases: Windows594pass, Linux/macOS591pass3Windows-only skips. All9 downloaded
+artifacts/logs/JUnit/package hashes were independently checked. This certifies that
+checkpoint's regression/install observations, not full-client or release acceptance.
+See acceptance/evidence/rat14-ci-inspection.json.
+
+M5B1 at0.3.0a2 introduces additional tests that require fresh evidence. Local Windows
+has no verified Docker backend; all14 actual-container cases are explicitly skipped.
+Only a real dedicated Linux Docker job can certify that backend. Ordinary platform
+policy tests, configured workflow files and unit mocks do not prove isolation.
+Actual Codex/Claude/Cursor adapters and model-driven relay remain unverified.
+
+## Historical M2 evidence
+
 Actual Windows checks, 2026-10-19. See TEST-REPORT.md for commands and serialized evidence.
 
 | Environment/client | Actual result | Boundary |

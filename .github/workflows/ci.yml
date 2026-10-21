@@ -1,5 +1,6 @@
 name: quality
-on: [push, pull_request]
+# Storage-only GitHub policy: never run automatically on uploads or PR updates.
+on: workflow_dispatch
 jobs:
   test:
     strategy:

@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-20",
+  "source_parent_sha": "5eedc5ff3d4e190ec0ab1f53cac7689e79df35bd",
+  "scope": "Local Windows source regression only; policy/workflow/docs changes staged during test. Not real Docker or full release acceptance.",
+  "tests": 733,
+  "passed": 716,
+  "skipped": 17,
+  "failed": 0,
+  "skip_breakdown": {
+    "real_docker_unavailable": 14,
+    "windows_symlink_privilege": 3
+  },
+  "ruff": "pass",
+  "format": "pass",
+  "mypy": "pass (26 source files)",
+  "github_policy": "storage only; workflows manual-only; do not dispatch Actions",
+  "container_runtime": "Docker/Podman absent; WSL not installed",
+  "formal_release": "blocked",
+  "artifacts": [
+    {
+      "path": "local-only-20261020-junit.xml",
+      "sha256": "cf7c9c732d21eeabb63873d18cbd87c666c89a0eb9faf9d57707f83efda53356",
+      "size": 114604
+    },
+    {
+      "path": "local-only-20261020.log",
+      "sha256": "7c608f3ccbbbb1e05cb0d50c3897249177090e90e011d0ff9d171ae8040ad88d",
+      "size": 3057
+    }
+  ]
+}

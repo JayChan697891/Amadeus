@@ -1,3 +1,17 @@
+# Current local verification — version0.3.0a2
+
+Frozen code cfb5304c3979fc1677c73618120c0d33f928018a: Linux source/wheel/sdist
+each754pass3Windows-onlyskip, complete collector18pass; Windows source740pass17skip.
+Real Docker14/14 cases executed in all three Linux installations,42 results total;
+all42 exact containers independently absent after execution. Source was clean and
+stable. Lead checked saved hashes, JUnit and matching verifier module bytes.
+See acceptance/RELEASE-ACCEPTANCE-REPORT.md and its indexed local evidence archive.
+GitHub was used only for storage. Full product release remains BLOCKED.
+
+The following reports are historical evidence for earlier versions.
+
+---
+
 # Verification report — current a2 and historical a1
 
 ## 0.1.0a2 continuation — 2026-10-19

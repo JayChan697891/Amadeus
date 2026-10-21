@@ -166,3 +166,14 @@ component cases to the register. The 14/14/14 inventory above describes the init
 audit, not the updated count. Approval/application and real client autonomous relay
 remain outstanding. The final requirement cases remain not_run until independently
 executed against the release candidate.
+
+## M5B1 staged update
+
+The register now maps bounded Git snapshot, simulated Docker policy and actual Linux
+Docker black-box test selectors separately. This owner library verifies only finite
+cases for standalone solution.py; it does not queue jobs, change task completion,
+consume approval or apply a merge. Ordinary matrix runs without Docker image record
+the14 actual-container cases as skipped; the required local Linux debug gate must
+execute them. GitHub is upload/storage only under the current owner instruction;
+do not dispatch Actions or use hosted checks/benchmarks. Full M5-04 acceptance stays not_run until integrated permission, durable
+recovery, applicable independent evidence and completion gates are actually tested.

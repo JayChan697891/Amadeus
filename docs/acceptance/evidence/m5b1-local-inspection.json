@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "tested_commit_sha": "cfb5304c3979fc1677c73618120c0d33f928018a",
+  "tested_tree_sha": "5e8580769ead8be5a6b4a21ee269aa0a0da01be6",
+  "verifier_source_sha256": "1248ab1ffe690939462475931e316bebcd50cdcb47c4f99686f14e21292f80aa",
+  "local_only": true,
+  "github_execution_used": false,
+  "checks_passed": 18,
+  "linux": {
+    "source": {
+      "passed": 754,
+      "skipped": 3
+    },
+    "wheel": {
+      "passed": 754,
+      "skipped": 3
+    },
+    "sdist": {
+      "passed": 754,
+      "skipped": 3
+    }
+  },
+  "windows": {
+    "source": {
+      "passed": 740,
+      "skipped": 17
+    }
+  },
+  "real_docker": {
+    "environment_count": 3,
+    "observations": 42,
+    "tests_per_environment": 14,
+    "execution_started": 42,
+    "cleanup_confirmed": 42,
+    "independent_exact_id_absence_checks": 42
+  },
+  "formal_release": "blocked",
+  "limitations": [
+    "M5B1 fixed standalone profile only; no arbitrary project tests.",
+    "No durable worker recovery, approval consumption or safe source apply.",
+    "Native development delegation is not an AgentSync client adapter test.",
+    "Real autonomous relay and remaining M6-M9 gates are unverified."
+  ],
+  "inspected_artifact_count": 26,
+  "observations": [
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_checks_all_external_cases.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "14acff492db0171704822735ad5fa823a66a19bb8e1f3d2b387d6349a72acec1"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_enforces_memory_bound.json",
+      "status": "failed",
+      "code": "memory_limit",
+      "container_id": "8f6bb4be10e80253283af9e4deff8cc9497cfc4186b233b8c31d357b3dc86d04"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_enforces_output_bounds[stderr].json",
+      "status": "failed",
+      "code": "stderr_limit",
+      "container_id": "2a2a2cf0fdfea407fda8ba47df9dc82bb163af6e067a1da9e83a2e0e7ec00316"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_enforces_output_bounds[stdout].json",
+      "status": "failed",
+      "code": "stdout_limit",
+      "container_id": "9906aa892cb056d64591b946592b9060b5686970612afffd866695f081da5d06"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_enforces_pid_bound.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "e2d2b3bb27e8663871e7de762cead21b86c23ba8a0fecbe63a11a1fceb502cd1"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_enforces_scratch_bound.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "cdbac3a4f50efa8cddfbff4e2b61a2bde27edc4f5e12369eff8d5da329c1230b"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_enforces_wall_time.json",
+      "status": "failed",
+      "code": "timeout",
+      "container_id": "63cb2e110b1a3cd9adcaf598e752ce4eeed111741a91db37063861ce9c8258ca"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_isolation_controls.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "722e9c1b90981dd456067f34a0d8e4aec7b4a878488a0bcb54b1c8d440d098a6"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_kernel_cgroup_limits.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "da9340e392ea11fb06cac089a79a730bcd03ff96ec4b0798ebd8d8702865c8ec"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json",
+      "status": "failed",
+      "code": "case_mismatch",
+      "container_id": "7e330b2d64819b3a6aecf7df8b5d1c0b6d1d92e826d91a6113e7c25ebfbbbb30"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "2fb0556f46b859e8bbd2981b2a9694b76e2d1f8aa9ece530b479004fe3253996"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "650cffc25e3a8999ad71f4e27bc90a9c1dd69ba2b40c1ddd697467393845d6e7"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "64d4a279b6329cedc34e751f2b73c8cbc46889c05edf46a4c604b7839cdaeb90"
+    },
+    {
+      "file": "docker\\38a0989f0b2ed571\\test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json",
+      "status": "failed",
+      "code": "case_mismatch",
+      "container_id": "83d00fbb9d7922134832f14c8ac9e1553fc82b02c74ff807282321d9fc1d01f6"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_checks_all_external_cases.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "6f4241c20c9360845bdc60b0b5abf8b2e2f035a59e1959012e6ff525e8b0c19e"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_enforces_memory_bound.json",
+      "status": "failed",
+      "code": "memory_limit",
+      "container_id": "88bbb203e3339d67a543d3f09be16acdcdd95de8e459aa0096b0b98fa0881286"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_enforces_output_bounds[stderr].json",
+      "status": "failed",
+      "code": "stderr_limit",
+      "container_id": "e1656983711b29b02586e65f5dbf4aff1014e68e8858112e069e1dc8a9be8468"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_enforces_output_bounds[stdout].json",
+      "status": "failed",
+      "code": "stdout_limit",
+      "container_id": "c7fa685dab5266157a0c1d480d7cd7d72014c65de0a52535be220e2e5b52d628"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_enforces_pid_bound.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "901cf413c9db3a82c87b506a7dd4ad542d5ab12898eac7a677296c3ef96f540b"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_enforces_scratch_bound.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "5f1d463abdd30d8b3eeb172ac29acef99c7021f31e69ce90706d8a546a26a1a8"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_enforces_wall_time.json",
+      "status": "failed",
+      "code": "timeout",
+      "container_id": "8e8d16dceb8ccf6791e6d29ec7701766e3a624097c6fab4988b396df9b4e9d51"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_isolation_controls.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "b405ce720457154bfbcbb4b4b8479937ec54f418e3411426dc33fb5bee131238"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_kernel_cgroup_limits.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "8b0340d8726d5542d325ca2dca350b9d6b40e455a6acc7b4b9466f5872df44f7"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json",
+      "status": "failed",
+      "code": "case_mismatch",
+      "container_id": "b45dec1e003baa412dcbf6916113ff6051337cb0ab22b797cd4bbe717d713ae4"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "ba9aa21b7c529e8e4dea59746a8c47f415082cb494a30379f8a20b1e181cc8cb"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "8a6084bbbe24f5832f501c83b14fb7f7a541c02035bcf175b86f194f304154a6"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "f0d006ef60d9888dad08c5bceed6b7470d9fca10209139d335d50c93c3882ea5"
+    },
+    {
+      "file": "docker\\771323afd456afa9\\test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json",
+      "status": "failed",
+      "code": "case_mismatch",
+      "container_id": "9aa8e976a618a9b81450de82ae34156f5544db62331ac04adf50265f293e9a04"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_checks_all_external_cases.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "97d23a07d99c283cbca8d37966b32ea8c6ad9598b5ce3eb51efc272823443492"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_enforces_memory_bound.json",
+      "status": "failed",
+      "code": "memory_limit",
+      "container_id": "2a2dd7a10fe23695bb9ec5315e63be26effd5c099e366748db5c8bd0aab43a82"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_enforces_output_bounds[stderr].json",
+      "status": "failed",
+      "code": "stderr_limit",
+      "container_id": "ac14abd813b4e297c1f392228baf80e74906849e7e293afc4cd1fd2633eb75db"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_enforces_output_bounds[stdout].json",
+      "status": "failed",
+      "code": "stdout_limit",
+      "container_id": "f20e80e152de922232520324ff3f2e05678192b64fcb51cd41df97d68dc2c52f"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_enforces_pid_bound.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "7146038279d9c7434df35bced008080f36486a96ca7a0874bf86a0ec52af678c"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_enforces_scratch_bound.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "c73c16da6250147cfe78d88579068fe2ee6f0bb1b22ad86520947a663b87ad5a"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_enforces_wall_time.json",
+      "status": "failed",
+      "code": "timeout",
+      "container_id": "6363b30a64f0be4275840170c2927d7f990d698305293a6b24907b00782c8252"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_isolation_controls.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "58cba495ff93da9e62cdbfa22a513589d905a101d58966d501ea4c519cd8a2ec"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_kernel_cgroup_limits.json",
+      "status": "passed",
+      "code": null,
+      "container_id": "ddcb43c8bf0b6acb13d07cb38ce7cc53b8b1bbd6804aa5fd1c05cadf9de012b6"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json",
+      "status": "failed",
+      "code": "case_mismatch",
+      "container_id": "404d7c343cb1b6dfd8ef526201bb9f1be83a7d98b7ab4e78dd404a3852f3426a"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "a2c0f47cd521e5294fbf094dcf3dcd5a5bb851dac765eb790e45ecfaf79cdb48"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "dac9e05eaafc74466e7baa7e8d83badbfabc73ef28c98ef4050eb9f98edeed00"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json",
+      "status": "failed",
+      "code": "protocol_failure",
+      "container_id": "26038acca28d665bb6a32397c8fbf211ba28fb78a6ca0fb5301ce4418d11c525"
+    },
+    {
+      "file": "docker\\a9de25bec0d8b7c2\\test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json",
+      "status": "failed",
+      "code": "case_mismatch",
+      "container_id": "408f44b6cd577627ae0054d83ab98e902ef2e84ad4346716748d8ea24a349438"
+    }
+  ],
+  "archive": {
+    "path": "M5B1-cfb5304-local.tar.gz",
+    "sha256": "d31a9882f8b52325f73bb4739fa45c2bd7a195883cc8444388f07e17ca1a4bdf",
+    "size": 468162
+  },
+  "release_report": "../RELEASE-ACCEPTANCE-REPORT.md",
+  "historical_failure": {
+    "status": "14 actual local tests failed before repair, execution not started, cleanup confirmed",
+    "preserved_in_archive": "historical-local-first-failure.tar",
+    "baseline_commit": "fa225124beb54bfa0688e9c8d310d227f5bcb1cd"
+  }
+}

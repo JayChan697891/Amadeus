@@ -1,4 +1,77 @@
-# Current Release Acceptance package-install stage (Issue13)
+# Verified local M5B1 checkpoint
+
+Code cfb5304c3979fc1677c73618120c0d33f928018a, tree5e8580769ead8be5a6b4a21ee269aa0a0da01be6.
+D:/agentsync-debug Linux collector18/18pass; source/wheel/sdist each754pass3Windows-onlyskip.
+All14 real Docker tests executed in each interpreter;42 safe result records and42
+independent exact-container absence checks. Windows same-product source740pass17skip.
+Lead verified saved hashes, JUnit, installed origins and Git/wheel/sdist/verifier
+module consistency. Evidence: acceptance/evidence/m5b1-local-inspection.json and
+acceptance/RELEASE-ACCEPTANCE-REPORT.md. Work acceptance remains separate.
+GitHub storage only; no new Actions execution. Private debug runtime stays D:.
+Full M5, actual adapters/relay and formal release remain BLOCKED.
+
+The observations below are historical checkpoints, including preserved RED evidence.
+
+---
+
+# Current M5B1 verifier foundation (Issue15)
+
+Current local debug environment is D:/agentsync-debug (see LOCAL-DEBUG.md).
+A verified QEMU/Alpine VM now runs Docker29.8.2, cgroupv2 and builtin seccomp.
+Actual local reproduction isolated the environment predicate as the only mismatch:
+Docker's bare expected ENV deletion markers were mistaken for extra process vars.
+Recognize only markers derived from validated image metadata and guard the actual
+container environment before reading candidate source. Move the canary to traversable
+host /tmp. All14 real Docker cases then passed in9.80s. Final exact-commit source/
+wheel/sdist collection is the next gate; this preliminary run does not certify a
+later tree. No GitHub execution was used. Full M5 and formal release remain BLOCKED.
+
+The observations below describe earlier checkpoints and are preserved as history.
+
+Local source regression after resume:716 passed/17 skipped (14 unavailable real
+Docker,3 Windows symlink privileges),162.81s. Ruff/format/mypy26files passed.
+See acceptance/evidence/local-only-20261020.json and redacted JUnit/log. Real Docker
+still unverified; no Actions run was requested.
+
+2026-10-20 user override: GitHub is storage only; no more Actions debugging,
+testing or benchmarks. Both workflows now have manual-only triggers and uploads
+use [skip ci]; the agent must not dispatch them. Validation is local/other
+authorized compute only. This host has no Docker/Podman and WSL reports it is not
+installed. Real Linux isolation remains unavailable here and must not be bypassed.
+Preserve historical failures; local policy/Git tests cannot certify real Docker.
+
+Version0.3.0a2, feature/m5b-verifier based on PR14 headf1f13ded.
+PR16 first head227512a ran actual Docker gate39437105068:14 cases failed with
+isolation_mismatch before candidate execution; all reported cleanup confirmed.
+Actual backend acceptance is FAILED, not skipped/passed. Preserve this failure;
+add safe effective-control diagnostics, identify the actual mismatched control,
+repair only with evidence, then rerun the complete final-head gates. Local first
+head source715pass17skip does not erase the Docker failure. No next implementation
+stage is accepted until this gate and Work review are complete.
+
+PR14 exact head passed9/9 quality jobs in run39433390898. Lead downloaded all9
+ZIPs and verified every saved log/artifact hash, clean/stable source and matching
+tree74072e7. Source/wheel/sdist each594cases: Windows594pass, POSIX591pass3skip.
+Actual local collector18checks passed, three suites each592pass2permission skips.
+Evidence: acceptance/evidence/rat14-ci-inspection.json and
+F:/syuc/work/rat-followup/release-20261020T134712Z-3c60ae469b61. Work independent
+reacceptance requested for this exact head; do not infer its decision.
+
+M5B1 adds only an owner-controlled fixed black-box library: immutable managed Git
+objects, bounded standalone solution.py, no host execution/mounts, inspected Linux
+Docker isolation, trusted external JSON assertions and exact container cleanup.
+See M5B1-CONTRACT.md / M5B1-GUIDE.md. Preliminary local source regression passed
+703cases with16 explicit skips before the final cleanup repair; this is not final
+head evidence. Actual Docker14cases are skipped locally because no backend exists.
+Dedicated LinuxCI must execute them without skip/fallback before backend acceptance.
+
+No agent-facing verifier API, job queue, restart recovery, task auto-acceptance,
+approval consumption or source apply is added. M5B integration/M5B2, M6-M9 and
+real autonomous relay remain open. Formal release BLOCKED; main unchanged.
+
+---
+
+# Release Acceptance package-install stage (Issue13 history)
 
 Runtime version0.3.0a1 remains unchanged from M5A head7479dfa. Separatebranch
 feature/release-sdist-acceptance improves tooling only. ParentPR12 nineCIjobs passed;

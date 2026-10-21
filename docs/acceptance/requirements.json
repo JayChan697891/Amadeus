@@ -853,7 +853,10 @@
       ],
       "existing_tests": [
         "tests/integration/test_acceptance.py::test_dependency_review_rejection_rework_and_persistence",
-        "tests/security/test_core_security.py::test_owner_version_and_review_identity_are_enforced"
+        "tests/security/test_core_security.py::test_owner_version_and_review_identity_are_enforced",
+        "tests/unit/test_verification_snapshot.py",
+        "tests/unit/test_verification_docker.py",
+        "tests/integration/test_docker_verifier.py"
       ],
       "planned_cases": [
         {
@@ -888,7 +891,10 @@
         "tests/security/test_m3_security.py::test_replayed_writes_and_reads_always_authenticate",
         "tests/security/test_m5_permissions.py",
         "tests/integration/test_m5_migration.py",
-        "tests/security/test_m5_owner_cli_inputs.py"
+        "tests/security/test_m5_owner_cli_inputs.py",
+        "tests/unit/test_verification_snapshot.py",
+        "tests/unit/test_verification_docker.py",
+        "tests/integration/test_docker_verifier.py"
       ],
       "planned_cases": [
         {
@@ -1264,7 +1270,9 @@
         "security",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_release_acceptance.py"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M9-02",

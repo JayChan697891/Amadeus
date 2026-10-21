@@ -1,0 +1,18 @@
+{
+  "head_sha": "227512a2046f95f3079ce767c0b5defb971a6cbc",
+  "workflow_run": 39437105068,
+  "job_id": 118676896001,
+  "artifact_id": 12271642328,
+  "artifact_zip_sha256": "80d2fe43bea16ce12f9c70f4807db982e1188438ad6fdc8751033e0bc622e19b",
+  "image_id": "sha256:4f228bc1cbcfc794e4878312cfc241d368eff55a21c08d1e2bb263116c4ef524",
+  "docker_server_version": "28.0.4",
+  "cgroup_version": "2",
+  "tests": 14,
+  "failures": 14,
+  "skipped": 0,
+  "all_result_status": "unsupported",
+  "all_error_code": "isolation_mismatch",
+  "all_execution_started": false,
+  "all_cleanup_confirmed": true,
+  "conclusion": "Actual isolation acceptance failed before candidate execution. Safe diagnostics required; no rule waived."
+}

@@ -1,0 +1,5 @@
+# Optional Windows owner tooling only; not AgentSync runtime dependencies.
+pycdlib==1.22.0
+paramiko==5.1.0
+passlib==1.7.4
+cryptography==50.0.2

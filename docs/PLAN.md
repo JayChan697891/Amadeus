@@ -1,7 +1,18 @@
+Current validation policy: GitHub upload/storage only; no Actions execution or
+benchmarks. D:/agentsync-debug hosts local Windows and Linux Docker validation.
+M5B1 code cfb5304 completed18localchecks, source/wheel/sdist each754pass3skip,
+42real Docker observations. Work acceptance is separate. Durable jobs/leases
+are the next bounded design, followed by supervised execution/recovery and safe
+approval/application. Full M5 and formal release remain incomplete.
+
 # AgentSync implementation plan
 
 Baseline: user-approved specification v1.0, 2026-10-19 (see SPECIFICATION.md).
-Current execution: **M5A permissions/approvals/audit plus Release Acceptance**, Issues #7/#11.
+Current execution: **M5B1 bounded verifier foundation plus Release Acceptance**,
+Issues #15/#7/#11. M5A passed independent Work acceptance. PR14 package evidence
+headf1f13ded passed9/9CI plus independent artifact inspection; Work reacceptance is
+separate. M5B1 is a synchronous owner library only; queue/recovery, permission API,
+approval consumption and safe apply remain further stages. See M5B1-CONTRACT.md.
 M3 is preserved at 72ab6b5 (PR #5); its nine CI jobs passed. Work independently accepted M3 and M4A (PR #8 comment6284092991);
 Issues #4/#6 are closed while Release Acceptance #7 remains open. M4A PR #8 at fe3ac74 passed nine CI jobs and independent artifact inspection.
 M4B head98bd361 passed9CI jobs with all372 cases executed per source/wheel environment
