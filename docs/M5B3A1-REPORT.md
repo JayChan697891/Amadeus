@@ -40,3 +40,5 @@ autonomous relay, task acceptance, approval consumption/safe apply, full platfor
 matrix and M9 remain incomplete. Formal Release **BLOCKED**. Issues11/7remain
 open. No Actions, paid calls or main modification/merge. Work review is separate.
 Later documentation/evidence commits do not claim another product test run.
+Independent Work limited-stage acceptance passed; see
+acceptance/evidence/m5b3a1-work-receipt.md and its actual review link.

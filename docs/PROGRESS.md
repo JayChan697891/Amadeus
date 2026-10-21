@@ -1,3 +1,13 @@
+# Work-accepted M5B3A1 checkpoint
+
+Actual independent review accepted evidence head0dd96e9942e96ee12cd86ead26350413bee65868;
+see acceptance/evidence/m5b3a1-work-receipt.md. Next bounded task is M5B3A2:
+validate existing disk/Git identities and export actual managed candidate content,
+with final owner/DB recapture. No task gate, execution or apply is implied.
+Full Release remains BLOCKED.
+
+---
+
 # Verified M5B3A1 local checkpoint
 
 Product65e97a3185a68b350aead0d364e69ced73df98f4, treee008b5cfec9a9066f14f7a44c5530a08730eb66a,0.3.0a6/schema9.
