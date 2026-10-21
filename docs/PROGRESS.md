@@ -1,3 +1,19 @@
+# Verified local M5B1 checkpoint
+
+Code cfb5304c3979fc1677c73618120c0d33f928018a, tree5e8580769ead8be5a6b4a21ee269aa0a0da01be6.
+D:/agentsync-debug Linux collector18/18pass; source/wheel/sdist each754pass3Windows-onlyskip.
+All14 real Docker tests executed in each interpreter;42 safe result records and42
+independent exact-container absence checks. Windows same-product source740pass17skip.
+Lead verified saved hashes, JUnit, installed origins and Git/wheel/sdist/verifier
+module consistency. Evidence: acceptance/evidence/m5b1-local-inspection.json and
+acceptance/RELEASE-ACCEPTANCE-REPORT.md. Work acceptance remains separate.
+GitHub storage only; no new Actions execution. Private debug runtime stays D:.
+Full M5, actual adapters/relay and formal release remain BLOCKED.
+
+The observations below are historical checkpoints, including preserved RED evidence.
+
+---
+
 # Current M5B1 verifier foundation (Issue15)
 
 Current local debug environment is D:/agentsync-debug (see LOCAL-DEBUG.md).

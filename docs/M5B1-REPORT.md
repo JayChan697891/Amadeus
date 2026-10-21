@@ -1,43 +1,47 @@
-# M5B1 foundation verification checkpoint
+# M5B1 local backend verification checkpoint
 
-Current local update: D-drive QEMU/Alpine Docker29.8.2/cgroupv2 reproduced the
-failure and identified ENV deletion-marker representation as the root cause.
-The precise marker/actual-environment guard repair has114 passing policy cases.
-Actual local Docker14cases passed after the canary location fix. See LOCAL-DEBUG.md.
-Final exact-SHA source/wheel/sdist evidence is still required after freezing this
-repair; the historical first-stage observations below are not that certification.
-GitHub is now storage only: no Actions execution/debugging or remote benchmarks.
+Tested commit: cfb5304c3979fc1677c73618120c0d33f928018a.
+Tree:5e8580769ead8be5a6b4a21ee269aa0a0da01be6. Version0.3.0a2, Issue15/11/7.
+GitHub is upload/storage only; all new checks ran locally on D:.
 
-Issue15, version0.3.0a2, parentf1f13ded (PR14). This stage is an owner-controlled
-synchronous library, not integrated full M5 acceptance. See M5B1-CONTRACT.md.
+| Environment | Actual result |
+|---|---|
+| Linux source |754 passed,3 Windows-only skips|
+| Fresh wheel installation |754 passed,3 Windows-only skips|
+| Fresh isolated sdist build/install |754 passed,3 Windows-only skips|
+| Windows source |740 passed,17 explicit skips|
+| Complete Linux collector |18/18 checks passed; source clean/stable|
+| Real Docker execution |14 tests per installation,42 observations, no skips|
+| Post-run exact container inspection |42/42 full IDs independently absent|
 
-Actual local focused evidence: 34 real-Git snapshot tests passed,1 Windows
-directory-link privilege skip;89 Docker-policy unit cases passed. The Docker
-cases simulate infrastructure to verify policy and error handling; they do not
-establish successful container isolation. Lead inspected the source, retained
-all previous tests, and checked Ruff/format/mypy (26 source files). Final exact-head
-source/wheel/sdist collector results must be attached after edits freeze.
+Ruff, formatting, mypy26sourcefiles, package builds, origin/SDK smoke and pip check
+passed. Lead recomputed saved file/log/build hashes and matched verifier bytes in
+Git, wheel, sdist and all real observations. See
+acceptance/RELEASE-ACCEPTANCE-REPORT.md and
+acceptance/evidence/m5b1-local-inspection.json. Full logs/JUnit/builds and original
+local failures are preserved in the indexed evidence archive. Private VM material
+was excluded. Reproduction/setup: LOCAL-DEBUG.md.
 
-Independent review repaired create-response-loss cleanup, actual candidate exit
-inspection, strict typed JSON comparison, immutable object identity checks and
-Windows-sensitive probe timeouts. No host candidate import/exec, host bind mount,
-arbitrary command, runtime image pull or dependency install exists in the backend.
+## Failure and repair
 
-The14 actual Docker integration cases require an inspected local Linux daemon and
-preloaded immutable Python image ID. Dedicated required CI runs the real backend,
-saves its effective constraints/profile/input/source/image/verifier hashes and
-host-generated JUnit, and fails if unavailable. Ordinary local/OS matrices skip
-that tier without claiming it passed. Until the real dedicated job and artifacts
-are inspected, actual isolation is unverified.
+The D-drive Linux VM reproduced14 isolation_mismatch failures before candidate
+execution. Only the environment check was false. Docker Config.Env retained bare
+image-variable removal markers while actual process os.environ excluded them.
+The repair accepts only unique expected removals from validated image metadata,
+still rejects extra values/unknown markers, and checks actual environment in the
+fixed bootstrap before reading source.114 policy unit tests passed.
 
-PR14 parent regression/install tooling is independently evidenced:9/9 quality
-jobs, nine artifact archives all saved hashes verified, source/wheel/sdist each
-594 cases. Those results do not certify M5B1's new source. Work reacceptance for
-PR14 is separate and must be read live. Parent index:
-acceptance/evidence/rat14-ci-inspection.json.
+A separate root-runner fixture issue placed its host canary under inaccessible
+/root; the probe correctly raised PermissionError. It now uses an exclusively
+created host /tmp file whose parent is traversable, with no host mount. All
+original security assertions and14 actual container cases were retained.
 
-Whole-product release remains BLOCKED. No persistent verification worker/queue,
-restart/orphan reconciliation, permission-controlled verification request, task
-completion gate, single-use approval consumption or source application is added.
-Real client adapters, autonomous relay and full M9 acceptance remain unverified.
-No main modification/merge, paid model call or user production-state upgrade.
+## Scope and pending acceptance
+
+Only the fixed owner-controlled synchronous standalone solution.py profile is
+implemented. No durable worker, crash/orphan recovery, task-completion gate,
+approval consumption or safe source application is added. Native development
+delegation is not an AgentSync adapter/relay test. M6-M9 and real autonomous relay
+remain unverified, and formal release remains BLOCKED. Work independently decides
+the limited M5B1 checkpoint; neither submission nor passing component tests close
+full M5. Main was not modified or merged.

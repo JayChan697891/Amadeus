@@ -1,3 +1,10 @@
+Current validation policy: GitHub upload/storage only; no Actions execution or
+benchmarks. D:/agentsync-debug hosts local Windows and Linux Docker validation.
+M5B1 code cfb5304 completed18localchecks, source/wheel/sdist each754pass3skip,
+42real Docker observations. Work acceptance is separate. Durable jobs/leases
+are the next bounded design, followed by supervised execution/recovery and safe
+approval/application. Full M5 and formal release remain incomplete.
+
 # AgentSync implementation plan
 
 Baseline: user-approved specification v1.0, 2026-10-19 (see SPECIFICATION.md).

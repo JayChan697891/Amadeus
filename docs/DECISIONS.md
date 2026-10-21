@@ -79,3 +79,19 @@ do not defend against their compromise or equivalent host authority. Missing
 Docker or effective controls fail closed. Create-response loss must not falsely
 confirm cleanup; destructive cleanup requires exact full ID plus random owner.
 Durable jobs and approval consumption/application remain separate designs.
+
+## Local-only debugging on D:
+
+The current owner instruction supersedes historical hosted-CI gates: GitHub is
+storage only. Keep manual-only workflows, upload with [skip ci], and do not
+dispatch Actions. A dedicated D:/agentsync-debug QEMU Linux VM provides real
+Docker isolation with no host directory sharing; source/deliverables stay F:/syuc.
+Only sanitized evidence is published; private keys, seed images and guest disks
+are excluded. Final source/wheel/sdist each use independent interpreters and
+unique evidence directories, with the exact frozen SHA/tree recorded.
+
+Docker Config.Env may retain unique bare names representing explicit removal of
+validated image metadata. Recognize only those expected markers while requiring
+all valued settings to match the fixed runtime policy. Independently guard the
+actual process environment inside the fixed bootstrap before reading candidate
+bytes. Unknown, duplicate and valued-extra entries remain rejected.
