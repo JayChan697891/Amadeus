@@ -1,3 +1,13 @@
+# Work-accepted M5B2B checkpoint
+
+Independent Work review accepted the limited scope at evidence head
+74fda3dc92018fc46664dc3fe3a09a97360d59ed. See
+acceptance/evidence/m5b2b-work-receipt.md for the actual review link and tested
+identities. Formal Release remains BLOCKED; Issues 11/7 remain open. This receipt
+checkpoint changes documentation only and does not claim another test run.
+
+---
+
 # Verified M5B2B local checkpoint
 
 Code b5504e09bf1cb1c390d56cac11e68a8176d2091d,
