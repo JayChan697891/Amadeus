@@ -20,3 +20,8 @@ Historical remote CI gates below are historical evidence, not current instructio
 Ask only for missing essential requirements, external blockers or high-impact authorization.
 The user authorized GitHub branch/PR publication and continuous plan execution (M4 now).
 Do not modify/merge main or make paid provider calls. Review submission is not acceptance.
+
+6. Check available quota before a new bounded stage. Reserve completion capacity
+   for local tests, repair, storage publication and Work review. Near the limit,
+   finish the checkpoint without launching another task; report unfinished gates
+   truthfully. Exact zero cannot be scheduled reliably.

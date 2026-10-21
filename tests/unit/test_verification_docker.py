@@ -618,3 +618,161 @@ def test_process_runner_bounds_real_trusted_probe_without_candidate_execution(mo
             [sys.executable, "-c", probe], dict(os.environ), 0.5 if mode == "timeout" else 5, 128
         )
     assert failure.value.code == expected
+
+
+class LifecycleProbe:
+    """Policy-only persistence failures; this does not execute a real daemon."""
+
+    def __init__(self, state, fail_at=None, exception=None):
+        self.state = state
+        self.fail_at = fail_at
+        self.exception = exception or RuntimeError("private-callback-sentinel")
+        self.events = []
+
+    def record(self, phase, *identity):
+        self.events.append((phase, identity, [call[0][5] for call in self.state["calls"]]))
+        if phase == self.fail_at:
+            raise self.exception
+
+    def before_create(self, owner, container_name):
+        self.record("before_create", owner, container_name)
+
+    def created(self, container_id):
+        self.record("created", container_id)
+
+    def before_start(self):
+        self.record("before_start")
+
+
+def test_lifecycle_notifications_bind_backend_generated_identity_in_exact_order(policy_daemon):
+    probe = LifecycleProbe(policy_daemon)
+    result = verify(_lifecycle=probe)
+    assert result["status"] == "passed" and result["cleanup_confirmed"]
+    assert [event[0] for event in probe.events] == ["before_create", "created", "before_start"]
+    intent, created, start = probe.events
+    assert intent[1] == (policy_daemon["owner"], policy_daemon["name"])
+    assert policy_daemon["name"] == "agentsync-verifier-" + policy_daemon["owner"]
+    assert len(policy_daemon["owner"]) == 32
+    assert intent[2] == ["info", "image"]
+    assert created[1] == (CID,) and created[2] == ["info", "image", "create"]
+    assert start[1] == () and start[2] == ["info", "image", "create", "inspect"]
+    assert [call[0][-2:] for call in policy_daemon["calls"] if call[0][5] == "rm"] == [
+        ["--force", CID]
+    ]
+
+
+@pytest.mark.parametrize("stage", ["before_create", "created", "before_start"])
+@pytest.mark.parametrize("exception", [RuntimeError, ValueError, docker._Failure])
+def test_lifecycle_exceptions_are_safe_and_cleanup_precedes_error_return(
+    policy_daemon, stage, exception
+):
+    probe = LifecycleProbe(policy_daemon, stage, exception("private-callback-sentinel"))
+    result = verify(_lifecycle=probe)
+    operations = [call[0][5] for call in policy_daemon["calls"]]
+    assert result["status"] == "error" and result["error_code"] == "lifecycle_error"
+    assert result["errors"] == ["lifecycle_error"]
+    assert not result["execution_started"] and result["cleanup_confirmed"]
+    assert "private-callback-sentinel" not in json.dumps(result)
+    assert "start" not in operations
+    if stage == "before_create":
+        assert "create" not in operations and "rm" not in operations
+        assert "container_id" not in result
+    else:
+        assert operations.count("create") == operations.count("rm") == 1
+        assert result["container_id"] == CID
+        assert next(call[0] for call in policy_daemon["calls"] if call[0][5] == "rm")[-1] == CID
+
+
+@pytest.mark.parametrize("stage", ["created", "before_start"])
+@pytest.mark.parametrize("exception", [SystemExit, KeyboardInterrupt])
+def test_lifecycle_baseexceptions_propagate_only_after_exact_owned_cleanup(
+    policy_daemon, stage, exception
+):
+    probe = LifecycleProbe(policy_daemon, stage, exception("trusted-stop"))
+    with pytest.raises(exception):
+        verify(_lifecycle=probe)
+    assert "start" not in [call[0][5] for call in policy_daemon["calls"]]
+    removes = [call[0] for call in policy_daemon["calls"] if call[0][5] == "rm"]
+    assert len(removes) == 1 and removes[0][-2:] == ["--force", CID]
+
+
+@pytest.mark.parametrize("exception", [SystemExit, KeyboardInterrupt])
+def test_before_create_baseexception_propagates_without_sending_create(policy_daemon, exception):
+    probe = LifecycleProbe(policy_daemon, "before_create", exception("trusted-stop"))
+    with pytest.raises(exception):
+        verify(_lifecycle=probe)
+    assert [call[0][5] for call in policy_daemon["calls"]] == ["info", "image"]
+
+
+def test_preflight_failure_does_not_emit_lifecycle_intent(policy_daemon):
+    def mutate(operation, result):
+        if operation == "image":
+            result[0]["Id"] = "sha256:" + "b" * 64
+        return result
+
+    policy_daemon["mutate"] = mutate
+    probe = LifecycleProbe(policy_daemon)
+    result = verify(_lifecycle=probe)
+    assert result["status"] == "unsupported" and result["cleanup_confirmed"]
+    assert not probe.events
+
+
+@pytest.mark.parametrize("stage", ["created", "before_start"])
+@pytest.mark.parametrize("cleanup_failure", ["rm", "ownership"])
+def test_callback_failure_never_hides_cleanup_uncertainty(policy_daemon, stage, cleanup_failure):
+    if cleanup_failure == "rm":
+        policy_daemon["rm_exit"] = 1
+
+    class CleanupFailureProbe(LifecycleProbe):
+        def record(self, phase, *identity):
+            if phase == stage and cleanup_failure == "ownership":
+                policy_daemon["cleanup_owner"] = False
+            super().record(phase, *identity)
+
+    result = verify(_lifecycle=CleanupFailureProbe(policy_daemon, stage))
+    assert result["status"] == "error" and not result["cleanup_confirmed"]
+    assert set(result["errors"]) == {"cleanup_failed", "lifecycle_error"}
+    assert not result["execution_started"]
+    assert "private-callback-sentinel" not in json.dumps(result)
+    if cleanup_failure == "ownership":
+        assert not any(call[0][5] == "rm" for call in policy_daemon["calls"])
+
+
+@pytest.mark.parametrize("lost_reply", ["exception", "partial", "nonzero"])
+def test_unknown_create_response_has_intent_only_and_keeps_existing_recovery(
+    policy_daemon, monkeypatch, lost_reply
+):
+    if lost_reply == "exception":
+        policy_daemon["create_failure"] = "timeout"
+    elif lost_reply == "partial":
+        policy_daemon["create_stdout"] = CID[:12].encode()
+    else:
+        original = docker._run
+
+        def nonzero(command, *args):
+            response = original(command, *args)
+            return docker._Process(1, response.stdout, 0) if command[5] == "create" else response
+
+        monkeypatch.setattr(docker, "_run", nonzero)
+    probe = LifecycleProbe(policy_daemon)
+    result = verify(_lifecycle=probe)
+    assert [event[0] for event in probe.events] == ["before_create"]
+    assert result["status"] == "error" and result["error_code"] == "container_create_failed"
+    assert result["cleanup_confirmed"] and not result["execution_started"]
+    assert not any(call[0][5] == "start" for call in policy_daemon["calls"])
+    removes = [call[0] for call in policy_daemon["calls"] if call[0][5] == "rm"]
+    assert len(removes) == 1 and removes[0][-2:] == ["--force", CID]
+
+
+def test_isolation_failure_forbids_before_start_notification(policy_daemon):
+    def mutate(operation, result):
+        if operation == "inspect":
+            result[0]["HostConfig"]["NetworkMode"] = "bridge"
+        return result
+
+    policy_daemon["mutate"] = mutate
+    probe = LifecycleProbe(policy_daemon)
+    result = verify(_lifecycle=probe)
+    assert [event[0] for event in probe.events] == ["before_create", "created"]
+    assert result["status"] == "unsupported" and result["cleanup_confirmed"]
+    assert not result["execution_started"]

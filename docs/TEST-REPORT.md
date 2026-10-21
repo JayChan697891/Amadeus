@@ -1,3 +1,17 @@
+# Current M5B2B owner executor checkpoint
+
+Version0.3.0a4/schema8, owner single snapshot execution; no scheduler/retry/apply
+or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work review.
+Root independently inspected source and incrementally executed7actual local Linux
+owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
+timeout, cancel-after-create/no-start and real backend pass followed by lease
+expiry→pending/unverified. These development runs used unfrozen overlays, not a
+final-SHA certification. Final source/wheel/sdist collection follows code freeze.
+Strategy/ledger/migration developer subset259pass, Docker policy139pass.
+GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
+
+---
+
 # Verified M5B2A local checkpoint
 
 Version0.3.0a3/schema7, tested613c95dab054f013c6a6029949e2678ad2056e37,

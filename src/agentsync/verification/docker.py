@@ -21,7 +21,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 IMAGE_ID = re.compile(r"sha256:[0-9a-f]{64}\Z")
 OBJECT_ID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})\Z")
@@ -552,6 +552,16 @@ def _cleanup_owned(
         return False
 
 
+class _Lifecycle(Protocol):
+    """Trusted in-process persistence/fencing hooks, never a request surface."""
+
+    def before_create(self, owner: str, container_name: str) -> None: ...
+
+    def created(self, container_id: str) -> None: ...
+
+    def before_start(self) -> None: ...
+
+
 def verify_python_json_lines(
     source: bytes,
     *,
@@ -559,6 +569,7 @@ def verify_python_json_lines(
     input_sha256: str,
     commit_sha: str,
     tree_sha: str,
+    _lifecycle: _Lifecycle | None = None,
 ) -> VerificationResult:
     """Execute finite owner cases inside the inspected container, never on the host."""
     started = datetime.now(UTC)
@@ -683,6 +694,11 @@ def verify_python_json_lines(
             for name, value in RUNTIME_ENV.items():
                 command.extend(["--env", f"{name}={value}"])
             command.extend([profile.image_id, "-I", "-u", "-c", BOOTSTRAP])
+            if _lifecycle is not None:
+                try:
+                    _lifecycle.before_create(owner, container_name)
+                except Exception:
+                    raise _Failure("lifecycle_error") from None
             # The daemon may create a container even if the CLI loses its reply.
             # From the moment create is sent, absence/cleanup is unconfirmed.
             evidence["cleanup_confirmed"] = False
@@ -702,6 +718,11 @@ def verify_python_json_lines(
             container_id = identity
             evidence["container_id"] = container_id
             try:
+                if _lifecycle is not None:
+                    try:
+                        _lifecycle.created(container_id)
+                    except Exception:
+                        raise _Failure("lifecycle_error") from None
                 containers = _inspect_json(
                     _run([*base, "inspect", container_id], env, 10, 256 * 1024)
                 )
@@ -720,6 +741,11 @@ def verify_python_json_lines(
                     + source
                     + b"".join(case.input_json + b"\n" for case in profile.cases)
                 )
+                if _lifecycle is not None:
+                    try:
+                        _lifecycle.before_start()
+                    except Exception:
+                        raise _Failure("lifecycle_error") from None
                 evidence["execution_started"] = True
                 result = _run(
                     [*base, "start", "--attach", "--interactive", container_id],

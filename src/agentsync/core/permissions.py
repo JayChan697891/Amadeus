@@ -65,6 +65,14 @@ VERIFICATION_AUDIT_OPERATIONS = frozenset(
         "verification_renew",
         "verification_ack_cancel",
         "verification_interrupt",
+        "execution_claim",
+        "execution_bind",
+        "execution_create_intent",
+        "execution_created",
+        "execution_start",
+        "execution_finish",
+        "execution_cancel",
+        "execution_pending",
     }
 )
 
