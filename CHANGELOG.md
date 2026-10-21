@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a7 — M5B3A2 existing candidate input export
+
+- Owner-only checked export of actual managed merge-candidate object content.
+- Open existing storage without reconstruction; strict receipts/intents and pre/post Git identity checks.
+- Reject bare and worktree Git redirects before Git, and verify applicable parent graph.
+- Preserve bounded source/object rules; no jobs, execution, task completion, schema or apply changes.
+
 ## 0.3.0a6 — M5B3A1 candidate metadata binding
 
 - Owner-only read-only capture of project-consistent candidate/worktree/snapshot/task records.

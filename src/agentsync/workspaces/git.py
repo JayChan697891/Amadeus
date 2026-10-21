@@ -53,9 +53,15 @@ def config_digest(repo: Path) -> str:
 
 
 class GitWorkspaceStore:
-    def __init__(self, data_dir: Path | str):
+    def __init__(self, data_dir: Path | str, *, create: bool = True):
+        raw_root = Path(data_dir) / "managed-git"
+        if not create:
+            physical(raw_root)
+            if not raw_root.is_dir():
+                fail("workspace_boundary", "Existing managed storage is required.")
         self.root = Path(data_dir).resolve() / "managed-git"
-        self.root.mkdir(parents=True, exist_ok=True)
+        if create:
+            self.root.mkdir(parents=True, exist_ok=True)
         self.root_identity = physical(self.root)
         binary = shutil.which("git")
         if binary is None:
@@ -70,8 +76,11 @@ class GitWorkspaceStore:
             "home",
             "hooks",
         ):
-            (self.root / name).mkdir(exist_ok=True)
+            if create:
+                (self.root / name).mkdir(exist_ok=True)
             physical(self.root / name)
+            if not (self.root / name).is_dir():
+                fail("workspace_boundary", "Managed storage directories are required.")
 
     def _env(self) -> dict[str, str]:
         env = {

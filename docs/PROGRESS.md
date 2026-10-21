@@ -1,3 +1,15 @@
+# M5B3A2 development checkpoint
+
+Version0.3.0a7/schema9, owner-only checked existing candidate content export.
+No reconstruction, jobs, execution, task gate or apply. Root independently tested
+actual candidate bytes and four adversarial cases using disposable Git projects.
+An independent audit reproduced a bare-repository .git redirect before the first
+Git command; the new guard and two independently run regressions close that issue.
+These are development observations; frozen source/package/Windows validation and
+Work review follow. Full M5 and formal Release remain BLOCKED; GitHub storage only.
+
+---
+
 # Work-accepted M5B3A1 checkpoint
 
 Actual independent review accepted evidence head0dd96e9942e96ee12cd86ead26350413bee65868;
