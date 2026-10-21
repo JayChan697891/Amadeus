@@ -1,3 +1,13 @@
+# Work-accepted M5B2C checkpoint
+
+Work accepted the limited stage at evidence head53797c5c. Actual review and
+tested identities: acceptance/evidence/m5b2c-work-receipt.md. No further
+implementation starts at this quota boundary. Next bounded task is the managed
+merge-candidate input bridge in M5B3A-DESIGN.md: design only, not a completed
+product feature or task gate. Full Release remains BLOCKED.
+
+---
+
 # Verified M5B2C local checkpoint
 
 Code c1f2e83a61af5c267e3374dd46398b2a57b6abf1, treede68cde10628e48122fad14409983ccbab570802; version0.3.0a5/schema9.

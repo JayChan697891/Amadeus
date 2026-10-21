@@ -1,7 +1,9 @@
 # M5B2C local acceptance report
 
 Tested product: `c1f2e83a61af5c267e3374dd46398b2a57b6abf1`; tree `de68cde10628e48122fad14409983ccbab570802`.
-Version0.3.0a5/schema9. Independent Work acceptance is a separate gate.
+Version0.3.0a5/schema9. Independent Work acceptance passed for this limited scope;
+see acceptance/evidence/m5b2c-work-receipt.md and its actual review link. Formal
+Release remains BLOCKED.
 
 ## Results and evidence
 
