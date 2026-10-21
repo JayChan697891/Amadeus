@@ -1,3 +1,16 @@
+# Current M5B2C development checkpoint
+
+Version0.3.0a5/schema9 adds an owner-only exact full-ID cleanup receipt. The job
+remains cleanup_pending/unverified and cannot be reused. Root incrementally ran
+5actual local Linux cases: created process hard exit, running process SIGKILL,
+initial absence, renamed protected object and lost create ACK. All5expectations
+passed on development overlays. They are not final-SHA acceptance evidence.
+Frozen source/wheel/sdist and Windows regression, independent file/hash review
+and Work acceptance follow code freeze. GitHub storage only; debug on D:.
+Full M5, real adapters/relay, safe apply/task gate and formal release stay BLOCKED.
+
+---
+
 # Work-accepted M5B2B checkpoint
 
 Independent Work review accepted the limited scope at evidence head

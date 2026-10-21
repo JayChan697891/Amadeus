@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a5 — M5B2C explicit cleanup receipt
+
+- Owner-only internal one-shot reconciliation for expired, acknowledged full-ID executions.
+- Additive schema9 intent/receipt and fencing before any Docker side effect.
+- Exact identity/image matching, removal acknowledgement and same-daemon absence observation.
+- Cleanup observations never restore passed results or allow job reuse.
+- No automatic recovery/retry, task acceptance, safe apply or real client relay; release blocked.
+
 ## 0.3.0a1 — M5A under development
 
 - Default read-only membership and explicit project-owner role grants.

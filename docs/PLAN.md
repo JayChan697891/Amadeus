@@ -1,3 +1,14 @@
+# M5B2C bounded cleanup-receipt implementation
+
+Advance recovery component coverage with a trusted owner-only one-shot cleanup
+receipt for expired, acknowledged full-ID executions. See M5B2C-CONTRACT.md and
+M5B2C-GUIDE.md. No cleanup result grants candidate success, job reuse, task
+acceptance, source apply or automatic retry. Full M5/M9 release remains BLOCKED.
+Final acceptance requires frozen source/wheel/sdist tests, Windows regression,
+real hard-exit/identity cases, independent evidence inspection and Work review.
+
+---
+
 # Verified M5B2B local checkpoint
 
 Code b5504e09bf1cb1c390d56cac11e68a8176d2091d,

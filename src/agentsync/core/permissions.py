@@ -73,6 +73,8 @@ VERIFICATION_AUDIT_OPERATIONS = frozenset(
         "execution_finish",
         "execution_cancel",
         "execution_pending",
+        "execution_reconciliation_intent",
+        "execution_reconciliation_record",
     }
 )
 

@@ -1,5 +1,12 @@
 # Error and limitation log
 
+- M5B2C tracer: a real created-container process hard exit exposed the missing
+  owner reconciliation operation. The new one-shot receipt is tested separately
+  from automatic recovery. Unknown ACKs, initial absence and identity mismatches
+  remain unresolved; interrupted cleanup intents cannot be retried in this stage.
+  Local VM was restarted on D: for this continuation; no user service/data was
+  used as a destructive fixture and no GitHub execution was requested.
+
 - Initial host Python did not include pip. Resolved by creating an isolated venv with ensurepip;
   no global Python changes required.
 - Earlier conversation retrieval returned content references instead of the plan body.
