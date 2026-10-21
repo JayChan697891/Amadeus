@@ -1,3 +1,32 @@
+# Verified M5B2A local checkpoint
+
+Version0.3.0a3/schema7, tested613c95dab054f013c6a6029949e2678ad2056e37,
+tree0eb394df1d83c13888bf1068b2625f60adc6a250. Complete D-localcollector18/18pass;
+three independent environment suites each780pass3Windows-onlyskip. Checkout suite
+used fresh noneditable install, with all27Python modules compared to the checkout.
+42existing-backend observations and42independent exact-container absence checks.
+New ledger remains non-executing/unverified. Lead checked files, installed origins,
+all saved hashes/JUnit and new module hashes across Git/wheel/sdist.
+See M5B2A-REPORT.md and acceptance/evidence/m5b2a-local-inspection.json.
+M5B1 Work acceptance passed (PR16 comment6292907383); Issue15 closed.
+M5B2A Work acceptance pending; fullM5/Issue11, Release/Issue7 remain BLOCKED.
+GitHub only stores files; no Actions. Main unchanged.
+
+---
+
+# Current M5B2A development checkpoint
+
+Version0.3.0a3/schema7: internal owner-authorized durable verification job/attempt
+ledger, no executable worker or successful verification outcome. Contract and
+guide: M5B2A-CONTRACT.md / M5B2A-GUIDE.md. Separate branch from M5B1.
+Developer preflight on the working tree:26new policy cases,28focused cases pass;
+Windows full source766pass17explicit skips. Lead independently inspects code and
+will run final frozen-source/wheel/sdist validation locally on D:. These preliminary
+counts do not certify a later commit. No GitHub Actions is used; main is unchanged.
+Full M5, real client relay and formal release remain BLOCKED.
+
+---
+
 # Verified local M5B1 checkpoint
 
 Code cfb5304c3979fc1677c73618120c0d33f928018a, tree5e8580769ead8be5a6b4a21ee269aa0a0da01be6.

@@ -1,7 +1,7 @@
 # Release Acceptance Report
 
-Version: 0.3.0a2
-Commit: cfb5304c3979fc1677c73618120c0d33f928018a
+Version: 0.3.0a3
+Commit: 613c95dab054f013c6a6029949e2678ad2056e37
 Platform: Linux-6.18.54-0-virt-x86_64-with-musl1
 
 Formal release acceptance: **BLOCKED**
@@ -31,8 +31,8 @@ Formal release acceptance: **BLOCKED**
 
 | Format | Install status | Exact artifact | SHA-256 |
 | --- | --- | --- | --- |
-| wheel | pass | artifacts/agentsync_local-0.3.0a2-py3-none-any.whl | 04ada99bf839716bb81d12cfb54174fa25a650193522c9702e1094b8cf38dda0 |
-| sdist | pass | artifacts/agentsync_local-0.3.0a2.tar.gz | fc236ff69658f629e3ede37ab61174e9eca6b9634ccef5f39087d334a6efaccf |
+| wheel | pass | artifacts/agentsync_local-0.3.0a3-py3-none-any.whl | 1d48fbcde8818ebbca54d28d798d0e000580c6b95d02f34b1e5d201faf234d43 |
+| sdist | pass | artifacts/agentsync_local-0.3.0a3.tar.gz | f32a1cb26449e406ea294d015d9b919ff6d2795c408ccae4e7c8b91bcc99d7bf |
 
 ## Per-requirement acceptance
 
@@ -100,30 +100,37 @@ Run from the recorded source with the recorded commands. No actual-client or aut
 Skipped tests remain skipped in JUnit; they are not passes. No destructive user-workspace tests or paid calls are performed.
 
 
-## Lead inspection of actual local evidence
+## M5B2A lead inspection and scope
 
-Tested source commit cfb5304c3979fc1677c73618120c0d33f928018a,
-tree5e8580769ead8be5a6b4a21ee269aa0a0da01be6. Git-visible source was clean and
-stable for the complete Linux collection. All18 local checks passed. Source,
-independently installed wheel and independently rebuilt/installed sdist each ran
-757 cases:754 passed,3 Windows-only skips. All14 actual Docker cases executed
-without skip in each interpreter, producing42 separate safe observations.
+Tested commit613c95dab054f013c6a6029949e2678ad2056e37,
+tree0eb394df1d83c13888bf1068b2625f60adc6a250, version0.3.0a3/schema7.
+All18 local collector checks passed against clean/stable frozen source. The
+checkout suite used a fresh noneditable installation built from that checkout;
+all27 installed Python modules were independently compared byte-for-byte with
+the checkout. It was not an editable source environment. Independent wheel and
+sdist installations each also ran the complete783-case suite:780passed and
+3Windows-only skips in each of the three environments.
 
-The lead recomputed every saved artifact/log hash, inspected all three JUnit files,
-matched verifier module bytes across Git/wheel/sdist and42 real results, and
-independently queried all42 exact full container IDs after execution: all absent.
-Windows source regression on the same product commit ran757 cases:740 passed,
-17 skips (14 Linux Docker cases and3 unavailable link privileges).
+The26 new ledger tests cover authentication before replay, project isolation,
+immutable input binding, idempotency, token/version/expiry fencing, explicit
+interruption/cancellation, real thread/spawn-process claim races, schema upgrade
+and audit rollback. These are non-executing ledger tests. All public ledger
+assessments remain unverified; no passed completion or executable worker exists.
 
-Full evidence including JUnit, sanitized logs, exact build archives, source snapshot,
-image identity, effective controls, failure reproduction and the original local
-RED run is stored in evidence/M5B1-cfb5304-local.tar.gz. Its SHA256/size and
-observation index are in evidence/m5b1-local-inspection.json. The artifact/report
-commit is later than the tested code commit and adds documentation/evidence only.
-No GitHub execution was requested or used. Private VM keys/seed/disks are excluded.
+Existing M5B1 Docker tests executed14cases in each installation,42new observations;
+the lead matched verifier hashes, inspected effective controls and independently
+queried all42 exact container IDs after execution, all absent. Those observations
+verify the existing bounded backend, not an integrated durable worker. Saved
+artifact/log hashes and three complete JUnit files were independently checked.
+New jobs/schema/permissions module bytes match Git, wheel and sdist.
 
-This establishes only the bounded synchronous standalone-solution verifier backend.
-It does not establish durable worker recovery, general project testing, executable
-task acceptance, approval consumption, safe apply, real client adapters or real
-autonomous relay. Full M5 and formal product release remain BLOCKED. Work review
-is a separate decision; this report does not fabricate it.
+Windows developer preflight766pass17skip was before final freeze/version bump;
+it is separately labelled and is not a final-SHA Windows attestation. Evidence:
+evidence/m5b2a-local-inspection.json and M5B2A-613c95d-local.tar.gz, containing
+reports, JUnit, sanitized logs, wheel/sdist, actual backend results and module/cleanup
+bindings. No GitHub execution. Private debug keys/seeds/disks remain excluded.
+
+M5B1 independently passed Work acceptance in PR16 comment6292907383; Issue15
+closed. M5B2A Work review remains a separate decision. Issue11/7 and formal
+release remain BLOCKED pending integrated execution/recovery, applicable task
+evidence, approval/application, real client adapters/relay and M9 gates.

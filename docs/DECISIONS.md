@@ -95,3 +95,12 @@ validated image metadata. Recognize only those expected markers while requiring
 all valued settings to match the fixed runtime policy. Independently guard the
 actual process environment inside the fixed bootstrap before reading candidate
 bytes. Unknown, duplicate and valued-extra entries remain rejected.
+
+## M5B2A ledger before executable recovery
+
+Persist only snapshot/profile hash bindings and a fenced attempt ledger before
+connecting an executor. Keep all states explicitly unverified and add no success
+completion operation. Owner recovery invalidates a lease and records interruption;
+it does not claim container cleanup or restart safety. Database fencing alone
+cannot prevent delayed Docker create after a crash. Future execution integration
+must separately solve that ownership/reconciliation boundary.
