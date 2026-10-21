@@ -1,5 +1,12 @@
 # Error and limitation log
 
+- M5B3A2 audit reproduced that a new regular .git redirect inside an otherwise
+  unchanged captured bare repository could affect the first Git lookup. Export
+  now rejects any such entry before the object boundary invokes Git, with separate
+  implementer and independent adversarial regressions. All reproduction data was
+  disposable. Service filesystem ABA races remain explicitly outside the atomicity
+  guarantee; this library creates no passed task/execution state.
+
 - M5B2C tracer: a real created-container process hard exit exposed the missing
   owner reconciliation operation. The new one-shot receipt is tested separately
   from automatic recovery. Unknown ACKs, initial absence and identity mismatches

@@ -1,3 +1,53 @@
+# Next queue design checkpoint
+
+M5B3B1-DESIGN.md records an independently peer-reviewed proposal for a separate
+candidate queue with enqueue/get/list/cancel only. No implementation/schema10,
+claim/lease, execution or task gate was added; product remains0.3.0a7/schema9.
+The final authenticated binding comparison must use the insertion connection;
+Git stays outside write transactions. History replay/current state and denial
+versus mutation audit distinctions are explicit. Finalize strict serialized
+field/response bounds in the implementation contract before coding.
+Do not claim this design checkpoint as a new product or formal Release pass.
+
+---
+
+# M5B3A2 independent Work acceptance recorded
+
+Work accepted the bounded candidate-object export stage on PR21 comment6320283524,
+reviewing product2ed3607 and evidenceheadcb176f0. Issues11/7 comments6320512727 /
+6320513992 retain open status. See acceptance/evidence/m5b3a2-work-receipt.md.
+The reviewer independently read repository bytes and recomputed saved evidence;
+it did not rerun tests or access the local Docker daemon. Later receipt changes
+are docs only. Formal Release remains BLOCKED. Next: separately design the
+candidate-aware durable job/executor binding before any verified task gate.
+
+---
+
+# Verified M5B3A2 local checkpoint
+
+Product2ed3607de761f731ce8f80385af86260e126a4f4, tree59af2cb1af025394c722d46fd3e25f3cdc503f98;0.3.0a7/schema9.
+18checks pass; source/wheel/sdist each963pass3skip; Windows936pass30skip.
+41newchecks and6actual candidate input records; no new execution/task acceptance.
+Root verified31Python modules against Git/wheel/sdist, all logs/artifacts/JUnit,
+225-file source identity, metadata/input fingerprints and78old container absences.
+Bare.git redirect finding repaired and independently regressed. See
+M5B3A2-REPORT.md and acceptance/evidence/m5b3a2-local-inspection.json.
+Work review separate; full Release BLOCKED. D:debug/F:source, GitHub storage only.
+
+---
+
+# M5B3A2 development checkpoint
+
+Version0.3.0a7/schema9, owner-only checked existing candidate content export.
+No reconstruction, jobs, execution, task gate or apply. Root independently tested
+actual candidate bytes and four adversarial cases using disposable Git projects.
+An independent audit reproduced a bare-repository .git redirect before the first
+Git command; the new guard and two independently run regressions close that issue.
+These are development observations; frozen source/package/Windows validation and
+Work review follow. Full M5 and formal Release remain BLOCKED; GitHub storage only.
+
+---
+
 # Work-accepted M5B3A1 checkpoint
 
 Actual independent review accepted evidence head0dd96e9942e96ee12cd86ead26350413bee65868;

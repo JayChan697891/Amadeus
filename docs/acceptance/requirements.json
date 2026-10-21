@@ -701,7 +701,9 @@
         "tests/integration/test_m4b_workspaces.py::test_dirty_and_stale_worktree_inputs_fail_without_discarding_edits",
         "tests/integration/test_m4b_workspaces.py::test_nul_parsed_unicode_and_space_filenames_survive_conflict_comparison",
         "tests/unit/test_candidate_binding.py",
-        "tests/integration/test_candidate_binding_git_records.py"
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py"
       ],
       "planned_cases": [
         {
@@ -770,7 +772,9 @@
         "tests/unit/test_verification_reconciliation.py",
         "tests/integration/test_execution_reconciliation.py",
         "tests/unit/test_candidate_binding.py",
-        "tests/integration/test_candidate_binding_git_records.py"
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py"
       ],
       "planned_cases": [
         {
@@ -877,7 +881,9 @@
         "tests/unit/test_verification_reconciliation.py",
         "tests/integration/test_execution_reconciliation.py",
         "tests/unit/test_candidate_binding.py",
-        "tests/integration/test_candidate_binding_git_records.py"
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py"
       ],
       "planned_cases": [
         {
@@ -922,7 +928,9 @@
         "tests/unit/test_verification_reconciliation.py",
         "tests/integration/test_execution_reconciliation.py",
         "tests/unit/test_candidate_binding.py",
-        "tests/integration/test_candidate_binding_git_records.py"
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py"
       ],
       "planned_cases": [
         {

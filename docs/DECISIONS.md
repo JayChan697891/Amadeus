@@ -1,5 +1,15 @@
 # Technical decisions
 
+## M5B3A2: existing content without reconstruction or acceptance authority
+
+Authenticate/capture DB provenance, open existing managed storage, validate strict
+disk receipts/intents and Git indirection before commands, export actual pinned
+candidate objects, repeat checks and finally recapture owner/task metadata. Reject
+extra bare .git entries before repository discovery. Keep content/provenance
+fingerprints separate from future execution/task authority; no caller object grants
+permission. Read-only excludes persistent records/commits, not bounded temporary
+Git output files. OS-level filesystem integrity remains trusted.
+
 ## M5B3A1: metadata capture before applicable input export
 
 Keep this quota-bounded increment DB-only and explicitly metadata. Capture all
