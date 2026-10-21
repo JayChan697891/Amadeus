@@ -1,3 +1,18 @@
+# Verified M5B2B local checkpoint
+
+Code b5504e09bf1cb1c390d56cac11e68a8176d2091d,
+tree4b0fdcba6ed826870ec19c8382ccbf7064108550, version0.3.0a4/schema8.
+D-localcollector18/18pass; source/wheel/sdist each847pass3Windows-onlyskip;
+Windows source826pass24explicit skip. 63real Docker/owner observations, all63exact
+container IDs independently absent. Owner cases preserve cancellation and expired
+authority even after passing candidate output. Root checked saved hashes, JUnit,
+origins, module/package bindings and per-file manifest. See M5B2B-REPORT.md and
+acceptance/evidence/m5b2b-local-inspection.json. Work review remains separate.
+No automatic reconciliation/retry, task acceptance, approval consumption, safe
+apply or real model relay. Full M5/release BLOCKED; GitHub storage only; main unchanged.
+
+---
+
 # Current M5B2B owner executor checkpoint
 
 Version0.3.0a4/schema8, owner single snapshot execution; no scheduler/retry/apply
