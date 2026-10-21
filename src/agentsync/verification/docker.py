@@ -43,8 +43,13 @@ RUNTIME_ENV = {
     "PYTHONDONTWRITEBYTECODE": "1",
 }
 LABEL = "org.agentsync.verifier.owner"
+_ENVIRONMENT_GUARD = (
+    "import os; "
+    f"assert all(os.environ.get(k)==v for k,v in {RUNTIME_ENV!r}.items()); "
+    f"assert set(os.environ)<=set({sorted(set(RUNTIME_ENV) | {'HOME', 'HOSTNAME'})!r}); "
+)
 BOOTSTRAP = (
-    "import sys; n=sys.stdin.buffer.readline(); "
+    _ENVIRONMENT_GUARD + "import sys; n=sys.stdin.buffer.readline(); "
     "assert len(n)<16 and n.endswith(b'\\n'); size=int(n); "
     f"assert 0<size<={MAX_SOURCE}; "
     "source=sys.stdin.buffer.read(size); assert len(source)==size; "
@@ -339,7 +344,9 @@ def _inspect_json(result: _Process) -> Any:
         raise _Failure("docker_inspection_invalid") from None
 
 
-def _isolation_summary(container: dict[str, Any]) -> dict[str, Any]:
+def _isolation_summary(
+    container: dict[str, Any], removed_environment_names: frozenset[str]
+) -> dict[str, Any]:
     """Fixed-schema diagnostics, never raw daemon environment/command/config text."""
     host = container.get("HostConfig", {})
     config = container.get("Config", {})
@@ -381,6 +388,10 @@ def _isolation_summary(container: dict[str, Any]) -> dict[str, Any]:
         "user": enum(config.get("User"), {"65534:65534", "0", "0:0", "root"}),
         "environment_sha256": digest(env),
         "environment_count": len(env),
+        "expected_runtime_environment_count": len(RUNTIME_ENV),
+        "expected_removal_marker_count": sum(
+            isinstance(item, str) and item in removed_environment_names for item in env
+        ),
         "expected_environment_keys_present": {
             key: any(isinstance(item, str) and item.startswith(key + "=") for item in env)
             for key in RUNTIME_ENV
@@ -427,16 +438,32 @@ def _isolation_summary(container: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _isolation(container: dict[str, Any], profile: DockerProfile, owner: str) -> dict[str, Any]:
+def _isolation(
+    container: dict[str, Any],
+    profile: DockerProfile,
+    owner: str,
+    removed_environment_names: frozenset[str],
+) -> dict[str, Any]:
     host = container.get("HostConfig", {})
     config = container.get("Config", {})
     environment = sorted(f"{key}={value}" for key, value in RUNTIME_ENV.items())
+    effective_env = config.get("Env") or []
+    # Docker can retain bare NAME entries for --env NAME removals even though
+    # those names are absent from the process environment. Accept only unique
+    # removals derived from the previously validated immutable image config.
+    environment_matches = (
+        isinstance(effective_env, list)
+        and all(isinstance(item, str) for item in effective_env)
+        and len(effective_env) == len(set(effective_env))
+        and sorted(item for item in effective_env if item not in removed_environment_names)
+        == environment
+    )
     expected_tmpfs = f"rw,noexec,nosuid,nodev,size={TMPFS},mode=1777"
     checks = {
         "owner": config.get("Labels", {}).get(LABEL) == owner,
         "image": container.get("Image") == profile.image_id,
         "user": config.get("User") == "65534:65534",
-        "environment": sorted(config.get("Env") or []) == environment,
+        "environment": environment_matches,
         "entrypoint": config.get("Entrypoint") == ["/usr/local/bin/python3"],
         "command": config.get("Cmd") == ["-I", "-u", "-c", BOOTSTRAP],
         "workdir": config.get("WorkingDir") == "/tmp",
@@ -469,7 +496,7 @@ def _isolation(container: dict[str, Any], profile: DockerProfile, owner: str) ->
             "isolation_mismatch",
             "unsupported",
             isolation_checks=checks,
-            isolation_summary=_isolation_summary(container),
+            isolation_summary=_isolation_summary(container, removed_environment_names),
         )
     return {
         "checks": checks,
@@ -482,6 +509,10 @@ def _isolation(container: dict[str, Any], profile: DockerProfile, owner: str) ->
         "stderr_limit": profile.output_bytes,
         "timeout_seconds": profile.timeout_seconds,
         "seccomp": "builtin",
+        "expected_runtime_environment_count": len(RUNTIME_ENV),
+        "expected_removal_marker_count": sum(
+            item in removed_environment_names for item in effective_env
+        ),
     }
 
 
@@ -622,6 +653,7 @@ def verify_python_json_lines(
             ):
                 raise _Failure("image_identity_mismatch", "unsupported")
             inherited = _image_environment(images[0].get("Config", {}))
+            removed_environment_names = frozenset(inherited) - RUNTIME_ENV.keys()
             command = [
                 *base,
                 "create",
@@ -679,7 +711,9 @@ def verify_python_json_lines(
                     or containers[0].get("Id") != container_id
                 ):
                     raise _Failure("container_identity_mismatch")
-                evidence["isolation"] = _isolation(containers[0], profile, owner)
+                evidence["isolation"] = _isolation(
+                    containers[0], profile, owner, removed_environment_names
+                )
                 payload = (
                     str(len(source)).encode()
                     + b"\n"

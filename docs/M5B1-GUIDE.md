@@ -29,16 +29,17 @@ real AI client. See M5B1-CONTRACT.md for exact limits and trusted components.
   `AGENTSYNC_DOCKER_TEST_IMAGE` specifies a preloaded full image ID. It tests
   external assertions, false success, isolation, time/output/memory/PID/tmpfs limits
   and cleanup. An unconfigured ordinary matrix records these cases as skipped.
-- The dedicated `verifier isolation` Linux CI sets
+- The local Linux debug runner sets
   `AGENTSYNC_REQUIRE_DOCKER_TESTS=1`; missing Docker/image/configuration fails that
-  gate. Actual backend results and host-generated JUnit are saved in its artifact.
+  gate. Actual backend results and host-generated JUnit are saved locally and uploaded
+  only as sanitized storage artifacts; GitHub Actions must not run.
 
 Raw candidate stdout/stderr is untrusted and is not copied into public result
 JSON. Safe metadata includes identities, hashes, counts, fixed errors and effective
 controls. A passing candidate exit status alone does not mean verification passed;
 all external cases and normal completion must be observed, with cleanup confirmed.
 
-The image preload in CI is trusted fixture preparation. It resolves a public
+The image preload in the local VM is trusted fixture preparation. It resolves a public
 Python image to an exact ID, saves its registry digest, then passes only the ID to
 the backend with `--pull=never`. Reproducing a run requires that recorded image,
 the exact verifier code and profile, and the pinned candidate commit/tree.

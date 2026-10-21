@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from uuid import uuid4
 
@@ -25,6 +26,18 @@ def real_image():
         pytest.skip("Real Linux Docker/image not configured; policy tests are a separate tier")
     assert sys.platform == "linux", "Real isolation gate requires a Linux host"
     return image
+
+
+@pytest.fixture
+def host_canary():
+    # The parent must be traversable: EACCES under /root is not proof that an
+    # otherwise-readable host path is absent from the container namespace.
+    if sys.platform != "linux":
+        pytest.skip("The actual host-canary probe requires Linux Docker")
+    with tempfile.NamedTemporaryFile(prefix="agentsync-canary-", dir="/tmp") as stream:
+        stream.write(b"isolated synthetic fixture")
+        stream.flush()
+        yield Path(stream.name)
 
 
 def candidate(tmp_path, source):
@@ -75,7 +88,12 @@ def execute_case(tmp_path, request, source, profile):
     ).as_dict()
     evidence = os.environ.get("AGENTSYNC_VERIFIER_EVIDENCE_DIR")
     if evidence:
-        directory = Path(evidence)
+        environment_id = hashlib.sha256(sys.prefix.encode("utf-8")).hexdigest()[:16]
+        # Source, installed wheel and sdist use different interpreters. Preserve
+        # each environment's real observations instead of overwriting one file.
+        directory = Path(evidence) / environment_id
+        result["test_environment_id"] = environment_id
+        result["test_python_version"] = sys.version.split()[0]
         assert directory.is_absolute()
         directory.mkdir(parents=True, exist_ok=True)
         (directory / (request.node.name + ".json")).write_text(
@@ -124,9 +142,8 @@ def test_actual_docker_rejects_self_reported_or_incomplete_success(
     assert result["error_code"] in {"protocol_failure", "case_mismatch"}, result
 
 
-def test_actual_docker_isolation_controls(tmp_path, request, real_image, monkeypatch):
-    canary = tmp_path / "host-only-canary.txt"
-    canary.write_text("isolated synthetic fixture", encoding="utf-8")
+def test_actual_docker_isolation_controls(tmp_path, request, real_image, monkeypatch, host_canary):
+    canary = host_canary
     monkeypatch.setenv("AGENTSYNC_SYNTHETIC_SECRET", "must-never-enter-container")
     source = b"""import json,os,pathlib,socket,sys
 request=json.loads(next(sys.stdin))
@@ -148,7 +165,8 @@ print(json.dumps({'nonroot':os.getuid()!=0,'no_caps':int(status['CapEff'].strip(
  'no_new_privileges':status['NoNewPrivs'].strip()=='1','seccomp':status['Seccomp'].strip()=='2',
  'readonly':readonly and root_is_ro,'no_network':no_network and no_default_route and {name for _,name in socket.if_nameindex()}=={'lo'},'no_host_canary':not pathlib.Path(request['canary']).exists(),
  'no_socket':not pathlib.Path('/var/run/docker.sock').exists(),
- 'no_secret':'AGENTSYNC_SYNTHETIC_SECRET' not in os.environ}),flush=True)
+ 'no_secret':'AGENTSYNC_SYNTHETIC_SECRET' not in os.environ,
+ 'no_image_metadata_env':all(name not in os.environ for name in ('GPG_KEY','PYTHON_VERSION','PYTHON_SHA256'))}),flush=True)
 """
     expected = dict.fromkeys(
         [
@@ -161,6 +179,7 @@ print(json.dumps({'nonroot':os.getuid()!=0,'no_caps':int(status['CapEff'].strip(
             "no_host_canary",
             "no_socket",
             "no_secret",
+            "no_image_metadata_env",
         ],
         True,
     )

@@ -104,3 +104,20 @@ confirmed. Docker28.0.4/cgroup2 and the preloaded image were present, so this is
 not missing Docker. Never mark this gate passed or skip it. Safe fixed control
 booleans and bounded normalized metadata are added to identify the mismatch
 without dumping raw configuration/environment. See the failure evidence index.
+
+## Local Linux reproduction: Docker environment removal markers
+
+D-drive QEMU/Alpine reproduced14/14 failures with Docker29.8.2/cgroupv2. Only the
+environment check was false; all other controls matched and no candidate executed.
+A trusted fixed probe showed Config.Env contains bare GPG_KEY/PYTHON_VERSION/
+PYTHON_SHA256 removal markers, but process os.environ excludes those names. Permit
+only unique expected bare markers from the already-validated image configuration;
+all valued entries still match the four fixed settings exactly. A fixed bootstrap
+checks actual os.environ before reading candidate bytes. Added24 policy regressions;
+114 policy cases pass. Unknown/duplicate markers or additional values still fail.
+
+The remaining local canary case failed because Python3.12 Path.exists under/root
+raises PermissionError for UID65534. Use an exclusively created host file under
+traversable/tmp so a namespace leak would expose its existence, rather than mask
+the probe with directory permission. Real local14case run then passed. Preserve
+first-failure results and final frozen-tree results as distinct evidence.

@@ -242,6 +242,112 @@ def test_mocked_policy_success_requires_comparison_and_excludes_raw_evidence(
 
 
 @pytest.mark.parametrize(
+    "markers", [[], ["GPG_KEY"], ["GPG_KEY", "PYTHON_VERSION", "PYTHON_SHA256"]]
+)
+def test_only_validated_image_removal_markers_are_optional_in_daemon_config(policy_daemon, markers):
+    def mutate(operation, result):
+        if operation == "image":
+            result[0]["Config"]["Env"].extend(
+                ["GPG_KEY=" + "A" * 40, "PYTHON_VERSION=3.12.13", "PYTHON_SHA256=" + "a" * 64]
+            )
+        if operation == "inspect":
+            result[0]["Config"]["Env"].extend(markers)
+        return result
+
+    policy_daemon["mutate"] = mutate
+    result = verify()
+    assert result["status"] == "passed" and result["cleanup_confirmed"]
+    assert result["isolation"]["expected_removal_marker_count"] == len(markers)
+    assert result["isolation"]["expected_runtime_environment_count"] == 4
+    create = next(call[0] for call in policy_daemon["calls"] if call[0][5] == "create")
+    for name in ("GPG_KEY", "PYTHON_VERSION", "PYTHON_SHA256"):
+        assert any(create[i : i + 2] == ["--env", name] for i in range(len(create) - 1))
+
+
+@pytest.mark.parametrize(
+    "extra",
+    [
+        ["GPG_KEY", "GPG_KEY"],
+        ["GPG_KEY=private-sentinel"],
+        ["GPG_KEY="],
+        ["GPG_KEY=" + "A" * 40],
+        ["GPG_KEY", "GPG_KEY="],
+        ["private-sentinel-unknown-name"],
+        ["OPENAI_API_KEY=private-sentinel"],
+        ["PATH"],
+        ["PATH=/usr/local/bin:/usr/bin:/bin"],
+        [""],
+        ["=private-sentinel"],
+        [None],
+    ],
+)
+def test_removal_marker_compatibility_still_rejects_extra_valued_or_unexpected_entries(
+    policy_daemon, extra
+):
+    def mutate(operation, result):
+        if operation == "image":
+            result[0]["Config"]["Env"].append("GPG_KEY=" + "A" * 40)
+        if operation == "inspect":
+            result[0]["Config"]["Env"].extend(extra)
+        return result
+
+    policy_daemon["mutate"] = mutate
+    result = verify()
+    assert result["status"] == "unsupported" and result["error_code"] == "isolation_mismatch"
+    assert result["effective_isolation_checks"]["environment"] is False
+    assert result["cleanup_confirmed"] and not result["execution_started"]
+    assert "private-sentinel" not in json.dumps(result)
+    assert not any(call[0][5] == "start" for call in policy_daemon["calls"])
+
+
+def test_known_allowlisted_name_without_presence_in_image_is_not_a_removal_marker(policy_daemon):
+    def mutate(operation, result):
+        if operation == "inspect":
+            result[0]["Config"]["Env"].append("GPG_KEY")
+        return result
+
+    policy_daemon["mutate"] = mutate
+    result = verify()
+    assert result["status"] == "unsupported" and not result["execution_started"]
+    assert result["effective_isolation_summary"]["expected_removal_marker_count"] == 0
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["missing", "wrong", "empty", "removed_public", "unknown", "bare_marker"],
+)
+def test_trusted_environment_guard_rejects_before_any_candidate_is_read(monkeypatch, mutation):
+    # Execute only the fixed environment guard, never candidate source or the
+    # source-reading/executing remainder of the container bootstrap on the host.
+    environment = {**docker.RUNTIME_ENV, "HOME": "/", "HOSTNAME": "isolated"}
+    if mutation == "missing":
+        del environment["LANG"]
+    elif mutation == "wrong":
+        environment["LANG"] = "private-sentinel"
+    elif mutation == "empty":
+        environment["LANG"] = ""
+    elif mutation == "removed_public":
+        environment["GPG_KEY"] = "A" * 40
+    elif mutation == "bare_marker":
+        environment["GPG_KEY"] = ""
+    else:
+        environment["private-sentinel-unknown"] = "private-sentinel"
+    monkeypatch.setattr(os, "environ", environment)
+    with pytest.raises(AssertionError) as failure:
+        exec(docker._ENVIRONMENT_GUARD, {})
+    assert failure.value.args == ()
+    assert docker.BOOTSTRAP.startswith(docker._ENVIRONMENT_GUARD + "import sys;")
+
+
+@pytest.mark.parametrize("implicit", [{}, {"HOME": "/", "HOSTNAME": "isolated"}])
+def test_trusted_environment_guard_accepts_only_fixed_values_and_normal_docker_keys(
+    monkeypatch, implicit
+):
+    monkeypatch.setattr(os, "environ", {**docker.RUNTIME_ENV, **implicit})
+    exec(docker._ENVIRONMENT_GUARD, {})
+
+
+@pytest.mark.parametrize(
     "output",
     [
         b"",

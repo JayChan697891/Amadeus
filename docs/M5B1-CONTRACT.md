@@ -183,8 +183,9 @@ image identity, sanitized argv/environment, Git object/path boundaries, every pr
 output bounds, typed comparisons, early exit, forged success text, and cleanup errors.
 Non-Linux/no-Docker tests must prove rejection without candidate host execution.
 
-A dedicated Linux GitHub Actions job must actually provide Docker, preload and pin a
-reviewed image, then run the real backend. That job must fail if Docker/image/security
+The authorized local Linux debug environment must actually provide Docker, preload
+and pin a reviewed image, then run the real backend. GitHub is storage only; do not
+run or debug Actions. Required local verification must fail if Docker/image/security
 controls are unavailable; skipping or substituting a mock is not a passing gate. Save
 JUnit, logs, exact image/commit/profile hashes and effective container settings.
 
@@ -195,11 +196,12 @@ checking, false-result rejection, and exact-owned-container cleanup. All destruc
 fixtures use isolated temporary projects and disposable containers. Other CI platforms
 can test policy/unsupported paths but cannot count as Linux Docker isolation evidence.
 
-The current Windows environment has no verified Docker backend. Local policy tests
-alone cannot establish successful sandbox execution. Report real Linux CI results
-separately and leave unavailable probes explicitly unexecuted or restricted.
+The Windows host has no native Docker backend. A dedicated QEMU/Alpine Linux VM
+on D: now provides the actual Docker29.8.2/cgroupv2 debug backend. Host policy tests
+alone cannot establish successful sandbox execution; report actual local Linux
+results separately and leave other unavailable backends explicitly unverified.
 
-The actual Linux gate additionally reads kernel cgroup v2 CPU/memory/swap/PID limit
+The actual local Linux gate additionally reads kernel cgroup v2 CPU/memory/swap/PID limit
 files, checks the root mount is read-only, and checks only loopback/no default route.
 An unrelated permission or connection error alone is insufficient isolation evidence.
 CPU evidence observes the effective kernel quota; it is not a throughput benchmark.

@@ -1,5 +1,17 @@
 # Current M5B1 verifier foundation (Issue15)
 
+Current local debug environment is D:/agentsync-debug (see LOCAL-DEBUG.md).
+A verified QEMU/Alpine VM now runs Docker29.8.2, cgroupv2 and builtin seccomp.
+Actual local reproduction isolated the environment predicate as the only mismatch:
+Docker's bare expected ENV deletion markers were mistaken for extra process vars.
+Recognize only markers derived from validated image metadata and guard the actual
+container environment before reading candidate source. Move the canary to traversable
+host /tmp. All14 real Docker cases then passed in9.80s. Final exact-commit source/
+wheel/sdist collection is the next gate; this preliminary run does not certify a
+later tree. No GitHub execution was used. Full M5 and formal release remain BLOCKED.
+
+The observations below describe earlier checkpoints and are preserved as history.
+
 Local source regression after resume:716 passed/17 skipped (14 unavailable real
 Docker,3 Windows symlink privileges),162.81s. Ruff/format/mypy26files passed.
 See acceptance/evidence/local-only-20261020.json and redacted JUnit/log. Real Docker

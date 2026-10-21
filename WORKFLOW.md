@@ -1,5 +1,11 @@
 # Work + Codex execution workflow
 
+Build/use the debug runtime on D:\agentsync-debug per the current user instruction.
+Use the local QEMU Linux VM for actual Docker isolation; preserve source and
+sanitized delivery evidence in F:\syuc. See LOCAL-DEBUG.md. Validate the exact frozen
+source and package installation environments; do not infer release or real-client
+acceptance from the verifier foundation alone.
+
 User override, 2026-10-20: GitHub is storage only; checks, execution, debugging and
 benchmarks must use local or other authorized environments. Never dispatch hosted
 Actions. Upload commits with [skip ci] and preserve manual-only workflow triggers.

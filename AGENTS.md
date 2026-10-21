@@ -1,5 +1,11 @@
 # AgentSync continuation context
 
+Debug-environment location (current user instruction): D:\agentsync-debug. Keep
+VM disks, debug venvs, caches and temporary execution evidence there. Project
+source/deliverables stay in F:\syuc. Local Linux Docker is now available inside the
+dedicated D-drive QEMU/Alpine VM; see docs/LOCAL-DEBUG.md. Never upload VM credentials,
+seeds or disks. This does not authorize GitHub-hosted execution.
+
 Current user override (2026-10-20): GitHub is upload/storage only. Do not run,
 dispatch, rerun or debug GitHub Actions, checks or benchmarks. Automatic workflow
 triggers are disabled in this branch. Perform validation locally or in a separately

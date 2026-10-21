@@ -1,5 +1,13 @@
 # M5B1 foundation verification checkpoint
 
+Current local update: D-drive QEMU/Alpine Docker29.8.2/cgroupv2 reproduced the
+failure and identified ENV deletion-marker representation as the root cause.
+The precise marker/actual-environment guard repair has114 passing policy cases.
+Actual local Docker14cases passed after the canary location fix. See LOCAL-DEBUG.md.
+Final exact-SHA source/wheel/sdist evidence is still required after freezing this
+repair; the historical first-stage observations below are not that certification.
+GitHub is now storage only: no Actions execution/debugging or remote benchmarks.
+
 Issue15, version0.3.0a2, parentf1f13ded (PR14). This stage is an owner-controlled
 synchronous library, not integrated full M5 acceptance. See M5B1-CONTRACT.md.
 
