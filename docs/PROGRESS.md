@@ -1,3 +1,16 @@
+# Next queue design checkpoint
+
+M5B3B1-DESIGN.md records an independently peer-reviewed proposal for a separate
+candidate queue with enqueue/get/list/cancel only. No implementation/schema10,
+claim/lease, execution or task gate was added; product remains0.3.0a7/schema9.
+The final authenticated binding comparison must use the insertion connection;
+Git stays outside write transactions. History replay/current state and denial
+versus mutation audit distinctions are explicit. Finalize strict serialized
+field/response bounds in the implementation contract before coding.
+Do not claim this design checkpoint as a new product or formal Release pass.
+
+---
+
 # M5B3A2 independent Work acceptance recorded
 
 Work accepted the bounded candidate-object export stage on PR21 comment6320283524,
