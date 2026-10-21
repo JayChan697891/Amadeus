@@ -57,6 +57,16 @@ REVIEWER_OPERATIONS = frozenset({"review_task", "list_audit"})
 BOOTSTRAP_OPERATIONS = frozenset({"create_project", "register_agent"})
 AGENT_WRITES = WORKER_OPERATIONS | {"review_task", "heartbeat"} | BOOTSTRAP_OPERATIONS
 OWNER_WRITES = frozenset({"set_agent_roles", "decide_approval", "revoke_approval"})
+VERIFICATION_AUDIT_OPERATIONS = frozenset(
+    {
+        "verification_enqueue",
+        "verification_cancel",
+        "verification_claim",
+        "verification_renew",
+        "verification_ack_cancel",
+        "verification_interrupt",
+    }
+)
 
 
 def _digest(value: str) -> str:
@@ -126,7 +136,11 @@ class PermissionsMixin:
         response: dict[str, Any] | None = None,
     ) -> None:
         safe_operation = (
-            operation if operation in OPERATIONS or operation in OWNER_OPERATIONS else "unknown"
+            operation
+            if operation in OPERATIONS
+            or operation in OWNER_OPERATIONS
+            or operation in VERIFICATION_AUDIT_OPERATIONS
+            else "unknown"
         )
         safe_code = code if re.fullmatch(r"[a-z_]{1,64}", code) else "operation_failed"
         target = None

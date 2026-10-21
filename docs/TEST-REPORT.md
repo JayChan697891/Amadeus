@@ -1,3 +1,16 @@
+# Current M5B2A development checkpoint
+
+Version0.3.0a3/schema7: internal owner-authorized durable verification job/attempt
+ledger, no executable worker or successful verification outcome. Contract and
+guide: M5B2A-CONTRACT.md / M5B2A-GUIDE.md. Separate branch from M5B1.
+Developer preflight on the working tree:26new policy cases,28focused cases pass;
+Windows full source766pass17explicit skips. Lead independently inspects code and
+will run final frozen-source/wheel/sdist validation locally on D:. These preliminary
+counts do not certify a later commit. No GitHub Actions is used; main is unchanged.
+Full M5, real client relay and formal release remain BLOCKED.
+
+---
+
 # Current local verification — version0.3.0a2
 
 Frozen code cfb5304c3979fc1677c73618120c0d33f928018a: Linux source/wheel/sdist

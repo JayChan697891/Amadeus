@@ -135,6 +135,36 @@ PRAGMA user_version=6;
 """
 
 
+MIGRATION_V7 = """
+CREATE TABLE verification_jobs(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ snapshot_id TEXT NOT NULL REFERENCES repository_snapshots(id), commit_sha TEXT NOT NULL,
+ profile_kind TEXT NOT NULL, profile_sha256 TEXT NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('queued','running','cancel_requested','cancelled','interrupted')),
+ version INTEGER NOT NULL CHECK(version BETWEEN 1 AND 9223372036854775806),
+ attempt_number INTEGER NOT NULL CHECK(attempt_number BETWEEN 0 AND 9223372036854775806),
+ current_attempt_id TEXT, created_at REAL NOT NULL, updated_at REAL NOT NULL,
+ UNIQUE(id,project_id));
+CREATE INDEX verification_jobs_project ON verification_jobs(project_id,created_at,id);
+CREATE TABLE verification_attempts(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, job_id TEXT NOT NULL,
+ attempt_number INTEGER NOT NULL CHECK(attempt_number BETWEEN 1 AND 9223372036854775806),
+ token_hash TEXT NOT NULL, lease_expires_at REAL NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('running','cancel_requested','cancelled','interrupted')),
+ reason_code TEXT NOT NULL CHECK(reason_code IN ('','owner_cancelled','lease_expired','service_interrupted')),
+ created_at REAL NOT NULL, updated_at REAL NOT NULL,
+ FOREIGN KEY(job_id,project_id) REFERENCES verification_jobs(id,project_id),
+ UNIQUE(job_id,attempt_number));
+CREATE INDEX verification_attempts_expiry ON verification_attempts(status,lease_expires_at);
+CREATE TABLE verification_requests(
+ project_id TEXT NOT NULL REFERENCES projects(id), operation TEXT NOT NULL,
+ request_id TEXT NOT NULL, payload_hash TEXT NOT NULL, job_id TEXT NOT NULL,
+ FOREIGN KEY(job_id,project_id) REFERENCES verification_jobs(id,project_id),
+ PRIMARY KEY(project_id,operation,request_id));
+PRAGMA user_version=7;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -180,7 +210,12 @@ def migrate(path: Path) -> None:
             for statement in MIGRATION_V6.split(";"):
                 if statement.strip():
                     db.execute(statement)
-        elif version != 6:
+            version = 6
+        if version == 6:
+            for statement in MIGRATION_V7.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+        elif version != 7:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         db.commit()
     except Exception:
