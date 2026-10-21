@@ -1,3 +1,16 @@
+# Verified M5B3A1 local checkpoint
+
+Product65e97a3185a68b350aead0d364e69ced73df98f4, treee008b5cfec9a9066f14f7a44c5530a08730eb66a,0.3.0a6/schema9.
+DB-only candidate metadata capture: no Git/filesystem/execution/task acceptance.
+18checks pass; Linux three suites each922pass3skip; Windows896pass29skip.
+6metadata observations and78existing container regressions, all78IDs independently
+absent. Root verified hashes/JUnit/origins/7package modules and source identity.
+See M5B3A1-REPORT.md and acceptance/evidence/m5b3a1-local-inspection.json.
+Work review separate; no new scope starts. Full Release BLOCKED. D:debug/F:source,
+GitHub storage only; no Actions/paid calls/main changes.
+
+---
+
 # Verified M5B2C local checkpoint
 
 Code c1f2e83a61af5c267e3374dd46398b2a57b6abf1, treede68cde10628e48122fad14409983ccbab570802; version0.3.0a5/schema9.
