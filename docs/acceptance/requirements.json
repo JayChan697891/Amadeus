@@ -699,7 +699,9 @@
         "tests/security/test_resource_paths.py::test_mutation_during_real_hash_read_is_explicitly_unstable",
         "tests/integration/test_m4b_workspaces.py::test_actual_same_line_conflict_uses_third_tree_and_preserves_both_actors",
         "tests/integration/test_m4b_workspaces.py::test_dirty_and_stale_worktree_inputs_fail_without_discarding_edits",
-        "tests/integration/test_m4b_workspaces.py::test_nul_parsed_unicode_and_space_filenames_survive_conflict_comparison"
+        "tests/integration/test_m4b_workspaces.py::test_nul_parsed_unicode_and_space_filenames_survive_conflict_comparison",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py"
       ],
       "planned_cases": [
         {
@@ -766,7 +768,9 @@
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",
         "tests/unit/test_verification_reconciliation.py",
-        "tests/integration/test_execution_reconciliation.py"
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py"
       ],
       "planned_cases": [
         {
@@ -871,7 +875,9 @@
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",
         "tests/unit/test_verification_reconciliation.py",
-        "tests/integration/test_execution_reconciliation.py"
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py"
       ],
       "planned_cases": [
         {
@@ -914,7 +920,9 @@
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",
         "tests/unit/test_verification_reconciliation.py",
-        "tests/integration/test_execution_reconciliation.py"
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py"
       ],
       "planned_cases": [
         {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0a6 — M5B3A1 candidate metadata binding
+
+- Owner-only read-only capture of project-consistent candidate/worktree/snapshot/task records.
+- Frozen metadata and canonical receipt fingerprints; strict stored JSON validation.
+- No filesystem/Git validation, code execution, task gate, schema change or source apply.
+
 ## 0.3.0a5 — M5B2C explicit cleanup receipt
 
 - Owner-only internal one-shot reconciliation for expired, acknowledged full-ID executions.

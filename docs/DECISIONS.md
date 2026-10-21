@@ -1,5 +1,13 @@
 # Technical decisions
 
+## M5B3A1: metadata capture before applicable input export
+
+Keep this quota-bounded increment DB-only and explicitly metadata. Capture all
+related project records in one authenticated read transaction, strictly validate
+receipts and return frozen values with an unkeyed versioned digest. This does not
+make a caller-constructible dataclass an authority or prove a current filesystem.
+Do not attach arbitrary historical baseline passes to a merged task result.
+
 ## M5B2C: cleanup observations do not release execution authority
 
 Persist an additive schema9 one-shot cleanup intent and revoke the old token

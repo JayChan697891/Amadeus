@@ -1,3 +1,15 @@
+# M5B3A1 bounded development
+
+Version0.3.0a6/schema9: DB-only owner candidate metadata binding. M5B3A full input
+bridge remains incomplete: no disk/Git/object validation or task gate. Root's
+two actual Git-generated-record integration cases passed during development;
+they show metadata capture and explicitly do not attest a dirty checkout. These
+are not frozen-SHA acceptance results. Final local source/package checks and
+independent Work review follow code freeze. GitHub storage only, D:debug/F:source.
+Formal Release remains BLOCKED.
+
+---
+
 # Work-accepted M5B2C checkpoint
 
 Work accepted the limited stage at evidence head53797c5c. Actual review and
