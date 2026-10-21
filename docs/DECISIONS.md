@@ -143,3 +143,11 @@ from finite-profile assessment. Unknown create/crash/expired authority remains
 unverified and cannot be recycled by old ledger APIs. Preserve diagnostic backend
 observations without granting success-writing authority. No exactly-once or
 automatic crash cleanup guarantee is claimed.
+
+## M5B3B0 capture inside the caller transaction
+
+Extract the existing metadata read as a private authenticated seam, retaining
+public capture's validation and transaction lifetime. Future queue insertion must
+compare in its own write transaction; reading through another connection before
+insertion is insufficient. This prerequisite creates no queue or successful
+verification and does not extend trust to arbitrary caller-created databases.

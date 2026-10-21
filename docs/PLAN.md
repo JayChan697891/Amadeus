@@ -1,3 +1,13 @@
+# M5B3B0 transaction prerequisite in development
+
+Implement the private owner-authenticated metadata capture seam on an existing
+caller-owned transaction before any candidate queue. Original public capture and
+existing object export retain their semantics. Version0.3.0a8/schema9; no queue,
+execution/lease, task gate or apply. See M5B3B0-CONTRACT.md. Final frozen-source
+local checks and independent Work review remain pending. Formal Release BLOCKED.
+
+---
+
 # Verified M5B3A2 local checkpoint
 
 Product2ed3607de761f731ce8f80385af86260e126a4f4, tree59af2cb1af025394c722d46fd3e25f3cdc503f98;0.3.0a7/schema9.

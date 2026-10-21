@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a8 — M5B3B0 transaction-bound metadata capture
+
+Extract a private owner-authenticated capture seam that reads the caller-owned
+SQLite transaction without managing its lifetime. Preserve public capture and
+existing export behavior. No candidate queue, schema change or execution gate.
+Final validation and independent Work review remain required.
+
 ## 0.3.0a7 — M5B3A2 existing candidate input export
 
 - Owner-only checked export of actual managed merge-candidate object content.
