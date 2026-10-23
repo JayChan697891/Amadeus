@@ -1,3 +1,15 @@
+# Verified M5B3B0 local checkpoint
+
+Product 37b17a3d0c27b0a34ca93e03c4944f02a7a63071, tree 4036fc4a1b19abb57fd6559f34e14e731412c170; 0.3.0a8/schema9.
+18 checks pass; Linux source/wheel/sdist each 970 pass / 3 skip;
+Windows 943 pass / 30 skip. Seven new real transaction cases pass in all suites.
+Root verified 31 Python modules, 233-file source identity, all logs/artifacts/JUnit,
+6 metadata + 6 input + 78 old container regression observations and exact ID absence.
+Private helper prerequisite only; no queue or task acceptance. See M5B3B0-REPORT.md.
+Work acceptance separate; formal Release BLOCKED. D:debug/F:source; no Actions.
+
+---
+
 # Verified M5B3A2 local checkpoint
 
 Product2ed3607de761f731ce8f80385af86260e126a4f4, tree59af2cb1af025394c722d46fd3e25f3cdc503f98;0.3.0a7/schema9.

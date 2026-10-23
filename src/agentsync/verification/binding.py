@@ -129,6 +129,39 @@ class OwnerCandidateBindings:
             ) from None
         try:
             db.execute("BEGIN")
+            return self._capture_in_transaction(db, **p)
+        except sqlite3.Error:
+            raise AgentSyncError(
+                "storage_error", "Candidate metadata storage unavailable.", 503
+            ) from None
+        finally:
+            db.rollback()
+            db.close()
+
+    def _capture_in_transaction(
+        self,
+        db: sqlite3.Connection,
+        *,
+        project_id: str,
+        admin_token: str,
+        candidate_id: str,
+        expected_candidate_sha: str,
+    ) -> CandidateBinding:
+        """Authenticate/read on an active caller-owned transaction; never manage it."""
+        p = self.core._validated_payload(
+            _Capture,
+            {
+                "project_id": project_id,
+                "admin_token": admin_token,
+                "candidate_id": candidate_id,
+                "expected_candidate_sha": expected_candidate_sha,
+            },
+        )
+        try:
+            if not db.in_transaction:
+                raise AgentSyncError(
+                    "transaction_required", "An active caller transaction is required.", 409
+                )
             self.core._authenticate_owner(db, p)
             candidate = db.execute(
                 "SELECT * FROM merge_candidates WHERE id=? AND project_id=?",
@@ -235,6 +268,3 @@ class OwnerCandidateBindings:
             raise AgentSyncError(
                 "storage_error", "Candidate metadata storage unavailable.", 503
             ) from None
-        finally:
-            db.rollback()
-            db.close()
