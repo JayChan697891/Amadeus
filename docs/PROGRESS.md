@@ -1,3 +1,16 @@
+# Verified M5B3B2A local checkpoint
+
+Product 0fd2041c8efd1c4fa348117e013c0c5b1f30e470, tree 9a76e8c5280c34d38087f42fc35b702808d15c59;0.3.0a10/schema11.
+18checks pass; Linux three suites each 1058pass/3skip;
+Windows 1031pass/30skip. 38 new cases;
+six actual reservation/recovery observations.33modules and253-file
+source/package identity verified;78 old Docker regression IDs independently absent.
+Owner reservation only; no execution/task gate/apply. Independent Work review
+pending, formal Release BLOCKED. See M5B3B2A-REPORT.md and evidence index.
+D:debug/F:source; no Actions, paid calls or main changes.
+
+---
+
 # M5B3B2A candidate owner reservation in development
 
 Implement the bounded owner-only one-shot reservation and explicit ledger
