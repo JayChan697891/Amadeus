@@ -95,3 +95,10 @@ matrix and M9 remain incomplete. Formal Release **BLOCKED**. Issues #11/#7 stay 
 Independent Work acceptance remains separate and pending. Later documentation
 heads are not re-executed product commits. Source F:/syuc; debug/cache/temp D:.
 GitHub storage only: no Actions, paid calls, main changes or merge.
+
+## Independent Work acceptance
+
+Bounded queue accepted in PR23 comment6356443059 after independent code/archive/
+JUnit/package/observation review of evidencehead a2f7efad51a1f95c39ce5d6a2641094fc4763ff9.
+Reviewer did not rerun tests or inspect original daemon. Published receipt:
+acceptance/evidence/m5b3b1-work-receipt.md. Issues11/7 open; full Release BLOCKED.
