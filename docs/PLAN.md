@@ -1,3 +1,16 @@
+# Verified M5B3B1 local checkpoint
+
+Product f65e134d672d4c4333701b982759cc86567a97a6, tree 64c402b142ab10246e2dfa76e31cf0167c71acba; 0.3.0a9/schema10.
+18 checks pass; Linux three suites each 1020 pass / 3 skip; Windows 993 pass / 30 skip.
+50 new cases; six actual queue records with raw metadata/request rows; 32 modules
+and 244-file source identity verified. Old 6 metadata + 6 input +
+78 Docker regression observations are separate. Profile-binding and timeout audit
+findings repaired. See M5B3B1-REPORT.md and acceptance evidence index.
+Queue only; no worker/lease/execution/task gate/apply. Work review separate;
+formal Release BLOCKED. D:debug/F:source; no Actions, paid calls or main changes.
+
+---
+
 # M5B3B1 candidate queue in development
 
 Implement the independent owner candidate queue from M5B3B1-CONTRACT.md:
