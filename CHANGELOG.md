@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0a11 — M5B3B2B candidate execution intent guard
+
+Add owner-only prepare/get/abandon of a single non-executing candidate intent.
+Fence ledger recovery while a prepared intent exists; require explicit terminal
+abandonment before owner reservation interruption. Preserve prior proofs/history
+and add schema12 tables only. No execution capability, token, worker, Docker,
+renewal, task gate or apply. Frozen validation/Work review remain required;
+formal Release BLOCKED.
+
 ## 0.3.0a10 — M5B3B2A one-shot owner reservation
 
 Add owner-only candidate reservation, explicit terminal interruption and strict
