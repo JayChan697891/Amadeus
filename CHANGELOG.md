@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a9 — M5B3B1 durable candidate verification queue
+
+Add a separate owner-only candidate queue with immutable checked input bindings,
+historical idempotent receipts and version-fenced cancellation. Add schema10
+tables without changing old snapshot verification semantics. No candidate
+worker, lease, execution, task verification, approval consumption or apply.
+Frozen local validation and independent Work acceptance remain required.
+
 ## 0.3.0a8 — M5B3B0 transaction-bound metadata capture
 
 Extract a private owner-authenticated capture seam that reads the caller-owned

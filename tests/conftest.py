@@ -19,3 +19,14 @@ def owner_grant(core, project, actor, roles=("worker", "reviewer")):
                 + str(current["version"]),
             },
         )
+
+
+def drop_candidate_queue_schema(db):
+    """Remove only v10 additions when constructing historical migration fixtures."""
+    db.execute("DROP TABLE IF EXISTS candidate_verification_requests")
+    db.execute("DROP TABLE IF EXISTS candidate_verification_jobs")
+    indexes = db.execute(
+        "SELECT name FROM sqlite_master WHERE type='index' AND name LIKE 'candidate_queue_%'"
+    ).fetchall()
+    for row in indexes:
+        db.execute('DROP INDEX "' + row[0].replace('"', '""') + '"')

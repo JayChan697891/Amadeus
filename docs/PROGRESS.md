@@ -1,3 +1,40 @@
+# M5B3B1 independent Work acceptance recorded
+
+PR23 comment6356443059 accepts the bounded candidate queue, reviewing product
+f65e134 and evidenceheada2f7efa. Issues11/7 records6360133299 /6360134616 stay open.
+Work independently inspected actual code/repository bytes,143-file archive,
+4JUnit,32module package identity and6queue/6metadata/6input/78Docker saved records;
+it did not rerun tests or access the original daemon. Receipt:
+acceptance/evidence/m5b3b1-work-receipt.md. Docs descendants are not re-executed
+product commits. Full Release BLOCKED. Next: bounded candidate claim prerequisite.
+
+---
+
+# Verified M5B3B1 local checkpoint
+
+Product f65e134d672d4c4333701b982759cc86567a97a6, tree 64c402b142ab10246e2dfa76e31cf0167c71acba; 0.3.0a9/schema10.
+18 checks pass; Linux three suites each 1020 pass / 3 skip; Windows 993 pass / 30 skip.
+50 new cases; six actual queue records with raw metadata/request rows; 32 modules
+and 244-file source identity verified. Old 6 metadata + 6 input +
+78 Docker regression observations are separate. Profile-binding and timeout audit
+findings repaired. See M5B3B1-REPORT.md and acceptance evidence index.
+Queue only; no worker/lease/execution/task gate/apply. Work review separate;
+formal Release BLOCKED. D:debug/F:source; no Actions, paid calls or main changes.
+
+---
+
+# M5B3B1 candidate queue in development
+
+Implement the independent owner candidate queue from M5B3B1-CONTRACT.md:
+enqueue/get/list/cancel, schema10 additive tables, immutable checked content
+metadata, historical request receipts and transactional owner/version binding.
+No candidate worker/claim/lease, execution, task gate or apply. Version0.3.0a9.
+B0 private same-connection capture is independently accepted in PR22. Existing
+snapshot jobs/executor remain distinct. Final frozen tests and Work acceptance
+are still required; formal Release BLOCKED. D:debug/F:source; no Actions.
+
+---
+
 # M5B3B0 independent Work acceptance recorded
 
 PR22 comment6329149589 now accepts the bounded private transaction-capture stage,

@@ -255,6 +255,49 @@ PRAGMA user_version=9;
 """
 
 
+MIGRATION_V10 = """
+CREATE UNIQUE INDEX candidate_queue_candidates_project ON merge_candidates(id,project_id);
+CREATE UNIQUE INDEX candidate_queue_snapshots_project ON repository_snapshots(id,project_id);
+CREATE UNIQUE INDEX candidate_queue_worktrees_project ON managed_worktrees(id,project_id);
+CREATE UNIQUE INDEX candidate_queue_tasks_project ON tasks(id,project_id);
+CREATE TABLE candidate_verification_jobs(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+ candidate_id TEXT NOT NULL, snapshot_id TEXT NOT NULL,
+ left_worktree_id TEXT NOT NULL, right_worktree_id TEXT NOT NULL,
+ left_task_id TEXT NOT NULL, right_task_id TEXT NOT NULL,
+ left_task_version INTEGER NOT NULL CHECK(left_task_version BETWEEN 1 AND 9223372036854775807),
+ right_task_version INTEGER NOT NULL CHECK(right_task_version BETWEEN 1 AND 9223372036854775807),
+ candidate_sha TEXT NOT NULL, base_sha TEXT NOT NULL, left_sha TEXT NOT NULL, right_sha TEXT NOT NULL,
+ tree_sha TEXT NOT NULL, input_sha256 TEXT NOT NULL, source_sha256 TEXT NOT NULL,
+ binding_sha256 TEXT NOT NULL, provenance_sha256 TEXT NOT NULL,
+ profile_kind TEXT NOT NULL, profile_sha256 TEXT NOT NULL, image_id TEXT NOT NULL,
+ metadata_json TEXT NOT NULL CHECK(length(CAST(metadata_json AS BLOB))<=4194304),
+ metadata_sha256 TEXT NOT NULL,
+ source_kind TEXT NOT NULL CHECK(source_kind='managed_merge_candidate_input'),
+ status TEXT NOT NULL CHECK(status IN ('queued','cancelled')),
+ version INTEGER NOT NULL CHECK(version BETWEEN 1 AND 9223372036854775806),
+ created_at REAL NOT NULL CHECK(abs(created_at)<=1.7976931348623157e308),
+ updated_at REAL NOT NULL CHECK(abs(updated_at)<=1.7976931348623157e308),
+ UNIQUE(id,project_id),
+ FOREIGN KEY(candidate_id,project_id) REFERENCES merge_candidates(id,project_id),
+ FOREIGN KEY(snapshot_id,project_id) REFERENCES repository_snapshots(id,project_id),
+ FOREIGN KEY(left_worktree_id,project_id) REFERENCES managed_worktrees(id,project_id),
+ FOREIGN KEY(right_worktree_id,project_id) REFERENCES managed_worktrees(id,project_id),
+ FOREIGN KEY(left_task_id,project_id) REFERENCES tasks(id,project_id),
+ FOREIGN KEY(right_task_id,project_id) REFERENCES tasks(id,project_id));
+CREATE INDEX candidate_queue_jobs_page ON candidate_verification_jobs(project_id,created_at,id);
+CREATE TABLE candidate_verification_requests(
+ project_id TEXT NOT NULL REFERENCES projects(id),
+ operation TEXT NOT NULL CHECK(operation IN ('enqueue','cancel')),
+ request_id TEXT NOT NULL, payload_hash TEXT NOT NULL, job_id TEXT NOT NULL,
+ response_json TEXT NOT NULL CHECK(length(CAST(response_json AS BLOB))<=16384),
+ response_sha256 TEXT NOT NULL,
+ PRIMARY KEY(project_id,operation,request_id),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id));
+PRAGMA user_version=10;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -318,7 +361,12 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 9
-        if version != 9:
+        if version == 9:
+            for statement in MIGRATION_V10.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 10
+        if version != 10:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
             raise RuntimeError("Database migration violated foreign-key constraints.")

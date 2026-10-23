@@ -60,6 +60,8 @@ OWNER_WRITES = frozenset({"set_agent_roles", "decide_approval", "revoke_approval
 VERIFICATION_AUDIT_OPERATIONS = frozenset(
     {
         "verification_enqueue",
+        "candidate_verification_enqueue",
+        "candidate_verification_cancel",
         "verification_cancel",
         "verification_claim",
         "verification_renew",

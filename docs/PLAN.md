@@ -1,3 +1,28 @@
+# Verified M5B3B1 local checkpoint
+
+Product f65e134d672d4c4333701b982759cc86567a97a6, tree 64c402b142ab10246e2dfa76e31cf0167c71acba; 0.3.0a9/schema10.
+18 checks pass; Linux three suites each 1020 pass / 3 skip; Windows 993 pass / 30 skip.
+50 new cases; six actual queue records with raw metadata/request rows; 32 modules
+and 244-file source identity verified. Old 6 metadata + 6 input +
+78 Docker regression observations are separate. Profile-binding and timeout audit
+findings repaired. See M5B3B1-REPORT.md and acceptance evidence index.
+Queue only; no worker/lease/execution/task gate/apply. Work review separate;
+formal Release BLOCKED. D:debug/F:source; no Actions, paid calls or main changes.
+
+---
+
+# M5B3B1 candidate queue in development
+
+Implement the independent owner candidate queue from M5B3B1-CONTRACT.md:
+enqueue/get/list/cancel, schema10 additive tables, immutable checked content
+metadata, historical request receipts and transactional owner/version binding.
+No candidate worker/claim/lease, execution, task gate or apply. Version0.3.0a9.
+B0 private same-connection capture is independently accepted in PR22. Existing
+snapshot jobs/executor remain distinct. Final frozen tests and Work acceptance
+are still required; formal Release BLOCKED. D:debug/F:source; no Actions.
+
+---
+
 # Verified M5B3B0 local checkpoint
 
 Product 37b17a3d0c27b0a34ca93e03c4944f02a7a63071, tree 4036fc4a1b19abb57fd6559f34e14e731412c170; 0.3.0a8/schema9.

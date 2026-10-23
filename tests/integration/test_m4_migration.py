@@ -110,7 +110,7 @@ def test_m4_upgrade_preserves_data_and_reopened_resource_locks(tmp_path, version
             context
         ]
     with sqlite3.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 9
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 10
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []
         assert (
             db.execute("SELECT review_evidence FROM tasks WHERE id='t'").fetchone()[0]
