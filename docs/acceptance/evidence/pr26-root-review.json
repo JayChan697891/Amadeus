@@ -6,7 +6,9 @@
   "root_read_both_documents": true,
   "all_sizes_and_sha256_matched": true,
   "input_git_blob_ids_matched": true,
-  "peer_report_sha256": "a566fdff688983937034e51d5ccbb06c8cecdd3c9d54423447b0f191bc8ac772",
+  "peer_report_sha256": "99a523f8db6d08dc027ea3a3a98848e31e9678e3995703e3423ab96c042a9230",
   "scope": "documentation only; no product test or execution acceptance",
-  "release": "BLOCKED"
+  "release": "BLOCKED",
+  "peer_original_debug_report_sha256": "a566fdff688983937034e51d5ccbb06c8cecdd3c9d54423447b0f191bc8ac772",
+  "review_receipt_encoding": "UTF-8 LF for Git publication; original debug receipt identity retained separately"
 }
