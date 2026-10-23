@@ -340,6 +340,29 @@ def _public(row: sqlite3.Row) -> dict[str, Any]:
     }
 
 
+def _trusted_profile(profile: DockerProfile) -> dict[str, str]:
+    try:
+        if type(profile) is not DockerProfile:
+            raise ValueError("profile type")
+        profile.__post_init__()
+        kind, digest, image = profile.profile_id, profile.sha256, profile.image_id
+        _text(kind)
+        _sha(digest)
+        if re.fullmatch(r"sha256:[0-9a-f]{64}", image) is None:
+            raise ValueError("profile image")
+    except (
+        AgentSyncError,
+        ValueError,
+        TypeError,
+        UnicodeError,
+        RecursionError,
+        AttributeError,
+        OverflowError,
+    ):
+        _error("invalid_profile", "A trusted immutable DockerProfile is required.", 400)
+    return {"kind": kind, "sha256": digest, "image_id": image}
+
+
 class CandidateVerificationJobs:
     def __init__(self, core: Core):
         self.core = core
@@ -362,16 +385,20 @@ class CandidateVerificationJobs:
             self.core._authenticate_owner(db, p)
             actor = (p["project_id"], "owner", p["project_id"])
             now = time.time()
-            if type(now) not in {int, float} or not math.isfinite(now):
+            try:
+                finite_clock = type(now) in {int, float} and math.isfinite(now)
+            except OverflowError:
+                finite_clock = False
+            if not finite_clock:
                 _error("invalid_clock", "A finite service clock is required.")
             yield db, now
             db.commit()
         except AgentSyncError as exc:
             db.rollback()
-            if write:
+            if write and exc.code != "invalid_clock":
                 self.core._audit_denial(actor, operation, p, exc.code)
             raise
-        except (sqlite3.Error, UnicodeError, ValueError, TypeError, RecursionError):
+        except (sqlite3.Error, UnicodeError, ValueError, TypeError, RecursionError, OverflowError):
             db.rollback()
             _error("storage_error", "Candidate queue operation failed.", 503)
         except BaseException:
@@ -437,7 +464,12 @@ class CandidateVerificationJobs:
                 or re.fullmatch(r"sha256:[0-9a-f]{64}", row["image_id"]) is None
             ):
                 _corrupt()
-            if (row["status"], row["version"]) not in {("queued", 1), ("cancelled", 2)}:
+            if (row["status"], row["version"]) not in {
+                ("queued", 1),
+                ("cancelled", 2),
+                ("claimed", 2),
+                ("interrupted", 3),
+            }:
                 _corrupt()
             if (
                 any(
@@ -447,6 +479,9 @@ class CandidateVerificationJobs:
                 or row["updated_at"] < row["created_at"]
             ):
                 _corrupt()
+            from agentsync.verification.candidate_claims import validate_claim
+
+            validate_claim(db, row)
             return row
         except (KeyError, IndexError, ValueError, TypeError, UnicodeError):
             _corrupt()
@@ -536,29 +571,12 @@ class CandidateVerificationJobs:
         )
         p["expected_candidate_sha"] = p["expected_candidate_sha"].lower()
         with self._transaction(p) as (db, _):
-            try:
-                if type(profile) is not DockerProfile:
-                    raise ValueError("profile type")
-                profile.__post_init__()
-                profile_kind, profile_hash, image_id = (
-                    profile.profile_id,
-                    profile.sha256,
-                    profile.image_id,
-                )
-                _text(profile_kind)
-                _sha(profile_hash)
-                if re.fullmatch(r"sha256:[0-9a-f]{64}", image_id) is None:
-                    raise ValueError("profile image")
-            except (
-                AgentSyncError,
-                ValueError,
-                TypeError,
-                UnicodeError,
-                RecursionError,
-                AttributeError,
-                OverflowError,
-            ):
-                _error("invalid_profile", "A trusted immutable DockerProfile is required.", 400)
+            policy = _trusted_profile(profile)
+            profile_kind, profile_hash, image_id = (
+                policy["kind"],
+                policy["sha256"],
+                policy["image_id"],
+            )
             fingerprint = _hash(
                 _dump(
                     {
@@ -726,6 +744,11 @@ class CandidateVerificationJobs:
                 _error("clock_regressed", "Clock moved backwards.")
             if row["version"] != expected_version:
                 _error("version_conflict", "Candidate job version changed.")
+            if row["status"] == "claimed":
+                _error(
+                    "owner_recovery_required",
+                    "Claimed candidates require owner reservation recovery.",
+                )
             if row["status"] != "queued":
                 _error("invalid_state", "Candidate job is already cancelled.")
             result = db.execute(

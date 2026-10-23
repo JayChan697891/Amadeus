@@ -62,6 +62,8 @@ VERIFICATION_AUDIT_OPERATIONS = frozenset(
         "verification_enqueue",
         "candidate_verification_enqueue",
         "candidate_verification_cancel",
+        "candidate_verification_claim",
+        "candidate_verification_recover",
         "verification_cancel",
         "verification_claim",
         "verification_renew",

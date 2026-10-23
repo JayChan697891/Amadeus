@@ -298,6 +298,72 @@ PRAGMA user_version=10;
 """
 
 
+# The v10 candidate table bodies are retained exactly except their state CHECK.
+# Explicit copied columns prevent future additions from reinterpreting old rows.
+_CANDIDATE_JOB_COLUMNS = (
+    "id,project_id,candidate_id,snapshot_id,left_worktree_id,right_worktree_id,"
+    "left_task_id,right_task_id,left_task_version,right_task_version,"
+    "candidate_sha,base_sha,left_sha,right_sha,tree_sha,input_sha256,source_sha256,"
+    "binding_sha256,provenance_sha256,profile_kind,profile_sha256,image_id,"
+    "metadata_json,metadata_sha256,source_kind,status,version,created_at,updated_at"
+)
+_CANDIDATE_REQUEST_COLUMNS = (
+    "project_id,operation,request_id,payload_hash,job_id,response_json,response_sha256"
+)
+_CANDIDATE_V11_TABLES = (
+    MIGRATION_V10[MIGRATION_V10.index("CREATE TABLE candidate_verification_jobs(") :]
+    .split("PRAGMA user_version=10;")[0]
+    .replace(
+        "CREATE INDEX candidate_queue_jobs_page ON candidate_verification_jobs(project_id,created_at,id);",
+        "",
+    )
+    .replace("candidate_verification_jobs", "candidate_verification_jobs_v11")
+    .replace("candidate_verification_requests", "candidate_verification_requests_v11")
+    .replace(
+        "status IN ('queued','cancelled')",
+        "status IN ('queued','cancelled','claimed','interrupted')",
+    )
+)
+MIGRATION_V11 = (
+    _CANDIDATE_V11_TABLES
+    + f"""
+INSERT INTO candidate_verification_jobs_v11({_CANDIDATE_JOB_COLUMNS}) SELECT {_CANDIDATE_JOB_COLUMNS} FROM candidate_verification_jobs;
+INSERT INTO candidate_verification_requests_v11({_CANDIDATE_REQUEST_COLUMNS}) SELECT {_CANDIDATE_REQUEST_COLUMNS} FROM candidate_verification_requests;
+DROP TABLE candidate_verification_requests;
+DROP TABLE candidate_verification_jobs;
+ALTER TABLE candidate_verification_jobs_v11 RENAME TO candidate_verification_jobs;
+ALTER TABLE candidate_verification_requests_v11 RENAME TO candidate_verification_requests;
+CREATE INDEX candidate_claim_jobs_page ON candidate_verification_jobs(project_id,created_at,id);
+CREATE TABLE candidate_verification_claims(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, job_id TEXT NOT NULL UNIQUE,
+ kind TEXT NOT NULL CHECK(kind='owner_reservation_v1'),
+ claim_version INTEGER NOT NULL CHECK(claim_version=2),
+ metadata_sha256 TEXT NOT NULL, profile_kind TEXT NOT NULL, profile_sha256 TEXT NOT NULL,
+ image_id TEXT NOT NULL, candidate_sha TEXT NOT NULL, tree_sha TEXT NOT NULL,
+ input_sha256 TEXT NOT NULL, source_sha256 TEXT NOT NULL,
+ created_at REAL NOT NULL CHECK(abs(created_at)<=1.7976931348623157e308),
+ lease_expires_at REAL NOT NULL CHECK(abs(lease_expires_at)<=1.7976931348623157e308 AND lease_expires_at>created_at),
+ proof_json TEXT NOT NULL CHECK(length(CAST(proof_json AS BLOB))<=16384),
+ proof_sha256 TEXT NOT NULL,
+ status TEXT NOT NULL CHECK(status IN ('claimed','interrupted')),
+ reason_code TEXT NOT NULL CHECK(reason_code IN ('','owner_interrupted')),
+ updated_at REAL NOT NULL CHECK(abs(updated_at)<=1.7976931348623157e308 AND updated_at>=created_at),
+ UNIQUE(id,project_id,job_id),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id));
+CREATE INDEX candidate_claim_claims_project ON candidate_verification_claims(project_id,created_at,id);
+CREATE TABLE candidate_claim_recoveries(
+ project_id TEXT NOT NULL, request_id TEXT NOT NULL, job_id TEXT NOT NULL,
+ claim_id TEXT NOT NULL UNIQUE, payload_hash TEXT NOT NULL,
+ response_json TEXT NOT NULL CHECK(length(CAST(response_json AS BLOB))<=16384),
+ response_sha256 TEXT NOT NULL,
+ PRIMARY KEY(project_id,request_id),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id),
+ FOREIGN KEY(claim_id,project_id,job_id) REFERENCES candidate_verification_claims(id,project_id,job_id));
+PRAGMA user_version=11;
+"""
+)
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -366,7 +432,12 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 10
-        if version != 10:
+        if version == 10:
+            for statement in MIGRATION_V11.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 11
+        if version != 11:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
             raise RuntimeError("Database migration violated foreign-key constraints.")

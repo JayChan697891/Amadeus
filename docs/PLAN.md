@@ -1,3 +1,14 @@
+# M5B3B2A candidate owner reservation in development
+
+Implement the bounded owner-only one-shot reservation and explicit ledger
+interruption from M5B3B2A-CONTRACT.md. Version0.3.0a10/schema11; no worker
+credential, callback, renewal, execution or task gate. Prior B1 independently
+accepted in PR23. Migration/old ledger focused group:125 passed; full frozen
+source/package/Windows validation and independent Work review remain pending.
+Formal Release BLOCKED. D:debug/F:source; GitHub storage only, no Actions.
+
+---
+
 # Verified M5B3B1 local checkpoint
 
 Product f65e134d672d4c4333701b982759cc86567a97a6, tree 64c402b142ab10246e2dfa76e31cf0167c71acba; 0.3.0a9/schema10.

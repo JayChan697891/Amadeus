@@ -1,3 +1,14 @@
+# M5B3B2A candidate owner reservation in development
+
+Implement the bounded owner-only one-shot reservation and explicit ledger
+interruption from M5B3B2A-CONTRACT.md. Version0.3.0a10/schema11; no worker
+credential, callback, renewal, execution or task gate. Prior B1 independently
+accepted in PR23. Migration/old ledger focused group:125 passed; full frozen
+source/package/Windows validation and independent Work review remain pending.
+Formal Release BLOCKED. D:debug/F:source; GitHub storage only, no Actions.
+
+---
+
 # M5B3B1 independent Work acceptance recorded
 
 PR23 comment6356443059 accepts the bounded candidate queue, reviewing product
