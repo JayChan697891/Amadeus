@@ -87,3 +87,11 @@ Formal42 complete scenarios remain not_run; component coverage remains18 existin
 Independent Work acceptance is pending and separate; later documentation heads
 are not re-executed product commits. F:source/D:debug. GitHub storage only;
 no Actions, paid calls, main edits or merge.
+
+## Independent Work disposition
+
+Work limited-stage acceptance passed in PR24 comment6365449101. See
+acceptance/evidence/m5b3b2a-work-receipt.md for the actual published assessment.
+Work reviewed stored evidence/code, did not rerun tests or inspect the daemon.
+Issues11/7 stay open; formal Release BLOCKED. Later receipt-only heads are
+not re-executed product commits.
