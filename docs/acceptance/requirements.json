@@ -235,7 +235,9 @@
       "existing_tests": [
         "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",
         "tests/security/test_core_security.py::test_cross_process_claim_has_exactly_one_winner",
-        "tests/security/test_core_security.py::test_idempotency_replay_collision_and_authentication"
+        "tests/security/test_core_security.py::test_idempotency_replay_collision_and_authentication",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py"
       ],
       "planned_cases": [
         {
@@ -774,7 +776,10 @@
         "tests/unit/test_candidate_binding.py",
         "tests/integration/test_candidate_binding_git_records.py",
         "tests/integration/test_candidate_export.py",
-        "tests/integration/test_candidate_export_security.py"
+        "tests/integration/test_candidate_export_security.py",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py",
+        "tests/integration/test_candidate_queue_security.py"
       ],
       "planned_cases": [
         {
@@ -883,7 +888,10 @@
         "tests/unit/test_candidate_binding.py",
         "tests/integration/test_candidate_binding_git_records.py",
         "tests/integration/test_candidate_export.py",
-        "tests/integration/test_candidate_export_security.py"
+        "tests/integration/test_candidate_export_security.py",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py",
+        "tests/integration/test_candidate_queue_security.py"
       ],
       "planned_cases": [
         {
@@ -930,7 +938,10 @@
         "tests/unit/test_candidate_binding.py",
         "tests/integration/test_candidate_binding_git_records.py",
         "tests/integration/test_candidate_export.py",
-        "tests/integration/test_candidate_export_security.py"
+        "tests/integration/test_candidate_export_security.py",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py",
+        "tests/integration/test_candidate_queue_security.py"
       ],
       "planned_cases": [
         {

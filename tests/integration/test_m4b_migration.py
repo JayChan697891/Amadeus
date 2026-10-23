@@ -3,7 +3,7 @@
 import sqlite3
 
 import pytest
-from conftest import owner_grant
+from conftest import drop_candidate_queue_schema, owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -43,6 +43,7 @@ def test_v4_upgrade_preserves_resource_roots_locks_and_context(tmp_path):
     )
     lock = core.execute("acquire_file_lock", {**auth, "path": "file", "request_id": "lock"})
     with sqlite3.connect(core.db_path) as db:
+        drop_candidate_queue_schema(db)
         roots_before = db.execute("SELECT * FROM project_resource_roots").fetchall()
         locks_before = db.execute("SELECT * FROM file_locks").fetchall()
         for table in (
@@ -70,7 +71,7 @@ def test_v4_upgrade_preserves_resource_roots_locks_and_context(tmp_path):
         == lock
     )
     with sqlite3.connect(upgraded.db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 9
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 10
         assert db.execute("SELECT * FROM project_resource_roots").fetchall() == roots_before
         assert db.execute("SELECT * FROM file_locks").fetchall() == locks_before
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

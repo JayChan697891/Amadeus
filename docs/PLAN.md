@@ -1,3 +1,15 @@
+# M5B3B1 candidate queue in development
+
+Implement the independent owner candidate queue from M5B3B1-CONTRACT.md:
+enqueue/get/list/cancel, schema10 additive tables, immutable checked content
+metadata, historical request receipts and transactional owner/version binding.
+No candidate worker/claim/lease, execution, task gate or apply. Version0.3.0a9.
+B0 private same-connection capture is independently accepted in PR22. Existing
+snapshot jobs/executor remain distinct. Final frozen tests and Work acceptance
+are still required; formal Release BLOCKED. D:debug/F:source; no Actions.
+
+---
+
 # Verified M5B3B0 local checkpoint
 
 Product 37b17a3d0c27b0a34ca93e03c4944f02a7a63071, tree 4036fc4a1b19abb57fd6559f34e14e731412c170; 0.3.0a8/schema9.

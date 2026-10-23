@@ -4,6 +4,7 @@ import json
 import time
 
 import pytest
+from conftest import drop_candidate_queue_schema
 
 from agentsync.core.service import Core
 from agentsync.storage import database
@@ -450,6 +451,7 @@ def test_migration9_preserves_schema8_rows_and_rolls_back(pending, monkeypatch):
 
     core, _, _, _ = pending
     with database.connect(core.db_path) as db:
+        drop_candidate_queue_schema(db)
         db.execute("DROP TABLE verification_reconciliations")
         db.execute("DROP INDEX verification_execution_reconciliation_binding")
         db.execute("PRAGMA user_version=8")
@@ -481,13 +483,13 @@ def test_migration9_preserves_schema8_rows_and_rolls_back(pending, monkeypatch):
     database.migrate(core.db_path)
     database.migrate(core.db_path)
     with database.connect(core.db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 9
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 10
         assert all(
             db.execute('SELECT * FROM "' + name + '"').fetchall() == rows
             for name, rows in before.items()
         )
         assert db.execute("PRAGMA foreign_key_check").fetchone() is None
-        db.execute("PRAGMA user_version=10")
+        db.execute("PRAGMA user_version=11")
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(core.db_path)
 

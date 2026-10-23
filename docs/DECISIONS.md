@@ -151,3 +151,12 @@ public capture's validation and transaction lifetime. Future queue insertion mus
 compare in its own write transaction; reading through another connection before
 insertion is insufficient. This prerequisite creates no queue or successful
 verification and does not extend trust to arbitrary caller-created databases.
+
+## M5B3B1 candidate queue remains separate from snapshot execution
+
+Persist checked candidate observations in new tables and preserve old snapshot
+job shapes and semantics. Never substitute the baseline executor's commit with
+a candidate SHA. History receipts are original mutation observations; current
+state is a distinct get/list projection. Replay is owner-authenticated and DB-only,
+not renewed Git freshness or execution authority. Final binding comparison and
+insert/request/audit share the write transaction, while export stays outside it.

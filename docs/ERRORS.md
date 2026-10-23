@@ -135,3 +135,19 @@ raises PermissionError for UID65534. Use an exclusively created host file under
 traversable/tmp so a namespace leak would expose its existence, rather than mask
 the probe with directory permission. Real local14case run then passed. Preserve
 first-failure results and final frozen-tree results as distinct evidence.
+
+## M5B3B1 development audit findings
+
+An independent real Git/SQLite audit reproduced that changing a single valid
+profile SHA or image ID column was accepted by get/cancel because the new queue
+metadata initially did not include profile fields. The implementation now pins
+kind/SHA/image inside verification_profile in the full metadata envelope and
+cross-checks all three on every read. Three independent public-API regressions
+verify rejection by get/list/cancel/enqueue replay after a one-column mutation.
+The original two passing audit assertions demonstrate the defect reproduction;
+they are not passing security acceptance cases.
+
+A second trusted-profile fault injection used an enormous timeout integer and
+revealed a raw OverflowError during profile validation. Validation must safely
+map this to invalid_profile. Both findings require frozen full-suite regression
+and separate independent repair confirmation before final stage acceptance.
