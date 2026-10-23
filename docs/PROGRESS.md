@@ -1,3 +1,12 @@
+# Cloud-only continuation configuration saved, trigger unverified
+
+See CLOUD-CONTINUATION.md. Single plan6adb59ed26cc8191a935d85e639458bf
+for2026-10-23 10:50 America/Tijuana is enabled, but next_run_time=null
+and no explicit environment field was exposed. Do not claim verified automatic
+cloud execution after shutdown. Latest GitHub state must guide any actual run.
+
+---
+
 # M5B3B2A independent Work acceptance recorded
 
 PR24 comment6365449101 accepts the bounded owner reservation/ledger interruption,
