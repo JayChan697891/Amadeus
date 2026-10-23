@@ -22,11 +22,13 @@ def owner_grant(core, project, actor, roles=("worker", "reviewer")):
 
 
 def drop_candidate_queue_schema(db):
-    """Remove only v10 additions when constructing historical migration fixtures."""
+    """Remove candidate additions when constructing pre-v10 migration fixtures."""
+    db.execute("DROP TABLE IF EXISTS candidate_claim_recoveries")
+    db.execute("DROP TABLE IF EXISTS candidate_verification_claims")
     db.execute("DROP TABLE IF EXISTS candidate_verification_requests")
     db.execute("DROP TABLE IF EXISTS candidate_verification_jobs")
     indexes = db.execute(
-        "SELECT name FROM sqlite_master WHERE type='index' AND name LIKE 'candidate_queue_%'"
+        "SELECT name FROM sqlite_master WHERE type='index' AND (name LIKE 'candidate_queue_%' OR name LIKE 'candidate_claim_%')"
     ).fetchall()
     for row in indexes:
         db.execute('DROP INDEX "' + row[0].replace('"', '""') + '"')

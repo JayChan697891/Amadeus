@@ -1,3 +1,50 @@
+# Cloud-only continuation configuration saved, trigger unverified
+
+See CLOUD-CONTINUATION.md. Single plan6adb59ed26cc8191a935d85e639458bf
+for2026-10-23 10:50 America/Tijuana is enabled, but next_run_time=null
+and no explicit environment field was exposed. Do not claim verified automatic
+cloud execution after shutdown. Latest GitHub state must guide any actual run.
+
+---
+
+# M5B3B2A independent Work acceptance recorded
+
+PR24 comment6365449101 accepts the bounded owner reservation/ledger interruption,
+reviewing product0fd2041 and evidencehead74abf24. Issues11/7 comments6365454598 /
+6365456556 remain open. Work read actual repository/archive bytes and independently
+verified154 manifest files,18checks/26artifacts,4JUnit,33module package identity,
+253-file source snapshots and6new claim/proof/recovery observations plus old
+regression evidence. Work did not rerun tests or access the original daemon.
+Receipt: acceptance/evidence/m5b3b2a-work-receipt.md. Documentation descendants
+are not re-executed product commits. Formal Release BLOCKED. Before candidate
+execution: separate execution-aware authority/recovery guard and cleanup contract.
+
+---
+
+# Verified M5B3B2A local checkpoint
+
+Product 0fd2041c8efd1c4fa348117e013c0c5b1f30e470, tree 9a76e8c5280c34d38087f42fc35b702808d15c59;0.3.0a10/schema11.
+18checks pass; Linux three suites each 1058pass/3skip;
+Windows 1031pass/30skip. 38 new cases;
+six actual reservation/recovery observations.33modules and253-file
+source/package identity verified;78 old Docker regression IDs independently absent.
+Owner reservation only; no execution/task gate/apply. Independent Work review
+pending, formal Release BLOCKED. See M5B3B2A-REPORT.md and evidence index.
+D:debug/F:source; no Actions, paid calls or main changes.
+
+---
+
+# M5B3B2A candidate owner reservation in development
+
+Implement the bounded owner-only one-shot reservation and explicit ledger
+interruption from M5B3B2A-CONTRACT.md. Version0.3.0a10/schema11; no worker
+credential, callback, renewal, execution or task gate. Prior B1 independently
+accepted in PR23. Migration/old ledger focused group:125 passed; full frozen
+source/package/Windows validation and independent Work review remain pending.
+Formal Release BLOCKED. D:debug/F:source; GitHub storage only, no Actions.
+
+---
+
 # M5B3B1 independent Work acceptance recorded
 
 PR23 comment6356443059 accepts the bounded candidate queue, reviewing product

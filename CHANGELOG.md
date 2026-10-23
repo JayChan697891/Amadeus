@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a10 — M5B3B2A one-shot owner reservation
+
+Add owner-only candidate reservation, explicit terminal interruption and strict
+claim/proof/recovery relations. Schema11 preserves original queued/cancelled
+records and historical receipts. Reservation never starts a worker or execution;
+no token, renewal, task gate, approval consumption or apply. Formal Release stays
+BLOCKED; frozen local validation and independent Work acceptance are required.
+
 ## 0.3.0a9 — M5B3B1 durable candidate verification queue
 
 Add a separate owner-only candidate queue with immutable checked input bindings,

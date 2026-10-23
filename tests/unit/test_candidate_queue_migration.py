@@ -50,7 +50,7 @@ def test_v9_populated_execution_history_survives_v10_and_reopen(pending, transpo
     database.migrate(path)
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 10
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 11
         after = history(db)
         assert all(after[name] == rows for name, rows in before.items())
         assert after["candidate_verification_jobs"] == []
@@ -78,12 +78,12 @@ def test_future_schema_rejected_without_mutating_existing_database(tmp_path):
     path = tmp_path / "future.db"
     database.migrate(path)
     with database.connect(path) as db:
-        db.execute("PRAGMA user_version=11")
+        db.execute("PRAGMA user_version=12")
         before, old_schema = history(db), schema(db)
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 11
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
         assert history(db) == before and schema(db) == old_schema
 
 
@@ -91,7 +91,7 @@ def test_fresh_schema10_starts_with_empty_candidate_queue(tmp_path):
     path = tmp_path / "new.db"
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 10
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 11
         assert db.execute("SELECT count(*) FROM candidate_verification_jobs").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM candidate_verification_requests").fetchone()[0] == 0
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

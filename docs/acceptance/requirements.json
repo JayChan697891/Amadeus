@@ -779,7 +779,9 @@
         "tests/integration/test_candidate_export_security.py",
         "tests/integration/test_candidate_jobs.py",
         "tests/unit/test_candidate_queue_migration.py",
-        "tests/integration/test_candidate_queue_security.py"
+        "tests/integration/test_candidate_queue_security.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py"
       ],
       "planned_cases": [
         {
@@ -844,7 +846,9 @@
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",
         "tests/unit/test_verification_reconciliation.py",
-        "tests/integration/test_execution_reconciliation.py"
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py"
       ],
       "planned_cases": [
         {
@@ -891,7 +895,9 @@
         "tests/integration/test_candidate_export_security.py",
         "tests/integration/test_candidate_jobs.py",
         "tests/unit/test_candidate_queue_migration.py",
-        "tests/integration/test_candidate_queue_security.py"
+        "tests/integration/test_candidate_queue_security.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py"
       ],
       "planned_cases": [
         {
@@ -941,7 +947,9 @@
         "tests/integration/test_candidate_export_security.py",
         "tests/integration/test_candidate_jobs.py",
         "tests/unit/test_candidate_queue_migration.py",
-        "tests/integration/test_candidate_queue_security.py"
+        "tests/integration/test_candidate_queue_security.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py"
       ],
       "planned_cases": [
         {
