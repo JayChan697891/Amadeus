@@ -1,3 +1,14 @@
+# M5B3B2B candidate execution intent guard in development
+
+Implement owner-only prepare/get/abandon and transactionally fence reservation
+recovery while a prepared intent exists. See M5B3B2B-CONTRACT.md. Version0.3.0a11 /
+schema12 additive tables; old job/claim states/proofs/history unchanged. This is
+non-executing admission only, no Docker/credential/worker/renew/taskgate/apply.
+Prior B2A accepted PR24. Full frozen validation and Work review pending; Release
+BLOCKED. D:debug/F:source; no Actions/paid/main changes.
+
+---
+
 # Verified M5B3B2A local checkpoint
 
 Product 0fd2041c8efd1c4fa348117e013c0c5b1f30e470, tree 9a76e8c5280c34d38087f42fc35b702808d15c59;0.3.0a10/schema11.

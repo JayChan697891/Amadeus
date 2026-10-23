@@ -80,7 +80,7 @@ def test_v10_queued_and_cancelled_history_survives_upgrade_and_reopen(v10):
     database.migrate(path)
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 11
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
         after = history(db)
         assert all(after[name] == rows for name, rows in before.items())
         assert after["candidate_verification_claims"] == []
@@ -106,22 +106,22 @@ def test_v11_failed_rebuild_rolls_back_tables_indexes_receipts_and_version(v10, 
     database.migrate(path)
 
 
-def test_future_schema12_rejected_without_any_mutation(v10):
+def test_future_schema13_rejected_without_any_mutation(v10):
     path, before, old_schema, _, _, _ = v10
     with database.connect(path) as db:
-        db.execute("PRAGMA user_version=12")
+        db.execute("PRAGMA user_version=13")
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
         assert history(db) == before and schema(db) == old_schema
 
 
-def test_fresh_schema11_starts_without_fabricated_claim_history(tmp_path):
+def test_fresh_schema12_starts_without_fabricated_claim_history(tmp_path):
     path = tmp_path / "fresh.db"
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 11
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
         assert db.execute("SELECT count(*) FROM candidate_verification_claims").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM candidate_claim_recoveries").fetchone()[0] == 0
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

@@ -364,6 +364,37 @@ PRAGMA user_version=11;
 )
 
 
+MIGRATION_V12 = """
+CREATE TABLE candidate_execution_intents(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, job_id TEXT NOT NULL UNIQUE,
+ claim_id TEXT NOT NULL UNIQUE, kind TEXT NOT NULL CHECK(kind='owner_candidate_execution_intent_v1'),
+ claim_version INTEGER NOT NULL CHECK(claim_version=2),
+ claim_proof_sha256 TEXT NOT NULL, metadata_sha256 TEXT NOT NULL,
+ profile_kind TEXT NOT NULL, profile_sha256 TEXT NOT NULL, image_id TEXT NOT NULL,
+ candidate_sha TEXT NOT NULL, tree_sha TEXT NOT NULL, input_sha256 TEXT NOT NULL,
+ source_sha256 TEXT NOT NULL, created_at REAL NOT NULL,
+ claim_lease_expires_at REAL NOT NULL CHECK(claim_lease_expires_at>created_at),
+ proof_json TEXT NOT NULL CHECK(length(CAST(proof_json AS BLOB))<=16384),
+ proof_sha256 TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('prepared','abandoned')),
+ revision INTEGER NOT NULL CHECK(revision IN (1,2)),
+ reason_code TEXT NOT NULL CHECK(reason_code IN ('','owner_abandoned')),
+ updated_at REAL NOT NULL CHECK(updated_at>=created_at),
+ UNIQUE(id,project_id,job_id,claim_id),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id),
+ FOREIGN KEY(claim_id,project_id,job_id) REFERENCES candidate_verification_claims(id,project_id,job_id));
+CREATE INDEX candidate_intent_project ON candidate_execution_intents(project_id,job_id);
+CREATE TABLE candidate_intent_abandonments(
+ project_id TEXT NOT NULL, request_id TEXT NOT NULL, job_id TEXT NOT NULL,
+ claim_id TEXT NOT NULL, intent_id TEXT NOT NULL UNIQUE, payload_hash TEXT NOT NULL,
+ response_json TEXT NOT NULL CHECK(length(CAST(response_json AS BLOB))<=16384),
+ response_sha256 TEXT NOT NULL, PRIMARY KEY(project_id,request_id),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id),
+ FOREIGN KEY(claim_id,project_id,job_id) REFERENCES candidate_verification_claims(id,project_id,job_id),
+ FOREIGN KEY(intent_id,project_id,job_id,claim_id) REFERENCES candidate_execution_intents(id,project_id,job_id,claim_id));
+PRAGMA user_version=12;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -437,7 +468,12 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 11
-        if version != 11:
+        if version == 11:
+            for statement in MIGRATION_V12.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 12
+        if version != 12:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
             raise RuntimeError("Database migration violated foreign-key constraints.")

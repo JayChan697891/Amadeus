@@ -131,6 +131,8 @@ def _recovery_fingerprint(project: str, job: str, claim: str, version: int) -> s
 
 def validate_claim(db: sqlite3.Connection, job: sqlite3.Row) -> sqlite3.Row | None:
     """Pure relation validation on a metadata-validated job. Never recurse or Git."""
+    from agentsync.verification.candidate_intents import validate_intent
+
     rows = db.execute(
         "SELECT * FROM candidate_verification_claims WHERE job_id=? LIMIT 2", (job["id"],)
     ).fetchall()
@@ -140,6 +142,7 @@ def validate_claim(db: sqlite3.Connection, job: sqlite3.Row) -> sqlite3.Row | No
     if job["status"] in {"queued", "cancelled"}:
         if rows or recoveries:
             _corrupt()
+        validate_intent(db, job, None)
         return None
     if len(rows) != 1:
         _corrupt()
@@ -203,6 +206,7 @@ def validate_claim(db: sqlite3.Connection, job: sqlite3.Row) -> sqlite3.Row | No
                 _corrupt()
         else:
             _corrupt()
+        validate_intent(db, job, claim)
         return claim
     except (KeyError, IndexError, ValueError, TypeError, UnicodeError, OverflowError):
         _corrupt()
@@ -407,7 +411,22 @@ class OwnerCandidateClaims:
                 _error("invalid_state", "Only an owner reservation can be interrupted.")
             claim = validate_claim(db, job)
             assert claim is not None
-            timestamp = float(max(now, job["updated_at"], claim["updated_at"], claim["created_at"]))
+            from agentsync.verification.candidate_intents import validate_intent
+
+            intent = validate_intent(db, job, claim)
+            if intent is not None and intent["status"] == "prepared":
+                _error(
+                    "execution_intent_active", "Prepared execution intent must be abandoned first."
+                )
+            timestamp = float(
+                max(
+                    now,
+                    job["updated_at"],
+                    claim["updated_at"],
+                    claim["created_at"],
+                    intent["updated_at"] if intent is not None else claim["updated_at"],
+                )
+            )
             db.execute(
                 "UPDATE candidate_verification_claims SET status='interrupted',reason_code='owner_interrupted',updated_at=? WHERE id=? AND project_id=? AND status='claimed'",
                 (timestamp, claim["id"], project_id),
