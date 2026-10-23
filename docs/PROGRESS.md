@@ -1,3 +1,15 @@
+# M5B3B0 independent Work acceptance recorded
+
+PR22 comment6329149589 now accepts the bounded private transaction-capture stage,
+reviewing product37b17a3 and evidencehead37720ee. Issues11/7 records6356135968 /
+6356136874 remain open. Work independently inspected code/archive/JUnit/package
+and supplemental real SQL-error evidence; it did not rerun tests or inspect the
+original daemon. See acceptance/evidence/m5b3b0-work-receipt.md.
+Receipt-only documentation descendants are not re-executed product commits.
+Formal Release remains BLOCKED. Next: separately implement M5B3B1 candidate queue.
+
+---
+
 # Verified M5B3B0 local checkpoint
 
 Product 37b17a3d0c27b0a34ca93e03c4944f02a7a63071, tree 4036fc4a1b19abb57fd6559f34e14e731412c170; 0.3.0a8/schema9.
