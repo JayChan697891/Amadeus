@@ -1,0 +1,173 @@
+{
+  "schema": "agentsync.independent-document-review.v1",
+  "reviewer": "native same-task execution_design",
+  "pr": 26,
+  "head": "9ee1a6678bbeb3089c0fa6df8479c07f3ab8dcf2",
+  "base": "aac28a0f688962eca640b930e92eeaa608ff824f",
+  "tree": "be8636e4301858f99a303aef5c87b869ec75c9dc",
+  "only_three_docs_added": true,
+  "input_identities_verified": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "size": 1552,
+      "sha256": "0aeab8fe094aa3481af0b45f2bb2d3d7433e0d931a02268b0d9afc96d208a2e4",
+      "git_blob_sha": "74cf50fca900e1e6ae98f3e3d77cdd6f374d5634"
+    },
+    {
+      "path": ".github/workflows/verifier-docker.yml",
+      "size": 1631,
+      "sha256": "77f47240f8ca41102bbb312c875581f71931ea85f0136d50306654459b113003",
+      "git_blob_sha": "03dee08fb449c41822132862b70dbda1fd8b8ac1"
+    },
+    {
+      "path": "AGENTS.md",
+      "size": 2298,
+      "sha256": "543d163ff5058abfa66edb55a448370b66aed25d9acf55a1fba8a914945a4fd0",
+      "git_blob_sha": "7fb5a41b2de6499fd9384e5447124d148729bad6"
+    },
+    {
+      "path": "WORKFLOW.md",
+      "size": 1761,
+      "sha256": "c909a3c3309ccb34587197af7422027415a8f0f0f0d1d0e8c3a701913367cb2a",
+      "git_blob_sha": "ea597159abec096ff5460bba871fa94b9c4ac5f1"
+    },
+    {
+      "path": "docs/CLOUD-CONTINUATION.md",
+      "size": 3240,
+      "sha256": "c9e0f3e75ab275c7a51017b484a11f02f53f98e68b8907f606862da988494db6",
+      "git_blob_sha": "f78914cd0db4ab19437bed6ca613f78875a5b7d9"
+    },
+    {
+      "path": "docs/M5B3B2B-CONTRACT.md",
+      "size": 10177,
+      "sha256": "93641b3faf06d6794212b8ae34f42d408de7a690d2a5c3b675dc29740bdd2caa",
+      "git_blob_sha": "848dfcb2345687ed074119c1671fc5347ae28046"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "size": 13582,
+      "sha256": "4f526f191e3636e59d34a1064ca5defcfbe6acf0dc4649a56c812d85badd3549",
+      "git_blob_sha": "1f6d69f185c89dfc1c208c08770cc7006db4d1e9"
+    },
+    {
+      "path": "docs/PROGRESS.md",
+      "size": 31142,
+      "sha256": "b34da6701df6a0ddbe0aa0704565ec1b213d95e74438ddfbdc89874ad5c610ee",
+      "git_blob_sha": "6090505013e3fb91aedb97c61c241fb4e079d4d9"
+    },
+    {
+      "path": "docs/SPECIFICATION.md",
+      "size": 37476,
+      "sha256": "416bc491742891b4a81d885bcd9cbbb38089c782bbec4804f4357296e5d25722",
+      "git_blob_sha": "93408a09224011ab4e1f9a1eab924bf328da316d"
+    },
+    {
+      "path": "src/agentsync/storage/database.py",
+      "size": 27303,
+      "sha256": "b0022c9b261ac97eb0d3f86edac760f073c45b34ecf040555bcafae56a733426",
+      "git_blob_sha": "2662ffc167780ee82e1c57c32e5be15cb524c3e8"
+    },
+    {
+      "path": "src/agentsync/verification/candidate_claims.py",
+      "size": 17222,
+      "sha256": "5ebfa3332eb60eb88f255edcf574a4a27bd249bc778138ced97c915d02cd127e",
+      "git_blob_sha": "092ccffa199ca8843d09aac27d5480801ddd13f2"
+    },
+    {
+      "path": "src/agentsync/verification/candidate_intents.py",
+      "size": 18013,
+      "sha256": "028891856108d9f19cf793caf43f1cbdd04d30f35d69e4c9bf68769f150dcf5b",
+      "git_blob_sha": "8ccb400adcb566de8d4af0d55d5d374dc112f133"
+    },
+    {
+      "path": "src/agentsync/verification/candidate_jobs.py",
+      "size": 26781,
+      "sha256": "d2a2df5674c890b69bcc0f4cd794a0b99be2b6df677960faadcf5d4f073ca099",
+      "git_blob_sha": "153987b41f93d13f77b6ba39ec7c3f658b066b27"
+    },
+    {
+      "path": "tests/integration/test_candidate_intent_migration.py",
+      "size": 6243,
+      "sha256": "4a055f9ac4641c265da432b201b33bb1e332e2c8df5505a733f569f041d87ba1",
+      "git_blob_sha": "646df09912cbc11758940284d5c00492c523304c"
+    },
+    {
+      "path": "tests/integration/test_candidate_intent_security.py",
+      "size": 2347,
+      "sha256": "2bcfabaae7c4b37caca54586dab253a7812188d29945d61f3432163aee6bdf69",
+      "git_blob_sha": "6aa3ad9fd1fa34057e3972c2f39b6ce9c1500eb0"
+    },
+    {
+      "path": "tests/integration/test_candidate_intents.py",
+      "size": 21080,
+      "sha256": "344655700383578dc609d79f6ccd66049a77b9b6ae50ed62a806ec27ad2bd21c",
+      "git_blob_sha": "fb4880cc75a5900768f4638c93f61c20b40d080d"
+    },
+    {
+      "path": "tools/release_acceptance.py",
+      "size": 38166,
+      "sha256": "38e24fb110ddce15e88d4f7df9b3afe9ca72575a17dd75145aed6f1a550656ab",
+      "git_blob_sha": "b2efcb7ad9ed26d9321a44876bbef4bdc9dd827c"
+    }
+  ],
+  "document_identities_verified": [
+    {
+      "path": "docs/acceptance/M5B3B2B-CLOUD-HANDOFF.md",
+      "sha256": "3030dbf3bd87f41982ea151bbe8f1ce32f4bc8fd5fbd4b514a33a5db8fec2461",
+      "size": 8652
+    },
+    {
+      "path": "docs/CANDIDATE-EXECUTION-ADMISSION-DESIGN.md",
+      "sha256": "1e8cd951d501e24926ccaac22fc92ff3890707ba6e099245b2f7f0d8fe4b2666",
+      "size": 7465
+    }
+  ],
+  "static_selectors_verified": {
+    "tests/integration/test_candidate_intent_security.py::test_intent_audit_identifies_resource_revisions_without_plain_credentials": 1,
+    "tests/integration/test_candidate_intents.py::test_prepare_preserves_claim_and_does_not_execute": 1,
+    "tests/integration/test_candidate_intents.py::test_prepared_intent_fences_recovery_until_explicit_abandon": 1,
+    "tests/integration/test_candidate_intents.py::test_invalid_owner_version_profile_rejected_before_git": 3,
+    "tests/integration/test_candidate_intents.py::test_controlled_clock_rejects_prepare_before_git": 3,
+    "tests/integration/test_candidate_intents.py::test_controlled_post_export_changes_reject_prepare": 4,
+    "tests/integration/test_candidate_intents.py::test_invalid_managed_git_prevents_intent": 2,
+    "tests/integration/test_candidate_intents.py::test_two_preparers_create_one_intent": 1,
+    "tests/integration/test_candidate_intents.py::test_recovery_winning_during_export_prevents_intent": 1,
+    "tests/integration/test_candidate_intents.py::test_explicit_abandon_then_recovery_uses_intent_anchor": 2,
+    "tests/integration/test_candidate_intents.py::test_abandon_is_terminal_and_request_conflicts": 1,
+    "tests/integration/test_candidate_intents.py::test_restart_and_db_only_histories_preserve_original_receipts": 1,
+    "tests/integration/test_candidate_intents.py::test_controlled_audit_failure_rolls_back_intent_transition": 2,
+    "tests/integration/test_candidate_intents.py::test_controlled_intent_corruption_rejected_across_public_readers": 5,
+    "tests/integration/test_candidate_intents.py::test_controlled_abandon_receipt_corruption_blocks_all_reads": 1,
+    "tests/integration/test_candidate_intents.py::test_actual_prepared_observation_never_executes": 1,
+    "tests/integration/test_candidate_intents.py::test_actual_abandoned_recovered_observation_never_executes": 1,
+    "tests/integration/test_candidate_intents.py::test_valid_foreign_owner_cannot_prepare": 1,
+    "tests/integration/test_candidate_intents.py::test_controlled_process_exit_before_commit_has_no_partial_transition": 2,
+    "tests/integration/test_candidate_intents.py::test_controlled_float_revision_in_abandon_receipt_is_not_integer": 1,
+    "tests/integration/test_candidate_intents.py::test_controlled_deadline_crossing_after_capture_prevents_prepare": 1,
+    "tests/integration/test_candidate_intent_migration.py::test_v11_all_states_and_history_survive_additive_upgrade_and_reopen": 1,
+    "tests/integration/test_candidate_intent_migration.py::test_v12_failed_addition_rolls_back_tables_indexes_history_and_version": 1,
+    "tests/integration/test_candidate_intent_migration.py::test_future_schema13_rejected_without_any_mutation": 1,
+    "tests/integration/test_candidate_intent_migration.py::test_fresh_schema12_starts_without_fabricated_intent_history": 1
+  },
+  "static_definition_count": 25,
+  "static_expansion_count": 40,
+  "execution_status": "not_run",
+  "workflow_dispatch_only_source_verified": true,
+  "findings": [],
+  "document_scope_blockers": [],
+  "design_checks": [
+    "Committed unique fence and audit precede external Docker create",
+    "Ledger abandon/recover permanently denied after fence even without create acknowledgement/full ID",
+    "Unknown/late create remains unresolved; no replacement create or name-only destructive cleanup",
+    "Authority rechecked before start and accepting output; cleanup is separate future lifecycle",
+    "Historical receipts remain immutable; base snapshot path cannot substitute candidate input",
+    "Task gate/apply/real clients/relay/M9/release remain unfinished"
+  ],
+  "decision": "limited_documentation_scope_review_pass",
+  "product_acceptance": "not_performed",
+  "real_execution_acceptance": "not_performed",
+  "release": "BLOCKED",
+  "approval_note": "Initial combined large verification/report command was rejected blocked by policy without a specific reason; subsequently used smaller explicitly scoped read-only Git/AST checks and this single authorized D report write. No original command retry.",
+  "modified_product_or_tests": false,
+  "actions_or_paid_calls": false
+}
