@@ -6,6 +6,15 @@ Execution: Codex. Formal release acceptance: **BLOCKED**. M5 is frozen to its
 original five requirements; its only exit checklist is
 [M5-FINAL-ACCEPTANCE.md](../M5-FINAL-ACCEPTANCE.md). No new M5 substage is opened.
 
+After validation, the36 changed project files were frozen locally on
+`feature/m6-local-prototype-20261025`, product commit
+`b70cd1b9671de3910979b66f8c711b0f0f1f51af` / tree
+`624e231fc050f3c9035390520d3f6a2fe6786734`. All42 Git module blobs match the
+tested source, built archives and installed modules. This receipt-only report
+update does not rerun product tests or grant M5 acceptance. The branch was not
+pushed; main and PR25 remain unchanged. See
+[local freeze receipt](evidence/m6-local-freeze-20261025.json).
+
 Base HEAD aac28a0f688962eca640b930e92eeaa608ff824f, version0.3.0a11/schema12.
 The tested product is an uncommitted290-file snapshot, not a newly accepted Git
 commit. Root independently checked source/package/installed42-module bytes,

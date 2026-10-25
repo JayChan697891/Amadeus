@@ -7,6 +7,11 @@ SPECIFICATION.md 的 M5-01 至 M5-05。文档整理、重复证据、非关键�
 
 ## 实际核查基线
 
+本轮收口时已在新本地分支 feature/m6-local-prototype-20261025 保存产品提交
+b70cd1b9671de3910979b66f8c711b0f0f1f51af。42模块Git字节与实际测试/安装包一致；
+后续仅保存本段冻结回执，不是重新执行测试或M5通过。没有推送、合并或修改main。
+以下分支/HEAD及dirty状态描述的是本轮开始核查与测试时的真实基线。
+
 - 当前分支 feature/m5b3b2b-execution-intent；HEAD
   aac28a0f688962eca640b930e92eeaa608ff824f，tree
   ea2937f959c224bf940852f73ca030a96112f98b，0.3.0a11/schema12。
