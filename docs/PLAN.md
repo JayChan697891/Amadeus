@@ -1,4 +1,14 @@
-# M5B3B2B candidate execution intent guard in development
+# Current direction: M5 scope frozen; conditional M6 prototype
+
+Use [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md) as the only M5 exit checklist.
+M5 remains the original five requirements; no new stages for documentation,
+duplicate evidence or noncritical enhancements. Existing stage records below are
+historical. Current full local Windows checkpoint:1303 passed/30 skipped, zero
+failures; uncommitted source snapshot, not PR25 frozen-commit acceptance.
+Start M6 with bounded offline Codex event parsing; actual clients, candidate
+execution, verified completion and apply remain gated. Formal release BLOCKED.
+
+# Historical M5B3B2B candidate execution intent guard in development
 
 Implement owner-only prepare/get/abandon and transactionally fence reservation
 recovery while a prepared intent exists. See M5B3B2B-CONTRACT.md. Version0.3.0a11 /

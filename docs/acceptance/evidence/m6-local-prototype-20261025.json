@@ -1,0 +1,145 @@
+{
+  "scope": "M5 scope review and offline trusted-parent-process/protocol components; no real adapter acceptance",
+  "verified_at": "2026-10-25T08:04:38.956355+00:00",
+  "base_commit": "aac28a0f688962eca640b930e92eeaa608ff824f",
+  "uncommitted_changes": true,
+  "source_unchanged": true,
+  "results": {
+    "source": {
+      "tests": 812,
+      "passed": 811,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "c085219d3ec6cfeeb25d738852e4e980d512b85a4ab29fd1d0673c4b3e94df46"
+    },
+    "wheel": {
+      "tests": 437,
+      "passed": 437,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "890e560806c6ac5f0c58ebb724a0fe1e8759431d69ccbc09ea6c55556274cfff"
+    },
+    "sdist": {
+      "tests": 437,
+      "passed": 437,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "2319089669d45336ce0922a42213f50ebfed3507f4f1935f1478795ad46eeb76"
+    },
+    "linux_protocol_and_trace": {
+      "tests": 287,
+      "passed": 287,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "67e01873578100a5d73a3e82b0689d6c82559e0d4946fcd3261cf53df5883e52"
+    }
+  },
+  "artifacts": {
+    "wheel": {
+      "path": "D:\\agentsync-debug\\local-process-capture-7hiuiaq7\\artifacts\\agentsync_local-0.3.0a11-py3-none-any.whl",
+      "sha256": "ebf4776dbf15b59038b516e5bb691827917d7409dff39b27d36360d438dd9a87"
+    },
+    "sdist": {
+      "path": "D:\\agentsync-debug\\local-process-capture-7hiuiaq7\\artifacts\\agentsync_local-0.3.0a11.tar.gz",
+      "sha256": "468c60b3b3fd122e7f1f294da16b51daa961efd5f20a63b765b6ec21f3e4b53d"
+    }
+  },
+  "release_gate": {
+    "status": "blocked",
+    "formal_acceptance": false,
+    "local_checks_passed": true,
+    "invalid_or_incomplete_checks": [],
+    "blockers": {
+      "remaining_milestones": "M4-05 approved application and M5-M9 implementation and acceptance remain incomplete.",
+      "real_codex_adapter": "Actual Codex client adapter has not been independently verified.",
+      "real_claude_adapter": "Actual Claude Code client adapter has not been independently verified.",
+      "real_other_adapters": "Other planned clients, including Cursor, lack actual-client evidence.",
+      "autonomous_relay": "Real autonomous dual-agent relay, independent review and conflict handling are unverified.",
+      "cross_platform": "A local run does not establish the complete supported OS/Python matrix.",
+      "m9_acceptance": "Full M9 release acceptance has not been performed."
+    },
+    "policy": "No mock, protocol-only, missing, restricted or unverified evidence can count as actual-client acceptance."
+  },
+  "formal_acceptance": false,
+  "source_files": 290,
+  "runtime_modules": {
+    "__init__.py": "a5c3657d412c5de52be983e7feb3a2074dc1ba46f33a69c4e45094efb22ee676",
+    "__main__.py": "0aaaa36d3b4bab615b53037b2a497d77524f9643eef04cb30de3c9950c409df6",
+    "adapters/__init__.py": "deb7cbedf2886d2903a81be07f41fee5c330841a8a62a47957f91b3bdc6029c3",
+    "adapters/base.py": "30ead90443bf1bbbdc3e6ef087e75664197213f3e111437b2bc421daf2e6090f",
+    "adapters/codex_events.py": "eafc9cd940d05c4fef5741f8c039d383cd0f99bf870ea0719821b9bcaa21ffbb",
+    "adapters/mock.py": "02019d792792dc851b5d8119312dd83e2ae8b453921613ace2cbd11d0d2fa926",
+    "adapters/process_capture.py": "200c026a91445bbd778c6f4d965e511beef494689b25cd342dfe1676c1e5fe41",
+    "cli.py": "d2b8f1190bb0f0c06e9b8ac7b4d09970e22d1089dfa10d7bf50184aa16227efd",
+    "config.py": "021c7b04607df00cf75f9f688d80f04c7140be3c99250d5133eadb5352163af8",
+    "core/__init__.py": "d93e8a4d3b48ba182d840e7d76eec69300ec955dd8f9b098e4544d5d8e1ef6de",
+    "core/collaboration.py": "c522330854f0011032befb295a28c88f3ea7845b91013927a10eaacd6efc8cec",
+    "core/permissions.py": "aacf3bd5b8cd6b9e23aa146a9c88f4557b3e5f428dfe9932fe3adb5250ab24f2",
+    "core/resources.py": "e0b3a6fceb43c123e3e37141b392c84ad0385e53973ab09a72fa7db7a78763cf",
+    "core/service.py": "10472279407bbebd9fb9b175e6109d55803233671950584de034f6b1ea809089",
+    "core/workspaces.py": "ea40e59c07f382c4929c99c91bfd3020e063bab63d112faedefb46be588c6157",
+    "dispatch_planning.py": "bf3bf75fabe8f53d7a7c7f786410298ae2bf8e1d77e8b917decd0f219085c441",
+    "errors.py": "2e80e6ed40fda368ed76ae996fd2d563d455141e53cf4f50128674616b45666e",
+    "integrations/__init__.py": "9bade86abee7d5f2610d378801dc386007fb30f5aea7e7b5adfd3695e99e675a",
+    "integrations/http.py": "08705581e2d7047a94e369857793a3ea5850a9f39b5f372bfc122ee9e0f3a6f9",
+    "integrations/mcp.py": "1a999c66bcd94d707e3400570760b203b68712e99ddabb562b254cf5d07cf6c3",
+    "mock_run_manager.py": "74baad510d2f8a4092945e35f7b7c7839a64037561fb2ade722d6672198e3cf8",
+    "models.py": "77c038dd8fff7490fc18e2f2354d6a9d884528b82ebf625b0f96f32a57946ece",
+    "resources/__init__.py": "7b960fd421a27a3147fc050f4149f8665aeae184ad2d2b8108919289215023bb",
+    "resources/paths.py": "3c913b3ea3778b1fb402c90eaf4f5d4090e01a8f3d4dfba8cf8d1243d6dbc0d0",
+    "scheduling.py": "ddc59309bd6ee586ca97c309bed71cc8ff100540893afd71a30867c5f6482544",
+    "sdk/__init__.py": "02ab4b60687d6e6a47d90dab7ab915c13af07cf8250491a3f3c9d61474de5506",
+    "sdk/client.py": "c893e5808ff878fbd87d6c5b8fd04bb63829353de26d532c79a4cb7083fb955c",
+    "storage/__init__.py": "3b6e52f3471d060ba746973631b0a19a85e6bc8cdafbad14d8cd6ef96e23e285",
+    "storage/database.py": "b0022c9b261ac97eb0d3f86edac760f073c45b34ecf040555bcafae56a733426",
+    "verification/__init__.py": "e8d69239fd834f7f3f8e29614dfaaa24ed854f0b18304f67826933c16e989053",
+    "verification/binding.py": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961",
+    "verification/candidate.py": "7c2bd05600407d85ae0e8125bdb18fdd4f29ef730331e3c1cf11a23dea060ec7",
+    "verification/candidate_claims.py": "5ebfa3332eb60eb88f255edcf574a4a27bd249bc778138ced97c915d02cd127e",
+    "verification/candidate_intents.py": "97f25b90b2b834fb37fd818c460b7600974451592ee2dfba1d27a8c923edf265",
+    "verification/candidate_jobs.py": "d2a2df5674c890b69bcc0f4cd794a0b99be2b6df677960faadcf5d4f073ca099",
+    "verification/docker.py": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+    "verification/executor.py": "73bdc926b3ed65c25777f79ad0a9cfe50ceec838cc1226b954494dbc54cc02c8",
+    "verification/jobs.py": "99531f4974ddd23c1d981c1223b0cc0a759562418e674c0fb3eb42cb5ae88bdb",
+    "verification/reconciliation.py": "27cad856d82ded185aef99b58c182281cf772d5eafc3c04715c27ceafc3f86cd",
+    "verification/snapshot.py": "bef70ed60b5b979da3dc69fadbedbf0a8131bb3acdf4c07c30413401eda265c6",
+    "workspaces/__init__.py": "5316aad3121721c4e02786265356c71306aca69b6fdae596fa5a499d9ace76b2",
+    "workspaces/git.py": "92f5a1315ce6a302aebf6e4b397d650144644bb5be6f414b6c04b325ec708295"
+  },
+  "root_checkpoint_sha256": "25db6f1d9b8474a05bbed6d00ea17df41082ff56cdd58de5a494ce9032cc0ca2",
+  "root_checkpoint_path": "D:\\agentsync-debug\\M6-LOCAL-PROTOTYPE-CHECKPOINT-20261025.json",
+  "source_frozen_before_documentation_closeout": true,
+  "actual_cli_smoke": "codex-readonly-cli-smoke-20261025.json",
+  "real_adapter_integration": "NOT RUN",
+  "parent_process_tree_cleanup": "unverified",
+  "process_capture_not_sandbox": true,
+  "pre_transport_start_timeout": "NOT VERIFIED",
+  "cancellation_during_start_handshake": "NOT RUN",
+  "formal_requirement_scenarios": {
+    "total": 42,
+    "not_run": 42
+  },
+  "m5_exit_checklist": "docs/M5-FINAL-ACCEPTANCE.md",
+  "failures_preserved": {
+    "source_cli_import_failures": [
+      "local-codex-protocol-l12uao3y",
+      "local-codex-protocol-9g353uhs"
+    ],
+    "linux_not_run": "codex-protocol-linux-sj69bpuk",
+    "github_detail_limited": [
+      8,
+      10,
+      12,
+      14,
+      16,
+      19,
+      20,
+      22,
+      23
+    ]
+  }
+}

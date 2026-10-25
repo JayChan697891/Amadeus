@@ -1,4 +1,31 @@
-# M5B3B2B candidate execution intent guard in development
+# Current: M5 frozen; M6 conditional development
+
+2026-10-25 America/Tijuana: read original specification, current code, all stored
+M5 archive evidence, live open PRs and Issues7/11. Single exit checklist and exact
+BLOCKER/DEFERRED/limited VERIFIED scope: [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md).
+Current frozen local snapshot Windows:1303pass/30skip/0fail/error; root independently
+verified source/package/log hashes and Ruff/format/mypy/diff. This is not a clean
+Git commit or formal M5/Release acceptance. No GitHub Actions or remote writes.
+M6 offline protocol parser and repository inspection CLI now implemented: source
+components787pass/1skip; fresh wheel/sdist components413pass each; local Linux263pass.
+Root verified286-file snapshot/41 modules and installed/archive bytes. See
+D:/agentsync-debug/CODEX-PROTOCOL-CHECKPOINT-20261025.json. No complete new OS matrix.
+One separately authorized actual Codex CLI no-tools inline-fixture smoke exited0,
+four events/reply hash and19 unchanged files independently checked; see acceptance/
+evidence/codex-readonly-cli-smoke-20261025.json. This is not adapter/cancel/timeout/
+filesystem/relay acceptance; the single model-task authorization is consumed.
+The material below records historical stages rather than a new M5 task queue.
+
+Additional local-only parent-process capture completed:24 known Python-helper
+tests, no real client. Latest290-file/42-module snapshot: source811pass/1skip;
+fresh wheel/sdist components437pass each; local Linux process/protocol/trace287pass.
+Root independently recomputed XML/log/archive/install hashes. See
+D:/agentsync-debug/M6-LOCAL-PROTOTYPE-CHECKPOINT-20261025.json and the current
+acceptance/RELEASE-ACCEPTANCE-REPORT.md. Mechanical capture is parent-only, inherits
+host environment and is not a sandbox. Pre-transport startup deadline and start
+cancellation remain unverified; no actual client is wired to this layer.
+
+# Historical M5B3B2B candidate execution intent guard in development
 
 Implement owner-only prepare/get/abandon and transactionally fence reservation
 recovery while a prepared intent exists. See M5B3B2B-CONTRACT.md. Version0.3.0a11 /

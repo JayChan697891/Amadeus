@@ -53,6 +53,210 @@ def test_design_mode_never_executes_and_preserves_manifest(repository, tmp_path,
     assert (run / "Release-Acceptance-Report.md").is_file()
 
 
+def test_process_attempt_record_exists_before_command_and_survives_completion(
+    repository, tmp_path, monkeypatch
+):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    record_path = run / "logs" / "sample.process.json"
+
+    def command_result(*_args, **_kwargs):
+        started = json.loads(record_path.read_text(encoding="utf-8"))
+        assert started["phase"] == "started"
+        assert started["outcome"] == "unknown"
+        assert started["formal_acceptance"] is False
+        assert started["check_id"] == "sample"
+        return type("Result", (), {"returncode": 0})()
+
+    monkeypatch.setattr(runner.subprocess, "run", command_result)
+    result = runner.execute("sample", ["local-test-command"], repository, run, scratch)
+    saved = json.loads(record_path.read_text(encoding="utf-8"))
+    assert saved["phase"] == "finished"
+    assert saved["outcome"] == "exited" and saved["error_type"] is None
+    assert saved["result"] == result
+    assert saved["formal_acceptance"] is False
+    assert saved["junit_validated"] is False
+    assert result["status"] == "pass"
+
+
+@pytest.mark.parametrize("existing", [False, True])
+def test_execute_without_scratch_prepares_default_directory_and_keeps_existing_files(
+    repository, tmp_path, monkeypatch, existing
+):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    temporary = run / "tmp"
+    if existing:
+        temporary.mkdir()
+        (temporary / "keep.txt").write_text("existing temporary data", encoding="utf-8")
+
+    def local_command(_command, **kwargs):
+        assert temporary.is_dir()
+        assert kwargs["env"]["TMP"] == str(temporary)
+        assert kwargs["env"]["TEMP"] == str(temporary)
+        assert kwargs["env"]["TMPDIR"] == str(temporary)
+        kwargs["stdout"].write(b"default scratch command finished\n")
+        return type("Result", (), {"returncode": 0})()
+
+    monkeypatch.setattr(runner.subprocess, "run", local_command)
+    result = runner.execute("sample", ["local-test-command"], repository, run)
+    assert result["status"] == "pass" and result["exit_code"] == 0
+    assert (run / result["log"]).read_text(encoding="utf-8") == "default scratch command finished\n"
+    remaining = list(temporary.iterdir())
+    if existing:
+        assert remaining == [temporary / "keep.txt"]
+        assert remaining[0].read_text(encoding="utf-8") == "existing temporary data"
+    else:
+        assert not remaining
+
+
+def test_execute_default_temporary_path_does_not_replace_existing_file(
+    repository, tmp_path, monkeypatch
+):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    (run / "tmp").write_text("caller-owned file", encoding="utf-8")
+
+    def forbidden(*_args, **_kwargs):
+        pytest.fail("Command started with an invalid temporary directory")
+
+    monkeypatch.setattr(runner.subprocess, "run", forbidden)
+    with pytest.raises(OSError):
+        runner.execute("sample", ["local-test-command"], repository, run)
+    assert (run / "tmp").read_text(encoding="utf-8") == "caller-owned file"
+
+
+@pytest.mark.parametrize("outcome", ["nonzero", "launch_error", "timeout"])
+def test_finished_attempt_preserves_failed_process_result(
+    repository, tmp_path, monkeypatch, outcome
+):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+
+    def command_result(command, **_kwargs):
+        if outcome == "launch_error":
+            raise OSError("unit-only launch failure")
+        if outcome == "timeout":
+            raise runner.subprocess.TimeoutExpired(command, 900)
+        return type("Result", (), {"returncode": 7})()
+
+    monkeypatch.setattr(runner.subprocess, "run", command_result)
+    result = runner.execute("sample", ["local-test-command"], repository, run, scratch)
+    saved = json.loads((run / "logs/sample.process.json").read_text(encoding="utf-8"))
+    assert saved["phase"] == "finished" and saved["result"] == result
+    expected_outcome = {
+        "nonzero": "exited",
+        "launch_error": "runner_error",
+        "timeout": "timed_out",
+    }[outcome]
+    expected_error = {"nonzero": None, "launch_error": "OSError", "timeout": "TimeoutExpired"}[
+        outcome
+    ]
+    assert saved["outcome"] == expected_outcome and saved["error_type"] == expected_error
+    assert result["status"] == "fail"
+    assert result["exit_code"] == (7 if outcome == "nonzero" else None)
+    assert saved["formal_acceptance"] is False and saved["junit_validated"] is False
+    assert not list(scratch.iterdir())
+    assert not list((run / "logs").glob(".attempt-*.tmp"))
+
+
+def test_interrupted_attempt_does_not_claim_command_or_junit_completion(
+    repository, tmp_path, monkeypatch
+):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+
+    def interrupt(*_args, **_kwargs):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(runner.subprocess, "run", interrupt)
+    with pytest.raises(KeyboardInterrupt):
+        runner.execute("sample", ["local-test-command"], repository, run, scratch)
+    saved = json.loads((run / "logs/sample.process.json").read_text(encoding="utf-8"))
+    assert saved["phase"] == "started" and "result" not in saved
+    assert saved["outcome"] == "unknown"
+    assert saved["formal_acceptance"] is False and saved["junit_validated"] is False
+    assert not list(scratch.iterdir())
+
+
+def test_attempt_record_contains_only_redacted_command_metadata(repository, tmp_path, monkeypatch):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+
+    def command_result(*_args, **_kwargs):
+        return type("Result", (), {"returncode": 0})()
+
+    monkeypatch.setattr(runner.subprocess, "run", command_result)
+    runner.execute(
+        "sample", ["local-test-command", "password=unit-placeholder"], repository, run, scratch
+    )
+    text = (run / "logs/sample.process.json").read_text(encoding="utf-8")
+    assert "unit-placeholder" not in text and "[REDACTED]" in text
+
+
+def test_record_write_failure_leaves_previous_record_and_does_not_start_command(
+    repository, tmp_path, monkeypatch
+):
+    run = tmp_path / "run"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    record = run / "logs/sample.process.json"
+    previous = '{"phase":"previous-completed-attempt"}\n'
+    record.write_text(previous, encoding="utf-8")
+
+    def write_failure(*_args, **_kwargs):
+        raise OSError("unit-only replacement failure")
+
+    def forbidden_command(*_args, **_kwargs):
+        pytest.fail("Command started without its attempt record")
+
+    monkeypatch.setattr(runner.os, "replace", write_failure)
+    monkeypatch.setattr(runner.subprocess, "run", forbidden_command)
+    with pytest.raises(OSError, match="unit-only replacement failure"):
+        runner.execute("sample", ["local-test-command"], repository, run, scratch)
+    assert record.read_text(encoding="utf-8") == previous
+    assert not list((run / "logs").glob(".attempt-*.tmp"))
+
+
+def test_completed_attempt_is_preserved_when_later_check_is_interrupted(
+    repository, tmp_path, monkeypatch
+):
+    output = tmp_path / "evidence"
+
+    def synthetic_command(command, **kwargs):
+        if "pytest" in command:
+            xml_path = Path(command[command.index("--junitxml") + 1])
+            xml_path.write_text(
+                '<testsuite tests="1"><testcase name="synthetic-unit-observation"/></testsuite>',
+                encoding="utf-8",
+            )
+            kwargs["stdout"].write(b"synthetic unit command finished\n")
+            return type("Result", (), {"returncode": 0})()
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(runner.subprocess, "run", synthetic_command)
+    with pytest.raises(KeyboardInterrupt):
+        runner.collect(repository, output, run_checks=True, package_install=False)
+    run = next(output.glob("release-*"))
+    completed = json.loads((run / "logs/pytest.process.json").read_text(encoding="utf-8"))
+    interrupted = json.loads((run / "logs/ruff.process.json").read_text(encoding="utf-8"))
+    assert completed["phase"] == "finished" and completed["result"]["exit_code"] == 0
+    assert interrupted["phase"] == "started" and "result" not in interrupted
+    assert completed["formal_acceptance"] is False and interrupted["formal_acceptance"] is False
+    assert (run / "junit.xml").is_file()
+    assert not (run / "report.json").exists(), "Partial records must not become final acceptance"
+    assert not list(output.glob(".scratch-*"))
+
+
 def test_each_run_uses_new_evidence_directory(repository, tmp_path):
     first = runner.collect(
         repository, tmp_path / "evidence", run_checks=False, package_install=False
@@ -144,6 +348,24 @@ def test_scratch_secrets_are_not_persisted(repository, tmp_path, monkeypatch):
     assert not any("auth.json" in entry["path"] for entry in report["artifacts"])
 
 
+@pytest.mark.parametrize("relative", [".", "scratch", "nested/../scratch"])
+def test_scratch_root_rejects_source_before_creating_any_directories(
+    repository, tmp_path, relative
+):
+    output = tmp_path / "uncreated" / "reports"
+    with pytest.raises(ValueError, match="Scratch.*outside"):
+        runner.collect(
+            repository,
+            output,
+            run_checks=False,
+            package_install=False,
+            scratch_root=repository / relative,
+        )
+    assert not output.parent.exists()
+    assert not (repository / "scratch").exists()
+    assert not (repository / "nested").exists()
+
+
 def test_malformed_requirements_manifest_keeps_release_blocked(repository, tmp_path):
     manifest = repository / "docs/acceptance/requirements.json"
     manifest.parent.mkdir(parents=True)
@@ -196,6 +418,233 @@ def test_requirement_rows_preserve_nonacceptance_with_exact_component_evidence(t
         "errors": 0,
         "skipped": 1,
     }
+
+
+@pytest.mark.parametrize("junit_name", ["junit.xml", "wheel-junit.xml", "sdist-junit.xml"])
+def test_protocol_only_codex_junit_cannot_promote_real_start_or_relay(tmp_path, junit_name):
+    """Synthetic passing parser records are explicitly not actual CLI captures."""
+    manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    names = [
+        "test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
+        "test_exit_observation_prevents_protocol_only_success[None-incomplete]",
+        "test_upstream_errors_are_static_failed_observations[event0]",
+        "test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+    ]
+    cases = [("tests.unit.test_codex_events", name) for name in names]
+    cases += [
+        ("tests.unit.other", names[0]),
+        ("tests.unit.test_codex_events", names[0] + "_extra"),
+    ]
+    (tmp_path / junit_name).write_text(
+        "<testsuites><testsuite name='synthetic-protocol-only'>"
+        + "".join(f'<testcase classname="{module}" name="{name}"/>' for module, name in cases)
+        + "</testsuite></testsuites>",
+        encoding="utf-8",
+    )
+    rows = runner.requirement_results(manifest, tmp_path)
+    by_id = {row["id"]: row for row in rows}
+    row = by_id["M6-03"]
+    assert row["coverage"] == "partial"
+    assert len(row["component_evidence"]) == 4
+    for component in row["component_evidence"]:
+        assert component["observations"] == [
+            {
+                "junit": junit_name,
+                "counts": {"tests": 1, "passed": 1, "failures": 0, "errors": 0, "skipped": 0},
+            }
+        ]
+    assert row["acceptance_evidence_status"] == "unverified"
+    assert len(rows) == 42 and all(item["execution_status"] == "not_run" for item in rows)
+    for requirement_id in ("M6-01", "M6-02", "M7-01", "M7-02"):
+        assert all(
+            all(value == 0 for value in observation["counts"].values())
+            for component in by_id[requirement_id]["component_evidence"]
+            for observation in component["observations"]
+        )
+    for requirement_id in ("M6-04", "M6-05"):
+        assert by_id[requirement_id]["coverage"] == "missing"
+        assert by_id[requirement_id]["component_evidence"] == []
+        assert by_id[requirement_id]["acceptance_evidence_status"] == "unverified"
+    gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
+    assert gate["local_checks_passed"] is True
+    assert gate["formal_acceptance"] is False and gate["status"] == "blocked"
+    assert {"real_codex_adapter", "autonomous_relay"} <= set(gate["blockers"])
+
+
+@pytest.mark.parametrize("junit_name", ["junit.xml", "wheel-junit.xml", "sdist-junit.xml"])
+def test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptance(
+    tmp_path, junit_name
+):
+    manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    (tmp_path / junit_name).write_text(
+        "<testsuites><testsuite>"
+        '<testcase classname="tests.unit.test_adapters" '
+        'name="test_capabilities_honestly_declare_simulation_and_cancel[True]"/>'
+        '<testcase classname="tests.unit.test_adapters" '
+        'name="test_unsupported_cancel_and_resume_do_not_change_run"/>'
+        '<testcase classname="tests.unit.test_adapters" '
+        'name="test_only_explicit_finish_produces_simulated_result[False]"/>'
+        '<testcase classname="tests.integration.test_mock_adapter_core_boundary" '
+        'name="test_mock_terminal_result_preserves_core_task_and_persisted_state[succeeded-pending]"/>'
+        '<testcase classname="tests.unit.test_mock_run_manager" '
+        'name="test_global_running_limit_is_atomic_across_workers"/>'
+        '<testcase classname="tests.integration.test_mock_run_manager_core_boundary" '
+        'name="test_dispatch_plan_to_mock_manager_preserves_complete_core_snapshot"/>'
+        '<testcase classname="tests.unit.other" '
+        'name="test_capabilities_honestly_declare_simulation_and_cancel[True]"/>'
+        '<testcase classname="tests.unit.test_adapters" '
+        'name="test_unsupported_cancel_and_resume_do_not_change_run_extra"/>'
+        '<testcase classname="tests.unit.other" '
+        'name="test_global_running_limit_is_atomic_across_workers"/>'
+        '<testcase classname="tests.integration.test_mock_run_manager_core_boundary" '
+        'name="test_dispatch_plan_to_mock_manager_preserves_complete_core_snapshot_extra"/>'
+        "</testsuite></testsuites>",
+        encoding="utf-8",
+    )
+    rows = runner.requirement_results(manifest, tmp_path)
+    by_id = {row["id"]: row for row in rows}
+    assert len(rows) == 42 and all(row["execution_status"] == "not_run" for row in rows)
+    for requirement_id in ("M6-01", "M6-02"):
+        row = by_id[requirement_id]
+        assert row["coverage"] == "partial"
+        counts = [
+            observation["counts"]
+            for component in row["component_evidence"]
+            for observation in component["observations"]
+        ]
+        assert sum(count["passed"] for count in counts) == (2 if requirement_id == "M6-01" else 4)
+        assert sum(count["tests"] for count in counts) == (2 if requirement_id == "M6-01" else 4)
+        assert row["acceptance_evidence_status"] == "not_run"
+    for requirement_id in ("M6-03", "M6-04", "M6-05"):
+        row = by_id[requirement_id]
+        assert row["coverage"] == ("partial" if requirement_id == "M6-03" else "missing")
+        if requirement_id == "M6-03":
+            assert len(row["component_evidence"]) == 4
+            assert all(
+                all(value == 0 for value in observation["counts"].values())
+                for component in row["component_evidence"]
+                for observation in component["observations"]
+            )
+        else:
+            assert row["component_evidence"] == []
+        assert row["acceptance_evidence_status"] == "unverified"
+    gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
+    assert gate["local_checks_passed"] is True
+    assert gate["formal_acceptance"] is False and gate["status"] == "blocked"
+    assert {"real_codex_adapter", "real_claude_adapter", "real_other_adapters"} <= set(
+        gate["blockers"]
+    )
+
+
+@pytest.mark.parametrize("junit_name", ["junit.xml", "wheel-junit.xml", "sdist-junit.xml"])
+def test_all_planning_component_observations_leave_relay_unverified_and_release_blocked(
+    tmp_path, junit_name
+):
+    manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    cases = [
+        (
+            "tests.unit.test_scheduling",
+            "test_dependencies_require_completed_and_missing_is_never_completed",
+        ),
+        (
+            "tests.unit.test_scheduling",
+            "test_priority_then_created_at_then_id_sort_is_input_order_independent",
+        ),
+        (
+            "tests.unit.test_scheduling",
+            "test_cycles_duplicate_ids_and_oversized_snapshots_are_invalid",
+        ),
+        (
+            "tests.integration.test_scheduling_core_boundary",
+            "test_planning_uses_core_dependencies_and_priority_without_changing_tasks",
+        ),
+        (
+            "tests.integration.test_scheduling_core_boundary",
+            "test_core_rejects_stale_recommendation_after_another_worker_claims",
+        ),
+        (
+            "tests.integration.test_scheduling_core_boundary",
+            "test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is",
+        ),
+        (
+            "tests.unit.test_dispatch_planning",
+            "test_global_priority_order_and_least_load_balancing_are_deterministic",
+        ),
+        (
+            "tests.unit.test_dispatch_planning",
+            "test_load_aggregates_all_sessions_but_dispatch_selects_one_fresh_session",
+        ),
+        (
+            "tests.unit.test_dispatch_planning",
+            "test_reserved_worker_at_capacity_does_not_fall_back_to_another_worker",
+        ),
+        (
+            "tests.integration.test_dispatch_planning_core_boundary",
+            "test_real_task_load_limits_suggestions_without_mutating_core",
+        ),
+        (
+            "tests.integration.test_dispatch_planning_core_boundary",
+            "test_expired_lease_keeps_slot_until_explicit_core_reclamation",
+        ),
+        (
+            "tests.integration.test_dispatch_planning_core_boundary",
+            "test_offline_handoff_recipient_is_not_replaced_by_another_available_worker",
+        ),
+        # Ordinary neighboring names/classes are not the declared selectors.
+        (
+            "tests.unit.test_scheduling",
+            "test_dependencies_require_completed_and_missing_is_never_completed_extra",
+        ),
+        ("tests.unit.other", "test_dependencies_require_completed_and_missing_is_never_completed"),
+    ]
+    (tmp_path / junit_name).write_text(
+        "<testsuites><testsuite>"
+        + "".join(f'<testcase classname="{module}" name="{name}"/>' for module, name in cases)
+        + "</testsuite></testsuites>",
+        encoding="utf-8",
+    )
+    rows = runner.requirement_results(manifest, tmp_path)
+    by_id = {row["id"]: row for row in rows}
+    assert by_id["M7-02"]["acceptance_evidence_status"] == "unverified"
+    assert by_id["M7-01"]["acceptance_evidence_status"] == "not_run"
+    assert len(rows) == 42 and all(row["execution_status"] == "not_run" for row in rows)
+    for requirement_id in ("M7-01", "M7-02"):
+        row = by_id[requirement_id]
+        assert row["coverage"] == "partial" and len(row["component_evidence"]) == 6
+        for component in row["component_evidence"]:
+            assert component["observations"] == [
+                {
+                    "junit": junit_name,
+                    "counts": {
+                        "tests": 1,
+                        "passed": 1,
+                        "failures": 0,
+                        "errors": 0,
+                        "skipped": 0,
+                    },
+                }
+            ]
+    for requirement_id in ("M6-03", "M6-04", "M6-05"):
+        assert by_id[requirement_id]["coverage"] == (
+            "partial" if requirement_id == "M6-03" else "missing"
+        )
+        if requirement_id == "M6-03":
+            assert len(by_id[requirement_id]["component_evidence"]) == 4
+            assert all(
+                all(value == 0 for value in observation["counts"].values())
+                for component in by_id[requirement_id]["component_evidence"]
+                for observation in component["observations"]
+            )
+        else:
+            assert by_id[requirement_id]["component_evidence"] == []
+        assert by_id[requirement_id]["acceptance_evidence_status"] == "unverified"
+    gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
+    assert gate["local_checks_passed"] is True
+    assert gate["formal_acceptance"] is False and gate["status"] == "blocked"
+    assert "autonomous_relay" in gate["blockers"]
 
 
 def test_all_manifest_requirements_appear_in_json_and_markdown(repository, tmp_path):
@@ -676,3 +1125,278 @@ def test_installer_subprocess_cannot_inherit_external_write_targets(
         scratch,
     )
     assert item["status"] == "pass"
+
+
+def test_explicit_scratch_root_keeps_reports_durable_and_cleans_only_own_child(
+    repository, tmp_path, monkeypatch
+):
+    scratch_root = tmp_path / "short"
+    scratch_root.mkdir()
+    sentinel = scratch_root / "keep.txt"
+    sentinel.write_text("caller-owned contents")
+    output = tmp_path / "durable" / "reports"
+    temporary_paths = []
+
+    def record_check(check_id, command, repo, run, scratch):
+        assert scratch.parent == scratch_root.resolve()
+        assert scratch != scratch_root and scratch.is_dir()
+        assert run.parent == output.resolve()
+        temporary_paths.append(scratch)
+        (scratch / "transient.txt").write_text("temporary test data")
+        return {"id": check_id, "status": "fail", "command": command}
+
+    monkeypatch.setattr(runner, "execute", record_check)
+    run = runner.collect(
+        repository, output, run_checks=True, package_install=False, scratch_root=scratch_root
+    )
+    assert temporary_paths and all(not path.exists() for path in temporary_paths)
+    assert (run / "report.json").is_file()
+    assert (run / "Release-Acceptance-Report.md").is_file()
+    assert sentinel.read_text() == "caller-owned contents"
+    assert list(scratch_root.iterdir()) == [sentinel]
+    assert not list(output.glob(".scratch-*"))
+
+
+def test_cli_scratch_root_reaches_collect(tmp_path, monkeypatch):
+    scratch_root = tmp_path / "short"
+    output = tmp_path / "reports"
+    output.mkdir()
+    (output / "report.json").write_text(
+        '{"checks": [], "release_gate": {"formal_acceptance": false}}'
+    )
+    observed = []
+
+    def fake_collect(
+        repo, destination, *, run_checks, package_install, sdist_install, scratch_root
+    ):
+        observed.append((destination, scratch_root, run_checks, package_install, sdist_install))
+        return output
+
+    monkeypatch.setattr(runner, "collect", fake_collect)
+    monkeypatch.setattr(
+        runner.sys, "argv", ["runner", "--output", str(output), "--scratch-root", str(scratch_root)]
+    )
+    assert runner.main() == 0
+    assert observed == [(output.resolve(), scratch_root, False, False, False)]
+
+
+def test_scratch_child_is_cleaned_on_exception_without_removing_parent_contents(
+    repository, tmp_path, monkeypatch
+):
+    scratch_root = tmp_path / "short"
+    scratch_root.mkdir()
+    sentinel = scratch_root / "keep.txt"
+    sentinel.write_text("caller-owned contents")
+    temporary_paths = []
+
+    def fail_check(_check_id, _command, _repo, _run, scratch):
+        temporary_paths.append(scratch)
+        assert scratch.is_dir() and scratch.parent == scratch_root.resolve()
+        (scratch / "unfinished.txt").write_text("unfinished check")
+        raise RuntimeError("unit-only collector failure")
+
+    monkeypatch.setattr(runner, "execute", fail_check)
+    with pytest.raises(RuntimeError, match="unit-only collector failure"):
+        runner.collect(
+            repository,
+            tmp_path / "reports",
+            run_checks=True,
+            package_install=False,
+            scratch_root=scratch_root,
+        )
+    assert temporary_paths and all(not path.exists() for path in temporary_paths)
+    assert sentinel.read_text() == "caller-owned contents"
+    assert list(scratch_root.iterdir()) == [sentinel]
+
+
+@pytest.mark.parametrize("explicit_none", [False, True])
+def test_default_scratch_parent_remains_output(repository, tmp_path, monkeypatch, explicit_none):
+    output = tmp_path / "reports"
+    temporary_paths = []
+
+    def record_check(check_id, command, _repo, _run, scratch):
+        temporary_paths.append(scratch)
+        assert scratch.parent == output.resolve()
+        return {"id": check_id, "status": "fail", "command": command}
+
+    monkeypatch.setattr(runner, "execute", record_check)
+    options = {"scratch_root": None} if explicit_none else {}
+    run = runner.collect(repository, output, run_checks=True, package_install=False, **options)
+    assert temporary_paths and all(not path.exists() for path in temporary_paths)
+    assert (run / "report.json").is_file()
+
+
+def test_cli_without_scratch_root_preserves_existing_collect_signature(tmp_path, monkeypatch):
+    (tmp_path / "report.json").write_text(
+        '{"checks": [], "release_gate": {"formal_acceptance": false}}'
+    )
+    observed = []
+
+    def fake_collect(repo, output, *, run_checks, package_install, sdist_install):
+        observed.append(output)
+        return tmp_path
+
+    monkeypatch.setattr(runner, "collect", fake_collect)
+    monkeypatch.setattr(runner.sys, "argv", ["runner", "--output", str(tmp_path)])
+    assert runner.main() == 0
+    assert observed == [tmp_path.resolve()]
+
+
+def test_missing_scratch_parent_is_created_outside_durable_output(repository, tmp_path):
+    scratch_root = tmp_path / "new" / "short"
+    output = tmp_path / "reports"
+    run = runner.collect(
+        repository, output, run_checks=False, package_install=False, scratch_root=scratch_root
+    )
+    assert scratch_root.is_dir() and not list(scratch_root.iterdir())
+    assert (run / "report.json").is_file()
+    report = json.loads((run / "report.json").read_text())
+    command = next(check["command"] for check in report["checks"] if check["id"] == "pytest")
+    recorded_temporary = Path(command[command.index("--basetemp") + 1]).parent
+    assert recorded_temporary.parent == scratch_root.resolve()
+    assert not recorded_temporary.exists()
+
+
+def test_pytest_controller_uses_requested_timeout(repository, tmp_path, monkeypatch):
+    run = tmp_path / "reports"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+    deadlines = []
+
+    def fake_subprocess(command, **options):
+        deadlines.append(options["timeout"])
+        return runner.subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_subprocess)
+    check = runner.execute(
+        "pytest", ["python", "-m", "pytest"], repository, run, scratch, pytest_timeout=1800
+    )
+    assert deadlines == [1800]
+    assert check["timeout_seconds"] == 1800
+
+
+@pytest.mark.parametrize("value", [0, -1, 7201, True, False, 1.0, 900.0, "900", None])
+def test_collect_rejects_invalid_pytest_timeout_before_mkdir(repository, tmp_path, value):
+    output = tmp_path / "uncreated" / "reports"
+    scratch = tmp_path / "uncreated-scratch"
+    with pytest.raises(ValueError, match="pytest.*timeout"):
+        runner.collect(
+            repository,
+            output,
+            run_checks=False,
+            package_install=False,
+            scratch_root=scratch,
+            pytest_timeout=value,
+        )
+    assert not output.parent.exists()
+    assert not scratch.exists()
+
+
+@pytest.mark.parametrize("check_id", ["build", "pip_check", "ruff", "wheel_install", "sdist_venv"])
+def test_custom_pytest_timeout_rejected_for_other_controllers(repository, tmp_path, check_id):
+    with pytest.raises(ValueError, match="pytest.*timeout"):
+        runner.execute(
+            check_id, ["unit-only"], repository, tmp_path / "absent", pytest_timeout=1800
+        )
+
+
+@pytest.mark.parametrize("deadline", [1, 900, 1800, 7200])
+def test_collect_timeout_reaches_all_suite_controllers_and_saved_metadata(
+    repository, tmp_path, monkeypatch, deadline
+):
+    observed = []
+
+    def fake_subprocess(command, **options):
+        suite = None
+        if "--outdir" in command:
+            artifacts = Path(command[command.index("--outdir") + 1])
+            (artifacts / "unit.whl").write_bytes(b"unit-only wheel")
+            (artifacts / "unit.tar.gz").write_bytes(b"unit-only sdist")
+        if "--junitxml" in command:
+            junit = Path(command[command.index("--junitxml") + 1])
+            junit.write_text("<testsuites><testsuite><testcase/></testsuite></testsuites>")
+            suite = {
+                "junit.xml": "pytest",
+                "wheel-junit.xml": "wheel_pytest",
+                "sdist-junit.xml": "sdist_pytest",
+            }[junit.name]
+        observed.append((suite, options["timeout"]))
+        return runner.subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(runner.subprocess, "run", fake_subprocess)
+    run = runner.collect(
+        repository,
+        tmp_path / "reports",
+        run_checks=True,
+        package_install=True,
+        sdist_install=True,
+        pytest_timeout=deadline,
+    )
+    suites = {suite: timeout for suite, timeout in observed if suite is not None}
+    assert suites == {"pytest": deadline, "wheel_pytest": deadline, "sdist_pytest": deadline}
+    assert all(timeout == 900 for suite, timeout in observed if suite is None)
+    report = json.loads((run / "report.json").read_text())
+    assert all(check["status"] == "pass" for check in report["checks"])
+    for check in report["checks"]:
+        if deadline != 900 and check["id"] in suites:
+            assert check["timeout_seconds"] == deadline
+        else:
+            assert "timeout_seconds" not in check
+
+
+@pytest.mark.parametrize("deadline", [1, 900, 1800, 7200])
+def test_cli_pytest_timeout_passes_only_nondefault_collect_option(tmp_path, monkeypatch, deadline):
+    (tmp_path / "report.json").write_text(
+        '{"checks": [], "release_gate": {"formal_acceptance": false}}'
+    )
+    observed = []
+
+    def fake_collect(_repo, _output, *, run_checks, package_install, sdist_install, **options):
+        observed.append(options)
+        return tmp_path
+
+    monkeypatch.setattr(runner, "collect", fake_collect)
+    monkeypatch.setattr(
+        runner.sys, "argv", ["runner", "--output", str(tmp_path), "--pytest-timeout", str(deadline)]
+    )
+    assert runner.main() == 0
+    assert observed == ([{}] if deadline == 900 else [{"pytest_timeout": deadline}])
+
+
+@pytest.mark.parametrize("value", ["0", "-1", "7201", "true", "1.5"])
+def test_cli_invalid_pytest_timeout_never_calls_collect(tmp_path, monkeypatch, value):
+    def forbidden(*_args, **_options):
+        pytest.fail("Invalid CLI timeout reached collect")
+
+    output = tmp_path / "uncreated"
+    monkeypatch.setattr(runner, "collect", forbidden)
+    monkeypatch.setattr(
+        runner.sys, "argv", ["runner", "--output", str(output), "--pytest-timeout", value]
+    )
+    with pytest.raises(SystemExit) as exc:
+        runner.main()
+    assert exc.value.code == 2
+    assert not output.exists()
+
+
+def test_design_report_records_custom_pytest_deadline_without_executing(
+    repository, tmp_path, monkeypatch
+):
+    def forbidden(*_args, **_options):
+        pytest.fail("Design-only report executed a subprocess")
+
+    monkeypatch.setattr(runner.subprocess, "run", forbidden)
+    run = runner.collect(
+        repository,
+        tmp_path / "reports",
+        run_checks=False,
+        package_install=False,
+        pytest_timeout=1800,
+    )
+    report = json.loads((run / "report.json").read_text())
+    suite = next(check for check in report["checks"] if check["id"] == "pytest")
+    assert suite["status"] == "not_run" and suite["timeout_seconds"] == 1800
+    assert all(
+        "timeout_seconds" not in check for check in report["checks"] if check["id"] != "pytest"
+    )

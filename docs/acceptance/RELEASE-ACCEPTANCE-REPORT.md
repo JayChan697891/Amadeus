@@ -1,5 +1,67 @@
 # Release Acceptance Report
 
+## Current local checkpoint: 2026-10-25 America/Tijuana
+
+Execution: Codex. Formal release acceptance: **BLOCKED**. M5 is frozen to its
+original five requirements; its only exit checklist is
+[M5-FINAL-ACCEPTANCE.md](../M5-FINAL-ACCEPTANCE.md). No new M5 substage is opened.
+
+Base HEAD aac28a0f688962eca640b930e92eeaa608ff824f, version0.3.0a11/schema12.
+The tested product is an uncommitted290-file snapshot, not a newly accepted Git
+commit. Root independently checked source/package/installed42-module bytes,
+actual JUnit counts and saved log/attempt hashes. Subsequent changes to this
+report/progress/evidence summary are documentation only, not another test run.
+
+| Executed local scope | Actual result | Evidence |
+|---|---|---|
+| Source all unit + selected Core integration |811pass/1 explicit Windows symlink skip/0fail/error|D:/agentsync-debug/local-process-capture-7hiuiaq7/source-unit.xml|
+| Fresh offline wheel installation, component suite |437pass/0skip/fail/error|same root/wheel-junit.xml; wheel-origins.json|
+| Fresh isolated sdist installation, component suite |437pass/0skip/fail/error|same root/sdist-junit.xml; sdist-origins.json|
+| Existing local Linux VM process/protocol/trace components |287pass/0skip/fail/error|D:/agentsync-debug/process-capture-linux-gqcwjy9z/junit.xml|
+| Ruff / format / mypy / diff |pass;217 files formatted;45 typed source files|root local checks and native saved logs|
+| Prior complete Windows suite, before new protocol/process code |1303pass/30skip/0fail/error|D:/agentsync-debug/CURRENT-LOCAL-FULL-CHECKPOINT-20261024.json; not a complete run of this later snapshot|
+| One authorized actual Codex CLI no-tools inline-fixture smoke |exit0;4 events;reply hash matched;19 fixture files unchanged|evidence/codex-readonly-cli-smoke-20261025.json and .jsonl|
+
+New functionality: bounded single-turn Codex event parsing; repository CLI emits
+only message size/hash summaries; trusted-host parent-process capture supports
+bounded stdout/stderr, automatic execution deadline observation, cancellation and
+stable terminal records.24 tests use known local Python helpers, not Codex.
+`exited` means a process exit, not task success. Parent-only termination, inherited
+environment and unverified descendant cleanup are explicit. Startup handshake
+before a transport exists is not guaranteed to finish within the execution
+deadline; cancellation during that handshake remains NOT RUN. No real client is
+connected to this mechanical layer, and it is not an OS sandbox.
+
+All42 formal requirement scenarios retain not_run; real adapter evidence retains
+unverified. M6-03 partial coverage comes from protocol components, not the manual
+CLI smoke being relabelled as adapter acceptance. Real CodexAdapter integration,
+real cancellation/timeout, Claude, Cursor, automatic relay, independent verified
+completion, approval consumption/safe apply and full M9 remain NOT RUN/UNVERIFIED.
+M5-01/03 have historical limited VERIFIED evidence; current whole M5 is not VERIFIED.
+B1–B6 and D1–D5 remain exactly in the unique M5 checklist.
+
+The user separately authorized one subscription-only read-only model task. Actual
+CLI0.164.0-alpha.11.1 used ChatGPT login and no API-key environment; no credit
+purchase or account configuration change occurred. Original model-preflight
+configuration failure is preserved separately: stdout empty, no model turn; its
+reserved provider overrides were removed before the sole actual model task.
+Usage is captured data, not independent billing verification. That authorization
+is consumed; no additional actual model run was made.
+
+Preserved non-passing attempts: two source-driver CLI import failures, one Linux
+VM-off NOT RUN, native RED/fixture failures and nine GitHub detail transport
+failures. The source driver was corrected to give source-only subprocesses the
+same import path while fresh package tests keep isolated imports. Existing D-drive
+VM was restarted after preserving old logs. No failure was deleted or counted as
+pass.17 open PR descriptions and full Issues7/11 were read; nine full PR detail
+reads remain LIMITED. No Actions, remote mutations, main edits or merge.
+
+Evidence summary: [m6-local-prototype-20261025.json](evidence/m6-local-prototype-20261025.json).
+Full root checkpoint: D:/agentsync-debug/M6-LOCAL-PROTOTYPE-CHECKPOINT-20261025.json.
+This is a local development checkpoint, not product release approval.
+
+## Historical frozen report: 0.3.0a10
+
 Version: 0.3.0a10
 Commit: 0fd2041c8efd1c4fa348117e013c0c5b1f30e470
 Platform: Linux-6.18.54-0-virt-x86_64-with-musl1

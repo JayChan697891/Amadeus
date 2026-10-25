@@ -25,6 +25,7 @@ from pathlib import Path
 
 STATUSES = {"pass", "fail", "not_run", "restricted", "unverified"}
 MAX_LOG_BYTES = 16 * 1024 * 1024
+PYTEST_CHECKS = frozenset({"pytest", "wheel_pytest", "sdist_pytest"})
 REDACTED = "[REDACTED]"
 _CREDENTIAL_VALUE = re.compile(
     r"""(?P<prefix>(?<![\w])(?P<keyquote>['"]?)(?:session_token|admin_token|lease_token|access_token|refresh_token|api_key|openai_api_key|anthropic_api_key|agentsync_http_token|password|authorization)(?P=keyquote)\s*[:=]\s*)(?:"(?:\\.|[^"\\\r\n])*"|'(?:\\.|[^'\\\r\n])*'|[^\s,;}\]\)]+)""",
@@ -172,7 +173,7 @@ def requirement_results(manifest: dict | None, run: Path) -> list[dict]:
                 "execution_status": "not_run",
                 "declared_execution_status": requirement.get("execution_status", "not_run"),
                 "acceptance_evidence_status": "unverified"
-                if requirement_id in {"M2-05", "M6-03", "M6-04", "M6-05"}
+                if requirement_id in {"M2-05", "M6-03", "M6-04", "M6-05", "M7-02"}
                 else "not_run",
                 "component_evidence": component,
                 "component_evidence_scope": "Exact-selector local protocol/unit observations only; no whole-requirement or actual-client acceptance inferred.",
@@ -183,11 +184,66 @@ def requirement_results(manifest: dict | None, run: Path) -> list[dict]:
     return rows
 
 
+def _validate_pytest_timeout(value: int) -> None:
+    if type(value) is not int or not 1 <= value <= 7200:
+        raise ValueError("pytest controller timeout must be an integer from 1 to 7200 seconds")
+
+
+def _persist_process_attempt(path: Path, record: dict) -> None:
+    """Atomically replace only this run's command-attempt sidecar."""
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            newline="\n",
+            dir=path.parent,
+            prefix=".attempt-",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            json.dump(record, stream, indent=2, allow_nan=False)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
 def execute(
-    check_id: str, command: list[str], repo: Path, run: Path, scratch: Path | None = None
+    check_id: str,
+    command: list[str],
+    repo: Path,
+    run: Path,
+    scratch: Path | None = None,
+    *,
+    pytest_timeout: int = 900,
 ) -> dict:
+    _validate_pytest_timeout(pytest_timeout)
+    if pytest_timeout != 900 and check_id not in PYTEST_CHECKS:
+        raise ValueError("Custom pytest controller timeout is only valid for full-suite checks")
     log = run / "logs" / f"{check_id}.log"
     started = datetime.now(UTC)
+    attempt_path = log.with_suffix(".process.json")
+    attempt = {
+        "schema": "agentsync.local-process-attempt.v1",
+        "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+        "phase": "started",
+        "outcome": "unknown",
+        "check_id": check_id,
+        "formal_acceptance": False,
+        "junit_validated": False,
+        "request": {
+            "command": [redact_credentials(argument)[0] for argument in command],
+            "cwd": str(repo),
+            "started_at": started.isoformat(),
+            "timeout_seconds": pytest_timeout,
+        },
+    }
+    _persist_process_attempt(attempt_path, attempt)
     env = os.environ.copy()
     env.pop("PYTHONPATH", None)
     env.pop("PYTHONHOME", None)
@@ -218,8 +274,12 @@ def execute(
         env["PIP_CONFIG_FILE"] = os.devnull
         env["PIP_CACHE_DIR"] = str((scratch if scratch is not None else run / "tmp") / "pip-cache")
     temporary = scratch if scratch is not None else run / "tmp"
+    if scratch is None:
+        temporary.mkdir(exist_ok=True)
     env.update({"TMP": str(temporary), "TEMP": str(temporary), "TMPDIR": str(temporary)})
     exit_code = None
+    outcome = "unknown"
+    error_type = None
     # Raw process output exists only in a self-deleting scratch file. It is never
     # placed in the durable/uploadable log directory, even for failed commands.
     with tempfile.TemporaryFile(mode="w+b", dir=temporary) as stream:
@@ -230,11 +290,14 @@ def execute(
                 env=env,
                 stdout=stream,
                 stderr=subprocess.STDOUT,
-                timeout=900,
+                timeout=pytest_timeout,
                 check=False,
             )
             exit_code = result.returncode
+            outcome = "exited"
         except (OSError, subprocess.TimeoutExpired) as exc:
+            outcome = "timed_out" if isinstance(exc, subprocess.TimeoutExpired) else "runner_error"
+            error_type = type(exc).__name__
             stream.write(f"\nRunner error: {type(exc).__name__}: {exc}\n".encode())
         stream.seek(0)
         raw = stream.read(MAX_LOG_BYTES + 1)
@@ -243,7 +306,7 @@ def execute(
     if truncated:
         clean += "\n[OUTPUT TRUNCATED: evidence processing limit reached]\n"
     log.write_text(clean, encoding="utf-8")
-    return {
+    result_metadata = {
         "id": check_id,
         "status": "pass" if exit_code == 0 else "fail",
         "command": [redact_credentials(argument)[0] for argument in command],
@@ -257,6 +320,20 @@ def execute(
         "log_truncated": truncated,
         "provenance": "local_process",
     }
+    if pytest_timeout != 900:
+        result_metadata["timeout_seconds"] = pytest_timeout
+    attempt.update(phase="finished", outcome=outcome, error_type=error_type, result=result_metadata)
+    _persist_process_attempt(attempt_path, attempt)
+    return result_metadata
+
+
+def _execute_check(
+    check_id: str, command: list[str], repo: Path, run: Path, scratch: Path, pytest_timeout: int
+) -> dict:
+    # Preserve the existing execute seam for default settings and ordinary checks.
+    if check_id in PYTEST_CHECKS and pytest_timeout != 900:
+        return execute(check_id, command, repo, run, scratch, pytest_timeout=pytest_timeout)
+    return execute(check_id, command, repo, run, scratch)
 
 
 def release_gate(checks: list[dict], run: Path) -> dict:
@@ -310,9 +387,16 @@ def check_plan(python: str, run: Path, scratch: Path) -> list[tuple[str, list[st
 
 
 def sdist_checks(
-    repo: Path, run: Path, scratch: Path, version: str, build_passed: bool
+    repo: Path,
+    run: Path,
+    scratch: Path,
+    version: str,
+    build_passed: bool,
+    *,
+    pytest_timeout: int = 900,
 ) -> list[dict]:
     """Install only the selected sdist in a fresh environment; never fall back to source."""
+    _validate_pytest_timeout(pytest_timeout)
     archives = sorted((run / "artifacts").glob("*.tar.gz"))
     if not build_passed or len(archives) != 1:
         return [
@@ -333,7 +417,7 @@ def sdist_checks(
     checks = []
 
     def invoke(name: str, command: list[str]) -> dict:
-        result = execute("sdist_" + name, command, run, run, scratch)
+        result = _execute_check("sdist_" + name, command, run, run, scratch, pytest_timeout)
         result["artifact"] = artifact.copy()
         checks.append(result)
         return result
@@ -449,18 +533,32 @@ def collect(
     run_checks: bool,
     package_install: bool,
     sdist_install: bool = False,
+    scratch_root: Path | None = None,
+    pytest_timeout: int = 900,
 ) -> Path:
+    _validate_pytest_timeout(pytest_timeout)
     if sdist_install and not run_checks:
         raise ValueError("--sdist-install requires --run")
     output = output.resolve()
     if output.is_relative_to(repo.resolve()):
         raise ValueError("Evidence output must be outside the source repository")
+    temporary_parent = output if scratch_root is None else scratch_root.resolve()
+    if scratch_root is not None and temporary_parent.is_relative_to(repo.resolve()):
+        raise ValueError("Scratch root must be outside the source repository")
     output.mkdir(parents=True, exist_ok=True)
+    if scratch_root is not None:
+        temporary_parent.mkdir(parents=True, exist_ok=True)
     # Test DBs/auth files and wheel environments are never durable report artifacts.
     # TemporaryDirectory cleans only this freshly created directory, even on failure.
-    with tempfile.TemporaryDirectory(prefix=".scratch-", dir=output) as temporary:
+    with tempfile.TemporaryDirectory(prefix=".scratch-", dir=temporary_parent) as temporary:
         return _collect(
-            repo.resolve(), output, Path(temporary), run_checks, package_install, sdist_install
+            repo.resolve(),
+            output,
+            Path(temporary),
+            run_checks,
+            package_install,
+            sdist_install,
+            pytest_timeout=pytest_timeout,
         )
 
 
@@ -471,6 +569,8 @@ def _collect(
     run_checks: bool,
     package_install: bool,
     sdist_install: bool = False,
+    *,
+    pytest_timeout: int = 900,
 ) -> Path:
     run = output / (
         "release-" + datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
@@ -489,7 +589,7 @@ def _collect(
     checks = []
     for check_id, command in plan:
         if run_checks:
-            item = execute(check_id, command, repo, run, scratch)
+            item = _execute_check(check_id, command, repo, run, scratch, pytest_timeout)
             if check_id == "pytest" and (scratch / "junit.xml").exists():
                 try:
                     item["junit_credential_redactions"] = persist_junit(
@@ -510,6 +610,8 @@ def _collect(
                 item["error"] = "Required JUnit XML missing"
         else:
             item = {"id": check_id, "command": command, "status": "not_run"}
+            if check_id in PYTEST_CHECKS and pytest_timeout != 900:
+                item["timeout_seconds"] = pytest_timeout
         checks.append(item)
     if package_install and run_checks:
         wheels = list((run / "artifacts").glob("*.whl"))
@@ -573,7 +675,7 @@ def _collect(
                     execute("wheel_origin_sdk", [python, "-I", "-c", probe], run, run, scratch)
                 )
                 if next(c for c in checks if c["id"] == "wheel_install")["status"] == "pass":
-                    installed = execute(
+                    installed = _execute_check(
                         "wheel_pytest",
                         [
                             python,
@@ -589,6 +691,7 @@ def _collect(
                         run,
                         run,
                         scratch,
+                        pytest_timeout,
                     )
                     try:
                         installed["junit_credential_redactions"] = persist_junit(
@@ -638,6 +741,7 @@ def _collect(
                 scratch,
                 project["project"]["version"],
                 next(c for c in checks if c["id"] == "build")["status"] == "pass",
+                pytest_timeout=pytest_timeout,
             )
         )
     else:
@@ -838,6 +942,17 @@ def main() -> int:
         help="Evidence parent directory; a unique child is created",
     )
     parser.add_argument(
+        "--scratch-root",
+        type=Path,
+        help="Optional short temporary parent outside the source; only a fresh child is cleaned",
+    )
+    parser.add_argument(
+        "--pytest-timeout",
+        type=int,
+        default=900,
+        help="Full-suite pytest controller timeout in seconds (1..7200; default 900); other checks stay at 900",
+    )
+    parser.add_argument(
         "--run", action="store_true", help="Execute existing local validation checks"
     )
     parser.add_argument(
@@ -851,16 +966,24 @@ def main() -> int:
         help="Build/install the sdist in another isolated environment and run its full suite (may download dependencies)",
     )
     args = parser.parse_args()
+    try:
+        _validate_pytest_timeout(args.pytest_timeout)
+    except ValueError as exc:
+        parser.error(str(exc))
     if args.package_install and not args.run:
         parser.error("--package-install requires --run")
     if args.sdist_install and not args.run:
         parser.error("--sdist-install requires --run")
+    collect_options = {} if args.scratch_root is None else {"scratch_root": args.scratch_root}
+    if args.pytest_timeout != 900:
+        collect_options["pytest_timeout"] = args.pytest_timeout
     run = collect(
         Path(__file__).resolve().parents[1],
         args.output.resolve(),
         run_checks=args.run,
         package_install=args.package_install,
         sdist_install=args.sdist_install,
+        **collect_options,
     )
     print(run / "Release-Acceptance-Report.md")
     report = json.loads((run / "report.json").read_text(encoding="utf-8"))

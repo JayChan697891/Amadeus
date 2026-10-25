@@ -82,3 +82,95 @@ def test_static_design_does_not_imply_any_acceptance_was_executed():
     for requirement in REQUIREMENTS:
         assert requirement["coverage"] in MANIFEST["coverage_vocabulary"]
         assert requirement["release_gate"] == "required_for_v1_0"
+
+
+def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
+    item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
+    assert item["coverage"] == "partial"
+    assert set(item["existing_tests"]) == {
+        "tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
+        "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
+        "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
+        "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+    }
+    assert item["execution_status"] == "not_run"
+    assert item["original_scenarios"] == ["T13", "T14"]
+    assert "authorized subscription" in item["method"]
+    assert "artifact validated" in item["acceptance"]
+    for scenario in MANIFEST["scenarios"]:
+        if scenario["id"] in {"T13", "T14"}:
+            assert scenario["execution_status"] == "not_run"
+
+
+def test_mock_foundation_is_partial_component_coverage_not_real_client_acceptance():
+    by_id = {requirement["id"]: requirement for requirement in REQUIREMENTS}
+    mock_paths = {
+        "M6-01": {"tests/unit/test_adapters.py"},
+        "M6-02": {
+            "tests/unit/test_adapters.py",
+            "tests/integration/test_mock_adapter_core_boundary.py",
+            "tests/unit/test_mock_run_manager.py",
+            "tests/integration/test_mock_run_manager_core_boundary.py",
+        },
+    }
+    for requirement_id in ("M6-01", "M6-02"):
+        item = by_id[requirement_id]
+        assert item["coverage"] == "partial"
+        assert item["existing_tests"]
+        assert all("::" in selector for selector in item["existing_tests"])
+        assert all(
+            selector.split("::")[0] in mock_paths[requirement_id]
+            for selector in item["existing_tests"]
+        )
+        assert item["execution_status"] == "not_run"
+    assert {
+        "tests/unit/test_mock_run_manager.py::test_global_running_limit_is_atomic_across_workers",
+        "tests/unit/test_mock_run_manager.py::test_same_task_concurrently_started_on_workers_has_one_active_winner",
+        "tests/unit/test_mock_run_manager.py::test_replay_precedes_running_and_history_capacity",
+        "tests/integration/test_mock_run_manager_core_boundary.py::test_dispatch_plan_to_mock_manager_preserves_complete_core_snapshot",
+    } <= set(by_id["M6-02"]["existing_tests"])
+    assert by_id["M6-03"]["coverage"] == "partial"
+    assert all(
+        selector.startswith("tests/unit/test_codex_events.py::")
+        for selector in by_id["M6-03"]["existing_tests"]
+    )
+    assert by_id["M6-03"]["execution_status"] == "not_run"
+    for requirement_id in ("M6-04", "M6-05"):
+        item = by_id[requirement_id]
+        assert item["coverage"] == "missing" and item["existing_tests"] == []
+        assert item["execution_status"] == "not_run"
+    real_start = next(scenario for scenario in MANIFEST["scenarios"] if scenario["id"] == "T13")
+    assert set(real_start["requirements"]) == {"M6-03", "M6-04", "M6-05"}
+    assert real_start["execution_status"] == "not_run"
+
+
+def test_planning_foundations_remain_partial_without_real_relay_or_execution_claims():
+    by_id = {requirement["id"]: requirement for requirement in REQUIREMENTS}
+    paths = {
+        "M7-01": {
+            "tests/unit/test_scheduling.py",
+            "tests/integration/test_scheduling_core_boundary.py",
+        },
+        "M7-02": {
+            "tests/unit/test_dispatch_planning.py",
+            "tests/integration/test_dispatch_planning_core_boundary.py",
+        },
+    }
+    for requirement_id, allowed_paths in paths.items():
+        item = by_id[requirement_id]
+        assert item["coverage"] == "partial"
+        assert item["existing_tests"]
+        assert all(
+            "::" in selector and selector.split("::")[0] in allowed_paths
+            for selector in item["existing_tests"]
+        )
+        assert item["execution_status"] == "not_run" and item["original_scenarios"] == []
+    assert "real authorized agents" in by_id["M7-02"]["acceptance"]
+    assert by_id["M6-03"]["coverage"] == "partial"
+    assert all(
+        selector.startswith("tests/unit/test_codex_events.py::")
+        for selector in by_id["M6-03"]["existing_tests"]
+    )
+    for requirement_id in ("M6-04", "M6-05", "M7-03", "M7-04"):
+        assert by_id[requirement_id]["coverage"] == "missing"
+        assert by_id[requirement_id]["existing_tests"] == []

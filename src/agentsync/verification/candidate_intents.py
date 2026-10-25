@@ -125,11 +125,15 @@ def validate_intent(
     db: sqlite3.Connection, job: sqlite3.Row, claim: sqlite3.Row | None
 ) -> sqlite3.Row | None:
     """Validate relations without recursion, mutation, clock or filesystem access."""
+    claim_id = None if claim is None else claim["id"]
     rows = db.execute(
-        "SELECT * FROM candidate_execution_intents WHERE job_id=? LIMIT 2", (job["id"],)
+        "SELECT * FROM candidate_execution_intents WHERE job_id=? OR claim_id=? LIMIT 2",
+        (job["id"], claim_id),
     ).fetchall()
+    intent_id = rows[0]["id"] if len(rows) == 1 else None
     abandons = db.execute(
-        "SELECT * FROM candidate_intent_abandonments WHERE job_id=? LIMIT 2", (job["id"],)
+        "SELECT * FROM candidate_intent_abandonments WHERE job_id=? OR claim_id=? OR intent_id=? LIMIT 2",
+        (job["id"], claim_id, intent_id),
     ).fetchall()
     if claim is None:
         if rows or abandons:
@@ -152,6 +156,7 @@ def validate_intent(
         if (
             str(uuid.UUID(intent["id"])) != intent["id"]
             or intent["project_id"] != job["project_id"]
+            or intent["job_id"] != job["id"]
             or intent["claim_id"] != claim["id"]
             or intent["kind"] != KIND
             or type(intent["claim_version"]) is not int
@@ -193,6 +198,7 @@ def validate_intent(
             _text(request["request_id"])
             if (
                 request["project_id"] != job["project_id"]
+                or request["job_id"] != job["id"]
                 or request["intent_id"] != intent["id"]
                 or request["claim_id"] != claim["id"]
                 or request["payload_hash"]
