@@ -20,7 +20,7 @@ from agentsync.adapters.base import (
 from agentsync.errors import AgentSyncError
 
 
-class MockAdapter(AgentAdapter):
+class MockAdapter(AgentAdapter[AdapterCapabilities, RunSnapshot, AdapterResult]):
     def __init__(
         self,
         project_id: str,

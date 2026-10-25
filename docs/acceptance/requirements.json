@@ -1062,7 +1062,11 @@
         "tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
         "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
         "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
-        "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent"
+        "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state"
       ],
       "planned_cases": [
         {

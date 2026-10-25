@@ -421,6 +421,82 @@ def test_requirement_rows_preserve_nonacceptance_with_exact_component_evidence(t
 
 
 @pytest.mark.parametrize("junit_name", ["junit.xml", "wheel-junit.xml", "sdist-junit.xml"])
+def test_synthetic_codex_factory_and_core_records_do_not_verify_real_client(tmp_path, junit_name):
+    """Synthetic host-factory/Core fixture records are not actual client captures."""
+    manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    names = [
+        "test_default_capabilities_do_not_authorize_or_start_any_client",
+        "test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+    ]
+    core_name = "test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state"
+    cases = [("tests.unit.test_codex_adapter", name) for name in names]
+    cases += [
+        ("tests.integration.test_codex_adapter_core_boundary", core_name + "[pending]"),
+        ("tests.integration.test_codex_adapter_core_boundary", core_name + "[running]"),
+    ]
+    # Neighboring test names and wrong classes never satisfy an exact selector.
+    cases += [("tests.unit.test_codex_adapter", name + "_extra") for name in names]
+    cases += [("tests.unit.other", name) for name in names]
+    cases += [
+        ("tests.integration.test_codex_adapter_core_boundary", core_name + "_extra[pending]"),
+        ("tests.integration.other", core_name + "[running]"),
+    ]
+    (tmp_path / junit_name).write_text(
+        "<testsuites><testsuite name='synthetic-host-factory-core-only'>"
+        + "".join(f'<testcase classname="{module}" name="{name}"/>' for module, name in cases)
+        + "</testsuite></testsuites>",
+        encoding="utf-8",
+    )
+    rows = runner.requirement_results(manifest, tmp_path)
+    by_id = {row["id"]: row for row in rows}
+    row = by_id["M6-03"]
+    assert row["coverage"] == "partial"
+    assert len(row["component_evidence"]) == 8
+    counts = []
+    for component in row["component_evidence"]:
+        selector = component["selector"]
+        expected = (
+            0
+            if selector.startswith("tests/unit/test_codex_events.py::")
+            else 2
+            if selector.startswith("tests/integration/test_codex_adapter_core_boundary.py::")
+            else 1
+        )
+        assert component["observations"] == [
+            {
+                "junit": junit_name,
+                "counts": {
+                    "tests": expected,
+                    "passed": expected,
+                    "failures": 0,
+                    "errors": 0,
+                    "skipped": 0,
+                },
+            }
+        ]
+        counts.append(expected)
+    assert sum(counts) == 5
+    assert row["acceptance_evidence_status"] == "unverified"
+    assert len(rows) == 42 and all(item["execution_status"] == "not_run" for item in rows)
+    for requirement_id in ("M6-01", "M6-02", "M7-01", "M7-02"):
+        assert all(
+            all(value == 0 for value in observation["counts"].values())
+            for component in by_id[requirement_id]["component_evidence"]
+            for observation in component["observations"]
+        )
+    for requirement_id in ("M6-04", "M6-05"):
+        assert by_id[requirement_id]["coverage"] == "missing"
+        assert by_id[requirement_id]["component_evidence"] == []
+        assert by_id[requirement_id]["acceptance_evidence_status"] == "unverified"
+    gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
+    assert gate["local_checks_passed"] is True
+    assert gate["formal_acceptance"] is False and gate["status"] == "blocked"
+    assert {"real_codex_adapter", "autonomous_relay"} <= set(gate["blockers"])
+
+
+@pytest.mark.parametrize("junit_name", ["junit.xml", "wheel-junit.xml", "sdist-junit.xml"])
 def test_protocol_only_codex_junit_cannot_promote_real_start_or_relay(tmp_path, junit_name):
     """Synthetic passing parser records are explicitly not actual CLI captures."""
     manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
@@ -446,12 +522,25 @@ def test_protocol_only_codex_junit_cannot_promote_real_start_or_relay(tmp_path, 
     by_id = {row["id"]: row for row in rows}
     row = by_id["M6-03"]
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 4
+    assert len(row["component_evidence"]) == 8
+    parser_components = [
+        component
+        for component in row["component_evidence"]
+        if component["selector"].startswith("tests/unit/test_codex_events.py::")
+    ]
+    assert len(parser_components) == 4
     for component in row["component_evidence"]:
+        expected = 1 if component in parser_components else 0
         assert component["observations"] == [
             {
                 "junit": junit_name,
-                "counts": {"tests": 1, "passed": 1, "failures": 0, "errors": 0, "skipped": 0},
+                "counts": {
+                    "tests": expected,
+                    "passed": expected,
+                    "failures": 0,
+                    "errors": 0,
+                    "skipped": 0,
+                },
             }
         ]
     assert row["acceptance_evidence_status"] == "unverified"
@@ -521,7 +610,7 @@ def test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptanc
         row = by_id[requirement_id]
         assert row["coverage"] == ("partial" if requirement_id == "M6-03" else "missing")
         if requirement_id == "M6-03":
-            assert len(row["component_evidence"]) == 4
+            assert len(row["component_evidence"]) == 8
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in row["component_evidence"]
@@ -632,7 +721,7 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
             "partial" if requirement_id == "M6-03" else "missing"
         )
         if requirement_id == "M6-03":
-            assert len(by_id[requirement_id]["component_evidence"]) == 4
+            assert len(by_id[requirement_id]["component_evidence"]) == 8
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in by_id[requirement_id]["component_evidence"]

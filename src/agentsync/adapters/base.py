@@ -3,7 +3,7 @@
 import math
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Generic, Literal, TypeVar
 
 from agentsync.errors import AgentSyncError
 
@@ -93,21 +93,26 @@ class AdapterResult(SimulationMarkers):
     output: str = ""
 
 
-class AgentAdapter(ABC):
+CapabilitiesT = TypeVar("CapabilitiesT", covariant=True)
+RunT = TypeVar("RunT", covariant=True)
+ResultT = TypeVar("ResultT", covariant=True)
+
+
+class AgentAdapter(ABC, Generic[CapabilitiesT, RunT, ResultT]):
     @abstractmethod
-    async def capabilities(self) -> AdapterCapabilities: ...
+    async def capabilities(self) -> CapabilitiesT: ...
 
     @abstractmethod
-    async def start_task(self, task: AdapterTask) -> RunSnapshot: ...
+    async def start_task(self, task: AdapterTask) -> RunT: ...
 
     @abstractmethod
-    async def get_status(self, run_id: str) -> RunSnapshot: ...
+    async def get_status(self, run_id: str) -> RunT: ...
 
     @abstractmethod
-    async def get_result(self, run_id: str) -> AdapterResult: ...
+    async def get_result(self, run_id: str) -> ResultT: ...
 
     @abstractmethod
-    async def cancel_task(self, run_id: str) -> RunSnapshot: ...
+    async def cancel_task(self, run_id: str) -> RunT: ...
 
     @abstractmethod
-    async def resume_task(self, run_id: str) -> RunSnapshot: ...
+    async def resume_task(self, run_id: str) -> RunT: ...

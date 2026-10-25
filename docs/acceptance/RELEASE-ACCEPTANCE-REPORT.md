@@ -1,6 +1,51 @@
 # Release Acceptance Report
 
-## Current local checkpoint: 2026-10-25 America/Tijuana
+## Current host-factory lifecycle checkpoint: 2026-10-25 America/Tijuana
+
+Formal release **BLOCKED**. M5 remains exactly the five original requirements;
+its B1–B6/D1–D5 and unique final exit conditions are unchanged.
+
+The six-method CodexAdapter prototype now composes typed host-factory process
+capture and JSONL observation. No built-in live launcher or Core endpoint exists;
+default start is unsupported. Unknowns hold instance slots; local cancellation
+never acknowledges server cancellation. Shared/preexisting capture routing was
+reproduced with2 actual failed tests and fixed without killing the first owner.
+Old source SHA71934cb8 is retained as nonexecuting text for reproduction.
+
+| Scope | Actual result |
+|---|---|
+| Source all unit + selected Core integration |851pass/1 existing Windows symlink skip/0fail/error|
+| Fresh offline wheel / isolated sdist components |477pass each, zero skips/failures/errors|
+| Local Linux adapter/process/protocol/Mock components |399pass, zero skips/failures/errors|
+| Root targeted adapter/Mock/start-cancel/Core regression |116pass|
+| Ruff / format / mypy / diff |pass;221 files formatted;46 typed source files|
+
+Root independently parsed all XML and verified296 frozen source files,43 runtime
+modules, built artifact hashes, noneditable installation origins, installed bytes
+and command/log journals. Source JUnit alias `junit.xml` is byte-identical to the
+original `source-unit.xml`, not synthetic data. Requirement criteria/scenarios and
+all42 formal not_run statuses are unchanged. M6-03 has8 exact component selectors
+but remains partial/unverified. Synthetic guard tests do not count as real clients.
+
+Three public Core/SQLite cases preserve full task/project state and reopen state;
+the protocol result does not complete a Core task or grant permissions. One public
+event-loop factory-delay test covers start-caller cancellation and late-parent
+termination; this controlled test does not verify strict actual OS launch timing.
+
+This continuation made zero actual CLI/model/API calls. The earlier single real
+CLI smoke remains separate; its authorization is consumed. Real live adapter,
+server cancellation, strict OS launch bounds, process-tree cleanup, cross-instance
+or restart idempotency, Claude/Cursor/real relay and M9 remain unverified/not_run.
+Never-returning factory work can remain pending after a logical unknown deadline.
+The host must keep the event loop alive for late cleanup. See [M6-ADAPTERS.md](../M6-ADAPTERS.md).
+
+Evidence: [codex-adapter-local-20261025.json](evidence/codex-adapter-local-20261025.json),
+D:/agentsync-debug/CODEX-ADAPTER-LOCAL-CHECKPOINT-20261025.json and the referenced
+logs/JUnit/builds. The initial local Linux VM-off NOT RUN and the three initial
+Core fixture setup errors are retained, not counted as passes. No Actions,
+remote mutations, main modifications or paid provider calls were used.
+
+## Prior local checkpoint: 2026-10-25 America/Tijuana
 
 Execution: Codex. Formal release acceptance: **BLOCKED**. M5 is frozen to its
 original five requirements; its only exit checklist is

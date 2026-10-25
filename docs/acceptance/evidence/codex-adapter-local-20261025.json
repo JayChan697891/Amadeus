@@ -1,0 +1,134 @@
+{
+  "scope": "Host-injected Codex lifecycle only; no built-in live launcher or real client acceptance",
+  "verified_at": "2026-10-25T14:31:17.811495+00:00",
+  "base_commit": "e29cb291b11f2afd05d85b275398c8ca121516b7",
+  "results": {
+    "source_unit_and_selected_core": {
+      "tests": 852,
+      "passed": 851,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "f0633dc5b5cea21fc94d6c471f951526ee07bac295699323c847cc8afe18bf32"
+    },
+    "wheel": {
+      "tests": 477,
+      "passed": 477,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "b4469021bdbf85ad210e142ad4a0b1dc7ef0e0e7fe1d5831e8a3eba881974f0f"
+    },
+    "sdist": {
+      "tests": 477,
+      "passed": 477,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "2e2d0da8c7d579409104f5da089ff76385a740b44b83576604f4835de9d53778"
+    },
+    "linux_components": {
+      "tests": 399,
+      "passed": 399,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "b026d90da8f6d5fc16add800c2dc3549fc5667f07f34618051cd0c27b287ecdf"
+    }
+  },
+  "artifacts": {
+    "wheel": {
+      "path": "D:\\agentsync-debug\\local-codex-adapter-dqwh0fzf\\artifacts\\agentsync_local-0.3.0a11-py3-none-any.whl",
+      "sha256": "a6cb3471795852286f514f9a848a157296fabd2abe7e7a314db79efd072702bf"
+    },
+    "sdist": {
+      "path": "D:\\agentsync-debug\\local-codex-adapter-dqwh0fzf\\artifacts\\agentsync_local-0.3.0a11.tar.gz",
+      "sha256": "6bc32d6dc5829a1f9eb5e14a439b49a0d19372657d32e57cc352436a92c954b5"
+    }
+  },
+  "runtime_modules": {
+    "__init__.py": "a5c3657d412c5de52be983e7feb3a2074dc1ba46f33a69c4e45094efb22ee676",
+    "__main__.py": "0aaaa36d3b4bab615b53037b2a497d77524f9643eef04cb30de3c9950c409df6",
+    "adapters/__init__.py": "deb7cbedf2886d2903a81be07f41fee5c330841a8a62a47957f91b3bdc6029c3",
+    "adapters/base.py": "a42fc065e440d998ba9c640c98ad8c10f69dcfd15645e3839ef1e7c4c788ba7f",
+    "adapters/codex.py": "590a2b7e59c2be199b69f7cc22d4d40c68ec664e66c2ca42aaa098472a490488",
+    "adapters/codex_events.py": "eafc9cd940d05c4fef5741f8c039d383cd0f99bf870ea0719821b9bcaa21ffbb",
+    "adapters/mock.py": "cace721717e7e4872537f2a0699af226e9e0cf0b2068116daa1196e1abb03aa9",
+    "adapters/process_capture.py": "200c026a91445bbd778c6f4d965e511beef494689b25cd342dfe1676c1e5fe41",
+    "cli.py": "d2b8f1190bb0f0c06e9b8ac7b4d09970e22d1089dfa10d7bf50184aa16227efd",
+    "config.py": "021c7b04607df00cf75f9f688d80f04c7140be3c99250d5133eadb5352163af8",
+    "core/__init__.py": "d93e8a4d3b48ba182d840e7d76eec69300ec955dd8f9b098e4544d5d8e1ef6de",
+    "core/collaboration.py": "c522330854f0011032befb295a28c88f3ea7845b91013927a10eaacd6efc8cec",
+    "core/permissions.py": "aacf3bd5b8cd6b9e23aa146a9c88f4557b3e5f428dfe9932fe3adb5250ab24f2",
+    "core/resources.py": "e0b3a6fceb43c123e3e37141b392c84ad0385e53973ab09a72fa7db7a78763cf",
+    "core/service.py": "10472279407bbebd9fb9b175e6109d55803233671950584de034f6b1ea809089",
+    "core/workspaces.py": "ea40e59c07f382c4929c99c91bfd3020e063bab63d112faedefb46be588c6157",
+    "dispatch_planning.py": "bf3bf75fabe8f53d7a7c7f786410298ae2bf8e1d77e8b917decd0f219085c441",
+    "errors.py": "2e80e6ed40fda368ed76ae996fd2d563d455141e53cf4f50128674616b45666e",
+    "integrations/__init__.py": "9bade86abee7d5f2610d378801dc386007fb30f5aea7e7b5adfd3695e99e675a",
+    "integrations/http.py": "08705581e2d7047a94e369857793a3ea5850a9f39b5f372bfc122ee9e0f3a6f9",
+    "integrations/mcp.py": "1a999c66bcd94d707e3400570760b203b68712e99ddabb562b254cf5d07cf6c3",
+    "mock_run_manager.py": "74baad510d2f8a4092945e35f7b7c7839a64037561fb2ade722d6672198e3cf8",
+    "models.py": "77c038dd8fff7490fc18e2f2354d6a9d884528b82ebf625b0f96f32a57946ece",
+    "resources/__init__.py": "7b960fd421a27a3147fc050f4149f8665aeae184ad2d2b8108919289215023bb",
+    "resources/paths.py": "3c913b3ea3778b1fb402c90eaf4f5d4090e01a8f3d4dfba8cf8d1243d6dbc0d0",
+    "scheduling.py": "ddc59309bd6ee586ca97c309bed71cc8ff100540893afd71a30867c5f6482544",
+    "sdk/__init__.py": "02ab4b60687d6e6a47d90dab7ab915c13af07cf8250491a3f3c9d61474de5506",
+    "sdk/client.py": "c893e5808ff878fbd87d6c5b8fd04bb63829353de26d532c79a4cb7083fb955c",
+    "storage/__init__.py": "3b6e52f3471d060ba746973631b0a19a85e6bc8cdafbad14d8cd6ef96e23e285",
+    "storage/database.py": "b0022c9b261ac97eb0d3f86edac760f073c45b34ecf040555bcafae56a733426",
+    "verification/__init__.py": "e8d69239fd834f7f3f8e29614dfaaa24ed854f0b18304f67826933c16e989053",
+    "verification/binding.py": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961",
+    "verification/candidate.py": "7c2bd05600407d85ae0e8125bdb18fdd4f29ef730331e3c1cf11a23dea060ec7",
+    "verification/candidate_claims.py": "5ebfa3332eb60eb88f255edcf574a4a27bd249bc778138ced97c915d02cd127e",
+    "verification/candidate_intents.py": "97f25b90b2b834fb37fd818c460b7600974451592ee2dfba1d27a8c923edf265",
+    "verification/candidate_jobs.py": "d2a2df5674c890b69bcc0f4cd794a0b99be2b6df677960faadcf5d4f073ca099",
+    "verification/docker.py": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+    "verification/executor.py": "73bdc926b3ed65c25777f79ad0a9cfe50ceec838cc1226b954494dbc54cc02c8",
+    "verification/jobs.py": "99531f4974ddd23c1d981c1223b0cc0a759562418e674c0fb3eb42cb5ae88bdb",
+    "verification/reconciliation.py": "27cad856d82ded185aef99b58c182281cf772d5eafc3c04715c27ceafc3f86cd",
+    "verification/snapshot.py": "bef70ed60b5b979da3dc69fadbedbf0a8131bb3acdf4c07c30413401eda265c6",
+    "workspaces/__init__.py": "5316aad3121721c4e02786265356c71306aca69b6fdae596fa5a499d9ace76b2",
+    "workspaces/git.py": "92f5a1315ce6a302aebf6e4b397d650144644bb5be6f414b6c04b325ec708295"
+  },
+  "release_gate": {
+    "status": "blocked",
+    "formal_acceptance": false,
+    "local_checks_passed": true,
+    "invalid_or_incomplete_checks": [],
+    "blockers": {
+      "remaining_milestones": "M4-05 approved application and M5-M9 implementation and acceptance remain incomplete.",
+      "real_codex_adapter": "Actual Codex client adapter has not been independently verified.",
+      "real_claude_adapter": "Actual Claude Code client adapter has not been independently verified.",
+      "real_other_adapters": "Other planned clients, including Cursor, lack actual-client evidence.",
+      "autonomous_relay": "Real autonomous dual-agent relay, independent review and conflict handling are unverified.",
+      "cross_platform": "A local run does not establish the complete supported OS/Python matrix.",
+      "m9_acceptance": "Full M9 release acceptance has not been performed."
+    },
+    "policy": "No mock, protocol-only, missing, restricted or unverified evidence can count as actual-client acceptance."
+  },
+  "formal_acceptance": false,
+  "limits": [
+    "Factory is trusted host code, not authorization",
+    "Unknown retains instance slot",
+    "No sandbox/environment/tree-cleanup/server-cancel guarantee",
+    "No cross-instance/restart idempotency",
+    "Start cancellation uses a controlled public factory delay; actual OS startup bound unverified"
+  ],
+  "preserved_attempts": [
+    "codex-adapter-linux-xmdpfhst NOT RUN while local VM off",
+    "codex-adapter-core-first fixture setup errors, not product failures"
+  ],
+  "real_client_calls": 0,
+  "source_files": 296,
+  "source_unchanged_at_test": true,
+  "uncommitted_at_test": true,
+  "root_checkpoint_sha256": "06631e7c730eec95240fed61ee5294a93d81b905f0c485552a9ada0088badd31",
+  "root_checkpoint_path": "D:\\agentsync-debug\\CODEX-ADAPTER-LOCAL-CHECKPOINT-20261025.json",
+  "documentation_closeout_not_reexecuted": true,
+  "regression_source_archive": {
+    "path": "docs/acceptance/evidence/codex-before-capture-binding-71934cb8.py.txt",
+    "sha256": "71934cb8de923a61267535610a15f53e5f167e8049e9f9a9788ec8c76e52959b",
+    "execution": "Nonexecuting text; reproduction source, not production module"
+  }
+}

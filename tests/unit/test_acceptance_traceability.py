@@ -10,6 +10,11 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = json.loads((ROOT / "docs/acceptance/requirements.json").read_text(encoding="utf-8"))
 REQUIREMENTS = MANIFEST["requirements"]
+CODEX_COMPONENT_PATHS = {
+    "tests/unit/test_codex_events.py",
+    "tests/unit/test_codex_adapter.py",
+    "tests/integration/test_codex_adapter_core_boundary.py",
+}
 
 
 def test_register_matches_authoritative_formal_requirement_tables():
@@ -92,6 +97,10 @@ def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
         "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
         "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
         "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
     }
     assert item["execution_status"] == "not_run"
     assert item["original_scenarios"] == ["T13", "T14"]
@@ -100,6 +109,30 @@ def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
     for scenario in MANIFEST["scenarios"]:
         if scenario["id"] in {"T13", "T14"}:
             assert scenario["execution_status"] == "not_run"
+
+
+def test_codex_host_factory_components_keep_actual_client_acceptance_unverified():
+    item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
+    assert item["coverage"] == "partial"
+    assert item["execution_status"] == "not_run"
+    assert len(item["existing_tests"]) == 8
+    assert {
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
+    } <= set(item["existing_tests"])
+    assert all(
+        "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
+        for selector in item["existing_tests"]
+    )
+    assert "public supported Codex SDK/CLI" in item["method"]
+    assert "artifact validated" in item["acceptance"]
+    assert len(REQUIREMENTS) == 42 and len(MANIFEST["scenarios"]) == 16
+    assert all(row["execution_status"] == "not_run" for row in REQUIREMENTS)
+    for requirement_id in ("M6-04", "M6-05"):
+        missing = next(row for row in REQUIREMENTS if row["id"] == requirement_id)
+        assert missing["coverage"] == "missing" and missing["existing_tests"] == []
 
 
 def test_mock_foundation_is_partial_component_coverage_not_real_client_acceptance():
@@ -131,7 +164,7 @@ def test_mock_foundation_is_partial_component_coverage_not_real_client_acceptanc
     } <= set(by_id["M6-02"]["existing_tests"])
     assert by_id["M6-03"]["coverage"] == "partial"
     assert all(
-        selector.startswith("tests/unit/test_codex_events.py::")
+        "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
         for selector in by_id["M6-03"]["existing_tests"]
     )
     assert by_id["M6-03"]["execution_status"] == "not_run"
@@ -168,7 +201,7 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
     assert "real authorized agents" in by_id["M7-02"]["acceptance"]
     assert by_id["M6-03"]["coverage"] == "partial"
     assert all(
-        selector.startswith("tests/unit/test_codex_events.py::")
+        "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
         for selector in by_id["M6-03"]["existing_tests"]
     )
     for requirement_id in ("M6-04", "M6-05", "M7-03", "M7-04"):

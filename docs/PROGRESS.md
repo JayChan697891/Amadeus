@@ -1,5 +1,19 @@
 # Current: M5 frozen; M6 conditional development
 
+2026-10-25 continuation: host-factory CodexAdapter now implements the six-method
+generic lifecycle with default unsupported startup, bounded instance history,
+request/task deduplication and fail-closed unknown slots. Shared/preexisting
+capture misrouting was reproduced (2 real failed regressions) and repaired
+without cancelling another run's handle. Protocol completion does not mutate
+authoritative Core state (3 actual temporary Core/SQLite tests).
+Root independently verified296-file/43-module snapshot: source851pass/1skip;
+fresh wheel/sdist477pass each; local Linux399pass. Ruff/format/mypy pass.
+Controlled public-factory-delay start cancellation is now tested; strict OS
+startup bound, live launcher, server cancellation and real adapter acceptance
+remain unverified. No additional real model call, Actions or remote change.
+See M6-ADAPTERS.md and D:/agentsync-debug/CODEX-ADAPTER-LOCAL-CHECKPOINT-20261025.json.
+Earlier checkpoints below retain their original results and limitations.
+
 2026-10-25 America/Tijuana: read original specification, current code, all stored
 M5 archive evidence, live open PRs and Issues7/11. Single exit checklist and exact
 BLOCKER/DEFERRED/limited VERIFIED scope: [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md).
