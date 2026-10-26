@@ -1,3 +1,5 @@
+Complete Linux baseline driver error: a broad IMAGE placeholder replacement modified the required image environment-variable name. Actual26 fixture setup errors are preserved;1442 other tests passed,3 platform skips. Product source stayed unchanged. Fix the D-only driver and verify env names before a separate targeted run; never suppress mandatory Docker guards.
+
 Claude D-draft classification defect: last assistant.message.stop_reason was ignored despite optimistic terminal flags. Root6failed regressions and independent repro retained; repaired last-assistant classification,77 parser/13 independent/97 combined checks passed. Real Claude was never launched. Root first-party Ruff import ordering and verifier skip-name assumptions were corrected separately; no test or check rule disabled.
 
 Report-only encoding correction: two older Unicode paragraphs had been decoded using the host locale. Restored their original UTF-8 Git content and reapplied the latest additions. Product bytes and complete-suite evidence were unchanged.

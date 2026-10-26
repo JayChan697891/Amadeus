@@ -1,5 +1,20 @@
 # Release Acceptance Report
 
+## Complete Linux baseline failure classified: 2026-10-25 America/Tijuana
+
+The previously running44-module baseline248d0be suite has now finished **FAIL**:
+1442pass /3 platform skips /26 fixture-setup errors /0 test-body failures.
+Root independently parsed all1471 XML cases and checked source/log/JUnit hashes.
+The D-only test driver accidentally replaced IMAGE inside the environment key
+`AGENTSYNC_DOCKER_TEST_IMAGE`. Mandatory-image guards correctly rejected all26
+Docker/reconciliation/owner fixtures; those real container cases were NOT RUN.
+This is an actual failed attempt, not a passing Linux gate or a product fix.
+Original logs/XML remain immutable. A corrected driver will run only the affected
+subset separately; no fixture, timeout or isolation rule is relaxed.
+See [failed-driver evidence](evidence/linux-driver-failure-20261025.json).
+Formal release remains **BLOCKED**. Earlier RUNNING statements below record their
+observation time and are superseded by this result.
+
 ## Current offline Claude projection checkpoint: 2026-10-25 America/Tijuana
 
 Execution: Codex. Formal release **BLOCKED**; M5 five-item scope/exit checklist and
