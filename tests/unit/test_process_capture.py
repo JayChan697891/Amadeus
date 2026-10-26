@@ -458,3 +458,18 @@ async def test_invalid_environment_text_and_sizes_never_reach_subprocess(tmp_pat
             )
         assert error.value.message == "Invalid process capture input."
     assert calls == []
+
+
+@pytest.mark.asyncio
+async def test_unstarted_capture_cancel_is_bounded_unknown_and_never_claims_parent_exit():
+    process = CapturedProcess()
+    snapshot = await asyncio.wait_for(process.cancel(), timeout=0.5)
+    assert snapshot.state == "unknown"
+    assert snapshot.error_code == "capture_not_started"
+    assert snapshot.exit_code is None and snapshot.parent_ended is False
+    assert snapshot.finished_at is not None
+    result = await process.get_result()
+    assert result.snapshot == snapshot and result.stdout == result.stderr == b""
+    assert await process.cancel() == snapshot
+    assert await process.wait() == snapshot
+    assert snapshot.tree_cleanup == "unverified" and snapshot.real_client_verified is False

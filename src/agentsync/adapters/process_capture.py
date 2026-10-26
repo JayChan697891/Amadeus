@@ -337,5 +337,11 @@ class CapturedProcess:
         return CaptureResult(self._done.result(), bytes(self._stdout), bytes(self._stderr))
 
     async def cancel(self) -> CaptureSnapshot:
-        self._stop("cancelled")
+        if self._spawn_task is None and self._transport is None:
+            # A trusted factory can accidentally return the public constructor
+            # without start(). There is no parent or future spawn to observe.
+            # Freeze uncertainty instead of awaiting an event that cannot arrive.
+            self._finish("unknown", "capture_not_started")
+        else:
+            self._stop("cancelled")
         return await asyncio.shield(self._done)
