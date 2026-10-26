@@ -2084,5 +2084,10 @@
     "D:/agentsync-debug/claude-adapter-draft-686osgrn/evidence/draft-inspection.json",
     "D:/agentsync-debug/claude-trace-draft-0e7456b6/evidence/draft-inspection.json"
   ],
-  "linux_evidence": "claude-adapter-linux-20261026.json"
+  "linux_evidence": "claude-adapter-linux-20261026.json",
+  "fresh_linux_package_components": {
+    "wheel": "641pass/0skip/fail/error",
+    "sdist": "641pass/0skip/fail/error",
+    "evidence": "linux-fresh-packages-20261026.json"
+  }
 }

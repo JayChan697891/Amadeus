@@ -1,5 +1,21 @@
 # Release Acceptance Report
 
+## Latest fresh Linux package installation supplement
+
+Two new independent Linux venvs normally installed the actual Windows-built
+wheel and sdist offline from52 compatible cached dependencies. The sdist used
+normal PEP517 isolation. No no-deps/shared-site/PYTHONPATH fallback was used.
+Wheel: **641pass /0skip/fail/error**. Sdist: **641pass /0skip/fail/error**.
+Root independently parsed both actual XMLs, matched testcase identities to the
+frozen Linux source run, verified all10 stage exits/log hashes, direct_url archive
+hashes,47 imported module locations and post-test byte hashes, actual pyvenv.cfg
+and52 distributions inside each environment. Source317 files stayed unchanged.
+
+These are component installation checks on this Linux/Python runtime. They do not
+establish a complete current suite, all supported platforms/Python versions, real
+client behavior or formal release acceptance. Release remains **BLOCKED**.
+See [fresh Linux installation evidence](evidence/linux-fresh-packages-20261026.json).
+
 ## Latest Linux components and Git binding
 
 The current47-module frozen source components finished **641pass /0skip/fail/error**

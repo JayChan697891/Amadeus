@@ -1,5 +1,7 @@
 # Current: M5 frozen; M6 conditional development
 
+Fresh Linux wheel/sdist each641pass/0skip/fail/error, normal offline installs; root verified47 imported/post-test module hashes and52 distributions within each isolated venv,10 stage exits, actual XML and source317 unchanged. This completes the component installation supplement only; formal release/real-client/full matrix gates remain blocked.
+
 Linux follow-up:641 components passed/0skip/fail/error,317 frozen files unchanged; root tied code/tests/tools/requirement Git blobs to da61adf. Fresh package installs remain the separate Windows640pass/1skip each; no full current platform matrix or real-client acceptance.
 
 Latest shared lifecycle / ClaudeAdapter prototype:47 modules/317 frozen files; source1014pass/2skip; installed wheel/sdist640pass/1skip each. Root independently checked actual XML/artifact/module bytes and Codex public-record compatibility. Default startup unsupported; zero actual clients/credentials/Core wiring. M6-04 eight component selectors, all42/16 formal not_run, release BLOCKED; current Linux component evidence pending separately.
