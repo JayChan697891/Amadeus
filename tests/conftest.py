@@ -1,5 +1,7 @@
 """Explicit owner setup for legacy scenarios; no implicit permission changes."""
 
+import subprocess
+
 
 def owner_grant(core, project, actor, roles=("worker", "reviewer")):
     """Deliberately grant only the requested legacy test roles through owner API."""
@@ -34,3 +36,38 @@ def drop_candidate_queue_schema(db):
     ).fetchall()
     for row in indexes:
         db.execute('DROP INDEX "' + row[0].replace('"', '""') + '"')
+
+
+def run_owned_processes(commands, *, env=None, timeout=30):
+    """Run trusted local test commands; reap only handles created by this call."""
+    processes = []
+    original_error = None
+    try:
+        for command in commands:
+            processes.append(
+                subprocess.Popen(
+                    command, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+                )
+            )
+        return [(process.communicate(timeout=timeout), process.returncode) for process in processes]
+    except BaseException as exc:
+        original_error = exc
+        raise
+    finally:
+        cleanup_errors = []
+        for process in processes:
+            try:
+                if process.poll() is None:
+                    process.kill()
+            except ProcessLookupError:
+                pass  # Parent exited between poll and kill; still reap below.
+            except BaseException as exc:
+                cleanup_errors.append(exc)
+        for process in processes:
+            try:
+                process.communicate(timeout=timeout)
+            except BaseException as exc:
+                cleanup_errors.append(exc)
+        if cleanup_errors:
+            errors = ([original_error] if original_error is not None else []) + cleanup_errors
+            raise BaseExceptionGroup("Owned test process cleanup failed", errors) from None

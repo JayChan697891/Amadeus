@@ -2,6 +2,12 @@
 
 ## Unreleased — local M6 prototypes
 
+Add opt-in bounded private per-phase pytest evidence that survives a later test
+termination, and owned migration-test child cleanup without changing test limits.
+
+Bound cancellation of an accidentally never-started capture as unknown; preserve
+uncertain adapter capacity and pending-start cleanup without claiming parent exit.
+
 Add bounded Codex/Claude protocol projection and sanitized local inspectors, a
 pure pinned readonly Codex plan, and shared typed host-factory lifecycle handling.
 Default startup stays unsupported; unknown runs retain instance slots and parent

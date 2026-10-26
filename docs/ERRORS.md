@@ -1,3 +1,22 @@
+2026-10-26: independently reproduced bare CapturedProcess factory hang (both adapter
+deadlines/cancel and interpreter shutdown). Minimal cancel fix preserves unknown
+slots; actual RED and same-reproducer GREEN retained. First root broad run failed35
+CLI checks because its D wrapper omitted child source-path propagation; corrected
+wrapper passed1019/2skip without product/test-rule changes. Old full Windows driver
+failed cache-inclusive manifest despite1582/31skip and321 original files unchanged;
+new driver disabled parent bytecode writes but child processes still added21
+cache files, so original FAIL remains. Current fullWindows1587/31skip and all322
+originalfiles unchanged are independently checked, no tests removed. Linux fresh install timed out600s,
+outer transport1200s; recovered same-guest source98pass and NOT RUN package tests.
+No install retry or timeout relaxation. Current Linux fullattempt exited2 after
+one controlled SIGINT:1completedpass/4Coreinitialization30s timeout failures and
+1anonymousunfinishedXMLrecord (neverpass); remaining/DockerNOTRUN. Source322
+unchanged, no owned leftoverPython processes. Concurrency fixture lacks guaranteed
+per-iteration child cleanup on exceptions; test-only repair now verified (10 independent Windows cases), without changing
+8/5/30 limits or resolving the original Linux timeouts. Private per-phase journal
+now preserves early failure evidence even if a later owned pytest fixture is
+terminated; capped/incomplete evidence never grants acceptance.
+
 D-only Linux driver correction verified: explicit JSON/env dictionary preserves AGENTSYNC_DOCKER_TEST_IMAGE and REQUIRE=1, asserted by a real child before pytest.26 previously unexecuted fixtures then passed with26 hashed actual JSON artifacts. Old complete-suite FAIL and VM-off NOT RUN remain preserved; no test/product safety relaxation or combined full-pass claim.
 
 Complete Linux baseline driver error: a broad IMAGE placeholder replacement modified the required image environment-variable name. Actual26 fixture setup errors are preserved;1442 other tests passed,3 platform skips. Product source stayed unchanged. Fix the D-only driver and verify env names before a separate targeted run; never suppress mandatory Docker guards.

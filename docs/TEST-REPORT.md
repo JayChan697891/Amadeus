@@ -1,4 +1,18 @@
-# Latest local M6 checkpoint — 2026-10-25 America/Tijuana
+# Latest local M6 checkpoint — 2026-10-26 America/Tijuana
+
+Final local source test-infrastructure: 1041pass/5skip, Ruff/format/mypy/diff pass.
+Owned child cleanup and opt-in bounded private per-phase journal verified.
+Linux concurrency failures/package timeout remain unresolved; release BLOCKED.
+
+Never-started capture cancellation repaired in product7d01aed: actual supervised
+Codex/Claude reproduction now terminates unknown and keeps its slot. Windows source
+1019pass/2skip; fresh offline wheel/sdist98pass each; Linux focused source98pass.
+Linux package attempt failed at600s install/1200s transport bounds; wheel postinstall
+and sdist checks NOT RUN, same-guest evidence recovered without retry. Current Windows actual fullsuite1587pass/31skip,
+322 originalfiles unchanged, driverFAIL from21 generatedbytecodecache additions.
+Linux full INTERRUPTED:1completedpass/4fail plus1anonymousunfinishedrecord;
+concurrentCore30s deadlines failed, remaining/DockerNOTRUN. Python3.11 actual NOT RUN;
+formal release/real clients/relay remain BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.
 
 Fresh Linux wheel/sdist each641pass/0skip/fail/error, normal offline installs; root verified47 imported/post-test module hashes and52 distributions within each isolated venv,10 stage exits, actual XML and source317 unchanged. This completes the component installation supplement only; formal release/real-client/full matrix gates remain blocked.
 

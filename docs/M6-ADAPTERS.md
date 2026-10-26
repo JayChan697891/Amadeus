@@ -123,3 +123,12 @@ Codex public classes/fields and validation semantics remain compatible despite
 the private extraction. The historical actual Codex CLI smoke is not a live
 test of this new shared engine. A fresh real-client run still requires separate
 authorization and the relevant M5 gates; previous one-call grants were consumed.
+
+## Accidental never-started factory capture
+
+Factories must return a fresh capture created by `CapturedProcess.start()`.
+If trusted host code instead returns the bare public constructor, cancelling that
+capture now freezes `unknown/capture_not_started` immediately. Adapter cancellation
+or logical deadline can then settle unknown while retaining the uncertain slot.
+No parent exit, execution, tree cleanup, Core authority or real client is inferred.
+A pending actual start remains distinct and retains its existing late cleanup.
