@@ -111,6 +111,26 @@ def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
             assert scenario["execution_status"] == "not_run"
 
 
+def test_claude_protocol_components_remain_partial_without_real_client_acceptance():
+    item = next(row for row in REQUIREMENTS if row["id"] == "M6-04")
+    assert item["coverage"] == "partial"
+    assert item["execution_status"] == "not_run"
+    assert set(item["existing_tests"]) == {
+        "tests/unit/test_claude_events.py::test_literal_complete_response_needs_exit_zero_and_is_unverified",
+        "tests/unit/test_claude_events.py::test_unsuccessful_observations_never_expose_final_text",
+        "tests/unit/test_claude_events.py::test_last_assistant_incomplete_stop_cannot_be_hidden_by_optimistic_result",
+        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims",
+    }
+    assert item["original_scenarios"] == ["T13", "T14"]
+    assert "Claude Agent SDK/CLI" in item["method"]
+    assert "real evidence" in item["acceptance"]
+    assert len(REQUIREMENTS) == 42 and len(MANIFEST["scenarios"]) == 16
+    assert all(row["execution_status"] == "not_run" for row in REQUIREMENTS)
+    assert all(row["execution_status"] == "not_run" for row in MANIFEST["scenarios"])
+    cursor = next(row for row in REQUIREMENTS if row["id"] == "M6-05")
+    assert cursor["coverage"] == "missing" and cursor["existing_tests"] == []
+
+
 def test_codex_host_factory_components_keep_actual_client_acceptance_unverified():
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
@@ -132,7 +152,11 @@ def test_codex_host_factory_components_keep_actual_client_acceptance_unverified(
     assert all(row["execution_status"] == "not_run" for row in REQUIREMENTS)
     for requirement_id in ("M6-04", "M6-05"):
         missing = next(row for row in REQUIREMENTS if row["id"] == requirement_id)
-        assert missing["coverage"] == "missing" and missing["existing_tests"] == []
+        if requirement_id == "M6-04":
+            assert missing["coverage"] == "partial" and len(missing["existing_tests"]) == 4
+        else:
+            assert missing["coverage"] == "missing" and missing["existing_tests"] == []
+        assert missing["execution_status"] == "not_run"
 
 
 def test_mock_foundation_is_partial_component_coverage_not_real_client_acceptance():
@@ -170,7 +194,10 @@ def test_mock_foundation_is_partial_component_coverage_not_real_client_acceptanc
     assert by_id["M6-03"]["execution_status"] == "not_run"
     for requirement_id in ("M6-04", "M6-05"):
         item = by_id[requirement_id]
-        assert item["coverage"] == "missing" and item["existing_tests"] == []
+        if requirement_id == "M6-04":
+            assert item["coverage"] == "partial" and len(item["existing_tests"]) == 4
+        else:
+            assert item["coverage"] == "missing" and item["existing_tests"] == []
         assert item["execution_status"] == "not_run"
     real_start = next(scenario for scenario in MANIFEST["scenarios"] if scenario["id"] == "T13")
     assert set(real_start["requirements"]) == {"M6-03", "M6-04", "M6-05"}
@@ -204,6 +231,9 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
         "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
         for selector in by_id["M6-03"]["existing_tests"]
     )
-    for requirement_id in ("M6-04", "M6-05", "M7-03", "M7-04"):
+    assert by_id["M6-04"]["coverage"] == "partial"
+    assert len(by_id["M6-04"]["existing_tests"]) == 4
+    assert by_id["M6-04"]["execution_status"] == "not_run"
+    for requirement_id in ("M6-05", "M7-03", "M7-04"):
         assert by_id[requirement_id]["coverage"] == "missing"
         assert by_id[requirement_id]["existing_tests"] == []

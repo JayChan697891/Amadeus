@@ -1,3 +1,5 @@
+Claude projection is a limited caller-supplied protocol component. Preserve unverified identity/usage/acceptance; never bootstrap a real client or forward credentials. Distinguish parse completion, observed process outcome and Core authorization. Unsupported official stream extensions are explicit limitations.
+
 ## 2026-10-25: prepare without executing or granting authority
 
 Pin bounded executable bytes and namespace in a pure immutable plan; fixed read-only arguments and explicit copied environment do not guarantee filesystem or credential isolation. The adapter has no default launcher. A separately authorized one-turn response is external evidence; product verification/Core authorization flags stay unverified. Keep unknown slots and no automatic retry.

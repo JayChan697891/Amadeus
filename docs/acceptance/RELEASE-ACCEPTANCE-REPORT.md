@@ -1,6 +1,46 @@
 # Release Acceptance Report
 
-## Current explicit invocation and limited actual-client checkpoint: 2026-10-25 America/Tijuana
+## Current offline Claude projection checkpoint: 2026-10-25 America/Tijuana
+
+Execution: Codex. Formal release **BLOCKED**; M5 five-item scope/exit checklist and
+all42 formal requirements/16 scenarios remain NOT RUN. No real Claude client was
+started. `parse_claude_jsonl` and the repository inspector are bounded offline
+components, with fixed unverified/client-not-executed/billing-not-verified flags.
+M6-04 now has4 exact component selectors and partial coverage, never acceptance.
+
+| Latest45-module snapshot scope | Actual result |
+|---|---|
+| Source all unit + selected Core integration |977pass /2skip /0fail/error|
+| Fresh offline wheel / isolated sdist components |603pass /1skip each /0fail/error|
+| Root D parser/CLI independent run |97pass /1 Windows FIFO skip|
+| Static checks |Ruff, format, mypy and diff passed|
+
+Root independently parsed the actual XML and verified310 frozen source files,
+all45 source/archive/installed module bytes, artifact hashes and noneditable
+origins. Source skips are the existing unavailable Windows directory-symlink
+fixture and the new POSIX FIFO fixture; package components skip only that FIFO.
+The complete Windows1441pass/30skip below is the prior44-module product248d0be,
+not a full suite of this newer snapshot. Linux complete248d0be is separate and
+still needs its own final evidence; no new45-module Linux run is claimed.
+
+Independent review reproduced an optimistic-success defect in the original
+D-only draft when the final assistant was truncated/refused/tool-awaiting. Root
+recorded6 failed cases, fixed last-assistant stop tracking, and verified77 parser
+tests; a peer repeated77 plus13 independent cases. Failed/unknown/incomplete
+results expose no final text. Later complete assistant output can recover earlier
+truncation. Draft failures, test-fixture mistakes and final logs/XML remain in D.
+The new CLI reveals only result byte sizes/hashes, not raw IDs/messages/tool data.
+
+Supported input is a limited main-session stream-json subset, not full SDK
+compatibility. Legal hook/user/partial/trailing-system streams outside that subset
+are unsupported. Real Claude startup, permissions, cancellation, timeout, usage
+authentication, autonomous relay and M9 remain NOT RUN/UNVERIFIED. No provider/API,
+Actions, remote mutation, main modification or approval consumption was added.
+
+Evidence: [Claude local checkpoint](evidence/claude-protocol-local-20261025.json)
+and D:/agentsync-debug/CLAUDE-PROTOCOL-CHECKPOINT-20261025.json.
+
+## Prior explicit invocation and limited actual-client checkpoint: 2026-10-25 America/Tijuana
 
 Formal release **BLOCKED**; M5 five-item scope and B1–B6/D1–D5 remain unchanged.
 

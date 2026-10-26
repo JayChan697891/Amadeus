@@ -1091,12 +1091,17 @@
       "milestone": "M6",
       "title": "Real Claude Code control adapter",
       "acceptance": "Claude-specific real evidence and capabilities saved; MCP health check alone cannot satisfy adapter acceptance.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "real_client",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_claude_events.py::test_literal_complete_response_needs_exit_zero_and_is_unverified",
+        "tests/unit/test_claude_events.py::test_unsuccessful_observations_never_expose_final_text",
+        "tests/unit/test_claude_events.py::test_last_assistant_incomplete_stop_cannot_be_hidden_by_optimistic_result",
+        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-04",

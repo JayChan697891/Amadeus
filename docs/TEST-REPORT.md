@@ -1,5 +1,7 @@
 # Latest local M6 checkpoint — 2026-10-25 America/Tijuana
 
+Latest Claude OFFLINE projection:45 modules/310 frozen files; source977pass/2skip; fresh wheel/sdist603pass/1skip each; Ruff/format/mypy pass. Root verified actual XML/package bytes. M6-04 partial component mapping only; all42/16 formal not_run; zero real Claude calls, release BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
 Complete frozen Windows product248d0be:1441pass/30skip/0fail/error;1471 actual cases,305 files/44 modules unchanged. Root independently checked XML/hashes. See acceptance/evidence/full-windows-248d0be-20261025.json. Claude draft not included; Linux complete suite still running.
 
 Source unit + selected Core:873pass/1skip; installed wheel/sdist499pass each; Linux421pass. Ruff/format/mypy passed. One separately authorized installed-wheel actual CodexAdapter+plan+explicit environment run exited0, with4 real events and exact reply;19 fixture file hashes/Core pending tasks unchanged. Full current OS matrix and formal acceptance remain unverified. Detailed evidence: acceptance/RELEASE-ACCEPTANCE-REPORT.md.

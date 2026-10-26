@@ -78,3 +78,25 @@ is inferred. API-key/base-URL/token keys are excluded from the plan allowlist.
 `CapturedProcess.start(..., env=...)` separately copies/validates a strict dictionary;
 `None` preserves prior inheritance. Raw values never appear in its public snapshots.
 A caller still needs fresh authorization for every actual model execution.
+
+## Offline Claude event projection
+
+`agentsync.adapters.claude_events.parse_claude_jsonl(text, exit_code=...)` parses a
+bounded, single-main-session subset: system/init, supported assistant blocks and
+one result. It performs no filesystem, network, SDK, subprocess or Core operation.
+It checks session correlation, duplicate JSON keys, UTF-8/size/depth/counter bounds,
+subtype/is_error/API errors, interruption, permission denials and final assistant
+stop reasons. Unsupported hook/user/partial/trailing-system records stay explicitly
+unsupported; this is not general SDK stream compatibility or authenticated identity.
+Only final protocol success with observed exit0 exposes result_text; failure,
+incomplete/unknown exit keeps it empty. Usage is caller-reported, never a bill.
+
+`python tools/inspect_claude_events.py --input <explicit.jsonl> --exit-code 0`
+produces size/hash-only result summaries. Omit --exit-code to keep process status
+unknown. CLI exit0 means parsing completed, including failed/incomplete reports;
+it is not task success. No default log search, client launch or raw session/text
+projection occurs. Real ClaudeCodeAdapter startup/cancel/resume remains unimplemented.
+
+Schema research used the official [headless guide](https://code.claude.com/docs/en/headless),
+[agent lifecycle](https://code.claude.com/docs/en/agent-sdk/agent-loop) and
+[SDK types](https://github.com/anthropics/claude-agent-sdk-python/blob/main/src/claude_agent_sdk/types.py).
