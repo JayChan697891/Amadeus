@@ -4,6 +4,8 @@ Arguments must come from trusted host code, never model/tool/task text. This
 module grants no execution authorization and has no Core or client integration.
 Only the owned parent handle is stopped; descendants and tree cleanup remain
 unverified. Results contain private caller data and must not be logged blindly.
+An explicit child environment selects values only; it is not a sandbox or a
+credential-isolation guarantee. The default still inherits the host environment.
 Use one subprocess-capable asyncio event loop and keep it alive through wait or
 cancel. Parent exit with unavailable pipe EOF becomes capture_incomplete after
 0.25 seconds; unconfirmed parent termination becomes unknown after two seconds.
@@ -17,9 +19,13 @@ import math
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal, TypedDict, cast
 
 from agentsync.errors import AgentSyncError
+
+
+class _EnvironmentArgs(TypedDict, total=False):
+    env: dict[str, str]
 
 
 def _text(value: object, maximum: int) -> bytes:
@@ -60,6 +66,25 @@ def _validate(
     if not valid_timeout or type(limit) is not int or not 1 <= limit <= 1024 * 1024:
         raise invalid
     return _text(stdin_text, 16384)
+
+
+def _copy_environment(env: dict[str, str] | None) -> dict[str, str] | None:
+    if env is None:
+        return None
+    if type(env) is not dict or len(env) > 256:
+        raise AgentSyncError("validation_error", "Invalid process capture input.")
+    copied: dict[str, str] = {}
+    total = 0
+    for name, value in env.items():
+        encoded_name = _text(name, 256)
+        encoded_value = _text(value, 16384)
+        if not name or "=" in name:
+            raise AgentSyncError("validation_error", "Invalid process capture input.")
+        total += len(encoded_name) + len(encoded_value) + 2
+        if total > 65536:
+            raise AgentSyncError("validation_error", "Invalid process capture input.")
+        copied[name] = value
+    return copied
 
 
 CaptureState = Literal[
@@ -156,19 +181,22 @@ class CapturedProcess:
         stdin_text: str,
         timeout_seconds: float,
         output_limit: int = 1024 * 1024,
+        env: dict[str, str] | None = None,
     ) -> CapturedProcess:
         """Start only trusted argv; stdin is data, never a command or script.
 
         Each stream retains at most output_limit bytes (two independent caps).
         A supported event loop with subprocess support is required. This method
-        does not sanitize the child's inherited environment or restrict access.
+        does not restrict child access. env=None inherits the host environment;
+        an explicit strict dict is bounded and copied before the first await.
         """
         encoded_stdin = _validate(argv, cwd, stdin_text, timeout_seconds, output_limit)
+        environment = _copy_environment(env)
         owner = cls()
         owner._deadline = owner._started + timeout_seconds
         owner._limit = output_limit
         owner._timer = owner._loop.call_later(timeout_seconds, owner._stop, "timed_out")
-        owner._spawn_task = asyncio.create_task(owner._spawn(argv, cwd, encoded_stdin))
+        owner._spawn_task = asyncio.create_task(owner._spawn(argv, cwd, encoded_stdin, environment))
         try:
             await asyncio.shield(owner._spawn_task)
         except asyncio.CancelledError:
@@ -176,10 +204,24 @@ class CapturedProcess:
             raise
         return owner
 
-    async def _spawn(self, argv: tuple[str, ...], cwd: Path, encoded_stdin: bytes) -> None:
+    async def _spawn(
+        self,
+        argv: tuple[str, ...],
+        cwd: Path,
+        encoded_stdin: bytes,
+        environment: dict[str, str] | None,
+    ) -> None:
+        # Preserve the original inherited-environment call when env is omitted.
+        environment_args: _EnvironmentArgs = {} if environment is None else {"env": environment}
         try:
             transport, _ = await self._loop.subprocess_exec(
-                lambda: _Protocol(self), *argv, cwd=str(cwd), stdin=-1, stdout=-1, stderr=-1
+                lambda: _Protocol(self),
+                *argv,
+                cwd=str(cwd),
+                stdin=-1,
+                stdout=-1,
+                stderr=-1,
+                **environment_args,
             )
         except (OSError, ValueError, RuntimeError):
             self._finish("failed_to_start", "spawn_failed")

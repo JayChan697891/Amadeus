@@ -1,9 +1,45 @@
 # Release Acceptance Report
 
-## Current host-factory lifecycle checkpoint: 2026-10-25 America/Tijuana
+## Current explicit invocation and limited actual-client checkpoint: 2026-10-25 America/Tijuana
+
+Formal release **BLOCKED**; M5 five-item scope and B1–B6/D1–D5 remain unchanged.
+The new pure `CodexHostProfile` / `prepare_invocation` pins the executable SHA,
+namespace, asserted CLI version and fixed readonly arguments. It does not launch,
+discover credentials or authorize a task. Optional explicit child environments
+are copied and bounded; excluded keys are not forwarded. This is not a sandbox
+or proof that credentials cannot be read. Default adapter startup stays unsupported.
+
+| Executed scope | Actual result |
+|---|---|
+| Source unit + selected Core integration |873pass /1 existing Windows symlink skip /0fail/error|
+| Fresh offline wheel / isolated sdist components |499pass each /0skip/fail/error|
+| Local Linux invocation/process/protocol/Mock components |421pass /0skip/fail/error|
+| Ruff / format / mypy / diff |pass;225 formatted files;47 typed source files|
+| One separately authorized installed-wheel actual CodexAdapter run |starting → running → succeeded; exit0; exact synthetic reply;4 authentic events|
+
+Root verified302 frozen files,44 runtime modules, actual XML, artifact hashes,
+installed bytes and command journals. The live run used that same installed wheel,
+one factory invocation, fixed plan and explicit environment, with ChatGPT login,
+no API-key environment and no extra credits available at preflight. Nineteen
+temporary Git/project file hashes and Core tasks before/after/reopen are identical;
+the task remains pending. Billing ledger was not verified. One helper-PATH warning
+and model-list refresh timeout remain in original stderr; no retry was performed.
+
+Evidence: [offline summary](evidence/codex-invocation-local-20261025.json),
+[limited actual integration](evidence/codex-adapter-integrated-smoke-20261025.json),
+its authentic JSONL and D:/agentsync-debug/codex-adapter-live-in0z00f4/.
+Offline evidence remains distinct from the separately authorized live run.
+All42 formal requirements remain NOT RUN. M6-03 is partial/unverified; this does
+not validate permissions, server cancellation, real timeout, restart idempotency,
+Claude/Cursor, dual-agent autonomous relay or M9. Product verification flags remain
+unverified. No Actions, main modification or remote mutation was performed.
+Initial test-helper encoding failure and Windows metadata-comparison false
+rejection are retained in D-drive evidence, with their eventual passing checks.
+
+## Prior host-factory lifecycle checkpoint: 2026-10-25 America/Tijuana
 
 Formal release **BLOCKED**. M5 remains exactly the five original requirements;
-its B1–B6/D1–D5 and unique final exit conditions are unchanged.
+its B1â€“B6/D1â€“D5 and unique final exit conditions are unchanged.
 
 The six-method CodexAdapter prototype now composes typed host-factory process
 capture and JSONL observation. No built-in live launcher or Core endpoint exists;
@@ -92,7 +128,7 @@ CLI smoke being relabelled as adapter acceptance. Real CodexAdapter integration,
 real cancellation/timeout, Claude, Cursor, automatic relay, independent verified
 completion, approval consumption/safe apply and full M9 remain NOT RUN/UNVERIFIED.
 M5-01/03 have historical limited VERIFIED evidence; current whole M5 is not VERIFIED.
-B1–B6 and D1–D5 remain exactly in the unique M5 checklist.
+B1â€“B6 and D1â€“D5 remain exactly in the unique M5 checklist.
 
 The user separately authorized one subscription-only read-only model task. Actual
 CLI0.164.0-alpha.11.1 used ChatGPT login and no API-key environment; no credit

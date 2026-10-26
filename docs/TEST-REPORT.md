@@ -1,3 +1,9 @@
+# Latest local M6 checkpoint — 2026-10-25 America/Tijuana
+
+Source unit + selected Core:873pass/1skip; installed wheel/sdist499pass each; Linux421pass. Ruff/format/mypy passed. One separately authorized installed-wheel actual CodexAdapter+plan+explicit environment run exited0, with4 real events and exact reply;19 fixture file hashes/Core pending tasks unchanged. Full current OS matrix and formal acceptance remain unverified. Detailed evidence: acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
+---
+
 # Verified M5B3B2A local checkpoint
 
 Product 0fd2041c8efd1c4fa348117e013c0c5b1f30e470, tree 9a76e8c5280c34d38087f42fc35b702808d15c59;0.3.0a10/schema11.

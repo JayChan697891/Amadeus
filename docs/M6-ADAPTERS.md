@@ -16,7 +16,7 @@ An explicitly supplied trusted-host async factory receives a validated
 after that request. Its argv must come from trusted host code; task instructions
 are data, never scripts. A callback or process ID is not human authorization.
 Actual client integration still requires the existing M5 safety gates and a new
-explicit live-test authorization. The earlier single real CLI smoke is consumed.
+explicit live-test authorization. Both separately authorized single real CLI tests are now consumed.
 
 ## Lifecycle and result semantics
 
@@ -48,7 +48,8 @@ state `real_client_verified=False`, `verification=unverified`,
 The factory is trusted Python code and may never return. Its logical deadline
 freezes unknown, but does not prove that all its work stopped. Keep the same
 event loop alive for late cleanup. The mechanical process layer inherits the
-host environment and is not a sandbox. A controlled factory-delay cancellation
+host environment by default or copies an explicitly supplied bounded dictionary.
+Neither mode is a sandbox. A controlled factory-delay cancellation
 test is not proof of a strict OS process-creation timeout.
 
 History, request deduplication, capture ownership and capacity are in-memory for
@@ -57,6 +58,23 @@ guarantee is made. No persistence, approval consumption, safe apply or automatic
 task verification was added. Mock records retain their existing simulation flags;
 generic return types do not turn them into real-client evidence.
 
-Tests use known local Python helpers and hand-authored JSONL. Real CodexAdapter
-launch/permissions, server cancellation, Claude, Cursor and autonomous relay are
-still NOT RUN/UNVERIFIED. See RELEASE-ACCEPTANCE-REPORT.md for exact local evidence.
+Offline tests use known local Python helpers and hand-authored JSONL. One separately
+authorized actual installed-wheel adapter+plan+explicit-env run returned a synthetic
+inline token successfully; it did not use tools or complete a Core task. Permissions,
+server cancellation, real timeout, Claude, Cursor and autonomous relay remain
+NOT RUN/UNVERIFIED. See RELEASE-ACCEPTANCE-REPORT.md for exact evidence.
+
+## Optional pure host invocation preparation
+
+`agentsync.adapters.codex_invocation` provides an immutable host profile and pure
+`prepare_invocation(profile, task, environment=...)`. It validates namespace before
+filesystem checks, hashes a bounded ordinary executable, rejects final symlinks/
+Windows reparse paths, pins CLI0.164.0-alpha.11.1 and returns fixed readonly argv,
+cwd, stdin data, bounded timeout/output and a copyable explicit environment.
+It never executes the plan, probes login/version, discovers credentials or changes
+`os.environ`. The version is a host assertion; binary/path checks can become stale.
+No filesystem atomicity, credential isolation, billing or tool-permission guarantee
+is inferred. API-key/base-URL/token keys are excluded from the plan allowlist.
+`CapturedProcess.start(..., env=...)` separately copies/validates a strict dictionary;
+`None` preserves prior inheritance. Raw values never appear in its public snapshots.
+A caller still needs fresh authorization for every actual model execution.

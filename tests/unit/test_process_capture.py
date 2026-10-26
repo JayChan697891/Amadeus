@@ -1,6 +1,8 @@
 """Known local Python helpers only; no real client, sandbox or tree-cleanup evidence."""
 
 import asyncio
+import json
+import os
 import sys
 from dataclasses import FrozenInstanceError
 
@@ -8,6 +10,13 @@ import pytest
 
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.errors import AgentSyncError
+
+
+def selected_fixture_env(**markers):
+    environment = dict(markers)
+    if sys.platform == "win32" and "SystemRoot" in os.environ:
+        environment["SystemRoot"] = os.environ["SystemRoot"]
+    return environment
 
 
 def helper(source):
@@ -311,3 +320,141 @@ async def test_parent_exit_with_known_self_ending_child_has_bounded_incomplete_c
     await asyncio.sleep(0.15)
     assert await process.snapshot() == snapshot
     assert await process.get_result() == result
+
+
+@pytest.mark.asyncio
+async def test_explicit_environment_selects_only_fixture_values_without_mutation(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setenv("AGENTSYNC_PARENT_FIXTURE", "parent-only-marker")
+    monkeypatch.delenv("AGENTSYNC_CHILD_FIXTURE", raising=False)
+    environment = selected_fixture_env(AGENTSYNC_CHILD_FIXTURE="selected-child-marker")
+    original = dict(environment)
+    process = await CapturedProcess.start(
+        helper(
+            "import os,json; print(json.dumps([os.getenv('AGENTSYNC_PARENT_FIXTURE'),os.getenv('AGENTSYNC_CHILD_FIXTURE')]))"
+        ),
+        cwd=tmp_path,
+        stdin_text="",
+        timeout_seconds=3,
+        env=environment,
+    )
+    snapshot = await process.wait()
+    assert snapshot.state == "exited" and snapshot.exit_code == 0
+    assert json.loads((await process.get_result()).stdout) == [None, "selected-child-marker"]
+    assert environment == original
+    assert os.environ["AGENTSYNC_PARENT_FIXTURE"] == "parent-only-marker"
+    assert "AGENTSYNC_CHILD_FIXTURE" not in os.environ
+    assert "selected-child-marker" not in repr(snapshot)
+
+
+@pytest.mark.asyncio
+async def test_none_and_omitted_environment_preserve_parent_inheritance(tmp_path, monkeypatch):
+    monkeypatch.setenv("AGENTSYNC_PARENT_FIXTURE", "inherited-dummy-marker")
+    for options in ({}, {"env": None}):
+        process = await CapturedProcess.start(
+            helper("import os; print(os.getenv('AGENTSYNC_PARENT_FIXTURE'))"),
+            cwd=tmp_path,
+            stdin_text="",
+            timeout_seconds=3,
+            **options,
+        )
+        assert (await process.wait()).state == "exited"
+        assert (await process.get_result()).stdout.strip() == b"inherited-dummy-marker"
+    assert os.environ["AGENTSYNC_PARENT_FIXTURE"] == "inherited-dummy-marker"
+
+
+@pytest.mark.asyncio
+async def test_explicit_environment_is_copied_before_delayed_public_factory(tmp_path, monkeypatch):
+    loop = asyncio.get_running_loop()
+    original_factory = loop.subprocess_exec
+    entered, release = asyncio.Event(), asyncio.Event()
+
+    async def delayed_factory(protocol_factory, *args, **kwargs):
+        entered.set()
+        await release.wait()
+        return await original_factory(protocol_factory, *args, **kwargs)
+
+    monkeypatch.setattr(loop, "subprocess_exec", delayed_factory)
+    environment = selected_fixture_env(AGENTSYNC_CHILD_FIXTURE="original-dummy-marker")
+    caller = asyncio.create_task(
+        CapturedProcess.start(
+            helper(
+                "import os; print(os.getenv('AGENTSYNC_CHILD_FIXTURE')); print(os.getenv('AGENTSYNC_ADDED_FIXTURE'))"
+            ),
+            cwd=tmp_path,
+            stdin_text="",
+            timeout_seconds=3,
+            env=environment,
+        )
+    )
+    try:
+        await asyncio.wait_for(entered.wait(), timeout=3)
+        environment["AGENTSYNC_CHILD_FIXTURE"] = "changed-dummy-marker"
+        environment["AGENTSYNC_ADDED_FIXTURE"] = "added-dummy-marker"
+    finally:
+        release.set()
+    process = await caller
+    assert (await process.wait()).exit_code == 0
+    assert (await process.get_result()).stdout.splitlines() == [b"original-dummy-marker", b"None"]
+    assert environment["AGENTSYNC_CHILD_FIXTURE"] == "changed-dummy-marker"
+
+
+@pytest.mark.parametrize(
+    "environment",
+    [True, [], {False: "dummy"}, {"DUMMY": True}],
+    ids=["bool", "list", "bool-key", "bool-value"],
+)
+@pytest.mark.asyncio
+async def test_invalid_environment_types_never_reach_subprocess(tmp_path, monkeypatch, environment):
+    calls = []
+
+    async def forbidden_factory(*args, **kwargs):
+        calls.append(True)
+        pytest.fail("Invalid environment reached subprocess factory")
+
+    monkeypatch.setattr(asyncio.get_running_loop(), "subprocess_exec", forbidden_factory)
+    with pytest.raises(AgentSyncError) as error:
+        await CapturedProcess.start(
+            helper("print('known')"),
+            cwd=tmp_path,
+            stdin_text="",
+            timeout_seconds=1,
+            env=environment,
+        )
+    assert error.value.message == "Invalid process capture input."
+    assert calls == []
+
+
+@pytest.mark.asyncio
+async def test_invalid_environment_text_and_sizes_never_reach_subprocess(tmp_path, monkeypatch):
+    calls = []
+
+    async def forbidden_factory(*args, **kwargs):
+        calls.append(True)
+        pytest.fail("Invalid environment reached subprocess factory")
+
+    monkeypatch.setattr(asyncio.get_running_loop(), "subprocess_exec", forbidden_factory)
+    invalid = [
+        {"": "dummy"},
+        {"A=B": "dummy"},
+        {"DUMMY": "x\x00y"},
+        {"D\x00UMMY": "x"},
+        {"DUMMY": "\ud800"},
+        {"\ud800": "dummy"},
+        {"X" * 257: "dummy"},
+        {"DUMMY": "x" * 16385},
+        {f"K{i}": "v" for i in range(257)},
+        {f"K{i}": "x" * 16384 for i in range(4)},
+    ]
+    for environment in invalid:
+        with pytest.raises(AgentSyncError) as error:
+            await CapturedProcess.start(
+                helper("print('known')"),
+                cwd=tmp_path,
+                stdin_text="",
+                timeout_seconds=1,
+                env=environment,
+            )
+        assert error.value.message == "Invalid process capture input."
+    assert calls == []

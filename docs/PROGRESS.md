@@ -1,5 +1,15 @@
 # Current: M5 frozen; M6 conditional development
 
+2026-10-25 latest: pure fixed readonly invocation plan and optional explicit child
+environment implemented. Root verified302 files/44 runtime modules: source873pass/
+1skip; fresh wheel/sdist499pass each; local Linux421pass; Ruff/format/mypy pass.
+One NEW separately authorized actual installed-wheel CodexAdapter+plan+environment
+run completed once with exit0 and exact reply. All19 fixture hashes and pending
+Core task before/after/reopen stayed unchanged. Warning/model-list refresh timeout
+preserved; no retry, API key, Actions or remote mutation. This is a limited response
+smoke; permissions/cancel/timeout/relay/M9 remain unverified and release BLOCKED.
+See acceptance/RELEASE-ACCEPTANCE-REPORT.md and latest evidence summaries.
+
 2026-10-25 continuation: host-factory CodexAdapter now implements the six-method
 generic lifecycle with default unsupported startup, bounded instance history,
 request/task deduplication and fail-closed unknown slots. Shared/preexisting
@@ -322,7 +332,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiry→pending/unverified. These development runs used unfrozen overlays, not a
+expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.

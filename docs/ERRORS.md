@@ -1,3 +1,7 @@
+## 2026-10-25 invocation/live checkpoint
+
+The authorized integrated response succeeded once; original stderr retains a helper PATH-alias warning and model-list refresh timeout. No retry. Offline first attempts retain a test-helper UTF-8 decoding issue and a Windows lstat/fstat ctime comparison false rejection; final checks passed after targeted corrections. No full M6/M5 acceptance inferred.
+
 # Error and limitation log
 
 - M5B3A2 audit reproduced that a new regular .git redirect inside an otherwise

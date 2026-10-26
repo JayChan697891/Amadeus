@@ -1,3 +1,7 @@
+## 2026-10-25: prepare without executing or granting authority
+
+Pin bounded executable bytes and namespace in a pure immutable plan; fixed read-only arguments and explicit copied environment do not guarantee filesystem or credential isolation. The adapter has no default launcher. A separately authorized one-turn response is external evidence; product verification/Core authorization flags stay unverified. Keep unknown slots and no automatic retry.
+
 # Technical decisions
 
 ## M5B3A2: existing content without reconstruction or acceptance authority
