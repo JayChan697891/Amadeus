@@ -1100,7 +1100,11 @@
         "tests/unit/test_claude_events.py::test_literal_complete_response_needs_exit_zero_and_is_unverified",
         "tests/unit/test_claude_events.py::test_unsuccessful_observations_never_expose_final_text",
         "tests/unit/test_claude_events.py::test_last_assistant_incomplete_stop_cannot_be_hidden_by_optimistic_result",
-        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims"
+        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims",
+        "tests/unit/test_claude_adapter.py::test_default_adapter_contract_is_unverified_and_start_unsupported",
+        "tests/unit/test_claude_adapter.py::test_reused_capture_is_rejected_without_stopping_first_run_parent",
+        "tests/unit/test_claude_adapter.py::test_factory_deadline_freezes_unknown_then_cleans_only_fresh_late_parent",
+        "tests/integration/test_claude_adapter_core_boundary.py::test_claude_protocol_success_preserves_actual_core_and_reopened_state"
       ],
       "planned_cases": [
         {

@@ -1,5 +1,48 @@
 # Release Acceptance Report
 
+## Current shared lifecycle / ClaudeAdapter checkpoint: 2026-10-26 America/Tijuana
+
+Execution: Codex. Formal release **BLOCKED**. M5 scope/exit conditions unchanged.
+`ClaudeAdapter` implements the six lifecycle methods through a private typed
+shared host-process engine. Codex public classes stay in codex.py with identical
+record fields, values, privacy representations and invalid-configuration errors;
+root checked that differential in source and both fresh installed packages.
+Default startup is unsupported. A factory is trusted host code, not authorization.
+No launcher, SDK, credentials/config reader, Core endpoint or automatic apply was
+added. Claude and Codex parse their own formats into private observations; no
+Claude events are converted into pretend Codex captures.
+
+| Latest47-module snapshot | Actual result |
+|---|---|
+| Source all unit + selected Core integration |1014pass /2 platform skips /0fail/error|
+| Fresh offline wheel / isolated sdist components |640pass /1 FIFO skip each /0fail/error|
+| Root independent related regression |529pass /1 FIFO skip|
+| Ruff / format / mypy / diff |passed;233 formatted files;47 typed source files|
+
+Root verified317 frozen files, all47 source/archive/installed module bytes,
+noneditable origins, actual JUnit counts, command journals and artifact hashes.
+The final8-selector snapshot reran source/build/wheel/sdist checks after a trace
+patch line-ending mismatch; the earlier4-selector pilot and failed patch check
+remain recorded separately. Original D CRLF bytes are retained; runtime files were
+normalized to Git LF before the final tests and package builds.
+
+Claude22 unit cases and3 temporary Core/SQLite cases exercise known Python
+helpers only. Pending/running Core tasks and reopened state stay unchanged after
+protocol completion. Late factory cleanup, request concurrency, capture reuse,
+stale handles, history and unknown slots are covered. Local cancel/timeout can
+only observe owned-parent termination; server cancellation, process-tree cleanup,
+strict OS launch timing and cross-instance/restart identity remain unverified.
+
+M6-04 has8 exact component selectors, partial/unverified. All42 formal requirements
+and16 scenarios remain NOT RUN. Historical one-turn actual Codex evidence belongs
+to the earlier implementation; no actual Codex or Claude call was made through
+this refactored engine. Real client permissions, real relay and M9 remain gates.
+Local Linux components for this exact frozen source are a separate pending run;
+earlier real Docker26 target passes remain a separate supplement, not a full run.
+
+Evidence: [shared lifecycle checkpoint](evidence/claude-adapter-local-20261026.json)
+and D:/agentsync-debug/CLAUDE-ADAPTER-CHECKPOINT-20261026.json.
+
 ## Targeted real Docker supplement: 2026-10-25 America/Tijuana
 
 After repairing only the D-only driver, the previously unexecuted26 fixtures
@@ -31,7 +74,7 @@ See [failed-driver evidence](evidence/linux-driver-failure-20261025.json).
 Formal release remains **BLOCKED**. Earlier RUNNING statements below record their
 observation time and are superseded by this result.
 
-## Current offline Claude projection checkpoint: 2026-10-25 America/Tijuana
+## Prior offline Claude projection checkpoint: 2026-10-25 America/Tijuana
 
 Execution: Codex. Formal release **BLOCKED**; M5 five-item scope/exit checklist and
 all42 formal requirements/16 scenarios remain NOT RUN. No real Claude client was

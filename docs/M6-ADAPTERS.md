@@ -95,8 +95,31 @@ incomplete/unknown exit keeps it empty. Usage is caller-reported, never a bill.
 produces size/hash-only result summaries. Omit --exit-code to keep process status
 unknown. CLI exit0 means parsing completed, including failed/incomplete reports;
 it is not task success. No default log search, client launch or raw session/text
-projection occurs. Real ClaudeCodeAdapter startup/cancel/resume remains unimplemented.
+projection occurs. Built-in real Claude startup and server cancellation/resume remain unsupported.
 
 Schema research used the official [headless guide](https://code.claude.com/docs/en/headless),
 [agent lifecycle](https://code.claude.com/docs/en/agent-sdk/agent-loop) and
 [SDK types](https://github.com/anthropics/claude-agent-sdk-python/blob/main/src/claude_agent_sdk/types.py).
+
+## ClaudeAdapter and private shared lifecycle
+
+`agentsync.adapters.claude.ClaudeAdapter` supplies client-specific capabilities,
+ClaudeRun and ClaudeResult through the same private ownership/deadline/history
+engine as Codex. It reads Claude JSONL directly; no synthetic Codex conversion
+occurs. Public Claude results contain private result_text/client_session_id,
+optional unverified ClaudeUsage and the fixed host-process/unverified markers.
+Session IDs correlate output and never authenticate Core sessions.
+
+Without a trusted host async factory, capabilities.supports_start=False and start
+is unsupported. With a factory, the same six methods and instance-local safeguards
+apply. Factory exceptions, malformed/incomplete captures and uncertain deadlines
+retain unknown slots; shared/stale captures are rejected without stopping others.
+Late fresh owned parents may be cleaned without rewriting frozen unknown history.
+Cancel is owned-parent-only, never server acknowledgement or tree-cleanup proof;
+resume is unsupported. No built-in Claude command, SDK call or credential reader
+exists. Known Python helpers prove mechanical composition, not Claude integration.
+
+Codex public classes/fields and validation semantics remain compatible despite
+the private extraction. The historical actual Codex CLI smoke is not a live
+test of this new shared engine. A fresh real-client run still requires separate
+authorization and the relevant M5 gates; previous one-call grants were consumed.
