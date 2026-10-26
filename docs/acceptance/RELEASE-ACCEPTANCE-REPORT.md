@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+## Latest Linux components and Git binding
+
+The current47-module frozen source components finished **641pass /0skip/fail/error**
+on the existing local Linux VM. Root independently parsed actual JUnit, checked
+logs/hashes and317-file before/after manifests, and bound all source/test/tool plus
+requirement bytes to product commit `da61adf2c90196814c96a7827756b346bcd02f51`.
+The original precommit base/provenance remains intact; closeout documentation was
+added after tests. This is the same23 component selectors used by the two fresh
+Windows package environments, not a complete new Linux suite or Linux installation.
+No Docker cases or real clients were repeated in this component run.
+See [Linux component evidence](evidence/claude-adapter-linux-20261026.json).
+Formal release remains **BLOCKED**; earlier pending statements below are historical.
+
 ## Current shared lifecycle / ClaudeAdapter checkpoint: 2026-10-26 America/Tijuana
 
 Execution: Codex. Formal release **BLOCKED**. M5 scope/exit conditions unchanged.

@@ -1,5 +1,7 @@
 # Latest local M6 checkpoint — 2026-10-25 America/Tijuana
 
+Linux follow-up:641 components passed/0skip/fail/error,317 frozen files unchanged; root tied code/tests/tools/requirement Git blobs to da61adf. Fresh package installs remain the separate Windows640pass/1skip each; no full current platform matrix or real-client acceptance.
+
 Latest shared lifecycle / ClaudeAdapter prototype:47 modules/317 frozen files; source1014pass/2skip; installed wheel/sdist640pass/1skip each. Root independently checked actual XML/artifact/module bytes and Codex public-record compatibility. Default startup unsupported; zero actual clients/credentials/Core wiring. M6-04 eight component selectors, all42/16 formal not_run, release BLOCKED; current Linux component evidence pending separately.
 
 Latest Claude OFFLINE projection:45 modules/310 frozen files; source977pass/2skip; fresh wheel/sdist603pass/1skip each; Ruff/format/mypy pass. Root verified actual XML/package bytes. M6-04 partial component mapping only; all42/16 formal not_run; zero real Claude calls, release BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.

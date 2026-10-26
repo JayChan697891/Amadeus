@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — local M6 prototypes
+
+Add bounded Codex/Claude protocol projection and sanitized local inspectors, a
+pure pinned readonly Codex plan, and shared typed host-factory lifecycle handling.
+Default startup stays unsupported; unknown runs retain instance slots and parent
+cancellation does not assert server cancellation or process-tree cleanup. Preserve
+Codex public records and keep Claude session/result fields private. No credentials,
+SDK/client launch, Core authorization or automatic apply was added. These local
+checkpoints are not a release or M5/real-client acceptance; see the acceptance report.
+
 ## 0.3.0a11 — M5B3B2B candidate execution intent guard
 
 Add owner-only prepare/get/abandon of a single non-executing candidate intent.

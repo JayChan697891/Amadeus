@@ -1,12 +1,14 @@
-# Current direction: M5 scope frozen; conditional M6 prototype
+# Current direction: M5 scope frozen; conditional M6 prototypes
 
 Use [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md) as the only M5 exit checklist.
 M5 remains the original five requirements; no new stages for documentation,
 duplicate evidence or noncritical enhancements. Existing stage records below are
-historical. Current full local Windows checkpoint:1303 passed/30 skipped, zero
-failures; uncommitted source snapshot, not PR25 frozen-commit acceptance.
-Start M6 with bounded offline Codex event parsing; actual clients, candidate
-execution, verified completion and apply remain gated. Formal release BLOCKED.
+historical. Current M6 has typed host-factory Codex/Claude protocol adapters,
+bounded offline parsers/inspectors and a pure pinned Codex invocation plan.
+Default live startup is unsupported; candidate execution, verified completion,
+credential use, server cancellation and apply remain gated. Latest actual checks
+and limitations are in acceptance/RELEASE-ACCEPTANCE-REPORT.md; component passes
+do not establish the real clients, dual-agent relay or formal release. BLOCKED.
 
 # Historical M5B3B2B candidate execution intent guard in development
 

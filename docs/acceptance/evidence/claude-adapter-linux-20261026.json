@@ -1,0 +1,29 @@
+{
+  "scope": "Independent local Linux source components, not full current OS matrix or real clients",
+  "verified_at": "2026-10-26T07:24:14.226599+00:00",
+  "product_commit": "da61adf2c90196814c96a7827756b346bcd02f51",
+  "snapshot_base_commit": "aa01692aaeb6a19cd23190a8b750ad72ca99e156",
+  "frozen_source_files": 317,
+  "runtime_modules": 47,
+  "code_tests_tools_and_requirement_git_blobs_match_snapshot": true,
+  "tests": 641,
+  "passed": 641,
+  "skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "source_unchanged": true,
+  "junit_sha256": "13054e8d4ac1e52d3d0a33357d529178ec0265e9805eca0e1e3e826c218911d8",
+  "pytest_log_sha256": "550c6862b1ca0c37a7469f975844721ca75851c8316b073907db7504d7075096",
+  "evidence_archive_sha256": "14434f987ad3038b8a12d236fba8b4e161685abcaa576e8124d9af1ae66c17d2",
+  "raw_evidence_root": "D:\\agentsync-debug\\claude-adapter-linux-final-cc4q8gn2",
+  "formal_acceptance": false,
+  "real_client_calls": 0,
+  "github_actions": false,
+  "docker_tests": "Not run in this component slice; actual26 target evidence separate",
+  "limits": [
+    "Source component run only; fresh package installations verified on Windows separately",
+    "No updated-engine real Codex or actual Claude execution",
+    "No server cancellation, tree-cleanup, restart/cross-instance or autonomous relay acceptance",
+    "Complete Linux baseline failed attempt remains immutable; no union is labelled a full passing run"
+  ]
+}

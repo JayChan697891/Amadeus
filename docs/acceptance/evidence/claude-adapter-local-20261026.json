@@ -2079,9 +2079,10 @@
     "planned_evidence": "<evidence_root>/<run_id>/requirements/M6-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
     "release_gate": "required_for_v1_0"
   },
-  "linux_current_components": "RUNNING as a separate frozen-source attempt; no result inferred",
+  "linux_current_components": "641pass/0skip/fail/error; separately verified source components",
   "draft_evidence": [
     "D:/agentsync-debug/claude-adapter-draft-686osgrn/evidence/draft-inspection.json",
     "D:/agentsync-debug/claude-trace-draft-0e7456b6/evidence/draft-inspection.json"
-  ]
+  ],
+  "linux_evidence": "claude-adapter-linux-20261026.json"
 }
