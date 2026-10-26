@@ -3,6 +3,17 @@
 ## Current explicit invocation and limited actual-client checkpoint: 2026-10-25 America/Tijuana
 
 Formal release **BLOCKED**; M5 five-item scope and B1–B6/D1–D5 remain unchanged.
+
+Complete existing Windows `tests/` additionally executed against product commit
+`248d0be9685fd3cb474b633c177f29947f6f3f21`: **1441pass /30skip /0fail/error**
+(1471 actual XML cases), source305 files/44 runtime modules unchanged. Root checked
+actual XML and hashes independently. Skips:26 Linux Docker/reconciliation/owner,
+1 POSIX FIFO and3 Windows symlink privileges. See
+[complete Windows evidence](evidence/full-windows-248d0be-20261025.json).
+Two old Unicode report paragraphs were subsequently repaired from the original
+UTF-8 Git baseline; no product bytes changed. Linux full-suite first VM-off attempt
+is NOT RUN, retained at D:/agentsync-debug/full-linux-248d0be-yqhy0u4g; a separate
+attempt after restoring the dedicated VM is still RUNNING, not counted as passed.
 The new pure `CodexHostProfile` / `prepare_invocation` pins the executable SHA,
 namespace, asserted CLI version and fixed readonly arguments. It does not launch,
 discover credentials or authorize a task. Optional explicit child environments
@@ -39,7 +50,7 @@ rejection are retained in D-drive evidence, with their eventual passing checks.
 ## Prior host-factory lifecycle checkpoint: 2026-10-25 America/Tijuana
 
 Formal release **BLOCKED**. M5 remains exactly the five original requirements;
-its B1â€“B6/D1â€“D5 and unique final exit conditions are unchanged.
+its B1–B6/D1–D5 and unique final exit conditions are unchanged.
 
 The six-method CodexAdapter prototype now composes typed host-factory process
 capture and JSONL observation. No built-in live launcher or Core endpoint exists;
@@ -128,7 +139,7 @@ CLI smoke being relabelled as adapter acceptance. Real CodexAdapter integration,
 real cancellation/timeout, Claude, Cursor, automatic relay, independent verified
 completion, approval consumption/safe apply and full M9 remain NOT RUN/UNVERIFIED.
 M5-01/03 have historical limited VERIFIED evidence; current whole M5 is not VERIFIED.
-B1â€“B6 and D1â€“D5 remain exactly in the unique M5 checklist.
+B1–B6 and D1–D5 remain exactly in the unique M5 checklist.
 
 The user separately authorized one subscription-only read-only model task. Actual
 CLI0.164.0-alpha.11.1 used ChatGPT login and no API-key environment; no credit

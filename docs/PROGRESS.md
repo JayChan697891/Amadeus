@@ -1,5 +1,7 @@
 # Current: M5 frozen; M6 conditional development
 
+Complete frozen Windows product248d0be:1441pass/30skip/0fail/error;1471 actual cases,305 files/44 modules unchanged. Root independently checked XML/hashes. See acceptance/evidence/full-windows-248d0be-20261025.json. Claude draft not included; Linux complete suite still running.
+
 2026-10-25 latest: pure fixed readonly invocation plan and optional explicit child
 environment implemented. Root verified302 files/44 runtime modules: source873pass/
 1skip; fresh wheel/sdist499pass each; local Linux421pass; Ruff/format/mypy pass.
@@ -332,7 +334,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
+expiry→pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.

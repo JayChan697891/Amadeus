@@ -1,3 +1,5 @@
+Report-only encoding correction: two older Unicode paragraphs had been decoded using the host locale. Restored their original UTF-8 Git content and reapplied the latest additions. Product bytes and complete-suite evidence were unchanged.
+
 ## 2026-10-25 invocation/live checkpoint
 
 The authorized integrated response succeeded once; original stderr retains a helper PATH-alias warning and model-list refresh timeout. No retry. Offline first attempts retain a test-helper UTF-8 decoding issue and a Windows lstat/fstat ctime comparison false rejection; final checks passed after targeted corrections. No full M6/M5 acceptance inferred.
