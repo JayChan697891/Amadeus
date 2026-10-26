@@ -1,0 +1,147 @@
+{
+  "scope": "Independent actual26-case Docker target regression, not a combined full-suite pass",
+  "verified_at": "2026-10-26T06:56:56.624151+00:00",
+  "commit": "6b16f20a367d0d6b05840a629002ea53c49797f5",
+  "status": "PASS",
+  "tests": 26,
+  "passed": 26,
+  "skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "source_files": 312,
+  "runtime_modules": 45,
+  "source_unchanged": true,
+  "same_case_ids_as_prior26_setup_errors": true,
+  "actual_environment_preflight": {
+    "passed": true,
+    "actual_child_environment": {
+      "AGENTSYNC_DOCKER_TEST_IMAGE": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+      "AGENTSYNC_REQUIRE_DOCKER_TESTS": "1"
+    },
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "repo_digests": [
+      "python@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+    ],
+    "image_inspect_no_pull": true,
+    "test_started": false
+  },
+  "artifact_count": 26,
+  "artifacts": {
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_pid_bound.json": {
+      "sha256": "97504ea2fa147be173709ad109def08ea2d8333a3479687883a4f370c6965e8a",
+      "size": 2670
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_output_bounds[stdout].json": {
+      "sha256": "28c3a154d746c7801dc7e6b96c83e7ec8fdaa21b236e1a52c2850081b2729b6d",
+      "size": 2484
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_isolation_controls.json": {
+      "sha256": "8484be12072ff50209dca8ca28b3a6eb8c1efd05d21b61d19b93099042f690ad",
+      "size": 2672
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_wall_time.json": {
+      "sha256": "7deed52e045a85d87359bfe7d2f04aad0b41883b174474c342e72f3da48c34c3",
+      "size": 2474
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json": {
+      "sha256": "b60530d2b9719e2a56399e3cfe73919dbb22eb423e2e9647977a28ea0de8e389",
+      "size": 2712
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_checks_all_external_cases.json": {
+      "sha256": "e1e1294d915c1229cca70093c2bf6e188c986c164de88e9178839823f9a938ff",
+      "size": 2671
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json": {
+      "sha256": "65ef112bb38a348f5be9f98238756df9a145c7fc37aa9dbc4830d33d0fe86add",
+      "size": 2710
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json": {
+      "sha256": "b51d8550706da3d8d923eeb7c9f5d6ff72eb2232e5dcf4ef986628126d0519df",
+      "size": 2704
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_scratch_bound.json": {
+      "sha256": "9d5b5d6fcb849b422f4432ea1373fdf3e92898e84c91978b0a56db7004c9fba2",
+      "size": 2671
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json": {
+      "sha256": "89a26ada3ca012671c9a2ffa5ed72475e4cae8e6df3a089b0e8ff889248e8cd6",
+      "size": 2712
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_output_bounds[stderr].json": {
+      "sha256": "8b3481c608f6a582571e313c3f25246400a77d44f140afa93c201f34661bef2f",
+      "size": 2484
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_kernel_cgroup_limits.json": {
+      "sha256": "87e8350795f7a64593c014e7c0989828fe196e7a177c525ad4d03a630851a1fe",
+      "size": 2672
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_memory_bound.json": {
+      "sha256": "c0403524518b995a553aec2d7a202388406e220d75610e3e3af5644bc82bb5ae",
+      "size": 2707
+    },
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json": {
+      "sha256": "17c80330e656aa9f9879acaaed42af92913248289f0f421d2b4207cca0d7c71c",
+      "size": 2705
+    },
+    "owner-evidence/9f0b670cb292e8b5/fixed-snapshot.json": {
+      "sha256": "59636f465bff49faed8b72fcf2ab17dc31e29de519fa3d6136ae5814432da809",
+      "size": 4380
+    },
+    "owner-evidence/9f0b670cb292e8b5/wall-time.json": {
+      "sha256": "68b4b31489995f99fe4377ac7235deb1d69babb9f42ef21f58d75b50134d376c",
+      "size": 4170
+    },
+    "owner-evidence/9f0b670cb292e8b5/owner-cancel-before-start.json": {
+      "sha256": "ae07ced4815bb6b4e6a0ad52a3bbb04b7b90635cbcb06d40bebd1c1755133e1d",
+      "size": 4194
+    },
+    "owner-evidence/9f0b670cb292e8b5/expired-lease-after-real-pass.json": {
+      "sha256": "4fc4b2c684ba3d3c5c86aaeb6384f99516eaac4dc1208595828385f9b62e3478",
+      "size": 4461
+    },
+    "owner-evidence/9f0b670cb292e8b5/test_actual_owner_rejects_candidate_self_report[forged-junit].json": {
+      "sha256": "bb1b07875d811ff0c8883c11bacd6257ac3e8687699611505e9d27219a6b4f99",
+      "size": 4428
+    },
+    "owner-evidence/9f0b670cb292e8b5/test_actual_owner_rejects_candidate_self_report[wrong-result].json": {
+      "sha256": "2c935a198b0e05197912d0378797664b86a55ab1091aec99a77ace9ddeff3fbb",
+      "size": 4421
+    },
+    "owner-evidence/9f0b670cb292e8b5/test_actual_owner_rejects_candidate_self_report[early-exit].json": {
+      "sha256": "a412c156b99a4ac384749c7cd4f3b0bd1d57741a23bda231133417571a088e26",
+      "size": 4422
+    },
+    "reconciliation-evidence/9f0b670cb292e8b5/hard-exit-created.json": {
+      "sha256": "22f23c5fcdb65a2d543a95a870d13b42afe0cc3408ce747fe5caea818be5d23a",
+      "size": 3676
+    },
+    "reconciliation-evidence/9f0b670cb292e8b5/initial-absence.json": {
+      "sha256": "ac9c09ddd2ce3c16b23002f7bb78186d94c9edc29a2b923e7613a4d274c8df9d",
+      "size": 3716
+    },
+    "reconciliation-evidence/9f0b670cb292e8b5/lost-create-ack.json": {
+      "sha256": "e01cd1a73bd8c5aad6cc79299e44147d4c9215ad8a8d144b5c67a014dab4601d",
+      "size": 2629
+    },
+    "reconciliation-evidence/9f0b670cb292e8b5/hard-exit-running.json": {
+      "sha256": "dce13fc3fe27df5b2920887ff85f6ad12e953dd1ef57a234821910c0a2abe7ce",
+      "size": 3677
+    },
+    "reconciliation-evidence/9f0b670cb292e8b5/protected-renamed-object.json": {
+      "sha256": "f607dc46ee179b0961f8bf317d757036f4b6ffb0ed9a06ece218313a6ec072d6",
+      "size": 3720
+    }
+  },
+  "junit_sha256": "053d24d824a4ae46589a7d1e0cf7ec12204913dc709d5fe9fda9f2553f17b97d",
+  "pytest_log_sha256": "04c5fb6cde383f80fb42767d8b894ab95cd7664081f8800fb7e6fb0c59bafd36",
+  "raw_evidence_root": "D:\\agentsync-debug\\docker-targeted-6b16f20-dco7s4qx",
+  "formal_acceptance": false,
+  "real_agent_calls": 0,
+  "github_actions": false,
+  "remote_mutations": false,
+  "limitations": [
+    "Original complete Linux baseline remains a failed attempt",
+    "This rerun executes only the previously unexecuted26 fixtures on frozen6b16f20",
+    "No complete current Linux/OS matrix, actual client relay or release acceptance inferred"
+  ]
+}

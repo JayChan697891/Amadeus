@@ -1,3 +1,5 @@
+D-only Linux driver correction verified: explicit JSON/env dictionary preserves AGENTSYNC_DOCKER_TEST_IMAGE and REQUIRE=1, asserted by a real child before pytest.26 previously unexecuted fixtures then passed with26 hashed actual JSON artifacts. Old complete-suite FAIL and VM-off NOT RUN remain preserved; no test/product safety relaxation or combined full-pass claim.
+
 Complete Linux baseline driver error: a broad IMAGE placeholder replacement modified the required image environment-variable name. Actual26 fixture setup errors are preserved;1442 other tests passed,3 platform skips. Product source stayed unchanged. Fix the D-only driver and verify env names before a separate targeted run; never suppress mandatory Docker guards.
 
 Claude D-draft classification defect: last assistant.message.stop_reason was ignored despite optimistic terminal flags. Root6failed regressions and independent repro retained; repaired last-assistant classification,77 parser/13 independent/97 combined checks passed. Real Claude was never launched. Root first-party Ruff import ordering and verifier skip-name assumptions were corrected separately; no test or check rule disabled.

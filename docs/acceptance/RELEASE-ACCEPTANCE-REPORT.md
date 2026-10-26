@@ -1,5 +1,21 @@
 # Release Acceptance Report
 
+## Targeted real Docker supplement: 2026-10-25 America/Tijuana
+
+After repairing only the D-only driver, the previously unexecuted26 fixtures
+ran against frozen product6b16f20 and all passed:14 Docker +7 owner execution
++5 reconciliation;0 skips/failures/errors, exit0,119.63s. Root independently
+verified actual child environment names/values, pinned-image inspect, actual
+JUnit,26 JSON artifacts/hashes and unchanged312-file/45-module archive binding.
+The testcase identities exactly match the earlier26 fixture setup errors.
+No fixture, timeout, rule, safety limit or product code was changed. No image pull,
+provider call or real Agent execution occurred. The intermediate VM-off attempt
+remains NOT RUN; old failures remain immutable.
+
+This is a targeted supplement, **not one complete passing Linux run**. Formal
+release remains **BLOCKED**. See
+[actual target evidence](evidence/docker-targeted-6b16f20-20261025.json).
+
 ## Complete Linux baseline failure classified: 2026-10-25 America/Tijuana
 
 The previously running44-module baseline248d0be suite has now finished **FAIL**:
