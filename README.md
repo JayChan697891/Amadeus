@@ -79,7 +79,7 @@ the fixture and leaves dependent work pending. Reports explicitly mark all resul
 as simulation-only/unverified. This does not enable real clients, production
 automatic review, durable recovery, AI decomposition or paid services.
 
-## Quality checks
+## Reported usage
 
 `agentsync.usage.UsageLedger(project_id)` records typed adapter results through
 `record_result(result)` and returns an immutable `summary()`. Identical run
@@ -90,6 +90,8 @@ Elapsed time describes the adapter lifecycle interval, not provider/API duration
 These are caller-reported observations: costs remain unknown and billing/client
 verification remains false. The ledger is bounded and in memory, without recovery
 or transport/API-call accounting.
+
+## Quality checks
 
 ```powershell
 & .\.venv\Scripts\python.exe -m ruff check .

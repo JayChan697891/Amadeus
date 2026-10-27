@@ -1,6 +1,17 @@
 # Changelog
 
-## Unreleased — local M6 prototypes
+## 0.3.0a12 — development checkpoint
+
+- Add a bounded standalone Cursor JSON parser and typed host-factory adapter.
+- Add heterogeneous RunManager routing with bounded history and shared dispatch receipts.
+- Add optional read-only capability advice using explicit requirements and self-reported declarations.
+- Add an isolated Mock diamond workflow demo with bounded retries and attempt budgets.
+- Add an unknown-aware UsageLedger separating protocol observations from simulations.
+- Include developer acceptance/debug helpers in source distributions so packaged tests can find them.
+
+This development alpha changes no schema or dependencies and is not a release,
+tag or approval. Real clients, autonomous relay and formal acceptance remain
+unverified or blocked; component checks do not satisfy those gates.
 
 Add opt-in bounded private per-phase pytest evidence that survives a later test
 termination, and owned migration-test child cleanup without changing test limits.
