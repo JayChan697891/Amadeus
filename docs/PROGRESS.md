@@ -1,5 +1,14 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M8 normalized usage checkpoint export/restore implemented without I/O. Strict
+namespace/format/bounds/duplicate checks rebuild a new ledger and recompute totals;
+unknown costs, replay identity, capacity and Mock separation survive restoration.
+Sol implemented; Astra High reviewed final usage.py SHA f3318ead... with no blocker
+(source review only). Root independent Windows3.14 scoped19pass, Python3.11 usage
+15pass; two fresh-interpreter restores passed. Ruff/format/mypy52 pass.
+D:m8-usage-recovery-root-nas39osp. Explicit caller storage, no automatic durable
+files/Agent recovery. Unreleased source; all42 formal not_run; release BLOCKED.
+
 M7 Mock workflow now accepts optional finite elapsed admission budget (0,60]s,
 including owned setup. Expiry stops claims/starts, cancels active simulations,
 fails owned Core tasks and leaves descendants pending. Default output preserved.

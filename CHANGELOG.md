@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased - local recovery components
+
+- Add an actual Core crash/lease-expiry regression with successor and dependency recovery.
+- Add optional elapsed admission limits to the isolated Mock workflow.
+- Add strictly bounded JSON checkpoints for normalized caller-reported usage.
+
+These source components do not change schema/dependencies or establish a new
+packaged release, real-client execution, automatic durable recovery or acceptance.
+
 ## 0.3.0a13 — development compatibility repair
 
 Replace timestamp-based capture freshness with a private process-local creation

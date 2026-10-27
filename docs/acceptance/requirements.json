@@ -1310,6 +1310,10 @@
         "real_client"
       ],
       "existing_tests": [
+        "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
+        "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
+        "tests/unit/test_usage.py::test_checkpoint_rejects_malformed_namespaces_duplicates_and_overflow",
+        "tests/unit/test_usage.py::test_checkpoint_preflight_project_size_utf8_and_depth_before_parse",
         "tests/unit/test_usage.py::test_mixed_protocol_and_simulated_records_keep_metrics_separate",
         "tests/unit/test_usage.py::test_empty_missing_and_reported_zero_are_distinct",
         "tests/unit/test_usage.py::test_cumulative_overflow_rejects_admission_atomically",
@@ -1343,6 +1347,8 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
+        "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
         "tests/recovery/test_process_recovery.py::test_abrupt_process_exit_preserves_commits_and_rolls_back_transaction",
         "tests/recovery/test_process_recovery.py::test_crashed_running_owner_is_reclaimed_and_dependency_resumes_after_restart",
         "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",

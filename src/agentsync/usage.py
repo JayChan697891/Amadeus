@@ -11,6 +11,7 @@ admission atomically. Use synchronously from one owner, without concurrent calls
 
 from __future__ import annotations
 
+import json
 import math
 from dataclasses import dataclass, field
 from typing import Any, Literal, NoReturn, cast
@@ -24,6 +25,19 @@ from agentsync.adapters.cursor import CursorResult, CursorRun
 from agentsync.errors import AgentSyncError
 
 _LIMIT = 2**63 - 1
+_JSON_LIMIT = 32 * 1024 * 1024
+_CHECKPOINT_FIELDS = {
+    "schema_version",
+    "project_id",
+    "max_records",
+    "provenance",
+    "verification",
+    "real_client_verified",
+    "billing_verified",
+    "cost_usd",
+    "records",
+}
+_RECORD_FIELDS = {"kind", "identity", "status", "started_at", "finished_at", "counters"}
 _KINDS = {
     CodexResult: ("codex", CodexRun),
     ClaudeResult: ("claude", ClaudeRun),
@@ -47,6 +61,96 @@ def _time(value: Any) -> float:
     if type(value) not in (int, float) or not math.isfinite(value) or value < 0:
         _invalid()
     return float(value)
+
+
+def _json_preflight(text: str) -> None:
+    if type(text) is not str or len(text) > _JSON_LIMIT:
+        _invalid()
+    if len(text.encode("utf-8")) > _JSON_LIMIT:
+        _invalid()
+    depth = 0
+    quoted = escaped = False
+    for char in text:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == '"':
+                quoted = False
+        elif char == '"':
+            quoted = True
+        elif char in "{[":
+            depth += 1
+            if depth > 8:
+                _invalid()
+        elif char in "}]":
+            depth -= 1
+            if depth < 0:
+                _invalid()
+
+
+def _json_members(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            _invalid()
+        result[key] = value
+    return result
+
+
+def _json_float(text: str) -> float:
+    value = float(text)
+    if not math.isfinite(value):
+        _invalid()
+    return value
+
+
+def _json_constant(_text: str) -> NoReturn:
+    _invalid()
+
+
+def _fields(value: Any, expected: set[str]) -> None:
+    if type(value) is not dict or set(value) != expected:
+        _invalid()
+
+
+def _checkpoint_result(record: Any) -> object:
+    _fields(record, _RECORD_FIELDS)
+    kind, identity, counters = record["kind"], record["identity"], record["counters"]
+    if (
+        type(kind) is not str
+        or kind not in {"codex", "claude", "cursor", "mock"}
+        or type(identity) is not list
+        or len(identity) != 5
+        or type(counters) is not list
+        or len(counters) not in (2, 4)
+    ):
+        _invalid()
+    if len(counters) == 2:
+        if any(value is not None for value in counters):
+            _invalid()
+    elif kind not in {"codex", "claude"}:
+        _invalid()
+    args = dict(
+        zip(("project_id", "session_id", "task_id", "request_id", "run_id"), identity, strict=True)
+    )
+    args.update(
+        status=record["status"], started_at=record["started_at"], finished_at=record["finished_at"]
+    )
+    if kind == "codex":
+        usage = (
+            None
+            if len(counters) == 2
+            else CodexUsage(counters[0], counters[2], counters[1], counters[3])
+        )
+        return CodexResult(CodexRun(**args), usage=usage)
+    if kind == "claude":
+        claude_usage = None if len(counters) == 2 else ClaudeUsage(*counters)
+        return ClaudeResult(ClaudeRun(**args), usage=claude_usage)
+    if kind == "cursor":
+        return CursorResult(CursorRun(**args))
+    return AdapterResult(RunSnapshot(**args, deadline_at=record["started_at"]))
 
 
 @dataclass(frozen=True, slots=True)
@@ -107,6 +211,90 @@ class UsageLedger:
         self._max_records = max_records
         self._records: dict[tuple[str, str], _Record] = {}
         self._sums = [0, 0, 0]
+
+    def to_json(self) -> str:
+        """Export unverified normalized observations, without output/client metadata.
+
+        This performs no I/O. Caller-supplied identity text is retained verbatim;
+        it is not authenticated or guaranteed to be free of caller secrets.
+        """
+        document = {
+            "schema_version": 1,
+            "project_id": self._project_id,
+            "max_records": self._max_records,
+            "provenance": "caller_reported_adapter_results",
+            "verification": "unverified",
+            "real_client_verified": False,
+            "billing_verified": False,
+            "cost_usd": None,
+            "records": [
+                {
+                    "kind": record.kind,
+                    "identity": record.identity,
+                    "status": record.status,
+                    "started_at": record.started_at,
+                    "finished_at": record.finished_at,
+                    "counters": record.counters,
+                }
+                for record in self._records.values()
+            ],
+        }
+        try:
+            text = json.dumps(document, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+            _json_preflight(text)
+            return text
+        except (TypeError, ValueError, OverflowError, UnicodeError, RecursionError):
+            _invalid()
+
+    @classmethod
+    def from_json(cls, project_id: str, text: str) -> UsageLedger:
+        """Restore a new private ledger; validate and recompute every total.
+
+        Checkpoints are bounded to 32 MiB UTF-8 and depth eight. They convey
+        caller observations, without authentication, billing verification or I/O.
+        """
+        try:
+            _identifier(project_id)
+        except AgentSyncError:
+            _invalid()
+        try:
+            _json_preflight(text)
+            document = json.loads(
+                text,
+                object_pairs_hook=_json_members,
+                parse_float=_json_float,
+                parse_constant=_json_constant,
+            )
+            _fields(document, _CHECKPOINT_FIELDS)
+            if (
+                type(document["schema_version"]) is not int
+                or document["schema_version"] != 1
+                or document["provenance"] != "caller_reported_adapter_results"
+                or document["verification"] != "unverified"
+                or document["real_client_verified"] is not False
+                or document["billing_verified"] is not False
+                or document["cost_usd"] is not None
+                or type(document["records"]) is not list
+            ):
+                _invalid()
+            _identifier(document["project_id"])
+            if document["project_id"] != project_id:
+                raise AgentSyncError(
+                    "namespace_mismatch", "Usage result project does not match.", 403
+                )
+            ledger = cls(project_id, document["max_records"])
+            if len(document["records"]) > ledger._max_records:
+                _invalid()
+            for record in document["records"]:
+                if not ledger.record_result(_checkpoint_result(record)):
+                    _invalid()
+            return ledger
+        except AgentSyncError as exc:
+            if exc.code == "validation_error":
+                _invalid()
+            raise
+        except (TypeError, ValueError, OverflowError, UnicodeError, RecursionError):
+            _invalid()
 
     def _normalize(self, result: Any) -> _Record:
         if type(result) not in _KINDS:

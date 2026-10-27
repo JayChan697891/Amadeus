@@ -1,5 +1,35 @@
 # Release Acceptance Report
 
+## M8 explicit usage checkpoint recovery - 2026-10-27 America/Tijuana
+
+`UsageLedger.to_json()` and `UsageLedger.from_json(expected_project_id, text)`
+export/restore normalized caller observations without file/database/network I/O.
+Schema1 exact fields,32MiB UTF-8 bound, shallow preflight, duplicate-member/run
+rejection, strict types/counters/timestamps and namespace checks apply. Restoration
+uses existing admission validation into a private new ledger and recomputes sums
+and elapsed metrics; no saved summary is trusted. Raw output/client metadata are
+omitted, but caller-controlled identifiers remain in the checkpoint. Fixed
+unverified markers and unknown costs confer no authenticity or billing proof.
+
+Astra High approved the minimal consistency design and independently inspected
+final usage.py SHA256 `f3318eadbba16b235fe648ea966708ecd0c7a50f601d1f82046386810cc2cba2`,
+finding no blocking source issue. This was source-only review, not test execution
+or Release acceptance. Root inspected actual source/tests/JUnit and ran Windows
+Python3.14 usage/Cursor boundary/collector scope **19 passed**, Python3.11 usage
+**15 passed**, zero failures/errors/skips. Ruff/format and mypy52modules passed.
+Two fresh interpreters independently restored one caller-written private fixture
+file, preserved unknown-vs-zero, Mock separation, replay deduplication and full
+capacity. The API does not write that file or restore running Agents/tasks.
+
+Evidence: `D:/agentsync-debug/m8-usage-recovery-root-nas39osp/` (`result.json`,
+raw command logs/JUnit, `restart-smoke.json` and sanitized fixture). Sol raw
+evidence: `D:/agentsync-debug/usage-checkpoint-sol-20261027/`; one intermediate
+assertion identified mixed validation-error messages, which were normalized and
+retested. M8-01/M8-02 mappings remain partial. All42 formal statuses remain
+`not_run`; no new package/platform matrix, automatic crash-safe file storage or
+real-client relay is claimed. Prior package evidence stays bound to77426fa.
+This is Unreleased source at the existing development version. Release BLOCKED.
+
 ## M7 elapsed admission budget supplement - 2026-10-27 America/Tijuana
 
 `run_mock_workflow_demo(..., max_elapsed_seconds=None)` optionally accepts a strict

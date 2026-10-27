@@ -92,8 +92,14 @@ separate from protocol totals. Each metric distinguishes a complete value,
 known partial sum and unknown records, so missing usage is never reported as zero.
 Elapsed time describes the adapter lifecycle interval, not provider/API duration.
 These are caller-reported observations: costs remain unknown and billing/client
-verification remains false. The ledger is bounded and in memory, without recovery
-or transport/API-call accounting.
+verification remains false. `ledger.to_json()` exports a bounded normalized
+checkpoint; `UsageLedger.from_json(expected_project_id, text)` restores a new
+ledger, revalidates records and recomputes totals. Replay deduplication, capacity,
+unknown values and Mock separation survive restoration. Checkpoints include
+caller-supplied identifiers; they contain no raw output/client metadata. The
+32 MiB format grants no authenticity. Both methods perform no file, database or
+network I/O: callers control storage and crash-safe writes. They do not restore
+Agent processes or tasks and do not add transport/API-call accounting.
 
 ## Quality checks
 

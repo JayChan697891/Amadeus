@@ -1,11 +1,13 @@
 """Caller-constructed typed observations only; no client or process launches."""
 
 import gc
+import json
 import weakref
 from dataclasses import FrozenInstanceError, replace
 
 import pytest
 
+import agentsync.usage as usage_module
 from agentsync.adapters.base import AdapterResult, RunSnapshot
 from agentsync.adapters.claude import ClaudeResult, ClaudeRun
 from agentsync.adapters.claude_events import ClaudeUsage
@@ -274,3 +276,178 @@ def test_constructor_bounds_are_strict_and_empty_rate_has_no_denominator():
     summary = UsageLedger("project", 10000).summary()
     assert summary.failure_rate is None and summary.failure_rate_denominator == 0
     assert not summary.failure_rate_complete
+
+
+def test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata():
+    ledger = UsageLedger("project", max_records=6)
+    observations = [
+        replace(
+            codex(usage=CodexUsage(0, 4, 0, 5)),
+            run=replace(codex().run, request_id='caller-你{[\\"]}', finished_at=1.0),
+            agent_messages=("private-output",),
+            client_thread_id="private-client",
+        ),
+        replace(codex("missing"), run=replace(codex("missing").run, finished_at=None)),
+        ClaudeResult(
+            ClaudeRun("project", "s", "t", "r", "run", "failed", 1.0),
+            result_text="private-claude",
+            usage=ClaudeUsage(2, 3, None, 4),
+        ),
+        CursorResult(
+            CursorRun("project", "s", "t", "r", "run", "unknown", 1.0),
+            metadata=CursorReportedMetadata(1, 2, "private-metadata"),
+        ),
+        mock(),
+    ]
+    for observation in observations:
+        assert ledger.record_result(observation)
+    text = ledger.to_json()
+    assert "你" in text and all(
+        value not in text
+        for value in ("private-output", "private-client", "private-claude", "private-metadata")
+    )
+    document = json.loads(text)
+    assert [record["counters"] for record in document["records"]] == [
+        [0, 0, 4, 5],
+        [None, None],
+        [2, 3, None, 4],
+        [None, None],
+        [None, None],
+    ]
+    assert all("elapsed_ms" not in record for record in document["records"])
+    restored = UsageLedger.from_json("project", text)
+    assert restored.summary() == ledger.summary()
+    assert restored.to_json() == text
+    assert restored.summary().input_tokens == MetricTotal(None, 2, 2, 2)
+    assert restored.summary().simulated_records == 1
+    assert all(not restored.record_result(observation) for observation in observations)
+    assert restored.summary().billing_verified is restored.summary().real_client_verified is False
+
+
+def test_checkpoint_restore_preserves_replay_conflict_and_capacity():
+    ledger = UsageLedger("project", max_records=1)
+    observation = codex(usage=CodexUsage(1, 0, 2))
+    ledger.record_result(observation)
+    restored = UsageLedger.from_json("project", ledger.to_json())
+    assert not restored.record_result(replace(observation, agent_messages=("ignored",)))
+    with pytest.raises(AgentSyncError) as error:
+        restored.record_result(replace(observation, usage=CodexUsage(2, 0, 2)))
+    assert error.value.code == "idempotency_conflict"
+    with pytest.raises(AgentSyncError) as error:
+        restored.record_result(codex("new"))
+    assert error.value.code == "history_capacity_exceeded"
+    assert restored.summary() == ledger.summary()
+
+
+def test_checkpoint_rejects_malformed_namespaces_duplicates_and_overflow():
+    ledger = UsageLedger("project")
+    ledger.record_result(codex(usage=CodexUsage(1, 0, 2)))
+    text = ledger.to_json()
+    invalid = [
+        "",
+        "[]",
+        "null",
+        "{}",
+        text + " trailing",
+        text.replace('"schema_version":1', '"schema_version":1,"schema_version":1'),
+        text.replace('"kind":"codex"', '"kind":"codex","kind":"codex"'),
+        text.replace('"started_at":1.0', '"started_at":NaN'),
+        text.replace('"started_at":1.0', '"started_at":1e999'),
+        text.replace('"started_at":1.0', '"started_at":Infinity'),
+        "[" * 9 + "0" + "]" * 9,
+        "\ud800",
+    ]
+    for field, value in (
+        ("schema_version", True),
+        ("schema_version", 1.0),
+        ("schema_version", 2),
+        ("max_records", True),
+        ("max_records", 0),
+        ("max_records", 10001),
+        ("real_client_verified", 0),
+        ("billing_verified", 0),
+        ("cost_usd", 0),
+        ("verification", "verified"),
+        ("provenance", "measured"),
+        ("records", {}),
+        ("extra", "private"),
+    ):
+        document = json.loads(text)
+        document[field] = value
+        invalid.append(json.dumps(document))
+    for field, value in (
+        ("kind", "other"),
+        ("kind", []),
+        ("identity", ["project"]),
+        ("identity", ["project", "s", "t", "r", "\ud800"]),
+        ("status", "running"),
+        ("started_at", True),
+        ("finished_at", 0),
+        ("counters", [0, 0]),
+        ("counters", [1, 2, None, None]),
+        ("counters", [True, 2, 0, None]),
+        ("counters", [2**63, 2, 0, None]),
+        ("elapsed_ms", 0),
+    ):
+        document = json.loads(text)
+        document["records"][0][field] = value
+        invalid.append(json.dumps(document))
+    for kind in ("cursor", "mock"):
+        document = json.loads(text)
+        document["records"][0]["kind"] = kind
+        invalid.append(json.dumps(document))
+    document = json.loads(text)
+    del document["records"][0]["status"]
+    invalid.append(json.dumps(document))
+    document = json.loads(text)
+    document["records"] *= 2
+    invalid.append(json.dumps(document))
+    for malformed in invalid:
+        with pytest.raises(AgentSyncError) as error:
+            UsageLedger.from_json("project", malformed)
+        assert error.value.code == "validation_error"
+        assert error.value.message == "Invalid usage result or options."
+    for foreign_record in (False, True):
+        document = json.loads(text)
+        if foreign_record:
+            document["records"][0]["identity"][0] = "foreign"
+        else:
+            document["project_id"] = "foreign"
+        with pytest.raises(AgentSyncError) as error:
+            UsageLedger.from_json("project", json.dumps(document))
+        assert error.value.code == "namespace_mismatch"
+    overflowing = UsageLedger("project")
+    overflowing.record_result(codex(usage=CodexUsage(2**63 - 1, 0, 0)))
+    document = json.loads(overflowing.to_json())
+    document["records"].append(json.loads(text)["records"][0])
+    document["records"][1]["identity"][-1] = "overflow"
+    with pytest.raises(AgentSyncError) as error:
+        UsageLedger.from_json("project", json.dumps(document))
+    assert error.value.code == "usage_overflow"
+    assert ledger.summary().total_records == 1
+
+
+def test_checkpoint_preflight_project_size_utf8_and_depth_before_parse(monkeypatch):
+    ledger = UsageLedger("你")
+    text = ledger.to_json()
+    assert usage_module._JSON_LIMIT == 32 * 1024 * 1024
+    with monkeypatch.context() as patch:
+        patch.setattr(usage_module, "_JSON_LIMIT", len(text.encode("utf-8")))
+        assert UsageLedger.from_json("你", text).to_json() == text
+        patch.setattr(usage_module, "_JSON_LIMIT", len(text))
+        with pytest.raises(AgentSyncError):
+            ledger.to_json()
+
+        def no_parse(*args, **kwargs):
+            pytest.fail("Invalid preflight reached JSON parsing")
+
+        patch.setattr(usage_module.json, "loads", no_parse)
+        for project, invalid in (
+            ("", text),
+            ("\ud800", text),
+            ("你", text),
+            ("你", "x" * (len(text) + 1)),
+            ("你", "[" * 9 + "]" * 9),
+        ):
+            with pytest.raises(AgentSyncError):
+                UsageLedger.from_json(project, invalid)
