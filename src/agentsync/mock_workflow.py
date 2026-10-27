@@ -9,10 +9,12 @@ is no restart recovery, external execution, lease renewal or production authorit
 
 from __future__ import annotations
 
+import math
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from time import monotonic
 from typing import Any
 
 from agentsync.adapters import AdapterTask
@@ -37,7 +39,11 @@ class _Owned:
 
 
 async def run_mock_workflow_demo(
-    scratch_parent: Path, *, max_attempts_per_task: int = 2, attempt_budget: int = 6
+    scratch_parent: Path,
+    *,
+    max_attempts_per_task: int = 2,
+    attempt_budget: int = 6,
+    max_elapsed_seconds: float | None = None,
 ) -> dict[str, Any]:
     """Run a bounded fixed simulation in a disposable owned child, then remove it.
 
@@ -46,6 +52,9 @@ async def run_mock_workflow_demo(
     filesystem I/O. Existing parent databases are never opened. Only logical
     fixture labels and simulation observations are returned, without credentials.
     Core errors propagate; owned active Mock runs are cancelled on unexpected exit.
+    Optional elapsed budget is a finite number in (0, 60], including owned Core
+    setup. It stops admission and cancels active simulations after expiry is
+    observed; it cannot preempt a synchronous operation or an awaited Mock call.
     """
     if (
         not isinstance(scratch_parent, Path)
@@ -54,6 +63,14 @@ async def run_mock_workflow_demo(
         or not 1 <= max_attempts_per_task <= 3
         or type(attempt_budget) is not int
         or not 1 <= attempt_budget <= 16
+        or (
+            max_elapsed_seconds is not None
+            and (
+                type(max_elapsed_seconds) not in (int, float)
+                or not 0 < max_elapsed_seconds <= 60
+                or not math.isfinite(max_elapsed_seconds)
+            )
+        )
     ):
         raise ValueError("Invalid mock workflow scratch parent or bounds.")
     try:
@@ -62,11 +79,14 @@ async def run_mock_workflow_demo(
         raise ValueError("Mock workflow scratch parent must be an existing directory.") from None
     if not scratch_parent.is_dir():
         raise ValueError("Mock workflow scratch parent must be an existing directory.")
+    deadline = None if max_elapsed_seconds is None else monotonic() + max_elapsed_seconds
     with TemporaryDirectory(prefix="agentsync-mock-workflow-", dir=scratch_parent) as child:
-        return await _run(Path(child), max_attempts_per_task, attempt_budget)
+        return await _run(Path(child), max_attempts_per_task, attempt_budget, deadline)
 
 
-async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any]:
+async def _run(
+    directory: Path, max_attempts: int, budget: int, deadline: float | None
+) -> dict[str, Any]:
     root = directory / "project"
     root.mkdir()
     core = Core(directory / "state")
@@ -131,6 +151,19 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
     peak = 0
     stop_reason = None
 
+    def expired() -> bool:
+        nonlocal stop_reason
+        if deadline is not None and monotonic() >= deadline:
+            stop_reason = "time_budget_exhausted"
+            return True
+        return False
+
+    async def cancel_active() -> None:
+        for run_id in list(active):
+            if (await manager.get_status(run_id)).run.status == "running":
+                await manager.cancel_task(run_id)
+            del active[run_id]
+
     def transition(label: str, status: str) -> dict[str, Any]:
         entry = owned[label]
         entry.row = call(
@@ -147,6 +180,8 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
 
     try:
         while stop_reason is None:
+            if expired():
+                break
             remaining = budget - sum(attempts.values())
             state = call(0, "get_project_state")
             if all(row["status"] == "completed" for row in state["tasks"]):
@@ -178,6 +213,8 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
                 raise RuntimeError("Owned mock workflow unexpectedly has no eligible work.")
             # All starts in this bounded batch precede every simulated finish.
             for label, worker, version in batch:
+                if expired():
+                    break
                 if sum(attempts.values()) >= budget or attempts[label] >= max_attempts:
                     raise RuntimeError("Mock workflow attempt reservation was violated.")
                 if version is not None:
@@ -190,6 +227,8 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
                     )
                     owned[label] = _Owned(worker, claimed, claimed["lease_token"])
                     transition(label, "running")
+                if expired():
+                    break
                 attempts[label] += 1
                 started = await manager.start_task(
                     actors[worker]["agent_id"],
@@ -211,7 +250,13 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
                         "active_simulations": len(active),
                     }
                 )
+                if expired():
+                    break
+            if stop_reason == "time_budget_exhausted":
+                break
             for run_id, (label, worker) in list(active.items()):
+                if expired():
+                    break
                 failed = label == "root-build" and attempts[label] == 1
                 ended = await manager.finish_mock_run(run_id, output=_MARKER, failed=failed)
                 result = await manager.get_result(run_id)
@@ -228,6 +273,8 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
                         "active_simulations": len(active),
                     }
                 )
+                if expired():
+                    break
                 if failed:
                     if attempts[label] >= max_attempts:
                         stop_reason = "per_task_attempts_exhausted"
@@ -257,6 +304,8 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
                 )
                 trace.append({"event": "peer_reviewed", **reviews[-1]})
                 del owned[label]
+        # Cancellation must finish before constructing the public zero-active summary.
+        await cancel_active()
         # Exhaustion releases every remaining owned Core lease, never descendants.
         for label in owned:
             transition(label, "failed")
@@ -292,6 +341,4 @@ async def _run(directory: Path, max_attempts: int, budget: int) -> dict[str, Any
             },
         }
     finally:
-        for run_id in active:
-            if (await manager.get_status(run_id)).run.status == "running":
-                await manager.cancel_task(run_id)
+        await cancel_active()

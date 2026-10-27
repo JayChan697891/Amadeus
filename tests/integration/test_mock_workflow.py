@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+import agentsync.mock_workflow as workflow
 from agentsync.cli import main
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -174,6 +175,115 @@ async def test_invalid_options_precede_io_and_unexpected_core_error_cancels_owne
     assert len(observed) == 1
     assert (await observed[0][0].get_status(observed[0][1])).run.status == "cancelled"
     assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.asyncio
+async def test_elapsed_budget_includes_core_setup_without_claims_or_starts(tmp_path, monkeypatch):
+    clock = [100.0]
+    execute = Core.execute
+
+    def setup_expiry(self, operation, payload):
+        assert operation != "claim_task", "Expired setup admitted a Core claim"
+        response = execute(self, operation, payload)
+        if operation == "create_task" and payload["title"] == "final":
+            clock[0] = 101.0
+        return response
+
+    async def no_start(*args, **kwargs):
+        pytest.fail("Expired setup admitted a Mock start")
+
+    monkeypatch.setattr(workflow, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(Core, "execute", setup_expiry)
+    monkeypatch.setattr(MockRunManager, "start_task", no_start)
+    data = (await run_mock_workflow_demo(tmp_path, max_elapsed_seconds=1))["data"]
+    assert data["stop_reason"] == "time_budget_exhausted"
+    assert data["outcome"] == "simulated_stopped"
+    assert set(data["task_statuses"].values()) == {"pending"}
+    assert data["attempts_used"] == data["active_simulations"] == 0
+    assert data["peer_reviews"] == data["trace"] == []
+    assert data["persistence_verified"] and not list(tmp_path.iterdir())
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("boundary", ["claim", "start", "retry"])
+async def test_elapsed_budget_cancels_batch_and_blocks_later_admission(
+    tmp_path, monkeypatch, boundary
+):
+    clock = [100.0]
+    observed = []
+    claims = []
+    execute = Core.execute
+    start = MockRunManager.start_task
+
+    def advance(self, operation, payload):
+        response = execute(self, operation, payload)
+        if operation == "claim_task":
+            claims.append(response["title"])
+        if (
+            boundary == "claim"
+            and operation == "update_task"
+            and payload["status"] == "running"
+            and response["title"] == "root-test"
+        ) or (
+            boundary == "retry"
+            and operation == "get_project_state"
+            and any(row["status"] == "completed" for row in response["tasks"])
+        ):
+            clock[0] = 101.0
+        return response
+
+    async def track(self, *args, **kwargs):
+        result = await start(self, *args, **kwargs)
+        observed.append((self, result.run.run_id))
+        if boundary == "start":
+            clock[0] = 101.0
+        return result
+
+    monkeypatch.setattr(workflow, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(Core, "execute", advance)
+    monkeypatch.setattr(MockRunManager, "start_task", track)
+    data = (await run_mock_workflow_demo(tmp_path, max_elapsed_seconds=1.0))["data"]
+    assert data["stop_reason"] == "time_budget_exhausted"
+    assert data["outcome"] == "simulated_stopped" and data["active_simulations"] == 0
+    assert data["task_statuses"] == {
+        "root-build": "failed",
+        "root-test": {"claim": "failed", "start": "pending", "retry": "completed"}[boundary],
+        "join": "pending",
+        "final": "pending",
+    }
+    expected = 2 if boundary == "retry" else 1
+    assert data["attempts_used"] == len(observed) == expected
+    assert claims == (["root-build"] if boundary == "start" else ["root-build", "root-test"])
+    statuses = [(await manager.get_status(run_id)).run.status for manager, run_id in observed]
+    assert statuses == (["failed", "succeeded"] if boundary == "retry" else ["cancelled"])
+    assert [review["task"] for review in data["peer_reviews"]] == (
+        ["root-test"] if boundary == "retry" else []
+    )
+    assert data["persistence_verified"] and not list(tmp_path.iterdir())
+
+
+@pytest.mark.asyncio
+async def test_elapsed_budget_strict_validation_precedes_filesystem_io(tmp_path, monkeypatch):
+    def no_io(*args, **kwargs):
+        pytest.fail("I/O before elapsed-budget validation")
+
+    monkeypatch.setattr(Path, "resolve", no_io)
+    monkeypatch.setattr(Path, "is_dir", no_io)
+    for value in (
+        True,
+        False,
+        0,
+        -1,
+        60.01,
+        float("inf"),
+        float("-inf"),
+        float("nan"),
+        "1",
+        object(),
+        10**1000,
+    ):
+        with pytest.raises(ValueError):
+            await run_mock_workflow_demo(tmp_path, max_elapsed_seconds=value)
 
 
 def test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved(tmp_path, capsys):

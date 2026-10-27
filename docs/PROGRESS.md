@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M7 Mock workflow now accepts optional finite elapsed admission budget (0,60]s,
+including owned setup. Expiry stops claims/starts, cancels active simulations,
+fails owned Core tasks and leaves descendants pending. Default output preserved.
+Root Windows3.14 affected52pass; Windows3.11 workflow14pass; updated collector
+policy1pass; real monotonic setup-expiry smoke passed. Ruff/format/mypy52 pass.
+This is no hard watchdog; source component only, new packages NOT RUN. Evidence:
+D:m7-time-budget-root-ewvjv1i0. All42 formal not_run; release BLOCKED.
+
 M8 actual crash/lease recovery component added: abrupt process exit73, real lease
 expiry, one-time reclamation, stale owner/replay rejection, successor review and
 dependency continuation survive another fresh process. Root independent Windows

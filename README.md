@@ -74,8 +74,12 @@ already exist. Each invocation creates and removes its own private child databas
 existing parent projects are never selected. The original `demo` behavior is unchanged.
 
 The Python API `agentsync.mock_workflow.run_mock_workflow_demo` also accepts bounded
-`max_attempts_per_task` (1..3) and `attempt_budget` (1..16). Budget exhaustion stops
-the fixture and leaves dependent work pending. Reports explicitly mark all results
+`max_attempts_per_task` (1..3), `attempt_budget` (1..16), and optional
+`max_elapsed_seconds` (greater than zero, at most 60). The elapsed admission budget
+includes private setup. Once expiry is observed, new claims/starts stop, active
+Mock runs are cancelled and owned tasks fail; unstarted dependents stay pending.
+It cannot preempt synchronous operations or hanging awaited calls. Omit it to
+preserve the original behavior. Reports explicitly mark all results
 as simulation-only/unverified. This does not enable real clients, production
 automatic review, durable recovery, AI decomposition or paid services.
 

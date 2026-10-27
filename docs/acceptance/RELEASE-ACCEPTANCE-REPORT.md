@@ -1,5 +1,35 @@
 # Release Acceptance Report
 
+## M7 elapsed admission budget supplement - 2026-10-27 America/Tijuana
+
+`run_mock_workflow_demo(..., max_elapsed_seconds=None)` optionally accepts a strict
+finite positive number up to60 seconds, validated before filesystem access. The
+private monotonic deadline includes setup, gates fresh/retry claims and starts,
+and checks returned results. Once expiry is detected, active Mock runs are
+cancelled before the zero-active summary; remaining owned Core tasks fail and
+unstarted dependents remain pending. No budget argument preserves previous output.
+This controls admission, not preemption: a synchronous call or hanging await can
+outlast the deadline, and cleanup completes afterward. No real-client authority,
+provider call, billing, durable retry or independent acceptance is introduced.
+
+Root read actual source/tests and raw evidence. Windows Python3.14 affected suite
+**52 passed**; Python3.11 workflow **14 passed**, all zero failures/errors/skips.
+After adding three elapsed selectors to M7-04, the updated collector gate regression
+passed separately **1/1** and keeps all42 formal requirements `not_run`. Ruff/format
+and mypy52modules passed. Deterministic deadline fixtures cover setup, claim, start,
+retry and pre-I/O validation; they do not measure real performance. A separate
+actual monotonic-clock smoke with a1microsecond admission budget stopped before
+any claim/start, returned four pending tasks and removed its private child. Its
+whole call took0.0497s, demonstrating why this is not a hard timeout.
+
+Evidence: `D:/agentsync-debug/m7-time-budget-root-ewvjv1i0/` (`result.json`, raw
+logs/JUnit and `final-supplement.json`). Initial attempt to edit the manifest
+asserted before writing due to an indentation mismatch; corrected association
+was then policy-tested. Runtime hashes from the52/14 suites remain unchanged.
+This source component has no new package/platform/real-client run. The preceding
+a13 package evidence belongs only to77426fa. Hard watchdogs, token/cost budgets,
+AI decomposition, persistent retries and real relay remain unverified. Release BLOCKED.
+
 ## M8 Core crash and expired-lease recovery supplement - 2026-10-27 America/Tijuana
 
 One new isolated three-process regression uses actual abrupt exit73 and the persisted
