@@ -1745,3 +1745,28 @@ def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
     assert gate["local_checks_passed"] is True
     assert gate["formal_acceptance"] is False and gate["status"] == "blocked"
     assert {"real_other_adapters", "autonomous_relay"} <= set(gate["blockers"])
+
+
+def test_mock_workflow_components_never_establish_formal_or_real_relay_acceptance(tmp_path):
+    """Synthetic XML checks collector policy, not actual simulation execution."""
+    manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    requirement = next(row for row in manifest["requirements"] if row["id"] == "M7-04")
+    assert requirement["coverage"] == "partial" and len(requirement["existing_tests"]) == 3
+    (tmp_path / "junit.xml").write_text(
+        '<testsuites><testsuite><testcase classname="tests.integration.test_mock_workflow" '
+        'name="test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews"/>'
+        "</testsuite></testsuites>",
+        encoding="utf-8",
+    )
+    rows = runner.requirement_results(manifest, tmp_path)
+    assert len(rows) == 42 and all(row["execution_status"] == "not_run" for row in rows)
+    row = next(item for item in rows if item["id"] == "M7-04")
+    assert row["acceptance_evidence_status"] == "not_run"
+    counts = [
+        component["observations"][0]["counts"]["passed"] for component in row["component_evidence"]
+    ]
+    assert counts == [1, 0, 0]
+    gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
+    assert gate["status"] == "blocked" and gate["formal_acceptance"] is False
+    assert "autonomous_relay" in gate["blockers"]

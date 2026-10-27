@@ -1,5 +1,12 @@
 # Current: M5 frozen; M6 conditional development
 
+Isolated Mock workflow demo implemented: fresh disposable child Core, four-task
+diamond, overlapping Mock starts, bounded retry/attempt budget and distinct peer
+simulated reviews. Independent targeted suite164pass/0skip; lint/format/types pass.
+Astra's source-only component review found no blocker; real release stays BLOCKED.
+Broader Windows attempt was supervisor-interrupted to avoid unrelated repeated
+database checks; NOT COMPLETED, no full-suite pass count. Raw evidence retained.
+
 M7 optional capability-aware task/dispatch advice implemented: explicit complete
 task requirements match self-reported worker declarations before truncation;
 dependency validation, priorities and load limits preserved. Independent affected

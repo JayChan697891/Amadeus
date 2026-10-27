@@ -1,5 +1,35 @@
 # Release Acceptance Report
 
+## Isolated automatic Mock workflow — 2026-10-26 America/Tijuana
+
+`demo --workflow` composes the existing planner, Core and MockRunManager in a fresh
+temporary child of an explicit scratch parent. Two fixed workers execute a diamond
+of four fixture tasks with one failed attempt/retry, overlapping Mock records,
+authenticated claims/updates, distinct peer simulated reviews and persistence
+checking. Per-task/global attempt bounds stop further starts and leave descendants
+pending. Existing projects, adapters, credentials and arbitrary tasks cannot be
+supplied. The private child is removed, including on unexpected errors. Output is
+explicitly simulation-only/unverified; actual-client/formal acceptance is false.
+
+Astra High performed a source-only architecture/component review with no blocking
+finding, then Sol completed implementation. Root inspected code and independently
+ran **164 passed /0 skipped /0 failed/error** across workflow integration, existing
+demo, owner CLI input and release-collector tests. Ruff/format, mypy51modules and
+diff passed. Evidence: `D:/agentsync-debug/m7-workflow-focused-ow0tpz7w/`.
+
+The broader Windows attempt in `D:/agentsync-debug/m7-workflow-review-qqo1n24z/`
+was deliberately **INTERRUPTED/NOT COMPLETED** after scope review found that its
+unrelated database inventory was excessive. Only the identified owned pytest
+process was stopped after checking no direct children; raw partial stdout,
+nonzero exit and supervisor record remain. No JUnit was produced and no passed
+case count is inferred from progress dots. This is not a complete Windows result.
+
+M7-04 has partial retry/attempt-budget simulation coverage only. AI decomposition,
+provider backoff, time/token/cost budgets, durable recovery, real handoff and
+autonomous real-client relay remain unimplemented/unverified. All42 formal
+requirements remain `not_run`; M5 blockers and earlier Linux failures persist.
+Formal release remains **BLOCKED**.
+
 ## Capability-aware planning component — 2026-10-26 America/Tijuana
 
 Existing read-only task/dispatch planners now optionally match explicit complete

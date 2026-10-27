@@ -53,7 +53,7 @@ Every MCP process must use the same absolute data directory. Defaults are indepe
 Never put the live WAL database on a network share. Keep project admin/session tokens private.
 Stdio MCP hosts have local process access; Alpha is not a hostile-agent sandbox.
 
-## Quality checks
+## Read-only scheduling
 
 Read-only scheduling helpers `agentsync.scheduling.plan_tasks` and
 `agentsync.dispatch_planning.plan_dispatches` accept optional
@@ -64,6 +64,22 @@ self-reported capabilities, preserving dependencies, priority and load limits.
 Tokens are case-sensitive. Omitting the mapping preserves the previous behavior.
 The returned `capability_filter` identifies the mode, while capability verification
 and Core authorization remain unverified. Recommendations never claim or run work.
+
+## Isolated simulated workflow
+
+`python -m agentsync demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
+four-task diamond with two Mock workers, capability/dependency planning, one failed
+attempt followed by retry, and peer simulated reviews. The scratch parent must
+already exist. Each invocation creates and removes its own private child database;
+existing parent projects are never selected. The original `demo` behavior is unchanged.
+
+The Python API `agentsync.mock_workflow.run_mock_workflow_demo` also accepts bounded
+`max_attempts_per_task` (1..3) and `attempt_budget` (1..16). Budget exhaustion stops
+the fixture and leaves dependent work pending. Reports explicitly mark all results
+as simulation-only/unverified. This does not enable real clients, production
+automatic review, durable recovery, AI decomposition or paid services.
+
+## Quality checks
 
 ```powershell
 & .\.venv\Scripts\python.exe -m ruff check .

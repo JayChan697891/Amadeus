@@ -1,6 +1,7 @@
 """AgentSync local command line entrypoints."""
 
 import argparse
+import asyncio
 import json
 import os
 import sys
@@ -143,6 +144,11 @@ def main(argv: list[str] | None = None) -> int:
         "demo", help="Run two mock agents against an explicit local database"
     )
     demo.add_argument("--data-dir", dest="demo_data_dir")
+    demo.add_argument(
+        "--workflow",
+        action="store_true",
+        help="Run a disposable fixed Mock workflow in the existing scratch parent",
+    )
     args = parser.parse_args(argv)
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
@@ -174,7 +180,13 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "demo":
         if not data_dir:
             parser.error("demo requires --data-dir PATH to avoid modifying default user state")
-        print(json.dumps(run_demo(data_dir), ensure_ascii=False))
+        if args.workflow:
+            from agentsync.mock_workflow import run_mock_workflow_demo
+
+            result = asyncio.run(run_mock_workflow_demo(Path(data_dir)))
+        else:
+            result = run_demo(data_dir)
+        print(json.dumps(result, ensure_ascii=False))
     elif args.command == "mcp":
         from agentsync.integrations.mcp import build_server
 
