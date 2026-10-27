@@ -1,5 +1,11 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Astra final scoped evidence review found no blocking measurement issue. Separate
+32worker audit-count probe matched8success/248denied events; p95~2285.607ms still
+FAILED1000ms. This does not prove generalized audit durability. No product/audit
+code change. D:alpha14-audit-count-bg164krq. Linux QEMU currently not running;
+no new Linux job started, old failures remain open. Release stays BLOCKED.
+
 Development0.3.0a14 product2982539 frozen. Fresh offline Windows Python3.14 and
 Python3.11 wheel/sdist each370pass/0skip/fail/error; root matched all370-case sets,
 54 actual imported modules per environment and309 Git package inputs. Dependency

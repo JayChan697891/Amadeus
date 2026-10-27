@@ -1,5 +1,29 @@
 # Release Acceptance Report
 
+## Independent checkpoint and audit-count supplement - 2026-10-27 America/Tijuana
+
+Astra High independently inspected the benchmark source, actual workload reports,
+Core transaction paths and all four370-case JUnit files. No blocking measurement
+finding: nearest-rank percentiles and attempt-throughput scope are consistent;
+the32worker1000ms budget failure remains false/FAIL in both raw and summary data.
+This review is not Release or Work human acceptance.
+
+The original benchmark does not count denial audit rows. Source shows denial
+logging uses another transaction with1000ms busy timeout and suppresses SQLite
+errors; the performance impact and potential retention loss were not established
+by that benchmark. A separate owned32worker×8round run added only a final read-only
+audit query, after timed claims and before private-child cleanup. Observed8
+success/ok and248denied/version_conflict events exactly match expected counts.
+This run p95 was2285.607ms and still FAILED the unchanged1000ms budget. One complete
+run does not guarantee audit retention under other contention/failure conditions.
+No product code or audit semantics were changed and the earlier timing failure
+was not replaced. Evidence: `D:/agentsync-debug/alpha14-audit-count-bg164krq/`.
+
+Lock waiting, claim transaction cost and denial-audit cost remain unprofiled
+hypotheses for future diagnostic work. Current Linux validation was not started;
+a read-only process inventory found no running configured QEMU process. Earlier
+Linux failures remain open. All42formalnot_run and Release BLOCKED remain unchanged.
+
 ## Development alpha14 package checkpoint - 2026-10-27 America/Tijuana
 
 Frozen product `2982539e9b304f6e8da8fbcd57a040ec9ab158c3`, development0.3.0a14,

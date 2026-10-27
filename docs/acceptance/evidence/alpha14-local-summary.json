@@ -106,5 +106,19 @@
     "not full-repository test suite",
     "source-only Astra component review is not Release acceptance",
     "initial failed Sol benchmark raw JUnit was overwritten and NOT RETAINED"
-  ]
+  ],
+  "additional_audit_probe": {
+    "scope": "separate32worker8round run; final read-only audit count",
+    "expected_success": 8,
+    "observed_success": 8,
+    "expected_denied_version_conflict": 248,
+    "observed_denied_version_conflict": 248,
+    "counts_match": true,
+    "p95_ms": 2285.6068999972194,
+    "latency_budget_status": "FAIL",
+    "evidence": "D:\\agentsync-debug\\alpha14-audit-count-bg164krq\\audit-retention.json",
+    "evidence_sha256": "6138fdcc6de945c18ed2ea3463e45a15752b555b6d5eff63ce65a27fa0146289",
+    "generalized_audit_retention": "UNVERIFIED; one run does not rule out suppressed SQLite logging failures"
+  },
+  "independent_Astra_checkpoint_audit": "No blocking scoped correctness/measurement issue; source and four JUnit files inspected; not Work/Release acceptance"
 }
