@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M6 Claude pinned restricted CLI preparation implemented without launching. Explicit
+model/version/binary hash, fixedargv/stdin, filteredenv and bounded file checks;
+all auth/billing/tool/sandbox/actualclient markers false. Root scoped Windows3.14
+190pass, Python3.11 plan6pass; Ruff/format/mypy54 pass. Astra final source review
+no blocker. Separate nativeCLI help/version-only2.1.295 and installed hash-only
+preparation observed; completeflags/auth/realturn NOT RUN.
+Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
+
 M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
 11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
 workloads measured456 claim attempts: all functional checks passed, no unexpected

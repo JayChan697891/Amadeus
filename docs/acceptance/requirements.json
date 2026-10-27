@@ -1104,7 +1104,10 @@
         "tests/unit/test_claude_adapter.py::test_default_adapter_contract_is_unverified_and_start_unsupported",
         "tests/unit/test_claude_adapter.py::test_reused_capture_is_rejected_without_stopping_first_run_parent",
         "tests/unit/test_claude_adapter.py::test_factory_deadline_freezes_unknown_then_cleans_only_fresh_late_parent",
-        "tests/integration/test_claude_adapter_core_boundary.py::test_claude_protocol_success_preserves_actual_core_and_reopened_state"
+        "tests/integration/test_claude_adapter_core_boundary.py::test_claude_protocol_success_preserves_actual_core_and_reopened_state",
+        "tests/unit/test_claude_invocation.py::test_fixed_argv_stdin_environment_privacy_and_unverified_markers",
+        "tests/unit/test_claude_invocation.py::test_profile_namespace_version_and_environment_validation_precede_io",
+        "tests/unit/test_claude_invocation.py::test_binary_changes_during_bounded_hash_and_size_limit_fail_closed"
       ],
       "planned_cases": [
         {

@@ -7,6 +7,7 @@
 - Add pure bounded retry advice with confirmed outcomes and Retry-After floors.
 - Add strictly bounded JSON checkpoints for normalized caller-reported usage.
 - Add isolated local claim-contention diagnostics with explicit latency budgets.
+- Add non-executing pinned Claude CLI preparation with fixed restrictions.
 
 These source components do not change schema/dependencies or establish a new
 packaged release, real-client execution, automatic durable recovery or acceptance.

@@ -469,7 +469,7 @@ def test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay(
     by_id = {row["id"]: row for row in rows}
     row = by_id["M6-04"]
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 8
+    assert len(row["component_evidence"]) == 11
     total = 0
     for component in row["component_evidence"]:
         expected = (
@@ -478,6 +478,7 @@ def test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay(
             or component["selector"].startswith(
                 (
                     "tests/unit/test_claude_adapter.py::",
+                    "tests/unit/test_claude_invocation.py::",
                     "tests/integration/test_claude_adapter_core_boundary.py::",
                 )
             )
@@ -553,7 +554,7 @@ def test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified(
     by_id = {row["id"]: row for row in runner.requirement_results(manifest, tmp_path)}
     row = by_id["M6-04"]
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 8
+    assert len(row["component_evidence"]) == 11
     observations = 0
     for component in row["component_evidence"]:
         selector = component["selector"]
@@ -561,7 +562,11 @@ def test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified(
             0
             if not include_matches
             or selector.startswith(
-                ("tests/unit/test_claude_events.py::", "tests/unit/test_inspect_claude_events.py::")
+                (
+                    "tests/unit/test_claude_events.py::",
+                    "tests/unit/test_inspect_claude_events.py::",
+                    "tests/unit/test_claude_invocation.py::",
+                )
             )
             else 2
             if selector.startswith("tests/integration/test_claude_adapter_core_boundary.py::")
@@ -670,7 +675,7 @@ def test_synthetic_codex_factory_and_core_records_do_not_verify_real_client(tmp_
     for requirement_id in ("M6-04", "M6-05"):
         item = by_id[requirement_id]
         if requirement_id == "M6-04":
-            assert item["coverage"] == "partial" and len(item["component_evidence"]) == 8
+            assert item["coverage"] == "partial" and len(item["component_evidence"]) == 11
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in item["component_evidence"]
@@ -743,7 +748,7 @@ def test_protocol_only_codex_junit_cannot_promote_real_start_or_relay(tmp_path, 
     for requirement_id in ("M6-04", "M6-05"):
         item = by_id[requirement_id]
         if requirement_id == "M6-04":
-            assert item["coverage"] == "partial" and len(item["component_evidence"]) == 8
+            assert item["coverage"] == "partial" and len(item["component_evidence"]) == 11
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in item["component_evidence"]
@@ -807,7 +812,7 @@ def test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptanc
         row = by_id[requirement_id]
         assert row["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:
-            assert len(row["component_evidence"]) == 8
+            assert len(row["component_evidence"]) == (11 if requirement_id == "M6-04" else 8)
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in row["component_evidence"]
@@ -925,7 +930,9 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
     for requirement_id in ("M6-03", "M6-04", "M6-05"):
         assert by_id[requirement_id]["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:
-            assert len(by_id[requirement_id]["component_evidence"]) == 8
+            assert len(by_id[requirement_id]["component_evidence"]) == (
+                11 if requirement_id == "M6-04" else 8
+            )
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in by_id[requirement_id]["component_evidence"]

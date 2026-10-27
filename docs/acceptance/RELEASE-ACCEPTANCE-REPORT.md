@@ -1,5 +1,36 @@
 # Release Acceptance Report
 
+## M6 Claude bounded invocation preparation - 2026-10-27 America/Tijuana
+
+New explicit-profile preparation checks namespace/version/environment before bounded
+file reads, pins executable SHA256 and checks file/root identities, then returns
+fixed restricted/tool-deny/empty-MCP/ordinary-hook-disabling argv, cwd and stdin.
+No subprocess, account discovery or execution path is added; default ClaudeAdapter
+factory remains unsupported. Managed hooks/policy and configuration credentials
+remain outside this preparation boundary. Version/model are host assertions and
+all execution/auth/billing/client/sandbox/tool restriction flags remain false.
+No --bare, weaker fallback or instruction-to-command conversion is present.
+
+Astra High independently inspected final module SHA256
+`dba25746da96924f2b094059d2553d79065e7abaec3959250b79f8cdd0122cef` with no blocking
+source finding; this is not runtime/Release acceptance. Root independently ran
+Windows Python3.14 Claude/Codex plan/Claude adapter/collector scope190pass, and
+Python3.11 plan6pass; zero failures/errors/skips. Ruff/format/mypy54modules passed.
+Evidence: `D:/agentsync-debug/m6-claude-plan-root-zwkx1ith/`.
+
+Separate help/version-only native CLI observations in an empty D-drive home/config
+reported2.1.295, no created config files and no model prompt. Most prepared flags
+appear in help; --max-turns does not, despite current official documentation.
+The full combination is NOT RUN, not verified. Binary SHA256
+`a30012741c3d0b55e2a6c252dab3781134b75be95896ae89d40a93e10f83bcd6`; an independent
+prepare-only check hashed this installed binary and left the fixture unchanged,
+without launching it. Help evidence: `D:/agentsync-debug/claude-help-only-pqo5glrq/`;
+preparation receipt: `installed-binary-preparation.json` in the root evidence folder.
+
+Sources/limits are linked in M6-ADAPTERS.md. Real CLI turn, flag-combination effects,
+permissions, authentication/billing, cancellation and relay remain NOT RUN. M6-04
+partial with11 selectors; all42formalnot_run; release BLOCKED.
+
 ## M8 declared local contention diagnostic - 2026-10-27 America/Tijuana
 
 A local-only tool creates its own temporary project/database, explicitly grants

@@ -191,3 +191,31 @@ The supported schema is based on the official
 [Cursor output format](https://cursor.com/docs/cli/reference/output-format).
 Only synthetic known-Python fixtures have been exercised. Actual Cursor, CLI/OS
 compatibility, permissions, server cancellation and autonomous relay are NOT RUN.
+
+## Claude restricted invocation preparation
+
+`agentsync.adapters.claude_invocation.ClaudeHostProfile` requires explicit native
+executable/root paths, binary SHA256, model and project/session scope.
+`prepare_invocation(profile, task, environment=...)` performs bounded file/hash
+inspection and returns fixed argv, cwd, stdin and filtered environment data.
+It never launches a process. Only CLI version assertion2.1.295 is currently planned.
+Task text stays on stdin; no caller extra flags, resume or weaker fallback exists.
+The prepared restricted/tool-deny/empty-MCP/settings flags include ordinary-hook
+disabling. Managed hooks cannot be disabled this way; managed MCP policy may reject
+strict configuration. No sandbox, subscription-only billing or authentication is
+established. Home/config paths may still supply credentials/providers. All execution,
+version/auth/billing/client/sandbox/tool-restriction verification markers stay false.
+
+Primary references: [CLI](https://code.claude.com/docs/en/cli-reference),
+[hooks](https://code.claude.com/docs/en/hooks#disable-or-remove-hooks),
+[managed MCP](https://code.claude.com/docs/en/managed-mcp).
+`--bare` is deliberately absent because the official
+[headless guide](https://code.claude.com/docs/en/headless#start-faster-with-bare-mode)
+states that it does not use subscription OAuth credentials.
+
+An isolated empty-home help/version-only observation found installed2.1.295 and
+listed most prepared flags; `--max-turns` was absent from help despite appearing
+in current documentation. Complete flag-combination compatibility is NOT RUN.
+A separate installed-binary hash/preparation check launched nothing and retained
+all false markers. New real execution needs fresh cost authorization and M5 gates.
+Default ClaudeAdapter startup remains unsupported. Earlier one-call grants are spent.
