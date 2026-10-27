@@ -1,5 +1,12 @@
 # Current: M5 frozen; M6 conditional development
 
+M6 heterogeneous RunManager implemented: scoped routing for trusted registered
+adapters, cancellation-safe request deduplication, bounded history and nonblocking
+dispatch inspection. Independent Windows affected regression: 137pass/0skip;
+Ruff/format/mypy pass. Core remains unchanged by protocol fixture success.
+See M6-ADAPTERS.md and acceptance/RELEASE-ACCEPTANCE-REPORT.md. Cursor and actual
+clients/relay remain NOT RUN; M5 blockers and earlier Linux failures remain open.
+
 Final local source test-infrastructure: 1041pass/5skip, Ruff/format/mypy/diff pass.
 Owned child cleanup and opt-in bounded private per-phase journal verified.
 Linux concurrency failures/package timeout remain unresolved; release BLOCKED.

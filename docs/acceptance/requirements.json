@@ -1129,13 +1129,18 @@
       "milestone": "M6",
       "title": "Real Cursor adapter and run manager",
       "acceptance": "Run/session/project IDs and errors tracked; unavailable OS/client features explicit unsupported; no GUI/internal API substitution.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "real_client",
         "integration",
         "platform"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
+        "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
+        "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
+        "tests/integration/test_adapter_manager_core_boundary.py::test_heterogeneous_routes_preserve_protocol_markers_and_core"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-05",

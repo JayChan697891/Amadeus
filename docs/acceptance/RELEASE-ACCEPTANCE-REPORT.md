@@ -1,5 +1,30 @@
 # Release Acceptance Report
 
+## Local heterogeneous run manager — 2026-10-26 America/Tijuana
+
+Implemented scoped registration/routing, duplicate-request dispatch ownership,
+opaque handles, bounded non-evicting history, identity checks and nonblocking
+pending/returned/error inspection. A caller cancelling its wait cannot trigger
+a second dispatch. Fixed error codes replace private start exceptions; raw
+protocol results retain their original unverified markers. This adds no Core
+transition, client permission, scheduling, recovery or candidate application.
+
+Independent affected Windows tests: **137 passed, 0 skipped, 0 failed/errors**;
+Ruff, formatting, mypy (48 modules) and diff checks passed. Evidence including
+commands, JUnit and tested-file hashes: `D:/agentsync-debug/m6-manager-review-8movlm76/`.
+The independently rerun acceptance collector suite also passed **148 tests**
+(`acceptance-junit.xml` there), including positive/negative exact selector matching
+and refusal to promote local manager results to real-client acceptance.
+Earlier `m6-manager-review-y2crn24c` retains the first format-check failure, since
+fixed; its 135 test passes are not added to the final count. Known local Python
+fixtures exercised Codex/Claude protocol results alongside Mock and confirmed
+that actual Core state, including after reopen, stayed unchanged.
+
+M6-05 has component coverage only. Real Cursor, real current-engine clients,
+autonomous relay, Linux/current package checks and Python 3.11 execution were
+**NOT RUN** here. Previous Linux failures remain unresolved. All 42 formal
+requirements remain `not_run`; formal release remains **BLOCKED**.
+
 ## Never-started capture cancellation repair — 2026-10-26 America/Tijuana
 
 Final local test-infrastructure checkpoint: **1041pass /5skip /0fail/error**

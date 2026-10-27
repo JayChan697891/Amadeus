@@ -36,6 +36,18 @@ def passing_check(run):
     }
 
 
+def assert_unobserved_manager_component(row):
+    assert row["coverage"] == "partial"
+    assert len(row["component_evidence"]) == 4
+    assert all(
+        all(value == 0 for value in observation["counts"].values())
+        for component in row["component_evidence"]
+        for observation in component["observations"]
+    )
+    assert row["execution_status"] == "not_run"
+    assert row["acceptance_evidence_status"] == "unverified"
+
+
 def test_design_mode_never_executes_and_preserves_manifest(repository, tmp_path, monkeypatch):
     def forbidden(*_args, **_kwargs):
         pytest.fail("Design mode executed a validation subprocess")
@@ -496,8 +508,7 @@ def test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay(
             for observation in component["observations"]
         )
     assert by_id["M6-03"]["acceptance_evidence_status"] == "unverified"
-    assert by_id["M6-05"]["coverage"] == "missing"
-    assert by_id["M6-05"]["component_evidence"] == []
+    assert_unobserved_manager_component(by_id["M6-05"])
     assert by_id["M6-05"]["acceptance_evidence_status"] == "unverified"
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["local_checks_passed"] is True
@@ -580,8 +591,7 @@ def test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified(
             for observation in component["observations"]
         )
     assert len(by_id["M6-03"]["component_evidence"]) == 8
-    assert by_id["M6-05"]["coverage"] == "missing"
-    assert by_id["M6-05"]["component_evidence"] == []
+    assert_unobserved_manager_component(by_id["M6-05"])
     assert by_id["M6-05"]["acceptance_evidence_status"] == "unverified"
     check = passing_check(tmp_path)
     check["provenance"] = check_provenance
@@ -667,7 +677,7 @@ def test_synthetic_codex_factory_and_core_records_do_not_verify_real_client(tmp_
                 for observation in component["observations"]
             )
         else:
-            assert item["coverage"] == "missing" and item["component_evidence"] == []
+            assert_unobserved_manager_component(item)
         assert item["acceptance_evidence_status"] == "unverified"
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["local_checks_passed"] is True
@@ -740,7 +750,7 @@ def test_protocol_only_codex_junit_cannot_promote_real_start_or_relay(tmp_path, 
                 for observation in component["observations"]
             )
         else:
-            assert item["coverage"] == "missing" and item["component_evidence"] == []
+            assert_unobserved_manager_component(item)
         assert item["acceptance_evidence_status"] == "unverified"
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["local_checks_passed"] is True
@@ -795,7 +805,7 @@ def test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptanc
         assert row["acceptance_evidence_status"] == "not_run"
     for requirement_id in ("M6-03", "M6-04", "M6-05"):
         row = by_id[requirement_id]
-        assert row["coverage"] == ("partial" if requirement_id in {"M6-03", "M6-04"} else "missing")
+        assert row["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:
             assert len(row["component_evidence"]) == 8
             assert all(
@@ -804,7 +814,7 @@ def test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptanc
                 for observation in component["observations"]
             )
         else:
-            assert row["component_evidence"] == []
+            assert_unobserved_manager_component(row)
         assert row["acceptance_evidence_status"] == "unverified"
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["local_checks_passed"] is True
@@ -904,9 +914,7 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
                 }
             ]
     for requirement_id in ("M6-03", "M6-04", "M6-05"):
-        assert by_id[requirement_id]["coverage"] == (
-            "partial" if requirement_id in {"M6-03", "M6-04"} else "missing"
-        )
+        assert by_id[requirement_id]["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:
             assert len(by_id[requirement_id]["component_evidence"]) == 8
             assert all(
@@ -915,7 +923,7 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
                 for observation in component["observations"]
             )
         else:
-            assert by_id[requirement_id]["component_evidence"] == []
+            assert_unobserved_manager_component(by_id[requirement_id])
         assert by_id[requirement_id]["acceptance_evidence_status"] == "unverified"
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["local_checks_passed"] is True
@@ -1676,3 +1684,51 @@ def test_design_report_records_custom_pytest_deadline_without_executing(
     assert all(
         "timeout_seconds" not in check for check in report["checks"] if check["id"] != "pytest"
     )
+
+
+@pytest.mark.parametrize("include_matches", [False, True])
+def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
+    tmp_path, include_matches
+):
+    """Fixture XML tests collector matching only; it is not observed client evidence."""
+    manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    selectors = [
+        "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
+        "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
+        "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
+        "tests/integration/test_adapter_manager_core_boundary.py::test_heterogeneous_routes_preserve_protocol_markers_and_core",
+    ]
+    declared = next(row for row in manifest["requirements"] if row["id"] == "M6-05")
+    assert declared["existing_tests"] == selectors
+    cases = []
+    for selector in selectors:
+        path, name = selector.split("::")
+        module = path.removesuffix(".py").replace("/", ".")
+        cases.extend([(module, name + "_extra"), ("tests.unit.other", name)])
+        if include_matches:
+            cases.append((module, name + "[False]" if "inspection" in name else name))
+    (tmp_path / "junit.xml").write_text(
+        "<testsuites><testsuite>"
+        + "".join(f'<testcase classname="{module}" name="{name}"/>' for module, name in cases)
+        + "</testsuite></testsuites>",
+        encoding="utf-8",
+    )
+    rows = runner.requirement_results(manifest, tmp_path)
+    row = next(item for item in rows if item["id"] == "M6-05")
+    assert row["coverage"] == "partial" and len(row["component_evidence"]) == 4
+    for component in row["component_evidence"]:
+        counts = component["observations"][0]["counts"]
+        assert counts == {
+            "tests": int(include_matches),
+            "passed": int(include_matches),
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0,
+        }
+    assert len(rows) == 42 and all(item["execution_status"] == "not_run" for item in rows)
+    assert row["acceptance_evidence_status"] == "unverified"
+    gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
+    assert gate["local_checks_passed"] is True
+    assert gate["formal_acceptance"] is False and gate["status"] == "blocked"
+    assert {"real_other_adapters", "autonomous_relay"} <= set(gate["blockers"])

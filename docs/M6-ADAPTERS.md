@@ -132,3 +132,30 @@ capture now freezes `unknown/capture_not_started` immediately. Adapter cancellat
 or logical deadline can then settle unknown while retaining the uncertain slot.
 No parent exit, execution, tree cleanup, Core authority or real client is inferred.
 A pending actual start remains distinct and retains its existing late cleanup.
+
+## Heterogeneous local run routing
+
+`agentsync.adapters.manager.RunManager(project_id, session_id, adapters, max_runs=100)`
+accepts a fixed trusted mapping of adapter names to existing adapter instances.
+It routes `capabilities`, `start_task`, `get_status`, `get_result`, `cancel_task`
+and `resume_task` without changing their protocol results or verification markers.
+`start_task(name, task)` returns `ManagedRun(handle, adapter_id, run)`; subsequent
+operations use this manager's opaque `handle`, not the underlying client run ID.
+Replaying the same request returns its original start receipt; call `get_status`
+for a fresh observation. Switching adapters or inputs under the same request ID
+is a conflict. Returned run/result identities must match the registered request.
+
+The manager keeps one project/session namespace and up to 32 registered adapters.
+Its lifetime history is bounded, never evicted, and includes failed starts. Caller
+cancellation stops waiting but does not relaunch or cancel the owned dispatch.
+Concurrent duplicates share that dispatch, while independent adapters can proceed.
+`history()` lists local handles; `get_dispatch(handle)` observes a pending,
+returned or failed start without awaiting it. A returned receipt is not completed
+work. Start errors retain only fixed codes, not original exception tracebacks.
+
+This is trusted host routing, separate from the existing simulation scheduler
+`MockRunManager`. It grants no permission, claims no Core task, and enforces no
+running quota. There is no manager timeout, restart recovery or cross-instance
+deduplication. Keep the event loop alive for unfinished starts; adapter cancellation
+and cleanup limitations still apply. Known local Python protocol fixtures verify
+composition only. Cursor startup, real clients and autonomous relay remain unverified.
