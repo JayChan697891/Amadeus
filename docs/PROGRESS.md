@@ -1,4 +1,10 @@
-# Current: M5 frozen; M6 conditional development
+# Current: M5 frozen; isolated M6-M8 components
+
+M8 caller-reported usage ledger implemented: typed normalized records, replay
+deduplication, strict bounds/overflow, Mock separation and unknown-aware totals.
+Root scoped suite163pass/0skip; Ruff/format/mypy52modules pass. Actual Cursor helper
+results compose with the ledger without Core mutation or invented token/billing data.
+No provider billing, subscription estimate, transport accounting or recovery claim.
 
 Isolated Mock workflow demo implemented: fresh disposable child Core, four-task
 diamond, overlapping Mock starts, bounded retry/attempt budget and distinct peer

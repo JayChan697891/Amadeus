@@ -1300,13 +1300,18 @@
       "milestone": "M8",
       "title": "Usage, cost, elapsed time and failure rate",
       "acceptance": "Provenance separates measured/estimated/unknown; unknown never shown as zero real bill; no invented subscription quotas.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "real_client"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_usage.py::test_mixed_protocol_and_simulated_records_keep_metrics_separate",
+        "tests/unit/test_usage.py::test_empty_missing_and_reported_zero_are_distinct",
+        "tests/unit/test_usage.py::test_cumulative_overflow_rejects_admission_atomically",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M8-01",

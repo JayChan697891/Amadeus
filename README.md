@@ -81,6 +81,16 @@ automatic review, durable recovery, AI decomposition or paid services.
 
 ## Quality checks
 
+`agentsync.usage.UsageLedger(project_id)` records typed adapter results through
+`record_result(result)` and returns an immutable `summary()`. Identical run
+observations count once; conflicting observations reject. Mock records are
+separate from protocol totals. Each metric distinguishes a complete value,
+known partial sum and unknown records, so missing usage is never reported as zero.
+Elapsed time describes the adapter lifecycle interval, not provider/API duration.
+These are caller-reported observations: costs remain unknown and billing/client
+verification remains false. The ledger is bounded and in memory, without recovery
+or transport/API-call accounting.
+
 ```powershell
 & .\.venv\Scripts\python.exe -m ruff check .
 & .\.venv\Scripts\python.exe -m mypy

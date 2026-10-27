@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Caller-reported usage component — 2026-10-27 America/Tijuana
+
+Added a bounded project-local UsageLedger for exact typed adapter results. It
+retains scalar identities/status/timing/counters only, separates Mock from protocol
+totals, deduplicates identical observations and rejects conflicts/overflow without
+partial admission. Missing values differ from reported zero; incomplete totals
+remain unknown. Logical adapter intervals are not provider/API duration. Failure
+ratios require complete reported terminal outcomes. Costs stay unknown; billing
+and real-client verification remain false. No raw output/client correlation IDs,
+credentials, actual API accounting, paid call or restart recovery was introduced.
+
+Root inspected code and ran **163 passed /0 skipped /0 failed/error** across the
+ledger, actual known-Python Cursor/Core composition and release collector. Ruff,
+format, mypy52modules and diff passed. Evidence with JUnit/commands/tested hashes:
+`D:/agentsync-debug/m8-usage-review-_adka4an/`. M8-01 now has four partial component
+selectors. All42 formal requirements remain `not_run`; current real clients,
+autonomous relay, full platform matrix and formal release remain unverified/BLOCKED.
+
 ## Isolated automatic Mock workflow — 2026-10-26 America/Tijuana
 
 `demo --workflow` composes the existing planner, Core and MockRunManager in a fresh

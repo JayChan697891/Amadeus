@@ -13,6 +13,7 @@ from agentsync.adapters.manager import RunManager
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+from agentsync.usage import UsageLedger
 
 
 @pytest.mark.parametrize("exit_code", [0, 7])
@@ -56,6 +57,15 @@ async def test_cursor_fixture_through_manager_preserves_actual_core(
     assert result.real_client_verified is False
     assert result.verification == result.core_authorization == "unverified"
     assert result.run.exit_code == exit_code
+    ledger = UsageLedger(actor["project_id"])
+    assert ledger.record_result(result) is True
+    assert ledger.record_result(result) is False
+    summary = ledger.summary()
+    assert summary.protocol_records == 1 and summary.simulated_records == 0
+    assert summary.input_tokens.value is summary.output_tokens.value is None
+    assert summary.input_tokens.unknown_runs == summary.output_tokens.unknown_runs == 1
+    assert summary.cost_usd is None and summary.billing_verified is False
+    assert summary.adapter_elapsed_ms.value is not None
     assert core.execute("get_project_state", actor) == before
     assert Core(core.data_dir).execute("get_project_state", actor) == before
 
