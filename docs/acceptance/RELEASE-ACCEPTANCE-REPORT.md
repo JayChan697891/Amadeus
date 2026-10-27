@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## Strict diagnostic audit coverage - 2026-10-27 America/Tijuana
+
+The local diagnostic now compares final claim audit rows against exact expected
+agent/request-digest identities and success/denial outcomes, after all timed calls.
+Counts alone cannot hide a missing receipt plus a duplicate. Missing, duplicate,
+unexpected or mismatched rows set claim_audit_complete=false and overall failure.
+Only aggregate counts leave the owned fixture. Core and audit semantics are unchanged.
+
+Root independent Windows Python3.14 diagnostic/existing audit-security/collector
+scope11pass; Python3.11 diagnostic7pass; Ruff/format/mypy54 pass. Controlled missing
+denial and equal-total identity/outcome corruption tests fail the diagnostic as
+expected. Actual32workers×8rounds observed256 expected audit events,8success and
+248denied, with0missing/duplicate/unexpected/mismatch. All functional checks passed;
+p95=2303.126ms still FAILED the unchanged1000ms budget, exit1. This one workload
+does not prove generalized audit durability. Evidence:
+`D:/agentsync-debug/m8-audit-strict-root-cfi2btv7/` (JUnit/logs/strict32.json).
+
+This source diagnostic improvement is later than the2982539 alpha14 package build;
+earlier package evidence/artifacts are unchanged, not relabelled as testing this
+tool revision. Linux source component validation follows separately. No real client,
+M5 completion, full matrix or Release promotion; all42formalnot_run/releaseBLOCKED.
+
 ## Independent checkpoint and audit-count supplement - 2026-10-27 America/Tijuana
 
 Astra High independently inspected the benchmark source, actual workload reports,

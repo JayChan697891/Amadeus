@@ -1,5 +1,6 @@
 """Small real local contention diagnostics, with disposable owned Core state."""
 
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -28,9 +29,11 @@ def test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup(tmp_pa
         response = execute(self, operation, payload)
         secrets.extend(
             response[key]
-            for key in ("admin_token", "session_token", "lease_token")
+            for key in ("admin_token", "session_token", "lease_token", "agent_id", "session_id")
             if key in response
         )
+        if operation == "claim_task":
+            secrets.append(hashlib.sha256(payload["request_id"].encode()).hexdigest())
         return response
 
     monkeypatch.setattr(Core, "execute", observe)
@@ -38,6 +41,16 @@ def test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup(tmp_pa
     assert report["passed"] and all(report["functional_checks"].values())
     assert report["package_version"] == __version__
     assert report["workload"]["claims"] == 4 and not report["unexpected_errors"]
+    assert report["claim_audit"] == dict(
+        expected=4,
+        observed=4,
+        success=2,
+        denied=2,
+        missing=0,
+        duplicate=0,
+        unexpected=0,
+        mismatch=0,
+    )
     assert report["round_observations"] == [
         {"round": index, "winners": 1, "expected_version_conflicts": 1, "unexpected_errors": 0}
         for index in (1, 2)
@@ -110,3 +123,63 @@ def test_unexpected_claim_exception_fails_without_raw_exception_text(tmp_path, m
     report = benchmark.run_benchmark(tmp_path, workers=2, rounds=1)
     assert not report["passed"] and report["unexpected_errors"] == {"claim_error": 2}
     assert "private" not in json.dumps(report) and list(tmp_path.iterdir()) == []
+
+
+def test_missing_denial_audit_fails_even_when_claims_and_latency_pass(tmp_path, monkeypatch):
+    original = Core._audit_denial
+
+    def skip_claim_conflict(self, actor, operation, payload, code):
+        if operation != "claim_task" or code != "version_conflict":
+            original(self, actor, operation, payload, code)
+
+    monkeypatch.setattr(Core, "_audit_denial", skip_claim_conflict)
+    report = benchmark.run_benchmark(tmp_path, workers=2, rounds=1, p95_budget_ms=60000)
+    assert not report["passed"] and not report["functional_checks"]["claim_audit_complete"]
+    assert all(
+        value for key, value in report["functional_checks"].items() if key != "claim_audit_complete"
+    )
+    assert report["p95_budget_passed"] and not report["unexpected_errors"]
+    assert report["claim_audit"] == dict(
+        expected=2,
+        observed=1,
+        success=1,
+        denied=0,
+        missing=1,
+        duplicate=0,
+        unexpected=0,
+        mismatch=0,
+    )
+    assert "request_id_digest" not in json.dumps(report) and list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize("corruption", ["duplicate_instead_of_denial", "wrong_actor_kind"])
+def test_equal_audit_totals_do_not_mask_identity_or_outcome_corruption(
+    tmp_path, monkeypatch, corruption
+):
+    original = Core._audit_event
+
+    def corrupt(
+        db, project, actor_kind, actor_id, operation, payload, outcome, code, response=None
+    ):
+        if operation == "claim_task" and outcome == "denied":
+            if corruption == "duplicate_instead_of_denial":
+                return
+            actor_kind = "owner"
+        original(db, project, actor_kind, actor_id, operation, payload, outcome, code, response)
+        if (
+            operation == "claim_task"
+            and outcome == "success"
+            and corruption == "duplicate_instead_of_denial"
+        ):
+            original(db, project, actor_kind, actor_id, operation, payload, outcome, code, response)
+
+    monkeypatch.setattr(Core, "_audit_event", staticmethod(corrupt))
+    report = benchmark.run_benchmark(tmp_path, workers=2, rounds=1, p95_budget_ms=60000)
+    audit = report["claim_audit"]
+    assert not report["passed"] and not report["functional_checks"]["claim_audit_complete"]
+    assert audit["expected"] == audit["observed"] == 2
+    if corruption == "duplicate_instead_of_denial":
+        assert audit["missing"] == audit["duplicate"] == 1 and audit["mismatch"] == 0
+    else:
+        assert audit["missing"] == audit["duplicate"] == 0 and audit["mismatch"] == 1
+    assert not report["unexpected_errors"] and list(tmp_path.iterdir()) == []

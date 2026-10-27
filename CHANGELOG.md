@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased diagnostic checks
+
+- Require exact claim-audit identity/outcome coverage in local contention diagnostics.
+- Keep earlier alpha14 package evidence bound to its original source commit.
+
 ## 0.3.0a14 - development recovery and adapter preparation
 
 - Add an actual Core crash/lease-expiry regression with successor and dependency recovery.

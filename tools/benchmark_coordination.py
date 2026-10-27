@@ -7,6 +7,7 @@ The declared latency budget is a diagnostic threshold, not a Release SLO.
 """
 
 import argparse
+import hashlib
 import json
 import math
 import sqlite3
@@ -44,6 +45,42 @@ def _claim(
     return outcome, started, perf_counter(), response
 
 
+def _claim_audit(
+    db: sqlite3.Connection,
+    project_id: str,
+    expected: dict[tuple[str, str], tuple[str, str]],
+) -> dict[str, int]:
+    """Compare final claim receipts by identity; return only aggregate diagnostics."""
+    rows = db.execute(
+        "SELECT actor_id,request_id_digest,actor_kind,outcome,code FROM audit_events "
+        "WHERE project_id=? AND operation='claim_task'",
+        (project_id,),
+    ).fetchall()
+    seen: dict[tuple[str, str], int] = {}
+    counts = dict(
+        expected=len(expected),
+        observed=len(rows),
+        success=0,
+        denied=0,
+        missing=0,
+        duplicate=0,
+        unexpected=0,
+        mismatch=0,
+    )
+    for actor_id, request_digest, actor_kind, outcome, code in rows:
+        key = (actor_id, request_digest)
+        seen[key] = seen.get(key, 0) + 1
+        if outcome in {"success", "denied"}:
+            counts[outcome] += 1
+        if key not in expected:
+            counts["unexpected"] += 1
+        elif actor_kind != "agent" or (outcome, code) != expected[key]:
+            counts["mismatch"] += 1
+    counts["missing"] = sum(key not in seen for key in expected)
+    counts["duplicate"] = sum(count - 1 for count in seen.values())
+    return counts
+
+
 def run_benchmark(
     scratch_parent: Path, workers: int = 8, rounds: int = 8, p95_budget_ms: float = 1000
 ) -> dict[str, Any]:
@@ -73,6 +110,18 @@ def run_benchmark(
         persisted_task_count=False,
         sqlite_integrity=False,
         foreign_keys=False,
+        claim_audit_complete=False,
+    )
+    expected_audit: dict[tuple[str, str], tuple[str, str]] = {}
+    claim_audit = dict(
+        expected=0,
+        observed=0,
+        success=0,
+        denied=0,
+        missing=0,
+        duplicate=0,
+        unexpected=0,
+        mismatch=0,
     )
     observations = []
     latencies: list[float] = []
@@ -85,8 +134,10 @@ def run_benchmark(
                 "create_project", {"name": "local-diagnostic", "root_path": str(root)}
             )
             actors = []
+            agent_ids = []
             for index in range(workers):
                 actor = core.execute("register_agent", {**project, "name": f"worker-{index}"})
+                agent_ids.append(actor["agent_id"])
                 core.execute_owner(
                     "set_agent_roles",
                     {
@@ -112,6 +163,7 @@ def run_benchmark(
                         {**actors[0], "title": "diagnostic", "request_id": f"task-{round_index}"},
                     )
                     barrier = Barrier(workers)
+                    requests = [f"claim-{round_index}-{index}" for index in range(workers)]
                     futures = [
                         executor.submit(
                             _claim,
@@ -119,11 +171,22 @@ def run_benchmark(
                             auth,
                             task["id"],
                             barrier,
-                            f"claim-{round_index}-{index}",
+                            requests[index],
                         )
                         for index, auth in enumerate(actors)
                     ]
                     results = [future.result() for future in futures]
+                    for index, (outcome, _, _, _) in enumerate(results):
+                        if outcome in {"winner", "version_conflict"}:
+                            key = (
+                                agent_ids[index],
+                                hashlib.sha256(requests[index].encode()).hexdigest(),
+                            )
+                            expected_audit[key] = (
+                                ("success", "ok")
+                                if outcome == "winner"
+                                else ("denied", "version_conflict")
+                            )
                     winners = [
                         index for index, result in enumerate(results) if result[0] == "winner"
                     ]
@@ -187,6 +250,12 @@ def run_benchmark(
                     ("ok",)
                 ]
                 checks["foreign_keys"] = db.execute("PRAGMA foreign_key_check").fetchall() == []
+                claim_audit = _claim_audit(db, project["project_id"], expected_audit)
+                checks["claim_audit_complete"] = claim_audit[
+                    "expected"
+                ] == workers * rounds and not any(
+                    claim_audit[key] for key in ("missing", "duplicate", "unexpected", "mismatch")
+                )
     except Exception:
         errors["benchmark_error"] = errors.get("benchmark_error", 0) + 1
     ordered = sorted(latencies)
@@ -229,6 +298,7 @@ def run_benchmark(
         "p95_budget_passed": budget_passed,
         "round_observations": observations,
         "unexpected_errors": errors,
+        "claim_audit": claim_audit,
         "functional_checks": checks,
         "passed": all(checks.values()) and not errors and budget_passed,
     }

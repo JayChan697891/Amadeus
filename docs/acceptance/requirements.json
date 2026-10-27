@@ -1354,6 +1354,8 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/unit/test_coordination_benchmark.py::test_missing_denial_audit_fails_even_when_claims_and_latency_pass",
+        "tests/unit/test_coordination_benchmark.py::test_equal_audit_totals_do_not_mask_identity_or_outcome_corruption",
         "tests/unit/test_coordination_benchmark.py::test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup",
         "tests/unit/test_coordination_benchmark.py::test_cli_actual_tiny_latency_budget_fails_and_invalid_options_return_json",
         "tests/unit/test_coordination_benchmark.py::test_unexpected_claim_exception_fails_without_raw_exception_text",

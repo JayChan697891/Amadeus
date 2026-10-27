@@ -120,6 +120,9 @@ Agent processes or tasks and do not add transport/API-call accounting.
 --workers 8 --rounds 8 --p95-budget-ms 1000` (one command line) creates and removes
 an owned child project. Each round measures simultaneous claims for one task and
 checks one winner, expected version conflicts, persisted state and SQLite integrity.
+It also checks exact claim-audit identities/outcomes after timing; missing, duplicate,
+unexpected or mismatched events fail even when totals or latency look correct.
+Only aggregate audit counts are reported.
 The JSON report includes actual claim-attempt throughput and nearest-rank latency
 percentiles. Setup, barrier wait, verification and cleanup are excluded from timing.
 The declared p95 threshold is a diagnostic budget, not a Release SLO. Exit codes

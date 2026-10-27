@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
+Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
+Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
+Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
+2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
+diagnostic extends the earlier2982539 packaged checkpoint.
+D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
+
 Astra final scoped evidence review found no blocking measurement issue. Separate
 32worker audit-count probe matched8success/248denied events; p95~2285.607ms still
 FAILED1000ms. This does not prove generalized audit durability. No product/audit
