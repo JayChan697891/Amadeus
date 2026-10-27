@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## M8 Core crash and expired-lease recovery supplement - 2026-10-27 America/Tijuana
+
+One new isolated three-process regression uses actual abrupt exit73 and the persisted
+one-second lease deadline, without clock patches or database timestamp edits. The
+restarted Core retains the running task, rejects expired claim replay, reclaims it
+once, rejects the old lease/replay before and after successor ownership, and lets
+the successor proceed to review. A distinct reviewer completes the root; its
+dependent becomes claimable. A third process verifies exact persisted public state,
+one review, SQLite integrity and foreign keys. Review remains a peer assertion,
+not independent code verification or real Agent execution.
+
+Root inspected the source and raw JUnit/logs: Windows Python3.14 recovery plus
+existing claim/migration concurrency and collector policy checks **157 passed**,
+zero failures/errors/skips; Python3.11 recovery **2 passed**, zero failures/errors/
+skips. Focused Ruff lint/format and diff checks passed. No runtime/package version
+change or redundant rebuild. Evidence: `D:/agentsync-debug/m8-recovery-root-nd076l_6/`
+(`result.json`, `py314.xml`, `py311.xml` and command logs). Exact source hashes are
+recorded there. Existing M8-02 selectors are reused and supplemented; coverage is
+partial, with all42 formal execution statuses still `not_run`. Current Linux/macOS,
+MCP/HTTP/scheduler/adapter process recovery, performance stress and real autonomous
+relay remain NOT RUN/unverified; old Linux failures are not cleared. Release BLOCKED.
+
 ## Final development alpha13 package supplement — 2026-10-27 America/Tijuana
 
 Frozen product/package source `77426fa4a02125417f10b6582ad87dccf50683f5`, version

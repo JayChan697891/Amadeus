@@ -1332,7 +1332,7 @@
       "milestone": "M8",
       "title": "Recovery, retry, performance and concurrency stress",
       "acceptance": "Committed state survives; no duplicate active runs/owners; recoverable runs resume or explicit terminal/blocked state; latency/errors reported against declared budgets.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "recovery",
         "concurrency",
@@ -1340,6 +1340,10 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/recovery/test_process_recovery.py::test_abrupt_process_exit_preserves_commits_and_rolls_back_transaction",
+        "tests/recovery/test_process_recovery.py::test_crashed_running_owner_is_reclaimed_and_dependency_resumes_after_restart",
+        "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",
+        "tests/concurrency/test_claims.py::test_concurrent_first_process_migrations",
         "tests/unit/test_verification_jobs.py",
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",

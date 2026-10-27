@@ -1,5 +1,12 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M8 actual crash/lease recovery component added: abrupt process exit73, real lease
+expiry, one-time reclamation, stale owner/replay rejection, successor review and
+dependency continuation survive another fresh process. Root independent Windows
+Python3.14 recovery/concurrency/collector group157pass; Python3.11 recovery2pass.
+No runtime changes; old Linux contention failures remain unresolved. M8-02 partial,
+all42 formal not_run and release BLOCKED. Raw D:m8-recovery-root-nd076l_6.
+
 Final developmenta13 package source77426fa: fresh offline Windows Python3.14
 wheel/sdist and Python3.11.15 wheel each318pass/0skip. Root verified matching318-case
 sets,52 actual imported module hashes and no prior unraisable/closed-pipe warnings.
