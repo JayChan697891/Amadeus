@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased - local recovery components
+## 0.3.0a14 - development recovery and adapter preparation
 
 - Add an actual Core crash/lease-expiry regression with successor and dependency recovery.
 - Add optional elapsed admission limits to the isolated Mock workflow.
@@ -9,8 +9,9 @@
 - Add isolated local claim-contention diagnostics with explicit latency budgets.
 - Add non-executing pinned Claude CLI preparation with fixed restrictions.
 
-These source components do not change schema/dependencies or establish a new
-packaged release, real-client execution, automatic durable recovery or acceptance.
+This development checkpoint changes no schema/dependencies. Build/install validation
+is recorded separately; real-client execution, automatic durable recovery and
+formal release acceptance remain unverified or blocked.
 
 ## 0.3.0a13 — development compatibility repair
 
