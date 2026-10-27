@@ -141,6 +141,10 @@ It routes `capabilities`, `start_task`, `get_status`, `get_result`, `cancel_task
 and `resume_task` without changing their protocol results or verification markers.
 `start_task(name, task)` returns `ManagedRun(handle, adapter_id, run)`; subsequent
 operations use this manager's opaque `handle`, not the underlying client run ID.
+For a mixed registry, type checkers need an explicit annotation such as
+`manager: RunManager[object, AdapterRun, object]` (`AdapterRun` is exported by the
+same module). Results then require type narrowing; a concrete union annotation
+can preserve client-specific result types. Homogeneous registries infer their types.
 Replaying the same request returns its original start receipt; call `get_status`
 for a fresh observation. Switching adapters or inputs under the same request ID
 is a conflict. Returned run/result identities must match the registered request.
