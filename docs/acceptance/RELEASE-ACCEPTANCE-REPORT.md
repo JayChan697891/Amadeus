@@ -1,5 +1,34 @@
 # Release Acceptance Report
 
+## M8 declared local contention diagnostic - 2026-10-27 America/Tijuana
+
+A local-only tool creates its own temporary project/database, explicitly grants
+workers, synchronizes claim attempts, verifies exactly one persisted winner per
+round, cancels owned leases, and checks final versions/SQLite integrity/foreign
+keys before closing handles and removing only its private child. Reports omit
+credentials, actor/task IDs, raw exception messages and scratch paths. Claim-
+attempt throughput includes expected conflicts; startup, barrier, verification
+and cleanup are outside measured claim latency. CLI failures use nonzero exits.
+
+Root independently ran Windows Python3.14 focused11pass and Python3.11 tool4pass,
+zero failures/errors/skips; Ruff/format and mypy53modules passed. Actual Windows
+Python3.14 workloads used1/8/16/32workers,8rounds each:456 attempts,32 winners,424
+expected version conflicts, no unexpected errors. All functional/persistence/
+integrity checks passed. Nearest-rank p95ms were3.400/133.483/660.562/2395.555.
+The declared diagnostic threshold stayed1000ms for every workload:32workers
+**FAILED its latency budget**, exit1. Other three workload budgets passed. This
+is an observed local scaling limit, not a universal SLO or a security failure.
+Performance follow-up remains open; no audit rule or gate was weakened.
+
+Evidence: `D:/agentsync-debug/m8-contention-root-mqb8e39b/` (`result.json`, raw
+JUnit/logs and `workloads.json` with individual reports/hashes). Initial Sol tests
+exposed a Windows SQLite context retaining an open handle during temporary cleanup;
+explicit closing repaired it. Only final Sol JUnit was retained at the provided
+path; original pre-fix raw JUnit is NOT RETAINED, so no reconstructed failure log
+is presented. Root tests and workload reports are independently saved. Current
+Linux/macOS, startup contention, real client performance and the full acceptance
+scenario remain NOT RUN/unverified. M8-02 partial, all42formalnot_run, release BLOCKED.
+
 ## M7 deterministic retry planning - 2026-10-27 America/Tijuana
 
 A pure RetryPolicy/plan_retry component provides bounded deterministic exponential

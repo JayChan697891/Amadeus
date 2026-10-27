@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
+workloads measured456 claim attempts: all functional checks passed, no unexpected
+errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
+budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
+excluded; no Release SLO/platform claim. D:m8-contention-root-mqb8e39b.
+M8-02 partial; old Linux failures open; all42formalnot_run; release BLOCKED.
+
 M7 pure retry advice implemented: deterministic capped exponential backoff, numeric
 Retry-After minimum, explicit confirmed-outcome requirement, attempt/global/time
 budgets and precision-safe stops. Root Windows3.14 retry/Mock/collector54pass;

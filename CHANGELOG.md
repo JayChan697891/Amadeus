@@ -6,6 +6,7 @@
 - Add optional elapsed admission limits to the isolated Mock workflow.
 - Add pure bounded retry advice with confirmed outcomes and Retry-After floors.
 - Add strictly bounded JSON checkpoints for normalized caller-reported usage.
+- Add isolated local claim-contention diagnostics with explicit latency budgets.
 
 These source components do not change schema/dependencies or establish a new
 packaged release, real-client execution, automatic durable recovery or acceptance.

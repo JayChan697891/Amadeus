@@ -1351,6 +1351,9 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/unit/test_coordination_benchmark.py::test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup",
+        "tests/unit/test_coordination_benchmark.py::test_cli_actual_tiny_latency_budget_fails_and_invalid_options_return_json",
+        "tests/unit/test_coordination_benchmark.py::test_unexpected_claim_exception_fails_without_raw_exception_text",
         "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
         "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
         "tests/recovery/test_process_recovery.py::test_abrupt_process_exit_preserves_commits_and_rolls_back_transaction",

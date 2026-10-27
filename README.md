@@ -114,6 +114,18 @@ caller-supplied identifiers; they contain no raw output/client metadata. The
 network I/O: callers control storage and crash-safe writes. They do not restore
 Agent processes or tasks and do not add transport/API-call accounting.
 
+## Local contention diagnostic
+
+`python tools/benchmark_coordination.py --scratch-parent ABSOLUTE_EXISTING_DIRECTORY
+--workers 8 --rounds 8 --p95-budget-ms 1000` (one command line) creates and removes
+an owned child project. Each round measures simultaneous claims for one task and
+checks one winner, expected version conflicts, persisted state and SQLite integrity.
+The JSON report includes actual claim-attempt throughput and nearest-rank latency
+percentiles. Setup, barrier wait, verification and cleanup are excluded from timing.
+The declared p95 threshold is a diagnostic budget, not a Release SLO. Exit codes
+are 0 for passing the declared workload, 1 for failure and 2 for invalid options.
+No existing database or real Agent is selected; formal acceptance stays false.
+
 ## Quality checks
 
 ```powershell
