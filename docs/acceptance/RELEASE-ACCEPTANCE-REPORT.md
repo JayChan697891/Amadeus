@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Linux selected-source supplement - 2026-10-27 America/Tijuana
+
+Exact source `7c641e90bf0909c3f8ee68335817d817b34e5eaf` passed49 selected retry,
+Claude preparation, usage, strict diagnostic, crash-recovery and collector tests
+in the owned local Alpine VM, Python3.14.7/SQLite3.53.4: zero failures/errors/skips.
+Root independently matched163 Git archive inputs,54 actual source-import paths/
+hashes and raw JUnit. The source manifest remained unchanged; a bounded per-phase
+journal and raw logs survive independently. A fresh nonce guest directory and
+explicit empty home/config were used; no model/provider call, candidate execution
+or user project was selected. Host source staysF:, all VM/debug files stayD:.
+
+Evidence: `D:/agentsync-debug/alpha14-linux-components-gktwi5mr/`, sanitized
+`evidence/alpha14-linux-components.json`. Prior VM logs/process metadata were
+backed up before starting only the dedicated configured VM. This is an existing
+dependency-venv source check, not fresh package installation or a full OS matrix.
+The previous eight-process startup failures and installation limitations remain
+open. All42formalnot_run; real relay and Release BLOCKED.
+
 ## Strict diagnostic audit coverage - 2026-10-27 America/Tijuana
 
 The local diagnostic now compares final claim audit rows against exact expected

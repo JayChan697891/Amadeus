@@ -1,5 +1,11 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Actual local Linux source supplement at7c641e9:49pass/0skip/fail/error,54 actual
+source imports and163 Git inputs independently matched; sources unchanged. Guest
+Python3.14.7/SQLite3.53.4. D:alpha14-linux-components-gktwi5mr. Existing dependency
+venv only, not fresh Linux packages/fullmatrix; old startup failures NOT CLEARED.
+Formal42not_run/releaseBLOCKED.
+
 M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
 Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
 Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
