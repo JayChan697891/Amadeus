@@ -83,6 +83,19 @@ preserve the original behavior. Reports explicitly mark all results
 as simulation-only/unverified. This does not enable real clients, production
 automatic review, durable recovery, AI decomposition or paid services.
 
+## Retry advice
+
+`agentsync.retry_planning.plan_retry(RetryPolicy(...), ...)` calculates deterministic
+capped exponential backoff from a caller-reported failure. A numeric Retry-After
+minimum is respected even above the backoff cap. Attempt/global budgets and the
+next-attempt deadline can stop a retry. Unknown or unconfirmed outcomes never
+produce a retry recommendation; a timeout requires a confirmed outcome.
+
+This function never waits, starts an adapter or changes Core. Caller confirmation
+is not authorization or proof an external action is safe to repeat. Advice is
+unverified and must be rechecked before any later dispatch. Real provider limits
+and autonomous retry remain unverified.
+
 ## Reported usage
 
 `agentsync.usage.UsageLedger(project_id)` records typed adapter results through

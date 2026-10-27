@@ -1276,6 +1276,10 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/unit/test_retry_planning.py::test_exponential_backoff_caps_and_retry_after_remains_an_uncapped_floor",
+        "tests/unit/test_retry_planning.py::test_unknown_and_unconfirmed_outcomes_never_recommend_retries",
+        "tests/unit/test_retry_planning.py::test_attempt_global_and_deadline_budgets_do_not_fake_an_immediate_retry",
+        "tests/unit/test_retry_planning.py::test_caller_composes_one_bounded_wait_and_second_mock_attempt_only",
         "tests/integration/test_mock_workflow.py::test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews",
         "tests/integration/test_mock_workflow.py::test_exhaustion_finishes_started_batch_and_preserves_unstarted_descendants",
         "tests/integration/test_mock_workflow.py::test_existing_parent_core_unchanged_and_no_credentials_or_private_child_returned",

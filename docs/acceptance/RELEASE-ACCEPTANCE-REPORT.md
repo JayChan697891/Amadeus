@@ -1,5 +1,24 @@
 # Release Acceptance Report
 
+## M7 deterministic retry planning - 2026-10-27 America/Tijuana
+
+A pure RetryPolicy/plan_retry component provides bounded deterministic exponential
+backoff, a numeric caller-declared Retry-After floor (never capped downward), and
+per-task/global/deadline stops. Unknown/unconfirmed outcomes never recommend a
+retry. Positive delays that cannot advance the supplied clock stop explicitly.
+This is unverified snapshot advice; confirmation is not authorization or proof
+that an external side effect is safe to repeat. It never sleeps, dispatches,
+reserves a budget or changes Core. Real HTTP/provider behavior was not tested.
+
+Root read actual source/tests and raw JUnit: Windows Python3.14 scoped54pass,
+Python3.11 retry18pass, zero failures/errors/skips. Ruff/format and mypy53modules
+passed. One isolated Mock composition explicitly waits1ms and starts a distinct
+second attempt; this is not real-client or autonomous relay evidence.
+Evidence: `D:/agentsync-debug/m7-retry-root-09rucwxf/`. Source SHA256
+`05a40fb13e2f4b8c35de1805d378c63f3ed582e719bb39b36b7be5f55ea53291`.
+M7-04 remains partial; all42 formal execution statuses remain not_run and Release
+BLOCKED. No new package build, provider calls, Actions or main changes.
+
 ## M8 explicit usage checkpoint recovery - 2026-10-27 America/Tijuana
 
 `UsageLedger.to_json()` and `UsageLedger.from_json(expected_project_id, text)`

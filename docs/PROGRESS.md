@@ -1,5 +1,12 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M7 pure retry advice implemented: deterministic capped exponential backoff, numeric
+Retry-After minimum, explicit confirmed-outcome requirement, attempt/global/time
+budgets and precision-safe stops. Root Windows3.14 retry/Mock/collector54pass;
+Python3.11 retry18pass; Ruff/format/mypy53 pass. Only the caller-controlled Mock
+composition waits/starts; planner performs no execution. Evidence D:m7-retry-root-09rucwxf.
+All42 formal not_run; real retry and release remain BLOCKED.
+
 M8 normalized usage checkpoint export/restore implemented without I/O. Strict
 namespace/format/bounds/duplicate checks rebuild a new ledger and recompute totals;
 unknown costs, replay identity, capacity and Mock separation survive restoration.

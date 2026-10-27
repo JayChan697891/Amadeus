@@ -4,6 +4,7 @@
 
 - Add an actual Core crash/lease-expiry regression with successor and dependency recovery.
 - Add optional elapsed admission limits to the isolated Mock workflow.
+- Add pure bounded retry advice with confirmed outcomes and Retry-After floors.
 - Add strictly bounded JSON checkpoints for normalized caller-reported usage.
 
 These source components do not change schema/dependencies or establish a new
