@@ -1,10 +1,17 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Final developmenta13 package source77426fa: fresh offline Windows Python3.14
+wheel/sdist and Python3.11.15 wheel each318pass/0skip. Root verified matching318-case
+sets,52 actual imported module hashes and no prior unraisable/closed-pipe warnings.
+Dependency checks and installed CLI Mock workflow passed in all3 environments.
+Ruff/format/mypy52modules passed. Rawalpha12 301pass/10fail and interrupted fullsuite
+remain preserved; current full OS/Python matrix/real relay/release remain BLOCKED.
+
 Actual Python3.11 alpha12 package run exposed301pass/10fail from equal-clock fresh
 captures falsely rejected as stale; warnings preserved. Developmenta13 uses private
 creation order plus loop identity, without weakening stale/reuse checks. Root3.11
 source111pass; Sol3.14affected108pass; synthetic RED3freshfail/GREEN7pass. Astra
-source review found no blocker. Fixed installed-package validation pending.
+source review found no blocker; subsequent installed-package checks are recorded above.
 
 Development alpha0.3.0a12 frozen at9ebb13e: fresh offline Windows Python3.14
 wheel/sdist each311pass/0skip, pipcheck and actual installed CLI Mock demo pass.

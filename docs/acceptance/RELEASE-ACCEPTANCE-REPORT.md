@@ -1,5 +1,32 @@
 # Release Acceptance Report
 
+## Final development alpha13 package supplement — 2026-10-27 America/Tijuana
+
+Frozen product/package source `77426fa4a02125417f10b6582ad87dccf50683f5`, version
+`0.3.0a13`. Fresh offline Windows Python3.14 wheel and sdist environments each
+passed **318 tests /0 skipped /0 failed/error**. A fresh Windows Python3.11.15
+wheel environment also passed **318 /0 /0**, using the existing local dependency
+cache offline. All3 dependency checks and installed CLI Mock workflow runs passed.
+Root independently matched raw318-case ID sets,52 imported module paths/hashes
+per environment and frozen Git package inputs. Ruff/format/mypy52modules/diff passed.
+The earlier unraisable/closed-pipe warnings were absent in all3 final test logs.
+
+Evidence/artifacts: `D:/agentsync-debug/alpha13-packages-wsy5uci3/` and
+`D:/agentsync-debug/alpha13-python311-1_06_4p9/`; consolidated receipt
+`D:/agentsync-debug/AGENTSYNC-CHECKPOINT-20261027.json`.
+Wheel SHA256 `728af5aef18e521017d9264372baeb3eaae81b82f4aec55dcec0a577011103fa`;
+sdist SHA256 `423744438154687878880565f159eab52128a1f6a73dc7fca18685fd0210f13d`.
+
+Private Python3.11 runtime/bootstrap/cache live on D:. User Python registration/
+PATH fingerprints remained unchanged. Initial setup's locator confused the managed
+alias with its real directory; a separate canonical-path probe recovered without
+reinstalling. Setup evidence: `D:/agentsync-debug/python311-setup-2qknq1_r/`.
+The alpha12 **301pass/10fail** result and transport warnings remain preserved;
+the interrupted broader Windows attempt is still NOT COMPLETED. No Windows full
+suite or current Linux/macOS matrix, Python3.11 sdist, real clients or autonomous
+relay is claimed by these scoped results. All42 formal requirements remain
+`not_run`; formal release remains **BLOCKED**. No Release/tag/main change occurred.
+
 ## Coarse-clock capture freshness repair — 2026-10-27 America/Tijuana
 
 Actual isolated Python3.11.15 alpha12 wheel tests executed **301 passed /10 failed**,
