@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Development0.3.0a14 product2982539 frozen. Fresh offline Windows Python3.14 and
+Python3.11 wheel/sdist each370pass/0skip/fail/error; root matched all370-case sets,
+54 actual imported modules per environment and309 Git package inputs. Dependency
+checks and installed CLI demo all4 passed; Python3.11 sdist standalone diagnostic
+passed. Ruff/format/mypy54 pass. No current Linux/macOS/fullsuite/real relay claim.
+32worker p95>1000ms diagnostic failure remains open; all42formalnot_run/releaseBLOCKED.
+See acceptance/evidence/alpha14-local-summary.json and Release Acceptance Report.
+
 M6 Claude pinned restricted CLI preparation implemented without launching. Explicit
 model/version/binary hash, fixedargv/stdin, filteredenv and bounded file checks;
 all auth/billing/tool/sandbox/actualclient markers false. Root scoped Windows3.14

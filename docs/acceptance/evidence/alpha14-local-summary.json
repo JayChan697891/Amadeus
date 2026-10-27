@@ -1,0 +1,110 @@
+{
+  "created_utc": "2026-10-27T13:29:56.805249+00:00",
+  "client_timezone": "America/Tijuana",
+  "version": "0.3.0a14",
+  "product_commit": "2982539e9b304f6e8da8fbcd57a040ec9ab158c3",
+  "schema_version": 12,
+  "dependencies": "unchanged",
+  "environments": [
+    {
+      "runtime": "Python3.14",
+      "artifact": "wheel",
+      "passed": 370,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 54,
+      "junit_sha256": "c81d3e1119088fae4325292a3efa7d3347b8d646527b167ca53a7647b98fea6b"
+    },
+    {
+      "runtime": "Python3.14",
+      "artifact": "sdist",
+      "passed": 370,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 54,
+      "junit_sha256": "2455f828857c4a4243c0d1c90dac954ce90bf33abf85609557b45e63bcf0732d"
+    },
+    {
+      "runtime": "Python3.11",
+      "artifact": "wheel",
+      "passed": 370,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 54,
+      "junit_sha256": "6527201b7c6266d0baf3a6b4e296ea65538d5dbff4968edd06f930bd9b54db70"
+    },
+    {
+      "runtime": "Python3.11",
+      "artifact": "sdist",
+      "passed": 370,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 54,
+      "junit_sha256": "7ccc009ed646e7b2bbcb39c6525354432039b68a659436a14da188c1a1c1843d"
+    }
+  ],
+  "matching_test_ids": 370,
+  "Git_package_inputs_verified": 309,
+  "artifacts": {
+    "agentsync_local-0.3.0a14-py3-none-any.whl": "2a4ad247402e516a37432b2f6ac0e67e44ecfe30f15d821d35dd67cc1c4872da",
+    "agentsync_local-0.3.0a14.tar.gz": "845cd9ad7572e082c31b286afce2c238ad5e14a3e1d1c43c1c16f249188296d2"
+  },
+  "evidence_directories": [
+    "D:\\agentsync-debug\\alpha14-packages-69ssdg9x",
+    "D:\\agentsync-debug\\alpha14-python311-9c8mvex7"
+  ],
+  "static_checks": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy54modules": "PASS"
+  },
+  "local_contention": {
+    "commit": "d5aa7f2",
+    "workers": [
+      1,
+      8,
+      16,
+      32
+    ],
+    "rounds_each": 8,
+    "claim_attempts": 456,
+    "functional_checks": "PASS",
+    "unexpected_errors": 0,
+    "declared_p95_budget_ms": 1000,
+    "p95_ms": [
+      3.4,
+      133.483,
+      660.562,
+      2395.555
+    ],
+    "budget_status": [
+      "PASS",
+      "PASS",
+      "PASS",
+      "FAIL"
+    ],
+    "evidence": "D:/agentsync-debug/m8-contention-root-mqb8e39b"
+  },
+  "Claude": {
+    "help_version": "2.1.295",
+    "help_version_only": true,
+    "actual_model_turn": "NOT RUN",
+    "complete_flag_combination": "NOT RUN",
+    "auth_billing_sandbox_tool_restrictions": "UNVERIFIED"
+  },
+  "formal_requirements_not_run": 42,
+  "formal_release": "BLOCKED",
+  "current_Linux_macOS_full_matrix": "NOT RUN / prior Linux failures remain open",
+  "GitHub_Actions": "NOT RUN",
+  "remote_mutations": "NONE",
+  "main_modified": false,
+  "limitations": [
+    "not full-repository test suite",
+    "source-only Astra component review is not Release acceptance",
+    "initial failed Sol benchmark raw JUnit was overwritten and NOT RETAINED"
+  ]
+}

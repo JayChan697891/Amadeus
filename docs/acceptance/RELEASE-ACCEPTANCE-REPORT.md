@@ -1,5 +1,34 @@
 # Release Acceptance Report
 
+## Development alpha14 package checkpoint - 2026-10-27 America/Tijuana
+
+Frozen product `2982539e9b304f6e8da8fbcd57a040ec9ab158c3`, development0.3.0a14,
+unchanged schema12/dependencies. Fresh independent offline Windows Python3.14
+wheel and sdist environments each **370 passed /0 skipped/failed/error**. Fresh
+Python3.11.15 wheel and sdist environments each matched the same **370 /0 /0**.
+All4 dependency checks and installed CLI Mock workflow runs passed. A direct
+Python3.11 sdist diagnostic-tool command also passed in a private scratch project.
+
+Root independently compared309 frozen Git package inputs, actual54 module paths/
+hashes per installed environment and all four370-case ID sets. Previous known
+unraisable/transport warnings were absent. Ruff/format and mypy54modules passed.
+Source developer helpers, including the new benchmark, are included in the sdist.
+Python3.11 source installation used pinned offline build backend packages and
+existing cached dependencies, without provider/API/network execution.
+
+Artifacts/evidence: `D:/agentsync-debug/alpha14-packages-69ssdg9x/` and
+`D:/agentsync-debug/alpha14-python311-9c8mvex7/`. Sanitized persistent summary:
+`evidence/alpha14-local-summary.json`. Wheel SHA256
+`2a4ad247402e516a37432b2f6ac0e67e44ecfe30f15d821d35dd67cc1c4872da`;
+sdist SHA256 `845cd9ad7572e082c31b286afce2c238ad5e14a3e1d1c43c1c16f249188296d2`.
+
+These are scoped installed-component suites, not the full repository or OS matrix.
+The measured32worker p95 diagnostic-budget failure remains **FAILED**, and prior
+Linux startup/installation limitations remain unresolved. Real clients, complete
+Claude flag compatibility/authentication/billing/tool effects and autonomous relay
+remain NOT RUN/unverified. All42 formal requirements stay not_run and **Release
+BLOCKED**. No tag, Release, Actions execution, main change or remote mutation.
+
 ## M6 Claude bounded invocation preparation - 2026-10-27 America/Tijuana
 
 New explicit-profile preparation checks namespace/version/environment before bounded
