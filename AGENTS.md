@@ -1,3 +1,23 @@
+# Model allocation policy (owner instruction, 2026-10-26)
+
+Default routine development, fixes, tests, documentation and ordinary decisions to
+GPT-6.1 Sol with High reasoning when explicitly configurable. Use GPT-6 Astra
+High or Extra High for major architecture changes, repeated unresolved failures,
+important independent reviews, substantial safety/data-consistency decisions,
+M5 final acceptance and Release Gate decisions. Return routine implementation to
+Sol after the critical analysis. This supersedes the earlier Astra-only request.
+
+Check actual tools before claiming a model switch. Current native delegation
+supports explicit model and reasoning selection with a fresh-context child;
+provide a compact handoff with current source, scope, evidence and constraints.
+The primary chat has no callable self-model switch. Do not infer its reasoning
+level from the model name. If designated delegation is unavailable, keep using
+the actual model and identify which critical decision needs manual Astra review.
+Reuse a small number of appropriately configured agents; reused agents retain
+their existing settings unless a supported mechanism explicitly changes them.
+Never substitute external paid APIs or treat a development subagent as evidence
+that the AgentSync client adapter works. All existing acceptance gates remain.
+
 # Quota-aware checkpoint policy
 
 Owner instruction: choose bounded tasks and reserve enough quota for independent
