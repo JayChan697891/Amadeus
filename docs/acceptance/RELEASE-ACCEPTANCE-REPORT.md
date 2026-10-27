@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Cursor protocol component — 2026-10-26 America/Tijuana
+
+Added a bounded standalone terminal-JSON parser and typed CursorAdapter using the
+existing shared host lifecycle. Explicit supported schema plus observed exit0 is
+required for result text. Stream JSON, malformed input and unsupported schemas
+cannot become success. Caller-reported timings and correlation IDs remain
+unverified. No built-in launcher, credentials, Core transition or authorization
+was added; shared lifecycle code was unchanged.
+
+Root independently inspected files and ran **280 passed /0 skipped /0 failed/error**
+across new parsing/process/Core fixtures, adjacent adapters/manager and acceptance
+collector tests. Ruff/format, mypy50modules and diff passed. Raw logs, commands,
+JUnit and tested-file hashes: `D:/agentsync-debug/m6-cursor-review-ithzwbp8/`.
+M6-05 now maps eight component selectors. All42 formal requirements remain
+`not_run`, and real Cursor/real client relay remain NOT RUN. No Linux, new package
+installation or full platform matrix was run here; earlier Linux failures remain.
+Formal release remains **BLOCKED**.
+
 ## Local heterogeneous run manager — 2026-10-26 America/Tijuana
 
 Implemented scoped registration/routing, duplicate-request dispatch ownership,

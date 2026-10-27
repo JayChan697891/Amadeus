@@ -1,5 +1,11 @@
 # Current: M5 frozen; M6 conditional development
 
+Cursor standalone terminal-JSON parser and host-factory adapter implemented;
+independent affected Windows suite280pass/0skip, Ruff/format/mypy50modules pass.
+M6-05 has eight component selectors; formal requirements remain not_run. Known
+local Python fixtures preserve Core state; actual Cursor launch/permissions/relay
+remain NOT RUN. Shared lifecycle code was unchanged. Existing Linux blockers persist.
+
 M6 heterogeneous RunManager implemented: scoped routing for trusted registered
 adapters, cancellation-safe request deduplication, bounded history and nonblocking
 dispatch inspection. Independent Windows affected regression: 137pass/0skip;

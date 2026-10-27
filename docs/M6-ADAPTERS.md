@@ -163,3 +163,26 @@ running quota. There is no manager timeout, restart recovery or cross-instance
 deduplication. Keep the event loop alive for unfinished starts; adapter cancellation
 and cleanup limitations still apply. Known local Python protocol fixtures verify
 composition only. Cursor startup, real clients and autonomous relay remain unverified.
+
+## Cursor terminal JSON adapter
+
+`agentsync.adapters.cursor.CursorAdapter` uses the same six-method lifecycle and
+trusted host factory boundary. It supports only the standalone terminal object
+from Cursor's explicit `--print --output-format json` mode. It does not consume
+`stream-json`, tool events, or text deltas and does not launch the CLI itself.
+The pure `parse_cursor_json(text, exit_code=None)` requires the documented success
+schema and observed exit zero before exposing result text. Empty, unknown or
+nonzero process observations never provide successful text. Malformed/unsupported
+objects raise fixed errors; an invalid captured protocol retains an unknown slot.
+
+Input is bounded to 1 MiB, strings to 64 KiB, IDs to 200 UTF-8 bytes and nesting
+to depth 32. Duplicate keys, invalid UTF-8/NUL and invalid numeric fields reject.
+`CursorReportedMetadata` contains caller-reported elapsed milliseconds and an
+optional request correlation ID; these are neither measured billing nor Core
+identity. All protocol/client verification markers remain unverified. Parent-only
+cancellation, deadline behavior and unsupported resume match the shared engine.
+
+The supported schema is based on the official
+[Cursor output format](https://cursor.com/docs/cli/reference/output-format).
+Only synthetic known-Python fixtures have been exercised. Actual Cursor, CLI/OS
+compatibility, permissions, server cancellation and autonomous relay are NOT RUN.

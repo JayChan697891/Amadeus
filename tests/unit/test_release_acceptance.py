@@ -38,7 +38,7 @@ def passing_check(run):
 
 def assert_unobserved_manager_component(row):
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 4
+    assert len(row["component_evidence"]) == 8
     assert all(
         all(value == 0 for value in observation["counts"].values())
         for component in row["component_evidence"]
@@ -1698,6 +1698,10 @@ def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
         "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
         "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
         "tests/integration/test_adapter_manager_core_boundary.py::test_heterogeneous_routes_preserve_protocol_markers_and_core",
+        "tests/unit/test_cursor_events.py::test_missing_exit_or_nonzero_and_empty_capture_never_expose_text",
+        "tests/unit/test_cursor_events.py::test_invalid_json_encoding_structure_and_bounds_are_static_errors",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_default_cursor_route_cannot_launch_or_change_core",
     ]
     declared = next(row for row in manifest["requirements"] if row["id"] == "M6-05")
     assert declared["existing_tests"] == selectors
@@ -1716,7 +1720,7 @@ def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
     )
     rows = runner.requirement_results(manifest, tmp_path)
     row = next(item for item in rows if item["id"] == "M6-05")
-    assert row["coverage"] == "partial" and len(row["component_evidence"]) == 4
+    assert row["coverage"] == "partial" and len(row["component_evidence"]) == 8
     for component in row["component_evidence"]:
         counts = component["observations"][0]["counts"]
         assert counts == {
