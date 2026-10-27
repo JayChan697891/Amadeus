@@ -2,7 +2,9 @@
 
 This module never authenticates, claims, executes, or maintains task state. A plan
 does not prove snapshot completeness or freshness; Core must recheck every claim.
-Capability matching, load balancing, retries and autonomous scheduling are unverified.
+Optional capability filtering compares caller requirements with self-reported
+declarations only. Capability verification, retries and autonomous scheduling
+remain unverified.
 """
 
 import math
@@ -25,6 +27,9 @@ class SchedulingPlan:
     agent_id: str
     observed_at: float
     candidates: tuple[TaskRecommendation, ...]
+    capability_filter: Literal["not_requested", "caller_required_self_reported"] = field(
+        default="not_requested", kw_only=True
+    )
     scope: Literal["planning_only"] = field(default="planning_only", init=False)
     execution_connected: Literal[False] = field(default=False, init=False)
     snapshot_freshness: Literal["unverified"] = field(default="unverified", init=False)
@@ -32,10 +37,19 @@ class SchedulingPlan:
 
 
 def plan_tasks(
-    snapshot: dict[str, Any], *, project_id: str, agent_id: str, now: float, limit: int = 10
+    snapshot: dict[str, Any],
+    *,
+    project_id: str,
+    agent_id: str,
+    now: float,
+    limit: int = 10,
+    required_capabilities: dict[str, tuple[str, ...]] | None = None,
+    agent_capabilities: tuple[str, ...] = (),
 ) -> SchedulingPlan:
     try:
-        return _plan(snapshot, project_id, agent_id, now, limit)
+        return _plan(
+            snapshot, project_id, agent_id, now, limit, required_capabilities, agent_capabilities
+        )
     except (KeyError, TypeError, ValueError, OverflowError, UnicodeError):
         raise AgentSyncError(
             "invalid_snapshot", "Invalid scheduling snapshot or options."
@@ -57,8 +71,38 @@ def _timestamp(value: Any) -> float:
     return float(value)
 
 
+def _capability_tokens(value: Any) -> frozenset[str]:
+    _require(type(value) is tuple and len(value) <= 128)
+    for token in value:
+        _identifier(token)
+    _require(len(value) == len(set(value)))
+    return frozenset(value)
+
+
+def _capability_requirements(
+    value: dict[str, tuple[str, ...]], task_ids: set[str]
+) -> dict[str, frozenset[str]]:
+    _require(type(value) is dict and len(value) <= 4096)
+    for task_id in value:
+        _identifier(task_id)
+    _require(set(value) == task_ids)
+    total = 0
+    requirements = {}
+    for task_id, tokens in value.items():
+        requirements[task_id] = _capability_tokens(tokens)
+        total += len(tokens)
+        _require(total <= 16384)
+    return requirements
+
+
 def _plan(
-    snapshot: dict[str, Any], project_id: str, agent_id: str, now: float, limit: int
+    snapshot: dict[str, Any],
+    project_id: str,
+    agent_id: str,
+    now: float,
+    limit: int,
+    required_capabilities: dict[str, tuple[str, ...]] | None,
+    agent_capabilities: tuple[str, ...],
 ) -> SchedulingPlan:
     _identifier(project_id)
     _identifier(agent_id)
@@ -110,6 +154,12 @@ def _plan(
         _require(edge_count <= 65536)
         rows[task_id] = row
 
+    requirements = None
+    declared = frozenset[str]()
+    if required_capabilities is not None:
+        requirements = _capability_requirements(required_capabilities, set(rows))
+        declared = _capability_tokens(agent_capabilities)
+
     # Iterative traversal keeps a valid deep dependency chain off the Python stack.
     children: dict[str, list[str]] = {task_id: [] for task_id in rows}
     incoming = dict.fromkeys(rows, 0)
@@ -130,6 +180,8 @@ def _plan(
     _require(visited == len(rows))
     candidates = []
     for row in rows.values():
+        if requirements is not None and not requirements[row["id"]] <= declared:
+            continue
         if (
             row["status"] != "pending"
             or row["owner_session_id"] is not None
@@ -154,4 +206,7 @@ def _plan(
         agent_id,
         observed,
         tuple(TaskRecommendation(row["id"], row["version"]) for row in candidates[:limit]),
+        capability_filter="caller_required_self_reported"
+        if requirements is not None
+        else "not_requested",
     )

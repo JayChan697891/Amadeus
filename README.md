@@ -55,6 +55,16 @@ Stdio MCP hosts have local process access; Alpha is not a hostile-agent sandbox.
 
 ## Quality checks
 
+Read-only scheduling helpers `agentsync.scheduling.plan_tasks` and
+`agentsync.dispatch_planning.plan_dispatches` accept optional
+`required_capabilities={task_id: ("python", "tests"), ...}`. An explicit mapping
+must cover every task in the snapshot, including terminal tasks; an empty tuple
+means no requirement. Dispatch compares all required tokens with each worker's
+self-reported capabilities, preserving dependencies, priority and load limits.
+Tokens are case-sensitive. Omitting the mapping preserves the previous behavior.
+The returned `capability_filter` identifies the mode, while capability verification
+and Core authorization remain unverified. Recommendations never claim or run work.
+
 ```powershell
 & .\.venv\Scripts\python.exe -m ruff check .
 & .\.venv\Scripts\python.exe -m mypy

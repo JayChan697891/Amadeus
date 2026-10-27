@@ -879,6 +879,14 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
             "tests.integration.test_dispatch_planning_core_boundary",
             "test_offline_handoff_recipient_is_not_replaced_by_another_available_worker",
         ),
+        (
+            "tests.unit.test_dispatch_planning",
+            "test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker",
+        ),
+        (
+            "tests.integration.test_capability_planning_core_boundary",
+            "test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
+        ),
         # Ordinary neighboring names/classes are not the declared selectors.
         (
             "tests.unit.test_scheduling",
@@ -899,7 +907,8 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
     assert len(rows) == 42 and all(row["execution_status"] == "not_run" for row in rows)
     for requirement_id in ("M7-01", "M7-02"):
         row = by_id[requirement_id]
-        assert row["coverage"] == "partial" and len(row["component_evidence"]) == 6
+        assert row["coverage"] == "partial"
+        assert len(row["component_evidence"]) == (6 if requirement_id == "M7-01" else 8)
         for component in row["component_evidence"]:
             assert component["observations"] == [
                 {

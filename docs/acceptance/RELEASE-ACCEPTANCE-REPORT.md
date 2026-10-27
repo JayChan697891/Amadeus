@@ -1,5 +1,22 @@
 # Release Acceptance Report
 
+## Capability-aware planning component — 2026-10-26 America/Tijuana
+
+Existing read-only task/dispatch planners now optionally match explicit complete
+task requirements against caller/self-reported agent capabilities. Input tokens,
+maps and totals are bounded; filtering precedes truncation and preserves the
+full dependency graph. Omitting requirements retains existing behavior. Mode
+labels do not assert verified capability, current authorization or execution.
+
+Root inspected code and independently ran **267 passed /0 skipped /0 failed/error**
+covering affected planners/managers, acceptance collector and actual temporary
+Core state. A matching viewer was recommended but still forbidden to claim; Core
+and reopened state remained unchanged. Ruff/format, mypy50modules and diff passed.
+Evidence: `D:/agentsync-debug/m7-capability-review-57fybcbk/` (commands/logs/JUnit/
+tested-file hashes). M7-02 has eight component selectors. All42 formal requirements
+remain `not_run`; real autonomous relay, current Linux/new package validation and
+formal release remain NOT RUN/BLOCKED. Existing Linux failures are unresolved.
+
 ## Cursor protocol component — 2026-10-26 America/Tijuana
 
 Added a bounded standalone terminal-JSON parser and typed CursorAdapter using the

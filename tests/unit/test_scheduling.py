@@ -185,3 +185,105 @@ def test_deep_dependency_chain_is_bounded_and_does_not_use_recursion():
 def test_pending_rows_with_existing_ownership_are_not_recommended():
     assert plan([task(owner_session_id="session")]).candidates == ()
     assert plan([task(lease_expires_at=25.0)]).candidates == ()
+
+
+def test_optional_capability_filter_is_exact_conjunctive_and_does_not_mutate_inputs():
+    rows = [task("both"), task("case"), task("free")]
+    requirements = {"both": ("Python", "tests"), "case": ("python",), "free": ()}
+    before = deepcopy((rows, requirements))
+    assert len(plan(rows).candidates) == 3
+    assert plan(rows).capability_filter == "not_requested"
+    result = plan(rows, required_capabilities=requirements, agent_capabilities=("Python", "tests"))
+    assert [item.task_id for item in result.candidates] == ["both", "free"]
+    assert result.capability_filter == "caller_required_self_reported"
+    assert result.capability_matching == "unverified"
+    assert [item.task_id for item in plan(rows, required_capabilities=requirements).candidates] == [
+        "free"
+    ]
+    assert (rows, requirements) == before
+    requirements["both"] = ("changed",)
+    assert [item.task_id for item in result.candidates] == ["both", "free"]
+
+
+def test_requirements_must_cover_every_task_including_completed_and_blocked():
+    rows = [task(), task("completed", status="completed"), task("blocked", status="blocked")]
+    complete = {row["id"]: () for row in rows}
+    assert [item.task_id for item in plan(rows, required_capabilities=complete).candidates] == [
+        "task"
+    ]
+    for invalid in ({}, {"task": ()}, {**complete, "stale": ()}):
+        with pytest.raises(AgentSyncError) as error:
+            plan(rows, required_capabilities=invalid)
+        assert error.value.code == "invalid_snapshot"
+
+
+def test_capability_token_container_identifier_and_uniqueness_bounds_are_strict():
+    invalid_tokens = (
+        [],
+        "Python",
+        ("same", "same"),
+        ("",),
+        ("bad\n",),
+        ("\x00",),
+        ("\ud800",),
+        ("你" * 67,),
+        (True,),
+        tuple(str(index) for index in range(129)),
+    )
+    for tokens in invalid_tokens:
+        for options in (
+            {"required_capabilities": {"task": tokens}},
+            {"required_capabilities": {"task": ()}, "agent_capabilities": tokens},
+        ):
+            with pytest.raises(AgentSyncError) as error:
+                plan([task()], **options)
+            assert error.value.code == "invalid_snapshot"
+    for requirements in ([], {"\ud800": ()}):
+        with pytest.raises(AgentSyncError):
+            plan([task()], required_capabilities=requirements)
+    boundary = tuple(["x" * 200] + [str(index) for index in range(127)])
+    assert plan(
+        [task()], required_capabilities={"task": boundary}, agent_capabilities=boundary
+    ).candidates
+
+
+def test_capability_requirement_total_and_map_bounds_are_checked():
+    tokens = tuple(str(index) for index in range(128))
+    rows = [task(str(index)) for index in range(129)]
+    requirements = {row["id"]: tokens for row in rows}
+    with pytest.raises(AgentSyncError):
+        plan(rows, required_capabilities=requirements, agent_capabilities=tokens)
+    rows.pop()
+    requirements.pop("128")
+    assert (
+        len(
+            plan(
+                rows, required_capabilities=requirements, agent_capabilities=tokens, limit=100
+            ).candidates
+        )
+        == 100
+    )
+    with pytest.raises(AgentSyncError):
+        plan([], required_capabilities={str(index): () for index in range(4097)})
+
+
+def test_capability_mismatch_does_not_remove_dependency_nodes_or_hide_cycles():
+    rows = [task("parent", status="completed"), task("child", dependencies=["parent"])]
+    requirements = {"parent": ("unavailable",), "child": ()}
+    assert [item.task_id for item in plan(rows, required_capabilities=requirements).candidates] == [
+        "child"
+    ]
+    rows[0]["status"] = "pending"
+    assert plan(rows, required_capabilities=requirements).candidates == ()
+    rows[0]["dependencies"] = ["child"]
+    with pytest.raises(AgentSyncError):
+        plan(rows, required_capabilities=requirements)
+
+
+def test_capability_filter_precedes_limit_and_keeps_deterministic_priority_order():
+    rows = [task(f"high-{index}", priority=100) for index in range(105)]
+    rows.extend([task("b"), task("a"), task("first", priority=1)])
+    requirements = {row["id"]: ("unavailable",) if row["priority"] == 100 else () for row in rows}
+    for source in (rows, list(reversed(rows))):
+        result = plan(source, required_capabilities=requirements, limit=2)
+        assert [item.task_id for item in result.candidates] == ["first", "a"]

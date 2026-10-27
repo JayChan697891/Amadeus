@@ -4,6 +4,8 @@ The worker allowlist confers no Core permission. Counts reflect task ownership,
 not client processes. Limits constrain this plan only: independent concurrent
 plans can compete for the same slots. Core must recheck each explicit claim;
 it does not enforce these planning limits. Completeness/freshness is unverified.
+Optional capability filtering compares explicit caller requirements with worker
+self-reported declarations; it grants no authorization or verified capability.
 """
 
 import math
@@ -11,7 +13,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 from agentsync.errors import AgentSyncError
-from agentsync.scheduling import plan_tasks
+from agentsync.scheduling import _capability_tokens, plan_tasks
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,6 +41,9 @@ class DispatchPlan:
     worker_loads: tuple[AgentLoad, ...]
     global_limit: int
     per_agent_limit: int
+    capability_filter: Literal["not_requested", "caller_required_self_reported"] = field(
+        default="not_requested", kw_only=True
+    )
     scope: Literal["planning_only"] = field(default="planning_only", init=False)
     execution_connected: Literal[False] = field(default=False, init=False)
     capability_matching: Literal["unverified"] = field(default="unverified", init=False)
@@ -58,10 +63,18 @@ def plan_dispatches(
     global_limit: int = 4,
     per_agent_limit: int = 1,
     limit: int = 10,
+    required_capabilities: dict[str, tuple[str, ...]] | None = None,
 ) -> DispatchPlan:
     try:
         return _plan_dispatches(
-            state, project_id, worker_agent_ids, now, global_limit, per_agent_limit, limit
+            state,
+            project_id,
+            worker_agent_ids,
+            now,
+            global_limit,
+            per_agent_limit,
+            limit,
+            required_capabilities,
         )
     except (KeyError, TypeError, ValueError, OverflowError, UnicodeError):
         raise AgentSyncError("invalid_snapshot", "Invalid dispatch snapshot or options.") from None
@@ -90,6 +103,7 @@ def _plan_dispatches(
     global_limit: int,
     per_agent_limit: int,
     limit: int,
+    required_capabilities: dict[str, tuple[str, ...]] | None,
 ) -> DispatchPlan:
     _identifier(project_id)
     now = _timestamp(now)
@@ -105,12 +119,18 @@ def _plan_dispatches(
     _require(type(state["agents"]) is list and len(state["agents"]) <= 8192)
     _require(type(state["sessions"]) is list and len(state["sessions"]) <= 8192)
     agent_ids = set()
+    declarations: dict[str, tuple[str, ...]] = {}
     for row in state["agents"]:
         _require(type(row) is dict)
         _identifier(row["id"])
         _require(row["project_id"] == project_id and row["id"] not in agent_ids)
         _timestamp(row["created_at"])
         agent_ids.add(row["id"])
+        if required_capabilities is not None and row["id"] in worker_agent_ids:
+            capabilities = row["capabilities"]
+            _require(type(capabilities) is list and len(capabilities) <= 128)
+            _capability_tokens(tuple(capabilities))
+            declarations[row["id"]] = tuple(capabilities)
     _require(set(worker_agent_ids) <= agent_ids)
     workers = sorted(worker_agent_ids)
     session_map = {}
@@ -135,6 +155,8 @@ def _plan_dispatches(
                 agent_id=worker,
                 now=now,
                 limit=100,
+                required_capabilities=required_capabilities,
+                agent_capabilities=declarations.get(worker, ()),
             ).candidates
         }
         for worker in workers
@@ -195,4 +217,7 @@ def _plan_dispatches(
         ),
         global_limit,
         per_agent_limit,
+        capability_filter="caller_required_self_reported"
+        if required_capabilities is not None
+        else "not_requested",
     )

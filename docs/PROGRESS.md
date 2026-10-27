@@ -1,5 +1,11 @@
 # Current: M5 frozen; M6 conditional development
 
+M7 optional capability-aware task/dispatch advice implemented: explicit complete
+task requirements match self-reported worker declarations before truncation;
+dependency validation, priorities and load limits preserved. Independent affected
+Windows suite267pass/0skip, Ruff/format/mypy pass. Actual Core viewer claim still
+denied despite matching capability. No auto-claim/execute or verified capability.
+
 Cursor standalone terminal-JSON parser and host-factory adapter implemented;
 independent affected Windows suite280pass/0skip, Ruff/format/mypy50modules pass.
 M6-05 has eight component selectors; formal requirements remain not_run. Known

@@ -341,3 +341,112 @@ def test_plan_is_immutable_and_does_not_change_or_retain_mutable_input():
         result.worker_loads[0].active_count = 999
     with pytest.raises((ValueError, TypeError)):
         replace(result, execution_connected=True)
+
+
+def test_worker_capability_declarations_are_strict_only_in_opt_in_mode():
+    for invalid in (
+        None,
+        (),
+        "Python",
+        ["same", "same"],
+        [""],
+        ["\ud800"],
+        [True],
+        [str(index) for index in range(129)],
+    ):
+        snapshot = state()
+        snapshot["agents"][0]["capabilities"] = invalid
+        assert plan(snapshot).dispatches[0].agent_id == "a"
+        assert plan(snapshot).capability_filter == "not_requested"
+        with pytest.raises(AgentSyncError) as error:
+            plan(snapshot, required_capabilities={"task": ()})
+        assert error.value.code == "invalid_snapshot"
+    snapshot = state()
+    del snapshot["agents"][0]["capabilities"]
+    with pytest.raises(AgentSyncError):
+        plan(snapshot, required_capabilities={"task": ()})
+
+
+def test_capability_matching_keeps_deterministic_load_balancing_and_immutable_inputs():
+    snapshot = state(
+        [
+            task("both", priority=3),
+            task("backend", priority=2),
+            task("case", priority=1),
+            task("free"),
+        ]
+    )
+    snapshot["agents"][0]["capabilities"] = ["Python", "tests"]
+    snapshot["agents"][1]["capabilities"] = ["Python"]
+    requirements = {
+        "both": ("Python", "tests"),
+        "backend": ("Python",),
+        "case": ("python",),
+        "free": (),
+    }
+    before = deepcopy((snapshot, requirements))
+    result = plan(snapshot, required_capabilities=requirements, per_agent_limit=2)
+    assert [(item.task_id, item.agent_id) for item in result.dispatches] == [
+        ("both", "a"),
+        ("backend", "b"),
+        ("free", "a"),
+    ]
+    assert result.capability_filter == "caller_required_self_reported"
+    assert result.capability_matching == result.core_authorization == "unverified"
+    assert [(load.agent_id, load.planned_count) for load in result.worker_loads] == [
+        ("a", 2),
+        ("b", 1),
+    ]
+    assert (snapshot, requirements) == before
+    snapshot["agents"].reverse()
+    snapshot["tasks"].reverse()
+    assert (
+        plan(
+            snapshot,
+            required_capabilities=requirements,
+            per_agent_limit=2,
+            worker_agent_ids=("b", "a"),
+        )
+        == result
+    )
+    snapshot["agents"][0]["capabilities"].append("python")
+    assert len(result.dispatches) == 3
+
+
+def test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker():
+    rows = [task(f"high-{index:03}", priority=100) for index in range(105)] + [task("low")]
+    snapshot = state(rows)
+    snapshot["agents"][0]["capabilities"] = ["low"]
+    snapshot["agents"][1]["capabilities"] = ["high"]
+    requirements = {row["id"]: ("low",) if row["id"] == "low" else ("high",) for row in rows}
+    result = plan(snapshot, required_capabilities=requirements)
+    assert [(item.task_id, item.agent_id) for item in result.dispatches] == [
+        ("high-000", "b"),
+        ("low", "a"),
+    ]
+    snapshot["tasks"].reverse()
+    assert plan(snapshot, required_capabilities=requirements) == result
+
+
+def test_capability_map_stays_complete_and_valid_with_offline_or_full_workers():
+    rows = [
+        task("owned", status="blocked", owner_session_id="session-a"),
+        task("done", status="completed"),
+        task(),
+    ]
+    requirements = {row["id"]: () for row in rows}
+    for unavailable in ("offline", "full"):
+        snapshot = state(rows)
+        if unavailable == "offline":
+            for row in snapshot["sessions"]:
+                row["expires_at"] = 99.5
+        options = {"global_limit": 1} if unavailable == "full" else {}
+        assert plan(snapshot, required_capabilities=requirements, **options).dispatches == ()
+        for invalid in (
+            {"task": ()},
+            {**requirements, "stale": ()},
+            {**requirements, "done": ("same", "same")},
+        ):
+            with pytest.raises(AgentSyncError) as error:
+                plan(snapshot, required_capabilities=invalid, **options)
+            assert error.value.code == "invalid_snapshot"
