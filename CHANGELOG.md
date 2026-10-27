@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0a13 — development compatibility repair
+
+Replace timestamp-based capture freshness with a private process-local creation
+fence and explicit event-loop association. Fresh captures can share a timestamp
+with their adapter run on coarse Windows clocks; preexisting or foreign-loop
+captures remain rejected without taking ownership or stopping them. Public
+timestamps, markers and cancellation limits remain unchanged. This development
+alpha grants no authentication, real-client verification or release acceptance.
+
 ## 0.3.0a12 — development checkpoint
 
 - Add a bounded standalone Cursor JSON parser and typed host-factory adapter.

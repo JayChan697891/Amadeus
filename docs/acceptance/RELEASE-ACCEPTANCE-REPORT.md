@@ -1,5 +1,51 @@
 # Release Acceptance Report
 
+## Coarse-clock capture freshness repair — 2026-10-27 America/Tijuana
+
+Actual isolated Python3.11.15 alpha12 wheel tests executed **301 passed /10 failed**,
+not NOT RUN: fresh captures could share the run's public loop-clock timestamp and
+were falsely classified `capture_stale`. Transport warnings were also observed.
+Raw failure evidence and the correction to the driver's stale NOT RUN label are
+in `D:/agentsync-debug/alpha12-python311-3wv_qoj1/`.
+
+Developmenta13 replaces timestamp comparison with private process-local creation
+ordering and explicit same-loop association. Capture-ID reuse rejection remains
+first; stale/foreign captures stay unowned/uncancelled. Public dataclasses,
+timestamps, timers, unknown slots and late-parent cleanup are unchanged. This
+mechanism is not authorization, client provenance or cross-restart identity.
+
+Synthetic RED preserved3fresh equal-timestamp failures and3stale rejections;
+GREEN7cases include all3adapters fresh/stale and foreign-loop rejection. Sol's
+Python3.14 affected suite108pass; root's actual Python3.11 source suite111pass.
+Evidence: `D:/agentsync-debug/creation-fence-{red,green,regression,root311}.xml`.
+Astra reviewed the actual diff without a blocking finding (source-only review).
+Fixed installed-package tests remain pending at this checkpoint; no claim of
+full Python3.11 support, actual clients, relay or formal release is made. BLOCKED.
+
+## Development alpha12 installation checkpoint — 2026-10-27 America/Tijuana
+
+Product/package source commit: `9ebb13e2799cb2d58e36ab429845b0eede9a3c0d`,
+version `0.3.0a12`, unchanged schema12/dependencies. This is a development alpha,
+not a published Release/tag or formal acceptance. The previous a11 source archive
+omitted `tools/release_acceptance.py` and `tools/pytest_case_journal.py` even though
+packaged tests reference them. MANIFEST now includes developer helper source.
+
+Built wheel/sdist from302 Git-verified package inputs on D:. Fresh independent
+offline Windows Python3.14 environments each executed **311 passed /0 skipped /
+0 failed/error** from the extracted source-package tests. Both pip checks and
+actual installed `agentsync.exe demo --workflow` passed. Root independently read
+the raw JUnit (identical311-case sets),52 actual imported module paths/hashes,
+isolated venv configuration and54 installed distributions per environment.
+Both archives contain the matching runtime; source helpers match frozen Git bytes.
+
+Evidence/artifacts: `D:/agentsync-debug/alpha12-packages-5bk73scl/`.
+Wheel SHA256 `1e8b3df1b9c8d4fdacafbbe9526b607dc975bb8ef3f2a4a1b52d999621461f78`;
+sdist SHA256 `dd8798e8859a662b4c1ed3a292db963d3b57aaa5db3fecda31db718c8cb9f259`.
+The earlier interrupted full Windows run remains NOT COMPLETED; these are scoped
+installation/component results. Linux/current full platform matrix and actual
+clients/relay were not executed here. All42 formal requirements remain `not_run`;
+M5 blockers and formal release remain **BLOCKED**.
+
 ## Caller-reported usage component — 2026-10-27 America/Tijuana
 
 Added a bounded project-local UsageLedger for exact typed adapter results. It

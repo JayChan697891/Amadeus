@@ -18,10 +18,21 @@ import asyncio
 import math
 import uuid
 from dataclasses import dataclass, field
+from itertools import count
 from pathlib import Path
+from threading import Lock
 from typing import Literal, TypedDict, cast
 
 from agentsync.errors import AgentSyncError
+
+_CREATION_ORDER = count()
+_CREATION_LOCK = Lock()
+
+
+def _next_creation_order() -> int:
+    """Process-local ordering only, never authentication or restart identity."""
+    with _CREATION_LOCK:
+        return next(_CREATION_ORDER)
 
 
 class _EnvironmentArgs(TypedDict, total=False):
@@ -151,6 +162,7 @@ class _Protocol(asyncio.SubprocessProtocol):
 class CapturedProcess:
     def __init__(self) -> None:
         self._loop = asyncio.get_running_loop()
+        self._creation_order = _next_creation_order()
         self._id = uuid.uuid4().hex
         self._state: CaptureState = "running"
         self._transport: asyncio.SubprocessTransport | None = None
@@ -171,6 +183,10 @@ class CapturedProcess:
         self._grace: asyncio.TimerHandle | None = None
         self._kill_confirmation: asyncio.TimerHandle | None = None
         self._spawn_task: asyncio.Task[None] | None = None
+
+    def _created_after(self, fence: int) -> bool:
+        """Check local construction order and loop association, not timestamps."""
+        return self._creation_order > fence and self._loop is asyncio.get_running_loop()
 
     @classmethod
     async def start(

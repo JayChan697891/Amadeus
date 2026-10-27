@@ -15,6 +15,11 @@ An explicitly supplied trusted-host async factory receives a validated
 `AdapterTask` and must return a fresh, exclusively owned `CapturedProcess` created
 after that request. Its argv must come from trusted host code; task instructions
 are data, never scripts. A callback or process ID is not human authorization.
+Freshness uses a private process-local creation ordinal plus same-event-loop
+association, rather than strict timestamp inequality: coarse clock ticks may give
+a fresh capture the same public start time as its run. Older, reused and foreign-
+loop captures remain unowned/uncancelled. Ordinals are not serialized, credentials
+or restart identities; public timestamps and timers retain their original meaning.
 Actual client integration still requires the existing M5 safety gates and a new
 explicit live-test authorization. Both separately authorized single real CLI tests are now consumed.
 

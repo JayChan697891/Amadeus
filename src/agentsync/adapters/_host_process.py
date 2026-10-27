@@ -16,7 +16,12 @@ from dataclasses import dataclass, field, replace
 from typing import Generic, Literal, TypeVar
 
 from agentsync.adapters.base import AdapterTask, AgentAdapter, _identifier
-from agentsync.adapters.process_capture import CapturedProcess, CaptureSnapshot, CaptureState
+from agentsync.adapters.process_capture import (
+    CapturedProcess,
+    CaptureSnapshot,
+    CaptureState,
+    _next_creation_order,
+)
 from agentsync.errors import AgentSyncError
 
 _CaptureFactory = Callable[[AdapterTask], Awaitable[CapturedProcess]]
@@ -74,6 +79,7 @@ class _ProtocolObservation(Generic[_UsageT]):
 class _Entry(Generic[_RunT, _ResultT]):
     task: AdapterTask
     view: _RunT
+    creation_fence: int
     process: CapturedProcess | None = None
     result: _ResultT | None = None
     driver: asyncio.Task[None] | None = None
@@ -165,7 +171,7 @@ class _HostProcessAdapter(
                 )
             loop = asyncio.get_running_loop()
             view = self._new_run(task, uuid.uuid4().hex, loop.time())
-            entry: _Entry[_RunT, _ResultT] = _Entry(task, view)
+            entry: _Entry[_RunT, _ResultT] = _Entry(task, view, _next_creation_order())
             self._entries[view.run_id] = entry
             self._requests[task.request_id] = view.run_id
             entry.driver = asyncio.create_task(self._drive(entry))
@@ -194,7 +200,7 @@ class _HostProcessAdapter(
                 if observed.capture_id in self._capture_owners:
                     self._finish(entry, "unknown", error="capture_reused")
                     return
-                if observed.started_at <= entry.view.started_at:
+                if not process._created_after(entry.creation_fence):
                     self._finish(entry, "unknown", error="capture_stale")
                     return
                 # At most one capture per bounded history entry. Never kill a
