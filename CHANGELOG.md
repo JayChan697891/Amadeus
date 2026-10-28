@@ -1,7 +1,9 @@
 # Changelog
 
-## Unreleased diagnostic checks
+## 0.3.0a15 - development admission and diagnostic checks
 
+- Add bounded process-local Core thread admission while preserving transaction behavior.
+- Reset inherited gate state after fork and reclaim unused per-path gates.
 - Require exact claim-audit identity/outcome coverage in local contention diagnostics.
 - Keep earlier alpha14 package evidence bound to its original source commit.
 

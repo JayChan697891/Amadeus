@@ -1,5 +1,14 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+M8 bounded process-local Core admission implemented; existing SQL/auth/replay/lease/
+audit/close body byte-identical, owner/migration paths unchanged. Astra source
+review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
+37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
+andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
+versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
+Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
+core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
+
 Actual local Linux source supplement at7c641e9:49pass/0skip/fail/error,54 actual
 source imports and163 Git inputs independently matched; sources unchanged. Guest
 Python3.14.7/SQLite3.53.4. D:alpha14-linux-components-gktwi5mr. Existing dependency

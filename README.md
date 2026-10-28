@@ -129,6 +129,16 @@ The declared p95 threshold is a diagnostic budget, not a Release SLO. Exit codes
 are 0 for passing the declared workload, 1 for failure and 2 for invalid options.
 No existing database or real Agent is selected; formal acceptance stays false.
 
+## Core thread admission
+
+Core agent operations group waiting threads by resolved database path before
+opening SQLite, while retaining all existing transaction/auth/replay/lease/audit
+logic. Admission is process-local; SQLite still controls cross-process writes.
+A wait can time out after 30 seconds before SQL begins. That wait is additive to
+SQLite waits and audit work, so it is not a whole-operation deadline. No fairness,
+queue-size, recursion or security guarantee is added. Owner/migration paths are
+unchanged. Unused gates are reclaimed, and fork children reset inherited gates.
+
 ## Quality checks
 
 ```powershell

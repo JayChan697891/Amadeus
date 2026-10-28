@@ -1354,6 +1354,11 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/unit/test_core_admission.py::test_same_database_core_instances_share_admission_while_other_database_progresses",
+        "tests/unit/test_core_admission.py::test_waiter_strong_reference_prevents_gate_replacement_and_unused_gate_is_reaped",
+        "tests/unit/test_core_admission.py::test_timeout_precedes_sql_or_denial_audit_and_payload_validation_precedes_gate",
+        "tests/unit/test_core_admission.py::test_admission_releases_after_connection_body_audit_close_and_base_exceptions",
+        "tests/unit/test_core_admission.py::test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent",
         "tests/unit/test_coordination_benchmark.py::test_missing_denial_audit_fails_even_when_claims_and_latency_pass",
         "tests/unit/test_coordination_benchmark.py::test_equal_audit_totals_do_not_mask_identity_or_outcome_corruption",
         "tests/unit/test_coordination_benchmark.py::test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup",

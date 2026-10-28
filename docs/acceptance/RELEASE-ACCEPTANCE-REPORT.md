@@ -1,5 +1,39 @@
 # Release Acceptance Report
 
+## M8 process-local admission experiment - 2026-10-27 America/Tijuana
+
+Source `b10bf99d0c8d814762849f86e76565c2c40ba394` adds weak per-database process-local
+thread admission after payload validation. The original connect/transaction/auth/
+replay/lease/rollback/denial-audit/close body is byte-identical; owner and migration
+paths are untouched. Acquisition timeout is30s before SQL, additive to existing
+SQLite/audit waits. No fairness, bounded queue, recursion, cross-process lock or
+security guarantee is claimed. Strong waiter references prevent gate replacement;
+unused gates reclaim and child-after-fork resets both gate registry and mutex.
+Astra independently reviewed the production source and found no blocker.
+
+Root independently ran Windows Python3.14 broad Core/security/concurrency/recovery/
+transport scope432pass3skip, zero failures/errors; Python3.11 scope37pass1skip.
+Windows skips: POSIXfork and2symlink-privilege-dependent cases. Linux selected
+Core/fork/security/real two-MCP-process scope122pass2Windows-junctionskips, zero
+failures/errors. The inherited-Core fork test actually passed while parent gate
+and registry mutex were held. Root matched165 Git source inputs and55 source
+imports; sources stayed unchanged. A first root review incorrectly assumed zero
+Linux skips; it was corrected from raw XML without rerunning or promoting skips.
+Ruff/format/mypy55modules passed.
+
+Identical32worker×8round timing includes all admission waiting and uses the same
+1000ms p95 threshold. Observed p95=107.837ms,256 claim attempts,8 success/248 denial
+audits exactly matched,0 audit defects, all checks passed. Earlier strict baseline
+p95=2303.126ms and its failure remain preserved. This is an observed one-host
+workload improvement, not proof of global fairness, all-load performance or a
+universal SLO. Cross-process SQLite authority and earlier8-process startup failure
+are not declared repaired.
+
+Evidence: `D:/agentsync-debug/core-admission-root-e9ou5xav/`,
+`D:/agentsync-debug/core-admission-perf-qqof4ky8/`, and
+`D:/agentsync-debug/core-admission-linux-isvv1r9f/`. This is M8 performance work,
+not a new M5 phase or acceptance. All42formalnot_run and Release BLOCKED.
+
 ## Linux selected-source supplement - 2026-10-27 America/Tijuana
 
 Exact source `7c641e90bf0909c3f8ee68335817d817b34e5eaf` passed49 selected retry,
