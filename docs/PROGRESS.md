@@ -1,11 +1,22 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha21 full-source supplement at `f162ee13e5e70303486a3ab1ca79bec3e18503a3`:
+Linux WITH required realDocker1832pass/3Windows-specificskips/0fail,error;
+1835uniqueIDs retain1821old+14new.375Gitinputs and60runtimebytes match;26raw
+Docker records/26fullIDs independently confirmed absent. Astra saved-evidence
+review no blocker; ownedVM26724 gracefully off. WindowsFULL600s TIMEDOUT,
+noJUnit/no fullpass;2likelypending cases eachpassed (~7.7/7.9s), cumulative setup
+cost inferred, Gitstartup not separately measured. No blindfullrerun. Existing
+selectedsource/package50passes stay separate. All42not_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha21-full-source-summary.json (164KB raw archive).
+
 Alpha21 (`cb71f0e232253561a6da4ae5f346b312f94ce91b`) fixes a reproduced
 Unicode project-ID crash in offline planning with ASCII stdout. JSON escaping
 preserves parsed results and unverified markers. Root Windows3.14/3.11 source
 and fresh Windows wheel/sdist each50pass0skip, identical IDs (old49+1new),60
 modulehashes matched; lint/format/mypy pass. Red/green logs, JUnit and builds in
-one archive. Linux/macOS/fullsuite/actualclients NOT RUN; ReleaseBLOCKED and
+one archive. That selected checkpoint did not run Linux/macOS/full suites;
+subsequent source evidence is above. Actualclients NOT RUN; ReleaseBLOCKED and
 all42formalnot_run. See acceptance/evidence/alpha21-local-summary.json.
 
 Alpha20 (`b2e855947a30d4ee57b0d947ec9420816c84eeb0`) adds offline

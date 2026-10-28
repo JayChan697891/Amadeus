@@ -80,11 +80,11 @@
     "members_independently_rehashed": true
   },
   "not_run": [
-    "Linux alpha21",
     "macOS alpha21",
-    "full source or installed suite",
     "real clients and autonomous relay",
-    "M5/Release final acceptance"
+    "M5/Release final acceptance",
+    "full Windows source timed out / not completed",
+    "full installed suites"
   ],
   "release": "BLOCKED",
   "formal_requirements": {
@@ -93,5 +93,6 @@
   "constraints": [
     "No Actions, paid calls, real clients, account edits or retry of closed Codex attempt",
     "VM remains stopped; all debug data D and source F"
-  ]
+  ],
+  "full_source_supplement": "alpha21-full-source-summary.json"
 }

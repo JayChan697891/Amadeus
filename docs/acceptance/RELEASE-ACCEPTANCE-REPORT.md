@@ -1,5 +1,41 @@
 # Release Acceptance Report
 
+## Alpha21 complete Linux source regression and incomplete Windows run
+
+Frozen source `f162ee13e5e70303486a3ab1ca79bec3e18503a3` has the same60
+runtime module bytes as alpha21 product `cb71f0e232253561a6da4ae5f346b312f94ce91b`.
+One complete local Linux run, including the required real Docker tier, produced
+**1,832 passed,3 Windows-specific skips,0 failures/errors** in about454.8s.
+All1,821 prior alpha17 case IDs remain, with14 added. All375 input file hashes
+were independently matched to frozen Git bytes; actual imports before/after
+matched the package/source module identities. The3 skipped cases concern Windows
+case folding and junction boundaries; exact IDs/reasons are in the summary.
+
+There are26 raw Docker records and26 full recorded container IDs. A separate
+postcheck confirmed all26 absent. Owned VM26724 was identity-checked and stopped
+gracefully, preserving disk/logs. Astra independently inspected saved XML, case
+identity retention, runtime bindings, container observations and shutdown evidence;
+the review executed no tests and approved reporting this limited result.
+
+The separate Windows full run reached its600s observation ceiling: **TIMED OUT /
+NOT COMPLETED**, no final JUnit, `passed=false`. Partial dots are not counted as
+completed tests. The likely pending proof/profile-corruption cases passed in a
+separate fresh-fixture diagnostic, **2 passed in15.72s**, with individual7.674s /
+7.872s JUnit times. Continuing fixture timestamps and these passes support
+cumulative setup cost rather than a stationary hang; this is inference, and Git
+startup contribution was not measured separately. A diagnostic collection bootstrap
+error is preserved alongside the corrected collection. No blind600s full rerun.
+Completion requires per-case progress/durations and a larger declared observation
+budget or separately reported partitions; this does not establish an ETA.
+
+The earlier4 selected50-case source/installation runs remain valid separate
+observations. Full installed suites, macOS, actual clients, autonomous relay and
+formal acceptance remain **NOT RUN**; Windows full remains **INCOMPLETE**.
+All42 formal requirements remain not_run; M5/Release remain **BLOCKED**.
+Raw evidence, diagnostics, reproduction drivers and manifests are in the164KB
+archive referenced by `evidence/alpha21-full-source-summary.json`. No Actions,
+paid calls, client upgrades, account edits or retry of the closed Codex attempt.
+
 ## Alpha21 planning Unicode output repair — selected local validation
 
 Frozen `cb71f0e232253561a6da4ae5f346b312f94ce91b` (0.3.0a21/schema12)
@@ -16,8 +52,9 @@ match frozen source; Ruff/format/mypy60/diff passed. Raw failure and green logs,
 JUnit, artifacts and reproduction drivers are preserved in the manifest-checked
 archive identified by `evidence/alpha21-local-summary.json`.
 
-Alpha21 Linux/macOS, full suites, real clients and autonomous relay **NOT RUN**.
-No VM or provider was started for this repair. All42 formal requirements remain
+That selected checkpoint ran no Linux/macOS or full suites; the later full-source
+results are recorded above. Real clients and autonomous relay remain **NOT RUN**.
+No VM or provider was started for the selected repair checks. All42 formal requirements remain
 not_run; M5 and Release remain **BLOCKED**. No Actions, paid calls or account edits.
 
 ## Alpha20 offline reported-usage command — selected local validation

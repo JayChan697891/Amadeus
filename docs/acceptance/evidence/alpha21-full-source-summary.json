@@ -1,0 +1,104 @@
+{
+  "source_commit": "f162ee13e5e70303486a3ab1ca79bec3e18503a3",
+  "runtime_product_commit": "cb71f0e232253561a6da4ae5f346b312f94ce91b",
+  "version": "0.3.0a21",
+  "linux_full_source": {
+    "commit": "f162ee13e5e70303486a3ab1ca79bec3e18503a3",
+    "scope": "complete local Linux SOURCE suite including required real Docker tier; existing dependency venv and pinned preloaded image",
+    "image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "sqlite": "3.53.4",
+    "source_files": 375,
+    "status": "COMPLETED",
+    "formal_release": "BLOCKED",
+    "real_clients": "NOT RUN",
+    "deadline_seconds": 1200,
+    "owned_pytest_pid": 2928,
+    "exit_status": 0,
+    "wall_seconds": 454.816968381,
+    "source_unchanged": true,
+    "junit": {
+      "tests": 1835,
+      "passed": 1832,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    "passed": true
+  },
+  "all_375_inputs_match_frozen_git_bytes": true,
+  "runtime_modules_matching_package_and_windows": 60,
+  "prior_1821_case_ids_retained": true,
+  "added_case_count": 14,
+  "linux_skips": [
+    {
+      "id": "tests.security.test_file_locks.test_windows_case_and_separator_aliases_conflict",
+      "reason": "Windows conflict keys case-fold"
+    },
+    {
+      "id": "tests.security.test_resource_paths.test_new_ancestor_junction_rejects_even_identical_physical_root",
+      "reason": "Windows junction-specific ancestor boundary"
+    },
+    {
+      "id": "tests.security.test_resource_paths.test_junction_is_denied",
+      "reason": "Windows junction-specific boundary"
+    }
+  ],
+  "docker_postcheck": {
+    "recorded_full_ids": 26,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "vm_shutdown": {
+    "transport_exit": 0,
+    "verified_owned_pid": 26724,
+    "forced_stop_used": false,
+    "stopped": true,
+    "disk_preserved": true
+  },
+  "windows_full_source": {
+    "status": "TIMED OUT / NOT COMPLETED",
+    "passed": false,
+    "junit": "NOT PRODUCED",
+    "deadline_seconds": 600,
+    "source_unchanged": true,
+    "completed_test_count": "UNKNOWN; partial progress not counted"
+  },
+  "windows_diagnostic": {
+    "cases": [
+      {
+        "nodeid": "tests.integration.test_candidate_intents::test_controlled_intent_corruption_rejected_across_public_readers[proof_sha256-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc]",
+        "seconds": 7.674,
+        "status": "passed"
+      },
+      {
+        "nodeid": "tests.integration.test_candidate_intents::test_controlled_intent_corruption_rejected_across_public_readers[profile_sha256-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc]",
+        "seconds": 7.872,
+        "status": "passed"
+      }
+    ],
+    "elapsed_seconds": 16.059355900004448,
+    "status": "2 isolated passes, not full-suite acceptance",
+    "interpretation": "Continuing fixture timestamps and isolated passes support cumulative setup cost over an isolated hang; inference only. Git startup contribution not separately measured.",
+    "initial_collection": "Base-interpreter collection lacked pywin32 .pth bootstrap and failed; corrected diagnostic processed site .pth; both logs retained.",
+    "next_condition": "Full Windows execution requires per-case progress/durations and a longer declared observation budget or separately reported partitions; no blind 600s rerun."
+  },
+  "independent_astra_review": "Saved Linux XML/IDs/module bindings/container IDs/shutdown reviewed; no blocker to this limited result. Windows full incomplete acknowledged. No tests executed by reviewer.",
+  "archive": {
+    "path": "releases/0.3.0a21/checkpoints/full-source-f162ee1-local.tar.gz",
+    "bytes": 164368,
+    "sha256": "3789e76aefdfa0d2ea0cc30aa1e83ada8772ce4ed3eb7bf5e545b339d611f6ff",
+    "manifest_members": 52,
+    "members_independently_rehashed": true
+  },
+  "formal_requirements": {
+    "not_run": 42
+  },
+  "release": "BLOCKED",
+  "not_run": [
+    "full installed alpha21 suites",
+    "macOS alpha21",
+    "actual clients and autonomous relay",
+    "M5/Release final acceptance"
+  ]
+}
