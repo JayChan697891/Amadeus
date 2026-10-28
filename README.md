@@ -53,6 +53,109 @@ Every MCP process must use the same absolute data directory. Defaults are indepe
 Never put the live WAL database on a network share. Keep project admin/session tokens private.
 Stdio MCP hosts have local process access; Alpha is not a hostile-agent sandbox.
 
+## Read-only scheduling
+
+`python -m agentsync plan < dispatch-input.json` prints offline dispatch advice.
+In PowerShell: `Get-Content -Raw -Encoding utf8 .\dispatch-input.json | python -m agentsync plan`.
+The bounded UTF-8 JSON input requires `state` (an explicit project-state snapshot),
+`project_id`, `worker_agent_ids` (an array), and `now` (a caller-supplied timestamp).
+Optional fields are `global_limit`, `per_agent_limit`, `limit`, and
+`required_capabilities` (task IDs mapped to capability arrays). No database or
+default state is opened. Output remains unverified planning advice; it neither
+authorizes nor starts work. Extra command arguments and input fields are rejected.
+
+Read-only scheduling helpers `agentsync.scheduling.plan_tasks` and
+`agentsync.dispatch_planning.plan_dispatches` accept optional
+`required_capabilities={task_id: ("python", "tests"), ...}`. An explicit mapping
+must cover every task in the snapshot, including terminal tasks; an empty tuple
+means no requirement. Dispatch compares all required tokens with each worker's
+self-reported capabilities, preserving dependencies, priority and load limits.
+Tokens are case-sensitive. Omitting the mapping preserves the previous behavior.
+The returned `capability_filter` identifies the mode, while capability verification
+and Core authorization remain unverified. Recommendations never claim or run work.
+
+## Isolated simulated workflow
+
+`python -m agentsync demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
+four-task diamond with two Mock workers, capability/dependency planning, one failed
+attempt followed by retry, and peer simulated reviews. The scratch parent must
+already exist. Each invocation creates and removes its own private child database;
+existing parent projects are never selected. The original `demo` behavior is unchanged.
+
+The Python API `agentsync.mock_workflow.run_mock_workflow_demo` also accepts bounded
+`max_attempts_per_task` (1..3), `attempt_budget` (1..16), and optional
+`max_elapsed_seconds` (greater than zero, at most 60). The elapsed admission budget
+includes private setup. Once expiry is observed, new claims/starts stop, active
+Mock runs are cancelled and owned tasks fail; unstarted dependents stay pending.
+It cannot preempt synchronous operations or hanging awaited calls. Omit it to
+preserve the original behavior. Reports explicitly mark all results
+as simulation-only/unverified. This does not enable real clients, production
+automatic review, durable recovery, AI decomposition or paid services.
+
+## Retry advice
+
+`agentsync.retry_planning.plan_retry(RetryPolicy(...), ...)` calculates deterministic
+capped exponential backoff from a caller-reported failure. A numeric Retry-After
+minimum is respected even above the backoff cap. Attempt/global budgets and the
+next-attempt deadline can stop a retry. Unknown or unconfirmed outcomes never
+produce a retry recommendation; a timeout requires a confirmed outcome.
+
+This function never waits, starts an adapter or changes Core. Caller confirmation
+is not authorization or proof an external action is safe to repeat. Advice is
+unverified and must be rechecked before any later dispatch. Real provider limits
+and autonomous retry remain unverified.
+
+## Reported usage
+
+`agentsync.usage.UsageLedger(project_id)` records typed adapter results through
+`record_result(result)` and returns an immutable `summary()`. Identical run
+observations count once; conflicting observations reject. Mock records are
+separate from protocol totals. Each metric distinguishes a complete value,
+known partial sum and unknown records, so missing usage is never reported as zero.
+Elapsed time describes the adapter lifecycle interval, not provider/API duration.
+These are caller-reported observations: costs remain unknown and billing/client
+verification remains false. `ledger.to_json()` exports a bounded normalized
+checkpoint; `UsageLedger.from_json(expected_project_id, text)` restores a new
+ledger, revalidates records and recomputes totals. Replay deduplication, capacity,
+unknown values and Mock separation survive restoration. Checkpoints include
+caller-supplied identifiers; they contain no raw output/client metadata. The
+32 MiB format grants no authenticity. Both methods perform no file, database or
+network I/O: callers control storage and crash-safe writes. They do not restore
+Agent processes or tasks and do not add transport/API-call accounting.
+
+`agentsync usage --project-id PROJECT_ID` reads one UTF-8 checkpoint from stdin
+and prints the same aggregate summary. This offline CLI accepts at most1 MiB;
+larger checkpoints can use the Python interface's32 MiB limit. It opens no Core
+database and writes no files. The project ID is a caller namespace assertion,
+not authentication. Costs stay unknown and client/billing verification stays
+false. Extra options, invalid input and a mismatched checkpoint project return
+a fixed error with exit status2, without printing the private input.
+
+## Local contention diagnostic
+
+`python tools/benchmark_coordination.py --scratch-parent ABSOLUTE_EXISTING_DIRECTORY
+--workers 8 --rounds 8 --p95-budget-ms 1000` (one command line) creates and removes
+an owned child project. Each round measures simultaneous claims for one task and
+checks one winner, expected version conflicts, persisted state and SQLite integrity.
+It also checks exact claim-audit identities/outcomes after timing; missing, duplicate,
+unexpected or mismatched events fail even when totals or latency look correct.
+Only aggregate audit counts are reported.
+The JSON report includes actual claim-attempt throughput and nearest-rank latency
+percentiles. Setup, barrier wait, verification and cleanup are excluded from timing.
+The declared p95 threshold is a diagnostic budget, not a Release SLO. Exit codes
+are 0 for passing the declared workload, 1 for failure and 2 for invalid options.
+No existing database or real Agent is selected; formal acceptance stays false.
+
+## Core thread admission
+
+Core agent operations group waiting threads by resolved database path before
+opening SQLite, while retaining all existing transaction/auth/replay/lease/audit
+logic. Admission is process-local; SQLite still controls cross-process writes.
+A wait can time out after 30 seconds before SQL begins. That wait is additive to
+SQLite waits and audit work, so it is not a whole-operation deadline. No fairness,
+queue-size, recursion or security guarantee is added. Owner/migration paths are
+unchanged. Unused gates are reclaimed, and fork children reset inherited gates.
+
 ## Quality checks
 
 ```powershell

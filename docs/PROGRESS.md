@@ -1,4 +1,322 @@
-# M5B3B2B candidate execution intent guard in development
+# Current: M5 frozen; isolated M6-M8 components
+
+Alpha21 Windowsfull source066b8dd completed1800pass/35skips/0fail,error in1082.8s.
+377Gitinputs/60actualmodules/1835caseIDs independently matched. Bootstrap main
+guard added before spawn, original+intervention preserved; spawn case passed.
+One anyio rewrite warning retained. Source/product unchanged, not alpha22 proof.
+See acceptance/evidence/alpha21-windows-full-summary.json. M5/ReleaseBLOCKED.
+
+Alpha21 installed supplement: fresh offline localLinux wheel and rebuilt sdist
+each1832pass/3Windows-specificskips/0fail,error, same1835IDs as full source.
+60actualinstalledmodules,175Git source/test/tool inputs and both artifact hashes
+independently matched;52rawDocker records/fullIDs all independently absent.
+No new product change; source productcb71f0e. Windowsfull066b8dd stillRUNNING.
+See acceptance/evidence/alpha21-installed-full-summary.json. M5/ReleaseBLOCKED.
+
+Alpha21 full-source supplement at `f162ee13e5e70303486a3ab1ca79bec3e18503a3`:
+Linux WITH required realDocker1832pass/3Windows-specificskips/0fail,error;
+1835uniqueIDs retain1821old+14new.375Gitinputs and60runtimebytes match;26raw
+Docker records/26fullIDs independently confirmed absent. Astra saved-evidence
+review no blocker; ownedVM26724 gracefully off. WindowsFULL600s TIMEDOUT,
+noJUnit/no fullpass;2likelypending cases eachpassed (~7.7/7.9s), cumulative setup
+cost inferred, Gitstartup not separately measured. No blindfullrerun. Existing
+selectedsource/package50passes stay separate. All42not_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha21-full-source-summary.json (164KB raw archive).
+
+Alpha21 (`cb71f0e232253561a6da4ae5f346b312f94ce91b`) fixes a reproduced
+Unicode project-ID crash in offline planning with ASCII stdout. JSON escaping
+preserves parsed results and unverified markers. Root Windows3.14/3.11 source
+and fresh Windows wheel/sdist each50pass0skip, identical IDs (old49+1new),60
+modulehashes matched; lint/format/mypy pass. Red/green logs, JUnit and builds in
+one archive. That selected checkpoint did not run Linux/macOS/full suites;
+subsequent source evidence is above. Actualclients NOT RUN; ReleaseBLOCKED and
+all42formalnot_run. See acceptance/evidence/alpha21-local-summary.json.
+
+Alpha20 (`b2e855947a30d4ee57b0d947ec9420816c84eeb0`) adds offline
+`agentsync usage --project-id ID`: strict1MiB stdin checkpoint, existing summary,
+no Core/files/client calls; unknown costs and caller-reported markers preserved.
+Root Windows3.14/3.11 source and fresh Windows wheel/sdist each49pass0skip;
+60actualmodulehashes and identical case sets verified; lint/format/mypy pass.
+Initial test-assertion failure and missing-httpx collection error retained in one
+archive. Linux/macOS/fullsuite/realclients NOT RUN. All42not_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha20-local-summary.json. Alpha19 Astra review approved
+its limited component/source/evidence scope; it is not Work/M5 acceptance.
+
+Alpha19 (`cd2e8d75555e954b41c421f1dfeb3308032ba440`) exposes Cursor's opt-in
+contextual factory through the unchanged shared launch guard. No built-in Cursor
+plan or default startup. Root Windows3.14/3.11 each455pass0skip (451old IDs+4new);
+fresh Windows/Linux wheel/sdist each122pass0skip,59actualmodulehashes matched;
+all4installed case sets identical, lint/format/mypy pass. One1MB main archive plus
+29KB Linux supplement retain logs/JUnit/builds/drivers/manifests. Initial SSH upload
+failed before tests and is preserved; fresh guest run passed. OwnedVM safely off.
+macOS/full suite/actualclients NOT RUN; all42formalnot_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha19-local-summary.json. No real-client retry or Actions.
+
+One newly authorized Codex factory subscription test stopped at preflight:
+PATH/npm native CLI reports0.162.0; the pinned profile requires0.164.0-alpha.11.1.
+BLOCKED;0model attempts/0factory calls. Login/actual response NOT RUN. No retry,
+upgrade or loosened gate. See acceptance/evidence/codex-factory-preflight-20261028.json.
+
+Alpha18 adds opt-in pinned ClaudeProcessFactory on the existing launch context.
+Flags/shared engine/context/Codex/parsers/Core unchanged; defaultsunsupported.
+Root Windows3.14/3.11 each451pass0skip (prior446retained+5new). Fresh Windows/
+Linuxwheel+sdist each118pass0skip,59actualmodulehashes/caseIDs matched. This is
+selected validation; fullAlpha17Linux evidence is not promoted toAlpha18.
+Managedhooks/configcredentials/billing/isolation/actualClaude remain unverified.
+Astra source/results review no blocker. All42formalnot_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha18-local-summary.json.
+
+Alpha17 adds opt-in pinned CodexProcessFactory + task/run/loop-bound launch
+observation: stop/original-deadline check and one consumed local attempt before
+capture. Defaultsunsupported; legacy behavior preserved; no liveclientcall.
+Root Windows3.14/3.11 each446pass0skip; fullLinux WITHrequiredDocker1818pass3
+Windows-skips/0fail/error,1821IDs (prior1811retained+10new). Fresh Windows/Linux
+wheel/sdist each113pass0skip,58actualmodulehashes matched; two original fixture/
+portability failures preserved. Astra source/results review no blocker. All42not_run,
+ReleaseBLOCKED. See acceptance/evidence/alpha17-local-summary.json.
+
+Alpha16 actual localLinux Docker supplement at7f658b1:26passed0skip/fail/error,
+fixed preloaded image/no pull;56 actual source module bytes verified before/after.
+All26 match Docker case IDs skipped in the prior ordinary full run;3platformskips
+remain. Separate observations, no combined single-suite claim. All42formalnot_run,
+ReleaseBLOCKED. See acceptance/evidence/alpha16-docker-local-summary.json.
+
+Development0.3.0a16 adds offline stdin-only `agentsync plan` dispatch advice.
+Root Windows3.14/3.11 each44pass; lint/format/mypy56 pass. Fresh Windows3.14
+wheel installed offline: CLI module/entrypoint smoke, dependencycheck and56
+actual module hashes pass; no Core state opened. Linux startup10pass plus
+8-process diagnostic pass; original cause unknown. Corrected fullLinux at2da1a89:
+1782pass/29skip/0fail,error; all1807oldIDs retained+4newCLIcases;6oldfailures pass.
+See acceptance/evidence/alpha16-local-summary.json.
+Original failed attempt preserved. All42formalnot_run; ReleaseBLOCKED.
+
+Local developer startup diagnostic at1eb17be: fixed owned interpreter children,
+service-module hash pin, import/connect/WAL/init phases, private new shared DB,
+integrity/FK/schema checks and bounded parent observation with kill/reap cleanup.
+Root Windows Python3.14/3.11 each4pass0skip; Ruff/format/focused mypy pass.
+Actual8processes completed in~0.356s; parent file preserved. No production edits.
+Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
+See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
+
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
+environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
+junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
+785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
+IndependentAstra source+result review approves scopeddevelopment only. Same32×8
+budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
+256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
+OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
+See acceptance/evidence/alpha15-local-summary.json.
+
+M8 bounded process-local Core admission implemented; existing SQL/auth/replay/lease/
+audit/close body byte-identical, owner/migration paths unchanged. Astra source
+review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
+37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
+andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
+versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
+Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
+core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
+
+Actual local Linux source supplement at7c641e9:49pass/0skip/fail/error,54 actual
+source imports and163 Git inputs independently matched; sources unchanged. Guest
+Python3.14.7/SQLite3.53.4. D:alpha14-linux-components-gktwi5mr. Existing dependency
+venv only, not fresh Linux packages/fullmatrix; old startup failures NOT CLEARED.
+Formal42not_run/releaseBLOCKED.
+
+M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
+Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
+Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
+Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
+2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
+diagnostic extends the earlier2982539 packaged checkpoint.
+D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
+
+Astra final scoped evidence review found no blocking measurement issue. Separate
+32worker audit-count probe matched8success/248denied events; p95~2285.607ms still
+FAILED1000ms. This does not prove generalized audit durability. No product/audit
+code change. D:alpha14-audit-count-bg164krq. Linux QEMU currently not running;
+no new Linux job started, old failures remain open. Release stays BLOCKED.
+
+Development0.3.0a14 product2982539 frozen. Fresh offline Windows Python3.14 and
+Python3.11 wheel/sdist each370pass/0skip/fail/error; root matched all370-case sets,
+54 actual imported modules per environment and309 Git package inputs. Dependency
+checks and installed CLI demo all4 passed; Python3.11 sdist standalone diagnostic
+passed. Ruff/format/mypy54 pass. No current Linux/macOS/fullsuite/real relay claim.
+32worker p95>1000ms diagnostic failure remains open; all42formalnot_run/releaseBLOCKED.
+See acceptance/evidence/alpha14-local-summary.json and Release Acceptance Report.
+
+M6 Claude pinned restricted CLI preparation implemented without launching. Explicit
+model/version/binary hash, fixedargv/stdin, filteredenv and bounded file checks;
+all auth/billing/tool/sandbox/actualclient markers false. Root scoped Windows3.14
+190pass, Python3.11 plan6pass; Ruff/format/mypy54 pass. Astra final source review
+no blocker. Separate nativeCLI help/version-only2.1.295 and installed hash-only
+preparation observed; completeflags/auth/realturn NOT RUN.
+Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
+
+M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
+workloads measured456 claim attempts: all functional checks passed, no unexpected
+errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
+budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
+excluded; no Release SLO/platform claim. D:m8-contention-root-mqb8e39b.
+M8-02 partial; old Linux failures open; all42formalnot_run; release BLOCKED.
+
+M7 pure retry advice implemented: deterministic capped exponential backoff, numeric
+Retry-After minimum, explicit confirmed-outcome requirement, attempt/global/time
+budgets and precision-safe stops. Root Windows3.14 retry/Mock/collector54pass;
+Python3.11 retry18pass; Ruff/format/mypy53 pass. Only the caller-controlled Mock
+composition waits/starts; planner performs no execution. Evidence D:m7-retry-root-09rucwxf.
+All42 formal not_run; real retry and release remain BLOCKED.
+
+M8 normalized usage checkpoint export/restore implemented without I/O. Strict
+namespace/format/bounds/duplicate checks rebuild a new ledger and recompute totals;
+unknown costs, replay identity, capacity and Mock separation survive restoration.
+Sol implemented; Astra High reviewed final usage.py SHA f3318ead... with no blocker
+(source review only). Root independent Windows3.14 scoped19pass, Python3.11 usage
+15pass; two fresh-interpreter restores passed. Ruff/format/mypy52 pass.
+D:m8-usage-recovery-root-nas39osp. Explicit caller storage, no automatic durable
+files/Agent recovery. Unreleased source; all42 formal not_run; release BLOCKED.
+
+M7 Mock workflow now accepts optional finite elapsed admission budget (0,60]s,
+including owned setup. Expiry stops claims/starts, cancels active simulations,
+fails owned Core tasks and leaves descendants pending. Default output preserved.
+Root Windows3.14 affected52pass; Windows3.11 workflow14pass; updated collector
+policy1pass; real monotonic setup-expiry smoke passed. Ruff/format/mypy52 pass.
+This is no hard watchdog; source component only, new packages NOT RUN. Evidence:
+D:m7-time-budget-root-ewvjv1i0. All42 formal not_run; release BLOCKED.
+
+M8 actual crash/lease recovery component added: abrupt process exit73, real lease
+expiry, one-time reclamation, stale owner/replay rejection, successor review and
+dependency continuation survive another fresh process. Root independent Windows
+Python3.14 recovery/concurrency/collector group157pass; Python3.11 recovery2pass.
+No runtime changes; old Linux contention failures remain unresolved. M8-02 partial,
+all42 formal not_run and release BLOCKED. Raw D:m8-recovery-root-nd076l_6.
+
+Final developmenta13 package source77426fa: fresh offline Windows Python3.14
+wheel/sdist and Python3.11.15 wheel each318pass/0skip. Root verified matching318-case
+sets,52 actual imported module hashes and no prior unraisable/closed-pipe warnings.
+Dependency checks and installed CLI Mock workflow passed in all3 environments.
+Ruff/format/mypy52modules passed. Rawalpha12 301pass/10fail and interrupted fullsuite
+remain preserved; current full OS/Python matrix/real relay/release remain BLOCKED.
+
+Actual Python3.11 alpha12 package run exposed301pass/10fail from equal-clock fresh
+captures falsely rejected as stale; warnings preserved. Developmenta13 uses private
+creation order plus loop identity, without weakening stale/reuse checks. Root3.11
+source111pass; Sol3.14affected108pass; synthetic RED3freshfail/GREEN7pass. Astra
+source review found no blocker; subsequent installed-package checks are recorded above.
+
+Development alpha0.3.0a12 frozen at9ebb13e: fresh offline Windows Python3.14
+wheel/sdist each311pass/0skip, pipcheck and actual installed CLI Mock demo pass.
+Root matched52 imported module hashes,54 distributions per environment,302 Git
+package inputs and both311-case ID sets. Source package now includes missing tools.
+This is component package validation; current Linux/full matrix/real relay blocked.
+
+M8 caller-reported usage ledger implemented: typed normalized records, replay
+deduplication, strict bounds/overflow, Mock separation and unknown-aware totals.
+Root scoped suite163pass/0skip; Ruff/format/mypy52modules pass. Actual Cursor helper
+results compose with the ledger without Core mutation or invented token/billing data.
+No provider billing, subscription estimate, transport accounting or recovery claim.
+
+Isolated Mock workflow demo implemented: fresh disposable child Core, four-task
+diamond, overlapping Mock starts, bounded retry/attempt budget and distinct peer
+simulated reviews. Independent targeted suite164pass/0skip; lint/format/types pass.
+Astra's source-only component review found no blocker; real release stays BLOCKED.
+Broader Windows attempt was supervisor-interrupted to avoid unrelated repeated
+database checks; NOT COMPLETED, no full-suite pass count. Raw evidence retained.
+
+M7 optional capability-aware task/dispatch advice implemented: explicit complete
+task requirements match self-reported worker declarations before truncation;
+dependency validation, priorities and load limits preserved. Independent affected
+Windows suite267pass/0skip, Ruff/format/mypy pass. Actual Core viewer claim still
+denied despite matching capability. No auto-claim/execute or verified capability.
+
+Cursor standalone terminal-JSON parser and host-factory adapter implemented;
+independent affected Windows suite280pass/0skip, Ruff/format/mypy50modules pass.
+M6-05 has eight component selectors; formal requirements remain not_run. Known
+local Python fixtures preserve Core state; actual Cursor launch/permissions/relay
+remain NOT RUN. Shared lifecycle code was unchanged. Existing Linux blockers persist.
+
+M6 heterogeneous RunManager implemented: scoped routing for trusted registered
+adapters, cancellation-safe request deduplication, bounded history and nonblocking
+dispatch inspection. Independent Windows affected regression: 137pass/0skip;
+Ruff/format/mypy pass. Core remains unchanged by protocol fixture success.
+See M6-ADAPTERS.md and acceptance/RELEASE-ACCEPTANCE-REPORT.md. Cursor and actual
+clients/relay remain NOT RUN; M5 blockers and earlier Linux failures remain open.
+
+Final local source test-infrastructure: 1041pass/5skip, Ruff/format/mypy/diff pass.
+Owned child cleanup and opt-in bounded private per-phase journal verified.
+Linux concurrency failures/package timeout remain unresolved; release BLOCKED.
+
+Never-started capture cancellation repaired in product7d01aed: actual supervised
+Codex/Claude reproduction now terminates unknown and keeps its slot. Windows source
+1019pass/2skip; fresh offline wheel/sdist98pass each; Linux focused source98pass.
+Linux package attempt failed at600s install/1200s transport bounds; wheel postinstall
+and sdist checks NOT RUN, same-guest evidence recovered without retry. Current Windows actual fullsuite1587pass/31skip,
+322 originalfiles unchanged, driverFAIL from21 generatedbytecodecache additions.
+Linux full INTERRUPTED:1completedpass/4fail plus1anonymousunfinishedrecord;
+concurrentCore30s deadlines failed, remaining/DockerNOTRUN. Python3.11 actual NOT RUN;
+formal release/real clients/relay remain BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
+Fresh Linux wheel/sdist each641pass/0skip/fail/error, normal offline installs; root verified47 imported/post-test module hashes and52 distributions within each isolated venv,10 stage exits, actual XML and source317 unchanged. This completes the component installation supplement only; formal release/real-client/full matrix gates remain blocked.
+
+Linux follow-up:641 components passed/0skip/fail/error,317 frozen files unchanged; root tied code/tests/tools/requirement Git blobs to da61adf. Fresh package installs remain the separate Windows640pass/1skip each; no full current platform matrix or real-client acceptance.
+
+Latest shared lifecycle / ClaudeAdapter prototype:47 modules/317 frozen files; source1014pass/2skip; installed wheel/sdist640pass/1skip each. Root independently checked actual XML/artifact/module bytes and Codex public-record compatibility. Default startup unsupported; zero actual clients/credentials/Core wiring. M6-04 eight component selectors, all42/16 formal not_run, release BLOCKED; current Linux component evidence pending separately.
+
+Latest Claude OFFLINE projection:45 modules/310 frozen files; source977pass/2skip; fresh wheel/sdist603pass/1skip each; Ruff/format/mypy pass. Root verified actual XML/package bytes. M6-04 partial component mapping only; all42/16 formal not_run; zero real Claude calls, release BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
+Complete frozen Windows product248d0be:1441pass/30skip/0fail/error;1471 actual cases,305 files/44 modules unchanged. Root independently checked XML/hashes. See acceptance/evidence/full-windows-248d0be-20261025.json. Claude draft not included; Linux complete suite still running.
+
+2026-10-25 latest: pure fixed readonly invocation plan and optional explicit child
+environment implemented. Root verified302 files/44 runtime modules: source873pass/
+1skip; fresh wheel/sdist499pass each; local Linux421pass; Ruff/format/mypy pass.
+One NEW separately authorized actual installed-wheel CodexAdapter+plan+environment
+run completed once with exit0 and exact reply. All19 fixture hashes and pending
+Core task before/after/reopen stayed unchanged. Warning/model-list refresh timeout
+preserved; no retry, API key, Actions or remote mutation. This is a limited response
+smoke; permissions/cancel/timeout/relay/M9 remain unverified and release BLOCKED.
+See acceptance/RELEASE-ACCEPTANCE-REPORT.md and latest evidence summaries.
+
+2026-10-25 continuation: host-factory CodexAdapter now implements the six-method
+generic lifecycle with default unsupported startup, bounded instance history,
+request/task deduplication and fail-closed unknown slots. Shared/preexisting
+capture misrouting was reproduced (2 real failed regressions) and repaired
+without cancelling another run's handle. Protocol completion does not mutate
+authoritative Core state (3 actual temporary Core/SQLite tests).
+Root independently verified296-file/43-module snapshot: source851pass/1skip;
+fresh wheel/sdist477pass each; local Linux399pass. Ruff/format/mypy pass.
+Controlled public-factory-delay start cancellation is now tested; strict OS
+startup bound, live launcher, server cancellation and real adapter acceptance
+remain unverified. No additional real model call, Actions or remote change.
+See M6-ADAPTERS.md and D:/agentsync-debug/CODEX-ADAPTER-LOCAL-CHECKPOINT-20261025.json.
+Earlier checkpoints below retain their original results and limitations.
+
+2026-10-25 America/Tijuana: read original specification, current code, all stored
+M5 archive evidence, live open PRs and Issues7/11. Single exit checklist and exact
+BLOCKER/DEFERRED/limited VERIFIED scope: [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md).
+Current frozen local snapshot Windows:1303pass/30skip/0fail/error; root independently
+verified source/package/log hashes and Ruff/format/mypy/diff. This is not a clean
+Git commit or formal M5/Release acceptance. No GitHub Actions or remote writes.
+M6 offline protocol parser and repository inspection CLI now implemented: source
+components787pass/1skip; fresh wheel/sdist components413pass each; local Linux263pass.
+Root verified286-file snapshot/41 modules and installed/archive bytes. See
+D:/agentsync-debug/CODEX-PROTOCOL-CHECKPOINT-20261025.json. No complete new OS matrix.
+One separately authorized actual Codex CLI no-tools inline-fixture smoke exited0,
+four events/reply hash and19 unchanged files independently checked; see acceptance/
+evidence/codex-readonly-cli-smoke-20261025.json. This is not adapter/cancel/timeout/
+filesystem/relay acceptance; the single model-task authorization is consumed.
+The material below records historical stages rather than a new M5 task queue.
+
+Additional local-only parent-process capture completed:24 known Python-helper
+tests, no real client. Latest290-file/42-module snapshot: source811pass/1skip;
+fresh wheel/sdist components437pass each; local Linux process/protocol/trace287pass.
+Root independently recomputed XML/log/archive/install hashes. See
+D:/agentsync-debug/M6-LOCAL-PROTOTYPE-CHECKPOINT-20261025.json and the current
+acceptance/RELEASE-ACCEPTANCE-REPORT.md. Mechanical capture is parent-only, inherits
+host environment and is not a sandbox. Pre-transport startup deadline and start
+cancellation remain unverified; no actual client is wired to this layer.
+
+# Historical M5B3B2B candidate execution intent guard in development
 
 Implement owner-only prepare/get/abandon and transactionally fence reservation
 recovery while a prepared intent exists. See M5B3B2B-CONTRACT.md. Version0.3.0a11 /

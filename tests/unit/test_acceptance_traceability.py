@@ -10,6 +10,21 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = json.loads((ROOT / "docs/acceptance/requirements.json").read_text(encoding="utf-8"))
 REQUIREMENTS = MANIFEST["requirements"]
+CODEX_COMPONENT_PATHS = {
+    "tests/unit/test_codex_events.py",
+    "tests/unit/test_codex_adapter.py",
+    "tests/integration/test_codex_adapter_core_boundary.py",
+}
+CURSOR_COMPONENT_SELECTORS = {
+    "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
+    "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
+    "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
+    "tests/integration/test_adapter_manager_core_boundary.py::test_heterogeneous_routes_preserve_protocol_markers_and_core",
+    "tests/unit/test_cursor_events.py::test_missing_exit_or_nonzero_and_empty_capture_never_expose_text",
+    "tests/unit/test_cursor_events.py::test_invalid_json_encoding_structure_and_bounds_are_static_errors",
+    "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+    "tests/integration/test_cursor_adapter_core_boundary.py::test_default_cursor_route_cannot_launch_or_change_core",
+}
 
 
 def test_register_matches_authoritative_formal_requirement_tables():
@@ -82,3 +97,180 @@ def test_static_design_does_not_imply_any_acceptance_was_executed():
     for requirement in REQUIREMENTS:
         assert requirement["coverage"] in MANIFEST["coverage_vocabulary"]
         assert requirement["release_gate"] == "required_for_v1_0"
+
+
+def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
+    item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
+    assert item["coverage"] == "partial"
+    assert set(item["existing_tests"]) == {
+        "tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
+        "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
+        "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
+        "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
+    }
+    assert item["execution_status"] == "not_run"
+    assert item["original_scenarios"] == ["T13", "T14"]
+    assert "authorized subscription" in item["method"]
+    assert "artifact validated" in item["acceptance"]
+    for scenario in MANIFEST["scenarios"]:
+        if scenario["id"] in {"T13", "T14"}:
+            assert scenario["execution_status"] == "not_run"
+
+
+def test_claude_protocol_components_remain_partial_without_real_client_acceptance():
+    item = next(row for row in REQUIREMENTS if row["id"] == "M6-04")
+    assert item["coverage"] == "partial"
+    assert item["execution_status"] == "not_run"
+    assert set(item["existing_tests"]) == {
+        "tests/unit/test_claude_events.py::test_literal_complete_response_needs_exit_zero_and_is_unverified",
+        "tests/unit/test_claude_events.py::test_unsuccessful_observations_never_expose_final_text",
+        "tests/unit/test_claude_events.py::test_last_assistant_incomplete_stop_cannot_be_hidden_by_optimistic_result",
+        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims",
+        "tests/unit/test_claude_adapter.py::test_default_adapter_contract_is_unverified_and_start_unsupported",
+        "tests/unit/test_claude_adapter.py::test_reused_capture_is_rejected_without_stopping_first_run_parent",
+        "tests/unit/test_claude_adapter.py::test_factory_deadline_freezes_unknown_then_cleans_only_fresh_late_parent",
+        "tests/integration/test_claude_adapter_core_boundary.py::test_claude_protocol_success_preserves_actual_core_and_reopened_state",
+        "tests/unit/test_claude_invocation.py::test_fixed_argv_stdin_environment_privacy_and_unverified_markers",
+        "tests/unit/test_claude_invocation.py::test_profile_namespace_version_and_environment_validation_precede_io",
+        "tests/unit/test_claude_invocation.py::test_binary_changes_during_bounded_hash_and_size_limit_fail_closed",
+    }
+    assert item["original_scenarios"] == ["T13", "T14"]
+    assert "Claude Agent SDK/CLI" in item["method"]
+    assert "real evidence" in item["acceptance"]
+    assert len(REQUIREMENTS) == 42 and len(MANIFEST["scenarios"]) == 16
+    assert all(row["execution_status"] == "not_run" for row in REQUIREMENTS)
+    assert all(row["execution_status"] == "not_run" for row in MANIFEST["scenarios"])
+    cursor = next(row for row in REQUIREMENTS if row["id"] == "M6-05")
+    assert cursor["coverage"] == "partial"
+    assert set(cursor["existing_tests"]) == CURSOR_COMPONENT_SELECTORS
+
+
+def test_codex_host_factory_components_keep_actual_client_acceptance_unverified():
+    item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
+    assert item["coverage"] == "partial"
+    assert item["execution_status"] == "not_run"
+    assert len(item["existing_tests"]) == 8
+    assert {
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
+    } <= set(item["existing_tests"])
+    assert all(
+        "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
+        for selector in item["existing_tests"]
+    )
+    assert "public supported Codex SDK/CLI" in item["method"]
+    assert "artifact validated" in item["acceptance"]
+    assert len(REQUIREMENTS) == 42 and len(MANIFEST["scenarios"]) == 16
+    assert all(row["execution_status"] == "not_run" for row in REQUIREMENTS)
+    for requirement_id in ("M6-04", "M6-05"):
+        missing = next(row for row in REQUIREMENTS if row["id"] == requirement_id)
+        if requirement_id == "M6-04":
+            assert missing["coverage"] == "partial" and len(missing["existing_tests"]) == 11
+        else:
+            assert missing["coverage"] == "partial"
+            assert set(missing["existing_tests"]) == CURSOR_COMPONENT_SELECTORS
+        assert missing["execution_status"] == "not_run"
+
+
+def test_mock_foundation_is_partial_component_coverage_not_real_client_acceptance():
+    by_id = {requirement["id"]: requirement for requirement in REQUIREMENTS}
+    mock_paths = {
+        "M6-01": {"tests/unit/test_adapters.py"},
+        "M6-02": {
+            "tests/unit/test_adapters.py",
+            "tests/integration/test_mock_adapter_core_boundary.py",
+            "tests/unit/test_mock_run_manager.py",
+            "tests/integration/test_mock_run_manager_core_boundary.py",
+        },
+    }
+    for requirement_id in ("M6-01", "M6-02"):
+        item = by_id[requirement_id]
+        assert item["coverage"] == "partial"
+        assert item["existing_tests"]
+        assert all("::" in selector for selector in item["existing_tests"])
+        assert all(
+            selector.split("::")[0] in mock_paths[requirement_id]
+            for selector in item["existing_tests"]
+        )
+        assert item["execution_status"] == "not_run"
+    assert {
+        "tests/unit/test_mock_run_manager.py::test_global_running_limit_is_atomic_across_workers",
+        "tests/unit/test_mock_run_manager.py::test_same_task_concurrently_started_on_workers_has_one_active_winner",
+        "tests/unit/test_mock_run_manager.py::test_replay_precedes_running_and_history_capacity",
+        "tests/integration/test_mock_run_manager_core_boundary.py::test_dispatch_plan_to_mock_manager_preserves_complete_core_snapshot",
+    } <= set(by_id["M6-02"]["existing_tests"])
+    assert by_id["M6-03"]["coverage"] == "partial"
+    assert all(
+        "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
+        for selector in by_id["M6-03"]["existing_tests"]
+    )
+    assert by_id["M6-03"]["execution_status"] == "not_run"
+    for requirement_id in ("M6-04", "M6-05"):
+        item = by_id[requirement_id]
+        if requirement_id == "M6-04":
+            assert item["coverage"] == "partial" and len(item["existing_tests"]) == 11
+        else:
+            assert item["coverage"] == "partial"
+            assert set(item["existing_tests"]) == CURSOR_COMPONENT_SELECTORS
+        assert item["execution_status"] == "not_run"
+    real_start = next(scenario for scenario in MANIFEST["scenarios"] if scenario["id"] == "T13")
+    assert set(real_start["requirements"]) == {"M6-03", "M6-04", "M6-05"}
+    assert real_start["execution_status"] == "not_run"
+
+
+def test_planning_foundations_remain_partial_without_real_relay_or_execution_claims():
+    by_id = {requirement["id"]: requirement for requirement in REQUIREMENTS}
+    paths = {
+        "M7-01": {
+            "tests/unit/test_scheduling.py",
+            "tests/integration/test_scheduling_core_boundary.py",
+        },
+        "M7-02": {
+            "tests/unit/test_dispatch_planning.py",
+            "tests/integration/test_dispatch_planning_core_boundary.py",
+            "tests/integration/test_capability_planning_core_boundary.py",
+        },
+    }
+    for requirement_id, allowed_paths in paths.items():
+        item = by_id[requirement_id]
+        assert item["coverage"] == "partial"
+        assert item["existing_tests"]
+        assert all(
+            "::" in selector and selector.split("::")[0] in allowed_paths
+            for selector in item["existing_tests"]
+        )
+        assert item["execution_status"] == "not_run" and item["original_scenarios"] == []
+    assert "real authorized agents" in by_id["M7-02"]["acceptance"]
+    assert by_id["M6-03"]["coverage"] == "partial"
+    assert all(
+        "::" in selector and selector.split("::")[0] in CODEX_COMPONENT_PATHS
+        for selector in by_id["M6-03"]["existing_tests"]
+    )
+    assert by_id["M6-04"]["coverage"] == "partial"
+    assert len(by_id["M6-04"]["existing_tests"]) == 11
+    assert by_id["M6-04"]["execution_status"] == "not_run"
+    assert by_id["M6-05"]["coverage"] == "partial"
+    assert set(by_id["M6-05"]["existing_tests"]) == CURSOR_COMPONENT_SELECTORS
+    assert by_id["M6-05"]["execution_status"] == "not_run"
+    assert by_id["M7-03"]["coverage"] == "missing"
+    assert by_id["M7-03"]["existing_tests"] == []
+    assert by_id["M7-04"]["coverage"] == "partial"
+    assert set(by_id["M7-04"]["existing_tests"]) == {
+        "tests/unit/test_retry_planning.py::test_exponential_backoff_caps_and_retry_after_remains_an_uncapped_floor",
+        "tests/unit/test_retry_planning.py::test_unknown_and_unconfirmed_outcomes_never_recommend_retries",
+        "tests/unit/test_retry_planning.py::test_attempt_global_and_deadline_budgets_do_not_fake_an_immediate_retry",
+        "tests/unit/test_retry_planning.py::test_caller_composes_one_bounded_wait_and_second_mock_attempt_only",
+        "tests/integration/test_mock_workflow.py::test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews",
+        "tests/integration/test_mock_workflow.py::test_exhaustion_finishes_started_batch_and_preserves_unstarted_descendants",
+        "tests/integration/test_mock_workflow.py::test_existing_parent_core_unchanged_and_no_credentials_or_private_child_returned",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io",
+    }
+    assert by_id["M7-04"]["execution_status"] == "not_run"

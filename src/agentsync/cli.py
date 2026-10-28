@@ -1,6 +1,7 @@
 """AgentSync local command line entrypoints."""
 
 import argparse
+import asyncio
 import json
 import os
 import sys
@@ -128,10 +129,28 @@ def run_demo(data_dir: str | Path) -> dict[str, Any]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    arguments = sys.argv[1:] if argv is None else argv
+    # Only a leading plan command takes this route; owner operations and values
+    # named "plan" retain their existing command parsing.
+    if arguments and arguments[0] == "plan":
+        from agentsync.planning_cli import invalid_input, run_plan_cli
+
+        return run_plan_cli() if len(arguments) == 1 else invalid_input()
+    if arguments and arguments[0] == "usage":
+        from agentsync.usage_cli import invalid_input, run_usage_cli
+
+        return (
+            run_usage_cli(arguments[2])
+            if len(arguments) == 3 and arguments[1] == "--project-id"
+            else invalid_input()
+        )
     parser = argparse.ArgumentParser(prog="agentsync")
     parser.add_argument("--data-dir", default=None, help="Absolute local state directory")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("mcp", help="Run official MCP stdio server")
+    commands.add_parser("plan", help="Print offline dispatch advice from bounded stdin JSON")
+    usage = commands.add_parser("usage", help="Summarize a bounded stdin usage checkpoint offline")
+    usage.add_argument("--project-id")
     owner = commands.add_parser(
         "owner", help="Owner operation; read credentials and payload JSON from stdin"
     )
@@ -143,7 +162,20 @@ def main(argv: list[str] | None = None) -> int:
         "demo", help="Run two mock agents against an explicit local database"
     )
     demo.add_argument("--data-dir", dest="demo_data_dir")
+    demo.add_argument(
+        "--workflow",
+        action="store_true",
+        help="Run a disposable fixed Mock workflow in the existing scratch parent",
+    )
     args = parser.parse_args(argv)
+    if args.command == "plan":
+        from agentsync.planning_cli import invalid_input
+
+        return invalid_input()
+    if args.command == "usage":
+        from agentsync.usage_cli import invalid_input
+
+        return invalid_input()
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
@@ -174,7 +206,13 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "demo":
         if not data_dir:
             parser.error("demo requires --data-dir PATH to avoid modifying default user state")
-        print(json.dumps(run_demo(data_dir), ensure_ascii=False))
+        if args.workflow:
+            from agentsync.mock_workflow import run_mock_workflow_demo
+
+            result = asyncio.run(run_mock_workflow_demo(Path(data_dir)))
+        else:
+            result = run_demo(data_dir)
+        print(json.dumps(result, ensure_ascii=False))
     elif args.command == "mcp":
         from agentsync.integrations.mcp import build_server
 

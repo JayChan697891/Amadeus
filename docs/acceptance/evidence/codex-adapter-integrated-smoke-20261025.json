@@ -1,0 +1,88 @@
+{
+  "scope": "One authorized actual installed adapter+plan+explicit-env readonly response smoke",
+  "authorization": "User: allow one readonly whole-path validation, no extra payment, no retries",
+  "started_at": "2026-10-25T15:22:18.340223+00:00",
+  "finished_at": "2026-10-25T15:22:51.584780+00:00",
+  "cli_version": "codex-cli 0.164.0-alpha.11.1",
+  "cli_sha256": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+  "model_tasks_started": 1,
+  "factory_calls": 1,
+  "formal_acceptance": false,
+  "billing_verified": false,
+  "api_key_environment_passed": false,
+  "adapter_result": {
+    "scope": "host_process_protocol",
+    "provenance": "trusted_host_factory",
+    "real_client_verified": false,
+    "verification": "unverified",
+    "core_authorization": "unverified",
+    "capacity_scope": "instance_protocol_runs",
+    "tree_cleanup": "unverified",
+    "run": {
+      "scope": "host_process_protocol",
+      "provenance": "trusted_host_factory",
+      "real_client_verified": false,
+      "verification": "unverified",
+      "core_authorization": "unverified",
+      "capacity_scope": "instance_protocol_runs",
+      "tree_cleanup": "unverified",
+      "project_id": "4f130325-22e7-4e66-8b97-80fab70c494a",
+      "session_id": "24c0870a-fa7c-4550-b578-ca59f52c2f37",
+      "task_id": "718dd876-1841-4c92-8a48-43ee60dc693c",
+      "request_id": "one-authorized-live-request",
+      "run_id": "c0244346d6af40968bc71c1ca94d2211",
+      "status": "succeeded",
+      "started_at": 49439.5736913,
+      "finished_at": 49466.2805486,
+      "capture_id": "2037886a30f540d982653484d459c613",
+      "capture_state": "exited",
+      "exit_code": 0,
+      "parent_ended": true,
+      "timed_out": false,
+      "slot_held": false,
+      "error_code": null
+    },
+    "agent_messages": [
+      "AGENTSYNC_INTEGRATED_519ef81ecfd85699"
+    ],
+    "usage": {
+      "input_tokens": 11241,
+      "cached_input_tokens": 8960,
+      "output_tokens": 18,
+      "reasoning_output_tokens": 0
+    },
+    "client_thread_id": "01a173a7-e48f-7352-80bf-dee9513cf680"
+  },
+  "states_observed": [
+    "starting",
+    "running",
+    "succeeded"
+  ],
+  "tasks_unchanged": true,
+  "fixture_unchanged": true,
+  "reply_matches": true,
+  "expected_reply_sha256": "4ff34aa130fa12cb7de0c40993da2b5cf44263fae7dfa6ca4eb048ba48487070",
+  "integrated_smoke": "pass",
+  "fixture_file_count": 19,
+  "raw_evidence_root": "D:\\agentsync-debug\\codex-adapter-live-in0z00f4",
+  "subscription_route_confirmed": true,
+  "extra_credits_available": false,
+  "raw_account_data_retained": false,
+  "stdout": {
+    "size": 380,
+    "sha256": "cf8946f1ffbd1b0616905490a24ef2325dce475153017ee0a748ba61f88d064b"
+  },
+  "stderr": {
+    "size": 324,
+    "sha256": "75b35bc22521dcd6a1b4219aad117acc1590f476ef1ac07d193ccb39e1c4145a"
+  },
+  "stderr_observations": [
+    "Helper PATH alias creation warning; model-list refresh request timed out. Task still exited0 with complete four-event response. Original stderr retained locally; no retry."
+  ],
+  "limitations": [
+    "One inline no-tools response only; no filesystem permission enforcement proof",
+    "No server cancellation/timeout/restart/dual-agent relay acceptance",
+    "Core task stays pending; no authorization or independent completion granted",
+    "No billing ledger verification; ChatGPT subscription with no extra credits was checked before launch"
+  ]
+}

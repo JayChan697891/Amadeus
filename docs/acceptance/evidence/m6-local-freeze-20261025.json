@@ -1,0 +1,23 @@
+{
+  "scope": "Local-only frozen product and report checkpoint",
+  "created_at": "2026-10-25T08:10:55.180875+00:00",
+  "branch": "feature/m6-local-prototype-20261025",
+  "commit": "b70cd1b9671de3910979b66f8c711b0f0f1f51af",
+  "tree": "624e231fc050f3c9035390520d3f6a2fe6786734",
+  "parent": "aac28a0f688962eca640b930e92eeaa608ff824f",
+  "main_unchanged": "68588d5016678a001ae9d199a9201669988d2b50",
+  "git_status_clean": true,
+  "files_committed": 36,
+  "runtime_modules": 42,
+  "git_module_bytes_match_tested_packages": true,
+  "remote_push": false,
+  "actions": false,
+  "formal_acceptance": false,
+  "release_gate": "BLOCKED",
+  "git_identity": "Existing repository commit identity reused for this command only; no persistent config change",
+  "previous_commit_attempt": "Missing Git identity, no commit created; staged files preserved",
+  "test_checkpoint": "D:\\agentsync-debug\\M6-LOCAL-PROTOTYPE-CHECKPOINT-20261025.json",
+  "documentation_closeout": "D:\\agentsync-debug\\M6-PROTOTYPE-DOCUMENTATION-CLOSEOUT-20261025.json",
+  "test_checkpoint_sha256": "25db6f1d9b8474a05bbed6d00ea17df41082ff56cdd58de5a494ce9032cc0ca2",
+  "documentation_receipt_not_reexecuted": true
+}

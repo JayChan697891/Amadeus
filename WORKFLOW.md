@@ -12,7 +12,12 @@ Actions. Upload commits with [skip ci] and preserve manual-only workflow trigger
 Historical remote CI gates below are historical evidence, not current instructions.
 
 1. Read the uploaded specification, docs/PLAN.md, docs/PROGRESS.md, docs/CONTRACT.md and Git status.
-2. Plan a bounded stage and delegate implementation using native same-task agents.
+2. Classify complexity before a bounded stage. Sol High handles ordinary work;
+   Astra High/Extra High handles major architecture, difficult unresolved failures,
+   critical independent review, M5 acceptance and Release Gate decisions. Use
+   native same-task delegation only when useful, with a small agent set and compact
+   handoffs; then return routine implementation to Sol. Follow AGENTS.md's model
+   capability limits; never claim a primary-chat model switch without evidence.
 3. Wait for execution, inspect changed files, run relevant tests and checks independently.
 4. Repair failures, repeat affected checks, then save an evidence-backed checkpoint.
 5. Update progress with commands, results, limitations and exact remaining work.

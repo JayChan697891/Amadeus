@@ -1,5 +1,102 @@
 # Changelog
 
+## 0.3.0a21 - portable planning JSON output
+
+- Fix valid Unicode project IDs crashing `agentsync plan` when redirected stdout
+  uses ASCII encoding; JSON escapes preserve the decoded planning result.
+
+## 0.3.0a20 - offline reported-usage command
+
+- Print the existing usage ledger summary from a bounded stdin checkpoint with
+  `agentsync usage --project-id ID`, without opening Core state or calling clients.
+- Keep caller-reported provenance, unknown costs and incomplete metrics explicit;
+  invalid inputs receive a fixed error without echoing private checkpoint data.
+
+## 0.3.0a19 - Cursor contextual launch entry point
+
+- Allow a trusted Cursor host factory to use the existing task-bound launch
+  context for prelaunch cancellation and original-deadline checks.
+- Preserve the legacy factory, unsupported default and parent-only cleanup;
+  no built-in Cursor invocation plan or actual client verification is added.
+
+## 0.3.0a18 - opt-in pinned Claude launch plumbing
+
+- Add a Claude process factory using the existing restricted plan and shared
+  task-bound launch observations; defaults remain unsupported.
+- Keep managed-hook, credential/provider, billing and sandbox limitations explicit;
+  no actual client execution or acceptance is implied.
+
+## 0.3.0a17 - opt-in pinned Codex launch plumbing
+
+- Add a task/run/loop-bound launch observation with an original-deadline check
+  and one consumed local process-start attempt.
+- Add an opt-in Codex process factory with fresh pin checks and explicit filtered
+  environment; preserve unsupported defaults and legacy factory behavior.
+- Keep actual-client authorization, billing, isolation and acceptance unverified.
+
+## 0.3.0a16 - offline dispatch advice command
+
+- Expose existing dispatch planning through bounded stdin JSON with `agentsync plan`.
+- Preserve unverified planning markers without opening Core state or starting work.
+- Reject duplicate fields, nonfinite numbers, unknown options and oversized input.
+- Keep alpha15 installed and Linux regression evidence bound to their frozen source.
+
+## 0.3.0a15 - development admission and diagnostic checks
+
+- Add bounded process-local Core thread admission while preserving transaction behavior.
+- Reset inherited gate state after fork and reclaim unused per-path gates.
+- Require exact claim-audit identity/outcome coverage in local contention diagnostics.
+- Keep earlier alpha14 package evidence bound to its original source commit.
+
+## 0.3.0a14 - development recovery and adapter preparation
+
+- Add an actual Core crash/lease-expiry regression with successor and dependency recovery.
+- Add optional elapsed admission limits to the isolated Mock workflow.
+- Add pure bounded retry advice with confirmed outcomes and Retry-After floors.
+- Add strictly bounded JSON checkpoints for normalized caller-reported usage.
+- Add isolated local claim-contention diagnostics with explicit latency budgets.
+- Add non-executing pinned Claude CLI preparation with fixed restrictions.
+
+This development checkpoint changes no schema/dependencies. Build/install validation
+is recorded separately; real-client execution, automatic durable recovery and
+formal release acceptance remain unverified or blocked.
+
+## 0.3.0a13 — development compatibility repair
+
+Replace timestamp-based capture freshness with a private process-local creation
+fence and explicit event-loop association. Fresh captures can share a timestamp
+with their adapter run on coarse Windows clocks; preexisting or foreign-loop
+captures remain rejected without taking ownership or stopping them. Public
+timestamps, markers and cancellation limits remain unchanged. This development
+alpha grants no authentication, real-client verification or release acceptance.
+
+## 0.3.0a12 — development checkpoint
+
+- Add a bounded standalone Cursor JSON parser and typed host-factory adapter.
+- Add heterogeneous RunManager routing with bounded history and shared dispatch receipts.
+- Add optional read-only capability advice using explicit requirements and self-reported declarations.
+- Add an isolated Mock diamond workflow demo with bounded retries and attempt budgets.
+- Add an unknown-aware UsageLedger separating protocol observations from simulations.
+- Include developer acceptance/debug helpers in source distributions so packaged tests can find them.
+
+This development alpha changes no schema or dependencies and is not a release,
+tag or approval. Real clients, autonomous relay and formal acceptance remain
+unverified or blocked; component checks do not satisfy those gates.
+
+Add opt-in bounded private per-phase pytest evidence that survives a later test
+termination, and owned migration-test child cleanup without changing test limits.
+
+Bound cancellation of an accidentally never-started capture as unknown; preserve
+uncertain adapter capacity and pending-start cleanup without claiming parent exit.
+
+Add bounded Codex/Claude protocol projection and sanitized local inspectors, a
+pure pinned readonly Codex plan, and shared typed host-factory lifecycle handling.
+Default startup stays unsupported; unknown runs retain instance slots and parent
+cancellation does not assert server cancellation or process-tree cleanup. Preserve
+Codex public records and keep Claude session/result fields private. No credentials,
+SDK/client launch, Core authorization or automatic apply was added. These local
+checkpoints are not a release or M5/real-client acceptance; see the acceptance report.
+
 ## 0.3.0a11 — M5B3B2B candidate execution intent guard
 
 Add owner-only prepare/get/abandon of a single non-executing candidate intent.

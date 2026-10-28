@@ -1,0 +1,154 @@
+{
+  "created_utc": "2026-10-28T14:03:27.526305+00:00",
+  "product_commit": "cd2e8d75555e954b41c421f1dfeb3308032ba440",
+  "version": "0.3.0a19",
+  "schema_version": 12,
+  "scope": "Cursor contextual factory entry point, shared engine and context unchanged",
+  "development_tests": {
+    "passed": 87,
+    "skipped": 0
+  },
+  "independent_source": {
+    "Windows_Python_3_14": {
+      "exit_status": 0,
+      "tests": 455,
+      "passed": 455,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "818db381bee7e7bc6a55a1ed1a2c41e9b4d1eb46f2b2c990dbb7e1ae76d7457e"
+    },
+    "Windows_Python_3_11": {
+      "exit_status": 0,
+      "tests": 455,
+      "passed": 455,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "4f266912fb1995cb58bfe65b3b81972821afe10f8ff7638606f42e478a1f8825"
+    },
+    "prior_451_case_ids_retained": true,
+    "new_case_ids": [
+      "test_contextual_configuration_rejects_mixed_or_noncallable_factory",
+      "test_contextual_factory_binds_exact_task_and_observes_known_python_result",
+      "test_contextual_factory_stopped_during_setup_never_enters_capture[cancel]",
+      "test_contextual_factory_stopped_during_setup_never_enters_capture[deadline]"
+    ]
+  },
+  "independent_packages": {
+    "wheel": {
+      "tests": 122,
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "1aaa262fb54e0caf66d29b3d9aa81ba63ae8fe4c4663090ab0397bd8569d84c5"
+    },
+    "sdist": {
+      "tests": 122,
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "1453cc1b3d50cc19c2ebff0862f16c420608ea1a0ab155dee9557f65b3cbc348"
+    }
+  },
+  "artifacts": {
+    "agentsync_local-0.3.0a19-py3-none-any.whl": "30cc77d3940e1dd8805822075d751f56d09e8ee24b1975fbe07748a7d57715a2",
+    "agentsync_local-0.3.0a19.tar.gz": "087f99aa304d3149cefd9a1b250fe476b65eedf17072f2336a8a06e0d575f81d"
+  },
+  "runtime_modules": 59,
+  "source_and_installed_module_hashes_match": true,
+  "installed_case_ids_match_and_are_source_subset": true,
+  "static_checks": {
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    },
+    "diff": {
+      "exit_status": 0
+    }
+  },
+  "archive": {
+    "path": "releases/0.3.0a19/checkpoints/cursor-context-cd2e8d7-local.tar.gz",
+    "sha256": "0d8bdb539cddcd14a404a9e56bd05afddbc903bbee1f61a063c3a122048819e3",
+    "bytes": 1066624,
+    "manifest_members": 52,
+    "members_independently_rehashed": true
+  },
+  "not_run": [
+    "actual Cursor",
+    "actual Codex or Claude",
+    "macOS alpha19",
+    "full alpha19 source suite",
+    "full installed suite",
+    "real autonomous dual-agent relay",
+    "formal M5/Release acceptance",
+    "full Linux alpha19 source suite"
+  ],
+  "independent_astra_review": {
+    "model": "GPT-6 Astra High",
+    "scope": "frozen alpha19 source and saved evidence; no tests or clients executed during review",
+    "result": "No concrete implementation blocker or false evidence claim found",
+    "checked": "runtime delta, prior case retention, four installed case sets, 59 module origins and hashes, source and artifact bindings, both evidence archive hashes",
+    "formal_acceptance": false
+  },
+  "release": "BLOCKED",
+  "formal_requirements": {
+    "not_run": 42
+  },
+  "limitations": [
+    "Trusted host factory is not authenticated or authorized by this entry point.",
+    "No Cursor invocation plan or built-in launcher.",
+    "Default unsupported; legacy unchanged.",
+    "Already scheduled OS creation can complete late; only owned parent cleanup is observed.",
+    "No Actions, paid calls, client upgrade or retry of closed Codex preflight."
+  ],
+  "independent_linux_packages": {
+    "wheel": {
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "e6cf1e056780defbc64a8f2057fb8473ff3cd6366bc8d1a888d82e712cbfcce5"
+    },
+    "sdist": {
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "8ea986bc15aaa04e513a8c2111e73188f92f9f511f7a57d73c1a19a7789229fe"
+    }
+  },
+  "all_four_installed_case_sets_match": true,
+  "linux_actual_module_hashes_and_direct_archive_hashes_match": true,
+  "linux_initial_upload": {
+    "status": "NOT RUN",
+    "reason": "SSH session unavailable during initial VM startup; no tests executed",
+    "log_sha256": "a7fd412c1ffba863352c61f8112745b9c78762cbeb69e1baa55447e5bddd8704",
+    "preserved_in_supplement": true
+  },
+  "linux_supplement": {
+    "path": "releases/0.3.0a19/checkpoints/cursor-context-cd2e8d7-linux.tar.gz",
+    "bytes": 28582,
+    "sha256": "ce08b5ddb7364195ac2aeb3942bbb5a78e0e431e57117c3ee11374d891f2853c",
+    "manifest_members": 28,
+    "members_independently_rehashed": true
+  },
+  "vm_shutdown": {
+    "verified_owned_pid": 10624,
+    "forced_stop_used": false,
+    "disk_preserved": true,
+    "stopped": true,
+    "transport_exit": 0
+  }
+}

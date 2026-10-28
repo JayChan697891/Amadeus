@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-10-28T02:35:22.802743-07:00",
+  "finished_utc": "2026-10-28T02:35:23.42471-07:00",
+  "product_commit": "c1a53ccf62263681da17d529b9c9abe362aea4a7",
+  "scope": "One authorized pinned CodexProcessFactory subscription smoke preflight",
+  "authorization": "User allowed once readonly subscription test, no extra payment, no retry",
+  "status": "BLOCKED",
+  "blocking_condition": "PATH npm Codex native executable version differs from supported factory profile",
+  "observed_cli_version": "codex-cli 0.162.0",
+  "required_cli_version": "codex-cli 0.164.0-alpha.11.1",
+  "model_attempts": 0,
+  "login_status": "NOT RUN: stopped at version gate",
+  "subscription_route": "NOT CHECKED",
+  "factory_invocations": 0,
+  "fixture_execution": "NOT RUN",
+  "retry_performed": false,
+  "client_upgrade_or_configuration_change": "NONE",
+  "raw_evidence_directory_name": "codex-factory-live-s3fn7pgi",
+  "raw_result_sha256": "650e055de7f81961fbbd430228ac2c2eaf5a0f863a572cd8271942bcbbf21223",
+  "formal_acceptance": false,
+  "release": "BLOCKED",
+  "minimum_condition": "A specifically identified compatible CLI, verified version/route/safety, and explicit authorization for a subsequent bounded attempt. Do not automatically retry this completed preflight."
+}

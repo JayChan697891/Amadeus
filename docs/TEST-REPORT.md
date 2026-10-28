@@ -1,3 +1,33 @@
+# Latest local M6 checkpoint — 2026-10-26 America/Tijuana
+
+Final local source test-infrastructure: 1041pass/5skip, Ruff/format/mypy/diff pass.
+Owned child cleanup and opt-in bounded private per-phase journal verified.
+Linux concurrency failures/package timeout remain unresolved; release BLOCKED.
+
+Never-started capture cancellation repaired in product7d01aed: actual supervised
+Codex/Claude reproduction now terminates unknown and keeps its slot. Windows source
+1019pass/2skip; fresh offline wheel/sdist98pass each; Linux focused source98pass.
+Linux package attempt failed at600s install/1200s transport bounds; wheel postinstall
+and sdist checks NOT RUN, same-guest evidence recovered without retry. Current Windows actual fullsuite1587pass/31skip,
+322 originalfiles unchanged, driverFAIL from21 generatedbytecodecache additions.
+Linux full INTERRUPTED:1completedpass/4fail plus1anonymousunfinishedrecord;
+concurrentCore30s deadlines failed, remaining/DockerNOTRUN. Python3.11 actual NOT RUN;
+formal release/real clients/relay remain BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
+Fresh Linux wheel/sdist each641pass/0skip/fail/error, normal offline installs; root verified47 imported/post-test module hashes and52 distributions within each isolated venv,10 stage exits, actual XML and source317 unchanged. This completes the component installation supplement only; formal release/real-client/full matrix gates remain blocked.
+
+Linux follow-up:641 components passed/0skip/fail/error,317 frozen files unchanged; root tied code/tests/tools/requirement Git blobs to da61adf. Fresh package installs remain the separate Windows640pass/1skip each; no full current platform matrix or real-client acceptance.
+
+Latest shared lifecycle / ClaudeAdapter prototype:47 modules/317 frozen files; source1014pass/2skip; installed wheel/sdist640pass/1skip each. Root independently checked actual XML/artifact/module bytes and Codex public-record compatibility. Default startup unsupported; zero actual clients/credentials/Core wiring. M6-04 eight component selectors, all42/16 formal not_run, release BLOCKED; current Linux component evidence pending separately.
+
+Latest Claude OFFLINE projection:45 modules/310 frozen files; source977pass/2skip; fresh wheel/sdist603pass/1skip each; Ruff/format/mypy pass. Root verified actual XML/package bytes. M6-04 partial component mapping only; all42/16 formal not_run; zero real Claude calls, release BLOCKED. See acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
+Complete frozen Windows product248d0be:1441pass/30skip/0fail/error;1471 actual cases,305 files/44 modules unchanged. Root independently checked XML/hashes. See acceptance/evidence/full-windows-248d0be-20261025.json. Claude draft not included; Linux complete suite still running.
+
+Source unit + selected Core:873pass/1skip; installed wheel/sdist499pass each; Linux421pass. Ruff/format/mypy passed. One separately authorized installed-wheel actual CodexAdapter+plan+explicit environment run exited0, with4 real events and exact reply;19 fixture file hashes/Core pending tasks unchanged. Full current OS matrix and formal acceptance remain unverified. Detailed evidence: acceptance/RELEASE-ACCEPTANCE-REPORT.md.
+
+---
+
 # Verified M5B3B2A local checkpoint
 
 Product 0fd2041c8efd1c4fa348117e013c0c5b1f30e470, tree 9a76e8c5280c34d38087f42fc35b702808d15c59;0.3.0a10/schema11.

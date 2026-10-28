@@ -1,4 +1,16 @@
-# M5B3B2B candidate execution intent guard in development
+# Current direction: M5 scope frozen; conditional M6 prototypes
+
+Use [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md) as the only M5 exit checklist.
+M5 remains the original five requirements; no new stages for documentation,
+duplicate evidence or noncritical enhancements. Existing stage records below are
+historical. Current M6 has typed host-factory Codex/Claude/Cursor protocol adapters,
+bounded offline parsers/inspectors and a pure pinned Codex invocation plan.
+Default live startup is unsupported; candidate execution, verified completion,
+credential use, server cancellation and apply remain gated. Latest actual checks
+and limitations are in acceptance/RELEASE-ACCEPTANCE-REPORT.md; component passes
+do not establish the real clients, dual-agent relay or formal release. BLOCKED.
+
+# Historical M5B3B2B candidate execution intent guard in development
 
 Implement owner-only prepare/get/abandon and transactionally fence reservation
 recovery while a prepared intent exists. See M5B3B2B-CONTRACT.md. Version0.3.0a11 /

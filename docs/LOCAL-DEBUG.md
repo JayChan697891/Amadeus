@@ -96,3 +96,26 @@ separate gate; this is not complete M5, actual agent relay or formal release app
 - [Cloud-init NoCloud](https://docs.cloud-init.io/en/latest/reference/datasources/nocloud.html)
 - [Alpine Docker](https://wiki.alpinelinux.org/wiki/Docker)
 - [QEMU WHPX support and limitations](https://www.qemu.org/docs/master/system/whpx.html)
+
+## Opt-in per-case diagnostic evidence
+
+From the trusted repository source, run `python -m pytest -p tools.pytest_case_journal --case-journal D:/agentsync-debug/NEW-private.jsonl <selected-tests>`.
+The path must be a new file within existing physical directories. No file is
+created without this explicit option. Each setup/call/teardown report is flushed
+and fsynced; the first failure remains readable if a later test is terminated.
+This is private local evidence containing raw fixture node IDs/failure text: do
+not upload it automatically. Pytest's normal console reporting is unchanged.
+
+The journal caps total output at1MiB and each report at16KiB. On total exhaustion
+it records incomplete evidence and forces pytest exit3; use focused selections
+rather than treating capped evidence as a full suite. A finish records pytest's
+return, not proof that all collected tests ran. Missing finish or an incomplete
+last line remains incomplete. xdist is unsupported; known symlink/reparse paths
+are rejected, with no concurrent parent-path replacement guarantee. This tool
+never changes Core/client capability, requirements or release acceptance.
+
+Migration concurrency tests now always reap only subprocess handles they created,
+including partial startup/timeout. Cleanup failure preserves the original failure
+in an exception group. Eight processes, five iterations and30-second communicate
+limits are unchanged. This repair is not proof that Linux throughput/timeouts
+are resolved; the recorded Linux failures remain unresolved.

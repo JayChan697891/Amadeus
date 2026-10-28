@@ -1,11 +1,10 @@
 import os
-import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 
 import pytest
-from conftest import owner_grant
+from conftest import owner_grant, run_owned_processes
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -54,17 +53,8 @@ def test_concurrent_first_process_migrations(tmp_path, iteration):
     data_dir = tmp_path / "new-database"
     code = "from agentsync.core.service import Core; import sys; Core(sys.argv[1])"
     env = os.environ.copy()
-    processes = [
-        subprocess.Popen(
-            [sys.executable, "-c", code, str(data_dir)],
-            env=env,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        for _ in range(8)
-    ]
-    results = [(process.communicate(timeout=30), process.returncode) for process in processes]
+    commands = [[sys.executable, "-c", code, str(data_dir)] for _ in range(8)]
+    results = run_owned_processes(commands, env=env, timeout=30)
     assert all(code == 0 for (_, code) in results), results
     core = Core(data_dir)
     assert core.db_path.is_file()

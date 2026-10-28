@@ -1,0 +1,14 @@
+{
+  "commit": "7c641e90bf0909c3f8ee68335817d817b34e5eaf",
+  "passed": 49,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "actual_source_imports": 54,
+  "Git_source_files_verified": 163,
+  "junit_sha256": "4c3d908b216175c69d439771506ad0da134d925321c86e9cf8b66603bad0e90d",
+  "source_unchanged": true,
+  "scope": "existing localLinuxvenv, source components only; no fresh Linuxpackage or fullmatrix",
+  "old_Linux_startup_failures": "NOT CLEARED",
+  "release": "BLOCKED"
+}

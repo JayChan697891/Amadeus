@@ -1,0 +1,51 @@
+{
+  "scope": "Independent two fresh offline Linux package component installations",
+  "verified_at": "2026-10-26T07:47:22.905443+00:00",
+  "product_commit": "da61adf2c90196814c96a7827756b346bcd02f51",
+  "source_files": 317,
+  "runtime_modules": 47,
+  "results": {
+    "wheel": {
+      "passed": 641,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "module_origins_and_post_test_hashes_verified": 47,
+      "distributions_within_fresh_venv": 52,
+      "noneditable": true,
+      "system_site_packages": false,
+      "pythonpath_fallback": false,
+      "junit_sha256": "62a9a6e5513534c4a2a96fc4253bfb96cf7fc9f13e1c35edb0c0b3a0e383df04",
+      "artifact_sha256": "157d12b7dfd218eb541a243d817795f2a7314ec1d6cf28012b48f2392d69b75e",
+      "post_inspection_sha256": "c442ca9b3ae936a5b60ff5ab266c7ea4bfa1304caa655fce5de3db3ca45ad754"
+    },
+    "sdist": {
+      "passed": 641,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "module_origins_and_post_test_hashes_verified": 47,
+      "distributions_within_fresh_venv": 52,
+      "noneditable": true,
+      "system_site_packages": false,
+      "pythonpath_fallback": false,
+      "junit_sha256": "ae37a493d8917833d32786cbe09b2b55710a2d4d29c9da7e1d758e8a96dc2a20",
+      "artifact_sha256": "83053a1bf6a54a99e90dcc090958eee6164dd952a4e8833b6936adc5de30b9df",
+      "post_inspection_sha256": "a35df6378b69861c7b061a28c87fa24aebeb4bc9b6166875d79e770dff79c447"
+    }
+  },
+  "source_unchanged": true,
+  "raw_evidence_root": "D:\\agentsync-debug\\linux-fresh-claude-packages-osjy828z",
+  "cache_wheels": 52,
+  "actual_command_stages": 10,
+  "formal_acceptance": false,
+  "real_client_calls": 0,
+  "github_actions": false,
+  "provider_calls": false,
+  "downloads": false,
+  "limits": [
+    "Component package installation only, not complete current suite or full supported OS/Python matrix",
+    "No actual updated-engine Codex/Claude run or real autonomous relay",
+    "Original full-suite failure and separate Docker target evidence stay unchanged"
+  ]
+}

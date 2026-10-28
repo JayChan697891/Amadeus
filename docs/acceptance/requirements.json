@@ -981,13 +981,17 @@
       "milestone": "M6",
       "title": "Uniform adapter lifecycle and capability declarations",
       "acceptance": "Consistent typed lifecycle; unsupported cancel/resume/usage reported explicitly, never fabricated success.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "real_client"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_adapters.py::test_start_and_observe_running_adapter_run",
+        "tests/unit/test_adapters.py::test_capabilities_honestly_declare_simulation_and_cancel",
+        "tests/unit/test_adapters.py::test_unsupported_cancel_and_resume_do_not_change_run"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-01",
@@ -1010,13 +1014,23 @@
       "milestone": "M6",
       "title": "MockAdapter for multiple simulated agents",
       "acceptance": "Mock scheduling reproducible and cost-free; all reports label mock evidence and cannot satisfy real-client gate.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_adapters.py::test_only_explicit_finish_produces_simulated_result",
+        "tests/unit/test_adapters.py::test_concurrent_duplicate_start_is_one_run",
+        "tests/unit/test_adapters.py::test_observing_clock_only_times_out_never_completes",
+        "tests/unit/test_adapters.py::test_separate_mock_instances_do_not_share_runs_or_authorize_core_access",
+        "tests/integration/test_mock_adapter_core_boundary.py::test_mock_terminal_result_preserves_core_task_and_persisted_state",
+        "tests/unit/test_mock_run_manager.py::test_global_running_limit_is_atomic_across_workers",
+        "tests/unit/test_mock_run_manager.py::test_same_task_concurrently_started_on_workers_has_one_active_winner",
+        "tests/unit/test_mock_run_manager.py::test_replay_precedes_running_and_history_capacity",
+        "tests/integration/test_mock_run_manager_core_boundary.py::test_dispatch_plan_to_mock_manager_preserves_complete_core_snapshot"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-02",
@@ -1039,12 +1053,21 @@
       "milestone": "M6",
       "title": "Real Codex control adapter",
       "acceptance": "Real run/session ID, client version and command recorded; artifact validated; unavailable credentials/quota reported blocked rather than passed.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "real_client",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
+        "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
+        "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
+        "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-03",
@@ -1068,12 +1091,24 @@
       "milestone": "M6",
       "title": "Real Claude Code control adapter",
       "acceptance": "Claude-specific real evidence and capabilities saved; MCP health check alone cannot satisfy adapter acceptance.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "real_client",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_claude_events.py::test_literal_complete_response_needs_exit_zero_and_is_unverified",
+        "tests/unit/test_claude_events.py::test_unsuccessful_observations_never_expose_final_text",
+        "tests/unit/test_claude_events.py::test_last_assistant_incomplete_stop_cannot_be_hidden_by_optimistic_result",
+        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims",
+        "tests/unit/test_claude_adapter.py::test_default_adapter_contract_is_unverified_and_start_unsupported",
+        "tests/unit/test_claude_adapter.py::test_reused_capture_is_rejected_without_stopping_first_run_parent",
+        "tests/unit/test_claude_adapter.py::test_factory_deadline_freezes_unknown_then_cleans_only_fresh_late_parent",
+        "tests/integration/test_claude_adapter_core_boundary.py::test_claude_protocol_success_preserves_actual_core_and_reopened_state",
+        "tests/unit/test_claude_invocation.py::test_fixed_argv_stdin_environment_privacy_and_unverified_markers",
+        "tests/unit/test_claude_invocation.py::test_profile_namespace_version_and_environment_validation_precede_io",
+        "tests/unit/test_claude_invocation.py::test_binary_changes_during_bounded_hash_and_size_limit_fail_closed"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-04",
@@ -1097,13 +1132,22 @@
       "milestone": "M6",
       "title": "Real Cursor adapter and run manager",
       "acceptance": "Run/session/project IDs and errors tracked; unavailable OS/client features explicit unsupported; no GUI/internal API substitution.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "real_client",
         "integration",
         "platform"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
+        "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
+        "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
+        "tests/integration/test_adapter_manager_core_boundary.py::test_heterogeneous_routes_preserve_protocol_markers_and_core",
+        "tests/unit/test_cursor_events.py::test_missing_exit_or_nonzero_and_empty_capture_never_expose_text",
+        "tests/unit/test_cursor_events.py::test_invalid_json_encoding_structure_and_bounds_are_static_errors",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_default_cursor_route_cannot_launch_or_change_core"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M6-05",
@@ -1127,13 +1171,20 @@
       "milestone": "M7",
       "title": "Dependency graph and deterministic scheduling",
       "acceptance": "Only eligible nodes start; cycles rejected; duplicate triggers never launch duplicate runs.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "concurrency",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_scheduling.py::test_dependencies_require_completed_and_missing_is_never_completed",
+        "tests/unit/test_scheduling.py::test_priority_then_created_at_then_id_sort_is_input_order_independent",
+        "tests/unit/test_scheduling.py::test_cycles_duplicate_ids_and_oversized_snapshots_are_invalid",
+        "tests/integration/test_scheduling_core_boundary.py::test_planning_uses_core_dependencies_and_priority_without_changing_tasks",
+        "tests/integration/test_scheduling_core_boundary.py::test_core_rejects_stale_recommendation_after_another_worker_claims",
+        "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M7-01",
@@ -1154,14 +1205,23 @@
       "milestone": "M7",
       "title": "Capability, availability and load allocation",
       "acceptance": "Capabilities and capacity enforced; real authorized agents continue automatically without human forwarding; mock run cannot satisfy real relay gate.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "concurrency",
         "real_client",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_dispatch_planning.py::test_global_priority_order_and_least_load_balancing_are_deterministic",
+        "tests/unit/test_dispatch_planning.py::test_load_aggregates_all_sessions_but_dispatch_selects_one_fresh_session",
+        "tests/unit/test_dispatch_planning.py::test_reserved_worker_at_capacity_does_not_fall_back_to_another_worker",
+        "tests/integration/test_dispatch_planning_core_boundary.py::test_real_task_load_limits_suggestions_without_mutating_core",
+        "tests/integration/test_dispatch_planning_core_boundary.py::test_expired_lease_keeps_slot_until_explicit_core_reclamation",
+        "tests/integration/test_dispatch_planning_core_boundary.py::test_offline_handoff_recipient_is_not_replaced_by_another_available_worker",
+        "tests/unit/test_dispatch_planning.py::test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker",
+        "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M7-02",
@@ -1211,14 +1271,25 @@
       "milestone": "M7",
       "title": "AI-assisted decomposition, retries and budgets",
       "acceptance": "Bounded backoff/retries and idempotent scheduling; hard budgets stop execution; no unbounded automatic paid calls.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "recovery",
         "e2e"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_retry_planning.py::test_exponential_backoff_caps_and_retry_after_remains_an_uncapped_floor",
+        "tests/unit/test_retry_planning.py::test_unknown_and_unconfirmed_outcomes_never_recommend_retries",
+        "tests/unit/test_retry_planning.py::test_attempt_global_and_deadline_budgets_do_not_fake_an_immediate_retry",
+        "tests/unit/test_retry_planning.py::test_caller_composes_one_bounded_wait_and_second_mock_attempt_only",
+        "tests/integration/test_mock_workflow.py::test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews",
+        "tests/integration/test_mock_workflow.py::test_exhaustion_finishes_started_batch_and_preserves_unstarted_descendants",
+        "tests/integration/test_mock_workflow.py::test_existing_parent_core_unchanged_and_no_credentials_or_private_child_returned",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M7-04",
@@ -1239,13 +1310,22 @@
       "milestone": "M8",
       "title": "Usage, cost, elapsed time and failure rate",
       "acceptance": "Provenance separates measured/estimated/unknown; unknown never shown as zero real bill; no invented subscription quotas.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "real_client"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
+        "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
+        "tests/unit/test_usage.py::test_checkpoint_rejects_malformed_namespaces_duplicates_and_overflow",
+        "tests/unit/test_usage.py::test_checkpoint_preflight_project_size_utf8_and_depth_before_parse",
+        "tests/unit/test_usage.py::test_mixed_protocol_and_simulated_records_keep_metrics_separate",
+        "tests/unit/test_usage.py::test_empty_missing_and_reported_zero_are_distinct",
+        "tests/unit/test_usage.py::test_cumulative_overflow_rejects_admission_atomically",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M8-01",
@@ -1266,7 +1346,7 @@
       "milestone": "M8",
       "title": "Recovery, retry, performance and concurrency stress",
       "acceptance": "Committed state survives; no duplicate active runs/owners; recoverable runs resume or explicit terminal/blocked state; latency/errors reported against declared budgets.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "recovery",
         "concurrency",
@@ -1274,6 +1354,22 @@
         "e2e"
       ],
       "existing_tests": [
+        "tests/unit/test_core_admission.py::test_same_database_core_instances_share_admission_while_other_database_progresses",
+        "tests/unit/test_core_admission.py::test_waiter_strong_reference_prevents_gate_replacement_and_unused_gate_is_reaped",
+        "tests/unit/test_core_admission.py::test_timeout_precedes_sql_or_denial_audit_and_payload_validation_precedes_gate",
+        "tests/unit/test_core_admission.py::test_admission_releases_after_connection_body_audit_close_and_base_exceptions",
+        "tests/unit/test_core_admission.py::test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent",
+        "tests/unit/test_coordination_benchmark.py::test_missing_denial_audit_fails_even_when_claims_and_latency_pass",
+        "tests/unit/test_coordination_benchmark.py::test_equal_audit_totals_do_not_mask_identity_or_outcome_corruption",
+        "tests/unit/test_coordination_benchmark.py::test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup",
+        "tests/unit/test_coordination_benchmark.py::test_cli_actual_tiny_latency_budget_fails_and_invalid_options_return_json",
+        "tests/unit/test_coordination_benchmark.py::test_unexpected_claim_exception_fails_without_raw_exception_text",
+        "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
+        "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
+        "tests/recovery/test_process_recovery.py::test_abrupt_process_exit_preserves_commits_and_rolls_back_transaction",
+        "tests/recovery/test_process_recovery.py::test_crashed_running_owner_is_reclaimed_and_dependency_resumes_after_restart",
+        "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",
+        "tests/concurrency/test_claims.py::test_concurrent_first_process_migrations",
         "tests/unit/test_verification_jobs.py",
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",

@@ -1,0 +1,153 @@
+{
+  "scope": "Independent review of failed complete Linux baseline; test-driver environment defect",
+  "verified_at": "2026-10-26T06:49:02.263899+00:00",
+  "product_commit": "248d0be9685fd3cb474b633c177f29947f6f3f21",
+  "tests": 1471,
+  "passed": 1442,
+  "skipped": 3,
+  "failures": 0,
+  "setup_errors": 26,
+  "run_status": "FAIL",
+  "formal_acceptance": false,
+  "source_unchanged": true,
+  "runtime_modules": 44,
+  "real_docker_cases_executed": 0,
+  "root_cause": "Driver global IMAGE placeholder replacement corrupted AGENTSYNC_DOCKER_TEST_IMAGE key. REQUIRE=1 correctly rejected missing image at26 fixture setups. No product/test rule was changed.",
+  "raw_evidence_root": "D:\\agentsync-debug\\full-linux-248d0be-1itnmcyb",
+  "junit_sha256": "3b7a24f7f2c32e6574e522d69ed2d4258001707af7d5e943de51c1e69045b49d",
+  "pytest_log_sha256": "5a2dfc6da054343a73258f2b2f95e4702f101b88c215f332bf81ff4c6622c130",
+  "driver_script_sha256": "89ac13ede57421cd4ec38333969f5001820c7051095026b2b466cc24c5bc2f76",
+  "affected_cases": [
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_checks_all_external_cases",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_isolation_controls",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_enforces_wall_time",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_enforces_output_bounds[stdout]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_enforces_output_bounds[stderr]",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_enforces_memory_bound",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_enforces_scratch_bound",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_enforces_pid_bound",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_docker_verifier",
+      "name": "test_actual_docker_kernel_cgroup_limits",
+      "message": "failed on setup with \"Failed: Required real Docker evidence has no preloaded image ID\""
+    },
+    {
+      "class": "tests.integration.test_execution_reconciliation",
+      "name": "test_actual_hard_exit_then_explicit_cleanup_never_restores_success[created]",
+      "message": "failed on setup with \"Failed: Required real reconciliation has no pinned Docker image\""
+    },
+    {
+      "class": "tests.integration.test_execution_reconciliation",
+      "name": "test_actual_hard_exit_then_explicit_cleanup_never_restores_success[running]",
+      "message": "failed on setup with \"Failed: Required real reconciliation has no pinned Docker image\""
+    },
+    {
+      "class": "tests.integration.test_execution_reconciliation",
+      "name": "test_actual_initial_absence_is_not_claimed_as_proven_cleanup",
+      "message": "failed on setup with \"Failed: Required real reconciliation has no pinned Docker image\""
+    },
+    {
+      "class": "tests.integration.test_execution_reconciliation",
+      "name": "test_actual_renamed_container_is_protected_from_cleanup",
+      "message": "failed on setup with \"Failed: Required real reconciliation has no pinned Docker image\""
+    },
+    {
+      "class": "tests.integration.test_execution_reconciliation",
+      "name": "test_actual_lost_create_ack_is_never_reconciled_by_name[lost_ack]",
+      "message": "failed on setup with \"Failed: Required real reconciliation has no pinned Docker image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_executes_fixed_snapshot_and_persists_independent_result",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_rejects_candidate_self_report[early-exit]",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_rejects_candidate_self_report[forged-junit]",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_rejects_candidate_self_report[wrong-result]",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_enforces_wall_time[owner_case0]",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_cancel_after_create_prevents_start",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    },
+    {
+      "class": "tests.integration.test_owner_execution",
+      "name": "test_actual_owner_expired_lease_cannot_accept_passing_backend",
+      "message": "failed on setup with \"Failed: Required real owner execution has no pinned image\""
+    }
+  ],
+  "followup": "A corrected explicit JSON/env driver will run only the26 affected cases in a new isolated guest; result remains pending until actual evidence."
+}
