@@ -1,0 +1,97 @@
+{
+  "product_commit": "cb71f0e232253561a6da4ae5f346b312f94ce91b",
+  "version": "0.3.0a21",
+  "schema_version": 12,
+  "scope": "Fix valid Unicode planning JSON on ASCII stdout; decoded result unchanged",
+  "development": {
+    "red_failed": 1,
+    "green_passed": 9,
+    "skipped": 0
+  },
+  "independent_source": {
+    "py314": {
+      "exit_status": 0,
+      "tests": 50,
+      "passed": 50,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "b0e8a224ea60fed347e96d421cad5841bde4b9be48bc05f8aebbb9b35e14d8bc"
+    },
+    "py311": {
+      "exit_status": 0,
+      "tests": 50,
+      "passed": 50,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "d6e5981454022ce523ad0b0a392cebc356d2c34af6d3205672e35f7a31ea4a9b"
+    }
+  },
+  "independent_windows_packages": {
+    "wheel": {
+      "tests": 50,
+      "passed": 50,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 60,
+      "junit_sha256": "ae630e8894e0a8db7989871c370f4f893430e6676c45b98baecf2e0033039f96"
+    },
+    "sdist": {
+      "tests": 50,
+      "passed": 50,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 60,
+      "junit_sha256": "313a78234efd829d0910ee7de759b22f93b3f39470cd64d14e3cdae134f2c61a"
+    }
+  },
+  "all_four_case_sets_identical": true,
+  "prior_49_case_ids_retained": true,
+  "new_case_ids": [
+    "test_unicode_project_plan_survives_ascii_stdout_without_state_or_private_input_echo"
+  ],
+  "actual_module_hashes_match_source": 60,
+  "static_checks": {
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    },
+    "diff": {
+      "exit_status": 0
+    }
+  },
+  "artifacts": {
+    "agentsync_local-0.3.0a21-py3-none-any.whl": "6d93c22cb84b7173765cd626e48aa025285a55e096d7170880c1283e796f8824",
+    "agentsync_local-0.3.0a21.tar.gz": "29ec423878c9da3bc32afb0d2fabcbd1ae4d290b1c461cf7a5afb8820a388bee"
+  },
+  "archive": {
+    "path": "releases/0.3.0a21/checkpoints/plan-ascii-cb71f0e-local.tar.gz",
+    "bytes": 1061409,
+    "sha256": "882e1fba5ac00f7dc9129898d29616b211ce6620a011f853678c07e845959a1b",
+    "manifest_members": 56,
+    "members_independently_rehashed": true
+  },
+  "not_run": [
+    "Linux alpha21",
+    "macOS alpha21",
+    "full source or installed suite",
+    "real clients and autonomous relay",
+    "M5/Release final acceptance"
+  ],
+  "release": "BLOCKED",
+  "formal_requirements": {
+    "not_run": 42
+  },
+  "constraints": [
+    "No Actions, paid calls, real clients, account edits or retry of closed Codex attempt",
+    "VM remains stopped; all debug data D and source F"
+  ]
+}

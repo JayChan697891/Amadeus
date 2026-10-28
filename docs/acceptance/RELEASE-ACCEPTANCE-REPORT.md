@@ -1,5 +1,25 @@
 # Release Acceptance Report
 
+## Alpha21 planning Unicode output repair — selected local validation
+
+Frozen `cb71f0e232253561a6da4ae5f346b312f94ce91b` (0.3.0a21/schema12)
+fixes valid Unicode project IDs failing with UnicodeEncodeError on ASCII stdout.
+Only planning JSON serialization changes; decoded plans and verification markers
+are unchanged. Root reproduced the original failure, and Sol's actual subprocess
+regression failed before the fix, then the planning/usage CLI group passed9 cases.
+
+Root independently inspected files and ran the existing usage/planning/owner-input,
+HTTP/MCP/SDK and Mock workflow selection. Windows Python3.14/3.11 source and
+separate fresh Windows wheel/sdist each **50 passed,0 skipped**. All4 case sets
+match: all49 previous cases plus1 new regression. Actual imports of all60 modules
+match frozen source; Ruff/format/mypy60/diff passed. Raw failure and green logs,
+JUnit, artifacts and reproduction drivers are preserved in the manifest-checked
+archive identified by `evidence/alpha21-local-summary.json`.
+
+Alpha21 Linux/macOS, full suites, real clients and autonomous relay **NOT RUN**.
+No VM or provider was started for this repair. All42 formal requirements remain
+not_run; M5 and Release remain **BLOCKED**. No Actions, paid calls or account edits.
+
 ## Alpha20 offline reported-usage command — selected local validation
 
 Frozen `b2e855947a30d4ee57b0d947ec9420816c84eeb0` (0.3.0a20/schema12) adds

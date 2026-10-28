@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha21 (`cb71f0e232253561a6da4ae5f346b312f94ce91b`) fixes a reproduced
+Unicode project-ID crash in offline planning with ASCII stdout. JSON escaping
+preserves parsed results and unverified markers. Root Windows3.14/3.11 source
+and fresh Windows wheel/sdist each50pass0skip, identical IDs (old49+1new),60
+modulehashes matched; lint/format/mypy pass. Red/green logs, JUnit and builds in
+one archive. Linux/macOS/fullsuite/actualclients NOT RUN; ReleaseBLOCKED and
+all42formalnot_run. See acceptance/evidence/alpha21-local-summary.json.
+
 Alpha20 (`b2e855947a30d4ee57b0d947ec9420816c84eeb0`) adds offline
 `agentsync usage --project-id ID`: strict1MiB stdin checkpoint, existing summary,
 no Core/files/client calls; unknown costs and caller-reported markers preserved.
