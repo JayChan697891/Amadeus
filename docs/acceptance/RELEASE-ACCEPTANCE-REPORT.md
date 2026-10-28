@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Alpha19 Cursor contextual launch entry point — selected local validation
+
+Frozen product `cd2e8d75555e954b41c421f1dfeb3308032ba440` (0.3.0a19/schema12)
+adds the explicit Cursor contextual-factory argument; shared engine/context,
+parsers, invocation plans and Core are unchanged. A trusted host can use the
+existing prelaunch stop/deadline checks; the entry point grants no authorization
+and supplies no built-in Cursor plan. Default startup remains unsupported.
+
+Sol's focused selection: **87 passed,0 skipped**. Root independently inspected
+the diff and ran Windows Python3.14/3.11 selections: **455 passed,0 skipped each**.
+All451 prior case IDs retained with4 added. Fresh offline Windows wheel/sdist
+environments: **122 passed,0 skipped each**; actual imports of all59 runtime
+modules match the frozen source; installed case sets match and are a source
+subset. Ruff/format/mypy59/diff checks passed. The single manifest-checked archive
+contains raw logs, JUnit, build artifacts and reproduction drivers; see
+`evidence/alpha19-local-summary.json` for hashes and paths.
+
+Alpha19 Linux/macOS, full source/installed suites, actual clients and autonomous
+relay are **NOT RUN**. Earlier Linux evidence remains bound to its earlier SHA.
+This component checkpoint does not complete M6-05, M5 or formal acceptance:
+all42 formal requirements remain not_run and Release remains **BLOCKED**.
+No Actions, paid calls, client upgrade or retry of the closed Codex preflight.
+
 ## Authorized actual Codex factory test — preflight BLOCKED
 
 On2026-10-28, the new single-use readonly subscription test stopped before model

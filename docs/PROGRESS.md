@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha19 (`cd2e8d75555e954b41c421f1dfeb3308032ba440`) exposes Cursor's opt-in
+contextual factory through the unchanged shared launch guard. No built-in Cursor
+plan or default startup. Root Windows3.14/3.11 each455pass0skip (451old IDs+4new);
+fresh Windows wheel/sdist each122pass0skip,59actualmodulehashes matched; lint,
+format and mypy pass. One1MB archive retains logs/JUnit/builds/drivers/manifest.
+Linux/macOS/full suite/actualclients NOT RUN; all42formalnot_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha19-local-summary.json. No real-client retry or Actions.
+
 One newly authorized Codex factory subscription test stopped at preflight:
 PATH/npm native CLI reports0.162.0; the pinned profile requires0.164.0-alpha.11.1.
 BLOCKED;0model attempts/0factory calls. Login/actual response NOT RUN. No retry,
