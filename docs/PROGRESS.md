@@ -1,5 +1,14 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha18 adds opt-in pinned ClaudeProcessFactory on the existing launch context.
+Flags/shared engine/context/Codex/parsers/Core unchanged; defaultsunsupported.
+Root Windows3.14/3.11 each451pass0skip (prior446retained+5new). Fresh Windows/
+Linuxwheel+sdist each118pass0skip,59actualmodulehashes/caseIDs matched. This is
+selected validation; fullAlpha17Linux evidence is not promoted toAlpha18.
+Managedhooks/configcredentials/billing/isolation/actualClaude remain unverified.
+Astra source/results review no blocker. All42formalnot_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha18-local-summary.json.
+
 Alpha17 adds opt-in pinned CodexProcessFactory + task/run/loop-bound launch
 observation: stop/original-deadline check and one consumed local attempt before
 capture. Defaultsunsupported; legacy behavior preserved; no liveclientcall.

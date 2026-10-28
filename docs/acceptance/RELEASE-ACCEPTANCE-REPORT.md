@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## Alpha18 opt-in Claude launch plumbing — selected validation
+
+Frozen `c1a53ccf62263681da17d529b9c9abe362aea4a7` adds `ClaudeProcessFactory` and
+Claude contextual-factory argument using the existing launch contract. Shared
+engine/context, Codex, invocation flags/parsers and Core stay unchanged. Root
+Windows3.14/3.11 source selections each **451 passed,0 skipped**; old446 IDs
+retained plus5 new Claude cases. Ruff/format/mypy59 pass. Four fresh offline
+Windows/Linux wheel/sdist environments each **118 passed,0 skipped**, with
+matching IDs and59 actual installed module hashes; Linux archive metadata matches
+the built artifacts. Astra independently reviewed source and saved XML/case IDs,
+installed origins and archive bindings, approving this scoped checkpoint.
+
+Full current Linux source/OS/Python package matrix is **NOT RUN**; prior Alpha17
+full results remain tied to their frozen commit. All56 other prior runtime modules
+retain their bytes; differences are version metadata, the additive
+Claude argument and new factory. No actual client was called. Managed hooks
+remain possible, managed MCP may reject flags and HOME/config may supply
+credentials/providers. Authentication, billing, sandbox and client compatibility
+are unverified. Every actual model run needs fresh authorization; factory
+attachment grants none. All42 formal statuses remain `not_run`; M5/Release
+BLOCKED. Evidence: `evidence/alpha18-local-summary.json`.
+
 ## Alpha17 pinned Codex launch plumbing — scoped local checkpoint
 
 Product `33b5ec26318d10783352c9c39e2364af0e8a1e53`; fixture-only successor/package

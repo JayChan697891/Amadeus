@@ -1,0 +1,119 @@
+{
+  "created_utc": "2026-10-28T08:39:55.636681+00:00",
+  "version": "0.3.0a18",
+  "product_commit": "c1a53ccf62263681da17d529b9c9abe362aea4a7",
+  "schema": 12,
+  "dependencies": "unchanged",
+  "capability": "opt-in pinned ClaudeProcessFactory using existing shared LaunchContext; no actual client execution",
+  "source_Windows": {
+    "py314": {
+      "exit_status": 0,
+      "tests": 451,
+      "passed": 451,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "bc9b1a2a893f24a9537ed915e88f13137538c1cd3762bbf713027c5cdd23e1b7"
+    },
+    "py311": {
+      "exit_status": 0,
+      "tests": 451,
+      "passed": 451,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "0beba5b7e92dd09c3431bb858f5027859ca891e803092c0a92adfd960fda6acb"
+    },
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    },
+    "diff": {
+      "exit_status": 0
+    }
+  },
+  "source_case_identity": {
+    "old446_retained": true,
+    "new_Claude_cases": 5,
+    "py314_py311_same451_ids": true
+  },
+  "unchanged_runtime_modules_from_alpha17": 56,
+  "shared_engine_context_Codex_Claude_invocation_parser_Core_unchanged": true,
+  "installed_packages": [
+    {
+      "platform": "Windows",
+      "kind": "wheel",
+      "passed": 118,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "579c10fec24c1178708f5d337791ee2175c86d82a62722a8133433b811b70e21"
+    },
+    {
+      "platform": "Windows",
+      "kind": "sdist",
+      "passed": 118,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "b94e21c04bb0156ae1a53d251f3d4f0b9c91dab350ad2c1c9a7bc2fa9bae81e4"
+    },
+    {
+      "platform": "Linux",
+      "kind": "wheel",
+      "passed": 118,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "60925ff82f357f88479cd14e625962b704133069cd0600d4f4f7df77117f7d0c"
+    },
+    {
+      "platform": "Linux",
+      "kind": "sdist",
+      "passed": 118,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "41f845060a9b8f31363da290905edb1c1b715934f7dcd2e437fc0522a51c6338"
+    }
+  ],
+  "artifacts": {
+    "agentsync_local-0.3.0a18-py3-none-any.whl": "d24ff4a71139225c33f097e84a0aa168633930401cf4258e74231cbf8c9da040",
+    "agentsync_local-0.3.0a18.tar.gz": "44ca83071d42ed16bc21f584c6bef91805ba854865ab13ca61db8a21cf1ffbfb"
+  },
+  "critical_source_sha256": {
+    "agentsync/adapters/claude_process.py": "36b26e3115d54e8a6b4e47095d0c3a27044fc27f4ce8c6ba701266c44c9fb004",
+    "agentsync/adapters/claude.py": "14437e075417a909abd37c28b24e290ef3dc29bafbe0c23eae3eae96406cdc25",
+    "agentsync/adapters/launch_context.py": "579c14bc3fc89a3e8ed721fee8920ee0dc88f6c941b2bb2b3436caf3ef241578",
+    "agentsync/adapters/_host_process.py": "ed071adc779b292b70abf0fb910fa02d17c81c7a282b25c43b964198c7498257"
+  },
+  "full_current_Linux_suite": "NOT RUN; bounded additive Claude extension tested in fresh installed scope. Prior full alpha17 run remains bound to d42a07c, not this product.",
+  "prior_full_Linux_evidence": "alpha17-local-summary.json",
+  "evidence_directory_names": [
+    "claude-process-source-p0jhvjif",
+    "alpha18-windows-qodaspwk",
+    "alpha18-linux-packages-4tc8ojhv",
+    "claude-process-sol-c7bcd58e"
+  ],
+  "review": "Independent Astra source and saved-results review approved the scoped checkpoint after verifying raw case identities/XML hashes, 59 installed module bindings and Linux artifact metadata. Root executed the tests. Not actual Claude, formal or Work human acceptance.",
+  "limitations": [
+    "No actual Claude/Codex/model/provider call. Every actual model execution needs fresh human authorization and applicable gates; factory attachment authorizes none.",
+    "Managed hooks are not disabled; managed MCP may reject configuration; HOME/config may supply credentials/providers.",
+    "Authentication, subscription-only billing, tool restrictions, sandbox and current real-client compatibility remain unverified.",
+    "Stop/deadline and one-attempt checks are process-local; preparation thread/OS creation may finish late, with no hard I/O, descendant or server cancellation guarantee.",
+    "Four fresh installed environments ran selected118-case scope; no full current OS/Python package matrix claim.",
+    "No GitHub Actions/main changes/paid calls/formal status promotion."
+  ],
+  "formal_not_run": 42,
+  "formal_acceptance": false,
+  "release": "BLOCKED"
+}
