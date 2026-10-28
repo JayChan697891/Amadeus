@@ -1,0 +1,138 @@
+{
+  "created_utc": "2026-10-28T00:34:46.039350+00:00",
+  "client_timezone": "America/Tijuana",
+  "version": "0.3.0a15",
+  "product_commit": "1d6b52605ff930787a992e8a7800caf01a8a0089",
+  "schema_version": 12,
+  "dependencies": "unchanged",
+  "Windows_installed_environments": [
+    {
+      "runtime": "py314",
+      "kind": "wheel",
+      "passed": 782,
+      "skipped": 3,
+      "actual_imports": 55,
+      "junit_sha256": "5dd0dc6d583488caedce31b2eb672e9fe83f6ba2aa49b64dace6fbbf48d609e0",
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "sqlite": "3.50.4"
+    },
+    {
+      "runtime": "py314",
+      "kind": "sdist",
+      "passed": 782,
+      "skipped": 3,
+      "actual_imports": 55,
+      "junit_sha256": "d613f1eaafef6cc7d7e221922b428c21880475d0df0d1f84c40851f601c091ae",
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "sqlite": "3.50.4"
+    },
+    {
+      "runtime": "py311",
+      "kind": "wheel",
+      "passed": 782,
+      "skipped": 3,
+      "actual_imports": 55,
+      "junit_sha256": "3b7371e4a70b6dbeb1bff3adfe11bec0b00561642dc469e184b9f92d4d27e65a",
+      "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+      "sqlite": "3.50.4"
+    },
+    {
+      "runtime": "py311",
+      "kind": "sdist",
+      "passed": 782,
+      "skipped": 3,
+      "actual_imports": 55,
+      "junit_sha256": "0f943fde737a73613060cd5728909111318dc689ac3f1f85fd310972a10cb4d8",
+      "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+      "sqlite": "3.50.4"
+    }
+  ],
+  "Linux_installed_environments": [
+    {
+      "kind": "wheel",
+      "passed": 122,
+      "skipped": 2,
+      "failed": 0,
+      "errors": 0,
+      "actual_imports": 55,
+      "fork": "ACTUALLY_PASS",
+      "artifact_sha256": "c1a6079bab349fb714e9ca50b23083ba149c5405a63a0870784fe397377f1907",
+      "junit_sha256": "a7e2a3653c9a01a9dc86616ad37840084e5ad567687f3b9b5c3c4aa4541f9561"
+    },
+    {
+      "kind": "sdist",
+      "passed": 122,
+      "skipped": 2,
+      "failed": 0,
+      "errors": 0,
+      "actual_imports": 55,
+      "fork": "ACTUALLY_PASS",
+      "artifact_sha256": "3b94fb00f167d6f9854b1dcd696d68a9d578f26b5e4904a6c9ba936ec43e157c",
+      "junit_sha256": "168494916ffbc4f00a4331f38d9a6bc685dc867403aa6796386e1282e1d7031f"
+    }
+  ],
+  "Windows_case_ids_matched": 785,
+  "Linux_case_ids_matched": 124,
+  "runtime_modules_each": 55,
+  "Git_package_inputs_verified": 313,
+  "artifacts": {
+    "agentsync_local-0.3.0a15-py3-none-any.whl": "c1a6079bab349fb714e9ca50b23083ba149c5405a63a0870784fe397377f1907",
+    "agentsync_local-0.3.0a15.tar.gz": "3b94fb00f167d6f9854b1dcd696d68a9d578f26b5e4904a6c9ba936ec43e157c"
+  },
+  "source_regression": {
+    "Windows3.14": {
+      "passed": 432,
+      "skipped": 3
+    },
+    "Windows3.11": {
+      "passed": 37,
+      "skipped": 1
+    },
+    "Linux3.14.7": {
+      "passed": 122,
+      "skipped": 2,
+      "fork": "actually passed"
+    }
+  },
+  "performance": {
+    "workload": "32workers x8rounds; unchanged1000ms p95 budget; includes admission waiting",
+    "baseline_p95_ms": 2303.126,
+    "baseline_status": "FAIL preserved",
+    "source_p95_ms": 107.83679999985907,
+    "installed3.11_p95_ms": 110.680499999944,
+    "new_observed_budget_status": "PASS",
+    "each_audit_expected_and_observed": 256,
+    "success": 8,
+    "denied": 248,
+    "missing_duplicate_unexpected_mismatch": 0,
+    "scope": "one-host declared workload, not universalSLO/fairness/durability"
+  },
+  "Astra_review": "critical source and saved-results reviews: approve scoped development checkpoint only, not Work/Release acceptance",
+  "owner_migration_auth_replay_lease_audit_logic": "unchanged; original transaction body exact match",
+  "admission_limits": "process-local;30s admission additive to SQLite/audit waits; no fairness, queue bound, recursion or cross-process security guarantee",
+  "VM_cleanup": {
+    "stopped": true,
+    "guard_note": "Initial string/date comparison rejected before any shutdown; exact UTC ticks then matched",
+    "verified_owned_pid": 5088,
+    "disk_preserved": true,
+    "forced_stop_used": false
+  },
+  "evidence_directories": [
+    "D:\\agentsync-debug\\alpha15-packages-vsexm9ec",
+    "D:/agentsync-debug/alpha15-python311-8x9mrsbm",
+    "D:\\agentsync-debug\\alpha15-linux-packages-8nxxft8u",
+    "D:/agentsync-debug/core-admission-root-e9ou5xav",
+    "D:/agentsync-debug/core-admission-linux-isvv1r9f",
+    "D:/agentsync-debug/core-admission-perf-qqof4ky8"
+  ],
+  "formal_requirements_not_run": 42,
+  "formal_release": "BLOCKED",
+  "remaining": [
+    "historical Linux8process startup failures not declared repaired",
+    "full OS/Python matrix and macOS NOT RUN",
+    "real client/Claude flag combination/auth/billing/relay NOT VERIFIED"
+  ],
+  "GitHub_Actions": "NOT RUN",
+  "remote_mutations": "NONE",
+  "main_modified": false
+}

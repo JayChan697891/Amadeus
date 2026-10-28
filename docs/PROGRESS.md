@@ -1,5 +1,15 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
+environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
+junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
+785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
+IndependentAstra source+result review approves scopeddevelopment only. Same32×8
+budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
+256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
+OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
+See acceptance/evidence/alpha15-local-summary.json.
+
 M8 bounded process-local Core admission implemented; existing SQL/auth/replay/lease/
 audit/close body byte-identical, owner/migration paths unchanged. Astra source
 review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped

@@ -1,5 +1,44 @@
 # Release Acceptance Report
 
+## Development alpha15 installed checkpoint - 2026-10-27 America/Tijuana
+
+Frozen product `1d6b52605ff930787a992e8a7800caf01a8a0089`, development0.3.0a15,
+schema12/dependencies unchanged. Four fresh offline Windows environments (Python
+3.14/3.11 × wheel/sdist) each **782 passed,3 skipped,0 failures/errors** across
+matching785 case IDs. Skips are POSIXfork and2symlink-privilege cases, not passes.
+Two fresh offline Linux wheel/sdist environments each **122 passed,2 skipped,
+0 failures/errors** across124 selected IDs. Their Windows-junction skips are
+platform-specific; inherited-Core fork and actual two-MCP-process claim executed
+and passed. Dependency checks and installed Mock CLI demos passed in all6.
+
+Root independently verified313 Git package inputs,55 actual installed module
+paths/hashes per environment, same-runtime case/skip sets, original artifact
+hashes and Linux direct-archive install metadata. Pinned offline build backends
+and52-wheel guest cache were used; no provider/API/hosted execution. These are
+selected suites, not the full repository, OS matrix or historical8-process repair.
+Astra reviewed critical source and saved results, approving this scoped development
+checkpoint only; this is not independent Work human or M5/Release acceptance.
+
+The identical32worker×8round/1000ms diagnostic now passed with sourcep95=107.837ms
+and fresh installed Python3.11 p95=110.680ms, each with256 exact audit receipts
+(8success/248denied,0 defects). Admission wait remains included. Historical
+2303.126ms baseline failure stays preserved. This measured local improvement
+does not prove generalized SLOs, fairness, audit durability or cross-process bounds.
+
+Evidence/artifacts: `D:/agentsync-debug/alpha15-packages-vsexm9ec/`,
+`D:/agentsync-debug/alpha15-python311-8x9mrsbm/`,
+`D:/agentsync-debug/alpha15-linux-packages-8nxxft8u/`; persistent summary
+`evidence/alpha15-local-summary.json` includes hashes and related source/perf runs.
+All owned validation jobs completed. The dedicated VM was synchronized and
+gracefully powered off, preserving disk and backed-up logs. An initial guard
+compared an auto-parsed DateTime against a string and refused before sending
+shutdown; exact UTC ticks/PID/executable/disk then matched. No forced stop occurred.
+
+All42 formal requirements remain not_run and **Release BLOCKED**. Real clients,
+full Claude flag compatibility/authentication/billing/relay, macOS and complete
+platform matrix remain unverified. Old Linux startup failures remain open. No
+Actions run, remote mutation, main modification, tag or public Release occurred.
+
 ## M8 process-local admission experiment - 2026-10-27 America/Tijuana
 
 Source `b10bf99d0c8d814762849f86e76565c2c40ba394` adds weak per-database process-local
