@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a19 - Cursor contextual launch entry point
+
+- Allow a trusted Cursor host factory to use the existing task-bound launch
+  context for prelaunch cancellation and original-deadline checks.
+- Preserve the legacy factory, unsupported default and parent-only cleanup;
+  no built-in Cursor invocation plan or actual client verification is added.
+
 ## 0.3.0a18 - opt-in pinned Claude launch plumbing
 
 - Add a Claude process factory using the existing restricted plan and shared

@@ -219,6 +219,14 @@ optional request correlation ID; these are neither measured billing nor Core
 identity. All protocol/client verification markers remain unverified. Parent-only
 cancellation, deadline behavior and unsupported resume match the shared engine.
 
+An explicit `CursorAdapter(..., contextual_factory=factory)` can now pass its
+task-bound `LaunchContext` to a trusted host factory, mutually exclusive with
+the legacy `factory` argument. The host must use `context.start(...)` to obtain
+the existing prelaunch stop/deadline and one-attempt checks. This entry point
+does not supply a Cursor invocation plan, authenticate the factory or authorize
+execution. Default startup remains unsupported; already-scheduled OS creation
+and parent-only cleanup retain the shared engine's documented limitations.
+
 The supported schema is based on the official
 [Cursor output format](https://cursor.com/docs/cli/reference/output-format).
 Only synthetic known-Python fixtures have been exercised. Actual Cursor, CLI/OS
