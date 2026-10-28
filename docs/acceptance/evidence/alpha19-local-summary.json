@@ -86,12 +86,12 @@
   "not_run": [
     "actual Cursor",
     "actual Codex or Claude",
-    "Linux alpha19",
     "macOS alpha19",
     "full alpha19 source suite",
     "full installed suite",
     "real autonomous dual-agent relay",
-    "formal M5/Release acceptance"
+    "formal M5/Release acceptance",
+    "full Linux alpha19 source suite"
   ],
   "release": "BLOCKED",
   "formal_requirements": {
@@ -103,5 +103,45 @@
     "Default unsupported; legacy unchanged.",
     "Already scheduled OS creation can complete late; only owned parent cleanup is observed.",
     "No Actions, paid calls, client upgrade or retry of closed Codex preflight."
-  ]
+  ],
+  "independent_linux_packages": {
+    "wheel": {
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "e6cf1e056780defbc64a8f2057fb8473ff3cd6366bc8d1a888d82e712cbfcce5"
+    },
+    "sdist": {
+      "passed": 122,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 59,
+      "junit_sha256": "8ea986bc15aaa04e513a8c2111e73188f92f9f511f7a57d73c1a19a7789229fe"
+    }
+  },
+  "all_four_installed_case_sets_match": true,
+  "linux_actual_module_hashes_and_direct_archive_hashes_match": true,
+  "linux_initial_upload": {
+    "status": "NOT RUN",
+    "reason": "SSH session unavailable during initial VM startup; no tests executed",
+    "log_sha256": "a7fd412c1ffba863352c61f8112745b9c78762cbeb69e1baa55447e5bddd8704",
+    "preserved_in_supplement": true
+  },
+  "linux_supplement": {
+    "path": "releases/0.3.0a19/checkpoints/cursor-context-cd2e8d7-linux.tar.gz",
+    "bytes": 28582,
+    "sha256": "ce08b5ddb7364195ac2aeb3942bbb5a78e0e431e57117c3ee11374d891f2853c",
+    "manifest_members": 28,
+    "members_independently_rehashed": true
+  },
+  "vm_shutdown": {
+    "verified_owned_pid": 10624,
+    "forced_stop_used": false,
+    "disk_preserved": true,
+    "stopped": true,
+    "transport_exit": 0
+  }
 }

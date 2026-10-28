@@ -17,8 +17,16 @@ subset. Ruff/format/mypy59/diff checks passed. The single manifest-checked archi
 contains raw logs, JUnit, build artifacts and reproduction drivers; see
 `evidence/alpha19-local-summary.json` for hashes and paths.
 
-Alpha19 Linux/macOS, full source/installed suites, actual clients and autonomous
-relay are **NOT RUN**. Earlier Linux evidence remains bound to its earlier SHA.
+The subsequent dedicated local Linux VM installed the same frozen wheel/sdist
+offline into separate fresh environments: **122 passed,0 skipped each**, all59
+actual module hashes and direct archive hashes matched. All4 Windows/Linux
+installed case sets are identical. Dependency checks and installed Mock workflow
+CLI passed. Initial SSH upload failed during startup before tests; its NOT RUN
+record/log remain in the29KB Linux supplement, separate from the successful fresh
+guest run. Owned VM10624 was identity-checked and gracefully stopped; disk retained.
+
+Alpha19 macOS, full source/installed suites, actual clients and autonomous relay
+are **NOT RUN**. Earlier full Linux evidence remains bound to its earlier SHA.
 This component checkpoint does not complete M6-05, M5 or formal acceptance:
 all42 formal requirements remain not_run and Release remains **BLOCKED**.
 No Actions, paid calls, client upgrade or retry of the closed Codex preflight.
