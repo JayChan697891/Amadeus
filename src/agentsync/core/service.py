@@ -18,6 +18,7 @@ from agentsync.core.workspaces import WorkspacesMixin
 from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
 from agentsync.resources.paths import pin_root
+from agentsync.storage.admission import database_admission
 from agentsync.storage.database import connect, migrate
 
 
@@ -44,6 +45,10 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, PermissionsMixin
         if schema is None:
             raise AgentSyncError("unknown_operation", "Unknown operation.", 404)
         p = self._validated_payload(schema, payload)
+        with database_admission(self.db_path):
+            return self._execute_validated(operation, p)
+
+    def _execute_validated(self, operation: str, p: dict[str, Any]) -> dict[str, Any]:
         db = connect(self.db_path)
         actor = None
         try:
