@@ -18,6 +18,7 @@ from typing import Literal
 
 from agentsync.adapters._host_process import (
     _CaptureFactory,
+    _ContextualCaptureFactory,
     _HostProcessAdapter,
     _HostRun,
     _HostStatus,
@@ -30,6 +31,7 @@ from agentsync.adapters.base import AdapterTask
 from agentsync.adapters.codex_events import CodexUsage, parse_codex_jsonl
 
 CaptureFactory = _CaptureFactory
+ContextualCaptureFactory = _ContextualCaptureFactory
 CodexStatus = _HostStatus
 
 
@@ -84,6 +86,7 @@ class CodexAdapter(_HostProcessAdapter[CodexCapabilities, CodexRun, CodexResult,
         session_id: str,
         *,
         factory: CaptureFactory | None = None,
+        contextual_factory: ContextualCaptureFactory | None = None,
         max_runs: int = 100,
         running_limit: int = 1,
     ):
@@ -91,6 +94,7 @@ class CodexAdapter(_HostProcessAdapter[CodexCapabilities, CodexRun, CodexResult,
             project_id,
             session_id,
             factory=factory,
+            contextual_factory=contextual_factory,
             max_runs=max_runs,
             running_limit=running_limit,
             new_capabilities=CodexCapabilities,

@@ -1,8 +1,10 @@
 # M6 host-factory adapter prototype
 
 `agentsync.adapters.codex.CodexAdapter` implements the six generic `AgentAdapter`
-methods. It composes `CapturedProcess` and the bounded Codex JSONL parser. There
-is no built-in CLI launcher, credential reader, Core dispatch or network client.
+methods. It composes `CapturedProcess` and the bounded Codex JSONL parser. The
+default adapter has no launcher. The explicit trusted-host helper described below
+can connect a pinned plan to a process; no credential reader, Core dispatch or
+network client is added to the adapter.
 
 ```python
 adapter = CodexAdapter("project", "session")
@@ -22,6 +24,34 @@ loop captures remain unowned/uncancelled. Ordinals are not serialized, credentia
 or restart identities; public timestamps and timers retain their original meaning.
 Actual client integration still requires the existing M5 safety gates and a new
 explicit live-test authorization. Both separately authorized single real CLI tests are now consumed.
+
+## Opt-in pinned Codex process factory
+
+`agentsync.adapters.codex_process.CodexProcessFactory(profile, environment=explicit_env)`
+copies a `CodexHostProfile` and a filtered explicit environment without launching.
+A trusted host can pass it as `CodexAdapter(..., contextual_factory=factory)`;
+it cannot combine this with the existing `factory` argument. Each invocation
+prepares the task afresh, including binary/root checks, then forwards the exact
+fixed argv, cwd, stdin, timeout, output limit and explicit environment to capture.
+No CLI command, automatic workflow or Core operation enables this path.
+
+The adapter issues a `LaunchContext` for that exact task/run/event loop. Before
+capture entry it synchronously checks observed stop state and the original run
+deadline, and consumes one local attempt. Failed or uncertain starts consume it
+too. The check and capture entry have no intervening await. This is an in-memory
+observation, never human/Core authorization, approval consumption or a persistent
+reservation. Fresh authorization remains required for every actual model run;
+attaching the reusable factory authorizes none. The earlier two grants are spent.
+
+Preparation uses a worker thread, which can continue after a stop and has no hard
+I/O deadline. A stop observed before capture entry prevents that attempt; OS
+creation already scheduled can still finish late. Keep the loop alive for owned
+late-parent cleanup. The original adapter deadline and the plan's capture timeout
+are separate observations, not a hard end-to-end execution bound. The helper is
+not an OS sandbox or proof of subscription-only billing, unreadable credentials,
+client compatibility, server cancellation or descendant cleanup. Tests with a
+start spy establish fixed argument wiring; owned Python children establish local
+lifecycle behavior. Neither is an actual Codex invocation or formal acceptance.
 
 ## Lifecycle and result semantics
 

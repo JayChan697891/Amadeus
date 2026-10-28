@@ -16,6 +16,7 @@ from dataclasses import dataclass, field, replace
 from typing import Generic, Literal, TypeVar
 
 from agentsync.adapters.base import AdapterTask, AgentAdapter, _identifier
+from agentsync.adapters.launch_context import LaunchContext, _LaunchBlocked, _new_launch_context
 from agentsync.adapters.process_capture import (
     CapturedProcess,
     CaptureSnapshot,
@@ -25,6 +26,7 @@ from agentsync.adapters.process_capture import (
 from agentsync.errors import AgentSyncError
 
 _CaptureFactory = Callable[[AdapterTask], Awaitable[CapturedProcess]]
+_ContextualCaptureFactory = Callable[[AdapterTask, LaunchContext], Awaitable[CapturedProcess]]
 _HostStatus = Literal["starting", "running", "succeeded", "failed", "unknown"]
 
 
@@ -100,6 +102,7 @@ class _HostProcessAdapter(
         session_id: str,
         *,
         factory: _CaptureFactory | None = None,
+        contextual_factory: _ContextualCaptureFactory | None = None,
         new_capabilities: Callable[[bool, int, int], _CapabilitiesT],
         new_run: Callable[[AdapterTask, str, float], _RunT],
         new_result: Callable[[_RunT, tuple[str, ...], _UsageT | None, str | None], _ResultT],
@@ -112,6 +115,8 @@ class _HostProcessAdapter(
         _identifier(session_id)
         if (
             (factory is not None and not callable(factory))
+            or (contextual_factory is not None and not callable(contextual_factory))
+            or (factory is not None and contextual_factory is not None)
             or type(max_runs) is not int
             or not 1 <= max_runs <= 10000
             or type(running_limit) is not int
@@ -120,6 +125,7 @@ class _HostProcessAdapter(
             raise AgentSyncError("validation_error", configuration_error)
         self._project_id, self._session_id = project_id, session_id
         self._factory = factory
+        self._contextual_factory = contextual_factory
         self._max_runs, self._running_limit = max_runs, running_limit
         self._new_capabilities = new_capabilities
         self._new_run = new_run
@@ -132,7 +138,9 @@ class _HostProcessAdapter(
 
     async def capabilities(self) -> _CapabilitiesT:
         return self._new_capabilities(
-            self._factory is not None, self._max_runs, self._running_limit
+            self._factory is not None or self._contextual_factory is not None,
+            self._max_runs,
+            self._running_limit,
         )
 
     async def start_task(self, task: AdapterTask) -> _RunT:
@@ -143,7 +151,7 @@ class _HostProcessAdapter(
             raise AgentSyncError(
                 "namespace_mismatch", "Request does not match adapter namespace.", 403
             )
-        if self._factory is None:
+        if self._factory is None and self._contextual_factory is None:
             raise AgentSyncError("unsupported", "A trusted host process factory is required.")
         async with self._lock:
             existing = self._requests.get(task.request_id)
@@ -189,8 +197,17 @@ class _HostProcessAdapter(
             # Caller cancellation cannot reach this independent background task.
             if entry.result is not None:
                 return
-            assert self._factory is not None
-            process = await self._factory(entry.task)
+            if self._contextual_factory is not None:
+                context = _new_launch_context(
+                    entry.task,
+                    asyncio.get_running_loop(),
+                    entry.view.started_at + entry.task.timeout_seconds,
+                    lambda: entry.stop_code is not None or entry.result is not None,
+                )
+                process = await self._contextual_factory(entry.task, context)
+            else:
+                assert self._factory is not None
+                process = await self._factory(entry.task)
             if type(process) is not CapturedProcess:
                 async with self._lock:
                     self._finish(entry, "unknown", error="factory_invalid_result")
@@ -224,6 +241,12 @@ class _HostProcessAdapter(
                 return
             await process.wait()
             await self._collect(entry)
+        except _LaunchBlocked as exc:
+            if exc.expired:
+                await self._request_stop(entry, "adapter_timeout", True)
+            else:
+                async with self._lock:
+                    self._finish(entry, "unknown", error="factory_failed")
         except asyncio.CancelledError:
             async with self._lock:
                 self._finish(entry, "unknown", error="factory_cancelled")

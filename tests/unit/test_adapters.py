@@ -98,8 +98,10 @@ async def test_running_result_is_not_ready_and_cannot_be_forged_as_real():
     with pytest.raises(AgentSyncError) as exc:
         await adapter.get_result(run.run_id)
     assert exc.value.code == "result_not_ready"
-    with pytest.raises(TypeError):
+    # Supported stdlib versions reject init=False replacement with either type.
+    with pytest.raises((TypeError, ValueError)):
         replace(run, execution_connected=True)
+    assert run.execution_connected is False
     with pytest.raises((FrozenInstanceError, AttributeError, TypeError)):
         run.status = "succeeded"
 

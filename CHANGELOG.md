@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a17 - opt-in pinned Codex launch plumbing
+
+- Add a task/run/loop-bound launch observation with an original-deadline check
+  and one consumed local process-start attempt.
+- Add an opt-in Codex process factory with fresh pin checks and explicit filtered
+  environment; preserve unsupported defaults and legacy factory behavior.
+- Keep actual-client authorization, billing, isolation and acceptance unverified.
+
 ## 0.3.0a16 - offline dispatch advice command
 
 - Expose existing dispatch planning through bounded stdin JSON with `agentsync plan`.
