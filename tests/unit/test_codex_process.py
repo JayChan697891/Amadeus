@@ -7,6 +7,7 @@ import sys
 import threading
 import time
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
@@ -27,6 +28,12 @@ for event in [{'type':'thread.started','thread_id':'fixture'},
               {'type':'turn.completed','usage':{'input_tokens':1,'cached_input_tokens':0,'output_tokens':1}}]:
  print(json.dumps(event),flush=True)
 """
+
+
+def known_python():
+    # Own the interpreter itself, rather than a Windows venv redirector parent.
+    candidate = Path(sys.base_prefix) / ("python.exe" if os.name == "nt" else "bin/python")
+    return str(candidate) if candidate.is_file() else sys.executable
 
 
 def fixture_profile(tmp_path):
@@ -89,7 +96,7 @@ async def test_exact_pinned_fields_feed_fixture_capture_and_replay_only_once(tmp
             output_limit=expected.output_limit,
             env=expected.child_env(),
         )
-        return await original_start((sys.executable, "-I", "-u", "-c", HELPER), **options)
+        return await original_start((known_python(), "-I", "-u", "-c", HELPER), **options)
 
     monkeypatch.setattr(CapturedProcess, "start", classmethod(fixture_start))
     adapter = CodexAdapter("p", "s", contextual_factory=bridge)
@@ -264,7 +271,7 @@ async def test_late_scheduled_owned_python_parent_is_cleaned_without_rewriting_u
     async def factory(task, context):
         process = await context.start(
             task,
-            (sys.executable, "-I", "-u", "-c", "import time; time.sleep(20)"),
+            (known_python(), "-I", "-u", "-c", "import time; time.sleep(20)"),
             cwd=tmp_path,
             stdin_text="",
             timeout_seconds=3,
