@@ -191,7 +191,13 @@ def test_failure_text_cap_is_explicit_and_total_cap_freezes_incomplete(tmp_path)
     )
     text_path = tmp_path / "text-private.jsonl"
     code, _, _ = run(
-        tmp_path, "--case-journal", str(text_path), "--case-journal-report-bytes", "64", "--tb=no"
+        tmp_path,
+        "--case-journal",
+        str(text_path),
+        "--case-journal-report-bytes",
+        "64",
+        "--tb=no",
+        "-rN",
     )
     assert code == 1
     saved = records(text_path)
@@ -202,7 +208,13 @@ def test_failure_text_cap_is_explicit_and_total_cap_freezes_incomplete(tmp_path)
     assert saved[-1]["status"] == "complete_with_truncation"
     total_path = tmp_path / "limit-private.jsonl"
     code, stdout, stderr = run(
-        tmp_path, "--case-journal", str(total_path), "--case-journal-max-bytes", "2048", "--tb=no"
+        tmp_path,
+        "--case-journal",
+        str(total_path),
+        "--case-journal-max-bytes",
+        "2048",
+        "--tb=no",
+        "-rN",
     )
     assert code == 3
     assert total_path.stat().st_size <= 2048
