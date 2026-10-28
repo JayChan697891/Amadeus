@@ -55,6 +55,15 @@ Stdio MCP hosts have local process access; Alpha is not a hostile-agent sandbox.
 
 ## Read-only scheduling
 
+`python -m agentsync plan < dispatch-input.json` prints offline dispatch advice.
+In PowerShell: `Get-Content -Raw -Encoding utf8 .\dispatch-input.json | python -m agentsync plan`.
+The bounded UTF-8 JSON input requires `state` (an explicit project-state snapshot),
+`project_id`, `worker_agent_ids` (an array), and `now` (a caller-supplied timestamp).
+Optional fields are `global_limit`, `per_agent_limit`, `limit`, and
+`required_capabilities` (task IDs mapped to capability arrays). No database or
+default state is opened. Output remains unverified planning advice; it neither
+authorizes nor starts work. Extra command arguments and input fields are rejected.
+
 Read-only scheduling helpers `agentsync.scheduling.plan_tasks` and
 `agentsync.dispatch_planning.plan_dispatches` accept optional
 `required_capabilities={task_id: ("python", "tests"), ...}`. An explicit mapping

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a16 - offline dispatch advice command
+
+- Expose existing dispatch planning through bounded stdin JSON with `agentsync plan`.
+- Preserve unverified planning markers without opening Core state or starting work.
+- Reject duplicate fields, nonfinite numbers, unknown options and oversized input.
+- Keep alpha15 installed and Linux regression evidence bound to their frozen source.
+
 ## 0.3.0a15 - development admission and diagnostic checks
 
 - Add bounded process-local Core thread admission while preserving transaction behavior.

@@ -129,10 +129,18 @@ def run_demo(data_dir: str | Path) -> dict[str, Any]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    arguments = sys.argv[1:] if argv is None else argv
+    # Only a leading plan command takes this route; owner operations and values
+    # named "plan" retain their existing command parsing.
+    if arguments and arguments[0] == "plan":
+        from agentsync.planning_cli import invalid_input, run_plan_cli
+
+        return run_plan_cli() if len(arguments) == 1 else invalid_input()
     parser = argparse.ArgumentParser(prog="agentsync")
     parser.add_argument("--data-dir", default=None, help="Absolute local state directory")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("mcp", help="Run official MCP stdio server")
+    commands.add_parser("plan", help="Print offline dispatch advice from bounded stdin JSON")
     owner = commands.add_parser(
         "owner", help="Owner operation; read credentials and payload JSON from stdin"
     )
@@ -150,6 +158,10 @@ def main(argv: list[str] | None = None) -> int:
         help="Run a disposable fixed Mock workflow in the existing scratch parent",
     )
     args = parser.parse_args(argv)
+    if args.command == "plan":
+        from agentsync.planning_cli import invalid_input
+
+        return invalid_input()
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
