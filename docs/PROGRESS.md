@@ -1,5 +1,13 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Local developer startup diagnostic at1eb17be: fixed owned interpreter children,
+service-module hash pin, import/connect/WAL/init phases, private new shared DB,
+integrity/FK/schema checks and bounded parent observation with kill/reap cleanup.
+Root Windows Python3.14/3.11 each4pass0skip; Ruff/format/focused mypy pass.
+Actual8processes completed in~0.356s; parent file preserved. No production edits.
+Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
+See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
+
 Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
 environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
 junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,

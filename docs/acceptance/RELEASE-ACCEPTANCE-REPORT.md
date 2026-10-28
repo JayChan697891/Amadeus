@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Local startup diagnostic - Windows development evidence only
+
+Developer tool commit `1eb17bee8a953603321f0e2ef56dff89a20ffa3b` adds fixed
+owned interpreter startup observations without changing production code. Root
+independently ran **4 passed,0 skipped** on each Python3.14 and3.11; Ruff,
+format and focused tool typing passed. Actual **8 Windows processes** sharing
+a new disposable database completed in **0.356s**, with schema12, integrity
+and foreign-key checks, owned process cleanup and parent-file preservation.
+
+Phases cover import, connect, WAL and overall initialization; BEGIN waiting
+is not separately measured. The source pin covers Core service.py only.
+The observation deadline does not preempt OS launch/kill/reap/cleanup.
+Linux diagnostic is **NOT RUN**; historical Linux8-process startup failure
+remains **OPEN**. All42 formal requirements remain `not_run`; Release BLOCKED.
+Earlier installed alpha15 results remain bound to their original product SHA.
+Evidence: `evidence/core-startup-local-summary.json`; raw logs/JUnits in
+`D:\agentsync-debug\core-startup-root-6ndgmxne`. No remote/provider calls.
+
 ## Development alpha15 installed checkpoint - 2026-10-27 America/Tijuana
 
 Frozen product `1d6b52605ff930787a992e8a7800caf01a8a0089`, development0.3.0a15,

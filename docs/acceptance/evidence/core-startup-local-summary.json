@@ -1,0 +1,426 @@
+{
+  "created_utc": "2026-10-28T00:43:49.290619+00:00",
+  "diagnostic_commit": "1eb17bee8a953603321f0e2ef56dff89a20ffa3b",
+  "runtime_product_commit": "1d6b52605ff930787a992e8a7800caf01a8a0089",
+  "runtime_sources_unchanged": true,
+  "version": "0.3.0a15",
+  "source_sha256": {
+    "tools/diagnose_core_startup.py": "c34dde434a442ac059e46af24122d5c4f9743d247e63d47f3de81a74e9dfe9cc",
+    "tests/unit/test_core_startup_diagnostic.py": "87a368e15ce72c99e94aab8efec54e12a84a0ecd803a17b0efc0d51e46277120",
+    "src/agentsync/core/service.py": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1"
+  },
+  "checks": {
+    "py314": {
+      "exit_status": 0,
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "afffad31134ee56901d7e0c21c64d098842cb7e1b28df7cc9c0a8d6ad59b57c4"
+    },
+    "py311": {
+      "exit_status": 0,
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "1224c4355207073995911ae74525fe8baa0d8e9dd515172da3ace3f0a099ed9f"
+    },
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    },
+    "actual-eight": {
+      "exit_status": 0
+    }
+  },
+  "actual_windows_eight_processes": {
+    "package_version": "0.3.0a15",
+    "scope": "local_core_startup",
+    "diagnostic_only": true,
+    "formal_acceptance": false,
+    "real_client_verified": false,
+    "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+    "source_hash_scope": "core_service_module_only",
+    "workers": 8,
+    "deadline_seconds": 30.0,
+    "startup_wall_seconds": 0.3560427000002164,
+    "startup_workers_per_second": 22.46921506885308,
+    "owned_processes_reaped": true,
+    "counts": {
+      "completed": 8,
+      "failed": 0,
+      "timed_out": 0,
+      "not_started": 0
+    },
+    "worker_observations": [
+      {
+        "worker": 0,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.0024000000848900527
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 140.09079999959795
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 140.40659999955096
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 140.65510000000359
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 140.67470000009052
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 141.19819999996253
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 171.1899000001722
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 173.03129999982048,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 1,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.0026999996407539584
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 134.45369999953982
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 134.79309999911493
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 135.09589999921445
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 135.11449999987235
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 137.65309999962483
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 147.67339999980322
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 149.23599999929138,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 2,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.0039000005926936865
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 137.988000000405
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 138.48550000057003
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 138.72880000053556
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 138.74650000070687
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 139.03550000031828
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 279.3801000007079
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 281.64230000038515,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 3,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.002600000698294025
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 134.34280000001309
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 134.80730000082985
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 135.09400000020833
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 135.11319999997795
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 135.44679999995424
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 149.42930000052002
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 151.24140000079933,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 4,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.002499999936844688
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 135.99640000029467
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 136.22490000034304
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 136.43950000005134
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 136.4568999997573
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 136.7155999996612
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 195.14710000021296
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 197.2078999997393,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 5,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.002099999619531445
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 131.03249999949185
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 131.29200000003038
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 131.50690000020404
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 131.52439999976195
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 131.79419999960373
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 207.56520000031742
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 210.19239999986894,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 6,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.002200000380980782
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 127.40900000062538
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 127.90120000045135
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 128.17460000042047
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 128.1951000000845
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 128.49300000016228
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 235.93970000001718
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 237.84730000079435,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      },
+      {
+        "worker": 7,
+        "state": "completed",
+        "exit_status": 0,
+        "phases": [
+          {
+            "phase": "before_import",
+            "elapsed_ms": 0.004200000148557592
+          },
+          {
+            "phase": "after_import",
+            "elapsed_ms": 127.26049999946554
+          },
+          {
+            "phase": "before_connect",
+            "elapsed_ms": 127.4796999996397
+          },
+          {
+            "phase": "after_connect",
+            "elapsed_ms": 127.68379999943136
+          },
+          {
+            "phase": "before_wal",
+            "elapsed_ms": 127.70169999930658
+          },
+          {
+            "phase": "after_wal",
+            "elapsed_ms": 127.95349999942118
+          },
+          {
+            "phase": "after_init",
+            "elapsed_ms": 171.87579999972513
+          },
+          {
+            "phase": "verified",
+            "elapsed_ms": 174.08849999992526,
+            "source_sha256": "5ad8993cb2d53004235d96828363b16c27020d7048228f16105278b5579787a1",
+            "schema": 12,
+            "integrity": true,
+            "foreign_keys": true
+          }
+        ]
+      }
+    ],
+    "passed": true
+  },
+  "parent_preserved": true,
+  "raw_evidence_directory_name": "core-startup-root-6ndgmxne",
+  "review_sha256": "0c7c01f4405d14afb2d8c4edf982a3b0dc25ec623cab65404cdc5a9919c035c2",
+  "limitations": [
+    "Windows only. Historical Linux eight-process timeout remains OPEN; Linux diagnostic NOT RUN.",
+    "Core service module is pinned; this is not a full package source hash pin.",
+    "Import/connect/WAL/overall initialization are observed; BEGIN is not separately timed.",
+    "Global completion budget includes launching, but OS creation/kill/reap/cleanup are not preemptive deadlines.",
+    "Only owned fixed interpreter processes are killed; no process-tree cleanup guarantee.",
+    "No production changes, real-client calls, provider calls, GitHub execution or remote mutations.",
+    "Earlier alpha15 installed-package results cover their frozen product, not this later developer tool."
+  ],
+  "formal_not_run": 42,
+  "release": "BLOCKED",
+  "formal_acceptance": false
+}
