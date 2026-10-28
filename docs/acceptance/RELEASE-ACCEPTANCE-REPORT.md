@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Alpha21 complete offline Linux distribution installations
+
+Fresh independent Linux wheel and rebuilt-sdist environments each completed
+**1,832 passed / 3 Windows-specific skips / 0 failures or errors** using the
+required actual local Docker tier. Each has the same1,835 unique case IDs and
+skip reasons as the complete Linux source run. Root independently checked60
+installed module origins/hashes,175 frozen Git source/test/tool inputs, both
+artifact hashes and direct installation records. All52 full container IDs from
+52 raw records were separately confirmed absent. No image pull or model call.
+
+The tested product is `cb71f0e232253561a6da4ae5f346b312f94ce91b`, not later
+alpha22 development. The184KB archive retains logs, JUnit, drivers and an88-member
+manifest. An initial evidence-audit glob missed nested directories; the original
+script and failure description are preserved. Correcting that audit did not rerun
+product tests. See `evidence/alpha21-installed-full-summary.json`.
+
+Windows full source is running separately at066b8dd with a7200s observation limit.
+Its private bootstrap was guarded before the multiprocessing-spawn case; original
+bytes, changed bytes, UTC and reason are retained, without changing tests/fixtures
+or restarting pytest. No complete Windows pass is yet claimed. macOS/full support
+matrix, actual clients, autonomous relay and M5/M9 final acceptance remain unverified.
+All42 formal requirements remain not_run; M5/Release remain **BLOCKED**.
+
 ## Alpha21 complete Linux source regression and incomplete Windows run
 
 Frozen source `f162ee13e5e70303486a3ab1ca79bec3e18503a3` has the same60
@@ -29,8 +52,10 @@ Completion requires per-case progress/durations and a larger declared observatio
 budget or separately reported partitions; this does not establish an ETA.
 
 The earlier4 selected50-case source/installation runs remain valid separate
-observations. Full installed suites, macOS, actual clients, autonomous relay and
-formal acceptance remain **NOT RUN**; Windows full remains **INCOMPLETE**.
+observations. Full installed suites were NOT RUN at that source-only checkpoint;
+the later distribution supplement above records their actual execution. macOS,
+actual clients, autonomous relay and formal acceptance remain **NOT RUN**;
+the original600s Windows full run remains **INCOMPLETE**.
 All42 formal requirements remain not_run; M5/Release remain **BLOCKED**.
 Raw evidence, diagnostics, reproduction drivers and manifests are in the164KB
 archive referenced by `evidence/alpha21-full-source-summary.json`. No Actions,

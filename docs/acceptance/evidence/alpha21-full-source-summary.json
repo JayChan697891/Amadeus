@@ -96,9 +96,9 @@
   },
   "release": "BLOCKED",
   "not_run": [
-    "full installed alpha21 suites",
     "macOS alpha21",
     "actual clients and autonomous relay",
     "M5/Release final acceptance"
-  ]
+  ],
+  "full_installed_supplement": "alpha21-installed-full-summary.json"
 }

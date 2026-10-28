@@ -1,0 +1,65 @@
+{
+  "product_commit": "cb71f0e232253561a6da4ae5f346b312f94ce91b",
+  "version": "0.3.0a21",
+  "packages": {
+    "wheel": {
+      "passed": 1832,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 3,
+      "actual_imports": 60,
+      "junit_sha256": "9fe91582ca32b6c04906073ea6ffec2d22cac7b1c56670388174f36773bc255d"
+    },
+    "sdist": {
+      "passed": 1832,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 3,
+      "actual_imports": 60,
+      "junit_sha256": "fafa8136758ebbbd8b79bb2da27b87a298086a92f4334b417b8da640b24ca6eb"
+    }
+  },
+  "complete_case_sets_equal_source": true,
+  "case_count_each": 1835,
+  "actual_installed_module_hashes_each": 60,
+  "git_test_tool_source_inputs_compared": 175,
+  "skips_each": [
+    {
+      "id": "tests.security.test_file_locks.test_windows_case_and_separator_aliases_conflict",
+      "reason": "Windows conflict keys case-fold"
+    },
+    {
+      "id": "tests.security.test_resource_paths.test_new_ancestor_junction_rejects_even_identical_physical_root",
+      "reason": "Windows junction-specific ancestor boundary"
+    },
+    {
+      "id": "tests.security.test_resource_paths.test_junction_is_denied",
+      "reason": "Windows junction-specific boundary"
+    }
+  ],
+  "release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "observed_utc": "2026-10-28T23:51:49.211401+00:00",
+  "scope": "fresh offline Linux full installed wheel and rebuilt sdist; required actual local Docker, no image pull",
+  "docker_postcheck": {
+    "recorded_full_ids": 52,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "archive": {
+    "path": "releases/0.3.0a21/checkpoints/installed-full-cb71f0e-linux.tar.gz",
+    "bytes": 184714,
+    "sha256": "ea6686973442be9e749f752122f1143d0ff51ad4a21c897e67a75029d024ac33",
+    "manifest_members": 88,
+    "all_members_rehashed": true
+  },
+  "limitations": [
+    "Windows complete source validation still running separately at066b8dd",
+    "macOS and full supported Python/OS matrix NOT RUN",
+    "Actual clients, autonomous relay, M5 final acceptance and M9 NOT RUN",
+    "Evidence audit initially used nonrecursive glob; original script and failure description retained; product tests not rerun",
+    "Initial VM readiness probe before SSH was ready failed without launching tests; later upload/run succeeded",
+    "VM remains owned and running temporarily for subsequent authorized candidate tests; shutdown receipt not yet claimed"
+  ],
+  "artifacts_reused_from": "plan-ascii-cb71f0e-local.tar.gz; binary SHA256 independently rechecked, not copied again"
+}

@@ -1,5 +1,12 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha21 installed supplement: fresh offline localLinux wheel and rebuilt sdist
+each1832pass/3Windows-specificskips/0fail,error, same1835IDs as full source.
+60actualinstalledmodules,175Git source/test/tool inputs and both artifact hashes
+independently matched;52rawDocker records/fullIDs all independently absent.
+No new product change; source productcb71f0e. Windowsfull066b8dd stillRUNNING.
+See acceptance/evidence/alpha21-installed-full-summary.json. M5/ReleaseBLOCKED.
+
 Alpha21 full-source supplement at `f162ee13e5e70303486a3ab1ca79bec3e18503a3`:
 Linux WITH required realDocker1832pass/3Windows-specificskips/0fail,error;
 1835uniqueIDs retain1821old+14new.375Gitinputs and60runtimebytes match;26raw
@@ -85,11 +92,11 @@ Actual8processes completed in~0.356s; parent file preserved. No production edits
 Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
 See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
 
-Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 Ã—wheel/sdist)
 environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
 junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
 785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
-IndependentAstra source+result review approves scopeddevelopment only. Same32×8
+IndependentAstra source+result review approves scopeddevelopment only. Same32Ã—8
 budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
 256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
 OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
@@ -99,7 +106,7 @@ M8 bounded process-local Core admission implemented; existing SQL/auth/replay/le
 audit/close body byte-identical, owner/migration paths unchanged. Astra source
 review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
 37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
-andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
+andtwo-MCPprocessclaim passed. Same32Ã—8/1000ms workload p95 observed107.837ms
 versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
 Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
 core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
@@ -113,7 +120,7 @@ Formal42not_run/releaseBLOCKED.
 M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
 Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
 Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
-Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
+Actual32Ã—8 strict run matched256events(8success/248denied), audit errors0; p95
 2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
 diagnostic extends the earlier2982539 packaged checkpoint.
 D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
@@ -141,7 +148,7 @@ preparation observed; completeflags/auth/realturn NOT RUN.
 Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
 
 M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
-11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker Ã—8round
 workloads measured456 claim attempts: all functional checks passed, no unexpected
 errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
 budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
@@ -586,7 +593,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiry→pending/unverified. These development runs used unfrozen overlays, not a
+expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.

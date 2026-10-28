@@ -83,8 +83,7 @@
     "macOS alpha21",
     "real clients and autonomous relay",
     "M5/Release final acceptance",
-    "full Windows source timed out / not completed",
-    "full installed suites"
+    "full Windows source timed out / not completed"
   ],
   "release": "BLOCKED",
   "formal_requirements": {
@@ -94,5 +93,6 @@
     "No Actions, paid calls, real clients, account edits or retry of closed Codex attempt",
     "VM remains stopped; all debug data D and source F"
   ],
-  "full_source_supplement": "alpha21-full-source-summary.json"
+  "full_source_supplement": "alpha21-full-source-summary.json",
+  "full_installed_supplement": "alpha21-installed-full-summary.json"
 }
