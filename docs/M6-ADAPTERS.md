@@ -151,8 +151,10 @@ apply. Factory exceptions, malformed/incomplete captures and uncertain deadlines
 retain unknown slots; shared/stale captures are rejected without stopping others.
 Late fresh owned parents may be cleaned without rewriting frozen unknown history.
 Cancel is owned-parent-only, never server acknowledgement or tree-cleanup proof;
-resume is unsupported. No built-in Claude command, SDK call or credential reader
-exists. Known Python helpers prove mechanical composition, not Claude integration.
+resume is unsupported. The default Claude adapter has no launcher; the explicit
+`ClaudeProcessFactory` below can connect its fixed plan to capture. No SDK call
+or credential reader is added. Known Python helpers prove mechanical composition,
+not actual Claude integration.
 
 Codex public classes/fields and validation semantics remain compatible despite
 the private extraction. The historical actual Codex CLI smoke is not a live
@@ -249,3 +251,19 @@ in current documentation. Complete flag-combination compatibility is NOT RUN.
 A separate installed-binary hash/preparation check launched nothing and retained
 all false markers. New real execution needs fresh cost authorization and M5 gates.
 Default ClaudeAdapter startup remains unsupported. Earlier one-call grants are spent.
+
+## Opt-in pinned Claude process factory
+
+`agentsync.adapters.claude_process.ClaudeProcessFactory(profile, environment=explicit_env)`
+can be passed explicitly as `ClaudeAdapter(..., contextual_factory=factory)`,
+mutually exclusive with `factory`. Construction copies the profile and filtered
+environment without launching. Each call prepares the existing restricted plan
+afresh in a worker thread and forwards its exact fields through the same
+`LaunchContext` checks as Codex. Defaults, flags, separate timeout observations,
+unknown-slot retention and late owned-parent cleanup remain unchanged. Attaching
+the factory authorizes no model execution; every actual run needs fresh human
+authorization and the existing gates. Managed hooks are not disabled, managed MCP
+may reject strict configuration, and home/config may supply credentials/providers.
+Authentication, billing, tool restrictions, sandboxing and real-client compatibility
+remain unverified. Start spies and synthetic Claude JSONL from known Python
+helpers establish wiring and local lifecycle only; no actual Claude call was made.

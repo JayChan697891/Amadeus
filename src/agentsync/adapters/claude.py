@@ -13,6 +13,7 @@ from typing import Literal
 
 from agentsync.adapters._host_process import (
     _CaptureFactory,
+    _ContextualCaptureFactory,
     _HostMarkers,
     _HostProcessAdapter,
     _HostRun,
@@ -23,6 +24,7 @@ from agentsync.adapters.base import AdapterTask
 from agentsync.adapters.claude_events import ClaudeUsage, parse_claude_jsonl
 
 CaptureFactory = _CaptureFactory
+ContextualCaptureFactory = _ContextualCaptureFactory
 ClaudeStatus = _HostStatus
 
 
@@ -86,6 +88,7 @@ class ClaudeAdapter(_HostProcessAdapter[ClaudeCapabilities, ClaudeRun, ClaudeRes
         session_id: str,
         *,
         factory: CaptureFactory | None = None,
+        contextual_factory: ContextualCaptureFactory | None = None,
         max_runs: int = 100,
         running_limit: int = 1,
     ):
@@ -93,6 +96,7 @@ class ClaudeAdapter(_HostProcessAdapter[ClaudeCapabilities, ClaudeRun, ClaudeRes
             project_id,
             session_id,
             factory=factory,
+            contextual_factory=contextual_factory,
             max_runs=max_runs,
             running_limit=running_limit,
             new_capabilities=ClaudeCapabilities,

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a18 - opt-in pinned Claude launch plumbing
+
+- Add a Claude process factory using the existing restricted plan and shared
+  task-bound launch observations; defaults remain unsupported.
+- Keep managed-hook, credential/provider, billing and sandbox limitations explicit;
+  no actual client execution or acceptance is implied.
+
 ## 0.3.0a17 - opt-in pinned Codex launch plumbing
 
 - Add a task/run/loop-bound launch observation with an original-deadline check
