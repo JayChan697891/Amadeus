@@ -1,5 +1,11 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha21 Windowsfull source066b8dd completed1800pass/35skips/0fail,error in1082.8s.
+377Gitinputs/60actualmodules/1835caseIDs independently matched. Bootstrap main
+guard added before spawn, original+intervention preserved; spawn case passed.
+One anyio rewrite warning retained. Source/product unchanged, not alpha22 proof.
+See acceptance/evidence/alpha21-windows-full-summary.json. M5/ReleaseBLOCKED.
+
 Alpha21 installed supplement: fresh offline localLinux wheel and rebuilt sdist
 each1832pass/3Windows-specificskips/0fail,error, same1835IDs as full source.
 60actualinstalledmodules,175Git source/test/tool inputs and both artifact hashes

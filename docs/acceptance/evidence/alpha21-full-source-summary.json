@@ -100,5 +100,6 @@
     "actual clients and autonomous relay",
     "M5/Release final acceptance"
   ],
-  "full_installed_supplement": "alpha21-installed-full-summary.json"
+  "full_installed_supplement": "alpha21-installed-full-summary.json",
+  "windows_full_supplement": "alpha21-windows-full-summary.json"
 }

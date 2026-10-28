@@ -94,5 +94,6 @@
     "VM remains stopped; all debug data D and source F"
   ],
   "full_source_supplement": "alpha21-full-source-summary.json",
-  "full_installed_supplement": "alpha21-installed-full-summary.json"
+  "full_installed_supplement": "alpha21-installed-full-summary.json",
+  "windows_full_supplement": "alpha21-windows-full-summary.json"
 }

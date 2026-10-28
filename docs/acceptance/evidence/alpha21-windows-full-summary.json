@@ -1,0 +1,64 @@
+{
+  "frozen_commit": "066b8dd0b0fc38b5f774854cd5915e433fc76695",
+  "runtime_product_commit": "cb71f0e232253561a6da4ae5f346b312f94ce91b",
+  "source_inputs_rehashed": 377,
+  "module_origins_and_hashes": 60,
+  "junit": {
+    "tests": 1835,
+    "passed": 1800,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 35
+  },
+  "all_case_ids_equal_linux": true,
+  "spawn_case_passed_after_documented_bootstrap_guard": true,
+  "bootstrap_intervention": {
+    "time_utc": "2026-10-28T23:44:56.025799+00:00",
+    "scope": "private test bootstrap only; no product/test/fixture edits or test restart",
+    "reason": "guard multiprocessing spawn re-import from recursively invoking pytest",
+    "original_sha256": "73fb43d85d3ccb99cd1ba9bb57bf4b58fa450a9bb3277f6353bcc3fc672ef443",
+    "guarded_sha256": "9f2911146e9e32fd638a330a6d187ce9248109b66f7805dbdf83e4b1b1c4ccff",
+    "original_preserved_as": "bootstrap-before-guard.py.txt",
+    "parent_already_loaded_original": true,
+    "spawn_case_not_yet_started": true,
+    "observed_phase_lines_at_intervention": 525,
+    "reproduction": "use guarded bootstrap from start; original and intervention retained",
+    "formal_release": "BLOCKED"
+  },
+  "elapsed_seconds": 1082.7962377999997,
+  "warnings": [
+    "PytestAssertRewriteWarning: anyio was imported before pytest plugin rewriting; retained, not a product failure"
+  ],
+  "pid_cleanup_scope": "owned controller3756 and pytest7108 absent by CIM; no universal descendant cleanup assertion",
+  "formal_release": "BLOCKED",
+  "actual_clients": "NOT RUN",
+  "version": "0.3.0a21",
+  "scope": "complete Windows3.14 source at frozen066b8dd; existing debug packages, owned base parent with venv child interpreter",
+  "skip_reason_counts": {
+    "POSIX FIFO metadata fixture requires Linux": 1,
+    "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+    "Actual reconciliation requires an explicitly configured local Linux image": 5,
+    "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\alpha21-windows-complete-sol-6cd849b2\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\alpha21-windows-complete-sol-6cd849b2\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\alpha21-windows-complete-sol-6cd849b2\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\alpha21-windows-complete-sol-6cd849b2\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+    "Requires Linux/POSIX fork": 1,
+    "FIFO fixture requires os.mkfifo": 1,
+    "Local symlink creation unavailable": 2,
+    "Local FIFO creation unavailable": 1,
+    "Creating directory symlinks requires unavailable host privileges": 1
+  },
+  "archive": {
+    "path": "releases/0.3.0a21/checkpoints/windows-full-066b8dd-local.tar.gz",
+    "bytes": 369318,
+    "sha256": "8d040b7dc5d73a7096cbbeece58cb12dc2a557c7df96b665a6c079f1ec6cdd97",
+    "manifest_members": 19,
+    "all_members_rehashed": true
+  },
+  "not_run": [
+    "full fresh Windows installed suites",
+    "macOS/full OS Python matrix",
+    "actual clients, autonomous relay, M5/M9 final acceptance"
+  ],
+  "historical_timeout": "Original600s attempt remains incomplete; this distinct1835case execution does not overwrite it",
+  "later_product": "alpha22 development not covered"
+}

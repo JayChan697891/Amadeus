@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## Alpha21 complete Windows source supplement
+
+Frozen066b8dd completed **1,800 passed / 35 skipped / 0 failures or errors**,
+1,835 cases in1082.8s. All377 Git inputs and60 actual module identities were
+independently checked, and the case-ID set equals the complete Linux source set.
+Skip reasons remain explicit in the summary/JUnit; they include actual Docker,
+POSIX/FIFO/fork and unavailable local symlink privileges, never passes.
+
+The private bootstrap originally lacked a main guard. Before the multiprocessing
+spawn case, root preserved its original bytes and added a guard without restarting
+pytest or editing product/tests/fixtures. Both hashes and UTC intervention are
+archived; the actual spawn race then passed. This is a complete test observation
+with a documented harness intervention, not an unmodified-driver run. One anyio
+assert-rewrite warning is retained. Only the two directly owned controller/pytest
+PIDs were confirmed absent; universal descendant cleanup is not asserted.
+
+See `evidence/alpha21-windows-full-summary.json`. The original600s timeout remains
+incomplete historical evidence. Full Windows installed suites, macOS/full matrix,
+actual clients and M5/M9 final acceptance remain NOT RUN/UNVERIFIED. Later alpha22
+development is outside this result; all42 formal requirements remain not_run and
+M5/Release remain **BLOCKED**.
+
 ## Alpha21 complete offline Linux distribution installations
 
 Fresh independent Linux wheel and rebuilt-sdist environments each completed

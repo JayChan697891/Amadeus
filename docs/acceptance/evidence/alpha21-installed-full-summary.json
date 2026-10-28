@@ -61,5 +61,6 @@
     "Initial VM readiness probe before SSH was ready failed without launching tests; later upload/run succeeded",
     "VM remains owned and running temporarily for subsequent authorized candidate tests; shutdown receipt not yet claimed"
   ],
-  "artifacts_reused_from": "plan-ascii-cb71f0e-local.tar.gz; binary SHA256 independently rechecked, not copied again"
+  "artifacts_reused_from": "plan-ascii-cb71f0e-local.tar.gz; binary SHA256 independently rechecked, not copied again",
+  "windows_full_supplement": "alpha21-windows-full-summary.json"
 }
