@@ -74,7 +74,7 @@ def run_plan_cli() -> int:
             now=payload["now"],
             **options,
         )
-        output = json.dumps(asdict(plan), ensure_ascii=False, allow_nan=False)
+        output = json.dumps(asdict(plan), allow_nan=False)
     except (
         AgentSyncError,
         AttributeError,

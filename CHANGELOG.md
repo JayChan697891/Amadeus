@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0a21 - portable planning JSON output
+
+- Fix valid Unicode project IDs crashing `agentsync plan` when redirected stdout
+  uses ASCII encoding; JSON escapes preserve the decoded planning result.
+
 ## 0.3.0a20 - offline reported-usage command
 
 - Print the existing usage ledger summary from a bounded stdin checkpoint with

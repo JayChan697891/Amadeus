@@ -167,3 +167,60 @@ def test_actual_plan_process_leaves_empty_home_and_default_state_unchanged(tmp_p
     assert observed["scope"] == "planning_only" and not observed["execution_connected"]
     assert list(home.iterdir()) == [] and not state.exists()
     assert set(tmp_path.iterdir()) == {home}
+
+
+def test_unicode_project_plan_survives_ascii_stdout_without_state_or_private_input_echo(tmp_path):
+    data = payload()
+    project_id = "项目😀"
+    data["project_id"] = data["state"]["project"]["id"] = project_id
+    for group in ("agents", "sessions", "tasks"):
+        for row in data["state"][group]:
+            row["project_id"] = project_id
+    data["state"]["tasks"][0]["description"] = "private-input-sentinel"
+    expected = plan_dispatches(
+        data["state"],
+        project_id=project_id,
+        worker_agent_ids=tuple(data["worker_agent_ids"]),
+        now=data["now"],
+        global_limit=data["global_limit"],
+        per_agent_limit=data["per_agent_limit"],
+        limit=data["limit"],
+        required_capabilities={
+            key: tuple(value) for key, value in data["required_capabilities"].items()
+        },
+    )
+    home, state = tmp_path / "home", tmp_path / "unused-state"
+    home.mkdir()
+    environment = {
+        "PYTHONPATH": str(Path(agentsync.__file__).resolve().parents[1]),
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONIOENCODING": "ascii",
+        "HOME": str(home),
+        "USERPROFILE": str(home),
+        "APPDATA": str(home),
+        "LOCALAPPDATA": str(home),
+        "AGENTSYNC_DATA_DIR": str(state),
+        "TMP": str(tmp_path),
+        "TEMP": str(tmp_path),
+    }
+    if "SystemRoot" in os.environ:
+        environment["SystemRoot"] = os.environ["SystemRoot"]
+    result = subprocess.run(
+        [sys.executable, "-B", "-m", "agentsync", "plan"],
+        input=json.dumps(data, ensure_ascii=False).encode("utf-8"),
+        cwd=tmp_path,
+        env=environment,
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stderr == b"" and result.stdout.isascii()
+    observed = json.loads(result.stdout)
+    assert observed == json.loads(json.dumps(asdict(expected)))
+    assert observed["project_id"] == project_id and observed["scope"] == "planning_only"
+    assert not observed["execution_connected"]
+    assert observed["core_authorization"] == observed["snapshot_freshness"] == "unverified"
+    assert b"private-input-sentinel" not in result.stdout
+    assert list(home.iterdir()) == [] and not state.exists()
+    assert set(tmp_path.iterdir()) == {home}
