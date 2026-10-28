@@ -1,5 +1,34 @@
 # Release Acceptance Report
 
+## Alpha17 pinned Codex launch plumbing — scoped local checkpoint
+
+Product `33b5ec26318d10783352c9c39e2364af0e8a1e53`; fixture-only successor/package
+freeze `d42a07c386f7183b44a3718c2c285fd73ec82861` has identical runtime bytes.
+The opt-in library factory freshly prepares fixed Codex parameters and explicit
+filtered environment, then enters capture through an adapter-issued task/run/loop
+observation checking stop/original deadline and consuming one local attempt.
+Defaults stay unsupported; no Core operation or CLI autoexecution enables it.
+
+Root Windows3.14/3.11 selected source suites each **446 passed,0 skipped**;
+Ruff/format/mypy58 pass. Full Linux source **with required actual Docker tier**:
+**1818 passed,3 Windows-specific skips,0 failures/errors**,1821 cases. All1811
+previous IDs remain plus10 new context cases. Four fresh offline Windows/Linux
+wheel/sdist environments each **113 passed,0 skipped**, matching case sets and
+58 actual imported module hashes. Linux PEP610 archive hashes match the originals.
+This is a selected installed scope, not the complete OS/Python package matrix.
+
+Astra independently reviewed critical source and actual saved XML/case identities,
+installed origins and artifact bindings, approving this scoped checkpoint. Root
+executed the tests. The initial Windows UTF8 helper
+failure and old Python3.11 stdlib exception mismatch remain retained, corrected
+without changing product safety semantics. Preparation threads can outlive stop;
+no hard I/O/spawn/descendant/server cleanup guarantee exists. Fresh authorization
+is required for **every actual model run**; attaching this factory grants none.
+No real client/model call occurred and neither fixture wiring nor protocol success
+proves client compatibility, billing, sandboxing or Core acceptance. All42 formal
+statuses remain `not_run`; M5/Release BLOCKED. Evidence:
+`evidence/alpha17-local-summary.json`.
+
 ## Alpha16 actual local Docker supplement
 
 Frozen `7f658b189b62e5977dcda6b9b675bb864d61a1a3`: **26 passed,0 skipped,

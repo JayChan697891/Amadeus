@@ -1,5 +1,14 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha17 adds opt-in pinned CodexProcessFactory + task/run/loop-bound launch
+observation: stop/original-deadline check and one consumed local attempt before
+capture. Defaultsunsupported; legacy behavior preserved; no liveclientcall.
+Root Windows3.14/3.11 each446pass0skip; fullLinux WITHrequiredDocker1818pass3
+Windows-skips/0fail/error,1821IDs (prior1811retained+10new). Fresh Windows/Linux
+wheel/sdist each113pass0skip,58actualmodulehashes matched; two original fixture/
+portability failures preserved. Astra source/results review no blocker. All42not_run,
+ReleaseBLOCKED. See acceptance/evidence/alpha17-local-summary.json.
+
 Alpha16 actual localLinux Docker supplement at7f658b1:26passed0skip/fail/error,
 fixed preloaded image/no pull;56 actual source module bytes verified before/after.
 All26 match Docker case IDs skipped in the prior ordinary full run;3platformskips

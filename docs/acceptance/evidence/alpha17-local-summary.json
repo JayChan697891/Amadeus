@@ -1,0 +1,169 @@
+{
+  "created_utc": "2026-10-28T08:22:19.481210+00:00",
+  "version": "0.3.0a17",
+  "product_commit": "33b5ec26318d10783352c9c39e2364af0e8a1e53",
+  "frozen_test_package_commit": "d42a07c386f7183b44a3718c2c285fd73ec82861",
+  "runtime_sources_identical_across_commits": true,
+  "schema": 12,
+  "dependencies": "unchanged",
+  "capability": "opt-in pinned CodexProcessFactory with adapter-issued stop/deadline/one-attempt LaunchContext; default unsupported",
+  "source_Windows": {
+    "py314": {
+      "exit_status": 0,
+      "tests": 446,
+      "passed": 446,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "8c7ddfb8a146f9df2e3eab3762d8e68b432e689dcbb2a77c18f4e19fc1dd5de1"
+    },
+    "py311": {
+      "exit_status": 0,
+      "tests": 446,
+      "passed": 446,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "86048edfab21e9ba29ca13f7bea422050bf885ef1c38eeca8cf86c2fe5b5999b"
+    },
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    },
+    "diff": {
+      "exit_status": 0
+    }
+  },
+  "source_Linux": {
+    "commit": "d42a07c386f7183b44a3718c2c285fd73ec82861",
+    "scope": "complete local Linux SOURCE suite including required real Docker tier; existing dependency venv and pinned preloaded image",
+    "image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "sqlite": "3.53.4",
+    "source_files": 361,
+    "status": "COMPLETED",
+    "formal_release": "BLOCKED",
+    "real_clients": "NOT RUN",
+    "deadline_seconds": 1200,
+    "exit_status": 0,
+    "wall_seconds": 447.84790981799995,
+    "source_unchanged": true,
+    "junit": {
+      "tests": 1821,
+      "passed": 1818,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    "passed": true
+  },
+  "source_Linux_skips": [
+    {
+      "class": "tests.security.test_file_locks",
+      "name": "test_windows_case_and_separator_aliases_conflict",
+      "reason": "Windows conflict keys case-fold"
+    },
+    {
+      "class": "tests.security.test_resource_paths",
+      "name": "test_new_ancestor_junction_rejects_even_identical_physical_root",
+      "reason": "Windows junction-specific ancestor boundary"
+    },
+    {
+      "class": "tests.security.test_resource_paths",
+      "name": "test_junction_is_denied",
+      "reason": "Windows junction-specific boundary"
+    }
+  ],
+  "case_identity": {
+    "prior1811_retained": true,
+    "new_context_cases": 10,
+    "package113_ids_match_all4_environments": true
+  },
+  "installed_packages": [
+    {
+      "platform": "Windows",
+      "kind": "wheel",
+      "passed": 113,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 58,
+      "junit_sha256": "dca4c066ba73d9271e13843d485caea8cc52814a0868400530192c0d72883572"
+    },
+    {
+      "platform": "Windows",
+      "kind": "sdist",
+      "passed": 113,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 58,
+      "junit_sha256": "095aa320c69a0c00b782fea9e0429e250356e4560a41b82a691684885c54e971"
+    },
+    {
+      "platform": "Linux",
+      "kind": "wheel",
+      "passed": 113,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 58,
+      "junit_sha256": "57c4e1b1128b28ed9f60c1d57ebdc02f63c5921f20e901ddd4ebf90b6de873ee"
+    },
+    {
+      "platform": "Linux",
+      "kind": "sdist",
+      "passed": 113,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 58,
+      "junit_sha256": "f50b5170b1ca5b0a0756d40619709fd757ac72d60932f1d97d433423abf14623"
+    }
+  ],
+  "artifacts": {
+    "agentsync_local-0.3.0a17-py3-none-any.whl": "89b569b64799f9b7267437049a86633cf6fb38b2427d7d5ca19ddbe27c4dd162",
+    "agentsync_local-0.3.0a17.tar.gz": "54ec8744a9779d7d20d7c7af309e729581aa7479a28362a0a2b8e5bddf0659a9"
+  },
+  "critical_source_sha256": {
+    "agentsync/adapters/launch_context.py": "579c14bc3fc89a3e8ed721fee8920ee0dc88f6c941b2bb2b3436caf3ef241578",
+    "agentsync/adapters/codex_process.py": "5fe186ff0dc3fd3d89b0d5038e3d3b891f8353230631fb1a0ee736444f8d6414",
+    "agentsync/adapters/_host_process.py": "ed071adc779b292b70abf0fb910fa02d17c81c7a282b25c43b964198c7498257",
+    "agentsync/adapters/codex.py": "0e8d37fbf3f08fe013bf44b3475940557c22888b8cae68395865ff396d2e9130"
+  },
+  "retained_intermediate_failures": [
+    {
+      "directory": "codex-process-initial-a1f8690e",
+      "result": "1 failed9passed; trusted helper read UTF8 stdin using Windows default text decoding; fixture corrected"
+    },
+    {
+      "directory": "codex-process-source-tvywxzt8",
+      "result": "3.11 onefailure445passed; stdlib init=False replace rejection exception type corrected; markerFalseassertion strengthened"
+    }
+  ],
+  "evidence_directory_names": [
+    "codex-process-source-afiqyz5a",
+    "alpha17-windows-uv5o2zj9",
+    "alpha17-linux-full-kp98rad3",
+    "alpha17-linux-packages-em5l4hw7",
+    "codex-owned-fixture-3905ac97"
+  ],
+  "review": "Independent Astra source and saved-results review approved the scoped checkpoint, including raw case identities, XML hashes, installed origins and artifact bindings. Root executed tests. No Work human or M5 acceptance.",
+  "limitations": [
+    "No real Codex/Claude/model or provider call; prior two single-use grants remain spent.",
+    "Every actual model execution needs fresh authorization and applicable safety gates; attaching a reusable factory grants none.",
+    "One context consumes a process-local attempt; no persistent reservation or cross-instance/cross-process authority.",
+    "Preparation thread can outlive stop; filesystem I/O, OS spawn and descendant/server cancellation have no hard guarantee.",
+    "Original adapter deadline and per-capture timeout remain separate; read-only CLI flags are not an OS sandbox or billing proof.",
+    "Linux full run used existing dependency venv. Four fresh installed environments ran selected113-case scope, not full OS/Python package matrix.",
+    "No GitHub Actions, paid compute, main changes or formal status promotion."
+  ],
+  "formal_not_run": 42,
+  "formal_acceptance": false,
+  "release": "BLOCKED"
+}
