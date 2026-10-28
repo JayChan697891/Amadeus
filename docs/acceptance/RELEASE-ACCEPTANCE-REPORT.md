@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+## Authorized actual Codex factory test — preflight BLOCKED
+
+On2026-10-28, the new single-use readonly subscription test stopped before model
+execution: the native executable selected by the PATH/npm installation reported
+`codex-cli 0.162.0`, while the factory profile requires `0.164.0-alpha.11.1`.
+Model attempts and factory invocations: **0**. Login status, subscription route,
+actual response and fixture execution are **NOT RUN / NOT CHECKED**. No retry,
+client upgrade, version-gate relaxation or account-configuration change was made.
+This observation does not establish the versions of other installed clients.
+The preflight is closed; no automatic subsequent attempt is authorized. A
+specifically identified compatible CLI and verified route/safety conditions are
+required before a separately authorized bounded attempt. Evidence:
+`evidence/codex-factory-preflight-20261028.json`. Release remains BLOCKED.
+
 ## Alpha18 opt-in Claude launch plumbing — selected validation
 
 Frozen `c1a53ccf62263681da17d529b9c9abe362aea4a7` adds `ClaudeProcessFactory` and

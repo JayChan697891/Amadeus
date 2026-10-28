@@ -1,5 +1,10 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+One newly authorized Codex factory subscription test stopped at preflight:
+PATH/npm native CLI reports0.162.0; the pinned profile requires0.164.0-alpha.11.1.
+BLOCKED;0model attempts/0factory calls. Login/actual response NOT RUN. No retry,
+upgrade or loosened gate. See acceptance/evidence/codex-factory-preflight-20261028.json.
+
 Alpha18 adds opt-in pinned ClaudeProcessFactory on the existing launch context.
 Flags/shared engine/context/Codex/parsers/Core unchanged; defaultsunsupported.
 Root Windows3.14/3.11 each451pass0skip (prior446retained+5new). Fresh Windows/
