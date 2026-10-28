@@ -1,0 +1,185 @@
+{
+  "created_utc": "2026-10-28T05:01:47.891655+00:00",
+  "version": "0.3.0a16",
+  "product_commit": "e248a929cd08e7eb12835c3283582b3a60dc047a",
+  "full_source_commit": "2da1a89d222f88c801097856ed704d15b61c950a",
+  "product_sources_equal_across_these_commits": true,
+  "Windows_source": {
+    "py314": {
+      "exit_status": 0,
+      "tests": 44,
+      "passed": 44,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "41a55744c7ddd4f8f01f1847344c72a7076b01a2cd3d6167bf5925cbdc680e0d"
+    },
+    "py311": {
+      "exit_status": 0,
+      "tests": 44,
+      "passed": 44,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "41b313ced0a66a666b54cd449e401e6b58e8f3fe7383b67d222261044bbe4a42"
+    },
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    }
+  },
+  "Windows_fresh_wheel": {
+    "commit": "e248a929cd08e7eb12835c3283582b3a60dc047a",
+    "version": "0.3.0a16",
+    "checks": {
+      "build": {
+        "exit_status": 0
+      },
+      "venv": {
+        "exit_status": 0
+      },
+      "install": {
+        "exit_status": 0
+      },
+      "pipcheck": {
+        "exit_status": 0
+      },
+      "module": {
+        "exit_status": 0
+      },
+      "entrypoint": {
+        "exit_status": 0
+      },
+      "installed-imports": {
+        "exit_status": 0
+      }
+    },
+    "formal_release": "BLOCKED",
+    "formal_acceptance": false,
+    "wheel": {
+      "name": "agentsync_local-0.3.0a16-py3-none-any.whl",
+      "sha256": "68742c2656391d2f04e3d054559d9808809946f205d41f3f467f47b18174445e"
+    },
+    "passed": true,
+    "installed_modules": 56,
+    "parent_state_unchanged": true,
+    "Git_inputs": 356,
+    "runtime": "Windows Python3.14 wheel only; no sdist/Linux/full alpha16 suite"
+  },
+  "Linux_startup": {
+    "commit": "c1a5742a4565f7467a27125a0a46750709e0d740",
+    "diagnostic_counts": {
+      "completed": 8,
+      "failed": 0,
+      "timed_out": 0,
+      "not_started": 0
+    },
+    "startup_wall_seconds": 2.3061087150000006,
+    "regressions": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "source_unchanged": true,
+    "conclusion": "Historical failure retained; current standalone8process/5original iterations passed. Original cause not established."
+  },
+  "Linux_original_full_attempt": {
+    "commit": "c1a5742a4565f7467a27125a0a46750709e0d740",
+    "junit": {
+      "tests": 1807,
+      "passed": 1772,
+      "failed": 6,
+      "errors": 0,
+      "skipped": 29
+    },
+    "status": "FAILED",
+    "source_unchanged": true,
+    "failed_cases": [
+      [
+        "tests.unit.test_acceptance_traceability",
+        "test_claude_protocol_components_remain_partial_without_real_client_acceptance"
+      ],
+      [
+        "tests.unit.test_acceptance_traceability",
+        "test_codex_host_factory_components_keep_actual_client_acceptance_unverified"
+      ],
+      [
+        "tests.unit.test_acceptance_traceability",
+        "test_mock_foundation_is_partial_component_coverage_not_real_client_acceptance"
+      ],
+      [
+        "tests.unit.test_acceptance_traceability",
+        "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims"
+      ],
+      [
+        "tests.unit.test_pytest_case_journal",
+        "test_failure_text_cap_is_explicit_and_total_cap_freezes_incomplete"
+      ],
+      [
+        "tests.unit.test_verification_jobs",
+        "test_two_claimants_have_exactly_one_winner[processes]"
+      ]
+    ],
+    "driver_issue": "Unguarded pytest.main wrapper re-executed in multiprocessing spawn children; original driver and raw failure preserved."
+  },
+  "Linux_corrected_full_attempt": {
+    "commit": "2da1a89d222f88c801097856ed704d15b61c950a",
+    "scope": "complete ordinary Linux SOURCE suite; existing dependency venv; actual Docker opt-ins absent",
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "sqlite": "3.53.4",
+    "source_files": 356,
+    "status": "COMPLETED",
+    "exit_status": 0,
+    "wall_seconds": 421.39463561399987,
+    "source_unchanged": true,
+    "junit": {
+      "tests": 1811,
+      "passed": 1782,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 29
+    },
+    "passed": true
+  },
+  "comparison": {
+    "removed_case_ids": 0,
+    "added_case_ids": 4,
+    "original_failures_now_passed": 6,
+    "actual_imported_modules_before_and_after": 56,
+    "source_module_bytes_match_installed_wheel": true
+  },
+  "repairs": [
+    "Explicit stale component selector expectations updated; formal not_run/gates preserved.",
+    "Synthetic journal subprocesses suppress native pytest short summaries; plugin truncation/capacity/exit3 assertions unchanged.",
+    "Developer full-suite driver guarded for multiprocessing spawn; production and verification-job tests unchanged."
+  ],
+  "raw_evidence": {
+    "linux-startup-root-y9r4fp0s": {
+      "result_sha256": "1772cb2edb799c4de4b80abd969119ad5493aa7c12cd530a7e89a7337af43766",
+      "junit_sha256": "70f441570a1d6c1a629f64e212fdb7de0bb0bf721f36b5bb160ae055180cae12"
+    },
+    "alpha15-linux-full-dsy1b9_s": {
+      "result_sha256": "fe42ea9d420d1f5b7b36b3bbbd10d57f377120ce39dbbe7b9c4c681f4dd2756f",
+      "junit_sha256": "e13ed8d380ce07e11a77272b843626d3b91c7efd553197594819d57a5e38fe38"
+    },
+    "alpha16-linux-full-xioibyyi": {
+      "result_sha256": "fb9415c1eebdb4be310801a15e6a1862c3d3a7104364f79c7d4acaec33e36813",
+      "junit_sha256": "92a3891d1b1239eb083809d510360653468889f10e683b4baeeab3682c5312ef"
+    }
+  },
+  "limits": [
+    "Actual Docker tests opt-ins absent: skipped, not passed.",
+    "Fresh alpha16 package check: Windows Python3.14 wheel only; sdist/macOS/new Linux package runs NOT RUN.",
+    "Full Linux suite used existing dependency venv and frozen source; not whole release acceptance.",
+    "No real client/model calls or autonomous relay; all42 formal requirements not_run.",
+    "No GitHub Actions, remote mutations or main changes."
+  ],
+  "formal_not_run": 42,
+  "formal_acceptance": false,
+  "release": "BLOCKED"
+}

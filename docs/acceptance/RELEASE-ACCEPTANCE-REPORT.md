@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Alpha16 offline dispatch command and local Linux regression
+
+Product `e248a929cd08e7eb12835c3283582b3a60dc047a` adds `agentsync plan`: bounded
+strict UTF-8 stdin JSON, existing dispatch advice and unverified markers. It
+does not open state, authenticate or start work. Root Windows3.14/3.11 each
+**44 passed,0 skipped**; lint/format/full typing pass. One fresh offline
+Windows3.14 wheel passed dependencycheck, actual module/console CLI smoke
+and56 installed module byte checks. No other alpha16 package matrix claim.
+
+Current local Linux startup observation: **8/8 completed** and **10 regression
+cases passed**, including all five unchanged8-process/30s migration tests.
+Historical failures are retained; no root cause or universal repair claimed.
+The first ordinary full suite retained **1772 passed,6 failed,29 skipped**.
+Four stale traceability assertions and a journal fixture were repaired without
+changing gates. The root developer wrapper also needed a multiprocessing main
+guard. Corrected full source `2da1a89d222f88c801097856ed704d15b61c950a`:
+**1782 passed,29 skipped,0 failures/errors**,1811 cases. All1807 original
+case IDs remain,4 CLI cases were added,and all6 original failures now passed.
+Retained failures and byte/case comparisons are in
+`evidence/alpha16-local-summary.json`. Docker
+opt-ins stayed absent; skips never count as passes. All42 formal requirements
+remain `not_run`; M5/Release BLOCKED; no real-client/relay/Actions claim.
+
 ## Local startup diagnostic - Windows development evidence only
 
 Developer tool commit `1eb17bee8a953603321f0e2ef56dff89a20ffa3b` adds fixed

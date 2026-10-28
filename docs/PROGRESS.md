@@ -1,5 +1,14 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Development0.3.0a16 adds offline stdin-only `agentsync plan` dispatch advice.
+Root Windows3.14/3.11 each44pass; lint/format/mypy56 pass. Fresh Windows3.14
+wheel installed offline: CLI module/entrypoint smoke, dependencycheck and56
+actual module hashes pass; no Core state opened. Linux startup10pass plus
+8-process diagnostic pass; original cause unknown. Corrected fullLinux at2da1a89:
+1782pass/29skip/0fail,error; all1807oldIDs retained+4newCLIcases;6oldfailures pass.
+See acceptance/evidence/alpha16-local-summary.json.
+Original failed attempt preserved. All42formalnot_run; ReleaseBLOCKED.
+
 Local developer startup diagnostic at1eb17be: fixed owned interpreter children,
 service-module hash pin, import/connect/WAL/init phases, private new shared DB,
 integrity/FK/schema checks and bounded parent observation with kill/reap cleanup.
