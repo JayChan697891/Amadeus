@@ -1,5 +1,15 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha20 (`b2e855947a30d4ee57b0d947ec9420816c84eeb0`) adds offline
+`agentsync usage --project-id ID`: strict1MiB stdin checkpoint, existing summary,
+no Core/files/client calls; unknown costs and caller-reported markers preserved.
+Root Windows3.14/3.11 source and fresh Windows wheel/sdist each49pass0skip;
+60actualmodulehashes and identical case sets verified; lint/format/mypy pass.
+Initial test-assertion failure and missing-httpx collection error retained in one
+archive. Linux/macOS/fullsuite/realclients NOT RUN. All42not_run/ReleaseBLOCKED.
+See acceptance/evidence/alpha20-local-summary.json. Alpha19 Astra review approved
+its limited component/source/evidence scope; it is not Work/M5 acceptance.
+
 Alpha19 (`cd2e8d75555e954b41c421f1dfeb3308032ba440`) exposes Cursor's opt-in
 contextual factory through the unchanged shared launch guard. No built-in Cursor
 plan or default startup. Root Windows3.14/3.11 each455pass0skip (451old IDs+4new);

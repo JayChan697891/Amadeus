@@ -1,0 +1,112 @@
+{
+  "product_commit": "b2e855947a30d4ee57b0d947ec9420816c84eeb0",
+  "version": "0.3.0a20",
+  "schema_version": 12,
+  "scope": "Offline bounded usage checkpoint CLI; ledger, Core, adapters and runtime dependencies unchanged",
+  "development_selection": {
+    "passed": 28,
+    "skipped": 0
+  },
+  "independent_source": {
+    "py314": {
+      "exit_status": 0,
+      "tests": 49,
+      "passed": 49,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "64183435d408d370e8704d024022ed91c012b5cb648db8796a8faf920c79114d"
+    },
+    "py311": {
+      "exit_status": 0,
+      "tests": 49,
+      "passed": 49,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "a2d11268797b0f794be7fb6a8fffbc15f9a58869703cce8550f9946286675ea2"
+    }
+  },
+  "independent_windows_packages": {
+    "wheel": {
+      "tests": 49,
+      "passed": 49,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 60,
+      "junit_sha256": "a36b89ef32bf6f2e7e862f656e9df5aa5a7535bb5f12e642926c1c57a2f51370"
+    },
+    "sdist": {
+      "tests": 49,
+      "passed": 49,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 60,
+      "junit_sha256": "f04b8c134203753100e83671397f32acaaa7207dc7ecbdaef2ab68907f611384"
+    }
+  },
+  "source_and_installed_case_sets_identical": true,
+  "actual_installed_module_hashes_match_source": 60,
+  "static_checks": {
+    "ruff": {
+      "exit_status": 0
+    },
+    "format": {
+      "exit_status": 0
+    },
+    "mypy": {
+      "exit_status": 0
+    },
+    "diff": {
+      "exit_status": 0
+    }
+  },
+  "artifacts": {
+    "agentsync_local-0.3.0a20-py3-none-any.whl": "7f47a6347ed8ee158338990686b0c23f104053e7b379eb10f54a83c00a730326",
+    "agentsync_local-0.3.0a20.tar.gz": "b3a281df86777208b688ad704fd4ffc13fdeafdbf5cfda8e5e629292de0547a8"
+  },
+  "preserved_initial_results": {
+    "development": {
+      "tests": 4,
+      "passed": 3,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "cause": "Test substring assertion matched legitimate total_records keys; corrected to exact records key. Product summary already matched ledger."
+    },
+    "package": {
+      "tests": 1,
+      "passed": 0,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 0,
+      "cause": "Validation environment lacked dev dependency httpx; collection failed, product tests NOT RUN. Fresh environment installed existing pinned dev dependency and passed."
+    }
+  },
+  "archive": {
+    "path": "releases/0.3.0a20/checkpoints/usage-cli-b2e8559-local.tar.gz",
+    "bytes": 1078241,
+    "sha256": "8bbcc37dae12efcb1e0a38f43916c2705cd4c04036809ec74973e973c5f92aa8",
+    "manifest_members": 59,
+    "members_independently_rehashed": true
+  },
+  "not_run": [
+    "Linux alpha20",
+    "macOS alpha20",
+    "full source and installed suites",
+    "real clients and autonomous dual-agent relay",
+    "M5 and formal Release acceptance"
+  ],
+  "release": "BLOCKED",
+  "formal_requirements": {
+    "not_run": 42
+  },
+  "constraints": [
+    "No Actions, paid provider calls, account changes or real client execution",
+    "No retry of closed real Codex authorization",
+    "Source F, debug and temporary state D",
+    "VM remains stopped; no new VM started for alpha20"
+  ]
+}

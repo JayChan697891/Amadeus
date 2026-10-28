@@ -1,5 +1,29 @@
 # Release Acceptance Report
 
+## Alpha20 offline reported-usage command — selected local validation
+
+Frozen `b2e855947a30d4ee57b0d947ec9420816c84eeb0` (0.3.0a20/schema12) adds
+`agentsync usage --project-id ID` with1MiB UTF-8 stdin limit and strict existing
+checkpoint restoration. It prints only aggregate summary data as ASCII-safe JSON,
+retaining unknown costs, incomplete counters and caller-reported/unverified
+markers. No Core state, files, real clients, accounts or providers are opened.
+The supplied project ID is a namespace assertion, not authentication.
+
+Sol's selection: **28 passed,0 skipped**. Root inspected actual files and ran
+usage/planning/owner-input, HTTP/MCP/SDK and existing Mock workflow regressions:
+Windows Python3.14/3.11 each **49 passed,0 skipped**. Separate fresh offline
+Windows wheel/sdist each **49 passed,0 skipped**; all4 case sets match, and60
+actual installed module hashes match the frozen source. Ruff/format/mypy60/diff
+passed. First development attempt had one assertion-only failure; first package
+attempt had one collection error from missing test dependency httpx and executed
+no product tests. Both are preserved separately from successful fresh results;
+the product dependency set was unchanged. Logs/JUnit/builds/drivers and hashes:
+`evidence/alpha20-local-summary.json` and its manifest-checked archive.
+
+Alpha20 Linux/macOS, full suites, real clients and autonomous relay **NOT RUN**.
+Prior platform evidence stays bound to its earlier SHA. All42 formal requirements
+remain not_run; M5 and Release remain **BLOCKED**. No Actions or paid calls.
+
 ## Alpha19 Cursor contextual launch entry point — selected local validation
 
 Frozen product `cd2e8d75555e954b41c421f1dfeb3308032ba440` (0.3.0a19/schema12)
