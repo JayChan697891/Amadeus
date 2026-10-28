@@ -123,6 +123,14 @@ caller-supplied identifiers; they contain no raw output/client metadata. The
 network I/O: callers control storage and crash-safe writes. They do not restore
 Agent processes or tasks and do not add transport/API-call accounting.
 
+`agentsync usage --project-id PROJECT_ID` reads one UTF-8 checkpoint from stdin
+and prints the same aggregate summary. This offline CLI accepts at most1 MiB;
+larger checkpoints can use the Python interface's32 MiB limit. It opens no Core
+database and writes no files. The project ID is a caller namespace assertion,
+not authentication. Costs stay unknown and client/billing verification stays
+false. Extra options, invalid input and a mismatched checkpoint project return
+a fixed error with exit status2, without printing the private input.
+
 ## Local contention diagnostic
 
 `python tools/benchmark_coordination.py --scratch-parent ABSOLUTE_EXISTING_DIRECTORY

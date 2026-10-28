@@ -93,6 +93,13 @@
     "formal M5/Release acceptance",
     "full Linux alpha19 source suite"
   ],
+  "independent_astra_review": {
+    "model": "GPT-6 Astra High",
+    "scope": "frozen alpha19 source and saved evidence; no tests or clients executed during review",
+    "result": "No concrete implementation blocker or false evidence claim found",
+    "checked": "runtime delta, prior case retention, four installed case sets, 59 module origins and hashes, source and artifact bindings, both evidence archive hashes",
+    "formal_acceptance": false
+  },
   "release": "BLOCKED",
   "formal_requirements": {
     "not_run": 42

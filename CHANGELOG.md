@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a20 - offline reported-usage command
+
+- Print the existing usage ledger summary from a bounded stdin checkpoint with
+  `agentsync usage --project-id ID`, without opening Core state or calling clients.
+- Keep caller-reported provenance, unknown costs and incomplete metrics explicit;
+  invalid inputs receive a fixed error without echoing private checkpoint data.
+
 ## 0.3.0a19 - Cursor contextual launch entry point
 
 - Allow a trusted Cursor host factory to use the existing task-bound launch

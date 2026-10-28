@@ -30,6 +30,9 @@ are **NOT RUN**. Earlier full Linux evidence remains bound to its earlier SHA.
 This component checkpoint does not complete M6-05, M5 or formal acceptance:
 all42 formal requirements remain not_run and Release remains **BLOCKED**.
 No Actions, paid calls, client upgrade or retry of the closed Codex preflight.
+Astra independently inspected the frozen delta and saved source/package/archive
+bindings and found no concrete blocker or false evidence claim in this scope;
+that review executed no tests or clients and does not constitute Work acceptance.
 
 ## Authorized actual Codex factory test — preflight BLOCKED
 

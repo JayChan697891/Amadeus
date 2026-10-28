@@ -136,11 +136,21 @@ def main(argv: list[str] | None = None) -> int:
         from agentsync.planning_cli import invalid_input, run_plan_cli
 
         return run_plan_cli() if len(arguments) == 1 else invalid_input()
+    if arguments and arguments[0] == "usage":
+        from agentsync.usage_cli import invalid_input, run_usage_cli
+
+        return (
+            run_usage_cli(arguments[2])
+            if len(arguments) == 3 and arguments[1] == "--project-id"
+            else invalid_input()
+        )
     parser = argparse.ArgumentParser(prog="agentsync")
     parser.add_argument("--data-dir", default=None, help="Absolute local state directory")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("mcp", help="Run official MCP stdio server")
     commands.add_parser("plan", help="Print offline dispatch advice from bounded stdin JSON")
+    usage = commands.add_parser("usage", help="Summarize a bounded stdin usage checkpoint offline")
+    usage.add_argument("--project-id")
     owner = commands.add_parser(
         "owner", help="Owner operation; read credentials and payload JSON from stdin"
     )
@@ -160,6 +170,10 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "plan":
         from agentsync.planning_cli import invalid_input
+
+        return invalid_input()
+    if args.command == "usage":
+        from agentsync.usage_cli import invalid_input
 
         return invalid_input()
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
