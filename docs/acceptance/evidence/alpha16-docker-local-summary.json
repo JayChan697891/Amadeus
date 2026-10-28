@@ -1,0 +1,70 @@
+{
+  "created_utc": "2026-10-28T07:42:19.915454+00:00",
+  "commit": "7f658b189b62e5977dcda6b9b675bb864d61a1a3",
+  "version": "0.3.0a16",
+  "scope": "actual local Linux Docker verifier/owner/reconciliation tier only; existing dependency venv and pinned preloaded image",
+  "counts": {
+    "tests": 26,
+    "passed": 26,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "wall_seconds": 22.608021524,
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "sqlite": "3.53.4",
+  "source_files": 357,
+  "source_unchanged": true,
+  "actual_imported_module_hashes_verified": 56,
+  "image": {
+    "Id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "RepoDigests": [
+      "python@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+    ],
+    "network_pull": "NOT RUN"
+  },
+  "previous_skipped_cases_now_observed_passed": 26,
+  "remaining_prior_platform_skips": 3,
+  "separate_runs_not_one_combined_suite": true,
+  "runtime_artifact_count": 26,
+  "runtime_artifact_sha256": {
+    "reconciliation-evidence/9f0b670cb292e8b5/hard-exit-created.json": "8eb9d793365b7142f82ee4a633107c0da3d9bfaa03c8067dbe8f72aa7c4d1f25",
+    "reconciliation-evidence/9f0b670cb292e8b5/hard-exit-running.json": "14080a839594f5baca5ae8ff7cc73124fd1fce4e04d8c66dc9cc6eeed4c1b287",
+    "reconciliation-evidence/9f0b670cb292e8b5/initial-absence.json": "be0f176c148358db372fc711e2ddc89bc2b1b57355e75c6746fded60f2ac5234",
+    "reconciliation-evidence/9f0b670cb292e8b5/lost-create-ack.json": "b6da163634fb9a94d3fcf2692738b083a7a8421f235d26b7e3db447c38c053d5",
+    "reconciliation-evidence/9f0b670cb292e8b5/protected-renamed-object.json": "5f420af9abdfb62235c7fa2c491ae41f878cd7bb54c93d57248e930dbb9d5e12",
+    "owner-evidence/9f0b670cb292e8b5/expired-lease-after-real-pass.json": "0ac9284d6f883c80615a2724028ab2a207bda4576eee30282b3de9e535bf26ed",
+    "owner-evidence/9f0b670cb292e8b5/fixed-snapshot.json": "f84e6c42cb3292240247bdeeaf66c8514adea87e585821db20a29b4d72735db0",
+    "owner-evidence/9f0b670cb292e8b5/owner-cancel-before-start.json": "3feac4639281fc3e997c37b0ae8c666fa76bc2a84723abef049bad7a2e635097",
+    "owner-evidence/9f0b670cb292e8b5/test_actual_owner_rejects_candidate_self_report[early-exit].json": "4ef145e4d6714b98d2f4e10788bfae256a35acea44b89c69c174327856c5f53a",
+    "owner-evidence/9f0b670cb292e8b5/test_actual_owner_rejects_candidate_self_report[forged-junit].json": "9537e9aa2b62f1315b4092551c78e4611bd66e2a48e45ec34336549444be8f4a",
+    "owner-evidence/9f0b670cb292e8b5/test_actual_owner_rejects_candidate_self_report[wrong-result].json": "c404da1e0872750b9b714a9385e09766f72e4ca6d022e4ccb0fd21b7f3f370e5",
+    "owner-evidence/9f0b670cb292e8b5/wall-time.json": "38ccb3206947a65ed832a0758b13365cc7a47301466656f963ea8626c4bbf4ec",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_checks_all_external_cases.json": "2b941efe0979fc348d736a1bf791634c7360ab2436c03efe14e59da333d7a687",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_memory_bound.json": "2a429d4db2cad24ec91a944b8468ad22467b418b4422c435d0f8a528d1af2f96",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_output_bounds[stderr].json": "88099732721653de26620065c5c42945cf677e89b2c40cf010e3ba1c48e09891",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_output_bounds[stdout].json": "b16eb2745c3eadd76a0e68039dca1c9aae52c3953a15e5bf1b096d6d39bced2e",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_pid_bound.json": "1c42f4a3b4a6da250fc6d5566732095ce4ae5686f36142ee1c4dd07f1ddc1c6c",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_scratch_bound.json": "62994952d7249f2a302a42b7741cdaa250675784639f48127f3d39270181629d",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_enforces_wall_time.json": "c14490fd53d56243fb811dd6867dccb030a14c063797d3cd5923d7069a994fbf",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_isolation_controls.json": "1828033c1085f980c70d8074d6ce26292226275461b7122abbb9417a6889f988",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_kernel_cgroup_limits.json": "9a4ddbce1b43135579e2df003331940bc11a78220af111226fd8a3a196cf43bf",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json": "04b5df8e535ba332f088343e067629c6cf3db77f5a709c364c93d1a70cd7bbc4",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json": "07239b22a4a219f63f2c7ab91f48c7a8b822403ac31165a444a5c5237c7f6d72",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json": "30dc23183e02f715144b6fc44d2093de4167bdf6c0ef7ec00dd19376f57f40fc",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json": "3d13a11bd898ca09b92a57c587429c22d9749963989252a4cc60af7736d45ed2",
+    "docker-evidence/9f0b670cb292e8b5/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json": "7fd85e4f1029e4da5fee4f6f009c51dcd196cdfc373a3b9d35655a2201d62763"
+  },
+  "raw_evidence_directory_name": "alpha16-docker-y1w2rbn2",
+  "junit_sha256": "285a38a2601c1f83fc8d175bd1558283483d6c0455bcdfeb7ef73859e73d1cb8",
+  "result_sha256": "05e81a0d2dc03f7854e7bf99274a7bead7be148a2e700ec0b07a77029a4141a3",
+  "limitations": [
+    "Existing dependency venv/source only; no new installed-package or platform matrix claim.",
+    "Expected negative verification outcomes are test successes, not accepted candidate results.",
+    "No real client/model call, autonomous relay or M5 gate closure.",
+    "No remote execution/Actions/image pulls."
+  ],
+  "formal_not_run": 42,
+  "formal_acceptance": false,
+  "release": "BLOCKED"
+}

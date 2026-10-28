@@ -1,5 +1,20 @@
 # Release Acceptance Report
 
+## Alpha16 actual local Docker supplement
+
+Frozen `7f658b189b62e5977dcda6b9b675bb864d61a1a3`: **26 passed,0 skipped,
+0 failures/errors** in the dedicated local Linux VM. Verifier, owner execution
+and reconciliation tests used the fixed preloaded image with required Docker
+evidence enabled and no image pull. Root verified56 actual imported source
+module hashes before/after; sources stayed unchanged. All26 IDs exactly match
+Docker cases skipped in the preceding full ordinary run;3 Windows-specific skips
+remain. These are separate runs, not a newly combined full-suite execution.
+Negative candidate outcomes were correctly rejected; test passes do not mark
+those candidates accepted. This source/dependency-venv check does not establish
+new installed packages, real clients, autonomous relay or M5/Release acceptance.
+All42 formal statuses remain `not_run`; Release BLOCKED. Sanitized evidence:
+`evidence/alpha16-docker-local-summary.json`.
+
 ## Alpha16 offline dispatch command and local Linux regression
 
 Product `e248a929cd08e7eb12835c3283582b3a60dc047a` adds `agentsync plan`: bounded

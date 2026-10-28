@@ -1,5 +1,11 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha16 actual localLinux Docker supplement at7f658b1:26passed0skip/fail/error,
+fixed preloaded image/no pull;56 actual source module bytes verified before/after.
+All26 match Docker case IDs skipped in the prior ordinary full run;3platformskips
+remain. Separate observations, no combined single-suite claim. All42formalnot_run,
+ReleaseBLOCKED. See acceptance/evidence/alpha16-docker-local-summary.json.
+
 Development0.3.0a16 adds offline stdin-only `agentsync plan` dispatch advice.
 Root Windows3.14/3.11 each44pass; lint/format/mypy56 pass. Fresh Windows3.14
 wheel installed offline: CLI module/entrypoint smoke, dependencycheck and56
