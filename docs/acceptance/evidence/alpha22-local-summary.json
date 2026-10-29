@@ -104,7 +104,8 @@
     "passed": 3,
     "failed": 0,
     "skipped": 0,
-    "scope": "race plus two actual-commit acknowledgement-loss regressions"
+    "scope": "race plus two actual-commit acknowledgement-loss regressions",
+    "observation_source": "Working tree immediately before a566f24; historical red/green observation. The same cases also pass in frozen final Linux and installed Windows suites."
   },
   "static": {
     "ruff": "PASS",
@@ -157,5 +158,17 @@
     "stopped": true,
     "verified_owned_pid": 23652,
     "transport_exit": 0
+  },
+  "independent_checkpoint_review": {
+    "model": "gpt-6-astra",
+    "reasoning": "high",
+    "product_commit": "437d306643b6529e600aa93c64e9ac0b9cf81d28",
+    "reviewed_delivery": "f73166130153c9cd7a9c17787f2019cd02dc4e52",
+    "status": "COMPLETED_LIMITED_SCOPE",
+    "outcome": "No material inconsistency found in raw archive hashes, Git inputs, runtime modules, original JUnit, retained failures or actual candidate success bindings.",
+    "previous_attempt": "Interrupted by usage limit; no completion claimed for that attempt.",
+    "tests_executed_by_reviewer": false,
+    "release_accepted": false,
+    "recorded_at_utc": "2026-10-29T12:40:04.974405+00:00"
   }
 }
