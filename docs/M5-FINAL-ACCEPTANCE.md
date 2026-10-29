@@ -86,6 +86,23 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
 - D5：历史材料重排、重复报告/证明、全归档格式统一：不推进产品功能，不作为
   无执行原型的先决条件；最终证据只按 B6 补必要缺口。
 
+### 下一项原有 B4 的完整实施边界（尚未实现）
+
+Astra 设计复核：新增内部 `OwnerVerifiedTaskCompletion.complete_once`，schema14 仅增
+持久验证/幂等记录；同时验证 owner 与独立 reviewer 当前会话/角色及作者隔离。任务须
+处于 review，候选两侧版本精确匹配，重新捕获现有候选绑定，可信 profile 与实际
+finished/passed 执行及完整清理证明一致；review、任务递增完成、验证记录、幂等和审计
+必须原子提交。普通文本 review 只显示 asserted/unverified；仅匹配当前完成版本的
+持久证明显示 verified，历史缓存不得贴用后来状态。旧 candidate 回执不改写。
+
+真实 Core/Git 可达性 pilot 证明提交 review 后可为同一候选建立精确新版本 job；旧版本
+在调用后端前拒绝，不采用 version-1 放宽。一侧完成会使整对绑定从 [3,3] 变成 [4,3]，
+另一侧不能继续套用原结果，需要满足新的精确绑定及显式 owner 验证流程。
+该 pilot 的唯一执行后端为 MOCK，首轮脚本 KeyError 和修正均保留，不能算 B4 或实际
+隔离验收。见 acceptance/evidence/b4-flow-feasibility.json。完整实现包含认证、持久
+证明、原子完成、可信投影、迁移/并发/撤权/审计回滚及真实 Docker 到独立审核闭环；
+不以字段或 wrapper 代替功能，不在此扩入自动运行器、真实客户端或 apply。
+
 ## 唯一最终退出条件
 
 以下六条全部有冻结 SHA 对应证据并由独立验收确认，才能将 M5 整体标通过：

@@ -12,6 +12,11 @@ runtime changes from437d306 fullsuite; fullrepository atbda2772 NOT RUN. B4,
 realclients and overallM5/Release remain BLOCKED; Agentdispatch/recovery unopened.
 See acceptance/evidence/alpha22-lifecycle-summary.json. No Actions/main changes.
 
+B4 design-only Core/Git pilot confirms exact review-version flow and stale paired
+binding after one textual completion. Backend MOCK only; no B4 implementation or
+acceptance. See acceptance/evidence/b4-flow-feasibility.json; sole M5 checklist
+retains the complete implementation boundary. This is not product progress.
+
 Alpha22 owner candidate execution product `437d306643b6529e600aa93c64e9ac0b9cf81d28`
 adds schema13, a permanent one-attempt fence and exact-ID cleanup. A reproduced
 late-executor/cleanup race is fixed; real post-commit acknowledgement-loss tests

@@ -1,0 +1,62 @@
+{
+  "scope": "B4 design reachability only; no B4 product implementation",
+  "status": "PILOT_PASS_NOT_ACCEPTANCE",
+  "code_sha": "f1045e707780038eac0cef601918793920483585",
+  "backend": "MOCK.synthetic_backend",
+  "real_docker": false,
+  "real_clients": "NOT RUN",
+  "backend_calls": 1,
+  "old_job_backend_calls": 0,
+  "review_task_versions": [
+    3,
+    3
+  ],
+  "fresh_job_versions": [
+    3,
+    3
+  ],
+  "after_one_text_review_pair_versions": [
+    4,
+    3
+  ],
+  "version_minus_one_not_used": true,
+  "source_identity": {
+    "src/agentsync/verification/candidate_executor.py": {
+      "observed_sha256": "4519f7164f8f47f17234f5b8ea79a5cb25b3ab1111454dbcbaa8e7fc2edd8c4d",
+      "git_blob_sha256": "4519f7164f8f47f17234f5b8ea79a5cb25b3ab1111454dbcbaa8e7fc2edd8c4d",
+      "line_endings_only": false
+    },
+    "src/agentsync/verification/binding.py": {
+      "observed_sha256": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961",
+      "git_blob_sha256": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961",
+      "line_endings_only": false
+    },
+    "src/agentsync/verification/candidate_jobs.py": {
+      "observed_sha256": "9c080aa830a355f3fe536c9e2004347117a8e74504579b11feda6afacf86c0af",
+      "git_blob_sha256": "9c080aa830a355f3fe536c9e2004347117a8e74504579b11feda6afacf86c0af",
+      "line_endings_only": false
+    },
+    "tests/integration/test_candidate_execution.py": {
+      "observed_sha256": "1540907223e598941a5f8cfa4164ea3fbac0afab50660036441b84a4596b63fa",
+      "git_blob_sha256": "715b6fec99e0e16a891d04587af910ad3c29961f6bcfd7f1703853db5f724f1c",
+      "line_endings_only": true
+    }
+  },
+  "identity_note": "Four actual source hashes unchanged; one Windows test file differs from Git only in CRLF line endings, independently normalized and matched. Raw hashes are not mislabeled as identical Git blob hashes.",
+  "first_run": {
+    "status": "FAILED",
+    "type": "KeyError",
+    "backend_calls": 0,
+    "reason": "Pilot assumed task versions were public receipt fields; debug script now reads owned temporary job row. Actual error key was not logged.",
+    "retained": true
+  },
+  "design_impact": "A job binds both current task versions. Textual completion of one side advances its version and makes that pair binding stale for the other side. The existing execution is also permanently fenced; no B4 verified wrapper or completion was implemented.",
+  "B4": "BLOCKED_NOT_IMPLEMENTED",
+  "release_gate": "BLOCKED",
+  "archive": {
+    "path": "releases/0.3.0a22/checkpoints/b4-flow-f1045e7.tar.gz",
+    "sha256": "ac87aee83e357c07d4885674e4a26faaecb591726acc47ad7ebcd00eeb799d1e",
+    "bytes": 4830,
+    "manifest_members": 7
+  }
+}
