@@ -125,6 +125,8 @@ def validate_intent(
     db: sqlite3.Connection, job: sqlite3.Row, claim: sqlite3.Row | None
 ) -> sqlite3.Row | None:
     """Validate relations without recursion, mutation, clock or filesystem access."""
+    from agentsync.verification.candidate_execution_state import validate_execution
+
     claim_id = None if claim is None else claim["id"]
     rows = db.execute(
         "SELECT * FROM candidate_execution_intents WHERE job_id=? OR claim_id=? LIMIT 2",
@@ -138,10 +140,12 @@ def validate_intent(
     if claim is None:
         if rows or abandons:
             _corrupt()
+        validate_execution(db, job, None, None)
         return None
     if not rows:
         if abandons:
             _corrupt()
+        validate_execution(db, job, claim, None)
         return None
     if len(rows) != 1:
         _corrupt()
@@ -215,6 +219,7 @@ def validate_intent(
                 _corrupt()
         else:
             _corrupt()
+        validate_execution(db, job, claim, intent)
         return intent
     except (KeyError, IndexError, ValueError, TypeError, UnicodeError, OverflowError):
         _corrupt()
@@ -365,6 +370,8 @@ class OwnerCandidateExecutionIntents:
             return response
 
     def get(self, *, project_id: str, admin_token: str, job_id: str) -> dict[str, Any]:
+        from agentsync.verification.candidate_execution_state import projection
+
         p = self.core._validated_payload(
             _Lookup, {"project_id": project_id, "admin_token": admin_token, "job_id": job_id}
         )
@@ -372,15 +379,22 @@ class OwnerCandidateExecutionIntents:
             job = self.jobs._row(db, project_id, job_id)
             claim = validate_claim(db, job)
             intent = validate_intent(db, job, claim)
+            execution = projection(db, job)
+            flags = {
+                key: execution[key]
+                for key in ("execution_connected", "execution_assessment")
+                if key in execution
+            }
             return _bounded(
                 {
                     "current_state": True,
                     **FLAGS,
-                    "job": _public(job),
+                    "job": _public(job) | execution,
                     "intent": None
                     if intent is None
-                    else _summary(intent, current=True, job=job, claim=claim, now=now),
+                    else _summary(intent, current=True, job=job, claim=claim, now=now) | flags,
                 }
+                | execution
             )
 
     def abandon_once(
@@ -422,6 +436,13 @@ class OwnerCandidateExecutionIntents:
                 self.jobs._row(db, project_id, job_id)
                 return _load(cached["response_json"], MAX_RESPONSE)
             job = self.jobs._row(db, project_id, job_id)
+            if db.execute(
+                "SELECT 1 FROM candidate_executions WHERE job_id=?", (job_id,)
+            ).fetchone():
+                _error(
+                    "candidate_execution_exists",
+                    "Execution permanently prevents intent abandonment.",
+                )
             claim = validate_claim(db, job)
             intent = validate_intent(db, job, claim)
             if intent is None or intent["id"] != intent_id:

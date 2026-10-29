@@ -80,7 +80,7 @@ def test_v10_queued_and_cancelled_history_survives_upgrade_and_reopen(v10):
     database.migrate(path)
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
         after = history(db)
         assert all(after[name] == rows for name, rows in before.items())
         assert after["candidate_verification_claims"] == []
@@ -121,7 +121,7 @@ def test_fresh_schema12_starts_without_fabricated_claim_history(tmp_path):
     path = tmp_path / "fresh.db"
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
         assert db.execute("SELECT count(*) FROM candidate_verification_claims").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM candidate_claim_recoveries").fetchone()[0] == 0
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

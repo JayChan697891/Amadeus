@@ -1,0 +1,28 @@
+{
+  "status": "WIP_NOT_VALIDATED",
+  "observed_at_utc": "2026-10-29T05:29:20.389041+00:00",
+  "baseline": "72a3caa",
+  "execution_party": "Codex",
+  "observations": [
+    "Saved focused log reports 29 passed and 1 real-Docker test skipped; not independently rerun or bound to a frozen commit.",
+    "Earlier failing smoke and diagnostic results retained.",
+    "Saved Ruff and mypy outputs are observations only, not final release checks.",
+    "No independent Astra code review, actual candidate Docker execution, full regression or package validation for this WIP.",
+    "M5 and Release remain BLOCKED. No real client calls authorized or performed by this checkpoint."
+  ],
+  "files": {
+    "diagnostic.log": "3edf765fae74bebfe73f08ff13ba185214b73d9b52be4bb3175c1176fafda81f",
+    "diagnostic.xml": "0a1a10c62e52fdc4d4e4eec5fdddc7ea2c46fcbc80b72485f4c6b896577129fd",
+    "focused.log": "d91104007e4a8b62f483a89f501d41075c10b649660f8ea88b64ed6932e3a953",
+    "focused.xml": "f0047dde123bb56189ee41b9b5bac715abc1d6d3c8501c6e3360462e4fb7fa6b",
+    "mypy-current.log": "1ae1a89d54d420cace381d4367eb85674ac10663afe0766641917ac6d36ebbd0",
+    "mypy-first.log": "d5bfc053a242a3f0a38299d887512b5bbf1d867f93114e4a6cac57971521edaf",
+    "ruff-current.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "smoke-green.log": "6cd784084b8a0915225f9a1c075e146da3e5d73957f824e1e1301e161fd9a8ef",
+    "smoke-green.xml": "06defc4bb9c215d34927c14d9efb19407800540c3fea6a08735292dd0cc211d0",
+    "smoke-short.log": "4ea45b87724ff07cfb81c2ca213a745ddb3a0d49439d234cab6de0db7db7c1c9",
+    "smoke-short.xml": "0e91a22534555e8095712cd57d829efe13e33efcced7d0fddd561e6bd69a8c37",
+    "smoke.log": "36e1bfc87c975c3370059b7c458978662187ebbbc71f4d2827bb29a7d1ffd6b7",
+    "smoke.xml": "ccf08821f18f3cb072ef26acf6a6784002500039c8d65f50e3cf098e435b5893"
+  }
+}

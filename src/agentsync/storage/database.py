@@ -395,6 +395,32 @@ PRAGMA user_version=12;
 """
 
 
+MIGRATION_V13 = """
+CREATE TABLE candidate_executions(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, job_id TEXT NOT NULL UNIQUE,
+ claim_id TEXT NOT NULL UNIQUE, intent_id TEXT NOT NULL UNIQUE,
+ proof_json TEXT NOT NULL CHECK(length(CAST(proof_json AS BLOB))<=16384),
+ proof_sha256 TEXT NOT NULL, token_hash TEXT NOT NULL,
+ revision INTEGER NOT NULL CHECK(revision>=1),
+ phase TEXT NOT NULL CHECK(phase IN ('preparing','create_intent','created','executing','finished','unresolved')),
+ assessment TEXT NOT NULL CHECK(assessment IN ('unverified','passed','failed','unsupported','error')),
+ cancel_requested INTEGER NOT NULL CHECK(cancel_requested IN (0,1)),
+ create_intent INTEGER NOT NULL CHECK(create_intent IN (0,1)),
+ create_reply_complete INTEGER NOT NULL CHECK(create_reply_complete IN (0,1)),
+ start_intent INTEGER NOT NULL CHECK(start_intent IN (0,1)),
+ owner_nonce TEXT, container_name TEXT, container_id TEXT,
+ result_json TEXT NOT NULL CHECK(length(CAST(result_json AS BLOB))<=65536), result_sha256 TEXT,
+ cleanup_attempted INTEGER NOT NULL CHECK(cleanup_attempted IN (0,1)),
+ cleanup_json TEXT NOT NULL CHECK(length(CAST(cleanup_json AS BLOB))<=16384), cleanup_sha256 TEXT,
+ created_at REAL NOT NULL, updated_at REAL NOT NULL CHECK(updated_at>=created_at),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id),
+ FOREIGN KEY(claim_id,project_id,job_id) REFERENCES candidate_verification_claims(id,project_id,job_id),
+ FOREIGN KEY(intent_id,project_id,job_id,claim_id) REFERENCES candidate_execution_intents(id,project_id,job_id,claim_id));
+CREATE INDEX candidate_execution_project ON candidate_executions(project_id,job_id);
+PRAGMA user_version=13;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -473,7 +499,12 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 12
-        if version != 12:
+        if version == 12:
+            for statement in MIGRATION_V13.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 13
+        if version != 13:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
             raise RuntimeError("Database migration violated foreign-key constraints.")

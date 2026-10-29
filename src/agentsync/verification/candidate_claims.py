@@ -348,20 +348,28 @@ class OwnerCandidateClaims:
             return response
 
     def get(self, *, project_id: str, admin_token: str, job_id: str) -> dict[str, Any]:
+        from agentsync.verification.candidate_execution_state import projection
+
         p = self.core._validated_payload(
             _Lookup, {"project_id": project_id, "admin_token": admin_token, "job_id": job_id}
         )
         with self.jobs._transaction(p) as (db, now):
             job = self.jobs._row(db, project_id, job_id)
             claim = validate_claim(db, job)
+            execution = projection(db, job)
+            flags = {
+                key: execution[key]
+                for key in ("execution_connected", "execution_assessment")
+                if key in execution
+            }
             response = {
                 "current_state": True,
                 **FLAGS,
-                "job": _public(job),
+                "job": _public(job) | execution,
                 "reservation": None
                 if claim is None
-                else _summary(claim, current=True, job=job, now=now),
-            }
+                else _summary(claim, current=True, job=job, now=now) | flags,
+            } | execution
             if len(_dump(response).encode("utf-8")) > MAX_RESPONSE:
                 _error("response_too_large", "Candidate reservation view exceeds its bound.")
             return response
@@ -405,6 +413,13 @@ class OwnerCandidateClaims:
                 self.jobs._row(db, project_id, job_id)
                 return _load(cached["response_json"], MAX_RESPONSE)
             job = self.jobs._row(db, project_id, job_id)
+            if db.execute(
+                "SELECT 1 FROM candidate_executions WHERE job_id=?", (job_id,)
+            ).fetchone():
+                _error(
+                    "candidate_execution_exists",
+                    "Execution permanently prevents reservation recovery.",
+                )
             if job["version"] != expected_version:
                 _error("version_conflict", "Candidate recovery version changed.")
             if job["status"] != "claimed":

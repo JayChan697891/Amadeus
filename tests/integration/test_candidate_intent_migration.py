@@ -85,7 +85,7 @@ def test_v11_all_states_and_history_survive_additive_upgrade_and_reopen(v11):
     database.migrate(path)
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
         after = history(db)
         assert all(after[name] == rows for name, rows in before.items())
         assert len(after["candidate_verification_claims"]) == 2
@@ -140,7 +140,7 @@ def test_fresh_schema12_starts_without_fabricated_intent_history(tmp_path):
     path = tmp_path / "fresh.db"
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 12
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
         assert db.execute("SELECT count(*) FROM candidate_execution_intents").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM candidate_intent_abandonments").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM candidate_verification_claims").fetchone()[0] == 0
