@@ -351,6 +351,91 @@ def test_lost_ack_has_no_name_based_cleanup_and_stays_fenced(prepared, monkeypat
     assert_fenced(prepared, OwnerCandidateExecutor(Core(prepared[0].data_dir)), args, receipts)
 
 
+def test_cleanup_keeps_observation_when_expired_executor_returns(prepared, monkeypatch):
+    executor, args, receipts = attempt(prepared)
+    entered, release = threading.Event(), threading.Event()
+
+    def backend(source, **options):
+        result = synthetic_backend(source, **options)
+        entered.set()
+        assert release.wait(30)
+        return result
+
+    monkeypatch.setattr(module, "verify_python_json_lines", backend)
+    with ThreadPoolExecutor(1) as pool:
+        running = pool.submit(executor.execute_once, **args)
+        try:
+            assert entered.wait(30)
+            with connect(prepared[0].db_path) as db:
+                deadline = db.execute(
+                    "SELECT lease_expires_at FROM candidate_verification_claims"
+                ).fetchone()[0]
+            monkeypatch.setattr(module.queue_module.time, "time", lambda: deadline + 1)
+            view = current(executor, args)
+
+            def observe(identity):
+                assert identity["container_id"] == "c" * 64
+                release.set()
+                returned = running.result(timeout=30)
+                assert returned["execution_assessment"] == "unverified"
+                return {"outcome": "removed_and_absent", "absence_observed": True}
+
+            monkeypatch.setattr(module, "_observation", observe)
+            result = executor.cleanup_once(
+                **owner(prepared),
+                job_id=args["job_id"],
+                execution_id=view["execution_id"],
+                expected_revision=view["execution"]["revision"],
+            )
+        finally:
+            release.set()
+    assert result["execution"]["cleanup"]["status"] == "observed"
+    assert result["execution"]["cleanup"]["observation"]["absence_observed"] is True
+    assert_fenced(prepared, OwnerCandidateExecutor(Core(prepared[0].data_dir)), args, receipts)
+
+
+@pytest.mark.parametrize("phase", ["preparing", "executing"])
+def test_commit_ack_loss_preserves_fence_before_next_external_step(prepared, monkeypatch, phase):
+    executor, args, receipts = attempt(prepared)
+    original_connect = module.queue_module.connect
+    injected, backend_calls, continued = [], [], []
+
+    class CommitAckLoss:
+        def __init__(self, db):
+            self.db = db
+
+        def __getattr__(self, name):
+            return getattr(self.db, name)
+
+        def commit(self):
+            row = self.db.execute("SELECT phase FROM candidate_executions").fetchone()
+            self.db.commit()
+            if row is not None and row["phase"] == phase and not injected:
+                injected.append(phase)
+                raise sqlite3.OperationalError("Controlled lost commit acknowledgement")
+
+    def backend(source, **options):
+        backend_calls.append(True)
+        result = synthetic_backend(source, **options)
+        continued.append(True)
+        return result
+
+    monkeypatch.setattr(
+        module.queue_module, "connect", lambda path: CommitAckLoss(original_connect(path))
+    )
+    monkeypatch.setattr(module, "verify_python_json_lines", backend)
+    if phase == "preparing":
+        with pytest.raises(AgentSyncError) as error:
+            executor.execute_once(**args)
+        assert error.value.code == "storage_error"
+        assert not backend_calls
+    else:
+        assert executor.execute_once(**args)["execution_assessment"] == "unverified"
+        assert len(backend_calls) == 1
+    assert injected == [phase] and not continued
+    assert_fenced(prepared, OwnerCandidateExecutor(Core(prepared[0].data_dir)), args, receipts)
+
+
 @pytest.mark.parametrize("operation", ["candidate_execution_admit", "candidate_execution_finish"])
 def test_audit_failure_rolls_back_and_never_grants_success(prepared, monkeypatch, operation):
     executor, args, receipts = attempt(prepared)
@@ -521,3 +606,26 @@ def test_actual_linux_docker_executes_candidate_not_base(prepared):
     )
     assert evidence["cleanup_confirmed"] is True
     assert_fenced(prepared, executor, args, receipts)
+    directory = os.environ.get("AGENTSYNC_CANDIDATE_EXECUTOR_EVIDENCE_DIR")
+    if directory:
+        target = Path(directory)
+        assert target.is_absolute()
+        target.mkdir(parents=True, exist_ok=True)
+        with connect(prepared[0].db_path) as db:
+            row = dict(db.execute("SELECT * FROM candidate_executions").fetchone())
+        # No owner/session credentials or private process capability hash.
+        del row["token_hash"]
+        (target / "actual-candidate-execution.json").write_text(
+            json.dumps(
+                {
+                    "schema": "agentsync.candidate-executor-observation.v1",
+                    "real_docker": True,
+                    "real_clients": "NOT RUN",
+                    "current": result,
+                    "stored_execution": row,
+                    "historical_receipts": receipts,
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )

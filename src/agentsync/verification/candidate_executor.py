@@ -407,7 +407,11 @@ class OwnerCandidateExecutor:
                     or row["id"] != run.execution_id
                     or not hmac.compare_digest(row["token_hash"], _hash(run.token))
                     or row["phase"] == "finished"
+                    or row["cleanup_attempted"]
                 ):
+                    # Cleanup owns this revision while its exact-ID observation
+                    # runs outside the transaction. A returning expired executor
+                    # must not invalidate that one-shot observation.
                     return
                 raw = "{}"
                 if result is not None:

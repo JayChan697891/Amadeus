@@ -5,13 +5,17 @@
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a2 M5B1 verifier foundation (under verification)**. M5A permissions,
-approvals and audit passed their limited Work acceptance. M5B1 adds an owner-only
-fixed JSON black-box verification library, with no host execution or host mounts.
-It requires inspected Linux Docker; unavailable backends fail closed. The dedicated
-real-container CI gate is separate from simulated policy tests. See the
-[verifier scope](docs/M5B1-GUIDE.md). Verification queue/recovery, approval consumption,
-source application and actual-client relay remain incomplete.
+Status: **0.3.0a22 development prototype; M5 and Release BLOCKED**. Permissions,
+approvals, audit, isolated verification components and offline planning have
+limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
+The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
+prepared reservation to the fixed Linux Docker verifier, with one permanent
+execution attempt, cooperative cancellation and one exact-ID cleanup. It is under
+local validation and is not exposed through Core, MCP or HTTP. Unavailable isolation
+fails closed. Historical receipts stay immutable; container success does not mark
+tasks independently verified. Approval consumption, source application, automatic
+retries and actual-client relay remain gated. All checks run locally; GitHub Actions
+are manual-only and are not used for development testing.
 
 Project context has immutable revisions, source/summary
 metadata and literal substring search. Structured handoffs pin context revisions,
