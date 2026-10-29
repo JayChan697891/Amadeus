@@ -1,0 +1,174 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "recorded_at_utc": "2026-10-29T06:05:35.031588+00:00",
+  "product_commit": "437d306643b6529e600aa93c64e9ac0b9cf81d28",
+  "version": "0.3.0a22",
+  "database_schema": 13,
+  "linux_full": {
+    "tests": 1868,
+    "passed": 1864,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "linux_skips": [
+    {
+      "id": "tests.integration.test_candidate_execution.test_unavailable_isolation_is_unsupported_without_host_execution",
+      "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+    },
+    {
+      "id": "tests.security.test_file_locks.test_windows_case_and_separator_aliases_conflict",
+      "reason": "Windows conflict keys case-fold"
+    },
+    {
+      "id": "tests.security.test_resource_paths.test_new_ancestor_junction_rejects_even_identical_physical_root",
+      "reason": "Windows junction-specific ancestor boundary"
+    },
+    {
+      "id": "tests.security.test_resource_paths.test_junction_is_denied",
+      "reason": "Windows junction-specific boundary"
+    }
+  ],
+  "initial_failed_full": {
+    "product_commit": "a566f245e403d3f7c93045bae955f604c0708fa5",
+    "junit": {
+      "tests": 1868,
+      "passed": 1856,
+      "failed": 8,
+      "errors": 0,
+      "skipped": 4
+    },
+    "failed_cases": [
+      [
+        "tests.integration.test_candidate_claim_migration",
+        "test_future_schema13_rejected_without_any_mutation"
+      ],
+      [
+        "tests.integration.test_candidate_execution",
+        "test_actual_linux_docker_executes_candidate_not_base"
+      ],
+      [
+        "tests.integration.test_candidate_intent_migration",
+        "test_future_schema13_rejected_without_any_mutation"
+      ],
+      [
+        "tests.unit.test_candidate_intent_relations",
+        "test_matching_prepared_relation_is_read_without_changes"
+      ],
+      [
+        "tests.unit.test_candidate_intent_relations",
+        "test_unrelated_records_are_not_attached_to_the_requested_job"
+      ],
+      [
+        "tests.unit.test_candidate_queue_migration",
+        "test_future_schema_rejected_without_mutating_existing_database"
+      ],
+      [
+        "tests.unit.test_core_startup_diagnostic",
+        "test_actual_two_workers_share_new_database_without_touching_parent_state"
+      ],
+      [
+        "tests.unit.test_verification_reconciliation",
+        "test_migration9_preserves_schema8_rows_and_rolls_back"
+      ]
+    ]
+  },
+  "retained_prior_case_ids": 1835,
+  "renamed_future_schema_cases": 3,
+  "new_case_ids": 33,
+  "windows311_selected": {
+    "passed": 8,
+    "skipped": 0
+  },
+  "windows_installed_selected": {
+    "wheel": {
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 62,
+      "junit_sha256": "4c8378861ca4e9fc2bbe418c6b86a87633880867adfc50b83c02fd71e6505978"
+    },
+    "sdist": {
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_imports": 62,
+      "junit_sha256": "0b6e8cfbfad0cd6d627276bf9e1feaef93cbe8feb216dcc4adbecc4f6d786934"
+    }
+  },
+  "windows314_new_regressions": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "race plus two actual-commit acknowledgement-loss regressions",
+    "observation_source": "Working tree immediately before a566f24; historical red/green observation. The same cases also pass in frozen final Linux and installed Windows suites."
+  },
+  "static": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy": "PASS"
+  },
+  "identity": {
+    "runtime_module_count": 62,
+    "git_inputs_checked": 387,
+    "sdist_inputs_checked": 178,
+    "artifacts": {
+      "agentsync_local-0.3.0a22-py3-none-any.whl": "0adb1590a100725ef46cb0663e2217992519518696e768ccf67cd2831537d908",
+      "agentsync_local-0.3.0a22.tar.gz": "74a2e6faab86c590e75fa248397592d7dc11af7a504c3139eab1811fb2e0aaf3"
+    }
+  },
+  "real_candidate_execution": {
+    "observations": 1,
+    "backend": "dedicated local Linux Docker",
+    "pinned_candidate_bytes": true,
+    "task_verification": "unverified",
+    "permanent_fence": true
+  },
+  "cleanup_postcheck": {
+    "recorded_full_ids": 54,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "earlier_attempts": [
+    "Cleanup-race RED: one failure reproduced before minimal guard; one unknown asyncio_mode warning retained in that red harness.",
+    "Frozen WIP Windows group:186 collected, interrupted after12 success progress markers, no final count/JUnit; NOT COMPLETE. Prior WIP partial failures remain in its historical archive."
+  ],
+  "limitations": [
+    "No complete alpha22 Windows suite; installed-package suites select six critical cases each.",
+    "Actual candidate success is observed; candidate cancellation, timeout and crash/cleanup paths use synthetic backend observations; no claim of their full actual-Docker validation.",
+    "No full Linux installed-package suite for alpha22.",
+    "No actual Codex/Claude/Cursor call, autonomous two-Agent relay, full OS/Python matrix or Work acceptance.",
+    "All42 formal requirements retain not_run; M5 and Release remain BLOCKED."
+  ],
+  "archive": {
+    "path": "releases/0.3.0a22/checkpoints/local-437d306.tar.gz",
+    "sha256": "542dfab429f1cd5cd581b4add473e94f1e46cbf22b91afde253c4bc185a10423",
+    "bytes": 1459153,
+    "manifest_members": 142
+  },
+  "release_gate": "BLOCKED",
+  "execution_party": "Codex",
+  "owned_debug_vm_shutdown": {
+    "disk_preserved": true,
+    "forced_stop_used": false,
+    "stopped": true,
+    "verified_owned_pid": 23652,
+    "transport_exit": 0
+  },
+  "independent_checkpoint_review": {
+    "model": "gpt-6-astra",
+    "reasoning": "high",
+    "product_commit": "437d306643b6529e600aa93c64e9ac0b9cf81d28",
+    "reviewed_delivery": "f73166130153c9cd7a9c17787f2019cd02dc4e52",
+    "status": "COMPLETED_LIMITED_SCOPE",
+    "outcome": "No material inconsistency found in raw archive hashes, Git inputs, runtime modules, original JUnit, retained failures or actual candidate success bindings.",
+    "previous_attempt": "Interrupted by usage limit; no completion claimed for that attempt.",
+    "tests_executed_by_reviewer": false,
+    "release_accepted": false,
+    "recorded_at_utc": "2026-10-29T12:40:04.974405+00:00"
+  }
+}

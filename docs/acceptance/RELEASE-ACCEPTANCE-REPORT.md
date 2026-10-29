@@ -1,5 +1,34 @@
 # Release Acceptance Report
 
+Alpha22 lifecycle supplement at `bda27722ace70eec4f2ea59696c3301763828fd6` changes
+only tests. Source and fresh Linux wheel/sdist each36pass/1platformskip, same37IDs
+(33retained+4new),389Gitinputs/178sdistinputs/62actualmodules independently matched.
+15final actual observations cover success, mismatch, timeout, Running-before-cancel
+and process exit after created commit with Core reopen and exact-ID cleanup.
+Lease expiry uses an explicit controlled service clock; cancellation is cooperative.
+20IDs including earlierfocus independently absent; ownedVM22544 gracefully off.
+Astra accepts B5 LIMITED internalowner single-attempt lifecycle scope only. No
+runtime changes from437d306 fullsuite; fullrepository atbda2772 NOT RUN. B4,
+realclients and overallM5/Release remain BLOCKED; Agentdispatch/recovery unopened.
+See acceptance/evidence/alpha22-lifecycle-summary.json. No Actions/main changes.
+
+B4 design-only Core/Git pilot confirms exact review-version flow and stale paired
+binding after one textual completion. Backend MOCK only; no B4 implementation or
+acceptance. See acceptance/evidence/b4-flow-feasibility.json; sole M5 checklist
+retains the complete implementation boundary. This is not product progress.
+
+Alpha22 owner candidate execution product `437d306643b6529e600aa93c64e9ac0b9cf81d28`
+adds schema13, a permanent one-attempt fence and exact-ID cleanup. A reproduced
+late-executor/cleanup race is fixed; real post-commit acknowledgement-loss tests
+retain the fence. Linux full1864pass/4skip, prior1835cases (3future-schema renames)+33new; Windows3.11 eight
+critical passes and fresh Windows wheel/sdist six passes each.62actual modules,
+387Git inputs and sdist source/test/tool inputs independently checked. One actual
+candidate Docker success;54fullcontainer IDs from both Linux attempts independently
+absent. Initial full1856pass/8fail/4skip retained; all eight fixed. Task status
+remains unverified. Actual candidate timeout/cancel/crash cleanup not fully run;
+component evidence does not resolve B5/B6. Earlier interrupted Windows group and
+RED retained. See acceptance/evidence/alpha22-local-summary.json. ReleaseBLOCKED.
+
 ## Alpha21 complete Windows source supplement
 
 Frozen066b8dd completed **1,800 passed / 35 skipped / 0 failures or errors**,

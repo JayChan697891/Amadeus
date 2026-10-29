@@ -26,7 +26,7 @@ def test_actual_two_workers_share_new_database_without_touching_parent_state(tmp
         assert worker["exit_status"] == 0
         assert tuple(row["phase"] for row in worker["phases"]) == diagnostic._PHASES
         assert worker["phases"][-1]["source_sha256"] == report["source_sha256"]
-        assert worker["phases"][-1]["schema"] == 12
+        assert worker["phases"][-1]["schema"] == 13
     serialized = json.dumps(report)
     assert str(tmp_path) not in serialized and "private" not in serialized
     assert report["diagnostic_only"] and not report["formal_acceptance"]

@@ -43,13 +43,13 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
 | M5-01 权限控制 | VERIFIED：历史 M5A/7479dfa0c8243f1650f0ac395afbead4bc49d7e5 的限定权限验收；当前 Core 默认 viewer、角色矩阵、owner 独立渠道、鉴权先于重放有本地回归 | BLOCKER B1：真实运行器授权/资源边界尚未验证；整个正式需求未 VERIFIED |
 | M5-02 风险审批 | VERIFIED：同一历史 M5A 限定审批元数据；绑定请求者/candidate/SHA、过期、撤销、并发；批准本身不执行 | BLOCKER B2：危险执行/应用的最终校验与单次消费未接通；不启用 apply 时 DEFERRED D1，不能记已实现 |
 | M5-03 审计日志 | VERIFIED：历史 M5A 限定事务审计与脱敏；当前白名单、拒绝事件和审计失败回滚有回归 | BLOCKER B3：真实适配器输出/凭据处理及生命周期审计未验证；数据库管理员防篡改不在本范围 |
-| M5-04 独立验证 | VERIFIED：历史 M5B1–B2C 等各自冻结提交的固定 snapshot/profile 容器验证器限定证据；不是当前 candidate 执行或任务验收 | BLOCKER B4：review_task 仍可基于其他 Agent 的非空文本完成任务；缺独立结果与不可变 candidate 的强制绑定；BLOCKER B5：candidate 真执行生命周期尚未接通 |
-| M5-05 安全回归 | 当前完整 Windows 回归1303通过/30跳过/零失败，只有组件证明；历史隔离回归分 SHA 保存 | BLOCKER B6：冻结提交最终安全清单、适用隔离/安装测试及独立审查未完成；五项正式完整场景仍 NOT RUN |
+| M5-04 独立验证 | VERIFIED：历史 M5B1–B2C 等各自冻结提交的固定 snapshot/profile 容器验证器限定证据；不是当前 candidate 执行或任务验收 | BLOCKER B4：review_task 仍可基于其他 Agent 的非空文本完成任务；缺独立结果与不可变 candidate 的强制绑定；B5 VERIFIED（仅内部 owner-only 单次隔离 candidate 生命周期）：bda2772 的源码与 fresh Linux wheel/sdist 各36通过/1平台跳过，真实成功/错误/超时/运行中取消/created 后崩溃重开及精确清理有证据；不代表任务 verified completion 或真实客户端通过 |
+| M5-05 安全回归 | 最新冻结 alpha22/Linux 完整回归1864通过/4平台跳过，Windows安装包各6项、Python3.11关键组8项通过；均为限定组件证据，详见当前验收报告 | BLOCKER B6：冻结提交最终安全清单、适用隔离/安装测试及独立审查未完成；五项正式完整场景仍 NOT RUN |
 
 当前 completed 表示既有协作状态，不能标称独立 verified。模型文本、Mock 成功、
 协议回放、approved、prepared intent、旧 Docker 成功均不能替代独立验证。
 
-## 全部剩余 BLOCKER（固定清单）
+## 固定门槛状态与全部剩余 BLOCKER
 
 - B1，启用真实客户端前：确定官方接口/版本、明确授权及可能费用、专用临时
   项目和运行身份、最小权限/资源/网络边界；未满足时不启动，不借用宿主凭据。
@@ -59,26 +59,49 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
   输出文本不获工具权限，原始 stdout/stderr 不直接成为安全公开日志。
 - B4，宣告自动独立验收前：任务、candidate SHA、测试产物、profile、独立 reviewer
   与实际验证结果绑定；伪造/陈旧/不匹配/未知/失败证据不得提升为 verified。
-- B5，连接 candidate 实际执行前：外部 create 前持久 fence，未知/丢失 ACK
-  保持 unresolved；禁止旧 ledger recovery 解除可能运行中的执行；超时、取消、
-  重启和 exact-identity 清理有闭环。现有 prepared/abandon 不提供此权限。
+- B5，VERIFIED（限定内部 owner-only 单次隔离 candidate 执行）：外部 create 前持久
+  fence、未知 ACK 保持 unresolved、旧 recovery/abandon 禁止释放、真实超时/协作式取消、
+  created 提交后真实进程退出、Core 重开与 exact-ID 清理已按冻结 bda2772 验证。
+  源码、fresh Linux wheel/sdist 各36通过/1平台跳过，33原用例+4新增；15份最终真实场景
+  记录，20个含较早 focused 的完整容器 ID 后检不存在。租约到期显式使用受控服务时钟，
+  崩溃位置为 created 后、start 前；不扩称所有崩溃时点或真实时间等待。独立 Astra 复核
+  接受此限定范围；证据 acceptance/evidence/alpha22-lifecycle-summary.json。自动调度、
+  面向 Agent 接线和自动恢复仍为原 D2/D3，不能使 B1/B3/B4/B6 或整个 M5 通过。
 - B6，M5 最终验收前：冻结产品 SHA/tree，独立核验对应源码、安装包、JUnit、
   日志、迁移/故障/并发/关键安全用例及逐文件 manifest；未执行/跳过逐项解释。
-  当前 dirty-tree 回归不能冒充 PR25 原 SHA 的最终包验收或 Work 接受。
+  各自冻结 SHA 的组件回归不能冒充 PR25 原 SHA 的最终包验收或整个 M5 的 Work 接受。
 
 未发现额外可复现阻断缺陷时，不再扩大此清单。上述缺失功能/证据不是新发现漏洞。
 
 ## DEFERRED（不阻止无执行原型，不代表完成）
 
 - D1：safe apply 与审批消费的实现，安排在实际应用功能启用前，依赖 B2。
-- D2：自动任务验收与 candidate 执行接线，在启用前分别解除 B4/B5；当前保持
-  asserted/unverified，不用关闭能力来宣称完整 M5 已通过。
+- D2：自动任务验收仍依赖 B4；面向 Agent 的 candidate 执行接线须满足 B1/B3 的授权与
+  真实运行边界，再接入已限定验证的 B5 执行器。未接通部分保持 asserted/unverified，
+  不用关闭能力来宣称完整 M5 已通过。
 - D3：跨进程管理、自动恢复/重试、智能调度、预算、真实双 Agent 接力：属于
   M6–M8/M9；不得为此再新建 M5 子阶段。失败/未知不得自动替换为成功。
 - D4：完整 OS/Python 支持矩阵、账单对账和非关键增强：对应后续版本/M9门槛，
   不能把当前未验证平台或费用写成支持/零费用。
 - D5：历史材料重排、重复报告/证明、全归档格式统一：不推进产品功能，不作为
   无执行原型的先决条件；最终证据只按 B6 补必要缺口。
+
+### 下一项原有 B4 的完整实施边界（尚未实现）
+
+Astra 设计复核：新增内部 `OwnerVerifiedTaskCompletion.complete_once`，schema14 仅增
+持久验证/幂等记录；同时验证 owner 与独立 reviewer 当前会话/角色及作者隔离。任务须
+处于 review，候选两侧版本精确匹配，重新捕获现有候选绑定，可信 profile 与实际
+finished/passed 执行及完整清理证明一致；review、任务递增完成、验证记录、幂等和审计
+必须原子提交。普通文本 review 只显示 asserted/unverified；仅匹配当前完成版本的
+持久证明显示 verified，历史缓存不得贴用后来状态。旧 candidate 回执不改写。
+
+真实 Core/Git 可达性 pilot 证明提交 review 后可为同一候选建立精确新版本 job；旧版本
+在调用后端前拒绝，不采用 version-1 放宽。一侧完成会使整对绑定从 [3,3] 变成 [4,3]，
+另一侧不能继续套用原结果，需要满足新的精确绑定及显式 owner 验证流程。
+该 pilot 的唯一执行后端为 MOCK，首轮脚本 KeyError 和修正均保留，不能算 B4 或实际
+隔离验收。见 acceptance/evidence/b4-flow-feasibility.json。完整实现包含认证、持久
+证明、原子完成、可信投影、迁移/并发/撤权/审计回滚及真实 Docker 到独立审核闭环；
+不以字段或 wrapper 代替功能，不在此扩入自动运行器、真实客户端或 apply。
 
 ## 唯一最终退出条件
 
@@ -113,7 +136,7 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
 3. 条件真实原型：B1/B3满足后，明确授权的官方客户端在专用临时 Git 项目运行，
    保存版本、run/session/project/task ID、exit、输出摘要、超时/取消及限制。
    当前禁止付费调用仍有效，不能默认使用已登录客户端额度。
-4. 必须等待：candidate 执行(B5)、自动 verified completion(B4)、危险 apply(B2)、
+4. 必须等待：面向 Agent 或自动运行的 candidate 接线(B1/B3/D2；B5仅限内部owner原型已验证)、自动 verified completion(B4)、危险 apply(B2)、
    不受控自动调度/真实接力与发布。禁止宿主 fallback、任意 Shell 和权限伪装。
 
 官方协议依据：https://learn.chatgpt.com/docs/non-interactive-mode 。

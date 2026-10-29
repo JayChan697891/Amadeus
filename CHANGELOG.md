@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0a22 - owner candidate execution prototype
+
+- Connect an owner-only internal candidate executor to the fixed Docker verifier,
+  binding fresh candidate bytes, reservation, intent, profile and result evidence.
+- Persist a permanent one-attempt fence before container creation; retain unknown
+  outcomes and allow one exact-identity cleanup after lease expiry.
+- Keep cleanup observations stable when an expired executor returns concurrently;
+  preserve historical reservation receipts and keep task acceptance unverified.
+- Add schema13 without exposing execution through Core, MCP or HTTP. Actual
+  client relay, verified task completion, automatic retries and apply remain gated.
+
 ## 0.3.0a21 - portable planning JSON output
 
 - Fix valid Unicode project IDs crashing `agentsync plan` when redirected stdout

@@ -672,15 +672,23 @@ class CandidateVerificationJobs:
             return response
 
     def get(self, *, project_id: str, admin_token: str, job_id: str) -> dict[str, Any]:
+        from agentsync.verification.candidate_execution_state import projection
+
         p = self.core._validated_payload(
             _Lookup, {"project_id": project_id, "admin_token": admin_token, "job_id": job_id}
         )
         with self._transaction(p) as (db, _):
-            return _public(self._row(db, project_id, job_id))
+            row = self._row(db, project_id, job_id)
+            return _public(row) | projection(db, row)
 
     def list(
         self, *, project_id: str, admin_token: str, limit: int = 20, offset: int = 0
     ) -> dict[str, Any]:
+        from agentsync.verification.candidate_execution_state import (
+            projection,
+            validate_project_links,
+        )
+
         p = self.core._validated_payload(
             _Page,
             {
@@ -691,15 +699,17 @@ class CandidateVerificationJobs:
             },
         )
         with self._transaction(p) as (db, _):
+            validate_project_links(db, project_id)
             ids = db.execute(
                 "SELECT id FROM candidate_verification_jobs WHERE project_id=? ORDER BY created_at,id LIMIT ? OFFSET ?",
                 (project_id, limit + 1, offset),
             ).fetchall()
+            rows = [self._row(db, project_id, row["id"]) for row in ids[:limit]]
             return {
-                "jobs": [_public(self._row(db, project_id, row["id"])) for row in ids[:limit]],
+                "jobs": [_public(row) | projection(db, row) for row in rows],
                 "has_more": len(ids) > limit,
                 "current_state": True,
-                "execution_connected": False,
+                "execution_connected": any(projection(db, row) for row in rows),
                 "execution_assessment": "unverified",
             }
 
