@@ -7,6 +7,7 @@ import sqlite3
 import pytest
 
 from agentsync.errors import AgentSyncError
+from agentsync.storage.database import MIGRATION_V13
 from agentsync.verification.candidate_intents import validate_intent
 
 
@@ -35,6 +36,8 @@ def records():
         db,
         {
             "id": "claim",
+            "project_id": "project",
+            "job_id": "job",
             "created_at": 10.0,
             "lease_expires_at": 50.0,
             **pins,
@@ -64,6 +67,17 @@ def records():
         reason_code="",
         updated_at=11.0,
     )
+    # Keep parent relations explicit and unconstrained so corruption tests can
+    # introduce invalid links; the execution table uses the current real DDL.
+    for table, values in (
+        ("candidate_verification_jobs", dict(job)),
+        ("candidate_verification_claims", dict(claim)),
+    ):
+        db.execute("CREATE TABLE " + table + "(" + ",".join(values) + ")")
+        db.execute(
+            "INSERT INTO " + table + " VALUES(" + ",".join("?" for _ in values) + ")",
+            tuple(values.values()),
+        )
     columns = ",".join(name for name in intent)
     db.execute("CREATE TABLE candidate_execution_intents(" + columns + ")")
     db.execute("CREATE TABLE candidate_intent_abandonments(job_id,claim_id,intent_id)")
@@ -71,6 +85,7 @@ def records():
         "INSERT INTO candidate_execution_intents VALUES(" + ",".join("?" for _ in intent) + ")",
         tuple(intent.values()),
     )
+    db.executescript(MIGRATION_V13)
     try:
         yield db, job, claim
     finally:
@@ -119,7 +134,7 @@ def test_prepared_relation_rejects_linked_abandonment(records, claim_id, intent_
 
 def test_unrelated_records_are_not_attached_to_the_requested_job(records):
     db, _, _ = records
-    job = row(db, {"id": "other-job"})
-    claim = row(db, {"id": "other-claim"})
+    job = row(db, {"id": "other-job", "project_id": "project"})
+    claim = row(db, {"id": "other-claim", "project_id": "project", "job_id": "other-job"})
     assert validate_intent(db, job, claim) is None
     assert validate_intent(db, job, None) is None

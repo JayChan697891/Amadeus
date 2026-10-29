@@ -16,6 +16,7 @@ from test_candidate_intents import abandon
 from test_candidate_jobs import enqueue, owner, profile
 from test_candidate_jobs import prepared as prepared
 from test_candidate_jobs import world as world
+from test_m4b_workspaces import call, capture, commit_edit, comparison, git, worktree
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -586,7 +587,7 @@ def test_unavailable_isolation_is_unsupported_without_host_execution(prepared, m
     assert_fenced(prepared, executor, args, receipts)
 
 
-def test_actual_linux_docker_executes_candidate_not_base(prepared):
+def test_actual_linux_docker_executes_candidate_not_base(world):
     image = os.environ.get("AGENTSYNC_DOCKER_TEST_IMAGE")
     if not image or sys.platform != "linux":
         if os.environ.get("AGENTSYNC_REQUIRE_DOCKER_TESTS") == "1":
@@ -594,18 +595,40 @@ def test_actual_linux_docker_executes_candidate_not_base(prepared):
         pytest.skip(
             "Requires separately controlled local Linux Docker and preloaded immutable image"
         )
+    # The fixed verifier runs a JSON-lines program; a bare solve definition
+    # intentionally produces no protocol output and must not pass.
+    source = b"import json,sys\nfor line in sys.stdin:\n json.loads(line)\n print(json.dumps('candidate'))\n"
+    core, credentials, (a, b), root = world
+    (root / "solution.py").write_bytes(source.replace(b"'candidate'", b"'base'"))
+    git(root, "add", ".")
+    git(root, "commit", "-m", "candidate protocol baseline")
+    snapshot = capture(world)
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+    lh = commit_edit(left, "solution.py", source.decode())
+    rh = commit_edit(right, "right.txt", "right changed\n")
+    candidate = call(
+        core, a, "prepare_merge_candidate", **comparison(left, right, lh, rh), request_id="protocol"
+    )
+    with connect(core.db_path) as db:
+        receipt = json.loads(
+            db.execute(
+                "SELECT receipt FROM merge_candidates WHERE id=?", (candidate["candidate_id"],)
+            ).fetchone()[0]
+        )
+    prepared = (
+        core,
+        credentials
+        | {
+            "candidate_id": candidate["candidate_id"],
+            "expected_candidate_sha": candidate["candidate_sha"],
+        },
+        left,
+        right,
+        receipt,
+    )
     policy = docker.DockerProfile(image, (docker.JsonCase(None, "candidate"),))
     executor, args, receipts = attempt(prepared, policy)
     result = executor.execute_once(**args)
-    assert result["execution_assessment"] == "passed"
-    evidence = result["execution"]["result"]
-    assert evidence["commit_sha"] == receipts[0]["candidate_sha"] != prepared[2]["base_sha"]
-    assert (
-        evidence["source_sha256"]
-        == hashlib.sha256(b"def solve(x): return 'candidate'\n").hexdigest()
-    )
-    assert evidence["cleanup_confirmed"] is True
-    assert_fenced(prepared, executor, args, receipts)
     directory = os.environ.get("AGENTSYNC_CANDIDATE_EXECUTOR_EVIDENCE_DIR")
     if directory:
         target = Path(directory)
@@ -621,6 +644,8 @@ def test_actual_linux_docker_executes_candidate_not_base(prepared):
                     "schema": "agentsync.candidate-executor-observation.v1",
                     "real_docker": True,
                     "real_clients": "NOT RUN",
+                    "base_sha": left["base_sha"],
+                    "expected_source_sha256": hashlib.sha256(source).hexdigest(),
                     "current": result,
                     "stored_execution": row,
                     "historical_receipts": receipts,
@@ -629,3 +654,9 @@ def test_actual_linux_docker_executes_candidate_not_base(prepared):
             ),
             encoding="utf-8",
         )
+    assert result["execution_assessment"] == "passed"
+    evidence = result["execution"]["result"]
+    assert evidence["commit_sha"] == receipts[0]["candidate_sha"] != left["base_sha"]
+    assert evidence["source_sha256"] == hashlib.sha256(source).hexdigest()
+    assert evidence["cleanup_confirmed"] is True
+    assert_fenced(prepared, executor, args, receipts)

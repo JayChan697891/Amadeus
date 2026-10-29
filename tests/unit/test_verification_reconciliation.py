@@ -489,7 +489,7 @@ def test_migration9_preserves_schema8_rows_and_rolls_back(pending, monkeypatch):
             for name, rows in before.items()
         )
         assert db.execute("PRAGMA foreign_key_check").fetchone() is None
-        db.execute("PRAGMA user_version=13")
+        db.execute("PRAGMA user_version=14")
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(core.db_path)
 

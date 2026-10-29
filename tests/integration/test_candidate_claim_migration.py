@@ -106,14 +106,14 @@ def test_v11_failed_rebuild_rolls_back_tables_indexes_receipts_and_version(v10, 
     database.migrate(path)
 
 
-def test_future_schema13_rejected_without_any_mutation(v10):
+def test_future_schema14_rejected_without_any_mutation(v10):
     path, before, old_schema, _, _, _ = v10
     with database.connect(path) as db:
-        db.execute("PRAGMA user_version=13")
+        db.execute("PRAGMA user_version=14")
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 14
         assert history(db) == before and schema(db) == old_schema
 
 
