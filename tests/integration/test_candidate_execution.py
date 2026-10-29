@@ -949,6 +949,10 @@ m.OwnerCandidateExecutor(core).execute_once(**p)
         assert cleanup["container_id"] == row["container_id"]
         assert cleanup["observation"]["identity_matched"] is True
         assert cleanup["observation"]["absence_observed"] is True
+        assert cleanup["observation"]["outcome"] == "removed_and_absent"
+        assert cleanup["observation"]["remove_acknowledged"] is True
+        assert cleanup["observation"]["daemon_consistent"] is True
+        assert cleanup["observation"]["error_code"] == ""
         assert cleaned["execution_assessment"] == "unverified"
         action["expected_revision"] = cleaned["execution"]["revision"]
         with pytest.raises(AgentSyncError) as error:
