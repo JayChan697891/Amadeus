@@ -7,8 +7,11 @@ import sqlite3
 import subprocess
 import sys
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pytest
 from test_candidate_claims import recover
@@ -587,7 +590,12 @@ def test_unavailable_isolation_is_unsupported_without_host_execution(prepared, m
     assert_fenced(prepared, executor, args, receipts)
 
 
-def test_actual_linux_docker_executes_candidate_not_base(world):
+JSON_LINES_CANDIDATE = (
+    b"import json,sys\nfor line in sys.stdin:\n json.loads(line)\n print(json.dumps('candidate'))\n"
+)
+
+
+def actual_docker_image():
     image = os.environ.get("AGENTSYNC_DOCKER_TEST_IMAGE")
     if not image or sys.platform != "linux":
         if os.environ.get("AGENTSYNC_REQUIRE_DOCKER_TESTS") == "1":
@@ -595,11 +603,14 @@ def test_actual_linux_docker_executes_candidate_not_base(world):
         pytest.skip(
             "Requires separately controlled local Linux Docker and preloaded immutable image"
         )
-    # The fixed verifier runs a JSON-lines program; a bare solve definition
-    # intentionally produces no protocol output and must not pass.
-    source = b"import json,sys\nfor line in sys.stdin:\n json.loads(line)\n print(json.dumps('candidate'))\n"
+    return image
+
+
+def protocol_candidate(world, source):
+    # Candidate bytes are committed/exported as data. Only the isolated verifier
+    # executes them; the baseline has a different, valid JSON-lines answer.
     core, credentials, (a, b), root = world
-    (root / "solution.py").write_bytes(source.replace(b"'candidate'", b"'base'"))
+    (root / "solution.py").write_bytes(JSON_LINES_CANDIDATE.replace(b"'candidate'", b"'base'"))
     git(root, "add", ".")
     git(root, "commit", "-m", "candidate protocol baseline")
     snapshot = capture(world)
@@ -615,7 +626,7 @@ def test_actual_linux_docker_executes_candidate_not_base(world):
                 "SELECT receipt FROM merge_candidates WHERE id=?", (candidate["candidate_id"],)
             ).fetchone()[0]
         )
-    prepared = (
+    return (
         core,
         credentials
         | {
@@ -626,37 +637,321 @@ def test_actual_linux_docker_executes_candidate_not_base(world):
         right,
         receipt,
     )
-    policy = docker.DockerProfile(image, (docker.JsonCase(None, "candidate"),))
-    executor, args, receipts = attempt(prepared, policy)
-    result = executor.execute_once(**args)
+
+
+def save_actual(scenario, observation, prepared, args):
+    with connect(prepared[0].db_path) as db:
+        stored = db.execute(
+            "SELECT * FROM candidate_executions WHERE job_id=?", (args["job_id"],)
+        ).fetchone()
+    row = None if stored is None else dict(stored)
+    if row is not None:
+        row.pop("token_hash")
+    observation["stored_execution"] = row
     directory = os.environ.get("AGENTSYNC_CANDIDATE_EXECUTOR_EVIDENCE_DIR")
     if directory:
         target = Path(directory)
-        assert target.is_absolute()
+        if not target.is_absolute():
+            raise ValueError("Absolute evidence directory required")
         target.mkdir(parents=True, exist_ok=True)
-        with connect(prepared[0].db_path) as db:
-            row = dict(db.execute("SELECT * FROM candidate_executions").fetchone())
-        # No owner/session credentials or private process capability hash.
-        del row["token_hash"]
-        (target / "actual-candidate-execution.json").write_text(
-            json.dumps(
-                {
-                    "schema": "agentsync.candidate-executor-observation.v1",
-                    "real_docker": True,
-                    "real_clients": "NOT RUN",
-                    "base_sha": left["base_sha"],
-                    "expected_source_sha256": hashlib.sha256(source).hexdigest(),
-                    "current": result,
-                    "stored_execution": row,
-                    "historical_receipts": receipts,
-                },
-                indent=2,
-            ),
-            encoding="utf-8",
+        # Values come from public receipts and a row with its capability removed.
+        (target / (scenario + ".json")).write_text(
+            json.dumps(observation, indent=2), encoding="utf-8"
         )
-    assert result["execution_assessment"] == "passed"
-    evidence = result["execution"]["result"]
-    assert evidence["commit_sha"] == receipts[0]["candidate_sha"] != left["base_sha"]
-    assert evidence["source_sha256"] == hashlib.sha256(source).hexdigest()
-    assert evidence["cleanup_confirmed"] is True
-    assert_fenced(prepared, executor, args, receipts)
+
+
+def actual_identity(row):
+    if row is None or not row["create_reply_complete"] or not row["container_id"]:
+        return None
+    identity = {key: row[key] for key in ("container_id", "container_name", "owner_nonce")}
+    if not docker.CONTAINER_ID.fullmatch(identity["container_id"]):
+        raise ValueError("Full owned container ID required")
+    identity["image_id"] = json.loads(row["proof_json"])["image_id"]
+    return identity
+
+
+def actual_cli(arguments):
+    # The test observes only its acknowledged full ID on the fixed local daemon,
+    # using the same trusted CLI selection and empty config as the verifier.
+    cli = docker._trusted_cli()
+    with TemporaryDirectory(prefix="agentsync-candidate-test-config-") as config:
+        env = {"PATH": "/usr/bin:/bin", "HOME": config, "LC_ALL": "C"}
+        return docker._run(
+            [cli, "--host", "unix:///var/run/docker.sock", "--config", config, *arguments],
+            env,
+            2,
+            256 * 1024,
+        )
+
+
+def owned_container_state(identity):
+    items = docker._inspect_json(actual_cli(["inspect", identity["container_id"]]))
+    if not isinstance(items, list) or len(items) != 1:
+        raise ValueError("Owned container inspection unavailable")
+    item = items[0]
+    if not (
+        item.get("Id") == identity["container_id"]
+        and item.get("Name") == "/" + identity["container_name"]
+        and item.get("Image") == identity["image_id"]
+        and item.get("Config", {}).get("Labels", {}).get(docker.LABEL) == identity["owner_nonce"]
+    ):
+        raise ValueError("Owned container inspection identity mismatch")
+    return {
+        "container_id": identity["container_id"],
+        "identity_matched": True,
+        "running": item.get("State", {}).get("Running") is True,
+        "status": item.get("State", {}).get("Status"),
+    }
+
+
+def safety_cleanup(identity):
+    if identity is None:
+        return {"outcome": "identity_unavailable", "absence_observed": False}
+    listed = actual_cli(
+        [
+            "container",
+            "ls",
+            "--all",
+            "--no-trunc",
+            "--filter",
+            "id=" + identity["container_id"],
+            "--format",
+            "{{.ID}}",
+        ]
+    )
+    if listed.returncode == 0 and not listed.stdout.strip():
+        return {"outcome": "already_absent", "absence_observed": True}
+    # This implementation checks full ID, nonce, name, image and daemon identity
+    # before its single exact-ID removal, and checks absence afterwards.
+    return module._observation(identity)
+
+
+@contextmanager
+def actual_attempt(world, source, policy, scenario):
+    prepared = protocol_candidate(world, source)
+    executor, args, receipts = attempt(prepared, policy)
+    observation = {
+        "schema": "agentsync.candidate-executor-observation.v1",
+        "real_docker": True,
+        "real_clients": "NOT RUN",
+        "base_sha": prepared[2]["base_sha"],
+        "expected_source_sha256": hashlib.sha256(source).hexdigest(),
+        "current": None,
+        "stored_execution": None,
+        "historical_receipts": receipts,
+    }
+    try:
+        yield prepared, executor, args, receipts, observation
+    finally:
+        with connect(prepared[0].db_path) as db:
+            stored = db.execute(
+                "SELECT * FROM candidate_executions WHERE job_id=?", (args["job_id"],)
+            ).fetchone()
+        row = None if stored is None else dict(stored)
+        if row is not None:
+            row.pop("token_hash")
+        observation["stored_execution"] = row
+        cleanup = {"outcome": "cleanup_error", "absence_observed": False}
+        try:
+            save_actual(scenario, observation, prepared, args)
+        finally:
+            # Evidence I/O failure must never bypass owned-container cleanup.
+            try:
+                cleanup = safety_cleanup(actual_identity(row))
+            finally:
+                observation["fixture_safety_cleanup"] = cleanup
+                save_actual(scenario, observation, prepared, args)
+        assert cleanup["absence_observed"] is True, "Owned fixture container remains unresolved"
+
+
+def test_actual_linux_docker_executes_candidate_not_base(world):
+    policy = docker.DockerProfile(actual_docker_image(), (docker.JsonCase(None, "candidate"),))
+    scenario = "actual-candidate-execution"
+    with actual_attempt(world, JSON_LINES_CANDIDATE, policy, scenario) as values:
+        prepared, executor, args, receipts, observation = values
+        result = executor.execute_once(**args)
+        observation["current"] = result
+        save_actual(scenario, observation, prepared, args)
+        assert result["execution_assessment"] == "passed"
+        evidence = result["execution"]["result"]
+        assert evidence["commit_sha"] == receipts[0]["candidate_sha"] != prepared[2]["base_sha"]
+        assert evidence["source_sha256"] == hashlib.sha256(JSON_LINES_CANDIDATE).hexdigest()
+        assert evidence["cleanup_confirmed"] is True
+        assert_fenced(prepared, executor, args, receipts)
+
+
+def test_actual_linux_docker_wrong_result_fails_and_stays_fenced(world):
+    policy = docker.DockerProfile(actual_docker_image(), (docker.JsonCase(None, "candidate"),))
+    source = JSON_LINES_CANDIDATE.replace(b"'candidate'", b"'wrong'")
+    scenario = "actual-candidate-wrong-result"
+    with actual_attempt(world, source, policy, scenario) as values:
+        prepared, executor, args, receipts, observation = values
+        result = executor.execute_once(**args)
+        observation["current"] = result
+        save_actual(scenario, observation, prepared, args)
+        assert result["execution_assessment"] == "failed"
+        assert result["execution"]["phase"] == "finished"
+        assert "case_mismatch" in result["execution"]["result"]["errors"]
+        assert result["execution"]["result"]["cleanup_confirmed"] is True
+        assert_fenced(prepared, OwnerCandidateExecutor(Core(prepared[0].data_dir)), args, receipts)
+
+
+def test_actual_linux_docker_timeout_is_unresolved_and_never_retried(world):
+    policy = docker.DockerProfile(
+        actual_docker_image(), (docker.JsonCase(None, "candidate"),), timeout_seconds=1
+    )
+    source = b"import time\ntime.sleep(30)\n"
+    scenario = "actual-candidate-timeout"
+    with actual_attempt(world, source, policy, scenario) as values:
+        prepared, executor, args, receipts, observation = values
+        result = executor.execute_once(**args)
+        observation["current"] = result
+        save_actual(scenario, observation, prepared, args)
+        assert result["execution_assessment"] == "unverified"
+        assert result["execution"]["phase"] == "unresolved"
+        evidence = result["execution"]["result"]
+        assert evidence["execution_started"] is True and "timeout" in evidence["errors"]
+        assert evidence["source_sha256"] == hashlib.sha256(source).hexdigest()
+        assert evidence["cleanup_confirmed"] is True
+        assert_fenced(prepared, OwnerCandidateExecutor(Core(prepared[0].data_dir)), args, receipts)
+
+
+def test_actual_linux_docker_cancel_after_running_keeps_correct_result_unverified(world):
+    policy = docker.DockerProfile(
+        actual_docker_image(), (docker.JsonCase(None, "candidate"),), timeout_seconds=8
+    )
+    source = JSON_LINES_CANDIDATE.replace(b"import json,sys", b"import json,sys,time").replace(
+        b" print(json.dumps", b" time.sleep(3)\n print(json.dumps"
+    )
+    scenario = "actual-candidate-running-cancel"
+    with actual_attempt(world, source, policy, scenario) as values:
+        prepared, executor, args, receipts, observation = values
+        with ThreadPoolExecutor(1) as pool:
+            running = pool.submit(executor.execute_once, **args)
+            deadline = time.monotonic() + 12
+            state = None
+            try:
+                while time.monotonic() < deadline and not running.done():
+                    with connect(prepared[0].db_path) as db:
+                        row = db.execute(
+                            "SELECT * FROM candidate_executions WHERE job_id=?", (args["job_id"],)
+                        ).fetchone()
+                    identity = actual_identity(row)
+                    if identity is not None:
+                        state = owned_container_state(identity)
+                        if state["running"]:
+                            break
+                    time.sleep(0.05)
+                observation["running_observation"] = state
+                save_actual(scenario, observation, prepared, args)
+                assert state is not None and state["running"] is True
+                view = current(executor, args)
+                cancelled = executor.cancel(
+                    **owner(prepared),
+                    job_id=args["job_id"],
+                    execution_id=view["execution_id"],
+                    expected_revision=view["execution"]["revision"],
+                )
+                observation["cancel_receipt"] = cancelled
+            finally:
+                # Cancellation is cooperative: wait for the finite candidate and
+                # verifier cleanup; no immediate-kill or server-cancel claim.
+                result = running.result(timeout=45)
+                observation["current"] = result
+                save_actual(scenario, observation, prepared, args)
+        assert result["execution_assessment"] == "unverified"
+        assert result["execution"]["phase"] == "unresolved"
+        assert result["execution"]["cancel_requested"] == 1
+        evidence = result["execution"]["result"]
+        assert evidence["passed_case_count"] == 1 and evidence["candidate_exit_code"] == 0
+        assert evidence["cleanup_confirmed"] is True and not evidence["errors"]
+        assert_fenced(prepared, OwnerCandidateExecutor(Core(prepared[0].data_dir)), args, receipts)
+
+
+def test_actual_linux_docker_crash_after_created_reopens_and_cleans_exact_id(world, monkeypatch):
+    policy = docker.DockerProfile(actual_docker_image(), (docker.JsonCase(None, "candidate"),))
+    scenario = "actual-candidate-created-crash-cleanup"
+    with actual_attempt(world, JSON_LINES_CANDIDATE, policy, scenario) as values:
+        prepared, executor, args, receipts, observation = values
+        program = """import json,os,sys
+from agentsync.core.service import Core
+from agentsync.verification import candidate_executor as m
+from agentsync.verification.docker import DockerProfile,JsonCase
+p=json.load(sys.stdin)
+core=Core(p.pop('data_dir'))
+p['profile']=DockerProfile(p.pop('image_id'),(JsonCase(None,'candidate'),))
+original=m._Lifecycle.created
+def committed_then_exit(self,container_id):
+ original(self,container_id)
+ os._exit(86)
+m._Lifecycle.created=committed_then_exit
+m.OwnerCandidateExecutor(core).execute_once(**p)
+"""
+        payload = {key: value for key, value in args.items() if key != "profile"} | {
+            "data_dir": str(prepared[0].data_dir),
+            "image_id": policy.image_id,
+        }
+        # Only interpreter/OS essentials and the trusted source import path are
+        # inherited. Credentials travel via private stdin, never argv or output.
+        env = {key: value for key, value in os.environ.items() if key in {"PATH", "LANG", "LC_ALL"}}
+        env.update(
+            PYTHONPATH=str(Path(module.__file__).resolve().parents[2]),
+            PYTHONNOUSERSITE="1",
+            PYTHONDONTWRITEBYTECODE="1",
+        )
+        child = subprocess.run(
+            [sys.executable, "-c", program],
+            input=json.dumps(payload).encode(),
+            capture_output=True,
+            timeout=45,
+            env=env,
+        )
+        reopened = OwnerCandidateExecutor(Core(prepared[0].data_dir))
+        view = current(reopened, args)
+        with connect(prepared[0].db_path) as db:
+            row = db.execute(
+                "SELECT * FROM candidate_executions WHERE job_id=?", (args["job_id"],)
+            ).fetchone()
+            expires = db.execute(
+                "SELECT lease_expires_at FROM candidate_verification_claims WHERE job_id=?",
+                (args["job_id"],),
+            ).fetchone()[0]
+        observation.update(
+            current=view,
+            child_exit_code=child.returncode,
+            child_stdout_bytes=len(child.stdout),
+            child_stderr_bytes=len(child.stderr),
+            created_container=owned_container_state(actual_identity(row)),
+            controlled_clock={
+                "scope": "service clock only",
+                "lease_expires_at": expires,
+                "now": expires + 1,
+            },
+        )
+        save_actual(scenario, observation, prepared, args)
+        assert child.returncode == 86 and not child.stdout and not child.stderr
+        assert (
+            view["execution"]["phase"] == "created" and view["execution"]["create_reply_complete"]
+        )
+        assert observation["created_container"]["running"] is False
+        monkeypatch.setattr(module.queue_module.time, "time", lambda: expires + 1)
+        action = dict(
+            **owner(prepared),
+            job_id=args["job_id"],
+            execution_id=view["execution_id"],
+            expected_revision=view["execution"]["revision"],
+        )
+        cleaned = reopened.cleanup_once(**action)
+        observation["current"] = cleaned
+        save_actual(scenario, observation, prepared, args)
+        cleanup = cleaned["execution"]["cleanup"]
+        assert cleanup["status"] == "observed"
+        assert cleanup["container_id"] == row["container_id"]
+        assert cleanup["observation"]["identity_matched"] is True
+        assert cleanup["observation"]["absence_observed"] is True
+        assert cleaned["execution_assessment"] == "unverified"
+        action["expected_revision"] = cleaned["execution"]["revision"]
+        with pytest.raises(AgentSyncError) as error:
+            reopened.cleanup_once(**action)
+        assert error.value.code == "cleanup_ineligible"
+        assert_fenced(prepared, reopened, args, receipts)
