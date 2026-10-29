@@ -1,5 +1,17 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha22 owner candidate execution product `437d306643b6529e600aa93c64e9ac0b9cf81d28`
+adds schema13, a permanent one-attempt fence and exact-ID cleanup. A reproduced
+late-executor/cleanup race is fixed; real post-commit acknowledgement-loss tests
+retain the fence. Linux full1864pass/4skip, prior1835cases (3future-schema renames)+33new; Windows3.11 eight
+critical passes and fresh Windows wheel/sdist six passes each.62actual modules,
+387Git inputs and sdist source/test/tool inputs independently checked. One actual
+candidate Docker success;54fullcontainer IDs from both Linux attempts independently
+absent. Initial full1856pass/8fail/4skip retained; all eight fixed. Task status
+remains unverified. Actual candidate timeout/cancel/crash cleanup not fully run;
+component evidence does not resolve B5/B6. Earlier interrupted Windows group and
+RED retained. See acceptance/evidence/alpha22-local-summary.json. ReleaseBLOCKED.
+
 Alpha21 Windowsfull source066b8dd completed1800pass/35skips/0fail,error in1082.8s.
 377Gitinputs/60actualmodules/1835caseIDs independently matched. Bootstrap main
 guard added before spawn, original+intervention preserved; spawn case passed.

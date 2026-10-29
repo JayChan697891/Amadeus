@@ -43,8 +43,8 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
 | M5-01 权限控制 | VERIFIED：历史 M5A/7479dfa0c8243f1650f0ac395afbead4bc49d7e5 的限定权限验收；当前 Core 默认 viewer、角色矩阵、owner 独立渠道、鉴权先于重放有本地回归 | BLOCKER B1：真实运行器授权/资源边界尚未验证；整个正式需求未 VERIFIED |
 | M5-02 风险审批 | VERIFIED：同一历史 M5A 限定审批元数据；绑定请求者/candidate/SHA、过期、撤销、并发；批准本身不执行 | BLOCKER B2：危险执行/应用的最终校验与单次消费未接通；不启用 apply 时 DEFERRED D1，不能记已实现 |
 | M5-03 审计日志 | VERIFIED：历史 M5A 限定事务审计与脱敏；当前白名单、拒绝事件和审计失败回滚有回归 | BLOCKER B3：真实适配器输出/凭据处理及生命周期审计未验证；数据库管理员防篡改不在本范围 |
-| M5-04 独立验证 | VERIFIED：历史 M5B1–B2C 等各自冻结提交的固定 snapshot/profile 容器验证器限定证据；不是当前 candidate 执行或任务验收 | BLOCKER B4：review_task 仍可基于其他 Agent 的非空文本完成任务；缺独立结果与不可变 candidate 的强制绑定；BLOCKER B5：candidate 真执行生命周期尚未接通 |
-| M5-05 安全回归 | 当前完整 Windows 回归1303通过/30跳过/零失败，只有组件证明；历史隔离回归分 SHA 保存 | BLOCKER B6：冻结提交最终安全清单、适用隔离/安装测试及独立审查未完成；五项正式完整场景仍 NOT RUN |
+| M5-04 独立验证 | VERIFIED：历史 M5B1–B2C 等各自冻结提交的固定 snapshot/profile 容器验证器限定证据；不是当前 candidate 执行或任务验收 | BLOCKER B4：review_task 仍可基于其他 Agent 的非空文本完成任务；缺独立结果与不可变 candidate 的强制绑定；BLOCKER B5：alpha22 内部 owner candidate 执行原型已接通并有真实容器成功证据；真实超时/取消/崩溃清理闭环仍未完整验证 |
+| M5-05 安全回归 | 最新冻结 alpha22/Linux 完整回归1864通过/4平台跳过，Windows安装包各6项、Python3.11关键组8项通过；均为限定组件证据，详见当前验收报告 | BLOCKER B6：冻结提交最终安全清单、适用隔离/安装测试及独立审查未完成；五项正式完整场景仍 NOT RUN |
 
 当前 completed 表示既有协作状态，不能标称独立 verified。模型文本、Mock 成功、
 协议回放、approved、prepared intent、旧 Docker 成功均不能替代独立验证。
@@ -61,17 +61,17 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
   与实际验证结果绑定；伪造/陈旧/不匹配/未知/失败证据不得提升为 verified。
 - B5，连接 candidate 实际执行前：外部 create 前持久 fence，未知/丢失 ACK
   保持 unresolved；禁止旧 ledger recovery 解除可能运行中的执行；超时、取消、
-  重启和 exact-identity 清理有闭环。现有 prepared/abandon 不提供此权限。
+  重启和 exact-identity 清理有闭环。alpha22/437d306 已有受控真实候选成功、永久 fence、并发清理与真实提交 ACK 异常回归；取消/超时/崩溃清理的候选执行路径尚缺完整真实 Docker 验证，仍为 BLOCKER，prepared/abandon 本身不提供执行权限。
 - B6，M5 最终验收前：冻结产品 SHA/tree，独立核验对应源码、安装包、JUnit、
   日志、迁移/故障/并发/关键安全用例及逐文件 manifest；未执行/跳过逐项解释。
-  当前 dirty-tree 回归不能冒充 PR25 原 SHA 的最终包验收或 Work 接受。
+  各自冻结 SHA 的组件回归不能冒充 PR25 原 SHA 的最终包验收或整个 M5 的 Work 接受。
 
 未发现额外可复现阻断缺陷时，不再扩大此清单。上述缺失功能/证据不是新发现漏洞。
 
 ## DEFERRED（不阻止无执行原型，不代表完成）
 
 - D1：safe apply 与审批消费的实现，安排在实际应用功能启用前，依赖 B2。
-- D2：自动任务验收与 candidate 执行接线，在启用前分别解除 B4/B5；当前保持
+- D2：自动任务验收与面向 Agent 的 candidate 执行接线，在启用前分别解除 B4/B5；当前保持
   asserted/unverified，不用关闭能力来宣称完整 M5 已通过。
 - D3：跨进程管理、自动恢复/重试、智能调度、预算、真实双 Agent 接力：属于
   M6–M8/M9；不得为此再新建 M5 子阶段。失败/未知不得自动替换为成功。
@@ -113,7 +113,7 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
 3. 条件真实原型：B1/B3满足后，明确授权的官方客户端在专用临时 Git 项目运行，
    保存版本、run/session/project/task ID、exit、输出摘要、超时/取消及限制。
    当前禁止付费调用仍有效，不能默认使用已登录客户端额度。
-4. 必须等待：candidate 执行(B5)、自动 verified completion(B4)、危险 apply(B2)、
+4. 必须等待：面向 Agent 或自动运行的 candidate 执行(B5)、自动 verified completion(B4)、危险 apply(B2)、
    不受控自动调度/真实接力与发布。禁止宿主 fallback、任意 Shell 和权限伪装。
 
 官方协议依据：https://learn.chatgpt.com/docs/non-interactive-mode 。
