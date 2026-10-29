@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+Alpha22 lifecycle supplement at `bda27722ace70eec4f2ea59696c3301763828fd6` changes
+only tests. Source and fresh Linux wheel/sdist each36pass/1platformskip, same37IDs
+(33retained+4new),389Gitinputs/178sdistinputs/62actualmodules independently matched.
+15final actual observations cover success, mismatch, timeout, Running-before-cancel
+and process exit after created commit with Core reopen and exact-ID cleanup.
+Lease expiry uses an explicit controlled service clock; cancellation is cooperative.
+20IDs including earlierfocus independently absent; ownedVM22544 gracefully off.
+Astra accepts B5 LIMITED internalowner single-attempt lifecycle scope only. No
+runtime changes from437d306 fullsuite; fullrepository atbda2772 NOT RUN. B4,
+realclients and overallM5/Release remain BLOCKED; Agentdispatch/recovery unopened.
+See acceptance/evidence/alpha22-lifecycle-summary.json. No Actions/main changes.
+
 Alpha22 owner candidate execution product `437d306643b6529e600aa93c64e9ac0b9cf81d28`
 adds schema13, a permanent one-attempt fence and exact-ID cleanup. A reproduced
 late-executor/cleanup race is fixed; real post-commit acknowledgement-loss tests

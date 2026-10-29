@@ -1,0 +1,117 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "recorded_at_utc": "2026-10-29T13:04:32.950961+00:00",
+  "test_commit": "bda27722ace70eec4f2ea59696c3301763828fd6",
+  "runtime_unchanged_from_full_suite": "437d306643b6529e600aa93c64e9ac0b9cf81d28",
+  "version": "0.3.0a22",
+  "database_schema": 13,
+  "scope": "Complete modified candidate execution test module, not complete repository suites",
+  "source": {
+    "passed": 36,
+    "skipped": 1,
+    "failed": 0,
+    "errors": 0
+  },
+  "fresh_linux_installed": {
+    "wheel": {
+      "passed": 36,
+      "skipped": 1,
+      "failed": 0,
+      "errors": 0
+    },
+    "sdist": {
+      "passed": 36,
+      "skipped": 1,
+      "failed": 0,
+      "errors": 0
+    }
+  },
+  "skips": [
+    {
+      "case": "test_unavailable_isolation_is_unsupported_without_host_execution",
+      "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+    }
+  ],
+  "case_identity": {
+    "retained": 33,
+    "added": 4,
+    "count_each": 37
+  },
+  "identity": {
+    "git_inputs": 389,
+    "sdist_inputs": 178,
+    "actual_modules_each": 62,
+    "artifacts": {
+      "agentsync_local-0.3.0a22-py3-none-any.whl": "8ce2a82e01f9b0d5fb2394efaddfc29b9971418e83afb7a387837fab5ff36e3c",
+      "agentsync_local-0.3.0a22.tar.gz": "72b0acbd4fe3d5f1e888be8cbf14fa5169410a61cb6a5421aae28ab916d62d0a"
+    }
+  },
+  "actual_scenarios": [
+    "Correct JSON-lines candidate success",
+    "Incorrect candidate result rejected",
+    "Actual container timeout remains unresolved and fenced",
+    "Container Running independently observed before cooperative cancellation; correct result stays unverified",
+    "Real child exit after created commit; Core reopen, explicitly advanced service clock, actual exact-ID cleanup, no retry/release"
+  ],
+  "actual_final_observations": 15,
+  "earlier_focused": {
+    "commit": "47f85205f2221d4029b599f5b0b26c9f581667f6",
+    "passed": 5,
+    "note": "Before four final cleanup assertions; actual raw observations retained, not sole closure evidence."
+  },
+  "earlier_windows_precheck": {
+    "base": "05049d3",
+    "passed": 2,
+    "skipped": 5,
+    "note": "Before final cleanup assertion change; not a complete Windows run or actual Docker execution."
+  },
+  "cleanup_postcheck": {
+    "recorded_full_ids": 20,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "owned_vm_shutdown": {
+    "disk_preserved": true,
+    "transport_exit": 0,
+    "verified_owned_pid": 22544,
+    "forced_stop_used": false,
+    "stopped": true
+  },
+  "independent_review": {
+    "model": "gpt-6-astra",
+    "reasoning": "high",
+    "test_commit": "bda27722ace70eec4f2ea59696c3301763828fd6",
+    "mode": "independent read-only raw evidence and source review; no tests rerun",
+    "recorded_at_utc": "2026-10-29T13:03:12.516853+00:00",
+    "conclusion": "VERIFIED_LIMITED_SCOPE",
+    "scope": "Internal owner-only one-shot isolated candidate execution lifecycle",
+    "evidence": "Source, wheel and sdist each36passed1platformskip;33oldcases+4new;389Gitinputs178sdistinputs62modules;15final actualscenario records;20fullIDs absent including earlierfocus. No fixture fallback deletion needed.",
+    "boundaries": [
+      "Cancellation is cooperative.",
+      "Actual process exit occurs after created commit, before start.",
+      "Lease expiry uses an explicitly controlled service clock.",
+      "Runtime bytes unchanged from full-suite437d306.",
+      "Agent-facing dispatch and automatic recovery remain unopened D2/D3.",
+      "B4, B1/B3 real clients, overallB6/M5/Release remain BLOCKED; apply D1/B2."
+    ],
+    "finding_fixed": "Actual crash-cleanup assertions now require removed_and_absent, remove acknowledgement, daemon consistency and empty error_code."
+  },
+  "gate_B5": {
+    "status": "VERIFIED_LIMITED_SCOPE",
+    "scope": "Internal owner-only single-attempt isolated candidate lifecycle only"
+  },
+  "limitations": [
+    "No runtime code change; previous complete Linux repository suite1864pass4skip remains bound to437d306. Full repository suite at bda2772 NOT RUN.",
+    "No actual Codex/Claude/Cursor call, Agent-facing execution dispatch, automatic recovery or autonomous two-Agent relay.",
+    "Cancellation is cooperative; process crash tested after created commit, before start; lease expiry uses controlled service clock.",
+    "All42formal execution_status remain not_run; B1/B3 real clients, B4 and overallB6/M5/Release remain BLOCKED; apply D1/B2."
+  ],
+  "archive": {
+    "path": "releases/0.3.0a22/checkpoints/lifecycle-bda2772.tar.gz",
+    "sha256": "789358197d00e336fa586045243f7f586e4be54787738f45270ebe4b59554586",
+    "bytes": 1229605,
+    "manifest_members": 90
+  },
+  "release_gate": "BLOCKED",
+  "execution_party": "Codex"
+}
