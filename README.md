@@ -5,7 +5,7 @@
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a24 development prototype; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a25 development prototype; M5 and Release BLOCKED**. Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -20,7 +20,9 @@ Approval consumption, source application, automatic
 retries and actual-client relay remain gated. All checks run locally; GitHub Actions
 are manual-only and are not used for development testing.
 
-For a previously dispatched adapter start, await
+To obtain a handle before an adapter start finishes, await
+`manager.dispatch_task(adapter_id, task)`. This admits the same request once and
+returns its current dispatch snapshot. For a previously dispatched start, await
 `manager.wait_dispatch(handle, timeout_seconds=5)` for a bounded receipt
 observation, or use zero seconds to poll. A `pending` result leaves the start
 running. Cancelling the waiter also preserves dispatched work; `returned` means

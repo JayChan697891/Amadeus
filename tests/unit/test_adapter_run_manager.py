@@ -273,3 +273,81 @@ async def test_wait_dispatch_validates_handle_and_requires_existing_dispatch(han
         await manager.wait_dispatch(handle, timeout_seconds=0)
     assert error.value.code == ("not_found" if handle == "missing" else "validation_error")
     assert manager.history() == () and adapter.calls == 0
+
+
+async def test_dispatch_task_returns_pending_handle_for_wait_and_original_receipt():
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter})
+    pending = await asyncio.wait_for(manager.dispatch_task("worker", task()), 1)
+    await adapter.entered.wait()
+    assert pending.state == "pending" and pending.error_code is None
+    assert manager.history() == (pending.handle,)
+    assert await manager.dispatch_task("worker", task()) == pending
+    assert await manager.wait_dispatch(pending.handle, timeout_seconds=0) == pending
+    adapter.release.set()
+    observed = await manager.wait_dispatch(pending.handle, timeout_seconds=1)
+    receipt = await manager.start_task("worker", task())
+    assert observed.state == "returned" and observed.handle == receipt.handle == pending.handle
+    assert await manager.dispatch_task("worker", task()) == observed
+    assert receipt.run.status == "running" and adapter.calls == 1
+    assert pending.state == "pending"
+
+
+@pytest.mark.parametrize("start_first", [False, True])
+async def test_concurrent_mixed_dispatch_and_start_admit_exactly_once(start_first):
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter}, max_runs=1)
+    starts, dispatches = [], []
+    for _ in range(4):
+        for start in (start_first, not start_first):
+            if start:
+                starts.append(asyncio.create_task(manager.start_task("worker", task())))
+            else:
+                dispatches.append(asyncio.create_task(manager.dispatch_task("worker", task())))
+    snapshots = await asyncio.wait_for(asyncio.gather(*dispatches), 1)
+    await adapter.entered.wait()
+    (handle,) = manager.history()
+    assert all(snapshot.handle == handle and snapshot.state == "pending" for snapshot in snapshots)
+    assert all(not caller.done() for caller in starts)
+    assert adapter.calls == 1
+    adapter.release.set()
+    receipts = await asyncio.gather(*starts)
+    assert all(receipt.handle == handle and receipt.run is receipts[0].run for receipt in receipts)
+    assert adapter.calls == 1
+
+
+async def test_dispatch_task_rejects_changed_replay_and_foreign_scope():
+    adapter = GateAdapter()
+    other = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter, "other": other})
+    pending = await manager.dispatch_task("worker", task())
+    for worker, request, code in [
+        ("other", task(), "idempotency_conflict"),
+        ("worker", task(instruction="changed"), "idempotency_conflict"),
+        ("worker", task(session_id="foreign"), "namespace_mismatch"),
+    ]:
+        with pytest.raises(AgentSyncError) as error:
+            await manager.dispatch_task(worker, request)
+        assert error.value.code == code
+    assert manager.history() == (pending.handle,) and other.calls == 0
+    adapter.release.set()
+    assert (await manager.wait_dispatch(pending.handle, timeout_seconds=1)).state == "returned"
+    assert adapter.calls == 1
+
+
+async def test_dispatch_task_failure_replay_is_sanitized_and_consumes_capacity():
+    adapter = GateAdapter(failure=True)
+    manager = RunManager("project", "session", {"worker": adapter}, max_runs=1)
+    pending = await manager.dispatch_task("worker", task(instruction="private prompt"))
+    adapter.release.set()
+    failed = await manager.wait_dispatch(pending.handle, timeout_seconds=1)
+    assert failed.state == "error" and failed.error_code == "adapter_start_unknown"
+    assert "private" not in repr(failed)
+    assert await manager.dispatch_task("worker", task(instruction="private prompt")) == failed
+    with pytest.raises(AgentSyncError) as error:
+        await manager.start_task("worker", task(instruction="private prompt"))
+    assert error.value.code == "adapter_start_unknown"
+    with pytest.raises(AgentSyncError) as error:
+        await manager.dispatch_task("worker", task("new"))
+    assert error.value.code == "history_capacity_exceeded"
+    assert manager.history() == (pending.handle,) and adapter.calls == 1

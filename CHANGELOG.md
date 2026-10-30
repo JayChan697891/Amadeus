@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a25 - nonblocking dispatch receipt
+
+- Add `RunManager.dispatch_task(adapter_id, task)` to obtain an admitted handle
+  without waiting for a possibly stalled adapter start. Compose with the bounded
+  `wait_dispatch` observer; returned receipts still do not imply execution success.
+- Share the existing admission path with `start_task`, preserving namespace,
+  idempotency, capacity, cancellation and sanitized failure behavior.
+
 ## 0.3.0a24 - bounded dispatch observation
 
 - Add `RunManager.wait_dispatch(handle, timeout_seconds=...)` to wait up to 300
