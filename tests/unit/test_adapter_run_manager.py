@@ -154,3 +154,122 @@ async def test_dispatch_inspection_is_nonblocking_and_sanitized(failure):
     assert "private" not in repr(observed)
     assert pending.state == "pending"
     assert adapter.calls == 1
+
+
+async def test_wait_dispatch_timeout_preserves_original_receipt_and_capacity():
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter}, max_runs=1)
+    caller = asyncio.create_task(manager.start_task("worker", task()))
+    await adapter.entered.wait()
+    (handle,) = manager.history()
+    pending = await manager.wait_dispatch(handle, timeout_seconds=0.001)
+    assert pending == manager.get_dispatch(handle)
+    assert pending.state == "pending" and pending.error_code is None
+    assert manager.history() == (handle,) and adapter.calls == 1
+    with pytest.raises(AgentSyncError) as error:
+        await manager.start_task("worker", task("other"))
+    assert error.value.code == "history_capacity_exceeded"
+    adapter.release.set()
+    observed = await asyncio.wait_for(manager.wait_dispatch(handle, timeout_seconds=300), 1)
+    receipt = await caller
+    replay = await manager.start_task("worker", task())
+    assert observed.state == "returned"
+    assert observed.handle == receipt.handle == replay.handle == handle
+    assert replay.run is receipt.run
+    assert receipt.run.status == "running"
+    assert pending.state == "pending" and adapter.calls == 1
+
+
+async def test_cancelled_dispatch_waiter_leaves_driver_and_other_waiter_running():
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter})
+    caller = asyncio.create_task(manager.start_task("worker", task()))
+    await adapter.entered.wait()
+    (handle,) = manager.history()
+    cancelled = asyncio.create_task(manager.wait_dispatch(handle, timeout_seconds=300))
+    survivor = asyncio.create_task(manager.wait_dispatch(handle, timeout_seconds=300))
+    await asyncio.sleep(0)
+    cancelled.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await cancelled
+    assert manager.get_dispatch(handle).state == "pending"
+    assert not caller.done() and not survivor.done()
+    adapter.release.set()
+    observed = await asyncio.wait_for(survivor, 1)
+    assert observed.state == "returned"
+    assert (await caller).handle == handle
+    assert manager.history() == (handle,) and adapter.calls == 1
+
+
+@pytest.mark.parametrize("failure", [False, True])
+async def test_wait_dispatch_terminal_observation_is_prompt_and_sanitized(failure):
+    adapter = GateAdapter(failure=failure)
+    manager = RunManager("project", "session", {"worker": adapter})
+    caller = asyncio.create_task(manager.start_task("worker", task(instruction="private prompt")))
+    await adapter.entered.wait()
+    (handle,) = manager.history()
+    waiter = asyncio.create_task(manager.wait_dispatch(handle, timeout_seconds=300))
+    await asyncio.sleep(0)
+    assert not waiter.done()
+    adapter.release.set()
+    observed = await asyncio.wait_for(waiter, 1)
+    if failure:
+        with pytest.raises(AgentSyncError) as error:
+            await caller
+        assert error.value.code == "adapter_start_unknown"
+    else:
+        assert (await caller).run.status == "running"
+    assert observed.state == ("error" if failure else "returned")
+    assert observed.error_code == ("adapter_start_unknown" if failure else None)
+    assert "private" not in repr(observed)
+    assert await asyncio.wait_for(manager.wait_dispatch(handle, timeout_seconds=300), 1) == observed
+    assert adapter.calls == 1
+
+
+async def test_wait_dispatch_zero_is_an_immediate_poll():
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter})
+    caller = asyncio.create_task(manager.start_task("worker", task()))
+    await adapter.entered.wait()
+    (handle,) = manager.history()
+    observed = await asyncio.wait_for(manager.wait_dispatch(handle, timeout_seconds=0), 1)
+    assert observed == manager.get_dispatch(handle)
+    assert observed.state == "pending"
+    adapter.release.set()
+    await caller
+    terminal = await manager.wait_dispatch(handle, timeout_seconds=0.0)
+    assert terminal.state == "returned" and adapter.calls == 1
+
+
+@pytest.mark.parametrize(
+    "timeout",
+    [
+        True,
+        False,
+        None,
+        "1",
+        -1,
+        300.001,
+        float("nan"),
+        float("inf"),
+        float("-inf"),
+        pytest.param(10**10000, id="huge-integer"),
+    ],
+)
+async def test_wait_dispatch_rejects_invalid_timeout_without_dispatch(timeout):
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter})
+    with pytest.raises(AgentSyncError) as error:
+        await manager.wait_dispatch("missing", timeout_seconds=timeout)
+    assert error.value.code == "validation_error"
+    assert manager.history() == () and adapter.calls == 0
+
+
+@pytest.mark.parametrize("handle", [None, "", 123, True, "missing"])
+async def test_wait_dispatch_validates_handle_and_requires_existing_dispatch(handle):
+    adapter = GateAdapter()
+    manager = RunManager("project", "session", {"worker": adapter})
+    with pytest.raises(AgentSyncError) as error:
+        await manager.wait_dispatch(handle, timeout_seconds=0)
+    assert error.value.code == ("not_found" if handle == "missing" else "validation_error")
+    assert manager.history() == () and adapter.calls == 0

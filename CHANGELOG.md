@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a24 - bounded dispatch observation
+
+- Add `RunManager.wait_dispatch(handle, timeout_seconds=...)` to wait up to 300
+  seconds for an existing adapter start receipt. Zero seconds polls immediately.
+- Observation timeout or caller cancellation preserves the original dispatched
+  work and history slot. It never retries, cancels execution or implies run success.
+- Real clients, automatic relay, M5 and Release acceptance remain unverified/blocked.
+
 ## 0.3.0a23 - internal independent task completion
 
 - Add an owner-mediated completion gate with independent reviewer authentication,

@@ -140,6 +140,21 @@ class RunManager(Generic[C, R, T]):
             raise AgentSyncError("not_found", "Adapter is not registered.", 404)
         return adapter
 
+    async def wait_dispatch(self, handle: str, *, timeout_seconds: float) -> DispatchSnapshot:
+        """Observe an existing start for up to 300 seconds, without starting more work.
+
+        This observation timeout neither limits adapter execution nor grants permission.
+        Timeout or caller cancellation leaves the dispatched start running; a returned
+        receipt never establishes run success.
+        """
+        if type(timeout_seconds) not in (int, float) or not 0 <= timeout_seconds <= 300:
+            raise AgentSyncError("validation_error", "Invalid dispatch observation timeout.")
+        snapshot = self.get_dispatch(handle)
+        if snapshot.state == "pending" and timeout_seconds > 0:
+            # asyncio.wait does not cancel its input task on timeout or caller cancellation.
+            await asyncio.wait((self._routes[handle].start,), timeout=timeout_seconds)
+        return self.get_dispatch(handle)
+
     async def capabilities(self, adapter_id: str) -> C:
         return await self._adapter(adapter_id).capabilities()
 
