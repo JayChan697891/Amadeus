@@ -5,15 +5,18 @@
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a22 development prototype; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a23 development prototype; M5 and Release BLOCKED**. Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
 prepared reservation to the fixed Linux Docker verifier, with one permanent
-execution attempt, cooperative cancellation and one exact-ID cleanup. It is under
-local validation and is not exposed through Core, MCP or HTTP. Unavailable isolation
-fails closed. Historical receipts stay immutable; container success does not mark
-tasks independently verified. Approval consumption, source application, automatic
+execution attempt, cooperative cancellation and one exact-ID cleanup. It has
+limited local evidence and is not exposed through Core, MCP or HTTP. Unavailable isolation
+fails closed. The internal `OwnerVerifiedTaskCompletion.complete_once` requires owner
+authority, an independent reviewer and a passed execution bound to the exact current
+candidate/task versions. Completion, durable proof and audit commit together.
+Ordinary text reviews remain unverified, and historical receipts stay immutable.
+Approval consumption, source application, automatic
 retries and actual-client relay remain gated. All checks run locally; GitHub Actions
 are manual-only and are not used for development testing.
 

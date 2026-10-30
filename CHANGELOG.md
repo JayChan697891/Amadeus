@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0a23 - internal independent task completion
+
+- Add an owner-mediated completion gate with independent reviewer authentication,
+  exact candidate/task versions, fixed policy and passed isolated execution evidence.
+- Atomically persist completion, review, verification proof, idempotent receipt and
+  audit; classify legacy text reviews and historical responses as unverified.
+- Add schema14 without a public execution/completion transport, source application,
+  automatic dispatch or real-client acceptance. M5 and Release remain blocked.
+
 ## 0.3.0a22 - owner candidate execution prototype
 
 - Connect an owner-only internal candidate executor to the fixed Docker verifier,

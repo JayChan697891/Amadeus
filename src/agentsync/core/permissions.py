@@ -59,6 +59,7 @@ AGENT_WRITES = WORKER_OPERATIONS | {"review_task", "heartbeat"} | BOOTSTRAP_OPER
 OWNER_WRITES = frozenset({"set_agent_roles", "decide_approval", "revoke_approval"})
 VERIFICATION_AUDIT_OPERATIONS = frozenset(
     {
+        "task_verified_complete",
         "verification_enqueue",
         "candidate_verification_enqueue",
         "candidate_verification_cancel",

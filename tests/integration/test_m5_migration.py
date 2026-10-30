@@ -128,7 +128,7 @@ def test_all_legacy_versions_preserve_history_and_require_explicit_write_regrant
         before = {table: db.execute("SELECT * FROM " + table).fetchall() for table in tables}
     core = Core(data)
     with sqlite3.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 13
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 14
         for table, rows in before.items():
             assert db.execute("SELECT * FROM " + table).fetchall() == rows, table
     owner = {"project_id": "p", "admin_token": "owner-secret"}
