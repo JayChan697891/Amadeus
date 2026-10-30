@@ -1,5 +1,17 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha24 bounded M6 dispatch observation at `03185807230beea0c276654c7dbb9a6702c56b64`
+adds `RunManager.wait_dispatch` without starting/retrying/cancelling adapter work.
+Strict0..300s observation timeout returns the existing sanitized receipt state;
+caller cancellation preserves the original dispatch and history slot. Returned is
+not run success. Windows3.14/3.11 source and fresh offline Windows wheel/sdist
+affected seven-module groups each94pass/0skip, identical74retained+20newIDs.
+Root verified397Git files,346sdist matching members and63actual module origins
+per environment; Ruff/format176/mypy63 pass. Evidence archive and package hashes:
+acceptance/evidence/alpha24-local-summary.json. No Linux/macOS or complete alpha24
+suite, real clients or formal42 execution this round; M5/Release stay BLOCKED and
+Work acceptance pending. No Actions, VM startup, main or account changes.
+
 Alpha23 internal independent task completion at `e0b1d7c6e0333a3485169253d2d9500d7762c2b7`
 adds schema14 and `OwnerVerifiedTaskCompletion.complete_once`. Owner and independent
 reviewer auth precede lookup/replay; both task versions, fresh physical candidate,

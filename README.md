@@ -20,6 +20,12 @@ Approval consumption, source application, automatic
 retries and actual-client relay remain gated. All checks run locally; GitHub Actions
 are manual-only and are not used for development testing.
 
+For a previously dispatched adapter start, await
+`manager.wait_dispatch(handle, timeout_seconds=5)` for a bounded receipt
+observation, or use zero seconds to poll. A `pending` result leaves the start
+running. Cancelling the waiter also preserves dispatched work; `returned` means
+a start receipt, and callers still inspect the adapter's run status separately.
+
 Project context has immutable revisions, source/summary
 metadata and literal substring search. Structured handoffs pin context revisions,
 invalidate the sender's lease and reserve a fresh claim for the designated recipient.

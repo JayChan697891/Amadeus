@@ -1,0 +1,75 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "recorded_at_utc": "2026-10-30T11:58:12.304569+00:00",
+  "source_commit": "03185807230beea0c276654c7dbb9a6702c56b64",
+  "version": "0.3.0a24",
+  "scope": "M6 bounded observation of existing adapter start receipts; no new execution authorization",
+  "source_windows314": {
+    "tests": 94,
+    "passed": 94,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_sha256": "563583cf1cb48c6ea5037d1009c06b7f16b1a2cf7bcf895c7c6d3cac357a03b6"
+  },
+  "source_windows311": {
+    "tests": 94,
+    "passed": 94,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_sha256": "ed8aca22e9e7ef9c7747ad382126f52bb43dabc28ac108d44c064540930817cc"
+  },
+  "fresh_windows_installed_each": {
+    "passed": 94,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "seven affected manager/protocol/Core-boundary modules, not whole repository"
+  },
+  "case_identity": {
+    "retained": 74,
+    "added": 20,
+    "identical_unique_ids_each": 94
+  },
+  "static": "Ruff, format176files and mypy63modules PASS",
+  "identity": {
+    "frozen_source_sha": "03185807230beea0c276654c7dbb9a6702c56b64",
+    "git_files_independently_matched": 397,
+    "runtime_modules_each": 63,
+    "sdist_git_members_matched": 346,
+    "unique_cases_each": 94,
+    "retained_cases": 74,
+    "added_cases": 20,
+    "root_actual_file_junit_hash_origin_review": "PASS",
+    "code_review": "15-line additive bounded observer; no dispatch/retry/cancel/Core changes",
+    "release": "BLOCKED",
+    "not_run": [
+      "full repository suite at alpha24",
+      "Linux/macOS at alpha24",
+      "real Agent clients and autonomous relay",
+      "formal42 acceptance"
+    ]
+  },
+  "artifacts": {
+    "agentsync_local-0.3.0a24-py3-none-any.whl": "dcf33531a00172c0219e31278bcc1c75e2346980c87dcd5299b2849ee52437b4",
+    "agentsync_local-0.3.0a24.tar.gz": "05e47c1401abdab26aba3104ffc07c676398f58f51866157cf7d4d3ecc2354e5"
+  },
+  "evidence_archive": "releases/0.3.0a24/checkpoints/local-0318580.tar.gz",
+  "evidence_archive_sha256": "239865330ec0188b9499dd90e0c22e28e8a6752650de26ae9f462ce5a9259e64",
+  "evidence_archive_bytes": 1135214,
+  "manifest_members": 38,
+  "M5": "BLOCKED",
+  "Release": "BLOCKED",
+  "formal_requirements": "42 not_run unchanged",
+  "real_clients": "NOT RUN; synthetic Python protocol fixtures and Mock only",
+  "Work_acceptance": "PENDING",
+  "not_run": [
+    "full repository suite at alpha24",
+    "Linux/macOS at alpha24",
+    "real Agent clients and autonomous relay",
+    "formal42 acceptance"
+  ],
+  "constraints": "No Actions, real-client execution, account changes, paid API, VM startup or main changes",
+  "development_failure_note": "No product test/check failure; initial commit rejected missing Git identity, corrected using per-command prior Codex identity without account/global config changes."
+}
