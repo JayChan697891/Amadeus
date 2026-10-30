@@ -1,5 +1,21 @@
 # Release Acceptance Report
 
+Alpha23 internal independent task completion at `e0b1d7c6e0333a3485169253d2d9500d7762c2b7`
+adds schema14 and `OwnerVerifiedTaskCompletion.complete_once`. Owner and independent
+reviewer auth precede lookup/replay; both task versions, fresh physical candidate,
+trusted profile and passed isolated evidence must match. Completion, immutable proof,
+review, receipt and audit commit together; ordinary text reviews remain unverified.
+Linux full source1895pass/4platformskip,1899IDs; fresh Linux wheel/sdist affected
+modules each63pass/1platformskip,64IDs. Windows3.11 selected6pass; frozen Ruff,
+format/mypy63 pass.395Gitinputs/180sdistinputs/63actual modules independently matched.
+Three actual Docker-to-independent-completion records verified;44fullcontainerIDs
+independently absent and ownedVM10636 gracefully off. Astra accepts LIMITED internal
+B4 scope only. Formal42statuses remainnot_run; Agent-facing automation, realclients,
+apply and overallM5/Release remain BLOCKED. Installed fullsuites and complete new
+Windows/macOS matrix NOT RUN. Initial import-origin collection error and read-only
+collector ambiguity preserved, corrected without hiding failures. Evidence:
+acceptance/evidence/alpha23-local-summary.json. No Actions/main changes.
+
 Alpha22 lifecycle supplement at `bda27722ace70eec4f2ea59696c3301763828fd6` changes
 only tests. Source and fresh Linux wheel/sdist each36pass/1platformskip, same37IDs
 (33retained+4new),389Gitinputs/178sdistinputs/62actualmodules independently matched.

@@ -5,7 +5,8 @@ M5 remains the original five requirements; no new stages for documentation,
 duplicate evidence or noncritical enhancements. Existing stage records below are
 historical. Current M6 has typed host-factory Codex/Claude/Cursor protocol adapters,
 bounded offline parsers/inspectors and a pure pinned Codex invocation plan.
-Default live startup is unsupported; candidate execution, verified completion,
+Owner-only candidate execution and independent completion have limited local evidence.
+Default live startup is unsupported; Agent-facing execution/completion,
 credential use, server cancellation and apply remain gated. Latest actual checks
 and limitations are in acceptance/RELEASE-ACCEPTANCE-REPORT.md; component passes
 do not establish the real clients, dual-agent relay or formal release. BLOCKED.

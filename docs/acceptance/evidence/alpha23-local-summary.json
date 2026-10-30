@@ -1,0 +1,310 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "recorded_at_utc": "2026-10-30T06:24:33.503373+00:00",
+  "source_commit": "e0b1d7c6e0333a3485169253d2d9500d7762c2b7",
+  "version": "0.3.0a23",
+  "database_schema": 14,
+  "scope": "Internal owner-mediated independent task completion; no automatic dispatch or public execution entry point",
+  "source": {
+    "tests": 1899,
+    "passed": 1895,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "source_skips": [
+    {
+      "class": "tests.integration.test_candidate_execution",
+      "name": "test_unavailable_isolation_is_unsupported_without_host_execution",
+      "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+    },
+    {
+      "class": "tests.security.test_file_locks",
+      "name": "test_windows_case_and_separator_aliases_conflict",
+      "reason": "Windows conflict keys case-fold"
+    },
+    {
+      "class": "tests.security.test_resource_paths",
+      "name": "test_new_ancestor_junction_rejects_even_identical_physical_root",
+      "reason": "Windows junction-specific ancestor boundary"
+    },
+    {
+      "class": "tests.security.test_resource_paths",
+      "name": "test_junction_is_denied",
+      "reason": "Windows junction-specific boundary"
+    }
+  ],
+  "fresh_linux_installed_each": {
+    "tests": 64,
+    "passed": 63,
+    "skipped": 1,
+    "failed": 0,
+    "errors": 0
+  },
+  "installed_scope": "Complete two affected integration modules, not full installed repository suites",
+  "windows311": {
+    "tests": 6,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 6
+  },
+  "frozen_static_checks": "Ruff, format, mypy63 passed",
+  "identity": {
+    "git_inputs": 395,
+    "sdist_inputs": 180,
+    "runtime_modules": 63,
+    "artifacts": {
+      "agentsync_local-0.3.0a23-py3-none-any.whl": "d2cb9b00b71c20b704e1be54d140ebc792a15a7acbdea82f18c6b2ddadc81904",
+      "agentsync_local-0.3.0a23.tar.gz": "fed746bec7409eafe8ad0bf15bbf5c05427ac3223326e5d500e891612760437f"
+    }
+  },
+  "case_identity": {
+    "source_cases": 1899,
+    "retained_prior_full": 1868,
+    "mapped_future_schema_renames": 3,
+    "added_since_prior_full": 31,
+    "new_B4_cases": 27,
+    "installed_cases_each": 64
+  },
+  "actual_completion_observations": [
+    {
+      "environment": "source",
+      "execution_id": "f88a8e30-7dc2-4705-b10d-0270d89e647d",
+      "verification_id": "0c573df0-91aa-49fa-9417-7d13a5df9d06",
+      "container_id": "89ef94b542573e4547a908de9a5390d7d4318c10e4fa5d1c98a3e300ef901350",
+      "independent_reviewer": true,
+      "current_task_version": 4,
+      "bound_pair_versions": [
+        3,
+        3
+      ]
+    },
+    {
+      "environment": "wheel",
+      "execution_id": "019027ca-5e77-4d79-b99c-5fc1ba7f3bd5",
+      "verification_id": "a0e565e2-1a4f-4c8e-a81d-e8c1906d9c26",
+      "container_id": "628995d03bf28faf65644be4e83e4c6513c8271e9766d37c3eaa8121c50e2331",
+      "independent_reviewer": true,
+      "current_task_version": 4,
+      "bound_pair_versions": [
+        3,
+        3
+      ]
+    },
+    {
+      "environment": "sdist",
+      "execution_id": "c6ea4e3b-86dc-4e2c-bc23-4fca6323f780",
+      "verification_id": "f119e9e1-9d45-49bb-aee7-24f4b9975516",
+      "container_id": "ba37787c10f89760c6724c1644c214dffb7dff9a90fe7a95b1d339f0fda3de2e",
+      "independent_reviewer": true,
+      "current_task_version": 4,
+      "bound_pair_versions": [
+        3,
+        3
+      ]
+    }
+  ],
+  "recorded_containers": {
+    "recorded_full_ids": 44,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "owned_vm": {
+    "transport_exit": 0,
+    "stopped": true,
+    "verified_owned_pid": 10636,
+    "forced_stop_used": false,
+    "disk_preserved": true
+  },
+  "independent_review": {
+    "source_sha": "e0b1d7c6e0333a3485169253d2d9500d7762c2b7",
+    "decision": "VERIFIED_LIMITED_INTERNAL_B4",
+    "scope": "Internal owner-mediated independent reviewer completion of one exact finished/passed isolated candidate execution; schema14 durable proof/idempotency and atomic task/review/audit. No public execution or apply.",
+    "findings": [],
+    "read_files": [
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\sdist-direct-url.json",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\sdist-junit.xml",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\sdist-origins.json",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\sdist-task-completion\\actual-verified-task-completion.json",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\wheel-direct-url.json",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\wheel-junit.xml",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\wheel-origins.json",
+      "D:\\agentsync-debug\\alpha23-completion-installed-2od9dm2g\\evidence\\wheel-task-completion\\actual-verified-task-completion.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\config.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\evidence\\imports-after.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\evidence\\imports-before.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\evidence\\junit.xml",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\evidence\\task-completion-evidence\\actual-verified-task-completion.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\root-container-postcheck.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\root-fixture-observation.json",
+      "D:\\agentsync-debug\\alpha23-linux-full-9s8fju3r\\source.tar",
+      "D:\\agentsync-debug\\alpha23-windows-selected-t29ah2ik\\imports-after.json",
+      "D:\\agentsync-debug\\alpha23-windows-selected-t29ah2ik\\imports-before.json",
+      "D:\\agentsync-debug\\alpha23-windows-selected-t29ah2ik\\junit.xml",
+      "D:\\agentsync-debug\\alpha23-windows-selected-t29ah2ik\\result.json",
+      "D:\\agentsync-debug\\b23complete-b00mmdfm\\artifacts\\agentsync_local-0.3.0a23-py3-none-any.whl",
+      "D:\\agentsync-debug\\b23complete-b00mmdfm\\artifacts\\agentsync_local-0.3.0a23.tar.gz",
+      "D:\\agentsync-debug\\b23complete-b00mmdfm\\format-frozen.log",
+      "D:\\agentsync-debug\\b23complete-b00mmdfm\\mypy-frozen.log",
+      "D:\\agentsync-debug\\b23complete-b00mmdfm\\result.json",
+      "D:\\agentsync-debug\\b23complete-b00mmdfm\\ruff-frozen.log",
+      "D:\\agentsync-debug\\vm\\startup-poweroff-result.json"
+    ],
+    "checks": {
+      "source_manifest_inputs_independently_hashed": 395,
+      "git_runtime_modules_independently_hashed": 63,
+      "sdist_matching_source_members_independently_hashed": 345,
+      "sdist_runtime_test_tool_inputs": 180,
+      "test_results": {
+        "source": {
+          "total": 1899,
+          "passed": 1895,
+          "skips": [
+            {
+              "id": "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+              "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+            },
+            {
+              "id": "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict",
+              "reason": "Windows conflict keys case-fold"
+            },
+            {
+              "id": "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root",
+              "reason": "Windows junction-specific ancestor boundary"
+            },
+            {
+              "id": "tests.security.test_resource_paths::test_junction_is_denied",
+              "reason": "Windows junction-specific boundary"
+            }
+          ]
+        },
+        "wheel": {
+          "total": 64,
+          "passed": 63,
+          "skips": [
+            {
+              "id": "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+              "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+            }
+          ]
+        },
+        "sdist": {
+          "total": 64,
+          "passed": 63,
+          "skips": [
+            {
+              "id": "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+              "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+            }
+          ]
+        },
+        "windows311": {
+          "total": 6,
+          "passed": 6,
+          "skips": []
+        }
+      },
+      "installed_64_case_ids_equal_and_subset_of_source": true,
+      "installed_and_windows_module_origins_and_hashes_match": true,
+      "source_import_hashes_before_after_match": true,
+      "artifacts_independently_hashed": {
+        "agentsync_local-0.3.0a23-py3-none-any.whl": "d2cb9b00b71c20b704e1be54d140ebc792a15a7acbdea82f18c6b2ddadc81904",
+        "agentsync_local-0.3.0a23.tar.gz": "fed746bec7409eafe8ad0bf15bbf5c05427ac3223326e5d500e891612760437f"
+      },
+      "real_completion_proofs": [
+        {
+          "environment": "source",
+          "verification_id": "0c573df0-91aa-49fa-9417-7d13a5df9d06",
+          "execution_id": "f88a8e30-7dc2-4705-b10d-0270d89e647d",
+          "container_id": "89ef94b542573e4547a908de9a5390d7d4318c10e4fa5d1c98a3e300ef901350",
+          "bound_versions": [
+            3,
+            3
+          ],
+          "completed_version": 4,
+          "independent_reviewer": true
+        },
+        {
+          "environment": "wheel",
+          "verification_id": "a0e565e2-1a4f-4c8e-a81d-e8c1906d9c26",
+          "execution_id": "019027ca-5e77-4d79-b99c-5fc1ba7f3bd5",
+          "container_id": "628995d03bf28faf65644be4e83e4c6513c8271e9766d37c3eaa8121c50e2331",
+          "bound_versions": [
+            3,
+            3
+          ],
+          "completed_version": 4,
+          "independent_reviewer": true
+        },
+        {
+          "environment": "sdist",
+          "verification_id": "f119e9e1-9d45-49bb-aee7-24f4b9975516",
+          "execution_id": "c6ea4e3b-86dc-4e2c-bc23-4fca6323f780",
+          "container_id": "ba37787c10f89760c6724c1644c214dffb7dff9a90fe7a95b1d339f0fda3de2e",
+          "bound_versions": [
+            3,
+            3
+          ],
+          "completed_version": 4,
+          "independent_reviewer": true
+        }
+      ],
+      "recorded_containers_absent": 44,
+      "vm_gracefully_stopped": true,
+      "static": {
+        "ruff": "PASS",
+        "format_files": 339,
+        "mypy_source_files": 63
+      }
+    },
+    "limits": [
+      "Full source suite covers frozen SHA; installed suites cover only 64 affected cases each.",
+      "Synthetic security cases are not real client acceptance; three explicitly real Docker completion records support the isolated end-to-end scope.",
+      "Source four and installed one platform skips retained; Windows311 six selected cases only.",
+      "Root fixture supplement is a read-only extraction of original test databases; initial ambiguous glob failure retained, not product-test failure or rerun.",
+      "Reviewer audit assumptions corrected: 345 total matching sdist files vs 180 runtime/test/tool inputs; frozen formatter scanned339 vs earlier176. All source hashes and corrected static checks pass; no product tests rerun.",
+      "No paid API, model client, hosted Actions, main merge, autonomous dispatch, automatic recovery, or safe apply acceptance.",
+      "B1/B3/B6 and overall M5/Release remain BLOCKED; B2/apply and remaining D2/D3 remain deferred or blocked."
+    ],
+    "M5": "BLOCKED",
+    "Release": "BLOCKED"
+  },
+  "earlier_results": [
+    {
+      "scope": "Windows pre-freeze initial new test collection",
+      "passed": 22,
+      "skipped": 1,
+      "note": "Earlier23cases; not final27case coverage."
+    },
+    {
+      "scope": "Windows pre-freeze core/migration/diagnostic",
+      "passed": 26,
+      "note": "Initial missingPYTHONPATH loaded foreign editable install; collection failed, preserved; corrected source passed."
+    },
+    {
+      "scope": "Windows frozen security additions",
+      "passed": 5,
+      "deselected": 22
+    }
+  ],
+  "collector_issue": "First supplemental read-only fixture glob matched six isolated databases; stopped before evidence extraction. Corrected selection uses exact verification ID; original log/script retained. Product tests not rerun for this collector issue.",
+  "not_run": [
+    "Complete installed repository suites",
+    "Complete Windows/macOS support matrix at this SHA",
+    "Real client adapters and autonomous two-agent relay",
+    "Formal42requirement acceptance",
+    "Source application and Agent-facing automatic dispatch"
+  ],
+  "formal_requirements": "42execution_status entries remain not_run",
+  "release_gate": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "actions_used": false,
+  "main_modified": false,
+  "archive": {
+    "path": "releases/0.3.0a23/checkpoints/local-e0b1d7c.tar.gz",
+    "bytes": 1340141,
+    "sha256": "ebd6a708c74a9dccea95edeb1d71c97a68687d689a079f29af9c014aee3cc5cc",
+    "manifest_members": 130
+  }
+}
