@@ -346,7 +346,7 @@ def test_expiry_during_work_or_replay_rechecks_authority_and_rolls_back(ready, m
     monkeypatch.setattr(
         task_completion,
         "clock",
-        SimpleNamespace(time=SimpleNamespace(time=lambda: current_time[0])),
+        SimpleNamespace(time=SimpleNamespace(time=lambda: max(current_time[0], original_time()))),
     )
     if phase == "export":
         original = task_completion.OwnerCandidateExporter.export
