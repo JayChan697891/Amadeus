@@ -98,6 +98,9 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, PermissionsMixin
                     if operation == "request_approval":
                         assert session is not None
                         response = self._approval_replay(db, p, response, now, session)
+                    from agentsync.verification.task_completion import historical_task_response
+
+                    response = historical_task_response(response)
                     db.commit()
                     return response
             response = getattr(self, "_" + operation)(db, p, now, session)
@@ -212,6 +215,9 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, PermissionsMixin
         public["latest_review"] = dict(review) if review is not None else None
         if public["latest_review"] is not None:
             public["latest_review"]["accept"] = bool(public["latest_review"]["accept"])
+        from agentsync.verification.task_completion import task_projection
+
+        public.update(task_projection(db, task))
         return public
 
     @staticmethod

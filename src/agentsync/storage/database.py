@@ -421,6 +421,30 @@ PRAGMA user_version=13;
 """
 
 
+MIGRATION_V14 = """
+CREATE UNIQUE INDEX completion_execution_binding ON candidate_executions(id,project_id,job_id);
+CREATE TABLE task_verifications(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL, task_id TEXT NOT NULL,
+ completed_version INTEGER NOT NULL CHECK(completed_version BETWEEN 2 AND 9223372036854775807),
+ job_id TEXT NOT NULL, execution_id TEXT NOT NULL UNIQUE,
+ reviewer_agent_id TEXT NOT NULL REFERENCES agents(id),
+ reviewer_session_id TEXT NOT NULL REFERENCES sessions(id),
+ proof_json TEXT NOT NULL CHECK(length(CAST(proof_json AS BLOB))<=16384),
+ proof_sha256 TEXT NOT NULL, created_at REAL NOT NULL,
+ UNIQUE(project_id,task_id,completed_version),
+ FOREIGN KEY(task_id,project_id) REFERENCES tasks(id,project_id),
+ FOREIGN KEY(task_id,completed_version) REFERENCES reviews(task_id,version),
+ FOREIGN KEY(job_id,project_id) REFERENCES candidate_verification_jobs(id,project_id),
+ FOREIGN KEY(execution_id,project_id,job_id) REFERENCES candidate_executions(id,project_id,job_id));
+CREATE TABLE task_verification_requests(
+ project_id TEXT NOT NULL REFERENCES projects(id), request_id TEXT NOT NULL,
+ payload_hash TEXT NOT NULL, verification_id TEXT NOT NULL REFERENCES task_verifications(id),
+ response_json TEXT NOT NULL CHECK(length(CAST(response_json AS BLOB))<=16384),
+ response_sha256 TEXT NOT NULL, PRIMARY KEY(project_id,request_id));
+PRAGMA user_version=14;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -504,7 +528,12 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 13
-        if version != 13:
+        if version == 13:
+            for statement in MIGRATION_V14.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 14
+        if version != 14:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
             raise RuntimeError("Database migration violated foreign-key constraints.")
