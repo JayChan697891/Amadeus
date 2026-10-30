@@ -6,6 +6,8 @@ duplicate evidence or noncritical enhancements. Existing stage records below are
 historical. Current M6 has typed host-factory Codex/Claude/Cursor protocol adapters,
 bounded offline parsers/inspectors and a pure pinned Codex invocation plan.
 Owner-only candidate execution and independent completion have limited local evidence.
+M6's instance-local manager can return a nonblocking dispatch handle and observe
+its startup receipt with a bounded wait; this does not enable automatic scheduling.
 Default live startup is unsupported; Agent-facing execution/completion,
 credential use, server cancellation and apply remain gated. Latest actual checks
 and limitations are in acceptance/RELEASE-ACCEPTANCE-REPORT.md; component passes

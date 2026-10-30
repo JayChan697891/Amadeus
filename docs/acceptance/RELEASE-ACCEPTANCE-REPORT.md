@@ -1,5 +1,26 @@
 # Release Acceptance Report
 
+## Alpha25 M6 nonblocking receipt checkpoint
+
+Frozen source `d9b1abc22a6748575bf9935cb9c651172d250ba2` adds a nonblocking
+dispatch receipt through the original shared admission path. Callers can obtain
+their handle while startup is pending and compose it with bounded observation.
+Mixed old/new calls admit once; capacity, namespace, replay and sanitized failure
+behavior remain unchanged. A returned receipt is neither run success nor permission.
+
+Windows Python3.14/3.11 source and fresh offline Windows wheel/rebuilt sdist each
+pass the same99 affected cases (74retained+25new), with zero skips/errors/failures.
+Root independently checked399Git inputs,347matching sdist members,63actual
+runtime origins per environment, artifact/log/JUnit hashes and43archive members.
+Ruff, format176 and mypy63 pass. Astra independently reviewed the actual delta
+and existing logs/JUnit with no blocking finding; package-origin auditing was
+performed separately by root. See [alpha25 evidence](evidence/alpha25-local-summary.json).
+
+Complete alpha25 repository suites, Linux/macOS, real clients, autonomous relay
+and42formal requirements were NOT RUN. M5/Release remain **BLOCKED** and Work
+acceptance is pending. Historical full-suite evidence retains its original SHA.
+No Actions, real-client calls, VM startup, account changes or main merge.
+
 # Alpha24 bounded M6 observation checkpoint
 
 Frozen source `03185807230beea0c276654c7dbb9a6702c56b64` adds bounded waiting for

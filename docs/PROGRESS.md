@@ -1,5 +1,18 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha25 M6 nonblocking receipt at `d9b1abc22a6748575bf9935cb9c651172d250ba2`
+adds `RunManager.dispatch_task`, sharing unchanged admission with `start_task`.
+Callers obtain a handle before adapter startup returns, then use the bounded
+observer; mixed calls retain one start/history slot, namespace/capacity checks,
+original receipt replay and fixed failure codes. Windows3.14/3.11 source and
+fresh offline Windows wheel/sdist seven affected modules each99pass/0skip,
+identical74retained+25newIDs. Root verified399Git inputs,347sdist matching
+members and63actual module origins per environment; Ruff/format176/mypy63 pass.
+Astra independent source/result review found no blocker in this limited scope.
+Evidence: acceptance/evidence/alpha25-local-summary.json and43-member archive.
+Full alpha25 repository/Linux/macOS, real clients and formal42 NOT RUN;
+M5/Release BLOCKED and Work acceptance pending. No Actions/main changes.
+
 Alpha24 bounded M6 dispatch observation at `03185807230beea0c276654c7dbb9a6702c56b64`
 adds `RunManager.wait_dispatch` without starting/retrying/cancelling adapter work.
 Strict0..300s observation timeout returns the existing sanitized receipt state;
