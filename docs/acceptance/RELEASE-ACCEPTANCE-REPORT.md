@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+# Alpha24 bounded M6 observation checkpoint
+
+Frozen source `03185807230beea0c276654c7dbb9a6702c56b64` adds bounded waiting for
+an existing run-manager start receipt. Timeout/caller cancellation preserves the
+dispatch, and returned receipts never imply successful execution. Windows3.14,
+Windows3.11, fresh offline Windows wheel and rebuilt sdist each pass the same94
+affected cases (74retained+20new), with no skips/failures. Root independently
+checked397Git inputs,346sdist matching members,63actual runtime origins per
+environment, JUnit identities, package hashes and the38-member archive manifest.
+Ruff, format176files and mypy63 pass. See
+[alpha24 evidence](evidence/alpha24-local-summary.json).
+
+This is component acceptance only. Complete alpha24 repository suites, Linux,
+macOS, real clients, autonomous relay and42formal requirements were NOT RUN.
+Earlier alpha23 full Linux results apply to their frozen source, not alpha24.
+Overall M5/Release remain **BLOCKED**; independent Work acceptance is pending.
+No hosted Actions, real model calls, VM startup, main merge or account changes.
+
 Alpha23 internal independent task completion at `e0b1d7c6e0333a3485169253d2d9500d7762c2b7`
 adds schema14 and `OwnerVerifiedTaskCompletion.complete_once`. Owner and independent
 reviewer auth precede lookup/replay; both task versions, fresh physical candidate,
@@ -1381,21 +1399,3 @@ Formal42 complete scenarios remain not_run; component coverage remains18 existin
 Independent Work acceptance is pending and separate; later documentation heads
 are not re-executed product commits. F:source/D:debug. GitHub storage only;
 no Actions, paid calls, main edits or merge.
-# Alpha24 bounded M6 observation checkpoint
-
-Frozen source `03185807230beea0c276654c7dbb9a6702c56b64` adds bounded waiting for
-an existing run-manager start receipt. Timeout/caller cancellation preserves the
-dispatch, and returned receipts never imply successful execution. Windows3.14,
-Windows3.11, fresh offline Windows wheel and rebuilt sdist each pass the same94
-affected cases (74retained+20new), with no skips/failures. Root independently
-checked397Git inputs,346sdist matching members,63actual runtime origins per
-environment, JUnit identities, package hashes and the38-member archive manifest.
-Ruff, format176files and mypy63 pass. See
-[alpha24 evidence](evidence/alpha24-local-summary.json).
-
-This is component acceptance only. Complete alpha24 repository suites, Linux,
-macOS, real clients, autonomous relay and42formal requirements were NOT RUN.
-Earlier alpha23 full Linux results apply to their frozen source, not alpha24.
-Overall M5/Release remain **BLOCKED**; independent Work acceptance is pending.
-No hosted Actions, real model calls, VM startup, main merge or account changes.
-
