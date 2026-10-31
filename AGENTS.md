@@ -1,3 +1,10 @@
+# Current continuation entry (2026-10-30)
+
+Read CLAUDE.md and docs/HANDOFF-CLAUDE.md for the latest cross-agent handoff.
+The later user request authorizes Claude takeover; model allocation below describes
+the original Codex environment, not a requirement to impersonate unavailable models.
+Historical M5A/M4 statements below do not override current PLAN/PROGRESS or gates.
+
 # Model allocation policy (owner instruction, 2026-10-26)
 
 Default routine development, fixes, tests, documentation and ordinary decisions to

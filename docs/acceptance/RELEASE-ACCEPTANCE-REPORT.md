@@ -1,5 +1,11 @@
 # Release Acceptance Report
 
+Handoff update (2026-10-30): [Work accepted PR30's limited M6 component](https://github.com/JayChan697891/agentsync/pull/30#issuecomment-6522196337)
+at head9027286 / productd9b1abc (comment updated12:07:59Z). This supersedes the
+pending Work status in historical alpha25 snapshots only for that component.
+It does not accept this later documentation update, PR29, M5 or Release.
+See [Claude handoff](../HANDOFF-CLAUDE.md) for current continuation instructions.
+
 ## Alpha25 M6 nonblocking receipt checkpoint
 
 Frozen source `d9b1abc22a6748575bf9935cb9c651172d250ba2` adds a nonblocking

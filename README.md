@@ -2,6 +2,9 @@
 
 # AgentSync
 
+Continuing with Claude? Start at [CLAUDE.md](CLAUDE.md) and the
+[complete handoff](docs/HANDOFF-CLAUDE.md); use the named feature branch, not main.
+
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
