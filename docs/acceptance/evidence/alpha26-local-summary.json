@@ -1,0 +1,70 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "version": "0.3.0a26",
+  "source_commit": "5eaaf152c447d6a6cf79fd9fbf1cfc734fda62a9",
+  "scope": "M6 manager callback exception boundary; no complete lifecycle audit/client authorization",
+  "suites": {
+    "source314": {
+      "tests": 152,
+      "passed": 152,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "adffaa168e5daf88777987647b96bcce661bac6c22c3305697d792218cf42614"
+    },
+    "source311": {
+      "tests": 152,
+      "passed": 152,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "5cb8a3f35f56d70c14da8ed0cc649c2b3d82cf1e66cf8049f68ac63eab122946"
+    },
+    "wheel": {
+      "tests": 152,
+      "passed": 152,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "91e40de79e8c9606dfcae8ab02ab39079248c74ea52eac838a6d0f1b64a9ac94"
+    },
+    "sdist": {
+      "tests": 152,
+      "passed": 152,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "251b519a2ba48fb84ad8ea9f59bdcdf9d6a2420ce3132a43ab5fcfd846559a7e"
+    }
+  },
+  "identity": {
+    "source_commit": "5eaaf152c447d6a6cf79fd9fbf1cfc734fda62a9",
+    "git_files": 403,
+    "sdist_matching_git_members": 349,
+    "runtime_origins_each": 63,
+    "unique_cases_each": 152,
+    "retained_alpha25_cases": 99,
+    "new_cases": 53,
+    "root_independent_checks": "Actual Git/file bytes, JUnit identities/results, origins, logs and artifact hashes PASS",
+    "review": "Astra limited component review; full B3/M5/Release not accepted"
+  },
+  "static": "Ruff/format/mypy63 PASS",
+  "independent_review": "Astra limited static component review, three findings resolved; no open blockers; Work pending",
+  "artifacts": {
+    "agentsync_local-0.3.0a26-py3-none-any.whl": "58cdfd56be036a2d43248549638d3efbcfa84e596280ecfde808108dd4f85bc8",
+    "agentsync_local-0.3.0a26.tar.gz": "a8b8c49f77b0abf68e40b715f5945c0115022cd4c109754323fa2603c7779bef"
+  },
+  "archive": "releases/0.3.0a26/checkpoints/local-5eaaf15.tar.gz",
+  "archive_sha256": "4320c1f741d17c784ab863422d65d25e5f5e8fe49f783652f6476a1190b889e5",
+  "archive_bytes": 1170860,
+  "manifest_members": 58,
+  "not_run": [
+    "full repository suite at this SHA",
+    "Linux/macOS at this SHA",
+    "real clients",
+    "autonomous relay",
+    "formal42 acceptance"
+  ],
+  "release": "BLOCKED",
+  "failures_preserved": "Initial RED26 and review RED7 failures; later local development logs retained. Actual fixture secrets are synthetic, not account data."
+}

@@ -1,5 +1,19 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha26 M6 callback error boundary at `5eaaf152c447d6a6cf79fd9fbf1cfc734fda62a9`
+fixes reproduced private exception leaks from manager lifecycle callbacks and
+malformed receipt/error properties. Fixed public codes/messages/statuses replace
+private details without exception chaining; validated routing IDs are captured
+once and reused. Cancellation, successful private results and dispatch ownership
+remain intact. Root Windows3.14/3.11 source and fresh offline Windows wheel/sdist
+seven affected modules each152pass/0skip, same99retained+53newIDs. Root checked
+403Git inputs,349sdist matching members,63runtime origins per environment and
+all artifact/JUnit/log/archive hashes. Ruff/format/mypy63 pass. Astra static review
+found three related issues, all fixed; initialRED26/reviewRED7 retained. Evidence:
+acceptance/evidence/alpha26-local-summary.json (58-member archive). Work pending;
+full current repository/Linux/macOS/real clients/formal42 NOT RUN. This is not full
+B3 lifecycle auditing; M5/Release remain BLOCKED. No Actions/paid calls/main merge.
+
 2026-11-04: owner cancelled the Claude package/handoff and resumed Codex work.
 Live PR30 feedback retains productd9b1abc's limited component acceptance but blocks
 handoff documents for a missing repo DELIVERY.json and conflicting Work statuses.
