@@ -1,5 +1,8 @@
 # AgentSync 完整开发交接
 
+> 已作废（2026-11-04）：用户取消本次交接包，要求 Codex 继续开发。
+> 以下仅保存历史快照，不再作为任务或验收入口。当前工作看 AGENTS.md 与 PROGRESS.md。
+
 交接日期：2026-10-30，America/Tijuana。执行方：Codex。
 用途：让 Claude 从仓库恢复项目事实与约束；不是宣称 Claude 已读取或已开始执行。
 这是经过整理的必要工作上下文，不是本聊天的逐字导出。原始附件、账号登录态、
@@ -10,7 +13,8 @@
 - 仓库：https://github.com/JayChan697891/agentsync
 - 必须检出 `feature/m6-bounded-dispatch-wait-20261030`，不要默认使用 main。
 - 交接前已上传 HEAD：`90272861566475bb571d36f5001009575abc06d2`。
-  交接提交将在其上只增加文档；最终交接 HEAD 见 Git 日志和随包 DELIVERY.json。
+  原交接文档提交为 `3932747f5a0b188ab86e08eacf3fd66305d02ffb`；
+  仓库未提供 DELIVERY.json，不应依赖本机包外文件核验仓库身份。
 - 受测产品：`d9b1abc22a6748575bf9935cb9c651172d250ba2`，0.3.0a25，schema14，63运行模块。
 - PR30：https://github.com/JayChan697891/agentsync/pull/30
   基于 PR29 的 `feature/m5-verified-completion-20261029` / `3f622c3`，不是 main。

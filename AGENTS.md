@@ -1,8 +1,8 @@
-# Current continuation entry (2026-10-30)
+# Current continuation entry (2026-11-04)
 
-Read CLAUDE.md and docs/HANDOFF-CLAUDE.md for the latest cross-agent handoff.
-The later user request authorizes Claude takeover; model allocation below describes
-the original Codex environment, not a requirement to impersonate unavailable models.
+The user cancelled the Claude handoff/package and requested continued Codex work.
+CLAUDE.md and docs/HANDOFF-CLAUDE.md are historical, not continuation instructions.
+Read current PLAN/PROGRESS and live PR feedback before selecting the next bounded task.
 Historical M5A/M4 statements below do not override current PLAN/PROGRESS or gates.
 
 # Model allocation policy (owner instruction, 2026-10-26)

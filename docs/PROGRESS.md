@@ -1,5 +1,11 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+2026-11-04: owner cancelled the Claude package/handoff and resumed Codex work.
+Live PR30 feedback retains productd9b1abc's limited component acceptance but blocks
+handoff documents for a missing repo DELIVERY.json and conflicting Work statuses.
+Current documentation retires that entry, removes the external-file dependency
+and reconciles status; this correction awaits Work review. No runtime/test changes.
+
 Alpha25 M6 nonblocking receipt at `d9b1abc22a6748575bf9935cb9c651172d250ba2`
 adds `RunManager.dispatch_task`, sharing unchanged admission with `start_task`.
 Callers obtain a handle before adapter startup returns, then use the bounded

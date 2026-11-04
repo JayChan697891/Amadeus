@@ -1,5 +1,8 @@
 # AgentSync — Claude 接手入口
 
+> 已作废（2026-11-04）：用户取消本次打包交接，恢复 Codex 开发。
+> 以下内容仅为历史记录；当前入口为 AGENTS.md、WORKFLOW.md 和 docs/PROGRESS.md。
+
 用户已请求允许 Claude 接手后续工作。先读 [完整交接](docs/HANDOFF-CLAUDE.md)，
 再读 AGENTS.md / WORKFLOW.md。不要从 main 重做项目。
 

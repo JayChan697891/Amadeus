@@ -4,7 +4,9 @@ Handoff update (2026-10-30): [Work accepted PR30's limited M6 component](https:/
 at head9027286 / productd9b1abc (comment updated12:07:59Z). This supersedes the
 pending Work status in historical alpha25 snapshots only for that component.
 It does not accept this later documentation update, PR29, M5 or Release.
-See [Claude handoff](../HANDOFF-CLAUDE.md) for current continuation instructions.
+2026-11-04: the user cancelled the handoff package and resumed Codex development.
+The Work update at that link (2026-10-31T02:12:10Z) blocked the handoff documents,
+while retaining the product's limited acceptance. Current instructions are AGENTS.md.
 
 ## Alpha25 M6 nonblocking receipt checkpoint
 
@@ -24,7 +26,9 @@ performed separately by root. See [alpha25 evidence](evidence/alpha25-local-summ
 
 Complete alpha25 repository suites, Linux/macOS, real clients, autonomous relay
 and42formal requirements were NOT RUN. M5/Release remain **BLOCKED** and Work
-acceptance is pending. Historical full-suite evidence retains its original SHA.
+accepted the limited component at9027286; the later handoff documentation was
+blocked by Work and the user cancelled that handoff on2026-11-04. This documentation
+correction still requires independent review. Historical evidence retains its original SHA.
 No Actions, real-client calls, VM startup, account changes or main merge.
 
 # Alpha24 bounded M6 observation checkpoint
