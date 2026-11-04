@@ -1,3 +1,3 @@
 """AgentSync local coordination engine."""
 
-__version__ = "0.3.0a25"
+__version__ = "0.3.0a26"

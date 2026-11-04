@@ -1,6 +1,7 @@
 """Bounded routing and dispatch ownership, without clients or process execution."""
 
 import asyncio
+import traceback
 from dataclasses import replace
 
 import pytest
@@ -351,3 +352,266 @@ async def test_dispatch_task_failure_replay_is_sanitized_and_consumes_capacity()
         await manager.dispatch_task("worker", task("new"))
     assert error.value.code == "history_capacity_exceeded"
     assert manager.history() == (pending.handle,) and adapter.calls == 1
+
+
+LIFECYCLE_OPERATIONS = ("capabilities", "get_status", "get_result", "cancel_task", "resume_task")
+
+
+@pytest.mark.parametrize("operation", LIFECYCLE_OPERATIONS)
+@pytest.mark.parametrize("failure", ["runtime", "unknown_domain", "public_domain"])
+async def test_lifecycle_errors_have_fixed_public_details(operation, failure, monkeypatch):
+    class FailingAdapter(MockAdapter):
+        async def fail(self, *args):
+            if failure == "runtime":
+                raise RuntimeError("private credential/prompt detail")
+            raise AgentSyncError(
+                "not_found" if failure == "public_domain" else "private_adapter_code",
+                "private credential/prompt detail",
+                599,
+            )
+
+    adapter = FailingAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+    monkeypatch.setattr(adapter, operation, adapter.fail)
+    with pytest.raises(AgentSyncError) as error:
+        await getattr(manager, operation)(
+            "worker" if operation == "capabilities" else receipt.handle
+        )
+    public = error.value
+    assert public.code == (
+        "not_found" if failure == "public_domain" else "adapter_operation_unknown"
+    )
+    assert public.message == (
+        "Adapter run was not found."
+        if failure == "public_domain"
+        else "Adapter operation did not complete."
+    )
+    assert public.status_code == (404 if failure == "public_domain" else 409)
+    assert public.__cause__ is None and public.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(public))
+    assert manager.history() == (receipt.handle,)
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+    assert (await manager.start_task("worker", task())).run is receipt.run
+
+
+@pytest.mark.parametrize("operation", LIFECYCLE_OPERATIONS)
+async def test_lifecycle_caller_cancellation_is_preserved(operation, monkeypatch):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+    entered = asyncio.Event()
+
+    async def blocked(*args):
+        entered.set()
+        await asyncio.Event().wait()
+
+    monkeypatch.setattr(adapter, operation, blocked)
+    caller = asyncio.create_task(
+        getattr(manager, operation)("worker" if operation == "capabilities" else receipt.handle)
+    )
+    await entered.wait()
+    caller.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await caller
+    assert manager.history() == (receipt.handle,)
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+    assert (await manager.start_task("worker", task())).run is receipt.run
+
+
+@pytest.mark.parametrize("operation", ["start_task", *LIFECYCLE_OPERATIONS[1:]])
+@pytest.mark.parametrize("field", ["run_id", "project_id"])
+async def test_run_property_errors_are_invalid_receipts(operation, field, monkeypatch):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+
+    class BrokenRun:
+        def __getattr__(self, name):
+            if name == field:
+                raise RuntimeError("private credential/prompt detail")
+            return getattr(receipt.run, name)
+
+    async def malformed(*args):
+        if operation == "get_result":
+            return type("BrokenResult", (), {"run": BrokenRun()})()
+        return BrokenRun()
+
+    monkeypatch.setattr(adapter, operation, malformed)
+    with pytest.raises(AgentSyncError) as error:
+        if operation == "start_task":
+            await manager.start_task("worker", task("other"))
+        else:
+            await getattr(manager, operation)(receipt.handle)
+    assert error.value.code == "invalid_adapter_run"
+    assert error.value.__cause__ is None and error.value.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(error.value))
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+
+
+async def test_result_property_errors_are_invalid_receipts(monkeypatch):
+    class BrokenResult:
+        @property
+        def run(self):
+            raise RuntimeError("private credential/prompt detail")
+
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+
+    async def malformed(*args):
+        return BrokenResult()
+
+    monkeypatch.setattr(adapter, "get_result", malformed)
+    with pytest.raises(AgentSyncError) as error:
+        await manager.get_result(receipt.handle)
+    assert error.value.code == "invalid_adapter_run"
+    assert error.value.__cause__ is None and error.value.__context__ is None
+
+
+async def test_successful_private_result_is_returned_unchanged():
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+    await adapter.finish_run(receipt.run.run_id, output="private prompt/result bytes: 密钥\n\x01")
+    expected = await adapter.get_result(receipt.run.run_id)
+    assert await manager.get_result(receipt.handle) is expected
+
+
+@pytest.mark.parametrize(
+    ("code", "message", "status"),
+    [
+        ("unsupported", "Operation is unsupported by this adapter.", 400),
+        ("not_found", "Adapter run was not found.", 404),
+        ("result_not_ready", "Adapter result is not ready.", 409),
+        ("invalid_state", "Adapter run is in an invalid state.", 409),
+        ("invalid_adapter_run", "Adapter returned an inconsistent run.", 409),
+        ("namespace_mismatch", "Request does not match adapter namespace.", 403),
+        ("capacity_exceeded", "Adapter capacity is exhausted.", 409),
+        ("history_capacity_exceeded", "Adapter history capacity is exhausted.", 409),
+        ("running_capacity_exceeded", "Adapter running capacity is exhausted.", 409),
+        ("task_already_active", "Task already has an active adapter run.", 409),
+        ("idempotency_conflict", "Request ID has different inputs.", 409),
+        ("validation_error", "Invalid adapter input.", 400),
+        pytest.param([], "Adapter operation did not complete.", 409, id="malformed-code"),
+    ],
+)
+async def test_lifecycle_public_codes_have_static_messages_and_statuses(
+    code, message, status, monkeypatch
+):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+
+    async def fail(*args):
+        raise AgentSyncError(code, "private credential/prompt detail", 599)
+
+    monkeypatch.setattr(adapter, "get_status", fail)
+    with pytest.raises(AgentSyncError) as error:
+        await manager.get_status(receipt.handle)
+    assert error.value.code == (code if type(code) is str else "adapter_operation_unknown")
+    assert error.value.message == message and error.value.status_code == status
+    assert error.value.__cause__ is None and error.value.__context__ is None
+
+
+async def test_start_with_malformed_error_code_has_fixed_failure_and_replay():
+    class BrokenAdapter(MockAdapter):
+        async def start_task(self, request):
+            raise AgentSyncError([], "private credential/prompt detail", 599)
+
+    manager = RunManager("project", "session", {"worker": BrokenAdapter("project", "session")})
+    for _ in range(2):
+        with pytest.raises(AgentSyncError) as error:
+            await manager.start_task("worker", task())
+        assert error.value.code == "adapter_start_unknown"
+        assert error.value.__cause__ is None and error.value.__context__ is None
+        assert "private" not in "".join(traceback.format_exception(error.value))
+    (handle,) = manager.history()
+    snapshot = manager.get_dispatch(handle)
+    assert snapshot.state == "error" and snapshot.error_code == "adapter_start_unknown"
+
+
+@pytest.mark.parametrize("operation", LIFECYCLE_OPERATIONS[1:])
+async def test_lifecycle_uses_frozen_receipt_id_after_callback(operation, monkeypatch):
+    class StatefulRun:
+        def __init__(self, run):
+            self.original = run
+            self.broken = False
+            self.id_reads = 0
+
+        @property
+        def run_id(self):
+            self.id_reads += 1
+            if self.broken:
+                raise RuntimeError("private credential/prompt detail")
+            return self.original.run_id
+
+        def __getattr__(self, name):
+            return getattr(self.original, name)
+
+    class StatefulAdapter(MockAdapter):
+        async def start_task(self, request):
+            return StatefulRun(await super().start_task(request))
+
+    adapter = StatefulAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+    initial = receipt.run
+    assert initial.id_reads == 1
+    original_id = initial.original.run_id
+    seen = []
+
+    async def callback(run_id):
+        seen.append(run_id)
+        initial.broken = True
+        if operation == "get_result":
+            return type("Result", (), {"run": initial.original})()
+        return initial.original
+
+    monkeypatch.setattr(adapter, operation, callback)
+    for _ in range(2):
+        result = await getattr(manager, operation)(receipt.handle)
+        assert result.run is initial.original
+    assert seen == [original_id, original_id] and initial.id_reads == 1
+    assert (await manager.start_task("worker", task())).run is initial
+
+
+async def test_capabilities_descriptor_errors_have_fixed_public_details():
+    class BrokenAdapter(MockAdapter):
+        @property
+        def capabilities(self):
+            raise RuntimeError("private credential/prompt detail")
+
+    manager = RunManager("project", "session", {"worker": BrokenAdapter("project", "session")})
+    with pytest.raises(AgentSyncError) as error:
+        await manager.capabilities("worker")
+    assert error.value.code == "adapter_operation_unknown"
+    assert error.value.__cause__ is None and error.value.__context__ is None
+
+
+@pytest.mark.parametrize("operation", ["start_task", "capabilities"])
+async def test_error_code_descriptor_errors_have_fixed_public_details(operation, monkeypatch):
+    class BrokenError(AgentSyncError):
+        def __init__(self):
+            Exception.__init__(self, "private credential/prompt detail")
+
+        @property
+        def code(self):
+            raise RuntimeError("private credential/prompt detail")
+
+    adapter = MockAdapter("project", "session")
+
+    async def callback(*args):
+        raise BrokenError()
+
+    monkeypatch.setattr(adapter, operation, callback)
+    manager = RunManager("project", "session", {"worker": adapter})
+    with pytest.raises(AgentSyncError) as error:
+        if operation == "start_task":
+            await manager.start_task("worker", task())
+        else:
+            await manager.capabilities("worker")
+    assert error.value.code == (
+        "adapter_start_unknown" if operation == "start_task" else "adapter_operation_unknown"
+    )
+    assert error.value.__cause__ is None and error.value.__context__ is None
