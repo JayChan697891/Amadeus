@@ -1,0 +1,70 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "version": "0.3.0a27",
+  "source_commit": "b9533352abc4c8c94a2676792f00b616b63032ee",
+  "scope": "M7 configurable owned Mock task DAG execution; simulation only and unverified",
+  "suites": {
+    "source314": {
+      "tests": 175,
+      "passed": 175,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "851cb8365813c2d4b03d85f3d63160ffe3bf68d53e5e27146d4bd2b44743fdf1"
+    },
+    "source311": {
+      "tests": 175,
+      "passed": 175,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "806f119e5042f917692feabee682177036985db6228f1dc7cd77c60713ec02aa"
+    },
+    "wheel": {
+      "tests": 175,
+      "passed": 175,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "1c97c55fc4e6d50a8513939a97f9833a96529bbe22b3cc9de6fd8e6e72159d4a"
+    },
+    "sdist": {
+      "tests": 175,
+      "passed": 175,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "1cb4f38ba4e20805408abb969b570a23e0c26ca3dd7654da6b75b9f2788d0db3"
+    }
+  },
+  "identity": {
+    "source_commit": "b9533352abc4c8c94a2676792f00b616b63032ee",
+    "git_files": 405,
+    "sdist_matching_git_members": 350,
+    "runtime_origins_each": 63,
+    "unique_cases_each": 175,
+    "retained_prior_cases": 144,
+    "new_cases": 31,
+    "root_independent_checks": "Actual Git/file bytes, JUnit identities/results, origins, logs and artifact hashes PASS",
+    "review": "Astra limited static Mock workflow review; real scheduling/M5/Release not accepted"
+  },
+  "static": "Ruff/format/mypy63 PASS",
+  "independent_review": "Astra limited static design/source review; no open blockers; Work pending",
+  "artifacts": {
+    "agentsync_local-0.3.0a27-py3-none-any.whl": "481d19a93252602be2c9ff4c5d976b3ae6e18aff994f34ecf2ed89a738cb2a19",
+    "agentsync_local-0.3.0a27.tar.gz": "20afddd135d3f823cba3df8fca1e6906a92a35e18a02903fb7c58d377f5446d6"
+  },
+  "archive": "releases/0.3.0a27/checkpoints/local-b953335.tar.gz",
+  "archive_sha256": "46eb36808da7d23548b2819a176e2f8bb41dabdb4db6fd31a0d6e98ff67aa31e",
+  "archive_bytes": 1170863,
+  "manifest_members": 45,
+  "not_run": [
+    "full repository suite at this SHA",
+    "Linux/macOS at this SHA",
+    "real clients",
+    "autonomous relay",
+    "formal42 acceptance"
+  ],
+  "release": "BLOCKED",
+  "failures_preserved": "Initial RED31 interface failures and mypy missing-annotation failure retained; corrected before freeze. Only owned simulation data used."
+}

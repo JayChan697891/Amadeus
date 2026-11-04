@@ -1,5 +1,18 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha27 M7 configurable owned Mock workflows at `b9533352abc4c8c94a2676792f00b616b63032ee`
+adds typed copied task graphs (1..16), strict pre-I/O validation and deterministic
+topological creation. Non-demo chains/fan-in/parallel tasks reuse dependency/capability
+dispatch, attempt/time budgets, explicit simulated failure/retry and opposite-worker
+reviews. Original four-task demo retained; no caller Core/adapters/credentials or
+external execution. Root Windows3.14/3.11 source and fresh offline Windows wheel/sdist
+eight affected modules each175pass/0skip, same144retained+31newIDs. Root checked405Git
+inputs,350matching sdist members,63runtime origins each and raw artifact/log/JUnit hashes.
+Ruff/format/mypy63 pass; Astra limited static review has no open blockers. InitialRED31
+and initial mypy annotation error retained. Evidence: acceptance/evidence/alpha27-local-summary.json
+(45-member archive). Work pending; whole current repository/Linux/macOS/real clients/relay
+and42formal requirements NOT RUN. All results simulation/unverified; M5/Release BLOCKED.
+
 Alpha26 M6 callback error boundary at `5eaaf152c447d6a6cf79fd9fbf1cfc734fda62a9`
 fixes reproduced private exception leaks from manager lifecycle callbacks and
 malformed receipt/error properties. Fixed public codes/messages/statuses replace
