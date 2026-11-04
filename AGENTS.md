@@ -1,3 +1,10 @@
+# Current continuation entry (2026-11-04)
+
+The user cancelled the Claude handoff/package and requested continued Codex work.
+CLAUDE.md and docs/HANDOFF-CLAUDE.md are historical, not continuation instructions.
+Read current PLAN/PROGRESS and live PR feedback before selecting the next bounded task.
+Historical M5A/M4 statements below do not override current PLAN/PROGRESS or gates.
+
 # Model allocation policy (owner instruction, 2026-10-26)
 
 Default routine development, fixes, tests, documentation and ordinary decisions to

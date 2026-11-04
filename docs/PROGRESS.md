@@ -1,5 +1,36 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+2026-11-04: owner cancelled the Claude package/handoff and resumed Codex work.
+Live PR30 feedback retains productd9b1abc's limited component acceptance but blocks
+handoff documents for a missing repo DELIVERY.json and conflicting Work statuses.
+Current documentation retires that entry, removes the external-file dependency
+and reconciles status; this correction awaits Work review. No runtime/test changes.
+
+Alpha25 M6 nonblocking receipt at `d9b1abc22a6748575bf9935cb9c651172d250ba2`
+adds `RunManager.dispatch_task`, sharing unchanged admission with `start_task`.
+Callers obtain a handle before adapter startup returns, then use the bounded
+observer; mixed calls retain one start/history slot, namespace/capacity checks,
+original receipt replay and fixed failure codes. Windows3.14/3.11 source and
+fresh offline Windows wheel/sdist seven affected modules each99pass/0skip,
+identical74retained+25newIDs. Root verified399Git inputs,347sdist matching
+members and63actual module origins per environment; Ruff/format176/mypy63 pass.
+Astra independent source/result review found no blocker in this limited scope.
+Evidence: acceptance/evidence/alpha25-local-summary.json and43-member archive.
+Full alpha25 repository/Linux/macOS, real clients and formal42 NOT RUN;
+M5/Release BLOCKED and Work acceptance pending. No Actions/main changes.
+
+Alpha24 bounded M6 dispatch observation at `03185807230beea0c276654c7dbb9a6702c56b64`
+adds `RunManager.wait_dispatch` without starting/retrying/cancelling adapter work.
+Strict0..300s observation timeout returns the existing sanitized receipt state;
+caller cancellation preserves the original dispatch and history slot. Returned is
+not run success. Windows3.14/3.11 source and fresh offline Windows wheel/sdist
+affected seven-module groups each94pass/0skip, identical74retained+20newIDs.
+Root verified397Git files,346sdist matching members and63actual module origins
+per environment; Ruff/format176/mypy63 pass. Evidence archive and package hashes:
+acceptance/evidence/alpha24-local-summary.json. No Linux/macOS or complete alpha24
+suite, real clients or formal42 execution this round; M5/Release stay BLOCKED and
+Work acceptance pending. No Actions, VM startup, main or account changes.
+
 Alpha23 internal independent task completion at `e0b1d7c6e0333a3485169253d2d9500d7762c2b7`
 adds schema14 and `OwnerVerifiedTaskCompletion.complete_once`. Owner and independent
 reviewer auth precede lookup/replay; both task versions, fresh physical candidate,

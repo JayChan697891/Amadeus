@@ -140,11 +140,40 @@ class RunManager(Generic[C, R, T]):
             raise AgentSyncError("not_found", "Adapter is not registered.", 404)
         return adapter
 
+    async def wait_dispatch(self, handle: str, *, timeout_seconds: float) -> DispatchSnapshot:
+        """Observe an existing start for up to 300 seconds, without starting more work.
+
+        This observation timeout neither limits adapter execution nor grants permission.
+        Timeout or caller cancellation leaves the dispatched start running; a returned
+        receipt never establishes run success.
+        """
+        if type(timeout_seconds) not in (int, float) or not 0 <= timeout_seconds <= 300:
+            raise AgentSyncError("validation_error", "Invalid dispatch observation timeout.")
+        snapshot = self.get_dispatch(handle)
+        if snapshot.state == "pending" and timeout_seconds > 0:
+            # asyncio.wait does not cancel its input task on timeout or caller cancellation.
+            await asyncio.wait((self._routes[handle].start,), timeout=timeout_seconds)
+        return self.get_dispatch(handle)
+
     async def capabilities(self, adapter_id: str) -> C:
         return await self._adapter(adapter_id).capabilities()
 
     async def start_task(self, adapter_id: str, task: AdapterTask) -> ManagedRun[R]:
         """Return the original dispatch receipt on replay; use get_status for freshness."""
+        route = await self._admit(adapter_id, task)
+        run = await self._started(route)
+        return ManagedRun(route.handle, route.adapter_id, run)
+
+    async def dispatch_task(self, adapter_id: str, task: AdapterTask) -> DispatchSnapshot:
+        """Admit once and return a handle without waiting for the adapter's receipt.
+
+        Replay observes the current dispatch state, never execution success or permission.
+        The admitted start retains its history slot independently of caller cancellation.
+        """
+        route = await self._admit(adapter_id, task)
+        return self.get_dispatch(route.handle)
+
+    async def _admit(self, adapter_id: str, task: AdapterTask) -> _Route[R]:
         adapter = self._adapter(adapter_id)
         if type(task) is not AdapterTask:
             raise AgentSyncError("validation_error", "Invalid adapter request.")
@@ -170,8 +199,7 @@ class RunManager(Generic[C, R, T]):
                 route = _Route(handle, adapter_id, task, start)
                 self._routes[handle] = route
                 self._requests[task.request_id] = route
-        run = await self._started(route)
-        return ManagedRun(route.handle, route.adapter_id, run)
+        return route
 
     async def _started(self, route: _Route[R]) -> R:
         outcome = await asyncio.shield(route.start)

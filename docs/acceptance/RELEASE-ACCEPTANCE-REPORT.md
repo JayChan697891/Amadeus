@@ -1,5 +1,54 @@
 # Release Acceptance Report
 
+Handoff update (2026-10-30): [Work accepted PR30's limited M6 component](https://github.com/JayChan697891/agentsync/pull/30#issuecomment-6522196337)
+at head9027286 / productd9b1abc (comment updated12:07:59Z). This supersedes the
+pending Work status in historical alpha25 snapshots only for that component.
+It does not accept this later documentation update, PR29, M5 or Release.
+2026-11-04: the user cancelled the handoff package and resumed Codex development.
+The Work update at that link (2026-10-31T02:12:10Z) blocked the handoff documents,
+while retaining the product's limited acceptance. Current instructions are AGENTS.md.
+
+## Alpha25 M6 nonblocking receipt checkpoint
+
+Frozen source `d9b1abc22a6748575bf9935cb9c651172d250ba2` adds a nonblocking
+dispatch receipt through the original shared admission path. Callers can obtain
+their handle while startup is pending and compose it with bounded observation.
+Mixed old/new calls admit once; capacity, namespace, replay and sanitized failure
+behavior remain unchanged. A returned receipt is neither run success nor permission.
+
+Windows Python3.14/3.11 source and fresh offline Windows wheel/rebuilt sdist each
+pass the same99 affected cases (74retained+25new), with zero skips/errors/failures.
+Root independently checked399Git inputs,347matching sdist members,63actual
+runtime origins per environment, artifact/log/JUnit hashes and43archive members.
+Ruff, format176 and mypy63 pass. Astra independently reviewed the actual delta
+and existing logs/JUnit with no blocking finding; package-origin auditing was
+performed separately by root. See [alpha25 evidence](evidence/alpha25-local-summary.json).
+
+Complete alpha25 repository suites, Linux/macOS, real clients, autonomous relay
+and42formal requirements were NOT RUN. M5/Release remain **BLOCKED** and Work
+accepted the limited component at9027286; the later handoff documentation was
+blocked by Work and the user cancelled that handoff on2026-11-04. This documentation
+correction still requires independent review. Historical evidence retains its original SHA.
+No Actions, real-client calls, VM startup, account changes or main merge.
+
+# Alpha24 bounded M6 observation checkpoint
+
+Frozen source `03185807230beea0c276654c7dbb9a6702c56b64` adds bounded waiting for
+an existing run-manager start receipt. Timeout/caller cancellation preserves the
+dispatch, and returned receipts never imply successful execution. Windows3.14,
+Windows3.11, fresh offline Windows wheel and rebuilt sdist each pass the same94
+affected cases (74retained+20new), with no skips/failures. Root independently
+checked397Git inputs,346sdist matching members,63actual runtime origins per
+environment, JUnit identities, package hashes and the38-member archive manifest.
+Ruff, format176files and mypy63 pass. See
+[alpha24 evidence](evidence/alpha24-local-summary.json).
+
+This is component acceptance only. Complete alpha24 repository suites, Linux,
+macOS, real clients, autonomous relay and42formal requirements were NOT RUN.
+Earlier alpha23 full Linux results apply to their frozen source, not alpha24.
+Overall M5/Release remain **BLOCKED**; independent Work acceptance is pending.
+No hosted Actions, real model calls, VM startup, main merge or account changes.
+
 Alpha23 internal independent task completion at `e0b1d7c6e0333a3485169253d2d9500d7762c2b7`
 adds schema14 and `OwnerVerifiedTaskCompletion.complete_once`. Owner and independent
 reviewer auth precede lookup/replay; both task versions, fresh physical candidate,

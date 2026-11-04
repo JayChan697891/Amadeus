@@ -1,0 +1,83 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "recorded_at_utc": "2026-10-30T05:05:07.874471-07:00",
+  "source_commit": "d9b1abc22a6748575bf9935cb9c651172d250ba2",
+  "version": "0.3.0a25",
+  "scope": "M6 nonblocking dispatch receipt plus bounded observation; unchanged shared admission and no new execution authorization",
+  "source_windows314": {
+    "tests": 99,
+    "passed": 99,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_sha256": "511177b7ca7ef0368a7eb2fdea26b1bbb02f27182a35902fab7cd1f248644bc1"
+  },
+  "source_windows311": {
+    "tests": 99,
+    "passed": 99,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_sha256": "52b019ceb364c035e9d6de1b29d73a86015f4a9f3e81f5ed76911b607f309d29"
+  },
+  "fresh_windows_installed_each": {
+    "passed": 99,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "seven affected manager/protocol/Core-boundary modules, not whole repository"
+  },
+  "case_identity": {
+    "retained": 74,
+    "added": 25,
+    "identical_unique_ids_each": 99
+  },
+  "static": "Ruff, format176files and mypy63modules PASS",
+  "identity": {
+    "frozen_source_sha": "d9b1abc22a6748575bf9935cb9c651172d250ba2",
+    "git_files_independently_matched": 399,
+    "runtime_modules_each": 63,
+    "sdist_git_members_matched": 347,
+    "unique_cases_each": 99,
+    "retained_cases": 74,
+    "added_cases": 25,
+    "root_actual_file_junit_hash_origin_review": "PASS",
+    "code_review": "Bounded observer and nonblocking receipt share original admission; no retry/cancel/Core changes",
+    "release": "BLOCKED",
+    "not_run": [
+      "full repository suite at alpha25",
+      "Linux/macOS at alpha25",
+      "real Agent clients and autonomous relay",
+      "formal42 acceptance"
+    ]
+  },
+  "artifacts": {
+    "agentsync_local-0.3.0a25-py3-none-any.whl": "a59f3c4ac3731452aa5025ead8e437f8983448489560a2181a29a0909e0241aa",
+    "agentsync_local-0.3.0a25.tar.gz": "2ce53e94af1a31b6edd6178e1e568190f904c12c6f05d2558a905cbff48ff012"
+  },
+  "evidence_archive": "releases/0.3.0a25/checkpoints/local-d9b1abc.tar.gz",
+  "evidence_archive_sha256": "2f9fe7a7dadc874d3f14ee7744a202bcf07a609c924407c64245f54adc21a672",
+  "evidence_archive_bytes": 1140241,
+  "manifest_members": 43,
+  "M5": "BLOCKED",
+  "Release": "BLOCKED",
+  "formal_requirements": "42 not_run unchanged",
+  "real_clients": "NOT RUN; synthetic Python protocol fixtures and Mock only",
+  "Work_acceptance": "PENDING",
+  "not_run": [
+    "full repository suite at alpha25",
+    "Linux/macOS at alpha25",
+    "real Agent clients and autonomous relay",
+    "formal42 acceptance"
+  ],
+  "constraints": "No Actions, real-client execution, account changes, paid API, VM startup or main changes",
+  "development_failure_note": "No product test/check failure. Earlier alpha24 commit identity and documentation whitespace save issues were corrected without account/global configuration or runtime changes.",
+  "independent_review": {
+    "model": "GPT-6 Astra",
+    "source_commit": "d9b1abc22a6748575bf9935cb9c651172d250ba2",
+    "findings": [],
+    "scope": "Limited component source and existing result review; root package/origin audit separate",
+    "evidence_member": "review/astra-dispatch-review.json",
+    "Work_acceptance": "PENDING"
+  }
+}

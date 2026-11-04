@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0a25 - nonblocking dispatch receipt
+
+- Add `RunManager.dispatch_task(adapter_id, task)` to obtain an admitted handle
+  without waiting for a possibly stalled adapter start. Compose with the bounded
+  `wait_dispatch` observer; returned receipts still do not imply execution success.
+- Share the existing admission path with `start_task`, preserving namespace,
+  idempotency, capacity, cancellation and sanitized failure behavior.
+
+## 0.3.0a24 - bounded dispatch observation
+
+- Add `RunManager.wait_dispatch(handle, timeout_seconds=...)` to wait up to 300
+  seconds for an existing adapter start receipt. Zero seconds polls immediately.
+- Observation timeout or caller cancellation preserves the original dispatched
+  work and history slot. It never retries, cancels execution or implies run success.
+- Real clients, automatic relay, M5 and Release acceptance remain unverified/blocked.
+
 ## 0.3.0a23 - internal independent task completion
 
 - Add an owner-mediated completion gate with independent reviewer authentication,
