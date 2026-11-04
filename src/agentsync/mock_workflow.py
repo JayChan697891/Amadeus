@@ -1,21 +1,22 @@
-"""Owned four-task simulation demo, not a scheduler or real-client relay.
+"""Owned bounded Mock workflows, not a production scheduler or real-client relay.
 
 Only a fresh temporary child of an explicit existing scratch parent is used.
-The fixed fixture performs authenticated Core lifecycle operations and peer
+The owned fixture performs authenticated Core lifecycle operations and peer
 reviews, but all work/results/evidence are simulation_only/unverified. No caller
-Core, tasks, adapters, credentials, instructions or callbacks are accepted. There
+Core, adapters, credentials, instructions or callbacks are accepted. There
 is no restart recovery, external execution, lease renewal or production authority.
 """
 
 from __future__ import annotations
 
 import math
+import re
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from time import monotonic
-from typing import Any
+from typing import Any, Literal
 
 from agentsync.adapters import AdapterTask
 from agentsync.core.service import Core
@@ -23,12 +24,74 @@ from agentsync.dispatch_planning import plan_dispatches
 from agentsync.mock_run_manager import MockRunManager, MockWorker
 
 _MARKER = "simulation_only/unverified"
+
+
+def _valid_label(value: str) -> bool:
+    return type(value) is str and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", value) is not None
+
+
+@dataclass(frozen=True, slots=True)
+class MockWorkflowTask:
+    """Simulation metadata only; labels are 1..64 ASCII identifier characters."""
+
+    label: str
+    priority: int
+    capability: Literal["build", "test"]
+    dependencies: tuple[str, ...] = ()
+    fail_first_attempt: bool = False
+
+    def __post_init__(self) -> None:
+        if (
+            not _valid_label(self.label)
+            or type(self.priority) is not int
+            or not -(2**63) <= self.priority < 2**63
+            or type(self.capability) is not str
+            or self.capability not in ("build", "test")
+            or type(self.dependencies) is not tuple
+            or len(self.dependencies) > 15
+            or any(not _valid_label(label) for label in self.dependencies)
+            or len(set(self.dependencies)) != len(self.dependencies)
+            or self.label in self.dependencies
+            or type(self.fail_first_attempt) is not bool
+        ):
+            raise ValueError("Invalid mock workflow task.")
+
+
 _SCENARIO = (
-    ("root-build", 40, "build", ()),
-    ("root-test", 30, "test", ()),
-    ("join", 20, "build", ("root-build", "root-test")),
-    ("final", 10, "test", ("join",)),
+    MockWorkflowTask("root-build", 40, "build", fail_first_attempt=True),
+    MockWorkflowTask("root-test", 30, "test"),
+    MockWorkflowTask("join", 20, "build", ("root-build", "root-test")),
+    MockWorkflowTask("final", 10, "test", ("join",)),
 )
+
+
+def _copy_tasks(tasks: tuple[MockWorkflowTask, ...]) -> tuple[MockWorkflowTask, ...]:
+    if (
+        type(tasks) is not tuple
+        or not 1 <= len(tasks) <= 16
+        or any(type(task) is not MockWorkflowTask for task in tasks)
+    ):
+        raise ValueError("Invalid mock workflow tasks.")
+    try:
+        copies = tuple(replace(task) for task in tasks)
+    except (AttributeError, TypeError):
+        raise ValueError("Invalid mock workflow task.") from None
+    remaining = {task.label: task for task in copies}
+    if len(remaining) != len(copies) or any(
+        dependency not in remaining for task in copies for dependency in task.dependencies
+    ):
+        raise ValueError("Invalid mock workflow dependencies or duplicate labels.")
+    ordered: list[MockWorkflowTask] = []
+    while remaining:
+        ready = sorted(
+            label
+            for label, task in remaining.items()
+            if all(dependency not in remaining for dependency in task.dependencies)
+        )
+        if not ready:
+            raise ValueError("Mock workflow dependencies contain a cycle.")
+        ordered.extend(remaining.pop(label) for label in ready)
+    return tuple(ordered)
 
 
 @dataclass
@@ -45,12 +108,31 @@ async def run_mock_workflow_demo(
     attempt_budget: int = 6,
     max_elapsed_seconds: float | None = None,
 ) -> dict[str, Any]:
-    """Run a bounded fixed simulation in a disposable owned child, then remove it.
+    """Run the original four-task simulation, including its first build failure."""
+    return await run_mock_workflow(
+        scratch_parent,
+        tasks=_SCENARIO,
+        max_attempts_per_task=max_attempts_per_task,
+        attempt_budget=attempt_budget,
+        max_elapsed_seconds=max_elapsed_seconds,
+    )
+
+
+async def run_mock_workflow(
+    scratch_parent: Path,
+    *,
+    tasks: tuple[MockWorkflowTask, ...],
+    max_attempts_per_task: int = 2,
+    attempt_budget: int = 6,
+    max_elapsed_seconds: float | None = None,
+) -> dict[str, Any]:
+    """Run 1..16 typed simulation tasks in a disposable owned child, then remove it.
 
     The parent must already be an absolute directory. Strict integer bounds are
-    1..3 attempts per task and 1..16 starts overall. Options are validated before
-    filesystem I/O. Existing parent databases are never opened. Only logical
-    fixture labels and simulation observations are returned, without credentials.
+    1..3 attempts per task and 1..16 starts overall (default 6). Task values are
+    copied and validated as an acyclic graph before filesystem I/O. Unordered
+    inputs use deterministic topological creation order. Existing parent databases
+    are never opened. Only logical labels and simulation observations are returned.
     Core errors propagate; owned active Mock runs are cancelled on unexpected exit.
     Optional elapsed budget is a finite number in (0, 60], including owned Core
     setup. It stops admission and cancels active simulations after expiry is
@@ -73,6 +155,7 @@ async def run_mock_workflow_demo(
         )
     ):
         raise ValueError("Invalid mock workflow scratch parent or bounds.")
+    scenario = _copy_tasks(tasks)
     try:
         scratch_parent = scratch_parent.resolve(strict=True)
     except (OSError, RuntimeError):
@@ -81,11 +164,15 @@ async def run_mock_workflow_demo(
         raise ValueError("Mock workflow scratch parent must be an existing directory.")
     deadline = None if max_elapsed_seconds is None else monotonic() + max_elapsed_seconds
     with TemporaryDirectory(prefix="agentsync-mock-workflow-", dir=scratch_parent) as child:
-        return await _run(Path(child), max_attempts_per_task, attempt_budget, deadline)
+        return await _run(Path(child), scenario, max_attempts_per_task, attempt_budget, deadline)
 
 
 async def _run(
-    directory: Path, max_attempts: int, budget: int, deadline: float | None
+    directory: Path,
+    scenario: tuple[MockWorkflowTask, ...],
+    max_attempts: int,
+    budget: int,
+    deadline: float | None,
 ) -> dict[str, Any]:
     root = directory / "project"
     root.mkdir()
@@ -120,17 +207,19 @@ async def _run(
 
     tasks: dict[str, dict[str, Any]] = {}
     requirements: dict[str, tuple[str, ...]] = {}
-    for label, priority, capability, dependencies in _SCENARIO:
+    for definition in scenario:
+        label = definition.label
         tasks[label] = call(
             0,
             "create_task",
             title=label,
             description=_MARKER,
-            priority=priority,
-            dependencies=[tasks[parent]["id"] for parent in dependencies],
+            priority=definition.priority,
+            dependencies=[tasks[parent]["id"] for parent in definition.dependencies],
             request_id="create-" + label,
         )
-        requirements[tasks[label]["id"]] = (capability,)
+        requirements[tasks[label]["id"]] = (definition.capability,)
+    fail_first = {definition.label for definition in scenario if definition.fail_first_attempt}
     labels = {row["id"]: label for label, row in tasks.items()}
     worker_indices = {actor["agent_id"]: index for index, actor in enumerate(actors)}
     worker_labels = ("build", "test")
@@ -257,7 +346,7 @@ async def _run(
             for run_id, (label, worker) in list(active.items()):
                 if expired():
                     break
-                failed = label == "root-build" and attempts[label] == 1
+                failed = label in fail_first and attempts[label] == 1
                 ended = await manager.finish_mock_run(run_id, output=_MARKER, failed=failed)
                 result = await manager.get_result(run_id)
                 if result.result.run != ended.run or result.result.output != _MARKER:

@@ -1,6 +1,7 @@
 """Actual owned Core fixture composition with in-memory simulations only."""
 
 import json
+from dataclasses import FrozenInstanceError
 from pathlib import Path
 
 import pytest
@@ -297,3 +298,212 @@ def test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved(tmp_
     assert existing["data"]["status"] == "completed"
     assert existing["data"]["duplicate_claim_rejected"]
     assert (classic / "agentsync.db").is_file()
+
+
+@pytest.mark.asyncio
+async def test_configurable_unordered_dag_has_parallel_roots_chain_and_fan_in(tmp_path):
+    spec = workflow.MockWorkflowTask
+    tasks = (
+        spec("publish", 10, "test", ("merge",)),
+        spec("merge", 20, "build", ("compile", "unit")),
+        spec("compile", 30, "build", ("root-build",)),
+        spec("unit", 40, "test"),
+        spec("root-build", 50, "build"),
+    )
+    result = await workflow.run_mock_workflow(tmp_path, tasks=tasks)
+    data = result["data"]
+    starts = [event for event in data["trace"] if event["event"] == "started"]
+    assert [(event["task"], event["worker"]) for event in starts] == [
+        ("root-build", "build"),
+        ("unit", "test"),
+        ("compile", "build"),
+        ("merge", "build"),
+        ("publish", "test"),
+    ]
+    assert [event["event"] for event in data["trace"][:2]] == ["started", "started"]
+    assert data["outcome"] == "simulated_completed" and data["stop_reason"] is None
+    assert data["max_active_simulations"] == 2 and data["active_simulations"] == 0
+    assert set(data["attempt_counts"].values()) == {1} and data["attempts_used"] == 5
+    assert set(data["task_statuses"].values()) == {"completed"}
+    assert len(data["peer_reviews"]) == 5 and data["persistence_verified"]
+    assert all(
+        review["owner"] != review["reviewer"] and review["evidence"] == "simulation_only/unverified"
+        for review in data["peer_reviews"]
+    )
+    assert data["scope"] == "simulation_only" and data["verification"] == "unverified"
+    assert not data["execution_connected"] and not data["formal_acceptance"]
+    assert not data["real_client_verified"]
+    assert await workflow.run_mock_workflow(tmp_path, tasks=tuple(reversed(tasks))) == result
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "max_attempts,budget,reason,counts,statuses",
+    [
+        (2, 6, None, {"a": 2, "b": 2, "join": 1}, ["completed"] * 3),
+        (
+            1,
+            6,
+            "per_task_attempts_exhausted",
+            {"a": 1, "b": 1, "join": 0},
+            ["failed", "failed", "pending"],
+        ),
+        (
+            2,
+            3,
+            "attempt_budget_exhausted",
+            {"a": 2, "b": 1, "join": 0},
+            ["completed", "failed", "pending"],
+        ),
+        (
+            2,
+            4,
+            "attempt_budget_exhausted",
+            {"a": 2, "b": 2, "join": 0},
+            ["completed", "completed", "pending"],
+        ),
+    ],
+)
+async def test_configured_failures_share_existing_retry_and_start_budgets(
+    tmp_path, max_attempts, budget, reason, counts, statuses
+):
+    spec = workflow.MockWorkflowTask
+    tasks = (
+        spec("a", 30, "build", fail_first_attempt=True),
+        spec("b", 20, "test", fail_first_attempt=True),
+        spec("join", 10, "build", ("a", "b")),
+    )
+    data = (
+        await workflow.run_mock_workflow(
+            tmp_path, tasks=tasks, max_attempts_per_task=max_attempts, attempt_budget=budget
+        )
+    )["data"]
+    assert data["stop_reason"] == reason and data["attempt_counts"] == counts
+    assert list(data["task_statuses"].values()) == statuses
+    assert data["attempts_used"] == sum(counts.values()) <= budget
+    assert data["outcome"] == ("simulated_completed" if reason is None else "simulated_stopped")
+    assert data["active_simulations"] == 0 and data["persistence_verified"]
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.asyncio
+async def test_configured_descendant_failure_retries_and_caller_values_are_copied(
+    tmp_path, monkeypatch
+):
+    spec = workflow.MockWorkflowTask
+    child = spec("child", 10, "test", ("root",), True)
+    tasks = (child, spec("root", 20, "build"))
+    with pytest.raises(FrozenInstanceError):
+        child.label = "mutated"
+    start = MockRunManager.start_task
+
+    async def mutate(self, *args, **kwargs):
+        object.__setattr__(child, "label", "")
+        object.__setattr__(child, "dependencies", ["missing"])
+        object.__setattr__(child, "fail_first_attempt", False)
+        return await start(self, *args, **kwargs)
+
+    monkeypatch.setattr(MockRunManager, "start_task", mutate)
+    data = (await workflow.run_mock_workflow(tmp_path, tasks=tasks))["data"]
+    assert data["attempt_counts"] == {"root": 1, "child": 2}
+    assert data["task_statuses"] == {"root": "completed", "child": "completed"}
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "case",
+    [
+        "empty",
+        "list",
+        "too_many",
+        "wrong_task",
+        "subclass",
+        "duplicate",
+        "missing",
+        "self",
+        "cycle",
+        "bad_label",
+        "unicode_label",
+        "long_label",
+        "priority_bool",
+        "priority_float",
+        "priority_low",
+        "priority_high",
+        "capability",
+        "capability_type",
+        "dependencies_list",
+        "dependency_type",
+        "duplicate_dependencies",
+        "too_many_dependencies",
+        "failure_int",
+        "mutated_task",
+    ],
+)
+async def test_configurable_task_validation_precedes_filesystem_io(tmp_path, monkeypatch, case):
+    def no_io(*args, **kwargs):
+        pytest.fail("I/O before task graph validation")
+
+    monkeypatch.setattr(Path, "resolve", no_io)
+    monkeypatch.setattr(Path, "is_dir", no_io)
+    with pytest.raises(ValueError):
+        spec = workflow.MockWorkflowTask
+        task = spec("a", 0, "build")
+        tasks = (task,)
+        if case == "empty":
+            tasks = ()
+        elif case == "list":
+            tasks = [task]
+        elif case == "too_many":
+            tasks = tuple(spec(f"a{index}", 0, "build") for index in range(17))
+        elif case == "wrong_task":
+            tasks = ({"label": "a"},)
+        elif case == "subclass":
+
+            class Child(spec):
+                pass
+
+            tasks = (Child("a", 0, "build"),)
+        elif case == "duplicate":
+            tasks = (task, task)
+        elif case == "missing":
+            tasks = (spec("a", 0, "build", ("missing",)),)
+        elif case == "self":
+            tasks = (spec("a", 0, "build", ("a",)),)
+        elif case == "cycle":
+            tasks = (spec("a", 0, "build", ("b",)), spec("b", 0, "test", ("a",)))
+        elif case == "mutated_task":
+            object.__setattr__(task, "priority", True)
+        else:
+            changes = {
+                "bad_label": {"label": "a/b"},
+                "unicode_label": {"label": "任务"},
+                "long_label": {"label": "a" * 65},
+                "priority_bool": {"priority": True},
+                "priority_float": {"priority": 1.0},
+                "priority_low": {"priority": -(2**63) - 1},
+                "priority_high": {"priority": 2**63},
+                "capability": {"capability": "exec"},
+                "capability_type": {"capability": []},
+                "dependencies_list": {"dependencies": []},
+                "dependency_type": {"dependencies": (1,)},
+                "duplicate_dependencies": {"dependencies": ("b", "b")},
+                "too_many_dependencies": {"dependencies": tuple(f"b{i}" for i in range(16))},
+                "failure_int": {"fail_first_attempt": 1},
+            }[case]
+            tasks = (spec(**{"label": "a", "priority": 0, "capability": "build", **changes}),)
+        await workflow.run_mock_workflow(tmp_path, tasks=tasks)
+
+
+@pytest.mark.asyncio
+async def test_configurable_maximum_graph_and_priority_bounds(tmp_path):
+    spec = workflow.MockWorkflowTask
+    tasks = tuple(
+        spec(f"task{index:02}", -(2**63) if index else 2**63 - 1, "build") for index in range(16)
+    )
+    data = (await workflow.run_mock_workflow(tmp_path, tasks=tasks, attempt_budget=16))["data"]
+    assert data["outcome"] == "simulated_completed" and data["attempts_used"] == 16
+    assert data["max_active_simulations"] == 1 and data["active_simulations"] == 0
+    assert set(data["task_statuses"].values()) == {"completed"}
+    assert not list(tmp_path.iterdir())
