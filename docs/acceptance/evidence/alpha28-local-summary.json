@@ -1,0 +1,80 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "version": "0.3.0a28",
+  "source_commit": "fdb316b736825f0ac7b3e6a79ddee1046ff23668",
+  "scope": "M6 exact desktop Codex version admission; live tasks NOT RUN",
+  "suites": {
+    "source314": {
+      "tests": 151,
+      "passed": 151,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "2a6e7dec9a66512667be5cd9d60eac9ac4f2798d8f4431506c643305f3ed4168"
+    },
+    "source311": {
+      "tests": 151,
+      "passed": 151,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "18cebb96a09ceb06da778a408ec8504d82dd8f6979602cc6f0197328c0ad2d18"
+    },
+    "wheel": {
+      "tests": 151,
+      "passed": 151,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "ac35f96e2b4633b6cb414eaab7516dda8fdb0cb7152a6dc69a1b39cebbd3ea00"
+    },
+    "sdist": {
+      "tests": 151,
+      "passed": 151,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "8688ee38b59661f5ce4485cf6d430065af2f832fcac5c11547a9f4feb8d0332b"
+    }
+  },
+  "identity": {
+    "source_commit": "fdb316b736825f0ac7b3e6a79ddee1046ff23668",
+    "git_files": 407,
+    "sdist_matching_git_members": 351,
+    "runtime_origins_each": 63,
+    "unique_cases_each": 151,
+    "retained_prior_cases": 143,
+    "new_cases": 8,
+    "root_independent_checks": "Actual Git/file bytes, JUnit identities/results, origins, logs and artifact hashes PASS",
+    "review": "Astra limited static version-guard review; M5/Release not accepted"
+  },
+  "static": "Ruff/format/mypy63 PASS",
+  "independent_review": "Astra limited static design/source review; no open blockers; Work pending",
+  "artifacts": {
+    "agentsync_local-0.3.0a28-py3-none-any.whl": "1d41936a361ee5a44a2f27e56ecb1ad4c17ac2f402a99842ba523a5b4fa2c455",
+    "agentsync_local-0.3.0a28.tar.gz": "7e5e0fe42293ea3109c8f71505ce613bb62ca430cf969427654662c70c6f203f"
+  },
+  "archive": "releases/0.3.0a28/checkpoints/local-fdb316b.tar.gz",
+  "archive_sha256": "7cbfd97bb0ff840375b055698024e5773db506bdd8622788d772bbed6ceb8653",
+  "archive_bytes": 1177503,
+  "manifest_members": 55,
+  "not_run": [
+    "full repository suite at this SHA",
+    "Linux/macOS at this SHA",
+    "real clients",
+    "autonomous relay",
+    "formal42 acceptance"
+  ],
+  "release": "BLOCKED",
+  "failures_preserved": "Initial RED1 new-version rejection and six passing rejection cases retained; fixed before freeze. Factory tests use owned Python fixtures; actual Codex only version/help/read-only feature listing and real-binary plan preparation.",
+  "readonly_cli_observation": {
+    "npm": "0.162.0 not admitted",
+    "desktop": "0.166.0-alpha.6",
+    "scope": "version/help/read-only feature listing and real pinned binary plan preparation; no model task",
+    "empty_disposable_homes": true,
+    "raw_model_output_collected": false,
+    "official_interface": "https://learn.chatgpt.com/docs/non-interactive-mode",
+    "auth_billing_sandbox": "UNVERIFIED"
+  },
+  "collector_recovery": "First collector expected object findings, reviewer used strings; failed before archive creation. Preserved first helper, checked explicit open_blockers and exact source hashes; no product result change or rerun."
+}

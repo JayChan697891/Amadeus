@@ -1,5 +1,30 @@
 # Release Acceptance Report
 
+## Alpha28 exact desktop Codex declaration checkpoint
+
+Frozen `fdb316b736825f0ac7b3e6a79ddee1046ff23668` admits only the additional
+desktop declaration0.166.0-alpha.6; the old default stays0.164.0-alpha.11.1.
+Unlisted versions remain rejected. Existing opt-in factory preparation shares
+this gate; it still requires independent real-execution authorization and gates.
+
+Root actual CLI metadata probes observed npm0.162.0 and desktop0.166.0-alpha.6,
+listing required flags/features using disposable homes. The actual desktop binary
+hash was checked during non-executing plan preparation. This is not a live model
+test, billing proof, sandbox proof or full argument-combination execution. Commands
+and warnings are preserved. [Official non-interactive interface](https://learn.chatgpt.com/docs/non-interactive-mode).
+
+Windows3.14/3.11 source and fresh offline Windows wheel/rebuilt sdist each151pass,
+zero skips/failures/errors, same143retained+8newIDs across six affected modules.
+Ruff/format/mypy63 pass; root checked407Git inputs,351matching sdist members,
+63actual runtime origins each and raw artifact/log/JUnit/55archive-member hashes.
+Astra static review no open blockers. InitialRED1 retained. The initial collector's
+review-schema assumption failed before archive creation; its code is retained and
+the collector was corrected without rerunning or changing product results.
+See [alpha28 evidence](evidence/alpha28-local-summary.json).
+
+Complete current repository/Linux/macOS, live model tasks, autonomous relay and42
+formal acceptance NOT RUN. Work acceptance pending; M5/Release BLOCKED.
+
 ## Alpha27 configurable owned Mock graph checkpoint
 
 Frozen `b9533352abc4c8c94a2676792f00b616b63032ee` executes validated caller-defined
