@@ -1,0 +1,197 @@
+[
+  {
+    "schema": "agentsync.local-checkpoint.v1",
+    "pr": 31,
+    "version": "0.3.0a26",
+    "source_commit": "09c2f059bdf13ff32eaf48f9c28af6bb80850d38",
+    "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+    "suites": {
+      "source314": {
+        "tests": 179,
+        "passed": 179,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "fb03e146d80c24dabafe95531832f2daa3cfe6db3e16d31756fe38dc40147fc8"
+      },
+      "source311": {
+        "tests": 179,
+        "passed": 179,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "6f638bfd4d6a4d7a3abd5d3e8dbd2d405294fbab030a5e6bcac16649cde1040b"
+      },
+      "wheel": {
+        "tests": 179,
+        "passed": 179,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "f8be12385e1ac2f9a36ced58051b344858ee975c99ff9f5a982347f015f10217"
+      },
+      "sdist": {
+        "tests": 179,
+        "passed": 179,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "a8da9eabbdeee4a26056f87b007b3510bcc3963e71835c48c121b87ba1aabb03"
+      }
+    },
+    "identity": {
+      "source_commit": "09c2f059bdf13ff32eaf48f9c28af6bb80850d38",
+      "git_files": 405,
+      "runtime_modules_each": 63,
+      "sdist_matching_git_members": 350,
+      "unique_cases_each": 179,
+      "retained_cases": 152,
+      "new_cancellation_cases": 27,
+      "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS"
+    },
+    "archive": "releases/0.3.0a26/checkpoints/cancel-pr31-09c2f05.tar.gz",
+    "archive_sha256": "31fce369ae4a28791c62206d5edb3bcbf90b66770723c42c61e241fda8f3c64a",
+    "manifest_members": 51,
+    "static": "Ruff/format/mypy63 PASS",
+    "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+    "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+    "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+    "not_run": [
+      "whole repository/Linux/macOS at this SHA",
+      "real clients/model tasks",
+      "autonomous relay",
+      "formal42 acceptance"
+    ],
+    "release": "BLOCKED"
+  },
+  {
+    "schema": "agentsync.local-checkpoint.v1",
+    "pr": 32,
+    "version": "0.3.0a27",
+    "source_commit": "67454ca4772b223dd94910ccabad5efe07987b00",
+    "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+    "suites": {
+      "source314": {
+        "tests": 286,
+        "passed": 286,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "6eb10de2f27bfb6b8ae434627feb25baca01e93d61b986fdc3d13081c18b856d"
+      },
+      "source311": {
+        "tests": 286,
+        "passed": 286,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "49e656e6c3512c0bb56fe9dc7587ddf5964914108e9845556c9667defdc4b35c"
+      },
+      "wheel": {
+        "tests": 286,
+        "passed": 286,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "80d831846be0fa30c838dedcd9df44cb072b017be3e5de0cf1b8f0617e9749de"
+      },
+      "sdist": {
+        "tests": 286,
+        "passed": 286,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "fdc9f17220edf8e97ac7783908bdba2afb7940c1cf61520dd55eea240308cc1b"
+      }
+    },
+    "identity": {
+      "source_commit": "67454ca4772b223dd94910ccabad5efe07987b00",
+      "git_files": 407,
+      "runtime_modules_each": 63,
+      "sdist_matching_git_members": 351,
+      "unique_cases_each": 286,
+      "retained_cases": 259,
+      "new_cancellation_cases": 27,
+      "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS"
+    },
+    "archive": "releases/0.3.0a27/checkpoints/cancel-pr32-67454ca.tar.gz",
+    "archive_sha256": "523c0f0c5b4565d0bccf2449239a59c37521d139c4e0339910ccabd374edf0bd",
+    "manifest_members": 51,
+    "static": "Ruff/format/mypy63 PASS",
+    "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+    "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+    "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+    "not_run": [
+      "whole repository/Linux/macOS at this SHA",
+      "real clients/model tasks",
+      "autonomous relay",
+      "formal42 acceptance"
+    ],
+    "release": "BLOCKED"
+  },
+  {
+    "schema": "agentsync.local-checkpoint.v1",
+    "pr": 33,
+    "version": "0.3.0a28",
+    "source_commit": "cc72e2cf2dbc3b27faba7ef50adcaf1ae2dfed38",
+    "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+    "suites": {
+      "source314": {
+        "tests": 178,
+        "passed": 178,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "d433362736b936a803b02c53d3fc8e2d275735ee135d09dab9052356671a3145"
+      },
+      "source311": {
+        "tests": 178,
+        "passed": 178,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "aaa094f43a24934cd348cd0166dc1f32aebfc48a10074f19f838a35206715fd9"
+      },
+      "wheel": {
+        "tests": 178,
+        "passed": 178,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "87d98d893381ddcb1c97161444336d9aa7b0788bd0725f9009999912670566c3"
+      },
+      "sdist": {
+        "tests": 178,
+        "passed": 178,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "junit_sha256": "084a2d458c09fa5938755e40ff03afa8e7893d6a5a2b6caebcfbc003530ca540"
+      }
+    },
+    "identity": {
+      "source_commit": "cc72e2cf2dbc3b27faba7ef50adcaf1ae2dfed38",
+      "git_files": 409,
+      "runtime_modules_each": 63,
+      "sdist_matching_git_members": 352,
+      "unique_cases_each": 178,
+      "retained_cases": 151,
+      "new_cancellation_cases": 27,
+      "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS"
+    },
+    "archive": "releases/0.3.0a28/checkpoints/cancel-pr33-cc72e2c.tar.gz",
+    "archive_sha256": "dd02d121d5ccfd9af6c6386ac349c1b1392c222743ff2391cd6453c9b13c1c7f",
+    "manifest_members": 51,
+    "static": "Ruff/format/mypy63 PASS",
+    "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+    "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+    "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+    "not_run": [
+      "whole repository/Linux/macOS at this SHA",
+      "real clients/model tasks",
+      "autonomous relay",
+      "formal42 acceptance"
+    ],
+    "release": "BLOCKED"
+  }
+]
