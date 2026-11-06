@@ -1,0 +1,254 @@
+{
+  "agentsync/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\__init__.py",
+    "sha256": "344557e79171befb799300d5f75266425557f008871f75d62ae4c393c7629e5a"
+  },
+  "agentsync/__main__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\__main__.py",
+    "sha256": "0aaaa36d3b4bab615b53037b2a497d77524f9643eef04cb30de3c9950c409df6"
+  },
+  "agentsync/adapters/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\__init__.py",
+    "sha256": "deb7cbedf2886d2903a81be07f41fee5c330841a8a62a47957f91b3bdc6029c3"
+  },
+  "agentsync/adapters/_host_process.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\_host_process.py",
+    "sha256": "ed071adc779b292b70abf0fb910fa02d17c81c7a282b25c43b964198c7498257"
+  },
+  "agentsync/adapters/base.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\base.py",
+    "sha256": "a42fc065e440d998ba9c640c98ad8c10f69dcfd15645e3839ef1e7c4c788ba7f"
+  },
+  "agentsync/adapters/claude.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\claude.py",
+    "sha256": "14437e075417a909abd37c28b24e290ef3dc29bafbe0c23eae3eae96406cdc25"
+  },
+  "agentsync/adapters/claude_events.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\claude_events.py",
+    "sha256": "3f92b3e1ca993e80cc6edbe182afead7181f51116243cad8172e952b64d07b0c"
+  },
+  "agentsync/adapters/claude_invocation.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\claude_invocation.py",
+    "sha256": "dba25746da96924f2b094059d2553d79065e7abaec3959250b79f8cdd0122cef"
+  },
+  "agentsync/adapters/claude_process.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\claude_process.py",
+    "sha256": "36b26e3115d54e8a6b4e47095d0c3a27044fc27f4ce8c6ba701266c44c9fb004"
+  },
+  "agentsync/adapters/codex.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\codex.py",
+    "sha256": "0e8d37fbf3f08fe013bf44b3475940557c22888b8cae68395865ff396d2e9130"
+  },
+  "agentsync/adapters/codex_events.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\codex_events.py",
+    "sha256": "eafc9cd940d05c4fef5741f8c039d383cd0f99bf870ea0719821b9bcaa21ffbb"
+  },
+  "agentsync/adapters/codex_invocation.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\codex_invocation.py",
+    "sha256": "73473781710d5b16ceb100cc4f62bef1257001f95f9af1fd643dbc02769fc88d"
+  },
+  "agentsync/adapters/codex_process.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\codex_process.py",
+    "sha256": "5fe186ff0dc3fd3d89b0d5038e3d3b891f8353230631fb1a0ee736444f8d6414"
+  },
+  "agentsync/adapters/cursor.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\cursor.py",
+    "sha256": "fb2fdaf903ddb825e2dadcfa5510a68484fb18bc82e0ac88909a0489b0284c9a"
+  },
+  "agentsync/adapters/cursor_events.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\cursor_events.py",
+    "sha256": "bac8f3b77d1509353553ad397bc0039271c3c8eb3771999e05b6d1c883949edc"
+  },
+  "agentsync/adapters/launch_context.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\launch_context.py",
+    "sha256": "579c14bc3fc89a3e8ed721fee8920ee0dc88f6c941b2bb2b3436caf3ef241578"
+  },
+  "agentsync/adapters/manager.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\manager.py",
+    "sha256": "b56224dd4aacadbdcf0b74239a4aaf551c85ccf723cc1c7e700c0f2192b691f6"
+  },
+  "agentsync/adapters/mock.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\mock.py",
+    "sha256": "cace721717e7e4872537f2a0699af226e9e0cf0b2068116daa1196e1abb03aa9"
+  },
+  "agentsync/adapters/process_capture.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\adapters\\process_capture.py",
+    "sha256": "c74d439f58cb47abf1246c41421cec163dd34408e01172d832bb94e178838f68"
+  },
+  "agentsync/cli.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\cli.py",
+    "sha256": "6ee6b12c68462c2668861d3b15624f07c510a89d72e3652fce030b03441c5224"
+  },
+  "agentsync/config.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\config.py",
+    "sha256": "021c7b04607df00cf75f9f688d80f04c7140be3c99250d5133eadb5352163af8"
+  },
+  "agentsync/core/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\core\\__init__.py",
+    "sha256": "d93e8a4d3b48ba182d840e7d76eec69300ec955dd8f9b098e4544d5d8e1ef6de"
+  },
+  "agentsync/core/collaboration.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\core\\collaboration.py",
+    "sha256": "c522330854f0011032befb295a28c88f3ea7845b91013927a10eaacd6efc8cec"
+  },
+  "agentsync/core/permissions.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\core\\permissions.py",
+    "sha256": "226671b4a043056edc57631ea4df123ce927f0a506e866c71bdf18a91c7634f4"
+  },
+  "agentsync/core/resources.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\core\\resources.py",
+    "sha256": "e0b3a6fceb43c123e3e37141b392c84ad0385e53973ab09a72fa7db7a78763cf"
+  },
+  "agentsync/core/service.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\core\\service.py",
+    "sha256": "740e5d82e2fbb4efbe5691c250db8ae5ea624812c4c4faf1e5f9df98d2af57b9"
+  },
+  "agentsync/core/workspaces.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\core\\workspaces.py",
+    "sha256": "ea40e59c07f382c4929c99c91bfd3020e063bab63d112faedefb46be588c6157"
+  },
+  "agentsync/dispatch_planning.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\dispatch_planning.py",
+    "sha256": "9fbdafdd817c32e3942ec2a6a6c2c49c7f88d46e209cdd2fdd04197f50ae8ea6"
+  },
+  "agentsync/errors.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\errors.py",
+    "sha256": "2e80e6ed40fda368ed76ae996fd2d563d455141e53cf4f50128674616b45666e"
+  },
+  "agentsync/integrations/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\integrations\\__init__.py",
+    "sha256": "9bade86abee7d5f2610d378801dc386007fb30f5aea7e7b5adfd3695e99e675a"
+  },
+  "agentsync/integrations/http.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\integrations\\http.py",
+    "sha256": "08705581e2d7047a94e369857793a3ea5850a9f39b5f372bfc122ee9e0f3a6f9"
+  },
+  "agentsync/integrations/mcp.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\integrations\\mcp.py",
+    "sha256": "1a999c66bcd94d707e3400570760b203b68712e99ddabb562b254cf5d07cf6c3"
+  },
+  "agentsync/mock_run_manager.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\mock_run_manager.py",
+    "sha256": "74baad510d2f8a4092945e35f7b7c7839a64037561fb2ade722d6672198e3cf8"
+  },
+  "agentsync/mock_workflow.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\mock_workflow.py",
+    "sha256": "8f246cba4faa9583fb08b3ad309b72866a4147afd4628ac0db1862e0fbfcd653"
+  },
+  "agentsync/models.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\models.py",
+    "sha256": "77c038dd8fff7490fc18e2f2354d6a9d884528b82ebf625b0f96f32a57946ece"
+  },
+  "agentsync/planning_cli.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\planning_cli.py",
+    "sha256": "b5b094b14c79bae7c7906fb04e6943fbd7b2016a5b1de05968cf036c45d5de00"
+  },
+  "agentsync/resources/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\resources\\__init__.py",
+    "sha256": "7b960fd421a27a3147fc050f4149f8665aeae184ad2d2b8108919289215023bb"
+  },
+  "agentsync/resources/paths.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\resources\\paths.py",
+    "sha256": "3c913b3ea3778b1fb402c90eaf4f5d4090e01a8f3d4dfba8cf8d1243d6dbc0d0"
+  },
+  "agentsync/retry_planning.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\retry_planning.py",
+    "sha256": "05a40fb13e2f4b8c35de1805d378c63f3ed582e719bb39b36b7be5f55ea53291"
+  },
+  "agentsync/scheduling.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\scheduling.py",
+    "sha256": "86c38c51e8c4af14f86cef881f1f23e06b069a35207d64d45e1f1573b0a974c3"
+  },
+  "agentsync/sdk/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\sdk\\__init__.py",
+    "sha256": "02ab4b60687d6e6a47d90dab7ab915c13af07cf8250491a3f3c9d61474de5506"
+  },
+  "agentsync/sdk/client.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\sdk\\client.py",
+    "sha256": "c893e5808ff878fbd87d6c5b8fd04bb63829353de26d532c79a4cb7083fb955c"
+  },
+  "agentsync/storage/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\storage\\__init__.py",
+    "sha256": "3b6e52f3471d060ba746973631b0a19a85e6bc8cdafbad14d8cd6ef96e23e285"
+  },
+  "agentsync/storage/admission.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\storage\\admission.py",
+    "sha256": "b98530854d8d4aed5d46983577ed885affe2a080c03fdd9647f5cb9ed546773a"
+  },
+  "agentsync/storage/database.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\storage\\database.py",
+    "sha256": "9ecc26174f4bface4229491c37031b5ddf503b0c51a9b9dcebba4e6fe8d376d7"
+  },
+  "agentsync/usage.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\usage.py",
+    "sha256": "f3318eadbba16b235fe648ea966708ecd0c7a50f601d1f82046386810cc2cba2"
+  },
+  "agentsync/usage_cli.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\usage_cli.py",
+    "sha256": "9fc779702a2dfe43a33e37463102a6400c4896ce8e3fede95f92d3c9774e3d93"
+  },
+  "agentsync/verification/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\__init__.py",
+    "sha256": "e8d69239fd834f7f3f8e29614dfaaa24ed854f0b18304f67826933c16e989053"
+  },
+  "agentsync/verification/binding.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\binding.py",
+    "sha256": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961"
+  },
+  "agentsync/verification/candidate.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\candidate.py",
+    "sha256": "7c2bd05600407d85ae0e8125bdb18fdd4f29ef730331e3c1cf11a23dea060ec7"
+  },
+  "agentsync/verification/candidate_claims.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\candidate_claims.py",
+    "sha256": "8e627526588da078b3d3ec4a051adc7e30b154ba67b300560e6d2f2ef09cc5a5"
+  },
+  "agentsync/verification/candidate_execution_state.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\candidate_execution_state.py",
+    "sha256": "c4a428c0e1cd25bf11179f96fd92d0a384f863a5a027a015cf1f04a8290087fc"
+  },
+  "agentsync/verification/candidate_executor.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\candidate_executor.py",
+    "sha256": "4519f7164f8f47f17234f5b8ea79a5cb25b3ab1111454dbcbaa8e7fc2edd8c4d"
+  },
+  "agentsync/verification/candidate_intents.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\candidate_intents.py",
+    "sha256": "271174a4d929c42639e435245bb07f213ec3e7da584b962750d7cc27fc2e49e5"
+  },
+  "agentsync/verification/candidate_jobs.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\candidate_jobs.py",
+    "sha256": "9c080aa830a355f3fe536c9e2004347117a8e74504579b11feda6afacf86c0af"
+  },
+  "agentsync/verification/docker.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\docker.py",
+    "sha256": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721"
+  },
+  "agentsync/verification/executor.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\executor.py",
+    "sha256": "73bdc926b3ed65c25777f79ad0a9cfe50ceec838cc1226b954494dbc54cc02c8"
+  },
+  "agentsync/verification/jobs.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\jobs.py",
+    "sha256": "99531f4974ddd23c1d981c1223b0cc0a759562418e674c0fb3eb42cb5ae88bdb"
+  },
+  "agentsync/verification/reconciliation.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\reconciliation.py",
+    "sha256": "27cad856d82ded185aef99b58c182281cf772d5eafc3c04715c27ceafc3f86cd"
+  },
+  "agentsync/verification/snapshot.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\snapshot.py",
+    "sha256": "bef70ed60b5b979da3dc69fadbedbf0a8131bb3acdf4c07c30413401eda265c6"
+  },
+  "agentsync/verification/task_completion.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\verification\\task_completion.py",
+    "sha256": "91d1ad908e94798a61271139119dc88565cba762c307ced300b7ed3b8230e6b2"
+  },
+  "agentsync/workspaces/__init__.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\workspaces\\__init__.py",
+    "sha256": "5316aad3121721c4e02786265356c71306aca69b6fdae596fa5a499d9ace76b2"
+  },
+  "agentsync/workspaces/git.py": {
+    "path": "D:\\agentsync-debug\\cancel31-w6bv2b8w\\sdist-venv\\Lib\\site-packages\\agentsync\\workspaces\\git.py",
+    "sha256": "92f5a1315ce6a302aebf6e4b397d650144644bb5be6f414b6c04b325ec708295"
+  }
+}
