@@ -615,3 +615,183 @@ async def test_error_code_descriptor_errors_have_fixed_public_details(operation,
         "adapter_start_unknown" if operation == "start_task" else "adapter_operation_unknown"
     )
     assert error.value.__cause__ is None and error.value.__context__ is None
+
+
+@pytest.mark.parametrize("operation", LIFECYCLE_OPERATIONS)
+async def test_lifecycle_internal_cancellation_has_fixed_public_details(operation, monkeypatch):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+
+    async def fail(*args):
+        raise asyncio.CancelledError("private credential/prompt detail")
+
+    monkeypatch.setattr(adapter, operation, fail)
+    with pytest.raises(AgentSyncError) as error:
+        await getattr(manager, operation)(
+            "worker" if operation == "capabilities" else receipt.handle
+        )
+    public = error.value
+    assert public.code == "adapter_operation_unknown"
+    assert public.message == "Adapter operation did not complete." and public.status_code == 409
+    assert public.__cause__ is None and public.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(public))
+    assert manager.history() == (receipt.handle,)
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+    assert (await manager.start_task("worker", task())).run is receipt.run
+
+
+@pytest.mark.parametrize("operation", ["start_task", *LIFECYCLE_OPERATIONS[1:]])
+@pytest.mark.parametrize("field", ["run_id", "project_id"])
+async def test_run_property_internal_cancellation_is_invalid_receipt(operation, field, monkeypatch):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+
+    class BrokenRun:
+        def __getattr__(self, name):
+            if name == field:
+                raise asyncio.CancelledError("private credential/prompt detail")
+            return getattr(receipt.run, name)
+
+    async def malformed(*args):
+        if operation == "get_result":
+            return type("BrokenResult", (), {"run": BrokenRun()})()
+        return BrokenRun()
+
+    monkeypatch.setattr(adapter, operation, malformed)
+    with pytest.raises(AgentSyncError) as error:
+        if operation == "start_task":
+            await manager.start_task("worker", task("other"))
+        else:
+            await getattr(manager, operation)(receipt.handle)
+    public = error.value
+    assert public.code == "invalid_adapter_run"
+    assert public.message in (
+        "Adapter returned an inconsistent run.",
+        "Adapter start did not return a usable run.",
+    )
+    assert public.status_code == 409
+    assert public.__cause__ is None and public.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(public))
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+
+
+async def test_result_property_internal_cancellation_is_invalid_receipt(monkeypatch):
+    class BrokenResult:
+        @property
+        def run(self):
+            raise asyncio.CancelledError("private credential/prompt detail")
+
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+
+    async def malformed(*args):
+        return BrokenResult()
+
+    monkeypatch.setattr(adapter, "get_result", malformed)
+    with pytest.raises(AgentSyncError) as error:
+        await manager.get_result(receipt.handle)
+    public = error.value
+    assert public.code == "invalid_adapter_run"
+    assert public.message == "Adapter returned an inconsistent run." and public.status_code == 409
+    assert public.__cause__ is None and public.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(public))
+
+
+@pytest.mark.parametrize("operation", LIFECYCLE_OPERATIONS)
+async def test_lifecycle_caller_cancellation_rewrapped_by_adapter_is_sanitized(
+    operation, monkeypatch
+):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+    entered = asyncio.Event()
+
+    async def blocked(*args):
+        entered.set()
+        try:
+            await asyncio.Event().wait()
+        except asyncio.CancelledError as error:
+            raise asyncio.CancelledError("private credential/prompt detail") from error
+
+    monkeypatch.setattr(adapter, operation, blocked)
+    caller = asyncio.create_task(
+        getattr(manager, operation)("worker" if operation == "capabilities" else receipt.handle)
+    )
+    await entered.wait()
+    caller.cancel("private caller detail")
+    with pytest.raises(asyncio.CancelledError) as error:
+        await caller
+    assert error.value.args == ()
+    assert error.value.__cause__ is None and error.value.__context__ is None
+    assert caller.cancelled() and caller.cancelling() == 1
+    assert "private" not in "".join(traceback.format_exception(error.value))
+    assert manager.history() == (receipt.handle,)
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+
+
+@pytest.mark.parametrize("operation", LIFECYCLE_OPERATIONS)
+async def test_lifecycle_rejects_uncleared_cancellation_before_callback(operation, monkeypatch):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    receipt = await manager.start_task("worker", task())
+    entered = False
+
+    async def callback(*args):
+        nonlocal entered
+        entered = True
+        raise asyncio.CancelledError("private adapter detail")
+
+    monkeypatch.setattr(adapter, operation, callback)
+
+    async def caller_with_uncleared_cancellation():
+        current = asyncio.current_task()
+        current.cancel("private prior caller detail")
+        try:
+            await asyncio.sleep(0)
+        except asyncio.CancelledError:
+            pass
+        assert current.cancelling() == 1
+        try:
+            await getattr(manager, operation)(
+                "worker" if operation == "capabilities" else receipt.handle
+            )
+        finally:
+            current.uncancel()
+
+    caller = asyncio.create_task(caller_with_uncleared_cancellation())
+    with pytest.raises(asyncio.CancelledError) as error:
+        await caller
+    assert not entered
+    assert error.value.args == ()
+    assert error.value.__cause__ is None and error.value.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(error.value))
+    assert manager.history() == (receipt.handle,)
+    assert manager.get_dispatch(receipt.handle).state == "returned"
+
+
+async def test_capabilities_callback_cannot_swallow_uncleared_caller_cancellation(monkeypatch):
+    adapter = MockAdapter("project", "session")
+    manager = RunManager("project", "session", {"worker": adapter})
+    entered = asyncio.Event()
+
+    async def blocked():
+        entered.set()
+        try:
+            await asyncio.Event().wait()
+        except asyncio.CancelledError:
+            return "private adapter result"
+
+    monkeypatch.setattr(adapter, "capabilities", blocked)
+    caller = asyncio.create_task(manager.capabilities("worker"))
+    await entered.wait()
+    caller.cancel("private caller detail")
+    with pytest.raises(asyncio.CancelledError) as error:
+        await caller
+    assert caller.cancelled() and caller.cancelling() == 1
+    assert error.value.args == ()
+    assert error.value.__cause__ is None and error.value.__context__ is None
+    assert "private" not in "".join(traceback.format_exception(error.value))
+    assert manager.history() == ()
