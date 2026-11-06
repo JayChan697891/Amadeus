@@ -58,17 +58,31 @@ _OPERATION_ERRORS = {
 }
 
 
+def _raise_pending_cancellation() -> None:
+    # An uncleared request prevents adapter entry, even if its original exception
+    # was swallowed. The count is policy, not proof of an exception's origin.
+    # Fresh errors raised outside handlers cannot retain private adapter details.
+    caller = asyncio.current_task()
+    if caller is not None and caller.cancelling():
+        raise asyncio.CancelledError()
+
+
 async def _call_adapter(callback: Callable[[], Awaitable[U]]) -> U:
+    _raise_pending_cancellation()
     code = "adapter_operation_unknown"
     try:
-        return await callback()
+        value = await callback()
     except AgentSyncError as error:
         public_code = vars(error).get("code")
         if type(public_code) is str and public_code in _OPERATION_ERRORS:
             code = public_code
-    except Exception:
+    except (Exception, asyncio.CancelledError):
         pass
+    else:
+        _raise_pending_cancellation()
+        return value
     # Raise outside the handlers so the public error retains no private context.
+    _raise_pending_cancellation()
     message, status = _OPERATION_ERRORS.get(code, ("Adapter operation did not complete.", 409))
     raise AgentSyncError(code, message, status)
 
@@ -275,6 +289,7 @@ class RunManager(Generic[C, R, T]):
 
     @staticmethod
     def _validate_run(run: R, task: AdapterTask, run_id: str | None = None) -> str:
+        _raise_pending_cancellation()
         try:
             captured_id = run.run_id
             _identifier(captured_id)
@@ -283,8 +298,9 @@ class RunManager(Generic[C, R, T]):
                 == (task.project_id, task.session_id, task.task_id, task.request_id)
                 and (run_id is None or captured_id == run_id)
             )
-        except Exception:
+        except (Exception, asyncio.CancelledError):
             valid = False
+        _raise_pending_cancellation()
         if not valid:
             raise AgentSyncError(
                 "invalid_adapter_run", "Adapter returned an inconsistent run.", 409
@@ -310,9 +326,10 @@ class RunManager(Generic[C, R, T]):
         route, run_id = await self._lookup(handle)
         adapter = self._adapter(route.adapter_id)
         result = await _call_adapter(lambda: adapter.get_result(run_id))
+        _raise_pending_cancellation()
         try:
             run = getattr(result, "run", None)
-        except Exception:
+        except (Exception, asyncio.CancelledError):
             run = None
         self._validate_run(cast(R, run), route.task, run_id)
         return result
