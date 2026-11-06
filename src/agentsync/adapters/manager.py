@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import asyncio
 import uuid
-from collections.abc import Mapping
+from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass, field, replace
 from typing import Generic, Literal, Protocol, TypeVar, cast
 
@@ -40,6 +40,51 @@ class AdapterRun(Protocol):
 C = TypeVar("C")
 R = TypeVar("R", bound=AdapterRun)
 T = TypeVar("T")
+U = TypeVar("U")
+
+_OPERATION_ERRORS = {
+    "unsupported": ("Operation is unsupported by this adapter.", 400),
+    "not_found": ("Adapter run was not found.", 404),
+    "result_not_ready": ("Adapter result is not ready.", 409),
+    "invalid_state": ("Adapter run is in an invalid state.", 409),
+    "invalid_adapter_run": ("Adapter returned an inconsistent run.", 409),
+    "namespace_mismatch": ("Request does not match adapter namespace.", 403),
+    "capacity_exceeded": ("Adapter capacity is exhausted.", 409),
+    "history_capacity_exceeded": ("Adapter history capacity is exhausted.", 409),
+    "running_capacity_exceeded": ("Adapter running capacity is exhausted.", 409),
+    "task_already_active": ("Task already has an active adapter run.", 409),
+    "idempotency_conflict": ("Request ID has different inputs.", 409),
+    "validation_error": ("Invalid adapter input.", 400),
+}
+
+
+def _raise_pending_cancellation() -> None:
+    # An uncleared request prevents adapter entry, even if its original exception
+    # was swallowed. The count is policy, not proof of an exception's origin.
+    # Fresh errors raised outside handlers cannot retain private adapter details.
+    caller = asyncio.current_task()
+    if caller is not None and caller.cancelling():
+        raise asyncio.CancelledError()
+
+
+async def _call_adapter(callback: Callable[[], Awaitable[U]]) -> U:
+    _raise_pending_cancellation()
+    code = "adapter_operation_unknown"
+    try:
+        value = await callback()
+    except AgentSyncError as error:
+        public_code = vars(error).get("code")
+        if type(public_code) is str and public_code in _OPERATION_ERRORS:
+            code = public_code
+    except (Exception, asyncio.CancelledError):
+        pass
+    else:
+        _raise_pending_cancellation()
+        return value
+    # Raise outside the handlers so the public error retains no private context.
+    _raise_pending_cancellation()
+    message, status = _OPERATION_ERRORS.get(code, ("Adapter operation did not complete.", 409))
+    raise AgentSyncError(code, message, status)
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,6 +109,7 @@ class DispatchSnapshot:
 @dataclass(frozen=True, slots=True)
 class _StartResult(Generic[R]):
     run: R | None = field(default=None, repr=False)
+    run_id: str | None = field(default=None, repr=False)
     error_code: str | None = None
 
 
@@ -156,12 +202,13 @@ class RunManager(Generic[C, R, T]):
         return self.get_dispatch(handle)
 
     async def capabilities(self, adapter_id: str) -> C:
-        return await self._adapter(adapter_id).capabilities()
+        adapter = self._adapter(adapter_id)
+        return await _call_adapter(lambda: adapter.capabilities())
 
     async def start_task(self, adapter_id: str, task: AdapterTask) -> ManagedRun[R]:
         """Return the original dispatch receipt on replay; use get_status for freshness."""
         route = await self._admit(adapter_id, task)
-        run = await self._started(route)
+        run, _ = await self._started(route)
         return ManagedRun(route.handle, route.adapter_id, run)
 
     async def dispatch_task(self, adapter_id: str, task: AdapterTask) -> DispatchSnapshot:
@@ -201,26 +248,28 @@ class RunManager(Generic[C, R, T]):
                 self._requests[task.request_id] = route
         return route
 
-    async def _started(self, route: _Route[R]) -> R:
+    async def _started(self, route: _Route[R]) -> tuple[R, str]:
         outcome = await asyncio.shield(route.start)
-        if outcome.run is None:
+        if outcome.run is None or outcome.run_id is None:
             raise AgentSyncError(
                 outcome.error_code or "adapter_start_unknown",
                 "Adapter start did not return a usable run.",
                 409,
             )
-        return outcome.run
+        return outcome.run, outcome.run_id
 
     async def _start(self, adapter: AgentAdapter[C, R, T], task: AdapterTask) -> _StartResult[R]:
         try:
             run = await adapter.start_task(task)
-            self._validate_run(run, task)
-            return _StartResult(run=run)
+            run_id = self._validate_run(run, task)
+            return _StartResult(run=run, run_id=run_id)
         except AgentSyncError as error:
             # Only fixed public codes survive; no exception, traceback, or message is retained.
+            public_code = vars(error).get("code")
             code = (
-                error.code
-                if error.code
+                public_code
+                if type(public_code) is str
+                and public_code
                 in {
                     "unsupported",
                     "invalid_adapter_run",
@@ -239,49 +288,62 @@ class RunManager(Generic[C, R, T]):
             return _StartResult(error_code="adapter_start_unknown")
 
     @staticmethod
-    def _validate_run(run: R, task: AdapterTask, run_id: str | None = None) -> None:
+    def _validate_run(run: R, task: AdapterTask, run_id: str | None = None) -> str:
+        _raise_pending_cancellation()
         try:
-            _identifier(run.run_id)
-            valid = (run.project_id, run.session_id, run.task_id, run.request_id) == (
-                task.project_id,
-                task.session_id,
-                task.task_id,
-                task.request_id,
-            ) and (run_id is None or run.run_id == run_id)
-        except (AttributeError, TypeError, AgentSyncError):
+            captured_id = run.run_id
+            _identifier(captured_id)
+            valid = bool(
+                (run.project_id, run.session_id, run.task_id, run.request_id)
+                == (task.project_id, task.session_id, task.task_id, task.request_id)
+                and (run_id is None or captured_id == run_id)
+            )
+        except (Exception, asyncio.CancelledError):
             valid = False
+        _raise_pending_cancellation()
         if not valid:
             raise AgentSyncError(
                 "invalid_adapter_run", "Adapter returned an inconsistent run.", 409
             )
+        return captured_id
 
-    async def _lookup(self, handle: str) -> tuple[_Route[R], R]:
+    async def _lookup(self, handle: str) -> tuple[_Route[R], str]:
         _identifier(handle)
         route = self._routes.get(handle)
         if route is None:
             raise AgentSyncError("not_found", "Manager run does not exist.", 404)
-        return route, await self._started(route)
+        _, run_id = await self._started(route)
+        return route, run_id
 
     async def get_status(self, handle: str) -> ManagedRun[R]:
-        route, initial = await self._lookup(handle)
-        run = await self._adapter(route.adapter_id).get_status(initial.run_id)
-        self._validate_run(run, route.task, initial.run_id)
+        route, run_id = await self._lookup(handle)
+        adapter = self._adapter(route.adapter_id)
+        run = await _call_adapter(lambda: adapter.get_status(run_id))
+        self._validate_run(run, route.task, run_id)
         return ManagedRun(handle, route.adapter_id, run)
 
     async def get_result(self, handle: str) -> T:
-        route, initial = await self._lookup(handle)
-        result = await self._adapter(route.adapter_id).get_result(initial.run_id)
-        self._validate_run(cast(R, getattr(result, "run", None)), route.task, initial.run_id)
+        route, run_id = await self._lookup(handle)
+        adapter = self._adapter(route.adapter_id)
+        result = await _call_adapter(lambda: adapter.get_result(run_id))
+        _raise_pending_cancellation()
+        try:
+            run = getattr(result, "run", None)
+        except (Exception, asyncio.CancelledError):
+            run = None
+        self._validate_run(cast(R, run), route.task, run_id)
         return result
 
     async def cancel_task(self, handle: str) -> ManagedRun[R]:
-        route, initial = await self._lookup(handle)
-        run = await self._adapter(route.adapter_id).cancel_task(initial.run_id)
-        self._validate_run(run, route.task, initial.run_id)
+        route, run_id = await self._lookup(handle)
+        adapter = self._adapter(route.adapter_id)
+        run = await _call_adapter(lambda: adapter.cancel_task(run_id))
+        self._validate_run(run, route.task, run_id)
         return ManagedRun(handle, route.adapter_id, run)
 
     async def resume_task(self, handle: str) -> ManagedRun[R]:
-        route, initial = await self._lookup(handle)
-        run = await self._adapter(route.adapter_id).resume_task(initial.run_id)
-        self._validate_run(run, route.task, initial.run_id)
+        route, run_id = await self._lookup(handle)
+        adapter = self._adapter(route.adapter_id)
+        run = await _call_adapter(lambda: adapter.resume_task(run_id))
+        self._validate_run(run, route.task, run_id)
         return ManagedRun(handle, route.adapter_id, run)

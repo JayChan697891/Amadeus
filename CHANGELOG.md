@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a26 - manager lifecycle error boundary
+
+- Normalize adapter callback failures into fixed public manager errors across
+  lifecycle operations; retain legitimate error codes without private messages.
+- Preserve caller cancellation, original dispatch ownership and successful private
+  result data. This does not establish complete output auditing or real-client safety.
+
 ## 0.3.0a25 - nonblocking dispatch receipt
 
 - Add `RunManager.dispatch_task(adapter_id, task)` to obtain an admitted handle

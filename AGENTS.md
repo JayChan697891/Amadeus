@@ -1,4 +1,8 @@
-# Current continuation entry (2026-11-04)
+# Current continuation entry (2026-11-05)
+
+Read docs/acceptance/CANCELLATION-REPAIR-20261105.md for current security-repair
+status. Earlier alpha26/27/28 component evidence does not cover internal cancellation.
+Work revalidation remains pending; do not infer acceptance from local passing tests.
 
 The user cancelled the Claude handoff/package and requested continued Codex work.
 CLAUDE.md and docs/HANDOFF-CLAUDE.md are historical, not continuation instructions.

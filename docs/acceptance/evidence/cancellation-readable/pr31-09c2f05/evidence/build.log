@@ -1,0 +1,672 @@
+running egg_info
+creating src\agentsync_local.egg-info
+writing src\agentsync_local.egg-info\PKG-INFO
+writing dependency_links to src\agentsync_local.egg-info\dependency_links.txt
+writing entry points to src\agentsync_local.egg-info\entry_points.txt
+writing requirements to src\agentsync_local.egg-info\requires.txt
+writing top-level names to src\agentsync_local.egg-info\top_level.txt
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+reading manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+running bdist_wheel
+running build
+running build_py
+creating build\lib\agentsync
+copying src\agentsync\cli.py -> build\lib\agentsync
+copying src\agentsync\config.py -> build\lib\agentsync
+copying src\agentsync\dispatch_planning.py -> build\lib\agentsync
+copying src\agentsync\errors.py -> build\lib\agentsync
+copying src\agentsync\mock_run_manager.py -> build\lib\agentsync
+copying src\agentsync\mock_workflow.py -> build\lib\agentsync
+copying src\agentsync\models.py -> build\lib\agentsync
+copying src\agentsync\planning_cli.py -> build\lib\agentsync
+copying src\agentsync\retry_planning.py -> build\lib\agentsync
+copying src\agentsync\scheduling.py -> build\lib\agentsync
+copying src\agentsync\usage.py -> build\lib\agentsync
+copying src\agentsync\usage_cli.py -> build\lib\agentsync
+copying src\agentsync\__init__.py -> build\lib\agentsync
+copying src\agentsync\__main__.py -> build\lib\agentsync
+creating build\lib\agentsync\adapters
+copying src\agentsync\adapters\base.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude_events.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude_invocation.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex_events.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex_invocation.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\cursor.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\cursor_events.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\launch_context.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\manager.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\mock.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\process_capture.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\_host_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\__init__.py -> build\lib\agentsync\adapters
+creating build\lib\agentsync\core
+copying src\agentsync\core\collaboration.py -> build\lib\agentsync\core
+copying src\agentsync\core\permissions.py -> build\lib\agentsync\core
+copying src\agentsync\core\resources.py -> build\lib\agentsync\core
+copying src\agentsync\core\service.py -> build\lib\agentsync\core
+copying src\agentsync\core\workspaces.py -> build\lib\agentsync\core
+copying src\agentsync\core\__init__.py -> build\lib\agentsync\core
+creating build\lib\agentsync\integrations
+copying src\agentsync\integrations\http.py -> build\lib\agentsync\integrations
+copying src\agentsync\integrations\mcp.py -> build\lib\agentsync\integrations
+copying src\agentsync\integrations\__init__.py -> build\lib\agentsync\integrations
+creating build\lib\agentsync\resources
+copying src\agentsync\resources\paths.py -> build\lib\agentsync\resources
+copying src\agentsync\resources\__init__.py -> build\lib\agentsync\resources
+creating build\lib\agentsync\sdk
+copying src\agentsync\sdk\client.py -> build\lib\agentsync\sdk
+copying src\agentsync\sdk\__init__.py -> build\lib\agentsync\sdk
+creating build\lib\agentsync\storage
+copying src\agentsync\storage\admission.py -> build\lib\agentsync\storage
+copying src\agentsync\storage\database.py -> build\lib\agentsync\storage
+copying src\agentsync\storage\__init__.py -> build\lib\agentsync\storage
+creating build\lib\agentsync\verification
+copying src\agentsync\verification\binding.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_claims.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_execution_state.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_executor.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_intents.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_jobs.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\docker.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\executor.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\jobs.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\reconciliation.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\snapshot.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\task_completion.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\__init__.py -> build\lib\agentsync\verification
+creating build\lib\agentsync\workspaces
+copying src\agentsync\workspaces\git.py -> build\lib\agentsync\workspaces
+copying src\agentsync\workspaces\__init__.py -> build\lib\agentsync\workspaces
+running egg_info
+writing src\agentsync_local.egg-info\PKG-INFO
+writing dependency_links to src\agentsync_local.egg-info\dependency_links.txt
+writing entry points to src\agentsync_local.egg-info\entry_points.txt
+writing requirements to src\agentsync_local.egg-info\requires.txt
+writing top-level names to src\agentsync_local.egg-info\top_level.txt
+reading manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+copying src\agentsync\py.typed -> build\lib\agentsync
+installing to build\bdist.win-amd64\wheel
+running install
+running install_lib
+creating build\bdist.win-amd64\wheel
+creating build\bdist.win-amd64\wheel\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\adapters
+copying build\lib\agentsync\adapters\base.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude_events.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude_invocation.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex_events.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex_invocation.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\cursor.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\cursor_events.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\launch_context.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\manager.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\mock.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\process_capture.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\_host_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\config.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\core
+copying build\lib\agentsync\core\collaboration.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\permissions.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\resources.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\service.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\workspaces.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\dispatch_planning.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\errors.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\integrations
+copying build\lib\agentsync\integrations\http.py -> build\bdist.win-amd64\wheel\.\agentsync\integrations
+copying build\lib\agentsync\integrations\mcp.py -> build\bdist.win-amd64\wheel\.\agentsync\integrations
+copying build\lib\agentsync\integrations\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\integrations
+copying build\lib\agentsync\mock_run_manager.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\mock_workflow.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\models.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\planning_cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\py.typed -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\resources
+copying build\lib\agentsync\resources\paths.py -> build\bdist.win-amd64\wheel\.\agentsync\resources
+copying build\lib\agentsync\resources\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\resources
+copying build\lib\agentsync\retry_planning.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\scheduling.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\sdk
+copying build\lib\agentsync\sdk\client.py -> build\bdist.win-amd64\wheel\.\agentsync\sdk
+copying build\lib\agentsync\sdk\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\sdk
+creating build\bdist.win-amd64\wheel\agentsync\storage
+copying build\lib\agentsync\storage\admission.py -> build\bdist.win-amd64\wheel\.\agentsync\storage
+copying build\lib\agentsync\storage\database.py -> build\bdist.win-amd64\wheel\.\agentsync\storage
+copying build\lib\agentsync\storage\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\storage
+copying build\lib\agentsync\usage.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\usage_cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\verification
+copying build\lib\agentsync\verification\binding.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_claims.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_execution_state.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_executor.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_intents.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_jobs.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\docker.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\executor.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\jobs.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\reconciliation.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\snapshot.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\task_completion.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+creating build\bdist.win-amd64\wheel\agentsync\workspaces
+copying build\lib\agentsync\workspaces\git.py -> build\bdist.win-amd64\wheel\.\agentsync\workspaces
+copying build\lib\agentsync\workspaces\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\workspaces
+copying build\lib\agentsync\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\__main__.py -> build\bdist.win-amd64\wheel\.\agentsync
+running install_egg_info
+Copying src\agentsync_local.egg-info to build\bdist.win-amd64\wheel\.\agentsync_local-0.3.0a26-py3.14.egg-info
+running install_scripts
+creating build\bdist.win-amd64\wheel\agentsync_local-0.3.0a26.dist-info\WHEEL
+creating 'D:\\agentsync-debug\\cancel31-w6bv2b8w\\artifacts\\.tmp-5z63pf5x\\agentsync_local-0.3.0a26-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+adding 'agentsync/__init__.py'
+adding 'agentsync/__main__.py'
+adding 'agentsync/cli.py'
+adding 'agentsync/config.py'
+adding 'agentsync/dispatch_planning.py'
+adding 'agentsync/errors.py'
+adding 'agentsync/mock_run_manager.py'
+adding 'agentsync/mock_workflow.py'
+adding 'agentsync/models.py'
+adding 'agentsync/planning_cli.py'
+adding 'agentsync/py.typed'
+adding 'agentsync/retry_planning.py'
+adding 'agentsync/scheduling.py'
+adding 'agentsync/usage.py'
+adding 'agentsync/usage_cli.py'
+adding 'agentsync/adapters/__init__.py'
+adding 'agentsync/adapters/_host_process.py'
+adding 'agentsync/adapters/base.py'
+adding 'agentsync/adapters/claude.py'
+adding 'agentsync/adapters/claude_events.py'
+adding 'agentsync/adapters/claude_invocation.py'
+adding 'agentsync/adapters/claude_process.py'
+adding 'agentsync/adapters/codex.py'
+adding 'agentsync/adapters/codex_events.py'
+adding 'agentsync/adapters/codex_invocation.py'
+adding 'agentsync/adapters/codex_process.py'
+adding 'agentsync/adapters/cursor.py'
+adding 'agentsync/adapters/cursor_events.py'
+adding 'agentsync/adapters/launch_context.py'
+adding 'agentsync/adapters/manager.py'
+adding 'agentsync/adapters/mock.py'
+adding 'agentsync/adapters/process_capture.py'
+adding 'agentsync/core/__init__.py'
+adding 'agentsync/core/collaboration.py'
+adding 'agentsync/core/permissions.py'
+adding 'agentsync/core/resources.py'
+adding 'agentsync/core/service.py'
+adding 'agentsync/core/workspaces.py'
+adding 'agentsync/integrations/__init__.py'
+adding 'agentsync/integrations/http.py'
+adding 'agentsync/integrations/mcp.py'
+adding 'agentsync/resources/__init__.py'
+adding 'agentsync/resources/paths.py'
+adding 'agentsync/sdk/__init__.py'
+adding 'agentsync/sdk/client.py'
+adding 'agentsync/storage/__init__.py'
+adding 'agentsync/storage/admission.py'
+adding 'agentsync/storage/database.py'
+adding 'agentsync/verification/__init__.py'
+adding 'agentsync/verification/binding.py'
+adding 'agentsync/verification/candidate.py'
+adding 'agentsync/verification/candidate_claims.py'
+adding 'agentsync/verification/candidate_execution_state.py'
+adding 'agentsync/verification/candidate_executor.py'
+adding 'agentsync/verification/candidate_intents.py'
+adding 'agentsync/verification/candidate_jobs.py'
+adding 'agentsync/verification/docker.py'
+adding 'agentsync/verification/executor.py'
+adding 'agentsync/verification/jobs.py'
+adding 'agentsync/verification/reconciliation.py'
+adding 'agentsync/verification/snapshot.py'
+adding 'agentsync/verification/task_completion.py'
+adding 'agentsync/workspaces/__init__.py'
+adding 'agentsync/workspaces/git.py'
+adding 'agentsync_local-0.3.0a26.dist-info/licenses/LICENSE'
+adding 'agentsync_local-0.3.0a26.dist-info/METADATA'
+adding 'agentsync_local-0.3.0a26.dist-info/WHEEL'
+adding 'agentsync_local-0.3.0a26.dist-info/entry_points.txt'
+adding 'agentsync_local-0.3.0a26.dist-info/top_level.txt'
+adding 'agentsync_local-0.3.0a26.dist-info/RECORD'
+removing build\bdist.win-amd64\wheel
+running egg_info
+writing src\agentsync_local.egg-info\PKG-INFO
+writing dependency_links to src\agentsync_local.egg-info\dependency_links.txt
+writing entry points to src\agentsync_local.egg-info\entry_points.txt
+writing requirements to src\agentsync_local.egg-info\requires.txt
+writing top-level names to src\agentsync_local.egg-info\top_level.txt
+reading manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+running sdist
+running egg_info
+writing src\agentsync_local.egg-info\PKG-INFO
+writing dependency_links to src\agentsync_local.egg-info\dependency_links.txt
+writing entry points to src\agentsync_local.egg-info\entry_points.txt
+writing requirements to src\agentsync_local.egg-info\requires.txt
+writing top-level names to src\agentsync_local.egg-info\top_level.txt
+reading manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+running check
+creating agentsync_local-0.3.0a26
+creating agentsync_local-0.3.0a26\.github\workflows
+creating agentsync_local-0.3.0a26\docs
+creating agentsync_local-0.3.0a26\docs\acceptance
+creating agentsync_local-0.3.0a26\docs\acceptance\evidence
+creating agentsync_local-0.3.0a26\examples
+creating agentsync_local-0.3.0a26\examples\mcp_clients
+creating agentsync_local-0.3.0a26\src\agentsync
+creating agentsync_local-0.3.0a26\src\agentsync\adapters
+creating agentsync_local-0.3.0a26\src\agentsync\core
+creating agentsync_local-0.3.0a26\src\agentsync\integrations
+creating agentsync_local-0.3.0a26\src\agentsync\resources
+creating agentsync_local-0.3.0a26\src\agentsync\sdk
+creating agentsync_local-0.3.0a26\src\agentsync\storage
+creating agentsync_local-0.3.0a26\src\agentsync\verification
+creating agentsync_local-0.3.0a26\src\agentsync\workspaces
+creating agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+creating agentsync_local-0.3.0a26\tests
+creating agentsync_local-0.3.0a26\tests\concurrency
+creating agentsync_local-0.3.0a26\tests\integration
+creating agentsync_local-0.3.0a26\tests\manual
+creating agentsync_local-0.3.0a26\tests\recovery
+creating agentsync_local-0.3.0a26\tests\security
+creating agentsync_local-0.3.0a26\tests\unit
+creating agentsync_local-0.3.0a26\tools
+copying files to agentsync_local-0.3.0a26...
+copying .env.example -> agentsync_local-0.3.0a26
+copying .gitattributes -> agentsync_local-0.3.0a26
+copying .gitignore -> agentsync_local-0.3.0a26
+copying AGENTS.md -> agentsync_local-0.3.0a26
+copying CHANGELOG.md -> agentsync_local-0.3.0a26
+copying CONTRIBUTING.md -> agentsync_local-0.3.0a26
+copying LICENSE -> agentsync_local-0.3.0a26
+copying MANIFEST.in -> agentsync_local-0.3.0a26
+copying README.md -> agentsync_local-0.3.0a26
+copying README.zh-CN.md -> agentsync_local-0.3.0a26
+copying SECURITY.md -> agentsync_local-0.3.0a26
+copying WORKFLOW.md -> agentsync_local-0.3.0a26
+copying pyproject.toml -> agentsync_local-0.3.0a26
+copying requirements-dev-lock.txt -> agentsync_local-0.3.0a26
+copying requirements-lock.txt -> agentsync_local-0.3.0a26
+copying .github\workflows\ci.yml -> agentsync_local-0.3.0a26\.github\workflows
+copying .github\workflows\verifier-docker.yml -> agentsync_local-0.3.0a26\.github\workflows
+copying docs\ARCHITECTURE.md -> agentsync_local-0.3.0a26\docs
+copying docs\CLOUD-CONTINUATION.md -> agentsync_local-0.3.0a26\docs
+copying docs\CODEX-CLOUD.md -> agentsync_local-0.3.0a26\docs
+copying docs\COMPATIBILITY.md -> agentsync_local-0.3.0a26\docs
+copying docs\CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\DECISIONS.md -> agentsync_local-0.3.0a26\docs
+copying docs\DELIVERY.zh-CN.md -> agentsync_local-0.3.0a26\docs
+copying docs\ERRORS.md -> agentsync_local-0.3.0a26\docs
+copying docs\FILE-TREE.md -> agentsync_local-0.3.0a26\docs
+copying docs\HANDOFF-CLAUDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\LOCAL-DEBUG.md -> agentsync_local-0.3.0a26\docs
+copying docs\M2-CONTINUATION.zh-CN.md -> agentsync_local-0.3.0a26\docs
+copying docs\M3-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M3-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M4A-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M4A-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M4B-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M4B-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5-FINAL-ACCEPTANCE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5A-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5A-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5A-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B1-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B1-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B1-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2A-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2A-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2A-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2B-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2B-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2B-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2C-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2C-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B2C-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A-DESIGN.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A1-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A1-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A1-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A2-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A2-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3A2-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B0-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B0-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B1-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B1-DESIGN.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B1-GUIDE.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B1-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B2A-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B2A-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M5B3B2B-CONTRACT.md -> agentsync_local-0.3.0a26\docs
+copying docs\M6-ADAPTERS.md -> agentsync_local-0.3.0a26\docs
+copying docs\PLAN.md -> agentsync_local-0.3.0a26\docs
+copying docs\PROGRESS.md -> agentsync_local-0.3.0a26\docs
+copying docs\RUFF-CI-REPAIR.md -> agentsync_local-0.3.0a26\docs
+copying docs\SOURCES.md -> agentsync_local-0.3.0a26\docs
+copying docs\SPECIFICATION.md -> agentsync_local-0.3.0a26\docs
+copying docs\TEST-REPORT.md -> agentsync_local-0.3.0a26\docs
+copying docs\THIRD-PARTY-LICENSES.md -> agentsync_local-0.3.0a26\docs
+copying docs\THIRD-PARTY-NOTICES.txt -> agentsync_local-0.3.0a26\docs
+copying docs\claude-host-probe.json -> agentsync_local-0.3.0a26\docs
+copying docs\codex-cloud-config.json -> agentsync_local-0.3.0a26\docs
+copying docs\codex-cloud-verification.json -> agentsync_local-0.3.0a26\docs
+copying docs\codex-collaboration-probe.json -> agentsync_local-0.3.0a26\docs
+copying docs\codex-host-probe.json -> agentsync_local-0.3.0a26\docs
+copying docs\codex-registration-probe.json -> agentsync_local-0.3.0a26\docs
+copying docs\dependency-inventory.json -> agentsync_local-0.3.0a26\docs
+copying docs\desktop-connection-confirmation.json -> agentsync_local-0.3.0a26\docs
+copying docs\pytest-m2-followup-python312.xml -> agentsync_local-0.3.0a26\docs
+copying docs\pytest-m2-followup.xml -> agentsync_local-0.3.0a26\docs
+copying docs\pytest-python312.xml -> agentsync_local-0.3.0a26\docs
+copying docs\pytest-results.xml -> agentsync_local-0.3.0a26\docs
+copying docs\acceptance\CLIENT-MATRIX.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a10.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a4.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a5.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a6.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a7.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a8.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\COVERAGE-REVIEW-0.3.0a9.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\DESIGN.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\INSTALLATION-REPORT.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\PACKAGE-INSTALLATION.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\RELEASE-ACCEPTANCE-REPORT.md -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\requirements.json -> agentsync_local-0.3.0a26\docs\acceptance
+copying docs\acceptance\evidence\README.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha14-linux-components.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha14-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha15-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha16-docker-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha16-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha17-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha18-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha19-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha20-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha21-full-source-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha21-installed-full-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha21-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha21-windows-full-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha22-lifecycle-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha22-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha23-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha24-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha25-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\alpha26-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\b4-flow-feasibility.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\claude-adapter-linux-20261026.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\claude-adapter-local-20261026.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\claude-protocol-local-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\codex-adapter-integrated-smoke-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\codex-adapter-local-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\codex-before-capture-binding-71934cb8.py.txt -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\codex-factory-preflight-20261028.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\codex-invocation-local-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\codex-readonly-cli-smoke-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\core-startup-local-summary.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\docker-targeted-6b16f20-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\full-windows-248d0be-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\linux-driver-failure-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\linux-fresh-packages-20261026.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\local-only-20261020-junit.xml -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\local-only-20261020.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m4a-ci-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m4b-ci-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m4b-independent-junit.xml -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m4b-receipt-binding-green-junit.xml -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m4b-receipt-binding-junit.xml -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5a-ci-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b1-first-docker-failure.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b1-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b2a-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b2b-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b2b-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b2c-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b2c-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3a1-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3a1-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3a2-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3a2-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3b0-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3b0-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3b1-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3b1-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3b2a-local-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m5b3b2a-work-receipt.md -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m6-local-freeze-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\m6-local-prototype-20261025.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\rat14-ci-inspection.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying docs\acceptance\evidence\unstarted-capture-local-20261026.json -> agentsync_local-0.3.0a26\docs\acceptance\evidence
+copying examples\m3_handoff.py -> agentsync_local-0.3.0a26\examples
+copying examples\two_mock_agents.py -> agentsync_local-0.3.0a26\examples
+copying examples\mcp_clients\README.md -> agentsync_local-0.3.0a26\examples\mcp_clients
+copying examples\mcp_clients\claude-desktop.json -> agentsync_local-0.3.0a26\examples\mcp_clients
+copying examples\mcp_clients\codex.toml -> agentsync_local-0.3.0a26\examples\mcp_clients
+copying examples\mcp_clients\install_codex.py -> agentsync_local-0.3.0a26\examples\mcp_clients
+copying src\agentsync\__init__.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\__main__.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\cli.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\config.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\dispatch_planning.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\errors.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\mock_run_manager.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\mock_workflow.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\models.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\planning_cli.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\py.typed -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\retry_planning.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\scheduling.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\usage.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\usage_cli.py -> agentsync_local-0.3.0a26\src\agentsync
+copying src\agentsync\adapters\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\_host_process.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\base.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\claude.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\claude_events.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\claude_invocation.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\claude_process.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\codex.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\codex_events.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\codex_invocation.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\codex_process.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\cursor.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\cursor_events.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\launch_context.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\manager.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\mock.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\adapters\process_capture.py -> agentsync_local-0.3.0a26\src\agentsync\adapters
+copying src\agentsync\core\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\core
+copying src\agentsync\core\collaboration.py -> agentsync_local-0.3.0a26\src\agentsync\core
+copying src\agentsync\core\permissions.py -> agentsync_local-0.3.0a26\src\agentsync\core
+copying src\agentsync\core\resources.py -> agentsync_local-0.3.0a26\src\agentsync\core
+copying src\agentsync\core\service.py -> agentsync_local-0.3.0a26\src\agentsync\core
+copying src\agentsync\core\workspaces.py -> agentsync_local-0.3.0a26\src\agentsync\core
+copying src\agentsync\integrations\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\integrations
+copying src\agentsync\integrations\http.py -> agentsync_local-0.3.0a26\src\agentsync\integrations
+copying src\agentsync\integrations\mcp.py -> agentsync_local-0.3.0a26\src\agentsync\integrations
+copying src\agentsync\resources\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\resources
+copying src\agentsync\resources\paths.py -> agentsync_local-0.3.0a26\src\agentsync\resources
+copying src\agentsync\sdk\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\sdk
+copying src\agentsync\sdk\client.py -> agentsync_local-0.3.0a26\src\agentsync\sdk
+copying src\agentsync\storage\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\storage
+copying src\agentsync\storage\admission.py -> agentsync_local-0.3.0a26\src\agentsync\storage
+copying src\agentsync\storage\database.py -> agentsync_local-0.3.0a26\src\agentsync\storage
+copying src\agentsync\verification\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\binding.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\candidate.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\candidate_claims.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\candidate_execution_state.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\candidate_executor.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\candidate_intents.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\candidate_jobs.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\docker.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\executor.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\jobs.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\reconciliation.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\snapshot.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\verification\task_completion.py -> agentsync_local-0.3.0a26\src\agentsync\verification
+copying src\agentsync\workspaces\__init__.py -> agentsync_local-0.3.0a26\src\agentsync\workspaces
+copying src\agentsync\workspaces\git.py -> agentsync_local-0.3.0a26\src\agentsync\workspaces
+copying src\agentsync_local.egg-info\PKG-INFO -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+copying src\agentsync_local.egg-info\SOURCES.txt -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+copying src\agentsync_local.egg-info\dependency_links.txt -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+copying src\agentsync_local.egg-info\entry_points.txt -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+copying src\agentsync_local.egg-info\requires.txt -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+copying src\agentsync_local.egg-info\top_level.txt -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+copying tests\conftest.py -> agentsync_local-0.3.0a26\tests
+copying tests\concurrency\test_claims.py -> agentsync_local-0.3.0a26\tests\concurrency
+copying tests\concurrency\test_file_lock_races.py -> agentsync_local-0.3.0a26\tests\concurrency
+copying tests\concurrency\test_m3_races.py -> agentsync_local-0.3.0a26\tests\concurrency
+copying tests\concurrency\test_m5_approval_races.py -> agentsync_local-0.3.0a26\tests\concurrency
+copying tests\integration\test_acceptance.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_adapter_manager_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_binding_transaction.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_binding_git_records.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_claim_migration.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_claims.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_execution.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_export.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_export_security.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_intent_migration.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_intent_security.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_intents.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_jobs.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_candidate_queue_security.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_capability_planning_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_claude_adapter_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_codex_adapter_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_codex_invocation_process.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_cursor_adapter_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_dispatch_planning_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_docker_verifier.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_execution_reconciliation.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_host_report.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_live_http.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m3_migration.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m3_transports.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m4_migration.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m4_transports.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m4b_migration.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m4b_transports.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m4b_workspaces.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m5_governance.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m5_migration.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_m5_transports.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_mcp_install.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_mock_adapter_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_mock_run_manager_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_mock_workflow.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_owner_execution.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_scheduling_core_boundary.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_transports.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\integration\test_verified_task_completion.py -> agentsync_local-0.3.0a26\tests\integration
+copying tests\manual\probe_claude_host.py -> agentsync_local-0.3.0a26\tests\manual
+copying tests\manual\probe_codex_collaboration.py -> agentsync_local-0.3.0a26\tests\manual
+copying tests\manual\probe_codex_host.py -> agentsync_local-0.3.0a26\tests\manual
+copying tests\manual\probe_registered_codex.py -> agentsync_local-0.3.0a26\tests\manual
+copying tests\recovery\test_process_recovery.py -> agentsync_local-0.3.0a26\tests\recovery
+copying tests\security\test_core_security.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_file_locks.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_http_boundary.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_m3_security.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_m5_audit_transactions.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_m5_owner_cli_inputs.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_m5_permissions.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\security\test_resource_paths.py -> agentsync_local-0.3.0a26\tests\security
+copying tests\unit\test_acceptance_traceability.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_adapter_run_manager.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_adapters.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_candidate_binding.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_candidate_intent_relations.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_candidate_queue_migration.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_capture_creation_fence.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_claude_adapter.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_claude_events.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_claude_invocation.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_claude_process.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_codex_adapter.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_codex_events.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_codex_invocation.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_codex_process.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_context.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_coordination_benchmark.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_core.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_core_admission.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_core_startup_diagnostic.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_cursor_adapter.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_cursor_events.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_data_path.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_dispatch_planning.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_inspect_claude_events.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_inspect_codex_events.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_inspect_local_attempts.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_mock_run_manager.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_owned_process_cleanup.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_planning_cli.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_process_capture.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_process_capture_start_cancel.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_pytest_case_journal.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_release_acceptance.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_retry_planning.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_scheduling.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_unstarted_capture_adapter.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_usage.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_usage_cli.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_verification_docker.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_verification_executor.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_verification_jobs.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_verification_reconciliation.py -> agentsync_local-0.3.0a26\tests\unit
+copying tests\unit\test_verification_snapshot.py -> agentsync_local-0.3.0a26\tests\unit
+copying tools\benchmark_coordination.py -> agentsync_local-0.3.0a26\tools
+copying tools\diagnose_core_startup.py -> agentsync_local-0.3.0a26\tools
+copying tools\inspect_claude_events.py -> agentsync_local-0.3.0a26\tools
+copying tools\inspect_codex_events.py -> agentsync_local-0.3.0a26\tools
+copying tools\inspect_local_attempts.py -> agentsync_local-0.3.0a26\tools
+copying tools\local-debug-requirements.txt -> agentsync_local-0.3.0a26\tools
+copying tools\local_vm_exec.py -> agentsync_local-0.3.0a26\tools
+copying tools\prepare_local_vm.py -> agentsync_local-0.3.0a26\tools
+copying tools\pytest_case_journal.py -> agentsync_local-0.3.0a26\tools
+copying tools\release_acceptance.py -> agentsync_local-0.3.0a26\tools
+copying tools\start_local_vm.ps1 -> agentsync_local-0.3.0a26\tools
+copying src\agentsync_local.egg-info\SOURCES.txt -> agentsync_local-0.3.0a26\src\agentsync_local.egg-info
+Writing agentsync_local-0.3.0a26\setup.cfg
+Creating tar archive
+removing 'agentsync_local-0.3.0a26' (and everything under it)
+Successfully built agentsync_local-0.3.0a26-py3-none-any.whl and agentsync_local-0.3.0a26.tar.gz
+* Getting build dependencies for wheel...
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+* Building wheel...
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+warning: build_py: byte-compiling is disabled, skipping.
+
+warning: install_lib: byte-compiling is disabled, skipping.
+
+* Getting build dependencies for sdist...
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+* Building sdist...
+warning: no previously-included files matching '*.pyc' found anywhere in distribution

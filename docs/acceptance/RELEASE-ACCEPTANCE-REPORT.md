@@ -1,5 +1,24 @@
 # Release Acceptance Report
 
+## Alpha26 limited M6 callback error boundary
+
+Frozen `5eaaf152c447d6a6cf79fd9fbf1cfc734fda62a9`: ordinary callback failures,
+malformed receipt properties and malformed domain codes no longer expose raw
+private exceptions through RunManager. Start-time validated routing IDs remain
+fixed across awaited lifecycle calls. Cancellation and successful private results
+retain their semantics; this is not comprehensive output redaction or B3 acceptance.
+
+Root Windows3.14/3.11 source and fresh offline Windows wheel/rebuilt sdist each
+152passed/0skipped/0failed/error across seven affected modules; identical99retained
++53newIDs. Ruff/format/mypy63 pass. Root checked403Git inputs,349matching sdist
+members,63actual runtime origins per environment, and raw artifact/log/JUnit hashes.
+Astra static review's three findings were resolved before freezing; reviewer did
+not run tests. Initial26RED and review7RED failures remain in the58-member archive.
+See [alpha26 evidence](evidence/alpha26-local-summary.json).
+
+Whole repository/Linux/macOS at this SHA, real clients, relay and42formal
+acceptance NOT RUN. Independent Work review pending. M5/Release BLOCKED.
+
 Handoff update (2026-10-30): [Work accepted PR30's limited M6 component](https://github.com/JayChan697891/agentsync/pull/30#issuecomment-6522196337)
 at head9027286 / productd9b1abc (comment updated12:07:59Z). This supersedes the
 pending Work status in historical alpha25 snapshots only for that component.
