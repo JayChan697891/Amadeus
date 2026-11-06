@@ -1,5 +1,25 @@
 # Release Acceptance Report
 
+## Alpha27 configurable owned Mock graph checkpoint
+
+Frozen `b9533352abc4c8c94a2676792f00b616b63032ee` executes validated caller-defined
+simulation DAGs in its own disposable project. Task metadata is copied/revalidated
+before filesystem access; missing/self/duplicate/cyclic dependencies fail closed.
+The fixed demo, two Mock workers, planning capacity, budgets, cleanup and ordinary
+peer reviews remain. Every result is simulation-only/unverified, never real-client
+or production execution evidence.
+
+Root Windows3.14/3.11 source and fresh offline Windows wheel/rebuilt sdist each
+175passed/0skipped/0failed/error, identical144retained+31newIDs across eight modules.
+Ruff/format/mypy63 pass. Root checked405Git inputs,350matching sdist members,63actual
+runtime origins each, raw artifact/log/JUnit identities and45archive members.
+Astra static design/source review has no open blockers; it did not execute tests.
+InitialRED31 and the corrected mypy annotation error remain in the archive.
+See [alpha27 evidence](evidence/alpha27-local-summary.json).
+
+Whole current repository/Linux/macOS, real clients, autonomous relay and42formal
+requirements NOT RUN. Work review pending; M5/Release BLOCKED. No Actions/main merge.
+
 ## Alpha26 limited M6 callback error boundary
 
 Frozen `5eaaf152c447d6a6cf79fd9fbf1cfc734fda62a9`: ordinary callback failures,

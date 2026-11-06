@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a27 - configurable owned Mock workflow
+
+- Execute a validated bounded task DAG using the existing temporary-project Mock
+  workflow, dependency/capability dispatch, attempt budgets and separate peer reviews.
+- Retain the fixed demo and its behavior. Inputs grant no external execution;
+  every result remains a simulation and unverified.
+
 ## 0.3.0a26 - manager lifecycle error boundary
 
 - Normalize adapter callback failures into fixed public manager errors across

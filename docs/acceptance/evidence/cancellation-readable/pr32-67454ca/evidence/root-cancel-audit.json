@@ -1,0 +1,10 @@
+{
+  "source_commit": "67454ca4772b223dd94910ccabad5efe07987b00",
+  "git_files": 407,
+  "runtime_modules_each": 63,
+  "sdist_matching_git_members": 351,
+  "unique_cases_each": 286,
+  "retained_cases": 259,
+  "new_cancellation_cases": 27,
+  "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS"
+}

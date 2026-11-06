@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a26 development prototype; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a27 development prototype; M5 and Release BLOCKED**. Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -93,6 +93,29 @@ The returned `capability_filter` identifies the mode, while capability verificat
 and Core authorization remain unverified. Recommendations never claim or run work.
 
 ## Isolated simulated workflow
+
+The Python API also accepts a validated graph of 1–16 simulation tasks. Tasks may
+arrive out of dependency order; duplicate labels, missing dependencies and cycles
+are rejected before filesystem access. Only the two built-in Mock workers run:
+
+```python
+from pathlib import Path
+from agentsync.mock_workflow import MockWorkflowTask, run_mock_workflow
+
+result = await run_mock_workflow(
+    Path("D:/agentsync-debug"),
+    tasks=(
+        MockWorkflowTask("check", 20, "test", ("build",)),
+        MockWorkflowTask("build", 10, "build"),
+    ),
+    attempt_budget=4,
+)
+```
+
+The default total attempt budget is 6, with a maximum of 16. An optional
+`fail_first_attempt=True` injects one simulated failure for that task. These
+graphs use a disposable owned project and always return simulation/unverified
+markers; they do not attach to existing projects or launch real clients.
 
 `python -m agentsync demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
 four-task diamond with two Mock workers, capability/dependency planning, one failed
