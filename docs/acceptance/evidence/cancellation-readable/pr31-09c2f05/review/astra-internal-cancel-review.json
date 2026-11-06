@@ -1,0 +1,62 @@
+{
+  "review_kind": "independent static critical review",
+  "reviewer": "GPT-6 Astra",
+  "repository": "F:\\syuc\\agentsync-execution-intent",
+  "base_commit": "e9b778f55f626a94bf7d10a6b40e22ba0bb83105",
+  "source_commit": null,
+  "source_state": "Uncommitted two-file implementation reviewed over base_commit; identify final commit by reviewed file hashes.",
+  "reviewed_files_sha256": {
+    "src/agentsync/adapters/manager.py": "b56224dd4aacadbdcf0b74239a4aaf551c85ccf723cc1c7e700c0f2192b691f6",
+    "tests/unit/test_adapter_run_manager.py": "fb312bac08e168cd090d5fac468cdf36b88275bc1ecc1a4479c4a8093530957b"
+  },
+  "findings": [
+    {
+      "id": "callback-internal-cancel",
+      "status": "resolved",
+      "detail": "_call_adapter catches asyncio.CancelledError separately from process-control BaseExceptions. With no outstanding cancellation, the existing fixed adapter_operation_unknown error is raised after leaving the handler. Callback method lookup remains inside lambda, covering descriptors structurally."
+    },
+    {
+      "id": "receipt-property-internal-cancel",
+      "status": "resolved",
+      "detail": "_validate_run catches property CancelledError and returns fixed invalid_adapter_run without retaining the private exception. All actual call sites execute under async manager operations. Start receipts retain the existing private owned-driver/static-start-error boundary."
+    },
+    {
+      "id": "result-property-internal-cancel",
+      "status": "resolved",
+      "detail": "get_result catches CancelledError from result.run. Subsequent validation occurs outside that handler and returns fixed invalid_adapter_run, or sanitized pending caller cancellation."
+    },
+    {
+      "id": "external-cancel-context-privacy",
+      "status": "resolved",
+      "detail": "Pending caller cancellation observed at the boundary is preserved as a fresh message-free CancelledError raised outside handlers; raw adapter exceptions are not reraised. Tests explicitly cover adapters rewrapping real task cancellation with private args and explicit cause, and assert empty args, absent cause/context, cancelled task and retained cancellation count."
+    },
+    {
+      "id": "stale-cancellation-count-policy",
+      "status": "resolved",
+      "detail": "An uncleared Task.cancelling() count rejects callback/property entry before adapter code executes. The count is explicitly policy rather than exception-origin evidence. Tests cover a previously delivered and swallowed cancellation and show callback never executes. A caller wishing to resume lifecycle work must clear its swallowed cancellation request."
+    },
+    {
+      "id": "scope-ownership-retry",
+      "status": "resolved",
+      "detail": "No Core, adapter registration, admission, shielding, shared-start ownership, retained-history, replay, retry or successful-result payload changes. KeyboardInterrupt and SystemExit are not swallowed by the added catches."
+    },
+    {
+      "id": "success-return-pending-cancellation",
+      "status": "resolved",
+      "detail": "Root identified that successful capabilities return could bypass the post-call cancellation policy when an adapter swallowed caller cancellation. Final _call_adapter stores callback result then checks pending cancellation in the try/else outside exception handlers before returning. Added regression asserts the task remains cancelled with empty args and absent cause/context even when callback returns a private value."
+    }
+  ],
+  "open_blockers": [],
+  "inspected_tests": {
+    "new_parameterized_cases": 27,
+    "execution_by_reviewer": false,
+    "detail": "Read assertions for all five lifecycle callbacks, run_id/project_id properties over start and lifecycle receipts, result.run, external rewrapped cancellation and preexisting uncleared cancellation. Existing external cancellation and dispatch ownership tests remain. Final review additionally covers successful capabilities callback return after swallowing a real cancellation request."
+  },
+  "limitations": [
+    "Static source/test review only. No tests, provider/client calls, VM operations, GitHub Actions or API operations were performed by this reviewer.",
+    "Root must independently validate frozen source and installed packages and bind execution evidence to matching reviewed hashes.",
+    "The cancellation count is not authenticated provenance; policy intentionally rejects lifecycle entry with outstanding requests and sanitizes messages rather than preserving cancellation payloads.",
+    "Descriptor handling was verified through source structure, not a newly added descriptor-specific cancellation test.",
+    "This bounded repair does not establish full repository, Linux/macOS, real-client, Work acceptance, M5 or Release acceptance."
+  ]
+}

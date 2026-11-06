@@ -4,3 +4,5 @@
 *.gz binary
 # Preserve upstream notice text, including legal separators and original whitespace.
 docs/THIRD-PARTY-NOTICES.txt -whitespace
+# Preserve raw evidence bytes while retaining text file extensions for API readers.
+docs/acceptance/evidence/cancellation-readable/** -text
