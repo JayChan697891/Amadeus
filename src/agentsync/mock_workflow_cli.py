@@ -17,7 +17,7 @@ _WORKFLOW_OPTIONS = {
     "parallel_limit",
 }
 _TASK_REQUIRED = {"label", "priority", "capability"}
-_TASK_OPTIONAL = {"dependencies", "fail_first_attempt"}
+_TASK_OPTIONAL = {"dependencies", "fail_first_attempt", "handoff_on_success"}
 
 
 def _unique_members(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -49,6 +49,7 @@ def _task(row: Any) -> MockWorkflowTask:
         capability=row["capability"],
         dependencies=tuple(dependencies),
         fail_first_attempt=row.get("fail_first_attempt", False),
+        handoff_on_success=row.get("handoff_on_success", False),
     )
 
 

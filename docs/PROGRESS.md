@@ -3,7 +3,10 @@
 2026-11-07, alpha30 source checkpoint. The owner requested implementation before
 testing or debugging. M6 adds explicit pinned Cursor ask/terminal-JSON preparation
 and a contextual process factory. M7 exposes configurable Mock workflows on stdin
-with a bounded worker roster and parallel budget. M8 adds explicit local save and
+with a bounded worker roster and parallel budget. Optional simulated handoff pins
+a context revision, transfers ownership through Core, schedules a recipient
+attempt under the same budgets and selects a third participant for review.
+M8 adds explicit local save and
 restore for private usage checkpoints. M9 keeps historical raw evidence in Git
 while omitting those copies from future source packages.
 

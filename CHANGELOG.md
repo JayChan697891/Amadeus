@@ -4,6 +4,7 @@
 
 - Add a pinned Cursor CLI plan and opt-in process factory for terminal JSON.
 - Run configurable Mock task graphs and worker rosters through a local stdin command.
+- Let opted-in Mock tasks pass a pinned context revision and a new lease to another worker.
 - Save and restore explicitly selected private usage checkpoints.
 - Keep raw historical evidence copies in Git and omit them from source packages.
 - Validation deferred to the end of the implementation phase.

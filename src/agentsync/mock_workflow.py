@@ -39,6 +39,7 @@ class MockWorkflowTask:
     capability: Literal["build", "test"]
     dependencies: tuple[str, ...] = ()
     fail_first_attempt: bool = False
+    handoff_on_success: bool = False
 
     def __post_init__(self) -> None:
         if (
@@ -53,6 +54,7 @@ class MockWorkflowTask:
             or len(set(self.dependencies)) != len(self.dependencies)
             or self.label in self.dependencies
             or type(self.fail_first_attempt) is not bool
+            or type(self.handoff_on_success) is not bool
         ):
             raise ValueError("Invalid mock workflow task.")
 
@@ -110,6 +112,12 @@ def _copy_workers(
         task.capability not in supported for task in scenario
     ):
         raise ValueError("Mock workflow requires distinct workers covering all tasks.")
+    for task in scenario:
+        if task.handoff_on_success and (
+            len(copies) < 3
+            or sum(task.capability in worker.capabilities for worker in copies) < 2
+        ):
+            raise ValueError("A Mock handoff requires two capable workers and a separate reviewer.")
     return copies
 
 
@@ -182,6 +190,7 @@ async def run_mock_workflow(
     1..3 attempts per task and 1..16 starts overall (default 6). Task values are
     copied and validated as an acyclic graph before filesystem I/O. The two to
     eight workers must cover every task capability, with one active run each.
+    An optional handoff uses a new lease and attempt under the same budgets.
     Tasks use deterministic topological creation order. Existing parent databases
     are never opened. Only logical labels and simulation observations are returned.
     Core errors propagate; owned active Mock runs are cancelled on unexpected exit.
@@ -287,6 +296,11 @@ async def _run(
         )
         requirements[tasks[label]["id"]] = (definition.capability,)
     fail_first = {definition.label for definition in scenario if definition.fail_first_attempt}
+    transfer_tasks = {
+        definition.label: definition.capability
+        for definition in scenario
+        if definition.handoff_on_success
+    }
     labels = {row["id"]: label for label, row in tasks.items()}
     worker_indices = {actor["agent_id"]: index for index, actor in enumerate(actors)}
     worker_labels = tuple(worker.label for worker in roster)
@@ -304,6 +318,7 @@ async def _run(
     retries: list[str] = []
     trace: list[dict[str, Any]] = []
     reviews = []
+    transfers: dict[str, tuple[int, int]] = {}
     peak = 0
     stop_reason = None
 
@@ -322,6 +337,7 @@ async def _run(
 
     def transition(label: str, status: str) -> dict[str, Any]:
         entry = owned[label]
+        request_id = f"{label}:handoff:{status}" if label in transfers else f"{label}-{status}"
         entry.row = call(
             entry.worker,
             "update_task",
@@ -330,9 +346,63 @@ async def _run(
             lease_token=entry.lease,
             status=status,
             result=_MARKER,
-            request_id=f"{label}-{status}",
+            request_id=request_id,
         )
         return entry.row
+
+    def accept_handoff(label: str, sender: int) -> None:
+        entry = owned[label]
+        recipient = next(
+            index
+            for index, candidate in enumerate(roster)
+            if index != sender and transfer_tasks[label] in candidate.capabilities
+        )
+        context = call(
+            sender,
+            "publish_context",
+            kind="progress",
+            title=label,
+            content=_MARKER,
+            request_id="context-" + label,
+        )
+        reference = {"context_id": context["context_id"], "version": context["version"]}
+        transfer = call(
+            sender,
+            "submit_handoff",
+            task_id=entry.row["id"],
+            lease_token=entry.lease,
+            expected_version=entry.row["version"],
+            target_agent_id=actors[recipient]["agent_id"],
+            package={"summary": _MARKER, "context_refs": [reference]},
+            request_id="handoff-" + label,
+        )
+        del owned[label]
+        received = call(recipient, "get_handoff", handoff_id=transfer["id"])
+        if received != transfer or received["contexts"] != [context]:
+            raise RuntimeError("Mock workflow handoff context did not match.")
+        accepted = call(
+            recipient,
+            "resolve_handoff",
+            handoff_id=received["id"],
+            expected_version=received["task_version"],
+            accept=True,
+            request_id="accept-" + label,
+        )
+        if (
+            accepted["status"] != "accepted"
+            or accepted["assigned_agent_id"] != actors[recipient]["agent_id"]
+        ):
+            raise RuntimeError("Mock workflow handoff assignment did not match.")
+        transfers[label] = (sender, recipient)
+        trace.append(
+            {
+                "event": "handoff_accepted",
+                "task": label,
+                "sender": worker_labels[sender],
+                "recipient": worker_labels[recipient],
+                "context_version": context["version"],
+            }
+        )
 
     try:
         while stop_reason is None:
@@ -374,12 +444,17 @@ async def _run(
                 if sum(attempts.values()) >= budget or attempts[label] >= max_attempts:
                     raise RuntimeError("Mock workflow attempt reservation was violated.")
                 if version is not None:
+                    claim_request = "claim-" + label
+                    if label in transfers:
+                        if worker != transfers[label][1]:
+                            raise RuntimeError("Mock workflow lost the handoff reservation.")
+                        claim_request = "claim:handoff:" + label
                     claimed = call(
                         worker,
                         "claim_task",
                         task_id=tasks[label]["id"],
                         expected_version=version,
-                        request_id="claim-" + label,
+                        request_id=claim_request,
                     )
                     owned[label] = _Owned(worker, claimed, claimed["lease_token"])
                     transition(label, "running")
@@ -437,8 +512,19 @@ async def _run(
                     else:
                         retries.append(label)
                     continue
+                if label in transfer_tasks and label not in transfers:
+                    if attempts[label] >= max_attempts:
+                        stop_reason = "per_task_attempts_exhausted"
+                    else:
+                        accept_handoff(label, worker)
+                    continue
                 submitted = transition(label, "review")
-                peer = (worker + 1) % len(roster)
+                if label in transfers:
+                    peer = next(
+                        index for index in range(len(roster)) if index not in transfers[label]
+                    )
+                else:
+                    peer = (worker + 1) % len(roster)
                 completed = call(
                     peer,
                     "review_task",

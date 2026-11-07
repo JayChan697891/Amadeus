@@ -146,6 +146,10 @@ with a unique `label` and a `capabilities` array containing `build`, `test`, or
 both. Every task capability needs a matching worker. `parallel_limit` defaults
 to two and can be set from one to the worker count. Inspect `data.outcome` and
 `data.stop_reason` to distinguish a completed simulation from a budget stop.
+Set `handoff_on_success` on a task to simulate a structured transfer after its
+first successful run. Use at least two workers with the task capability and a
+third worker for review. The recipient takes a new lease and uses another
+attempt from the same task and workflow budgets.
 
 `python -m agentsync demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
 four-task diamond with two Mock workers, capability/dependency planning, one failed
