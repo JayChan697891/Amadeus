@@ -1,0 +1,110 @@
+{
+  "schema": "agentsync.full-linux-checkpoint.v1",
+  "source_commit": "50bcbf50095f7df1ca6a420e5d68c3892991f9d1",
+  "source_wheel_sdist_each": {
+    "tests": 2043,
+    "passed": 2039,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0
+  },
+  "identity": {
+    "source_commit": "50bcbf50095f7df1ca6a420e5d68c3892991f9d1",
+    "git_inputs": 417,
+    "runtime_modules_each": 63,
+    "source_wheel_sdist_each": {
+      "tests": 2043,
+      "passed": 2039,
+      "skipped": 4,
+      "failed": 0,
+      "errors": 0
+    },
+    "retained": 1899,
+    "added": 144,
+    "artifacts": {
+      "agentsync_local-0.3.0a28-py3-none-any.whl": "b9c58784b0af39224344b00b19694cc96f917e251e5b0d2d7b401bb0646b6b91",
+      "agentsync_local-0.3.0a28.tar.gz": "8a8a000cc7de3022a6e0325876c3a147654bfd1fd571bbb8a246c6efc41b91ad"
+    },
+    "json_observations": 96,
+    "container_postcheck": "PENDING",
+    "vm_old11692_shutdown": "Not observed running on resume; no graceful shutdown claim",
+    "release": "BLOCKED"
+  },
+  "skips": {
+    "source": [
+      {
+        "id": "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+        "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+      },
+      {
+        "id": "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict",
+        "reason": "Windows conflict keys case-fold"
+      },
+      {
+        "id": "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root",
+        "reason": "Windows junction-specific ancestor boundary"
+      },
+      {
+        "id": "tests.security.test_resource_paths::test_junction_is_denied",
+        "reason": "Windows junction-specific boundary"
+      }
+    ],
+    "wheel": [
+      {
+        "id": "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+        "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+      },
+      {
+        "id": "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict",
+        "reason": "Windows conflict keys case-fold"
+      },
+      {
+        "id": "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root",
+        "reason": "Windows junction-specific ancestor boundary"
+      },
+      {
+        "id": "tests.security.test_resource_paths::test_junction_is_denied",
+        "reason": "Windows junction-specific boundary"
+      }
+    ],
+    "sdist": [
+      {
+        "id": "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+        "reason": "Actual Linux backend belongs to the separately controlled Docker fixture"
+      },
+      {
+        "id": "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict",
+        "reason": "Windows conflict keys case-fold"
+      },
+      {
+        "id": "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root",
+        "reason": "Windows junction-specific ancestor boundary"
+      },
+      {
+        "id": "tests.security.test_resource_paths::test_junction_is_denied",
+        "reason": "Windows junction-specific boundary"
+      }
+    ]
+  },
+  "sdist_members": "365 total:357 Git-matched and8generated; independently checked",
+  "recorded_container_ids_absent": 96,
+  "owned_vm5552_gracefully_stopped": true,
+  "earlier_vm11692_shutdown": "Unobserved; no graceful shutdown claim",
+  "independent_audit": "Astra38data checks pass, no findings; reviewer did not run tests",
+  "archive": "releases/0.3.0a28/checkpoints/full-linux-50bcbf5.tar.gz",
+  "archive_sha256": "3b9e86e71165214b735c3018f77cece43393ec0cfac0d4cbd1479fb6c8f58091",
+  "manifest_members": 138,
+  "readable_path": "docs/acceptance/evidence/full-linux-readable/50bcbf5",
+  "Work": "New Linux evidence PENDING; earlier PR33 limited component accepted at08a3e93",
+  "not_run": [
+    "full Windows/macOS at this SHA",
+    "real model/client tasks",
+    "autonomous relay",
+    "formal42 acceptance"
+  ],
+  "release": "BLOCKED",
+  "bootstrap_notes": [
+    "Initial shell poststart check used stale LASTEXITCODE; actual VM identity verified without relaunch",
+    "Initial SSH connection before guest readiness failed; serial readiness observed and read-only preflight succeeded; no product tests executed during failed transport"
+  ]
+}

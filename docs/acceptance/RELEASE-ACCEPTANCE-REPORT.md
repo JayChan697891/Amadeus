@@ -1,5 +1,31 @@
 # Release Acceptance Report
 
+## Full Linux source and installed supplement (2026-11-06)
+
+Frozen product/test `50bcbf50095f7df1ca6a420e5d68c3892991f9d1`: complete Linux
+source, fresh offline wheel and rebuilt sdist each2039passed,4explained skips,
+0failed/errors;2043unique IDs with1899retained+144new and no removed cases.
+All three required the real Docker tier. Four skips are identical across suites;
+their exact IDs/reasons are in the summary, including the separate controlled
+Docker-fixture case rather than silently skipping required Docker execution.
+
+Root independently checked417Git inputs,63actual modules/origins, artifact hashes
+and direct URLs, identical JUnit sets and raw Docker data. Astra performed38
+independent data checks, no findings; reviewer did not execute tests or Docker.
+The sdist contains357Git-matched files and8generated metadata files. All96recorded
+container IDs were absent in an actual postcheck; ownedVM5552 then gracefully
+stopped. OldVM11692 had already disappeared at resume, so its shutdown is unknown.
+
+[Summary and exact skip reasons](evidence/full-linux-50bcbf5-summary.json);
+[directly readable original evidence](evidence/full-linux-readable/50bcbf5/INDEX.json).
+The138-member archive includes raw logs/JUnit, builds, Docker records, checksums,
+drivers and audits. Later proof-only commits do not change product/test bytes.
+
+This new supplement awaits Work review. Earlier PR33 limited component acceptance
+at08a3e93 does not accept the new evidence or formal release. Full current Windows/
+macOS, real model/client tasks, autonomous relay and42formal acceptance remain
+NOT RUN; M5/Release BLOCKED. No GitHub Actions or paid provider calls.
+
 ## Alpha28 exact desktop Codex declaration checkpoint
 
 Frozen `fdb316b736825f0ac7b3e6a79ddee1046ff23668` admits only the additional
