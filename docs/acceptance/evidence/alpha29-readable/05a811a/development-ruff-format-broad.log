@@ -1,0 +1,2564 @@
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:1:16
+    |
+    - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1   + import hashlib, io, json, subprocess, tarfile, xml.etree.ElementTree as ET
+2   | from pathlib import Path
+    - repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+    - reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+    - assert review.get('open_blockers',[])==[]
+    - entries=[(31,'cancel31-w6bv2b8w','0.3.0a26',['alpha26-lifecycle-vcrr1usf']),(32,'cancel32-a2zmz9oj','0.3.0a27',['alpha27-workflow-6g0at8nh','alpha26-lifecycle-vcrr1usf']),(33,'cancel33-hc72z3ls','0.3.0a28',['alpha28-codex-version-_s__lqtm'])]
+    - allresults=[]
+    - for pr,folder,version,oldfolders in entries:
+    -  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'];sets=[]
+    -  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+    -  for n,h in expected.items():assert r['source_manifest'][n]==h
+    -  for n,h in r['source_manifest'].items():
+    -   assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+    -   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+    -  for name,s in r['suites'].items():
+    -   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+    -   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+    -   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+    -   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+    -   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+    -   for n,item in origins.items():
+    -    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['runtime_modules'][n]
+    -  assert len(sets)==4 and all(s==sets[0] for s in sets)
+    -  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+    -  for oldfolder in oldfolders:
+    -   cases=ET.parse(Path('D:/agentsync-debug')/oldfolder/'source314.xml').getroot().iter('testcase')
+    -   oldids|={c.get('classname')+'::'+c.get('name') for c in cases if c.get('classname') in classes}
+    -  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+    -  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+    -  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+    -  matched=0
+    -  with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+    -   for m in stream:
+    -    n='/'.join(Path(m.name).parts[1:])
+    -    if m.isfile() and n in r['source_manifest']:
+    -     assert hashlib.sha256(stream.extractfile(m).read()).hexdigest()==r['source_manifest'][n];matched+=1
+    -  audit={'source_commit':sha,'git_files':len(r['source_manifest']),'runtime_modules_each':63,'sdist_matching_git_members':matched,'unique_cases_each':len(sets[0]),'retained_cases':len(oldids),'new_cancellation_cases':27,'checks':'Independent Git/file/origin/JUnit/log/artifact bytes PASS'}
+    -  (out/'root-cancel-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+    -  members={'review/astra-internal-cancel-review.json':reviewpath,'drivers/finalize-cancellation-stack.py':Path(__file__),'drivers/verify-cancel'+str(pr)+'.py':Path('D:/agentsync-debug/verify-cancel'+str(pr)+'.py')}
+    -  for p in out.iterdir():
+    -   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+    -  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+    -  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+    -   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+    -  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+    -  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+    -  with tarfile.open(archive,'w:gz') as stream:
+    -   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+    -   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(raw))
+    -  with tarfile.open(archive) as stream:
+    -   for n,record in manifest.items():
+    -    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+    -  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance','suites':{n:{k:v for k,v in s.items() if k!='case_ids'} for n,s in r['suites'].items()},'identity':audit,'archive':'releases/'+version+'/checkpoints/'+archive.name,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'manifest_members':len(manifest),'static':'Ruff/format/mypy63 PASS','independent_review':'Astra static source/hash review; no tests run by reviewer; Work pending','policy':'Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.','red_evidence':'Initial26 regressions and additional successful-return regression1 retained','not_run':['whole repository/Linux/macOS at this SHA','real clients/model tasks','autonomous relay','formal42 acceptance'],'release':'BLOCKED'}
+    -  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+    -  print(json.dumps({'pr':pr,'source':sha,'each_passed':len(sets[0]),'archive':archive.name,'sha256':summary['archive_sha256']}),flush=True)
+    - (dest/'stack-summary.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + dest = Path("D:/agentsync-debug/cancel-stack-delivery")
+6   + dest.mkdir(exist_ok=True)
+7   + reviewpath = Path("D:/agentsync-debug/astra-internal-cancel-review.json")
+8   + review = json.loads(reviewpath.read_text(encoding="utf-8"))
+9   + assert review.get("open_blockers", []) == []
+10  + entries = [
+11  +     (31, "cancel31-w6bv2b8w", "0.3.0a26", ["alpha26-lifecycle-vcrr1usf"]),
+12  +     (
+13  +         32,
+14  +         "cancel32-a2zmz9oj",
+15  +         "0.3.0a27",
+16  +         ["alpha27-workflow-6g0at8nh", "alpha26-lifecycle-vcrr1usf"],
+17  +     ),
+18  +     (33, "cancel33-hc72z3ls", "0.3.0a28", ["alpha28-codex-version-_s__lqtm"]),
+19  + ]
+20  + allresults = []
+21  + for pr, folder, version, oldfolders in entries:
+22  +     out = Path("D:/agentsync-debug") / folder
+23  +     r = json.loads((out / "result.json").read_text(encoding="utf-8"))
+24  +     assert r["passed"]
+25  +     sha = r["commit"]
+26  +     sets = []
+27  +     expected = review.get("reviewed_files_sha256", review.get("reviewed_files", {}))
+28  +     assert len(expected) >= 2
+29  +     for n, h in expected.items():
+30  +         assert r["source_manifest"][n] == h
+31  +     for n, h in r["source_manifest"].items():
+32  +         assert (
+33  +             hashlib.sha256(
+34  +                 subprocess.check_output(["git", "show", sha + ":" + n], cwd=repo)
+35  +             ).hexdigest()
+36  +             == h
+37  +         )
+38  +         assert hashlib.sha256((out / "source" / n).read_bytes()).hexdigest() == h
+39  +     for name, s in r["suites"].items():
+40  +         xml = out / (name + ".xml")
+41  +         cases = list(ET.parse(xml).getroot().iter("testcase"))
+42  +         ids = {c.get("classname") + "::" + c.get("name") for c in cases}
+43  +         assert len(ids) == len(cases) == s["passed"] and not any(
+44  +             c.find(t) is not None for c in cases for t in ("failure", "error", "skipped")
+45  +         )
+46  +         assert hashlib.sha256(xml.read_bytes()).hexdigest() == s["junit_sha256"]
+47  +         sets.append(ids)
+48  +         origins = json.loads((out / (name + "-origins.json")).read_text(encoding="utf-8"))
+49  +         assert len(origins) == 63
+50  +         base = (
+51  +             (out / "source/src").resolve()
+52  +             if name.startswith("source")
+53  +             else (out / (name + "-venv")).resolve()
+54  +         )
+55  +         for n, item in origins.items():
+56  +             p = Path(item["path"]).resolve()
+57  +             assert (
+58  +                 p.is_relative_to(base)
+59  +                 and hashlib.sha256(p.read_bytes()).hexdigest()
+60  +                 == item["sha256"]
+61  +                 == r["runtime_modules"][n]
+62  +             )
+63  +     assert len(sets) == 4 and all(s == sets[0] for s in sets)
+64  +     classes = {i.rsplit("::", 1)[0] for i in sets[0]}
+65  +     oldids = set()
+66  +     for oldfolder in oldfolders:
+67  +         cases = (
+68  +             ET.parse(Path("D:/agentsync-debug") / oldfolder / "source314.xml")
+69  +             .getroot()
+70  +             .iter("testcase")
+71  +         )
+72  +         oldids |= {
+73  +             c.get("classname") + "::" + c.get("name")
+74  +             for c in cases
+75  +             if c.get("classname") in classes
+76  +         }
+77  +     assert oldids <= sets[0] and len(sets[0] - oldids) == 27
+78  +     for n, c in r["checks"].items():
+79  +         assert (
+80  +             c["exit_code"] == 0
+81  +             and hashlib.sha256((out / (n + ".log")).read_bytes()).hexdigest() == c["log_sha256"]
+82  +         )
+83  +     for n, h in r["artifacts"].items():
+84  +         assert hashlib.sha256((out / "artifacts" / n).read_bytes()).hexdigest() == h
+85  +     matched = 0
+86  +     with tarfile.open(next((out / "artifacts").glob("*.tar.gz"))) as stream:
+87  +         for m in stream:
+88  +             n = "/".join(Path(m.name).parts[1:])
+89  +             if m.isfile() and n in r["source_manifest"]:
+90  +                 assert (
+91  +                     hashlib.sha256(stream.extractfile(m).read()).hexdigest()
+92  +                     == r["source_manifest"][n]
+93  +                 )
+94  +                 matched += 1
+95  +     audit = {
+96  +         "source_commit": sha,
+97  +         "git_files": len(r["source_manifest"]),
+98  +         "runtime_modules_each": 63,
+99  +         "sdist_matching_git_members": matched,
+100 +         "unique_cases_each": len(sets[0]),
+101 +         "retained_cases": len(oldids),
+102 +         "new_cancellation_cases": 27,
+103 +         "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS",
+104 +     }
+105 +     (out / "root-cancel-audit.json").write_text(json.dumps(audit, indent=2), encoding="utf-8")
+106 +     members = {
+107 +         "review/astra-internal-cancel-review.json": reviewpath,
+108 +         "drivers/finalize-cancellation-stack.py": Path(__file__),
+109 +         "drivers/verify-cancel" + str(pr) + ".py": Path(
+110 +             "D:/agentsync-debug/verify-cancel" + str(pr) + ".py"
+111 +         ),
+112 +     }
+113 +     for p in out.iterdir():
+114 +         if p.is_file() and p.suffix in {".json", ".log", ".xml", ".py"}:
+115 +             members["evidence/" + p.name] = p
+116 +     for p in (out / "artifacts").iterdir():
+117 +         members["artifacts/" + p.name] = p
+118 +     for p in Path("D:/agentsync-debug/m6-internal-cancel-sol").iterdir():
+119 +         if p.is_file() and p.suffix in {".log", ".xml"}:
+120 +             members["development/" + p.name] = p
+121 +     manifest = {
+122 +         n: {"bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+123 +         for n, p in members.items()
+124 +     }
+125 +     archive = dest / ("cancel-pr" + str(pr) + "-" + sha[:7] + ".tar.gz")
+126 +     assert not archive.exists()
+127 +     with tarfile.open(archive, "w:gz") as stream:
+128 +         for n, p in members.items():
+129 +             stream.add(p, arcname=n, recursive=False)
+130 +         raw = json.dumps(manifest, indent=2).encode()
+131 +         info = tarfile.TarInfo("MANIFEST.json")
+132 +         info.size = len(raw)
+133 +         stream.addfile(info, io.BytesIO(raw))
+134 +     with tarfile.open(archive) as stream:
+135 +         for n, record in manifest.items():
+136 +             raw = stream.extractfile(n).read()
+137 +             assert (
+138 +                 len(raw) == record["bytes"] and hashlib.sha256(raw).hexdigest() == record["sha256"]
+139 +             )
+140 +     summary = {
+141 +         "schema": "agentsync.local-checkpoint.v1",
+142 +         "pr": pr,
+143 +         "version": version,
+144 +         "source_commit": sha,
+145 +         "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+146 +         "suites": {
+147 +             n: {k: v for k, v in s.items() if k != "case_ids"} for n, s in r["suites"].items()
+148 +         },
+149 +         "identity": audit,
+150 +         "archive": "releases/" + version + "/checkpoints/" + archive.name,
+151 +         "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+152 +         "manifest_members": len(manifest),
+153 +         "static": "Ruff/format/mypy63 PASS",
+154 +         "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+155 +         "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+156 +         "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+157 +         "not_run": [
+158 +             "whole repository/Linux/macOS at this SHA",
+159 +             "real clients/model tasks",
+160 +             "autonomous relay",
+161 +             "formal42 acceptance",
+162 +         ],
+163 +         "release": "BLOCKED",
+164 +     }
+165 +     (dest / ("pr" + str(pr) + ".json")).write_text(
+166 +         json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+167 +     )
+168 +     allresults.append(summary)
+169 +     print(
+170 +         json.dumps(
+171 +             {
+172 +                 "pr": pr,
+173 +                 "source": sha,
+174 +                 "each_passed": len(sets[0]),
+175 +                 "archive": archive.name,
+176 +                 "sha256": summary["archive_sha256"],
+177 +             }
+178 +         ),
+179 +         flush=True,
+180 +     )
+181 + (dest / "stack-summary.json").write_text(json.dumps(allresults, indent=2), encoding="utf-8")
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:2:1
+    |
+1   | """Local frozen source and offline installed-package acceptance; no real clients."""
+2   +
+3   | from pathlib import Path
+4   | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+5   |
+    - repo = Path('F:/syuc/agentsync-execution-intent')
+    - out = Path(tempfile.mkdtemp(prefix='cancel31-', dir='D:/agentsync-debug'))
+    - py = 'D:/agentsync-debug/venv/Scripts/python.exe'
+    - py311 = 'D:/agentsync-debug/alpha13-python311-1_06_4p9/venv/Scripts/python.exe'
+    - cache = 'D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse'
+    - commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repo, text=True).strip()
+    - assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=repo, text=True).strip()
+    - archive = out / 'source.tar'
+    - subprocess.run(['git', 'archive', '--format=tar', '--output', str(archive), commit], cwd=repo, check=True)
+    - source = out / 'source'
+6   + repo = Path("F:/syuc/agentsync-execution-intent")
+7   + out = Path(tempfile.mkdtemp(prefix="cancel31-", dir="D:/agentsync-debug"))
+8   + py = "D:/agentsync-debug/venv/Scripts/python.exe"
+9   + py311 = "D:/agentsync-debug/alpha13-python311-1_06_4p9/venv/Scripts/python.exe"
+10  + cache = "D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse"
+11  + commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+12  + assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip()
+13  + archive = out / "source.tar"
+14  + subprocess.run(
+15  +     ["git", "archive", "--format=tar", "--output", str(archive), commit], cwd=repo, check=True
+16  + )
+17  + source = out / "source"
+18  | source.mkdir()
+--------------------------------------------------------------------------------
+31  |         manifest[member.name] = hashlib.sha256(data).hexdigest()
+    - modules = {n.removeprefix('src/'): h for n, h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')}
+32  + modules = {
+33  +     n.removeprefix("src/"): h
+34  +     for n, h in manifest.items()
+35  +     if n.startswith("src/agentsync/") and n.endswith(".py")
+36  + }
+37  | assert len(modules) == 63
+    - binding = out / 'binding.json'
+    - binding.write_text(json.dumps(modules), encoding='utf-8')
+    - wrapper = out / 'test_frozen.py'
+    - wrapper.write_text('''if __name__ == '__main__':
+38  + binding = out / "binding.json"
+39  + binding.write_text(json.dumps(modules), encoding="utf-8")
+40  + wrapper = out / "test_frozen.py"
+41  + wrapper.write_text(
+42  +     """if __name__ == '__main__':
+43  |  import hashlib, importlib, json, pathlib, sys
+--------------------------------------------------------------------------------
+62  |  raise SystemExit(code)
+    - ''', encoding='utf-8')
+63  + """,
+64  +     encoding="utf-8",
+65  + )
+66  | selectors = [
+    -  'tests/unit/test_adapter_run_manager.py',
+    -  'tests/unit/test_mock_run_manager.py',
+    -  'tests/unit/test_cursor_adapter.py',
+    -  'tests/integration/test_adapter_manager_core_boundary.py',
+    -  'tests/integration/test_mock_workflow.py',
+    -  'tests/integration/test_mock_run_manager_core_boundary.py',
+    -  'tests/integration/test_cursor_adapter_core_boundary.py',
+67  +     "tests/unit/test_adapter_run_manager.py",
+68  +     "tests/unit/test_mock_run_manager.py",
+69  +     "tests/unit/test_cursor_adapter.py",
+70  +     "tests/integration/test_adapter_manager_core_boundary.py",
+71  +     "tests/integration/test_mock_workflow.py",
+72  +     "tests/integration/test_mock_run_manager_core_boundary.py",
+73  +     "tests/integration/test_cursor_adapter_core_boundary.py",
+74  | ]
+    - env = {k: v for k, v in os.environ.items() if k.upper() in {'SYSTEMROOT', 'WINDIR', 'PATH', 'COMSPEC', 'PATHEXT'}}
+    - home = out / 'home'; home.mkdir()
+    - env.update(TEMP=str(out), TMP=str(out), HOME=str(home), USERPROFILE=str(home), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTEST_DISABLE_PLUGIN_AUTOLOAD='1', PIP_NO_INDEX='1', PIP_DISABLE_PIP_VERSION_CHECK='1', PIP_CONFIG_FILE=os.devnull, GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, RUFF_CACHE_DIR=str(out/'ruff-cache'), MYPY_CACHE_DIR=str(out/'mypy-cache'))
+    - result = {'commit': commit, 'version': '0.3.0a26', 'source_manifest': manifest, 'runtime_modules': modules, 'selectors': selectors, 'checks': {}, 'suites': {}, 'scope': 'Selected affected Windows source and fresh offline Windows installed-package suites; full repository/Linux/macOS/real clients NOT RUN', 'release': 'BLOCKED'}
+75  + env = {
+76  +     k: v
+77  +     for k, v in os.environ.items()
+78  +     if k.upper() in {"SYSTEMROOT", "WINDIR", "PATH", "COMSPEC", "PATHEXT"}
+79  + }
+80  + home = out / "home"
+81  + home.mkdir()
+82  + env.update(
+83  +     TEMP=str(out),
+84  +     TMP=str(out),
+85  +     HOME=str(home),
+86  +     USERPROFILE=str(home),
+87  +     PYTHONDONTWRITEBYTECODE="1",
+88  +     PYTHONNOUSERSITE="1",
+89  +     PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+90  +     PIP_NO_INDEX="1",
+91  +     PIP_DISABLE_PIP_VERSION_CHECK="1",
+92  +     PIP_CONFIG_FILE=os.devnull,
+93  +     GIT_CONFIG_NOSYSTEM="1",
+94  +     GIT_CONFIG_GLOBAL=os.devnull,
+95  +     RUFF_CACHE_DIR=str(out / "ruff-cache"),
+96  +     MYPY_CACHE_DIR=str(out / "mypy-cache"),
+97  + )
+98  + result = {
+99  +     "commit": commit,
+100 +     "version": "0.3.0a26",
+101 +     "source_manifest": manifest,
+102 +     "runtime_modules": modules,
+103 +     "selectors": selectors,
+104 +     "checks": {},
+105 +     "suites": {},
+106 +     "scope": "Selected affected Windows source and fresh offline Windows installed-package suites; full repository/Linux/macOS/real clients NOT RUN",
+107 +     "release": "BLOCKED",
+108 + }
+109 +
+110 +
+111 | def save():
+    -     (out/'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+112 +     (out / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+113 +
+114 +
+115 | def run(name, args, cwd=source, timeout=240):
+--------------------------------------------------------------------------------
+121 |     except subprocess.TimeoutExpired as exc:
+    -         log = (exc.stdout or b'') + (exc.stderr or b'')
+122 +         log = (exc.stdout or b"") + (exc.stderr or b"")
+123 |         code = None
+    -     (out/(name+'.log')).write_bytes(log)
+    -     result['checks'][name] = {'exit_code': code, 'log_sha256': hashlib.sha256(log).hexdigest()}
+124 +     (out / (name + ".log")).write_bytes(log)
+125 +     result["checks"][name] = {"exit_code": code, "log_sha256": hashlib.sha256(log).hexdigest()}
+126 |     save()
+127 |     assert code == 0, name
+128 +
+129 +
+130 | def tests(name, python, mode):
+    -     xml = out/(name+'.xml')
+    -     run(name, [str(python), '-I', '-B', str(wrapper), str(binding), str(out/(name+'-origins.json')), mode, '-p', 'pytest_asyncio.plugin', '-q', *selectors, '--junitxml', str(xml), '--basetemp', str(out/(name+'-tmp')), '-o', 'cache_dir='+str(out/(name+'-cache'))])
+    -     cases = list(ET.parse(xml).getroot().iter('testcase'))
+    -     ids = [c.get('classname')+'::'+c.get('name') for c in cases]
+131 +     xml = out / (name + ".xml")
+132 +     run(
+133 +         name,
+134 +         [
+135 +             str(python),
+136 +             "-I",
+137 +             "-B",
+138 +             str(wrapper),
+139 +             str(binding),
+140 +             str(out / (name + "-origins.json")),
+141 +             mode,
+142 +             "-p",
+143 +             "pytest_asyncio.plugin",
+144 +             "-q",
+145 +             *selectors,
+146 +             "--junitxml",
+147 +             str(xml),
+148 +             "--basetemp",
+149 +             str(out / (name + "-tmp")),
+150 +             "-o",
+151 +             "cache_dir=" + str(out / (name + "-cache")),
+152 +         ],
+153 +     )
+154 +     cases = list(ET.parse(xml).getroot().iter("testcase"))
+155 +     ids = [c.get("classname") + "::" + c.get("name") for c in cases]
+156 |     assert len(ids) == len(set(ids))
+    -     result['suites'][name] = {'tests': len(cases), 'passed': sum(not any(c.find(t) is not None for t in ['failure', 'error', 'skipped']) for c in cases), 'failed': sum(c.find('failure') is not None for c in cases), 'errors': sum(c.find('error') is not None for c in cases), 'skipped': sum(c.find('skipped') is not None for c in cases), 'case_ids': ids, 'junit_sha256': hashlib.sha256(xml.read_bytes()).hexdigest()}
+    -     assert len(cases) > 0 and result['suites'][name]['passed'] == len(cases)
+157 +     result["suites"][name] = {
+158 +         "tests": len(cases),
+159 +         "passed": sum(
+160 +             not any(c.find(t) is not None for t in ["failure", "error", "skipped"]) for c in cases
+161 +         ),
+162 +         "failed": sum(c.find("failure") is not None for c in cases),
+163 +         "errors": sum(c.find("error") is not None for c in cases),
+164 +         "skipped": sum(c.find("skipped") is not None for c in cases),
+165 +         "case_ids": ids,
+166 +         "junit_sha256": hashlib.sha256(xml.read_bytes()).hexdigest(),
+167 +     }
+168 +     assert len(cases) > 0 and result["suites"][name]["passed"] == len(cases)
+169 |     save()
+    - print(out, flush=True); save()
+    - tests('source314', py, 'source')
+    - tests('source311', py311, 'source')
+    - for name, args in [('ruff', ['ruff', 'check', 'src', 'tests', 'tools']), ('format', ['ruff', 'format', '--check', 'src', 'tests', 'tools']), ('mypy', ['mypy', 'src/agentsync'])]:
+    -     run(name, [py, '-m', *args])
+    - run('build', [py, '-m', 'build', '--wheel', '--sdist', '--no-isolation', '--outdir', str(out/'artifacts'), str(source)])
+    - result['artifacts'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()}
+    - for kind, artifact in [('wheel', next((out/'artifacts').glob('*.whl'))), ('sdist', next((out/'artifacts').glob('*.tar.gz')))]:
+    -     venv = out/(kind+'-venv'); run(kind+'-venv', [py, '-m', 'venv', str(venv)])
+    -     python = venv/'Scripts/python.exe'
+    -     run(kind+'-tools', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', cache, 'setuptools==82.0.1', 'wheel==0.46.3', 'pytest==9.1.1', 'pytest-asyncio==1.4.0', 'httpx==0.28.1'])
+    -     run(kind+'-install', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--no-build-isolation', '--find-links', cache, str(artifact)])
+    -     run(kind+'-pipcheck', [str(python), '-m', 'pip', 'check'])
+    -     tests(kind, python, 'installed')
+    -     direct = next((venv/'Lib/site-packages').glob('agentsync_local-*.dist-info/direct_url.json'))
+    -     direct_data = json.loads(direct.read_text(encoding='utf-8'))
+    -     assert direct_data['archive_info']['hashes']['sha256'] == result['artifacts'][artifact.name]
+    -     (out/(kind+'-direct-url.json')).write_text(json.dumps(direct_data, indent=2), encoding='utf-8')
+    - first = set(result['suites']['source314']['case_ids'])
+    - assert all(set(s['case_ids']) == first for s in result['suites'].values())
+    - result['source_unchanged'] = all(hashlib.sha256((source/n).read_bytes()).hexdigest() == h for n, h in manifest.items())
+    - assert result['source_unchanged']
+    - result['passed'] = True; save()
+    - print(json.dumps({'evidence': str(out), 'commit': commit, 'suites': {n: {k: v for k,v in s.items() if k != 'case_ids'} for n,s in result['suites'].items()}, 'artifacts': result['artifacts'], 'passed': True}), flush=True)
+170 +
+171 +
+172 + print(out, flush=True)
+173 + save()
+174 + tests("source314", py, "source")
+175 + tests("source311", py311, "source")
+176 + for name, args in [
+177 +     ("ruff", ["ruff", "check", "src", "tests", "tools"]),
+178 +     ("format", ["ruff", "format", "--check", "src", "tests", "tools"]),
+179 +     ("mypy", ["mypy", "src/agentsync"]),
+180 + ]:
+181 +     run(name, [py, "-m", *args])
+182 + run(
+183 +     "build",
+184 +     [
+185 +         py,
+186 +         "-m",
+187 +         "build",
+188 +         "--wheel",
+189 +         "--sdist",
+190 +         "--no-isolation",
+191 +         "--outdir",
+192 +         str(out / "artifacts"),
+193 +         str(source),
+194 +     ],
+195 + )
+196 + result["artifacts"] = {
+197 +     p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out / "artifacts").iterdir()
+198 + }
+199 + for kind, artifact in [
+200 +     ("wheel", next((out / "artifacts").glob("*.whl"))),
+201 +     ("sdist", next((out / "artifacts").glob("*.tar.gz"))),
+202 + ]:
+203 +     venv = out / (kind + "-venv")
+204 +     run(kind + "-venv", [py, "-m", "venv", str(venv)])
+205 +     python = venv / "Scripts/python.exe"
+206 +     run(
+207 +         kind + "-tools",
+208 +         [
+209 +             str(python),
+210 +             "-m",
+211 +             "pip",
+212 +             "install",
+213 +             "--no-index",
+214 +             "--no-cache-dir",
+215 +             "--find-links",
+216 +             cache,
+217 +             "setuptools==82.0.1",
+218 +             "wheel==0.46.3",
+219 +             "pytest==9.1.1",
+220 +             "pytest-asyncio==1.4.0",
+221 +             "httpx==0.28.1",
+222 +         ],
+223 +     )
+224 +     run(
+225 +         kind + "-install",
+226 +         [
+227 +             str(python),
+228 +             "-m",
+229 +             "pip",
+230 +             "install",
+231 +             "--no-index",
+232 +             "--no-cache-dir",
+233 +             "--no-build-isolation",
+234 +             "--find-links",
+235 +             cache,
+236 +             str(artifact),
+237 +         ],
+238 +     )
+239 +     run(kind + "-pipcheck", [str(python), "-m", "pip", "check"])
+240 +     tests(kind, python, "installed")
+241 +     direct = next((venv / "Lib/site-packages").glob("agentsync_local-*.dist-info/direct_url.json"))
+242 +     direct_data = json.loads(direct.read_text(encoding="utf-8"))
+243 +     assert direct_data["archive_info"]["hashes"]["sha256"] == result["artifacts"][artifact.name]
+244 +     (out / (kind + "-direct-url.json")).write_text(
+245 +         json.dumps(direct_data, indent=2), encoding="utf-8"
+246 +     )
+247 + first = set(result["suites"]["source314"]["case_ids"])
+248 + assert all(set(s["case_ids"]) == first for s in result["suites"].values())
+249 + result["source_unchanged"] = all(
+250 +     hashlib.sha256((source / n).read_bytes()).hexdigest() == h for n, h in manifest.items()
+251 + )
+252 + assert result["source_unchanged"]
+253 + result["passed"] = True
+254 + save()
+255 + print(
+256 +     json.dumps(
+257 +         {
+258 +             "evidence": str(out),
+259 +             "commit": commit,
+260 +             "suites": {
+261 +                 n: {k: v for k, v in s.items() if k != "case_ids"}
+262 +                 for n, s in result["suites"].items()
+263 +             },
+264 +             "artifacts": result["artifacts"],
+265 +             "passed": True,
+266 +         }
+267 +     ),
+268 +     flush=True,
+269 + )
+    |
+
+unformatted: File would be reformatted
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:1:16
+   |
+   - if __name__ == '__main__':
+   -  import hashlib, importlib, json, pathlib, sys
+   -  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+   -  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+   -  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+   -  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+   -  def audit():
+   -   result = {}
+   -   for relative, digest in expected.items():
+   -    name = relative.removesuffix('.py').replace('/', '.').removesuffix('.__init__')
+   -    module = importlib.import_module(name); origin = pathlib.Path(module.__file__).resolve()
+   -    assert origin.is_relative_to(base) and hashlib.sha256(origin.read_bytes()).hexdigest() == digest, (name, str(origin))
+   -    result[relative] = {'path': str(origin), 'sha256': digest}
+   -   return result
+   -  before = audit()
+   -  import agentsync, pytest
+   -  assert agentsync.__version__ == '0.3.0a26'
+   -  code = pytest.main(sys.argv[4:])
+   -  after = audit(); assert before == after
+   -  destination.write_text(json.dumps(after, indent=2), encoding='utf-8')
+   -  raise SystemExit(code)
+1  + if __name__ == "__main__":
+2  +     import hashlib, importlib, json, pathlib, sys
+3  +
+4  +     expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+5  +     destination = pathlib.Path(sys.argv[2])
+6  +     mode = sys.argv[3]
+7  +     if mode == "source":
+8  +         sys.path.insert(0, str(pathlib.Path.cwd() / "src"))
+9  +     base = (
+10 +         (pathlib.Path.cwd() / "src").resolve()
+11 +         if mode == "source"
+12 +         else pathlib.Path(sys.prefix).resolve()
+13 +     )
+14 +
+15 +     def audit():
+16 +         result = {}
+17 +         for relative, digest in expected.items():
+18 +             name = relative.removesuffix(".py").replace("/", ".").removesuffix(".__init__")
+19 +             module = importlib.import_module(name)
+20 +             origin = pathlib.Path(module.__file__).resolve()
+21 +             assert (
+22 +                 origin.is_relative_to(base)
+23 +                 and hashlib.sha256(origin.read_bytes()).hexdigest() == digest
+24 +             ), (name, str(origin))
+25 +             result[relative] = {"path": str(origin), "sha256": digest}
+26 +         return result
+27 +
+28 +     before = audit()
+29 +     import agentsync, pytest
+30 +
+31 +     assert agentsync.__version__ == "0.3.0a26"
+32 +     code = pytest.main(sys.argv[4:])
+33 +     after = audit()
+34 +     assert before == after
+35 +     destination.write_text(json.dumps(after, indent=2), encoding="utf-8")
+36 +     raise SystemExit(code)
+   |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:1:16
+    |
+    - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1   + import hashlib, io, json, subprocess, tarfile, xml.etree.ElementTree as ET
+2   | from pathlib import Path
+    - repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+    - reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+    - assert review.get('open_blockers',[])==[]
+    - entries=[(31,'cancel31-w6bv2b8w','0.3.0a26',['alpha26-lifecycle-vcrr1usf']),(32,'cancel32-a2zmz9oj','0.3.0a27',['alpha27-workflow-6g0at8nh','alpha26-lifecycle-vcrr1usf']),(33,'cancel33-hc72z3ls','0.3.0a28',['alpha28-codex-version-_s__lqtm'])]
+    - allresults=[]
+    - for pr,folder,version,oldfolders in entries:
+    -  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'];sets=[]
+    -  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+    -  for n,h in expected.items():assert r['source_manifest'][n]==h
+    -  for n,h in r['source_manifest'].items():
+    -   assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+    -   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+    -  for name,s in r['suites'].items():
+    -   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+    -   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+    -   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+    -   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+    -   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+    -   for n,item in origins.items():
+    -    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['runtime_modules'][n]
+    -  assert len(sets)==4 and all(s==sets[0] for s in sets)
+    -  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+    -  for oldfolder in oldfolders:
+    -   cases=ET.parse(Path('D:/agentsync-debug')/oldfolder/'source314.xml').getroot().iter('testcase')
+    -   oldids|={c.get('classname')+'::'+c.get('name') for c in cases if c.get('classname') in classes}
+    -  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+    -  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+    -  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+    -  matched=0
+    -  with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+    -   for m in stream:
+    -    n='/'.join(Path(m.name).parts[1:])
+    -    if m.isfile() and n in r['source_manifest']:
+    -     assert hashlib.sha256(stream.extractfile(m).read()).hexdigest()==r['source_manifest'][n];matched+=1
+    -  audit={'source_commit':sha,'git_files':len(r['source_manifest']),'runtime_modules_each':63,'sdist_matching_git_members':matched,'unique_cases_each':len(sets[0]),'retained_cases':len(oldids),'new_cancellation_cases':27,'checks':'Independent Git/file/origin/JUnit/log/artifact bytes PASS'}
+    -  (out/'root-cancel-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+    -  members={'review/astra-internal-cancel-review.json':reviewpath,'drivers/finalize-cancellation-stack.py':Path(__file__),'drivers/verify-cancel'+str(pr)+'.py':Path('D:/agentsync-debug/verify-cancel'+str(pr)+'.py')}
+    -  for p in out.iterdir():
+    -   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+    -  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+    -  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+    -   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+    -  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+    -  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+    -  with tarfile.open(archive,'w:gz') as stream:
+    -   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+    -   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(raw))
+    -  with tarfile.open(archive) as stream:
+    -   for n,record in manifest.items():
+    -    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+    -  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance','suites':{n:{k:v for k,v in s.items() if k!='case_ids'} for n,s in r['suites'].items()},'identity':audit,'archive':'releases/'+version+'/checkpoints/'+archive.name,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'manifest_members':len(manifest),'static':'Ruff/format/mypy63 PASS','independent_review':'Astra static source/hash review; no tests run by reviewer; Work pending','policy':'Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.','red_evidence':'Initial26 regressions and additional successful-return regression1 retained','not_run':['whole repository/Linux/macOS at this SHA','real clients/model tasks','autonomous relay','formal42 acceptance'],'release':'BLOCKED'}
+    -  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+    -  print(json.dumps({'pr':pr,'source':sha,'each_passed':len(sets[0]),'archive':archive.name,'sha256':summary['archive_sha256']}),flush=True)
+    - (dest/'stack-summary.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + dest = Path("D:/agentsync-debug/cancel-stack-delivery")
+6   + dest.mkdir(exist_ok=True)
+7   + reviewpath = Path("D:/agentsync-debug/astra-internal-cancel-review.json")
+8   + review = json.loads(reviewpath.read_text(encoding="utf-8"))
+9   + assert review.get("open_blockers", []) == []
+10  + entries = [
+11  +     (31, "cancel31-w6bv2b8w", "0.3.0a26", ["alpha26-lifecycle-vcrr1usf"]),
+12  +     (
+13  +         32,
+14  +         "cancel32-a2zmz9oj",
+15  +         "0.3.0a27",
+16  +         ["alpha27-workflow-6g0at8nh", "alpha26-lifecycle-vcrr1usf"],
+17  +     ),
+18  +     (33, "cancel33-hc72z3ls", "0.3.0a28", ["alpha28-codex-version-_s__lqtm"]),
+19  + ]
+20  + allresults = []
+21  + for pr, folder, version, oldfolders in entries:
+22  +     out = Path("D:/agentsync-debug") / folder
+23  +     r = json.loads((out / "result.json").read_text(encoding="utf-8"))
+24  +     assert r["passed"]
+25  +     sha = r["commit"]
+26  +     sets = []
+27  +     expected = review.get("reviewed_files_sha256", review.get("reviewed_files", {}))
+28  +     assert len(expected) >= 2
+29  +     for n, h in expected.items():
+30  +         assert r["source_manifest"][n] == h
+31  +     for n, h in r["source_manifest"].items():
+32  +         assert (
+33  +             hashlib.sha256(
+34  +                 subprocess.check_output(["git", "show", sha + ":" + n], cwd=repo)
+35  +             ).hexdigest()
+36  +             == h
+37  +         )
+38  +         assert hashlib.sha256((out / "source" / n).read_bytes()).hexdigest() == h
+39  +     for name, s in r["suites"].items():
+40  +         xml = out / (name + ".xml")
+41  +         cases = list(ET.parse(xml).getroot().iter("testcase"))
+42  +         ids = {c.get("classname") + "::" + c.get("name") for c in cases}
+43  +         assert len(ids) == len(cases) == s["passed"] and not any(
+44  +             c.find(t) is not None for c in cases for t in ("failure", "error", "skipped")
+45  +         )
+46  +         assert hashlib.sha256(xml.read_bytes()).hexdigest() == s["junit_sha256"]
+47  +         sets.append(ids)
+48  +         origins = json.loads((out / (name + "-origins.json")).read_text(encoding="utf-8"))
+49  +         assert len(origins) == 63
+50  +         base = (
+51  +             (out / "source/src").resolve()
+52  +             if name.startswith("source")
+53  +             else (out / (name + "-venv")).resolve()
+54  +         )
+55  +         for n, item in origins.items():
+56  +             p = Path(item["path"]).resolve()
+57  +             assert (
+58  +                 p.is_relative_to(base)
+59  +                 and hashlib.sha256(p.read_bytes()).hexdigest()
+60  +                 == item["sha256"]
+61  +                 == r["runtime_modules"][n]
+62  +             )
+63  +     assert len(sets) == 4 and all(s == sets[0] for s in sets)
+64  +     classes = {i.rsplit("::", 1)[0] for i in sets[0]}
+65  +     oldids = set()
+66  +     for oldfolder in oldfolders:
+67  +         cases = (
+68  +             ET.parse(Path("D:/agentsync-debug") / oldfolder / "source314.xml")
+69  +             .getroot()
+70  +             .iter("testcase")
+71  +         )
+72  +         oldids |= {
+73  +             c.get("classname") + "::" + c.get("name")
+74  +             for c in cases
+75  +             if c.get("classname") in classes
+76  +         }
+77  +     assert oldids <= sets[0] and len(sets[0] - oldids) == 27
+78  +     for n, c in r["checks"].items():
+79  +         assert (
+80  +             c["exit_code"] == 0
+81  +             and hashlib.sha256((out / (n + ".log")).read_bytes()).hexdigest() == c["log_sha256"]
+82  +         )
+83  +     for n, h in r["artifacts"].items():
+84  +         assert hashlib.sha256((out / "artifacts" / n).read_bytes()).hexdigest() == h
+85  +     matched = 0
+86  +     with tarfile.open(next((out / "artifacts").glob("*.tar.gz"))) as stream:
+87  +         for m in stream:
+88  +             n = "/".join(Path(m.name).parts[1:])
+89  +             if m.isfile() and n in r["source_manifest"]:
+90  +                 assert (
+91  +                     hashlib.sha256(stream.extractfile(m).read()).hexdigest()
+92  +                     == r["source_manifest"][n]
+93  +                 )
+94  +                 matched += 1
+95  +     audit = {
+96  +         "source_commit": sha,
+97  +         "git_files": len(r["source_manifest"]),
+98  +         "runtime_modules_each": 63,
+99  +         "sdist_matching_git_members": matched,
+100 +         "unique_cases_each": len(sets[0]),
+101 +         "retained_cases": len(oldids),
+102 +         "new_cancellation_cases": 27,
+103 +         "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS",
+104 +     }
+105 +     (out / "root-cancel-audit.json").write_text(json.dumps(audit, indent=2), encoding="utf-8")
+106 +     members = {
+107 +         "review/astra-internal-cancel-review.json": reviewpath,
+108 +         "drivers/finalize-cancellation-stack.py": Path(__file__),
+109 +         "drivers/verify-cancel" + str(pr) + ".py": Path(
+110 +             "D:/agentsync-debug/verify-cancel" + str(pr) + ".py"
+111 +         ),
+112 +     }
+113 +     for p in out.iterdir():
+114 +         if p.is_file() and p.suffix in {".json", ".log", ".xml", ".py"}:
+115 +             members["evidence/" + p.name] = p
+116 +     for p in (out / "artifacts").iterdir():
+117 +         members["artifacts/" + p.name] = p
+118 +     for p in Path("D:/agentsync-debug/m6-internal-cancel-sol").iterdir():
+119 +         if p.is_file() and p.suffix in {".log", ".xml"}:
+120 +             members["development/" + p.name] = p
+121 +     manifest = {
+122 +         n: {"bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+123 +         for n, p in members.items()
+124 +     }
+125 +     archive = dest / ("cancel-pr" + str(pr) + "-" + sha[:7] + ".tar.gz")
+126 +     assert not archive.exists()
+127 +     with tarfile.open(archive, "w:gz") as stream:
+128 +         for n, p in members.items():
+129 +             stream.add(p, arcname=n, recursive=False)
+130 +         raw = json.dumps(manifest, indent=2).encode()
+131 +         info = tarfile.TarInfo("MANIFEST.json")
+132 +         info.size = len(raw)
+133 +         stream.addfile(info, io.BytesIO(raw))
+134 +     with tarfile.open(archive) as stream:
+135 +         for n, record in manifest.items():
+136 +             raw = stream.extractfile(n).read()
+137 +             assert (
+138 +                 len(raw) == record["bytes"] and hashlib.sha256(raw).hexdigest() == record["sha256"]
+139 +             )
+140 +     summary = {
+141 +         "schema": "agentsync.local-checkpoint.v1",
+142 +         "pr": pr,
+143 +         "version": version,
+144 +         "source_commit": sha,
+145 +         "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+146 +         "suites": {
+147 +             n: {k: v for k, v in s.items() if k != "case_ids"} for n, s in r["suites"].items()
+148 +         },
+149 +         "identity": audit,
+150 +         "archive": "releases/" + version + "/checkpoints/" + archive.name,
+151 +         "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+152 +         "manifest_members": len(manifest),
+153 +         "static": "Ruff/format/mypy63 PASS",
+154 +         "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+155 +         "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+156 +         "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+157 +         "not_run": [
+158 +             "whole repository/Linux/macOS at this SHA",
+159 +             "real clients/model tasks",
+160 +             "autonomous relay",
+161 +             "formal42 acceptance",
+162 +         ],
+163 +         "release": "BLOCKED",
+164 +     }
+165 +     (dest / ("pr" + str(pr) + ".json")).write_text(
+166 +         json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+167 +     )
+168 +     allresults.append(summary)
+169 +     print(
+170 +         json.dumps(
+171 +             {
+172 +                 "pr": pr,
+173 +                 "source": sha,
+174 +                 "each_passed": len(sets[0]),
+175 +                 "archive": archive.name,
+176 +                 "sha256": summary["archive_sha256"],
+177 +             }
+178 +         ),
+179 +         flush=True,
+180 +     )
+181 + (dest / "stack-summary.json").write_text(json.dumps(allresults, indent=2), encoding="utf-8")
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:2:1
+    |
+1   | """Local frozen source and offline installed-package acceptance; no real clients."""
+2   +
+3   | from pathlib import Path
+4   | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+5   |
+    - repo = Path('F:/syuc/agentsync-execution-intent')
+    - out = Path(tempfile.mkdtemp(prefix='cancel32-', dir='D:/agentsync-debug'))
+    - py = 'D:/agentsync-debug/venv/Scripts/python.exe'
+    - py311 = 'D:/agentsync-debug/alpha13-python311-1_06_4p9/venv/Scripts/python.exe'
+    - cache = 'D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse'
+    - commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repo, text=True).strip()
+    - assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=repo, text=True).strip()
+    - archive = out / 'source.tar'
+    - subprocess.run(['git', 'archive', '--format=tar', '--output', str(archive), commit], cwd=repo, check=True)
+    - source = out / 'source'
+6   + repo = Path("F:/syuc/agentsync-execution-intent")
+7   + out = Path(tempfile.mkdtemp(prefix="cancel32-", dir="D:/agentsync-debug"))
+8   + py = "D:/agentsync-debug/venv/Scripts/python.exe"
+9   + py311 = "D:/agentsync-debug/alpha13-python311-1_06_4p9/venv/Scripts/python.exe"
+10  + cache = "D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse"
+11  + commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+12  + assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip()
+13  + archive = out / "source.tar"
+14  + subprocess.run(
+15  +     ["git", "archive", "--format=tar", "--output", str(archive), commit], cwd=repo, check=True
+16  + )
+17  + source = out / "source"
+18  | source.mkdir()
+--------------------------------------------------------------------------------
+31  |         manifest[member.name] = hashlib.sha256(data).hexdigest()
+    - modules = {n.removeprefix('src/'): h for n, h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')}
+32  + modules = {
+33  +     n.removeprefix("src/"): h
+34  +     for n, h in manifest.items()
+35  +     if n.startswith("src/agentsync/") and n.endswith(".py")
+36  + }
+37  | assert len(modules) == 63
+    - binding = out / 'binding.json'
+    - binding.write_text(json.dumps(modules), encoding='utf-8')
+    - wrapper = out / 'test_frozen.py'
+    - wrapper.write_text('''if __name__ == '__main__':
+38  + binding = out / "binding.json"
+39  + binding.write_text(json.dumps(modules), encoding="utf-8")
+40  + wrapper = out / "test_frozen.py"
+41  + wrapper.write_text(
+42  +     """if __name__ == '__main__':
+43  |  import hashlib, importlib, json, pathlib, sys
+--------------------------------------------------------------------------------
+62  |  raise SystemExit(code)
+    - ''', encoding='utf-8')
+63  + """,
+64  +     encoding="utf-8",
+65  + )
+66  | selectors = [
+    -  'tests/unit/test_adapter_run_manager.py',
+    -  'tests/unit/test_scheduling.py',
+    -  'tests/unit/test_retry_planning.py',
+    -  'tests/unit/test_mock_run_manager.py',
+    -  'tests/unit/test_dispatch_planning.py',
+    -  'tests/integration/test_scheduling_core_boundary.py',
+    -  'tests/integration/test_mock_workflow.py',
+    -  'tests/integration/test_mock_run_manager_core_boundary.py',
+    -  'tests/integration/test_dispatch_planning_core_boundary.py',
+67  +     "tests/unit/test_adapter_run_manager.py",
+68  +     "tests/unit/test_scheduling.py",
+69  +     "tests/unit/test_retry_planning.py",
+70  +     "tests/unit/test_mock_run_manager.py",
+71  +     "tests/unit/test_dispatch_planning.py",
+72  +     "tests/integration/test_scheduling_core_boundary.py",
+73  +     "tests/integration/test_mock_workflow.py",
+74  +     "tests/integration/test_mock_run_manager_core_boundary.py",
+75  +     "tests/integration/test_dispatch_planning_core_boundary.py",
+76  | ]
+    - env = {k: v for k, v in os.environ.items() if k.upper() in {'SYSTEMROOT', 'WINDIR', 'PATH', 'COMSPEC', 'PATHEXT'}}
+    - home = out / 'home'; home.mkdir()
+    - env.update(TEMP=str(out), TMP=str(out), HOME=str(home), USERPROFILE=str(home), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTEST_DISABLE_PLUGIN_AUTOLOAD='1', PIP_NO_INDEX='1', PIP_DISABLE_PIP_VERSION_CHECK='1', PIP_CONFIG_FILE=os.devnull, GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, RUFF_CACHE_DIR=str(out/'ruff-cache'), MYPY_CACHE_DIR=str(out/'mypy-cache'))
+    - result = {'commit': commit, 'version': '0.3.0a27', 'source_manifest': manifest, 'runtime_modules': modules, 'selectors': selectors, 'checks': {}, 'suites': {}, 'scope': 'Selected affected Windows source and fresh offline Windows installed-package suites; full repository/Linux/macOS/real clients NOT RUN', 'release': 'BLOCKED'}
+77  + env = {
+78  +     k: v
+79  +     for k, v in os.environ.items()
+80  +     if k.upper() in {"SYSTEMROOT", "WINDIR", "PATH", "COMSPEC", "PATHEXT"}
+81  + }
+82  + home = out / "home"
+83  + home.mkdir()
+84  + env.update(
+85  +     TEMP=str(out),
+86  +     TMP=str(out),
+87  +     HOME=str(home),
+88  +     USERPROFILE=str(home),
+89  +     PYTHONDONTWRITEBYTECODE="1",
+90  +     PYTHONNOUSERSITE="1",
+91  +     PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+92  +     PIP_NO_INDEX="1",
+93  +     PIP_DISABLE_PIP_VERSION_CHECK="1",
+94  +     PIP_CONFIG_FILE=os.devnull,
+95  +     GIT_CONFIG_NOSYSTEM="1",
+96  +     GIT_CONFIG_GLOBAL=os.devnull,
+97  +     RUFF_CACHE_DIR=str(out / "ruff-cache"),
+98  +     MYPY_CACHE_DIR=str(out / "mypy-cache"),
+99  + )
+100 + result = {
+101 +     "commit": commit,
+102 +     "version": "0.3.0a27",
+103 +     "source_manifest": manifest,
+104 +     "runtime_modules": modules,
+105 +     "selectors": selectors,
+106 +     "checks": {},
+107 +     "suites": {},
+108 +     "scope": "Selected affected Windows source and fresh offline Windows installed-package suites; full repository/Linux/macOS/real clients NOT RUN",
+109 +     "release": "BLOCKED",
+110 + }
+111 +
+112 +
+113 | def save():
+    -     (out/'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+114 +     (out / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+115 +
+116 +
+117 | def run(name, args, cwd=source, timeout=240):
+--------------------------------------------------------------------------------
+123 |     except subprocess.TimeoutExpired as exc:
+    -         log = (exc.stdout or b'') + (exc.stderr or b'')
+124 +         log = (exc.stdout or b"") + (exc.stderr or b"")
+125 |         code = None
+    -     (out/(name+'.log')).write_bytes(log)
+    -     result['checks'][name] = {'exit_code': code, 'log_sha256': hashlib.sha256(log).hexdigest()}
+126 +     (out / (name + ".log")).write_bytes(log)
+127 +     result["checks"][name] = {"exit_code": code, "log_sha256": hashlib.sha256(log).hexdigest()}
+128 |     save()
+129 |     assert code == 0, name
+130 +
+131 +
+132 | def tests(name, python, mode):
+    -     xml = out/(name+'.xml')
+    -     run(name, [str(python), '-I', '-B', str(wrapper), str(binding), str(out/(name+'-origins.json')), mode, '-p', 'pytest_asyncio.plugin', '-q', *selectors, '--junitxml', str(xml), '--basetemp', str(out/(name+'-tmp')), '-o', 'cache_dir='+str(out/(name+'-cache'))])
+    -     cases = list(ET.parse(xml).getroot().iter('testcase'))
+    -     ids = [c.get('classname')+'::'+c.get('name') for c in cases]
+133 +     xml = out / (name + ".xml")
+134 +     run(
+135 +         name,
+136 +         [
+137 +             str(python),
+138 +             "-I",
+139 +             "-B",
+140 +             str(wrapper),
+141 +             str(binding),
+142 +             str(out / (name + "-origins.json")),
+143 +             mode,
+144 +             "-p",
+145 +             "pytest_asyncio.plugin",
+146 +             "-q",
+147 +             *selectors,
+148 +             "--junitxml",
+149 +             str(xml),
+150 +             "--basetemp",
+151 +             str(out / (name + "-tmp")),
+152 +             "-o",
+153 +             "cache_dir=" + str(out / (name + "-cache")),
+154 +         ],
+155 +     )
+156 +     cases = list(ET.parse(xml).getroot().iter("testcase"))
+157 +     ids = [c.get("classname") + "::" + c.get("name") for c in cases]
+158 |     assert len(ids) == len(set(ids))
+    -     result['suites'][name] = {'tests': len(cases), 'passed': sum(not any(c.find(t) is not None for t in ['failure', 'error', 'skipped']) for c in cases), 'failed': sum(c.find('failure') is not None for c in cases), 'errors': sum(c.find('error') is not None for c in cases), 'skipped': sum(c.find('skipped') is not None for c in cases), 'case_ids': ids, 'junit_sha256': hashlib.sha256(xml.read_bytes()).hexdigest()}
+    -     assert len(cases) > 0 and result['suites'][name]['passed'] == len(cases)
+159 +     result["suites"][name] = {
+160 +         "tests": len(cases),
+161 +         "passed": sum(
+162 +             not any(c.find(t) is not None for t in ["failure", "error", "skipped"]) for c in cases
+163 +         ),
+164 +         "failed": sum(c.find("failure") is not None for c in cases),
+165 +         "errors": sum(c.find("error") is not None for c in cases),
+166 +         "skipped": sum(c.find("skipped") is not None for c in cases),
+167 +         "case_ids": ids,
+168 +         "junit_sha256": hashlib.sha256(xml.read_bytes()).hexdigest(),
+169 +     }
+170 +     assert len(cases) > 0 and result["suites"][name]["passed"] == len(cases)
+171 |     save()
+    - print(out, flush=True); save()
+    - tests('source314', py, 'source')
+    - tests('source311', py311, 'source')
+    - for name, args in [('ruff', ['ruff', 'check', 'src', 'tests', 'tools']), ('format', ['ruff', 'format', '--check', 'src', 'tests', 'tools']), ('mypy', ['mypy', 'src/agentsync'])]:
+    -     run(name, [py, '-m', *args])
+    - run('build', [py, '-m', 'build', '--wheel', '--sdist', '--no-isolation', '--outdir', str(out/'artifacts'), str(source)])
+    - result['artifacts'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()}
+    - for kind, artifact in [('wheel', next((out/'artifacts').glob('*.whl'))), ('sdist', next((out/'artifacts').glob('*.tar.gz')))]:
+    -     venv = out/(kind+'-venv'); run(kind+'-venv', [py, '-m', 'venv', str(venv)])
+    -     python = venv/'Scripts/python.exe'
+    -     run(kind+'-tools', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', cache, 'setuptools==82.0.1', 'wheel==0.46.3', 'pytest==9.1.1', 'pytest-asyncio==1.4.0', 'httpx==0.28.1'])
+    -     run(kind+'-install', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--no-build-isolation', '--find-links', cache, str(artifact)])
+    -     run(kind+'-pipcheck', [str(python), '-m', 'pip', 'check'])
+    -     tests(kind, python, 'installed')
+    -     direct = next((venv/'Lib/site-packages').glob('agentsync_local-*.dist-info/direct_url.json'))
+    -     direct_data = json.loads(direct.read_text(encoding='utf-8'))
+    -     assert direct_data['archive_info']['hashes']['sha256'] == result['artifacts'][artifact.name]
+    -     (out/(kind+'-direct-url.json')).write_text(json.dumps(direct_data, indent=2), encoding='utf-8')
+    - first = set(result['suites']['source314']['case_ids'])
+    - assert all(set(s['case_ids']) == first for s in result['suites'].values())
+    - result['source_unchanged'] = all(hashlib.sha256((source/n).read_bytes()).hexdigest() == h for n, h in manifest.items())
+    - assert result['source_unchanged']
+    - result['passed'] = True; save()
+    - print(json.dumps({'evidence': str(out), 'commit': commit, 'suites': {n: {k: v for k,v in s.items() if k != 'case_ids'} for n,s in result['suites'].items()}, 'artifacts': result['artifacts'], 'passed': True}), flush=True)
+172 +
+173 +
+174 + print(out, flush=True)
+175 + save()
+176 + tests("source314", py, "source")
+177 + tests("source311", py311, "source")
+178 + for name, args in [
+179 +     ("ruff", ["ruff", "check", "src", "tests", "tools"]),
+180 +     ("format", ["ruff", "format", "--check", "src", "tests", "tools"]),
+181 +     ("mypy", ["mypy", "src/agentsync"]),
+182 + ]:
+183 +     run(name, [py, "-m", *args])
+184 + run(
+185 +     "build",
+186 +     [
+187 +         py,
+188 +         "-m",
+189 +         "build",
+190 +         "--wheel",
+191 +         "--sdist",
+192 +         "--no-isolation",
+193 +         "--outdir",
+194 +         str(out / "artifacts"),
+195 +         str(source),
+196 +     ],
+197 + )
+198 + result["artifacts"] = {
+199 +     p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out / "artifacts").iterdir()
+200 + }
+201 + for kind, artifact in [
+202 +     ("wheel", next((out / "artifacts").glob("*.whl"))),
+203 +     ("sdist", next((out / "artifacts").glob("*.tar.gz"))),
+204 + ]:
+205 +     venv = out / (kind + "-venv")
+206 +     run(kind + "-venv", [py, "-m", "venv", str(venv)])
+207 +     python = venv / "Scripts/python.exe"
+208 +     run(
+209 +         kind + "-tools",
+210 +         [
+211 +             str(python),
+212 +             "-m",
+213 +             "pip",
+214 +             "install",
+215 +             "--no-index",
+216 +             "--no-cache-dir",
+217 +             "--find-links",
+218 +             cache,
+219 +             "setuptools==82.0.1",
+220 +             "wheel==0.46.3",
+221 +             "pytest==9.1.1",
+222 +             "pytest-asyncio==1.4.0",
+223 +             "httpx==0.28.1",
+224 +         ],
+225 +     )
+226 +     run(
+227 +         kind + "-install",
+228 +         [
+229 +             str(python),
+230 +             "-m",
+231 +             "pip",
+232 +             "install",
+233 +             "--no-index",
+234 +             "--no-cache-dir",
+235 +             "--no-build-isolation",
+236 +             "--find-links",
+237 +             cache,
+238 +             str(artifact),
+239 +         ],
+240 +     )
+241 +     run(kind + "-pipcheck", [str(python), "-m", "pip", "check"])
+242 +     tests(kind, python, "installed")
+243 +     direct = next((venv / "Lib/site-packages").glob("agentsync_local-*.dist-info/direct_url.json"))
+244 +     direct_data = json.loads(direct.read_text(encoding="utf-8"))
+245 +     assert direct_data["archive_info"]["hashes"]["sha256"] == result["artifacts"][artifact.name]
+246 +     (out / (kind + "-direct-url.json")).write_text(
+247 +         json.dumps(direct_data, indent=2), encoding="utf-8"
+248 +     )
+249 + first = set(result["suites"]["source314"]["case_ids"])
+250 + assert all(set(s["case_ids"]) == first for s in result["suites"].values())
+251 + result["source_unchanged"] = all(
+252 +     hashlib.sha256((source / n).read_bytes()).hexdigest() == h for n, h in manifest.items()
+253 + )
+254 + assert result["source_unchanged"]
+255 + result["passed"] = True
+256 + save()
+257 + print(
+258 +     json.dumps(
+259 +         {
+260 +             "evidence": str(out),
+261 +             "commit": commit,
+262 +             "suites": {
+263 +                 n: {k: v for k, v in s.items() if k != "case_ids"}
+264 +                 for n, s in result["suites"].items()
+265 +             },
+266 +             "artifacts": result["artifacts"],
+267 +             "passed": True,
+268 +         }
+269 +     ),
+270 +     flush=True,
+271 + )
+    |
+
+unformatted: File would be reformatted
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:1:16
+   |
+   - if __name__ == '__main__':
+   -  import hashlib, importlib, json, pathlib, sys
+   -  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+   -  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+   -  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+   -  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+   -  def audit():
+   -   result = {}
+   -   for relative, digest in expected.items():
+   -    name = relative.removesuffix('.py').replace('/', '.').removesuffix('.__init__')
+   -    module = importlib.import_module(name); origin = pathlib.Path(module.__file__).resolve()
+   -    assert origin.is_relative_to(base) and hashlib.sha256(origin.read_bytes()).hexdigest() == digest, (name, str(origin))
+   -    result[relative] = {'path': str(origin), 'sha256': digest}
+   -   return result
+   -  before = audit()
+   -  import agentsync, pytest
+   -  assert agentsync.__version__ == '0.3.0a27'
+   -  code = pytest.main(sys.argv[4:])
+   -  after = audit(); assert before == after
+   -  destination.write_text(json.dumps(after, indent=2), encoding='utf-8')
+   -  raise SystemExit(code)
+1  + if __name__ == "__main__":
+2  +     import hashlib, importlib, json, pathlib, sys
+3  +
+4  +     expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+5  +     destination = pathlib.Path(sys.argv[2])
+6  +     mode = sys.argv[3]
+7  +     if mode == "source":
+8  +         sys.path.insert(0, str(pathlib.Path.cwd() / "src"))
+9  +     base = (
+10 +         (pathlib.Path.cwd() / "src").resolve()
+11 +         if mode == "source"
+12 +         else pathlib.Path(sys.prefix).resolve()
+13 +     )
+14 +
+15 +     def audit():
+16 +         result = {}
+17 +         for relative, digest in expected.items():
+18 +             name = relative.removesuffix(".py").replace("/", ".").removesuffix(".__init__")
+19 +             module = importlib.import_module(name)
+20 +             origin = pathlib.Path(module.__file__).resolve()
+21 +             assert (
+22 +                 origin.is_relative_to(base)
+23 +                 and hashlib.sha256(origin.read_bytes()).hexdigest() == digest
+24 +             ), (name, str(origin))
+25 +             result[relative] = {"path": str(origin), "sha256": digest}
+26 +         return result
+27 +
+28 +     before = audit()
+29 +     import agentsync, pytest
+30 +
+31 +     assert agentsync.__version__ == "0.3.0a27"
+32 +     code = pytest.main(sys.argv[4:])
+33 +     after = audit()
+34 +     assert before == after
+35 +     destination.write_text(json.dumps(after, indent=2), encoding="utf-8")
+36 +     raise SystemExit(code)
+   |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:1:16
+    |
+    - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1   + import hashlib, io, json, subprocess, tarfile, xml.etree.ElementTree as ET
+2   | from pathlib import Path
+    - repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+    - reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+    - assert review.get('open_blockers',[])==[]
+    - entries=[(31,'cancel31-w6bv2b8w','0.3.0a26',['alpha26-lifecycle-vcrr1usf']),(32,'cancel32-a2zmz9oj','0.3.0a27',['alpha27-workflow-6g0at8nh','alpha26-lifecycle-vcrr1usf']),(33,'cancel33-hc72z3ls','0.3.0a28',['alpha28-codex-version-_s__lqtm'])]
+    - allresults=[]
+    - for pr,folder,version,oldfolders in entries:
+    -  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'];sets=[]
+    -  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+    -  for n,h in expected.items():assert r['source_manifest'][n]==h
+    -  for n,h in r['source_manifest'].items():
+    -   assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+    -   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+    -  for name,s in r['suites'].items():
+    -   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+    -   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+    -   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+    -   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+    -   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+    -   for n,item in origins.items():
+    -    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['runtime_modules'][n]
+    -  assert len(sets)==4 and all(s==sets[0] for s in sets)
+    -  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+    -  for oldfolder in oldfolders:
+    -   cases=ET.parse(Path('D:/agentsync-debug')/oldfolder/'source314.xml').getroot().iter('testcase')
+    -   oldids|={c.get('classname')+'::'+c.get('name') for c in cases if c.get('classname') in classes}
+    -  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+    -  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+    -  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+    -  matched=0
+    -  with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+    -   for m in stream:
+    -    n='/'.join(Path(m.name).parts[1:])
+    -    if m.isfile() and n in r['source_manifest']:
+    -     assert hashlib.sha256(stream.extractfile(m).read()).hexdigest()==r['source_manifest'][n];matched+=1
+    -  audit={'source_commit':sha,'git_files':len(r['source_manifest']),'runtime_modules_each':63,'sdist_matching_git_members':matched,'unique_cases_each':len(sets[0]),'retained_cases':len(oldids),'new_cancellation_cases':27,'checks':'Independent Git/file/origin/JUnit/log/artifact bytes PASS'}
+    -  (out/'root-cancel-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+    -  members={'review/astra-internal-cancel-review.json':reviewpath,'drivers/finalize-cancellation-stack.py':Path(__file__),'drivers/verify-cancel'+str(pr)+'.py':Path('D:/agentsync-debug/verify-cancel'+str(pr)+'.py')}
+    -  for p in out.iterdir():
+    -   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+    -  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+    -  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+    -   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+    -  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+    -  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+    -  with tarfile.open(archive,'w:gz') as stream:
+    -   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+    -   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(raw))
+    -  with tarfile.open(archive) as stream:
+    -   for n,record in manifest.items():
+    -    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+    -  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance','suites':{n:{k:v for k,v in s.items() if k!='case_ids'} for n,s in r['suites'].items()},'identity':audit,'archive':'releases/'+version+'/checkpoints/'+archive.name,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'manifest_members':len(manifest),'static':'Ruff/format/mypy63 PASS','independent_review':'Astra static source/hash review; no tests run by reviewer; Work pending','policy':'Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.','red_evidence':'Initial26 regressions and additional successful-return regression1 retained','not_run':['whole repository/Linux/macOS at this SHA','real clients/model tasks','autonomous relay','formal42 acceptance'],'release':'BLOCKED'}
+    -  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+    -  print(json.dumps({'pr':pr,'source':sha,'each_passed':len(sets[0]),'archive':archive.name,'sha256':summary['archive_sha256']}),flush=True)
+    - (dest/'stack-summary.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + dest = Path("D:/agentsync-debug/cancel-stack-delivery")
+6   + dest.mkdir(exist_ok=True)
+7   + reviewpath = Path("D:/agentsync-debug/astra-internal-cancel-review.json")
+8   + review = json.loads(reviewpath.read_text(encoding="utf-8"))
+9   + assert review.get("open_blockers", []) == []
+10  + entries = [
+11  +     (31, "cancel31-w6bv2b8w", "0.3.0a26", ["alpha26-lifecycle-vcrr1usf"]),
+12  +     (
+13  +         32,
+14  +         "cancel32-a2zmz9oj",
+15  +         "0.3.0a27",
+16  +         ["alpha27-workflow-6g0at8nh", "alpha26-lifecycle-vcrr1usf"],
+17  +     ),
+18  +     (33, "cancel33-hc72z3ls", "0.3.0a28", ["alpha28-codex-version-_s__lqtm"]),
+19  + ]
+20  + allresults = []
+21  + for pr, folder, version, oldfolders in entries:
+22  +     out = Path("D:/agentsync-debug") / folder
+23  +     r = json.loads((out / "result.json").read_text(encoding="utf-8"))
+24  +     assert r["passed"]
+25  +     sha = r["commit"]
+26  +     sets = []
+27  +     expected = review.get("reviewed_files_sha256", review.get("reviewed_files", {}))
+28  +     assert len(expected) >= 2
+29  +     for n, h in expected.items():
+30  +         assert r["source_manifest"][n] == h
+31  +     for n, h in r["source_manifest"].items():
+32  +         assert (
+33  +             hashlib.sha256(
+34  +                 subprocess.check_output(["git", "show", sha + ":" + n], cwd=repo)
+35  +             ).hexdigest()
+36  +             == h
+37  +         )
+38  +         assert hashlib.sha256((out / "source" / n).read_bytes()).hexdigest() == h
+39  +     for name, s in r["suites"].items():
+40  +         xml = out / (name + ".xml")
+41  +         cases = list(ET.parse(xml).getroot().iter("testcase"))
+42  +         ids = {c.get("classname") + "::" + c.get("name") for c in cases}
+43  +         assert len(ids) == len(cases) == s["passed"] and not any(
+44  +             c.find(t) is not None for c in cases for t in ("failure", "error", "skipped")
+45  +         )
+46  +         assert hashlib.sha256(xml.read_bytes()).hexdigest() == s["junit_sha256"]
+47  +         sets.append(ids)
+48  +         origins = json.loads((out / (name + "-origins.json")).read_text(encoding="utf-8"))
+49  +         assert len(origins) == 63
+50  +         base = (
+51  +             (out / "source/src").resolve()
+52  +             if name.startswith("source")
+53  +             else (out / (name + "-venv")).resolve()
+54  +         )
+55  +         for n, item in origins.items():
+56  +             p = Path(item["path"]).resolve()
+57  +             assert (
+58  +                 p.is_relative_to(base)
+59  +                 and hashlib.sha256(p.read_bytes()).hexdigest()
+60  +                 == item["sha256"]
+61  +                 == r["runtime_modules"][n]
+62  +             )
+63  +     assert len(sets) == 4 and all(s == sets[0] for s in sets)
+64  +     classes = {i.rsplit("::", 1)[0] for i in sets[0]}
+65  +     oldids = set()
+66  +     for oldfolder in oldfolders:
+67  +         cases = (
+68  +             ET.parse(Path("D:/agentsync-debug") / oldfolder / "source314.xml")
+69  +             .getroot()
+70  +             .iter("testcase")
+71  +         )
+72  +         oldids |= {
+73  +             c.get("classname") + "::" + c.get("name")
+74  +             for c in cases
+75  +             if c.get("classname") in classes
+76  +         }
+77  +     assert oldids <= sets[0] and len(sets[0] - oldids) == 27
+78  +     for n, c in r["checks"].items():
+79  +         assert (
+80  +             c["exit_code"] == 0
+81  +             and hashlib.sha256((out / (n + ".log")).read_bytes()).hexdigest() == c["log_sha256"]
+82  +         )
+83  +     for n, h in r["artifacts"].items():
+84  +         assert hashlib.sha256((out / "artifacts" / n).read_bytes()).hexdigest() == h
+85  +     matched = 0
+86  +     with tarfile.open(next((out / "artifacts").glob("*.tar.gz"))) as stream:
+87  +         for m in stream:
+88  +             n = "/".join(Path(m.name).parts[1:])
+89  +             if m.isfile() and n in r["source_manifest"]:
+90  +                 assert (
+91  +                     hashlib.sha256(stream.extractfile(m).read()).hexdigest()
+92  +                     == r["source_manifest"][n]
+93  +                 )
+94  +                 matched += 1
+95  +     audit = {
+96  +         "source_commit": sha,
+97  +         "git_files": len(r["source_manifest"]),
+98  +         "runtime_modules_each": 63,
+99  +         "sdist_matching_git_members": matched,
+100 +         "unique_cases_each": len(sets[0]),
+101 +         "retained_cases": len(oldids),
+102 +         "new_cancellation_cases": 27,
+103 +         "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS",
+104 +     }
+105 +     (out / "root-cancel-audit.json").write_text(json.dumps(audit, indent=2), encoding="utf-8")
+106 +     members = {
+107 +         "review/astra-internal-cancel-review.json": reviewpath,
+108 +         "drivers/finalize-cancellation-stack.py": Path(__file__),
+109 +         "drivers/verify-cancel" + str(pr) + ".py": Path(
+110 +             "D:/agentsync-debug/verify-cancel" + str(pr) + ".py"
+111 +         ),
+112 +     }
+113 +     for p in out.iterdir():
+114 +         if p.is_file() and p.suffix in {".json", ".log", ".xml", ".py"}:
+115 +             members["evidence/" + p.name] = p
+116 +     for p in (out / "artifacts").iterdir():
+117 +         members["artifacts/" + p.name] = p
+118 +     for p in Path("D:/agentsync-debug/m6-internal-cancel-sol").iterdir():
+119 +         if p.is_file() and p.suffix in {".log", ".xml"}:
+120 +             members["development/" + p.name] = p
+121 +     manifest = {
+122 +         n: {"bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+123 +         for n, p in members.items()
+124 +     }
+125 +     archive = dest / ("cancel-pr" + str(pr) + "-" + sha[:7] + ".tar.gz")
+126 +     assert not archive.exists()
+127 +     with tarfile.open(archive, "w:gz") as stream:
+128 +         for n, p in members.items():
+129 +             stream.add(p, arcname=n, recursive=False)
+130 +         raw = json.dumps(manifest, indent=2).encode()
+131 +         info = tarfile.TarInfo("MANIFEST.json")
+132 +         info.size = len(raw)
+133 +         stream.addfile(info, io.BytesIO(raw))
+134 +     with tarfile.open(archive) as stream:
+135 +         for n, record in manifest.items():
+136 +             raw = stream.extractfile(n).read()
+137 +             assert (
+138 +                 len(raw) == record["bytes"] and hashlib.sha256(raw).hexdigest() == record["sha256"]
+139 +             )
+140 +     summary = {
+141 +         "schema": "agentsync.local-checkpoint.v1",
+142 +         "pr": pr,
+143 +         "version": version,
+144 +         "source_commit": sha,
+145 +         "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+146 +         "suites": {
+147 +             n: {k: v for k, v in s.items() if k != "case_ids"} for n, s in r["suites"].items()
+148 +         },
+149 +         "identity": audit,
+150 +         "archive": "releases/" + version + "/checkpoints/" + archive.name,
+151 +         "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+152 +         "manifest_members": len(manifest),
+153 +         "static": "Ruff/format/mypy63 PASS",
+154 +         "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+155 +         "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+156 +         "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+157 +         "not_run": [
+158 +             "whole repository/Linux/macOS at this SHA",
+159 +             "real clients/model tasks",
+160 +             "autonomous relay",
+161 +             "formal42 acceptance",
+162 +         ],
+163 +         "release": "BLOCKED",
+164 +     }
+165 +     (dest / ("pr" + str(pr) + ".json")).write_text(
+166 +         json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+167 +     )
+168 +     allresults.append(summary)
+169 +     print(
+170 +         json.dumps(
+171 +             {
+172 +                 "pr": pr,
+173 +                 "source": sha,
+174 +                 "each_passed": len(sets[0]),
+175 +                 "archive": archive.name,
+176 +                 "sha256": summary["archive_sha256"],
+177 +             }
+178 +         ),
+179 +         flush=True,
+180 +     )
+181 + (dest / "stack-summary.json").write_text(json.dumps(allresults, indent=2), encoding="utf-8")
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:2:1
+    |
+1   | """Local frozen source and offline installed-package acceptance; no real clients."""
+2   +
+3   | from pathlib import Path
+4   | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+5   |
+    - repo = Path('F:/syuc/agentsync-execution-intent')
+    - out = Path(tempfile.mkdtemp(prefix='cancel33-', dir='D:/agentsync-debug'))
+    - py = 'D:/agentsync-debug/venv/Scripts/python.exe'
+    - py311 = 'D:/agentsync-debug/alpha13-python311-1_06_4p9/venv/Scripts/python.exe'
+    - cache = 'D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse'
+    - commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repo, text=True).strip()
+    - assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=repo, text=True).strip()
+    - archive = out / 'source.tar'
+    - subprocess.run(['git', 'archive', '--format=tar', '--output', str(archive), commit], cwd=repo, check=True)
+    - source = out / 'source'
+6   + repo = Path("F:/syuc/agentsync-execution-intent")
+7   + out = Path(tempfile.mkdtemp(prefix="cancel33-", dir="D:/agentsync-debug"))
+8   + py = "D:/agentsync-debug/venv/Scripts/python.exe"
+9   + py311 = "D:/agentsync-debug/alpha13-python311-1_06_4p9/venv/Scripts/python.exe"
+10  + cache = "D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse"
+11  + commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+12  + assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip()
+13  + archive = out / "source.tar"
+14  + subprocess.run(
+15  +     ["git", "archive", "--format=tar", "--output", str(archive), commit], cwd=repo, check=True
+16  + )
+17  + source = out / "source"
+18  | source.mkdir()
+--------------------------------------------------------------------------------
+31  |         manifest[member.name] = hashlib.sha256(data).hexdigest()
+    - modules = {n.removeprefix('src/'): h for n, h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')}
+32  + modules = {
+33  +     n.removeprefix("src/"): h
+34  +     for n, h in manifest.items()
+35  +     if n.startswith("src/agentsync/") and n.endswith(".py")
+36  + }
+37  | assert len(modules) == 63
+    - binding = out / 'binding.json'
+    - binding.write_text(json.dumps(modules), encoding='utf-8')
+    - wrapper = out / 'test_frozen.py'
+    - wrapper.write_text('''if __name__ == '__main__':
+38  + binding = out / "binding.json"
+39  + binding.write_text(json.dumps(modules), encoding="utf-8")
+40  + wrapper = out / "test_frozen.py"
+41  + wrapper.write_text(
+42  +     """if __name__ == '__main__':
+43  |  import hashlib, importlib, json, pathlib, sys
+--------------------------------------------------------------------------------
+62  |  raise SystemExit(code)
+    - ''', encoding='utf-8')
+63  + """,
+64  +     encoding="utf-8",
+65  + )
+66  | selectors = [
+    -  'tests/unit/test_codex_invocation.py',
+    -  'tests/unit/test_codex_process.py',
+    -  'tests/unit/test_codex_adapter.py',
+    -  'tests/unit/test_adapter_run_manager.py',
+    -  'tests/integration/test_codex_adapter_core_boundary.py',
+    -  'tests/integration/test_adapter_manager_core_boundary.py',
+67  +     "tests/unit/test_codex_invocation.py",
+68  +     "tests/unit/test_codex_process.py",
+69  +     "tests/unit/test_codex_adapter.py",
+70  +     "tests/unit/test_adapter_run_manager.py",
+71  +     "tests/integration/test_codex_adapter_core_boundary.py",
+72  +     "tests/integration/test_adapter_manager_core_boundary.py",
+73  | ]
+    - env = {k: v for k, v in os.environ.items() if k.upper() in {'SYSTEMROOT', 'WINDIR', 'PATH', 'COMSPEC', 'PATHEXT'}}
+    - home = out / 'home'; home.mkdir()
+    - env.update(TEMP=str(out), TMP=str(out), HOME=str(home), USERPROFILE=str(home), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTEST_DISABLE_PLUGIN_AUTOLOAD='1', PIP_NO_INDEX='1', PIP_DISABLE_PIP_VERSION_CHECK='1', PIP_CONFIG_FILE=os.devnull, GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, RUFF_CACHE_DIR=str(out/'ruff-cache'), MYPY_CACHE_DIR=str(out/'mypy-cache'))
+    - result = {'commit': commit, 'version': '0.3.0a28', 'source_manifest': manifest, 'runtime_modules': modules, 'selectors': selectors, 'checks': {}, 'suites': {}, 'scope': 'Selected affected Windows source and fresh offline Windows installed-package suites; full repository/Linux/macOS/real clients NOT RUN', 'release': 'BLOCKED'}
+74  + env = {
+75  +     k: v
+76  +     for k, v in os.environ.items()
+77  +     if k.upper() in {"SYSTEMROOT", "WINDIR", "PATH", "COMSPEC", "PATHEXT"}
+78  + }
+79  + home = out / "home"
+80  + home.mkdir()
+81  + env.update(
+82  +     TEMP=str(out),
+83  +     TMP=str(out),
+84  +     HOME=str(home),
+85  +     USERPROFILE=str(home),
+86  +     PYTHONDONTWRITEBYTECODE="1",
+87  +     PYTHONNOUSERSITE="1",
+88  +     PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+89  +     PIP_NO_INDEX="1",
+90  +     PIP_DISABLE_PIP_VERSION_CHECK="1",
+91  +     PIP_CONFIG_FILE=os.devnull,
+92  +     GIT_CONFIG_NOSYSTEM="1",
+93  +     GIT_CONFIG_GLOBAL=os.devnull,
+94  +     RUFF_CACHE_DIR=str(out / "ruff-cache"),
+95  +     MYPY_CACHE_DIR=str(out / "mypy-cache"),
+96  + )
+97  + result = {
+98  +     "commit": commit,
+99  +     "version": "0.3.0a28",
+100 +     "source_manifest": manifest,
+101 +     "runtime_modules": modules,
+102 +     "selectors": selectors,
+103 +     "checks": {},
+104 +     "suites": {},
+105 +     "scope": "Selected affected Windows source and fresh offline Windows installed-package suites; full repository/Linux/macOS/real clients NOT RUN",
+106 +     "release": "BLOCKED",
+107 + }
+108 +
+109 +
+110 | def save():
+    -     (out/'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+111 +     (out / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+112 +
+113 +
+114 | def run(name, args, cwd=source, timeout=240):
+--------------------------------------------------------------------------------
+120 |     except subprocess.TimeoutExpired as exc:
+    -         log = (exc.stdout or b'') + (exc.stderr or b'')
+121 +         log = (exc.stdout or b"") + (exc.stderr or b"")
+122 |         code = None
+    -     (out/(name+'.log')).write_bytes(log)
+    -     result['checks'][name] = {'exit_code': code, 'log_sha256': hashlib.sha256(log).hexdigest()}
+123 +     (out / (name + ".log")).write_bytes(log)
+124 +     result["checks"][name] = {"exit_code": code, "log_sha256": hashlib.sha256(log).hexdigest()}
+125 |     save()
+126 |     assert code == 0, name
+127 +
+128 +
+129 | def tests(name, python, mode):
+    -     xml = out/(name+'.xml')
+    -     run(name, [str(python), '-I', '-B', str(wrapper), str(binding), str(out/(name+'-origins.json')), mode, '-p', 'pytest_asyncio.plugin', '-q', *selectors, '--junitxml', str(xml), '--basetemp', str(out/(name+'-tmp')), '-o', 'cache_dir='+str(out/(name+'-cache'))])
+    -     cases = list(ET.parse(xml).getroot().iter('testcase'))
+    -     ids = [c.get('classname')+'::'+c.get('name') for c in cases]
+130 +     xml = out / (name + ".xml")
+131 +     run(
+132 +         name,
+133 +         [
+134 +             str(python),
+135 +             "-I",
+136 +             "-B",
+137 +             str(wrapper),
+138 +             str(binding),
+139 +             str(out / (name + "-origins.json")),
+140 +             mode,
+141 +             "-p",
+142 +             "pytest_asyncio.plugin",
+143 +             "-q",
+144 +             *selectors,
+145 +             "--junitxml",
+146 +             str(xml),
+147 +             "--basetemp",
+148 +             str(out / (name + "-tmp")),
+149 +             "-o",
+150 +             "cache_dir=" + str(out / (name + "-cache")),
+151 +         ],
+152 +     )
+153 +     cases = list(ET.parse(xml).getroot().iter("testcase"))
+154 +     ids = [c.get("classname") + "::" + c.get("name") for c in cases]
+155 |     assert len(ids) == len(set(ids))
+    -     result['suites'][name] = {'tests': len(cases), 'passed': sum(not any(c.find(t) is not None for t in ['failure', 'error', 'skipped']) for c in cases), 'failed': sum(c.find('failure') is not None for c in cases), 'errors': sum(c.find('error') is not None for c in cases), 'skipped': sum(c.find('skipped') is not None for c in cases), 'case_ids': ids, 'junit_sha256': hashlib.sha256(xml.read_bytes()).hexdigest()}
+    -     assert len(cases) > 0 and result['suites'][name]['passed'] == len(cases)
+156 +     result["suites"][name] = {
+157 +         "tests": len(cases),
+158 +         "passed": sum(
+159 +             not any(c.find(t) is not None for t in ["failure", "error", "skipped"]) for c in cases
+160 +         ),
+161 +         "failed": sum(c.find("failure") is not None for c in cases),
+162 +         "errors": sum(c.find("error") is not None for c in cases),
+163 +         "skipped": sum(c.find("skipped") is not None for c in cases),
+164 +         "case_ids": ids,
+165 +         "junit_sha256": hashlib.sha256(xml.read_bytes()).hexdigest(),
+166 +     }
+167 +     assert len(cases) > 0 and result["suites"][name]["passed"] == len(cases)
+168 |     save()
+    - print(out, flush=True); save()
+    - tests('source314', py, 'source')
+    - tests('source311', py311, 'source')
+    - for name, args in [('ruff', ['ruff', 'check', 'src', 'tests', 'tools']), ('format', ['ruff', 'format', '--check', 'src', 'tests', 'tools']), ('mypy', ['mypy', 'src/agentsync'])]:
+    -     run(name, [py, '-m', *args])
+    - run('build', [py, '-m', 'build', '--wheel', '--sdist', '--no-isolation', '--outdir', str(out/'artifacts'), str(source)])
+    - result['artifacts'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()}
+    - for kind, artifact in [('wheel', next((out/'artifacts').glob('*.whl'))), ('sdist', next((out/'artifacts').glob('*.tar.gz')))]:
+    -     venv = out/(kind+'-venv'); run(kind+'-venv', [py, '-m', 'venv', str(venv)])
+    -     python = venv/'Scripts/python.exe'
+    -     run(kind+'-tools', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', cache, 'setuptools==82.0.1', 'wheel==0.46.3', 'pytest==9.1.1', 'pytest-asyncio==1.4.0', 'httpx==0.28.1'])
+    -     run(kind+'-install', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--no-build-isolation', '--find-links', cache, str(artifact)])
+    -     run(kind+'-pipcheck', [str(python), '-m', 'pip', 'check'])
+    -     tests(kind, python, 'installed')
+    -     direct = next((venv/'Lib/site-packages').glob('agentsync_local-*.dist-info/direct_url.json'))
+    -     direct_data = json.loads(direct.read_text(encoding='utf-8'))
+    -     assert direct_data['archive_info']['hashes']['sha256'] == result['artifacts'][artifact.name]
+    -     (out/(kind+'-direct-url.json')).write_text(json.dumps(direct_data, indent=2), encoding='utf-8')
+    - first = set(result['suites']['source314']['case_ids'])
+    - assert all(set(s['case_ids']) == first for s in result['suites'].values())
+    - result['source_unchanged'] = all(hashlib.sha256((source/n).read_bytes()).hexdigest() == h for n, h in manifest.items())
+    - assert result['source_unchanged']
+    - result['passed'] = True; save()
+    - print(json.dumps({'evidence': str(out), 'commit': commit, 'suites': {n: {k: v for k,v in s.items() if k != 'case_ids'} for n,s in result['suites'].items()}, 'artifacts': result['artifacts'], 'passed': True}), flush=True)
+169 +
+170 +
+171 + print(out, flush=True)
+172 + save()
+173 + tests("source314", py, "source")
+174 + tests("source311", py311, "source")
+175 + for name, args in [
+176 +     ("ruff", ["ruff", "check", "src", "tests", "tools"]),
+177 +     ("format", ["ruff", "format", "--check", "src", "tests", "tools"]),
+178 +     ("mypy", ["mypy", "src/agentsync"]),
+179 + ]:
+180 +     run(name, [py, "-m", *args])
+181 + run(
+182 +     "build",
+183 +     [
+184 +         py,
+185 +         "-m",
+186 +         "build",
+187 +         "--wheel",
+188 +         "--sdist",
+189 +         "--no-isolation",
+190 +         "--outdir",
+191 +         str(out / "artifacts"),
+192 +         str(source),
+193 +     ],
+194 + )
+195 + result["artifacts"] = {
+196 +     p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out / "artifacts").iterdir()
+197 + }
+198 + for kind, artifact in [
+199 +     ("wheel", next((out / "artifacts").glob("*.whl"))),
+200 +     ("sdist", next((out / "artifacts").glob("*.tar.gz"))),
+201 + ]:
+202 +     venv = out / (kind + "-venv")
+203 +     run(kind + "-venv", [py, "-m", "venv", str(venv)])
+204 +     python = venv / "Scripts/python.exe"
+205 +     run(
+206 +         kind + "-tools",
+207 +         [
+208 +             str(python),
+209 +             "-m",
+210 +             "pip",
+211 +             "install",
+212 +             "--no-index",
+213 +             "--no-cache-dir",
+214 +             "--find-links",
+215 +             cache,
+216 +             "setuptools==82.0.1",
+217 +             "wheel==0.46.3",
+218 +             "pytest==9.1.1",
+219 +             "pytest-asyncio==1.4.0",
+220 +             "httpx==0.28.1",
+221 +         ],
+222 +     )
+223 +     run(
+224 +         kind + "-install",
+225 +         [
+226 +             str(python),
+227 +             "-m",
+228 +             "pip",
+229 +             "install",
+230 +             "--no-index",
+231 +             "--no-cache-dir",
+232 +             "--no-build-isolation",
+233 +             "--find-links",
+234 +             cache,
+235 +             str(artifact),
+236 +         ],
+237 +     )
+238 +     run(kind + "-pipcheck", [str(python), "-m", "pip", "check"])
+239 +     tests(kind, python, "installed")
+240 +     direct = next((venv / "Lib/site-packages").glob("agentsync_local-*.dist-info/direct_url.json"))
+241 +     direct_data = json.loads(direct.read_text(encoding="utf-8"))
+242 +     assert direct_data["archive_info"]["hashes"]["sha256"] == result["artifacts"][artifact.name]
+243 +     (out / (kind + "-direct-url.json")).write_text(
+244 +         json.dumps(direct_data, indent=2), encoding="utf-8"
+245 +     )
+246 + first = set(result["suites"]["source314"]["case_ids"])
+247 + assert all(set(s["case_ids"]) == first for s in result["suites"].values())
+248 + result["source_unchanged"] = all(
+249 +     hashlib.sha256((source / n).read_bytes()).hexdigest() == h for n, h in manifest.items()
+250 + )
+251 + assert result["source_unchanged"]
+252 + result["passed"] = True
+253 + save()
+254 + print(
+255 +     json.dumps(
+256 +         {
+257 +             "evidence": str(out),
+258 +             "commit": commit,
+259 +             "suites": {
+260 +                 n: {k: v for k, v in s.items() if k != "case_ids"}
+261 +                 for n, s in result["suites"].items()
+262 +             },
+263 +             "artifacts": result["artifacts"],
+264 +             "passed": True,
+265 +         }
+266 +     ),
+267 +     flush=True,
+268 + )
+    |
+
+unformatted: File would be reformatted
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:1:16
+   |
+   - if __name__ == '__main__':
+   -  import hashlib, importlib, json, pathlib, sys
+   -  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+   -  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+   -  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+   -  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+   -  def audit():
+   -   result = {}
+   -   for relative, digest in expected.items():
+   -    name = relative.removesuffix('.py').replace('/', '.').removesuffix('.__init__')
+   -    module = importlib.import_module(name); origin = pathlib.Path(module.__file__).resolve()
+   -    assert origin.is_relative_to(base) and hashlib.sha256(origin.read_bytes()).hexdigest() == digest, (name, str(origin))
+   -    result[relative] = {'path': str(origin), 'sha256': digest}
+   -   return result
+   -  before = audit()
+   -  import agentsync, pytest
+   -  assert agentsync.__version__ == '0.3.0a28'
+   -  code = pytest.main(sys.argv[4:])
+   -  after = audit(); assert before == after
+   -  destination.write_text(json.dumps(after, indent=2), encoding='utf-8')
+   -  raise SystemExit(code)
+1  + if __name__ == "__main__":
+2  +     import hashlib, importlib, json, pathlib, sys
+3  +
+4  +     expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+5  +     destination = pathlib.Path(sys.argv[2])
+6  +     mode = sys.argv[3]
+7  +     if mode == "source":
+8  +         sys.path.insert(0, str(pathlib.Path.cwd() / "src"))
+9  +     base = (
+10 +         (pathlib.Path.cwd() / "src").resolve()
+11 +         if mode == "source"
+12 +         else pathlib.Path(sys.prefix).resolve()
+13 +     )
+14 +
+15 +     def audit():
+16 +         result = {}
+17 +         for relative, digest in expected.items():
+18 +             name = relative.removesuffix(".py").replace("/", ".").removesuffix(".__init__")
+19 +             module = importlib.import_module(name)
+20 +             origin = pathlib.Path(module.__file__).resolve()
+21 +             assert (
+22 +                 origin.is_relative_to(base)
+23 +                 and hashlib.sha256(origin.read_bytes()).hexdigest() == digest
+24 +             ), (name, str(origin))
+25 +             result[relative] = {"path": str(origin), "sha256": digest}
+26 +         return result
+27 +
+28 +     before = audit()
+29 +     import agentsync, pytest
+30 +
+31 +     assert agentsync.__version__ == "0.3.0a28"
+32 +     code = pytest.main(sys.argv[4:])
+33 +     after = audit()
+34 +     assert before == after
+35 +     destination.write_text(json.dumps(after, indent=2), encoding="utf-8")
+36 +     raise SystemExit(code)
+   |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:1:16
+    |
+    - import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+1   + import hashlib, json, subprocess, tarfile, io, re, xml.etree.ElementTree as ET
+2   | from pathlib import Path
+    - repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+    - config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commit']==sha
+    - for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+    - modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modules)==63
+    - before=json.loads((src/'evidence/imports-before.json').read_text());after=json.loads((src/'evidence/imports-after.json').read_text());assert before==after==modules
+    - groups={'source':src/'evidence/junit.xml','wheel':inst/'evidence/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};skips={}
+    - for name,p in groups.items():
+    -  cases=list(ET.parse(p).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases};assert len(ids)==len(cases)==2043
+    -  assert not any(c.find(t)is not None for c in cases for t in ('failure','error'))
+    -  skips[name]=[{'id':c.get('classname')+'::'+c.get('name'),'reason':c.find('skipped').get('message')} for c in cases if c.find('skipped')is not None];assert len(skips[name])==4;sets[name]=ids
+    - assert all(s==sets['source'] for s in sets.values())
+    - old={c.get('classname')+'::'+c.get('name') for c in ET.parse('D:/agentsync-debug/alpha23-linux-full-9s8fju3r/evidence/junit.xml').getroot().iter('testcase')};assert len(old)==1899 and old<=sets['source']
+    - for kind in ('wheel','sdist'):
+    -  origins=json.loads((inst/'evidence'/(kind+'-origins.json')).read_text());assert set(origins)==set(modules)
+    -  for n,o in origins.items():assert o['sha256']==modules[n] and '/'+kind+'/lib/' in o['path'] and '/site-packages/' in o['path']
+    -  direct=json.loads((inst/'evidence'/(kind+'-direct-url.json')).read_text());name=next(n for n in b['artifacts'] if n.endswith('.whl' if kind=='wheel' else '.tar.gz'));assert direct['archive_info']['hashes']['sha256']==b['artifacts'][name]
+    - for name,h in b['artifacts'].items():assert hashlib.sha256((build/'artifacts'/name).read_bytes()).hexdigest()==h
+    - ids=set();records=0
+    - def scan(value,key=''):
+    -  if isinstance(value,dict):
+    -   for k,v in value.items():scan(v,k)
+    -  elif isinstance(value,list):
+    -   for v in value:scan(v,key)
+    -  elif isinstance(value,str) and re.fullmatch('[0-9a-f]{64}',value) and any(t in key.lower() for t in ('container','backend_ref')):ids.add(value)
+    - for root in (src/'evidence',inst/'evidence'):
+    -  for p in root.rglob('*.json'):
+    -   if p.name in {'result.json','image.json'} or 'origins' in p.name or 'runtime' in p.name or 'imports-' in p.name:continue
+    -   value=json.loads(p.read_text());scan(value)
+    -   if 'docker' in p.as_posix() or any(t in p.as_posix() for t in ('candidate','completion','owner','reconciliation')):records+=1
+    - result={'source_commit':sha,'git_inputs':len(config['manifest']),'runtime_modules_each':63,'source_wheel_sdist_each':{'tests':2043,'passed':2039,'skipped':4,'failed':0,'errors':0},'retained':1899,'added':144,'skips':skips,'artifacts':b['artifacts'],'recorded_container_ids':sorted(ids),'json_observations':records,'container_postcheck':'PENDING','vm_old11692_shutdown':'Not observed running on resume; no graceful shutdown claim','release':'BLOCKED'}
+    - (src/'root-full-audit.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:v for k,v in result.items() if k not in ('skips','recorded_container_ids')},indent=2));print('Recorded IDs',len(ids))
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + src = Path("D:/agentsync-debug/cancel-linux-full-h1ma9gdf")
+6   + inst = Path("D:/agentsync-debug/cancel-linux-installed-z4u0xy6v")
+7   + build = Path("D:/agentsync-debug/cancel-full-build-g39f1e5j")
+8   + config = json.loads((src / "config.json").read_text())
+9   + sha = config["commit"]
+10  + b = json.loads((build / "result.json").read_text())
+11  + assert b["commit"] == sha
+12  + for n, h in config["manifest"].items():
+13  +     assert (
+14  +         hashlib.sha256(
+15  +             subprocess.check_output(["git", "show", sha + ":" + n], cwd=repo)
+16  +         ).hexdigest()
+17  +         == h
+18  +     )
+19  + modules = {
+20  +     n.removeprefix("src/"): h
+21  +     for n, h in config["manifest"].items()
+22  +     if n.startswith("src/agentsync/") and n.endswith(".py")
+23  + }
+24  + assert len(modules) == 63
+25  + before = json.loads((src / "evidence/imports-before.json").read_text())
+26  + after = json.loads((src / "evidence/imports-after.json").read_text())
+27  + assert before == after == modules
+28  + groups = {
+29  +     "source": src / "evidence/junit.xml",
+30  +     "wheel": inst / "evidence/wheel-junit.xml",
+31  +     "sdist": inst / "evidence/sdist-junit.xml",
+32  + }
+33  + sets = {}
+34  + skips = {}
+35  + for name, p in groups.items():
+36  +     cases = list(ET.parse(p).getroot().iter("testcase"))
+37  +     ids = {c.get("classname") + "::" + c.get("name") for c in cases}
+38  +     assert len(ids) == len(cases) == 2043
+39  +     assert not any(c.find(t) is not None for c in cases for t in ("failure", "error"))
+40  +     skips[name] = [
+41  +         {
+42  +             "id": c.get("classname") + "::" + c.get("name"),
+43  +             "reason": c.find("skipped").get("message"),
+44  +         }
+45  +         for c in cases
+46  +         if c.find("skipped") is not None
+47  +     ]
+48  +     assert len(skips[name]) == 4
+49  +     sets[name] = ids
+50  + assert all(s == sets["source"] for s in sets.values())
+51  + old = {
+52  +     c.get("classname") + "::" + c.get("name")
+53  +     for c in ET.parse("D:/agentsync-debug/alpha23-linux-full-9s8fju3r/evidence/junit.xml")
+54  +     .getroot()
+55  +     .iter("testcase")
+56  + }
+57  + assert len(old) == 1899 and old <= sets["source"]
+58  + for kind in ("wheel", "sdist"):
+59  +     origins = json.loads((inst / "evidence" / (kind + "-origins.json")).read_text())
+60  +     assert set(origins) == set(modules)
+61  +     for n, o in origins.items():
+62  +         assert (
+63  +             o["sha256"] == modules[n]
+64  +             and "/" + kind + "/lib/" in o["path"]
+65  +             and "/site-packages/" in o["path"]
+66  +         )
+67  +     direct = json.loads((inst / "evidence" / (kind + "-direct-url.json")).read_text())
+68  +     name = next(n for n in b["artifacts"] if n.endswith(".whl" if kind == "wheel" else ".tar.gz"))
+69  +     assert direct["archive_info"]["hashes"]["sha256"] == b["artifacts"][name]
+70  + for name, h in b["artifacts"].items():
+71  +     assert hashlib.sha256((build / "artifacts" / name).read_bytes()).hexdigest() == h
+72  + ids = set()
+73  + records = 0
+74  +
+75  +
+76  + def scan(value, key=""):
+77  +     if isinstance(value, dict):
+78  +         for k, v in value.items():
+79  +             scan(v, k)
+80  +     elif isinstance(value, list):
+81  +         for v in value:
+82  +             scan(v, key)
+83  +     elif (
+84  +         isinstance(value, str)
+85  +         and re.fullmatch("[0-9a-f]{64}", value)
+86  +         and any(t in key.lower() for t in ("container", "backend_ref"))
+87  +     ):
+88  +         ids.add(value)
+89  +
+90  +
+91  + for root in (src / "evidence", inst / "evidence"):
+92  +     for p in root.rglob("*.json"):
+93  +         if (
+94  +             p.name in {"result.json", "image.json"}
+95  +             or "origins" in p.name
+96  +             or "runtime" in p.name
+97  +             or "imports-" in p.name
+98  +         ):
+99  +             continue
+100 +         value = json.loads(p.read_text())
+101 +         scan(value)
+102 +         if "docker" in p.as_posix() or any(
+103 +             t in p.as_posix() for t in ("candidate", "completion", "owner", "reconciliation")
+104 +         ):
+105 +             records += 1
+106 + result = {
+107 +     "source_commit": sha,
+108 +     "git_inputs": len(config["manifest"]),
+109 +     "runtime_modules_each": 63,
+110 +     "source_wheel_sdist_each": {
+111 +         "tests": 2043,
+112 +         "passed": 2039,
+113 +         "skipped": 4,
+114 +         "failed": 0,
+115 +         "errors": 0,
+116 +     },
+117 +     "retained": 1899,
+118 +     "added": 144,
+119 +     "skips": skips,
+120 +     "artifacts": b["artifacts"],
+121 +     "recorded_container_ids": sorted(ids),
+122 +     "json_observations": records,
+123 +     "container_postcheck": "PENDING",
+124 +     "vm_old11692_shutdown": "Not observed running on resume; no graceful shutdown claim",
+125 +     "release": "BLOCKED",
+126 + }
+127 + (src / "root-full-audit.json").write_text(json.dumps(result, indent=2))
+128 + print(
+129 +     json.dumps(
+130 +         {k: v for k, v in result.items() if k not in ("skips", "recorded_container_ids")}, indent=2
+131 +     )
+132 + )
+133 + print("Recorded IDs", len(ids))
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:1:16
+    |
+    - import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+1   + import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+2   | from pathlib import Path
+    - repo=Path(r'F:\syuc\agentsync-execution-intent');out=Path(tempfile.mkdtemp(prefix='cancel-full-build-',dir=r'D:\agentsync-debug'))
+    - commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()
+    - assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+    - archive=out/'source.tar';subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+    - source=out/'source';source.mkdir();manifest={}
+3   +
+4   + repo = Path(r"F:\syuc\agentsync-execution-intent")
+5   + out = Path(tempfile.mkdtemp(prefix="cancel-full-build-", dir=r"D:\agentsync-debug"))
+6   + commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+7   + assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip()
+8   + archive = out / "source.tar"
+9   + subprocess.run(
+10  +     ["git", "archive", "--format=tar", "--output", str(archive), commit], cwd=repo, check=True
+11  + )
+12  + source = out / "source"
+13  + source.mkdir()
+14  + manifest = {}
+15  | with tarfile.open(archive) as stream:
+    -  for m in stream:
+    -   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.resolve())
+    -   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+    -   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifest[m.name]=hashlib.sha256(data).hexdigest()
+    - modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modules)>=63
+    - binding=out/'binding.json';binding.write_text(json.dumps(modules))
+    - wrapper=out/'installed_tests.py';wrapper.write_text('''if __name__ == '__main__':
+16  +     for m in stream:
+17  +         p = Path(m.name)
+18  +         assert not p.is_absolute() and ".." not in p.parts
+19  +         target = source / p
+20  +         assert target.resolve().is_relative_to(source.resolve())
+21  +         if m.isdir():
+22  +             target.mkdir(parents=True, exist_ok=True)
+23  +             continue
+24  +         assert m.isfile()
+25  +         target.parent.mkdir(parents=True, exist_ok=True)
+26  +         data = stream.extractfile(m).read()
+27  +         target.write_bytes(data)
+28  +         manifest[m.name] = hashlib.sha256(data).hexdigest()
+29  + modules = {
+30  +     n.removeprefix("src/"): h
+31  +     for n, h in manifest.items()
+32  +     if n.startswith("src/agentsync/") and n.endswith(".py")
+33  + }
+34  + assert len(modules) >= 63
+35  + binding = out / "binding.json"
+36  + binding.write_text(json.dumps(modules))
+37  + wrapper = out / "installed_tests.py"
+38  + wrapper.write_text("""if __name__ == '__main__':
+39  |  import hashlib,importlib,json,pathlib,sys
+--------------------------------------------------------------------------------
+52  |  destination.write_text(json.dumps(after,indent=2));raise SystemExit(code)
+    - ''')
+    - selectors=['tests/integration/test_candidate_execution.py::test_actual_candidate_bytes_not_base_and_old_receipts_stay_immutable','tests/integration/test_candidate_execution.py::test_cleanup_keeps_observation_when_expired_executor_returns','tests/integration/test_candidate_execution.py::test_commit_ack_loss_preserves_fence_before_next_external_step','tests/integration/test_candidate_execution.py::test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed','tests/integration/test_candidate_execution.py::test_unavailable_isolation_is_unsupported_without_host_execution']
+    - env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','PATH','COMSPEC','PATHEXT'}}
+    - home=out/'home';home.mkdir();env.update(TEMP=str(out),TMP=str(out),HOME=str(home),USERPROFILE=str(home),PYTHONDONTWRITEBYTECODE='1',PYTEST_DISABLE_PLUGIN_AUTOLOAD='1',PIP_NO_INDEX='1',PIP_DISABLE_PIP_VERSION_CHECK='1',PIP_CONFIG_FILE=os.devnull,GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull)
+    - py=r'D:\agentsync-debug\venv\Scripts\python.exe';cache=r'D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse'
+    - r={'commit':commit,'version':'0.3.0a28','runtime':'WindowsPython3.14','runtime_modules':modules,'source_manifest':manifest,'selectors':selectors,'checks':{},'packages':{},'formal_release':'BLOCKED','real_clients':'NOT RUN'}
+    - def save():(out/'result.json').write_text(json.dumps(r,indent=2))
+    - def run(name,cmd,cwd=out,timeout=300):
+    -  p=subprocess.run(cmd,cwd=cwd,env=env,capture_output=True,timeout=timeout);(out/(name+'.stdout')).write_bytes(p.stdout);(out/(name+'.stderr')).write_bytes(p.stderr);r['checks'][name]={'exit_status':p.returncode};save();assert p.returncode==0,name;return p
+    - print(out,flush=True);save()
+    - run('build',[py,'-m','build','--wheel','--sdist','--no-isolation','--outdir',str(out/'artifacts'),str(source)])
+    - r['artifacts']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()};save()
+    - r['scope']='build only; no installed test execution';r['source_unchanged']=all(hashlib.sha256((source/n).read_bytes()).hexdigest()==h for n,h in manifest.items());assert r['source_unchanged'];r['passed']=True;save();print(json.dumps({'build_root':str(out),'commit':commit,'artifacts':r['artifacts']}),flush=True)
+53  + """)
+54  + selectors = [
+55  +     "tests/integration/test_candidate_execution.py::test_actual_candidate_bytes_not_base_and_old_receipts_stay_immutable",
+56  +     "tests/integration/test_candidate_execution.py::test_cleanup_keeps_observation_when_expired_executor_returns",
+57  +     "tests/integration/test_candidate_execution.py::test_commit_ack_loss_preserves_fence_before_next_external_step",
+58  +     "tests/integration/test_candidate_execution.py::test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed",
+59  +     "tests/integration/test_candidate_execution.py::test_unavailable_isolation_is_unsupported_without_host_execution",
+60  + ]
+61  + env = {
+62  +     k: v
+63  +     for k, v in os.environ.items()
+64  +     if k.upper() in {"SYSTEMROOT", "WINDIR", "PATH", "COMSPEC", "PATHEXT"}
+65  + }
+66  + home = out / "home"
+67  + home.mkdir()
+68  + env.update(
+69  +     TEMP=str(out),
+70  +     TMP=str(out),
+71  +     HOME=str(home),
+72  +     USERPROFILE=str(home),
+73  +     PYTHONDONTWRITEBYTECODE="1",
+74  +     PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+75  +     PIP_NO_INDEX="1",
+76  +     PIP_DISABLE_PIP_VERSION_CHECK="1",
+77  +     PIP_CONFIG_FILE=os.devnull,
+78  +     GIT_CONFIG_NOSYSTEM="1",
+79  +     GIT_CONFIG_GLOBAL=os.devnull,
+80  + )
+81  + py = r"D:\agentsync-debug\venv\Scripts\python.exe"
+82  + cache = r"D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse"
+83  + r = {
+84  +     "commit": commit,
+85  +     "version": "0.3.0a28",
+86  +     "runtime": "WindowsPython3.14",
+87  +     "runtime_modules": modules,
+88  +     "source_manifest": manifest,
+89  +     "selectors": selectors,
+90  +     "checks": {},
+91  +     "packages": {},
+92  +     "formal_release": "BLOCKED",
+93  +     "real_clients": "NOT RUN",
+94  + }
+95  +
+96  +
+97  + def save():
+98  +     (out / "result.json").write_text(json.dumps(r, indent=2))
+99  +
+100 +
+101 + def run(name, cmd, cwd=out, timeout=300):
+102 +     p = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, timeout=timeout)
+103 +     (out / (name + ".stdout")).write_bytes(p.stdout)
+104 +     (out / (name + ".stderr")).write_bytes(p.stderr)
+105 +     r["checks"][name] = {"exit_status": p.returncode}
+106 +     save()
+107 +     assert p.returncode == 0, name
+108 +     return p
+109 +
+110 +
+111 + print(out, flush=True)
+112 + save()
+113 + run(
+114 +     "build",
+115 +     [
+116 +         py,
+117 +         "-m",
+118 +         "build",
+119 +         "--wheel",
+120 +         "--sdist",
+121 +         "--no-isolation",
+122 +         "--outdir",
+123 +         str(out / "artifacts"),
+124 +         str(source),
+125 +     ],
+126 + )
+127 + r["artifacts"] = {
+128 +     p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out / "artifacts").iterdir()
+129 + }
+130 + save()
+131 + r["scope"] = "build only; no installed test execution"
+132 + r["source_unchanged"] = all(
+133 +     hashlib.sha256((source / n).read_bytes()).hexdigest() == h for n, h in manifest.items()
+134 + )
+135 + assert r["source_unchanged"]
+136 + r["passed"] = True
+137 + save()
+138 + print(
+139 +     json.dumps({"build_root": str(out), "commit": commit, "artifacts": r["artifacts"]}), flush=True
+140 + )
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:1:16
+    |
+    - import hashlib,io,json,subprocess,tarfile
+1   + import hashlib, io, json, subprocess, tarfile
+2   | from pathlib import Path
+    - repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+    - audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=json.loads(reviewpath.read_text());assert review['findings']==[] and review['reviewed_sha']==audit['source_commit']
+    - post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.loads(post.read_text());c=json.loads(closed.read_text(encoding='utf-8-sig'))
+    - assert p['all_recorded_ids_absent'] and p['recorded_ids']==96 and c['stopped'] and c['verified_owned_pid']==5552 and not c['forced_stop_used']
+    - assert not subprocess.check_output(['git','diff','--name-only',audit['source_commit'],'HEAD','--','src','tests','tools','pyproject.toml'],cwd=repo,text=True).strip()
+    - members={}
+    - for prefix,folder in [('source',src/'evidence'),('installed',inst/'evidence')]:
+    -  for path in folder.rglob('*'):
+    -   if path.is_file():members[prefix+'/'+path.relative_to(folder).as_posix()]=path
+    - for path in (build/'artifacts').iterdir():members['artifacts/'+path.name]=path
+    - for label,path in [('source-config.json',src/'config.json'),('build-result.json',build/'result.json'),('root-audit.json',src/'root-full-audit.json'),('astra-review.json',reviewpath),('container-postcheck.json',post),('owned-vm-shutdown.json',closed)]:members[label]=path
+    - for name in ['run-cancel-linux-full.py','build-cancel-full-packages.py','verify-cancel-linux-full-packages.py','audit-and-package-full-linux.py','postcheck-full-containers.sh','publish-linux-full-evidence.py']:
+    -  members['drivers/'+name]=Path('D:/agentsync-debug')/name
+    - manifest={n:{'bytes':v.stat().st_size,'sha256':hashlib.sha256(v.read_bytes()).hexdigest()} for n,v in members.items()}
+    - archive=repo/'releases/0.3.0a28/checkpoints/full-linux-50bcbf5.tar.gz';assert not archive.exists()
+    - with tarfile.open(archive,'w:gz') as stream:
+    -  for n,v in members.items():stream.add(v,arcname=n,recursive=False)
+    -  raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(raw))
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + src = Path("D:/agentsync-debug/cancel-linux-full-h1ma9gdf")
+6   + inst = Path("D:/agentsync-debug/cancel-linux-installed-z4u0xy6v")
+7   + build = Path("D:/agentsync-debug/cancel-full-build-g39f1e5j")
+8   + audit = json.loads((src / "root-full-audit.json").read_text())
+9   + reviewpath = Path("D:/agentsync-debug/astra-linux-full-final.json")
+10  + review = json.loads(reviewpath.read_text())
+11  + assert review["findings"] == [] and review["reviewed_sha"] == audit["source_commit"]
+12  + post = Path("D:/agentsync-debug/full-container-postcheck.json")
+13  + closed = Path("D:/agentsync-debug/vm/startup-poweroff-result.json")
+14  + p = json.loads(post.read_text())
+15  + c = json.loads(closed.read_text(encoding="utf-8-sig"))
+16  + assert (
+17  +     p["all_recorded_ids_absent"]
+18  +     and p["recorded_ids"] == 96
+19  +     and c["stopped"]
+20  +     and c["verified_owned_pid"] == 5552
+21  +     and not c["forced_stop_used"]
+22  + )
+23  + assert not subprocess.check_output(
+24  +     [
+25  +         "git",
+26  +         "diff",
+27  +         "--name-only",
+28  +         audit["source_commit"],
+29  +         "HEAD",
+30  +         "--",
+31  +         "src",
+32  +         "tests",
+33  +         "tools",
+34  +         "pyproject.toml",
+35  +     ],
+36  +     cwd=repo,
+37  +     text=True,
+38  + ).strip()
+39  + members = {}
+40  + for prefix, folder in [("source", src / "evidence"), ("installed", inst / "evidence")]:
+41  +     for path in folder.rglob("*"):
+42  +         if path.is_file():
+43  +             members[prefix + "/" + path.relative_to(folder).as_posix()] = path
+44  + for path in (build / "artifacts").iterdir():
+45  +     members["artifacts/" + path.name] = path
+46  + for label, path in [
+47  +     ("source-config.json", src / "config.json"),
+48  +     ("build-result.json", build / "result.json"),
+49  +     ("root-audit.json", src / "root-full-audit.json"),
+50  +     ("astra-review.json", reviewpath),
+51  +     ("container-postcheck.json", post),
+52  +     ("owned-vm-shutdown.json", closed),
+53  + ]:
+54  +     members[label] = path
+55  + for name in [
+56  +     "run-cancel-linux-full.py",
+57  +     "build-cancel-full-packages.py",
+58  +     "verify-cancel-linux-full-packages.py",
+59  +     "audit-and-package-full-linux.py",
+60  +     "postcheck-full-containers.sh",
+61  +     "publish-linux-full-evidence.py",
+62  + ]:
+63  +     members["drivers/" + name] = Path("D:/agentsync-debug") / name
+64  + manifest = {
+65  +     n: {"bytes": v.stat().st_size, "sha256": hashlib.sha256(v.read_bytes()).hexdigest()}
+66  +     for n, v in members.items()
+67  + }
+68  + archive = repo / "releases/0.3.0a28/checkpoints/full-linux-50bcbf5.tar.gz"
+69  + assert not archive.exists()
+70  + with tarfile.open(archive, "w:gz") as stream:
+71  +     for n, v in members.items():
+72  +         stream.add(v, arcname=n, recursive=False)
+73  +     raw = json.dumps(manifest, indent=2).encode()
+74  +     info = tarfile.TarInfo("MANIFEST.json")
+75  +     info.size = len(raw)
+76  +     stream.addfile(info, io.BytesIO(raw))
+77  | with tarfile.open(archive) as stream:
+    -  for n,item in manifest.items():
+    -   raw=stream.extractfile(n).read();assert len(raw)==item['bytes'] and hashlib.sha256(raw).hexdigest()==item['sha256']
+    - root=repo/'docs/acceptance/evidence/full-linux-readable/50bcbf5';assert not root.exists();root.mkdir(parents=True)
+    - readable={}
+    - for n,v in members.items():
+    -  if v.suffix not in {'.xml','.json','.log','.py','.sh'}:continue
+    -  raw=v.read_bytes();raw.decode('utf-8-sig');target=root/n;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+    -  readable[n]={**manifest[n],'git_blob_sha1':hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\x00'+raw).hexdigest()}
+    - (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8',newline='\n')
+    - summary={'schema':'agentsync.full-linux-checkpoint.v1','source_commit':audit['source_commit'],'source_wheel_sdist_each':audit['source_wheel_sdist_each'],'identity':{k:v for k,v in audit.items() if k not in ('skips','recorded_container_ids')},'skips':audit['skips'],'sdist_members':'365 total:357 Git-matched and8generated; independently checked','recorded_container_ids_absent':96,'owned_vm5552_gracefully_stopped':True,'earlier_vm11692_shutdown':'Unobserved; no graceful shutdown claim','independent_audit':'Astra38data checks pass, no findings; reviewer did not run tests','archive':archive.relative_to(repo).as_posix(),'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'manifest_members':len(manifest),'readable_path':root.relative_to(repo).as_posix(),'readable_members':readable,'Work':'New Linux evidence PENDING; earlier PR33 limited component accepted at08a3e93','not_run':['full Windows/macOS at this SHA','real model/client tasks','autonomous relay','formal42 acceptance'],'release':'BLOCKED','bootstrap_notes':['Initial shell poststart check used stale LASTEXITCODE; actual VM identity verified without relaunch','Initial SSH connection before guest readiness failed; serial readiness observed and read-only preflight succeeded; no product tests executed during failed transport']}
+    - (root/'INDEX.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n')
+    - (repo/'docs/acceptance/evidence/full-linux-50bcbf5-summary.json').write_text(json.dumps({k:v for k,v in summary.items() if k!='readable_members'},indent=2)+'\n',encoding='utf-8',newline='\n')
+    - attributes=repo/'.gitattributes';s=attributes.read_text(encoding='utf-8');s+='\ndocs/acceptance/evidence/full-linux-readable/** -text\n';attributes.write_text(s,encoding='utf-8',newline='\n')
+    - print(json.dumps({k:v for k,v in summary.items() if k not in ('readable_members','skips','identity')},indent=2))
+78  +     for n, item in manifest.items():
+79  +         raw = stream.extractfile(n).read()
+80  +         assert len(raw) == item["bytes"] and hashlib.sha256(raw).hexdigest() == item["sha256"]
+81  + root = repo / "docs/acceptance/evidence/full-linux-readable/50bcbf5"
+82  + assert not root.exists()
+83  + root.mkdir(parents=True)
+84  + readable = {}
+85  + for n, v in members.items():
+86  +     if v.suffix not in {".xml", ".json", ".log", ".py", ".sh"}:
+87  +         continue
+88  +     raw = v.read_bytes()
+89  +     raw.decode("utf-8-sig")
+90  +     target = root / n
+91  +     target.parent.mkdir(parents=True, exist_ok=True)
+92  +     target.write_bytes(raw)
+93  +     readable[n] = {
+94  +         **manifest[n],
+95  +         "git_blob_sha1": hashlib.sha1(
+96  +             b"blob " + str(len(raw)).encode() + b"\x00" + raw
+97  +         ).hexdigest(),
+98  +     }
+99  + (root / "MANIFEST.json").write_text(
+100 +     json.dumps(manifest, indent=2) + "\n", encoding="utf-8", newline="\n"
+101 + )
+102 + summary = {
+103 +     "schema": "agentsync.full-linux-checkpoint.v1",
+104 +     "source_commit": audit["source_commit"],
+105 +     "source_wheel_sdist_each": audit["source_wheel_sdist_each"],
+106 +     "identity": {k: v for k, v in audit.items() if k not in ("skips", "recorded_container_ids")},
+107 +     "skips": audit["skips"],
+108 +     "sdist_members": "365 total:357 Git-matched and8generated; independently checked",
+109 +     "recorded_container_ids_absent": 96,
+110 +     "owned_vm5552_gracefully_stopped": True,
+111 +     "earlier_vm11692_shutdown": "Unobserved; no graceful shutdown claim",
+112 +     "independent_audit": "Astra38data checks pass, no findings; reviewer did not run tests",
+113 +     "archive": archive.relative_to(repo).as_posix(),
+114 +     "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+115 +     "manifest_members": len(manifest),
+116 +     "readable_path": root.relative_to(repo).as_posix(),
+117 +     "readable_members": readable,
+118 +     "Work": "New Linux evidence PENDING; earlier PR33 limited component accepted at08a3e93",
+119 +     "not_run": [
+120 +         "full Windows/macOS at this SHA",
+121 +         "real model/client tasks",
+122 +         "autonomous relay",
+123 +         "formal42 acceptance",
+124 +     ],
+125 +     "release": "BLOCKED",
+126 +     "bootstrap_notes": [
+127 +         "Initial shell poststart check used stale LASTEXITCODE; actual VM identity verified without relaunch",
+128 +         "Initial SSH connection before guest readiness failed; serial readiness observed and read-only preflight succeeded; no product tests executed during failed transport",
+129 +     ],
+130 + }
+131 + (root / "INDEX.json").write_text(
+132 +     json.dumps(summary, indent=2) + "\n", encoding="utf-8", newline="\n"
+133 + )
+134 + (repo / "docs/acceptance/evidence/full-linux-50bcbf5-summary.json").write_text(
+135 +     json.dumps({k: v for k, v in summary.items() if k != "readable_members"}, indent=2) + "\n",
+136 +     encoding="utf-8",
+137 +     newline="\n",
+138 + )
+139 + attributes = repo / ".gitattributes"
+140 + s = attributes.read_text(encoding="utf-8")
+141 + s += "\ndocs/acceptance/evidence/full-linux-readable/** -text\n"
+142 + attributes.write_text(s, encoding="utf-8", newline="\n")
+143 + print(
+144 +     json.dumps(
+145 +         {k: v for k, v in summary.items() if k not in ("readable_members", "skips", "identity")},
+146 +         indent=2,
+147 +     )
+148 + )
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:2:16
+    |
+1   | from pathlib import Path
+    - import hashlib,json,subprocess,tarfile,tempfile,uuid
+    - repo=Path('F:/syuc/agentsync-execution-intent')
+    - out=Path(tempfile.mkdtemp(prefix='cancel-linux-full-',dir='D:/agentsync-debug'))
+    - commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()
+    - assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+    - guest='/root/agentsync-cancel-full-'+uuid.uuid4().hex
+    - archive=out/'source.tar'
+    - subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+    - sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+    - manifest={}
+2   + import hashlib, json, subprocess, tarfile, tempfile, uuid
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + out = Path(tempfile.mkdtemp(prefix="cancel-linux-full-", dir="D:/agentsync-debug"))
+6   + commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+7   + assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip()
+8   + guest = "/root/agentsync-cancel-full-" + uuid.uuid4().hex
+9   + archive = out / "source.tar"
+10  + subprocess.run(
+11  +     ["git", "archive", "--format=tar", "--output", str(archive), commit], cwd=repo, check=True
+12  + )
+13  + sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+14  + manifest = {}
+15  | with tarfile.open(archive) as stream:
+    -  for m in stream:
+    -   if m.isfile():manifest[m.name]=hashlib.sha256(stream.extractfile(m).read()).hexdigest()
+    - config={'commit':commit,'guest':guest,'manifest':manifest,'archive_sha256':sha(archive)}
+    - (out/'config.json').write_text(json.dumps(config,indent=2))
+    - body=r"""
+16  +     for m in stream:
+17  +         if m.isfile():
+18  +             manifest[m.name] = hashlib.sha256(stream.extractfile(m).read()).hexdigest()
+19  + config = {"commit": commit, "guest": guest, "manifest": manifest, "archive_sha256": sha(archive)}
+20  + (out / "config.json").write_text(json.dumps(config, indent=2))
+21  + body = r"""
+22  | import hashlib,importlib,json,os,pathlib,signal,sqlite3,subprocess,sys,tarfile,time,xml.etree.ElementTree as ET
+--------------------------------------------------------------------------------
+83  | """
+    - script=out/'run.sh';script.write_text("set -eu\n/root/jobs-env/bin/python - <<'OWNED_FULL_REGRESSION'\nconfig="+repr(config)+'\n'+body+'\nOWNED_FULL_REGRESSION\n',encoding='utf-8',newline='\n')
+    - py='D:/agentsync-debug/venv/Scripts/python.exe';transport=repo/'tools/local_vm_exec.py'
+    - def call(name,args,timeout):
+    -  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout)
+    -  (out/(name+'.log')).write_bytes(p.stdout+p.stderr);print(name,p.returncode,flush=True)
+    -  if p.returncode:raise SystemExit('Transport failed; inspect guest before retry: '+str(out))
+    - print(out,flush=True)
+    - call('upload',['--upload',str(archive),guest+'.tar'],90)
+    - call('run',['--script',str(script),'--timeout','1300','--log',str(out/'guest.log')],1330)
+    - call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90)
+    - folder=out/'evidence';folder.mkdir()
+    - with tarfile.open(out/'evidence.tar') as stream:
+    -  for m in stream:
+    -   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..' not in p.parts
+    -   target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(stream.extractfile(m).read())
+    - result=json.loads((folder/'result.json').read_text());print(json.dumps(result),flush=True)
+    - raise SystemExit(0 if result['passed'] else 1)
+84  + script = out / "run.sh"
+85  + script.write_text(
+86  +     "set -eu\n/root/jobs-env/bin/python - <<'OWNED_FULL_REGRESSION'\nconfig="
+87  +     + repr(config)
+88  +     + "\n"
+89  +     + body
+90  +     + "\nOWNED_FULL_REGRESSION\n",
+91  +     encoding="utf-8",
+92  +     newline="\n",
+93  + )
+94  + py = "D:/agentsync-debug/venv/Scripts/python.exe"
+95  + transport = repo / "tools/local_vm_exec.py"
+96  +
+97  +
+98  + def call(name, args, timeout):
+99  +     p = subprocess.run(
+100 +         [py, "-B", str(transport), *args], cwd=repo, capture_output=True, timeout=timeout
+101 +     )
+102 +     (out / (name + ".log")).write_bytes(p.stdout + p.stderr)
+103 +     print(name, p.returncode, flush=True)
+104 +     if p.returncode:
+105 +         raise SystemExit("Transport failed; inspect guest before retry: " + str(out))
+106 +
+107 +
+108 + print(out, flush=True)
+109 + call("upload", ["--upload", str(archive), guest + ".tar"], 90)
+110 + call("run", ["--script", str(script), "--timeout", "1300", "--log", str(out / "guest.log")], 1330)
+111 + call("download", ["--download", guest + "/evidence.tar", str(out / "evidence.tar")], 90)
+112 + folder = out / "evidence"
+113 + folder.mkdir()
+114 + with tarfile.open(out / "evidence.tar") as stream:
+115 +     for m in stream:
+116 +         p = Path(m.name)
+117 +         assert m.isfile() and not p.is_absolute() and ".." not in p.parts
+118 +         target = folder / p
+119 +         assert target.resolve().is_relative_to(folder.resolve())
+120 +         target.parent.mkdir(parents=True, exist_ok=True)
+121 +         target.write_bytes(stream.extractfile(m).read())
+122 + result = json.loads((folder / "result.json").read_text())
+123 + print(json.dumps(result), flush=True)
+124 + raise SystemExit(0 if result["passed"] else 1)
+    |
+
+unformatted: File would be reformatted
+   --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:2:16
+    |
+1   | from pathlib import Path
+    - import hashlib,json,subprocess,tarfile,tempfile,uuid
+    - repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((package/'result.json').read_text());out=Path(tempfile.mkdtemp(prefix='cancel-linux-installed-',dir='D:/agentsync-debug'));guest='/root/agentsync-installed-'+uuid.uuid4().hex;sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+    - wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n)==h for n,h in parent['artifacts'].items())
+    - config={'commit':parent['commit'],'guest':guest,'wheel':wheel.name,'sdist':sdist.name,'artifacts':parent['artifacts'],'modules':parent['runtime_modules'],'selectors':['tests']}
+    - (out/'config.json').write_text(json.dumps(config,indent=2));bundle=out/'bundle.tar'
+    - with tarfile.open(bundle,'w') as stream:
+    -  for path in [wheel,sdist,package/'installed_tests.py',out/'config.json']:stream.add(path,arcname=path.name,recursive=False)
+    - config['bundle_sha256']=sha(bundle)
+    - body=r'''
+2   + import hashlib, json, subprocess, tarfile, tempfile, uuid
+3   +
+4   + repo = Path("F:/syuc/agentsync-execution-intent")
+5   + package = Path("D:/agentsync-debug/cancel-full-build-g39f1e5j")
+6   + parent = json.loads((package / "result.json").read_text())
+7   + out = Path(tempfile.mkdtemp(prefix="cancel-linux-installed-", dir="D:/agentsync-debug"))
+8   + guest = "/root/agentsync-installed-" + uuid.uuid4().hex
+9   + sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+10  + wheel = next((package / "artifacts").glob("*.whl"))
+11  + sdist = next((package / "artifacts").glob("*.tar.gz"))
+12  + assert all(sha(package / "artifacts" / n) == h for n, h in parent["artifacts"].items())
+13  + config = {
+14  +     "commit": parent["commit"],
+15  +     "guest": guest,
+16  +     "wheel": wheel.name,
+17  +     "sdist": sdist.name,
+18  +     "artifacts": parent["artifacts"],
+19  +     "modules": parent["runtime_modules"],
+20  +     "selectors": ["tests"],
+21  + }
+22  + (out / "config.json").write_text(json.dumps(config, indent=2))
+23  + bundle = out / "bundle.tar"
+24  + with tarfile.open(bundle, "w") as stream:
+25  +     for path in [wheel, sdist, package / "installed_tests.py", out / "config.json"]:
+26  +         stream.add(path, arcname=path.name, recursive=False)
+27  + config["bundle_sha256"] = sha(bundle)
+28  + body = r"""
+29  | import contextlib,hashlib,json,os,pathlib,signal,subprocess,sys,tarfile,venv,xml.etree.ElementTree as ET
+--------------------------------------------------------------------------------
+77  | print(json.dumps({'status':r['status'],'packages':r['packages']}),flush=True)
+    - '''
+    - script=out/'run.sh';script.write_text("set -eu\n/root/jobs-env/bin/python - <<'OWNED_INSTALLED_COMPONENTS'\nconfig="+repr(config)+'\n'+body+'\nOWNED_INSTALLED_COMPONENTS\n',encoding='utf-8',newline='\n');transport=repo/'tools/local_vm_exec.py';py='D:/agentsync-debug/venv/Scripts/python.exe';report={'commit':parent['commit'],'guest':guest,'bundle_sha256':sha(bundle),'status':'NOT RUN','steps':[],'formal_release':'BLOCKED'}
+    - def save():(out/'result.json').write_text(json.dumps(report,indent=2))
+    - def call(name,args,timeout):
+    -  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout);log=out/(name+'.log');log.write_bytes(p.stdout+p.stderr);report['steps'].append({'name':name,'exit_code':p.returncode,'log_sha256':sha(log)});save();print(name,p.returncode,flush=True);return p.returncode
+    - print(out,flush=True);save()
+    - if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+    - if call('run',['--script',str(script),'--timeout','2800','--log',str(out/'guest-run.log')],2830):report['status']='TRANSPORT FAILED / inspect guest before retry';save();raise SystemExit(2)
+    - if call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90):raise SystemExit(2)
+    - folder=out/'evidence';folder.mkdir()
+    - with tarfile.open(out/'evidence.tar') as stream:
+    -  for m in stream:
+    -   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(stream.extractfile(m).read())
+    - actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(actual['status'],actual['packages'],flush=True)
+78  + """
+79  + script = out / "run.sh"
+80  + script.write_text(
+81  +     "set -eu\n/root/jobs-env/bin/python - <<'OWNED_INSTALLED_COMPONENTS'\nconfig="
+82  +     + repr(config)
+83  +     + "\n"
+84  +     + body
+85  +     + "\nOWNED_INSTALLED_COMPONENTS\n",
+86  +     encoding="utf-8",
+87  +     newline="\n",
+88  + )
+89  + transport = repo / "tools/local_vm_exec.py"
+90  + py = "D:/agentsync-debug/venv/Scripts/python.exe"
+91  + report = {
+92  +     "commit": parent["commit"],
+93  +     "guest": guest,
+94  +     "bundle_sha256": sha(bundle),
+95  +     "status": "NOT RUN",
+96  +     "steps": [],
+97  +     "formal_release": "BLOCKED",
+98  + }
+99  +
+100 +
+101 + def save():
+102 +     (out / "result.json").write_text(json.dumps(report, indent=2))
+103 +
+104 +
+105 + def call(name, args, timeout):
+106 +     p = subprocess.run(
+107 +         [py, "-B", str(transport), *args], cwd=repo, capture_output=True, timeout=timeout
+108 +     )
+109 +     log = out / (name + ".log")
+110 +     log.write_bytes(p.stdout + p.stderr)
+111 +     report["steps"].append({"name": name, "exit_code": p.returncode, "log_sha256": sha(log)})
+112 +     save()
+113 +     print(name, p.returncode, flush=True)
+114 +     return p.returncode
+115 +
+116 +
+117 + print(out, flush=True)
+118 + save()
+119 + if call("upload", ["--upload", str(bundle), guest + ".tar"], 90):
+120 +     raise SystemExit(2)
+121 + if call(
+122 +     "run", ["--script", str(script), "--timeout", "2800", "--log", str(out / "guest-run.log")], 2830
+123 + ):
+124 +     report["status"] = "TRANSPORT FAILED / inspect guest before retry"
+125 +     save()
+126 +     raise SystemExit(2)
+127 + if call("download", ["--download", guest + "/evidence.tar", str(out / "evidence.tar")], 90):
+128 +     raise SystemExit(2)
+129 + folder = out / "evidence"
+130 + folder.mkdir()
+131 + with tarfile.open(out / "evidence.tar") as stream:
+132 +     for m in stream:
+133 +         p = Path(m.name)
+134 +         assert m.isfile() and not p.is_absolute() and ".." not in p.parts
+135 +         target = folder / p
+136 +         assert target.resolve().is_relative_to(folder.resolve())
+137 +         target.parent.mkdir(parents=True, exist_ok=True)
+138 +         target.write_bytes(stream.extractfile(m).read())
+139 + actual = json.loads((folder / "result.json").read_text())
+140 + report["guest_result"] = actual
+141 + report["status"] = actual["status"]
+142 + save()
+143 + print(actual["status"], actual["packages"], flush=True)
+    |
+
+14 files would be reformatted, 282 files already formatted

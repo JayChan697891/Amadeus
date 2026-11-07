@@ -1,0 +1,25 @@
+{
+  "recorded_utc": "2026-11-07T02:15:49.054512+00:00",
+  "authorization": "One readonly existing-subscription model request explicitly allowed; no extra payment; stop if safety/cost unknown; no retry after failed/unknown task",
+  "authorization_consumed": false,
+  "model_attempts": 0,
+  "existing_auth_method": "chatgpt",
+  "metadata_only_auth_command_exit_code": 0,
+  "status": "BLOCKED_BEFORE_MODEL_REQUEST",
+  "real_model_task": "NOT RUN",
+  "blockers": [
+    "Current subscription-only versus paid-credit consumption not established; usage lookup unavailable",
+    "Current flags do not establish absence of all tools or actual isolation for this build"
+  ],
+  "not_claimed": [
+    "Actual client result reception",
+    "Billing or sandbox verification",
+    "Autonomous relay",
+    "M5/Release acceptance"
+  ],
+  "next_minimum_condition": "Evidence that the exact invocation satisfies existing no-extra-payment and isolation gates; authorization is not permission to bypass these checks",
+  "account_configuration_modified": false,
+  "raw_account_output_retained": false,
+  "api_keys_passed": false,
+  "release": "BLOCKED"
+}

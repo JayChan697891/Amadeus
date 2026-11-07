@@ -1,0 +1,18 @@
+{
+  "time_utc": "2026-11-07T02:14:17.041650+00:00",
+  "scope": "codex login status metadata only",
+  "command": [
+    "C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.1103.3517.0_x64__2p2nqsd0c76g0\\app\\resources\\codex.exe",
+    "login",
+    "status"
+  ],
+  "model_attempts": 0,
+  "raw_output_retained": false,
+  "api_keys_passed": false,
+  "account_config_modified_by_script": false,
+  "exit_code": 0,
+  "method": "chatgpt",
+  "output_sha256": "16118df3eb3595e44a4721878cef0f79910e6564e10ff0e78e451e7c4e478947",
+  "output_bytes": 24,
+  "real_model_task": "NOT RUN"
+}

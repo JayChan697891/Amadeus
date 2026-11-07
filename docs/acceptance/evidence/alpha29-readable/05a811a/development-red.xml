@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.187" timestamp="2026-11-06T18:05:40.104587-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.unit.test_codex_invocation" name="test_current_desktop_version_changes_only_asserted_version" time="0.005"><failure message="agentsync.errors.AgentSyncError: Invalid Codex invocation input.">tmp_path = WindowsPath('D:/agentsync-debug/m6-current-cli-sol/red-tmp/test_current_desktop_version_c0')
+
+    def test_current_desktop_version_changes_only_asserted_version(tmp_path):
+        profile = profile_for(tmp_path)
+        supplied = {"CODEX_HOME": "synthetic-home", "OPENAI_API_KEY": "synthetic-excluded-secret"}
+        legacy = prepare_invocation(profile, task(), environment=supplied)
+&gt;       current = prepare_invocation(
+            replace(profile, expected_cli_version="0.167.0-alpha.3.2"), task(), environment=supplied
+        )
+
+tests\unit\test_codex_invocation.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\agentsync\adapters\codex_invocation.py:255: in prepare_invocation
+    _invalid("unsupported_cli_version")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'unsupported_cli_version'
+
+    def _invalid(code: str = "validation_error") -&gt; NoReturn:
+&gt;       raise AgentSyncError(code, "Invalid Codex invocation input.") from None
+E       agentsync.errors.AgentSyncError: Invalid Codex invocation input.
+
+src\agentsync\adapters\codex_invocation.py:77: AgentSyncError</failure></testcase></testsuite></testsuites>

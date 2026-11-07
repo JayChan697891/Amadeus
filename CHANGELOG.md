@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a29 - current desktop CLI declaration
+
+- Admit the exact reviewed desktop declaration `0.167.0-alpha.3.2` alongside
+  previously reviewed declarations; retain the original default and launch guards.
+- Local version/help/feature inspection remains separate from real model tasks,
+  which require fresh authorization and existing safety/cost conditions.
+
 ## 0.3.0a28 - explicit desktop Codex preparation version
 
 - Allow the exact reviewed desktop CLI declaration `0.166.0-alpha.6` during

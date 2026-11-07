@@ -319,7 +319,7 @@ def test_desktop_version_preserves_legacy_default_and_changes_only_asserted_vers
     )
     assert desktop == replace(legacy, expected_cli_version="0.166.0-alpha.6")
     assert codex_invocation.SUPPORTED_CLI_VERSIONS == frozenset(
-        {"0.164.0-alpha.11.1", "0.166.0-alpha.6"}
+        {"0.164.0-alpha.11.1", "0.166.0-alpha.6", "0.167.0-alpha.3.2"}
     )
     assert type(codex_invocation.SUPPORTED_CLI_VERSIONS) is frozenset
     assert desktop.scope == "read_only_cli_plan"
@@ -337,6 +337,16 @@ def test_desktop_version_preserves_legacy_default_and_changes_only_asserted_vers
     )
 
 
+def test_current_desktop_version_changes_only_asserted_version(tmp_path):
+    profile = profile_for(tmp_path)
+    supplied = {"CODEX_HOME": "synthetic-home", "OPENAI_API_KEY": "synthetic-excluded-secret"}
+    legacy = prepare_invocation(profile, task(), environment=supplied)
+    current = prepare_invocation(
+        replace(profile, expected_cli_version="0.167.0-alpha.3.2"), task(), environment=supplied
+    )
+    assert current == replace(legacy, expected_cli_version="0.167.0-alpha.3.2")
+
+
 @pytest.mark.parametrize(
     "version",
     [
@@ -345,6 +355,10 @@ def test_desktop_version_preserves_legacy_default_and_changes_only_asserted_vers
         "0.166.0-alpha.5",
         "0.166.0-alpha.7",
         "0.167.0-alpha.1",
+        "0.167.0-alpha.3.1",
+        "0.167.0-alpha.3.3",
+        "0.167.0-alpha.3",
+        "0.167.0-alpha.3.2 ",
         "0.166.0-alpha.6 ",
     ],
 )

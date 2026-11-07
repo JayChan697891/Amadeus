@@ -1,8 +1,16 @@
-# Current continuation entry (2026-11-05)
+# Current continuation entry (2026-11-06)
+
+Alpha29 exact desktop declaration is frozen at05a811a; see current PROGRESS and
+acceptance/evidence/alpha29-local-summary.json. Four selected Windows source/
+installed suites each184pass; full suites and real models NOT RUN. One newly
+authorized conditional subscription task is unconsumed, blocked before model
+request on cost/tool-isolation evidence. Do not treat permission as clearing gates.
+PR33 Linux supplement at8671c2d has limited Work acceptance; alpha29 awaits review.
 
 Read docs/acceptance/CANCELLATION-REPAIR-20261105.md for current security-repair
 status. Earlier alpha26/27/28 component evidence does not cover internal cancellation.
-Work revalidation remains pending; do not infer acceptance from local passing tests.
+Cancellation repair and Linux supplement have limited Work acceptance at8671c2d;
+do not infer current alpha29 or formal acceptance from those historical results.
 
 The user cancelled the Claude handoff/package and requested continued Codex work.
 CLAUDE.md and docs/HANDOFF-CLAUDE.md are historical, not continuation instructions.

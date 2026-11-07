@@ -117,7 +117,18 @@ async def test_exact_pinned_fields_feed_fixture_capture_and_replay_only_once(tmp
 
 @pytest.mark.asyncio
 async def test_desktop_version_profile_flows_to_owned_python_fixture_only(tmp_path, monkeypatch):
-    profile = replace(fixture_profile(tmp_path), expected_cli_version="0.166.0-alpha.6")
+    await assert_desktop_version_fixture(tmp_path, monkeypatch, "0.166.0-alpha.6")
+
+
+@pytest.mark.asyncio
+async def test_current_desktop_version_profile_flows_to_owned_python_fixture_only(
+    tmp_path, monkeypatch
+):
+    await assert_desktop_version_fixture(tmp_path, monkeypatch, "0.167.0-alpha.3.2")
+
+
+async def assert_desktop_version_fixture(tmp_path, monkeypatch, version):
+    profile = replace(fixture_profile(tmp_path), expected_cli_version=version)
     task, environment = request(), explicit_env(tmp_path)
     expected = prepare_invocation(profile, task, environment=environment)
     original_start, calls = CapturedProcess.start, []

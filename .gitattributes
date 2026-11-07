@@ -8,3 +8,5 @@ docs/THIRD-PARTY-NOTICES.txt -whitespace
 docs/acceptance/evidence/cancellation-readable/** -text
 
 docs/acceptance/evidence/full-linux-readable/** -text
+
+docs/acceptance/evidence/alpha29-readable/** -text

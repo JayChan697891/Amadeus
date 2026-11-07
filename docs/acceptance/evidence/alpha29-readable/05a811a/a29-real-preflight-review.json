@@ -1,0 +1,54 @@
+{
+  "schema": "agentsync.a29-real-preflight-review.v1",
+  "reviewed_sha": "05a811a244d7cbf2c1c36f8f180baa4468dba7e3",
+  "created_utc": "2026-11-07T02:13:57.024292+00:00",
+  "status": "BLOCKED_BEFORE_MODEL_REQUEST",
+  "actual_model_attempts_by_reviewer": 0,
+  "scope": "Static critical preflight review only; no real CLI, model, account/API, credential, remote-target or configuration actions. Not M5/Release review.",
+  "verified_local_evidence": {
+    "binary_sha256": "40ecc3d8b6899afd8f935a8cccb7d53ba41ffd7c199f679e186d30ddd0d0bf39",
+    "binary_pin_matches": true,
+    "saved_empty_home_probe_log_checks": {
+      "version": true,
+      "exec-help": true,
+      "features": true
+    },
+    "saved_cli_version": "0.167.0-alpha.3.2",
+    "source_sha256": {
+      "src/agentsync/adapters/codex_invocation.py": "ba3b954514bc2031a8464a62b0dd8e045881a35c5e3b1409a665df7b1de3958a",
+      "src/agentsync/adapters/codex_process.py": "5fe186ff0dc3fd3d89b0d5038e3d3b891f8353230631fb1a0ee736444f8d6414",
+      "src/agentsync/adapters/codex.py": "0e8d37fbf3f08fe013bf44b3475940557c22888b8cae68395865ff396d2e9130",
+      "src/agentsync/adapters/launch_context.py": "579c14bc3fc89a3e8ed721fee8920ee0dc88f6c941b2bb2b3436caf3ef241578"
+    }
+  },
+  "launch_blockers": [
+    {
+      "id": "BILLING_ROUTE",
+      "severity": "blocker",
+      "finding": "Current active auth method is not established. Even a ChatGPT result does not establish zero paid-credit consumption. Root current documentation review reports both subscription and paid credits are possible and current usage lookup errors.",
+      "minimal_clearance": "Need existing reliable evidence that this one request cannot draw paid credits or create an extra charge. Do not infer this from forced_login_method, provider, API-key exclusion, low reasoning, default service tier or past free smoke. If unavailable, leave NOT RUN; do not change account settings or purchase credits."
+    },
+    {
+      "id": "TOOL_AND_CONTEXT_SCOPE",
+      "severity": "blocker_until_resolved",
+      "finding": "Eight explicit disable flags do not prove all tools unavailable on this binary. Saved feature defaults include computer_use, browser_use, browser_use_external, code_mode_host, unified_exec, view_image and plugins enabled; feature availability does not itself prove registration. Help scopes read-only sandbox to model-generated shell commands. ignore-user-config skips config.toml, not all instructions/skills or credentials.",
+      "minimal_clearance": "For this fixed-text smoke, establish that effective tool/config/context surface cannot perform unauthorized host, browser, remote or paid actions; do not use prompt instructions alone as enforcement. A D-only synthetic cwd and read-only flag do not prove broader read isolation. If that cannot be established from available non-model evidence, do not launch."
+    }
+  ],
+  "safe_minimal_authmethod_check": {
+    "purpose": "One local metadata-only active-auth-method check, not a model request and not billing proof.",
+    "candidate": "Pinned executable login status with existing CODEX_HOME and explicitly filtered environment, only after root confirms this version exposes that command.",
+    "ignore_user_config": "Saved help lists --ignore-user-config under exec; do not assume it is accepted by login status. No global equivalent is established by the reviewed evidence. A config parse error is a blocked check, not permission to edit, rename, bypass or substitute configuration.",
+    "handling": "Capture output only in memory; emit only recognized method enum and exit status. Do not save or print raw output because API-key-mode status can disclose a key fragment in some clients. Hash optional, not necessary. Never inspect/copy auth.json or token stores, log in, log out or refresh credentials as a workaround.",
+    "acceptance": "Only clear local ChatGPT/subscription method succeeds at this gate. API-key, external/unknown mode, error or ambiguity means stop. ChatGPT alone leaves BILLING_ROUTE unresolved.",
+    "limit": "This reviewer did not run login status and does not claim it is side-effect/network-free for this exact build."
+  },
+  "if_all_blockers_cleared_minimal_execution_contract": [
+    "Use only new explicit one-test authorization; old smoke permissions are exhausted. Pin reviewed Git source, actual binary hash and exact version freshly.",
+    "Single CodexAdapter with contextual_factory=CodexProcessFactory, max_runs=1 and running_limit=1; one fixed inline synthetic prompt, one request, bounded timeout/output, same event loop retained through owned-parent cleanup.",
+    "D-only ordinary non-reparse synthetic Git fixture with no remote, no private content or executable hooks; hash fixture before/after. Pass explicit filtered environment; no API keys/provider overrides/remote target or copied credentials.",
+    "Record authorization consumption before first possible model start. No retry, fallback, resume or second task after failure/unknown; CLI-internal request behavior is not proven by factory local single-attempt guard.",
+    "Accept only terminal adapter result with exact expected fixed reply, zero process error, no unexpected tool activity and unchanged fixture. Do not present parent process exit as server cancellation proof."
+  ],
+  "remaining_gates": "Real task NOT RUN unless all prerequisites established; full OS matrix, real-client acceptance, formal42, M5 and Release remain BLOCKED."
+}

@@ -1,5 +1,29 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+2026-11-06 alpha29 frozen `05a811a244d7cbf2c1c36f8f180baa4468dba7e3`:
+add only exact desktop declaration0.167.0-alpha.3.2, preserving old declarations,
+legacy default, argv/environment guards and unverified markers. Root independently
+ran six affected modules on Windows Python3.14/3.11 source and fresh offline
+wheel/rebuilt sdist: each184passed,0skip/failure/error;178retained+6new,0removed.
+Root checked713Git inputs,542Git-matched sdist files+8generated metadata,
+63runtime origins each, package/directURL/log/JUnit hashes and identical case sets.
+Ruff/format src/tests/tools and mypy63 pass; broad repository Ruff includes
+historical raw evidence-driver failures, preserved and not claimed passed.
+Evidence: acceptance/evidence/alpha29-local-summary.json and its49raw readable
+members; release packages stored once, no duplicate checkpoint archive.
+
+Fresh user permission allows one subscription-only fixed-text readonly test;
+metadata-only login status confirms ChatGPT, with no raw account output retained.
+Model attempts0, authorization unconsumed: cost/paid-credit exclusion and actual
+tool/isolation gates remain unknown. Astra preflight BLOCKED_BEFORE_MODEL_REQUEST;
+no failed/unknown model task retried. Full current suites/real clients/relay/formal42
+NOT RUN; Work review pending, M5/Release BLOCKED. No Actions/main/account changes.
+
+Live GitHub feedback now accepts PR33 head8671c2d's Linux supplement in its limited
+scope (comment6675346744), including136text members and403source SHA-256 values;
+14historical binary archive hashes could not be recomputed by Work. This does not
+accept alpha29, real clients, B3, M5 or Release. Issues7/11 remain open.
+
 2026-11-06 full Linux supplement, frozen `50bcbf50095f7df1ca6a420e5d68c3892991f9d1`:
 complete source, fresh offline wheel and rebuilt sdist each2039passed/4explained
 skips/0failure,error,2043uniqueIDs; all1899prior cases retained+144new. Required
@@ -9,7 +33,8 @@ hashes and identical case/skip sets.96recorded container IDs independently absen
 owned postcheckVM5552 gracefully stopped. OldVM11692 was absent on resume; shutdown
 was not observed and is not claimed graceful. Astra38data checks passed, no findings.
 Full evidence138-member archive and directly readable logs/JUnit/origins/records:
-acceptance/evidence/full-linux-50bcbf5-summary.json. New supplement Work PENDING;
+acceptance/evidence/full-linux-50bcbf5-summary.json. Limited supplement Work accepted
+at8671c2d (403text input hashes independently recomputed;14old archives unavailable);
 PR33 prior limited component accepted at08a3e93. Full current Windows/macOS,
 real clients/model tasks, relay and formal42 NOT RUN; M5/Release BLOCKED.
 

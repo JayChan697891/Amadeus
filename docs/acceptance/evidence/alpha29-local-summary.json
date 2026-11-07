@@ -1,0 +1,121 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "version": "0.3.0a29",
+  "source_commit": "05a811a244d7cbf2c1c36f8f180baa4468dba7e3",
+  "scope": "Exact current desktop CLI declaration, selected local regressions and offline package installation",
+  "suites": {
+    "source314": {
+      "tests": 184,
+      "passed": 184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "f35f131f68b98731636bd481f07d00f5c8b4fbe60ba189d2788d07fe4692177e"
+    },
+    "source311": {
+      "tests": 184,
+      "passed": 184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "79d6effddd216daf8c64a04681010f094061365101855e8e608f1fe10e0f224f"
+    },
+    "wheel": {
+      "tests": 184,
+      "passed": 184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "c42ec655ab002073d2c35ae2531e6f8a1b74078f169c1ddb41611cce85e71b3b"
+    },
+    "sdist": {
+      "tests": 184,
+      "passed": 184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "ae52ff0ed681060460efe0d14863cac14425cdcf04d815811eb370236292fe81"
+    }
+  },
+  "identity": {
+    "source_commit": "05a811a244d7cbf2c1c36f8f180baa4468dba7e3",
+    "git_inputs": 713,
+    "runtime_modules_each": 63,
+    "suites_each": {
+      "passed": 184,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "retained": 178,
+    "added": 6,
+    "removed": 0,
+    "sdist_matching_git_members": 542,
+    "sdist_generated_members": [
+      "PKG-INFO",
+      "setup.cfg",
+      "src/agentsync_local.egg-info/PKG-INFO",
+      "src/agentsync_local.egg-info/SOURCES.txt",
+      "src/agentsync_local.egg-info/dependency_links.txt",
+      "src/agentsync_local.egg-info/entry_points.txt",
+      "src/agentsync_local.egg-info/requires.txt",
+      "src/agentsync_local.egg-info/top_level.txt"
+    ],
+    "git_blob_binding": true,
+    "source_installed_origins": true,
+    "artifacts_direct_url_logs_junit": true,
+    "case_sets_identical": true,
+    "new_ids": [
+      "tests.unit.test_codex_invocation::test_current_desktop_version_changes_only_asserted_version",
+      "tests.unit.test_codex_invocation::test_unlisted_versions_are_rejected_before_filesystem_access[0.167.0-alpha.3.1]",
+      "tests.unit.test_codex_invocation::test_unlisted_versions_are_rejected_before_filesystem_access[0.167.0-alpha.3.2 ]",
+      "tests.unit.test_codex_invocation::test_unlisted_versions_are_rejected_before_filesystem_access[0.167.0-alpha.3.3]",
+      "tests.unit.test_codex_invocation::test_unlisted_versions_are_rejected_before_filesystem_access[0.167.0-alpha.3]",
+      "tests.unit.test_codex_process::test_current_desktop_version_profile_flows_to_owned_python_fixture_only"
+    ],
+    "real_client": "NOT RUN",
+    "full_suite_at_this_sha": "NOT RUN",
+    "release": "BLOCKED"
+  },
+  "static": "Ruff check/format src tests tools PASS; mypy63 PASS. Historical evidence drivers outside the explicit development-check command scope have separate broad-check failures; no whole-repository lint pass claimed.",
+  "artifacts": {
+    "agentsync_local-0.3.0a29-py3-none-any.whl": "e673458f433bdbc97f79626b8007c6e1c486572a6c2d1caeb6be0899ff3b4f9f",
+    "agentsync_local-0.3.0a29.tar.gz": "fdb8bd5e57ee48d184e953f920b4c617815445ab5af9a862bbc59029facef3c4"
+  },
+  "evidence_index": "docs/acceptance/evidence/alpha29-readable/05a811a/INDEX.json",
+  "raw_evidence_files": 49,
+  "real_preflight": {
+    "recorded_utc": "2026-11-07T02:15:49.054512+00:00",
+    "authorization": "One readonly existing-subscription model request explicitly allowed; no extra payment; stop if safety/cost unknown; no retry after failed/unknown task",
+    "authorization_consumed": false,
+    "model_attempts": 0,
+    "existing_auth_method": "chatgpt",
+    "metadata_only_auth_command_exit_code": 0,
+    "status": "BLOCKED_BEFORE_MODEL_REQUEST",
+    "real_model_task": "NOT RUN",
+    "blockers": [
+      "Current subscription-only versus paid-credit consumption not established; usage lookup unavailable",
+      "Current flags do not establish absence of all tools or actual isolation for this build"
+    ],
+    "not_claimed": [
+      "Actual client result reception",
+      "Billing or sandbox verification",
+      "Autonomous relay",
+      "M5/Release acceptance"
+    ],
+    "next_minimum_condition": "Evidence that the exact invocation satisfies existing no-extra-payment and isolation gates; authorization is not permission to bypass these checks",
+    "account_configuration_modified": false,
+    "raw_account_output_retained": false,
+    "api_keys_passed": false,
+    "release": "BLOCKED"
+  },
+  "work_review": "PENDING",
+  "not_run": [
+    "Full current Windows/Linux/macOS suites",
+    "Real model task, client result reception, live flag combination",
+    "Real dual-Agent autonomous relay",
+    "42 formal requirement acceptance"
+  ],
+  "prior_full_linux": "2039 pass /4 skip each source/wheel/sdist at50bcbf5 versiona28 only; does not prove a29",
+  "release": "BLOCKED"
+}

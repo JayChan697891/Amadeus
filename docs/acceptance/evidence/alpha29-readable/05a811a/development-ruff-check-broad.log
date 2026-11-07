@@ -1,0 +1,3468 @@
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:1:1
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |
+help: Split imports
+  |
+  - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import xml.etree.ElementTree as ET
+7 | from pathlib import Path
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:1:1
+  |
+1 | / import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | | from pathlib import Path
+  | |________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+4 |   reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+  |
+help: Organize imports
+  |
+  - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import xml.etree.ElementTree as ET
+7 | from pathlib import Path
+8 +
+9 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:3:48
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |                                                ^
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+5 | assert review.get('open_blockers',[])==[]
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:3:102
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |                                                                                                      ^
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+5 | assert review.get('open_blockers',[])==[]
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:4:72
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+  |                                                                        ^
+5 | assert review.get('open_blockers',[])==[]
+6 | entries=[(31,'cancel31-w6bv2b8w','0.3.0a26',['alpha26-lifecycle-vcrr1usf']),(32,'cancel32-a2zmz9oj','0.3.0a27',['alpha27-workflow-6g0at…
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:9:39
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                       ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:9:101
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                                                                                     ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:9:120
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                                                                                                        ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:9:136
+   |
+ 7 | …
+ 8 | …
+ 9 | …').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'];sets=[]
+   |                                                                    ^
+10 | …es',{}));assert len(expected)>=2
+11 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:10:78
+   |
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+   |                                                                              ^
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+12 |  for n,h in r['source_manifest'].items():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:11:29
+   |
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |                             ^
+12 |  for n,h in r['source_manifest'].items():
+13 |   assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:16:24
+   |
+14 |   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+15 |  for name,s in r['suites'].items():
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+   |                        ^
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:16:77
+   |
+14 |   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+15 |  for name,s in r['suites'].items():
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+   |                                                                             ^
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:18:73
+   |
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |                                                                         ^
+19 |   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:19:79
+   |
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+19 |   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+   |                                                                               ^
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+21 |   for n,item in origins.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:22:34
+   |
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+21 |   for n,item in origins.items():
+22 |    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['run…
+   |                                  ^
+23 |  assert len(sets)==4 and all(s==sets[0] for s in sets)
+24 |  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:24:48
+   |
+22 |    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['run…
+23 |  assert len(sets)==4 and all(s==sets[0] for s in sets)
+24 |  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+   |                                                ^
+25 |  for oldfolder in oldfolders:
+26 |   cases=ET.parse(Path('D:/agentsync-debug')/oldfolder/'source314.xml').getroot().iter('testcase')
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:29:32
+   |
+27 |   oldids|={c.get('classname')+'::'+c.get('name') for c in cases if c.get('classname') in classes}
+28 |  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+29 |  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+   |                                ^
+30 |  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+31 |  matched=0
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:30:35
+   |
+28 |  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+29 |  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+30 |  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+   |                                   ^
+31 |  matched=0
+32 |  with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:36:93
+   |
+34 |    n='/'.join(Path(m.name).parts[1:])
+35 |    if m.isfile() and n in r['source_manifest']:
+36 |     assert hashlib.sha256(stream.extractfile(m).read()).hexdigest()==r['source_manifest'][n];matched+=1
+   |                                                                                             ^
+37 |  audit={'source_commit':sha,'git_files':len(r['source_manifest']),'runtime_modules_each':63,'sdist_matching_git_members':matched,'uniq…
+38 |  (out/'root-cancel-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:41:63
+   |
+39 |  members={'review/astra-internal-cancel-review.json':reviewpath,'drivers/finalize-cancellation-stack.py':Path(__file__),'drivers/verif…
+40 |  for p in out.iterdir():
+41 |   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+   |                                                               ^
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:42:38
+   |
+40 |  for p in out.iterdir():
+41 |   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+   |                                      ^
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:44:49
+   |
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+   |                                                 ^
+45 |  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:46:58
+   |
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+45 |  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+   |                                                          ^
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:48:29
+   |
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+   |                             ^
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+50 |  with tarfile.open(archive) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:49:45
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                             ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:49:83
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                                                                   ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:49:102
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                                                                                      ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:52:36
+   |
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+52 |    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+   |                                    ^
+53 |  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation priva…
+54 |  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\finalize-cancellation-stack.py:54:94
+   |
+52 |    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+53 |  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation priva…
+54 |  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+   |                                                                                              ^
+55 |  print(json.dumps({'pr':pr,'source':sha,'each_passed':len(sets[0]),'archive':archive.name,'sha256':summary['archive_sha256']}),flush=T…
+56 | (dest/'stack-summary.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:2:1
+  |
+1 |   """Local frozen source and offline installed-package acceptance; no real clients."""
+2 | / from pathlib import Path
+3 | | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+  | |____________________________________________________________________________________^
+4 |
+5 |   repo = Path('F:/syuc/agentsync-execution-intent')
+  |
+help: Organize imports
+   |
+1  | """Local frozen source and offline installed-package acceptance; no real clients."""
+2  + import hashlib
+3  + import json
+4  + import os
+5  + import subprocess
+6  + import tarfile
+7  + import tempfile
+8  + import xml.etree.ElementTree as ET
+9  | from pathlib import Path
+   - import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+10 |
+   |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:3:1
+  |
+1 | """Local frozen source and offline installed-package acceptance; no real clients."""
+2 | from pathlib import Path
+3 | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 |
+5 | repo = Path('F:/syuc/agentsync-execution-intent')
+  |
+help: Split imports
+   |
+2  | from pathlib import Path
+   - import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+3  + import hashlib
+4  + import json
+5  + import os
+6  + import subprocess
+7  + import tarfile
+8  + import tempfile
+9  + import xml.etree.ElementTree as ET
+10 |
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:66:20
+   |
+64 | ]
+65 | env = {k: v for k, v in os.environ.items() if k.upper() in {'SYSTEMROOT', 'WINDIR', 'PATH', 'COMSPEC', 'PATHEXT'}}
+66 | home = out / 'home'; home.mkdir()
+   |                    ^
+67 | env.update(TEMP=str(out), TMP=str(out), HOME=str(home), USERPROFILE=str(home), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTE…
+68 | result = {'commit': commit, 'version': '0.3.0a26', 'source_manifest': manifest, 'runtime_modules': modules, 'selectors': selectors, 'c…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:93:23
+   |
+91 |     assert len(cases) > 0 and result['suites'][name]['passed'] == len(cases)
+92 |     save()
+93 | print(out, flush=True); save()
+   |                       ^
+94 | tests('source314', py, 'source')
+95 | tests('source311', py311, 'source')
+   |
+
+E702 Multiple statements on one line (semicolon)
+   --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:101:30
+    |
+ 99 | result['artifacts'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()}
+100 | for kind, artifact in [('wheel', next((out/'artifacts').glob('*.whl'))), ('sdist', next((out/'artifacts').glob('*.tar.gz')))]:
+101 |     venv = out/(kind+'-venv'); run(kind+'-venv', [py, '-m', 'venv', str(venv)])
+    |                              ^
+102 |     python = venv/'Scripts/python.exe'
+103 |     run(kind+'-tools', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', cache, 'setuptools==82.0…
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\drivers\verify-cancel31.py:115:24
+    |
+113 | result['source_unchanged'] = all(hashlib.sha256((source/n).read_bytes()).hexdigest() == h for n, h in manifest.items())
+114 | assert result['source_unchanged']
+115 | result['passed'] = True; save()
+    |                        ^
+116 | print(json.dumps({'evidence': str(out), 'commit': commit, 'suites': {n: {k: v for k,v in s.items() if k != 'case_ids'} for n,s in res…
+    |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:2:2
+  |
+1 | if __name__ == '__main__':
+2 |  import hashlib, importlib, json, pathlib, sys
+  |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |
+help: Split imports
+  |
+1 | if __name__ == '__main__':
+  -  import hashlib, importlib, json, pathlib, sys
+2 +  import hashlib
+3 +  import importlib
+4 +  import json
+5 +  import pathlib
+6 +  import sys
+7 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:2:2
+  |
+1 | if __name__ == '__main__':
+2 |  import hashlib, importlib, json, pathlib, sys
+  |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |
+help: Organize imports
+  |
+1 | if __name__ == '__main__':
+  -  import hashlib, importlib, json, pathlib, sys
+2 +  import hashlib
+3 +  import importlib
+4 +  import json
+5 +  import pathlib
+6 +  import sys
+7 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:4:41
+  |
+2 |  import hashlib, importlib, json, pathlib, sys
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |                                         ^
+5 |  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+6 |  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+  |
+
+E701 Multiple statements on one line (colon)
+ --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:5:21
+  |
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+5 |  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+  |                     ^
+6 |  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+7 |  def audit():
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:11:42
+   |
+ 9 |   for relative, digest in expected.items():
+10 |    name = relative.removesuffix('.py').replace('/', '.').removesuffix('.__init__')
+11 |    module = importlib.import_module(name); origin = pathlib.Path(module.__file__).resolve()
+   |                                          ^
+12 |    assert origin.is_relative_to(base) and hashlib.sha256(origin.read_bytes()).hexdigest() == digest, (name, str(origin))
+13 |    result[relative] = {'path': str(origin), 'sha256': digest}
+   |
+
+E401 [*] Multiple imports on one line
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:16:2
+   |
+14 |   return result
+15 |  before = audit()
+16 |  import agentsync, pytest
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^
+17 |  assert agentsync.__version__ == '0.3.0a26'
+18 |  code = pytest.main(sys.argv[4:])
+   |
+help: Split imports
+   |
+15 |  before = audit()
+   -  import agentsync, pytest
+16 +  import agentsync
+17 +  import pytest
+18 |  assert agentsync.__version__ == '0.3.0a26'
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:16:2
+   |
+14 |   return result
+15 |  before = audit()
+16 |  import agentsync, pytest
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^
+17 |  assert agentsync.__version__ == '0.3.0a26'
+18 |  code = pytest.main(sys.argv[4:])
+   |
+help: Organize imports
+   |
+15 |  before = audit()
+   -  import agentsync, pytest
+16 +  import pytest
+17 +
+18 +  import agentsync
+19 |  assert agentsync.__version__ == '0.3.0a26'
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr31-09c2f05\evidence\test_frozen.py:19:17
+   |
+17 |  assert agentsync.__version__ == '0.3.0a26'
+18 |  code = pytest.main(sys.argv[4:])
+19 |  after = audit(); assert before == after
+   |                 ^
+20 |  destination.write_text(json.dumps(after, indent=2), encoding='utf-8')
+21 |  raise SystemExit(code)
+   |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:1:1
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |
+help: Split imports
+  |
+  - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import xml.etree.ElementTree as ET
+7 | from pathlib import Path
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:1:1
+  |
+1 | / import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | | from pathlib import Path
+  | |________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+4 |   reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+  |
+help: Organize imports
+  |
+  - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import xml.etree.ElementTree as ET
+7 | from pathlib import Path
+8 +
+9 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:3:48
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |                                                ^
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+5 | assert review.get('open_blockers',[])==[]
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:3:102
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |                                                                                                      ^
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+5 | assert review.get('open_blockers',[])==[]
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:4:72
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+  |                                                                        ^
+5 | assert review.get('open_blockers',[])==[]
+6 | entries=[(31,'cancel31-w6bv2b8w','0.3.0a26',['alpha26-lifecycle-vcrr1usf']),(32,'cancel32-a2zmz9oj','0.3.0a27',['alpha27-workflow-6g0at…
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:9:39
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                       ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:9:101
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                                                                                     ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:9:120
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                                                                                                        ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:9:136
+   |
+ 7 | …
+ 8 | …
+ 9 | …').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'];sets=[]
+   |                                                                    ^
+10 | …es',{}));assert len(expected)>=2
+11 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:10:78
+   |
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+   |                                                                              ^
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+12 |  for n,h in r['source_manifest'].items():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:11:29
+   |
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |                             ^
+12 |  for n,h in r['source_manifest'].items():
+13 |   assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:16:24
+   |
+14 |   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+15 |  for name,s in r['suites'].items():
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+   |                        ^
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:16:77
+   |
+14 |   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+15 |  for name,s in r['suites'].items():
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+   |                                                                             ^
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:18:73
+   |
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |                                                                         ^
+19 |   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:19:79
+   |
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+19 |   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+   |                                                                               ^
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+21 |   for n,item in origins.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:22:34
+   |
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+21 |   for n,item in origins.items():
+22 |    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['run…
+   |                                  ^
+23 |  assert len(sets)==4 and all(s==sets[0] for s in sets)
+24 |  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:24:48
+   |
+22 |    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['run…
+23 |  assert len(sets)==4 and all(s==sets[0] for s in sets)
+24 |  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+   |                                                ^
+25 |  for oldfolder in oldfolders:
+26 |   cases=ET.parse(Path('D:/agentsync-debug')/oldfolder/'source314.xml').getroot().iter('testcase')
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:29:32
+   |
+27 |   oldids|={c.get('classname')+'::'+c.get('name') for c in cases if c.get('classname') in classes}
+28 |  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+29 |  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+   |                                ^
+30 |  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+31 |  matched=0
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:30:35
+   |
+28 |  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+29 |  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+30 |  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+   |                                   ^
+31 |  matched=0
+32 |  with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:36:93
+   |
+34 |    n='/'.join(Path(m.name).parts[1:])
+35 |    if m.isfile() and n in r['source_manifest']:
+36 |     assert hashlib.sha256(stream.extractfile(m).read()).hexdigest()==r['source_manifest'][n];matched+=1
+   |                                                                                             ^
+37 |  audit={'source_commit':sha,'git_files':len(r['source_manifest']),'runtime_modules_each':63,'sdist_matching_git_members':matched,'uniq…
+38 |  (out/'root-cancel-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:41:63
+   |
+39 |  members={'review/astra-internal-cancel-review.json':reviewpath,'drivers/finalize-cancellation-stack.py':Path(__file__),'drivers/verif…
+40 |  for p in out.iterdir():
+41 |   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+   |                                                               ^
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:42:38
+   |
+40 |  for p in out.iterdir():
+41 |   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+   |                                      ^
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:44:49
+   |
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+   |                                                 ^
+45 |  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:46:58
+   |
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+45 |  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+   |                                                          ^
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:48:29
+   |
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+   |                             ^
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+50 |  with tarfile.open(archive) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:49:45
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                             ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:49:83
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                                                                   ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:49:102
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                                                                                      ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:52:36
+   |
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+52 |    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+   |                                    ^
+53 |  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation priva…
+54 |  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\finalize-cancellation-stack.py:54:94
+   |
+52 |    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+53 |  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation priva…
+54 |  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+   |                                                                                              ^
+55 |  print(json.dumps({'pr':pr,'source':sha,'each_passed':len(sets[0]),'archive':archive.name,'sha256':summary['archive_sha256']}),flush=T…
+56 | (dest/'stack-summary.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:2:1
+  |
+1 |   """Local frozen source and offline installed-package acceptance; no real clients."""
+2 | / from pathlib import Path
+3 | | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+  | |____________________________________________________________________________________^
+4 |
+5 |   repo = Path('F:/syuc/agentsync-execution-intent')
+  |
+help: Organize imports
+   |
+1  | """Local frozen source and offline installed-package acceptance; no real clients."""
+2  + import hashlib
+3  + import json
+4  + import os
+5  + import subprocess
+6  + import tarfile
+7  + import tempfile
+8  + import xml.etree.ElementTree as ET
+9  | from pathlib import Path
+   - import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+10 |
+   |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:3:1
+  |
+1 | """Local frozen source and offline installed-package acceptance; no real clients."""
+2 | from pathlib import Path
+3 | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 |
+5 | repo = Path('F:/syuc/agentsync-execution-intent')
+  |
+help: Split imports
+   |
+2  | from pathlib import Path
+   - import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+3  + import hashlib
+4  + import json
+5  + import os
+6  + import subprocess
+7  + import tarfile
+8  + import tempfile
+9  + import xml.etree.ElementTree as ET
+10 |
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:68:20
+   |
+66 | ]
+67 | env = {k: v for k, v in os.environ.items() if k.upper() in {'SYSTEMROOT', 'WINDIR', 'PATH', 'COMSPEC', 'PATHEXT'}}
+68 | home = out / 'home'; home.mkdir()
+   |                    ^
+69 | env.update(TEMP=str(out), TMP=str(out), HOME=str(home), USERPROFILE=str(home), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTE…
+70 | result = {'commit': commit, 'version': '0.3.0a27', 'source_manifest': manifest, 'runtime_modules': modules, 'selectors': selectors, 'c…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:95:23
+   |
+93 |     assert len(cases) > 0 and result['suites'][name]['passed'] == len(cases)
+94 |     save()
+95 | print(out, flush=True); save()
+   |                       ^
+96 | tests('source314', py, 'source')
+97 | tests('source311', py311, 'source')
+   |
+
+E702 Multiple statements on one line (semicolon)
+   --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:103:30
+    |
+101 | result['artifacts'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()}
+102 | for kind, artifact in [('wheel', next((out/'artifacts').glob('*.whl'))), ('sdist', next((out/'artifacts').glob('*.tar.gz')))]:
+103 |     venv = out/(kind+'-venv'); run(kind+'-venv', [py, '-m', 'venv', str(venv)])
+    |                              ^
+104 |     python = venv/'Scripts/python.exe'
+105 |     run(kind+'-tools', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', cache, 'setuptools==82.0…
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\drivers\verify-cancel32.py:117:24
+    |
+115 | result['source_unchanged'] = all(hashlib.sha256((source/n).read_bytes()).hexdigest() == h for n, h in manifest.items())
+116 | assert result['source_unchanged']
+117 | result['passed'] = True; save()
+    |                        ^
+118 | print(json.dumps({'evidence': str(out), 'commit': commit, 'suites': {n: {k: v for k,v in s.items() if k != 'case_ids'} for n,s in res…
+    |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:2:2
+  |
+1 | if __name__ == '__main__':
+2 |  import hashlib, importlib, json, pathlib, sys
+  |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |
+help: Split imports
+  |
+1 | if __name__ == '__main__':
+  -  import hashlib, importlib, json, pathlib, sys
+2 +  import hashlib
+3 +  import importlib
+4 +  import json
+5 +  import pathlib
+6 +  import sys
+7 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:2:2
+  |
+1 | if __name__ == '__main__':
+2 |  import hashlib, importlib, json, pathlib, sys
+  |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |
+help: Organize imports
+  |
+1 | if __name__ == '__main__':
+  -  import hashlib, importlib, json, pathlib, sys
+2 +  import hashlib
+3 +  import importlib
+4 +  import json
+5 +  import pathlib
+6 +  import sys
+7 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:4:41
+  |
+2 |  import hashlib, importlib, json, pathlib, sys
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |                                         ^
+5 |  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+6 |  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+  |
+
+E701 Multiple statements on one line (colon)
+ --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:5:21
+  |
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+5 |  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+  |                     ^
+6 |  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+7 |  def audit():
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:11:42
+   |
+ 9 |   for relative, digest in expected.items():
+10 |    name = relative.removesuffix('.py').replace('/', '.').removesuffix('.__init__')
+11 |    module = importlib.import_module(name); origin = pathlib.Path(module.__file__).resolve()
+   |                                          ^
+12 |    assert origin.is_relative_to(base) and hashlib.sha256(origin.read_bytes()).hexdigest() == digest, (name, str(origin))
+13 |    result[relative] = {'path': str(origin), 'sha256': digest}
+   |
+
+E401 [*] Multiple imports on one line
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:16:2
+   |
+14 |   return result
+15 |  before = audit()
+16 |  import agentsync, pytest
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^
+17 |  assert agentsync.__version__ == '0.3.0a27'
+18 |  code = pytest.main(sys.argv[4:])
+   |
+help: Split imports
+   |
+15 |  before = audit()
+   -  import agentsync, pytest
+16 +  import agentsync
+17 +  import pytest
+18 |  assert agentsync.__version__ == '0.3.0a27'
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:16:2
+   |
+14 |   return result
+15 |  before = audit()
+16 |  import agentsync, pytest
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^
+17 |  assert agentsync.__version__ == '0.3.0a27'
+18 |  code = pytest.main(sys.argv[4:])
+   |
+help: Organize imports
+   |
+15 |  before = audit()
+   -  import agentsync, pytest
+16 +  import pytest
+17 +
+18 +  import agentsync
+19 |  assert agentsync.__version__ == '0.3.0a27'
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr32-67454ca\evidence\test_frozen.py:19:17
+   |
+17 |  assert agentsync.__version__ == '0.3.0a27'
+18 |  code = pytest.main(sys.argv[4:])
+19 |  after = audit(); assert before == after
+   |                 ^
+20 |  destination.write_text(json.dumps(after, indent=2), encoding='utf-8')
+21 |  raise SystemExit(code)
+   |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:1:1
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |
+help: Split imports
+  |
+  - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import xml.etree.ElementTree as ET
+7 | from pathlib import Path
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:1:1
+  |
+1 | / import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | | from pathlib import Path
+  | |________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+4 |   reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+  |
+help: Organize imports
+  |
+  - import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import xml.etree.ElementTree as ET
+7 | from pathlib import Path
+8 +
+9 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:3:48
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |                                                ^
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+5 | assert review.get('open_blockers',[])==[]
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:3:102
+  |
+1 | import hashlib,io,json,subprocess,tarfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+  |                                                                                                      ^
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+5 | assert review.get('open_blockers',[])==[]
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:4:72
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');dest=Path('D:/agentsync-debug/cancel-stack-delivery');dest.mkdir(exist_ok=True)
+4 | reviewpath=Path('D:/agentsync-debug/astra-internal-cancel-review.json');review=json.loads(reviewpath.read_text(encoding='utf-8'))
+  |                                                                        ^
+5 | assert review.get('open_blockers',[])==[]
+6 | entries=[(31,'cancel31-w6bv2b8w','0.3.0a26',['alpha26-lifecycle-vcrr1usf']),(32,'cancel32-a2zmz9oj','0.3.0a27',['alpha27-workflow-6g0at…
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:9:39
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                       ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:9:101
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                                                                                     ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:9:120
+   |
+ 7 | allresults=[]
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+   |                                                                                                                        ^
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:9:136
+   |
+ 7 | …
+ 8 | …
+ 9 | …').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'];sets=[]
+   |                                                                    ^
+10 | …es',{}));assert len(expected)>=2
+11 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:10:78
+   |
+ 8 | for pr,folder,version,oldfolders in entries:
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+   |                                                                              ^
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+12 |  for n,h in r['source_manifest'].items():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:11:29
+   |
+ 9 |  out=Path('D:/agentsync-debug')/folder;r=json.loads((out/'result.json').read_text(encoding='utf-8'));assert r['passed'];sha=r['commit'…
+10 |  expected=review.get('reviewed_files_sha256',review.get('reviewed_files',{}));assert len(expected)>=2
+11 |  for n,h in expected.items():assert r['source_manifest'][n]==h
+   |                             ^
+12 |  for n,h in r['source_manifest'].items():
+13 |   assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:16:24
+   |
+14 |   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+15 |  for name,s in r['suites'].items():
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+   |                        ^
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:16:77
+   |
+14 |   assert hashlib.sha256((out/'source'/n).read_bytes()).hexdigest()==h
+15 |  for name,s in r['suites'].items():
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+   |                                                                             ^
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:18:73
+   |
+16 |   xml=out/(name+'.xml');cases=list(ET.parse(xml).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases}
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+   |                                                                         ^
+19 |   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:19:79
+   |
+17 |   assert len(ids)==len(cases)==s['passed'] and not any(c.find(t)is not None for c in cases for t in ('failure','error','skipped'))
+18 |   assert hashlib.sha256(xml.read_bytes()).hexdigest()==s['junit_sha256'];sets.append(ids)
+19 |   origins=json.loads((out/(name+'-origins.json')).read_text(encoding='utf-8'));assert len(origins)==63
+   |                                                                               ^
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+21 |   for n,item in origins.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:22:34
+   |
+20 |   base=(out/'source/src').resolve() if name.startswith('source') else (out/(name+'-venv')).resolve()
+21 |   for n,item in origins.items():
+22 |    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['run…
+   |                                  ^
+23 |  assert len(sets)==4 and all(s==sets[0] for s in sets)
+24 |  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:24:48
+   |
+22 |    p=Path(item['path']).resolve();assert p.is_relative_to(base) and hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']==r['run…
+23 |  assert len(sets)==4 and all(s==sets[0] for s in sets)
+24 |  classes={i.rsplit('::',1)[0] for i in sets[0]};oldids=set()
+   |                                                ^
+25 |  for oldfolder in oldfolders:
+26 |   cases=ET.parse(Path('D:/agentsync-debug')/oldfolder/'source314.xml').getroot().iter('testcase')
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:29:32
+   |
+27 |   oldids|={c.get('classname')+'::'+c.get('name') for c in cases if c.get('classname') in classes}
+28 |  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+29 |  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+   |                                ^
+30 |  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+31 |  matched=0
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:30:35
+   |
+28 |  assert oldids<=sets[0] and len(sets[0]-oldids)==27
+29 |  for n,c in r['checks'].items():assert c['exit_code']==0 and hashlib.sha256((out/(n+'.log')).read_bytes()).hexdigest()==c['log_sha256']
+30 |  for n,h in r['artifacts'].items():assert hashlib.sha256((out/'artifacts'/n).read_bytes()).hexdigest()==h
+   |                                   ^
+31 |  matched=0
+32 |  with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:36:93
+   |
+34 |    n='/'.join(Path(m.name).parts[1:])
+35 |    if m.isfile() and n in r['source_manifest']:
+36 |     assert hashlib.sha256(stream.extractfile(m).read()).hexdigest()==r['source_manifest'][n];matched+=1
+   |                                                                                             ^
+37 |  audit={'source_commit':sha,'git_files':len(r['source_manifest']),'runtime_modules_each':63,'sdist_matching_git_members':matched,'uniq…
+38 |  (out/'root-cancel-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:41:63
+   |
+39 |  members={'review/astra-internal-cancel-review.json':reviewpath,'drivers/finalize-cancellation-stack.py':Path(__file__),'drivers/verif…
+40 |  for p in out.iterdir():
+41 |   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+   |                                                               ^
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:42:38
+   |
+40 |  for p in out.iterdir():
+41 |   if p.is_file() and p.suffix in {'.json','.log','.xml','.py'}:members['evidence/'+p.name]=p
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+   |                                      ^
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:44:49
+   |
+42 |  for p in (out/'artifacts').iterdir():members['artifacts/'+p.name]=p
+43 |  for p in Path('D:/agentsync-debug/m6-internal-cancel-sol').iterdir():
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+   |                                                 ^
+45 |  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:46:58
+   |
+44 |   if p.is_file() and p.suffix in {'.log','.xml'}:members['development/'+p.name]=p
+45 |  manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in members.items()}
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+   |                                                          ^
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:48:29
+   |
+46 |  archive=dest/('cancel-pr'+str(pr)+'-'+sha[:7]+'.tar.gz');assert not archive.exists()
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+   |                             ^
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+50 |  with tarfile.open(archive) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:49:45
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                             ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:49:83
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                                                                   ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:49:102
+   |
+47 |  with tarfile.open(archive,'w:gz') as stream:
+48 |   for n,p in members.items():stream.add(p,arcname=n,recursive=False)
+49 |   raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(r…
+   |                                                                                                      ^
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:52:36
+   |
+50 |  with tarfile.open(archive) as stream:
+51 |   for n,record in manifest.items():
+52 |    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+   |                                    ^
+53 |  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation priva…
+54 |  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\finalize-cancellation-stack.py:54:94
+   |
+52 |    raw=stream.extractfile(n).read();assert len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256']
+53 |  summary={'schema':'agentsync.local-checkpoint.v1','pr':pr,'version':version,'source_commit':sha,'scope':'Work PR31 cancellation priva…
+54 |  (dest/('pr'+str(pr)+'.json')).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8');allresults.append(summary)
+   |                                                                                              ^
+55 |  print(json.dumps({'pr':pr,'source':sha,'each_passed':len(sets[0]),'archive':archive.name,'sha256':summary['archive_sha256']}),flush=T…
+56 | (dest/'stack-summary.json').write_text(json.dumps(allresults,indent=2),encoding='utf-8')
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:2:1
+  |
+1 |   """Local frozen source and offline installed-package acceptance; no real clients."""
+2 | / from pathlib import Path
+3 | | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+  | |____________________________________________________________________________________^
+4 |
+5 |   repo = Path('F:/syuc/agentsync-execution-intent')
+  |
+help: Organize imports
+   |
+1  | """Local frozen source and offline installed-package acceptance; no real clients."""
+2  + import hashlib
+3  + import json
+4  + import os
+5  + import subprocess
+6  + import tarfile
+7  + import tempfile
+8  + import xml.etree.ElementTree as ET
+9  | from pathlib import Path
+   - import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+10 |
+   |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:3:1
+  |
+1 | """Local frozen source and offline installed-package acceptance; no real clients."""
+2 | from pathlib import Path
+3 | import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 |
+5 | repo = Path('F:/syuc/agentsync-execution-intent')
+  |
+help: Split imports
+   |
+2  | from pathlib import Path
+   - import hashlib, json, os, subprocess, tarfile, tempfile, xml.etree.ElementTree as ET
+3  + import hashlib
+4  + import json
+5  + import os
+6  + import subprocess
+7  + import tarfile
+8  + import tempfile
+9  + import xml.etree.ElementTree as ET
+10 |
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:65:20
+   |
+63 | ]
+64 | env = {k: v for k, v in os.environ.items() if k.upper() in {'SYSTEMROOT', 'WINDIR', 'PATH', 'COMSPEC', 'PATHEXT'}}
+65 | home = out / 'home'; home.mkdir()
+   |                    ^
+66 | env.update(TEMP=str(out), TMP=str(out), HOME=str(home), USERPROFILE=str(home), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTE…
+67 | result = {'commit': commit, 'version': '0.3.0a28', 'source_manifest': manifest, 'runtime_modules': modules, 'selectors': selectors, 'c…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:92:23
+   |
+90 |     assert len(cases) > 0 and result['suites'][name]['passed'] == len(cases)
+91 |     save()
+92 | print(out, flush=True); save()
+   |                       ^
+93 | tests('source314', py, 'source')
+94 | tests('source311', py311, 'source')
+   |
+
+E702 Multiple statements on one line (semicolon)
+   --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:100:30
+    |
+ 98 | result['artifacts'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()}
+ 99 | for kind, artifact in [('wheel', next((out/'artifacts').glob('*.whl'))), ('sdist', next((out/'artifacts').glob('*.tar.gz')))]:
+100 |     venv = out/(kind+'-venv'); run(kind+'-venv', [py, '-m', 'venv', str(venv)])
+    |                              ^
+101 |     python = venv/'Scripts/python.exe'
+102 |     run(kind+'-tools', [str(python), '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', cache, 'setuptools==82.0…
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\drivers\verify-cancel33.py:114:24
+    |
+112 | result['source_unchanged'] = all(hashlib.sha256((source/n).read_bytes()).hexdigest() == h for n, h in manifest.items())
+113 | assert result['source_unchanged']
+114 | result['passed'] = True; save()
+    |                        ^
+115 | print(json.dumps({'evidence': str(out), 'commit': commit, 'suites': {n: {k: v for k,v in s.items() if k != 'case_ids'} for n,s in res…
+    |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:2:2
+  |
+1 | if __name__ == '__main__':
+2 |  import hashlib, importlib, json, pathlib, sys
+  |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |
+help: Split imports
+  |
+1 | if __name__ == '__main__':
+  -  import hashlib, importlib, json, pathlib, sys
+2 +  import hashlib
+3 +  import importlib
+4 +  import json
+5 +  import pathlib
+6 +  import sys
+7 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:2:2
+  |
+1 | if __name__ == '__main__':
+2 |  import hashlib, importlib, json, pathlib, sys
+  |  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |
+help: Organize imports
+  |
+1 | if __name__ == '__main__':
+  -  import hashlib, importlib, json, pathlib, sys
+2 +  import hashlib
+3 +  import importlib
+4 +  import json
+5 +  import pathlib
+6 +  import sys
+7 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:4:41
+  |
+2 |  import hashlib, importlib, json, pathlib, sys
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+  |                                         ^
+5 |  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+6 |  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+  |
+
+E701 Multiple statements on one line (colon)
+ --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:5:21
+  |
+3 |  expected = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
+4 |  destination = pathlib.Path(sys.argv[2]); mode = sys.argv[3]
+5 |  if mode == 'source': sys.path.insert(0, str(pathlib.Path.cwd() / 'src'))
+  |                     ^
+6 |  base = (pathlib.Path.cwd() / 'src').resolve() if mode == 'source' else pathlib.Path(sys.prefix).resolve()
+7 |  def audit():
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:11:42
+   |
+ 9 |   for relative, digest in expected.items():
+10 |    name = relative.removesuffix('.py').replace('/', '.').removesuffix('.__init__')
+11 |    module = importlib.import_module(name); origin = pathlib.Path(module.__file__).resolve()
+   |                                          ^
+12 |    assert origin.is_relative_to(base) and hashlib.sha256(origin.read_bytes()).hexdigest() == digest, (name, str(origin))
+13 |    result[relative] = {'path': str(origin), 'sha256': digest}
+   |
+
+E401 [*] Multiple imports on one line
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:16:2
+   |
+14 |   return result
+15 |  before = audit()
+16 |  import agentsync, pytest
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^
+17 |  assert agentsync.__version__ == '0.3.0a28'
+18 |  code = pytest.main(sys.argv[4:])
+   |
+help: Split imports
+   |
+15 |  before = audit()
+   -  import agentsync, pytest
+16 +  import agentsync
+17 +  import pytest
+18 |  assert agentsync.__version__ == '0.3.0a28'
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:16:2
+   |
+14 |   return result
+15 |  before = audit()
+16 |  import agentsync, pytest
+   |  ^^^^^^^^^^^^^^^^^^^^^^^^
+17 |  assert agentsync.__version__ == '0.3.0a28'
+18 |  code = pytest.main(sys.argv[4:])
+   |
+help: Organize imports
+   |
+15 |  before = audit()
+   -  import agentsync, pytest
+16 +  import pytest
+17 +
+18 +  import agentsync
+19 |  assert agentsync.__version__ == '0.3.0a28'
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\cancellation-readable\pr33-cc72e2c\evidence\test_frozen.py:19:17
+   |
+17 |  assert agentsync.__version__ == '0.3.0a28'
+18 |  code = pytest.main(sys.argv[4:])
+19 |  after = audit(); assert before == after
+   |                 ^
+20 |  destination.write_text(json.dumps(after, indent=2), encoding='utf-8')
+21 |  raise SystemExit(code)
+   |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:1:1
+  |
+1 | import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |
+help: Split imports
+  |
+  - import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import json
+3 + import subprocess
+4 + import tarfile
+5 + import io
+6 + import re
+7 + import xml.etree.ElementTree as ET
+8 | from pathlib import Path
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:1:1
+  |
+1 | / import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+2 | | from pathlib import Path
+  | |________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-deb…
+4 |   config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['com…
+  |
+help: Organize imports
+   |
+   - import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+1  + import hashlib
+2  + import io
+3  + import json
+4  + import re
+5  + import subprocess
+6  + import tarfile
+7  + import xml.etree.ElementTree as ET
+8  | from pathlib import Path
+9  +
+10 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+   |
+
+F401 [*] `tarfile` imported but unused
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:1:32
+  |
+1 | import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+  |                                ^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |
+help: Remove unused import
+  |
+  - import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+1 + import hashlib,json,subprocess,re,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+  |
+
+F401 [*] `io` imported but unused
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:1:40
+  |
+1 | import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+  |                                        ^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |
+help: Remove unused import
+  |
+  - import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+1 + import hashlib,json,subprocess,re,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:3:48
+  |
+1 | import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |                                                ^
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:3:106
+  |
+1 | import hashlib,json,subprocess,tarfile,io,re,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |                                                                                                          ^
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:3:170
+  |
+1 | …
+2 | …
+3 | …');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+  |                                                                    ^
+4 | …n').read_text());assert b['commit']==sha
+5 | …:'+n],cwd=repo)).hexdigest()==h
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:4:51
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+  |                                                   ^
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:4:72
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+  |                                                                        ^
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:4:120
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+  |                                                                                                                        ^
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert…
+  |
+
+E701 Multiple statements on one line (colon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:5:38
+  |
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+  |                                      ^
+6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert…
+7 | before=json.loads((src/'evidence/imports-before.json').read_text());after=json.loads((src/'evidence/imports-after.json').read_text());a…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:6:129
+  |
+4 | config=json.loads((src/'config.json').read_text());sha=config['commit'];b=json.loads((build/'result.json').read_text());assert b['commi…
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert…
+  |                                                                                                                                 ^
+7 | before=json.loads((src/'evidence/imports-before.json').read_text());after=json.loads((src/'evidence/imports-after.json').read_text());a…
+8 | groups={'source':src/'evidence/junit.xml','wheel':inst/'evidence/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};skip…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:7:68
+  |
+5 | for n,h in config['manifest'].items():assert hashlib.sha256(subprocess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert…
+7 | before=json.loads((src/'evidence/imports-before.json').read_text());after=json.loads((src/'evidence/imports-after.json').read_text());a…
+  |                                                                    ^
+8 | groups={'source':src/'evidence/junit.xml','wheel':inst/'evidence/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};skip…
+9 | for name,p in groups.items():
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:7:134
+  |
+5 | …ess.check_output(['git','show',sha+':'+n],cwd=repo)).hexdigest()==h
+6 | …ms() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modules)==63
+7 | …;after=json.loads((src/'evidence/imports-after.json').read_text());assert before==after==modules
+  |                                                                    ^
+8 | …eel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};skips={}
+9 | …
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:8:123
+   |
+ 6 | modules={n.removeprefix('src/'):h for n,h in config['manifest'].items() if n.startswith('src/agentsync/') and n.endswith('.py')};asser…
+ 7 | before=json.loads((src/'evidence/imports-before.json').read_text());after=json.loads((src/'evidence/imports-after.json').read_text());…
+ 8 | groups={'source':src/'evidence/junit.xml','wheel':inst/'evidence/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};ski…
+   |                                                                                                                           ^
+ 9 | for name,p in groups.items():
+10 |  cases=list(ET.parse(p).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases};assert len(ids)==len(ca…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:8:131
+   |
+ 6 | …items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modules)==63
+ 7 | …());after=json.loads((src/'evidence/imports-after.json').read_text());assert before==after==modules
+ 8 | …/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};skips={}
+   |                                                                    ^
+ 9 | …
+10 | …classname')+'::'+c.get('name') for c in cases};assert len(ids)==len(cases)==2043
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:10:52
+   |
+ 8 | groups={'source':src/'evidence/junit.xml','wheel':inst/'evidence/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};ski…
+ 9 | for name,p in groups.items():
+10 |  cases=list(ET.parse(p).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases};assert len(ids)==len(ca…
+   |                                                    ^
+11 |  assert not any(c.find(t)is not None for c in cases for t in ('failure','error'))
+12 |  skips[name]=[{'id':c.get('classname')+'::'+c.get('name'),'reason':c.find('skipped').get('message')} for c in cases if c.find('skipped…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:10:111
+   |
+ 8 | groups={'source':src/'evidence/junit.xml','wheel':inst/'evidence/wheel-junit.xml','sdist':inst/'evidence/sdist-junit.xml'};sets={};ski…
+ 9 | for name,p in groups.items():
+10 |  cases=list(ET.parse(p).getroot().iter('testcase'));ids={c.get('classname')+'::'+c.get('name') for c in cases};assert len(ids)==len(ca…
+   |                                                                                                               ^
+11 |  assert not any(c.find(t)is not None for c in cases for t in ('failure','error'))
+12 |  skips[name]=[{'id':c.get('classname')+'::'+c.get('name'),'reason':c.find('skipped').get('message')} for c in cases if c.find('skipped…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:12:149
+   |
+10 | ….get('name') for c in cases};assert len(ids)==len(cases)==2043
+11 | …
+12 | …').get('message')} for c in cases if c.find('skipped')is not None];assert len(skips[name])==4;sets[name]=ids
+   |                                                                    ^
+13 | …
+14 | …lpha23-linux-full-9s8fju3r/evidence/junit.xml').getroot().iter('testcase')};assert len(old)==1899 and old<=sets['source']
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:12:176
+   |
+10 | …};assert len(ids)==len(cases)==2043
+11 | …
+12 | … cases if c.find('skipped')is not None];assert len(skips[name])==4;sets[name]=ids
+   |                                                                    ^
+13 | …
+14 | …evidence/junit.xml').getroot().iter('testcase')};assert len(old)==1899 and old<=sets['source']
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:14:158
+   |
+12 | …essage')} for c in cases if c.find('skipped')is not None];assert len(skips[name])==4;sets[name]=ids
+13 | …
+14 | …nux-full-9s8fju3r/evidence/junit.xml').getroot().iter('testcase')};assert len(old)==1899 and old<=sets['source']
+   |                                                                    ^
+15 | …
+16 | …s)==set(modules)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:16:74
+   |
+14 | old={c.get('classname')+'::'+c.get('name') for c in ET.parse('D:/agentsync-debug/alpha23-linux-full-9s8fju3r/evidence/junit.xml').getr…
+15 | for kind in ('wheel','sdist'):
+16 |  origins=json.loads((inst/'evidence'/(kind+'-origins.json')).read_text());assert set(origins)==set(modules)
+   |                                                                          ^
+17 |  for n,o in origins.items():assert o['sha256']==modules[n] and '/'+kind+'/lib/' in o['path'] and '/site-packages/' in o['path']
+18 |  direct=json.loads((inst/'evidence'/(kind+'-direct-url.json')).read_text());name=next(n for n in b['artifacts'] if n.endswith('.whl' i…
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:17:28
+   |
+15 | for kind in ('wheel','sdist'):
+16 |  origins=json.loads((inst/'evidence'/(kind+'-origins.json')).read_text());assert set(origins)==set(modules)
+17 |  for n,o in origins.items():assert o['sha256']==modules[n] and '/'+kind+'/lib/' in o['path'] and '/site-packages/' in o['path']
+   |                            ^
+18 |  direct=json.loads((inst/'evidence'/(kind+'-direct-url.json')).read_text());name=next(n for n in b['artifacts'] if n.endswith('.whl' i…
+19 | for name,h in b['artifacts'].items():assert hashlib.sha256((build/'artifacts'/name).read_bytes()).hexdigest()==h
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:18:76
+   |
+16 |  origins=json.loads((inst/'evidence'/(kind+'-origins.json')).read_text());assert set(origins)==set(modules)
+17 |  for n,o in origins.items():assert o['sha256']==modules[n] and '/'+kind+'/lib/' in o['path'] and '/site-packages/' in o['path']
+18 |  direct=json.loads((inst/'evidence'/(kind+'-direct-url.json')).read_text());name=next(n for n in b['artifacts'] if n.endswith('.whl' i…
+   |                                                                            ^
+19 | for name,h in b['artifacts'].items():assert hashlib.sha256((build/'artifacts'/name).read_bytes()).hexdigest()==h
+20 | ids=set();records=0
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:18:167
+   |
+16 | …odules)
+17 | …ite-packages/' in o['path']
+18 | …artifacts'] if n.endswith('.whl' if kind=='wheel' else '.tar.gz'));assert direct['archive_info']['hashes']['sha256']==b['artifacts'][…
+   |                                                                    ^
+19 | …xdigest()==h
+20 | …
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:19:37
+   |
+17 |  for n,o in origins.items():assert o['sha256']==modules[n] and '/'+kind+'/lib/' in o['path'] and '/site-packages/' in o['path']
+18 |  direct=json.loads((inst/'evidence'/(kind+'-direct-url.json')).read_text());name=next(n for n in b['artifacts'] if n.endswith('.whl' i…
+19 | for name,h in b['artifacts'].items():assert hashlib.sha256((build/'artifacts'/name).read_bytes()).hexdigest()==h
+   |                                     ^
+20 | ids=set();records=0
+21 | def scan(value,key=''):
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:20:10
+   |
+18 |  direct=json.loads((inst/'evidence'/(kind+'-direct-url.json')).read_text());name=next(n for n in b['artifacts'] if n.endswith('.whl' i…
+19 | for name,h in b['artifacts'].items():assert hashlib.sha256((build/'artifacts'/name).read_bytes()).hexdigest()==h
+20 | ids=set();records=0
+   |          ^
+21 | def scan(value,key=''):
+22 |  if isinstance(value,dict):
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:23:27
+   |
+21 | def scan(value,key=''):
+22 |  if isinstance(value,dict):
+23 |   for k,v in value.items():scan(v,k)
+   |                           ^
+24 |  elif isinstance(value,list):
+25 |   for v in value:scan(v,key)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:25:17
+   |
+23 |   for k,v in value.items():scan(v,k)
+24 |  elif isinstance(value,list):
+25 |   for v in value:scan(v,key)
+   |                 ^
+26 |  elif isinstance(value,str) and re.fullmatch('[0-9a-f]{64}',value) and any(t in key.lower() for t in ('container','backend_ref')):ids.…
+27 | for root in (src/'evidence',inst/'evidence'):
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:26:130
+   |
+24 | …
+25 | …
+26 | …ue) and any(t in key.lower() for t in ('container','backend_ref')):ids.add(value)
+   |                                                                    ^
+27 | …
+28 | …
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:29:114
+   |
+27 | for root in (src/'evidence',inst/'evidence'):
+28 |  for p in root.rglob('*.json'):
+29 |   if p.name in {'result.json','image.json'} or 'origins' in p.name or 'runtime' in p.name or 'imports-' in p.name:continue
+   |                                                                                                                  ^
+30 |   value=json.loads(p.read_text());scan(value)
+31 |   if 'docker' in p.as_posix() or any(t in p.as_posix() for t in ('candidate','completion','owner','reconciliation')):records+=1
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:30:34
+   |
+28 |  for p in root.rglob('*.json'):
+29 |   if p.name in {'result.json','image.json'} or 'origins' in p.name or 'runtime' in p.name or 'imports-' in p.name:continue
+30 |   value=json.loads(p.read_text());scan(value)
+   |                                  ^
+31 |   if 'docker' in p.as_posix() or any(t in p.as_posix() for t in ('candidate','completion','owner','reconciliation')):records+=1
+32 | result={'source_commit':sha,'git_inputs':len(config['manifest']),'runtime_modules_each':63,'source_wheel_sdist_each':{'tests':2043,'pa…
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:31:117
+   |
+29 |   if p.name in {'result.json','image.json'} or 'origins' in p.name or 'runtime' in p.name or 'imports-' in p.name:continue
+30 |   value=json.loads(p.read_text());scan(value)
+31 |   if 'docker' in p.as_posix() or any(t in p.as_posix() for t in ('candidate','completion','owner','reconciliation')):records+=1
+   |                                                                                                                     ^
+32 | result={'source_commit':sha,'git_inputs':len(config['manifest']),'runtime_modules_each':63,'source_wheel_sdist_each':{'tests':2043,'pa…
+33 | (src/'root-full-audit.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:v for k,v in result.items() if k not in ('ski…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:33:69
+   |
+31 |   if 'docker' in p.as_posix() or any(t in p.as_posix() for t in ('candidate','completion','owner','reconciliation')):records+=1
+32 | result={'source_commit':sha,'git_inputs':len(config['manifest']),'runtime_modules_each':63,'source_wheel_sdist_each':{'tests':2043,'pa…
+33 | (src/'root-full-audit.json').write_text(json.dumps(result,indent=2));print(json.dumps({k:v for k,v in result.items() if k not in ('ski…
+   |                                                                     ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\audit-and-package-full-linux.py:33:176
+   |
+31 | …tion')):records+=1
+32 | …t_each':{'tests':2043,'passed':2039,'skipped':4,'failed':0,'errors':0},'retained':1899,'added':144,'skips':skips,'artifacts':b['artif…
+33 | …items() if k not in ('skips','recorded_container_ids')},indent=2));print('Recorded IDs',len(ids))
+   |                                                                    ^
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:1:1
+  |
+1 | import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path(r'F:\syuc\agentsync-execution-intent');out=Path(tempfile.mkdtemp(prefix='cancel-full-build-',dir=r'D:\agentsync-debug'))
+  |
+help: Split imports
+  |
+  - import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+1 + import hashlib
+2 + import json
+3 + import os
+4 + import subprocess
+5 + import tarfile
+6 + import tempfile
+7 + import xml.etree.ElementTree as ET
+8 | from pathlib import Path
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:1:1
+  |
+1 | / import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+2 | | from pathlib import Path
+  | |________________________^
+3 |   repo=Path(r'F:\syuc\agentsync-execution-intent');out=Path(tempfile.mkdtemp(prefix='cancel-full-build-',dir=r'D:\agentsync-debug'))
+4 |   commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()
+  |
+help: Organize imports
+   |
+   - import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+1  + import hashlib
+2  + import json
+3  + import os
+4  + import subprocess
+5  + import tarfile
+6  + import tempfile
+7  + import xml.etree.ElementTree as ET
+8  | from pathlib import Path
+9  +
+10 | repo=Path(r'F:\syuc\agentsync-execution-intent');out=Path(tempfile.mkdtemp(prefix='cancel-full-build-',dir=r'D:\agentsync-debug'))
+   |
+
+F401 [*] `xml.etree.ElementTree` imported but unused
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:1:77
+  |
+1 | import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+  |                                                                             ^^
+2 | from pathlib import Path
+3 | repo=Path(r'F:\syuc\agentsync-execution-intent');out=Path(tempfile.mkdtemp(prefix='cancel-full-build-',dir=r'D:\agentsync-debug'))
+  |
+help: Remove unused import: `xml.etree.ElementTree`
+  |
+  - import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+1 + import hashlib,json,os,subprocess,tarfile,tempfile
+2 | from pathlib import Path
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:3:49
+  |
+1 | import hashlib,json,os,subprocess,tarfile,tempfile,xml.etree.ElementTree as ET
+2 | from pathlib import Path
+3 | repo=Path(r'F:\syuc\agentsync-execution-intent');out=Path(tempfile.mkdtemp(prefix='cancel-full-build-',dir=r'D:\agentsync-debug'))
+  |                                                 ^
+4 | commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()
+5 | assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:6:25
+  |
+4 | commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()
+5 | assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+6 | archive=out/'source.tar';subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+  |                         ^
+7 | source=out/'source';source.mkdir();manifest={}
+8 | with tarfile.open(archive) as stream:
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:7:20
+  |
+5 | assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+6 | archive=out/'source.tar';subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+7 | source=out/'source';source.mkdir();manifest={}
+  |                    ^
+8 | with tarfile.open(archive) as stream:
+9 |  for m in stream:
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:7:35
+  |
+5 | assert not subprocess.check_output(['git','status','--porcelain'],cwd=repo,text=True).strip()
+6 | archive=out/'source.tar';subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+7 | source=out/'source';source.mkdir();manifest={}
+  |                                   ^
+8 | with tarfile.open(archive) as stream:
+9 |  for m in stream:
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:10:17
+   |
+ 8 | with tarfile.open(archive) as stream:
+ 9 |  for m in stream:
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+   |                 ^
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:10:68
+   |
+ 8 | with tarfile.open(archive) as stream:
+ 9 |  for m in stream:
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+   |                                                                    ^
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:10:84
+   |
+ 8 | with tarfile.open(archive) as stream:
+ 9 |  for m in stream:
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+   |                                                                                    ^
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:11:15
+   |
+ 9 |  for m in stream:
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+   |               ^
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:11:56
+   |
+ 9 |  for m in stream:
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+   |                                                        ^
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:12:20
+   |
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |                    ^
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:12:68
+   |
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |                                                                    ^
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:12:102
+   |
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |                                                                                                      ^
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:12:127
+   |
+10 |   p=Path(m.name);assert not p.is_absolute() and '..' not in p.parts;target=source/p;assert target.resolve().is_relative_to(source.reso…
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+   |                                                                                                                               ^
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:13:119
+   |
+11 |   if m.isdir():target.mkdir(parents=True,exist_ok=True);continue
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+   |                                                                                                                       ^
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+15 | wrapper=out/'installed_tests.py';wrapper.write_text('''if __name__ == '__main__':
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:14:27
+   |
+12 |   assert m.isfile();target.parent.mkdir(parents=True,exist_ok=True);data=stream.extractfile(m).read();target.write_bytes(data);manifes…
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+   |                           ^
+15 | wrapper=out/'installed_tests.py';wrapper.write_text('''if __name__ == '__main__':
+16 |  import hashlib,importlib,json,pathlib,sys
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:15:33
+   |
+13 | modules={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/') and n.endswith('.py')};assert len(modu…
+14 | binding=out/'binding.json';binding.write_text(json.dumps(modules))
+15 | wrapper=out/'installed_tests.py';wrapper.write_text('''if __name__ == '__main__':
+   |                                 ^
+16 |  import hashlib,importlib,json,pathlib,sys
+17 |  sys.dont_write_bytecode=True
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:33:16
+   |
+31 | selectors=['tests/integration/test_candidate_execution.py::test_actual_candidate_bytes_not_base_and_old_receipts_stay_immutable','test…
+32 | env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','PATH','COMSPEC','PATHEXT'}}
+33 | home=out/'home';home.mkdir();env.update(TEMP=str(out),TMP=str(out),HOME=str(home),USERPROFILE=str(home),PYTHONDONTWRITEBYTECODE='1',PY…
+   |                ^
+34 | py=r'D:\agentsync-debug\venv\Scripts\python.exe';cache=r'D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse'
+35 | r={'commit':commit,'version':'0.3.0a28','runtime':'WindowsPython3.14','runtime_modules':modules,'source_manifest':manifest,'selectors'…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:33:29
+   |
+31 | selectors=['tests/integration/test_candidate_execution.py::test_actual_candidate_bytes_not_base_and_old_receipts_stay_immutable','test…
+32 | env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','PATH','COMSPEC','PATHEXT'}}
+33 | home=out/'home';home.mkdir();env.update(TEMP=str(out),TMP=str(out),HOME=str(home),USERPROFILE=str(home),PYTHONDONTWRITEBYTECODE='1',PY…
+   |                             ^
+34 | py=r'D:\agentsync-debug\venv\Scripts\python.exe';cache=r'D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse'
+35 | r={'commit':commit,'version':'0.3.0a28','runtime':'WindowsPython3.14','runtime_modules':modules,'source_manifest':manifest,'selectors'…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:34:49
+   |
+32 | env={k:v for k,v in os.environ.items() if k.upper() in {'SYSTEMROOT','WINDIR','PATH','COMSPEC','PATHEXT'}}
+33 | home=out/'home';home.mkdir();env.update(TEMP=str(out),TMP=str(out),HOME=str(home),USERPROFILE=str(home),PYTHONDONTWRITEBYTECODE='1',PY…
+34 | py=r'D:\agentsync-debug\venv\Scripts\python.exe';cache=r'D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse'
+   |                                                 ^
+35 | r={'commit':commit,'version':'0.3.0a28','runtime':'WindowsPython3.14','runtime_modules':modules,'source_manifest':manifest,'selectors'…
+36 | def save():(out/'result.json').write_text(json.dumps(r,indent=2))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:38:75
+   |
+36 | def save():(out/'result.json').write_text(json.dumps(r,indent=2))
+37 | def run(name,cmd,cwd=out,timeout=300):
+38 |  p=subprocess.run(cmd,cwd=cwd,env=env,capture_output=True,timeout=timeout);(out/(name+'.stdout')).write_bytes(p.stdout);(out/(name+'.s…
+   |                                                                           ^
+39 | print(out,flush=True);save()
+40 | run('build',[py,'-m','build','--wheel','--sdist','--no-isolation','--outdir',str(out/'artifacts'),str(source)])
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:38:120
+   |
+36 | def save():(out/'result.json').write_text(json.dumps(r,indent=2))
+37 | def run(name,cmd,cwd=out,timeout=300):
+38 |  p=subprocess.run(cmd,cwd=cwd,env=env,capture_output=True,timeout=timeout);(out/(name+'.stdout')).write_bytes(p.stdout);(out/(name+'.s…
+   |                                                                                                                        ^
+39 | print(out,flush=True);save()
+40 | run('build',[py,'-m','build','--wheel','--sdist','--no-isolation','--outdir',str(out/'artifacts'),str(source)])
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:38:165
+   |
+36 | …
+37 | …
+38 | …write_bytes(p.stdout);(out/(name+'.stderr')).write_bytes(p.stderr);r['checks'][name]={'exit_status':p.returncode};save();assert p.ret…
+   |                                                                    ^
+39 | …
+40 | …str(source)])
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:38:212
+   |
+36 | …
+37 | …
+38 | …ite_bytes(p.stderr);r['checks'][name]={'exit_status':p.returncode};save();assert p.returncode==0,name;return p
+   |                                                                    ^
+39 | …
+40 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:38:219
+   |
+36 | …
+37 | …
+38 | …es(p.stderr);r['checks'][name]={'exit_status':p.returncode};save();assert p.returncode==0,name;return p
+   |                                                                    ^
+39 | …
+40 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:38:247
+   |
+36 | …
+37 | …
+38 | …e]={'exit_status':p.returncode};save();assert p.returncode==0,name;return p
+   |                                                                    ^
+39 | …
+40 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:39:22
+   |
+37 | def run(name,cmd,cwd=out,timeout=300):
+38 |  p=subprocess.run(cmd,cwd=cwd,env=env,capture_output=True,timeout=timeout);(out/(name+'.stdout')).write_bytes(p.stdout);(out/(name+'.s…
+39 | print(out,flush=True);save()
+   |                      ^
+40 | run('build',[py,'-m','build','--wheel','--sdist','--no-isolation','--outdir',str(out/'artifacts'),str(source)])
+41 | r['artifacts']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()};save()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:41:104
+   |
+39 | print(out,flush=True);save()
+40 | run('build',[py,'-m','build','--wheel','--sdist','--no-isolation','--outdir',str(out/'artifacts'),str(source)])
+41 | r['artifacts']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()};save()
+   |                                                                                                        ^
+42 | r['scope']='build only; no installed test execution';r['source_unchanged']=all(hashlib.sha256((source/n).read_bytes()).hexdigest()==h …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:42:53
+   |
+40 | run('build',[py,'-m','build','--wheel','--sdist','--no-isolation','--outdir',str(out/'artifacts'),str(source)])
+41 | r['artifacts']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (out/'artifacts').iterdir()};save()
+42 | r['scope']='build only; no installed test execution';r['source_unchanged']=all(hashlib.sha256((source/n).read_bytes()).hexdigest()==h …
+   |                                                     ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:42:163
+   |
+40 | …),str(source)])
+41 | …rdir()};save()
+42 | …ource/n).read_bytes()).hexdigest()==h for n,h in manifest.items());assert r['source_unchanged'];r['passed']=True;save();print(json.du…
+   |                                                                    ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:42:192
+   |
+40 | …
+41 | …
+42 | …est()==h for n,h in manifest.items());assert r['source_unchanged'];r['passed']=True;save();print(json.dumps({'build_root':str(out),'c…
+   |                                                                    ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:42:209
+   |
+40 | …
+41 | …
+42 | …in manifest.items());assert r['source_unchanged'];r['passed']=True;save();print(json.dumps({'build_root':str(out),'commit':commit,'ar…
+   |                                                                    ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\build-cancel-full-packages.py:42:216
+   |
+40 | …
+41 | …
+42 | …fest.items());assert r['source_unchanged'];r['passed']=True;save();print(json.dumps({'build_root':str(out),'commit':commit,'artifacts…
+   |                                                                    ^
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:1:1
+  |
+1 | import hashlib,io,json,subprocess,tarfile
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |
+help: Split imports
+  |
+  - import hashlib,io,json,subprocess,tarfile
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 | from pathlib import Path
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:1:1
+  |
+1 | / import hashlib,io,json,subprocess,tarfile
+2 | | from pathlib import Path
+  | |________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-deb…
+4 |   audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=j…
+  |
+help: Organize imports
+  |
+  - import hashlib,io,json,subprocess,tarfile
+1 + import hashlib
+2 + import io
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 | from pathlib import Path
+7 +
+8 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:3:48
+  |
+1 | import hashlib,io,json,subprocess,tarfile
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |                                                ^
+4 | audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=jso…
+5 | post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:3:106
+  |
+1 | import hashlib,io,json,subprocess,tarfile
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+  |                                                                                                          ^
+4 | audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=jso…
+5 | post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:3:170
+  |
+1 | …
+2 | …
+3 | …');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+  |                                                                    ^
+4 | …nux-full-final.json');review=json.loads(reviewpath.read_text());assert review['findings']==[] and review['reviewed_sha']==audit['sourc…
+5 | …p-poweroff-result.json');p=json.loads(post.read_text());c=json.loads(closed.read_text(encoding='utf-8-sig'))
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:4:59
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=jso…
+  |                                                           ^
+5 | post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.…
+6 | assert p['all_recorded_ids_absent'] and p['recorded_ids']==96 and c['stopped'] and c['verified_owned_pid']==5552 and not c['forced_stop…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:4:125
+  |
+2 | from pathlib import Path
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=jso…
+  |                                                                                                                             ^
+5 | post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.…
+6 | assert p['all_recorded_ids_absent'] and p['recorded_ids']==96 and c['stopped'] and c['verified_owned_pid']==5552 and not c['forced_stop…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:4:167
+  |
+2 | …
+3 | …gdf');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j')
+4 | …-linux-full-final.json');review=json.loads(reviewpath.read_text());assert review['findings']==[] and review['reviewed_sha']==audit['so…
+  |                                                                    ^
+5 | …rtup-poweroff-result.json');p=json.loads(post.read_text());c=json.loads(closed.read_text(encoding='utf-8-sig'))
+6 | …_pid']==5552 and not c['forced_stop_used']
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:5:62
+  |
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=jso…
+5 | post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.…
+  |                                                              ^
+6 | assert p['all_recorded_ids_absent'] and p['recorded_ids']==96 and c['stopped'] and c['verified_owned_pid']==5552 and not c['forced_stop…
+7 | assert not subprocess.check_output(['git','diff','--name-only',audit['source_commit'],'HEAD','--','src','tests','tools','pyproject.toml…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:5:128
+  |
+3 | repo=Path('F:/syuc/agentsync-execution-intent');src=Path('D:/agentsync-debug/cancel-linux-full-h1ma9gdf');inst=Path('D:/agentsync-debug…
+4 | audit=json.loads((src/'root-full-audit.json').read_text());reviewpath=Path('D:/agentsync-debug/astra-linux-full-final.json');review=jso…
+5 | post=Path('D:/agentsync-debug/full-container-postcheck.json');closed=Path('D:/agentsync-debug/vm/startup-poweroff-result.json');p=json.…
+  |                                                                                                                                ^
+6 | assert p['all_recorded_ids_absent'] and p['recorded_ids']==96 and c['stopped'] and c['verified_owned_pid']==5552 and not c['forced_stop…
+7 | assert not subprocess.check_output(['git','diff','--name-only',audit['source_commit'],'HEAD','--','src','tests','tools','pyproject.toml…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:5:159
+  |
+3 | …ll-h1ma9gdf');inst=Path('D:/agentsync-debug/cancel-linux-installed-z4u0xy6v');build=Path('D:/agentsync-debug/cancel-full-build-g39f1e5…
+4 | …ug/astra-linux-full-final.json');review=json.loads(reviewpath.read_text());assert review['findings']==[] and review['reviewed_sha']==a…
+5 | …g/vm/startup-poweroff-result.json');p=json.loads(post.read_text());c=json.loads(closed.read_text(encoding='utf-8-sig'))
+  |                                                                    ^
+6 | …ed_owned_pid']==5552 and not c['forced_stop_used']
+7 | …,'--','src','tests','tools','pyproject.toml'],cwd=repo,text=True).strip()
+  |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:11:20
+   |
+ 9 | for prefix,folder in [('source',src/'evidence'),('installed',inst/'evidence')]:
+10 |  for path in folder.rglob('*'):
+11 |   if path.is_file():members[prefix+'/'+path.relative_to(folder).as_posix()]=path
+   |                    ^
+12 | for path in (build/'artifacts').iterdir():members['artifacts/'+path.name]=path
+13 | for label,path in [('source-config.json',src/'config.json'),('build-result.json',build/'result.json'),('root-audit.json',src/'root-ful…
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:12:42
+   |
+10 |  for path in folder.rglob('*'):
+11 |   if path.is_file():members[prefix+'/'+path.relative_to(folder).as_posix()]=path
+12 | for path in (build/'artifacts').iterdir():members['artifacts/'+path.name]=path
+   |                                          ^
+13 | for label,path in [('source-config.json',src/'config.json'),('build-result.json',build/'result.json'),('root-audit.json',src/'root-ful…
+14 | for name in ['run-cancel-linux-full.py','build-cancel-full-packages.py','verify-cancel-linux-full-packages.py','audit-and-package-full…
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:13:251
+   |
+11 | …
+12 | …
+13 | …container-postcheck.json',post),('owned-vm-shutdown.json',closed)]:members[label]=path
+   |                                                                    ^
+14 | …-linux-full-evidence.py']:
+15 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:17:71
+   |
+15 |  members['drivers/'+name]=Path('D:/agentsync-debug')/name
+16 | manifest={n:{'bytes':v.stat().st_size,'sha256':hashlib.sha256(v.read_bytes()).hexdigest()} for n,v in members.items()}
+17 | archive=repo/'releases/0.3.0a28/checkpoints/full-linux-50bcbf5.tar.gz';assert not archive.exists()
+   |                                                                       ^
+18 | with tarfile.open(archive,'w:gz') as stream:
+19 |  for n,v in members.items():stream.add(v,arcname=n,recursive=False)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:19:28
+   |
+17 | archive=repo/'releases/0.3.0a28/checkpoints/full-linux-50bcbf5.tar.gz';assert not archive.exists()
+18 | with tarfile.open(archive,'w:gz') as stream:
+19 |  for n,v in members.items():stream.add(v,arcname=n,recursive=False)
+   |                            ^
+20 |  raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(ra…
+21 | with tarfile.open(archive) as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:20:44
+   |
+18 | with tarfile.open(archive,'w:gz') as stream:
+19 |  for n,v in members.items():stream.add(v,arcname=n,recursive=False)
+20 |  raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(ra…
+   |                                            ^
+21 | with tarfile.open(archive) as stream:
+22 |  for n,item in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:20:82
+   |
+18 | with tarfile.open(archive,'w:gz') as stream:
+19 |  for n,v in members.items():stream.add(v,arcname=n,recursive=False)
+20 |  raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(ra…
+   |                                                                                  ^
+21 | with tarfile.open(archive) as stream:
+22 |  for n,item in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:20:101
+   |
+18 | with tarfile.open(archive,'w:gz') as stream:
+19 |  for n,v in members.items():stream.add(v,arcname=n,recursive=False)
+20 |  raw=json.dumps(manifest,indent=2).encode();info=tarfile.TarInfo('MANIFEST.json');info.size=len(raw);stream.addfile(info,io.BytesIO(ra…
+   |                                                                                                     ^
+21 | with tarfile.open(archive) as stream:
+22 |  for n,item in manifest.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:23:35
+   |
+21 | with tarfile.open(archive) as stream:
+22 |  for n,item in manifest.items():
+23 |   raw=stream.extractfile(n).read();assert len(raw)==item['bytes'] and hashlib.sha256(raw).hexdigest()==item['sha256']
+   |                                   ^
+24 | root=repo/'docs/acceptance/evidence/full-linux-readable/50bcbf5';assert not root.exists();root.mkdir(parents=True)
+25 | readable={}
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:24:65
+   |
+22 |  for n,item in manifest.items():
+23 |   raw=stream.extractfile(n).read();assert len(raw)==item['bytes'] and hashlib.sha256(raw).hexdigest()==item['sha256']
+24 | root=repo/'docs/acceptance/evidence/full-linux-readable/50bcbf5';assert not root.exists();root.mkdir(parents=True)
+   |                                                                 ^
+25 | readable={}
+26 | for n,v in members.items():
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:24:90
+   |
+22 |  for n,item in manifest.items():
+23 |   raw=stream.extractfile(n).read();assert len(raw)==item['bytes'] and hashlib.sha256(raw).hexdigest()==item['sha256']
+24 | root=repo/'docs/acceptance/evidence/full-linux-readable/50bcbf5';assert not root.exists();root.mkdir(parents=True)
+   |                                                                                          ^
+25 | readable={}
+26 | for n,v in members.items():
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:27:56
+   |
+25 | readable={}
+26 | for n,v in members.items():
+27 |  if v.suffix not in {'.xml','.json','.log','.py','.sh'}:continue
+   |                                                        ^
+28 |  raw=v.read_bytes();raw.decode('utf-8-sig');target=root/n;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+29 |  readable[n]={**manifest[n],'git_blob_sha1':hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\x00'+raw).hexdigest()}
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:28:20
+   |
+26 | for n,v in members.items():
+27 |  if v.suffix not in {'.xml','.json','.log','.py','.sh'}:continue
+28 |  raw=v.read_bytes();raw.decode('utf-8-sig');target=root/n;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+   |                    ^
+29 |  readable[n]={**manifest[n],'git_blob_sha1':hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\x00'+raw).hexdigest()}
+30 | (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8',newline='\n')
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:28:44
+   |
+26 | for n,v in members.items():
+27 |  if v.suffix not in {'.xml','.json','.log','.py','.sh'}:continue
+28 |  raw=v.read_bytes();raw.decode('utf-8-sig');target=root/n;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+   |                                            ^
+29 |  readable[n]={**manifest[n],'git_blob_sha1':hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\x00'+raw).hexdigest()}
+30 | (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8',newline='\n')
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:28:58
+   |
+26 | for n,v in members.items():
+27 |  if v.suffix not in {'.xml','.json','.log','.py','.sh'}:continue
+28 |  raw=v.read_bytes();raw.decode('utf-8-sig');target=root/n;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+   |                                                          ^
+29 |  readable[n]={**manifest[n],'git_blob_sha1':hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\x00'+raw).hexdigest()}
+30 | (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8',newline='\n')
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:28:106
+   |
+26 | for n,v in members.items():
+27 |  if v.suffix not in {'.xml','.json','.log','.py','.sh'}:continue
+28 |  raw=v.read_bytes();raw.decode('utf-8-sig');target=root/n;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+   |                                                                                                          ^
+29 |  readable[n]={**manifest[n],'git_blob_sha1':hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\x00'+raw).hexdigest()}
+30 | (root/'MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8',newline='\n')
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:34:33
+   |
+32 | (root/'INDEX.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n')
+33 | (repo/'docs/acceptance/evidence/full-linux-50bcbf5-summary.json').write_text(json.dumps({k:v for k,v in summary.items() if k!='readabl…
+34 | attributes=repo/'.gitattributes';s=attributes.read_text(encoding='utf-8');s+='\ndocs/acceptance/evidence/full-linux-readable/** -text\…
+   |                                 ^
+35 | print(json.dumps({k:v for k,v in summary.items() if k not in ('readable_members','skips','identity')},indent=2))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:34:74
+   |
+32 | (root/'INDEX.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8',newline='\n')
+33 | (repo/'docs/acceptance/evidence/full-linux-50bcbf5-summary.json').write_text(json.dumps({k:v for k,v in summary.items() if k!='readabl…
+34 | attributes=repo/'.gitattributes';s=attributes.read_text(encoding='utf-8');s+='\ndocs/acceptance/evidence/full-linux-readable/** -text\…
+   |                                                                          ^
+35 | print(json.dumps({k:v for k,v in summary.items() if k not in ('readable_members','skips','identity')},indent=2))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\publish-linux-full-evidence.py:34:137
+   |
+32 | …ing='utf-8',newline='\n')
+33 | …e_text(json.dumps({k:v for k,v in summary.items() if k!='readable_members'},indent=2)+'\n',encoding='utf-8',newline='\n')
+34 | …8');s+='\ndocs/acceptance/evidence/full-linux-readable/** -text\n';attributes.write_text(s,encoding='utf-8',newline='\n')
+   |                                                                    ^
+35 | …e_members','skips','identity')},indent=2))
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:1:1
+  |
+1 | / from pathlib import Path
+2 | | import hashlib,json,subprocess,tarfile,tempfile,uuid
+  | |____________________________________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent')
+4 |   out=Path(tempfile.mkdtemp(prefix='cancel-linux-full-',dir='D:/agentsync-debug'))
+  |
+help: Organize imports
+  |
+1 + import hashlib
+2 + import json
+3 + import subprocess
+4 + import tarfile
+5 + import tempfile
+6 + import uuid
+7 | from pathlib import Path
+  - import hashlib,json,subprocess,tarfile,tempfile,uuid
+8 +
+9 | repo=Path('F:/syuc/agentsync-execution-intent')
+  |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:2:1
+  |
+1 | from pathlib import Path
+2 | import hashlib,json,subprocess,tarfile,tempfile,uuid
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 | repo=Path('F:/syuc/agentsync-execution-intent')
+4 | out=Path(tempfile.mkdtemp(prefix='cancel-linux-full-',dir='D:/agentsync-debug'))
+  |
+help: Split imports
+  |
+1 | from pathlib import Path
+  - import hashlib,json,subprocess,tarfile,tempfile,uuid
+2 + import hashlib
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import tempfile
+7 + import uuid
+8 | repo=Path('F:/syuc/agentsync-execution-intent')
+  |
+
+E731 Do not assign a `lambda` expression, use a `def`
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:10:1
+   |
+ 8 | archive=out/'source.tar'
+ 9 | subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+10 | sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+11 | manifest={}
+12 | with tarfile.open(archive) as stream:
+   |
+help: Rewrite `sha` as a `def`
+   |
+9  | subprocess.run(['git','archive','--format=tar','--output',str(archive),commit],cwd=repo,check=True)
+   - sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+10 + def sha(p):
+11 +  return hashlib.sha256(p.read_bytes()).hexdigest()
+12 | manifest={}
+   |
+note: This is an unsafe fix and may change runtime behavior
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:14:16
+   |
+12 | with tarfile.open(archive) as stream:
+13 |  for m in stream:
+14 |   if m.isfile():manifest[m.name]=hashlib.sha256(stream.extractfile(m).read()).hexdigest()
+   |                ^
+15 | config={'commit':commit,'guest':guest,'manifest':manifest,'archive_sha256':sha(archive)}
+16 | (out/'config.json').write_text(json.dumps(config,indent=2))
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:80:20
+   |
+78 | print(json.dumps({k:v for k,v in r.items() if k!='owned_pytest_pid'}),flush=True)
+79 | """
+80 | script=out/'run.sh';script.write_text("set -eu\n/root/jobs-env/bin/python - <<'OWNED_FULL_REGRESSION'\nconfig="+repr(config)+'\n'+body…
+   |                    ^
+81 | py='D:/agentsync-debug/venv/Scripts/python.exe';transport=repo/'tools/local_vm_exec.py'
+82 | def call(name,args,timeout):
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:81:48
+   |
+79 | """
+80 | script=out/'run.sh';script.write_text("set -eu\n/root/jobs-env/bin/python - <<'OWNED_FULL_REGRESSION'\nconfig="+repr(config)+'\n'+body…
+81 | py='D:/agentsync-debug/venv/Scripts/python.exe';transport=repo/'tools/local_vm_exec.py'
+   |                                                ^
+82 | def call(name,args,timeout):
+83 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:84:52
+   |
+82 | def call(name,args,timeout):
+83 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout)
+84 |  (out/(name+'.log')).write_bytes(p.stdout+p.stderr);print(name,p.returncode,flush=True)
+   |                                                    ^
+85 |  if p.returncode:raise SystemExit('Transport failed; inspect guest before retry: '+str(out))
+86 | print(out,flush=True)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:85:17
+   |
+83 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout)
+84 |  (out/(name+'.log')).write_bytes(p.stdout+p.stderr);print(name,p.returncode,flush=True)
+85 |  if p.returncode:raise SystemExit('Transport failed; inspect guest before retry: '+str(out))
+   |                 ^
+86 | print(out,flush=True)
+87 | call('upload',['--upload',str(archive),guest+'.tar'],90)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:90:22
+   |
+88 | call('run',['--script',str(script),'--timeout','1300','--log',str(out/'guest.log')],1330)
+89 | call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90)
+90 | folder=out/'evidence';folder.mkdir()
+   |                      ^
+91 | with tarfile.open(out/'evidence.tar') as stream:
+92 |  for m in stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:93:17
+   |
+91 | with tarfile.open(out/'evidence.tar') as stream:
+92 |  for m in stream:
+93 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..' not in p.parts
+   |                 ^
+94 |   target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.writ…
+95 | result=json.loads((folder/'result.json').read_text());print(json.dumps(result),flush=True)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:94:18
+   |
+92 |  for m in stream:
+93 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..' not in p.parts
+94 |   target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.writ…
+   |                  ^
+95 | result=json.loads((folder/'result.json').read_text());print(json.dumps(result),flush=True)
+96 | raise SystemExit(0 if result['passed'] else 1)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:94:75
+   |
+92 |  for m in stream:
+93 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..' not in p.parts
+94 |   target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.writ…
+   |                                                                           ^
+95 | result=json.loads((folder/'result.json').read_text());print(json.dumps(result),flush=True)
+96 | raise SystemExit(0 if result['passed'] else 1)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:94:123
+   |
+92 |  for m in stream:
+93 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..' not in p.parts
+94 |   target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.writ…
+   |                                                                                                                           ^
+95 | result=json.loads((folder/'result.json').read_text());print(json.dumps(result),flush=True)
+96 | raise SystemExit(0 if result['passed'] else 1)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\run-cancel-linux-full.py:95:54
+   |
+93 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..' not in p.parts
+94 |   target=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.writ…
+95 | result=json.loads((folder/'result.json').read_text());print(json.dumps(result),flush=True)
+   |                                                      ^
+96 | raise SystemExit(0 if result['passed'] else 1)
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:1:1
+  |
+1 | / from pathlib import Path
+2 | | import hashlib,json,subprocess,tarfile,tempfile,uuid
+  | |____________________________________________________^
+3 |   repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((pack…
+4 |   wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'…
+  |
+help: Organize imports
+  |
+1 + import hashlib
+2 + import json
+3 + import subprocess
+4 + import tarfile
+5 + import tempfile
+6 + import uuid
+7 | from pathlib import Path
+  - import hashlib,json,subprocess,tarfile,tempfile,uuid
+8 +
+9 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((package/'result.json').read_text());out=Path(tempfile.mkdtemp(prefix='cancel-linux-installed-',dir='D:/agentsync-debug'));guest='/root/agentsync-installed-'+uuid.uuid4().hex;sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+  |
+
+E401 [*] Multiple imports on one line
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:2:1
+  |
+1 | from pathlib import Path
+2 | import hashlib,json,subprocess,tarfile,tempfile,uuid
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((packag…
+4 | wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n…
+  |
+help: Split imports
+  |
+1 | from pathlib import Path
+  - import hashlib,json,subprocess,tarfile,tempfile,uuid
+2 + import hashlib
+3 + import json
+4 + import subprocess
+5 + import tarfile
+6 + import tempfile
+7 + import uuid
+8 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((package/'result.json').read_text());out=Path(tempfile.mkdtemp(prefix='cancel-linux-installed-',dir='D:/agentsync-debug'));guest='/root/agentsync-installed-'+uuid.uuid4().hex;sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:3:48
+  |
+1 | from pathlib import Path
+2 | import hashlib,json,subprocess,tarfile,tempfile,uuid
+3 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((packag…
+  |                                                ^
+4 | wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n…
+5 | config={'commit':parent['commit'],'guest':guest,'wheel':wheel.name,'sdist':sdist.name,'artifacts':parent['artifacts'],'modules':parent[…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:3:110
+  |
+1 | from pathlib import Path
+2 | import hashlib,json,subprocess,tarfile,tempfile,uuid
+3 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((packag…
+  |                                                                                                              ^
+4 | wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n…
+5 | config={'commit':parent['commit'],'guest':guest,'wheel':wheel.name,'sdist':sdist.name,'artifacts':parent['artifacts'],'modules':parent[…
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:3:165
+  |
+1 | …
+2 | …
+3 | …-g39f1e5j');parent=json.loads((package/'result.json').read_text());out=Path(tempfile.mkdtemp(prefix='cancel-linux-installed-',dir='D:/…
+  |                                                                    ^
+4 | …;assert all(sha(package/'artifacts'/n)==h for n,h in parent['artifacts'].items())
+5 | …parent['artifacts'],'modules':parent['runtime_modules'],'selectors':['tests']}
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:3:251
+  |
+1 | …
+2 | …
+3 | …kdtemp(prefix='cancel-linux-installed-',dir='D:/agentsync-debug'));guest='/root/agentsync-installed-'+uuid.uuid4().hex;sha=lambda p:ha…
+  |                                                                    ^
+4 | …
+5 | …
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:3:303
+  |
+1 | …
+2 | …
+3 | …tsync-debug'));guest='/root/agentsync-installed-'+uuid.uuid4().hex;sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+  |                                                                    ^
+4 | …
+5 | …
+  |
+
+E731 Do not assign a `lambda` expression, use a `def`
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:3:304
+  |
+1 | …
+2 | …
+3 | …agentsync-installed-'+uuid.uuid4().hex;sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+  |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 | …
+5 | …
+  |
+help: Rewrite `sha` as a `def`
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:4:48
+  |
+2 | import hashlib,json,subprocess,tarfile,tempfile,uuid
+3 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((packag…
+4 | wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n…
+  |                                                ^
+5 | config={'commit':parent['commit'],'guest':guest,'wheel':wheel.name,'sdist':sdist.name,'artifacts':parent['artifacts'],'modules':parent[…
+6 | (out/'config.json').write_text(json.dumps(config,indent=2));bundle=out/'bundle.tar'
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:4:99
+  |
+2 | import hashlib,json,subprocess,tarfile,tempfile,uuid
+3 | repo=Path('F:/syuc/agentsync-execution-intent');package=Path('D:/agentsync-debug/cancel-full-build-g39f1e5j');parent=json.loads((packag…
+4 | wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n…
+  |                                                                                                   ^
+5 | config={'commit':parent['commit'],'guest':guest,'wheel':wheel.name,'sdist':sdist.name,'artifacts':parent['artifacts'],'modules':parent[…
+6 | (out/'config.json').write_text(json.dumps(config,indent=2));bundle=out/'bundle.tar'
+  |
+
+E702 Multiple statements on one line (semicolon)
+ --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:6:60
+  |
+4 | wheel=next((package/'artifacts').glob('*.whl'));sdist=next((package/'artifacts').glob('*.tar.gz'));assert all(sha(package/'artifacts'/n…
+5 | config={'commit':parent['commit'],'guest':guest,'wheel':wheel.name,'sdist':sdist.name,'artifacts':parent['artifacts'],'modules':parent[…
+6 | (out/'config.json').write_text(json.dumps(config,indent=2));bundle=out/'bundle.tar'
+  |                                                            ^
+7 | with tarfile.open(bundle,'w') as stream:
+8 |  for path in [wheel,sdist,package/'installed_tests.py',out/'config.json']:stream.add(path,arcname=path.name,recursive=False)
+  |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:8:74
+   |
+ 6 | (out/'config.json').write_text(json.dumps(config,indent=2));bundle=out/'bundle.tar'
+ 7 | with tarfile.open(bundle,'w') as stream:
+ 8 |  for path in [wheel,sdist,package/'installed_tests.py',out/'config.json']:stream.add(path,arcname=path.name,recursive=False)
+   |                                                                          ^
+ 9 | config['bundle_sha256']=sha(bundle)
+10 | body=r'''
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:61:20
+   |
+59 | print(json.dumps({'status':r['status'],'packages':r['packages']}),flush=True)
+60 | '''
+61 | script=out/'run.sh';script.write_text("set -eu\n/root/jobs-env/bin/python - <<'OWNED_INSTALLED_COMPONENTS'\nconfig="+repr(config)+'\n'…
+   |                    ^
+62 | def save():(out/'result.json').write_text(json.dumps(report,indent=2))
+63 | def call(name,args,timeout):
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:61:204
+   |
+59 | …
+60 | …
+61 | …dy+'\nOWNED_INSTALLED_COMPONENTS\n',encoding='utf-8',newline='\n');transport=repo/'tools/local_vm_exec.py';py='D:/agentsync-debug/ven…
+   |                                                                    ^
+62 | …
+63 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:61:244
+   |
+59 | …
+60 | …
+61 | …ding='utf-8',newline='\n');transport=repo/'tools/local_vm_exec.py';py='D:/agentsync-debug/venv/Scripts/python.exe';report={'commit':p…
+   |                                                                    ^
+62 | …
+63 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:61:292
+   |
+59 | …
+60 | …
+61 | …/local_vm_exec.py';py='D:/agentsync-debug/venv/Scripts/python.exe';report={'commit':parent['commit'],'guest':guest,'bundle_sha256':sh…
+   |                                                                    ^
+62 | …
+63 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:64:95
+   |
+62 | def save():(out/'result.json').write_text(json.dumps(report,indent=2))
+63 | def call(name,args,timeout):
+64 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout);log=out/(name+'.log');log.write_bytes(p…
+   |                                                                                               ^
+65 | print(out,flush=True);save()
+66 | if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:64:117
+   |
+62 | def save():(out/'result.json').write_text(json.dumps(report,indent=2))
+63 | def call(name,args,timeout):
+64 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout);log=out/(name+'.log');log.write_bytes(p…
+   |                                                                                                                     ^
+65 | print(out,flush=True);save()
+66 | if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:64:152
+   |
+62 | …
+63 | …
+64 | …=timeout);log=out/(name+'.log');log.write_bytes(p.stdout+p.stderr);report['steps'].append({'name':name,'exit_code':p.returncode,'log_…
+   |                                                                    ^
+65 | …
+66 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:64:237
+   |
+62 | …
+63 | …
+64 | …pend({'name':name,'exit_code':p.returncode,'log_sha256':sha(log)});save();print(name,p.returncode,flush=True);return p.returncode
+   |                                                                    ^
+65 | …
+66 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:64:244
+   |
+62 | …
+63 | …
+64 | …name':name,'exit_code':p.returncode,'log_sha256':sha(log)});save();print(name,p.returncode,flush=True);return p.returncode
+   |                                                                    ^
+65 | …
+66 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:64:280
+   |
+62 | …
+63 | …
+64 | …'log_sha256':sha(log)});save();print(name,p.returncode,flush=True);return p.returncode
+   |                                                                    ^
+65 | …
+66 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:65:22
+   |
+63 | def call(name,args,timeout):
+64 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout);log=out/(name+'.log');log.write_bytes(p…
+65 | print(out,flush=True);save()
+   |                      ^
+66 | if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+67 | if call('run',['--script',str(script),'--timeout','2800','--log',str(out/'guest-run.log')],2830):report['status']='TRANSPORT FAILED / …
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:66:59
+   |
+64 |  p=subprocess.run([py,'-B',str(transport),*args],cwd=repo,capture_output=True,timeout=timeout);log=out/(name+'.log');log.write_bytes(p…
+65 | print(out,flush=True);save()
+66 | if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+   |                                                           ^
+67 | if call('run',['--script',str(script),'--timeout','2800','--log',str(out/'guest-run.log')],2830):report['status']='TRANSPORT FAILED / …
+68 | if call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90):raise SystemExit(2)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:67:97
+   |
+65 | print(out,flush=True);save()
+66 | if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+67 | if call('run',['--script',str(script),'--timeout','2800','--log',str(out/'guest-run.log')],2830):report['status']='TRANSPORT FAILED / …
+   |                                                                                                 ^
+68 | if call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90):raise SystemExit(2)
+69 | folder=out/'evidence';folder.mkdir()
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:67:162
+   |
+65 | …
+66 | …
+67 | …):report['status']='TRANSPORT FAILED / inspect guest before retry';save();raise SystemExit(2)
+   |                                                                    ^
+68 | …mExit(2)
+69 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:67:169
+   |
+65 | …
+66 | …
+67 | …t['status']='TRANSPORT FAILED / inspect guest before retry';save();raise SystemExit(2)
+   |                                                                    ^
+68 | …)
+69 | …
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:68:84
+   |
+66 | if call('upload',['--upload',str(bundle),guest+'.tar'],90):raise SystemExit(2)
+67 | if call('run',['--script',str(script),'--timeout','2800','--log',str(out/'guest-run.log')],2830):report['status']='TRANSPORT FAILED / …
+68 | if call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90):raise SystemExit(2)
+   |                                                                                    ^
+69 | folder=out/'evidence';folder.mkdir()
+70 | with tarfile.open(out/'evidence.tar') as stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:69:22
+   |
+67 | if call('run',['--script',str(script),'--timeout','2800','--log',str(out/'guest-run.log')],2830):report['status']='TRANSPORT FAILED / …
+68 | if call('download',['--download',guest+'/evidence.tar',str(out/'evidence.tar')],90):raise SystemExit(2)
+69 | folder=out/'evidence';folder.mkdir()
+   |                      ^
+70 | with tarfile.open(out/'evidence.tar') as stream:
+71 |  for m in stream:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:72:17
+   |
+70 | with tarfile.open(out/'evidence.tar') as stream:
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+   |                 ^
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:72:82
+   |
+70 | with tarfile.open(out/'evidence.tar') as stream:
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+   |                                                                                  ^
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:72:98
+   |
+70 | with tarfile.open(out/'evidence.tar') as stream:
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+   |                                                                                                  ^
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:72:155
+   |
+70 | …
+71 | …
+72 | …=folder/p;assert target.resolve().is_relative_to(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes…
+   |                                                                    ^
+73 | …rt['status']=actual['status'];save();print(actual['status'],actual['packages'],flush=True)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:72:203
+   |
+70 | …
+71 | …
+72 | …(folder.resolve());target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(stream.extractfile(m).read())
+   |                                                                    ^
+73 | …l['status'],actual['packages'],flush=True)
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:73:54
+   |
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |                                                      ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:73:84
+   |
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |                                                                                    ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:73:118
+   |
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |                                                                                                                      ^
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\full-linux-readable\50bcbf5\drivers\verify-cancel-linux-full-packages.py:73:125
+   |
+71 |  for m in stream:
+72 |   p=Path(m.name);assert m.isfile() and not p.is_absolute() and '..'not in p.parts;target=folder/p;assert target.resolve().is_relative_…
+73 | actual=json.loads((folder/'result.json').read_text());report['guest_result']=actual;report['status']=actual['status'];save();print(act…
+   |                                                                                                                             ^
+
+Found 284 errors.
+[*] 37 fixable with `--fix` (1 unsafe fix available with `--fix --unsafe-fixes`).

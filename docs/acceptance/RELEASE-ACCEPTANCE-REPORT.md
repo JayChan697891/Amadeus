@@ -1,5 +1,32 @@
 # Release Acceptance Report
 
+## Alpha29 current desktop declaration (2026-11-06)
+
+Frozen `05a811a244d7cbf2c1c36f8f180baa4468dba7e3`, version0.3.0a29:
+the exact declaration0.167.0-alpha.3.2 joins the existing allowlist. Legacy default,
+fixed invocation guards and unverified authorization/cost/isolation markers stay.
+Root independently executed six affected modules on Windows Python3.14/3.11
+source and fresh offline wheel/rebuilt sdist: each184pass,0skip/failure/error;
+178retained+6new, no removed cases.713Git inputs,542Git-matched sdist members,
+8generated metadata members,63runtime origins per environment, artifact/directURL/
+log/JUnit hashes and identical case sets matched. Scoped Ruff/format src/tests/tools
+and mypy63 pass. Broad Ruff on historical raw evidence drivers has284lint errors/
+14format failures; logs retained, no whole-repository lint success claimed.
+
+User authorized one readonly fixed-text subscription task, conditional on no extra
+payment and existing safety gates. Local login-status metadata confirms ChatGPT;
+no model task ran, no raw account output was retained, authorization unconsumed.
+Astra preflight remains BLOCKED: ChatGPT method does not prove paid credits cannot
+be consumed, and the eight disables do not prove all current tools absent or
+isolation verified. No launch or retry to work around these unknowns.
+
+[Summary](evidence/alpha29-local-summary.json) and
+[raw evidence index](evidence/alpha29-readable/05a811a/INDEX.json), including four
+JUnit files, actual origins/logs, RED1, broad-check failures, root audit and critical
+preflight review. Build artifacts are stored once under releases/0.3.0a29.
+Full current Windows/Linux/macOS suites, live client result collection, autonomous
+relay and42formal requirements NOT RUN. Work review PENDING; M5/Release BLOCKED.
+
 ## Full Linux source and installed supplement (2026-11-06)
 
 Frozen product/test `50bcbf50095f7df1ca6a420e5d68c3892991f9d1`: complete Linux
@@ -21,8 +48,10 @@ stopped. OldVM11692 had already disappeared at resume, so its shutdown is unknow
 The138-member archive includes raw logs/JUnit, builds, Docker records, checksums,
 drivers and audits. Later proof-only commits do not change product/test bytes.
 
-This new supplement awaits Work review. Earlier PR33 limited component acceptance
-at08a3e93 does not accept the new evidence or formal release. Full current Windows/
+Work accepted this limited supplement at PR33 head8671c2d, comment6675346744.
+Work recomputed403text input SHA-256 hashes;14historical binary archives were
+unavailable through its reader and were not independently recomputed by Work.
+Root's417input audit is separate from that narrower Work evidence. Full current Windows/
 macOS, real model/client tasks, autonomous relay and42formal acceptance remain
 NOT RUN; M5/Release BLOCKED. No GitHub Actions or paid provider calls.
 
