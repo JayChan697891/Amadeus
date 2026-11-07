@@ -1,0 +1,20 @@
+"""Metadata-only existing-login check, no model request or account mutation."""
+import hashlib,json,os,subprocess,tempfile
+from pathlib import Path
+from datetime import datetime,timezone
+out=Path(tempfile.mkdtemp(prefix='a29-auth-method-',dir='D:/agentsync-debug'))
+exe=Path('C:/Program Files/WindowsApps/OpenAI.Codex_26.1103.3517.0_x64__2p2nqsd0c76g0/app/resources/codex.exe')
+allowed={'SYSTEMROOT','WINDIR','PATH','PATHEXT','COMSPEC','USERPROFILE','HOME','APPDATA','LOCALAPPDATA','PROGRAMDATA','PROGRAMFILES','PROGRAMFILES(X86)','CODEX_HOME'}
+env={k:v for k,v in os.environ.items() if k.upper() in allowed}
+env.update(TEMP=str(out),TMP=str(out))
+record={'time_utc':datetime.now(timezone.utc).isoformat(),'scope':'codex login status metadata only','command':[str(exe),'login','status'],'model_attempts':0,'raw_output_retained':False,'api_keys_passed':False,'account_config_modified_by_script':False}
+try:
+ p=subprocess.run(record['command'],cwd=out,env=env,capture_output=True,timeout=20,creationflags=subprocess.CREATE_NO_WINDOW)
+ raw=p.stdout+p.stderr;text=raw.decode(errors='replace').lower()
+ method='chatgpt' if p.returncode==0 and 'logged in using chatgpt' in text and 'api key' not in text else 'UNKNOWN'
+ record.update(exit_code=p.returncode,method=method,output_sha256=hashlib.sha256(raw).hexdigest(),output_bytes=len(raw))
+ del raw,text,p
+except subprocess.TimeoutExpired:record.update(exit_code=None,method='UNKNOWN',status='TIMEOUT_NO_RETRY')
+record['real_model_task']='NOT RUN'
+(out/'result.json').write_text(json.dumps(record,indent=2),encoding='utf-8')
+print(json.dumps({'directory':str(out),'method':record['method'],'exit_code':record['exit_code'],'model_attempts':0}))

@@ -1,0 +1,41 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m6-current-cli-sol\pytest-cache
+rootdir: F:\syuc\agentsync-execution-intent
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 1 item
+
+tests\unit\test_codex_invocation.py F                                    [100%]
+
+================================== FAILURES ===================================
+_________ test_current_desktop_version_changes_only_asserted_version __________
+
+tmp_path = WindowsPath('D:/agentsync-debug/m6-current-cli-sol/red-tmp/test_current_desktop_version_c0')
+
+    def test_current_desktop_version_changes_only_asserted_version(tmp_path):
+        profile = profile_for(tmp_path)
+        supplied = {"CODEX_HOME": "synthetic-home", "OPENAI_API_KEY": "synthetic-excluded-secret"}
+        legacy = prepare_invocation(profile, task(), environment=supplied)
+>       current = prepare_invocation(
+            replace(profile, expected_cli_version="0.167.0-alpha.3.2"), task(), environment=supplied
+        )
+
+tests\unit\test_codex_invocation.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\agentsync\adapters\codex_invocation.py:255: in prepare_invocation
+    _invalid("unsupported_cli_version")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = 'unsupported_cli_version'
+
+    def _invalid(code: str = "validation_error") -> NoReturn:
+>       raise AgentSyncError(code, "Invalid Codex invocation input.") from None
+E       agentsync.errors.AgentSyncError: Invalid Codex invocation input.
+
+src\agentsync\adapters\codex_invocation.py:77: AgentSyncError
+------ generated xml file: D:\agentsync-debug\m6-current-cli-sol\red.xml ------
+=========================== short test summary info ===========================
+FAILED tests/unit/test_codex_invocation.py::test_current_desktop_version_changes_only_asserted_version
+============================== 1 failed in 0.24s ==============================

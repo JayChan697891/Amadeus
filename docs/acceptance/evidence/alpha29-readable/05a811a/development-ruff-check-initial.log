@@ -1,0 +1,4 @@
+All checks passed!
+warning: Failed to write cache file `D:\agentsync-debug\m6-current-cli-sol\ruff-cache\0.17.1\983809900599768587`: 拒绝访问。 (os error 5)
+warning: Failed to write cache file `D:\agentsync-debug\m6-current-cli-sol\ruff-cache\0.17.1\125212465135824120`: 拒绝访问。 (os error 5)
+warning: Failed to write cache file `D:\agentsync-debug\m6-current-cli-sol\ruff-cache\0.17.1\6464182407319450425`: 拒绝访问。 (os error 5)

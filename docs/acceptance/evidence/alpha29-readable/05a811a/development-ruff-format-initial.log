@@ -1,0 +1,15 @@
+warning: Failed to write cache file `D:\agentsync-debug\m6-current-cli-sol\ruff-cache\0.17.1\3703116538318415849`: 拒绝访问。 (os error 5)
+warning: Failed to write cache file `D:\agentsync-debug\m6-current-cli-sol\ruff-cache\0.17.1\3204153781787207810`: 拒绝访问。 (os error 5)
+warning: Failed to write cache file `D:\agentsync-debug\m6-current-cli-sol\ruff-cache\0.17.1\12827859599592392368`: 拒绝访问。 (os error 5)
+unformatted: File would be reformatted
+  --> src\agentsync\adapters\codex_invocation.py:26:36
+   |
+25 | SUPPORTED_CLI_VERSION = "0.164.0-alpha.11.1"
+   - SUPPORTED_CLI_VERSIONS = frozenset(
+   -     {SUPPORTED_CLI_VERSION, "0.166.0-alpha.6", "0.167.0-alpha.3.2"}
+   - )
+26 + SUPPORTED_CLI_VERSIONS = frozenset({SUPPORTED_CLI_VERSION, "0.166.0-alpha.6", "0.167.0-alpha.3.2"})
+27 | MAX_BINARY_BYTES = 512 * 1024 * 1024
+   |
+
+1 file would be reformatted, 166 files already formatted

@@ -1,0 +1,54 @@
+"""Independent saved-file audit of frozen a29 tests and artifacts; no execution."""
+from pathlib import Path
+import hashlib,json,subprocess,tarfile,zipfile,xml.etree.ElementTree as ET
+repo=Path('F:/syuc/agentsync-execution-intent');out=Path('D:/agentsync-debug/current-cli29-blzwmob4')
+read=lambda p:json.loads(p.read_text(encoding='utf-8'))
+sha=lambda b:hashlib.sha256(b).hexdigest()
+r=read(out/'result.json');commit=r['commit'];assert commit=='05a811a244d7cbf2c1c36f8f180baa4468dba7e3' and r['passed']
+assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==commit
+tree=subprocess.check_output(['git','ls-tree','-rz','--full-tree',commit],cwd=repo)
+blobs={}
+for row in tree.split(b'\0'):
+ if row:
+  fields,name=row.split(b'\t',1);mode,kind,oid=fields.split();assert kind==b'blob';blobs[name.decode()]=oid.decode()
+assert set(blobs)==set(r['source_manifest'])
+for name,digest in r['source_manifest'].items():
+ data=(out/'source'/name).read_bytes();assert sha(data)==digest
+ assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==blobs[name]
+for name,check in r['checks'].items():
+ assert check['exit_code']==0 and sha((out/(name+'.log')).read_bytes())==check['log_sha256']
+def ids(path):
+ cases=list(ET.parse(path).getroot().iter('testcase'))
+ assert not any(c.find(t) is not None for c in cases for t in ('failure','error','skipped'))
+ result={c.get('classname')+'::'+c.get('name') for c in cases};assert len(result)==len(cases)
+ return result
+baseline=ids(Path('D:/agentsync-debug/cancel33-hc72z3ls/source314.xml'));assert len(baseline)==178
+current=None
+for name,suite in r['suites'].items():
+ actual=ids(out/(name+'.xml'));assert len(actual)==184 and set(suite['case_ids'])==actual
+ assert baseline<=actual and len(actual-baseline)==6
+ assert sha((out/(name+'.xml')).read_bytes())==suite['junit_sha256']
+ if current is None:current=actual
+ else:assert actual==current
+ origins=read(out/(name+'-origins.json'));assert set(origins)==set(r['runtime_modules']) and len(origins)==63
+ expected=out/'source/src' if name.startswith('source') else out/(name+'-venv/Lib/site-packages')
+ for rel,origin in origins.items():
+  p=Path(origin['path']);assert p.is_relative_to(expected) and origin['sha256']==r['runtime_modules'][rel]==sha(p.read_bytes())
+for name,digest in r['artifacts'].items():assert sha((out/'artifacts'/name).read_bytes())==digest
+for kind in ('wheel','sdist'):
+ direct=read(out/(kind+'-direct-url.json'));suffix='.whl' if kind=='wheel' else '.tar.gz'
+ artifact=next(n for n in r['artifacts'] if n.endswith(suffix))
+ assert direct['archive_info']['hashes']['sha256']==r['artifacts'][artifact]
+ assert direct['url']==(out/'artifacts'/artifact).as_uri()
+matching=0;generated=[]
+with tarfile.open(next((out/'artifacts').glob('*.tar.gz'))) as stream:
+ for member in stream:
+  if member.isfile():
+   name=member.name.split('/',1)[1];data=stream.extractfile(member).read()
+   if name in r['source_manifest']:assert sha(data)==r['source_manifest'][name];matching+=1
+   else:generated.append(name)
+assert len(generated)==8
+with zipfile.ZipFile(next((out/'artifacts').glob('*.whl'))) as z:
+ for name,digest in r['runtime_modules'].items():assert sha(z.read(name))==digest
+audit={'source_commit':commit,'git_inputs':len(blobs),'runtime_modules_each':63,'suites_each':{'passed':184,'failed':0,'errors':0,'skipped':0},'retained':178,'added':6,'removed':0,'sdist_matching_git_members':matching,'sdist_generated_members':generated,'git_blob_binding':True,'source_installed_origins':True,'artifacts_direct_url_logs_junit':True,'case_sets_identical':True,'new_ids':sorted(current-baseline),'real_client':'NOT RUN','full_suite_at_this_sha':'NOT RUN','release':'BLOCKED'}
+(out/'root-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8');print(json.dumps(audit))
