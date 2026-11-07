@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a29 development prototype; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a30 development source; verification pending; M5 and Release BLOCKED**. Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -126,6 +126,27 @@ The default total attempt budget is 6, with a maximum of 16. An optional
 graphs use a disposable owned project and always return simulation/unverified
 markers; they do not attach to existing projects or launch real clients.
 
+Use `agentsync mock-workflow --scratch-parent ABSOLUTE_DIRECTORY` to pass a
+task graph as UTF-8 JSON on standard input. The scratch parent must already exist.
+For example, a build followed by a check uses this input:
+
+```json
+{
+  "tasks": [
+    {"label": "build", "priority": 20, "capability": "build"},
+    {"label": "check", "priority": 10, "capability": "test", "dependencies": ["build"]}
+  ],
+  "attempt_budget": 4
+}
+```
+
+Optional top-level fields include `max_attempts_per_task`, `attempt_budget`, and
+`max_elapsed_seconds`. Supply `workers` to define two to eight Mock workers, each
+with a unique `label` and a `capabilities` array containing `build`, `test`, or
+both. Every task capability needs a matching worker. `parallel_limit` defaults
+to two and can be set from one to the worker count. Inspect `data.outcome` and
+`data.stop_reason` to distinguish a completed simulation from a budget stop.
+
 `python -m agentsync demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
 four-task diamond with two Mock workers, capability/dependency planning, one failed
 attempt followed by retry, and peer simulated reviews. The scratch parent must
@@ -172,6 +193,12 @@ caller-supplied identifiers; they contain no raw output/client metadata. The
 32 MiB format grants no authenticity. Both methods perform no file, database or
 network I/O: callers control storage and crash-safe writes. They do not restore
 Agent processes or tasks and do not add transport/API-call accounting.
+
+For an explicitly selected private file, `agentsync.usage_storage` provides
+`save_usage_checkpoint(path, ledger)` and `load_usage_checkpoint(path, project_id)`.
+Supply an absolute file path in an existing owner-controlled directory and use
+a single writer. Save flushes a temporary file before replacing the checkpoint.
+Load validates the saved data and rebuilds its totals for the expected project.
 
 `agentsync usage --project-id PROJECT_ID` reads one UTF-8 checkpoint from stdin
 and prints the same aggregate summary. This offline CLI accepts at most1 MiB;

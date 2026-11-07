@@ -3,6 +3,10 @@ include AGENTS.md WORKFLOW.md .env.example .gitignore .gitattributes
 include requirements-lock.txt
 include requirements-dev-lock.txt
 recursive-include docs *.md *.json *.xml *.txt
+# Keep raw checkpoint copies in the repository. Package the summaries and tools.
+prune docs/acceptance/evidence/cancellation-readable
+prune docs/acceptance/evidence/full-linux-readable
+prune docs/acceptance/evidence/alpha29-readable
 recursive-include examples *.py *.md *.json *.toml
 recursive-include tests *.py
 recursive-include tools *.py *.ps1 *.txt

@@ -167,6 +167,10 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Run a disposable fixed Mock workflow in the existing scratch parent",
     )
+    mock_workflow = commands.add_parser(
+        "mock-workflow", help="Run a disposable Mock task graph from bounded stdin JSON"
+    )
+    mock_workflow.add_argument("--scratch-parent", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.command == "plan":
         from agentsync.planning_cli import invalid_input
@@ -176,6 +180,12 @@ def main(argv: list[str] | None = None) -> int:
         from agentsync.usage_cli import invalid_input
 
         return invalid_input()
+    if args.command == "mock-workflow":
+        if args.data_dir is not None:
+            parser.error("mock-workflow requires --scratch-parent instead of --data-dir")
+        from agentsync.mock_workflow_cli import run_mock_workflow_cli
+
+        return run_mock_workflow_cli(args.scratch_parent)
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")

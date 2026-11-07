@@ -1,5 +1,18 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+2026-11-07, alpha30 source checkpoint. The owner requested implementation before
+testing or debugging. M6 adds explicit pinned Cursor ask/terminal-JSON preparation
+and a contextual process factory. M7 exposes configurable Mock workflows on stdin
+with a bounded worker roster and parallel budget. M8 adds explicit local save and
+restore for private usage checkpoints. M9 keeps historical raw evidence in Git
+while omitting those copies from future source packages.
+
+Validation for alpha30 is NOT RUN, including static checks, product execution,
+package builds, all real clients and Release Acceptance. Earlier a29 and a28
+evidence belongs to its own frozen commits. M5 and Release remain BLOCKED. Continue
+with the remaining implementation, including optional provider integration and
+the controlled relay path, within existing authorization gates.
+
 2026-11-06 alpha29 frozen `05a811a244d7cbf2c1c36f8f180baa4468dba7e3`:
 add only exact desktop declaration0.167.0-alpha.3.2, preserving old declarations,
 legacy default, argv/environment guards and unverified markers. Root independently

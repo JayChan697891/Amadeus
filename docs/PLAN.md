@@ -4,7 +4,9 @@ Use [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md) as the only M5 exit checkli
 M5 remains the original five requirements; no new stages for documentation,
 duplicate evidence or noncritical enhancements. Existing stage records below are
 historical. Current M6 has typed host-factory Codex/Claude/Cursor protocol adapters,
-bounded offline parsers/inspectors and a pure pinned Codex invocation plan.
+bounded offline parsers/inspectors and explicit pinned invocation plans.
+The current code-first phase defers validation until implementation is ready.
+See [current progress](PROGRESS.md) for source changes and unrun checks.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe
 its startup receipt with a bounded wait; this does not enable automatic scheduling.

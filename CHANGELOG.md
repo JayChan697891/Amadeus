@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a30 - implementation checkpoint
+
+- Add a pinned Cursor CLI plan and opt-in process factory for terminal JSON.
+- Run configurable Mock task graphs and worker rosters through a local stdin command.
+- Save and restore explicitly selected private usage checkpoints.
+- Keep raw historical evidence copies in Git and omit them from source packages.
+- Validation deferred to the end of the implementation phase.
+
 ## 0.3.0a29 - current desktop CLI declaration
 
 - Admit the exact reviewed desktop declaration `0.167.0-alpha.3.2` alongside

@@ -65,6 +65,54 @@ _SCENARIO = (
 )
 
 
+@dataclass(frozen=True, slots=True)
+class MockWorkflowWorker:
+    """Named simulation worker with one or both supported capabilities."""
+
+    label: str
+    capabilities: tuple[Literal["build", "test"], ...]
+
+    def __post_init__(self) -> None:
+        if (
+            not _valid_label(self.label)
+            or type(self.capabilities) is not tuple
+            or not 1 <= len(self.capabilities) <= 2
+            or any(
+                type(value) is not str or value not in ("build", "test")
+                for value in self.capabilities
+            )
+            or len(set(self.capabilities)) != len(self.capabilities)
+        ):
+            raise ValueError("Invalid mock workflow worker.")
+
+
+_WORKERS = (
+    MockWorkflowWorker("build", ("build",)),
+    MockWorkflowWorker("test", ("test",)),
+)
+
+
+def _copy_workers(
+    workers: tuple[MockWorkflowWorker, ...], scenario: tuple[MockWorkflowTask, ...]
+) -> tuple[MockWorkflowWorker, ...]:
+    if (
+        type(workers) is not tuple
+        or not 2 <= len(workers) <= 8
+        or any(type(worker) is not MockWorkflowWorker for worker in workers)
+    ):
+        raise ValueError("Invalid mock workflow workers.")
+    try:
+        copies = tuple(replace(worker) for worker in workers)
+    except (AttributeError, TypeError):
+        raise ValueError("Invalid mock workflow worker.") from None
+    supported = {capability for worker in copies for capability in worker.capabilities}
+    if len({worker.label for worker in copies}) != len(copies) or any(
+        task.capability not in supported for task in scenario
+    ):
+        raise ValueError("Mock workflow requires distinct workers covering all tasks.")
+    return copies
+
+
 def _copy_tasks(tasks: tuple[MockWorkflowTask, ...]) -> tuple[MockWorkflowTask, ...]:
     if (
         type(tasks) is not tuple
@@ -122,6 +170,8 @@ async def run_mock_workflow(
     scratch_parent: Path,
     *,
     tasks: tuple[MockWorkflowTask, ...],
+    workers: tuple[MockWorkflowWorker, ...] = _WORKERS,
+    parallel_limit: int = 2,
     max_attempts_per_task: int = 2,
     attempt_budget: int = 6,
     max_elapsed_seconds: float | None = None,
@@ -130,8 +180,9 @@ async def run_mock_workflow(
 
     The parent must already be an absolute directory. Strict integer bounds are
     1..3 attempts per task and 1..16 starts overall (default 6). Task values are
-    copied and validated as an acyclic graph before filesystem I/O. Unordered
-    inputs use deterministic topological creation order. Existing parent databases
+    copied and validated as an acyclic graph before filesystem I/O. The two to
+    eight workers must cover every task capability, with one active run each.
+    Tasks use deterministic topological creation order. Existing parent databases
     are never opened. Only logical labels and simulation observations are returned.
     Core errors propagate; owned active Mock runs are cancelled on unexpected exit.
     Optional elapsed budget is a finite number in (0, 60], including owned Core
@@ -156,6 +207,9 @@ async def run_mock_workflow(
     ):
         raise ValueError("Invalid mock workflow scratch parent or bounds.")
     scenario = _copy_tasks(tasks)
+    roster = _copy_workers(workers, scenario)
+    if type(parallel_limit) is not int or not 1 <= parallel_limit <= len(roster):
+        raise ValueError("Invalid mock workflow parallel limit.")
     try:
         scratch_parent = scratch_parent.resolve(strict=True)
     except (OSError, RuntimeError):
@@ -164,12 +218,22 @@ async def run_mock_workflow(
         raise ValueError("Mock workflow scratch parent must be an existing directory.")
     deadline = None if max_elapsed_seconds is None else monotonic() + max_elapsed_seconds
     with TemporaryDirectory(prefix="agentsync-mock-workflow-", dir=scratch_parent) as child:
-        return await _run(Path(child), scenario, max_attempts_per_task, attempt_budget, deadline)
+        return await _run(
+            Path(child),
+            scenario,
+            roster,
+            parallel_limit,
+            max_attempts_per_task,
+            attempt_budget,
+            deadline,
+        )
 
 
 async def _run(
     directory: Path,
     scenario: tuple[MockWorkflowTask, ...],
+    roster: tuple[MockWorkflowWorker, ...],
+    parallel_limit: int,
     max_attempts: int,
     budget: int,
     deadline: float | None,
@@ -180,8 +244,11 @@ async def _run(
     project = core.execute("create_project", {"name": _MARKER, "root_path": str(root)})
     project_id = project["project_id"]
     actors = []
-    for label in ("build", "test"):
-        actor = core.execute("register_agent", {**project, "name": label, "capabilities": [label]})
+    for worker in roster:
+        actor = core.execute(
+            "register_agent",
+            {**project, "name": worker.label, "capabilities": list(worker.capabilities)},
+        )
         core.execute_owner(
             "set_agent_roles",
             {
@@ -189,7 +256,7 @@ async def _run(
                 "agent_id": actor["agent_id"],
                 "roles": ["worker", "reviewer"],
                 "expected_version": 1,
-                "request_id": "grant-" + label,
+                "request_id": "grant-" + worker.label,
             },
         )
         actors.append(actor)
@@ -222,11 +289,11 @@ async def _run(
     fail_first = {definition.label for definition in scenario if definition.fail_first_attempt}
     labels = {row["id"]: label for label, row in tasks.items()}
     worker_indices = {actor["agent_id"]: index for index, actor in enumerate(actors)}
-    worker_labels = ("build", "test")
+    worker_labels = tuple(worker.label for worker in roster)
     manager = MockRunManager(
         project_id,
         tuple(MockWorker(actor["agent_id"], actor["session_id"]) for actor in actors),
-        global_limit=2,
+        global_limit=parallel_limit,
         per_agent_limit=1,
         max_runs=16,
         clock=lambda: 100.0,
@@ -289,9 +356,9 @@ async def _run(
                     project_id=project_id,
                     worker_agent_ids=tuple(actor["agent_id"] for actor in actors),
                     now=time.time(),
-                    global_limit=2,
+                    global_limit=parallel_limit,
                     per_agent_limit=1,
-                    limit=min(fresh_budget, 2),
+                    limit=min(fresh_budget, parallel_limit),
                     required_capabilities=requirements,
                 )
                 batch.extend(
@@ -371,7 +438,7 @@ async def _run(
                         retries.append(label)
                     continue
                 submitted = transition(label, "review")
-                peer = 1 - worker
+                peer = (worker + 1) % len(roster)
                 completed = call(
                     peer,
                     "review_task",

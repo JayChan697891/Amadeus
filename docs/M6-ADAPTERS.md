@@ -222,13 +222,22 @@ cancellation, deadline behavior and unsupported resume match the shared engine.
 An explicit `CursorAdapter(..., contextual_factory=factory)` can now pass its
 task-bound `LaunchContext` to a trusted host factory, mutually exclusive with
 the legacy `factory` argument. The host must use `context.start(...)` to obtain
-the existing prelaunch stop/deadline and one-attempt checks. This entry point
-does not supply a Cursor invocation plan, authenticate the factory or authorize
-execution. Default startup remains unsupported; already-scheduled OS creation
-and parent-only cleanup retain the shared engine's documented limitations.
+the existing prelaunch stop/deadline and one-attempt checks. Default startup
+remains unsupported. Scheduled OS creation and parent-only cleanup retain the
+shared engine's documented limitations.
+
+`CursorHostProfile` and `prepare_invocation` in `agentsync.adapters.cursor_invocation`
+prepare a bounded plan for an explicit executable, binary SHA-256, host-declared
+version and working directory. `CursorProcessFactory` can pass that plan to the
+same contextual launch guard. The fixed flags select ask mode, terminal JSON
+and request the client sandbox. The prompt is a positional OS argument, so this
+prototype requires separately approved synthetic instructions without secrets.
+It uses a caller-supplied system environment allowlist. Actual auth, billing,
+tool restrictions, isolation and CLI/OS compatibility remain unverified.
 
 The supported schema is based on the official
 [Cursor output format](https://cursor.com/docs/cli/reference/output-format).
+Invocation flags are based on [Cursor CLI parameters](https://cursor.com/docs/cli/reference/parameters).
 Only synthetic known-Python fixtures have been exercised. Actual Cursor, CLI/OS
 compatibility, permissions, server cancellation and autonomous relay are NOT RUN.
 

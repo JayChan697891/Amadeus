@@ -1,4 +1,9 @@
-# Current continuation entry (2026-11-06)
+# Current continuation entry (2026-11-07)
+
+The owner requested a code-first phase. Continue implementation and publish
+reviewable source checkpoints. Defer debugging, tests, package builds and live
+client calls until the implementation phase ends. Record unrun validation as
+NOT RUN. Existing safety gates remain in effect. See docs/PROGRESS.md.
 
 Alpha29 exact desktop declaration is frozen at05a811a; see current PROGRESS and
 acceptance/evidence/alpha29-local-summary.json. Four selected Windows source/
