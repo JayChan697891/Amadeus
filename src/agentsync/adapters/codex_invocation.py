@@ -23,7 +23,7 @@ from agentsync.adapters.base import AdapterTask, _identifier
 from agentsync.errors import AgentSyncError
 
 SUPPORTED_CLI_VERSION = "0.164.0-alpha.11.1"
-SUPPORTED_CLI_VERSIONS = frozenset({SUPPORTED_CLI_VERSION, "0.166.0-alpha.6"})
+SUPPORTED_CLI_VERSIONS = frozenset({SUPPORTED_CLI_VERSION, "0.166.0-alpha.6", "0.167.0-alpha.3.2"})
 MAX_BINARY_BYTES = 512 * 1024 * 1024
 _MODEL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,99}\Z")
 _SHA256 = re.compile(r"[0-9a-fA-F]{64}\Z")
