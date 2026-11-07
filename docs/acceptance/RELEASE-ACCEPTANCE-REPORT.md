@@ -4,6 +4,12 @@ Alpha30 is a source-only development checkpoint. Per owner direction, validation
 for it is **NOT RUN** until the implementation phase ends. All results below apply
 to their recorded earlier commits. **M5 and Release remain BLOCKED.**
 
+After collecting local host reports, use `python tools/acceptance_matrix.py
+--commit SHA WINDOWS_REPORT LINUX_REPORT MACOS_REPORT` to summarize the checks
+and JUnit counts reported for one clean frozen revision. The summary identifies
+missing platforms and reported failures. Formal acceptance still requires direct
+evidence review and the existing release gates.
+
 ## Alpha29 current desktop declaration (2026-11-06)
 
 Frozen `05a811a244d7cbf2c1c36f8f180baa4468dba7e3`, version0.3.0a29:

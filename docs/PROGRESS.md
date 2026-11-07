@@ -6,9 +6,10 @@ and a contextual process factory. M7 exposes configurable Mock workflows on stdi
 with a bounded worker roster and parallel budget. Optional simulated handoff pins
 a context revision, transfers ownership through Core, schedules a recipient
 attempt under the same budgets and selects a third participant for review.
-M8 adds explicit local save and
-restore for private usage checkpoints. M9 keeps historical raw evidence in Git
-while omitting those copies from future source packages.
+M8 adds explicit local save and restore for private usage checkpoints. M9 keeps
+raw evidence in Git, omits those copies from future source packages and keeps
+Ruff focused on maintained files. The acceptance matrix tool summarizes saved
+local reports only when their frozen source identities match.
 
 Validation for alpha30 is NOT RUN, including static checks, product execution,
 package builds, all real clients and Release Acceptance. Earlier a29 and a28

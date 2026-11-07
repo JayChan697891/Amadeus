@@ -45,6 +45,12 @@ addopts = "-ra"
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+# Raw historical proof members keep their original bytes for checksum verification.
+extend-exclude = [
+  "docs/acceptance/evidence/cancellation-readable",
+  "docs/acceptance/evidence/full-linux-readable",
+  "docs/acceptance/evidence/alpha29-readable",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
