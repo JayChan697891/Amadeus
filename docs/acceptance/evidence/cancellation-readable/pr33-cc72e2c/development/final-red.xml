@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.169" timestamp="2026-11-05T18:26:52.423919-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.unit.test_adapter_run_manager" name="test_capabilities_callback_cannot_swallow_uncleared_caller_cancellation" time="0.003"><failure message="Failed: DID NOT RAISE CancelledError">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002C7B0266060&gt;
+
+    async def test_capabilities_callback_cannot_swallow_uncleared_caller_cancellation(monkeypatch):
+        adapter = MockAdapter("project", "session")
+        manager = RunManager("project", "session", {"worker": adapter})
+        entered = asyncio.Event()
+    
+        async def blocked():
+            entered.set()
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                return "private adapter result"
+    
+        monkeypatch.setattr(adapter, "capabilities", blocked)
+        caller = asyncio.create_task(manager.capabilities("worker"))
+        await entered.wait()
+        caller.cancel("private caller detail")
+&gt;       with pytest.raises(asyncio.CancelledError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE CancelledError
+
+tests\unit\test_adapter_run_manager.py:791: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m6-internal-cancel-sol\final-focused-cache
+rootdir: F:\syuc\agentsync-execution-intent
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 176 items
+
+tests\unit\test_adapter_run_manager.py ................................. [ 18%]
+........................................................................ [ 59%]
+......                                                                   [ 63%]
+tests\unit\test_cursor_adapter.py .............                          [ 70%]
+tests\unit\test_adapters.py ...................................          [ 90%]
+tests\integration\test_adapter_manager_core_boundary.py .                [ 90%]
+tests\integration\test_mock_run_manager_core_boundary.py .....           [ 93%]
+tests\integration\test_mock_adapter_core_boundary.py ........            [ 98%]
+tests\integration\test_cursor_adapter_core_boundary.py ...               [100%]
+
+- generated xml file: D:\agentsync-debug\m6-internal-cancel-sol\final-focused.xml -
+============================= 176 passed in 4.33s =============================

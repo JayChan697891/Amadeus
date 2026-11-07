@@ -115,6 +115,36 @@ async def test_exact_pinned_fields_feed_fixture_capture_and_replay_only_once(tmp
     assert len(calls) == 1  # A second invocation must hash afresh, not reuse its first plan.
 
 
+@pytest.mark.asyncio
+async def test_desktop_version_profile_flows_to_owned_python_fixture_only(tmp_path, monkeypatch):
+    profile = replace(fixture_profile(tmp_path), expected_cli_version="0.166.0-alpha.6")
+    task, environment = request(), explicit_env(tmp_path)
+    expected = prepare_invocation(profile, task, environment=environment)
+    original_start, calls = CapturedProcess.start, []
+
+    async def fixture_start(cls, argv, **options):
+        calls.append(argv)
+        assert argv == expected.argv
+        assert options == dict(
+            cwd=expected.cwd,
+            stdin_text=expected.stdin_text,
+            timeout_seconds=expected.timeout_seconds,
+            output_limit=expected.output_limit,
+            env=expected.child_env(),
+        )
+        return await original_start((known_python(), "-I", "-u", "-c", HELPER), **options)
+
+    monkeypatch.setattr(CapturedProcess, "start", classmethod(fixture_start))
+    adapter = CodexAdapter(
+        "p", "s", contextual_factory=CodexProcessFactory(profile, environment=environment)
+    )
+    run = await adapter.start_task(task)
+    assert (await terminal(adapter, run.run_id)).status == "succeeded"
+    result = await adapter.get_result(run.run_id)
+    assert result.agent_messages == (task.instruction,) and len(calls) == 1
+    assert not result.real_client_verified and result.core_authorization == "unverified"
+
+
 @pytest.mark.parametrize("change", ["binary", "root", "version"])
 @pytest.mark.asyncio
 async def test_fresh_pin_root_and_version_fail_before_any_capture(tmp_path, monkeypatch, change):

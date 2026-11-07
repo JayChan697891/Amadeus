@@ -1,0 +1,65 @@
+{
+  "schema": "agentsync.local-checkpoint.v1",
+  "pr": 33,
+  "version": "0.3.0a28",
+  "source_commit": "cc72e2cf2dbc3b27faba7ef50adcaf1ae2dfed38",
+  "scope": "Work PR31 cancellation privacy repair and repaired inherited baseline; no full B3/client acceptance",
+  "suites": {
+    "source314": {
+      "tests": 178,
+      "passed": 178,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "d433362736b936a803b02c53d3fc8e2d275735ee135d09dab9052356671a3145"
+    },
+    "source311": {
+      "tests": 178,
+      "passed": 178,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "aaa094f43a24934cd348cd0166dc1f32aebfc48a10074f19f838a35206715fd9"
+    },
+    "wheel": {
+      "tests": 178,
+      "passed": 178,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "87d98d893381ddcb1c97161444336d9aa7b0788bd0725f9009999912670566c3"
+    },
+    "sdist": {
+      "tests": 178,
+      "passed": 178,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "084a2d458c09fa5938755e40ff03afa8e7893d6a5a2b6caebcfbc003530ca540"
+    }
+  },
+  "identity": {
+    "source_commit": "cc72e2cf2dbc3b27faba7ef50adcaf1ae2dfed38",
+    "git_files": 409,
+    "runtime_modules_each": 63,
+    "sdist_matching_git_members": 352,
+    "unique_cases_each": 178,
+    "retained_cases": 151,
+    "new_cancellation_cases": 27,
+    "checks": "Independent Git/file/origin/JUnit/log/artifact bytes PASS"
+  },
+  "archive": "releases/0.3.0a28/checkpoints/cancel-pr33-cc72e2c.tar.gz",
+  "archive_sha256": "dd02d121d5ccfd9af6c6386ac349c1b1392c222743ff2391cd6453c9b13c1c7f",
+  "manifest_members": 51,
+  "static": "Ruff/format/mypy63 PASS",
+  "independent_review": "Astra static source/hash review; no tests run by reviewer; Work pending",
+  "policy": "Outstanding cancellation prevents adapter entry and is normalized to message-free CancelledError; internally raised CancelledError without pending request maps to static error. Counts are policy, not authenticated origin; uncancel required for swallowed requests. Success path rechecks pending state.",
+  "red_evidence": "Initial26 regressions and additional successful-return regression1 retained",
+  "not_run": [
+    "whole repository/Linux/macOS at this SHA",
+    "real clients/model tasks",
+    "autonomous relay",
+    "formal42 acceptance"
+  ],
+  "release": "BLOCKED"
+}

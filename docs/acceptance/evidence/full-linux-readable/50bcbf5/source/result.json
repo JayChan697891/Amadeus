@@ -1,0 +1,24 @@
+{
+  "commit": "50bcbf50095f7df1ca6a420e5d68c3892991f9d1",
+  "scope": "complete local Linux SOURCE suite including required real Docker tier; existing dependency venv and pinned preloaded image",
+  "image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "sqlite": "3.53.4",
+  "source_files": 417,
+  "status": "COMPLETED",
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "deadline_seconds": 1200,
+  "owned_pytest_pid": 2956,
+  "exit_status": 0,
+  "wall_seconds": 675.9520091989999,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 2043,
+    "passed": 2039,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "passed": true
+}

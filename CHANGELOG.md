@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0a28 - explicit desktop Codex preparation version
+
+- Allow the exact reviewed desktop CLI declaration `0.166.0-alpha.6` during
+  Codex plan preparation, retaining the original version and default profile.
+- Keep unknown versions denied and preserve fixed arguments, environment filtering
+  and all unverified authorization/client/cost markers. No live model test implied.
+
 ## 0.3.0a27 - configurable owned Mock workflow
 
 - Execute a validated bounded task DAG using the existing temporary-project Mock

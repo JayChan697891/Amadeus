@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a27 development prototype; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a28 development prototype; M5 and Release BLOCKED**. Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -22,6 +22,14 @@ Ordinary text reviews remain unverified, and historical receipts stay immutable.
 Approval consumption, source application, automatic
 retries and actual-client relay remain gated. All checks run locally; GitHub Actions
 are manual-only and are not used for development testing.
+
+Codex host profiles may explicitly declare desktop CLI `0.166.0-alpha.6` or the
+legacy `0.164.0-alpha.11.1` default. The same exact-version gate is used by plan
+preparation and the opt-in process factory. Unlisted versions remain rejected.
+Host version declarations and fixed CLI flags do not establish authentication,
+billing or sandbox isolation; every real factory invocation still needs its
+existing authorization and safety conditions. Local version/help/feature listing
+is recorded separately from model-task testing, which remains unverified.
 
 To obtain a handle before an adapter start finishes, await
 `manager.dispatch_task(adapter_id, task)`. This admits the same request once and

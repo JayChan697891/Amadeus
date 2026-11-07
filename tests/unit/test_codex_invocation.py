@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pytest
 
+from agentsync.adapters import codex_invocation
 from agentsync.adapters.base import AdapterTask
 from agentsync.adapters.codex_invocation import CodexHostProfile, prepare_invocation
 from agentsync.errors import AgentSyncError
@@ -302,3 +303,60 @@ def test_binary_hash_reads_multiple_chunks_and_requires_ordinary_explicit_paths(
         with pytest.raises(AgentSyncError) as error:
             prepare_invocation(replace(profile, **change), task(), environment={})
         assert error.value.code == "host_path_invalid"
+
+
+def test_desktop_version_preserves_legacy_default_and_changes_only_asserted_version(tmp_path):
+    profile = profile_for(tmp_path)
+    assert (
+        profile.expected_cli_version
+        == codex_invocation.SUPPORTED_CLI_VERSION
+        == "0.164.0-alpha.11.1"
+    )
+    supplied = {"CODEX_HOME": "synthetic-home", "OPENAI_API_KEY": "synthetic-excluded-secret"}
+    legacy = prepare_invocation(profile, task(), environment=supplied)
+    desktop = prepare_invocation(
+        replace(profile, expected_cli_version="0.166.0-alpha.6"), task(), environment=supplied
+    )
+    assert desktop == replace(legacy, expected_cli_version="0.166.0-alpha.6")
+    assert codex_invocation.SUPPORTED_CLI_VERSIONS == frozenset(
+        {"0.164.0-alpha.11.1", "0.166.0-alpha.6"}
+    )
+    assert type(codex_invocation.SUPPORTED_CLI_VERSIONS) is frozenset
+    assert desktop.scope == "read_only_cli_plan"
+    assert desktop.verification == desktop.core_authorization == "unverified"
+    assert all(
+        getattr(desktop, marker) is False
+        for marker in (
+            "executes",
+            "version_verified",
+            "auth_verified",
+            "billing_verified",
+            "real_client_verified",
+            "sandbox_verified",
+        )
+    )
+
+
+@pytest.mark.parametrize(
+    "version",
+    [
+        "0.162.0",
+        "0.164.0-alpha.11.2",
+        "0.166.0-alpha.5",
+        "0.166.0-alpha.7",
+        "0.167.0-alpha.1",
+        "0.166.0-alpha.6 ",
+    ],
+)
+def test_unlisted_versions_are_rejected_before_filesystem_access(tmp_path, monkeypatch, version):
+    profile = replace(profile_for(tmp_path), expected_cli_version=version)
+
+    def no_io(*args, **kwargs):
+        pytest.fail("Unlisted version reached filesystem access")
+
+    monkeypatch.setattr(Path, "lstat", no_io)
+    monkeypatch.setattr(Path, "open", no_io)
+    with pytest.raises(AgentSyncError) as error:
+        prepare_invocation(profile, task(), environment={})
+    assert error.value.code == "unsupported_cli_version"
+    assert error.value.message == "Invalid Codex invocation input."

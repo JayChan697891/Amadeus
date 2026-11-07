@@ -1,0 +1,20 @@
+Looking in links: d:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\setuptools-82.0.1-py3-none-any.whl
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\wheel-0.46.3-py3-none-any.whl
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\pytest-9.1.1-py3-none-any.whl
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\pytest_asyncio-1.4.0-py3-none-any.whl
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\httpx-0.28.1-py3-none-any.whl
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\packaging-26.3-py3-none-any.whl (from wheel==0.46.3)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\colorama-0.4.6-py2.py3-none-any.whl (from pytest==9.1.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\iniconfig-2.3.1-py3-none-any.whl (from pytest==9.1.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\pluggy-1.7.0-py3-none-any.whl (from pytest==9.1.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\pygments-2.21.0-py3-none-any.whl (from pytest==9.1.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\anyio-4.15.1-py3-none-any.whl (from httpx==0.28.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\certifi-2026.10.19-py3-none-any.whl (from httpx==0.28.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\httpcore-1.0.9-py3-none-any.whl (from httpx==0.28.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\idna-3.20-py3-none-any.whl (from httpx==0.28.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\h11-0.16.0-py3-none-any.whl (from httpcore==1.*->httpx==0.28.1)
+Processing D:\agentsync-debug\evidence\windows-final-aac28a0\windows-wheelhouse\typing_extensions-4.16.0-py3-none-any.whl (from anyio->httpx==0.28.1)
+Installing collected packages: typing_extensions, setuptools, pygments, pluggy, packaging, iniconfig, idna, h11, colorama, certifi, wheel, pytest, httpcore, anyio, pytest-asyncio, httpx
+
+Successfully installed anyio-4.15.1 certifi-2026.10.19 colorama-0.4.6 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1 pytest-asyncio-1.4.0 setuptools-82.0.1 typing_extensions-4.16.0 wheel-0.46.3

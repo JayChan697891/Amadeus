@@ -23,6 +23,7 @@ from agentsync.adapters.base import AdapterTask, _identifier
 from agentsync.errors import AgentSyncError
 
 SUPPORTED_CLI_VERSION = "0.164.0-alpha.11.1"
+SUPPORTED_CLI_VERSIONS = frozenset({SUPPORTED_CLI_VERSION, "0.166.0-alpha.6"})
 MAX_BINARY_BYTES = 512 * 1024 * 1024
 _MODEL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,99}\Z")
 _SHA256 = re.compile(r"[0-9a-fA-F]{64}\Z")
@@ -250,7 +251,7 @@ def prepare_invocation(
     profile = replace(profile)
     if task.project_id != profile.project_id or task.session_id != profile.session_id:
         _invalid("namespace_mismatch")
-    if profile.expected_cli_version != SUPPORTED_CLI_VERSION:
+    if profile.expected_cli_version not in SUPPORTED_CLI_VERSIONS:
         _invalid("unsupported_cli_version")
     selected_environment = _environment(environment)
     binary_sha256 = _binary_hash(profile)

@@ -1,5 +1,36 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+2026-11-06 full Linux supplement, frozen `50bcbf50095f7df1ca6a420e5d68c3892991f9d1`:
+complete source, fresh offline wheel and rebuilt sdist each2039passed/4explained
+skips/0failure,error,2043uniqueIDs; all1899prior cases retained+144new. Required
+actual Docker enabled. Root and Astra data audits matched417Git inputs,63runtime
+modules/origins,357sdist Git members+8generated metadata files, artifact/directURL
+hashes and identical case/skip sets.96recorded container IDs independently absent;
+owned postcheckVM5552 gracefully stopped. OldVM11692 was absent on resume; shutdown
+was not observed and is not claimed graceful. Astra38data checks passed, no findings.
+Full evidence138-member archive and directly readable logs/JUnit/origins/records:
+acceptance/evidence/full-linux-50bcbf5-summary.json. New supplement Work PENDING;
+PR33 prior limited component accepted at08a3e93. Full current Windows/macOS,
+real clients/model tasks, relay and formal42 NOT RUN; M5/Release BLOCKED.
+
+Alpha28 M6 exact desktop CLI declaration at `fdb316b736825f0ac7b3e6a79ddee1046ff23668`
+admits0.166.0-alpha.6 alongside the unchanged0.164.0-alpha.11.1 default; unlisted
+versions including installed npm0.162 remain denied. Existing opt-in factory uses
+the same gate, without granting new execution authorization. Root probed actual
+CLI version/help/read-only features in disposable homes and prepared a plan against
+the real pinned desktop binary; no model task/login/account change. Official basis:
+https://learn.chatgpt.com/docs/non-interactive-mode . Actual auth/billing/sandbox,
+full flag-combination execution and live client behavior remain unverified.
+Root Windows3.14/3.11 source and fresh offline Windows wheel/sdist six affected
+modules each151pass/0skip, same143retained+8newIDs. Root matched407Git inputs,
+351sdist Git members,63runtime origins each, raw artifacts/logs/JUnit/55archive
+members; Ruff/format/mypy63 pass. Astra limited static review no open blockers.
+InitialRED1 retained. First collector assumed review findings were objects instead
+of strings; corrected to check explicit open_blockers and exact hashes before archive.
+No product test rerun or result change. Evidence: acceptance/evidence/alpha28-local-summary.json.
+Whole current repository/Linux/macOS/live model tasks/relay/formal42 NOT RUN;
+Work pending, M5/Release BLOCKED. No Actions/main merge/paid API/VM startup.
+
 Alpha27 M7 configurable owned Mock workflows at `b9533352abc4c8c94a2676792f00b616b63032ee`
 adds typed copied task graphs (1..16), strict pre-I/O validation and deterministic
 topological creation. Non-demo chains/fan-in/parallel tasks reuse dependency/capability
