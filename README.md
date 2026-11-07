@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a30 development source; verification pending; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a31 development source; verification pending; M5 and Release BLOCKED**. Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -166,6 +166,33 @@ It cannot preempt synchronous operations or hanging awaited calls. Omit it to
 preserve the original behavior. Reports explicitly mark all results
 as simulation-only/unverified. This does not enable real clients, production
 automatic review, durable recovery, AI decomposition or paid services.
+
+## Optional model assistance
+
+`agentsync.providers` offers explicit Python host profiles for OpenAI, Anthropic,
+Gemini, DeepSeek and local Ollama. A host supplies its chosen model and any API
+key directly. It reviews the exact `ModelRequest` and obtains permission for
+the possible cost before issuing an expiring one-use grant with
+`provider.authorize(request)`. Each call sends at most one request. Timeout,
+cancellation and rate limits leave retries to a separate host decision.
+
+API references: [OpenAI](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create),
+[Anthropic](https://platform.claude.com/docs/en/api/messages/create),
+[Gemini](https://ai.google.dev/api/generate-content),
+[DeepSeek](https://api-docs.deepseek.com/api/create-chat-completion/), and
+[Ollama](https://docs.ollama.com/api/chat).
+
+Use `prepare_decomposition`, `prepare_role_suggestions` or `prepare_handoff` to
+build an advisory request. `get_advice` parses the reply into a bounded task graph,
+role suggestions or handoff notes. `MockProvider` can return a supplied response
+through the same interface without network access. The host controls what source
+material is sent to a provider. Suggestions remain private advisory data.
+
+`ModelCallMeter` from `agentsync.model_usage` can wrap either provider. It tracks
+local invocation duration and failures, keeps Mock responses separate from token
+and cost totals, and preserves unknown costs. Optional `FlatRate` inputs provide
+an estimate in picodollars for the reported tokens. It does not read tariffs or
+establish a bill.
 
 ## Retry advice
 

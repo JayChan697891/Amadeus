@@ -93,6 +93,29 @@ guarantee is made. No persistence, approval consumption, safe apply or automatic
 task verification was added. Mock records retain their existing simulation flags;
 generic return types do not turn them into real-client evidence.
 
+## Owner-controlled relay pilot
+
+`ControlledRelay` in `agentsync.controlled_relay` takes a Core in an isolated
+scratch tree, a retained private receipt directory and two enrolled actors with
+separate managed worktrees. Supply an existing pending task, a pinned context
+revision and two fixed synthetic instructions and expected replies. Worktree
+comparison can stop the pilot before either client starts. Each `LaunchAuthority`
+must independently establish the environment and cost boundary and approve the
+exact pinned plan. The supplied actor session and lease are checked again at
+capture entry. Core receives no raw client replies.
+
+The first matching reply permits a versioned handoff to the second actor. The
+second actor reads the pinned context and claims a new lease. Two matching replies
+submit the task for review. `review_once` takes an explicit decision and evidence
+from an enrolled reviewer who took part in neither client run. This uses Core's
+ordinary review. Verified completion still uses its independent evidence gate.
+
+Keep the same private receipt directory on restart. An unfinished fence remains
+incomplete and prevents another launch for the task through this pilot. Existing
+Core lease recovery is separate. Filesystem receipts and Core changes are separate
+transactions, so a crash between them can require human reconciliation. Runtime
+validation of the relay and its operating-system isolation is pending.
+
 Offline tests use known local Python helpers and hand-authored JSONL. One separately
 authorized actual installed-wheel adapter+plan+explicit-env run returned a synthetic
 inline token successfully; it did not use tools or complete a Core task. Permissions,

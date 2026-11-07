@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a31 - controlled relay and model assistance source
+
+- Add a host-controlled two-client relay with exact launch approval, one-attempt
+  receipts, managed worktree checks, versioned handoff and separate review.
+- Add optional text-only model adapters and Mock-backed structured advice.
+- Track local provider calls and optional cost estimates without inferring billing.
+- Defer validation to the end of the implementation phase.
+
 ## 0.3.0a30 - implementation checkpoint
 
 - Add a pinned Cursor CLI plan and opt-in process factory for terminal JSON.

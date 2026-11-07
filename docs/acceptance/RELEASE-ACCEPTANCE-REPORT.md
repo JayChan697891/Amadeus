@@ -1,8 +1,8 @@
 # Release Acceptance Report
 
-Alpha30 is a source-only development checkpoint. Per owner direction, validation
-for it is **NOT RUN** until the implementation phase ends. All results below apply
-to their recorded earlier commits. **M5 and Release remain BLOCKED.**
+Alpha30 and alpha31 are source-only development checkpoints. Per owner direction,
+validation is **NOT RUN** until the implementation phase ends. All results below
+apply to their recorded earlier commits. **M5 and Release remain BLOCKED.**
 
 After collecting local host reports, use `python tools/acceptance_matrix.py
 --commit SHA WINDOWS_REPORT LINUX_REPORT MACOS_REPORT` to summarize the checks

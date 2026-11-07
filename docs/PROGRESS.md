@@ -1,5 +1,20 @@
 # Current: M5 frozen; isolated M6-M8 components
 
+Alpha31 source. M6 and M7 add an isolated two-client relay for exact approved
+plans, live lease rechecks, durable one-attempt fences, managed worktree conflict
+checks, pinned context handoff and an explicit third-identity review. The optional
+model library implements text-only GPT, Claude, Gemini, DeepSeek and local Ollama
+providers with the same advisory API as Mock. M8 adds local call timing, failure
+counts and optional caller-rate estimates. Interrupted relay receipts remain
+incomplete, while Core retains its existing expired-lease recovery path.
+
+Validation is NOT RUN for alpha30 and alpha31. The first pending checks remain
+the earlier real-client connection and safety gates, followed by new source and
+installed-package paths in milestone order. D1 automatic application and D2
+automatic verified completion remain deferred under the existing M5 decisions.
+The code supports a fixed host-controlled pilot. General unattended real relay,
+live provider compatibility, release evidence and formal acceptance remain open.
+
 2026-11-07, alpha30 source checkpoint. The owner requested implementation before
 testing or debugging. M6 adds explicit pinned Cursor ask/terminal-JSON preparation
 and a contextual process factory. M7 exposes configurable Mock workflows on stdin

@@ -1,0 +1,173 @@
+"""Owner-side admission for a pinned client plan in an isolated host workspace.
+
+The authority callback belongs to trusted host code. It must independently
+establish cost and isolation and present the exact plan for human approval.
+This module cannot establish those conditions from flags or client output.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import hashlib
+import json
+import os
+import time
+from collections.abc import Awaitable, Callable
+from dataclasses import dataclass, field, replace
+from pathlib import Path
+from typing import Literal
+
+from agentsync.adapters import claude_invocation, codex_invocation, cursor_invocation
+from agentsync.adapters.base import AdapterTask, _identifier
+from agentsync.adapters.launch_context import LaunchContext
+from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.errors import AgentSyncError
+
+ClientKind = Literal["codex", "claude", "cursor"]
+HostProfile = (
+    codex_invocation.CodexHostProfile
+    | claude_invocation.ClaudeHostProfile
+    | cursor_invocation.CursorHostProfile
+)
+Invocation = (
+    codex_invocation.CodexInvocation
+    | claude_invocation.ClaudeInvocation
+    | cursor_invocation.CursorInvocation
+)
+
+
+def digest(value: object) -> str:
+    return hashlib.sha256(json.dumps(value, ensure_ascii=True).encode("ascii")).hexdigest()
+
+
+def client_kind(profile: HostProfile) -> ClientKind:
+    if type(profile) is codex_invocation.CodexHostProfile:
+        return "codex"
+    if type(profile) is claude_invocation.ClaudeHostProfile:
+        return "claude"
+    if type(profile) is cursor_invocation.CursorHostProfile:
+        return "cursor"
+    raise AgentSyncError("validation_error", "An exact supported host profile is required.")
+
+
+@dataclass(frozen=True, slots=True)
+class LaunchReview:
+    client: ClientKind
+    plan_sha256: str
+    plan: Invocation = field(repr=False)
+    task: AdapterTask = field(repr=False)
+
+
+@dataclass(frozen=True, slots=True)
+class LaunchConsent:
+    approval_id: str = field(repr=False)
+    plan_sha256: str
+    expires_at: float
+    confirmed_cost: bool
+    confirmed_isolation: bool
+
+
+LaunchAuthority = Callable[[LaunchReview], Awaitable[LaunchConsent | None]]
+
+
+def _consent_is_current(consent: LaunchConsent | None, review: LaunchReview) -> bool:
+    now = time.time()
+    return (
+        type(consent) is LaunchConsent
+        and type(consent.plan_sha256) is str
+        and consent.plan_sha256 == review.plan_sha256
+        and type(consent.expires_at) in (int, float)
+        and now < consent.expires_at <= now + 300
+        and consent.confirmed_cost is True
+        and consent.confirmed_isolation is True
+    )
+
+
+def _exclusive_receipt(path: Path, data: dict[str, object]) -> None:
+    """The private receipt remains a fence even if its write is interrupted."""
+    try:
+        with path.open("x", encoding="ascii", newline="\n") as file:
+            json.dump(data, file, ensure_ascii=True)
+            file.flush()
+            os.fsync(file.fileno())
+    except FileExistsError:
+        raise AgentSyncError("attempt_already_reserved", "An attempt is already reserved.", 409) from None
+    except OSError:
+        raise AgentSyncError("receipt_unavailable", "Could not reserve the attempt receipt.", 409) from None
+
+
+class ApprovedLaunchFactory:
+    """Use one exact prepared invocation and consume a host grant before capture.
+
+    The trusted receipt directory must remain private and retained across restarts.
+    A recorded request or approval can never launch again through that directory.
+    Partial writes and uncertain starts are deliberately not reclaimed. The two
+    exclusive receipts can consume a grant without starting a process.
+    """
+
+    def __init__(
+        self,
+        profile: HostProfile,
+        *,
+        environment: dict[str, str],
+        receipts: Path,
+        authority: LaunchAuthority,
+        revalidate: Callable[[AdapterTask], None],
+    ) -> None:
+        self.client = client_kind(profile)
+        if type(environment) is not dict or not callable(authority) or not callable(revalidate):
+            raise AgentSyncError("validation_error", "Invalid host launch authority configuration.")
+        if not isinstance(receipts, Path) or not receipts.is_absolute() or not receipts.is_dir():
+            raise AgentSyncError("validation_error", "An existing private receipt directory is required.")
+        self._profile = replace(profile)
+        self._environment = dict(environment)
+        self._receipts = receipts.resolve(strict=True)
+        self._authority = authority
+        self._revalidate = revalidate
+
+    def _prepare(self, task: AdapterTask) -> Invocation:
+        profile = self._profile
+        if isinstance(profile, codex_invocation.CodexHostProfile):
+            return codex_invocation.prepare_invocation(profile, task, environment=self._environment)
+        if isinstance(profile, claude_invocation.ClaudeHostProfile):
+            return claude_invocation.prepare_invocation(profile, task, environment=self._environment)
+        return cursor_invocation.prepare_invocation(profile, task, environment=self._environment)
+
+    async def __call__(self, task: AdapterTask, context: LaunchContext) -> CapturedProcess:
+        if type(context) is not LaunchContext:
+            raise AgentSyncError("validation_error", "Adapter-issued launch context required.")
+        context.check(task)
+        plan = await asyncio.to_thread(self._prepare, task)
+        child_env = plan.child_env()
+        review = LaunchReview(
+            self.client,
+            digest([
+                self.client, task.project_id, task.session_id, task.task_id, task.request_id,
+                task.timeout_seconds, task.instruction, plan.argv, str(plan.cwd), plan.stdin_text,
+                sorted(child_env.items()), plan.timeout_seconds, plan.output_limit,
+                plan.expected_cli_version, plan.binary_sha256,
+            ]),
+            plan,
+            task,
+        )
+        context.check(task)
+        consent = await self._authority(review)
+        if consent is None or not _consent_is_current(consent, review):
+            raise AgentSyncError("launch_not_authorized", "The exact client launch is not authorized.", 403)
+        _identifier(consent.approval_id)
+        context.check(task)
+        # Hash the binary and resolve the configured paths again after approval.
+        if await asyncio.to_thread(self._prepare, task) != plan:
+            raise AgentSyncError("launch_plan_changed", "The approved client plan changed.", 409)
+        context.check(task)
+        receipt: dict[str, object] = {"plan_sha256": review.plan_sha256, "client": self.client}
+        request_key = digest([task.project_id, task.session_id, task.task_id, task.request_id])
+        _exclusive_receipt(self._receipts / f"launch-{request_key}.json", receipt)
+        _exclusive_receipt(self._receipts / f"consent-{digest(consent.approval_id)}.json", receipt)
+        self._revalidate(task)
+        if not _consent_is_current(consent, review):
+            raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
+        return await context.start(
+            task, plan.argv, cwd=plan.cwd, stdin_text=plan.stdin_text,
+            timeout_seconds=plan.timeout_seconds, output_limit=plan.output_limit, env=child_env,
+        )
