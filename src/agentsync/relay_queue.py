@@ -10,15 +10,15 @@ from __future__ import annotations
 
 import asyncio
 import time
-from contextlib import suppress
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Literal, NoReturn
 
-from agentsync.adapters.approved_launch import _exclusive_receipt, digest
+from agentsync.adapters.approved_launch import digest
 from agentsync.adapters.base import _identifier
 from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
 from agentsync.errors import AgentSyncError
+from agentsync.relay_wave_journal import RelayWaveJournal
 from agentsync.scheduling import plan_tasks
 
 BatchState = Literal["not_started", "no_ready_tasks", "resolved", "incomplete"]
@@ -90,6 +90,7 @@ class RelayQueue:
         if type(relay) is not ControlledRelay:
             _invalid()
         self._relay = relay
+        self._journal = RelayWaveJournal(relay._receipts)
 
     @staticmethod
     def _key(actor: RelayActor, request_id: str) -> str:
@@ -102,13 +103,66 @@ class RelayQueue:
         """Read the saved wave outcome after reauthenticating in Core."""
         key = self._key(actor, request_id)
         self._relay._project_state(actor)
+        project_key = digest(actor.profile.project_id)
+        saved = self._journal.get(project_key, key)
+        if saved is not None:
+            status, selected, rows = saved
+            outcome = self._outcome(selected, rows)
+            if status == "admitted" or status != outcome.state:
+                return RelayQueueOutcome("incomplete")
+            return outcome
         initial = self._relay._read_receipt(key, "wave-admitted")
         final = self._relay._read_receipt(key, "wave-observed")
         if initial is None and final is None:
             return RelayQueueOutcome("not_started")
         if not initial or not final:
             return RelayQueueOutcome("incomplete")
-        selected, rows = initial.get("task_ids"), final.get("tasks")
+        return self._outcome(initial.get("task_ids"), final.get("tasks"))
+
+    def reconcile_completed(
+        self, actor: RelayActor, request_id: str, *, admin_token: str
+    ) -> RelayQueueOutcome:
+        """Recover only a wave whose same-wave terminal receipts all survived.
+
+        This never restarts a client or frees a fence based on a missing receipt.
+        A submitted task must still match the Core version in its review receipt.
+        """
+        key = self._key(actor, request_id)
+        self._relay._project_state(actor)
+        self._relay._core.execute_owner(
+            "list_members",
+            {"project_id": actor.profile.project_id, "admin_token": admin_token, "limit": 1},
+        )
+        project_key = digest(actor.profile.project_id)
+        saved = self._journal.get(project_key, key)
+        if saved is None or saved[0] != "admitted":
+            return self.observe(actor, request_id)
+        selected = saved[1]
+        if (
+            type(selected) is not list or not 1 <= len(selected) <= 4
+            or any(type(task_id) is not str for task_id in selected)
+            or len(set(selected)) != len(selected)
+        ):
+            return RelayQueueOutcome("incomplete")
+        results: list[dict[str, str]] = []
+        for task_id in selected:
+            state = self._relay.observe(actor, task_id).state
+            if state not in ("ready_for_review", "conflict"):
+                return RelayQueueOutcome("incomplete")
+            task_key = self._relay._key(actor, task_id)
+            admitted = self._relay._read_receipt(task_key, "incomplete")
+            terminal = self._relay._read_receipt(task_key, state)
+            if (
+                not admitted or not terminal
+                or admitted.get("wave_sha256") != key or terminal.get("wave_sha256") != key
+            ):
+                return RelayQueueOutcome("incomplete")
+            results.append({"task_id": task_id, "state": state})
+        self._journal.record(project_key, key, incomplete=False, results=results)
+        return self._outcome(selected, results)
+
+    @staticmethod
+    def _outcome(selected: Any, rows: Any) -> RelayQueueOutcome:
         if type(selected) is not list or type(rows) is not list or not 1 <= len(rows) <= 4:
             return RelayQueueOutcome("incomplete")
         results = []
@@ -215,38 +269,30 @@ class RelayQueue:
         ):
             _invalid()
         key = self._key(actor, request_id)
-        self._relay._project_state(actor)
-        if self._relay._read_receipt(key, "wave-admitted") is not None:
+        snapshot = self._relay._project_state(actor)
+        project_key = digest(project_id)
+        if (
+            self._journal.get(project_key, key) is not None
+            or self._relay._read_receipt(key, "wave-admitted") is not None
+        ):
             raise AgentSyncError("attempt_already_reserved", "This relay wave already has a receipt.", 409)
-        lock = self._relay._receipt(digest(["relay-queue-active-v1", project_id]), "wave-lock")
-        _exclusive_receipt(lock, {"request_sha256": key})
-        try:
-            if self._relay._read_receipt(key, "wave-admitted") is not None:
-                raise AgentSyncError(
-                    "attempt_already_reserved", "This relay wave already has a receipt.", 409
-                )
-            snapshot = self._relay._project_state(actor)
-            selected = self._select(items, snapshot, parallel_limit)
-            for item in selected:
-                # Validate the recipient as well as the authenticated sender.
-                self._relay._state(item.second, item.task.task_id)
-                if self._relay.observe(item.first, item.task.task_id).state != "not_started":
-                    raise AgentSyncError(
-                        "attempt_already_reserved", "A selected task already has a relay receipt.", 409
-                    )
-        except BaseException:
-            # No relay has started, so this process can release its own fence.
-            with suppress(OSError):
-                lock.unlink()
-            raise
+        legacy = digest(["relay-queue-active-v1", project_id])
+        if self._relay._read_receipt(legacy, "wave-lock") is not None:
+            raise AgentSyncError("wave_incomplete", "An earlier relay wave still holds the project fence.", 409)
+        selected = self._select(items, snapshot, parallel_limit)
         if not selected:
-            lock.unlink()
             return RelayQueueOutcome("no_ready_tasks")
-        self._relay._record(key, "wave-admitted", task_ids=[item.task.task_id for item in selected])
+        for item in selected:
+            self._relay._state(item.second, item.task.task_id)
+            if self._relay.observe(item.first, item.task.task_id).state != "not_started":
+                raise AgentSyncError(
+                    "attempt_already_reserved", "A selected task already has a relay receipt.", 409
+                )
+        self._journal.admit(project_key, key, tuple(item.task.task_id for item in selected))
 
         async def run(item: RelayQueueItem) -> RelayQueueResult:
             try:
-                outcome = await self._relay.run_once(item.first, item.second, item.task)
+                outcome = await self._relay.run_once(item.first, item.second, item.task, _wave_key=key)
             except Exception:
                 return RelayQueueResult(item.task.task_id, "incomplete")
             if outcome.state == "ready_for_review":
@@ -256,10 +302,11 @@ class RelayQueue:
             return RelayQueueResult(item.task.task_id, "incomplete")
 
         results = tuple(await asyncio.gather(*(run(item) for item in selected)))
-        self._relay._record(
-            key, "wave-observed", tasks=[{"task_id": row.task_id, "state": row.state} for row in results],
+        incomplete = any(result.state == "incomplete" for result in results)
+        self._journal.record(
+            project_key,
+            key,
+            incomplete=incomplete,
+            results=[{"task_id": row.task_id, "state": row.state} for row in results],
         )
-        if any(result.state == "incomplete" for result in results):
-            return RelayQueueOutcome("incomplete", results)
-        lock.unlink()
-        return RelayQueueOutcome("resolved", results)
+        return RelayQueueOutcome("incomplete" if incomplete else "resolved", results)

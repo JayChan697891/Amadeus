@@ -352,8 +352,15 @@ class ControlledRelay:
         )
         return {**active, "lease_token": lease_token}
 
-    async def run_once(self, first: RelayActor, second: RelayActor, spec: RelayInput) -> RelayOutcome:
+    async def run_once(
+        self, first: RelayActor, second: RelayActor, spec: RelayInput, *, _wave_key: str | None = None
+    ) -> RelayOutcome:
         if type(first) is not RelayActor or type(second) is not RelayActor or type(spec) is not RelayInput:
+            _reject()
+        if _wave_key is not None and (
+            type(_wave_key) is not str or len(_wave_key) != 64
+            or any(c not in "0123456789abcdef" for c in _wave_key)
+        ):
             _reject()
         if (
             first.profile.project_id != second.profile.project_id
@@ -379,13 +386,15 @@ class ControlledRelay:
         if hashlib.sha256(content.encode("utf-8")).hexdigest() != spec.context_sha256:
             _reject()
         key = self._key(first, spec.task_id)
-        self._record(key, "incomplete", context_version=spec.context_version)
+        self._record(key, "incomplete", context_version=spec.context_version, wave_sha256=_wave_key)
         comparison = self._call(
             first, "compare_worktrees", left_id=first.worktree_id, right_id=second.worktree_id,
             expected_left_head=first.expected_head, expected_right_head=second.expected_head,
         )
         if comparison["mergeable"] is not True:
-            self._record(key, "conflict", conflict_count=len(comparison["conflict_paths"]))
+            self._record(
+                key, "conflict", conflict_count=len(comparison["conflict_paths"]), wave_sha256=_wave_key
+            )
             return RelayOutcome("conflict")
         a = await self._attempt(
             first, spec, self._claim(first, spec.task_id, task["version"], f"relay:{key}:claim-a"),
@@ -427,5 +436,6 @@ class ControlledRelay:
         self._record(
             key, "ready_for_review", task_version=reviewed["version"],
             sender_sha256=digest(first.agent_id), recipient_sha256=digest(second.agent_id),
+            wave_sha256=_wave_key,
         )
         return RelayOutcome("ready_for_review")
