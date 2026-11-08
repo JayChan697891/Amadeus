@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentsync-local"
-version = "0.3.0a34"
+version = "0.3.0a35"
 description = "Local, model-independent multi-agent task coordination over MCP, HTTP and Python"
 readme = "README.md"
 requires-python = ">=3.11"
