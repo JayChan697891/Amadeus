@@ -116,11 +116,12 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
 
 
 def _inputs(
-    manifest_path: Path, local_reports: list[Path], commit: str, python_minors: tuple[str, ...]
+    manifest_path: Path, local_reports: list[Path], commit: str,
+    python_minors: tuple[str, ...], source_repo: Path | None,
 ) -> tuple[dict[str, Any], str, dict[str, str]]:
     matrix = summarize(
         local_reports, commit, verify_artifacts=True,
-        require_license_inventory=True, python_minors=python_minors,
+        require_license_inventory=True, python_minors=python_minors, source_repo=source_repo,
     )
     manifest, manifest_sha = _read(manifest_path)
     return matrix, manifest_sha, _traceability(manifest)
@@ -129,11 +130,12 @@ def _inputs(
 def prepare(
     manifest_path: Path, local_reports: list[Path], commit: str, reviewer_id: str,
     *, python_minors: tuple[str, ...] = ("3.11", "3.12", "3.14"),
+    source_repo: Path | None = None,
 ) -> dict[str, Any]:
     """Return a blank review form bound to the supplied evidence and coverage."""
     if not _IDENTIFIER.fullmatch(reviewer_id):
         raise ValueError("Invalid declared reviewer ID.")
-    matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors)
+    matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
     return {
         "schema_version": 1,
         "commit_sha": commit,
@@ -158,8 +160,9 @@ def assemble(
     commit: str,
     *,
     python_minors: tuple[str, ...] = ("3.11", "3.12", "3.14"),
+    source_repo: Path | None = None,
 ) -> dict[str, Any]:
-    matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors)
+    matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
     review, review_sha = _read(review_path)
     if set(review) != {
         "schema_version", "commit_sha", "version", "requirements_sha256", "matrix_sha256",
@@ -207,7 +210,10 @@ def assemble(
             "evidence_ids": refs, "reason": reason,
         })
     counts = Counter(case["declared_status"] for case in cases)
-    complete = counts["passed"] == len(cases) and matrix["local_matrix"] == "artifact_verified_pass"
+    complete = (
+        counts["passed"] == len(cases) and matrix["local_matrix"] == "artifact_verified_pass"
+        and matrix["git_source_audit"] is not None
+    )
     return {
         "schema_version": 1,
         "scope": "evidence_packet_for_independent_release_decision",
@@ -218,6 +224,7 @@ def assemble(
         "reviewer_authenticated": False,
         "matrix_sha256": _matrix_digest(matrix),
         "local_matrix": matrix["local_matrix"],
+        "git_source_audit": matrix["git_source_audit"],
         "missing_os_python_combinations": matrix["missing_os_python_combinations"],
         "declared_status_counts": {status: counts[status] for status in _STATUSES},
         "cases": cases,
@@ -232,6 +239,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--commit", required=True)
     parser.add_argument("--requirements", type=Path, required=True)
+    parser.add_argument("--source-repo", type=Path)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--review", type=Path)
     mode.add_argument("--prepare", metavar="REVIEWER_ID")
@@ -244,11 +252,14 @@ def main() -> int:
     minors = tuple(args.require_python or ("3.11", "3.12", "3.14"))
     try:
         if args.prepare is not None:
-            packet = prepare(args.requirements, args.report, args.commit, args.prepare, python_minors=minors)
+            packet = prepare(
+                args.requirements, args.report, args.commit, args.prepare,
+                python_minors=minors, source_repo=args.source_repo,
+            )
         else:
             packet = assemble(
                 args.requirements, args.review, args.evidence_root, args.report, args.commit,
-                python_minors=minors,
+                python_minors=minors, source_repo=args.source_repo,
             )
     except (AttributeError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid or inconsistent release review inputs.\n")

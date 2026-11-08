@@ -90,11 +90,14 @@ def _observation(report: dict[str, Any], digest: str) -> dict[str, Any]:
 def summarize(
     paths: list[Path], expected_commit: str, *, verify_artifacts: bool = False,
     require_license_inventory: bool = False, python_minors: tuple[str, ...] = (),
+    source_repo: Path | None = None,
 ) -> dict[str, Any]:
     if not 1 <= len(paths) <= 12 or not re.fullmatch(r"[0-9a-f]{40}", expected_commit):
         raise ValueError("Supply a frozen Git SHA and one to twelve reports.")
     if require_license_inventory and not verify_artifacts:
         raise ValueError("Required license inventories need artifact verification.")
+    if source_repo is not None and not verify_artifacts:
+        raise ValueError("Git source binding needs artifact verification.")
     if (
         type(python_minors) is not tuple or len(python_minors) > 4
         or any(type(value) is not str or not re.fullmatch(r"3\.(?:1[1-9]|[2-9][0-9])", value) for value in python_minors)
@@ -114,6 +117,7 @@ def summarize(
     observations = []
     identities = set()
     report_digests = set()
+    source_audit = None
     for path in paths:
         report, digest = _read_report(path, decoder=decoder)
         identity = tuple(report[field] for field in _IDENTITY_FIELDS)
@@ -132,7 +136,11 @@ def summarize(
         report_digests.add(digest)
         observation = _observation(report, digest)
         if verifier is not None:
-            observation["artifact_audit"] = verifier(path, report)
+            audit = verifier(path, report, source_repo=source_repo if source_audit is None else None)
+            git_source = audit.pop("git_source_audit")
+            if git_source is not None:
+                source_audit = git_source
+            observation["artifact_audit"] = audit
         observations.append(observation)
     if len(identities) != 1:
         raise ValueError("Reports describe different frozen sources.")
@@ -180,6 +188,7 @@ def summarize(
             else "artifact_verified_pass" if verify_artifacts else "reported_pass"
         ),
         "artifact_bytes_verified": verify_artifacts,
+        "git_source_audit": source_audit,
         "formal_release_acceptance": "blocked",
     }
 
@@ -190,6 +199,7 @@ def main() -> int:
     parser.add_argument("--verify-artifacts", action="store_true")
     parser.add_argument("--require-license-inventory", action="store_true")
     parser.add_argument("--require-python", action="append", default=[])
+    parser.add_argument("--source-repo", type=Path)
     parser.add_argument("report", nargs="+", type=Path)
     args = parser.parse_args()
     try:
@@ -197,6 +207,7 @@ def main() -> int:
             args.report, args.commit, verify_artifacts=args.verify_artifacts,
             require_license_inventory=args.require_license_inventory,
             python_minors=tuple(args.require_python),
+            source_repo=args.source_repo,
         )
     except (AttributeError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid local acceptance reports or mismatched frozen source.\n")

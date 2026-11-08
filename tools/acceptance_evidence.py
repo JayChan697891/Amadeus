@@ -402,13 +402,24 @@ def _verify_process(evidence: _Evidence, row: dict[str, Any], log: str) -> None:
         raise ValueError("Process receipt and check disagree.")
 
 
-def verify_report_evidence(path: Path, report: dict[str, Any]) -> dict[str, Any]:
+def verify_report_evidence(
+    path: Path, report: dict[str, Any], *, source_repo: Path | None = None
+) -> dict[str, Any]:
     evidence = _Evidence(path.parent, report.get("artifacts"))
     for name in evidence.members:
         evidence.check(name)
     evidence.require_digest("source-snapshot.json", report["source_snapshot_sha256"])
     evidence.require_digest("working-tree.patch", report["working_tree_patch_sha256"])
-    snapshot = _snapshot_entries(read_json(evidence.check("source-snapshot.json", retain=True)))
+    source = read_json(evidence.check("source-snapshot.json", retain=True))
+    snapshot = _snapshot_entries(source)
+    git_source = None
+    if source_repo is not None:
+        if __package__:
+            from .acceptance_git_source import verify_git_source
+        else:
+            from acceptance_git_source import verify_git_source
+
+        git_source = verify_git_source(source_repo, report["commit_sha"], report["tree_sha"], source)
     logs = set()
     cases: dict[str, str] = {}
     for row in report["checks"]:
@@ -439,6 +450,7 @@ def verify_report_evidence(path: Path, report: dict[str, Any]) -> dict[str, Any]
         "manifest_members": len(evidence.members),
         "process_logs": len(logs),
         "source_snapshot_entries": snapshot,
+        "git_source_audit": git_source,
         "installed_artifact_sha256": installed,
         "installed_license_inventories": _bound_licenses(report, evidence, installed),
         "offline_resolution": _offline_resolution(report, evidence),
