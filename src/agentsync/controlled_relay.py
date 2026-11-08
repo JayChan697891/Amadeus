@@ -149,9 +149,7 @@ class ControlledRelay:
             "session_token": actor.session_token,
         })
 
-    def _state(
-        self, actor: RelayActor, task_id: str, *, min_session_seconds: float = 0
-    ) -> dict[str, Any]:
+    def _project_state(self, actor: RelayActor, *, min_session_seconds: float = 0) -> dict[str, Any]:
         state = self._call(actor, "get_project_state")
         project_root = Path(state["project"]["root_path"]).resolve(strict=True)
         deadline = time.time() + min_session_seconds
@@ -161,6 +159,12 @@ class ControlledRelay:
             for session in state["sessions"]
         ):
             _reject()
+        return state
+
+    def _state(
+        self, actor: RelayActor, task_id: str, *, min_session_seconds: float = 0
+    ) -> dict[str, Any]:
+        state = self._project_state(actor, min_session_seconds=min_session_seconds)
         for task in state["tasks"]:
             if task["id"] == task_id:
                 return task

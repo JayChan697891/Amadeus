@@ -45,10 +45,12 @@ def plan_tasks(
     limit: int = 10,
     required_capabilities: dict[str, tuple[str, ...]] | None = None,
     agent_capabilities: tuple[str, ...] = (),
+    candidate_task_ids: tuple[str, ...] | None = None,
 ) -> SchedulingPlan:
     try:
         return _plan(
-            snapshot, project_id, agent_id, now, limit, required_capabilities, agent_capabilities
+            snapshot, project_id, agent_id, now, limit, required_capabilities, agent_capabilities,
+            candidate_task_ids,
         )
     except (KeyError, TypeError, ValueError, OverflowError, UnicodeError):
         raise AgentSyncError(
@@ -103,6 +105,7 @@ def _plan(
     limit: int,
     required_capabilities: dict[str, tuple[str, ...]] | None,
     agent_capabilities: tuple[str, ...],
+    candidate_task_ids: tuple[str, ...] | None,
 ) -> SchedulingPlan:
     _identifier(project_id)
     _identifier(agent_id)
@@ -159,6 +162,13 @@ def _plan(
     if required_capabilities is not None:
         requirements = _capability_requirements(required_capabilities, set(rows))
         declared = _capability_tokens(agent_capabilities)
+    allowed: set[str] | None = None
+    if candidate_task_ids is not None:
+        _require(type(candidate_task_ids) is tuple and len(candidate_task_ids) <= 4096)
+        for task_id in candidate_task_ids:
+            _identifier(task_id)
+        allowed = set(candidate_task_ids)
+        _require(len(allowed) == len(candidate_task_ids) and allowed <= rows.keys())
 
     # Iterative traversal keeps a valid deep dependency chain off the Python stack.
     children: dict[str, list[str]] = {task_id: [] for task_id in rows}
@@ -180,6 +190,8 @@ def _plan(
     _require(visited == len(rows))
     candidates = []
     for row in rows.values():
+        if allowed is not None and row["id"] not in allowed:
+            continue
         if requirements is not None and not requirements[row["id"]] <= declared:
             continue
         if (
