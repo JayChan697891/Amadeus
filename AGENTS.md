@@ -40,7 +40,7 @@ the actual model and identify which critical decision needs manual Astra review.
 Reuse a small number of appropriately configured agents; reused agents retain
 their existing settings unless a supported mechanism explicitly changes them.
 Never substitute external paid APIs or treat a development subagent as evidence
-that the AgentSync client adapter works. All existing acceptance gates remain.
+that the Amadeus client adapter works. All existing acceptance gates remain.
 
 # Quota-aware checkpoint policy
 
@@ -51,7 +51,11 @@ implementation task. Consumption/reset timing is not exactly predictable; never
 promise exact exhaustion, burn tokens artificially or mark incomplete work done.
 Persist tested code SHA, evidence and next-step status before the boundary.
 
-# AgentSync continuation context
+# Amadeus continuation context
+
+Repository: https://github.com/JayChan697891/Amadeus. Use `amadeus` in new CLI
+examples. Keep existing package, Python import, MCP, environment and data names
+for compatibility.
 
 Debug-environment location (current user instruction): D:\agentsync-debug. Keep
 VM disks, debug venvs, caches and temporary execution evidence there. Project

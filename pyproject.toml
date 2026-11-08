@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agentsync-local"
 version = "0.3.0a38"
-description = "Local, model-independent multi-agent task coordination over MCP, HTTP and Python"
+description = "Amadeus: local, model-independent multi-agent task coordination over MCP, HTTP and Python"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-authors = [{name = "AgentSync contributors"}]
+authors = [{name = "Amadeus contributors"}]
 dependencies = [
   "mcp==2.3.0",
   "fastapi==0.147.0",
@@ -29,7 +29,11 @@ dev = [
 ]
 
 [project.scripts]
+amadeus = "agentsync.cli:amadeus_main"
 agentsync = "agentsync.cli:main"
+
+[project.urls]
+Repository = "https://github.com/JayChan697891/Amadeus"
 
 [tool.setuptools.packages.find]
 where = ["src"]

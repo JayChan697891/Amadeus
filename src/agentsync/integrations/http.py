@@ -24,7 +24,7 @@ def create_app(data_dir: str | Path | None = None, api_token: str | None = None)
         raise ValueError("A nonempty HTTP API token is required")
     core = Core(data_dir=data_dir)
     app = FastAPI(
-        title="AgentSync", version=__version__, docs_url=None, redoc_url=None, openapi_url=None
+        title="Amadeus", version=__version__, docs_url=None, redoc_url=None, openapi_url=None
     )
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]"])
 

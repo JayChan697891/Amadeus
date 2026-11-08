@@ -1,4 +1,4 @@
-"""Register AgentSync with the public Codex MCP CLI, without editing TOML.
+"""Register Amadeus with the public Codex MCP CLI, without editing TOML.
 
 Run using a Python environment with agentsync-local installed. --dry-run reads
 configuration and validates Python but never calls `mcp add`. No database or data
@@ -132,7 +132,7 @@ def install(codex=None, python=None, data_dir=None, dry_run=False):
     )
     if checked.returncode:
         raise InstallError(
-            "AgentSync is not installed in the selected Python environment. Install its wheel there, then retry."
+            "Amadeus is not installed in the selected Python environment. Install its wheel there, then retry."
         )
     try:
         data = resolve_data_dir(data_dir, create=False)
@@ -178,7 +178,7 @@ def main():
         "--python", help="Python with agentsync-local installed (default: current Python)"
     )
     parser.add_argument(
-        "--data-dir", help="Absolute shared data directory (default: AgentSync user data)"
+        "--data-dir", help="Absolute shared data directory (default: Amadeus user data)"
     )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()

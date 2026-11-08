@@ -1,4 +1,4 @@
-# Current direction: M5 scope frozen; conditional M6 prototypes
+# Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
 Use [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md) as the only M5 exit checklist.
 M5 remains the original five requirements; no new stages for documentation,

@@ -1,4 +1,4 @@
-# Restore AgentSync after local cleanup
+# Restore Amadeus after local cleanup
 
 Main contains current v0.1.0a2 source. The versions/v0.1.0a1 and versions/v0.1.0a2 branches
 preserve exact source trees. Downloadable artifacts and original checksums are grouped under
@@ -7,7 +7,7 @@ releases/v0.1.0a1 and releases/v0.1.0a2. No public GitHub Release object is requ
 ## Windows
 
 ```powershell
-git clone https://github.com/JayChan697891/agentsync.git
+git clone https://github.com/JayChan697891/Amadeus.git agentsync
 Set-Location agentsync
 py -m venv .venv
 & .\.venv\Scripts\python.exe -m pip install -r requirements-dev-lock.txt

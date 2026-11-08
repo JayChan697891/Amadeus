@@ -1,6 +1,6 @@
 > Published archive: versions and checksummed files are in [releases/](releases/). See [RECOVERY.md](RECOVERY.md) and [PUBLICATION-MANIFEST.json](PUBLICATION-MANIFEST.json). Earlier no-publication statements in historical development reports describe the pre-publication checkpoint.
 
-# AgentSync
+# Amadeus
 
 Current development continues under [AGENTS.md](AGENTS.md), [WORKFLOW.md](WORKFLOW.md)
 and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancelled.
@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a31 development source; verification pending; M5 and Release BLOCKED**. Permissions,
+Status: **0.3.0a38 development source. Validation pending. M5 and Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -50,6 +50,8 @@ Protocol tests do not establish Codex/Claude/Cursor desktop compatibility.
 The current desktop MCP connection was confirmed by the user; real native tool/collaboration
 probes passed independently. See [M2 continuation](docs/M2-CONTINUATION.zh-CN.md).
 
+[Project repository](https://github.com/JayChan697891/Amadeus)
+
 ## Windows quick start
 
 From this repository directory, with Python 3.11+ installed:
@@ -58,7 +60,7 @@ From this repository directory, with Python 3.11+ installed:
 py -m venv .venv
 & .\.venv\Scripts\python.exe -m pip install -r requirements-dev-lock.txt
 & .\.venv\Scripts\python.exe -m pip install -e . --no-deps
-& .\.venv\Scripts\python.exe -m agentsync --data-dir "$PWD\local-data\demo" demo
+& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\demo" demo
 & .\.venv\Scripts\python.exe -m pytest
 ```
 
@@ -70,9 +72,15 @@ Both files are exact Windows-tested snapshots, not universal cross-platform reso
 
 ## Interfaces
 
+`amadeus` is the preferred console command. Existing integrations can continue to use
+`agentsync-local` as the Python distribution, `agentsync` for Python imports and
+as a console command, and `python -m agentsync` for module launches. MCP identifiers,
+`AGENTSYNC_*` settings, and the default `AgentSync` data directory and `agentsync.db`
+file retain their existing names.
+
 - Python: `from agentsync.sdk.client import AgentSyncClient`; use `.call(operation, **payload)`.
 - MCP: `python -m agentsync --data-dir ABSOLUTE_PATH mcp`.
-- HTTP: set a private `AGENTSYNC_HTTP_TOKEN`, then `python -m agentsync serve`.
+- HTTP: set a private `AGENTSYNC_HTTP_TOKEN`, then `amadeus serve`.
   Default bind is 127.0.0.1:8765. POST `/v1/{operation}` with bearer authorization and JSON.
 - See `examples/`, [operation contract](docs/CONTRACT.md), and [Chinese guide](README.zh-CN.md).
 
@@ -82,8 +90,8 @@ Stdio MCP hosts have local process access; Alpha is not a hostile-agent sandbox.
 
 ## Read-only scheduling
 
-`python -m agentsync plan < dispatch-input.json` prints offline dispatch advice.
-In PowerShell: `Get-Content -Raw -Encoding utf8 .\dispatch-input.json | python -m agentsync plan`.
+`amadeus plan < dispatch-input.json` prints offline dispatch advice.
+In PowerShell: `Get-Content -Raw -Encoding utf8 .\dispatch-input.json | amadeus plan`.
 The bounded UTF-8 JSON input requires `state` (an explicit project-state snapshot),
 `project_id`, `worker_agent_ids` (an array), and `now` (a caller-supplied timestamp).
 Optional fields are `global_limit`, `per_agent_limit`, `limit`, and
@@ -126,7 +134,7 @@ The default total attempt budget is 6, with a maximum of 16. An optional
 graphs use a disposable owned project and always return simulation/unverified
 markers; they do not attach to existing projects or launch real clients.
 
-Use `agentsync mock-workflow --scratch-parent ABSOLUTE_DIRECTORY` to pass a
+Use `amadeus mock-workflow --scratch-parent ABSOLUTE_DIRECTORY` to pass a
 task graph as UTF-8 JSON on standard input. The scratch parent must already exist.
 For example, a build followed by a check uses this input:
 
@@ -151,7 +159,7 @@ first successful run. Use at least two workers with the task capability and a
 third worker for review. The recipient takes a new lease and uses another
 attempt from the same task and workflow budgets.
 
-`python -m agentsync demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
+`amadeus demo --workflow --data-dir ABSOLUTE_SCRATCH_PARENT` runs a fixed
 four-task diamond with two Mock workers, capability/dependency planning, one failed
 attempt followed by retry, and peer simulated reviews. The scratch parent must
 already exist. Each invocation creates and removes its own private child database;
@@ -231,7 +239,7 @@ Supply an absolute file path in an existing owner-controlled directory and use
 a single writer. Save flushes a temporary file before replacing the checkpoint.
 Load validates the saved data and rebuilds its totals for the expected project.
 
-`agentsync usage --project-id PROJECT_ID` reads one UTF-8 checkpoint from stdin
+`amadeus usage --project-id PROJECT_ID` reads one UTF-8 checkpoint from stdin
 and prints the same aggregate summary. This offline CLI accepts at most1 MiB;
 larger checkpoints can use the Python interface's32 MiB limit. It opens no Core
 database and writes no files. The project ID is a caller namespace assertion,

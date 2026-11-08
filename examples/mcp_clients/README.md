@@ -1,4 +1,4 @@
-# Local MCP configuration templates
+# Amadeus local MCP configuration templates
 
 `install_codex.py` can register the installed package using the public Codex CLI.
 Run it with the project's Python and `--dry-run` first. It rejects different existing entries,
@@ -9,7 +9,8 @@ An optional `--codex` native executable and `--data-dir` absolute path are suppo
 
 These are templates, not installed or activated configurations. Replace
 `<ABSOLUTE_PYTHON_EXECUTABLE>` with the Python executable in the environment where
-AgentSync is installed. Replace `<ABSOLUTE_SHARED_DATA_DIRECTORY>` with one dedicated
+Amadeus is installed. The templates keep the `agentsync` registration name for
+existing client configurations. Replace `<ABSOLUTE_SHARED_DATA_DIRECTORY>` with one dedicated
 absolute directory, identical in all clients. The server creates `agentsync.db` there.
 Do not use a demo directory or a network share for real shared state.
 

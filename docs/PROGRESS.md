@@ -1,6 +1,11 @@
-# Current: M5 frozen; isolated M6-M8 components
+# Amadeus current progress
 
-Alpha31 source. M6 and M7 add an isolated two-client relay for exact approved
+0.3.0a38 development source adds the Amadeus project name and `amadeus` command.
+Validation is NOT RUN for this checkpoint. M5 and Release remain BLOCKED.
+
+## Alpha31 source checkpoint
+
+M6 and M7 add an isolated two-client relay for exact approved
 plans, live lease rechecks, durable one-attempt fences, managed worktree conflict
 checks, pinned context handoff and an explicit third-identity review. The optional
 model library implements text-only GPT, Claude, Gemini, DeepSeek and local Ollama

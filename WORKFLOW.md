@@ -1,4 +1,4 @@
-# Work + Codex execution workflow
+# Amadeus Work + Codex execution workflow
 
 Build/use the debug runtime on D:\agentsync-debug per the current user instruction.
 Use the local QEMU Linux VM for actual Docker isolation; preserve source and

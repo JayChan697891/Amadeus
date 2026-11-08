@@ -1,4 +1,4 @@
-"""AgentSync local command line entrypoints."""
+"""Amadeus local command line entrypoints."""
 
 import argparse
 import asyncio
@@ -128,7 +128,11 @@ def run_demo(data_dir: str | Path) -> dict[str, Any]:
     }
 
 
-def main(argv: list[str] | None = None) -> int:
+def amadeus_main() -> int:
+    return main(prog="amadeus")
+
+
+def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     arguments = sys.argv[1:] if argv is None else argv
     # Only a leading plan command takes this route; owner operations and values
     # named "plan" retain their existing command parsing.
@@ -144,7 +148,7 @@ def main(argv: list[str] | None = None) -> int:
             if len(arguments) == 3 and arguments[1] == "--project-id"
             else invalid_input()
         )
-    parser = argparse.ArgumentParser(prog="agentsync")
+    parser = argparse.ArgumentParser(prog=prog)
     parser.add_argument("--data-dir", default=None, help="Absolute local state directory")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("mcp", help="Run official MCP stdio server")
