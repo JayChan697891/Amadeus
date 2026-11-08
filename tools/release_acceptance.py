@@ -3,6 +3,8 @@
 Run from any directory: python tools/release_acceptance.py --output F:/syuc/evidence
 Add --run to execute checks, --package-install for a separate wheel environment,
 and --sdist-install for a separate source-distribution build and installation.
+Add --offline-wheelhouse to resolve packages from local wheels and --license-inventory
+to capture runtime license metadata from each verified installed distribution.
 No client credentials, model calls, workspace cleanup or Git mutations are performed.
 """
 
@@ -14,17 +16,26 @@ import json
 import os
 import platform
 import re
+import shutil
+import stat
 import subprocess
 import sys
 import tempfile
 import tomllib
 import uuid
 import xml.etree.ElementTree as ET
+import zipfile
+from contextlib import nullcontext
 from datetime import UTC, datetime
+from email.parser import BytesHeaderParser
+from itertools import islice
 from pathlib import Path
+from typing import NamedTuple
 
 STATUSES = {"pass", "fail", "not_run", "restricted", "unverified"}
 MAX_LOG_BYTES = 16 * 1024 * 1024
+MAX_WHEELHOUSE_WHEELS = 512
+MAX_WHEELHOUSE_BYTES = 4 * 1024**3
 PYTEST_CHECKS = frozenset({"pytest", "wheel_pytest", "sdist_pytest"})
 REDACTED = "[REDACTED]"
 _CREDENTIAL_VALUE = re.compile(
@@ -42,6 +53,128 @@ RELEASE_BLOCKERS = {
     "cross_platform": "A local run does not establish the complete supported OS/Python matrix.",
     "m9_acceptance": "Full M9 release acceptance has not been performed.",
 }
+
+
+class OfflinePackages(NamedTuple):
+    wheelhouse: Path
+    backend: tuple[str, ...]
+    frontend: str
+    application: tuple[str, ...]
+
+
+def _prepare_offline_packages(
+    project: dict, wheelhouse: Path, scratch: Path, run: Path
+) -> OfflinePackages:
+    # Offline execution uses the same PEP 508 syntax as pip. Keep metadata-only
+    # reports and the default online path usable without importing packaging.
+    from packaging.requirements import InvalidRequirement, Requirement
+    from packaging.utils import canonicalize_name, parse_wheel_filename
+
+    if not wheelhouse.is_dir():
+        raise ValueError("Offline wheelhouse must be a local directory")
+    metadata = project["project"]
+    if {"dependencies", "optional-dependencies"}.intersection(metadata.get("dynamic", ())):
+        raise ValueError("Offline builds require static runtime and optional dependencies")
+    backend = tuple(project["build-system"]["requires"])
+
+    def local_requirement(value: str) -> Requirement:
+        try:
+            requirement = Requirement(value)
+        except InvalidRequirement:
+            raise ValueError("Offline dependency metadata contains an invalid requirement") from None
+        if requirement.url is not None:
+            raise ValueError("Offline dependency metadata contains a direct URL requirement")
+        return requirement
+
+    for value in backend:
+        local_requirement(value)
+
+    def active_requirements(declarations: list[str], extras: tuple[str, ...]) -> list[Requirement]:
+        active = []
+        for value in declarations:
+            requirement = local_requirement(value)
+            if requirement.marker is None or any(
+                requirement.marker.evaluate({"extra": extra}) for extra in extras
+            ):
+                requirement.marker = None  # Already evaluated for the selected artifact extras.
+                active.append(requirement)
+        return active
+
+    runtime = active_requirements(metadata.get("dependencies", []), ("", "dev"))
+    dev = active_requirements(metadata.get("optional-dependencies", {}).get("dev", []), ("dev",))
+    frontends = [str(requirement) for requirement in dev if canonicalize_name(requirement.name) == "build"]
+    if len(frontends) != 1:
+        raise ValueError("Offline source build requires one declared build frontend")
+
+    # Use a private snapshot of validated wheels. A live find-links directory
+    # could change after validation or expose other package/link formats.
+    sources = sorted(islice(wheelhouse.glob("*.whl"), MAX_WHEELHOUSE_WHEELS + 1))
+    if not sources:
+        raise ValueError("Offline wheelhouse contains no wheels")
+    if len(sources) > MAX_WHEELHOUSE_WHEELS:
+        raise ValueError("Offline wheelhouse exceeds the wheel count limit")
+    sizes = []
+    for source in sources:
+        info = source.lstat()
+        if not stat.S_ISREG(info.st_mode) or (
+            getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+        ):
+            raise ValueError("Offline wheelhouse wheels must be regular local files")
+        sizes.append(info.st_size)
+    if sum(sizes) > MAX_WHEELHOUSE_BYTES:
+        raise ValueError("Offline wheelhouse exceeds the total size limit")
+
+    staged = scratch / "offline-wheels"
+    staged.mkdir()
+    inputs = []
+    for source, size in zip(sources, sizes, strict=True):
+        parse_wheel_filename(source.name)
+        target = staged / source.name
+        shutil.copyfile(source, target)
+        if target.stat().st_size != size:
+            raise ValueError("Offline wheelhouse wheel size changed during staging")
+        with zipfile.ZipFile(target) as archive:
+            members = [
+                member
+                for member in archive.infolist()
+                if member.filename.count("/") == 1
+                and member.filename.endswith(".dist-info/METADATA")
+            ]
+            if len(members) != 1 or members[0].file_size > MAX_LOG_BYTES:
+                raise ValueError("Each offline wheel must contain one bounded METADATA member")
+            headers = BytesHeaderParser().parsebytes(archive.read(members[0]))
+            if headers.defects:
+                raise ValueError("Offline wheel has malformed metadata headers")
+            for value in headers.get_all("Requires-Dist", []):
+                local_requirement(value)
+        with target.open("rb") as stream:
+            inputs.append(
+                {
+                    "filename": target.name,
+                    "sha256": hashlib.file_digest(stream, "sha256").hexdigest(),
+                    "size": size,
+                }
+            )
+    (run / "offline-wheelhouse.json").write_text(
+        json.dumps(inputs, indent=2) + "\n", encoding="utf-8"
+    )
+    return OfflinePackages(staged, backend, frontends[0], tuple(map(str, (*runtime, *dev))))
+
+
+def _offline_install(python: str, wheelhouse: Path, *args: str) -> list[str]:
+    return [
+        python,
+        "-I",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-index",
+        "--find-links",
+        wheelhouse.as_uri(),
+        "--no-cache-dir",
+        *args,
+    ]
 
 
 def sha256(path: Path) -> str:
@@ -221,6 +354,8 @@ def execute(
     scratch: Path | None = None,
     *,
     pytest_timeout: int = 900,
+    offline_wheelhouse: Path | None = None,
+    capture_stdout: Path | None = None,
 ) -> dict:
     _validate_pytest_timeout(pytest_timeout)
     if pytest_timeout != 900 and check_id not in PYTEST_CHECKS:
@@ -252,7 +387,16 @@ def execute(
         # runs attest the checked-in suite, with its declared plugin setup.
         for name in ("PYTEST_ADDOPTS", "PYTEST_PLUGINS", "PYTEST_DISABLE_PLUGIN_AUTOLOAD"):
             env.pop(name, None)
-    if check_id == "build" or check_id.startswith(("sdist_", "wheel_")):
+    if offline_wheelhouse is not None:
+        env = {name: value for name, value in env.items() if not name.upper().startswith("PIP_")}
+        env.update(
+            PIP_CONFIG_FILE=os.devnull,
+            PIP_DISABLE_PIP_VERSION_CHECK="1",
+            PIP_NO_INDEX="1",
+            PIP_FIND_LINKS=offline_wheelhouse.as_uri(),
+            PIP_NO_CACHE_DIR="1",
+        )
+    elif check_id == "build" or check_id.startswith(("sdist_", "wheel_")):
         # Preserve network/proxy settings, but don't inherit pip options that can
         # bypass build isolation or redirect writes outside this fresh venv.
         for name in (
@@ -282,14 +426,17 @@ def execute(
     error_type = None
     # Raw process output exists only in a self-deleting scratch file. It is never
     # placed in the durable/uploadable log directory, even for failed commands.
-    with tempfile.TemporaryFile(mode="w+b", dir=temporary) as stream:
+    with (
+        tempfile.TemporaryFile(mode="w+b", dir=temporary) as stream,
+        (capture_stdout.open("wb") if capture_stdout is not None else nullcontext(stream)) as stdout,
+    ):
         try:
             result = subprocess.run(
                 command,
                 cwd=repo,
                 env=env,
-                stdout=stream,
-                stderr=subprocess.STDOUT,
+                stdout=stdout,
+                stderr=subprocess.STDOUT if capture_stdout is None else stream,
                 timeout=pytest_timeout,
                 check=False,
             )
@@ -334,6 +481,106 @@ def _execute_check(
     if check_id in PYTEST_CHECKS and pytest_timeout != 900:
         return execute(check_id, command, repo, run, scratch, pytest_timeout=pytest_timeout)
     return execute(check_id, command, repo, run, scratch)
+
+
+def _offline_build_command(
+    repo: Path, run: Path, scratch: Path, packages: OfflinePackages, checks: list[dict]
+) -> list[str] | None:
+    environment = scratch / "offline-build"
+    created = execute(
+        "offline_build_venv", [sys.executable, "-m", "venv", str(environment)], repo, run, scratch
+    )
+    checks.append(created)
+    if created["status"] != "pass":
+        return None
+    python = str(environment / ("Scripts/python.exe" if os.name == "nt" else "bin/python"))
+    tools = execute(
+        "offline_build_tools",
+        _offline_install(
+            python, packages.wheelhouse, "--only-binary=:all:", packages.frontend, *packages.backend
+        ),
+        run,
+        run,
+        scratch,
+        offline_wheelhouse=packages.wheelhouse,
+    )
+    checks.append(tools)
+    if tools["status"] != "pass":
+        return None
+    return [python, "-I", "-m", "build", "--no-isolation", "--outdir", str(run / "artifacts")]
+
+
+def _installed_license_inventory(
+    kind: str,
+    python: str,
+    repo: Path,
+    run: Path,
+    scratch: Path,
+    version: str,
+    artifact: dict,
+    origin: dict,
+) -> dict:
+    check_id = kind + "_license_inventory"
+    stdout = scratch / f"{kind}-license-inventory.json"
+    result = execute(
+        check_id,
+        [python, "-I", str(repo / "tools" / "license_inventory.py"), "--distribution", "agentsync-local"],
+        run,
+        run,
+        scratch,
+        capture_stdout=stdout,
+    )
+    result["artifact"] = artifact.copy()
+    archive = run / artifact["path"]
+    try:
+        if result.get("exit_code") not in {0, 1}:
+            raise ValueError("Inventory process did not emit a completed report")
+        if not archive.is_file() or sha256(archive) != artifact["sha256"]:
+            raise ValueError("Installed archive changed before license evidence was recorded")
+        with stdout.open("rb") as stream:
+            raw = stream.read(MAX_LOG_BYTES + 1)
+        if len(raw) > MAX_LOG_BYTES:
+            raise ValueError("License inventory exceeds the bounded evidence limit")
+        decoded = raw.decode("utf-8")
+        if redact_credentials(decoded)[1]:
+            raise ValueError("Raw license inventory contains a recognized credential pattern")
+        inventory = json.loads(decoded)
+        if (
+            not isinstance(inventory, dict)
+            or type(inventory.get("schema_version")) is not int
+            or inventory["schema_version"] != 1
+            or inventory.get("root") != "agentsync-local"
+            or inventory.get("scope") != "installed_runtime_dependency_metadata"
+            or inventory.get("license_review") != "pending"
+            or inventory.get("publication_authorized") is not False
+            or not isinstance(inventory.get("distributions"), dict)
+            or not isinstance(inventory["distributions"].get("agentsync-local"), dict)
+            or inventory["distributions"]["agentsync-local"].get("version") != version
+            or not isinstance(inventory.get("edges"), list)
+            or not isinstance(inventory.get("review_items"), list)
+            or bool(inventory["review_items"]) != (result["exit_code"] == 1)
+        ):
+            raise ValueError("License inventory does not match the installed distribution or expected schema")
+        json.dumps(inventory, allow_nan=False)
+        target = run / stdout.name
+        target.write_bytes(raw)
+    except (OSError, ValueError, RecursionError) as exc:
+        result.update(status="fail", reason=redact_credentials(str(exc))[0])
+    else:
+        result.update(
+            status="unverified" if inventory["review_items"] else "pass",
+            inventory={
+                "path": target.relative_to(run).as_posix(),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+                "size": len(raw),
+                "scope": inventory["scope"],
+                "review_item_count": len(inventory["review_items"]),
+                "license_review": "pending",
+                "publication_authorized": False,
+                "installed_origin_check": origin["id"],
+            },
+        )
+    return result
 
 
 def release_gate(checks: list[dict], run: Path) -> dict:
@@ -394,6 +641,8 @@ def sdist_checks(
     build_passed: bool,
     *,
     pytest_timeout: int = 900,
+    offline_packages: OfflinePackages | None = None,
+    license_inventory: bool = False,
 ) -> list[dict]:
     """Install only the selected sdist in a fresh environment; never fall back to source."""
     _validate_pytest_timeout(pytest_timeout)
@@ -416,8 +665,14 @@ def sdist_checks(
     environment = Path(tempfile.mkdtemp(prefix="sdist-", dir=scratch))
     checks = []
 
-    def invoke(name: str, command: list[str]) -> dict:
-        result = _execute_check("sdist_" + name, command, run, run, scratch, pytest_timeout)
+    def invoke(name: str, command: list[str], *, offline: bool = False) -> dict:
+        check_id = "sdist_" + name
+        if offline and offline_packages is not None:
+            result = execute(
+                check_id, command, run, run, scratch, offline_wheelhouse=offline_packages.wheelhouse
+            )
+        else:
+            result = _execute_check(check_id, command, run, run, scratch, pytest_timeout)
         result["artifact"] = artifact.copy()
         checks.append(result)
         return result
@@ -441,9 +696,30 @@ def sdist_checks(
         )
         return checks
     python = str(environment / ("Scripts/python.exe" if os.name == "nt" else "bin/python"))
-    installed = invoke(
-        "install",
-        [
+    if offline_packages is not None:
+        wheelhouse = offline_packages.wheelhouse
+        dependencies = invoke(
+            "offline_dependencies",
+            _offline_install(
+                python,
+                wheelhouse,
+                "--only-binary=:all:",
+                *offline_packages.backend,
+                *offline_packages.application,
+            ),
+            offline=True,
+        )
+        if dependencies["status"] != "pass":
+            skipped(
+                ["install", "pip_check", "cli", "origin_sdk", "pytest"],
+                "Offline sdist dependency preparation failed",
+            )
+            return checks
+        install_command = _offline_install(
+            python, wheelhouse, "--no-build-isolation", "--no-deps", "--force-reinstall", "--", str(archive)
+        )
+    else:
+        install_command = [
             python,
             "-I",
             "-m",
@@ -452,15 +728,15 @@ def sdist_checks(
             "--use-pep517",
             "--no-cache-dir",
             str(archive) + "[dev]",
-        ],
-    )
+        ]
+    installed = invoke("install", install_command, offline=offline_packages is not None)
     if installed["status"] != "pass":
         skipped(
             ["pip_check", "cli", "origin_sdk", "pytest"],
             "Sdist installation failed; no fallback attempted",
         )
         return checks
-    invoke("pip_check", [python, "-I", "-m", "pip", "check"])
+    invoke("pip_check", [python, "-I", "-m", "pip", "check"], offline=True)
     invoke("cli", [python, "-I", "-m", "agentsync", "--help"])
     probe = (
         "import agentsync, importlib.metadata, json, pathlib, tempfile; "
@@ -486,6 +762,12 @@ def sdist_checks(
             "Installed sdist origin/version/SDK check failed; test results would be untrusted",
         )
     else:
+        if license_inventory:
+            checks.append(
+                _installed_license_inventory(
+                    "sdist", python, repo, run, scratch, version, artifact, origin
+                )
+            )
         tested = invoke(
             "pytest",
             [
@@ -535,21 +817,41 @@ def collect(
     sdist_install: bool = False,
     scratch_root: Path | None = None,
     pytest_timeout: int = 900,
+    offline_wheelhouse: Path | None = None,
+    license_inventory: bool = False,
 ) -> Path:
     _validate_pytest_timeout(pytest_timeout)
     if sdist_install and not run_checks:
         raise ValueError("--sdist-install requires --run")
+    if offline_wheelhouse is not None and not run_checks:
+        raise ValueError("--offline-wheelhouse requires --run")
+    if license_inventory and not (run_checks and (package_install or sdist_install)):
+        raise ValueError("--license-inventory requires --run and a requested distribution install")
+    if offline_wheelhouse is not None and any(
+        path is not None and path.drive.startswith("\\\\")
+        for path in (repo, output, scratch_root)
+    ):
+        raise ValueError("Offline mode requires local source, output and scratch paths")
     output = output.resolve()
     if output.is_relative_to(repo.resolve()):
         raise ValueError("Evidence output must be outside the source repository")
     temporary_parent = output if scratch_root is None else scratch_root.resolve()
     if scratch_root is not None and temporary_parent.is_relative_to(repo.resolve()):
         raise ValueError("Scratch root must be outside the source repository")
+    if offline_wheelhouse is not None and any(
+        path.drive.startswith("\\\\") for path in (repo.resolve(), output, temporary_parent)
+    ):
+        raise ValueError("Offline mode requires local source, output and scratch paths")
     output.mkdir(parents=True, exist_ok=True)
     if scratch_root is not None:
         temporary_parent.mkdir(parents=True, exist_ok=True)
     # Test DBs/auth files and wheel environments are never durable report artifacts.
     # TemporaryDirectory cleans only this freshly created directory, even on failure.
+    options = {}
+    if offline_wheelhouse is not None:
+        options["offline_wheelhouse"] = offline_wheelhouse
+    if license_inventory:
+        options["license_inventory"] = True
     with tempfile.TemporaryDirectory(prefix=".scratch-", dir=temporary_parent) as temporary:
         return _collect(
             repo.resolve(),
@@ -559,6 +861,7 @@ def collect(
             package_install,
             sdist_install,
             pytest_timeout=pytest_timeout,
+            **options,
         )
 
 
@@ -571,6 +874,8 @@ def _collect(
     sdist_install: bool = False,
     *,
     pytest_timeout: int = 900,
+    offline_wheelhouse: Path | None = None,
+    license_inventory: bool = False,
 ) -> Path:
     run = output / (
         "release-" + datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
@@ -587,8 +892,41 @@ def _collect(
     (run / "source-snapshot.json").write_text(json.dumps(source, indent=2), encoding="utf-8")
     plan = check_plan(sys.executable, run, scratch)
     checks = []
+    offline_packages = None
+    if offline_wheelhouse is not None:
+        try:
+            if offline_wheelhouse.drive.startswith("\\\\"):
+                raise ValueError("Offline wheelhouse must use a local filesystem path")
+            wheelhouse = offline_wheelhouse.resolve()
+            if wheelhouse.drive.startswith("\\\\"):
+                raise ValueError("Offline wheelhouse must use a local filesystem path")
+            offline_packages = _prepare_offline_packages(project, wheelhouse, scratch, run)
+        except (ImportError, KeyError, OSError, RuntimeError, TypeError, ValueError, zipfile.BadZipFile) as exc:
+            checks.append(
+                {
+                    "id": "offline_wheelhouse",
+                    "status": "fail",
+                    "reason": redact_credentials(str(exc))[0],
+                }
+            )
     for check_id, command in plan:
-        if run_checks:
+        if check_id == "build" and offline_wheelhouse is not None:
+            build = (
+                None
+                if offline_packages is None
+                else _offline_build_command(repo, run, scratch, offline_packages, checks)
+            )
+            if build is None or offline_packages is None:
+                item = {"id": "build", "status": "not_run", "reason": "Offline build prerequisites failed"}
+            else:
+                item = execute(
+                    "build", build, repo, run, scratch, offline_wheelhouse=offline_packages.wheelhouse
+                )
+        elif check_id == "pip_check" and offline_wheelhouse is not None:
+            item = execute(
+                check_id, command, repo, run, scratch, offline_wheelhouse=scratch / "offline-wheels"
+            )
+        elif run_checks:
             item = _execute_check(check_id, command, repo, run, scratch, pytest_timeout)
             if check_id == "pytest" and (scratch / "junit.xml").exists():
                 try:
@@ -613,9 +951,10 @@ def _collect(
             if check_id in PYTEST_CHECKS and pytest_timeout != 900:
                 item["timeout_seconds"] = pytest_timeout
         checks.append(item)
+    build_passed = next(c for c in checks if c["id"] == "build")["status"] == "pass"
     if package_install and run_checks:
         wheels = list((run / "artifacts").glob("*.whl"))
-        if len(wheels) == 1 and next(c for c in checks if c["id"] == "build")["status"] == "pass":
+        if len(wheels) == 1 and build_passed:
             wheel_artifact = {
                 "path": wheels[0].relative_to(run).as_posix(),
                 "sha256": sha256(wheels[0]),
@@ -635,19 +974,51 @@ def _collect(
             )
             python = str(environment / ("Scripts/python.exe" if os.name == "nt" else "bin/python"))
             if checks[-1]["status"] == "pass":
-                checks.append(
-                    execute(
-                        "wheel_install",
-                        [python, "-I", "-m", "pip", "install", str(wheels[0]) + "[dev]"],
+                options = {}
+                if offline_packages is None:
+                    install_command = [python, "-I", "-m", "pip", "install", str(wheels[0]) + "[dev]"]
+                else:
+                    wheelhouse = offline_packages.wheelhouse
+                    options["offline_wheelhouse"] = wheelhouse
+                    dependencies = execute(
+                        "wheel_offline_dependencies",
+                        _offline_install(
+                            python, wheelhouse, "--only-binary=:all:", *offline_packages.application
+                        ),
                         run,
                         run,
                         scratch,
+                        **options,
                     )
+                    checks.append(dependencies)
+                    install_command = _offline_install(
+                        python, wheelhouse, "--no-deps", "--force-reinstall", "--", str(wheels[0])
+                    )
+                if checks[-1]["status"] == "pass":
+                    checks.append(
+                        execute("wheel_install", install_command, run, run, scratch, **options)
+                    )
+                    checks[-1]["artifact"] = wheel_artifact
+            if checks[-1]["id"] != "wheel_install" and offline_packages is not None:
+                checks.append(
+                    {
+                        "id": "wheel_install",
+                        "status": "not_run",
+                        "artifact": wheel_artifact,
+                        "reason": "Offline wheel environment or dependency preparation failed",
+                    }
                 )
-                checks[-1]["artifact"] = wheel_artifact
+            if checks[-1]["id"] == "wheel_install" and (
+                offline_packages is None or checks[-1]["status"] == "pass"
+            ):
                 checks.append(
                     execute(
-                        "wheel_pip_check", [python, "-I", "-m", "pip", "check"], run, run, scratch
+                        "wheel_pip_check",
+                        [python, "-I", "-m", "pip", "check"],
+                        run,
+                        run,
+                        scratch,
+                        **options,
                     )
                 )
                 checks.append(
@@ -671,10 +1042,24 @@ def _collect(
                     "result = client.call('create_project', name='isolated wheel smoke', root_path=str(root)); "
                     "assert result['ok'], result; print('SDK smoke: pass'); tmp.cleanup()"
                 )
-                checks.append(
-                    execute("wheel_origin_sdk", [python, "-I", "-c", probe], run, run, scratch)
-                )
+                origin = execute("wheel_origin_sdk", [python, "-I", "-c", probe], run, run, scratch)
+                if license_inventory:
+                    origin["artifact"] = wheel_artifact.copy()
+                checks.append(origin)
                 if next(c for c in checks if c["id"] == "wheel_install")["status"] == "pass":
+                    if license_inventory and origin["status"] == "pass":
+                        checks.append(
+                            _installed_license_inventory(
+                                "wheel",
+                                python,
+                                repo,
+                                run,
+                                scratch,
+                                project["project"]["version"],
+                                wheel_artifact,
+                                origin,
+                            )
+                        )
                     installed = _execute_check(
                         "wheel_pytest",
                         [
@@ -718,11 +1103,13 @@ def _collect(
                     }
                 )
         else:
+            build_blocked = offline_wheelhouse is not None and not build_passed
             checks.append(
                 {
                     "id": "wheel_install",
-                    "status": "fail",
-                    "reason": "Build produced no unique successful wheel",
+                    "status": "not_run" if build_blocked else "fail",
+                    "reason": "Source build did not succeed"
+                    if build_blocked else "Build produced no unique successful wheel",
                 }
             )
     else:
@@ -734,20 +1121,42 @@ def _collect(
             }
         )
     if sdist_install:
-        checks.extend(
-            sdist_checks(
-                repo,
-                run,
-                scratch,
-                project["project"]["version"],
-                next(c for c in checks if c["id"] == "build")["status"] == "pass",
-                pytest_timeout=pytest_timeout,
+        if offline_wheelhouse is not None and not build_passed:
+            checks.append(
+                {"id": "sdist_install", "status": "not_run", "reason": "Source build did not succeed"}
             )
-        )
+        else:
+            options = {}
+            if offline_packages is not None:
+                options["offline_packages"] = offline_packages
+            if license_inventory:
+                options["license_inventory"] = True
+            checks.extend(
+                sdist_checks(
+                    repo,
+                    run,
+                    scratch,
+                    project["project"]["version"],
+                    build_passed,
+                    pytest_timeout=pytest_timeout,
+                    **options,
+                )
+            )
     else:
         checks.append(
             {"id": "sdist_install", "status": "not_run", "reason": "Requires --run --sdist-install"}
         )
+    if license_inventory:
+        for kind, requested in (("wheel", package_install), ("sdist", sdist_install)):
+            check_id = kind + "_license_inventory"
+            if requested and not any(c["id"] == check_id for c in checks):
+                checks.append(
+                    {
+                        "id": check_id,
+                        "status": "not_run",
+                        "reason": "Installed artifact origin was not verified",
+                    }
+                )
     manifest_path = repo / "docs" / "acceptance" / "requirements.json"
     manifest = None
     manifest_error = None
@@ -794,6 +1203,11 @@ def _collect(
         if (c["id"] != "wheel_install" or package_install)
         and (c["id"] != "sdist_install" or sdist_install)
     ]
+    sdist_isolation = (
+        "PEP 517 with preloaded build requirements in the fresh install environment; no cached wheel or editable fallback"
+        if offline_wheelhouse is not None
+        else "PEP 517 default isolation; no cached wheel or editable fallback"
+    )
     report = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
@@ -818,7 +1232,7 @@ def _collect(
                 "artifact": check.get("artifact"),
                 "status": check["status"],
                 "evidence_log": check.get("log"),
-                "build_isolation": "PEP 517 default isolation; no cached wheel or editable fallback"
+                "build_isolation": sdist_isolation
                 if check["id"] == "sdist_install"
                 else "Wheel installation; no sdist rebuild asserted",
             }
@@ -843,6 +1257,14 @@ def _collect(
             "Logs and JUnit redact known keyed credentials, Bearer values and recognized API-key prefixes; this is best-effort filtering, not proof that arbitrary secrets are absent.",
         ],
     }
+    if offline_wheelhouse is not None:
+        report["package_resolution"] = {
+            "mode": "offline_wheelhouse",
+            "wheelhouse_manifest": "offline-wheelhouse.json" if offline_packages is not None else None,
+            "source_build": "Fresh environment with build tools preloaded from the staged wheels",
+            "artifact_install": "Fresh environment with declared runtime and dev requirements preloaded from the staged wheels, then exact local artifact installation without dependency resolution",
+            "network_scope": "Pip package resolution only. Trusted build, package and test code is not isolated from the operating system network.",
+        }
     report["artifacts"] = [
         {"path": p.relative_to(run).as_posix(), "sha256": sha256(p), "size": p.stat().st_size}
         for p in sorted(run.rglob("*"))
@@ -864,7 +1286,7 @@ def _collect(
         "| --- | --- | --- |",
     ]
     rows.extend(
-        f"| {c['id']} | {c['status']} | {c.get('log', c.get('reason', 'Not executed'))} |"
+        f"| {c['id']} | {c['status']} | {c.get('inventory', {}).get('path', c.get('log', c.get('reason', 'Not executed')))} |"
         for c in checks
     )
     rows.extend(
@@ -924,6 +1346,12 @@ def _collect(
             "Skipped tests remain skipped in JUnit; they are not passes. No destructive user-workspace tests or paid calls are performed.",
         ]
     )
+    if offline_wheelhouse is not None:
+        rows.append(
+            "Offline package resolution uses staged local wheels. Trusted build, package and test code retains operating system network access."
+        )
+    if license_inventory:
+        rows.append("Installed license inventories record metadata for pending human review.")
     (run / "Release-Acceptance-Report.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
     return run
 
@@ -965,6 +1393,16 @@ def main() -> int:
         action="store_true",
         help="Build/install the sdist in another isolated environment and run its full suite (may download dependencies)",
     )
+    parser.add_argument(
+        "--offline-wheelhouse",
+        type=Path,
+        help="Resolve build and install requirements from a local directory of wheels (requires --run)",
+    )
+    parser.add_argument(
+        "--license-inventory",
+        action="store_true",
+        help="Collect runtime license metadata after verifying each requested fresh install",
+    )
     args = parser.parse_args()
     try:
         _validate_pytest_timeout(args.pytest_timeout)
@@ -974,9 +1412,17 @@ def main() -> int:
         parser.error("--package-install requires --run")
     if args.sdist_install and not args.run:
         parser.error("--sdist-install requires --run")
+    if args.offline_wheelhouse is not None and not args.run:
+        parser.error("--offline-wheelhouse requires --run")
+    if args.license_inventory and not (args.run and (args.package_install or args.sdist_install)):
+        parser.error("--license-inventory requires --run and a requested distribution install")
     collect_options = {} if args.scratch_root is None else {"scratch_root": args.scratch_root}
     if args.pytest_timeout != 900:
         collect_options["pytest_timeout"] = args.pytest_timeout
+    if args.offline_wheelhouse is not None:
+        collect_options["offline_wheelhouse"] = args.offline_wheelhouse
+    if args.license_inventory:
+        collect_options["license_inventory"] = True
     run = collect(
         Path(__file__).resolve().parents[1],
         args.output.resolve(),

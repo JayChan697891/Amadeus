@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import re
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -19,14 +20,20 @@ _REQUIRED_CHECKS = _SUITES | {
 _IDENTITY_FIELDS = ("version", "commit_sha", "tree_sha", "source_snapshot_sha256")
 
 
-def _read_report(path: Path) -> tuple[dict[str, Any], str]:
+def _read_report(
+    path: Path, *, decoder: Callable[[bytes], Any] | None = None
+) -> tuple[dict[str, Any], str]:
     if not path.is_file():
         raise ValueError("A report file is required.")
+    if decoder is not None and (
+        path.is_symlink() or getattr(path.lstat(), "st_file_attributes", 0) & 0x400
+    ):
+        raise ValueError("Verified report evidence requires an ordinary report file.")
     with path.open("rb") as report:
         data = report.read(_REPORT_LIMIT + 1)
     if len(data) > _REPORT_LIMIT:
         raise ValueError("Report exceeds the size limit.")
-    content = json.loads(data.decode("utf-8"))
+    content = json.loads(data.decode("utf-8")) if decoder is None else decoder(data)
     if type(content) is not dict or type(content.get("schema_version")) is not int:
         raise ValueError("Unsupported report schema.")
     if content["schema_version"] != 1:
@@ -53,7 +60,7 @@ def _observation(report: dict[str, Any], digest: str) -> dict[str, Any]:
         name, status = row["id"], row["status"]
         if type(name) is not str or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", name):
             raise ValueError("Invalid check ID.")
-        if name in checks or status not in ("pass", "fail", "blocked", "not_run"):
+        if name in checks or status not in ("pass", "fail", "blocked", "not_run", "restricted", "unverified"):
             raise ValueError("Invalid or repeated check.")
         checks[name] = status
         if name in _SUITES and "junit" in row:
@@ -80,14 +87,35 @@ def _observation(report: dict[str, Any], digest: str) -> dict[str, Any]:
     }
 
 
-def summarize(paths: list[Path], expected_commit: str) -> dict[str, Any]:
+def summarize(
+    paths: list[Path], expected_commit: str, *, verify_artifacts: bool = False,
+    require_license_inventory: bool = False, python_minors: tuple[str, ...] = (),
+) -> dict[str, Any]:
     if not 1 <= len(paths) <= 12 or not re.fullmatch(r"[0-9a-f]{40}", expected_commit):
         raise ValueError("Supply a frozen Git SHA and one to twelve reports.")
+    if require_license_inventory and not verify_artifacts:
+        raise ValueError("Required license inventories need artifact verification.")
+    if (
+        type(python_minors) is not tuple or len(python_minors) > 4
+        or any(type(value) is not str or not re.fullmatch(r"3\.(?:1[1-9]|[2-9][0-9])", value) for value in python_minors)
+        or len(set(python_minors)) != len(python_minors)
+    ):
+        raise ValueError("Supply distinct supported Python minor versions.")
+    decoder = None
+    verifier = None
+    if verify_artifacts:
+        if __package__:
+            from .acceptance_evidence import read_json, verify_report_evidence
+        else:
+            from acceptance_evidence import read_json, verify_report_evidence
+
+        decoder = read_json
+        verifier = verify_report_evidence
     observations = []
     identities = set()
     report_digests = set()
     for path in paths:
-        report, digest = _read_report(path)
+        report, digest = _read_report(path, decoder=decoder)
         identity = tuple(report[field] for field in _IDENTITY_FIELDS)
         version, commit, tree, snapshot = identity
         if (
@@ -102,25 +130,56 @@ def summarize(paths: list[Path], expected_commit: str) -> dict[str, Any]:
             raise ValueError("Duplicate report.")
         identities.add(identity)
         report_digests.add(digest)
-        observations.append(_observation(report, digest))
+        observation = _observation(report, digest)
+        if verifier is not None:
+            observation["artifact_audit"] = verifier(path, report)
+        observations.append(observation)
     if len(identities) != 1:
         raise ValueError("Reports describe different frozen sources.")
     frozen = dict(zip(_IDENTITY_FIELDS, identities.pop(), strict=True))
-    complete = {
-        observation["system"]
+    required = _REQUIRED_CHECKS | (
+        {"wheel_origin_sdk", "sdist_origin_sdk", "wheel_pip_check", "sdist_pip_check"}
+        if verify_artifacts else set()
+    )
+    if require_license_inventory:
+        required |= {"wheel_license_inventory", "sdist_license_inventory"}
+    complete = [
+        observation
         for observation in observations
-        if all(observation["checks"].get(name) == "pass" for name in _REQUIRED_CHECKS)
-    }
-    failed = any("fail" in observation["checks"].values() for observation in observations)
-    missing = sorted(_REQUIRED_SYSTEMS - complete)
+        if all(observation["checks"].get(name) == "pass" for name in required)
+        and (
+            not verify_artifacts or observation["artifact_audit"]["junit_case_sets_match"] is True
+        )
+    ]
+    failed = any(
+        "fail" in observation["checks"].values()
+        or (verify_artifacts and observation["artifact_audit"]["junit_case_sets_match"] is False)
+        for observation in observations
+    )
+    missing = sorted(_REQUIRED_SYSTEMS - {row["system"] for row in complete})
+    observed_matrix = set()
+    for row in complete:
+        match = re.match(r"^(3\.[0-9]{1,2})\.[0-9]+(?:\D|$)", row["python"])
+        if match:
+            observed_matrix.add((row["system"], match.group(1)))
+    missing_python = sorted(
+        (system, minor) for system in _REQUIRED_SYSTEMS for minor in python_minors
+        if (system, minor) not in observed_matrix
+    )
     return {
         "schema_version": 1,
         "scope": "saved_local_report_observations",
         "frozen": frozen,
         "observations": observations,
         "systems_without_full_reported_checks": missing,
-        "local_matrix": "failed" if failed else "incomplete" if missing else "reported_pass",
-        "artifact_bytes_verified": False,
+        "missing_os_python_combinations": [
+            {"system": system, "python_minor": minor} for system, minor in missing_python
+        ],
+        "local_matrix": (
+            "failed" if failed else "incomplete" if missing or missing_python
+            else "artifact_verified_pass" if verify_artifacts else "reported_pass"
+        ),
+        "artifact_bytes_verified": verify_artifacts,
         "formal_release_acceptance": "blocked",
     }
 
@@ -128,14 +187,25 @@ def summarize(paths: list[Path], expected_commit: str) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--commit", required=True)
+    parser.add_argument("--verify-artifacts", action="store_true")
+    parser.add_argument("--require-license-inventory", action="store_true")
+    parser.add_argument("--require-python", action="append", default=[])
     parser.add_argument("report", nargs="+", type=Path)
     args = parser.parse_args()
     try:
-        matrix = summarize(args.report, args.commit)
+        matrix = summarize(
+            args.report, args.commit, verify_artifacts=args.verify_artifacts,
+            require_license_inventory=args.require_license_inventory,
+            python_minors=tuple(args.require_python),
+        )
     except (AttributeError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid local acceptance reports or mismatched frozen source.\n")
     print(json.dumps(matrix, indent=2))
-    return 1 if matrix["local_matrix"] == "failed" else 0
+    if matrix["local_matrix"] == "failed":
+        return 1
+    if (args.require_license_inventory or args.require_python) and matrix["local_matrix"] == "incomplete":
+        return 2
+    return 0
 
 
 if __name__ == "__main__":
