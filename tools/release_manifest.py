@@ -232,6 +232,14 @@ def verify_manifest(
             or _source_distribution(source_repo, frozen) != manifest["distribution"]
         ):
             raise ValueError("The original build evidence does not match the candidate archives and source.")
+        installations = {row["kind"]: row["artifact"] for row in report["distribution_installations"]}
+        for artifact in artifacts:
+            original = installations[artifact["kind"]]
+            if (
+                _member_parts(artifact["path"]) != (*report_parts[:-1], *_member_parts(original["path"]))
+                or artifact["size"] != original["size"]
+            ):
+                raise ValueError("The candidate archive path or size differs from its original installation.")
 
     return {
         "schema_version": 1,
