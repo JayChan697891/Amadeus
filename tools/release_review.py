@@ -18,10 +18,12 @@ from typing import Any
 
 if __package__:
     from .acceptance_evidence import _Evidence, read_json
+    from .acceptance_git_source import _output
     from .acceptance_matrix import _complete_observation, _platform_gaps, matrix_digest, summarize
     from .release_manifest import verify_manifest
 else:
     from acceptance_evidence import _Evidence, read_json
+    from acceptance_git_source import _output
     from acceptance_matrix import _complete_observation, _platform_gaps, matrix_digest, summarize
     from release_manifest import verify_manifest
 
@@ -31,6 +33,7 @@ _STATUSES = ("passed", "failed", "not_run", "blocked", "restricted", "unverified
 _COUNTS = (5, 5, 5, 4, 5, 5, 5, 4, 2, 2)
 _REQUIREMENTS = {f"M{milestone}-{index:02d}" for milestone, count in enumerate(_COUNTS) for index in range(1, count + 1)}
 _SCENARIOS = {f"T{index:02d}" for index in range(1, 17)}
+_REGISTER_PATH = "docs/acceptance/requirements.json"
 _EVIDENCE_KINDS = {
     "component", "security", "package", "license", "mcp_host", "codex", "claude_code",
     "cursor", "real_relay", "conflict", "cross_platform", "independent_review",
@@ -132,6 +135,12 @@ def _inputs(
         require_license_inventory=True, python_minors=python_minors, source_repo=source_repo,
     )
     manifest, manifest_sha = _read(manifest_path)
+    if source_repo is not None:
+        frozen_register = _output(
+            source_repo, "cat-file", "blob", f"{commit}:{_REGISTER_PATH}", maximum=_LIMIT,
+        )
+        if hashlib.sha256(frozen_register).hexdigest() != manifest_sha:
+            raise ValueError("The requirements register differs from the frozen Git revision.")
     return matrix, manifest_sha, _traceability(manifest)
 
 
@@ -281,6 +290,7 @@ def assemble(
         "frozen": matrix["frozen"],
         "requirements_sha256": manifest_sha,
         "review_sha256": review_sha,
+        "requirements_git_bound": source_repo is not None,
         "reviewer_declared": review["reviewer_id"],
         "reviewer_authenticated": False,
         "matrix_sha256": digest,
@@ -319,6 +329,9 @@ def render_markdown(packet: dict[str, Any]) -> str:
         f"- Version `{frozen['version']}`",
         f"- Git commit `{frozen['commit_sha']}`",
         f"- Requirements SHA-256 `{packet['requirements_sha256']}`",
+        "- Requirements source: " + (
+            "matched to the frozen Git revision" if packet["requirements_git_bound"] else "not checked against Git"
+        ),
         f"- Review SHA-256 `{packet['review_sha256']}`",
         f"- Matrix SHA-256 `{packet['matrix_sha256']}`",
         f"- Declared reviewer `{packet['reviewer_declared']}`",
