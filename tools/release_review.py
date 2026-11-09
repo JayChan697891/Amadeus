@@ -17,14 +17,18 @@ from pathlib import Path
 from typing import Any
 
 if __package__:
-    from .acceptance_evidence import _Evidence, read_json
+    from .acceptance_evidence import _Evidence, _member_parts, _physical, read_json
     from .acceptance_git_source import _output
-    from .acceptance_matrix import _complete_observation, _platform_gaps, matrix_digest, summarize
+    from .acceptance_matrix import (
+        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
+    )
     from .release_manifest import verify_manifest
 else:
-    from acceptance_evidence import _Evidence, read_json
+    from acceptance_evidence import _Evidence, _member_parts, _physical, read_json
     from acceptance_git_source import _output
-    from acceptance_matrix import _complete_observation, _platform_gaps, matrix_digest, summarize
+    from acceptance_matrix import (
+        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
+    )
     from release_manifest import verify_manifest
 
 _LIMIT = 4 * 1024 * 1024
@@ -146,7 +150,7 @@ def _inputs(
 
 def prepare(
     manifest_path: Path, local_reports: list[Path], commit: str, reviewer_id: str,
-    *, python_minors: tuple[str, ...] = ("3.11", "3.12", "3.14"),
+    *, python_minors: tuple[str, ...] = RELEASE_PYTHON_MINORS,
     source_repo: Path | None = None,
 ) -> dict[str, Any]:
     """Return a blank review form bound to the supplied evidence and coverage."""
@@ -180,6 +184,10 @@ def _bind_candidate(
     ):
         raise ValueError("Release candidate describes a different frozen matrix.")
     build = candidate["build_report"]
+    build_path, _ = _physical(evidence_root.resolve(strict=True), _member_parts(build["path"]))
+    _, build_sha256 = _read_report(build_path, decoder=read_json)
+    if build_sha256 != build["sha256"]:
+        raise ValueError("The candidate build report differs from its manifest reference.")
     observation = next(
         (row for row in matrix["observations"] if row["report_sha256"] == build["sha256"]), None
     )
@@ -197,9 +205,11 @@ def _bind_candidate(
         and _complete_observation(row, verify_artifacts=True, require_license_inventory=True)
         and all(row["checks"].get(kind + "_console_smoke") == "pass" for kind in pins)
     ]
-    systems, combinations = _platform_gaps(matching, python_minors)
+    release_minors = tuple(sorted(set(python_minors) | set(RELEASE_PYTHON_MINORS)))
+    systems, combinations = _platform_gaps(matching, release_minors)
     return candidate | {
         "build_report_verified_in_matrix": True,
+        "build_report_bytes_verified": True,
         "matching_install_report_sha256": sorted(row["report_sha256"] for row in matching),
         "systems_without_exact_candidate_checks": systems,
         "missing_exact_candidate_os_python_combinations": combinations,
@@ -213,7 +223,7 @@ def assemble(
     local_reports: list[Path],
     commit: str,
     *,
-    python_minors: tuple[str, ...] = ("3.11", "3.12", "3.14"),
+    python_minors: tuple[str, ...] = RELEASE_PYTHON_MINORS,
     source_repo: Path | None = None,
     candidate_manifest: Path | None = None,
     candidate_sha256: str | None = None,
@@ -418,7 +428,7 @@ def main() -> int:
         parser.error("--candidate-manifest and --candidate-sha256 are required together")
     if args.candidate_manifest is not None and (args.review is None or args.source_repo is None):
         parser.error("candidate binding requires --review and --source-repo")
-    minors = tuple(args.require_python or ("3.11", "3.12", "3.14"))
+    minors = tuple(args.require_python or RELEASE_PYTHON_MINORS)
     try:
         if args.prepare is not None:
             packet = prepare(

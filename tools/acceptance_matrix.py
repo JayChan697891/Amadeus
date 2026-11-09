@@ -18,6 +18,7 @@ _REQUIRED_CHECKS = _SUITES | {
     "ruff", "format", "mypy", "build", "pip_check", "wheel_install", "sdist_install"
 }
 _IDENTITY_FIELDS = ("version", "commit_sha", "tree_sha", "source_snapshot_sha256")
+RELEASE_PYTHON_MINORS = ("3.11", "3.12", "3.14")
 
 
 def matrix_digest(matrix: dict[str, Any]) -> str:

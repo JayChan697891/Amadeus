@@ -12,16 +12,20 @@ from typing import TYPE_CHECKING, Any
 if __package__:
     from .acceptance_evidence import _SHA256, _Evidence, _member_parts, _physical, read_json
     from .acceptance_git_source import _output
-    from .acceptance_matrix import _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize
+    from .acceptance_matrix import (
+        RELEASE_PYTHON_MINORS, _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize,
+    )
 else:
     from acceptance_evidence import _SHA256, _Evidence, _member_parts, _physical, read_json
     from acceptance_git_source import _output
-    from acceptance_matrix import _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize
+    from acceptance_matrix import (
+        RELEASE_PYTHON_MINORS, _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize,
+    )
 
 if TYPE_CHECKING:
     from packaging.version import Version
 
-_PYTHON_MINORS = ("3.11", "3.12", "3.14")
+_PYTHON_MINORS = RELEASE_PYTHON_MINORS
 _KINDS = ("wheel", "sdist")
 _BUILD_CHECKS = {"build", "wheel_install", "sdist_install", "wheel_origin_sdk", "sdist_origin_sdk"}
 _SCOPE = "local_release_artifact_manifest"
