@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import stat
 from collections.abc import Iterator
 from contextlib import contextmanager, suppress
 from pathlib import Path
@@ -14,6 +15,7 @@ from agentsync.workspaces.git import physical
 
 _APPLICATION_ID = 0x41535751
 _VERSION = 1
+_SIDECAR_SUFFIXES = ("-journal", "-wal", "-shm")
 JournalState = Literal["admitted", "incomplete", "resolved"]
 
 
@@ -44,10 +46,25 @@ class RelayWaveJournal:
     def _check_path(self) -> bool:
         if physical(self._path.parent) != self._directory_identity:
             raise _unavailable()
-        if not self._path.exists() and not self._path.is_symlink():
+        sidecars = [self._path.with_name(self._path.name + suffix) for suffix in _SIDECAR_SUFFIXES]
+        present = [self._check_file(path) for path in sidecars]
+        exists = self._check_file(self._path)
+        if not exists and any(present):
+            raise _unavailable()
+        return exists
+
+    @staticmethod
+    def _check_file(path: Path) -> bool:
+        try:
+            info = path.lstat()
+        except FileNotFoundError:
             return False
-        physical(self._path)
-        if not self._path.is_file():
+        except OSError:
+            raise _unavailable() from None
+        if (
+            not stat.S_ISREG(info.st_mode) or info.st_nlink != 1
+            or getattr(info, "st_file_attributes", 0) & 0x400
+        ):
             raise _unavailable()
         return True
 
@@ -84,7 +101,7 @@ class RelayWaveJournal:
         try:
             self._check_path()
             db = sqlite3.connect(self._path, timeout=5, isolation_level=None)
-            db.execute("PRAGMA synchronous=FULL")
+            db.execute("PRAGMA synchronous=EXTRA")
             db.execute("BEGIN IMMEDIATE")
             self._check_schema(db, initialize=True)
             yield db
@@ -160,6 +177,18 @@ class RelayWaveJournal:
         """Read the sole active project fence, if any, without creating a journal."""
         return self._read(project_key, None)
 
+    @contextmanager
+    def _query(self) -> Iterator[sqlite3.Connection]:
+        # Permit SQLite to roll back a hot journal, but never create a database
+        # or change application rows from an observation.
+        db = sqlite3.connect(self._path.as_uri() + "?mode=rw", uri=True, timeout=5)
+        try:
+            db.execute("PRAGMA query_only=ON")
+            self._check_schema(db, initialize=False)
+            yield db
+        finally:
+            db.close()
+
     @staticmethod
     def _decode(row: tuple[Any, ...]) -> tuple[str, JournalState, Any, Any]:
         key, state, tasks, results = row
@@ -177,58 +206,48 @@ class RelayWaveJournal:
             if before is not None:
                 raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
             return [], None
-        db = None
         try:
-            db = sqlite3.connect(self._path.as_uri() + "?mode=ro", uri=True, timeout=5)
-            self._check_schema(db, initialize=False)
-            cursor = None
-            if before is not None:
-                found = db.execute(
-                    "SELECT rowid FROM relay_waves WHERE project_key=? AND request_key=?",
-                    (project_key, before),
-                ).fetchone()
-                if found is None:
-                    raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
-                cursor = found[0]
-            rows = db.execute(
-                "SELECT request_key, state, tasks_json, results_json FROM relay_waves "
-                "WHERE project_key=? AND (? IS NULL OR rowid<?) ORDER BY rowid DESC LIMIT ?",
-                (project_key, cursor, cursor, limit + 1),
-            ).fetchall()
+            with self._query() as db:
+                cursor = None
+                if before is not None:
+                    found = db.execute(
+                        "SELECT rowid FROM relay_waves WHERE project_key=? AND request_key=?",
+                        (project_key, before),
+                    ).fetchone()
+                    if found is None:
+                        raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
+                    cursor = found[0]
+                rows = db.execute(
+                    "SELECT request_key, state, tasks_json, results_json FROM relay_waves "
+                    "WHERE project_key=? AND (? IS NULL OR rowid<?) ORDER BY rowid DESC LIMIT ?",
+                    (project_key, cursor, cursor, limit + 1),
+                ).fetchall()
             page = rows[:limit]
             return [self._decode(row) for row in page], page[-1][0] if len(rows) > limit else None
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
             raise _unavailable() from None
-        finally:
-            if db is not None:
-                db.close()
 
     def _read(
         self, project_key: str, request_key: str | None
     ) -> tuple[str, JournalState, Any, Any] | None:
         if not self._check_path():
             return None
-        db = None
         try:
-            db = sqlite3.connect(self._path.as_uri() + "?mode=ro", uri=True, timeout=5)
-            self._check_schema(db, initialize=False)
-            if request_key is None:
-                row = db.execute(
-                    "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
-                    "WHERE project_key=? AND state IN ('admitted','incomplete')",
-                    (project_key,),
-                ).fetchone()
-            else:
-                row = db.execute(
-                    "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
-                    "WHERE project_key=? AND request_key=?",
-                    (project_key, request_key),
-                ).fetchone()
+            with self._query() as db:
+                if request_key is None:
+                    row = db.execute(
+                        "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
+                        "WHERE project_key=? AND state IN ('admitted','incomplete')",
+                        (project_key,),
+                    ).fetchone()
+                else:
+                    row = db.execute(
+                        "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
+                        "WHERE project_key=? AND request_key=?",
+                        (project_key, request_key),
+                    ).fetchone()
             if row is None:
                 return None
             return self._decode(row)
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
             raise _unavailable() from None
-        finally:
-            if db is not None:
-                db.close()
