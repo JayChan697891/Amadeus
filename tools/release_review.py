@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -170,7 +171,8 @@ def assemble(
     }:
         raise ValueError("Invalid independent review envelope.")
     if (
-        review["commit_sha"] != commit or review["version"] != matrix["frozen"]["version"]
+        type(review["schema_version"]) is not int or review["schema_version"] != 1
+        or review["commit_sha"] != commit or review["version"] != matrix["frozen"]["version"]
         or review["requirements_sha256"] != manifest_sha or review["matrix_sha256"] != _matrix_digest(matrix)
         or type(review["reviewer_id"]) is not str or not _IDENTIFIER.fullmatch(review["reviewer_id"])
         or type(review["independence_declared"]) is not bool
@@ -235,6 +237,66 @@ def assemble(
     }
 
 
+def _cell(value: str) -> str:
+    plain = " ".join(value.split())
+    return re.sub(r"[&<>\[\]|\\`*_!~:]", lambda match: f"&#{ord(match[0])};", plain)
+
+
+def render_markdown(packet: dict[str, Any]) -> str:
+    """Render the checked packet without converting reviewer declarations to approvals."""
+    frozen = packet["frozen"]
+    source_check = "verified against local Git objects" if packet["git_source_audit"] else "not run"
+    lines = [
+        "# Release Acceptance Report",
+        "",
+        f"Formal release acceptance is **{_cell(packet['formal_release_acceptance'].upper())}**.",
+        "Publication requires separate authorization. Reviewer identity and evidence classifications",
+        "are declarations that require independent confirmation.",
+        "",
+        f"- Version `{frozen['version']}`",
+        f"- Git commit `{frozen['commit_sha']}`",
+        f"- Requirements SHA-256 `{packet['requirements_sha256']}`",
+        f"- Review SHA-256 `{packet['review_sha256']}`",
+        f"- Matrix SHA-256 `{packet['matrix_sha256']}`",
+        f"- Declared reviewer `{packet['reviewer_declared']}`",
+        f"- Local matrix `{packet['local_matrix']}`",
+        f"- Frozen source check {source_check}",
+        f"- Packet state `{packet['packet_state']}`",
+        "",
+        "## Declared results",
+        "",
+        "| Status | Count |",
+        "| --- | ---: |",
+    ]
+    lines.extend(f"| `{status}` | {packet['declared_status_counts'][status]} |" for status in _STATUSES)
+    missing = packet["missing_os_python_combinations"]
+    if missing:
+        lines.extend(["", "## OS and Python combinations without complete evidence", ""])
+        lines.extend(f"- {_cell(row['system'])} / Python {_cell(row['python_minor'])}" for row in missing)
+    lines.extend([
+        "", "## Requirements and scenarios", "",
+        "| ID | Case | Declared status | Evidence IDs | Reason |",
+        "| --- | --- | --- | --- | --- |",
+    ])
+    for case in packet["cases"]:
+        refs = ", ".join(f"`{ref}`" for ref in case["evidence_ids"]) or "—"
+        lines.append(
+            f"| `{case['id']}` | {_cell(case['title'])} | `{case['declared_status']}` | "
+            f"{refs} | {_cell(case['reason'])} |"
+        )
+    lines.extend([
+        "", "## Checked evidence files", "",
+        "| ID | Declared kind | Relative path | Bytes | SHA-256 |",
+        "| --- | --- | --- | ---: | --- |",
+    ])
+    for identity, item in sorted(packet["evidence"].items()):
+        lines.append(
+            f"| `{identity}` | `{item['kind']}` | {_cell(item['path'])} | "
+            f"{item['size']} | `{item['sha256']}` |"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--commit", required=True)
@@ -245,10 +307,13 @@ def main() -> int:
     mode.add_argument("--prepare", metavar="REVIEWER_ID")
     parser.add_argument("--evidence-root", type=Path)
     parser.add_argument("--require-python", action="append")
+    parser.add_argument("--format", choices=("json", "markdown"), default="json")
     parser.add_argument("report", type=Path, nargs="+")
     args = parser.parse_args()
     if args.review is not None and args.evidence_root is None:
         parser.error("--review requires --evidence-root")
+    if args.prepare is not None and args.format != "json":
+        parser.error("--prepare emits the JSON decision template")
     minors = tuple(args.require_python or ("3.11", "3.12", "3.14"))
     try:
         if args.prepare is not None:
@@ -263,7 +328,10 @@ def main() -> int:
             )
     except (AttributeError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid or inconsistent release review inputs.\n")
-    print(json.dumps(packet, ensure_ascii=True, indent=2))
+    if args.format == "markdown":
+        sys.stdout.buffer.write(render_markdown(packet).encode("utf-8", errors="backslashreplace"))
+    else:
+        print(json.dumps(packet, ensure_ascii=True, indent=2))
     if args.prepare is not None:
         return 0
     return 0 if packet["packet_state"] == "complete_for_independent_decision" else 1

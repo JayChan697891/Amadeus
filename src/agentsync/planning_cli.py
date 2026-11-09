@@ -8,10 +8,14 @@ from typing import Any
 
 from agentsync.dispatch_planning import plan_dispatches
 from agentsync.errors import AgentSyncError
+from agentsync.retry_planning import RetryPolicy, plan_retry
 
 MAX_INPUT_BYTES = 1024 * 1024
 _REQUIRED = {"state", "project_id", "worker_agent_ids", "now"}
 _OPTIONAL = {"global_limit", "per_agent_limit", "limit", "required_capabilities"}
+_RETRY_REQUIRED = {"attempts_used", "failure_kind", "outcome_confirmed", "now"}
+_RETRY_OPTIONAL = {"deadline", "retry_after_seconds", "remaining_attempt_budget"}
+_RETRY_POLICY = {"max_attempts", "base_delay_seconds", "max_delay_seconds"}
 
 
 def invalid_input() -> int:
@@ -39,20 +43,26 @@ def _finite(text: str) -> float:
     return value
 
 
+def _read_payload(limit: int) -> dict[str, Any]:
+    raw = sys.stdin.buffer.read(limit + 1)
+    if len(raw) > limit:
+        raise ValueError
+    payload = json.loads(
+        raw.decode("utf-8"),
+        object_pairs_hook=_members,
+        parse_constant=_constant,
+        parse_float=_finite,
+    )
+    if type(payload) is not dict:
+        raise ValueError
+    return payload
+
+
 def run_plan_cli() -> int:
     try:
-        raw = sys.stdin.buffer.read(MAX_INPUT_BYTES + 1)
-        if len(raw) > MAX_INPUT_BYTES:
-            raise ValueError
-        payload = json.loads(
-            raw.decode("utf-8"),
-            object_pairs_hook=_members,
-            parse_constant=_constant,
-            parse_float=_finite,
-        )
+        payload = _read_payload(MAX_INPUT_BYTES)
         if (
-            type(payload) is not dict
-            or not _REQUIRED <= payload.keys()
+            not _REQUIRED <= payload.keys()
             or payload.keys() - _REQUIRED - _OPTIONAL
             or type(payload["worker_agent_ids"]) is not list
         ):
@@ -82,6 +92,34 @@ def run_plan_cli() -> int:
         ValueError,
         TypeError,
         UnicodeError,
+        OverflowError,
+        RecursionError,
+    ):
+        return invalid_input()
+    print(output)
+    return 0
+
+
+def run_retry_plan_cli() -> int:
+    """Emit retry advice from a caller observation without waiting or dispatching."""
+    try:
+        payload = _read_payload(16 * 1024)
+        policy = payload.pop("policy", {})
+        if (
+            not _RETRY_REQUIRED <= payload.keys()
+            or payload.keys() - _RETRY_REQUIRED - _RETRY_OPTIONAL
+            or type(policy) is not dict
+            or policy.keys() - _RETRY_POLICY
+        ):
+            raise ValueError
+        decision = plan_retry(RetryPolicy(**policy), **payload)
+        output = json.dumps(asdict(decision), allow_nan=False)
+    except (
+        AgentSyncError,
+        AttributeError,
+        OSError,
+        ValueError,
+        TypeError,
         OverflowError,
         RecursionError,
     ):

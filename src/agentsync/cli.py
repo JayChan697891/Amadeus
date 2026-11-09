@@ -140,6 +140,10 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         from agentsync.planning_cli import invalid_input, run_plan_cli
 
         return run_plan_cli() if len(arguments) == 1 else invalid_input()
+    if arguments and arguments[0] == "plan-retry":
+        from agentsync.planning_cli import invalid_input, run_retry_plan_cli
+
+        return run_retry_plan_cli() if len(arguments) == 1 else invalid_input()
     if arguments and arguments[0] == "usage":
         from agentsync.usage_cli import invalid_input, run_usage_cli
 
@@ -153,6 +157,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("mcp", help="Run official MCP stdio server")
     commands.add_parser("plan", help="Print offline dispatch advice from bounded stdin JSON")
+    commands.add_parser("plan-retry", help="Print offline retry advice from bounded stdin JSON")
     usage = commands.add_parser("usage", help="Summarize a bounded stdin usage checkpoint offline")
     usage.add_argument("--project-id")
     owner = commands.add_parser(
@@ -176,7 +181,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     )
     mock_workflow.add_argument("--scratch-parent", type=Path, required=True)
     args = parser.parse_args(argv)
-    if args.command == "plan":
+    if args.command in {"plan", "plan-retry"}:
         from agentsync.planning_cli import invalid_input
 
         return invalid_input()
