@@ -22,6 +22,7 @@ from agentsync.providers.base import (
     ProviderUsage,
 )
 from agentsync.providers.http import HTTPProvider, ProviderProfile
+from agentsync.providers.retry import plan_provider_retry
 
 __all__ = [
     "AdviceRequest",
@@ -40,6 +41,7 @@ __all__ = [
     "SuggestedRole",
     "SuggestedTask",
     "get_advice",
+    "plan_provider_retry",
     "prepare_decomposition",
     "prepare_handoff",
     "prepare_role_suggestions",
