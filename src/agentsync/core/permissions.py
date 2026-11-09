@@ -56,7 +56,9 @@ WORKER_OPERATIONS = frozenset(
 REVIEWER_OPERATIONS = frozenset({"review_task", "list_audit"})
 BOOTSTRAP_OPERATIONS = frozenset({"create_project", "register_agent"})
 AGENT_WRITES = WORKER_OPERATIONS | {"review_task", "heartbeat"} | BOOTSTRAP_OPERATIONS
-OWNER_WRITES = frozenset({"set_agent_roles", "decide_approval", "revoke_approval"})
+OWNER_WRITES = frozenset(
+    {"set_agent_roles", "decide_approval", "revoke_approval", "import_usage_checkpoint"}
+)
 VERIFICATION_AUDIT_OPERATIONS = frozenset(
     {
         "task_verified_complete",
@@ -410,6 +412,8 @@ class PermissionsMixin:
         response: dict[str, Any],
         now: float,
     ) -> dict[str, Any]:
+        if operation == "import_usage_checkpoint":
+            return response
         if operation == "set_agent_roles":
             current = self._public_member(self._member(db, p))
             if current["version"] != response["version"] or current["roles"] != response["roles"]:

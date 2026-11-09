@@ -14,6 +14,7 @@ from agentsync.config import resolve_data_dir
 from agentsync.core.collaboration import CollaborationMixin, active_assignment, reservation
 from agentsync.core.permissions import AGENT_WRITES, PermissionsMixin
 from agentsync.core.resources import ResourcesMixin
+from agentsync.core.usage import UsageMixin
 from agentsync.core.workspaces import WorkspacesMixin
 from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
@@ -34,7 +35,7 @@ def canonical(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, PermissionsMixin):
+class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, UsageMixin, PermissionsMixin):
     def __init__(self, data_dir: str | Path | None = None) -> None:
         self.data_dir = resolve_data_dir(data_dir)
         self.db_path = self.data_dir / "agentsync.db"

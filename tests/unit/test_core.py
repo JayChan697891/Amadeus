@@ -286,7 +286,7 @@ def test_v1_migration_preserves_data_and_records_future_reviews(tmp_path):
     assert legacy["result"] == "Legacy result"
     assert legacy["latest_review"] is None
     with sqlite3.connect(core.db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 14
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
         assert (
             db.execute("SELECT review_evidence FROM tasks WHERE id='task'").fetchone()[0]
             == "Legacy unattributed evidence"

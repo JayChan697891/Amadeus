@@ -18,6 +18,7 @@ from time import perf_counter, sleep
 from typing import Any, NoReturn
 
 import agentsync
+from agentsync.storage.database import SCHEMA_VERSION
 
 _PHASES = (
     "before_import",
@@ -71,7 +72,7 @@ try:
         foreign_keys = db.execute("PRAGMA foreign_key_check").fetchall() == []
     emit("verified", source_sha256=expected, schema=schema,
          integrity=integrity, foreign_keys=foreign_keys)
-    if schema != 14 or not integrity or not foreign_keys:
+    if schema != database.SCHEMA_VERSION or not integrity or not foreign_keys:
         raise SystemExit(1)
 except BaseException:
     emit("failed")
@@ -113,7 +114,7 @@ def _protocol(text: str, source_hash: str) -> tuple[bool, list[dict[str, Any]]]:
                 if (
                     row.get("source_sha256") != source_hash
                     or type(row.get("schema")) is not int
-                    or row["schema"] != 14
+                    or row["schema"] != SCHEMA_VERSION
                     or row.get("integrity") is not True
                     or row.get("foreign_keys") is not True
                 ):

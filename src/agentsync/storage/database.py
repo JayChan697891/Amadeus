@@ -2,6 +2,8 @@ import sqlite3
 import time
 from pathlib import Path
 
+SCHEMA_VERSION = 15
+
 # Historical v1 schema, applied only to empty databases before incremental upgrades.
 SCHEMA = """
 CREATE TABLE projects(id TEXT PRIMARY KEY, name TEXT NOT NULL, root_path TEXT NOT NULL,
@@ -445,6 +447,15 @@ PRAGMA user_version=14;
 """
 
 
+MIGRATION_V15 = """
+CREATE TABLE project_usage(
+ project_id TEXT PRIMARY KEY NOT NULL REFERENCES projects(id),
+ checkpoint TEXT NOT NULL CHECK(length(CAST(checkpoint AS BLOB)) BETWEEN 1 AND 524288),
+ updated_at REAL NOT NULL);
+PRAGMA user_version=15;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -533,7 +544,12 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 14
-        if version != 14:
+        if version == 14:
+            for statement in MIGRATION_V15.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 15
+        if version != SCHEMA_VERSION:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:
             raise RuntimeError("Database migration violated foreign-key constraints.")

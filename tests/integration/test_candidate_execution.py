@@ -567,7 +567,7 @@ def test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed
         db.execute("PRAGMA user_version=12")
     database.migrate(prepared[0].db_path)
     with connect(prepared[0].db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 14
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
         assert {
             name: [tuple(row) for row in db.execute("SELECT * FROM " + name)] for name in tables
         } == before

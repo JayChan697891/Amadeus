@@ -238,12 +238,19 @@ class DecideApproval(RevokeApproval):
     accept: bool
 
 
+class ImportUsageCheckpoint(AdminAuth):
+    checkpoint: str = Field(min_length=1, max_length=49152, repr=False)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
 OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "set_agent_roles": SetAgentRoles,
     "list_members": OwnerPage,
     "decide_approval": DecideApproval,
     "revoke_approval": RevokeApproval,
     "list_audit": OwnerPage,
+    "import_usage_checkpoint": ImportUsageCheckpoint,
+    "get_usage_summary": AdminAuth,
 }
 
 

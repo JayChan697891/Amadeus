@@ -439,7 +439,7 @@ def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready,
     monkeypatch.setattr(database, "MIGRATION_V14", migration)
     database.migrate(prepared[0].db_path)
     with connect(prepared[0].db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 14
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
         assert all(
             [tuple(row) for row in db.execute("SELECT * FROM " + name)] == rows
             for name, rows in before.items()

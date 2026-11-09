@@ -453,7 +453,7 @@ def test_schema_six_upgrade_preserves_all_existing_rows_and_failure_rolls_back(
     monkeypatch.setattr(database, "MIGRATION_V7", migration)
     database.migrate(path)
     with sqlite3.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 14
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
         assert all(
             db.execute('SELECT * FROM "' + name + '"').fetchall() == rows
             for name, rows in before.items()

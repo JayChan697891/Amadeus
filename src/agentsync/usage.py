@@ -342,6 +342,21 @@ class UsageLedger:
             record = self._normalize(result)
         except (AttributeError, TypeError, ValueError, OverflowError, UnicodeError):
             _invalid()
+        return self._record(record)
+
+    def merged_with(self, other: UsageLedger) -> tuple[UsageLedger, int]:
+        """Return a merged copy and its number of newly admitted observations."""
+        if type(other) is not UsageLedger:
+            _invalid()
+        if self._project_id != other._project_id:
+            raise AgentSyncError("namespace_mismatch", "Usage result project does not match.", 403)
+        merged = UsageLedger(self._project_id, self._max_records)
+        merged._records = self._records.copy()
+        merged._sums = self._sums.copy()
+        added = sum(merged._record(record) for record in other._records.values())
+        return merged, added
+
+    def _record(self, record: _Record) -> bool:
         key = (record.kind, record.identity[-1])
         previous = self._records.get(key)
         if previous is not None:
