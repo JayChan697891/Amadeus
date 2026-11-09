@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import hmac
+import math
 import re
 import time
 from dataclasses import dataclass, field, replace
@@ -97,6 +98,13 @@ class RelayQueuePreview:
     state: Literal["selected", "no_ready_tasks", "fenced"]
     tasks: tuple[RelayPreviewTask, ...] = ()
     selection_sha256: str | None = None
+    verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
+@dataclass(frozen=True, slots=True)
+class RelaySequenceOutcome:
+    reason: Literal["no_ready_tasks", "wave_limit", "time_limit", "incomplete"]
+    waves: tuple[RelayQueueOutcome, ...]
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
 
@@ -454,3 +462,50 @@ class RelayQueue:
             results=[{"task_id": row.task_id, "state": row.state} for row in results],
         )
         return RelayQueueOutcome("incomplete" if incomplete else "resolved", results)
+
+    async def drain_ready(
+        self,
+        items: tuple[RelayQueueItem, ...],
+        *,
+        request_id: str,
+        admin_token: str,
+        parallel_limit: int = 1,
+        max_waves: int = 2,
+        start_window_seconds: float = 120,
+    ) -> RelaySequenceOutcome:
+        """Continue prepared tasks only; every launch still requires exact fresh consent.
+
+        The window is checked before selecting each wave. It does not interrupt
+        admission or execution already underway. Nothing is retried, independently reviewed or
+        scheduled in the background. Reusing an admitted request fences replay.
+        """
+        items = self._validate_items(items, parallel_limit)
+        _identifier(request_id)
+        if (
+            type(max_waves) is not int or not 1 <= max_waves <= 4
+            or type(start_window_seconds) not in (int, float)
+            or not 0 < start_window_seconds <= 900 or not math.isfinite(start_window_seconds)
+        ):
+            _invalid()
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + start_window_seconds
+        project = items[0].first.profile.project_id
+        outcomes: list[RelayQueueOutcome] = []
+        remaining = items
+        for index in range(max_waves):
+            if loop.time() >= deadline:
+                return RelaySequenceOutcome("time_limit", tuple(outcomes))
+            wave_request = digest(["relay-queue-sequence-v1", project, request_id, index])
+            wave = await self.run_ready_once(
+                remaining, request_id=wave_request, admin_token=admin_token, parallel_limit=parallel_limit,
+            )
+            if wave.state == "no_ready_tasks":
+                return RelaySequenceOutcome("no_ready_tasks", tuple(outcomes))
+            outcomes.append(wave)
+            if wave.state != "resolved":
+                return RelaySequenceOutcome("incomplete", tuple(outcomes))
+            attempted = {row.task_id for row in wave.tasks}
+            remaining = tuple(item for item in remaining if item.task.task_id not in attempted)
+            if not remaining:
+                return RelaySequenceOutcome("no_ready_tasks", tuple(outcomes))
+        return RelaySequenceOutcome("wave_limit", tuple(outcomes))
