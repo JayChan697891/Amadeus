@@ -1,7 +1,8 @@
 """Declared local Core claim contention diagnostic, never formal acceptance.
 
-All state is disposable under an explicit scratch parent. Core startup, barrier,
-verification and cleanup are excluded from latency and throughput measurements.
+All state is disposable under an explicit scratch parent. Claim latencies exclude
+startup, barrier, verification and cleanup. Process-mode throughput includes
+worker dispatch and barrier wait, plus any initial worker startup.
 Barrier/SQLite bounds are ordinary operation limits, not preemptive timeouts.
 The declared latency budget is a diagnostic threshold, not a Release SLO.
 """
@@ -10,9 +11,10 @@ import argparse
 import hashlib
 import json
 import math
+import multiprocessing
 import sqlite3
-from concurrent.futures import ThreadPoolExecutor
-from contextlib import closing
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from contextlib import ExitStack, closing
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from threading import Barrier, BrokenBarrierError
@@ -23,10 +25,14 @@ from agentsync import __version__
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 
+_ClaimResult = tuple[str, float | None, float | None, dict[str, Any]]
+_process_core: Core | None = None
+_process_barrier: Barrier | None = None
+
 
 def _claim(
     core: Core, auth: dict[str, str], task_id: str, barrier: Barrier, request: str
-) -> tuple[str, float | None, float | None, dict[str, Any]]:
+) -> _ClaimResult:
     try:
         barrier.wait(timeout=10)
     except BrokenBarrierError:
@@ -43,6 +49,18 @@ def _claim(
     except Exception:
         outcome = "claim_error"
     return outcome, started, perf_counter(), response
+
+
+def _init_process_worker(data_dir: Path, barrier: Barrier) -> None:
+    global _process_core, _process_barrier
+    _process_core = Core(data_dir)
+    _process_barrier = barrier
+
+
+def _claim_in_process(auth: dict[str, str], task_id: str, request: str) -> _ClaimResult:
+    if _process_core is None or _process_barrier is None:
+        return "worker_unavailable", None, None, {}
+    return _claim(_process_core, auth, task_id, _process_barrier, request)
 
 
 def _claim_audit(
@@ -82,7 +100,12 @@ def _claim_audit(
 
 
 def run_benchmark(
-    scratch_parent: Path, workers: int = 8, rounds: int = 8, p95_budget_ms: float = 1000
+    scratch_parent: Path,
+    workers: int = 8,
+    rounds: int = 8,
+    p95_budget_ms: float = 1000,
+    *,
+    processes: bool = False,
 ) -> dict[str, Any]:
     """Run owned simultaneous claim rounds; invalid options raise a fixed ValueError."""
     if (
@@ -90,6 +113,8 @@ def run_benchmark(
         or not scratch_parent.is_absolute()
         or type(workers) is not int
         or not 1 <= workers <= 32
+        or type(processes) is not bool
+        or (processes and workers > 8)
         or type(rounds) is not int
         or not 1 <= rounds <= 32
         or type(p95_budget_ms) not in (int, float)
@@ -155,27 +180,42 @@ def run_benchmark(
                         "session_token": actor["session_token"],
                     }
                 )
-            cores = [Core(core.data_dir) for _ in actors]
-            with ThreadPoolExecutor(max_workers=workers) as executor:
+            with ExitStack() as stack:
+                if processes:
+                    context = multiprocessing.get_context("spawn")
+                    process_pool = stack.enter_context(
+                        ProcessPoolExecutor(
+                            max_workers=workers,
+                            mp_context=context,
+                            initializer=_init_process_worker,
+                            initargs=(core.data_dir, context.Barrier(workers)),
+                        )
+                    )
+                else:
+                    cores = [Core(core.data_dir) for _ in actors]
+                    thread_pool = stack.enter_context(ThreadPoolExecutor(max_workers=workers))
                 for round_index in range(1, rounds + 1):
                     task = core.execute(
                         "create_task",
                         {**actors[0], "title": "diagnostic", "request_id": f"task-{round_index}"},
                     )
-                    barrier = Barrier(workers)
                     requests = [f"claim-{round_index}-{index}" for index in range(workers)]
-                    futures = [
-                        executor.submit(
-                            _claim,
-                            cores[index],
-                            auth,
-                            task["id"],
-                            barrier,
-                            requests[index],
-                        )
-                        for index, auth in enumerate(actors)
-                    ]
+                    round_started = perf_counter()
+                    if processes:
+                        futures = [
+                            process_pool.submit(_claim_in_process, auth, task["id"], requests[index])
+                            for index, auth in enumerate(actors)
+                        ]
+                    else:
+                        barrier = Barrier(workers)
+                        futures = [
+                            thread_pool.submit(
+                                _claim, cores[index], auth, task["id"], barrier, requests[index]
+                            )
+                            for index, auth in enumerate(actors)
+                        ]
                     results = [future.result() for future in futures]
+                    round_elapsed = perf_counter() - round_started
                     for index, (outcome, _, _, _) in enumerate(results):
                         if outcome in {"winner", "version_conflict"}:
                             key = (
@@ -197,7 +237,9 @@ def run_benchmark(
                         if start is not None and end is not None
                     ]
                     latencies.extend((end - start) * 1000 for start, end in timed)
-                    if timed:
+                    if timed and processes:
+                        workload_seconds += round_elapsed
+                    elif timed:
                         workload_seconds += max(end for _, end in timed) - min(
                             start for start, _ in timed
                         )
@@ -226,7 +268,7 @@ def run_benchmark(
                         and current["version"] == 2
                         and current["owner_session_id"] == actors[winner]["session_id"]
                     )
-                    cores[winner].execute(
+                    core.execute(
                         "update_task",
                         {
                             **actors[winner],
@@ -287,7 +329,11 @@ def run_benchmark(
             "rounds": rounds,
             "claims": len(latencies),
             "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
-            "throughput_denominator": "sum_of_round_claim_spans",
+            "throughput_denominator": (
+                "sum_of_parent_round_spans_including_process_dispatch"
+                if processes else "sum_of_round_claim_spans"
+            ),
+            **({"worker_mode": "spawned_processes"} if processes else {}),
         },
         "claim_latency_ms": percentiles,
         "timed_workload_seconds": workload_seconds,
@@ -315,10 +361,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--workers", type=int, required=True)
     parser.add_argument("--rounds", type=int, required=True)
     parser.add_argument("--p95-budget-ms", type=float, required=True)
+    parser.add_argument("--processes", action="store_true", help="Use up to eight spawned workers")
     try:
         options = parser.parse_args(argv)
         report = run_benchmark(
-            options.scratch_parent, options.workers, options.rounds, options.p95_budget_ms
+            options.scratch_parent,
+            options.workers,
+            options.rounds,
+            options.p95_budget_ms,
+            processes=options.processes,
         )
     except ValueError:
         print(
