@@ -243,9 +243,9 @@ class ControlledRelay:
         """Authenticate before observing a receipt, including after host restart."""
         task = self._state(actor, task_id)
         key = self._key(actor, task_id)
-        ready = self._read_receipt(key, "ready_for_review")
+        ready = self._review_submission(key)
         if ready is not None:
-            if ready.get("task_version") == task["version"] and task["status"] == "review":
+            if self._matches_submission(task, ready) and task["status"] == "review":
                 return RelayOutcome("ready_for_review")
             return RelayOutcome("incomplete")
         conflict = self._read_receipt(key, "conflict")
@@ -254,6 +254,38 @@ class ControlledRelay:
         if self._read_receipt(key, "incomplete") is not None:
             return RelayOutcome("incomplete")
         return RelayOutcome("not_started")
+
+    def _review_submission(self, key: str) -> dict[str, Any] | None:
+        ready = self._read_receipt(key, "ready_for_review")
+        if ready is not None:
+            return ready
+        intent = self._read_receipt(key, "review-intent")
+        if intent is None:
+            return None
+        admission = self._read_receipt(key, "incomplete")
+        if (
+            not admission or not intent or "wave_sha256" not in intent
+            or admission.get("wave_sha256") != intent["wave_sha256"]
+            or _matched_text(intent.get("owner_session_sha256"), r"[0-9a-f]{64}") is None
+            or any(
+                self._inspect_attempt(key, leg).status != "expected_reply" for leg in ("first", "second")
+            )
+        ):
+            return {}
+        return intent
+
+    @staticmethod
+    def _matches_submission(
+        task: dict[str, Any], receipt: dict[str, Any], *, version_advance: int = 0,
+    ) -> bool:
+        version = receipt.get("task_version")
+        owner_pin = receipt.get("owner_session_sha256")
+        owner = task["owner_session_id"]
+        return (
+            type(version) is int and task["version"] == version + version_advance
+            and task["result"] == _REVIEW_MARKER
+            and (owner_pin is None or (type(owner) is str and digest(owner) == owner_pin))
+        )
 
     def _wave_terminal_state(
         self, actor: RelayActor, task_id: str, wave_key: str,
@@ -264,7 +296,7 @@ class ControlledRelay:
         admission = self._read_receipt(key, "incomplete")
         if not admission or admission.get("wave_sha256") != wave_key:
             return None
-        ready = self._read_receipt(key, "ready_for_review")
+        ready = self._review_submission(key)
         conflict = self._read_receipt(key, "conflict")
         if ready is None and conflict and conflict.get("wave_sha256") == wave_key:
             return "conflict"
@@ -273,9 +305,11 @@ class ControlledRelay:
         version = ready.get("task_version")
         if type(version) is not int or task["result"] != _REVIEW_MARKER:
             return None
-        if task["status"] == "review" and task["version"] == version:
+        if task["status"] == "review" and self._matches_submission(task, ready):
             return "ready_for_review"
         if task["status"] != "completed" or task["version"] != version + 1:
+            return None
+        if not self._matches_submission(task, ready, version_advance=1):
             return None
         review = task["latest_review"]
         sender = _matched_text(ready.get("sender_sha256"), r"[0-9a-f]{64}")
@@ -360,18 +394,20 @@ class ControlledRelay:
         }
         project = self._core.execute("get_project_state", auth)
         key = digest([reviewer.project_id, task_id])
-        ready = self._read_receipt(key, "ready_for_review")
+        ready = self._review_submission(key)
         if not ready:
             _reject()
         actor = next(
             (row["agent_id"] for row in project["sessions"] if row["id"] == reviewer.session_id),
             None,
         )
-        if actor is None or digest(actor) in (ready.get("sender_sha256"), ready.get("recipient_sha256")):
+        sender = _matched_text(ready.get("sender_sha256"), r"[0-9a-f]{64}")
+        recipient = _matched_text(ready.get("recipient_sha256"), r"[0-9a-f]{64}")
+        if actor is None or sender is None or recipient is None or sender == recipient or digest(actor) in (sender, recipient):
             _reject()
         version = ready.get("task_version")
         if type(version) is not int or not any(
-            row["id"] == task_id and row["status"] == "review" and row["version"] == version
+            row["id"] == task_id and row["status"] == "review" and self._matches_submission(row, ready)
             for row in project["tasks"]
         ):
             _reject()
@@ -580,14 +616,18 @@ class ControlledRelay:
         )
         self._workspace(first, spec.task_id)
         self._workspace(second, spec.task_id)
+        submission = {
+            "task_version": b["version"] + 1,
+            "sender_sha256": digest(first.agent_id), "recipient_sha256": digest(second.agent_id),
+            "owner_session_sha256": digest(second.profile.session_id), "wave_sha256": _wave_key,
+        }
+        self._record(key, "review-intent", **submission)
         reviewed = self._call(
             second, "update_task", task_id=spec.task_id, lease_token=b["lease_token"],
             expected_version=b["version"], status="review", result=_REVIEW_MARKER,
             request_id=f"relay:{key}:review",
         )
-        self._record(
-            key, "ready_for_review", task_version=reviewed["version"],
-            sender_sha256=digest(first.agent_id), recipient_sha256=digest(second.agent_id),
-            wave_sha256=_wave_key,
-        )
+        if reviewed["version"] != submission["task_version"]:
+            _reject()
+        self._record(key, "ready_for_review", **submission)
         return RelayOutcome("ready_for_review")

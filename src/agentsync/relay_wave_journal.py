@@ -114,7 +114,8 @@ class RelayWaveJournal:
             )
 
     def record(
-        self, project_key: str, request_key: str, *, incomplete: bool, results: list[dict[str, str]]
+        self, project_key: str, request_key: str, *, incomplete: bool, results: list[dict[str, str]],
+        reconciled: bool = False,
     ) -> None:
         with self._write() as db:
             row = db.execute(
@@ -125,7 +126,20 @@ class RelayWaveJournal:
             if row is None or json.loads(row[0]) != [result["task_id"] for result in results]:
                 raise _reject("wave_receipt_mismatch", "The relay result does not match the admitted wave.")
             state = "incomplete" if incomplete else "resolved"
-            if row[1] != "admitted":
+            may_reconcile = reconciled and not incomplete and row[1] == "incomplete"
+            if may_reconcile:
+                previous = json.loads(row[2])
+                if (
+                    type(previous) is not list or len(previous) != len(results)
+                    or any(
+                        type(old) is not dict or set(old) != {"task_id", "state"}
+                        or old["task_id"] != new["task_id"]
+                        or old["state"] not in ("incomplete", new["state"])
+                        for old, new in zip(previous, results, strict=True)
+                    )
+                ):
+                    raise _reject("wave_receipt_mismatch", "Reconciliation cannot replace a terminal result.")
+            if row[1] != "admitted" and not may_reconcile:
                 if row[1] == state and json.loads(row[2]) == results:
                     return
                 raise _reject("wave_receipt_mismatch", "The relay outcome is already recorded.")

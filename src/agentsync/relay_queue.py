@@ -245,9 +245,9 @@ class RelayQueue:
         key = self._key(actor, request_id)
         project_key, _ = self._owner_project(actor, admin_token)
         saved = self._journal.get(project_key, key)
-        if saved is None or saved[0] != "admitted":
+        if saved is None or saved[0] not in ("admitted", "incomplete"):
             return self.observe(actor, request_id)
-        return self._reconcile_admitted(actor, project_key, key, saved[1])
+        return self._reconcile_open(actor, project_key, key, saved)
 
     def observe_pending(self, actor: RelayActor, *, admin_token: str) -> PendingRelayWave | None:
         """Discover the current project fence when the original request ID was lost."""
@@ -281,8 +281,8 @@ class RelayQueue:
         if saved is None:
             raise AgentSyncError("not_found", "The relay wave was not found.", 404)
         state, selected, rows = saved
-        if state == "admitted":
-            return self._reconcile_admitted(actor, project_key, expected_wave_id, selected)
+        if state in ("admitted", "incomplete"):
+            return self._reconcile_open(actor, project_key, expected_wave_id, saved)
         outcome = self._outcome(selected, rows)
         return outcome if outcome.state == state else RelayQueueOutcome("incomplete")
 
@@ -294,19 +294,23 @@ class RelayQueue:
         project_id = actor.profile.project_id
         return digest(project_id), snapshot
 
-    def _reconcile_admitted(
-        self, actor: RelayActor, project_key: str, key: str, selected: Any
+    def _reconcile_open(
+        self, actor: RelayActor, project_key: str, key: str, saved: tuple[str, Any, Any],
     ) -> RelayQueueOutcome:
+        _, selected, rows = saved
         task_ids = _selected_tasks(selected)
-        if not task_ids:
+        prior = self._outcome(selected, rows)
+        if prior.state != "incomplete":
             return RelayQueueOutcome("incomplete")
+        if not task_ids:
+            return prior
         results: list[dict[str, str]] = []
         for task_id in task_ids:
             state = self._relay._wave_terminal_state(actor, task_id, key)
             if state is None:
-                return RelayQueueOutcome("incomplete")
+                return prior
             results.append({"task_id": task_id, "state": state})
-        self._journal.record(project_key, key, incomplete=False, results=results)
+        self._journal.record(project_key, key, incomplete=False, results=results, reconciled=True)
         return self._outcome(list(task_ids), results)
 
     @staticmethod
