@@ -318,6 +318,28 @@ def requirement_results(manifest: dict | None, run: Path) -> list[dict]:
     return rows
 
 
+def scenario_results(manifest: dict | None, requirements: list[dict]) -> list[dict]:
+    """Index original scenarios without reusing component observations as scenario evidence."""
+    observed_requirements = {
+        row["id"] for row in requirements
+        if any(
+            observed["counts"]["tests"] > 0
+            for component in row["component_evidence"] for observed in component["observations"]
+        )
+    }
+    return [
+        {
+            "id": row["id"], "title": row["title"], "expected": row["expected"],
+            "requirements": row["requirements"], "planned_evidence": row["evidence"],
+            "execution_status": "not_run", "scenario_evidence": [],
+            "requirements_with_component_observations": [
+                identity for identity in row["requirements"] if identity in observed_requirements
+            ],
+        }
+        for row in (manifest or {}).get("scenarios", [])
+    ]
+
+
 def _validate_pytest_timeout(value: int) -> None:
     if type(value) is not int or not 1 <= value <= 7200:
         raise ValueError("pytest controller timeout must be an integer from 1 to 7200 seconds")
@@ -1274,10 +1296,15 @@ def _collect(
     manifest_path = repo / "docs" / "acceptance" / "requirements.json"
     manifest = None
     manifest_error = None
+    manifest_digest = None
     if manifest_path.is_file():
         # Snapshot exact design input, without interpreting documentation as test results.
         try:
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            with manifest_path.open("rb") as stream:
+                manifest_bytes = stream.read(4 * 1024 * 1024 + 1)
+            if len(manifest_bytes) > 4 * 1024 * 1024:
+                raise ValueError("Requirements manifest exceeds its size limit")
+            manifest = json.loads(manifest_bytes.decode("utf-8"))
             if not isinstance(manifest, dict) or not isinstance(manifest.get("requirements"), list):
                 raise ValueError("requirements must be an array")
             if any(
@@ -1293,9 +1320,19 @@ def _collect(
                 raise ValueError("Requirement IDs must be unique")
             if "requirement_count" in manifest and manifest["requirement_count"] != len(ids):
                 raise ValueError("requirement_count does not match requirement rows")
-            (run / "requirements.json").write_text(
-                json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
-            )
+            scenarios = manifest.get("scenarios", [])
+            if type(scenarios) is not list or any(
+                type(row) is not dict
+                or any(type(row.get(key)) is not str for key in ("id", "title", "expected", "evidence"))
+                or re.fullmatch(r"T(?:0[1-9]|1[0-6])", row["id"]) is None
+                or type(row.get("requirements")) is not list
+                or not row["requirements"]
+                or any(type(identity) is not str or identity not in ids for identity in row["requirements"])
+                for row in scenarios
+            ) or len({row["id"] for row in scenarios}) != len(scenarios):
+                raise ValueError("Invalid original acceptance scenarios")
+            (run / "requirements.json").write_bytes(manifest_bytes)
+            manifest_digest = hashlib.sha256(manifest_bytes).hexdigest()
         except (ValueError, OSError) as exc:
             manifest = None
             manifest_error = str(exc)
@@ -1322,6 +1359,7 @@ def _collect(
         if offline_wheelhouse is not None
         else "PEP 517 default isolation; no cached wheel or editable fallback"
     )
+    requirements = requirement_results(manifest, run)
     report = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
@@ -1354,7 +1392,9 @@ def _collect(
             if check["id"] in {"sdist_install", "wheel_install"}
         ],
         "requirements_manifest_error": manifest_error,
-        "requirements": requirement_results(manifest, run),
+        "requirements_register_sha256": manifest_digest,
+        "requirements": requirements,
+        "scenarios": scenario_results(manifest, requirements),
         "release_gate": release_gate(selected_checks, run),
         "coverage": {
             "actual_clients": "unverified",
@@ -1450,6 +1490,16 @@ def _collect(
         rows.append(
             "No valid requirements manifest was available; per-requirement acceptance remains not_run."
         )
+    if report["scenarios"]:
+        rows.extend([
+            "", "## Original acceptance scenarios", "",
+            "Related component observations are references only. The collector does not execute the full original scenarios.",
+            "", "| Scenario | Execution | Related requirements with component observations |",
+            "| --- | --- | --- |",
+        ])
+        for scenario in report["scenarios"]:
+            related = ", ".join(scenario["requirements_with_component_observations"]) or "None"
+            rows.append(f"| {scenario['id']} | {scenario['execution_status']} | {related} |")
     rows.extend(["", "## Required outstanding evidence", ""])
     rows.extend(f"- {key}: {value}" for key, value in RELEASE_BLOCKERS.items())
     rows.extend(

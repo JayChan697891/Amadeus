@@ -412,6 +412,14 @@ def verify_report_evidence(
     evidence.require_digest("working-tree.patch", report["working_tree_patch_sha256"])
     source = read_json(evidence.check("source-snapshot.json", retain=True))
     snapshot = _snapshot_entries(source)
+    register = report.get("requirements_register_sha256")
+    if register is not None:
+        evidence.require_digest("requirements.json", register)
+        if not any(
+            row["path"] == "docs/acceptance/requirements.json" and row["sha256"] == register
+            for row in source
+        ):
+            raise ValueError("The saved requirements register differs from the source snapshot.")
     git_source = None
     if source_repo is not None:
         if __package__:
