@@ -195,6 +195,7 @@ def _bind_candidate(
         row for row in matrix["observations"]
         if row["artifact_audit"]["installed_artifact_sha256"] == pins
         and _complete_observation(row, verify_artifacts=True, require_license_inventory=True)
+        and all(row["checks"].get(kind + "_console_smoke") == "pass" for kind in pins)
     ]
     systems, combinations = _platform_gaps(matching, python_minors)
     return candidate | {

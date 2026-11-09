@@ -515,6 +515,52 @@ def _offline_build_command(
     ]
 
 
+_CONSOLE_PROBE = r"""
+import json, os, subprocess, sys
+from pathlib import Path
+
+def check():
+    scripts = Path(sys.executable).parent
+    scratch = Path(sys.argv[1])
+    suffix = ".exe" if os.name == "nt" else ""
+    env = {name: value for name, value in os.environ.items()
+           if not name.upper().startswith(("AGENTSYNC_", "PYTHON"))}
+    env.update(PYTHONSAFEPATH="1", PYTHONNOUSERSITE="1")
+    legacy = subprocess.run([str(scripts / ("agentsync" + suffix)), "--help"], cwd=scratch,
+                            env=env, timeout=30, capture_output=True, check=False)
+    if legacy.returncode != 0 or not legacy.stdout.startswith(b"usage: agentsync "):
+        return False
+    result = subprocess.run([str(scripts / ("amadeus" + suffix)), "demo", "--data-dir", str(scratch / "data")],
+                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)
+    if result.returncode != 0 or len(result.stdout) > 16384:
+        return False
+    document = json.loads(result.stdout)
+    data = document.get("data", {})
+    return (document.get("ok") is True and data.get("status") == "completed"
+            and data.get("agents") == 2 and data.get("duplicate_claim_rejected") is True
+            and data.get("persistence_verified") is True
+            and data.get("scope") == "local mock workflow; no desktop host compatibility verified")
+
+try:
+    passed = check()
+except (AttributeError, OSError, ValueError, subprocess.SubprocessError):
+    passed = False
+print("Installed console scripts and disposable Mock demo: " + ("pass" if passed else "failed"))
+raise SystemExit(0 if passed else 1)
+"""
+
+
+def _installed_console_smoke(kind: str, python: str, run: Path, scratch: Path, artifact: dict) -> dict:
+    directory = scratch / f"{kind}-console-probe"
+    directory.mkdir()
+    result = execute(
+        f"{kind}_console_smoke", [python, "-I", "-c", _CONSOLE_PROBE, str(directory)],
+        directory, run, scratch,
+    )
+    result["artifact"] = artifact.copy()
+    return result
+
+
 def _installed_license_inventory(
     kind: str,
     python: str,
@@ -767,6 +813,7 @@ def sdist_checks(
             "Installed sdist origin/version/SDK check failed; test results would be untrusted",
         )
     else:
+        checks.append(_installed_console_smoke("sdist", python, run, scratch, artifact))
         if license_inventory:
             checks.append(
                 _installed_license_inventory(
@@ -1112,6 +1159,8 @@ def _collect(
                     origin["artifact"] = wheel_artifact.copy()
                 checks.append(origin)
                 if next(c for c in checks if c["id"] == "wheel_install")["status"] == "pass":
+                    if origin["status"] == "pass":
+                        checks.append(_installed_console_smoke("wheel", python, run, scratch, wheel_artifact))
                     if license_inventory and origin["status"] == "pass":
                         checks.append(
                             _installed_license_inventory(
