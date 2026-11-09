@@ -80,6 +80,21 @@ class _ReceiptDirectory:
         self.check()
         return self.root / name
 
+    def _sync_directory_entry(self) -> None:
+        # A POSIX file fsync alone does not persist the name used as the replay fence.
+        if os.name != "posix":
+            return
+        flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+        descriptor = os.open(self.root, flags)
+        try:
+            directory = os.fstat(descriptor)
+            identity = [str(directory.st_dev), str(directory.st_ino)]
+            if not stat.S_ISDIR(directory.st_mode) or identity != self._identity:
+                raise _unavailable()
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+
     def write(self, name: str, data: dict[str, object]) -> None:
         """An exclusive write remains a fence even if interrupted."""
         path = self._path(name)
@@ -89,6 +104,7 @@ class _ReceiptDirectory:
                 json.dump(data, stream, ensure_ascii=True, allow_nan=False)
                 stream.flush()
                 os.fsync(stream.fileno())
+                self._sync_directory_entry()
                 current = path.lstat()
                 opened = os.fstat(stream.fileno())
                 if not _ordinary(current) or _file_stamp(opened)[:2] != _file_stamp(current)[:2]:
