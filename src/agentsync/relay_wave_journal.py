@@ -135,23 +135,40 @@ class RelayWaveJournal:
             )
 
     def get(self, project_key: str, request_key: str) -> tuple[str, Any, Any] | None:
+        saved = self._read(project_key, request_key)
+        return None if saved is None else saved[1:]
+
+    def pending(self, project_key: str) -> tuple[str, str, Any, Any] | None:
+        """Read the sole active project fence, if any, without creating a journal."""
+        return self._read(project_key, None)
+
+    def _read(
+        self, project_key: str, request_key: str | None
+    ) -> tuple[str, str, Any, Any] | None:
         if not self._check_path():
             return None
         db = None
         try:
             db = sqlite3.connect(self._path.as_uri() + "?mode=ro", uri=True, timeout=5)
             self._check_schema(db, initialize=False)
-            row = db.execute(
-                "SELECT state,tasks_json,results_json FROM relay_waves "
-                "WHERE project_key=? AND request_key=?",
-                (project_key, request_key),
-            ).fetchone()
+            if request_key is None:
+                row = db.execute(
+                    "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
+                    "WHERE project_key=? AND state IN ('admitted','incomplete')",
+                    (project_key,),
+                ).fetchone()
+            else:
+                row = db.execute(
+                    "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
+                    "WHERE project_key=? AND request_key=?",
+                    (project_key, request_key),
+                ).fetchone()
             if row is None:
                 return None
-            state, tasks, results = row
+            key, state, tasks, results = row
             if len(tasks) > 8192 or (results is not None and len(results) > 8192):
                 raise _unavailable()
-            return state, json.loads(tasks), None if results is None else json.loads(results)
+            return key, state, json.loads(tasks), None if results is None else json.loads(results)
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
             raise _unavailable() from None
         finally:

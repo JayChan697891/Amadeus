@@ -9,6 +9,7 @@ waves until an operator reconciles the isolated workspace outside this runner.
 from __future__ import annotations
 
 import asyncio
+import re
 import time
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -73,6 +74,23 @@ class RelayQueueOutcome:
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
 
+@dataclass(frozen=True, slots=True)
+class PendingRelayWave:
+    wave_id: str
+    receipt_state: Literal["admitted", "incomplete"]
+    outcome: RelayQueueOutcome
+
+
+def _selected_tasks(selected: Any) -> tuple[str, ...]:
+    if (
+        type(selected) is not list or not 1 <= len(selected) <= 4
+        or any(type(task_id) is not str for task_id in selected)
+        or len(set(selected)) != len(selected)
+    ):
+        return ()
+    return tuple(selected)
+
+
 def _roots(item: RelayQueueItem) -> tuple[Path, Path]:
     return item.first.profile.root, item.second.profile.root
 
@@ -128,24 +146,68 @@ class RelayQueue:
         A submitted task must still match the Core version in its review receipt.
         """
         key = self._key(actor, request_id)
-        self._relay._project_state(actor)
-        self._relay._core.execute_owner(
-            "list_members",
-            {"project_id": actor.profile.project_id, "admin_token": admin_token, "limit": 1},
-        )
-        project_key = digest(actor.profile.project_id)
+        project_key = self._owner_project(actor, admin_token)
         saved = self._journal.get(project_key, key)
         if saved is None or saved[0] != "admitted":
             return self.observe(actor, request_id)
-        selected = saved[1]
-        if (
-            type(selected) is not list or not 1 <= len(selected) <= 4
-            or any(type(task_id) is not str for task_id in selected)
-            or len(set(selected)) != len(selected)
-        ):
+        return self._reconcile_admitted(actor, project_key, key, saved[1])
+
+    def observe_pending(self, actor: RelayActor, *, admin_token: str) -> PendingRelayWave | None:
+        """Discover the current project fence when the original request ID was lost."""
+        project_key = self._owner_project(actor, admin_token)
+        saved = self._journal.pending(project_key)
+        if saved is None:
+            legacy = digest(["relay-queue-active-v1", actor.profile.project_id])
+            if self._relay._read_receipt(legacy, "wave-lock") is not None:
+                raise AgentSyncError(
+                    "wave_incomplete", "A legacy relay wave still holds the fence.", 409
+                )
+            return None
+        key, state, selected, rows = saved
+        if state == "admitted":
+            tasks = tuple(
+                RelayQueueResult(task_id, "incomplete") for task_id in _selected_tasks(selected)
+            )
+            return PendingRelayWave(key, "admitted", RelayQueueOutcome("incomplete", tasks))
+        outcome = self._outcome(selected, rows)
+        if outcome.state != "incomplete":
+            outcome = RelayQueueOutcome("incomplete")
+        return PendingRelayWave(key, "incomplete", outcome)
+
+    def reconcile_pending(
+        self, actor: RelayActor, *, admin_token: str, expected_wave_id: str
+    ) -> RelayQueueOutcome:
+        """Reconcile only the exact observed wave, never a newer project fence."""
+        if type(expected_wave_id) is not str or not re.fullmatch(r"[0-9a-f]{64}", expected_wave_id):
+            _invalid()
+        project_key = self._owner_project(actor, admin_token)
+        saved = self._journal.get(project_key, expected_wave_id)
+        if saved is None:
+            raise AgentSyncError("not_found", "The relay wave was not found.", 404)
+        state, selected, rows = saved
+        if state == "admitted":
+            return self._reconcile_admitted(actor, project_key, expected_wave_id, selected)
+        outcome = self._outcome(selected, rows)
+        return outcome if outcome.state == state else RelayQueueOutcome("incomplete")
+
+    def _owner_project(self, actor: RelayActor, admin_token: str) -> str:
+        if type(actor) is not RelayActor:
+            _invalid()
+        self._relay._project_state(actor)
+        project_id = actor.profile.project_id
+        self._relay._core.execute_owner(
+            "list_members", {"project_id": project_id, "admin_token": admin_token, "limit": 1}
+        )
+        return digest(project_id)
+
+    def _reconcile_admitted(
+        self, actor: RelayActor, project_key: str, key: str, selected: Any
+    ) -> RelayQueueOutcome:
+        task_ids = _selected_tasks(selected)
+        if not task_ids:
             return RelayQueueOutcome("incomplete")
         results: list[dict[str, str]] = []
-        for task_id in selected:
+        for task_id in task_ids:
             state = self._relay.observe(actor, task_id).state
             if state not in ("ready_for_review", "conflict"):
                 return RelayQueueOutcome("incomplete")
@@ -159,7 +221,7 @@ class RelayQueue:
                 return RelayQueueOutcome("incomplete")
             results.append({"task_id": task_id, "state": state})
         self._journal.record(project_key, key, incomplete=False, results=results)
-        return self._outcome(selected, results)
+        return self._outcome(list(task_ids), results)
 
     @staticmethod
     def _outcome(selected: Any, rows: Any) -> RelayQueueOutcome:
