@@ -7,6 +7,7 @@ import json
 import os
 import re
 import stat
+import sys
 from pathlib import Path
 from typing import Any, NoReturn
 
@@ -42,6 +43,44 @@ def _ordinary(info: os.stat_result) -> bool:
         stat.S_ISREG(info.st_mode) and not getattr(info, "st_file_attributes", 0) & 0x400
         and info.st_nlink == 1
     )
+
+
+def _exclusive_receipt_fd(path: str, flags: int) -> int:
+    """Create the fence once and request write-through for Windows metadata."""
+    if sys.platform != "win32":
+        return os.open(path, flags, 0o600)
+
+    import ctypes
+    import msvcrt
+    from ctypes import wintypes
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel.CreateFileW
+    create_file.argtypes = [
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        ctypes.c_void_p,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    ]
+    create_file.restype = wintypes.HANDLE
+    generic_write = 0x40000000
+    share_read_write = 0x00000003
+    create_new = 1
+    write_through = 0x80000000
+    handle = create_file(path, generic_write, share_read_write, None, create_new, write_through, None)
+    if handle is None or handle == wintypes.HANDLE(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    close_handle = kernel.CloseHandle
+    close_handle.argtypes = [wintypes.HANDLE]
+    close_handle.restype = wintypes.BOOL
+    try:
+        return msvcrt.open_osfhandle(handle, os.O_WRONLY | os.O_BINARY | os.O_NOINHERIT)
+    except BaseException:
+        close_handle(handle)
+        raise
 
 
 class _ReceiptDirectory:
@@ -99,7 +138,7 @@ class _ReceiptDirectory:
         """An exclusive write remains a fence even if interrupted."""
         path = self._path(name)
         try:
-            with path.open("x", encoding="ascii", newline="\n") as stream:
+            with open(path, "x", encoding="ascii", newline="\n", opener=_exclusive_receipt_fd) as stream:
                 self.check()
                 json.dump(data, stream, ensure_ascii=True, allow_nan=False)
                 stream.flush()
@@ -119,7 +158,6 @@ class _ReceiptDirectory:
     def read(self, name: str, *, durable: bool = False) -> dict[str, Any] | None:
         """None denotes absence; corrupt or unreadable entries remain fences."""
         path = self._path(name)
-        sync = durable and os.name == "posix"
         try:
             info = path.lstat()
         except FileNotFoundError:
@@ -131,7 +169,7 @@ class _ReceiptDirectory:
         try:
             if not _ordinary(info) or not 1 <= info.st_size <= _LIMIT:
                 return {}
-            with path.open("r+b" if sync else "rb") as stream:
+            with path.open("r+b" if durable else "rb") as stream:
                 opened = os.fstat(stream.fileno())
                 if not _ordinary(opened) or _file_stamp(opened) != _file_stamp(info):
                     return {}
@@ -139,7 +177,7 @@ class _ReceiptDirectory:
                 raw = stream.read(_LIMIT + 1)
                 if len(raw) != info.st_size or _file_stamp(path.lstat()) != _file_stamp(info):
                     return {}
-                if sync:
+                if durable:
                     os.fsync(stream.fileno())
                     self._sync_directory_entry()
                     if _file_stamp(path.lstat()) != _file_stamp(info):
