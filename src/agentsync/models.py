@@ -243,6 +243,11 @@ class ImportUsageCheckpoint(AdminAuth):
     request_id: str = Field(min_length=1, max_length=200)
 
 
+class GetUsageRun(AdminAuth):
+    kind: Literal["codex", "claude", "cursor", "mock"]
+    run_id: str = Field(min_length=1, max_length=200, repr=False)
+
+
 OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "set_agent_roles": SetAgentRoles,
     "list_members": OwnerPage,
@@ -251,6 +256,7 @@ OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "list_audit": OwnerPage,
     "import_usage_checkpoint": ImportUsageCheckpoint,
     "get_usage_summary": AdminAuth,
+    "get_usage_run": GetUsageRun,
 }
 
 

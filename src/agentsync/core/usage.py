@@ -55,3 +55,9 @@ class UsageMixin:
         db: sqlite3.Connection, p: dict[str, Any], _: float
     ) -> dict[str, Any]:
         return asdict(_project_ledger(db, p["project_id"]).summary())
+
+    @staticmethod
+    def _owner_get_usage_run(
+        db: sqlite3.Connection, p: dict[str, Any], _: float
+    ) -> dict[str, Any]:
+        return asdict(_project_ledger(db, p["project_id"]).get_run(p["kind"], p["run_id"]))

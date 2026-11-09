@@ -44,6 +44,7 @@ _KINDS = {
     CursorResult: ("cursor", CursorRun),
     AdapterResult: ("mock", RunSnapshot),
 }
+_RUN_KINDS = frozenset(kind for kind, _ in _KINDS.values())
 _STATUSES = ("succeeded", "failed", "unknown", "cancelled", "timed_out")
 
 
@@ -120,7 +121,7 @@ def _checkpoint_result(record: Any) -> object:
     kind, identity, counters = record["kind"], record["identity"], record["counters"]
     if (
         type(kind) is not str
-        or kind not in {"codex", "claude", "cursor", "mock"}
+        or kind not in _RUN_KINDS
         or type(identity) is not list
         or len(identity) != 5
         or type(counters) is not list
@@ -178,6 +179,24 @@ class UsageSummary:
     failure_rate: float | None
     failure_rate_denominator: int
     failure_rate_complete: bool
+    provenance: Literal["caller_reported_adapter_results"] = field(
+        default="caller_reported_adapter_results", init=False
+    )
+    verification: Literal["unverified"] = field(default="unverified", init=False)
+    real_client_verified: Literal[False] = field(default=False, init=False)
+    billing_verified: Literal[False] = field(default=False, init=False)
+    cost_usd: None = field(default=None, init=False)
+
+
+@dataclass(frozen=True, slots=True)
+class UsageRunSummary:
+    kind: str
+    run_id: str = field(repr=False)
+    status: str
+    simulated: bool
+    input_tokens: int | None
+    output_tokens: int | None
+    adapter_elapsed_ms: int | None
     provenance: Literal["caller_reported_adapter_results"] = field(
         default="caller_reported_adapter_results", init=False
     )
@@ -379,6 +398,21 @@ class UsageLedger:
         self._records[key] = record
         self._sums = sums
         return True
+
+    def get_run(self, kind: str, run_id: str) -> UsageRunSummary:
+        """Read one normalized observation without exposing its other identifiers."""
+        if type(kind) is not str or kind not in _RUN_KINDS:
+            _invalid()
+        _identifier(run_id)
+        record = self._records.get((kind, run_id))
+        if record is None:
+            raise AgentSyncError("not_found", "Usage run was not found.", 404)
+        simulated = kind == "mock"
+        input_tokens, output_tokens = record.counters[:2]
+        return UsageRunSummary(
+            kind, run_id, record.status, simulated, input_tokens, output_tokens,
+            None if simulated else record.elapsed_ms,
+        )
 
     def summary(self) -> UsageSummary:
         records = [record for record in self._records.values() if record.kind != "mock"]
