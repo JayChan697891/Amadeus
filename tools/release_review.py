@@ -17,17 +17,17 @@ from pathlib import Path
 from typing import Any
 
 if __package__:
-    from .acceptance_evidence import _Evidence, _member_parts, _physical, read_json
+    from .acceptance_evidence import _Evidence, read_json
     from .acceptance_git_source import _output
     from .acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
+        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, matrix_digest, summarize,
     )
     from .release_manifest import verify_manifest
 else:
-    from acceptance_evidence import _Evidence, _member_parts, _physical, read_json
+    from acceptance_evidence import _Evidence, read_json
     from acceptance_git_source import _output
     from acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
+        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, matrix_digest, summarize,
     )
     from release_manifest import verify_manifest
 
@@ -175,19 +175,19 @@ def prepare(
 
 def _bind_candidate(
     matrix: dict[str, Any], digest: str, evidence_root: Path, path: Path, manifest_sha256: str,
-    python_minors: tuple[str, ...],
+    python_minors: tuple[str, ...], source_repo: Path | None,
 ) -> dict[str, Any]:
-    candidate = verify_manifest(path, evidence_root, manifest_sha256=manifest_sha256)
+    if source_repo is None or matrix["git_source_audit"] is None:
+        raise ValueError("Release candidate review requires the frozen Git source.")
+    candidate = verify_manifest(
+        path, evidence_root, manifest_sha256=manifest_sha256, source_repo=source_repo,
+    )
     if (
-        matrix["git_source_audit"] is None or candidate["frozen"] != matrix["frozen"]
+        candidate["frozen"] != matrix["frozen"]
         or candidate["matrix_sha256"] != digest or candidate["local_matrix"] != matrix["local_matrix"]
     ):
         raise ValueError("Release candidate describes a different frozen matrix.")
     build = candidate["build_report"]
-    build_path, _ = _physical(evidence_root.resolve(strict=True), _member_parts(build["path"]))
-    _, build_sha256 = _read_report(build_path, decoder=read_json)
-    if build_sha256 != build["sha256"]:
-        raise ValueError("The candidate build report differs from its manifest reference.")
     observation = next(
         (row for row in matrix["observations"] if row["report_sha256"] == build["sha256"]), None
     )
@@ -209,7 +209,6 @@ def _bind_candidate(
     systems, combinations = _platform_gaps(matching, release_minors)
     return candidate | {
         "build_report_verified_in_matrix": True,
-        "build_report_bytes_verified": True,
         "matching_install_report_sha256": sorted(row["report_sha256"] for row in matching),
         "systems_without_exact_candidate_checks": systems,
         "missing_exact_candidate_os_python_combinations": combinations,
@@ -281,7 +280,9 @@ def assemble(
         })
     counts = Counter(case["declared_status"] for case in cases)
     candidate = (
-        _bind_candidate(matrix, digest, evidence_root, candidate_manifest, candidate_sha256, python_minors)
+        _bind_candidate(
+            matrix, digest, evidence_root, candidate_manifest, candidate_sha256, python_minors, source_repo,
+        )
         if candidate_manifest is not None and candidate_sha256 is not None else None
     )
     blockers = []
