@@ -437,19 +437,16 @@ class ControlledRelay:
         self._record(key, stage + "-dispatched", client=factory.client)
         run = await adapter.start_task(task)
         try:
-            async with asyncio.timeout(spec.timeout_seconds + 2):
-                while run.status in ("starting", "running"):
-                    await asyncio.sleep(0.05)
-                    run = await adapter.get_status(run.run_id)
-                if run.status != "succeeded" or run.exit_code != 0 or not run.parent_ended:
-                    self._record(
-                        key, stage + "-stopped", status=run.status, timed_out=run.timed_out,
-                        exit_code=run.exit_code, parent_ended=run.parent_ended,
-                        run_sha256=digest(run.run_id), session_sha256=digest(run.session_id),
-                        error_code=_matched_text(run.error_code, r"[a-z_]{1,64}"),
-                    )
-                    _reject()
-                result = await adapter.get_result(run.run_id)
+            run = await adapter.wait_terminal(run.run_id, timeout_seconds=spec.timeout_seconds + 2)
+            if run.status != "succeeded" or run.exit_code != 0 or not run.parent_ended:
+                self._record(
+                    key, stage + "-stopped", status=run.status, timed_out=run.timed_out,
+                    exit_code=run.exit_code, parent_ended=run.parent_ended,
+                    run_sha256=digest(run.run_id), session_sha256=digest(run.session_id),
+                    error_code=_matched_text(run.error_code, r"[a-z_]{1,64}"),
+                )
+                _reject()
+            result = await adapter.get_result(run.run_id)
         except (TimeoutError, asyncio.CancelledError):
             with suppress(AgentSyncError, TimeoutError):
                 async with asyncio.timeout(2):

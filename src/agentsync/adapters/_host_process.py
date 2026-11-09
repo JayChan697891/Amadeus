@@ -10,6 +10,7 @@ data, never event conversion or authenticated client evidence.
 from __future__ import annotations
 
 import asyncio
+import math
 import uuid
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field, replace
@@ -90,6 +91,7 @@ class _Entry(Generic[_RunT, _ResultT]):
     deadline_job: asyncio.Task[_RunT] | None = None
     stop_code: str | None = None
     timed_out: bool = False
+    terminal: asyncio.Event = field(default_factory=asyncio.Event, repr=False)
 
 
 class _HostProcessAdapter(
@@ -330,6 +332,7 @@ class _HostProcessAdapter(
         )
         if entry.deadline is not None:
             entry.deadline.cancel()
+        entry.terminal.set()
 
     def _entry(self, run_id: str) -> _Entry[_RunT, _ResultT]:
         _identifier(run_id)
@@ -341,6 +344,19 @@ class _HostProcessAdapter(
     async def get_status(self, run_id: str) -> _RunT:
         async with self._lock:
             return self._entry(run_id).view
+
+    async def wait_terminal(self, run_id: str, *, timeout_seconds: float) -> _RunT:
+        """Wait for a terminal local observation; timeout never cancels the run."""
+        if (
+            type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 7202
+            or not math.isfinite(timeout_seconds)
+        ):
+            raise AgentSyncError("validation_error", "Invalid terminal observation timeout.")
+        async with self._lock:
+            entry = self._entry(run_id)
+        async with asyncio.timeout(timeout_seconds):
+            await entry.terminal.wait()
+        return entry.view
 
     async def get_result(self, run_id: str) -> _ResultT:
         async with self._lock:
