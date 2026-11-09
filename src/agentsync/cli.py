@@ -144,11 +144,11 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         from agentsync.planning_cli import invalid_input, run_retry_plan_cli
 
         return run_retry_plan_cli() if len(arguments) == 1 else invalid_input()
-    if arguments and arguments[0] == "usage":
+    if arguments and arguments[0] in {"usage", "model-usage"}:
         from agentsync.usage_cli import invalid_input, run_usage_cli
 
         return (
-            run_usage_cli(arguments[2])
+            run_usage_cli(arguments[2], model=arguments[0] == "model-usage")
             if len(arguments) == 3 and arguments[1] == "--project-id"
             else invalid_input()
         )
@@ -160,6 +160,10 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     commands.add_parser("plan-retry", help="Print offline retry advice from bounded stdin JSON")
     usage = commands.add_parser("usage", help="Summarize a bounded stdin usage checkpoint offline")
     usage.add_argument("--project-id")
+    model_usage = commands.add_parser(
+        "model-usage", help="Summarize a bounded stdin model meter snapshot"
+    )
+    model_usage.add_argument("--project-id")
     owner = commands.add_parser(
         "owner", help="Owner operation; read credentials and payload JSON from stdin"
     )
@@ -185,7 +189,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         from agentsync.planning_cli import invalid_input
 
         return invalid_input()
-    if args.command == "usage":
+    if args.command in {"usage", "model-usage"}:
         from agentsync.usage_cli import invalid_input
 
         return invalid_input()

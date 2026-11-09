@@ -1,7 +1,7 @@
-"""Offline checkpoint summary, with no files, Core or client execution.
+"""Offline checkpoint summaries, with no files, Core or client execution.
 
-The CLI accepts only ``usage --project-id ID`` with a bounded UTF-8 checkpoint
-on stdin. Other usage arguments, including --help, return a fixed input error.
+Both ``usage`` and ``model-usage`` require ``--project-id ID`` and a bounded
+UTF-8 checkpoint on stdin. Invalid arguments return a fixed input error.
 Caller observations and unknown costs retain the ledger's unverified markers.
 """
 
@@ -10,6 +10,7 @@ import sys
 from dataclasses import asdict
 
 from agentsync.errors import AgentSyncError
+from agentsync.model_usage_checkpoint import MODEL_CHECKPOINT_LIMIT, load_model_usage
 from agentsync.usage import UsageLedger
 
 MAX_INPUT_BYTES = 1024 * 1024
@@ -20,13 +21,19 @@ def invalid_input() -> int:
     return 2
 
 
-def run_usage_cli(project_id: str) -> int:
+def run_usage_cli(project_id: str, *, model: bool = False) -> int:
     try:
-        raw = sys.stdin.buffer.read(MAX_INPUT_BYTES + 1)
-        if len(raw) > MAX_INPUT_BYTES:
+        limit = MODEL_CHECKPOINT_LIMIT if model else MAX_INPUT_BYTES
+        raw = sys.stdin.buffer.read(limit + 1)
+        if len(raw) > limit:
             raise ValueError
-        ledger = UsageLedger.from_json(project_id, raw.decode("utf-8"))
-        output = json.dumps(asdict(ledger.summary()), allow_nan=False)
+        text = raw.decode("utf-8")
+        if model:
+            observation = asdict(load_model_usage(project_id, text))
+            observation.update(project_id=project_id, verification="unverified", historical_snapshot=True)
+        else:
+            observation = asdict(UsageLedger.from_json(project_id, text).summary())
+        output = json.dumps(observation, allow_nan=False)
     except (
         AgentSyncError,
         AttributeError,
