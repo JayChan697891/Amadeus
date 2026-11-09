@@ -3,22 +3,27 @@
 All state is disposable under an explicit scratch parent. Claim latencies exclude
 startup, barrier, verification and cleanup. Process-mode throughput includes
 worker dispatch and barrier wait, plus any initial worker startup.
+Optional mixed-transport rounds compare direct Core and real loopback HTTP.
 Barrier/SQLite bounds are ordinary operation limits, not preemptive timeouts.
 The declared latency budget is a diagnostic threshold, not a Release SLO.
 """
 
 import argparse
 import hashlib
+import http.client
 import json
 import math
 import multiprocessing
+import secrets
+import socket
 import sqlite3
+from collections.abc import Iterator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-from contextlib import ExitStack, closing
+from contextlib import ExitStack, closing, contextmanager
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from threading import Barrier, BrokenBarrierError
-from time import perf_counter
+from threading import Barrier, BrokenBarrierError, Thread
+from time import perf_counter, sleep
 from typing import Any, NoReturn
 
 from agentsync import __version__
@@ -30,8 +35,68 @@ _process_core: Core | None = None
 _process_barrier: Barrier | None = None
 
 
+@contextmanager
+def _loopback_claim_server(data_dir: Path) -> Iterator[tuple[int, str]]:
+    """Use one owned, prebound socket with no race to reclaim a published port."""
+    import uvicorn
+
+    from agentsync.integrations.http import create_app
+
+    token = secrets.token_urlsafe(32)
+    app = create_app(data_dir, token)
+    server = uvicorn.Server(uvicorn.Config(
+        app, access_log=False, log_config=None, log_level="critical", proxy_headers=False,
+        lifespan="off", timeout_graceful_shutdown=3,
+    ))
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
+        listener.bind(("127.0.0.1", 0))
+        listener.listen()
+        port = listener.getsockname()[1]
+        thread = Thread(target=server.run, kwargs={"sockets": [listener]}, daemon=True)
+        thread.start()
+        try:
+            deadline = perf_counter() + 10
+            while not server.started:
+                if not thread.is_alive() or perf_counter() >= deadline:
+                    raise RuntimeError("Local HTTP diagnostic could not start.")
+                sleep(0.02)
+            yield port, token
+        finally:
+            server.should_exit = True
+            thread.join(timeout=5)
+            if thread.is_alive():
+                raise RuntimeError("Local HTTP diagnostic shutdown was not confirmed.")
+
+
+def _http_claim(endpoint: tuple[int, str], payload: dict[str, Any]) -> tuple[str, dict[str, Any]]:
+    port, token = endpoint
+    with closing(http.client.HTTPConnection("127.0.0.1", port, timeout=5)) as connection:
+        connection.request(
+            "POST", "/v1/claim_task", json.dumps(payload),
+            {"Authorization": "Bearer " + token, "Content-Type": "application/json"},
+        )
+        with connection.getresponse() as response:
+            code = response.status
+            raw = response.read(16385)
+    if len(raw) > 16384:
+        return "http_claim_error", {}
+    envelope = json.loads(raw)
+    if type(envelope) is not dict:
+        return "http_claim_error", {}
+    data, error = envelope.get("data"), envelope.get("error")
+    if code == 200 and envelope.get("ok") is True and type(data) is dict:
+        return "winner", data
+    if (
+        code == 409 and envelope.get("ok") is False and type(error) is dict
+        and error.get("code") == "version_conflict"
+    ):
+        return "version_conflict", {}
+    return "http_claim_error", {}
+
+
 def _claim(
-    core: Core, auth: dict[str, str], task_id: str, barrier: Barrier, request: str
+    core: Core, auth: dict[str, str], task_id: str, barrier: Barrier, request: str,
+    endpoint: tuple[int, str] | None = None,
 ) -> _ClaimResult:
     try:
         barrier.wait(timeout=10)
@@ -40,10 +105,12 @@ def _claim(
     started = perf_counter()
     response = {}
     try:
-        response = core.execute(
-            "claim_task", {**auth, "task_id": task_id, "expected_version": 1, "request_id": request}
-        )
-        outcome = "winner"
+        payload = {**auth, "task_id": task_id, "expected_version": 1, "request_id": request}
+        if endpoint is None:
+            response = core.execute("claim_task", payload)
+            outcome = "winner"
+        else:
+            outcome, response = _http_claim(endpoint, payload)
     except AgentSyncError as exc:
         outcome = "version_conflict" if exc.code == "version_conflict" else "core_claim_error"
     except Exception:
@@ -57,10 +124,12 @@ def _init_process_worker(data_dir: Path, barrier: Barrier) -> None:
     _process_barrier = barrier
 
 
-def _claim_in_process(auth: dict[str, str], task_id: str, request: str) -> _ClaimResult:
+def _claim_in_process(
+    auth: dict[str, str], task_id: str, request: str, endpoint: tuple[int, str] | None = None,
+) -> _ClaimResult:
     if _process_core is None or _process_barrier is None:
         return "worker_unavailable", None, None, {}
-    return _claim(_process_core, auth, task_id, _process_barrier, request)
+    return _claim(_process_core, auth, task_id, _process_barrier, request, endpoint)
 
 
 def _claim_audit(
@@ -106,6 +175,7 @@ def run_benchmark(
     p95_budget_ms: float = 1000,
     *,
     processes: bool = False,
+    transport_mix: bool = False,
 ) -> dict[str, Any]:
     """Run owned simultaneous claim rounds; invalid options raise a fixed ValueError."""
     if (
@@ -115,6 +185,8 @@ def run_benchmark(
         or not 1 <= workers <= 32
         or type(processes) is not bool
         or (processes and workers > 8)
+        or type(transport_mix) is not bool
+        or (transport_mix and (not processes or workers < 2))
         or type(rounds) is not int
         or not 1 <= rounds <= 32
         or type(p95_budget_ms) not in (int, float)
@@ -181,6 +253,9 @@ def run_benchmark(
                     }
                 )
             with ExitStack() as stack:
+                endpoint = (
+                    stack.enter_context(_loopback_claim_server(core.data_dir)) if transport_mix else None
+                )
                 if processes:
                     context = multiprocessing.get_context("spawn")
                     process_pool = stack.enter_context(
@@ -203,7 +278,10 @@ def run_benchmark(
                     round_started = perf_counter()
                     if processes:
                         futures = [
-                            process_pool.submit(_claim_in_process, auth, task["id"], requests[index])
+                            process_pool.submit(
+                                _claim_in_process, auth, task["id"], requests[index],
+                                endpoint if index % 2 else None,
+                            )
                             for index, auth in enumerate(actors)
                         ]
                     else:
@@ -252,6 +330,14 @@ def run_benchmark(
                             "winners": len(winners),
                             "expected_version_conflicts": conflicts,
                             "unexpected_errors": workers - len(winners) - conflicts,
+                            **({
+                                "winner_transport": ("loopback_http" if winners[0] % 2 else "core")
+                                if len(winners) == 1 else None,
+                                "http_observed_claims": sum(
+                                    outcome in {"winner", "version_conflict"}
+                                    for outcome, _, _, _ in results[1::2]
+                                ),
+                            } if transport_mix else {}),
                         }
                     )
                     if len(winners) != 1:
@@ -334,6 +420,7 @@ def run_benchmark(
                 if processes else "sum_of_round_claim_spans"
             ),
             **({"worker_mode": "spawned_processes"} if processes else {}),
+            **({"requested_transports": ["core", "loopback_http"]} if transport_mix else {}),
         },
         "claim_latency_ms": percentiles,
         "timed_workload_seconds": workload_seconds,
@@ -362,6 +449,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--rounds", type=int, required=True)
     parser.add_argument("--p95-budget-ms", type=float, required=True)
     parser.add_argument("--processes", action="store_true", help="Use up to eight spawned workers")
+    parser.add_argument("--transport-mix", action="store_true", help="Split spawned workers between Core and local HTTP")
     try:
         options = parser.parse_args(argv)
         report = run_benchmark(
@@ -370,6 +458,7 @@ def main(argv: list[str] | None = None) -> int:
             options.rounds,
             options.p95_budget_ms,
             processes=options.processes,
+            **({"transport_mix": True} if options.transport_mix else {}),
         )
     except ValueError:
         print(
