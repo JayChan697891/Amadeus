@@ -7,13 +7,14 @@ import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager, suppress
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from agentsync.errors import AgentSyncError
 from agentsync.workspaces.git import physical
 
 _APPLICATION_ID = 0x41535751
 _VERSION = 1
+JournalState = Literal["admitted", "incomplete", "resolved"]
 
 
 def _unavailable() -> AgentSyncError:
@@ -148,17 +149,60 @@ class RelayWaveJournal:
                 (state, json.dumps(results), project_key, request_key),
             )
 
-    def get(self, project_key: str, request_key: str) -> tuple[str, Any, Any] | None:
+    def get(self, project_key: str, request_key: str) -> tuple[JournalState, Any, Any] | None:
         saved = self._read(project_key, request_key)
         return None if saved is None else saved[1:]
 
-    def pending(self, project_key: str) -> tuple[str, str, Any, Any] | None:
+    def pending(self, project_key: str) -> tuple[str, JournalState, Any, Any] | None:
         """Read the sole active project fence, if any, without creating a journal."""
         return self._read(project_key, None)
 
+    @staticmethod
+    def _decode(row: tuple[Any, ...]) -> tuple[str, JournalState, Any, Any]:
+        key, state, tasks, results = row
+        if (
+            state not in ("admitted", "incomplete", "resolved") or len(tasks) > 8192
+            or (results is not None and len(results) > 8192)
+        ):
+            raise _unavailable()
+        return key, state, json.loads(tasks), None if results is None else json.loads(results)
+
+    def history(
+        self, project_key: str, *, limit: int, before: str | None,
+    ) -> tuple[list[tuple[str, JournalState, Any, Any]], str | None]:
+        if not self._check_path():
+            if before is not None:
+                raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
+            return [], None
+        db = None
+        try:
+            db = sqlite3.connect(self._path.as_uri() + "?mode=ro", uri=True, timeout=5)
+            self._check_schema(db, initialize=False)
+            cursor = None
+            if before is not None:
+                found = db.execute(
+                    "SELECT rowid FROM relay_waves WHERE project_key=? AND request_key=?",
+                    (project_key, before),
+                ).fetchone()
+                if found is None:
+                    raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
+                cursor = found[0]
+            rows = db.execute(
+                "SELECT request_key, state, tasks_json, results_json FROM relay_waves "
+                "WHERE project_key=? AND (? IS NULL OR rowid<?) ORDER BY rowid DESC LIMIT ?",
+                (project_key, cursor, cursor, limit + 1),
+            ).fetchall()
+            page = rows[:limit]
+            return [self._decode(row) for row in page], page[-1][0] if len(rows) > limit else None
+        except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
+            raise _unavailable() from None
+        finally:
+            if db is not None:
+                db.close()
+
     def _read(
         self, project_key: str, request_key: str | None
-    ) -> tuple[str, str, Any, Any] | None:
+    ) -> tuple[str, JournalState, Any, Any] | None:
         if not self._check_path():
             return None
         db = None
@@ -179,10 +223,7 @@ class RelayWaveJournal:
                 ).fetchone()
             if row is None:
                 return None
-            key, state, tasks, results = row
-            if len(tasks) > 8192 or (results is not None and len(results) > 8192):
-                raise _unavailable()
-            return key, state, json.loads(tasks), None if results is None else json.loads(results)
+            return self._decode(row)
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
             raise _unavailable() from None
         finally:

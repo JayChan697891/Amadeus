@@ -21,7 +21,7 @@ from agentsync.adapters.approved_launch import ClientKind, client_kind, digest
 from agentsync.adapters.base import _identifier
 from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
 from agentsync.errors import AgentSyncError
-from agentsync.relay_wave_journal import RelayWaveJournal
+from agentsync.relay_wave_journal import JournalState, RelayWaveJournal
 from agentsync.scheduling import plan_tasks
 
 BatchState = Literal["not_started", "no_ready_tasks", "resolved", "incomplete"]
@@ -83,6 +83,19 @@ class PendingRelayWave:
     wave_id: str
     receipt_state: Literal["admitted", "incomplete"]
     outcome: RelayQueueOutcome
+
+
+@dataclass(frozen=True, slots=True)
+class RelayWaveHistoryEntry:
+    wave_id: str
+    journal_state: JournalState
+    outcome: RelayQueueOutcome
+
+
+@dataclass(frozen=True, slots=True)
+class RelayWaveHistoryPage:
+    waves: tuple[RelayWaveHistoryEntry, ...]
+    next_before: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -268,7 +281,7 @@ class RelayQueue:
 
         This never restarts a client or frees a fence based on a missing receipt.
         A submission must match its recorded Core version or the exact next
-        version with an accepted review from a third identity.
+        version with an accepted or rejected review from a third identity.
         """
         key = self._key(actor, request_id)
         project_key, _ = self._owner_project(actor, admin_token)
@@ -297,6 +310,30 @@ class RelayQueue:
         if outcome.state != "incomplete":
             outcome = RelayQueueOutcome("incomplete")
         return PendingRelayWave(key, "incomplete", outcome)
+
+    def history(
+        self, actor: RelayActor, *, admin_token: str, limit: int = 16, before: str | None = None,
+    ) -> RelayWaveHistoryPage:
+        """Read this project's journal, newest first, without knowing original request IDs."""
+        if type(limit) is not int or not 1 <= limit <= 32 or (
+            before is not None and (type(before) is not str or re.fullmatch(r"[0-9a-f]{64}", before) is None)
+        ):
+            _invalid()
+        project_key, _ = self._owner_project(actor, admin_token)
+        rows, next_before = self._journal.history(project_key, limit=limit, before=before)
+        entries = []
+        for key, state, selected, results in rows:
+            if not re.fullmatch(r"[0-9a-f]{64}", key):
+                raise AgentSyncError("wave_receipt_mismatch", "The relay history record is invalid.", 409)
+            outcome = self._outcome(selected, results)
+            if state == "admitted":
+                outcome = RelayQueueOutcome(
+                    "incomplete", tuple(RelayQueueResult(task_id, "incomplete") for task_id in _selected_tasks(selected)),
+                )
+            elif outcome.state != state:
+                outcome = RelayQueueOutcome("incomplete")
+            entries.append(RelayWaveHistoryEntry(key, state, outcome))
+        return RelayWaveHistoryPage(tuple(entries), next_before)
 
     def reconcile_pending(
         self, actor: RelayActor, *, admin_token: str, expected_wave_id: str

@@ -324,15 +324,18 @@ class ControlledRelay:
             return None
         if task["status"] == "review" and self._matches_submission(task, ready):
             return "ready_for_review"
-        if task["status"] != "completed" or task["version"] != version + 1:
+        if task["status"] not in ("completed", "pending") or task["version"] != version + 1:
             return None
-        if not self._matches_submission(task, ready, version_advance=1):
+        accepted = task["status"] == "completed"
+        if accepted and not self._matches_submission(task, ready, version_advance=1):
+            return None
+        if not accepted and task["owner_session_id"] is not None:
             return None
         review = task["latest_review"]
         sender = _matched_text(ready.get("sender_sha256"), r"[0-9a-f]{64}")
         recipient = _matched_text(ready.get("recipient_sha256"), r"[0-9a-f]{64}")
         if (
-            type(review) is not dict or review.get("accept") is not True
+            type(review) is not dict or review.get("accept") is not accepted
             or review.get("version") != version + 1 or review.get("task_id") != task_id
             or review.get("project_id") != actor.profile.project_id
             or type(review.get("reviewer_agent_id")) is not str
