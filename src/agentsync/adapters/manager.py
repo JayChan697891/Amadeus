@@ -107,6 +107,15 @@ class DispatchSnapshot:
 
 
 @dataclass(frozen=True, slots=True)
+class CancellationObservation(Generic[R]):
+    handle: str
+    state: Literal["start_unresolved", "start_error", "unsupported", "cancel_unresolved", "returned"]
+    run: ManagedRun[R] | None = field(default=None, repr=False)
+    error_code: str | None = None
+    cleanup_verified: Literal[False] = field(default=False, init=False)
+
+
+@dataclass(frozen=True, slots=True)
 class _StartResult(Generic[R]):
     run: R | None = field(default=None, repr=False)
     run_id: str | None = field(default=None, repr=False)
@@ -340,6 +349,48 @@ class RunManager(Generic[C, R, T]):
         run = await _call_adapter(lambda: adapter.cancel_task(run_id))
         self._validate_run(run, route.task, run_id)
         return ManagedRun(handle, route.adapter_id, run)
+
+    async def cancel_bounded(self, handle: str, *, timeout_seconds: float) -> CancellationObservation[R]:
+        """Observe one cancel request within a shared startup and operation deadline.
+
+        An unreturned start is left alone. After adapter entry, a timeout means
+        that the cancellation outcome is unknown, even if cleanup is still running.
+        A returned adapter receipt never proves descendant or remote cleanup.
+        """
+        if type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 300:
+            raise AgentSyncError("validation_error", "Invalid cancellation observation timeout.")
+        _raise_pending_cancellation()
+        snapshot = self.get_dispatch(handle)
+        entered = False
+        loop = asyncio.get_running_loop()
+        end = loop.time() + timeout_seconds
+        window = asyncio.timeout_at(end)
+        try:
+            async with window:
+                if snapshot.state == "pending":
+                    snapshot = await self.wait_dispatch(handle, timeout_seconds=timeout_seconds)
+                if snapshot.state == "error":
+                    return CancellationObservation(
+                        handle, "start_unresolved" if snapshot.error_code == "adapter_start_unknown" else "start_error",
+                        error_code=snapshot.error_code,
+                    )
+                if snapshot.state == "pending" or loop.time() >= end:
+                    return CancellationObservation(handle, "start_unresolved", error_code="observation_timeout")
+                entered = True
+                observed = await self.cancel_task(handle)
+        except TimeoutError:
+            return CancellationObservation(
+                handle, "cancel_unresolved" if entered else "start_unresolved", error_code="observation_timeout",
+            )
+        except AgentSyncError as error:
+            # cancel_task routes failures through fixed public adapter codes.
+            return CancellationObservation(
+                handle, "unsupported" if error.code == "unsupported" else "cancel_unresolved",
+                error_code=error.code,
+            )
+        if window.expired() or loop.time() >= end:
+            return CancellationObservation(handle, "cancel_unresolved", error_code="observation_timeout")
+        return CancellationObservation(handle, "returned", observed)
 
     async def resume_task(self, handle: str) -> ManagedRun[R]:
         route, run_id = await self._lookup(handle)
