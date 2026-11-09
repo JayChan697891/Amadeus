@@ -26,6 +26,11 @@ from agentsync.scheduling import plan_tasks
 
 BatchState = Literal["not_started", "no_ready_tasks", "resolved", "incomplete"]
 TaskState = Literal["ready_for_review", "conflict", "incomplete"]
+_FAILURE_CODES = frozenset({
+    "attempt_already_reserved", "forbidden", "idempotency_conflict", "lease_expired", "not_found",
+    "receipt_unavailable", "relay_boundary", "relay_operation_failed", "relay_outcome_unknown",
+    "session_expired", "storage_error", "unauthorized", "version_conflict", "workspace_boundary",
+})
 
 
 def _invalid() -> NoReturn:
@@ -69,6 +74,13 @@ class RelayQueueResult:
 
     task_id: str
     state: TaskState
+    failure_code: str | None = None
+
+    def _receipt_row(self) -> dict[str, str]:
+        row = {"task_id": self.task_id, "state": self.state}
+        if self.failure_code is not None:
+            row["failure_code"] = self.failure_code
+        return row
 
 
 @dataclass(frozen=True, slots=True)
@@ -406,14 +418,19 @@ class RelayQueue:
             return RelayQueueOutcome("incomplete")
         results = []
         for row in rows:
-            if type(row) is not dict or set(row) != {"task_id", "state"}:
+            if type(row) is not dict or set(row) not in ({"task_id", "state"}, {"task_id", "state", "failure_code"}):
                 return RelayQueueOutcome("incomplete")
             state = row["state"]
             if type(row["task_id"]) is not str or type(state) is not str or state not in (
                 "ready_for_review", "conflict", "incomplete"
             ):
                 return RelayQueueOutcome("incomplete")
-            results.append(RelayQueueResult(row["task_id"], state))
+            failure = row.get("failure_code")
+            if "failure_code" in row and (
+                state != "incomplete" or type(failure) is not str or failure not in _FAILURE_CODES
+            ):
+                return RelayQueueOutcome("incomplete")
+            results.append(RelayQueueResult(row["task_id"], state, failure))
         if [result.task_id for result in results] != selected:
             return RelayQueueOutcome("incomplete")
         incomplete = any(result.state == "incomplete" for result in results)
@@ -541,13 +558,16 @@ class RelayQueue:
                 outcome = await self._relay.run_once(
                     item.first, item.second, item.task, admin_token=admin_token, _wave_key=key,
                 )
+            except AgentSyncError as error:
+                failure = error.code if type(error.code) is str and error.code in _FAILURE_CODES else "relay_operation_failed"
+                return RelayQueueResult(item.task.task_id, "incomplete", failure)
             except Exception:
-                return RelayQueueResult(item.task.task_id, "incomplete")
+                return RelayQueueResult(item.task.task_id, "incomplete", "relay_outcome_unknown")
             if outcome.state == "ready_for_review":
                 return RelayQueueResult(item.task.task_id, "ready_for_review")
             if outcome.state == "conflict":
                 return RelayQueueResult(item.task.task_id, "conflict")
-            return RelayQueueResult(item.task.task_id, "incomplete")
+            return RelayQueueResult(item.task.task_id, "incomplete", "relay_outcome_unknown")
 
         results = tuple(await asyncio.gather(*(run(item) for item in selected)))
         incomplete = any(result.state == "incomplete" for result in results)
@@ -555,7 +575,7 @@ class RelayQueue:
             project_key,
             key,
             incomplete=incomplete,
-            results=[{"task_id": row.task_id, "state": row.state} for row in results],
+            results=[row._receipt_row() for row in results],
         )
         return RelayQueueOutcome("incomplete" if incomplete else "resolved", results)
 

@@ -133,9 +133,12 @@ class RelayWaveJournal:
                 if (
                     type(previous) is not list or len(previous) != len(results)
                     or any(
-                        type(old) is not dict or set(old) != {"task_id", "state"}
+                        type(old) is not dict or set(old) not in (
+                            {"task_id", "state"}, {"task_id", "state", "failure_code"},
+                        )
                         or old["task_id"] != new["task_id"]
                         or old["state"] not in ("incomplete", new["state"])
+                        or ("failure_code" in old and old["state"] != "incomplete")
                         for old, new in zip(previous, results, strict=True)
                     )
                 ):
