@@ -81,6 +81,21 @@ class PendingRelayWave:
     outcome: RelayQueueOutcome
 
 
+@dataclass(frozen=True, slots=True)
+class RelayPreviewTask:
+    task_id: str
+    expected_version: int
+    first_agent_id: str
+    second_agent_id: str
+
+
+@dataclass(frozen=True, slots=True)
+class RelayQueuePreview:
+    state: Literal["selected", "no_ready_tasks", "fenced"]
+    tasks: tuple[RelayPreviewTask, ...] = ()
+    verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
 def _selected_tasks(selected: Any) -> tuple[str, ...]:
     if (
         type(selected) is not list or not 1 <= len(selected) <= 4
@@ -117,6 +132,63 @@ class RelayQueue:
         _identifier(request_id)
         return digest(["relay-queue-v1", actor.profile.project_id, request_id])
 
+    @staticmethod
+    def _validate_items(
+        items: tuple[RelayQueueItem, ...], parallel_limit: int
+    ) -> tuple[RelayQueueItem, ...]:
+        if (
+            type(items) is not tuple
+            or not 1 <= len(items) <= 16
+            or any(type(item) is not RelayQueueItem for item in items)
+            or type(parallel_limit) is not int
+            or not 1 <= parallel_limit <= 4
+        ):
+            _invalid()
+        items = tuple(replace(item) for item in items)
+        project_id = items[0].first.profile.project_id
+        if (
+            len({item.task.task_id for item in items}) != len(items)
+            or any(item.first.profile.project_id != project_id for item in items)
+        ):
+            _invalid()
+        return items
+
+    def _legacy_fence(self, project_id: str) -> bool:
+        legacy = digest(["relay-queue-active-v1", project_id])
+        return self._relay._read_receipt(legacy, "wave-lock") is not None
+
+    def _fenced(self, project_id: str, project_key: str) -> bool:
+        return self._legacy_fence(project_id) or self._journal.pending(project_key) is not None
+
+    def _check_selected(self, selected: tuple[RelayQueueItem, ...]) -> None:
+        for item in selected:
+            self._relay._state(item.second, item.task.task_id)
+            if self._relay.observe(item.first, item.task.task_id).state != "not_started":
+                raise AgentSyncError(
+                    "attempt_already_reserved", "A selected task already has a relay receipt.", 409
+                )
+
+    def preview(
+        self, items: tuple[RelayQueueItem, ...], *, admin_token: str, parallel_limit: int = 1
+    ) -> RelayQueuePreview:
+        """Preview the scheduler's current selection without reserving work or invoking a client."""
+        items = self._validate_items(items, parallel_limit)
+        actor = items[0].first
+        project_key, snapshot = self._owner_project(actor, admin_token)
+        if self._fenced(actor.profile.project_id, project_key):
+            return RelayQueuePreview("fenced")
+        selected = self._select(items, snapshot, parallel_limit)
+        self._check_selected(selected)
+        if not selected:
+            return RelayQueuePreview("no_ready_tasks")
+        tasks = tuple(
+            RelayPreviewTask(
+                item.task.task_id, item.task.expected_version, item.first.agent_id, item.second.agent_id
+            )
+            for item in selected
+        )
+        return RelayQueuePreview("selected", tasks)
+
     def observe(self, actor: RelayActor, request_id: str) -> RelayQueueOutcome:
         """Read the saved wave outcome after reauthenticating in Core."""
         key = self._key(actor, request_id)
@@ -146,7 +218,7 @@ class RelayQueue:
         A submitted task must still match the Core version in its review receipt.
         """
         key = self._key(actor, request_id)
-        project_key = self._owner_project(actor, admin_token)
+        project_key, _ = self._owner_project(actor, admin_token)
         saved = self._journal.get(project_key, key)
         if saved is None or saved[0] != "admitted":
             return self.observe(actor, request_id)
@@ -154,11 +226,10 @@ class RelayQueue:
 
     def observe_pending(self, actor: RelayActor, *, admin_token: str) -> PendingRelayWave | None:
         """Discover the current project fence when the original request ID was lost."""
-        project_key = self._owner_project(actor, admin_token)
+        project_key, _ = self._owner_project(actor, admin_token)
         saved = self._journal.pending(project_key)
         if saved is None:
-            legacy = digest(["relay-queue-active-v1", actor.profile.project_id])
-            if self._relay._read_receipt(legacy, "wave-lock") is not None:
+            if self._legacy_fence(actor.profile.project_id):
                 raise AgentSyncError(
                     "wave_incomplete", "A legacy relay wave still holds the fence.", 409
                 )
@@ -180,7 +251,7 @@ class RelayQueue:
         """Reconcile only the exact observed wave, never a newer project fence."""
         if type(expected_wave_id) is not str or not re.fullmatch(r"[0-9a-f]{64}", expected_wave_id):
             _invalid()
-        project_key = self._owner_project(actor, admin_token)
+        project_key, _ = self._owner_project(actor, admin_token)
         saved = self._journal.get(project_key, expected_wave_id)
         if saved is None:
             raise AgentSyncError("not_found", "The relay wave was not found.", 404)
@@ -190,15 +261,15 @@ class RelayQueue:
         outcome = self._outcome(selected, rows)
         return outcome if outcome.state == state else RelayQueueOutcome("incomplete")
 
-    def _owner_project(self, actor: RelayActor, admin_token: str) -> str:
+    def _owner_project(self, actor: RelayActor, admin_token: str) -> tuple[str, dict[str, Any]]:
         if type(actor) is not RelayActor:
             _invalid()
-        self._relay._project_state(actor)
+        snapshot = self._relay._project_state(actor)
         project_id = actor.profile.project_id
         self._relay._core.execute_owner(
             "list_members", {"project_id": project_id, "admin_token": admin_token, "limit": 1}
         )
-        return digest(project_id)
+        return digest(project_id), snapshot
 
     def _reconcile_admitted(
         self, actor: RelayActor, project_key: str, key: str, selected: Any
@@ -314,22 +385,9 @@ class RelayQueue:
         self, items: tuple[RelayQueueItem, ...], *, request_id: str, parallel_limit: int = 1
     ) -> RelayQueueOutcome:
         """Run at most one wave. Later dependencies wait for Core completion."""
-        if (
-            type(items) is not tuple
-            or not 1 <= len(items) <= 16
-            or any(type(item) is not RelayQueueItem for item in items)
-            or type(parallel_limit) is not int
-            or not 1 <= parallel_limit <= 4
-        ):
-            _invalid()
-        items = tuple(replace(item) for item in items)
+        items = self._validate_items(items, parallel_limit)
         actor = items[0].first
         project_id = actor.profile.project_id
-        if (
-            len({item.task.task_id for item in items}) != len(items)
-            or any(item.first.profile.project_id != project_id for item in items)
-        ):
-            _invalid()
         key = self._key(actor, request_id)
         snapshot = self._relay._project_state(actor)
         project_key = digest(project_id)
@@ -338,18 +396,12 @@ class RelayQueue:
             or self._relay._read_receipt(key, "wave-admitted") is not None
         ):
             raise AgentSyncError("attempt_already_reserved", "This relay wave already has a receipt.", 409)
-        legacy = digest(["relay-queue-active-v1", project_id])
-        if self._relay._read_receipt(legacy, "wave-lock") is not None:
+        if self._fenced(project_id, project_key):
             raise AgentSyncError("wave_incomplete", "An earlier relay wave still holds the project fence.", 409)
         selected = self._select(items, snapshot, parallel_limit)
         if not selected:
             return RelayQueueOutcome("no_ready_tasks")
-        for item in selected:
-            self._relay._state(item.second, item.task.task_id)
-            if self._relay.observe(item.first, item.task.task_id).state != "not_started":
-                raise AgentSyncError(
-                    "attempt_already_reserved", "A selected task already has a relay receipt.", 409
-                )
+        self._check_selected(selected)
         self._journal.admit(project_key, key, tuple(item.task.task_id for item in selected))
 
         async def run(item: RelayQueueItem) -> RelayQueueResult:
