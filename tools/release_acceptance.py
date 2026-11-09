@@ -906,24 +906,28 @@ def _stage_candidate(
 
     checked_root = evidence_root.resolve(strict=True)
     pins = {}
-    for artifact in verified["checked_artifacts"]:
-        source, info = _physical(checked_root, _member_parts(artifact["path"]))
-        dest = run / "artifacts" / artifact["filename"]
-        remaining = artifact["size"]
-        digest = hashlib.sha256()
-        if info.st_size != remaining:
-            raise ValueError("Candidate archive changed before staging.")
-        with source.open("rb") as incoming, dest.open("xb") as staged:
-            while remaining:
-                chunk = incoming.read(min(remaining, 1024 * 1024))
-                if not chunk:
-                    raise ValueError("Candidate archive ended during staging.")
-                digest.update(chunk)
-                staged.write(chunk)
-                remaining -= len(chunk)
-            if incoming.read(1) or digest.hexdigest() != artifact["sha256"]:
-                raise ValueError("Candidate archive changed during staging.")
-        pins[artifact["kind"]] = artifact["sha256"]
+    with tempfile.TemporaryDirectory(prefix=".candidate-", dir=run) as temporary:
+        archives = Path(temporary) / "artifacts"
+        archives.mkdir()
+        for artifact in verified["checked_artifacts"]:
+            source, info = _physical(checked_root, _member_parts(artifact["path"]))
+            dest = archives / artifact["filename"]
+            remaining = artifact["size"]
+            digest = hashlib.sha256()
+            if info.st_size != remaining:
+                raise ValueError("Candidate archive changed before staging.")
+            with source.open("rb") as incoming, dest.open("xb") as staged:
+                while remaining:
+                    chunk = incoming.read(min(remaining, 1024 * 1024))
+                    if not chunk:
+                        raise ValueError("Candidate archive ended during staging.")
+                    digest.update(chunk)
+                    staged.write(chunk)
+                    remaining -= len(chunk)
+                if incoming.read(1) or digest.hexdigest() != artifact["sha256"]:
+                    raise ValueError("Candidate archive changed during staging.")
+            pins[artifact["kind"]] = artifact["sha256"]
+        archives.rename(run / "artifacts")
     return {"manifest_sha256": verified["manifest_sha256"], "artifact_sha256": pins}
 
 
@@ -1008,8 +1012,7 @@ def _collect(
         "release-" + datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
     )
     run.mkdir()
-    for child in ("logs", "artifacts"):
-        (run / child).mkdir()
+    (run / "logs").mkdir()
     project = tomllib.loads((repo / "pyproject.toml").read_text(encoding="utf-8"))
     diff = git_value(repo, "diff", "HEAD", "--binary")
     original_patch_sha = hashlib.sha256((diff or "").encode("utf-8")).hexdigest()
@@ -1017,14 +1020,23 @@ def _collect(
     (run / "working-tree.patch").write_text(safe_patch, encoding="utf-8")
     source = source_snapshot(repo)
     (run / "source-snapshot.json").write_text(json.dumps(source, indent=2), encoding="utf-8")
-    candidate_input = (
-        _stage_candidate(repo, run, project["project"]["version"], candidate)
-        if candidate is not None else None
-    )
-    plan = check_plan(sys.executable, run, scratch)
     checks = []
+    candidate_input = None
+    candidate_rejected = False
+    if candidate is not None:
+        try:
+            candidate_input = _stage_candidate(repo, run, project["project"]["version"], candidate)
+        except (AttributeError, ImportError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
+            candidate_rejected = True
+            checks.append({
+                "id": "candidate_preflight", "status": "fail",
+                "reason": "Could not verify and stage the exact candidate from its original build and frozen source",
+            })
+    if candidate_input is None:
+        (run / "artifacts").mkdir(exist_ok=True)
+    plan = check_plan(sys.executable, run, scratch)
     offline_packages = None
-    if offline_wheelhouse is not None:
+    if offline_wheelhouse is not None and not candidate_rejected:
         try:
             if offline_wheelhouse.drive.startswith("\\\\"):
                 raise ValueError("Offline wheelhouse must use a local filesystem path")
@@ -1041,7 +1053,12 @@ def _collect(
                 }
             )
     for check_id, command in plan:
-        if check_id == "build" and offline_wheelhouse is not None:
+        if candidate_rejected:
+            item = {
+                "id": check_id, "command": command, "status": "not_run",
+                "reason": "Candidate preflight failed",
+            }
+        elif check_id == "build" and offline_wheelhouse is not None:
             build = (
                 None
                 if offline_packages is None
