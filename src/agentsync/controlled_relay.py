@@ -11,6 +11,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import re
 import stat
 import time
 from contextlib import suppress
@@ -99,6 +100,29 @@ class RelayInput:
 class RelayOutcome:
     state: Literal["not_started", "incomplete", "conflict", "ready_for_review"]
     verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
+@dataclass(frozen=True, slots=True)
+class RelayAttemptObservation:
+    leg: Literal["first", "second"]
+    state: Literal["not_dispatched", "outcome_unknown", "terminal_recorded"]
+    client: str | None = None
+    status: str | None = None
+    exit_code: int | None = None
+    timed_out: bool | None = None
+    parent_ended: bool | None = None
+    run_sha256: str | None = None
+    session_sha256: str | None = None
+    error_code: str | None = None
+    verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
+def _matched_text(value: Any, pattern: str) -> str | None:
+    return value if type(value) is str and re.fullmatch(pattern, value) is not None else None
+
+
+def _receipt_bool(value: Any) -> bool | None:
+    return value if type(value) is bool else None
 
 
 @dataclass(frozen=True, slots=True)
@@ -229,6 +253,55 @@ class ControlledRelay:
             return RelayOutcome("incomplete")
         return RelayOutcome("not_started")
 
+    def inspect_attempts(
+        self, actor: RelayActor, task_id: str, *, admin_token: str
+    ) -> tuple[RelayAttemptObservation, RelayAttemptObservation]:
+        """Read sanitized same-project observations without reconnecting to any process."""
+        if type(actor) is not RelayActor:
+            _reject()
+        _identifier(task_id)
+        self._state(actor, task_id)
+        self._core.execute_owner(
+            "list_members",
+            {"project_id": actor.profile.project_id, "admin_token": admin_token, "limit": 1},
+        )
+        key = self._key(actor, task_id)
+        return self._inspect_attempt(key, "first"), self._inspect_attempt(key, "second")
+
+    def _inspect_attempt(
+        self, key: str, leg: Literal["first", "second"]
+    ) -> RelayAttemptObservation:
+        dispatch = self._read_receipt(key, leg + "-dispatched")
+        observed = self._read_receipt(key, leg + "-observed")
+        stopped = self._read_receipt(key, leg + "-stopped")
+        if dispatch is None and observed is None and stopped is None:
+            return RelayAttemptObservation(leg, "not_dispatched")
+        client = _matched_text((dispatch or {}).get("client"), r"codex|claude|cursor")
+        if client is None or (observed is None) == (stopped is None):
+            return RelayAttemptObservation(leg, "outcome_unknown", client)
+        terminal = observed if observed is not None else stopped
+        assert terminal is not None
+        status = _matched_text(
+            terminal.get("status"),
+            r"expected_reply" if observed is not None else r"failed|unknown|succeeded|reply_mismatch",
+        )
+        exit_code = terminal.get("exit_code")
+        parent_ended = _receipt_bool(terminal.get("parent_ended"))
+        if status is None or (
+            status == "expected_reply"
+            and (type(exit_code) is not int or exit_code != 0 or parent_ended is not True)
+        ):
+            return RelayAttemptObservation(leg, "outcome_unknown", client)
+        return RelayAttemptObservation(
+            leg, "terminal_recorded", client, status,
+            exit_code=exit_code if type(exit_code) is int and -(2**63) <= exit_code < 2**63 else None,
+            timed_out=_receipt_bool(terminal.get("timed_out")),
+            parent_ended=parent_ended,
+            run_sha256=_matched_text(terminal.get("run_sha256"), r"[0-9a-f]{64}"),
+            session_sha256=_matched_text(terminal.get("session_sha256"), r"[0-9a-f]{64}"),
+            error_code=_matched_text(terminal.get("error_code"), r"[a-z_]{1,64}"),
+        )
+
     def review_once(
         self, reviewer: RelayReviewer, task_id: str, *, accept: bool, evidence: str
     ) -> dict[str, Any]:
@@ -331,6 +404,8 @@ class ControlledRelay:
                     self._record(
                         key, stage + "-stopped", status=run.status, timed_out=run.timed_out,
                         exit_code=run.exit_code, parent_ended=run.parent_ended,
+                        run_sha256=digest(run.run_id), session_sha256=digest(run.session_id),
+                        error_code=_matched_text(run.error_code, r"[a-z_]{1,64}"),
                     )
                     _reject()
                 result = await adapter.get_result(run.run_id)
@@ -344,11 +419,17 @@ class ControlledRelay:
             else result.result_text == expected_reply
         )
         if result.run != run or not matches:
-            self._record(key, stage + "-stopped", status="reply_mismatch", exit_code=run.exit_code)
+            self._record(
+                key, stage + "-stopped", status="reply_mismatch", exit_code=run.exit_code,
+                timed_out=run.timed_out, parent_ended=run.parent_ended,
+                run_sha256=digest(run.run_id), session_sha256=digest(run.session_id),
+                error_code="reply_mismatch",
+            )
             _reject()
         self._record(
             key, stage + "-observed", status="expected_reply", run_sha256=digest(run.run_id),
-            exit_code=run.exit_code, parent_ended=run.parent_ended,
+            session_sha256=digest(run.session_id), exit_code=run.exit_code,
+            parent_ended=run.parent_ended, timed_out=run.timed_out,
         )
         return {**active, "lease_token": lease_token}
 
