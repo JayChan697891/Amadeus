@@ -19,17 +19,10 @@ from typing import Any
 from agentsync.adapters.codex_events import parse_codex_jsonl
 from agentsync.errors import AgentSyncError
 
-MAX_INPUT_BYTES = 1024 * 1024
-
-
-def _exit_code(value: str) -> int:
-    try:
-        number = int(value)
-    except ValueError:
-        raise argparse.ArgumentTypeError("Expected a signed 64-bit integer.") from None
-    if not -(2**63) <= number <= 2**63 - 1:
-        raise argparse.ArgumentTypeError("Expected a signed 64-bit integer.")
-    return number
+if __package__:
+    from ._capture_inspection import MAX_INPUT_BYTES, exit_code, read_capture
+else:
+    from _capture_inspection import MAX_INPUT_BYTES, exit_code, read_capture
 
 
 def _markers() -> dict[str, Any]:
@@ -55,16 +48,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--input", type=Path, required=True, help="Explicit existing JSONL file")
     parser.add_argument(
         "--exit-code",
-        type=_exit_code,
+        type=exit_code,
         default=None,
         help="Caller-provided process status; omitted means unknown, never assumed zero",
     )
     args = parser.parse_args(argv)
     try:
-        if not args.input.is_file():
-            return _error("input_unavailable")
-        with args.input.open("rb") as source:
-            raw = source.read(MAX_INPUT_BYTES + 1)
+        raw = read_capture(args.input)
     except (OSError, ValueError):
         return _error("input_unavailable")
     if len(raw) > MAX_INPUT_BYTES:
