@@ -9,6 +9,7 @@ waves until an operator reconciles the isolated workspace outside this runner.
 from __future__ import annotations
 
 import asyncio
+import hmac
 import re
 import time
 from dataclasses import dataclass, field, replace
@@ -95,6 +96,7 @@ class RelayPreviewTask:
 class RelayQueuePreview:
     state: Literal["selected", "no_ready_tasks", "fenced"]
     tasks: tuple[RelayPreviewTask, ...] = ()
+    selection_sha256: str | None = None
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
 
@@ -110,6 +112,26 @@ def _selected_tasks(selected: Any) -> tuple[str, ...]:
 
 def _roots(item: RelayQueueItem) -> tuple[Path, Path]:
     return item.first.profile.root, item.second.profile.root
+
+
+def _selection_pin(selected: tuple[RelayQueueItem, ...]) -> str:
+    """Bind the displayed selection, independently of each launch approval."""
+    return digest([
+        "relay-queue-selection-v1",
+        [
+            [
+                item.task.task_id, item.task.expected_version, item.task.context_id,
+                item.task.context_version, item.task.context_sha256, item.task.timeout_seconds,
+                [
+                    [actor.profile.project_id, actor.profile.session_id, actor.agent_id,
+                     actor.worktree_id, actor.expected_head]
+                    for actor in (item.first, item.second)
+                ],
+                item.first_capabilities, item.second_capabilities,
+            ]
+            for item in selected
+        ],
+    ])
 
 
 class RelayQueue:
@@ -189,7 +211,7 @@ class RelayQueue:
             )
             for item in selected
         )
-        return RelayQueuePreview("selected", tasks)
+        return RelayQueuePreview("selected", tasks, _selection_pin(selected))
 
     def observe(self, actor: RelayActor, request_id: str) -> RelayQueueOutcome:
         """Read the saved wave outcome after reauthenticating in Core."""
@@ -376,10 +398,15 @@ class RelayQueue:
 
     async def run_ready_once(
         self, items: tuple[RelayQueueItem, ...], *, request_id: str, admin_token: str,
-        parallel_limit: int = 1,
+        parallel_limit: int = 1, expected_selection_sha256: str | None = None,
     ) -> RelayQueueOutcome:
-        """Run at most one wave. Later dependencies wait for Core completion."""
+        """Run at most one wave, optionally bound to a previously previewed selection."""
         items = self._validate_items(items, parallel_limit)
+        if expected_selection_sha256 is not None and (
+            type(expected_selection_sha256) is not str
+            or re.fullmatch(r"[0-9a-f]{64}", expected_selection_sha256) is None
+        ):
+            _invalid()
         actor = items[0].first
         project_id = actor.profile.project_id
         key = self._key(actor, request_id)
@@ -392,6 +419,10 @@ class RelayQueue:
         if self._fenced(project_id, project_key):
             raise AgentSyncError("wave_incomplete", "An earlier relay wave still holds the project fence.", 409)
         selected = self._select(items, snapshot, parallel_limit)
+        if expected_selection_sha256 is not None and (
+            not selected or not hmac.compare_digest(expected_selection_sha256, _selection_pin(selected))
+        ):
+            raise AgentSyncError("selection_changed", "The previewed relay selection changed.", 409)
         if not selected:
             return RelayQueueOutcome("no_ready_tasks")
         self._check_selected(selected)
