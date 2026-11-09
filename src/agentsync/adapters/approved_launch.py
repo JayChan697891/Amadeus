@@ -70,6 +70,30 @@ class LaunchConsent:
 LaunchAuthority = Callable[[LaunchReview], Awaitable[LaunchConsent | None]]
 
 
+def prepare_launch_review(
+    profile: HostProfile, task: AdapterTask, *, environment: dict[str, str]
+) -> LaunchReview:
+    """Prepare the exact host plan without invoking a client or requesting consent."""
+    client = client_kind(profile)
+    if isinstance(profile, codex_invocation.CodexHostProfile):
+        plan: Invocation = codex_invocation.prepare_invocation(profile, task, environment=environment)
+    elif isinstance(profile, claude_invocation.ClaudeHostProfile):
+        plan = claude_invocation.prepare_invocation(profile, task, environment=environment)
+    else:
+        plan = cursor_invocation.prepare_invocation(profile, task, environment=environment)
+    return LaunchReview(
+        client,
+        digest([
+            client, task.project_id, task.session_id, task.task_id, task.request_id,
+            task.timeout_seconds, task.instruction, plan.argv, str(plan.cwd), plan.stdin_text,
+            sorted(plan.child_env().items()), plan.timeout_seconds, plan.output_limit,
+            plan.expected_cli_version, plan.binary_sha256,
+        ]),
+        plan,
+        task,
+    )
+
+
 def _consent_is_current(consent: LaunchConsent | None, review: LaunchReview) -> bool:
     now = time.time()
     return (
@@ -126,30 +150,18 @@ class ApprovedLaunchFactory:
         self._revalidate = revalidate
 
     def _prepare(self, task: AdapterTask) -> Invocation:
-        profile = self._profile
-        if isinstance(profile, codex_invocation.CodexHostProfile):
-            return codex_invocation.prepare_invocation(profile, task, environment=self._environment)
-        if isinstance(profile, claude_invocation.ClaudeHostProfile):
-            return claude_invocation.prepare_invocation(profile, task, environment=self._environment)
-        return cursor_invocation.prepare_invocation(profile, task, environment=self._environment)
+        return self._review(task).plan
+
+    def _review(self, task: AdapterTask) -> LaunchReview:
+        return prepare_launch_review(self._profile, task, environment=self._environment)
 
     async def __call__(self, task: AdapterTask, context: LaunchContext) -> CapturedProcess:
         if type(context) is not LaunchContext:
             raise AgentSyncError("validation_error", "Adapter-issued launch context required.")
         context.check(task)
-        plan = await asyncio.to_thread(self._prepare, task)
+        review = await asyncio.to_thread(self._review, task)
+        plan = review.plan
         child_env = plan.child_env()
-        review = LaunchReview(
-            self.client,
-            digest([
-                self.client, task.project_id, task.session_id, task.task_id, task.request_id,
-                task.timeout_seconds, task.instruction, plan.argv, str(plan.cwd), plan.stdin_text,
-                sorted(child_env.items()), plan.timeout_seconds, plan.output_limit,
-                plan.expected_cli_version, plan.binary_sha256,
-            ]),
-            plan,
-            task,
-        )
         context.check(task)
         consent = await self._authority(review)
         if consent is None or not _consent_is_current(consent, review):

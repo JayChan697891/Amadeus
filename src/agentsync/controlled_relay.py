@@ -23,9 +23,11 @@ from agentsync.adapters.approved_launch import (
     ApprovedLaunchFactory,
     HostProfile,
     LaunchAuthority,
+    LaunchReview,
     _exclusive_receipt,
     client_kind,
     digest,
+    prepare_launch_review,
 )
 from agentsync.adapters.base import AdapterTask, _bounded_text, _identifier
 from agentsync.adapters.claude import ClaudeAdapter
@@ -260,13 +262,16 @@ class ControlledRelay:
         if type(actor) is not RelayActor:
             _reject()
         _identifier(task_id)
+        self._authorize_owner(actor, admin_token)
         self._state(actor, task_id)
+        key = self._key(actor, task_id)
+        return self._inspect_attempt(key, "first"), self._inspect_attempt(key, "second")
+
+    def _authorize_owner(self, actor: RelayActor, admin_token: str) -> None:
         self._core.execute_owner(
             "list_members",
             {"project_id": actor.profile.project_id, "admin_token": admin_token, "limit": 1},
         )
-        key = self._key(actor, task_id)
-        return self._inspect_attempt(key, "first"), self._inspect_attempt(key, "second")
 
     def _inspect_attempt(
         self, key: str, leg: Literal["first", "second"]
@@ -354,7 +359,7 @@ class ControlledRelay:
         claim: dict[str, Any],
         key: str,
         stage: str,
-        instruction: str,
+        task: AdapterTask,
         expected_reply: str,
     ) -> dict[str, Any]:
         prefix = f"relay:{key}:{stage}"
@@ -385,14 +390,13 @@ class ControlledRelay:
             authority=actor.authority, revalidate=renew,
         )
         adapter: _ActorAdapter
-        namespace = (actor.profile.project_id, actor.profile.session_id)
+        namespace = (task.project_id, task.session_id)
         if factory.client == "codex":
             adapter = CodexAdapter(*namespace, contextual_factory=factory)
         elif factory.client == "claude":
             adapter = ClaudeAdapter(*namespace, contextual_factory=factory)
         else:
             adapter = CursorAdapter(*namespace, contextual_factory=factory)
-        task = AdapterTask(*namespace, spec.task_id, prefix + ":launch", instruction, spec.timeout_seconds)
         self._record(key, stage + "-dispatched", client=factory.client)
         run = await adapter.start_task(task)
         try:
@@ -433,15 +437,10 @@ class ControlledRelay:
         )
         return {**active, "lease_token": lease_token}
 
-    async def run_once(
-        self, first: RelayActor, second: RelayActor, spec: RelayInput, *, _wave_key: str | None = None
-    ) -> RelayOutcome:
+    def _pinned_inputs(
+        self, first: RelayActor, second: RelayActor, spec: RelayInput,
+    ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], tuple[AdapterTask, AdapterTask]]:
         if type(first) is not RelayActor or type(second) is not RelayActor or type(spec) is not RelayInput:
-            _reject()
-        if _wave_key is not None and (
-            type(_wave_key) is not str or len(_wave_key) != 64
-            or any(c not in "0123456789abcdef" for c in _wave_key)
-        ):
             _reject()
         if (
             first.profile.project_id != second.profile.project_id
@@ -467,6 +466,40 @@ class ControlledRelay:
         if hashlib.sha256(content.encode("utf-8")).hexdigest() != spec.context_sha256:
             _reject()
         key = self._key(first, spec.task_id)
+        first_task = AdapterTask(
+            first.profile.project_id, first.profile.session_id, spec.task_id,
+            f"relay:{key}:first:launch", spec.first_instruction, spec.timeout_seconds,
+        )
+        second_task = AdapterTask(
+            second.profile.project_id, second.profile.session_id, spec.task_id,
+            f"relay:{key}:second:launch",
+            f"{spec.second_instruction}\n\nApproved shared context:\n{content}", spec.timeout_seconds,
+        )
+        return task, reference, revision, (first_task, second_task)
+
+    def preview_launches(
+        self, first: RelayActor, second: RelayActor, spec: RelayInput, *, admin_token: str,
+    ) -> tuple[LaunchReview, LaunchReview]:
+        """Prepare host-private plans; conflict checks and exact consent still gate execution."""
+        if type(first) is not RelayActor:
+            _reject()
+        self._authorize_owner(first, admin_token)
+        _, _, _, (first_task, second_task) = self._pinned_inputs(first, second, spec)
+        return (
+            prepare_launch_review(first.profile, first_task, environment=first.environment),
+            prepare_launch_review(second.profile, second_task, environment=second.environment),
+        )
+
+    async def run_once(
+        self, first: RelayActor, second: RelayActor, spec: RelayInput, *, _wave_key: str | None = None
+    ) -> RelayOutcome:
+        if _wave_key is not None and (
+            type(_wave_key) is not str or len(_wave_key) != 64
+            or any(c not in "0123456789abcdef" for c in _wave_key)
+        ):
+            _reject()
+        task, reference, revision, (first_task, second_task) = self._pinned_inputs(first, second, spec)
+        key = self._key(first, spec.task_id)
         self._record(key, "incomplete", context_version=spec.context_version, wave_sha256=_wave_key)
         comparison = self._call(
             first, "compare_worktrees", left_id=first.worktree_id, right_id=second.worktree_id,
@@ -479,7 +512,7 @@ class ControlledRelay:
             return RelayOutcome("conflict")
         a = await self._attempt(
             first, spec, self._claim(first, spec.task_id, task["version"], f"relay:{key}:claim-a"),
-            key, "first", spec.first_instruction, spec.first_reply,
+            key, "first", first_task, spec.first_reply,
         )
         self._workspace(first, spec.task_id)
         package = self._call(
@@ -505,7 +538,7 @@ class ControlledRelay:
         self._record(key, "handoff", context_version=spec.context_version, task_version=current["version"])
         b = await self._attempt(
             second, spec, self._claim(second, spec.task_id, current["version"], f"relay:{key}:claim-b"),
-            key, "second", f"{spec.second_instruction}\n\nApproved shared context:\n{content}", spec.second_reply,
+            key, "second", second_task, spec.second_reply,
         )
         self._workspace(first, spec.task_id)
         self._workspace(second, spec.task_id)
