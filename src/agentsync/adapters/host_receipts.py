@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -63,6 +64,15 @@ class _ReceiptDirectory:
     def check(self) -> None:
         if self._physical() != self._identity or not self.root.is_dir():
             raise _unavailable()
+
+    def location_pin(self) -> str:
+        """Return a host-local identity for a separate trusted anchor, not a movable path."""
+        self.check()
+        if self._identity[1] == "0":
+            raise _unavailable()
+        normalized = os.path.normcase(str(self.root))
+        data = json.dumps([normalized, *self._identity], ensure_ascii=True).encode("ascii")
+        return hashlib.sha256(data).hexdigest()
 
     def _path(self, name: str) -> Path:
         if not re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,179}\.json", name):

@@ -143,7 +143,8 @@ class RelayReviewer:
 class ControlledRelay:
     """Run at most one two-stage pilot for a project task in the receipt directory.
 
-    Keep the private receipts and the Core database across restart. Incomplete
+    Keep the private receipt directory and the entire separate Core data
+    directory in place across restart. Incomplete
     runs cannot be retried here. Expired Core task leases remain recoverable via
     Core, which does not prove any prior client or descendant stopped.
     """
@@ -160,15 +161,37 @@ class ControlledRelay:
         self._core = core
         self._scratch = scratch.resolve(strict=True)
         self._receipts = receipts.resolve(strict=True)
+        core_data = core.data_dir.resolve(strict=True)
         if (
             not self._scratch.is_dir()
             or not self._receipts.is_dir()
             or self._receipts == self._scratch
             or not self._receipts.is_relative_to(self._scratch)
-            or not core.data_dir.resolve().is_relative_to(self._scratch)
+            or not core_data.is_relative_to(self._scratch)
+            or core_data.is_relative_to(self._receipts)
         ):
             _reject()
         self._receipt_store = _ReceiptDirectory(self._receipts)
+        self._receipt_anchors = _ReceiptDirectory(core_data)
+
+    def _check_receipt_anchor(self, project_id: str, *, bind: bool = False) -> None:
+        """The separate Core data directory retains the selected receipt root across restart."""
+        name = f"controlled-relay-{digest(project_id)}.json"
+        expected: dict[str, object] = {
+            "schema_version": 1, "receipt_root_sha256": self._receipt_store.location_pin(),
+        }
+        current = self._receipt_anchors.read(name)
+        if current is None and bind:
+            try:
+                self._receipt_anchors.write(name, expected)
+            except AgentSyncError as error:
+                if error.code != "attempt_already_reserved":
+                    raise
+            current = self._receipt_anchors.read(name)
+        if (current is not None or bind) and (
+            not current or type(current.get("schema_version")) is not int or current != expected
+        ):
+            raise AgentSyncError("relay_boundary", "The project receipt directory does not match its saved identity.", 409)
 
     def _call(self, actor: RelayActor, operation: str, **payload: Any) -> dict[str, Any]:
         return self._core.execute(operation, {
@@ -234,6 +257,7 @@ class ControlledRelay:
     def observe(self, actor: RelayActor, task_id: str) -> RelayOutcome:
         """Authenticate before observing a receipt, including after host restart."""
         task = self._state(actor, task_id)
+        self._check_receipt_anchor(actor.profile.project_id)
         key = self._key(actor, task_id)
         ready = self._review_submission(key)
         if ready is not None:
@@ -284,6 +308,7 @@ class ControlledRelay:
     ) -> Literal["ready_for_review", "conflict"] | None:
         """Bind historical submission or conflict to the same durable wave."""
         task = self._state(actor, task_id)
+        self._check_receipt_anchor(actor.profile.project_id)
         key = self._key(actor, task_id)
         admission = self._read_receipt(key, "incomplete")
         if not admission or admission.get("wave_sha256") != wave_key:
@@ -327,6 +352,7 @@ class ControlledRelay:
         _identifier(task_id)
         self._authorize_owner(actor, admin_token)
         self._state(actor, task_id)
+        self._check_receipt_anchor(actor.profile.project_id)
         key = self._key(actor, task_id)
         return self._inspect_attempt(key, "first"), self._inspect_attempt(key, "second")
 
@@ -391,6 +417,7 @@ class ControlledRelay:
             "session_token": reviewer.session_token,
         }
         project = self._core.execute("get_project_state", auth)
+        self._check_receipt_anchor(reviewer.project_id)
         key = digest([reviewer.project_id, task_id])
         ready = self._review_submission(key)
         if not ready:
@@ -554,6 +581,7 @@ class ControlledRelay:
         if type(first) is not RelayActor:
             _reject()
         self._authorize_owner(first, admin_token)
+        self._check_receipt_anchor(first.profile.project_id)
         _, _, _, (first_task, second_task) = self._pinned_inputs(first, second, spec)
         return (
             prepare_launch_review(first.profile, first_task, environment=first.environment),
@@ -573,6 +601,7 @@ class ControlledRelay:
             _reject()
         self._authorize_owner(first, admin_token)
         task, reference, revision, (first_task, second_task) = self._pinned_inputs(first, second, spec)
+        self._check_receipt_anchor(first.profile.project_id, bind=True)
         key = self._key(first, spec.task_id)
         self._record(key, "incomplete", context_version=spec.context_version, wave_sha256=_wave_key)
         comparison = self._call(

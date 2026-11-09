@@ -227,6 +227,7 @@ class RelayQueue:
         """Read the saved wave outcome after reauthenticating in Core."""
         key = self._key(actor, request_id)
         self._relay._project_state(actor)
+        self._relay._check_receipt_anchor(actor.profile.project_id)
         project_key = digest(actor.profile.project_id)
         saved = self._journal.get(project_key, key)
         if saved is not None:
@@ -302,6 +303,7 @@ class RelayQueue:
         self._relay._authorize_owner(actor, admin_token)
         snapshot = self._relay._project_state(actor)
         project_id = actor.profile.project_id
+        self._relay._check_receipt_anchor(project_id)
         return digest(project_id), snapshot
 
     def _reconcile_open(
@@ -440,6 +442,7 @@ class RelayQueue:
         if not selected:
             return RelayQueueOutcome("no_ready_tasks")
         self._check_selected(selected)
+        self._relay._check_receipt_anchor(project_id, bind=True)
         self._journal.admit(project_key, key, tuple(item.task.task_id for item in selected))
 
         async def run(item: RelayQueueItem) -> RelayQueueResult:
