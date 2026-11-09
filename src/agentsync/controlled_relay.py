@@ -20,8 +20,11 @@ from typing import Any, Literal, NoReturn
 from agentsync.adapters.approved_launch import (
     ApprovedLaunchFactory,
     HostProfile,
+    LaunchAdmissionObservation,
     LaunchAuthority,
     LaunchReview,
+    _launch_key,
+    _observe_admission,
     client_kind,
     digest,
     prepare_launch_review,
@@ -114,6 +117,7 @@ class RelayAttemptObservation:
     run_sha256: str | None = None
     session_sha256: str | None = None
     error_code: str | None = None
+    admission: LaunchAdmissionObservation | None = None
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
 
@@ -341,8 +345,13 @@ class ControlledRelay:
         if dispatch is None and observed is None and stopped is None:
             return RelayAttemptObservation(leg, "not_dispatched")
         client = _matched_text((dispatch or {}).get("client"), r"codex|claude|cursor")
+        request = _matched_text((dispatch or {}).get("launch_request_sha256"), r"[0-9a-f]{64}")
+        admission = (
+            _observe_admission(self._receipt_store, request, client)
+            if request is not None and client is not None else None
+        )
         if client is None or (observed is None) == (stopped is None):
-            return RelayAttemptObservation(leg, "outcome_unknown", client)
+            return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
         terminal = observed if observed is not None else stopped
         assert terminal is not None
         status = _matched_text(
@@ -355,7 +364,7 @@ class ControlledRelay:
             status == "expected_reply"
             and (type(exit_code) is not int or exit_code != 0 or parent_ended is not True)
         ):
-            return RelayAttemptObservation(leg, "outcome_unknown", client)
+            return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
         return RelayAttemptObservation(
             leg, "terminal_recorded", client, status,
             exit_code=exit_code if type(exit_code) is int and -(2**63) <= exit_code < 2**63 else None,
@@ -364,6 +373,7 @@ class ControlledRelay:
             run_sha256=_matched_text(terminal.get("run_sha256"), r"[0-9a-f]{64}"),
             session_sha256=_matched_text(terminal.get("session_sha256"), r"[0-9a-f]{64}"),
             error_code=_matched_text(terminal.get("error_code"), r"[a-z_]{1,64}"),
+            admission=admission,
         )
 
     def review_once(
@@ -458,7 +468,9 @@ class ControlledRelay:
             adapter = ClaudeAdapter(*namespace, contextual_factory=factory)
         else:
             adapter = CursorAdapter(*namespace, contextual_factory=factory)
-        self._record(key, stage + "-dispatched", client=factory.client)
+        self._record(
+            key, stage + "-dispatched", client=factory.client, launch_request_sha256=_launch_key(task),
+        )
         run = await adapter.start_task(task)
         try:
             run = await adapter.wait_terminal(run.run_id, timeout_seconds=spec.timeout_seconds + 2)

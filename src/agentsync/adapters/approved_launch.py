@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import re
 import time
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field, replace
@@ -40,6 +41,10 @@ def digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, ensure_ascii=True).encode("ascii")).hexdigest()
 
 
+def _launch_key(task: AdapterTask) -> str:
+    return digest([task.project_id, task.session_id, task.task_id, task.request_id])
+
+
 def client_kind(profile: HostProfile) -> ClientKind:
     if type(profile) is codex_invocation.CodexHostProfile:
         return "codex"
@@ -65,6 +70,13 @@ class LaunchConsent:
     expires_at: float
     confirmed_cost: bool
     confirmed_isolation: bool
+
+
+@dataclass(frozen=True, slots=True)
+class LaunchAdmissionObservation:
+    state: Literal["not_recorded", "request_reserved", "both_reservations_recorded", "unknown"]
+    plan_sha256: str | None = None
+    execution_verified: Literal[False] = field(default=False, init=False)
 
 
 LaunchAuthority = Callable[[LaunchReview], Awaitable[LaunchConsent | None]]
@@ -105,6 +117,34 @@ def _consent_is_current(consent: LaunchConsent | None, review: LaunchReview) -> 
         and consent.confirmed_cost is True
         and consent.confirmed_isolation is True
     )
+
+
+def _valid_digest(value: object) -> bool:
+    return type(value) is str and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def _observe_admission(
+    store: _ReceiptDirectory, request_key: str, client: str,
+) -> LaunchAdmissionObservation:
+    if not _valid_digest(request_key):
+        return LaunchAdmissionObservation("unknown")
+    launch = store.read(f"launch-{request_key}.json")
+    if launch is None:
+        return LaunchAdmissionObservation("not_recorded")
+    plan = launch.get("plan_sha256")
+    consent_key = launch.get("consent_sha256")
+    if (
+        type(plan) is not str or not _valid_digest(plan)
+        or launch.get("client") != client or launch.get("request_sha256") != request_key
+        or not _valid_digest(consent_key)
+    ):
+        return LaunchAdmissionObservation("unknown")
+    consent = store.read(f"consent-{consent_key}.json")
+    if consent is None:
+        return LaunchAdmissionObservation("request_reserved", plan)
+    if consent != launch:
+        return LaunchAdmissionObservation("unknown")
+    return LaunchAdmissionObservation("both_reservations_recorded", plan)
 
 
 class ApprovedLaunchFactory:
@@ -164,10 +204,14 @@ class ApprovedLaunchFactory:
             raise AgentSyncError("launch_plan_changed", "The approved client plan changed.", 409)
         if not _consent_is_current(consent, review):
             raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
-        receipt: dict[str, object] = {"plan_sha256": review.plan_sha256, "client": self.client}
-        request_key = digest([task.project_id, task.session_id, task.task_id, task.request_id])
+        request_key = _launch_key(task)
+        consent_key = digest(consent.approval_id)
+        receipt: dict[str, object] = {
+            "plan_sha256": review.plan_sha256, "client": self.client,
+            "request_sha256": request_key, "consent_sha256": consent_key,
+        }
         self._receipt_store.write(f"launch-{request_key}.json", receipt)
-        self._receipt_store.write(f"consent-{digest(consent.approval_id)}.json", receipt)
+        self._receipt_store.write(f"consent-{consent_key}.json", receipt)
         self._revalidate(task)
         self._receipt_store.check()
         if not _consent_is_current(consent, review):
