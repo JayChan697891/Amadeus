@@ -75,6 +75,8 @@ def build_manifest(
     report, digest = _read_report(selected, decoder=read_json)
     if digest != observation["report_sha256"]:
         raise ValueError("The designated report changed after verification.")
+    if "candidate_input" in report:
+        raise ValueError("The designated build report must originate its candidate archives.")
 
     pyproject = _output(source_repo, "cat-file", "blob", f"{commit}:pyproject.toml", maximum=1024 * 1024)
     project = tomllib.loads(pyproject.decode("utf-8"))["project"]

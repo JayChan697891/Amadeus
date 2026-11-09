@@ -18,11 +18,11 @@ from typing import Any
 
 if __package__:
     from .acceptance_evidence import _Evidence, read_json
-    from .acceptance_matrix import matrix_digest, summarize
+    from .acceptance_matrix import _complete_observation, _platform_gaps, matrix_digest, summarize
     from .release_manifest import verify_manifest
 else:
     from acceptance_evidence import _Evidence, read_json
-    from acceptance_matrix import matrix_digest, summarize
+    from acceptance_matrix import _complete_observation, _platform_gaps, matrix_digest, summarize
     from release_manifest import verify_manifest
 
 _LIMIT = 4 * 1024 * 1024
@@ -161,7 +161,8 @@ def prepare(
 
 
 def _bind_candidate(
-    matrix: dict[str, Any], digest: str, evidence_root: Path, path: Path, manifest_sha256: str
+    matrix: dict[str, Any], digest: str, evidence_root: Path, path: Path, manifest_sha256: str,
+    python_minors: tuple[str, ...],
 ) -> dict[str, Any]:
     candidate = verify_manifest(path, evidence_root, manifest_sha256=manifest_sha256)
     if (
@@ -181,7 +182,18 @@ def _bind_candidate(
         or any(observation["checks"].get(kind + "_origin_sdk") != "pass" for kind in pins)
     ):
         raise ValueError("Release candidate archives differ from the reviewed build.")
-    return candidate | {"build_report_verified_in_matrix": True}
+    matching = [
+        row for row in matrix["observations"]
+        if row["artifact_audit"]["installed_artifact_sha256"] == pins
+        and _complete_observation(row, verify_artifacts=True, require_license_inventory=True)
+    ]
+    systems, combinations = _platform_gaps(matching, python_minors)
+    return candidate | {
+        "build_report_verified_in_matrix": True,
+        "matching_install_report_sha256": sorted(row["report_sha256"] for row in matching),
+        "systems_without_exact_candidate_checks": systems,
+        "missing_exact_candidate_os_python_combinations": combinations,
+    }
 
 
 def assemble(
@@ -249,7 +261,7 @@ def assemble(
         })
     counts = Counter(case["declared_status"] for case in cases)
     candidate = (
-        _bind_candidate(matrix, digest, evidence_root, candidate_manifest, candidate_sha256)
+        _bind_candidate(matrix, digest, evidence_root, candidate_manifest, candidate_sha256, python_minors)
         if candidate_manifest is not None and candidate_sha256 is not None else None
     )
     blockers = []
@@ -261,6 +273,8 @@ def assemble(
         blockers.append("git_source_not_audited")
     if candidate is None:
         blockers.append("release_candidate_not_bound")
+    elif candidate["systems_without_exact_candidate_checks"] or candidate["missing_exact_candidate_os_python_combinations"]:
+        blockers.append("exact_candidate_platform_matrix_incomplete")
     packet = {
         "schema_version": 1,
         "scope": "evidence_packet_for_independent_release_decision",
@@ -331,6 +345,14 @@ def render_markdown(packet: dict[str, Any]) -> str:
                 f"| `{artifact['kind']}` | {_cell(artifact['path'])} | "
                 f"{artifact['size']} | `{artifact['sha256']}` |"
             )
+        systems = candidate["systems_without_exact_candidate_checks"]
+        combinations = candidate["missing_exact_candidate_os_python_combinations"]
+        lines.extend([
+            "", "Platforms missing full checks against these exact archives: "
+            + (", ".join(_cell(system) for system in systems) or "none"),
+            "", "Missing platform/Python combinations for these exact archives: "
+            + (", ".join(f"{_cell(row['system'])} {row['python_minor']}" for row in combinations) or "none"),
+        ])
     missing = packet["missing_os_python_combinations"]
     if missing:
         lines.extend(["", "## OS and Python combinations without complete evidence", ""])

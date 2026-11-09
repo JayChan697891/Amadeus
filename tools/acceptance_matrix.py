@@ -96,6 +96,36 @@ def _observation(report: dict[str, Any], digest: str) -> dict[str, Any]:
     }
 
 
+def _complete_observation(
+    observation: dict[str, Any], *, verify_artifacts: bool, require_license_inventory: bool,
+) -> bool:
+    required = _REQUIRED_CHECKS
+    if verify_artifacts:
+        required = required | {"wheel_origin_sdk", "sdist_origin_sdk", "wheel_pip_check", "sdist_pip_check"}
+    if require_license_inventory:
+        required = required | {"wheel_license_inventory", "sdist_license_inventory"}
+    return all(observation["checks"].get(name) == "pass" for name in required) and (
+        not verify_artifacts or observation["artifact_audit"]["junit_case_sets_match"] is True
+    )
+
+
+def _platform_gaps(
+    observations: list[dict[str, Any]], python_minors: tuple[str, ...],
+) -> tuple[list[str], list[dict[str, str]]]:
+    missing_systems = sorted(_REQUIRED_SYSTEMS - {row["system"] for row in observations})
+    observed_matrix = set()
+    for row in observations:
+        match = re.match(r"^(3\.[0-9]{1,2})\.[0-9]+(?:\D|$)", row["python"])
+        if match:
+            observed_matrix.add((row["system"], match.group(1)))
+    combinations = [
+        {"system": system, "python_minor": minor}
+        for system, minor in sorted((system, minor) for system in _REQUIRED_SYSTEMS for minor in python_minors)
+        if (system, minor) not in observed_matrix
+    ]
+    return missing_systems, combinations
+
+
 def summarize(
     paths: list[Path], expected_commit: str, *, verify_artifacts: bool = False,
     require_license_inventory: bool = False, python_minors: tuple[str, ...] = (),
@@ -154,18 +184,11 @@ def summarize(
     if len(identities) != 1:
         raise ValueError("Reports describe different frozen sources.")
     frozen = dict(zip(_IDENTITY_FIELDS, identities.pop(), strict=True))
-    required = _REQUIRED_CHECKS | (
-        {"wheel_origin_sdk", "sdist_origin_sdk", "wheel_pip_check", "sdist_pip_check"}
-        if verify_artifacts else set()
-    )
-    if require_license_inventory:
-        required |= {"wheel_license_inventory", "sdist_license_inventory"}
     complete = [
         observation
         for observation in observations
-        if all(observation["checks"].get(name) == "pass" for name in required)
-        and (
-            not verify_artifacts or observation["artifact_audit"]["junit_case_sets_match"] is True
+        if _complete_observation(
+            observation, verify_artifacts=verify_artifacts, require_license_inventory=require_license_inventory,
         )
     ]
     failed = any(
@@ -173,25 +196,14 @@ def summarize(
         or (verify_artifacts and observation["artifact_audit"]["junit_case_sets_match"] is False)
         for observation in observations
     )
-    missing = sorted(_REQUIRED_SYSTEMS - {row["system"] for row in complete})
-    observed_matrix = set()
-    for row in complete:
-        match = re.match(r"^(3\.[0-9]{1,2})\.[0-9]+(?:\D|$)", row["python"])
-        if match:
-            observed_matrix.add((row["system"], match.group(1)))
-    missing_python = sorted(
-        (system, minor) for system in _REQUIRED_SYSTEMS for minor in python_minors
-        if (system, minor) not in observed_matrix
-    )
+    missing, missing_python = _platform_gaps(complete, python_minors)
     return {
         "schema_version": 1,
         "scope": "saved_local_report_observations",
         "frozen": frozen,
         "observations": observations,
         "systems_without_full_reported_checks": missing,
-        "missing_os_python_combinations": [
-            {"system": system, "python_minor": minor} for system, minor in missing_python
-        ],
+        "missing_os_python_combinations": missing_python,
         "local_matrix": (
             "failed" if failed else "incomplete" if missing or missing_python
             else "artifact_verified_pass" if verify_artifacts else "reported_pass"

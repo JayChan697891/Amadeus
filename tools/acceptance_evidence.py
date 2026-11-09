@@ -446,6 +446,25 @@ def verify_report_evidence(
         if junit_name is not None and status == "pass" and name not in cases:
             raise ValueError("Passing suite lacks verified JUnit bytes.")
     installed = _bound_installations(report, evidence)
+    if "candidate_input" in report:
+        intake = report["candidate_input"]
+        if (
+            type(intake) is not dict or set(intake) != {"manifest_sha256", "artifact_sha256"}
+            or type(intake["manifest_sha256"]) is not str
+            or _SHA256.fullmatch(intake["manifest_sha256"]) is None
+            or type(intake["artifact_sha256"]) is not dict
+            or set(intake["artifact_sha256"]) != {"wheel", "sdist"}
+        ):
+            raise ValueError("Invalid copied candidate input.")
+        pins = intake["artifact_sha256"]
+        for kind, suffix in (("wheel", ".whl"), ("sdist", ".tar.gz")):
+            names = [
+                name for name in evidence.members
+                if name.startswith("artifacts/") and name.count("/") == 1 and name.endswith(suffix)
+            ]
+            if len(names) != 1 or (kind in installed and installed[kind] != pins[kind]):
+                raise ValueError("Installed archives differ from the copied candidate input.")
+            evidence.require_digest(names[0], pins[kind])
     return {
         "manifest_members": len(evidence.members),
         "process_logs": len(logs),

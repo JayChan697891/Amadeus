@@ -178,7 +178,8 @@ def _offline_install(python: str, wheelhouse: Path, *args: str) -> list[str]:
 
 
 def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
 def redact_credentials(text: str) -> tuple[str, int]:
@@ -484,7 +485,8 @@ def _execute_check(
 
 
 def _offline_build_command(
-    repo: Path, run: Path, scratch: Path, packages: OfflinePackages, checks: list[dict]
+    repo: Path, run: Path, scratch: Path, packages: OfflinePackages, checks: list[dict],
+    *, artifact_output: Path | None = None,
 ) -> list[str] | None:
     environment = scratch / "offline-build"
     created = execute(
@@ -507,7 +509,10 @@ def _offline_build_command(
     checks.append(tools)
     if tools["status"] != "pass":
         return None
-    return [python, "-I", "-m", "build", "--no-isolation", "--outdir", str(run / "artifacts")]
+    return [
+        python, "-I", "-m", "build", "--no-isolation", "--outdir",
+        str(artifact_output if artifact_output is not None else run / "artifacts"),
+    ]
 
 
 def _installed_license_inventory(
@@ -808,6 +813,51 @@ def sdist_checks(
     return checks
 
 
+def _stage_candidate(
+    repo: Path, run: Path, version: str, candidate: tuple[Path, Path, str],
+) -> dict:
+    if __package__:
+        from .acceptance_evidence import _member_parts, _physical
+        from .release_manifest import verify_manifest
+    else:
+        from acceptance_evidence import _member_parts, _physical
+        from release_manifest import verify_manifest
+
+    manifest_path, evidence_root, checksum = candidate
+    if any(path.resolve(strict=True).drive.startswith("\\\\") for path in candidate[:2]):
+        raise ValueError("Candidate installation requires local evidence files.")
+    verified = verify_manifest(manifest_path, evidence_root, manifest_sha256=checksum)
+    frozen = {
+        "version": version, "commit_sha": git_value(repo, "rev-parse", "HEAD"),
+        "tree_sha": git_value(repo, "rev-parse", "HEAD^{tree}"),
+        "source_snapshot_sha256": sha256(run / "source-snapshot.json"),
+    }
+    if verified["frozen"] != frozen or git_value(repo, "status", "--porcelain") != "":
+        raise ValueError("Candidate archives require their matching clean frozen source.")
+
+    checked_root = evidence_root.resolve(strict=True)
+    pins = {}
+    for artifact in verified["checked_artifacts"]:
+        source, info = _physical(checked_root, _member_parts(artifact["path"]))
+        dest = run / "artifacts" / artifact["filename"]
+        remaining = artifact["size"]
+        digest = hashlib.sha256()
+        if info.st_size != remaining:
+            raise ValueError("Candidate archive changed before staging.")
+        with source.open("rb") as incoming, dest.open("xb") as staged:
+            while remaining:
+                chunk = incoming.read(min(remaining, 1024 * 1024))
+                if not chunk:
+                    raise ValueError("Candidate archive ended during staging.")
+                digest.update(chunk)
+                staged.write(chunk)
+                remaining -= len(chunk)
+            if incoming.read(1) or digest.hexdigest() != artifact["sha256"]:
+                raise ValueError("Candidate archive changed during staging.")
+        pins[artifact["kind"]] = artifact["sha256"]
+    return {"manifest_sha256": verified["manifest_sha256"], "artifact_sha256": pins}
+
+
 def collect(
     repo: Path,
     output: Path,
@@ -819,6 +869,7 @@ def collect(
     pytest_timeout: int = 900,
     offline_wheelhouse: Path | None = None,
     license_inventory: bool = False,
+    candidate: tuple[Path, Path, str] | None = None,
 ) -> Path:
     _validate_pytest_timeout(pytest_timeout)
     if sdist_install and not run_checks:
@@ -827,6 +878,10 @@ def collect(
         raise ValueError("--offline-wheelhouse requires --run")
     if license_inventory and not (run_checks and (package_install or sdist_install)):
         raise ValueError("--license-inventory requires --run and a requested distribution install")
+    if candidate is not None and not (
+        run_checks and package_install and sdist_install and offline_wheelhouse is not None
+    ):
+        raise ValueError("Candidate installs require --run, both installs and --offline-wheelhouse.")
     if offline_wheelhouse is not None and any(
         path is not None and path.drive.startswith("\\\\")
         for path in (repo, output, scratch_root)
@@ -852,6 +907,8 @@ def collect(
         options["offline_wheelhouse"] = offline_wheelhouse
     if license_inventory:
         options["license_inventory"] = True
+    if candidate is not None:
+        options["candidate"] = candidate
     with tempfile.TemporaryDirectory(prefix=".scratch-", dir=temporary_parent) as temporary:
         return _collect(
             repo.resolve(),
@@ -876,6 +933,7 @@ def _collect(
     pytest_timeout: int = 900,
     offline_wheelhouse: Path | None = None,
     license_inventory: bool = False,
+    candidate: tuple[Path, Path, str] | None = None,
 ) -> Path:
     run = output / (
         "release-" + datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
@@ -890,6 +948,10 @@ def _collect(
     (run / "working-tree.patch").write_text(safe_patch, encoding="utf-8")
     source = source_snapshot(repo)
     (run / "source-snapshot.json").write_text(json.dumps(source, indent=2), encoding="utf-8")
+    candidate_input = (
+        _stage_candidate(repo, run, project["project"]["version"], candidate)
+        if candidate is not None else None
+    )
     plan = check_plan(sys.executable, run, scratch)
     checks = []
     offline_packages = None
@@ -914,7 +976,10 @@ def _collect(
             build = (
                 None
                 if offline_packages is None
-                else _offline_build_command(repo, run, scratch, offline_packages, checks)
+                else _offline_build_command(
+                    repo, run, scratch, offline_packages, checks,
+                    **({"artifact_output": scratch / "local-rebuild"} if candidate_input else {}),
+                )
             )
             if build is None or offline_packages is None:
                 item = {"id": "build", "status": "not_run", "reason": "Offline build prerequisites failed"}
@@ -1265,6 +1330,8 @@ def _collect(
             "artifact_install": "Fresh environment with declared runtime and dev requirements preloaded from the staged wheels, then exact local artifact installation without dependency resolution",
             "network_scope": "Pip package resolution only. Trusted build, package and test code is not isolated from the operating system network.",
         }
+    if candidate_input is not None:
+        report["candidate_input"] = candidate_input
     report["artifacts"] = [
         {"path": p.relative_to(run).as_posix(), "sha256": sha256(p), "size": p.stat().st_size}
         for p in sorted(run.rglob("*"))
@@ -1403,6 +1470,9 @@ def main() -> int:
         action="store_true",
         help="Collect runtime license metadata after verifying each requested fresh install",
     )
+    parser.add_argument("--candidate-manifest", type=Path, help="Manifest for exact offline archives to install")
+    parser.add_argument("--candidate-evidence-root", type=Path, help="Local root of the manifest's archives")
+    parser.add_argument("--candidate-sha256", help="Independently trusted manifest digest")
     args = parser.parse_args()
     try:
         _validate_pytest_timeout(args.pytest_timeout)
@@ -1423,6 +1493,13 @@ def main() -> int:
         collect_options["offline_wheelhouse"] = args.offline_wheelhouse
     if args.license_inventory:
         collect_options["license_inventory"] = True
+    candidate = (args.candidate_manifest, args.candidate_evidence_root, args.candidate_sha256)
+    if any(value is not None for value in candidate):
+        if any(value is None for value in candidate):
+            parser.error("Candidate installs require the manifest, evidence root and trusted SHA-256.")
+        if not (args.run and args.package_install and args.sdist_install and args.offline_wheelhouse):
+            parser.error("Candidate installs require --run, both installs and --offline-wheelhouse.")
+        collect_options["candidate"] = candidate
     run = collect(
         Path(__file__).resolve().parents[1],
         args.output.resolve(),
