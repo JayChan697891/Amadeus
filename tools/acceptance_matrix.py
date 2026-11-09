@@ -20,6 +20,15 @@ _REQUIRED_CHECKS = _SUITES | {
 _IDENTITY_FIELDS = ("version", "commit_sha", "tree_sha", "source_snapshot_sha256")
 
 
+def matrix_digest(matrix: dict[str, Any]) -> str:
+    observations = sorted(matrix["observations"], key=lambda row: row["report_sha256"])
+    document = matrix | {"observations": observations}
+    canonical = json.dumps(
+        document, ensure_ascii=True, sort_keys=True, separators=(",", ":"), allow_nan=False
+    )
+    return hashlib.sha256(canonical.encode("ascii")).hexdigest()
+
+
 def _read_report(
     path: Path, *, decoder: Callable[[bytes], Any] | None = None
 ) -> tuple[dict[str, Any], str]:

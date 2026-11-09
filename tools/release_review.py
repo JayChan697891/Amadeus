@@ -18,10 +18,12 @@ from typing import Any
 
 if __package__:
     from .acceptance_evidence import _Evidence, read_json
-    from .acceptance_matrix import summarize
+    from .acceptance_matrix import matrix_digest, summarize
+    from .release_manifest import verify_manifest
 else:
     from acceptance_evidence import _Evidence, read_json
-    from acceptance_matrix import summarize
+    from acceptance_matrix import matrix_digest, summarize
+    from release_manifest import verify_manifest
 
 _LIMIT = 4 * 1024 * 1024
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,99}")
@@ -42,16 +44,6 @@ _REQUIRED_KINDS = {
     "M9-01": {"cross_platform"},
     "M9-02": {"package", "license"},
 }
-
-
-def _digest(value: Any) -> str:
-    canonical = json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":"), allow_nan=False)
-    return hashlib.sha256(canonical.encode("ascii")).hexdigest()
-
-
-def _matrix_digest(matrix: dict[str, Any]) -> str:
-    observations = sorted(matrix["observations"], key=lambda row: row["report_sha256"])
-    return _digest(matrix | {"observations": observations})
 
 
 def _read(path: Path) -> tuple[dict[str, Any], str]:
@@ -142,7 +134,7 @@ def prepare(
         "commit_sha": commit,
         "version": matrix["frozen"]["version"],
         "requirements_sha256": manifest_sha,
-        "matrix_sha256": _matrix_digest(matrix),
+        "matrix_sha256": matrix_digest(matrix),
         "reviewer_id": reviewer_id,
         "independence_declared": False,
         "evidence": [],
@@ -151,6 +143,30 @@ def prepare(
             for identity in labels
         ],
     }
+
+
+def _bind_candidate(
+    matrix: dict[str, Any], digest: str, evidence_root: Path, path: Path, manifest_sha256: str
+) -> dict[str, Any]:
+    candidate = verify_manifest(path, evidence_root, manifest_sha256=manifest_sha256)
+    if (
+        matrix["git_source_audit"] is None or candidate["frozen"] != matrix["frozen"]
+        or candidate["matrix_sha256"] != digest or candidate["local_matrix"] != matrix["local_matrix"]
+    ):
+        raise ValueError("Release candidate describes a different frozen matrix.")
+    build = candidate["build_report"]
+    observation = next(
+        (row for row in matrix["observations"] if row["report_sha256"] == build["sha256"]), None
+    )
+    pins = {item["kind"]: item["sha256"] for item in candidate["checked_artifacts"]}
+    if (
+        observation is None or observation["system"] != build["system"]
+        or observation["checks"].get("build") != "pass"
+        or observation["artifact_audit"]["installed_artifact_sha256"] != pins
+        or any(observation["checks"].get(kind + "_origin_sdk") != "pass" for kind in pins)
+    ):
+        raise ValueError("Release candidate archives differ from the reviewed build.")
+    return candidate | {"build_report_verified_in_matrix": True}
 
 
 def assemble(
@@ -162,8 +178,13 @@ def assemble(
     *,
     python_minors: tuple[str, ...] = ("3.11", "3.12", "3.14"),
     source_repo: Path | None = None,
+    candidate_manifest: Path | None = None,
+    candidate_sha256: str | None = None,
 ) -> dict[str, Any]:
+    if (candidate_manifest is None) != (candidate_sha256 is None):
+        raise ValueError("Candidate manifest and its trusted SHA-256 are required together.")
     matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
+    digest = matrix_digest(matrix)
     review, review_sha = _read(review_path)
     if set(review) != {
         "schema_version", "commit_sha", "version", "requirements_sha256", "matrix_sha256",
@@ -173,7 +194,7 @@ def assemble(
     if (
         type(review["schema_version"]) is not int or review["schema_version"] != 1
         or review["commit_sha"] != commit or review["version"] != matrix["frozen"]["version"]
-        or review["requirements_sha256"] != manifest_sha or review["matrix_sha256"] != _matrix_digest(matrix)
+        or review["requirements_sha256"] != manifest_sha or review["matrix_sha256"] != digest
         or type(review["reviewer_id"]) is not str or not _IDENTIFIER.fullmatch(review["reviewer_id"])
         or type(review["independence_declared"]) is not bool
     ):
@@ -216,7 +237,7 @@ def assemble(
         counts["passed"] == len(cases) and matrix["local_matrix"] == "artifact_verified_pass"
         and matrix["git_source_audit"] is not None
     )
-    return {
+    packet = {
         "schema_version": 1,
         "scope": "evidence_packet_for_independent_release_decision",
         "frozen": matrix["frozen"],
@@ -224,7 +245,7 @@ def assemble(
         "review_sha256": review_sha,
         "reviewer_declared": review["reviewer_id"],
         "reviewer_authenticated": False,
-        "matrix_sha256": _matrix_digest(matrix),
+        "matrix_sha256": digest,
         "local_matrix": matrix["local_matrix"],
         "git_source_audit": matrix["git_source_audit"],
         "missing_os_python_combinations": matrix["missing_os_python_combinations"],
@@ -235,6 +256,11 @@ def assemble(
         "formal_release_acceptance": "blocked",
         "publication_authorized": False,
     }
+    if candidate_manifest is not None and candidate_sha256 is not None:
+        packet["release_candidate"] = _bind_candidate(
+            matrix, digest, evidence_root, candidate_manifest, candidate_sha256
+        )
+    return packet
 
 
 def _cell(value: str) -> str:
@@ -269,6 +295,18 @@ def render_markdown(packet: dict[str, Any]) -> str:
         "| --- | ---: |",
     ]
     lines.extend(f"| `{status}` | {packet['declared_status_counts'][status]} |" for status in _STATUSES)
+    candidate = packet.get("release_candidate")
+    if candidate is not None:
+        lines.extend([
+            "", "## Bound release archives", "",
+            f"Manifest SHA-256 `{candidate['manifest_sha256']}`", "",
+            "| Kind | Relative path | Bytes | SHA-256 |", "| --- | --- | ---: | --- |",
+        ])
+        for artifact in candidate["checked_artifacts"]:
+            lines.append(
+                f"| `{artifact['kind']}` | {_cell(artifact['path'])} | "
+                f"{artifact['size']} | `{artifact['sha256']}` |"
+            )
     missing = packet["missing_os_python_combinations"]
     if missing:
         lines.extend(["", "## OS and Python combinations without complete evidence", ""])
@@ -306,6 +344,8 @@ def main() -> int:
     mode.add_argument("--review", type=Path)
     mode.add_argument("--prepare", metavar="REVIEWER_ID")
     parser.add_argument("--evidence-root", type=Path)
+    parser.add_argument("--candidate-manifest", type=Path)
+    parser.add_argument("--candidate-sha256", help="Independently trusted manifest SHA-256")
     parser.add_argument("--require-python", action="append")
     parser.add_argument("--format", choices=("json", "markdown"), default="json")
     parser.add_argument("report", type=Path, nargs="+")
@@ -314,6 +354,10 @@ def main() -> int:
         parser.error("--review requires --evidence-root")
     if args.prepare is not None and args.format != "json":
         parser.error("--prepare emits the JSON decision template")
+    if (args.candidate_manifest is None) != (args.candidate_sha256 is None):
+        parser.error("--candidate-manifest and --candidate-sha256 are required together")
+    if args.candidate_manifest is not None and (args.review is None or args.source_repo is None):
+        parser.error("candidate binding requires --review and --source-repo")
     minors = tuple(args.require_python or ("3.11", "3.12", "3.14"))
     try:
         if args.prepare is not None:
@@ -325,6 +369,7 @@ def main() -> int:
             packet = assemble(
                 args.requirements, args.review, args.evidence_root, args.report, args.commit,
                 python_minors=minors, source_repo=args.source_repo,
+                candidate_manifest=args.candidate_manifest, candidate_sha256=args.candidate_sha256,
             )
     except (AttributeError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid or inconsistent release review inputs.\n")

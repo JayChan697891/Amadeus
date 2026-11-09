@@ -12,13 +12,11 @@ from typing import TYPE_CHECKING, Any
 if __package__:
     from .acceptance_evidence import _SHA256, _Evidence, _member_parts, _physical, read_json
     from .acceptance_git_source import _output
-    from .acceptance_matrix import _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, summarize
-    from .release_review import _matrix_digest
+    from .acceptance_matrix import _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize
 else:
     from acceptance_evidence import _SHA256, _Evidence, _member_parts, _physical, read_json
     from acceptance_git_source import _output
-    from acceptance_matrix import _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, summarize
-    from release_review import _matrix_digest
+    from acceptance_matrix import _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize
 
 if TYPE_CHECKING:
     from packaging.version import Version
@@ -115,7 +113,7 @@ def build_manifest(
         "frozen": frozen,
         "build_report": {"path": artifact_report, "sha256": digest, "system": observation["system"]},
         "artifacts": artifacts,
-        "matrix_sha256": _matrix_digest(matrix),
+        "matrix_sha256": matrix_digest(matrix),
         "local_matrix": matrix["local_matrix"],
         "producer_authenticated": False,
         "formal_release_acceptance": "blocked",
@@ -205,7 +203,10 @@ def verify_manifest(
         "scope": "local_release_artifact_manifest_verification",
         "manifest_sha256": manifest_sha256,
         "frozen": frozen,
-        "checked_artifacts": sorted(pins, key=lambda pin: pin["path"]),
+        "matrix_sha256": manifest["matrix_sha256"],
+        "local_matrix": manifest["local_matrix"],
+        "build_report": build_report,
+        "checked_artifacts": sorted(artifacts, key=lambda artifact: artifact["kind"]),
         "artifact_bytes_verified": True,
         "build_report_bytes_verified": False,
         "producer_authenticated": False,
