@@ -155,7 +155,9 @@ class RelayQueue:
         if type(relay) is not ControlledRelay:
             _invalid()
         self._relay = relay
+        relay._receipt_store.check()
         self._journal = RelayWaveJournal(relay._receipts)
+        relay._receipt_store.check()
 
     @staticmethod
     def _key(actor: RelayActor, request_id: str) -> str:

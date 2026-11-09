@@ -10,9 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
-import json
 import re
-import stat
 import time
 from contextlib import suppress
 from dataclasses import dataclass, field
@@ -24,7 +22,6 @@ from agentsync.adapters.approved_launch import (
     HostProfile,
     LaunchAuthority,
     LaunchReview,
-    _exclusive_receipt,
     client_kind,
     digest,
     prepare_launch_review,
@@ -33,6 +30,7 @@ from agentsync.adapters.base import AdapterTask, _bounded_text, _identifier
 from agentsync.adapters.claude import ClaudeAdapter
 from agentsync.adapters.codex import CodexAdapter, CodexResult
 from agentsync.adapters.cursor import CursorAdapter
+from agentsync.adapters.host_receipts import _ReceiptDirectory
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 
@@ -166,6 +164,7 @@ class ControlledRelay:
             or not core.data_dir.resolve().is_relative_to(self._scratch)
         ):
             _reject()
+        self._receipt_store = _ReceiptDirectory(self._receipts)
 
     def _call(self, actor: RelayActor, operation: str, **payload: Any) -> dict[str, Any]:
         return self._core.execute(operation, {
@@ -212,32 +211,21 @@ class ControlledRelay:
             _reject()
         return view
 
-    def _receipt(self, key: str, stage: str) -> Path:
-        return self._receipts / f"relay-{key}-{stage}.json"
+    @staticmethod
+    def _receipt_name(key: str, stage: str) -> str:
+        return f"relay-{key}-{stage}.json"
 
     def _record(self, key: str, stage: str, **detail: object) -> None:
-        _exclusive_receipt(self._receipt(key, stage), {"stage": stage, "time": time.time(), **detail})
+        self._receipt_store.write(self._receipt_name(key, stage), {"stage": stage, "time": time.time(), **detail})
 
     def _key(self, actor: RelayActor, task_id: str) -> str:
         return digest([actor.profile.project_id, task_id])
 
     def _read_receipt(self, key: str, stage: str) -> dict[str, Any] | None:
-        path = self._receipt(key, stage)
-        try:
-            info = path.lstat()
-        except FileNotFoundError:
+        receipt = self._receipt_store.read(self._receipt_name(key, stage))
+        if receipt is None:
             return None
-        if not stat.S_ISREG(info.st_mode) or not 1 <= info.st_size <= 4096:
-            return {}
-        try:
-            with path.open("rb") as file:
-                raw = file.read(4097)
-            if len(raw) > 4096:
-                return {}
-            receipt = json.loads(raw)
-        except (OSError, ValueError, RecursionError):
-            return {}
-        return receipt if type(receipt) is dict and receipt.get("stage") == stage else {}
+        return receipt if receipt.get("stage") == stage else {}
 
     def observe(self, actor: RelayActor, task_id: str) -> RelayOutcome:
         """Authenticate before observing a receipt, including after host restart."""
@@ -460,7 +448,7 @@ class ControlledRelay:
 
         factory = ApprovedLaunchFactory(
             actor.profile, environment=actor.environment, receipts=self._receipts,
-            authority=actor.authority, revalidate=renew,
+            authority=actor.authority, revalidate=renew, _receipt_store=self._receipt_store,
         )
         adapter: _ActorAdapter
         namespace = (task.project_id, task.session_id)

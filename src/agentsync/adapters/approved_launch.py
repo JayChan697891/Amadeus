@@ -10,7 +10,6 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
-import os
 import time
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field, replace
@@ -19,6 +18,7 @@ from typing import Literal
 
 from agentsync.adapters import claude_invocation, codex_invocation, cursor_invocation
 from agentsync.adapters.base import AdapterTask, _identifier
+from agentsync.adapters.host_receipts import _ReceiptDirectory
 from agentsync.adapters.launch_context import LaunchContext
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.errors import AgentSyncError
@@ -107,19 +107,6 @@ def _consent_is_current(consent: LaunchConsent | None, review: LaunchReview) -> 
     )
 
 
-def _exclusive_receipt(path: Path, data: dict[str, object]) -> None:
-    """The private receipt remains a fence even if its write is interrupted."""
-    try:
-        with path.open("x", encoding="ascii", newline="\n") as file:
-            json.dump(data, file, ensure_ascii=True)
-            file.flush()
-            os.fsync(file.fileno())
-    except FileExistsError:
-        raise AgentSyncError("attempt_already_reserved", "An attempt is already reserved.", 409) from None
-    except OSError:
-        raise AgentSyncError("receipt_unavailable", "Could not reserve the attempt receipt.", 409) from None
-
-
 class ApprovedLaunchFactory:
     """Use one exact prepared invocation and consume a host grant before capture.
 
@@ -137,6 +124,7 @@ class ApprovedLaunchFactory:
         receipts: Path,
         authority: LaunchAuthority,
         revalidate: Callable[[AdapterTask], None],
+        _receipt_store: _ReceiptDirectory | None = None,
     ) -> None:
         self.client = client_kind(profile)
         if type(environment) is not dict or not callable(authority) or not callable(revalidate):
@@ -145,7 +133,11 @@ class ApprovedLaunchFactory:
             raise AgentSyncError("validation_error", "An existing private receipt directory is required.")
         self._profile = replace(profile)
         self._environment = dict(environment)
-        self._receipts = receipts.resolve(strict=True)
+        root = receipts.resolve(strict=True)
+        if _receipt_store is not None and (type(_receipt_store) is not _ReceiptDirectory or _receipt_store.root != root):
+            raise AgentSyncError("validation_error", "The shared private receipt directory must match.")
+        self._receipt_store = _receipt_store if _receipt_store is not None else _ReceiptDirectory(root)
+        self._receipt_store.check()
         self._authority = authority
         self._revalidate = revalidate
 
@@ -174,9 +166,10 @@ class ApprovedLaunchFactory:
             raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
         receipt: dict[str, object] = {"plan_sha256": review.plan_sha256, "client": self.client}
         request_key = digest([task.project_id, task.session_id, task.task_id, task.request_id])
-        _exclusive_receipt(self._receipts / f"launch-{request_key}.json", receipt)
-        _exclusive_receipt(self._receipts / f"consent-{digest(consent.approval_id)}.json", receipt)
+        self._receipt_store.write(f"launch-{request_key}.json", receipt)
+        self._receipt_store.write(f"consent-{digest(consent.approval_id)}.json", receipt)
         self._revalidate(task)
+        self._receipt_store.check()
         if not _consent_is_current(consent, review):
             raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
         return await context.start(
