@@ -17,7 +17,7 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Literal, NoReturn
 
-from agentsync.adapters.approved_launch import digest
+from agentsync.adapters.approved_launch import ClientKind, client_kind, digest
 from agentsync.adapters.base import _identifier
 from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
 from agentsync.errors import AgentSyncError
@@ -91,6 +91,8 @@ class RelayPreviewTask:
     expected_version: int
     first_agent_id: str
     second_agent_id: str
+    first_client: ClientKind
+    second_client: ClientKind
 
 
 @dataclass(frozen=True, slots=True)
@@ -132,7 +134,8 @@ def _selection_pin(selected: tuple[RelayQueueItem, ...]) -> str:
                 item.task.context_version, item.task.context_sha256, item.task.timeout_seconds,
                 [
                     [actor.profile.project_id, actor.profile.session_id, actor.agent_id,
-                     actor.worktree_id, actor.expected_head]
+                     actor.worktree_id, actor.expected_head, client_kind(actor.profile),
+                     actor.profile.expected_cli_version, actor.profile.expected_binary_sha256]
                     for actor in (item.first, item.second)
                 ],
                 item.first_capabilities, item.second_capabilities,
@@ -145,6 +148,8 @@ def _selection_pin(selected: tuple[RelayQueueItem, ...]) -> str:
 class RelayQueue:
     """Select ready tasks by Core priority, with one task per participant.
 
+    A task may offer up to four prepared pairs with identical inputs and role
+    requirements. Equal-priority alternatives are considered in supplied order.
     Capacity is local to this runner. The observed Core ownership count is a
     scheduling input, not a lock on unrelated clients. The host must coordinate
     any use of the underlying relay outside this queue. This API never reviews
@@ -180,11 +185,22 @@ class RelayQueue:
             _invalid()
         items = tuple(replace(item) for item in items)
         project_id = items[0].first.profile.project_id
-        if (
-            len({item.task.task_id for item in items}) != len(items)
-            or any(item.first.profile.project_id != project_id for item in items)
-        ):
-            _invalid()
+        specifications: dict[str, RelayQueueItem] = {}
+        alternatives: dict[str, set[tuple[str, str]]] = {}
+        for item in items:
+            if item.first.profile.project_id != project_id:
+                _invalid()
+            task_id = item.task.task_id
+            first_option = specifications.setdefault(task_id, item)
+            pairs = alternatives.setdefault(task_id, set())
+            pair = item.first.agent_id, item.second.agent_id
+            if (
+                item.task != first_option.task or item.first_capabilities != first_option.first_capabilities
+                or item.second_capabilities != first_option.second_capabilities
+                or pair in pairs or len(pairs) >= 4
+            ):
+                _invalid()
+            pairs.add(pair)
         return items
 
     def _legacy_fence(self, project_id: str) -> bool:
@@ -208,7 +224,7 @@ class RelayQueue:
         """Preview the scheduler's current selection without reserving work or invoking a client."""
         items = self._validate_items(items, parallel_limit)
         actor = items[0].first
-        project_key, snapshot = self._owner_project(actor, admin_token)
+        project_key, snapshot = self._owner_candidate_snapshot(items, admin_token)
         if self._fenced(actor.profile.project_id, project_key):
             return RelayQueuePreview("fenced")
         selected = self._select(items, snapshot, parallel_limit)
@@ -217,7 +233,8 @@ class RelayQueue:
             return RelayQueuePreview("no_ready_tasks")
         tasks = tuple(
             RelayPreviewTask(
-                item.task.task_id, item.task.expected_version, item.first.agent_id, item.second.agent_id
+                item.task.task_id, item.task.expected_version, item.first.agent_id, item.second.agent_id,
+                client_kind(item.first.profile), client_kind(item.second.profile),
             )
             for item in selected
         )
@@ -306,6 +323,27 @@ class RelayQueue:
         self._relay._check_receipt_anchor(project_id)
         return digest(project_id), snapshot
 
+    def _owner_candidate_snapshot(
+        self, items: tuple[RelayQueueItem, ...], admin_token: str,
+    ) -> tuple[str, dict[str, Any]]:
+        first = items[0].first
+        self._relay._authorize_owner(first, admin_token)
+        project = first.profile.project_id
+        self._relay._check_receipt_anchor(project)
+        seen: set[str] = set()
+        for item in items:
+            for actor in (item.first, item.second):
+                session_id = actor.profile.session_id
+                if session_id in seen:
+                    continue
+                seen.add(session_id)
+                try:
+                    return digest(project), self._relay._project_state(actor)
+                except AgentSyncError as error:
+                    if error.code != "session_expired":
+                        raise
+        raise AgentSyncError("session_expired", "No prepared relay session remains valid.", 401)
+
     def _reconcile_open(
         self, actor: RelayActor, project_key: str, key: str, saved: tuple[str, Any, Any],
     ) -> RelayQueueOutcome:
@@ -375,11 +413,11 @@ class RelayQueue:
             if not set(item.second_capabilities) <= capabilities[item.second.agent_id]:
                 continue
             if item.first.agent_id not in ready:
-                scoped = tuple(
+                scoped = tuple(dict.fromkeys(
                     candidate.task.task_id for candidate in items
                     if candidate.first.agent_id == item.first.agent_id
                     and candidate.task.task_id in tasks
-                )
+                ))
                 plan = plan_tasks(
                     {"tasks": snapshot["tasks"]}, project_id=project_id,
                     agent_id=item.first.agent_id, now=now, limit=100,
@@ -395,22 +433,38 @@ class RelayQueue:
             tasks[item.task.task_id]["created_at"],
             item.task.task_id,
         ))
-        selected: list[RelayQueueItem] = []
-        roots: list[Path] = []
+        grouped: dict[str, list[RelayQueueItem]] = {}
         for item in eligible:
-            if len(selected) >= budget:
-                break
-            participants = {item.first.agent_id, item.second.agent_id}
-            if participants & busy or any(
-                root.is_relative_to(previous) or previous.is_relative_to(root)
-                for root in _roots(item)
-                for previous in roots
-            ):
-                continue
-            selected.append(item)
-            busy.update(participants)
-            roots.extend(_roots(item))
-        return tuple(selected)
+            grouped.setdefault(item.task.task_id, []).append(item)
+        groups = tuple(grouped.values())
+
+        def select_pairs(
+            start: int, slots: int, occupied: set[str], roots: tuple[Path, ...],
+        ) -> tuple[tuple[int, ...], tuple[RelayQueueItem, ...]]:
+            if not slots:
+                return (), ()
+            for index in range(start, len(groups)):
+                best_rank: tuple[int, ...] | None = None
+                best: tuple[tuple[int, ...], tuple[RelayQueueItem, ...]] = ((), ())
+                for item in groups[index]:
+                    participants = {item.first.agent_id, item.second.agent_id}
+                    pair_roots = _roots(item)
+                    if participants & occupied or any(
+                        root.is_relative_to(previous) or previous.is_relative_to(root)
+                        for root in pair_roots for previous in roots
+                    ):
+                        continue
+                    tail_ranks, tail = select_pairs(index + 1, slots - 1, occupied | participants, roots + pair_roots)
+                    ranks = (index, *tail_ranks)
+                    # Keep task priority first, then prefer filling earlier remaining slots.
+                    padded = ranks + (len(groups),) * (slots - len(ranks))
+                    if best_rank is None or padded < best_rank:
+                        best_rank, best = padded, (ranks, (item, *tail))
+                if best_rank is not None:
+                    return best
+            return (), ()
+
+        return select_pairs(0, budget, busy, ())[1]
 
     async def run_ready_once(
         self, items: tuple[RelayQueueItem, ...], *, request_id: str, admin_token: str,
@@ -426,7 +480,7 @@ class RelayQueue:
         actor = items[0].first
         project_id = actor.profile.project_id
         key = self._key(actor, request_id)
-        project_key, snapshot = self._owner_project(actor, admin_token)
+        project_key, snapshot = self._owner_candidate_snapshot(items, admin_token)
         if (
             self._journal.get(project_key, key) is not None
             or self._relay._read_receipt(key, "wave-admitted") is not None
