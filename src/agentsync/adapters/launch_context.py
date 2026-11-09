@@ -8,12 +8,15 @@ the issuing event loop alive for the adapter's existing late-parent cleanup.
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from pathlib import Path
+from typing import TypeVar
 
 from agentsync.adapters.base import AdapterTask
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.errors import AgentSyncError
+
+_T = TypeVar("_T")
 
 
 class _LaunchBlocked(AgentSyncError):
@@ -55,6 +58,23 @@ class LaunchContext:
             raise _LaunchBlocked()
         if self._loop.time() >= self._deadline:
             raise _LaunchBlocked(expired=True)
+
+    async def wait_before_start(self, task: AdapterTask, wait: Callable[[], Awaitable[_T]]) -> _T:
+        """Bound a cooperative host wait by the same deadline as process admission."""
+        self.check(task)
+        deadline = asyncio.timeout_at(self._deadline)
+        try:
+            async with deadline:
+                value = await wait()
+        except TimeoutError:
+            if deadline.expired():
+                raise _LaunchBlocked(expired=True) from None
+            raise
+        if deadline.expired():
+            # Even a callback that handled its cancellation cannot supply a late grant.
+            raise _LaunchBlocked(expired=True)
+        self.check(task)
+        return value
 
     async def start(
         self,

@@ -159,19 +159,19 @@ class ApprovedLaunchFactory:
         if type(context) is not LaunchContext:
             raise AgentSyncError("validation_error", "Adapter-issued launch context required.")
         context.check(task)
-        review = await asyncio.to_thread(self._review, task)
+        review = await context.wait_before_start(task, lambda: asyncio.to_thread(self._review, task))
         plan = review.plan
         child_env = plan.child_env()
-        context.check(task)
-        consent = await self._authority(review)
+        consent = await context.wait_before_start(task, lambda: self._authority(review))
         if consent is None or not _consent_is_current(consent, review):
             raise AgentSyncError("launch_not_authorized", "The exact client launch is not authorized.", 403)
         _identifier(consent.approval_id)
-        context.check(task)
         # Hash the binary and resolve the configured paths again after approval.
-        if await asyncio.to_thread(self._prepare, task) != plan:
+        fresh = await context.wait_before_start(task, lambda: asyncio.to_thread(self._prepare, task))
+        if fresh != plan:
             raise AgentSyncError("launch_plan_changed", "The approved client plan changed.", 409)
-        context.check(task)
+        if not _consent_is_current(consent, review):
+            raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
         receipt: dict[str, object] = {"plan_sha256": review.plan_sha256, "client": self.client}
         request_key = digest([task.project_id, task.session_id, task.task_id, task.request_id])
         _exclusive_receipt(self._receipts / f"launch-{request_key}.json", receipt)
