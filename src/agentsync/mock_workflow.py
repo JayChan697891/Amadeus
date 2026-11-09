@@ -22,6 +22,7 @@ from agentsync.adapters import AdapterTask
 from agentsync.core.service import Core
 from agentsync.dispatch_planning import plan_dispatches
 from agentsync.mock_run_manager import MockRunManager, MockWorker
+from agentsync.retry_planning import RetryPolicy, plan_retry
 
 _MARKER = "simulation_only/unverified"
 
@@ -40,6 +41,7 @@ class MockWorkflowTask:
     dependencies: tuple[str, ...] = ()
     fail_first_attempt: bool = False
     handoff_on_success: bool = False
+    first_retry_after_seconds: int | None = None
 
     def __post_init__(self) -> None:
         if (
@@ -55,6 +57,11 @@ class MockWorkflowTask:
             or self.label in self.dependencies
             or type(self.fail_first_attempt) is not bool
             or type(self.handoff_on_success) is not bool
+            or (self.first_retry_after_seconds is not None and (
+                type(self.first_retry_after_seconds) is not int
+                or not 0 <= self.first_retry_after_seconds <= 3600
+                or self.fail_first_attempt
+            ))
         ):
             raise ValueError("Invalid mock workflow task.")
 
@@ -296,6 +303,10 @@ async def _run(
         )
         requirements[tasks[label]["id"]] = (definition.capability,)
     fail_first = {definition.label for definition in scenario if definition.fail_first_attempt}
+    rate_limits = {
+        definition.label: definition.first_retry_after_seconds
+        for definition in scenario if definition.first_retry_after_seconds is not None
+    }
     transfer_tasks = {
         definition.label: definition.capability
         for definition in scenario
@@ -315,7 +326,8 @@ async def _run(
     attempts = dict.fromkeys(tasks, 0)
     owned: dict[str, _Owned] = {}
     active: dict[str, tuple[str, int]] = {}
-    retries: list[str] = []
+    retries: dict[str, float] = {}
+    virtual_seconds = 0.0
     trace: list[dict[str, Any]] = []
     reviews = []
     transfers: dict[str, tuple[int, int]] = {}
@@ -415,10 +427,14 @@ async def _run(
             if remaining == 0:
                 stop_reason = "attempt_budget_exhausted"
                 break
+            eligible_retries = [
+                label for label, ready_at in retries.items() if ready_at <= virtual_seconds
+            ][:min(remaining, parallel_limit)]
             batch: list[tuple[str, int, int | None]] = [
-                (label, owned[label].worker, None) for label in retries[:remaining]
+                (label, owned[label].worker, None) for label in eligible_retries
             ]
-            retries = retries[len(batch) :]
+            for label in eligible_retries:
+                del retries[label]
             fresh_budget = remaining - len(batch)
             if fresh_budget:
                 plan = plan_dispatches(
@@ -436,6 +452,10 @@ async def _run(
                     for item in plan.dispatches
                 )
             if not batch:
+                if retries:
+                    virtual_seconds = min(retries.values())
+                    trace.append({"event": "retry_clock_advanced", "virtual_seconds": virtual_seconds})
+                    continue
                 raise RuntimeError("Owned mock workflow unexpectedly has no eligible work.")
             # All starts in this bounded batch precede every simulated finish.
             for label, worker, version in batch:
@@ -488,7 +508,8 @@ async def _run(
             for run_id, (label, worker) in list(active.items()):
                 if expired():
                     break
-                failed = label in fail_first and attempts[label] == 1
+                retry_after = rate_limits.get(label) if attempts[label] == 1 else None
+                failed = attempts[label] == 1 and (label in fail_first or retry_after is not None)
                 ended = await manager.finish_mock_run(run_id, output=_MARKER, failed=failed)
                 result = await manager.get_result(run_id)
                 if result.result.run != ended.run or result.result.output != _MARKER:
@@ -507,10 +528,30 @@ async def _run(
                 if expired():
                     break
                 if failed:
-                    if attempts[label] >= max_attempts:
-                        stop_reason = "per_task_attempts_exhausted"
+                    if retry_after is None:
+                        if attempts[label] >= max_attempts:
+                            stop_reason = "per_task_attempts_exhausted"
+                        else:
+                            retries[label] = virtual_seconds
                     else:
-                        retries.append(label)
+                        decision = plan_retry(
+                            RetryPolicy(max_attempts=max_attempts), attempts_used=attempts[label],
+                            failure_kind="rate_limited", outcome_confirmed=True, now=virtual_seconds,
+                            retry_after_seconds=retry_after,
+                            remaining_attempt_budget=budget - sum(attempts.values()),
+                        )
+                        if decision.retry_at is None:
+                            stop_reason = (
+                                "per_task_attempts_exhausted"
+                                if decision.reason == "attempts_exhausted" else decision.reason
+                            )
+                        else:
+                            retries[label] = decision.retry_at
+                        trace.append({
+                            "event": "simulated_rate_limit", "task": label,
+                            "retry_after_seconds": retry_after, "retry_at_virtual_seconds": decision.retry_at,
+                            "decision": decision.state, "reason": decision.reason,
+                        })
                     continue
                 if label in transfer_tasks and label not in transfers:
                     if attempts[label] >= max_attempts:
