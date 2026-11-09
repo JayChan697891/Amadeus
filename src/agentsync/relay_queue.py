@@ -63,6 +63,8 @@ class RelayQueueItem:
 
 @dataclass(frozen=True, slots=True)
 class RelayQueueResult:
+    """Historical per-wave result; a submitted task may have been reviewed since."""
+
     task_id: str
     state: TaskState
 
@@ -215,7 +217,8 @@ class RelayQueue:
         """Recover only a wave whose same-wave terminal receipts all survived.
 
         This never restarts a client or frees a fence based on a missing receipt.
-        A submitted task must still match the Core version in its review receipt.
+        A submission must match its recorded Core version or the exact next
+        version with an accepted review from a third identity.
         """
         key = self._key(actor, request_id)
         project_key, _ = self._owner_project(actor, admin_token)
@@ -264,11 +267,9 @@ class RelayQueue:
     def _owner_project(self, actor: RelayActor, admin_token: str) -> tuple[str, dict[str, Any]]:
         if type(actor) is not RelayActor:
             _invalid()
+        self._relay._authorize_owner(actor, admin_token)
         snapshot = self._relay._project_state(actor)
         project_id = actor.profile.project_id
-        self._relay._core.execute_owner(
-            "list_members", {"project_id": project_id, "admin_token": admin_token, "limit": 1}
-        )
         return digest(project_id), snapshot
 
     def _reconcile_admitted(
@@ -279,16 +280,8 @@ class RelayQueue:
             return RelayQueueOutcome("incomplete")
         results: list[dict[str, str]] = []
         for task_id in task_ids:
-            state = self._relay.observe(actor, task_id).state
-            if state not in ("ready_for_review", "conflict"):
-                return RelayQueueOutcome("incomplete")
-            task_key = self._relay._key(actor, task_id)
-            admitted = self._relay._read_receipt(task_key, "incomplete")
-            terminal = self._relay._read_receipt(task_key, state)
-            if (
-                not admitted or not terminal
-                or admitted.get("wave_sha256") != key or terminal.get("wave_sha256") != key
-            ):
+            state = self._relay._wave_terminal_state(actor, task_id, key)
+            if state is None:
                 return RelayQueueOutcome("incomplete")
             results.append({"task_id": task_id, "state": state})
         self._journal.record(project_key, key, incomplete=False, results=results)
@@ -382,15 +375,15 @@ class RelayQueue:
         return tuple(selected)
 
     async def run_ready_once(
-        self, items: tuple[RelayQueueItem, ...], *, request_id: str, parallel_limit: int = 1
+        self, items: tuple[RelayQueueItem, ...], *, request_id: str, admin_token: str,
+        parallel_limit: int = 1,
     ) -> RelayQueueOutcome:
         """Run at most one wave. Later dependencies wait for Core completion."""
         items = self._validate_items(items, parallel_limit)
         actor = items[0].first
         project_id = actor.profile.project_id
         key = self._key(actor, request_id)
-        snapshot = self._relay._project_state(actor)
-        project_key = digest(project_id)
+        project_key, snapshot = self._owner_project(actor, admin_token)
         if (
             self._journal.get(project_key, key) is not None
             or self._relay._read_receipt(key, "wave-admitted") is not None
@@ -406,7 +399,9 @@ class RelayQueue:
 
         async def run(item: RelayQueueItem) -> RelayQueueResult:
             try:
-                outcome = await self._relay.run_once(item.first, item.second, item.task, _wave_key=key)
+                outcome = await self._relay.run_once(
+                    item.first, item.second, item.task, admin_token=admin_token, _wave_key=key,
+                )
             except Exception:
                 return RelayQueueResult(item.task.task_id, "incomplete")
             if outcome.state == "ready_for_review":

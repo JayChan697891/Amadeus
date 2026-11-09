@@ -255,6 +255,43 @@ class ControlledRelay:
             return RelayOutcome("incomplete")
         return RelayOutcome("not_started")
 
+    def _wave_terminal_state(
+        self, actor: RelayActor, task_id: str, wave_key: str,
+    ) -> Literal["ready_for_review", "conflict"] | None:
+        """Bind historical submission or conflict to the same durable wave."""
+        task = self._state(actor, task_id)
+        key = self._key(actor, task_id)
+        admission = self._read_receipt(key, "incomplete")
+        if not admission or admission.get("wave_sha256") != wave_key:
+            return None
+        ready = self._read_receipt(key, "ready_for_review")
+        conflict = self._read_receipt(key, "conflict")
+        if ready is None and conflict and conflict.get("wave_sha256") == wave_key:
+            return "conflict"
+        if not ready or conflict is not None or ready.get("wave_sha256") != wave_key:
+            return None
+        version = ready.get("task_version")
+        if type(version) is not int or task["result"] != _REVIEW_MARKER:
+            return None
+        if task["status"] == "review" and task["version"] == version:
+            return "ready_for_review"
+        if task["status"] != "completed" or task["version"] != version + 1:
+            return None
+        review = task["latest_review"]
+        sender = _matched_text(ready.get("sender_sha256"), r"[0-9a-f]{64}")
+        recipient = _matched_text(ready.get("recipient_sha256"), r"[0-9a-f]{64}")
+        if (
+            type(review) is not dict or review.get("accept") is not True
+            or review.get("version") != version + 1 or review.get("task_id") != task_id
+            or review.get("project_id") != actor.profile.project_id
+            or type(review.get("reviewer_agent_id")) is not str
+            or sender is None or recipient is None or sender == recipient
+            or digest(review["reviewer_agent_id"]) in (sender, recipient)
+        ):
+            return None
+        # This describes the historical submission, not current task status or proof of verification.
+        return "ready_for_review"
+
     def inspect_attempts(
         self, actor: RelayActor, task_id: str, *, admin_token: str
     ) -> tuple[RelayAttemptObservation, RelayAttemptObservation]:
@@ -491,13 +528,17 @@ class ControlledRelay:
         )
 
     async def run_once(
-        self, first: RelayActor, second: RelayActor, spec: RelayInput, *, _wave_key: str | None = None
+        self, first: RelayActor, second: RelayActor, spec: RelayInput, *, admin_token: str,
+        _wave_key: str | None = None,
     ) -> RelayOutcome:
+        if type(first) is not RelayActor:
+            _reject()
         if _wave_key is not None and (
             type(_wave_key) is not str or len(_wave_key) != 64
             or any(c not in "0123456789abcdef" for c in _wave_key)
         ):
             _reject()
+        self._authorize_owner(first, admin_token)
         task, reference, revision, (first_task, second_task) = self._pinned_inputs(first, second, spec)
         key = self._key(first, spec.task_id)
         self._record(key, "incomplete", context_version=spec.context_version, wave_sha256=_wave_key)
