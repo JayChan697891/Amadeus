@@ -206,14 +206,14 @@ class ControlledRelay:
         expected: dict[str, object] = {
             "schema_version": 1, "receipt_root_sha256": self._receipt_store.location_pin(),
         }
-        current = self._receipt_anchors.read(name)
+        current = self._receipt_anchors.read(name, durable=bind)
         if current is None and bind:
             try:
                 self._receipt_anchors.write(name, expected)
             except AgentSyncError as error:
                 if error.code != "attempt_already_reserved":
                     raise
-            current = self._receipt_anchors.read(name)
+            current = self._receipt_anchors.read(name, durable=True)
         if (current is not None or bind) and (
             not current or type(current.get("schema_version")) is not int or current != expected
         ):

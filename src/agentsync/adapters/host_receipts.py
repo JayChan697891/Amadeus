@@ -116,9 +116,10 @@ class _ReceiptDirectory:
         except OSError:
             raise _unavailable() from None
 
-    def read(self, name: str) -> dict[str, Any] | None:
+    def read(self, name: str, *, durable: bool = False) -> dict[str, Any] | None:
         """None denotes absence; corrupt or unreadable entries remain fences."""
         path = self._path(name)
+        sync = durable and os.name == "posix"
         try:
             info = path.lstat()
         except FileNotFoundError:
@@ -130,7 +131,7 @@ class _ReceiptDirectory:
         try:
             if not _ordinary(info) or not 1 <= info.st_size <= _LIMIT:
                 return {}
-            with path.open("rb") as stream:
+            with path.open("r+b" if sync else "rb") as stream:
                 opened = os.fstat(stream.fileno())
                 if not _ordinary(opened) or _file_stamp(opened) != _file_stamp(info):
                     return {}
@@ -138,6 +139,11 @@ class _ReceiptDirectory:
                 raw = stream.read(_LIMIT + 1)
                 if len(raw) != info.st_size or _file_stamp(path.lstat()) != _file_stamp(info):
                     return {}
+                if sync:
+                    os.fsync(stream.fileno())
+                    self._sync_directory_entry()
+                    if _file_stamp(path.lstat()) != _file_stamp(info):
+                        return {}
             value = json.loads(raw, object_pairs_hook=_members, parse_constant=_invalid_constant)
             return value if type(value) is dict else {}
         except (OSError, ValueError, RecursionError):

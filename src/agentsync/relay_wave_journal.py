@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import stat
 from collections.abc import Iterator
@@ -42,23 +43,27 @@ class RelayWaveJournal:
         if not private_directory.is_dir():
             raise _unavailable()
         self._path = private_directory / "relay-waves.sqlite3"
+        self._file_identity: tuple[int, int] | None = None
 
     def _check_path(self) -> bool:
         if physical(self._path.parent) != self._directory_identity:
             raise _unavailable()
         sidecars = [self._path.with_name(self._path.name + suffix) for suffix in _SIDECAR_SUFFIXES]
-        present = [self._check_file(path) for path in sidecars]
-        exists = self._check_file(self._path)
-        if not exists and any(present):
+        present = [self._check_file(path) is not None for path in sidecars]
+        info = self._check_file(self._path)
+        identity = None if info is None else (info.st_dev, info.st_ino)
+        if self._file_identity is not None and identity != self._file_identity:
             raise _unavailable()
-        return exists
+        if identity is None and any(present):
+            raise _unavailable()
+        return identity is not None
 
     @staticmethod
-    def _check_file(path: Path) -> bool:
+    def _check_file(path: Path) -> os.stat_result | None:
         try:
             info = path.lstat()
         except FileNotFoundError:
-            return False
+            return None
         except OSError:
             raise _unavailable() from None
         if (
@@ -66,20 +71,41 @@ class RelayWaveJournal:
             or getattr(info, "st_file_attributes", 0) & 0x400
         ):
             raise _unavailable()
-        return True
+        return info
+
+    def location_identity(self, *, initialize: bool = False) -> tuple[int, int]:
+        """Pin an existing journal, creating it only before the first admission."""
+        if initialize and self._file_identity is None:
+            with self._write(create=True):
+                pass
+        if not self._check_path():
+            raise _unavailable()
+        info = self._check_file(self._path)
+        if info is None or info.st_ino == 0:
+            raise _unavailable()
+        identity = (info.st_dev, info.st_ino)
+        if self._file_identity is not None and identity != self._file_identity:
+            raise _unavailable()
+        self._file_identity = identity
+        return identity
 
     @staticmethod
-    def _check_schema(db: sqlite3.Connection, *, initialize: bool) -> None:
+    def _check_schema(
+        db: sqlite3.Connection, *, initialize: bool, allow_empty: bool = False,
+    ) -> bool:
         application_id = db.execute("PRAGMA application_id").fetchone()[0]
         version = db.execute("PRAGMA user_version").fetchone()[0]
         if application_id == _APPLICATION_ID and version == _VERSION:
-            return
+            return True
         if (
-            not initialize
-            or application_id != 0
+            application_id != 0
             or version != 0
             or db.execute("SELECT 1 FROM sqlite_master LIMIT 1").fetchone() is not None
         ):
+            raise _unavailable()
+        if not initialize:
+            if allow_empty:
+                return False
             raise _unavailable()
         db.execute(
             "CREATE TABLE relay_waves ("
@@ -94,16 +120,22 @@ class RelayWaveJournal:
         )
         db.execute(f"PRAGMA application_id={_APPLICATION_ID}")
         db.execute(f"PRAGMA user_version={_VERSION}")
+        return True
 
     @contextmanager
-    def _write(self) -> Iterator[sqlite3.Connection]:
+    def _write(self, *, create: bool = False) -> Iterator[sqlite3.Connection]:
         db = None
         try:
-            self._check_path()
-            db = sqlite3.connect(self._path, timeout=5, isolation_level=None)
+            if not self._check_path() and not create:
+                raise _unavailable()
+            mode = "rwc" if create else "rw"
+            db = sqlite3.connect(
+                self._path.as_uri() + f"?mode={mode}", uri=True, timeout=5, isolation_level=None,
+            )
             db.execute("PRAGMA synchronous=EXTRA")
             db.execute("BEGIN IMMEDIATE")
-            self._check_schema(db, initialize=True)
+            self._check_path()
+            self._check_schema(db, initialize=create)
             yield db
             db.commit()
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
@@ -178,14 +210,20 @@ class RelayWaveJournal:
         return self._read(project_key, None)
 
     @contextmanager
-    def _query(self) -> Iterator[sqlite3.Connection]:
+    def _query(self) -> Iterator[sqlite3.Connection | None]:
+        if not self._check_path():
+            yield None
+            return
         # Permit SQLite to roll back a hot journal, but never create a database
         # or change application rows from an observation.
         db = sqlite3.connect(self._path.as_uri() + "?mode=rw", uri=True, timeout=5)
         try:
+            self._check_path()
             db.execute("PRAGMA query_only=ON")
-            self._check_schema(db, initialize=False)
-            yield db
+            # Keep schema and row reads on the same database snapshot.
+            db.execute("BEGIN")
+            ready = self._check_schema(db, initialize=False, allow_empty=self._file_identity is None)
+            yield db if ready else None
         finally:
             db.close()
 
@@ -202,12 +240,12 @@ class RelayWaveJournal:
     def history(
         self, project_key: str, *, limit: int, before: str | None,
     ) -> tuple[list[tuple[str, JournalState, Any, Any]], str | None]:
-        if not self._check_path():
-            if before is not None:
-                raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
-            return [], None
         try:
             with self._query() as db:
+                if db is None:
+                    if before is not None:
+                        raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
+                    return [], None
                 cursor = None
                 if before is not None:
                     found = db.execute(
@@ -230,10 +268,10 @@ class RelayWaveJournal:
     def _read(
         self, project_key: str, request_key: str | None
     ) -> tuple[str, JournalState, Any, Any] | None:
-        if not self._check_path():
-            return None
         try:
             with self._query() as db:
+                if db is None:
+                    return None
                 if request_key is None:
                     row = db.execute(
                         "SELECT request_key,state,tasks_json,results_json FROM relay_waves "
@@ -251,3 +289,4 @@ class RelayWaveJournal:
             return self._decode(row)
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
             raise _unavailable() from None
+

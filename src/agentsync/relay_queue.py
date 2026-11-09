@@ -235,6 +235,29 @@ class RelayQueue:
     def _fenced(self, project_id: str, project_key: str) -> bool:
         return self._legacy_fence(project_id) or self._journal.pending(project_key) is not None
 
+    def _check_journal_anchor(self, project_key: str, *, bind: bool = False) -> None:
+        anchors = self._relay._receipt_anchors
+        name = f"controlled-relay-wave-{project_key}.json"
+        saved = anchors.read(name, durable=bind)
+        if saved is None and not bind:
+            return
+        identity = self._journal.location_identity(initialize=saved is None)
+        expected: dict[str, object] = {
+            "schema_version": 1,
+            "journal_sha256": digest([self._relay._receipt_store.location_pin(), *identity]),
+        }
+        if saved is None:
+            try:
+                anchors.write(name, expected)
+            except AgentSyncError as error:
+                if error.code != "attempt_already_reserved":
+                    raise
+            saved = anchors.read(name, durable=True)
+        if not saved or type(saved.get("schema_version")) is not int or saved != expected:
+            raise AgentSyncError(
+                "wave_journal_unavailable", "The wave journal does not match its saved identity.", 409,
+            )
+
     def _check_selected(self, selected: tuple[RelayQueueItem, ...]) -> None:
         for item in selected:
             self._relay._state(item.second, item.task.task_id)
@@ -271,6 +294,7 @@ class RelayQueue:
         self._relay._project_state(actor)
         self._relay._check_receipt_anchor(actor.profile.project_id)
         project_key = digest(actor.profile.project_id)
+        self._check_journal_anchor(project_key)
         saved = self._journal.get(project_key, key)
         if saved is not None:
             status, selected, rows = saved
@@ -370,7 +394,9 @@ class RelayQueue:
         snapshot = self._relay._project_state(actor)
         project_id = actor.profile.project_id
         self._relay._check_receipt_anchor(project_id)
-        return digest(project_id), snapshot
+        project_key = digest(project_id)
+        self._check_journal_anchor(project_key)
+        return project_key, snapshot
 
     def _owner_candidate_snapshot(
         self, items: tuple[RelayQueueItem, ...], admin_token: str,
@@ -379,6 +405,7 @@ class RelayQueue:
         self._relay._authorize_owner(first, admin_token)
         project = first.profile.project_id
         self._relay._check_receipt_anchor(project)
+        project_key = digest(project)
         seen: set[str] = set()
         for item in items:
             for actor in (item.first, item.second):
@@ -387,10 +414,13 @@ class RelayQueue:
                     continue
                 seen.add(session_id)
                 try:
-                    return digest(project), self._relay._project_state(actor)
+                    snapshot = self._relay._project_state(actor)
                 except AgentSyncError as error:
                     if error.code != "session_expired":
                         raise
+                else:
+                    self._check_journal_anchor(project_key)
+                    return project_key, snapshot
         raise AgentSyncError("session_expired", "No prepared relay session remains valid.", 401)
 
     def _reconcile_open(
@@ -551,6 +581,7 @@ class RelayQueue:
             return RelayQueueOutcome("no_ready_tasks")
         self._check_selected(selected)
         self._relay._check_receipt_anchor(project_id, bind=True)
+        self._check_journal_anchor(project_key, bind=True)
         self._journal.admit(project_key, key, tuple(item.task.task_id for item in selected))
 
         async def run(item: RelayQueueItem) -> RelayQueueResult:
