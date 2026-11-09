@@ -895,7 +895,7 @@ def _stage_candidate(
     manifest_path, evidence_root, checksum = candidate
     if any(path.resolve(strict=True).drive.startswith("\\\\") for path in candidate[:2]):
         raise ValueError("Candidate installation requires local evidence files.")
-    verified = verify_manifest(manifest_path, evidence_root, manifest_sha256=checksum)
+    verified = verify_manifest(manifest_path, evidence_root, manifest_sha256=checksum, source_repo=repo)
     frozen = {
         "version": version, "commit_sha": git_value(repo, "rev-parse", "HEAD"),
         "tree_sha": git_value(repo, "rev-parse", "HEAD^{tree}"),

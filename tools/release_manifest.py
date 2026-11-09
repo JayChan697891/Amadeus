@@ -49,6 +49,15 @@ def _check_archive_filename(kind: str, filename: str, distribution: str, version
         raise ValueError("The archive filename differs from the frozen distribution identity.")
 
 
+def _source_distribution(source_repo: Path, frozen: dict[str, str]) -> str:
+    commit = frozen["commit_sha"]
+    pyproject = _output(source_repo, "cat-file", "blob", f"{commit}:pyproject.toml", maximum=1024 * 1024)
+    project = tomllib.loads(pyproject.decode("utf-8"))["project"]
+    if type(project["name"]) is not str or not project["name"] or project["version"] != frozen["version"]:
+        raise ValueError("The distribution identity differs from the frozen Git source.")
+    return project["name"]
+
+
 def build_manifest(
     evidence_root: Path,
     artifact_report: str,
@@ -82,13 +91,10 @@ def build_manifest(
     if "candidate_input" in report:
         raise ValueError("The designated build report must originate its candidate archives.")
 
-    pyproject = _output(source_repo, "cat-file", "blob", f"{commit}:pyproject.toml", maximum=1024 * 1024)
-    project = tomllib.loads(pyproject.decode("utf-8"))["project"]
     frozen = matrix["frozen"]
-    if type(project["name"]) is not str or not project["name"] or project["version"] != frozen["version"]:
-        raise ValueError("The distribution identity differs from the frozen Git source.")
-    distribution = canonicalize_name(project["name"], validate=True)
-    version = Version(project["version"])
+    name = _source_distribution(source_repo, frozen)
+    distribution = canonicalize_name(name, validate=True)
+    version = Version(frozen["version"])
 
     directory = PurePosixPath(*parts[:-1])
     installed = observation["artifact_audit"]["installed_artifact_sha256"]
@@ -115,7 +121,7 @@ def build_manifest(
     return {
         "schema_version": 1,
         "scope": _SCOPE,
-        "distribution": project["name"],
+        "distribution": name,
         "frozen": frozen,
         "build_report": {"path": artifact_report, "sha256": digest, "system": observation["system"]},
         "artifacts": artifacts,
@@ -132,9 +138,9 @@ def _is_sha256(value: Any) -> bool:
 
 
 def verify_manifest(
-    manifest_path: Path, evidence_root: Path, *, manifest_sha256: str,
+    manifest_path: Path, evidence_root: Path, *, manifest_sha256: str, source_repo: Path | None = None,
 ) -> dict[str, Any]:
-    """Check the candidate archives using an independently trusted manifest digest."""
+    """Check candidate bytes and, when requested, their originating report and Git source."""
     from packaging.utils import canonicalize_name
     from packaging.version import Version
 
@@ -204,6 +210,29 @@ def verify_manifest(
     for path in evidence.members:
         evidence.check(path)
 
+    if source_repo is not None:
+        selected, _ = _physical(evidence_root.resolve(strict=True), report_parts)
+        report, digest = _read_report(selected, decoder=read_json)
+        if digest != build_report["sha256"] or "candidate_input" in report:
+            raise ValueError("Candidate archives require their original build report.")
+        origin = summarize(
+            [selected], frozen["commit_sha"], verify_artifacts=True,
+            require_license_inventory=True, source_repo=source_repo,
+        )
+        observation = origin["observations"][0]
+        report_pins = {row["kind"]: row["sha256"] for row in artifacts}
+        if (
+            origin["frozen"] != frozen
+            or origin["git_source_audit"] is None
+            or origin["local_matrix"] == "failed"
+            or observation["report_sha256"] != digest
+            or observation["system"] != build_report["system"]
+            or any(observation["checks"].get(check) != "pass" for check in _BUILD_CHECKS)
+            or observation["artifact_audit"]["installed_artifact_sha256"] != report_pins
+            or _source_distribution(source_repo, frozen) != manifest["distribution"]
+        ):
+            raise ValueError("The original build evidence does not match the candidate archives and source.")
+
     return {
         "schema_version": 1,
         "scope": "local_release_artifact_manifest_verification",
@@ -214,7 +243,7 @@ def verify_manifest(
         "build_report": build_report,
         "checked_artifacts": sorted(artifacts, key=lambda artifact: artifact["kind"]),
         "artifact_bytes_verified": True,
-        "build_report_bytes_verified": False,
+        "build_report_bytes_verified": source_repo is not None,
         "producer_authenticated": False,
         "formal_release_acceptance": "blocked",
         "publication_authorized": False,
@@ -224,7 +253,7 @@ def verify_manifest(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--commit")
-    parser.add_argument("--source-repo", type=Path)
+    parser.add_argument("--source-repo", type=Path, help="Bind evidence to the frozen local Git source")
     parser.add_argument("--evidence-root", type=Path, required=True)
     parser.add_argument("--artifact-report", help="Build report path relative to the evidence root")
     parser.add_argument("--require-python", action="append")
@@ -235,7 +264,7 @@ def main() -> int:
     if args.verify_manifest is not None:
         if args.manifest_sha256 is None:
             parser.error("--verify-manifest requires --manifest-sha256")
-        generation_options = (args.commit, args.source_repo, args.artifact_report, args.require_python)
+        generation_options = (args.commit, args.artifact_report, args.require_python)
         if any(value is not None for value in generation_options) or args.report:
             parser.error("--verify-manifest cannot be combined with generation inputs")
     else:
@@ -247,6 +276,7 @@ def main() -> int:
         if args.verify_manifest is not None:
             manifest = verify_manifest(
                 args.verify_manifest, args.evidence_root, manifest_sha256=args.manifest_sha256,
+                source_repo=args.source_repo,
             )
         else:
             manifest = build_manifest(
