@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import math
 import re
 import time
 from contextlib import suppress
@@ -17,6 +18,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal, NoReturn
 
+from agentsync.adapters._host_process import _HostRun
 from agentsync.adapters.approved_launch import (
     ApprovedLaunchFactory,
     HostProfile,
@@ -30,9 +32,9 @@ from agentsync.adapters.approved_launch import (
     prepare_launch_review,
 )
 from agentsync.adapters.base import AdapterTask, _bounded_text, _identifier
-from agentsync.adapters.claude import ClaudeAdapter
+from agentsync.adapters.claude import ClaudeAdapter, ClaudeResult
 from agentsync.adapters.codex import CodexAdapter, CodexResult
-from agentsync.adapters.cursor import CursorAdapter
+from agentsync.adapters.cursor import CursorAdapter, CursorResult
 from agentsync.adapters.host_receipts import _ReceiptDirectory
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -118,6 +120,11 @@ class RelayAttemptObservation:
     session_sha256: str | None = None
     error_code: str | None = None
     admission: LaunchAdmissionObservation | None = None
+    adapter_elapsed_ms: int | None = None
+    reported_input_tokens: int | None = None
+    reported_output_tokens: int | None = None
+    billing_verified: Literal[False] = field(default=False, init=False)
+    cost_usd: None = field(default=None, init=False)
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
 
@@ -127,6 +134,25 @@ def _matched_text(value: Any, pattern: str) -> str | None:
 
 def _receipt_bool(value: Any) -> bool | None:
     return value if type(value) is bool else None
+
+
+def _receipt_uint(value: Any) -> int | None:
+    return value if type(value) is int and 0 <= value < 2**63 else None
+
+
+def _terminal_metrics(
+    run: _HostRun, result: CodexResult | ClaudeResult | CursorResult | None = None,
+) -> dict[str, object]:
+    """Report local elapsed time and protocol counters, not billing or subscription usage."""
+    metrics: dict[str, object] = {}
+    if run.finished_at is not None:
+        elapsed_ms = (run.finished_at - run.started_at) * 1000
+        if math.isfinite(elapsed_ms) and 0 <= elapsed_ms < 2**63:
+            metrics["adapter_elapsed_ms"] = int(elapsed_ms)
+    if isinstance(result, (CodexResult, ClaudeResult)) and result.run == run and result.usage is not None:
+        metrics["reported_input_tokens"] = _receipt_uint(result.usage.input_tokens)
+        metrics["reported_output_tokens"] = _receipt_uint(result.usage.output_tokens)
+    return metrics
 
 
 @dataclass(frozen=True, slots=True)
@@ -403,6 +429,9 @@ class ControlledRelay:
             session_sha256=_matched_text(terminal.get("session_sha256"), r"[0-9a-f]{64}"),
             error_code=_matched_text(terminal.get("error_code"), r"[a-z_]{1,64}"),
             admission=admission,
+            adapter_elapsed_ms=_receipt_uint(terminal.get("adapter_elapsed_ms")),
+            reported_input_tokens=_receipt_uint(terminal.get("reported_input_tokens")) if client != "cursor" else None,
+            reported_output_tokens=_receipt_uint(terminal.get("reported_output_tokens")) if client != "cursor" else None,
         )
 
     def review_once(
@@ -510,6 +539,7 @@ class ControlledRelay:
                     exit_code=run.exit_code, parent_ended=run.parent_ended,
                     run_sha256=digest(run.run_id), session_sha256=digest(run.session_id),
                     error_code=_matched_text(run.error_code, r"[a-z_]{1,64}"),
+                    **_terminal_metrics(run),
                 )
                 _reject()
             result = await adapter.get_result(run.run_id)
@@ -528,12 +558,14 @@ class ControlledRelay:
                 timed_out=run.timed_out, parent_ended=run.parent_ended,
                 run_sha256=digest(run.run_id), session_sha256=digest(run.session_id),
                 error_code="reply_mismatch",
+                **_terminal_metrics(run, result),
             )
             _reject()
         self._record(
             key, stage + "-observed", status="expected_reply", run_sha256=digest(run.run_id),
             session_sha256=digest(run.session_id), exit_code=run.exit_code,
             parent_ended=run.parent_ended, timed_out=run.timed_out,
+            **_terminal_metrics(run, result),
         )
         return {**active, "lease_token": lease_token}
 
