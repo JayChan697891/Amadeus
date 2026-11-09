@@ -37,12 +37,22 @@ _EVIDENCE_KINDS = {
 }
 _REQUIRED_KINDS = {
     "M2-05": {"mcp_host"},
+    "M4-04": {"conflict"},
+    "M5-04": {"independent_review"},
+    "M5-05": {"security"},
     "M6-03": {"codex"},
     "M6-04": {"claude_code"},
     "M6-05": {"cursor"},
     "M7-02": {"real_relay"},
     "M9-01": {"cross_platform"},
     "M9-02": {"package", "license"},
+    "T07": {"security"},
+    "T09": {"conflict"},
+    "T10": {"independent_review"},
+    "T11": {"security"},
+    "T12": {"security"},
+    "T13": {"codex", "claude_code", "cursor", "independent_review"},
+    "T16": {"package"},
 }
 
 
@@ -85,6 +95,7 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
         raise ValueError("Invalid independent evidence list.")
     members = {}
     rows: dict[str, dict[str, Any]] = {}
+    client_by_hash: dict[str, str] = {}
     for record in records:
         if type(record) is not dict or set(record) != {"id", "kind", "path", "sha256", "size"}:
             raise ValueError("Invalid independent evidence record.")
@@ -99,6 +110,10 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
         member = {field: record[field] for field in ("path", "sha256", "size")}
         if path in rows and rows[path] != member:
             raise ValueError("Conflicting pins for one independent evidence file.")
+        kind, checksum = record["kind"], record["sha256"]
+        if kind in {"codex", "claude_code", "cursor"} and type(checksum) is str:
+            if client_by_hash.setdefault(checksum.lower(), kind) != kind:
+                raise ValueError("Real-client evidence must be recorded separately for each client.")
         members[key] = record
         rows[path] = member
     if rows:
@@ -233,10 +248,19 @@ def assemble(
             "evidence_ids": refs, "reason": reason,
         })
     counts = Counter(case["declared_status"] for case in cases)
-    complete = (
-        counts["passed"] == len(cases) and matrix["local_matrix"] == "artifact_verified_pass"
-        and matrix["git_source_audit"] is not None
+    candidate = (
+        _bind_candidate(matrix, digest, evidence_root, candidate_manifest, candidate_sha256)
+        if candidate_manifest is not None and candidate_sha256 is not None else None
     )
+    blockers = []
+    if counts["passed"] != len(cases):
+        blockers.append("review_decisions_incomplete")
+    if matrix["local_matrix"] != "artifact_verified_pass":
+        blockers.append("local_matrix_incomplete")
+    if matrix["git_source_audit"] is None:
+        blockers.append("git_source_not_audited")
+    if candidate is None:
+        blockers.append("release_candidate_not_bound")
     packet = {
         "schema_version": 1,
         "scope": "evidence_packet_for_independent_release_decision",
@@ -252,14 +276,13 @@ def assemble(
         "declared_status_counts": {status: counts[status] for status in _STATUSES},
         "cases": cases,
         "evidence": members,
-        "packet_state": "complete_for_independent_decision" if complete else "incomplete",
+        "packet_state": "incomplete" if blockers else "complete_for_independent_decision",
+        "packet_blockers": blockers,
         "formal_release_acceptance": "blocked",
         "publication_authorized": False,
     }
-    if candidate_manifest is not None and candidate_sha256 is not None:
-        packet["release_candidate"] = _bind_candidate(
-            matrix, digest, evidence_root, candidate_manifest, candidate_sha256
-        )
+    if candidate is not None:
+        packet["release_candidate"] = candidate
     return packet
 
 
@@ -288,6 +311,7 @@ def render_markdown(packet: dict[str, Any]) -> str:
         f"- Local matrix `{packet['local_matrix']}`",
         f"- Frozen source check {source_check}",
         f"- Packet state `{packet['packet_state']}`",
+        "- Packet blockers: " + (", ".join(f"`{item}`" for item in packet["packet_blockers"]) or "none"),
         "",
         "## Declared results",
         "",
