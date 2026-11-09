@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import math
 from dataclasses import dataclass, field
 from time import monotonic_ns
 from typing import Literal
@@ -14,6 +15,7 @@ from agentsync.providers.base import (
     ModelResponse,
     OwnerAuthorization,
     ProviderKind,
+    _validated_request,
 )
 
 
@@ -72,6 +74,9 @@ class ModelCallMeter:
     Measurements cover local invocations of the provider interface, including
     rejected calls, cancellation and Mock. They cannot establish API billing
     or whether a remote request stopped. The flat estimate ignores pricing tiers.
+
+    Optional budgets count requested limits at admission. Failure or cancellation
+    does not refund them, since a provider may already have received the request.
     """
 
     def __init__(
@@ -80,6 +85,9 @@ class ModelCallMeter:
         *,
         rates: dict[tuple[ProviderKind, str], FlatRate] | None = None,
         max_calls: int = 256,
+        max_in_flight: int | None = None,
+        max_requested_output_tokens: int | None = None,
+        max_requested_timeout_ms: int | None = None,
     ) -> None:
         if type(max_calls) is not int or not 1 <= max_calls <= 4096:
             raise AgentSyncError("validation_error", "Invalid model meter capacity.")
@@ -89,17 +97,50 @@ class ModelCallMeter:
             or any(type(rate) is not FlatRate for rate in rates.values())
         ):
             raise AgentSyncError("validation_error", "Invalid model estimate rates.")
+        for limit, maximum in (
+            (max_in_flight, max_calls),
+            (max_requested_output_tokens, max_calls * 4096),
+            (max_requested_timeout_ms, max_calls * 60_000),
+        ):
+            if limit is not None and (type(limit) is not int or not 1 <= limit <= maximum):
+                raise AgentSyncError("validation_error", "Invalid model invocation budget.")
         self._provider = provider
         self._rates = dict(rates or {})
         self._max_calls = max_calls
+        self._max_in_flight = max_in_flight
+        self._max_requested_output_tokens = max_requested_output_tokens
+        self._max_requested_timeout_ms = max_requested_timeout_ms
         self._calls: list[_Call] = []
         self._in_flight = 0
+        self._requested_output_tokens = 0
+        self._requested_timeout_ms = 0
+
+    def _admit(self, request: ModelRequest) -> ModelRequest:
+        if len(self._calls) + self._in_flight >= self._max_calls:
+            raise AgentSyncError(
+                "history_capacity_exceeded", "Model meter capacity is exhausted.", 409
+            )
+        if self._max_in_flight is not None and self._in_flight >= self._max_in_flight:
+            raise AgentSyncError("model_concurrency_limit", "Model concurrency limit reached.", 409)
+        if self._max_requested_output_tokens is None and self._max_requested_timeout_ms is None:
+            return request
+        request = _validated_request(request)
+        output = self._requested_output_tokens + request.max_output_tokens
+        timeout = self._requested_timeout_ms + math.ceil(request.timeout_seconds * 1000)
+        output_limit = self._max_requested_output_tokens
+        timeout_limit = self._max_requested_timeout_ms
+        if (output_limit is not None and output > output_limit) or (
+            timeout_limit is not None and timeout > timeout_limit
+        ):
+            raise AgentSyncError("model_budget_exhausted", "Model invocation budget is exhausted.", 409)
+        self._requested_output_tokens = output
+        self._requested_timeout_ms = timeout
+        return request
 
     async def complete(
         self, request: ModelRequest, *, authorization: OwnerAuthorization | None = None
     ) -> ModelResponse:
-        if len(self._calls) + self._in_flight >= self._max_calls:
-            raise AgentSyncError("history_capacity_exceeded", "Model meter capacity is exhausted.", 409)
+        request = self._admit(request)
         self._in_flight += 1
         start = monotonic_ns()
         try:
