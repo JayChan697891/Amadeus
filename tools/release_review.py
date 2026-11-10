@@ -152,17 +152,23 @@ def prepare(
     manifest_path: Path, local_reports: list[Path], commit: str, reviewer_id: str,
     *, python_minors: tuple[str, ...] = RELEASE_PYTHON_MINORS,
     source_repo: Path | None = None,
+    evidence_root: Path | None = None,
+    candidate_manifest: Path | None = None,
+    candidate_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Return a blank review form bound to the supplied evidence and coverage."""
     if not _IDENTIFIER.fullmatch(reviewer_id):
         raise ValueError("Invalid declared reviewer ID.")
+    if (candidate_manifest is None) != (candidate_sha256 is None):
+        raise ValueError("Candidate manifest and its trusted SHA-256 are required together.")
     matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
-    return {
+    digest = matrix_digest(matrix)
+    form = {
         "schema_version": 1,
         "commit_sha": commit,
         "version": matrix["frozen"]["version"],
         "requirements_sha256": manifest_sha,
-        "matrix_sha256": matrix_digest(matrix),
+        "matrix_sha256": digest,
         "reviewer_id": reviewer_id,
         "independence_declared": False,
         "evidence": [],
@@ -171,6 +177,15 @@ def prepare(
             for identity in labels
         ],
     }
+    if candidate_manifest is not None and candidate_sha256 is not None:
+        if evidence_root is None:
+            raise ValueError("Candidate review preparation requires the evidence root.")
+        candidate = _bind_candidate(
+            matrix, digest, evidence_root, candidate_manifest, candidate_sha256,
+            python_minors, source_repo, local_reports,
+        )
+        form["candidate_manifest_sha256"] = candidate["manifest_sha256"]
+    return form
 
 
 def _bind_candidate(
@@ -249,10 +264,15 @@ def assemble(
     matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
     digest = matrix_digest(matrix)
     review, review_sha = _read(review_path)
-    if set(review) != {
+    fields = {
         "schema_version", "commit_sha", "version", "requirements_sha256", "matrix_sha256",
         "reviewer_id", "independence_declared", "evidence", "decisions",
-    }:
+    }
+    if candidate_sha256 is not None:
+        fields.add("candidate_manifest_sha256")
+        if review.get("candidate_manifest_sha256") != candidate_sha256.lower():
+            raise ValueError("The independent review is not bound to this candidate manifest.")
+    if set(review) != fields:
         raise ValueError("Invalid independent review envelope.")
     if (
         type(review["schema_version"]) is not int or review["schema_version"] != 1
@@ -445,14 +465,16 @@ def main() -> int:
         parser.error("--prepare emits the JSON decision template")
     if (args.candidate_manifest is None) != (args.candidate_sha256 is None):
         parser.error("--candidate-manifest and --candidate-sha256 are required together")
-    if args.candidate_manifest is not None and (args.review is None or args.source_repo is None):
-        parser.error("candidate binding requires --review and --source-repo")
+    if args.candidate_manifest is not None and (args.evidence_root is None or args.source_repo is None):
+        parser.error("candidate binding requires --evidence-root and --source-repo")
     minors = tuple(args.require_python or RELEASE_PYTHON_MINORS)
     try:
         if args.prepare is not None:
             packet = prepare(
                 args.requirements, args.report, args.commit, args.prepare,
                 python_minors=minors, source_repo=args.source_repo,
+                evidence_root=args.evidence_root,
+                candidate_manifest=args.candidate_manifest, candidate_sha256=args.candidate_sha256,
             )
         else:
             packet = assemble(
