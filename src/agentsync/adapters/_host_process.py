@@ -29,6 +29,9 @@ from agentsync.errors import AgentSyncError
 _CaptureFactory = Callable[[AdapterTask], Awaitable[CapturedProcess]]
 _ContextualCaptureFactory = Callable[[AdapterTask, LaunchContext], Awaitable[CapturedProcess]]
 _HostStatus = Literal["starting", "running", "succeeded", "failed", "unknown"]
+_LAUNCH_ADMISSION_ERRORS = frozenset({
+    "attempt_already_reserved", "launch_not_authorized", "launch_plan_changed", "receipt_unavailable",
+})
 
 
 @dataclass(frozen=True, slots=True)
@@ -254,9 +257,16 @@ class _HostProcessAdapter(
                 self._finish(entry, "unknown", error="factory_cancelled")
             if entry.process is not None:
                 await entry.process.cancel()
-        except Exception:
+        except Exception as exc:
+            error = "factory_failed"
+            if (
+                isinstance(exc, AgentSyncError) and type(exc.code) is str
+                and self._contextual_factory is not None and entry.process is None
+                and exc.code in _LAUNCH_ADMISSION_ERRORS
+            ):
+                error = exc.code
             async with self._lock:
-                self._finish(entry, "unknown", error="factory_failed")
+                self._finish(entry, "unknown", error=error)
             if entry.process is not None:
                 await entry.process.cancel()
 
