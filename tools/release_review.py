@@ -38,10 +38,12 @@ _COUNTS = (5, 5, 5, 4, 5, 5, 5, 4, 2, 2)
 _REQUIREMENTS = {f"M{milestone}-{index:02d}" for milestone, count in enumerate(_COUNTS) for index in range(1, count + 1)}
 _SCENARIOS = {f"T{index:02d}" for index in range(1, 17)}
 _REGISTER_PATH = "docs/acceptance/requirements.json"
+_REAL_CLIENT_KINDS = {"codex", "claude_code", "cursor"}
+_REAL_EXECUTION_KINDS = _REAL_CLIENT_KINDS | {"real_relay"}
 _EVIDENCE_KINDS = {
-    "component", "security", "package", "license", "mcp_host", "codex", "claude_code",
-    "cursor", "real_relay", "conflict", "cross_platform", "independent_review",
-}
+    "component", "security", "package", "license", "mcp_host", "conflict",
+    "cross_platform", "independent_review",
+} | _REAL_EXECUTION_KINDS
 _REQUIRED_KINDS = {
     "M2-05": {"mcp_host"},
     "M4-04": {"conflict"},
@@ -50,7 +52,7 @@ _REQUIRED_KINDS = {
     "M6-03": {"codex"},
     "M6-04": {"claude_code"},
     "M6-05": {"cursor"},
-    "M7-02": {"real_relay"},
+    "M7-02": {"real_relay", "independent_review"},
     "M9-01": {"cross_platform"},
     "M9-02": {"package", "license"},
     "T07": {"security"},
@@ -102,7 +104,7 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
         raise ValueError("Invalid independent evidence list.")
     members = {}
     rows: dict[str, dict[str, Any]] = {}
-    client_by_hash: dict[str, str] = {}
+    kinds_by_hash: dict[str, set[str]] = {}
     for record in records:
         if type(record) is not dict or set(record) != {"id", "kind", "path", "sha256", "size"}:
             raise ValueError("Invalid independent evidence record.")
@@ -118,9 +120,14 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
         if path in rows and rows[path] != member:
             raise ValueError("Conflicting pins for one independent evidence file.")
         kind, checksum = record["kind"], record["sha256"]
-        if kind in {"codex", "claude_code", "cursor"} and type(checksum) is str:
-            if client_by_hash.setdefault(checksum.lower(), kind) != kind:
-                raise ValueError("Real-client evidence must be recorded separately for each client.")
+        if type(checksum) is not str:
+            raise ValueError("Invalid independent evidence digest.")
+        kinds = kinds_by_hash.setdefault(checksum.lower(), set())
+        kinds.add(kind)
+        if len(kinds & _REAL_CLIENT_KINDS) > 1:
+            raise ValueError("Real-client evidence must be recorded separately for each client.")
+        if kinds & _REAL_EXECUTION_KINDS and kinds & {"component", "independent_review"}:
+            raise ValueError("Real execution requires evidence separate from component checks and independent review.")
         members[key] = record
         rows[path] = member
     if rows:
