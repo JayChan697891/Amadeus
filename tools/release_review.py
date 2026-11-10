@@ -20,14 +20,14 @@ if __package__:
     from .acceptance_evidence import _Evidence, read_json
     from .acceptance_git_source import _output
     from .acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, matrix_digest, summarize,
+        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
     )
     from .release_manifest import verify_manifest
 else:
     from acceptance_evidence import _Evidence, read_json
     from acceptance_git_source import _output
     from acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, matrix_digest, summarize,
+        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
     )
     from release_manifest import verify_manifest
 
@@ -175,7 +175,7 @@ def prepare(
 
 def _bind_candidate(
     matrix: dict[str, Any], digest: str, evidence_root: Path, path: Path, manifest_sha256: str,
-    python_minors: tuple[str, ...], source_repo: Path | None,
+    python_minors: tuple[str, ...], source_repo: Path | None, local_reports: list[Path],
 ) -> dict[str, Any]:
     if source_repo is None or matrix["git_source_audit"] is None:
         raise ValueError("Release candidate review requires the frozen Git source.")
@@ -199,12 +199,29 @@ def _bind_candidate(
         or any(observation["checks"].get(kind + "_origin_sdk") != "pass" for kind in pins)
     ):
         raise ValueError("Release candidate archives differ from the reviewed build.")
-    matching = [
-        row for row in matrix["observations"]
-        if row["artifact_audit"]["installed_artifact_sha256"] == pins
-        and _complete_observation(row, verify_artifacts=True, require_license_inventory=True)
-        and all(row["checks"].get(kind + "_console_smoke") == "pass" for kind in pins)
-    ]
+    exact_archives = {
+        item["kind"]: ("artifacts/" + item["filename"], item["size"], item["sha256"])
+        for item in candidate["checked_artifacts"]
+    }
+    matching = []
+    for row, local_report in zip(matrix["observations"], local_reports, strict=True):
+        if (
+            row["artifact_audit"]["installed_artifact_sha256"] != pins
+            or not _complete_observation(row, verify_artifacts=True, require_license_inventory=True)
+            or any(row["checks"].get(kind + "_console_smoke") != "pass" for kind in pins)
+        ):
+            continue
+        # A wheel filename declares its compatibility tags even when its bytes are unchanged.
+        report, report_sha256 = _read_report(local_report, decoder=read_json)
+        if report_sha256 != row["report_sha256"]:
+            raise ValueError("A local report changed after verification.")
+        installed_archives = {
+            item["kind"]: (artifact["path"], artifact["size"], artifact["sha256"])
+            for item in report["distribution_installations"]
+            if (artifact := item["artifact"]) is not None
+        }
+        if installed_archives == exact_archives:
+            matching.append(row)
     release_minors = tuple(sorted(set(python_minors) | set(RELEASE_PYTHON_MINORS)))
     systems, combinations = _platform_gaps(matching, release_minors)
     return candidate | {
@@ -281,7 +298,8 @@ def assemble(
     counts = Counter(case["declared_status"] for case in cases)
     candidate = (
         _bind_candidate(
-            matrix, digest, evidence_root, candidate_manifest, candidate_sha256, python_minors, source_repo,
+            matrix, digest, evidence_root, candidate_manifest, candidate_sha256,
+            python_minors, source_repo, local_reports,
         )
         if candidate_manifest is not None and candidate_sha256 is not None else None
     )
