@@ -1036,7 +1036,11 @@ def _collect(
         (run / "artifacts").mkdir(exist_ok=True)
     plan = check_plan(sys.executable, run, scratch)
     offline_packages = None
-    if offline_wheelhouse is not None and not candidate_rejected:
+    if candidate_rejected:
+        checks.append({
+            "id": "offline_wheelhouse", "status": "not_run", "reason": "Candidate preflight failed",
+        })
+    elif offline_wheelhouse is not None:
         try:
             if offline_wheelhouse.drive.startswith("\\\\"):
                 raise ValueError("Offline wheelhouse must use a local filesystem path")

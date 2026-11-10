@@ -297,13 +297,28 @@ def _bound_licenses(
 
 
 def _offline_resolution(report: dict[str, Any], evidence: _Evidence) -> dict[str, Any] | None:
+    checks = {row["id"]: row for row in report["checks"]}
+    candidate_rejected = checks.get("candidate_preflight", {}).get("status") == "fail"
     scope = report.get("package_resolution")
-    if scope is None:
+    if scope is None and not candidate_rejected:
         return None
     if type(scope) is not dict or scope.get("mode") != "offline_wheelhouse":
         raise ValueError("Unknown package resolution policy.")
-    checks = {row["id"]: row for row in report["checks"]}
     member = scope.get("wheelhouse_manifest")
+    if candidate_rejected:
+        if (
+            member is not None or "candidate_input" in report
+            or any(
+                checks.get(name, {}).get("status") != "not_run"
+                for name in ("pytest", "build", "wheel_install", "sdist_install")
+            )
+            or any(
+                row["status"] == "pass" or "log" in row or "junit" in row
+                for row in checks.values()
+            )
+        ):
+            raise ValueError("Rejected candidate report claims execution or staged inputs.")
+        return {"state": "candidate_preflight_failed"}
     if member is None:
         if checks.get("offline_wheelhouse", {}).get("status") != "fail":
             raise ValueError("Missing offline package manifest.")
