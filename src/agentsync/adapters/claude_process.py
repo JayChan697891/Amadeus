@@ -45,9 +45,11 @@ class ClaudeProcessFactory:
     async def __call__(self, task: AdapterTask, context: LaunchContext) -> CapturedProcess:
         if type(context) is not LaunchContext:
             raise AgentSyncError("validation_error", "Adapter-issued launch context required.")
-        context.check(task)
-        plan = await asyncio.to_thread(
-            prepare_invocation, self._profile, task, environment=dict(self._environment)
+        plan = await context.wait_before_start(
+            task,
+            lambda: asyncio.to_thread(
+                prepare_invocation, self._profile, task, environment=dict(self._environment)
+            ),
         )
         return await context.start(
             task,

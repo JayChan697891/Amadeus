@@ -36,6 +36,35 @@ def passing_check(run):
     }
 
 
+def test_rejected_candidate_records_no_executed_checks(repository, tmp_path, monkeypatch):
+    def reject_candidate(*_args, **_kwargs):
+        raise ValueError("fixture origin did not match")
+
+    def unexpected_execution(*_args, **_kwargs):
+        pytest.fail("candidate rejection must stop all package and test processes")
+
+    monkeypatch.setattr(runner, "_stage_candidate", reject_candidate)
+    monkeypatch.setattr(runner, "execute", unexpected_execution)
+    monkeypatch.setattr(runner, "_execute_check", unexpected_execution)
+    monkeypatch.setattr(runner, "_prepare_offline_packages", unexpected_execution)
+    run = runner.collect(
+        repository,
+        tmp_path / "evidence",
+        run_checks=True,
+        package_install=True,
+        sdist_install=True,
+        offline_wheelhouse=tmp_path / "unused-wheelhouse",
+        candidate=(tmp_path / "manifest.json", tmp_path, "0" * 64),
+    )
+    report = json.loads((run / "report.json").read_text(encoding="utf-8"))
+    checks = {row["id"]: row["status"] for row in report["checks"]}
+    assert checks.pop("candidate_preflight") == "fail"
+    assert set(checks.values()) == {"not_run"}
+    assert "candidate_input" not in report
+    assert list((run / "artifacts").iterdir()) == []
+    assert report["release_gate"]["formal_acceptance"] is False
+
+
 def assert_unobserved_manager_component(row):
     assert row["coverage"] == "partial"
     assert len(row["component_evidence"]) == 8
