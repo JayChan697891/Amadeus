@@ -168,6 +168,14 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         "owner", help="Owner operation; read credentials and payload JSON from stdin"
     )
     owner.add_argument("operation")
+    relay_status = commands.add_parser(
+        "relay-status", help="Inspect a local relay journal with project owner credentials on stdin"
+    )
+    relay_status.add_argument("--scratch-root", type=Path, required=True)
+    relay_status.add_argument("--receipts", type=Path, required=True)
+    relay_status.add_argument("--history", action="store_true")
+    relay_status.add_argument("--limit", type=int, default=16)
+    relay_status.add_argument("--before")
     serve = commands.add_parser("serve", help="Run authenticated loopback HTTP server")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8765)
@@ -202,6 +210,17 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
+    if args.command == "relay-status":
+        if not data_dir:
+            parser.error("relay-status requires an explicit --data-dir")
+        if not args.history and (args.before is not None or args.limit != 16):
+            parser.error("relay-status paging options require --history")
+        from agentsync.relay_status_cli import run_relay_status_cli
+
+        return run_relay_status_cli(
+            Path(data_dir), args.scratch_root, args.receipts,
+            history=args.history, limit=args.limit, before=args.before,
+        )
     if args.command == "owner":
         try:
             raw = sys.stdin.read(65537)

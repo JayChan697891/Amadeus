@@ -386,9 +386,12 @@ class ControlledRelay:
         return self._inspect_attempt(key, "first"), self._inspect_attempt(key, "second")
 
     def _authorize_owner(self, actor: RelayActor, admin_token: str) -> None:
+        self._authorize_project_owner(actor.profile.project_id, admin_token)
+
+    def _authorize_project_owner(self, project_id: str, admin_token: str) -> None:
         self._core.execute_owner(
             "list_members",
-            {"project_id": actor.profile.project_id, "admin_token": admin_token, "limit": 1},
+            {"project_id": project_id, "admin_token": admin_token, "limit": 1},
         )
 
     def _inspect_attempt(

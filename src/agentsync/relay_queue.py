@@ -329,9 +329,17 @@ class RelayQueue:
     def observe_pending(self, actor: RelayActor, *, admin_token: str) -> PendingRelayWave | None:
         """Discover the current project fence when the original request ID was lost."""
         project_key, _ = self._owner_project(actor, admin_token)
+        return self._observe_pending(actor.profile.project_id, project_key)
+
+    def owner_observe_pending(self, project_id: str, *, admin_token: str) -> PendingRelayWave | None:
+        """Inspect a project fence when agent sessions have expired or are unavailable."""
+        project_key = self._owner_journal_key(project_id, admin_token)
+        return self._observe_pending(project_id, project_key)
+
+    def _observe_pending(self, project_id: str, project_key: str) -> PendingRelayWave | None:
         saved = self._journal.pending(project_key)
         if saved is None:
-            if self._legacy_fence(actor.profile.project_id):
+            if self._legacy_fence(project_id):
                 raise AgentSyncError(
                     "wave_incomplete", "A legacy relay wave still holds the fence.", 409
                 )
@@ -351,11 +359,26 @@ class RelayQueue:
         self, actor: RelayActor, *, admin_token: str, limit: int = 16, before: str | None = None,
     ) -> RelayWaveHistoryPage:
         """Read this project's journal, newest first, without knowing original request IDs."""
+        self._validate_history_page(limit, before)
+        project_key, _ = self._owner_project(actor, admin_token)
+        return self._history(project_key, limit=limit, before=before)
+
+    def owner_history(
+        self, project_id: str, *, admin_token: str, limit: int = 16, before: str | None = None,
+    ) -> RelayWaveHistoryPage:
+        """Read the project's journal without a live agent session or client profile."""
+        self._validate_history_page(limit, before)
+        project_key = self._owner_journal_key(project_id, admin_token)
+        return self._history(project_key, limit=limit, before=before)
+
+    @staticmethod
+    def _validate_history_page(limit: int, before: str | None) -> None:
         if type(limit) is not int or not 1 <= limit <= 32 or (
             before is not None and (type(before) is not str or re.fullmatch(r"[0-9a-f]{64}", before) is None)
         ):
             _invalid()
-        project_key, _ = self._owner_project(actor, admin_token)
+
+    def _history(self, project_key: str, *, limit: int, before: str | None) -> RelayWaveHistoryPage:
         rows, next_before = self._journal.history(project_key, limit=limit, before=before)
         entries = []
         for key, state, selected, results in rows:
@@ -392,11 +415,18 @@ class RelayQueue:
             _invalid()
         self._relay._authorize_owner(actor, admin_token)
         snapshot = self._relay._project_state(actor)
-        project_id = actor.profile.project_id
+        return self._checked_journal_key(actor.profile.project_id), snapshot
+
+    def _owner_journal_key(self, project_id: str, admin_token: str) -> str:
+        _identifier(project_id)
+        self._relay._authorize_project_owner(project_id, admin_token)
+        return self._checked_journal_key(project_id)
+
+    def _checked_journal_key(self, project_id: str) -> str:
         self._relay._check_receipt_anchor(project_id)
         project_key = digest(project_id)
         self._check_journal_anchor(project_key)
-        return project_key, snapshot
+        return project_key
 
     def _owner_candidate_snapshot(
         self, items: tuple[RelayQueueItem, ...], admin_token: str,
