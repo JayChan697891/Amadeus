@@ -383,8 +383,6 @@ class RelayQueue:
         rows, next_before = self._journal.history(project_key, limit=limit, before=before)
         entries = []
         for key, state, selected, results in rows:
-            if not re.fullmatch(r"[0-9a-f]{64}", key):
-                raise AgentSyncError("wave_receipt_mismatch", "The relay history record is invalid.", 409)
             outcome = self._outcome(selected, results)
             if state == "admitted":
                 outcome = RelayQueueOutcome(

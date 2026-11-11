@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sqlite3
 import stat
 from collections.abc import Iterator
@@ -17,6 +18,7 @@ from agentsync.workspaces.git import physical
 _APPLICATION_ID = 0x41535751
 _VERSION = 1
 _SIDECAR_SUFFIXES = ("-journal", "-wal", "-shm")
+_WAVE_KEY = re.compile(r"[0-9a-f]{64}")
 JournalState = Literal["admitted", "incomplete", "resolved"]
 
 
@@ -167,6 +169,24 @@ class RelayWaveJournal:
         self, project_key: str, request_key: str, *, incomplete: bool, results: list[dict[str, str]],
         reconciled: bool = False,
     ) -> None:
+        if (
+            type(incomplete) is not bool
+            or type(results) is not list or not 1 <= len(results) <= 4
+            or any(
+                type(result) is not dict
+                or set(result) not in ({"task_id", "state"}, {"task_id", "state", "failure_code"})
+                or type(result["task_id"]) is not str
+                or result.get("state") not in ("conflict", "ready_for_review", "incomplete")
+                or (
+                    "failure_code" in result
+                    and (result["state"] != "incomplete" or type(result["failure_code"]) is not str)
+                )
+                for result in results
+            )
+            or incomplete != any(result["state"] == "incomplete" for result in results)
+            or (reconciled and incomplete)
+        ):
+            raise _reject("wave_receipt_mismatch", "The wave state does not match its task outcomes.")
         with self._write() as db:
             row = db.execute(
                 "SELECT tasks_json,state,results_json FROM relay_waves "
@@ -231,7 +251,8 @@ class RelayWaveJournal:
     def _decode(row: tuple[Any, ...]) -> tuple[str, JournalState, Any, Any]:
         key, state, tasks, results = row
         if (
-            state not in ("admitted", "incomplete", "resolved") or len(tasks) > 8192
+            type(key) is not str or _WAVE_KEY.fullmatch(key) is None
+            or state not in ("admitted", "incomplete", "resolved") or len(tasks) > 8192
             or (results is not None and len(results) > 8192)
         ):
             raise _unavailable()
