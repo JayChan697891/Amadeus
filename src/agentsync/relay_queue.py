@@ -19,7 +19,7 @@ from typing import Any, Literal, NoReturn
 
 from agentsync.adapters.approved_launch import ClientKind, client_kind, digest
 from agentsync.adapters.base import _identifier
-from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
+from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput, _check_execution_deadline
 from agentsync.errors import AgentSyncError
 from agentsync.relay_wave_journal import JournalState, RelayWaveJournal
 from agentsync.scheduling import plan_tasks
@@ -29,7 +29,8 @@ TaskState = Literal["ready_for_review", "conflict", "incomplete"]
 _FAILURE_CODES = frozenset({
     "attempt_already_reserved", "forbidden", "idempotency_conflict", "lease_expired", "not_found",
     "receipt_unavailable", "relay_boundary", "relay_operation_failed", "relay_outcome_unknown",
-    "session_expired", "storage_error", "unauthorized", "version_conflict", "workspace_boundary",
+    "relay_execution_limit", "session_expired", "storage_error", "unauthorized", "version_conflict",
+    "workspace_boundary",
 })
 
 
@@ -130,7 +131,7 @@ class RelayQueuePreview:
 
 @dataclass(frozen=True, slots=True)
 class RelaySequenceOutcome:
-    reason: Literal["no_ready_tasks", "wave_limit", "time_limit", "incomplete"]
+    reason: Literal["no_ready_tasks", "wave_limit", "time_limit", "execution_limit", "incomplete"]
     waves: tuple[RelayQueueOutcome, ...]
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
@@ -583,8 +584,10 @@ class RelayQueue:
     async def run_ready_once(
         self, items: tuple[RelayQueueItem, ...], *, request_id: str, admin_token: str,
         parallel_limit: int = 1, expected_selection_sha256: str | None = None,
+        _execution_deadline: float | None = None,
     ) -> RelayQueueOutcome:
         """Run at most one wave, optionally bound to a previously previewed selection."""
+        _check_execution_deadline(_execution_deadline)
         items = self._validate_items(items, parallel_limit)
         if expected_selection_sha256 is not None and (
             type(expected_selection_sha256) is not str
@@ -612,12 +615,14 @@ class RelayQueue:
         self._check_selected(selected)
         self._relay._check_receipt_anchor(project_id, bind=True)
         self._check_journal_anchor(project_key, bind=True)
+        _check_execution_deadline(_execution_deadline)
         self._journal.admit(project_key, key, tuple(item.task.task_id for item in selected))
 
         async def run(item: RelayQueueItem) -> RelayQueueResult:
             try:
                 outcome = await self._relay.run_once(
                     item.first, item.second, item.task, admin_token=admin_token, _wave_key=key,
+                    _execution_deadline=_execution_deadline,
                 )
             except AgentSyncError as error:
                 failure = error.code if type(error.code) is str and error.code in _FAILURE_CODES else "relay_operation_failed"
@@ -649,12 +654,14 @@ class RelayQueue:
         parallel_limit: int = 1,
         max_waves: int = 2,
         start_window_seconds: float = 120,
+        execution_budget_seconds: float | None = None,
     ) -> RelaySequenceOutcome:
         """Continue prepared tasks only; every launch still requires exact fresh consent.
 
-        The window is checked before selecting each wave. It does not interrupt
-        admission or execution already underway. Nothing is retried, independently reviewed or
-        scheduled in the background. Reusing an admitted request fences replay.
+        The start window controls admission. An optional execution budget also
+        limits awaited execution and prevents further launches when it expires.
+        Cancellation does not prove child cleanup. Inspect the saved wave before
+        taking any further action.
         """
         items = self._validate_items(items, parallel_limit)
         _identifier(request_id)
@@ -662,23 +669,44 @@ class RelayQueue:
             type(max_waves) is not int or not 1 <= max_waves <= 4
             or type(start_window_seconds) not in (int, float)
             or not 0 < start_window_seconds <= 900 or not math.isfinite(start_window_seconds)
+            or (execution_budget_seconds is not None and (
+                type(execution_budget_seconds) not in (int, float)
+                or not 0 < execution_budget_seconds <= 900
+            ))
         ):
             _invalid()
         loop = asyncio.get_running_loop()
         deadline = loop.time() + start_window_seconds
+        execution_deadline = None if execution_budget_seconds is None else loop.time() + execution_budget_seconds
         project = items[0].first.profile.project_id
         outcomes: list[RelayQueueOutcome] = []
         remaining = items
         for index in range(max_waves):
+            if execution_deadline is not None and loop.time() >= execution_deadline:
+                return RelaySequenceOutcome("execution_limit", tuple(outcomes))
             if loop.time() >= deadline:
                 return RelaySequenceOutcome("time_limit", tuple(outcomes))
             wave_request = digest(["relay-queue-sequence-v1", project, request_id, index])
-            wave = await self.run_ready_once(
-                remaining, request_id=wave_request, admin_token=admin_token, parallel_limit=parallel_limit,
-            )
+            timer = asyncio.timeout_at(execution_deadline)
+            try:
+                async with timer:
+                    wave = await self.run_ready_once(
+                        remaining, request_id=wave_request, admin_token=admin_token,
+                        parallel_limit=parallel_limit, _execution_deadline=execution_deadline,
+                    )
+            except TimeoutError:
+                if not timer.expired():
+                    raise
+                return RelaySequenceOutcome("execution_limit", tuple(outcomes))
+            except AgentSyncError as error:
+                if error.code != "relay_execution_limit":
+                    raise
+                return RelaySequenceOutcome("execution_limit", tuple(outcomes))
             if wave.state == "no_ready_tasks":
                 return RelaySequenceOutcome("no_ready_tasks", tuple(outcomes))
             outcomes.append(wave)
+            if any(row.failure_code == "relay_execution_limit" for row in wave.tasks):
+                return RelaySequenceOutcome("execution_limit", tuple(outcomes))
             if wave.state != "resolved":
                 return RelaySequenceOutcome("incomplete", tuple(outcomes))
             attempted = {row.task_id for row in wave.tasks}

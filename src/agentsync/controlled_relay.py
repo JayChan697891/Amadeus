@@ -47,6 +47,11 @@ def _reject() -> NoReturn:
     raise AgentSyncError("relay_boundary", "The controlled relay no longer matches its scope.", 409)
 
 
+def _check_execution_deadline(deadline: float | None) -> None:
+    if deadline is not None and asyncio.get_running_loop().time() >= deadline:
+        raise AgentSyncError("relay_execution_limit", "The controlled relay execution budget expired.", 409)
+
+
 @dataclass(frozen=True, slots=True)
 class RelayActor:
     agent_id: str
@@ -512,7 +517,9 @@ class ControlledRelay:
         stage: str,
         task: AdapterTask,
         expected_reply: str,
+        execution_deadline: float | None,
     ) -> dict[str, Any]:
+        _check_execution_deadline(execution_deadline)
         prefix = f"relay:{key}:{stage}"
         lease_token = claim["lease_token"]
         active = self._call(
@@ -522,6 +529,7 @@ class ControlledRelay:
 
         def renew(_: AdapterTask) -> None:
             nonlocal active
+            _check_execution_deadline(execution_deadline)
             self._workspace(actor, spec.task_id)
             active = self._call(
                 actor, "renew_lease", task_id=spec.task_id, lease_token=lease_token,
@@ -535,6 +543,7 @@ class ControlledRelay:
                 or current["lease_expires_at"] <= time.time() + spec.timeout_seconds + 2
             ):
                 _reject()
+            _check_execution_deadline(execution_deadline)
 
         factory = ApprovedLaunchFactory(
             actor.profile, environment=actor.environment, receipts=self._receipts,
@@ -562,6 +571,7 @@ class ControlledRelay:
                     error_code=_matched_text(run.error_code, r"[a-z_]{1,64}"),
                     **_terminal_metrics(run),
                 )
+                _check_execution_deadline(execution_deadline)
                 _reject()
             result = await adapter.get_result(run.run_id)
         except (TimeoutError, asyncio.CancelledError):
@@ -646,7 +656,7 @@ class ControlledRelay:
 
     async def run_once(
         self, first: RelayActor, second: RelayActor, spec: RelayInput, *, admin_token: str,
-        _wave_key: str | None = None,
+        _wave_key: str | None = None, _execution_deadline: float | None = None,
     ) -> RelayOutcome:
         if type(first) is not RelayActor:
             _reject()
@@ -657,6 +667,7 @@ class ControlledRelay:
             _reject()
         self._authorize_owner(first, admin_token)
         task, reference, revision, (first_task, second_task) = self._pinned_inputs(first, second, spec)
+        _check_execution_deadline(_execution_deadline)
         self._check_receipt_anchor(first.profile.project_id, bind=True)
         key = self._key(first, spec.task_id)
         self._record(key, "incomplete", context_version=spec.context_version, wave_sha256=_wave_key)
@@ -669,11 +680,13 @@ class ControlledRelay:
                 key, "conflict", conflict_count=len(comparison["conflict_paths"]), wave_sha256=_wave_key
             )
             return RelayOutcome("conflict")
+        _check_execution_deadline(_execution_deadline)
         a = await self._attempt(
             first, spec, self._claim(first, spec.task_id, task["version"], f"relay:{key}:claim-a"),
-            key, "first", first_task, spec.first_reply,
+            key, "first", first_task, spec.first_reply, _execution_deadline,
         )
         self._workspace(first, spec.task_id)
+        _check_execution_deadline(_execution_deadline)
         package = self._call(
             first, "submit_handoff", task_id=spec.task_id, lease_token=a["lease_token"],
             expected_version=a["version"], target_agent_id=second.agent_id,
@@ -683,6 +696,7 @@ class ControlledRelay:
         received = self._call(second, "get_handoff", handoff_id=package["id"])
         if received != package or received["contexts"] != [revision]:
             _reject()
+        _check_execution_deadline(_execution_deadline)
         accepted = self._call(
             second, "resolve_handoff", handoff_id=package["id"], expected_version=package["task_version"],
             accept=True, request_id=f"relay:{key}:accept",
@@ -695,18 +709,21 @@ class ControlledRelay:
         ):
             _reject()
         self._record(key, "handoff", context_version=spec.context_version, task_version=current["version"])
+        _check_execution_deadline(_execution_deadline)
         b = await self._attempt(
             second, spec, self._claim(second, spec.task_id, current["version"], f"relay:{key}:claim-b"),
-            key, "second", second_task, spec.second_reply,
+            key, "second", second_task, spec.second_reply, _execution_deadline,
         )
         self._workspace(first, spec.task_id)
         self._workspace(second, spec.task_id)
+        _check_execution_deadline(_execution_deadline)
         submission = {
             "task_version": b["version"] + 1,
             "sender_sha256": digest(first.agent_id), "recipient_sha256": digest(second.agent_id),
             "owner_session_sha256": digest(second.profile.session_id), "wave_sha256": _wave_key,
         }
         self._record(key, "review-intent", **submission)
+        _check_execution_deadline(_execution_deadline)
         reviewed = self._call(
             second, "update_task", task_id=spec.task_id, lease_token=b["lease_token"],
             expected_version=b["version"], status="review", result=_REVIEW_MARKER,
