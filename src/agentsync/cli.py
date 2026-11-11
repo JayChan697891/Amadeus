@@ -173,7 +173,9 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     )
     relay_status.add_argument("--scratch-root", type=Path, required=True)
     relay_status.add_argument("--receipts", type=Path, required=True)
-    relay_status.add_argument("--history", action="store_true")
+    relay_view = relay_status.add_mutually_exclusive_group()
+    relay_view.add_argument("--history", action="store_true")
+    relay_view.add_argument("--task-id", help="Show saved attempt observations for this task")
     relay_status.add_argument("--limit", type=int, default=16)
     relay_status.add_argument("--before")
     serve = commands.add_parser("serve", help="Run authenticated loopback HTTP server")
@@ -219,7 +221,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
 
         return run_relay_status_cli(
             Path(data_dir), args.scratch_root, args.receipts,
-            history=args.history, limit=args.limit, before=args.before,
+            history=args.history, limit=args.limit, before=args.before, task_id=args.task_id,
         )
     if args.command == "owner":
         try:

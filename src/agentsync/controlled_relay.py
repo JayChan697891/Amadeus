@@ -272,7 +272,11 @@ class ControlledRelay:
         self._receipt_store.write(self._receipt_name(key, stage), {"stage": stage, "time": time.time(), **detail})
 
     def _key(self, actor: RelayActor, task_id: str) -> str:
-        return digest([actor.profile.project_id, task_id])
+        return self._task_receipt_key(actor.profile.project_id, task_id)
+
+    @staticmethod
+    def _task_receipt_key(project_id: str, task_id: str) -> str:
+        return digest([project_id, task_id])
 
     def _read_receipt(self, key: str, stage: str) -> dict[str, Any] | None:
         receipt = self._receipt_store.read(self._receipt_name(key, stage))
@@ -381,8 +385,22 @@ class ControlledRelay:
         _identifier(task_id)
         self._authorize_owner(actor, admin_token)
         self._state(actor, task_id)
-        self._check_receipt_anchor(actor.profile.project_id)
-        key = self._key(actor, task_id)
+        return self._project_attempts(actor.profile.project_id, task_id)
+
+    def owner_inspect_attempts(
+        self, project_id: str, task_id: str, *, admin_token: str,
+    ) -> tuple[RelayAttemptObservation, RelayAttemptObservation]:
+        """Read historical attempt receipts with project-owner authority after sessions expire."""
+        _identifier(project_id)
+        _identifier(task_id)
+        self._authorize_project_owner(project_id, admin_token)
+        return self._project_attempts(project_id, task_id)
+
+    def _project_attempts(
+        self, project_id: str, task_id: str,
+    ) -> tuple[RelayAttemptObservation, RelayAttemptObservation]:
+        self._check_receipt_anchor(project_id)
+        key = self._task_receipt_key(project_id, task_id)
         return self._inspect_attempt(key, "first"), self._inspect_attempt(key, "second")
 
     def _authorize_owner(self, actor: RelayActor, admin_token: str) -> None:

@@ -1,4 +1,4 @@
-"""Project-owner inspection of a local relay journal."""
+"""Project-owner inspection of local relay receipts and the wave journal."""
 
 import json
 import sqlite3
@@ -25,6 +25,7 @@ def run_relay_status_cli(
     history: bool,
     limit: int,
     before: str | None,
+    task_id: str | None = None,
 ) -> int:
     try:
         raw = sys.stdin.buffer.read(_INPUT_LIMIT + 1)
@@ -57,13 +58,18 @@ def run_relay_status_cli(
         if not database.is_file():
             raise ValueError
 
-        queue = RelayQueue(ControlledRelay(Core(data_dir), scratch_root, receipts))
+        relay = ControlledRelay(Core(data_dir), scratch_root, receipts)
         result: dict[str, Any] | None
-        if history:
-            result = asdict(queue.owner_history(**credentials, limit=limit, before=before))
+        if task_id is not None:
+            attempts = relay.owner_inspect_attempts(task_id=task_id, **credentials)
+            result = {"task_id": task_id, "attempts": [asdict(attempt) for attempt in attempts]}
         else:
-            pending = queue.owner_observe_pending(**credentials)
-            result = None if pending is None else asdict(pending)
+            queue = RelayQueue(relay)
+            if history:
+                result = asdict(queue.owner_history(**credentials, limit=limit, before=before))
+            else:
+                pending = queue.owner_observe_pending(**credentials)
+                result = None if pending is None else asdict(pending)
         response = {"ok": True, "data": result}
     except AgentSyncError as error:
         response = error_envelope(error)
