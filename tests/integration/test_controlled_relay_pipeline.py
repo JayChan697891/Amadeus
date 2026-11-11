@@ -21,8 +21,8 @@ from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue, RelayQueueItem
 
 
-@pytest.mark.parametrize("conflict", [False, True], ids=["handoff-and-review", "conflict-before-launch"])
-async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, conflict):
+@pytest.mark.parametrize("scenario", ["handoff-and-review", "conflict-before-launch", "restart-after-replies"])
+async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, scenario):
     scratch = tmp_path.resolve()
     source = scratch / "source"
     source.mkdir()
@@ -66,7 +66,7 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
         for index, actor in enumerate((first, second))
     ]
     heads = [tree["head_sha"] for tree in trees]
-    if conflict:
+    if scenario == "conflict-before-launch":
         heads = [commit_edit(tree, "same.txt", f"fixture change {index}\n") for index, tree in enumerate(trees)]
 
     binary = scratch / "fixture-client.exe"
@@ -140,14 +140,31 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
     )
     relay = ControlledRelay(core, scratch, receipts)
     queue = RelayQueue(relay)
-    wave = await queue.run_ready_once(
-        (RelayQueueItem(*prepared, request),), request_id="fixture-wave",
-        admin_token=owner["admin_token"],
-    )
+    items = (RelayQueueItem(*prepared, request),)
+    request_id = "fixture-wave"
+    token = owner["admin_token"]
+    if scenario == "restart-after-replies":
+        def interrupted_record(*_args, **_kwargs):
+            raise AgentSyncError("storage_error", "Fixture interrupted before wave result was saved.")
+
+        monkeypatch.setattr(queue._journal, "record", interrupted_record)
+        with pytest.raises(AgentSyncError) as interrupted:
+            await queue.run_ready_once(items, request_id=request_id, admin_token=token)
+        assert interrupted.value.code == "storage_error"
+        relay = ControlledRelay(Core(core.data_dir), scratch, receipts)
+        queue = RelayQueue(relay)
+        pending = queue.owner_observe_pending(project_id, admin_token=token)
+        assert pending is not None and pending.receipt_state == "admitted"
+        wave = queue.reconcile_pending(
+            prepared[0], admin_token=token, expected_wave_id=pending.wave_id,
+        )
+        assert queue.owner_observe_pending(project_id, admin_token=token) is None
+    else:
+        wave = await queue.run_ready_once(items, request_id=request_id, admin_token=token)
     assert wave.state == "resolved"
     assert wave.verification == "unverified"
     assert source_fingerprint(source) == original
-    if conflict:
+    if scenario == "conflict-before-launch":
         assert wave.tasks[0].state == "conflict"
         assert not launches and not approvals
         return
@@ -155,6 +172,10 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
     assert wave.tasks[0].state == "ready_for_review"
     assert [approval.client for approval in approvals] == ["codex", "cursor"]
     assert launches == [Path(tree["path"]) for tree in trees]
+    with pytest.raises(AgentSyncError) as duplicate:
+        await queue.run_ready_once(items, request_id=request_id, admin_token=token)
+    assert duplicate.value.code == "attempt_already_reserved"
+    assert len(launches) == len(approvals) == 2
     attempts = relay.owner_inspect_attempts(project_id, task["id"], admin_token=owner["admin_token"])
     assert [attempt.status for attempt in attempts] == ["expected_reply", "expected_reply"]
     with pytest.raises(AgentSyncError):
