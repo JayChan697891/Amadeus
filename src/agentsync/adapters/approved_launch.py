@@ -122,6 +122,12 @@ def prepare_launch_review(
                 plan.output_limit,
                 plan.expected_cli_version,
                 plan.binary_sha256,
+                *(
+                    [["cursor-node-bundle-v1", plan.bundle_sha256]]
+                    if isinstance(plan, cursor_invocation.CursorInvocation)
+                    and plan.bundle_sha256 is not None
+                    else []
+                ),
             ]
         ),
         plan,
