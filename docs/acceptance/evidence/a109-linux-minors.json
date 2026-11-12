@@ -53,15 +53,62 @@
       "evidence_archive_sha256": "80aaa8ba392544f53ba6af97ab7e07cf24e10e97a19e8cf460a8a088953c1871"
     },
     "3.11": {
-      "state": "running"
+      "state": "passed",
+      "python": "3.11.18 (main, Nov 12 2026, 03:23:31) [GCC 15.2.0]",
+      "report_sha256": "3620fce1cb3261243ba1dc0795e30027303ac44af22d0c56d765f9a8194659a3",
+      "local_checks": 26,
+      "suites": {
+        "source": {
+          "tests": 2085,
+          "passed": 2080,
+          "skipped": 5,
+          "junit_sha256": "824afa6431bc3b62f1c05e9d49d2099c14a7113c340003298c112e53d8ff05b7"
+        },
+        "wheel": {
+          "tests": 2085,
+          "passed": 2080,
+          "skipped": 5,
+          "junit_sha256": "729141e5e70f40cae0cab3e5f92467fe125fd104422cad97116a2531c22a1a7f"
+        },
+        "sdist": {
+          "tests": 2085,
+          "passed": 2080,
+          "skipped": 5,
+          "junit_sha256": "61d714d1f3f03b653ccd812bccfd8bc5001777937097cc1e2f22ed7819835ebb"
+        }
+      },
+      "installations": {
+        "wheel": {
+          "artifact_sha256": "1e52c448b16ea38b58fb12427b18d8e7ef2ea2791aabbbb59e45bd45560af6d6",
+          "license_inventory_sha256": "e4cb505d5e15d0cc4fc4248b665046d72801cd30583c07c7f0bcc9d32d0943f1"
+        },
+        "sdist": {
+          "artifact_sha256": "de633120621d6d02375adece9abf01c1354231e8d93788ac424a5fd6f6b420f2",
+          "license_inventory_sha256": "e4cb505d5e15d0cc4fc4248b665046d72801cd30583c07c7f0bcc9d32d0943f1"
+        }
+      },
+      "docker_observations_by_suite": {
+        "pytest": 32,
+        "sdist_pytest": 32,
+        "wheel_pytest": 32
+      },
+      "evidence_archive_sha256": "97af7d88ba2e8be5e28144dafec9c17a2959e1d2aca6b99cfc0ddc97ec804fa7"
     }
   },
   "evidence_local": "D:/agentsync-debug/continuation-cc30ed21/linux-minor-runtime",
   "formal_release": "BLOCKED",
   "actual_model_clients": "NOT RUN",
   "docker_postcheck": {
-    "recorded_full_ids": 96,
+    "recorded_full_ids": 192,
     "remaining_recorded_ids": [],
     "all_recorded_ids_absent": true
+  },
+  "owned_guest_shutdown": {
+    "owned_pid": 22384,
+    "primary_disk_preserved": true,
+    "transport_exit": 0,
+    "workspace_disk_preserved": true,
+    "stopped": true,
+    "force_used": false
   }
 }
