@@ -110,6 +110,77 @@ def test_read_only_invocation_uses_fixed_host_flags_and_never_claims_execution(t
     assert isinstance(plan.cwd, Path)
 
 
+def test_linux_opt_in_plan_is_explicit_bounded_and_preserves_legacy(tmp_path, monkeypatch):
+    profile = profile_for(tmp_path, expected_cli_version="0.167.0-alpha.3.2")
+    legacy = prepare_invocation(profile, task(), environment={})
+    assert (
+        prepare_invocation(replace(profile, linux_readonly=False), task(), environment={}) == legacy
+    )
+    monkeypatch.setattr(codex_invocation.sys, "platform", "linux")
+    selected = prepare_invocation(replace(profile, linux_readonly=True), task(), environment={})
+    settings = tomllib.loads(
+        "\n".join(selected.argv[i + 1] for i, value in enumerate(selected.argv) if value == "-c")
+    )
+    assert selected.argv[selected.argv.index("--sandbox") + 1] == "read-only"
+    assert len(selected.argv) <= 64 and "--disable" not in selected.argv
+    assert settings["agents"]["enabled"] is False and settings["project_doc_max_bytes"] == 0
+    assert settings["browser_use"]["default_origin_policy"]["access"] == "deny"
+    assert settings["computer_use"]["default_app_access"] == "deny"
+    assert settings["features"] and all(value is False for value in settings["features"].values())
+    assert set(settings["features"]) >= {
+        "shell_tool",
+        "unified_exec",
+        "code_mode_host",
+        "code_mode",
+        "browser_use",
+        "computer_use",
+        "plugins",
+        "multi_agent",
+        "goals",
+        "image_generation",
+        "hooks",
+    }
+    assert selected.real_client_verified is selected.sandbox_verified is selected.executes is False
+    assert selected.argv != legacy.argv
+    assert (
+        prepare_launch_review(
+            replace(profile, linux_readonly=True), task(), environment={}
+        ).plan_sha256
+        != prepare_launch_review(profile, task(), environment={}).plan_sha256
+    )
+
+
+@pytest.mark.parametrize(
+    "platform,version",
+    [("win32", "0.167.0-alpha.3.2"), ("darwin", "0.167.0-alpha.3.2"), ("linux", "0.166.0-alpha.6")],
+)
+def test_linux_opt_in_rejects_other_hosts_and_unobserved_versions(
+    tmp_path, monkeypatch, platform, version
+):
+    monkeypatch.setattr(codex_invocation.sys, "platform", platform)
+    with pytest.raises(AgentSyncError) as caught:
+        prepare_invocation(
+            profile_for(tmp_path, linux_readonly=True, expected_cli_version=version),
+            task(),
+            environment={},
+        )
+    assert caught.value.code == "unsupported_linux_profile"
+
+
+@pytest.mark.parametrize(
+    "options",
+    [
+        {"linux_readonly": 1},
+        {"linux_readonly": "true"},
+        {"linux_readonly": None},
+        {"linux_readonly": True, "windows_mxc": True},
+    ],
+)
+def test_linux_opt_in_rejects_ambiguous_profile_flags(tmp_path, options):
+    with pytest.raises(AgentSyncError):
+        profile_for(tmp_path, **options)
+
+
 def test_task_text_cannot_choose_host_executable_model_root_or_provider(tmp_path):
     profile = profile_for(tmp_path, model="host-model.v1")
     instruction = "private-instruction --model other --sandbox bypass; OPENAI_API_KEY=dummy"

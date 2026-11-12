@@ -456,3 +456,18 @@ Local Python protocol fixtures test this integration separately from real-client
 acceptance. Actual model-generated proposals and independent artifact execution
 require their own recorded authorized execution; consult the current progress and
 Release Acceptance Report instead of treating this API as an acceptance certificate.
+# Explicit Linux single-task profile
+
+For the pinned `0.167.0-alpha.3.2` CLI on Linux, a trusted host may select
+`CodexHostProfile(..., linux_readonly=True)`. This is an opt-in plan, mutually
+exclusive with `windows_mxc`; default and earlier-version plans remain unchanged.
+It requests read-only execution, the same restricted feature set as the native
+Windows single-task plan, browser/computer default denial, no project instruction
+loading and no collaboration-agent registration. The compact inline feature table
+keeps the existing64-argument limit. A different plan requires its own consent.
+
+Requested settings do not prove effective features or absent tools. The host must
+check the actual pinned Linux CLI's configuration and tool projection before a
+live run. Plan flags do not authorize credential copying, attest billing, contain
+the whole CLI, or establish real-client/Release acceptance.
+

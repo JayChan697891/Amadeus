@@ -16,6 +16,7 @@ import math
 import os
 import re
 import stat
+import sys
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Literal, NoReturn
@@ -75,7 +76,7 @@ _DISABLE = (
     "skill_search",
     "skill_mcp_dependency_install",
 )
-_MXC_DISABLE = _DISABLE + (
+_SINGLE_TASK_DISABLE = _DISABLE + (
     "browser_use",
     "browser_use_external",
     "browser_use_full_cdp_access",
@@ -124,6 +125,7 @@ class CodexHostProfile:
     max_timeout_seconds: float = 300.0
     output_limit: int = 1024 * 1024
     windows_mxc: bool = False
+    linux_readonly: bool = False
 
     def __post_init__(self) -> None:
         # Structural validation performs no filesystem or environment reads.
@@ -150,6 +152,8 @@ class CodexHostProfile:
         if (
             not valid_timeout
             or type(self.windows_mxc) is not bool
+            or type(self.linux_readonly) is not bool
+            or (self.windows_mxc and self.linux_readonly)
             or type(self.output_limit) is not int
             or not 1 <= self.output_limit <= 1024 * 1024
         ):
@@ -208,6 +212,28 @@ def _environment(value: dict[str, str]) -> tuple[tuple[str, str], ...]:
     return tuple(sorted(selected.items()))
 
 
+def _single_task_config() -> tuple[str, ...]:
+    disabled = ",".join(f"{feature}=false" for feature in _SINGLE_TASK_DISABLE)
+    return (
+        f"features={{{disabled}}}",
+        'browser_use.default_origin_policy.access="deny"',
+        'computer_use.default_app_access="deny"',
+        "project_doc_max_bytes=0",
+        "agents.enabled=false",
+    )
+
+
+def _linux_arguments(profile: CodexHostProfile) -> tuple[str, ...]:
+    """Explicit single-task Linux plan; effective tools still need host evidence."""
+    if sys.platform != "linux" or profile.expected_cli_version != "0.167.0-alpha.3.2":
+        _invalid("unsupported_linux_profile")
+    return (
+        "--sandbox",
+        "read-only",
+        *(argument for value in _single_task_config() for argument in ("-c", value)),
+    )
+
+
 def _mxc_arguments(profile: CodexHostProfile, environment: dict[str, str]) -> tuple[str, ...]:
     """Select an explicit native boundary; host evidence and consent remain required."""
     if os.name != "nt" or profile.expected_cli_version != "0.167.0-alpha.3.2":
@@ -226,17 +252,12 @@ def _mxc_arguments(profile: CodexHostProfile, environment: dict[str, str]) -> tu
     # Inline settings are part of the approved plan; no mutable named config
     # file can broaden the profile after the host reviews it.
     root = json.dumps(profile.root.as_posix(), ensure_ascii=False)
-    disabled = ",".join(f"{feature}=false" for feature in _MXC_DISABLE)
     config = (
         'windows.sandbox="mxc"',
         'default_permissions="amadeus_readonly"',
         f'permissions.amadeus_readonly.filesystem={{":minimal"="read",{root}="read"}}',
         "permissions.amadeus_readonly.network.enabled=false",
-        f"features={{{disabled}}}",
-        'browser_use.default_origin_policy.access="deny"',
-        'computer_use.default_app_access="deny"',
-        "project_doc_max_bytes=0",
-        "agents.enabled=false",
+        *_single_task_config(),
     )
     return tuple(argument for value in config for argument in ("-c", value))
 
@@ -309,6 +330,8 @@ def prepare_invocation(
     boundary = (
         _mxc_arguments(profile, dict(selected_environment))
         if profile.windows_mxc
+        else _linux_arguments(profile)
+        if profile.linux_readonly
         else ("--sandbox", "read-only")
     )
     binary_sha256 = _binary_hash(profile)
@@ -331,7 +354,7 @@ def prepare_invocation(
         *(argument for config in _CONFIG for argument in ("-c", config)),
         *(
             ()
-            if profile.windows_mxc
+            if profile.windows_mxc or profile.linux_readonly
             else tuple(argument for feature in _DISABLE for argument in ("--disable", feature))
         ),
         "-",
