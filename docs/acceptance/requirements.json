@@ -1066,7 +1066,10 @@
         "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
         "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
         "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
-        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state"
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
+        "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
+        "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
+        "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay"
       ],
       "planned_cases": [
         {

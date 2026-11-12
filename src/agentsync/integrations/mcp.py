@@ -162,6 +162,26 @@ def build_server(data_dir: str | Path | None = None) -> MCPServer:
         )
 
     @server.tool()
+    def publish_task_proposal(
+        project_id: str,
+        session_id: str,
+        session_token: str,
+        task_id: str,
+        lease_token: str,
+        expected_version: int,
+        worktree_id: str,
+        expected_head: str,
+        allowed_paths: list[str],
+        proposal_json: str,
+        request_id: str,
+    ) -> dict[str, Any]:
+        """Store unverified source data at a pinned task/worktree; never apply or execute it."""
+        return client.call(
+            "publish_task_proposal",
+            **{key: value for key, value in locals().items() if key != "client"},
+        )
+
+    @server.tool()
     def get_context(
         project_id: str,
         session_id: str,

@@ -40,6 +40,7 @@ WORKER_OPERATIONS = frozenset(
         "update_task",
         "reclaim_expired",
         "publish_context",
+        "publish_task_proposal",
         "submit_handoff",
         "resolve_handoff",
         "withdraw_handoff",

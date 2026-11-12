@@ -327,3 +327,29 @@ may reject strict configuration, and home/config may supply credentials/provider
 Authentication, billing, tool restrictions, sandboxing and real-client compatibility
 remain unverified. Start spies and synthetic Claude JSONL from known Python
 helpers establish wiring and local lifecycle only; no actual Claude call was made.
+
+## Task-bound inert source proposals
+
+`publish_task_proposal` is available through Core, SDK, loopback HTTP and MCP.
+It checks an authenticated worker, a running task at the exact version, the live
+lease and that worker's task-bound managed worktree at a clean expected Git head.
+After Git inspection it checks lease expiry again. A new context revision, the
+request's idempotency record and audit commit in one transaction. It leaves the
+task running and returns only the context reference, binding and content SHA256.
+An authenticated replay returns the original historical revision, even if the task
+later advances or its lease expires; it never republishes or renews authority.
+
+`proposal_json` is exactly `{"files":[{"path":"answer.py","content":"..."}]}`.
+It must contain every caller-declared allowed path exactly once: at most8 files,
+8192 UTF-8 bytes per content and32768 bytes per JSON envelope. Canonical context
+is additionally limited to65536 bytes. Duplicate JSON keys, extra fields, Markdown
+wrappers, aliases, path traversal and overlapping file/directory labels are rejected.
+The data is never imported as Python, executed or written into a worktree.
+
+This is authenticated publication of unverified data, not proof of a model run.
+Worker-supplied allowed paths and the context source label are not authorization;
+ordinary context publication can imitate labels. A later host importer must verify
+its own approved contract, actual publication receipt/audit, pinned immutable context
+revision and current source baseline. It must create a genuine managed candidate
+before entering existing owner-only verification gates. Adapter capture integration,
+import, isolated artifact execution and verified completion are still outstanding.

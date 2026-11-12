@@ -4,16 +4,84 @@ Git is called only after all involved project-scoped records have been resolved.
 Filesystem receipts survive a rolled-back database transaction and carry no auth.
 """
 
+import hashlib
 import json
 import sqlite3
+import time
 import uuid
 from typing import Any
 
 from agentsync.errors import AgentSyncError
+from agentsync.proposals import parse_proposal
 from agentsync.resources.paths import resolve_resource
 
 
 class WorkspacesMixin:
+    def _publish_task_proposal(
+        self, db: sqlite3.Connection, p: dict[str, Any], now: float, session: sqlite3.Row
+    ) -> dict[str, Any]:
+        """Publish inert code data under the current task lease, without applying it.
+
+        Context, idempotency and audit commit together. Context metadata is a
+        revision binding, not authenticated model provenance or a merge candidate.
+        Any later importer must independently authorize and recheck its inputs.
+        """
+        task = self._task(db, p)  # type: ignore[attr-defined]
+        self._version(task, p)  # type: ignore[attr-defined]
+        self._lease(task, p, p["lease_token"], now)  # type: ignore[attr-defined]
+        if task["status"] != "running":
+            raise AgentSyncError("invalid_state", "Proposal requires a running task.", 409)
+        files = parse_proposal(p["proposal_json"], p["allowed_paths"])
+        workspace = self._inspect_owned_worktree(db, {**p, "metadata_only": False}, now, session)
+        if workspace["head_sha"] != p["expected_head"] or workspace["dirty"]:
+            raise AgentSyncError("workspace_boundary", "Proposal baseline no longer matches.", 409)
+        content = json.dumps(
+            {
+                "format": "amadeus-source-proposal-v1",
+                "project_id": p["project_id"],
+                "task_id": p["task_id"],
+                "task_version": task["version"],
+                "worktree_id": p["worktree_id"],
+                "base_head": p["expected_head"],
+                "execution_provenance": "unverified",
+                "files": files,
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        if len(content.encode("utf-8")) > 65536:
+            raise AgentSyncError("proposal_invalid", "Canonical proposal exceeds its data limit.")
+        # Git inspection may take time; do not publish under an expired lease.
+        self._lease(task, p, p["lease_token"], time.time())  # type: ignore[attr-defined]
+        context = self._publish_context(  # type: ignore[attr-defined]
+            db,
+            {
+                "project_id": p["project_id"],
+                "session_id": p["session_id"],
+                "kind": "note",
+                "title": "Unverified source proposal",
+                "content": content,
+                "summary": "Inert source data. Not applied, executed or independently verified.",
+                "source": "amadeus:task-proposal",
+                "context_id": None,
+                "expected_version": 0,
+            },
+            now,
+            session,
+        )
+        return {
+            "context_id": context["id"],
+            "context_version": context["version"],
+            "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            "task_id": p["task_id"],
+            "task_version": task["version"],
+            "worktree_id": p["worktree_id"],
+            "base_head": p["expected_head"],
+            "verification": "unverified",
+            "execution_provenance": "unverified",
+        }
+
     def _workspace_store(self) -> Any:
         from agentsync.workspaces.git import GitWorkspaceStore
 

@@ -81,6 +81,19 @@ class GetContext(Auth):
     version: int | None = Field(default=None, ge=1, le=2**63 - 1)
 
 
+class PublishTaskProposal(Auth):
+    task_id: str = Field(min_length=1, max_length=200)
+    lease_token: str = Field(min_length=1, max_length=200)
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    worktree_id: str = Field(min_length=1, max_length=200)
+    expected_head: str = Field(pattern=r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$")
+    allowed_paths: list[Annotated[str, Field(min_length=1, max_length=512)]] = Field(
+        min_length=1, max_length=8
+    )
+    proposal_json: str = Field(min_length=1, max_length=32768)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
 class SearchContext(Auth):
     query: str = Field(min_length=1, max_length=500)
     kind: ContextKind | None = None
@@ -295,6 +308,7 @@ OPERATIONS: dict[str, type[StrictModel]] = {
     "review_task": ReviewTask,
     "reclaim_expired": Auth,
     "publish_context": PublishContext,
+    "publish_task_proposal": PublishTaskProposal,
     "get_context": GetContext,
     "search_context": SearchContext,
     "submit_handoff": SubmitHandoff,
