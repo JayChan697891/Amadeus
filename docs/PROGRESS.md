@@ -1,5 +1,40 @@
 # Amadeus current progress
 
+## Pinned proposal input for the next actor
+
+Frozen2ac4557 adds optional ProposalContextPin to CodexProposalInput. The receiving
+actor authenticates its own Core read of an exact producer task/context revision
+and hash. Complete capture/publication/submitted receipts and original launch
+binding are required; same Agent under another session cannot become its own
+independent reviewer. The exact original bytes are supplied as untrusted data,
+with the full rendered16000UTF-8byte input cap checked before claim or launch.
+Pins bind launch contracts, selection and durable observation; removing or
+changing them invalidates old bindings. No-pin legacy digests remain unchanged.
+
+An A-to-B-to-C fixture confirms only direct B content is read, not ancestor A;
+B's own ancestor pin remains part of its original launch contract. This supports
+continued review/fix relay without recursive context loading or claims about
+ancestor current validity. Review output stays inert/unverified; existing Core
+review, dependency, staging, candidate and verified-completion gates are unchanged.
+
+Final Windows source85passes; fresh Windows3.12.16 and Linux3.14.7 wheels each
+85passes, zero skips/failures.88runtime members match before/after, no source
+shadowing, valid dependencies. Root Ruff/format3files and mypy87modules pass.
+Independent source/package review accepted the scope;735tracked sdist members
+match the frozen commit. The first21pass/1fixture-setup-error run is preserved
+with sanitized logs. Its trusted Python echo transport was compressed to fit the
+existing transport cap; no product limit was raised or result rewritten.
+[Evidence](acceptance/evidence/m7-proposal-context/summary.json).
+
+Artifacts: releases/0.3.0a109/m7-context-2ac4557. Debug:
+D:/agentsync-debug/m7-package-proposal-context; guest
+/root/amadeus-proposal-context-2ac4557. New full matrix and sdist installation
+remain NOT RUN; earlier6017005 full/actual results retain their original scope.
+Next prepare one bounded distinct real Codex reviewer consuming the already
+captured6017005 producer artifact through2ac4557, without rerunning that producer.
+Only helper preparation is in progress; no second model launch has occurred.
+This is not yet real second-model or complete M7 acceptance; Release stays BLOCKED.
+
 ## Actual queued Codex proposal and verified same-task completion
 
 Runtime6017005 now has an actual single queued Codex proposal: authenticated

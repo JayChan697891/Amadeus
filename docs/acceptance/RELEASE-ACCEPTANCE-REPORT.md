@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## Pinned producer input: limited source and package acceptance
+
+Runtime2ac4557 lets a distinct actor consume a producer's exact immutable proposal
+through its own authenticated Core session. Full direct-source receipt/launch
+proof is required. Context pins bind the next launch, queue selection and replay;
+same-agent different-session review, forged/missing proof and oversized input are
+rejected. A-to-B-to-C reads only B while checking B's bound ancestor pin; it does
+not recursively read A or assert ancestor current validity. Legacy no-pin paths
+retain their digests. Review artifacts remain unverified data and do not grant
+Core approval, staging, execution, source application or verified completion.
+
+Final source85passed; fresh Windows3.12.16/Linux3.14.7 wheels each85passed, no
+failures/skips.88members match before/after, pip checks and root static checks
+pass. Independent review confirmed all88wheel members and735tracked sdist members
+against the frozen commit. Original21pass/1fixture-setup-error evidence is retained;
+only the trusted fixture's transport was changed, with product limits unchanged.
+[Evidence](evidence/m7-proposal-context/summary.json).
+
+New full matrix, sdist installation and actual second-model relay remain NOT RUN.
+Older6017005 full/actual evidence is not promoted to2ac4557. Formal Release remains
+BLOCKED; unavailable Claude/Cursor and unverified lifecycle requirements remain.
+
 ## Actual single queued proposal: limited acceptance
 
 On runtime6017005, one actual subscription-route Codex call completed through the

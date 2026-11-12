@@ -38,6 +38,10 @@ docs/acceptance/evidence/m6-full-regression/*full.log -whitespace
 docs/acceptance/evidence/m6-full-regression/*full.xml -whitespace
 docs/acceptance/evidence/m6-full-regression/windows-repair.log -whitespace
 # Preserve original evidence hashes from bounded local validation.
+docs/acceptance/evidence/m7-proposal-context/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Retain pytest's assertion-rendering whitespace in the original failed fixture report.
+docs/acceptance/evidence/m7-proposal-context/m7-pinned-proposal-first.log -whitespace
+docs/acceptance/evidence/m7-proposal-context/m7-pinned-proposal-first.xml -whitespace
 docs/acceptance/evidence/m7-queue-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m7-full-regression/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 # The captured Windows full-run log retains CRCRLF bytes bound by its checksum.

@@ -1,0 +1,43 @@
+.........E............                                                   [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_invalid_model_review_source_prevents_claim_and_launch[oversize] _
+
+pilot = (<agentsync.core.service.Core object at 0x00000257D82274D0>, {'project_id': '2c1e203c-7171-458f-875b-410e374e5dd0', 'a..., 'task_id': '9fd73f4b-9480-45eb-b004-f58af4eae136', 'base_sha': 'ca4f4524dda2c473a14cb5cbf62a378b6a6cfaee', ...}, ...)
+world = (<agentsync.core.service.Core object at 0x00000257D82274D0>, {'project_id': '2c1e203c-7171-458f-875b-410e374e5dd0', 'a..., 'task_id': '33f51642-ee66-4904-8b96-e6b467786820', 'base_sha': 'ca4f4524dda2c473a14cb5cbf62a378b6a6cfaee', ...}, ...)
+proposal_wave = (<agentsync.controlled_relay.ControlledRelay object at 0x00000257D8227980>, CodexProposalQueueItem(task=CodexProposalI...8b59802069d798b6a1c11ffb060211c27cbde0a761f2c7190ed')], [], <asyncio.locks.Event object at 0x00000257D8358730 [unset]>)
+request = <SubRequest 'pinned_proposal' for <Coroutine test_invalid_model_review_source_prevents_claim_and_launch[oversize]>>
+
+    @pytest.fixture
+    async def pinned_proposal(pilot, world, proposal_wave, request):
+        core, owner, producer, auth, task, tree, source, _, _ = pilot
+        relay, item, reviewer, approvals, captures, _ = proposal_wave
+        cancel_fixture_load(world)
+        scenario = getattr(request, "param", None)
+        queue = RelayQueue(relay)
+        token = owner["admin_token"]
+        if scenario == "oversize":
+            item = replace(
+                item,
+                task=replace(
+                    item.task, instruction="Oversize fixture", allowed_paths=("left.py", "right.py")
+                ),
+            )
+        if scenario == "stored-only":
+            stored = await relay.run_codex_proposal_once(
+                item.first,
+                replace(item.task, submit_for_review=False),
+                admin_token=[REDACTED],
+            )
+        else:
+>           assert (
+                await queue.run_ready_once((item,), request_id="producer", admin_token=[REDACTED])
+            ).state == "resolved"
+E           AssertionError: assert 'incomplete' == 'resolved'
+E             
+E             - resolved
+E             + incomplete
+
+tests\integration\test_codex_proposal_relay_queue.py:235: AssertionError
+=========================== short test summary info ===========================
+ERROR tests/integration/test_codex_proposal_relay_queue.py::test_invalid_model_review_source_prevents_claim_and_launch[oversize]
+21 passed, 1 error in 53.02s

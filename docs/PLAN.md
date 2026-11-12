@@ -9,6 +9,14 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+Frozen2ac4557 adds an authenticated exact producer-proposal reference for the next
+actor. Direct capture/publication/submission proof and different Core author are
+required; content is untrusted bounded input, not execution authority. The
+nonrecursive A-to-B-to-C path and old no-pin digests are covered.85source checks
+and85fresh-wheel checks on each Windows/Linux platform pass, with independent
+source/package review. Next validate a distinct real reviewer against the saved
+actual producer artifact; no second model has started. New full matrix remains
+NOT RUN and historical6017005 evidence is not upgraded to this new commit.
 The6017005 queued proposal path now has one actual Codex execution, followed by
 explicit host-approved staging,8/8actual Docker inputs and distinct Core reviewer
 completion of the same task. Reopened state is completed/v6/verified; temporary

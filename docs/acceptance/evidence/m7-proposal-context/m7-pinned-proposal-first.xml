@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="22" time="52.972" timestamp="2026-11-12T05:45:48.254522-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_model_review_queue_uses_exact_pinned_proposal_after_producer_expiry" time="3.383" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[same-agent]" time="2.602" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[cross-project]" time="2.440" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[wrong-version]" time="2.473" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[wrong-hash]" time="2.541" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[ordinary-context]" time="2.397" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[stored-only]" time="2.248" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[missing-submitted]" time="2.391" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[read-denied]" time="2.554" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_invalid_model_review_source_prevents_claim_and_launch[oversize]" time="1.510"><error message="failed on setup with &quot;AssertionError: assert 'incomplete' == 'resolved'&#10;  &#10;  - resolved&#10;  + incomplete&quot;">pilot = (&lt;agentsync.core.service.Core object at 0x00000257D82274D0&gt;, {'project_id': '2c1e203c-7171-458f-875b-410e374e5dd0', 'a..., 'task_id': '9fd73f4b-9480-45eb-b004-f58af4eae136', 'base_sha': 'ca4f4524dda2c473a14cb5cbf62a378b6a6cfaee', ...}, ...)
+world = (&lt;agentsync.core.service.Core object at 0x00000257D82274D0&gt;, {'project_id': '2c1e203c-7171-458f-875b-410e374e5dd0', 'a..., 'task_id': '33f51642-ee66-4904-8b96-e6b467786820', 'base_sha': 'ca4f4524dda2c473a14cb5cbf62a378b6a6cfaee', ...}, ...)
+proposal_wave = (&lt;agentsync.controlled_relay.ControlledRelay object at 0x00000257D8227980&gt;, CodexProposalQueueItem(task=CodexProposalI...8b59802069d798b6a1c11ffb060211c27cbde0a761f2c7190ed')], [], &lt;asyncio.locks.Event object at 0x00000257D8358730 [unset]&gt;)
+request = &lt;SubRequest 'pinned_proposal' for &lt;Coroutine test_invalid_model_review_source_prevents_claim_and_launch[oversize]&gt;&gt;
+
+    @pytest.fixture
+    async def pinned_proposal(pilot, world, proposal_wave, request):
+        core, owner, producer, auth, task, tree, source, _, _ = pilot
+        relay, item, reviewer, approvals, captures, _ = proposal_wave
+        cancel_fixture_load(world)
+        scenario = getattr(request, "param", None)
+        queue = RelayQueue(relay)
+        token = owner["admin_token"]
+        if scenario == "oversize":
+            item = replace(
+                item,
+                task=replace(
+                    item.task, instruction="Oversize fixture", allowed_paths=("left.py", "right.py")
+                ),
+            )
+        if scenario == "stored-only":
+            stored = await relay.run_codex_proposal_once(
+                item.first,
+                replace(item.task, submit_for_review=False),
+                admin_token=[REDACTED],
+            )
+        else:
+&gt;           assert (
+                await queue.run_ready_once((item,), request_id="producer", admin_token=[REDACTED])
+            ).state == "resolved"
+E           AssertionError: assert 'incomplete' == 'resolved'
+E             
+E             - resolved
+E             + incomplete
+
+tests\integration\test_codex_proposal_relay_queue.py:235: AssertionError</error></testcase><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_pinned_launch_rejects_consent_for_unpinned_plan[stale-consent]" time="2.510" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_model_review_source_does_not_expand_ancestor_contexts[chain]" time="3.809" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_proposal_queue_requires_current_heartbeat_before_launch" time="2.270" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_proposal_queue_uses_load_capabilities_and_core_dependencies" time="3.036" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_mixed_wave_slots_exclude_shared_agent_and_root" time="2.278" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_proposal_wave_reconciles_saved_receipts[submitted]" time="2.073" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_proposal_wave_reconciles_saved_receipts[completed]" time="2.159" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_proposal_wave_reconciles_saved_receipts[cross-wave]" time="1.982" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_uncertain_proposal_wave_keeps_its_fence[revoked]" time="1.579" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_uncertain_proposal_wave_keeps_its_fence[stale-consent]" time="1.627" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_uncertain_proposal_wave_keeps_its_fence[cancelled]" time="1.550" /><testcase classname="tests.integration.test_codex_proposal_relay_queue" name="test_uncertain_proposal_wave_keeps_its_fence[execution-limit]" time="1.634" /></testsuite></testsuites>
