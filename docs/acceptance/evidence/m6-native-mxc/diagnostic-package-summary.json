@@ -1,0 +1,52 @@
+{
+  "product_sha": "080722e8882a7c4d83a7afa80fc6427170e93fec",
+  "scope": "New diagnostic cases only, same frozen wheel freshly installed offline on Windows Python3.12 and Linux Python3.14",
+  "windows": {
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "deselected": 44,
+    "runtime_modules_matched_before_and_after": 84,
+    "pip_check": "passed"
+  },
+  "linux": {
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "deselected": 44,
+    "runtime_modules_matched_before_and_after": 84,
+    "pip_check": "passed",
+    "owned_vm_stopped": true
+  },
+  "build": "Wheel rebuilt from frozen sdist using existing pinned build environment; dependencies installed from pre-existing local wheelhouses; no network package fetch",
+  "artifact_sha256": {
+    "releases/0.3.0a109/m6-diagnostics-080722e/agentsync_local-0.3.0a109-py3-none-any.whl": "8ba85d597daf9bdb9017a1692e9e8f59052032bb769d16b7d9dc3b0534210bc3",
+    "releases/0.3.0a109/m6-diagnostics-080722e/agentsync_local-0.3.0a109.tar.gz": "37a7fa7ca7ab313c6760e1963454fe7c55b83ce9e08245556f9473cc7381fc72"
+  },
+  "evidence_sha256": {
+    "diag-package-build.log": "1c1ea1d285eb6955c7311acdb142665ebeb7cc717ec1b26ec9b18b317758dfed",
+    "diag-package-manifest.json": "eea687e671acd26a650a0f088b23a790b80dfda56055954fc1c984559e08917b",
+    "diag-package-windows-install.log": "23340600a2e7ceccadb09bfc87e6d496c0c7a1ead3340117c12bad09f5c98dd5",
+    "diag-package-windows-origin.json": "dc73f0a9dd1fe95bab42efec7e15cc034a2f120b1e6f364f6e07bb95cc199e18",
+    "diag-package-windows.xml": "5cce86123ee0deb87d5438d2f3e21f03d2a301851379e032fc507b399199ca10",
+    "diag-package-windows.log": "4a28b6a2841843e49ff8e29367be0a97718614dcafba7a0a392acffe3440baed",
+    "diag-package-windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "diag-package-linux-install.log": "fada9ee1ab6f9da96dc5500d6573a86c8b5eb958f0eaa6535e9d1411a190b1bf",
+    "diag-package-linux-origin.json": "e79315ff62b93b0a1ef31f780156ae4414958152521a5eab136268d655263fab",
+    "diag-package-linux.xml": "92f4c7f6ec7702087ace443947d39047519a1602faee948869df5ceb280d2d22",
+    "diag-package-linux.log": "d9f916d892c3900ee01fb2b70c0170c4cc40a8823d6f589fd7b1b92039c85ae2",
+    "diag-package-linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "diag-package-linux-binding.json": "554fcd68ec221210c18a4fbe5ab13d08355500ad74d538be9cd26db51f5f3d68"
+  },
+  "real_model_requests": 0,
+  "new_diagnostic_authorization": "Still awaiting explicit response; no credentials copied and no real task started",
+  "formal_release": "BLOCKED",
+  "not_run": [
+    "Actual stream diagnosis and accepted real single-client loop",
+    "macOS",
+    "New delta full source/package matrices",
+    "Second real client and automatic relay"
+  ]
+}

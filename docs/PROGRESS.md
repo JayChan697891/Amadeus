@@ -22,6 +22,15 @@ cases and 4 owner-status/journal/budget cases; Ruff/format and mypy (84 modules)
 passed. The initial five failing diagnostic regressions are retained.
 See [actual attempt and diagnostic evidence](acceptance/evidence/m6-native-mxc/live-and-diagnostics-summary.json).
 
+The same `080722e` wheel, rebuilt from the frozen sdist, now passes all 7 new
+selected diagnostic cases in fresh offline Windows3.12 and Linux3.14 installs.
+Both runs matched all84 runtime-module hashes before/after and passed pip check;
+44 unrelated cases per invocation were deselected, not counted as passes. The
+owned Linux VM stopped after evidence retrieval. See
+[installed diagnostic evidence](acceptance/evidence/m6-native-mxc/diagnostic-package-summary.json).
+This adds no model call and does not resolve the real protocol failure.
+
+
 For the preceding `6a8ff41` product, Windows source preflight passed 39 cases,
 and a fresh offline wheel rebuilt from sdist passed 51 selected cases with all
 84 installed module hashes matched. Linux Python 3.14 source now passed 50 cases

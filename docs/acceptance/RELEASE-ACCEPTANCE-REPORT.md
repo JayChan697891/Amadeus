@@ -16,7 +16,12 @@ parsing, change unknown/held-slot semantics, or validate the failed real result.
 Windows Python3.12 passed86 shared-adapter/pipeline cases plus4 owner/journal/
 budget cases; Ruff, formatting and mypy84 passed. Five pre-change failures remain
 saved. Astra's final read-only review found no remaining diagnostic finding.
-New delta real clients, packages, Linux/macOS and full acceptance are NOT RUN.
+The same frozen wheel subsequently passed7 new selected diagnostic cases in each
+fresh offline Windows3.12 and Linux3.14 installation;84 runtime modules matched
+before/after and pip check passed. The44 deselected cases per run are not passes.
+The VM stopped normally. See [package evidence](evidence/m6-native-mxc/diagnostic-package-summary.json).
+Real clients, macOS and full matrices for this delta remain NOT RUN; the actual
+protocol failure remains unresolved.
 
 The preceding frozen `6a8ff41` passed39 Windows source cases and51 fresh offline
 installed-wheel cases, with84 module hashes matched. Linux3.14 source additionally
