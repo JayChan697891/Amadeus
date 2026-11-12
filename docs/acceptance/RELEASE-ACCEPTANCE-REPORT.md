@@ -4,8 +4,9 @@
 
 Product `ee45690` repairs the observed completed warning item before turn.started,
 while preserving input bounds, lifecycle checks and fatal-error behavior. Windows
-source101 tests and fresh offline installed-wheel17 tests passed (46 deselected);
-84 installed module hashes matched, pip check, Ruff/format and mypy84 passed.
+source101 tests passed. The same frozen wheel passes17 tests in each fresh offline
+Windows3.12 and Linux3.14 installation (46 deselected each);84 module hashes match
+before/after, pip check, Ruff/format and mypy84 passed. The owned VM stopped.
 Astra's scoped review found no blocker. Offline replay of the private captured
 606 bytes now parses the expected reply; it is not live Core acceptance.
 
@@ -13,7 +14,7 @@ The once-authorized diagnostic at the preceding080722e runtime exited0 but was
 rejected by that parser as invalid_event_sequence. Its incomplete Core receipt is
 preserved. Temp auth removed, original and both fixtures unchanged. Raw output is
 local-only. Both actual calls remain NOT ACCEPTED. New real validation is prepared
-but awaits a fresh explicit call/copy grant. Linux/macOS and the full release
+but awaits a fresh explicit call/copy grant. macOS and the full release
 matrix for ee45690 are NOT RUN. M5/M6/M7 and formal Release remain BLOCKED.
 See [version-bound evidence](evidence/m6-native-mxc/startup-warning-summary.json).
 

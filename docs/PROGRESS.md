@@ -54,9 +54,11 @@ and input bounds remain enforced; warning text is never projected. Official
 upstream warning emission corroborates this shape, without proving installed
 binary equivalence. Offline replay of the exact saved bytes now parses the fixed
 reply; this is not a new live execution or Core acceptance. Windows source:101
-passed; fresh offline wheel rebuilt from sdist:17 passed,46 deselected,84 module
-hashes matched before/after. Ruff/format and mypy84 pass. Astra scoped review found
-no blocker. Linux/macOS and full release matrix for this delta are NOT RUN.
+passed; the same wheel rebuilt from sdist passes17 tests in each fresh offline
+Windows3.12 and Linux3.14 installation (46 deselected each), with84 module hashes
+matched before/after and pip check passing. The owned Linux VM stopped normally.
+Ruff/format and mypy84 pass. Astra scoped review found no blocker. macOS and the
+full release matrix for this delta are NOT RUN.
 See [repair and actual diagnostic evidence](acceptance/evidence/m6-native-mxc/startup-warning-summary.json).
 
 A new one-shot fixed-text validation is prepared under

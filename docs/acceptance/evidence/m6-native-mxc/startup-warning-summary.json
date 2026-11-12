@@ -47,11 +47,24 @@
         "agentsync_local-0.3.0a109-py3-none-any.whl": "75e6efa3c5251358cad9b348ad0fc0b05130d806c5b7515f51bd05831686352e",
         "agentsync_local-0.3.0a109.tar.gz": "5db999d16f65b9d08b0b848204793b91252a4ed93c5b012b594bd36dea300845"
       }
+    },
+    "linux_installed": {
+      "python": "3.14.7",
+      "passed": 17,
+      "deselected": 46,
+      "failed": 0,
+      "skipped": 0,
+      "runtime_modules_matched": 84,
+      "pip_check": "PASS",
+      "same_wheel_as_windows": true,
+      "source_shadowing": false,
+      "owned_vm_stopped": true,
+      "model_requests": 0
     }
   },
   "not_run": [
     "New real invocation of repaired product",
-    "Linux/macOS tests for this parser delta",
+    "macOS tests for this parser delta",
     "Full release matrix",
     "Real second-agent relay"
   ],
@@ -67,7 +80,12 @@
     "startup-warning-installed.xml": "314499051108fc65e42880fddc3cd99d95e46b6e08b7540beedd09c15345666d",
     "startup-warning-installed-origin.json": "c4a133a51525cb480718a374f2b198750cf207162fd169437c1fab9ff94cd246",
     "startup-warning-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
-    "startup-warning-next-plan.json": "38fd45200a36d0ef5fb01c692e878d50a3a9b35c359f35da1971861765faa7c2"
+    "startup-warning-next-plan.json": "38fd45200a36d0ef5fb01c692e878d50a3a9b35c359f35da1971861765faa7c2",
+    "startup-warning-linux-tests.log": "be07e6421a80e99fb542378dd34c701fc9e29929f2fde56346183a767b00e5cd",
+    "startup-warning-linux-installed.xml": "796d147a0899cd944f22c72f276492ee0763b4dcb9b5d600acde788534ac8302",
+    "startup-warning-linux-origin.json": "e79315ff62b93b0a1ef31f780156ae4414958152521a5eab136268d655263fab",
+    "startup-warning-linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "startup-warning-linux-build-binding.json": "b7efaab68e23f9ecb08652d2da06c8f7a27208499dbfbd4c5154aa5df133e4b6"
   },
   "next_live": {
     "authorization": "PENDING; no credential copy or real call",
