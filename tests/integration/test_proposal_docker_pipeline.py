@@ -201,7 +201,9 @@ async def test_same_core_proposal_to_independent_docker_acceptance(
                 request_id="failed-completion",
             )
     reopened = Core(core.data_dir)
-    current = reopened.execute("get_task", {**auth, "task_id": task["id"]})
+    current = next(
+        item for item in reopened.execute("list_tasks", auth)["tasks"] if item["id"] == task["id"]
+    )
     assert current["status"] == ("completed" if correct else "review")
     assert current["task_verification"] == ("verified" if correct else "unverified")
     with pytest.raises(AgentSyncError):
