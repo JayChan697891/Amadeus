@@ -43,6 +43,7 @@ async def test_manager_start_limit_rejects_new_requests_without_spawning_queued_
     await slow.entered.wait()
     try:
         assert await manager.dispatch_task("slow", task()) == first
+        assert manager.capacity().pending_starts == manager.capacity().pending_start_limit == 1
         with pytest.raises(AgentSyncError) as rejected:
             await manager.dispatch_task("fast", task("second"))
         assert rejected.value.code == "pending_start_capacity_exceeded"
@@ -72,6 +73,7 @@ async def test_active_run_limit_waits_for_a_terminal_observation_across_adapters
         await manager.dispatch_task("two", task("other"))
     observed = await manager.get_status(running.handle)
     assert observed.run.status == "cancelled"
+    assert manager.capacity().held_active_slots == 0
     admitted = await manager.start_task("two", task("other"))
     assert manager.history() == (running.handle, admitted.handle)
 
@@ -87,6 +89,7 @@ async def test_active_run_limit_retains_uncertain_start():
         await manager.dispatch_task("worker", task("other"))
     assert limited.value.code == "running_capacity_exceeded"
     assert adapter.calls == 1
+    assert manager.capacity().held_active_slots == manager.capacity().active_limit == 1
 
 
 async def test_cancelled_caller_concurrent_replay_and_independent_start():

@@ -111,6 +111,16 @@ class DispatchSnapshot:
 
 
 @dataclass(frozen=True, slots=True)
+class ManagerCapacity:
+    history: int
+    history_limit: int
+    pending_starts: int
+    pending_start_limit: int | None
+    held_active_slots: int | None
+    active_limit: int | None
+
+
+@dataclass(frozen=True, slots=True)
 class CancellationObservation(Generic[R]):
     handle: str
     state: Literal["start_unresolved", "start_error", "unsupported", "cancel_unresolved", "returned"]
@@ -178,6 +188,20 @@ class RunManager(Generic[C, R, T]):
     def history(self) -> tuple[str, ...]:
         """Opaque handles in dispatch order, including unresolved/failed starts."""
         return tuple(self._routes)
+
+    def capacity(self) -> ManagerCapacity:
+        """Read instance capacity without calling adapters or starting work."""
+        return ManagerCapacity(
+            history=len(self._routes),
+            history_limit=self._max_runs,
+            pending_starts=self._pending_start_count(),
+            pending_start_limit=self._max_pending_starts,
+            held_active_slots=None if self._max_active_runs is None else len(self._active_handles),
+            active_limit=self._max_active_runs,
+        )
+
+    def _pending_start_count(self) -> int:
+        return sum(not route.start.done() for route in self._routes.values())
 
     def get_dispatch(self, handle: str) -> DispatchSnapshot:
         """Inspect without waiting; returned means a start receipt, never run success."""
@@ -271,9 +295,7 @@ class RunManager(Generic[C, R, T]):
                         "history_capacity_exceeded", "Manager history is exhausted.", 409
                     )
                 limit = self._max_pending_starts
-                if limit is not None and sum(
-                    not entry.start.done() for entry in self._routes.values()
-                ) >= limit:
+                if limit is not None and self._pending_start_count() >= limit:
                     raise AgentSyncError(
                         "pending_start_capacity_exceeded", "Manager pending start capacity is exhausted.", 409
                     )
