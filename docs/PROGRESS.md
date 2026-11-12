@@ -1,5 +1,40 @@
 # Amadeus current progress
 
+## Actual Linux proposal to same-Core verified completion
+
+Runtime a2634ec now has one actual subscription-route Codex pipeline on the local
+Linux Core/Docker host. The pinned CLI returned the requested153-byte solution in
+27.416seconds, exit0; the adapter stored immutable context and submitted the same
+task for review. After inspecting the actual source and exact staging digest,
+the owner-mediated staging service created a genuine isolated candidate. Existing
+Docker verification passed8/8 inputs and19 isolation checks. A distinct Core
+reviewer completed the same task; reopening confirms completed/version6/verified.
+Candidate bytes match the reviewed proposal through execution and completion.
+Independent development review accepted this limited evidence without a rerun.
+
+Temporary ChatGPT authentication used a0700 tmpfs home; current mount/source/type/
+options were checked before copying. The0600 copy was removed and the mount released
+before candidate execution. Original authentication, source and producer worktree
+are unchanged.87 installed runtime modules match the existing wheel before/after.
+The fixed local Docker socket independently reports the recorded container absent.
+Raw capture remains private; its476-byte stderr has not been classified. Billing
+was not independently verified; owner-confirmed credits0/autorechargeoff and actual
+CLI ChatGPT login status were the fee/route gates. No API key or paid API was used.
+
+[Evidence](acceptance/evidence/m6-linux-live/summary.json) includes a report-derived
+JUnit aggregate, exact plans/helpers, actual receipts and hashes. It is not a new
+pytest/full-matrix run. The prior Linux readiness, fixture and Windows records
+below remain historical. This attempt is consumed; never rerun its controller.
+Debug: D:/agentsync-debug/m6-linux-live-20261112. Private guest state is not uploaded.
+
+This closes the limited same-Core real-proposal pipeline gap, not M6 as a whole.
+Review is host-mediated, not a second model. Cross-client remains NOT RUN because
+the owner has neither Claude nor Cursor subscription. Active-generation timeout,
+server/descendant cancellation, unattended relay/application and the unique M5
+exit checklist remain open. Full M5/M6/M7/Release remain BLOCKED. Next inspect those
+existing requirements and implement the next authorized product gap; do not create
+another M5 subdivision or repeat this successful single-client experiment.
+
 ## Linux single-task host readiness
 
 Runtime a2634ec adds explicit `linux_readonly=True` for the pinned0.167.0-alpha.3.2

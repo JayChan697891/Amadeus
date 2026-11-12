@@ -9,6 +9,13 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+The actual same-Core Linux proposal pipeline at a2634ec now passes a bounded
+real Codex task: immutable capture/review, explicitly approved genuine candidate,
+8/8 actual local Docker inputs and a distinct host-mediated Core review. Reopened
+task is completed/v6/verified; original workspaces and authentication are unchanged.
+This supersedes the next-run preparation notes below. It is not a second model,
+unattended relay, cross-client or full M6/Release acceptance. Continue from the
+existing remaining safety/lifecycle/relay requirements, without repeating the run.
 The real Linux host prerequisite is now available at a2634ec: explicit single-task
 read-only profile, pinned official0.167 CLI, native configuration/tool projection
 and actual bounded file/loopback checks.48 source/48 Windows installed/47 Linux

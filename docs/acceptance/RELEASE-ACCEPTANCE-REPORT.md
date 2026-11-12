@@ -1,5 +1,31 @@
 # Release Acceptance Report
 
+## Actual Linux same-Core single-client pipeline
+
+At runtime a2634ec, one actual Codex subscription-route task returned the pinned
+proposal and reached review through the real adapter. Owner review of the153-byte
+source and exact staging digest preceded candidate creation. Existing local Linux
+Docker checked8 inputs:8passed,19 isolation predicates true, exit0 and cleanup
+confirmed. Independent observation of the same pinned local daemon confirms the
+container absent. A different Core reviewer completed the original same-Core task;
+reopening confirms completed/version6/verified.87 installed runtime hashes match
+before/after; source/producer workspaces and original authentication are unchanged.
+
+The temporary credential copy used a checked RAM filesystem and was removed and
+unmounted before candidate execution. The model ran once,27.416seconds, with no
+retry. Raw stdout/stderr remain private;476 stderr bytes are unclassified. Fees
+were owner-confirmed, not independently verified. The new JUnit case summarizes
+actual receipts; it is not a pytest or full current-SHA matrix execution.
+Independent development review accepted this narrow result.
+[Exact plans, receipts, limitations and hashes](evidence/m6-linux-live/summary.json).
+
+PASS: this bounded real Codex→Core review→owner staging→Docker→distinct Core reviewer
+path. NOT RUN: second client (no Claude/Cursor subscription), independent model
+reviewer, unattended application, current full matrix. UNVERIFIED: active-generation
+timeout and server/descendant cancellation. Full M5/M6/M7/Release remain BLOCKED.
+The older sections below retain their original evidence scopes; their pending
+same-Core experiment is now superseded only by this explicitly limited result.
+
 ## Linux read-only single-task prerequisite
 
 a2634ec adds an explicit pinned Linux profile while retaining default/legacy/MXC

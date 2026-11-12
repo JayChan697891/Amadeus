@@ -30,3 +30,4 @@ docs/acceptance/evidence/m6-proposal-staging/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-proposal-review/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-proposal-pipeline/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-linux-readonly/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-linux-live/** -text whitespace=cr-at-eol

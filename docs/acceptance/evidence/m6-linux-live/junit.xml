@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="actual-linux-same-core-pilot" tests="1" failures="0" errors="0" skipped="0">
+  <properties>
+    <property name="kind" value="one aggregate case derived from recorded actual pipeline; not a pytest invocation" />
+    <property name="product_sha" value="a2634ecb9a65b666f617942fb3deb9f67fdd2a76" />
+    <property name="checked_inputs" value="8" />
+    <property name="model_calls" value="1" />
+    <property name="formal_release" value="BLOCKED" />
+  </properties>
+  <testcase classname="actual.codex.linux" name="proposal_review_stage_docker_independent_core_completion">
+    <system-out>Actual CLI proposal received; reviewed immutable bytes passed 8 local Docker inputs; 19 isolation checks; same-Core task reopened completed/v6/verified. Distinct host-mediated Core reviewer, not another model.</system-out>
+  </testcase>
+</testsuite>
