@@ -2,6 +2,7 @@
 
 import hashlib
 import importlib
+import json
 from pathlib import Path
 
 import pytest
@@ -52,3 +53,32 @@ def test_distinct_declarations_still_require_matching_bytes(review_tool, tmp_pat
     (tmp_path / "review.json").write_bytes(b'{"fixture":"edited"}')
     with pytest.raises(ValueError):
         review_tool._checked_members(tmp_path, records)
+
+
+def test_relay_receipt_pins_frozen_source_and_distinct_client_identities(review_tool, tmp_path):
+    commit = "a" * 40
+    artifact = "b" * 64
+    runs = [
+        {
+            "client": client,
+            "client_version": "1.2.3+fixture",
+            **{
+                name: hashlib.sha256(f"{client}:{name}".encode()).hexdigest()
+                for name in ("agent_sha256", "run_sha256", "session_sha256")
+            },
+        }
+        for client in ("codex", "cursor")
+    ]
+    document = {
+        "schema_version": 1, "kind": "real_relay", "commit_sha": commit,
+        "runs": runs, "artifact_sha256": artifact,
+    }
+    record = member(tmp_path, "relay-fixture", "real_relay", json.dumps(document).encode())
+    assert review_tool._execution_artifact_digest(tmp_path, record, commit) == artifact
+    with pytest.raises(ValueError, match="reviewed client or source"):
+        review_tool._execution_artifact_digest(tmp_path, record, "f" * 40)
+
+    runs[1]["agent_sha256"] = runs[0]["agent_sha256"]
+    duplicate = member(tmp_path, "duplicate-fixture", "real_relay", json.dumps(document).encode())
+    with pytest.raises(ValueError, match="separate agent"):
+        review_tool._execution_artifact_digest(tmp_path, duplicate, commit)

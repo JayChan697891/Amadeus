@@ -3,6 +3,10 @@
 The declared reviewer and evidence classifications require human verification.
 This tool checks identities, coverage and bytes, then prepares a review packet.
 It does not authenticate the reviewer or approve a release.
+
+A passing client or relay decision cites a JSON execution receipt with the
+frozen commit, client versions, hashed agent/run/session IDs and the SHA-256
+of a separate file cited as execution_artifact.
 """
 
 from __future__ import annotations
@@ -33,6 +37,8 @@ else:
 
 _LIMIT = 4 * 1024 * 1024
 _IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,99}")
+_SHA256 = re.compile(r"[0-9a-f]{64}")
+_CLIENT_VERSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,99}")
 _STATUSES = ("passed", "failed", "not_run", "blocked", "restricted", "unverified")
 _COUNTS = (5, 5, 5, 4, 5, 5, 5, 4, 2, 2)
 _REQUIREMENTS = {f"M{milestone}-{index:02d}" for milestone, count in enumerate(_COUNTS) for index in range(1, count + 1)}
@@ -42,7 +48,7 @@ _REAL_CLIENT_KINDS = {"codex", "claude_code", "cursor"}
 _REAL_EXECUTION_KINDS = _REAL_CLIENT_KINDS | {"real_relay"}
 _EVIDENCE_KINDS = {
     "component", "security", "package", "license", "mcp_host", "conflict",
-    "cross_platform", "independent_review",
+    "cross_platform", "independent_review", "execution_artifact",
 } | _REAL_EXECUTION_KINDS
 _REQUIRED_KINDS = {
     "M2-05": {"mcp_host"},
@@ -135,6 +141,40 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
         for path in checked.members:
             checked.check(path)
     return members
+
+
+def _execution_artifact_digest(root: Path, record: dict[str, Any], commit: str) -> str:
+    """Check execution metadata and return the declared artifact pin for human review."""
+    if record["size"] > 16 * 1024:
+        raise ValueError("Execution receipt exceeds its byte limit.")
+    evidence = _Evidence(root, [{key: record[key] for key in ("path", "size", "sha256")}])
+    receipt = read_json(evidence.check(record["path"], retain=True))
+    kind = record["kind"]
+    if (
+        type(receipt) is not dict
+        or set(receipt) != {"schema_version", "kind", "commit_sha", "runs", "artifact_sha256"}
+        or type(receipt["schema_version"]) is not int or receipt["schema_version"] != 1
+        or receipt["kind"] != kind or receipt["commit_sha"] != commit
+        or type(receipt["artifact_sha256"]) is not str or not _SHA256.fullmatch(receipt["artifact_sha256"])
+        or type(receipt["runs"]) is not list
+    ):
+        raise ValueError("Execution receipt does not match the reviewed client or source.")
+    runs = receipt["runs"]
+    if (kind == "real_relay" and not 2 <= len(runs) <= 8) or (kind != "real_relay" and len(runs) != 1):
+        raise ValueError("Execution receipt has an invalid number of runs.")
+    identity_fields = ("agent_sha256", "run_sha256", "session_sha256")
+    for run in runs:
+        if (
+            type(run) is not dict or set(run) != {"client", "client_version", *identity_fields}
+            or type(run["client"]) is not str or run["client"] not in _REAL_CLIENT_KINDS
+            or (kind != "real_relay" and run["client"] != kind)
+            or type(run["client_version"]) is not str or not _CLIENT_VERSION.fullmatch(run["client_version"])
+            or any(type(run[field]) is not str or not _SHA256.fullmatch(run[field]) for field in identity_fields)
+        ):
+            raise ValueError("Invalid real-client execution observation.")
+    if any(len({run[field] for run in runs}) != len(runs) for field in identity_fields):
+        raise ValueError("Relay runs require separate agent, run and session identities.")
+    return receipt["artifact_sha256"]
 
 
 def _inputs(
@@ -294,6 +334,7 @@ def assemble(
     if type(rows) is not list or len(rows) > len(labels):
         raise ValueError("Invalid independent review decisions.")
     decisions = {}
+    execution_pins: dict[str, str] = {}
     for row in rows:
         if type(row) is not dict or set(row) != {"id", "status", "evidence_ids", "reason"}:
             raise ValueError("Invalid independent review decision.")
@@ -314,6 +355,19 @@ def assemble(
             not review["independence_declared"] or not refs or not _REQUIRED_KINDS.get(identity, set()) <= kinds
         ):
             raise ValueError("A declared pass lacks its required independent evidence classes.")
+        if status == "passed" and kinds & _REAL_EXECUTION_KINDS:
+            artifacts = {
+                members[ref]["sha256"] for ref in refs
+                if members[ref]["kind"] == "execution_artifact" and members[ref]["size"] > 0
+            }
+            for ref in refs:
+                record = members[ref]
+                if record["kind"] not in _REAL_EXECUTION_KINDS:
+                    continue
+                if ref not in execution_pins:
+                    execution_pins[ref] = _execution_artifact_digest(evidence_root, record, commit)
+                if execution_pins[ref] not in artifacts or execution_pins[ref] == record["sha256"]:
+                    raise ValueError("A real execution pass lacks its separately pinned artifact.")
         decisions[identity] = (status, refs, reason)
     cases = []
     for identity, title in labels.items():
