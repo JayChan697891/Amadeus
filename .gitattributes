@@ -12,4 +12,4 @@ docs/acceptance/evidence/full-linux-readable/** -text
 docs/acceptance/evidence/alpha29-readable/** -text
 
 # Preserve the exact manifest bytes referenced by the saved candidate SHA-256.
-releases/0.3.0a109/checkpoints/candidate-4f08dc8.json -text
+releases/0.3.0a109/checkpoints/candidate-4f08dc8.json -text whitespace=cr-at-eol

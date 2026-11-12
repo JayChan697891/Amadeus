@@ -37,10 +37,10 @@ changes release tooling and its regression fixture. Development branch
   804 manifest entries because the Windows snapshot used CRLF. Collector fix
   `0be709a` makes new snapshots LF and accepts an exact historical CRLF
   encoding. All 161 targeted release tests and a real Linux staging probe passed.
-  Linux 3.12 passed all 26 local checks, including full source, wheel and sdist
-  using the same archive hashes as Windows 3.12. Each Linux suite had 2,080
-  passes and 5 skips. Its 96 recorded fixture containers were absent after
-  cleanup. Linux 3.11 is running. See
+  Linux 3.11 and 3.12 each passed all 26 local checks, including full source,
+  wheel and sdist with the exact Windows 3.12 archive hashes. Each Linux suite
+  had 2,080 passes and 5 skips. All 192 recorded fixture containers were
+  absent after cleanup. See
   [Linux minor-version evidence](acceptance/evidence/a109-linux-minors.json).
 - The local Windows M8 diagnostic passed 256 claim attempts with 256 matching
   audit outcomes and 117.46 ms p95 under its 1,000 ms budget. The host also
@@ -53,16 +53,14 @@ changes release tooling and its regression fixture. Development branch
   followed by automatic dispatch has no observed execution. The existing Work
   review on PR #33 applies to its historical frozen Linux evidence.
 
-Resume under `D:/agentsync-debug/continuation-cc30ed21` from
-`linux-minor-runtime/linux-3.11-recheck-driver.log` for the active full run.
-The finished Windows 3.11 and 3.12 reports are under `windows-py311-full/`
-and `windows-py312-full/`. The 3.14 package report is under `windows/` and the corrected
-3.14 source report is under `fixed-windows/`. If a run is active, read its existing
-evidence before launching another. Windows uses the release runner with a local
-wheelhouse and short D-drive scratch root. The Linux guest stopped normally
-after its 3.14 evidence was copied. It now uses a separate virtual disk for
-the minor-version runs. Diagnose failures against the
-recorded revision before rerunning affected checks.
+Completed local logs are under `D:/agentsync-debug/continuation-cc30ed21`.
+Windows reports are under `windows-py311-full/`, `windows-py312-full/`,
+`windows/` and `fixed-windows/`. Linux minor-version evidence is under
+`linux-minor-runtime/`. The owned guest stopped normally after verification,
+with both disks preserved. Resume from the
+[M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
+`feat/m6-single-codex-pilot` branch. Reuse this baseline and rerun affected
+checks only for changes in code or tests.
 
 Current macOS, live client relay, final M5 evidence review and formal Release
 remain open. No GitHub Actions test was dispatched.
