@@ -14,6 +14,8 @@ docs/acceptance/evidence/m6-single-stop/** -text whitespace=cr-at-eol
 # Preserve pytest traceback indentation in the original failing evidence.
 docs/acceptance/evidence/m6-single-stop/red-product.* -whitespace
 docs/acceptance/evidence/m6-native-mxc/** -text whitespace=cr-at-eol
+# Keep indentation in the unmodified failing pytest traceback evidence.
+docs/acceptance/evidence/m6-native-mxc/diagnostic-red.* -whitespace
 
 # Preserve the exact manifest bytes referenced by the saved candidate SHA-256.
 releases/0.3.0a109/checkpoints/candidate-4f08dc8.json -text whitespace=cr-at-eol

@@ -9,10 +9,12 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
-M6 now has one prepared Core-bound fixed-text Codex pilot at product `6a8ff41`.
-Next: resolve temporary isolated authentication permission, recognize the ChatGPT
-route, execute once, and independently inspect the actual result. Only then
-proceed to the separately authorized second-client relay; no new M5 subdivision.
+M6's authenticated fixed-text Codex attempt at `6a8ff41` exited with an unknown
+protocol result. Diagnostic preservation is implemented at `080722e`; no parser
+rules were relaxed. Next: prepare bounded private capture, obtain a separately
+authorized diagnostic task, and identify the actual stream failure. Only a real
+accepted single-client result permits the separately authorized second-client
+relay. Do not retry the consumed task or create a new M5 subdivision.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe
 its startup receipt with a bounded wait; this does not enable automatic scheduling.

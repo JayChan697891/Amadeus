@@ -2,44 +2,40 @@
 
 ## M6 single Codex pilot
 
-The current product is `6a8ff41`: the native MXC plan now sets the supported
-`agents.enabled=false` control and disables goals. Its non-model prompt projection
-no longer includes collaboration, shell, browser, image or extra-model tools.
-Strict configuration recognition passed; 39 affected Windows Python 3.12 tests,
-Ruff and format checks passed. Exact tested source bytes match the frozen commit.
-`unified_exec` ignores user opt-outs in this CLI; this is not represented as
-successfully disabled. The prior named MXC file/network observations remain
-scoped to `dcd7ca1`. Historical evidence is retained without rewriting it.
-See [current preflight evidence](acceptance/evidence/m6-native-mxc/single-task-summary.json).
+The once-authorized real Codex task ran at product `6a8ff41`. The CLI recognized
+ChatGPT authentication and exited 0 after about 31 seconds, but the adapter
+rejected its output as `protocol_invalid`. The result is UNKNOWN and the Core
+attempt remains incomplete/running/unverified, including after reopening; no
+review submission or real-client acceptance occurred. The source and actual
+worktree were unchanged. The authorized temporary auth.json copy was removed,
+and the original authentication file's bytes were unchanged. Both single-use
+permissions are consumed. No retry was performed or authorized.
 
-A fresh offline Windows Python 3.12 installation now passes all 51 selected
-Codex invocation/process and Core pipeline tests. Its wheel was rebuilt from
-the frozen sdist, and all 84 installed runtime module byte hashes matched before
-and after testing; source-checkout shadowing was excluded. The original build
-environment lacked setuptools; its failure is retained, and a dedicated offline
-build environment resolved it without product edits. Artifacts and JUnit are
-saved in [package evidence](acceptance/evidence/m6-native-mxc/package-summary.json).
-This closes the selected Windows installation check only, not full release,
-Linux/macOS or real-client acceptance.
+The exact parser cause remains unknown because the ephemeral session and host
+runner retained no raw stdout. Do not infer an encoding or event-schema defect.
+Product `080722e` now preserves only a whitelisted parser reason, byte counts,
+SHA256 and truncation flags through the adapter and stopped attempt receipt.
+Unknown state, held slots, result suppression and no-retry semantics remain.
+Astra reviewed this diagnostic change; it is not a fix or reclassification of
+the earlier real attempt. Windows Python 3.12 passed 86 shared-adapter/pipeline
+cases and 4 owner-status/journal/budget cases; Ruff/format and mypy (84 modules)
+passed. The initial five failing diagnostic regressions are retained.
+See [actual attempt and diagnostic evidence](acceptance/evidence/m6-native-mxc/live-and-diagnostics-summary.json).
 
+For the preceding `6a8ff41` product, Windows source preflight passed 39 cases,
+and a fresh offline wheel rebuilt from sdist passed 51 selected cases with all
+84 installed module hashes matched. Linux Python 3.14 source now passed 50 cases
+with one Windows-only MXC skip and all 84 runtime modules matched. Its owned
+D-drive virtual machine stopped normally after evidence retrieval. These results
+do not cover `080722e` installed packages/Linux/macOS or any formal Release gate.
 
-The owner confirmed credits=0 and auto-recharge disabled. The one authorized
-subscription model task remains unconsumed. A concrete Core task, disposable Git
-source and managed worktree are prepared in
-`D:\agentsync-debug\m6-live-single-20261112`; runtime origins and separate original/
-worktree baseline hashes were checked. The private home inherits only current-user
-and SYSTEM access. No authentication material was copied. A narrow permission
-request is pending for only the original `auth.json` to that private home, with
-cleanup after the owned process ends. The first authenticated metadata check must
-recognize ChatGPT; errors or ambiguity stop before model start. No retries after
-a possible model start. Resume from the saved plan and `pilot.py`; do not recreate
-the project, print local `state.json`, or upload the private home/Core database.
-
-Independent Astra source/evidence review cleared the prior projected-tool gap for
-this fixed-text preflight and found two harness bindings, both repaired: imported
-runtime origin and the actual execution worktree. This is not real-client, M5,
-Work or Release acceptance. Live execution is NOT RUN pending temporary credential
-transfer permission and authenticated-route recognition. No new M5 stage exists.
+Resume offline from `080722e`. A future diagnostic task needs bounded private raw
+capture retention and a new exact plan, then separate explicit model-call and
+temporary-credential authorization. Do not restart the consumed task at
+`D:\agentsync-debug\m6-live-single-20261112`, print/upload its state.json, private
+home, Core database or credentials. No new M5 stage exists; B1/B3/M6 and Release
+remain unresolved. Historical preflight and package evidence remain scoped to
+[6a8ff41](acceptance/evidence/m6-native-mxc/package-summary.json).
 
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.
@@ -64,9 +60,8 @@ Windows local evidence comprises 11 relay integration cases and 77 lifecycle
 cases. The installed Codex CLI `0.167.0-alpha.3.2` produced a verified
 read-only launch preview against a disposable Core task and managed Git worktree.
 See [M6 preview evidence](acceptance/evidence/m6-single-codex-preview.json).
-The next step is one authorized real execution after B1/B3 verify no extra
-cost and the isolated execution boundary. Live execution and the second
-client's relay remain NOT RUN. The [M5 final checklist](M5-FINAL-ACCEPTANCE.md)
+The later real attempt above ended unknown. The second
+client's relay remains NOT RUN. The [M5 final checklist](M5-FINAL-ACCEPTANCE.md)
 governs the independent review and the M5 exit.
 
 ## Continuous local validation for 0.3.0a109

@@ -1,28 +1,29 @@
 # Release Acceptance Report
 
-## M6 single-task native configuration
+## M6 authenticated attempt and diagnostic preservation
 
-Product `6a8ff41` passed 39 affected Windows Python 3.12 tests, Ruff and formatting.
-The supported `agents.enabled=false` switch removes the previously projected
-collaboration tools; goals are also disabled. Strict configuration validation
-returned zero. Independent Astra review permits preparation for this fixed-text
-pilot, not real-client acceptance. The concrete plan pins source, runtime origin,
-binary, environment, arguments and both fixture workspaces. See
-[current evidence](evidence/m6-native-mxc/single-task-summary.json).
+The single authorized task at `6a8ff41` recognized ChatGPT login and exited0 after
+31 seconds. Adapter output parsing failed (`protocol_invalid`); Core remained
+incomplete/running/unverified after reopening. This is NOT ACCEPTED, even though
+the parent exited normally. No raw stdout survived, so the parser cause remains
+UNRESOLVED. Temporary authentication was removed, the original unchanged, and
+both source/worktree fixtures unchanged. The call/copy grants are consumed;
+there was no retry. See [actual evidence](evidence/m6-native-mxc/live-and-diagnostics-summary.json).
 
-Windows Python 3.12 fresh offline installation additionally passed 51 affected
-invocation/process/pipeline cases. The wheel was built from the frozen sdist;
-all 84 installed runtime modules matched the snapshot before and after tests.
-`pip check` passed. The missing-build-backend environment failure and corrected
-build log are retained in [package evidence](evidence/m6-native-mxc/package-summary.json).
-These are deterministic tests, including local process fixtures, not real clients.
+Diagnostic delta `080722e` keeps fixed parser reasons, stream byte counts/hashes
+and truncation flags in the existing failure observations. It does not relax
+parsing, change unknown/held-slot semantics, or validate the failed real result.
+Windows Python3.12 passed86 shared-adapter/pipeline cases plus4 owner/journal/
+budget cases; Ruff, formatting and mypy84 passed. Five pre-change failures remain
+saved. Astra's final read-only review found no remaining diagnostic finding.
+New delta real clients, packages, Linux/macOS and full acceptance are NOT RUN.
 
-
-No credentials have been copied and no real model was called. The owner confirmed
-the spending condition; temporary credential transfer permission is pending.
-One model-task grant remains unconsumed. Authentication recognition, real execution,
-new delta Linux/macOS checks and full M5/M7/M9 acceptance are NOT RUN.
-Formal Release remains BLOCKED. Historical observations below retain their SHA scope.
+The preceding frozen `6a8ff41` passed39 Windows source cases and51 fresh offline
+installed-wheel cases, with84 module hashes matched. Linux3.14 source additionally
+passed50 with1 native-Windows-MXC skip and84 imported module hashes matched.
+The owned VM was shut down after evidence retrieval. These remain limited,
+version-bound results. M5, M6 real result acceptance, M7 and formal Release remain
+BLOCKED. No additional client call or credentials transfer is currently authorized.
 
 ## Historical M6 native Windows plan delta
 

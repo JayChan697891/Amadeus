@@ -1,0 +1,73 @@
+{
+  "live_product_sha": "6a8ff4127166d6e029360c3d782b3bbd4e89cab2",
+  "live_attempt": "authenticated CLI exited0 after31s; protocol_invalid; UNKNOWN outcome and incomplete Core task; NOT ACCEPTED",
+  "recognized_chatgpt_route": true,
+  "authenticated_client_launches": 1,
+  "actual_provider_request_count": "UNVERIFIED; no parsed usage/output",
+  "authorization": "Single real-task and temporary-copy permissions consumed; no retry or further model start authorized",
+  "temporary_auth_removed": true,
+  "original_auth_unchanged": true,
+  "source_and_worktree_unchanged": true,
+  "reopened_core": "running/unverified with incomplete attempt; no review submission",
+  "root_cause": "UNRESOLVED: ephemeral run retained no session files; original stdout was not saved; CLI log/thread tables had no rows. No guess about unsupported event, invalid JSON or encoding is promoted to a finding.",
+  "diagnostic_product_sha": "080722e8882a7c4d83a7afa80fc6427170e93fec",
+  "diagnostic_source_sha256": {
+    "src/agentsync/adapters/_host_process.py": "81c49d4ad6b127d487cd8a42ef4fb97c030c28a831fde763b2029e4e7ba56bec",
+    "src/agentsync/controlled_relay.py": "45d1b725616f59735149aa2f13bd3ab2cc08b44b0ff410f0707669902b2faa1a",
+    "tests/unit/test_codex_adapter.py": "fc4c0540b402537c7d0a6a98e61dd31239ea54fe3abd2db9e1663947e7427a32",
+    "tests/integration/test_controlled_relay_pipeline.py": "ff5f9aece13ddea59d2cc949371872eca15bbb42dca6a7a912af589616914a8c"
+  },
+  "diagnostic_scope": "Preserve whitelist parser reason plus captured byte counts, SHA256 and truncation flags; unknown status, held slot and no retry unchanged; no parser acceptance changes",
+  "diagnostic_tests": {
+    "diagnostic-final": {
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "diagnostic-owner": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "static_checks": {
+    "ruff": "passed",
+    "format": "passed",
+    "mypy_84_modules": "passed"
+  },
+  "independent_review": "Astra read-only final source/evidence review found no remaining substantive diagnostic-preservation finding. This does not resolve the real failure.",
+  "linux_6a8ff41": {
+    "passed": 50,
+    "skipped": 1,
+    "skip_reason": "Native Windows MXC plan",
+    "runtime_modules_matched": 84,
+    "vm_stopped": true
+  },
+  "new_diagnostic_delta_not_run": [
+    "real clients",
+    "installed packages",
+    "Linux/macOS"
+  ],
+  "formal_release": "BLOCKED",
+  "next": "Prepare bounded private raw-output retention for a fresh diagnostic task; obtain separate model-call and temporary-credential authorization before any start. Never retry the consumed task.",
+  "evidence_sha256": {
+    "live-auth-route.json": "b82b7b4b48df8adf3f77e73a4493a979f70165c103bcb4ebaf36a9357ef1c78a",
+    "live-attempt.json": "e4cf22f06cf337d56299a282db8e49ecf01356afc8ffd6390454109a92ea7cca",
+    "live-result.json": "804fae80d06a85c08228a163a3bce071859ee1426b1c5358f7a12598cbaf3244",
+    "live-cleanup.json": "fece45def8524571aae2255d33de1dd5335c61468a331549a6e854cf39243f69",
+    "live-reopened.json": "c131e52188cc27caf00199cdbd7c2ce8eb25b8d96ea6d37ef47d5ee615da2082",
+    "diagnostic-red.log": "3b4e752fbb8b4f86223996037f6f02e71c6110fc118255ce8f6a12996994f486",
+    "diagnostic-red.xml": "86fda762914599d4c7baa33f6778e11775a7ee0b3578de96ade4b3a066da66c6",
+    "diagnostic-final.log": "9362d9f39ae6c39117074ad4b353ee8a608a8cb5fa83add70c2db33cc198d456",
+    "diagnostic-final.xml": "c14e6417e9309a7488df85012051b1e969ed916ab2f96f30d741d768c75898c0",
+    "diagnostic-owner.log": "ed12b3c8a98874cad64d0c1d2347e97a4ceda027c29689d01ea1a9767be71548",
+    "diagnostic-owner.xml": "9c5f05ead3a11ec2ce4df09ff22ebc72e1f04e5f4a7e2d2a3bb9eacb12de39db",
+    "linux-result.json": "b3be2440e30f7f8b14b91a857106bf6194b3b0da0b9eca7654641a0db63e3c2b",
+    "linux-junit.xml": "7122efee6d5e489e5cee457220ef05471ca1c8b89413076731a4a3e5e32e85cc",
+    "linux-runtime.json": "c72075d28d423c64207853a80cad7139ad02dfbda81d1da6a59d33a6b45e8b5e",
+    "linux-pytest.log": "6139cca69d83c00acc1189f95927cef7f6c8f76887480ecf8cc3ff3b7fdb6eef"
+  },
+  "official_protocol_reference": "https://learn.chatgpt.com/docs/non-interactive-mode"
+}

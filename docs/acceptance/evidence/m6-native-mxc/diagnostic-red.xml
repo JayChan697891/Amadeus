@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="0.323" timestamp="2026-11-11T21:58:01.843709-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.unit.test_codex_adapter" name="test_protocol_failure_retains_only_fixed_reason_and_capture_metadata[\xff-invalid_utf8-False]" time="0.029"><failure message="AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'">tmp_path = WindowsPath('D:/agentsync-debug/m6-live-single-20261112/diagnostic-red-tmp/test_protocol_failure_retains_0')
+payload = b'\xff', reason = 'invalid_utf8', unexpected_code = False
+
+    @pytest.mark.parametrize(
+        "payload,reason,unexpected_code",
+        [
+            (b"\xff", "invalid_utf8", False),
+            (b"private malformed payload", "validation_error", False),
+            (b'{"type":"turn.started"}', "invalid_event_sequence", False),
+            (b'{"type":"private_future_event"}', "unsupported_event", False),
+            (b"private parser failure", "unclassified", True),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_protocol_failure_retains_only_fixed_reason_and_capture_metadata(
+        tmp_path, payload, reason, unexpected_code
+    ):
+        launches = []
+        stderr = b"private stderr fixture"
+    
+        async def factory(_task):
+            launches.append(True)
+            return await CapturedProcess.start(
+                (
+                    sys.executable,
+                    "-I",
+                    "-u",
+                    "-c",
+                    f"import sys;sys.stdout.buffer.write({payload!r});"
+                    f"sys.stderr.buffer.write({stderr!r})",
+                ),
+                cwd=tmp_path,
+                stdin_text="",
+                timeout_seconds=3,
+                output_limit=1024,
+            )
+    
+        adapter = CodexAdapter("p", "s", factory=factory)
+        if unexpected_code:
+    
+            def private_failure(_text):
+                raise AgentSyncError("private_error_code", "private exception message")
+    
+            adapter._parse = private_failure
+        started = await adapter.start_task(task())
+        end = await terminal(adapter, started.run_id)
+        result = await adapter.get_result(started.run_id)
+&gt;       assert end.protocol_error_reason == reason
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'
+
+tests\unit\test_codex_adapter.py:168: AttributeError</failure></testcase><testcase classname="tests.unit.test_codex_adapter" name="test_protocol_failure_retains_only_fixed_reason_and_capture_metadata[private malformed payload-validation_error-False]" time="0.037"><failure message="AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'">tmp_path = WindowsPath('D:/agentsync-debug/m6-live-single-20261112/diagnostic-red-tmp/test_protocol_failure_retains_1')
+payload = b'private malformed payload', reason = 'validation_error'
+unexpected_code = False
+
+    @pytest.mark.parametrize(
+        "payload,reason,unexpected_code",
+        [
+            (b"\xff", "invalid_utf8", False),
+            (b"private malformed payload", "validation_error", False),
+            (b'{"type":"turn.started"}', "invalid_event_sequence", False),
+            (b'{"type":"private_future_event"}', "unsupported_event", False),
+            (b"private parser failure", "unclassified", True),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_protocol_failure_retains_only_fixed_reason_and_capture_metadata(
+        tmp_path, payload, reason, unexpected_code
+    ):
+        launches = []
+        stderr = b"private stderr fixture"
+    
+        async def factory(_task):
+            launches.append(True)
+            return await CapturedProcess.start(
+                (
+                    sys.executable,
+                    "-I",
+                    "-u",
+                    "-c",
+                    f"import sys;sys.stdout.buffer.write({payload!r});"
+                    f"sys.stderr.buffer.write({stderr!r})",
+                ),
+                cwd=tmp_path,
+                stdin_text="",
+                timeout_seconds=3,
+                output_limit=1024,
+            )
+    
+        adapter = CodexAdapter("p", "s", factory=factory)
+        if unexpected_code:
+    
+            def private_failure(_text):
+                raise AgentSyncError("private_error_code", "private exception message")
+    
+            adapter._parse = private_failure
+        started = await adapter.start_task(task())
+        end = await terminal(adapter, started.run_id)
+        result = await adapter.get_result(started.run_id)
+&gt;       assert end.protocol_error_reason == reason
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'
+
+tests\unit\test_codex_adapter.py:168: AttributeError</failure></testcase><testcase classname="tests.unit.test_codex_adapter" name="test_protocol_failure_retains_only_fixed_reason_and_capture_metadata[{&quot;type&quot;:&quot;turn.started&quot;}-invalid_event_sequence-False]" time="0.027"><failure message="AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'">tmp_path = WindowsPath('D:/agentsync-debug/m6-live-single-20261112/diagnostic-red-tmp/test_protocol_failure_retains_2')
+payload = b'{"type":"turn.started"}', reason = 'invalid_event_sequence'
+unexpected_code = False
+
+    @pytest.mark.parametrize(
+        "payload,reason,unexpected_code",
+        [
+            (b"\xff", "invalid_utf8", False),
+            (b"private malformed payload", "validation_error", False),
+            (b'{"type":"turn.started"}', "invalid_event_sequence", False),
+            (b'{"type":"private_future_event"}', "unsupported_event", False),
+            (b"private parser failure", "unclassified", True),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_protocol_failure_retains_only_fixed_reason_and_capture_metadata(
+        tmp_path, payload, reason, unexpected_code
+    ):
+        launches = []
+        stderr = b"private stderr fixture"
+    
+        async def factory(_task):
+            launches.append(True)
+            return await CapturedProcess.start(
+                (
+                    sys.executable,
+                    "-I",
+                    "-u",
+                    "-c",
+                    f"import sys;sys.stdout.buffer.write({payload!r});"
+                    f"sys.stderr.buffer.write({stderr!r})",
+                ),
+                cwd=tmp_path,
+                stdin_text="",
+                timeout_seconds=3,
+                output_limit=1024,
+            )
+    
+        adapter = CodexAdapter("p", "s", factory=factory)
+        if unexpected_code:
+    
+            def private_failure(_text):
+                raise AgentSyncError("private_error_code", "private exception message")
+    
+            adapter._parse = private_failure
+        started = await adapter.start_task(task())
+        end = await terminal(adapter, started.run_id)
+        result = await adapter.get_result(started.run_id)
+&gt;       assert end.protocol_error_reason == reason
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'
+
+tests\unit\test_codex_adapter.py:168: AttributeError</failure></testcase><testcase classname="tests.unit.test_codex_adapter" name="test_protocol_failure_retains_only_fixed_reason_and_capture_metadata[{&quot;type&quot;:&quot;private_future_event&quot;}-unsupported_event-False]" time="0.027"><failure message="AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'">tmp_path = WindowsPath('D:/agentsync-debug/m6-live-single-20261112/diagnostic-red-tmp/test_protocol_failure_retains_3')
+payload = b'{"type":"private_future_event"}', reason = 'unsupported_event'
+unexpected_code = False
+
+    @pytest.mark.parametrize(
+        "payload,reason,unexpected_code",
+        [
+            (b"\xff", "invalid_utf8", False),
+            (b"private malformed payload", "validation_error", False),
+            (b'{"type":"turn.started"}', "invalid_event_sequence", False),
+            (b'{"type":"private_future_event"}', "unsupported_event", False),
+            (b"private parser failure", "unclassified", True),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_protocol_failure_retains_only_fixed_reason_and_capture_metadata(
+        tmp_path, payload, reason, unexpected_code
+    ):
+        launches = []
+        stderr = b"private stderr fixture"
+    
+        async def factory(_task):
+            launches.append(True)
+            return await CapturedProcess.start(
+                (
+                    sys.executable,
+                    "-I",
+                    "-u",
+                    "-c",
+                    f"import sys;sys.stdout.buffer.write({payload!r});"
+                    f"sys.stderr.buffer.write({stderr!r})",
+                ),
+                cwd=tmp_path,
+                stdin_text="",
+                timeout_seconds=3,
+                output_limit=1024,
+            )
+    
+        adapter = CodexAdapter("p", "s", factory=factory)
+        if unexpected_code:
+    
+            def private_failure(_text):
+                raise AgentSyncError("private_error_code", "private exception message")
+    
+            adapter._parse = private_failure
+        started = await adapter.start_task(task())
+        end = await terminal(adapter, started.run_id)
+        result = await adapter.get_result(started.run_id)
+&gt;       assert end.protocol_error_reason == reason
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'
+
+tests\unit\test_codex_adapter.py:168: AttributeError</failure></testcase><testcase classname="tests.unit.test_codex_adapter" name="test_protocol_failure_retains_only_fixed_reason_and_capture_metadata[private parser failure-unclassified-True]" time="0.028"><failure message="AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'">tmp_path = WindowsPath('D:/agentsync-debug/m6-live-single-20261112/diagnostic-red-tmp/test_protocol_failure_retains_4')
+payload = b'private parser failure', reason = 'unclassified'
+unexpected_code = True
+
+    @pytest.mark.parametrize(
+        "payload,reason,unexpected_code",
+        [
+            (b"\xff", "invalid_utf8", False),
+            (b"private malformed payload", "validation_error", False),
+            (b'{"type":"turn.started"}', "invalid_event_sequence", False),
+            (b'{"type":"private_future_event"}', "unsupported_event", False),
+            (b"private parser failure", "unclassified", True),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_protocol_failure_retains_only_fixed_reason_and_capture_metadata(
+        tmp_path, payload, reason, unexpected_code
+    ):
+        launches = []
+        stderr = b"private stderr fixture"
+    
+        async def factory(_task):
+            launches.append(True)
+            return await CapturedProcess.start(
+                (
+                    sys.executable,
+                    "-I",
+                    "-u",
+                    "-c",
+                    f"import sys;sys.stdout.buffer.write({payload!r});"
+                    f"sys.stderr.buffer.write({stderr!r})",
+                ),
+                cwd=tmp_path,
+                stdin_text="",
+                timeout_seconds=3,
+                output_limit=1024,
+            )
+    
+        adapter = CodexAdapter("p", "s", factory=factory)
+        if unexpected_code:
+    
+            def private_failure(_text):
+                raise AgentSyncError("private_error_code", "private exception message")
+    
+            adapter._parse = private_failure
+        started = await adapter.start_task(task())
+        end = await terminal(adapter, started.run_id)
+        result = await adapter.get_result(started.run_id)
+&gt;       assert end.protocol_error_reason == reason
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'CodexRun' object has no attribute 'protocol_error_reason'
+
+tests\unit\test_codex_adapter.py:168: AttributeError</failure></testcase></testsuite></testsuites>

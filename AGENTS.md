@@ -8,10 +8,11 @@ See docs/PROGRESS.md for the recovery entry point.
 
 Alpha29 exact desktop declaration is frozen at05a811a; see current PROGRESS and
 acceptance/evidence/alpha29-local-summary.json. Four selected Windows source/
-installed suites each184pass; full suites and real models NOT RUN. The once-authorized subscription task is still unconsumed. Current M6 product
-6a8ff41 closes the projected extra-tool gap; the owner confirmed zero paid credits
-and auto-recharge disabled. Temporary isolated authentication transfer permission
-and route recognition remain pending. See current PROGRESS; no real call yet.
+installed suites each184pass; full suites and real models NOT RUN. The once-authorized subscription task and temporary credential-copy permissions
+were consumed at6a8ff41. The authenticated CLI exited0 but protocol_invalid left
+an unknown/incomplete result. Temp auth removed, original unchanged; no retry.
+080722e preserves sanitized parser diagnostics without changing acceptance.
+See current PROGRESS; another live task requires separate explicit authorization.
 PR33 Linux supplement at8671c2d has limited Work acceptance; alpha29 awaits review.
 
 Read docs/acceptance/CANCELLATION-REPAIR-20261105.md for current security-repair
