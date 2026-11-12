@@ -22,9 +22,11 @@ guest stopped normally after all 96 fixture container IDs were absent. See
 The first Windows full source suite logged 46 failures from affected
 subprocess-based cases, 1,998 passes and 41 skips. The runner at `4f08dc8`
 passed all 46 formerly failing cases in a separate targeted recheck. The full
-corrected Windows source suite and the frozen offline Windows wheel each
-passed 2,044 cases and skipped 41. Ruff, format, mypy, build and pip check
-also passed on the corrected source. Windows sdist is running. The local
+corrected Windows Python 3.14 source suite, frozen offline wheel and rebuilt
+sdist each passed 2,044 cases and skipped 41. The initial collector retained
+its failed overall exit because its original source suite failed. Ruff,
+format, mypy, build and pip check passed on the corrected source. License
+inventories ran in the fresh 3.14 wheel and sdist environments. The local
 Windows archives contain the same member bytes as the archives tested on
 Linux, with separately recorded archive hashes. See
 [Windows evidence](acceptance/evidence/a109-windows-local.json).

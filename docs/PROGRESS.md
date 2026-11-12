@@ -19,8 +19,8 @@ changes release tooling and its regression fixture. Development branch
   skips. Its test subprocesses could import the old installed version. With
   the fixed import path all 46 failed cases and all 151 runner tests passed
   separately. The corrected full source run and the frozen offline Windows
-  wheel suite each had 2,044 passes and 41 skips. The Windows sdist full suite
-  is running. See [Windows evidence](acceptance/evidence/a109-windows-local.json).
+  wheel and rebuilt sdist suites each had 2,044 passes and 41 skips.
+  See [Windows evidence](acceptance/evidence/a109-windows-local.json).
 - The frozen Linux source suite completed with 2,080 passed and 5 platform
   skips. All 84 imported runtime modules matched the frozen bytes before and
   after the suite. The post-check found none of the 32 recorded fixture
@@ -41,8 +41,9 @@ changes release tooling and its regression fixture. Development branch
   review on PR #33 applies to its historical frozen Linux evidence.
 
 Resume under `D:/agentsync-debug/continuation-cc30ed21` from
-`windows-driver.log` for the remaining Windows sdist run. The corrected source
-report is under `fixed-windows/`. If a run is still active, read its existing
+`windows-py311-full-driver.log` and `windows-py312-full-driver.log` for the
+active full runs. The 3.14 package report is under `windows/` and the corrected
+3.14 source report is under `fixed-windows/`. If a run is active, read its existing
 evidence before launching another. Windows uses the release runner with a local
 wheelhouse and short D-drive scratch root. The owned Linux guest stopped normally
 after its evidence was copied and checked. Diagnose failures against the

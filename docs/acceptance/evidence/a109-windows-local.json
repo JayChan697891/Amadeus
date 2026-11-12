@@ -41,6 +41,11 @@
       "archive_name": "agentsync_local-0.3.0a109-py3-none-any.whl",
       "archive_sha256": "999ac1d4d738705ac86de3e9443acfb9b3fd846444fbe35c4f89bfe8003ff9c8",
       "members_matching_archives_tested_on_linux": 91,
+      "license_inventory": {
+        "distributions": 32,
+        "review_items": 0,
+        "sha256": "1a7ffec102efefbc3a65cb13b98e61d1a75be3053f7371df8800ff64676588b1"
+      },
       "tests": 2085,
       "failures": 0,
       "errors": 0,
@@ -55,7 +60,20 @@
       "archive_name": "agentsync_local-0.3.0a109.tar.gz",
       "archive_sha256": "e1d868dc44893270b13ad08b695d44d75960f2406e3da137cab63e2175482049",
       "members_matching_archives_tested_on_linux": 405,
-      "suite_status": "running"
+      "license_inventory": {
+        "distributions": 32,
+        "review_items": 0,
+        "sha256": "1a7ffec102efefbc3a65cb13b98e61d1a75be3053f7371df8800ff64676588b1"
+      },
+      "tests": 2085,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 41,
+      "passed": 2044,
+      "junit_sha256": "6cd235ccb8d725db7415539d200cab012dc1e4b194bcd6ea562345c4fd8e845d",
+      "suite_status": "passed",
+      "pytest_log_sha256": "881dbc55e0d6a4980795e452e96a7fbacc9f53ab6645cfc3c73284be5f022d13",
+      "origin_and_sdk_log_sha256": "0b785f9f1064d633b382f398eb4e6cb4db5adeee0911ff6e6cf91ef6f15187fa"
     }
   },
   "focused_checks": {
@@ -130,5 +148,6 @@
   "evidence_local": "D:/agentsync-debug/continuation-cc30ed21",
   "actual_model_clients": "NOT RUN",
   "macos": "NOT RUN",
-  "formal_release": "BLOCKED"
+  "formal_release": "BLOCKED",
+  "baseline_package_collector_report_sha256": "e2834be9d0678367c2e4a0723761e249af38d081f0aad6e90acf52671c694eee"
 }

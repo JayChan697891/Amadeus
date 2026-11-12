@@ -1,5 +1,35 @@
 # Release Acceptance Report
 
+## 0.3.0a109 local validation
+
+The runtime and package test baseline is `de44e7b`. Windows source revalidation
+uses `4f08dc8`, which repairs the release test runner and its regression fixture
+while preserving all 84 runtime module hashes. Evidence is bound to each
+recorded revision.
+
+| Area | Status | Result |
+|---|---|---|
+| Linux Python 3.14 source, wheel and rebuilt sdist | Passed | Each suite passed 2,080, skipped 5 and had zero failures or errors. All test IDs matched and 96 recorded Docker fixture containers were absent after cleanup. |
+| Windows Python 3.14 corrected source, wheel and rebuilt sdist | Passed | Each suite passed 2,044, skipped 41 and had zero failures or errors. Ruff, format, mypy, build and pip check passed in the corrected source run. Both fresh installs recorded their archive origin, CLI smoke and license inventory. |
+| Windows Python 3.14 initial source | Failed | The runner's child processes loaded a stale installation. All 46 failing cases passed after repair in a targeted retest and the corrected full suite. The initial collector retained its failed exit. |
+| Windows Python 3.11 and 3.12 | Limited | Each passed 154 focused checks. The Python 3.12 focused run used a fresh offline wheel and checked the installed archive hash. The two separate full runs are active. |
+| Windows M8 coordination | Passed within tested load | 256 direct Core and 32 mixed Core/loopback HTTP claim attempts had exact audit counts and p95 below the respective 1,000 ms diagnostic thresholds. |
+| macOS and the full OS/Python matrix | Not run or incomplete | No macOS test environment is available in the current local workflow. |
+| Live Codex, Claude Code, Cursor and autonomous relay | Unverified | Historical client evidence remains scoped to its own runs. The current frozen client and real dual-agent scenarios have no execution evidence. |
+| M5 final Work review and formal M9/Release | Blocked | Current evidence covers local components and the stated environments. The independent review and formal gates remain open. |
+
+The requirement manifest contains 42 distinct IDs and 228 current selector links.
+Each selector matched the frozen suite at collection. Formal requirement and
+scenario decisions still require their specified execution evidence.
+
+[Linux source](evidence/a109-linux-source.json),
+[Linux installations](evidence/a109-linux-packages.json), and
+[Windows results](evidence/a109-windows-local.json) bind the local reports, JUnit,
+logs and archive bytes. The tested distributables are stored under
+[`releases/0.3.0a109`](../../releases/0.3.0a109/).
+
+## Historical source-only checkpoints
+
 Alpha30 and alpha31 are source-only development checkpoints. Per owner direction,
 validation is **NOT RUN** until the implementation phase ends. All results below
 apply to their recorded earlier commits. **M5 and Release remain BLOCKED.**
