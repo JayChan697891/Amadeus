@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = json.loads((ROOT / "docs/acceptance/requirements.json").read_text(encoding="utf-8"))
 REQUIREMENTS = MANIFEST["requirements"]
 CODEX_COMPONENT_PATHS = {
+    "tests/integration/test_codex_proposal_review.py",
     "tests/integration/test_proposal_staging.py",
     "tests/integration/test_codex_proposal_capture.py",
     "tests/unit/test_proposals.py",
@@ -108,6 +109,7 @@ def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
     assert set(item["existing_tests"]) == {
+        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging",
         "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
         "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
         "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
@@ -164,7 +166,7 @@ def test_codex_host_factory_components_keep_actual_client_acceptance_unverified(
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
     assert item["execution_status"] == "not_run"
-    assert len(item["existing_tests"]) == 14
+    assert len(item["existing_tests"]) == 15
     assert {
         "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
         "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",

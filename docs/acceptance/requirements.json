@@ -1072,7 +1072,8 @@
         "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
         "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
         "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
-        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it"
+        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
+        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging"
       ],
       "planned_cases": [
         {

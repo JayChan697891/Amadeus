@@ -43,6 +43,7 @@ from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.proposals import parse_proposal, proposal_paths
 from agentsync.scheduling import _task_eligible
+from agentsync.verification.proposal_staging import OwnerProposalStaging
 
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
 _REVIEW_MARKER = (
@@ -51,6 +52,7 @@ _REVIEW_MARKER = (
 _SINGLE_REVIEW_MARKER = (
     "The controlled Codex reply matched the pilot input. Independent review pending."
 )
+_PROPOSAL_REVIEW_MARKER = "Controlled Codex proposal stored as inert data. Owner staging and independent verification pending."
 _CLIENT_VERSION = r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}"
 
 
@@ -152,6 +154,7 @@ class CodexProposalInput:
     instruction: str = field(repr=False)
     allowed_paths: tuple[str, ...]
     timeout_seconds: int = 90
+    submit_for_review: bool = False
 
     def __post_init__(self) -> None:
         _identifier(self.task_id)
@@ -162,6 +165,8 @@ class CodexProposalInput:
             _reject()
         object.__setattr__(self, "allowed_paths", proposal_paths(list(self.allowed_paths)))
         if type(self.timeout_seconds) is not int or not 1 <= self.timeout_seconds <= 180:
+            _reject()
+        if type(self.submit_for_review) is not bool:
             _reject()
 
 
@@ -181,6 +186,36 @@ class CodexProposalOutcome:
 class _AttemptOutcome:
     active: dict[str, Any] = field(repr=False)
     proposal_json: str | None = field(default=None, repr=False)
+
+
+@dataclass(frozen=True, slots=True)
+class CodexProposalReviewOutcome:
+    """Current review submission only, never staging or execution authority."""
+
+    state: Literal["not_requested", "incomplete", "submitted_for_review"]
+    context_id: str | None = None
+    content_sha256: str | None = None
+    publication_task_version: int | None = None
+    review_task_version: int | None = None
+    verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
+def _proposal_contract(
+    actor: RelayActor, version: int, paths: tuple[str, ...], submit_for_review: bool
+) -> dict[str, Any]:
+    # Preserve historical default contracts and their insertion-order digest.
+    contract: dict[str, Any] = {
+        "format": "amadeus-source-proposal-v1",
+        "allowed_paths": paths,
+        "max_json_bytes": 32768,
+        "max_file_bytes": 8192,
+        "expected_task_version": version,
+        "worktree_id": actor.worktree_id,
+        "base_head": actor.expected_head,
+    }
+    if submit_for_review:
+        contract["submit_for_review"] = True
+    return contract
 
 
 @dataclass(frozen=True, slots=True)
@@ -1021,15 +1056,9 @@ class ControlledRelay:
             _reject()
         self._workspace(actor, spec.task_id)
         if isinstance(spec, CodexProposalInput):
-            contract = {
-                "format": "amadeus-source-proposal-v1",
-                "allowed_paths": spec.allowed_paths,
-                "max_json_bytes": 32768,
-                "max_file_bytes": 8192,
-                "expected_task_version": spec.expected_version,
-                "worktree_id": actor.worktree_id,
-                "base_head": actor.expected_head,
-            }
+            contract = _proposal_contract(
+                actor, spec.expected_version, spec.allowed_paths, spec.submit_for_review
+            )
             instruction = (
                 spec.instruction
                 + '\n\nReturn exactly one final JSON object {"files":[{"path":"...","content":"..."}]}.'
@@ -1130,6 +1159,7 @@ class ControlledRelay:
             wave_sha256=None,
             initial_task_version=spec.expected_version,
             paths_sha256=digest(spec.allowed_paths),
+            **({"submit_for_review": True} if spec.submit_for_review else {}),
         )
         attempt = await self._attempt(
             actor,
@@ -1171,7 +1201,40 @@ class ControlledRelay:
             base_head=actor.expected_head,
             launch_request_sha256=_launch_key(task),
         )
-        return self.observe_codex_proposal(actor, spec.task_id)
+        stored = self.observe_codex_proposal(actor, spec.task_id)
+        if stored.state != "proposal_stored":
+            _reject()
+        if spec.submit_for_review:
+            self._workspace(actor, spec.task_id)
+            review_version = active["version"] + 1
+            self._record(
+                key,
+                "proposal-review-intent",
+                context_id=stored.context_id,
+                content_sha256=stored.content_sha256,
+                publication_task_version=stored.task_version,
+                review_task_version=review_version,
+                owner_session_sha256=digest(actor.profile.session_id),
+                launch_request_sha256=_launch_key(task),
+            )
+            submitted = self._call(
+                actor,
+                "update_task",
+                task_id=spec.task_id,
+                lease_token=active["lease_token"],
+                expected_version=active["version"],
+                status="review",
+                result=_PROPOSAL_REVIEW_MARKER,
+                request_id=f"relay:{key}:proposal:review",
+            )
+            if submitted["version"] != review_version:
+                _reject()
+            self._record(
+                key,
+                "proposal-review-submitted",
+                review_intent_sha256=digest(self._read_receipt(key, "proposal-review-intent")),
+            )
+        return stored
 
     def observe_codex_proposal(self, actor: RelayActor, task_id: str) -> CodexProposalOutcome:
         """Read historical storage after restart, without resuming or authorizing a run."""
@@ -1261,7 +1324,137 @@ class ControlledRelay:
             "paths_sha256"
         ):
             return missing
+        submit = admission.get("submit_for_review", False)
+        if type(submit) is not bool:
+            return missing
+        contract = _proposal_contract(actor, admission["initial_task_version"], paths, submit)
+        request = f"relay:{key}:codex-proposal:{digest(contract)}"
+        expected_launch = digest(
+            [actor.profile.project_id, actor.profile.session_id, task_id, request]
+        )
+        if stored["launch_request_sha256"] != expected_launch:
+            return missing
         return CodexProposalOutcome("proposal_stored", context_id, 1, content_sha, version)
+
+    def observe_codex_proposal_review(
+        self, actor: RelayActor, task_id: str
+    ) -> CodexProposalReviewOutcome:
+        """Require complete receipts plus the current exact review-state task."""
+        stored = self.observe_codex_proposal(actor, task_id)
+        key = self._key(actor, task_id)
+        admission = self._read_receipt(key, "incomplete")
+        if admission is None or (
+            admission.get("mode") == "codex_proposal"
+            and admission.get("submit_for_review", False) is False
+            and stored.state == "proposal_stored"
+        ):
+            return CodexProposalReviewOutcome("not_requested")
+        missing = CodexProposalReviewOutcome("incomplete")
+        if (
+            not admission
+            or admission.get("submit_for_review") is not True
+            or stored.state != "proposal_stored"
+        ):
+            return missing
+        intent = self._read_receipt(key, "proposal-review-intent")
+        submitted = self._read_receipt(key, "proposal-review-submitted")
+        captured = self._read_receipt(key, "proposal-stored")
+        if not intent or not submitted or not captured or stored.task_version is None:
+            return missing
+        task = self._state(actor, task_id)
+        version = stored.task_version + 1
+        if (
+            intent.get("context_id") != stored.context_id
+            or intent.get("content_sha256") != stored.content_sha256
+            or type(intent.get("publication_task_version")) is not int
+            or intent["publication_task_version"] != stored.task_version
+            or type(intent.get("review_task_version")) is not int
+            or intent["review_task_version"] != version
+            or intent.get("owner_session_sha256") != digest(actor.profile.session_id)
+            or intent.get("launch_request_sha256") != captured.get("launch_request_sha256")
+            or submitted.get("review_intent_sha256") != digest(intent)
+            or task["status"] != "review"
+            or task["version"] != version
+            or task["owner_session_id"] != actor.profile.session_id
+            or task["result"] != _PROPOSAL_REVIEW_MARKER
+        ):
+            return missing
+        return CodexProposalReviewOutcome(
+            "submitted_for_review",
+            stored.context_id,
+            stored.content_sha256,
+            stored.task_version,
+            version,
+        )
+
+    def _proposal_staging_request(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        admin_token: str,
+        staging_session_id: str,
+        staging_session_token: str,
+    ) -> dict[str, Any]:
+        needed = {actor.agent_id}
+        if self._owner_worker_ids(actor.profile.project_id, needed, admin_token) != needed:
+            _reject()
+        observed = self.observe_codex_proposal_review(actor, task_id)
+        if observed.state != "submitted_for_review":
+            _reject()
+        return {
+            "project_id": actor.profile.project_id,
+            "admin_token": admin_token,
+            "session_id": staging_session_id,
+            "session_token": staging_session_token,
+            "task_id": task_id,
+            "expected_task_version": observed.review_task_version,
+            "context_id": observed.context_id,
+            "expected_content_sha256": observed.content_sha256,
+            "publication_session_id": actor.profile.session_id,
+            "publication_request_id": f"relay:{self._key(actor, task_id)}:proposal:publish",
+        }
+
+    def preview_codex_proposal_staging(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        admin_token: str,
+        staging_session_id: str,
+        staging_session_token: str,
+    ) -> dict[str, Any]:
+        """Preview staging only after the controlled proposal submission is proven."""
+        request = self._proposal_staging_request(
+            actor,
+            task_id,
+            admin_token=admin_token,
+            staging_session_id=staging_session_id,
+            staging_session_token=staging_session_token,
+        )
+        return OwnerProposalStaging(self._core).preview(**request)
+
+    def stage_codex_proposal_once(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        admin_token: str,
+        staging_session_id: str,
+        staging_session_token: str,
+        expected_plan_sha256: str,
+    ) -> dict[str, Any]:
+        """Consume the caller-reviewed staging digest; no automatic approval/execution."""
+        request = self._proposal_staging_request(
+            actor,
+            task_id,
+            admin_token=admin_token,
+            staging_session_id=staging_session_id,
+            staging_session_token=staging_session_token,
+        )
+        return OwnerProposalStaging(self._core).stage_once(
+            **request, expected_plan_sha256=expected_plan_sha256
+        )
 
     def _pinned_inputs(
         self,

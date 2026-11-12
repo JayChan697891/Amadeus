@@ -1,5 +1,38 @@
 # M6 host-factory adapter prototype
 
+## Controlled proposal submission and staging bridge
+
+`CodexProposalInput(..., submit_for_review=True)` opts into lease-controlled
+submission after inert publication. The flag is included in the launch contract
+and approval digest; its default `False` preserves existing launch plans and the
+running-task/storage-only behavior. The controller records review intent before
+`update_task`, then a distinct submission receipt afterward. Missing final receipt,
+expired lease, changed task/version/worktree or corrupted bindings remain incomplete;
+publication can still be observed historically without implying submission success.
+
+`run_codex_proposal_once` continues to return the historical storage outcome.
+Use `observe_codex_proposal_review(actor, task_id)` to inspect the current exact
+`submitted_for_review` state and its separate publication/review task revisions.
+No task completion, ordinary fixed-reply relay success or execution authority is
+inferred from this state. A completed/changed task no longer matches this observer.
+
+The owner can call `preview_codex_proposal_staging(actor, task_id, admin_token=...,
+staging_session_id=..., staging_session_token=...)`, inspect the returned plan,
+then pass its hash as `expected_plan_sha256` to `stage_codex_proposal_once` with
+the same explicit credentials. The controller requires current producer identity
+and complete proposal/submission evidence; the staging service independently checks
+owner/stager authority and all current pins. The helper never previews and approves
+on the caller's behalf. If the producer session has expired, this convenience bridge
+cannot reconstruct its authority; the separate owner service below remains its own
+explicit publication-adoption boundary, not automatic model-provenance recovery.
+
+After staging, feed the returned `candidate_id`/`candidate_sha` into the existing
+owner `CandidateVerificationJobs.enqueue` with a trusted `DockerProfile`, then
+review its exact job version/metadata digest before `OwnerCandidateFlow.start_once`.
+Verified completion still requires a different reviewer via `complete_once`.
+The controller does not enqueue or execute automatically, and it never restarts a
+model or retries a staging effect to close an interrupted receipt gap.
+
 ## Owner-reviewed proposal staging
 
 `agentsync.verification.proposal_staging.OwnerProposalStaging(core)` now exposes
