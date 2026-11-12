@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Actual generated artifact through local isolation
+
+Runtimebf54d44, tool8520691, existing wheel9e4b64bf: one owner-mediated import of
+the previously captured63-byte add.py into a fresh dedicated Linux Core/project.
+Real managed worktrees and merge-candidate receipts bind the unchanged proposal
+and separately hashed JSON-lines driver. Existing Docker verification checked
+8 inputs, all passed;19 isolation predicates true, exit0, cleanup confirmed.
+A distinct host-mediated Core reviewer completed the new fixture task atversion5.
+Readonly reopening confirms its proof link and exact container absence.
+
+Original producer remains running/version4/unverified, with unchanged immutable
+context/source/worktree/runtime. Fresh Linux installed wheel85 module identities
+and migration bytes match before/after; pip check and pilot Ruff/format pass.
+No new model call, credential copy, source-workspace apply or GitHub execution.
+The JUnit file is one report-derived aggregate pipeline case, not a pytest run.
+
+Scoped artifact validation only: owner mediation is not automatic import or
+cross-Core authenticated provenance, and the reviewer is not a second model.
+Owner confirms neither Claude nor Cursor subscription: cross-client tests NOT RUN.
+Full new-SHA matrix, general proposal staging and unattended artifact relay remain
+NOT RUN/UNVERIFIED. M5/M6/M7 and formal Release remain BLOCKED.
+See [hash-bound evidence](evidence/m6-proposal-artifact/manifest.json).
+
 ## Actual Codex source proposal capture
 
 Productbf54d44:187 Windows source cases pass (including92 traceability), fresh

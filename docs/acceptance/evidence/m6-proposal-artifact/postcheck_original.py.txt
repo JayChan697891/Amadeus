@@ -1,0 +1,28 @@
+from pathlib import Path
+from dataclasses import asdict
+import json
+import sys
+
+BASE = Path('D:/agentsync-debug/m6-codex-proposal-live-20261112')
+OUT = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE))
+import pilot
+
+state = json.loads((BASE / 'state.json').read_text(encoding='utf-8'))
+origin = json.loads((OUT / 'origin.json').read_text(encoding='utf-8'))
+core = pilot.Core(BASE / 'core')
+actor = pilot.actor_for(state, pilot.deny)
+relay = pilot.ControlledRelay(core, BASE, BASE / 'receipts')
+observed = relay.observe_codex_proposal(actor, state['task']['id'])
+auth = {'project_id': state['owner']['project_id'], 'session_id': state['member']['session_id'], 'session_token': state['member']['session_token']}
+task = next(row for row in core.execute('get_project_state', auth)['tasks'] if row['id'] == origin['original_task_id'])
+assert observed.state == 'proposal_stored' and observed.content_sha256 == origin['context_sha256']
+assert observed.context_version == origin['context_version']
+assert task['status'] == origin['original_task_status'] and task['version'] == origin['original_task_version']
+assert pilot.fixture_intact(state, BASE / 'source')
+assert pilot.fixture_intact(state, Path(state['tree']['path']))
+assert pilot.sources() == state['source_hashes']
+result = {'original_task_status': task['status'], 'original_task_version': task['version'], 'context_unchanged': True, 'original_fixture_and_worktree_unchanged': True, 'runtime_sources_unchanged': True, 'temporary_auth_absent': not (BASE / 'private-home/auth.json').exists(), 'additional_model_calls': 0, 'legacy_observation': asdict(relay.observe(actor, state['task']['id']))}
+with (OUT / 'original-postcheck.json').open('x', encoding='utf-8') as stream:
+    json.dump(result, stream, indent=2)
+print(json.dumps(result))

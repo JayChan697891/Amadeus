@@ -1,0 +1,115 @@
+{
+  "schema": "amadeus.owner-proposal-pilot.v1",
+  "started_at": "2026-11-12T10:05:11.536572+00:00",
+  "owner_reviewed_origin": {
+    "runtime_sha": "bf54d44cd2e9550e902ca3d5d18ab6c7e296862b",
+    "plan_sha256": "af02675e6a76360065885aff1a4e54c520252e5daf02b4a378b05bc98e7ce52b",
+    "context_id": "b54a167b-96ba-446e-96ab-477f6e25c748",
+    "context_version": 1,
+    "context_sha256": "42b9b483667af196eb93db7b263ae0036a0741523e5e6fe963c5b0d3af9b0b8f",
+    "proposal_file_sha256": "0049214146c09e015865e54237ecc4d15c9e043886cb20d1d9c68659bf744bc9",
+    "proposal_json_sha256": "ef6850f24774b039c54d8145e27ce19423a636a506b91877e5afeaa57b2a8705",
+    "original_task_id": "e47e71c5-9e3d-420b-b83a-5afc43ee7a32",
+    "original_task_version": 4,
+    "original_task_status": "running",
+    "original_verification": "unverified",
+    "origin_kind": "owner-reviewed export from observed immutable actual Codex proposal; not cross-Core native authentication",
+    "model_calls": 0
+  },
+  "automated_import": false,
+  "model_calls": 0,
+  "original_producer_task_changed": false,
+  "reviewer_kind": "distinct Core identity, host-mediated; not a second model",
+  "proposal_sha256": "0049214146c09e015865e54237ecc4d15c9e043886cb20d1d9c68659bf744bc9",
+  "driver_sha256": "6f5720b7a9c85f97cdddd42cd1225262655ee8b588e6f5136fadf6026af31fc9",
+  "solution_sha256": "5aa1d5fd5c055cbae2213f0a3a01acabff12720e75b9644da03ff86204332991",
+  "target_project_id": "205c1915-32b3-440c-99fd-1deeb3236e67",
+  "target_task_id": "b24d555a-3a24-4f52-a80d-0641ccab21bc",
+  "target_worktree_id": "a83aceb4-1a7e-572f-9814-dc0445a6903a",
+  "target_head": "ef068454a605fa41ddf7d9c067fd02298b8dc806",
+  "candidate_id": "2422158b-a46d-5ca8-be60-6e2bc4c015f6",
+  "candidate_sha": "abb6777d986285a7cf62958daa465b09e5035532",
+  "candidate_provenance_sha256": "e1fa390633618918dd6a4b567e99226abed5a39680d53ba3d0a85344defe4fc9",
+  "manifest": [
+    [
+      "add.py",
+      "5b38b28734994ed9d36b0f2f59f2498bb84f5939",
+      63
+    ],
+    [
+      "fixture.txt",
+      "cc0ce556a1c31a47dc9a560fe9486567dd520ed6",
+      45
+    ],
+    [
+      "solution.py",
+      "8c3d72e600b1cd0f6aa86e0bba1677e155f88448",
+      197
+    ]
+  ],
+  "profile_sha256": "fdc54df4cec722eb4d8f7f18d2df2056e4e87c8b7f42b35183a2beaf7121fbfb",
+  "cases": [
+    {
+      "input": [
+        0,
+        0
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        2,
+        3
+      ],
+      "expected": 5
+    },
+    {
+      "input": [
+        -7,
+        4
+      ],
+      "expected": -3
+    },
+    {
+      "input": [
+        -8,
+        -9
+      ],
+      "expected": -17
+    },
+    {
+      "input": [
+        17,
+        -17
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        9223372036854775807,
+        1
+      ],
+      "expected": 9223372036854775808
+    },
+    {
+      "input": [
+        -9223372036854775808,
+        -1
+      ],
+      "expected": -9223372036854775809
+    },
+    {
+      "input": [
+        1000000000000000000000000000000,
+        1000000000000000000000000000000
+      ],
+      "expected": 2000000000000000000000000000000
+    }
+  ],
+  "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "formal_release": "BLOCKED",
+  "execution_assessment": "passed",
+  "fixture_task_verification": "verified",
+  "baseline_unchanged": true,
+  "finished_at": "2026-11-12T10:05:14.427452+00:00"
+}

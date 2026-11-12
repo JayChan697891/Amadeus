@@ -1,0 +1,9 @@
+{
+  "reopened_readonly": true,
+  "fixture_task_status": "completed",
+  "fixture_task_version": 5,
+  "verification_execution_link_matches": true,
+  "container_absent": true,
+  "container_id": "999d8cf508fd80b575005a5e25011037e7981c681b0e80991bb481bbd6b6ed36",
+  "no_retry": true
+}

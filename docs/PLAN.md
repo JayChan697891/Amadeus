@@ -9,6 +9,13 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+The actual captured add.py now passed8 inputs through genuine managed candidate
+creation and the existing local Linux Docker verifier (runtimebf54d44/pilot8520691).
+Only the new isolated fixture task is verified; import and reviewer operation were
+owner-mediated. Next product work is owner-only proposal staging with exact reviewed
+pins, without source-workspace application. General automated import and unattended
+artifact relay remain unverified. Owner confirms no Claude/Cursor subscriptions;
+cross-client calls remain NOT RUN and paid APIs remain prohibited.
 M6's first authenticated attempt at `6a8ff41` remains unknown. A separately
 authorized diagnostic at `080722e` captured the startup-warning ordering failure;
 `ee45690` narrowly repairs it and passes offline replay plus affected local source

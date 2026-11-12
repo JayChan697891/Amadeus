@@ -1,5 +1,37 @@
 # Amadeus current progress
 
+## Actual proposal artifact: isolated owner-mediated verification
+
+Runtimebf54d44 and pilot8520691 now bridge the captured actual Codex add.py into
+a new dedicated local Linux project, with genuine managed Git candidate records.
+The exact63-byte proposal is preserved; a separately hashed owner-authored JSON-lines
+driver adapts it to the existing fixed verifier. No generated code runs on the host.
+One actual Docker pipeline checked8 inputs:8passed,19 isolation predicates true,
+exit0, cleanup confirmed and independently observed container absent. A distinct
+Core reviewer completed only the new fixture task atversion5/verified. Reopening
+the original Windows producer still shows running/version4/unverified; its context,
+source/worktree and runtime are unchanged. No new model call or authentication copy.
+
+Fresh offline Linux wheel installation uses the existing9e4b64bf artifact;
+all85 runtime modules and migrations match its bytes before/after, pip check passes.
+The new pilot passes Ruff/format. JUnit records one aggregate actual pipeline case
+with8 checked inputs, explicitly report-derived rather than a pytest invocation.
+See [artifact evidence](acceptance/evidence/m6-proposal-artifact/manifest.json).
+
+Owner now confirms neither Claude nor Cursor subscription. Cross-client calls and
+acceptance remain NOT RUN; do not request the same account facts or start paid APIs.
+This is owner-mediated import and reviewer operation, not automated import,
+cross-Core authenticated provenance, a second model reviewer or full M6/Release.
+The local safe evidence is D:/agentsync-debug/m6-proposal-artifact-20261112;
+private guest Core state remains solely in the dedicated VM, never uploaded.
+
+Next: implement the product owner-only proposal-to-managed-candidate staging seam,
+with reviewed immutable content/task/worktree/head pins and no source-workspace apply.
+Reuse the existing candidate exporter, queue, executor and independent completion
+gate; retain original unknown/failure fences and the unique M5 exit checklist.
+The pilot is complete and must not be rerun as a model task. Full release matrix,
+cross-client execution and unattended artifact relay remain unverified.
+
 ## Current product: actual Codex proposal capture
 
 Productbf54d44 integrates exact approved proposal contracts with the existing

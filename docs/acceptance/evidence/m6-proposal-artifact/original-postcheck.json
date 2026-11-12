@@ -1,0 +1,13 @@
+{
+  "original_task_status": "running",
+  "original_task_version": 4,
+  "context_unchanged": true,
+  "original_fixture_and_worktree_unchanged": true,
+  "runtime_sources_unchanged": true,
+  "temporary_auth_absent": true,
+  "additional_model_calls": 0,
+  "legacy_observation": {
+    "state": "incomplete",
+    "verification": "unverified"
+  }
+}
