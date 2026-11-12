@@ -54,6 +54,41 @@ async def test_manager_start_limit_rejects_new_requests_without_spawning_queued_
     assert manager.history() == (first.handle, second.handle)
 
 
+async def test_active_run_limit_waits_for_a_terminal_observation_across_adapters():
+    first = MockAdapter("project", "session")
+    second = MockAdapter("project", "session")
+    manager = RunManager(
+        "project", "session", {"one": first, "two": second}, max_active_runs=1,
+    )
+    running = await manager.start_task("one", task())
+    assert await manager.start_task("one", task()) == running
+    with pytest.raises(AgentSyncError) as limited:
+        await manager.dispatch_task("two", task("other"))
+    assert limited.value.code == "running_capacity_exceeded"
+    assert manager.history() == (running.handle,)
+
+    await first.cancel_task(running.run.run_id)
+    with pytest.raises(AgentSyncError):
+        await manager.dispatch_task("two", task("other"))
+    observed = await manager.get_status(running.handle)
+    assert observed.run.status == "cancelled"
+    admitted = await manager.start_task("two", task("other"))
+    assert manager.history() == (running.handle, admitted.handle)
+
+
+async def test_active_run_limit_retains_uncertain_start():
+    adapter = GateAdapter(failure=True)
+    adapter.release.set()
+    manager = RunManager("project", "session", {"worker": adapter}, max_active_runs=1)
+    with pytest.raises(AgentSyncError) as unknown:
+        await manager.start_task("worker", task())
+    assert unknown.value.code == "adapter_start_unknown"
+    with pytest.raises(AgentSyncError) as limited:
+        await manager.dispatch_task("worker", task("other"))
+    assert limited.value.code == "running_capacity_exceeded"
+    assert adapter.calls == 1
+
+
 async def test_cancelled_caller_concurrent_replay_and_independent_start():
     slow = GateAdapter()
     fast = MockAdapter("project", "session")

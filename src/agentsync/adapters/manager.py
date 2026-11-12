@@ -6,7 +6,9 @@ A dispatched start owns its history slot even if it raises, hangs, or its caller
 cancels. The loop must remain alive for outstanding starts. Adapter timeouts and
 cleanup remain the adapter's responsibility. Raw observations retain their own
 markers: this router makes no success, verification, or authorization claims.
-Hosts may bound pending starts across all adapters without creating a waiting queue.
+Hosts may bound pending starts and active managed routes without a waiting queue.
+With an active limit, unobserved or uncertain runs keep their slot. A released slot
+does not establish descendant or remote process cleanup.
 """
 
 from __future__ import annotations
@@ -17,7 +19,8 @@ from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass, field, replace
 from typing import Generic, Literal, Protocol, TypeVar, cast
 
-from agentsync.adapters.base import AdapterTask, AgentAdapter, _identifier
+from agentsync.adapters._host_process import _HostRun
+from agentsync.adapters.base import AdapterTask, AgentAdapter, RunSnapshot, _identifier
 from agentsync.errors import AgentSyncError
 
 
@@ -129,6 +132,8 @@ class _Route(Generic[R]):
     adapter_id: str
     task: AdapterTask = field(repr=False)
     start: asyncio.Task[_StartResult[R]] = field(repr=False)
+    resume_epoch: int = 0
+    resuming: bool = False
 
 
 class RunManager(Generic[C, R, T]):
@@ -140,6 +145,7 @@ class RunManager(Generic[C, R, T]):
         *,
         max_runs: int = 100,
         max_pending_starts: int | None = None,
+        max_active_runs: int | None = None,
     ) -> None:
         _identifier(project_id)
         _identifier(session_id)
@@ -149,6 +155,10 @@ class RunManager(Generic[C, R, T]):
             type(max_pending_starts) is not int or not 1 <= max_pending_starts <= max_runs
         ):
             raise AgentSyncError("validation_error", "Invalid pending start capacity.")
+        if max_active_runs is not None and (
+            type(max_active_runs) is not int or not 1 <= max_active_runs <= max_runs
+        ):
+            raise AgentSyncError("validation_error", "Invalid active run capacity.")
         if not isinstance(adapters, Mapping) or not 1 <= len(adapters) <= 32:
             raise AgentSyncError("validation_error", "Invalid adapter registration.")
         self._adapters = dict(adapters)
@@ -159,6 +169,8 @@ class RunManager(Generic[C, R, T]):
         self._project_id, self._session_id = project_id, session_id
         self._max_runs = max_runs
         self._max_pending_starts = max_pending_starts
+        self._max_active_runs = max_active_runs
+        self._active_handles: set[str] = set()
         self._lock = asyncio.Lock()
         self._routes: dict[str, _Route[R]] = {}
         self._requests: dict[str, _Route[R]] = {}
@@ -225,6 +237,7 @@ class RunManager(Generic[C, R, T]):
         """Return the original dispatch receipt on replay; use get_status for freshness."""
         route = await self._admit(adapter_id, task)
         run, _ = await self._started(route)
+        self._observe_active_slot(route, run, epoch=0)
         return ManagedRun(route.handle, route.adapter_id, run)
 
     async def dispatch_task(self, adapter_id: str, task: AdapterTask) -> DispatchSnapshot:
@@ -265,11 +278,36 @@ class RunManager(Generic[C, R, T]):
                         "pending_start_capacity_exceeded", "Manager pending start capacity is exhausted.", 409
                     )
                 handle = uuid.uuid4().hex
+                self._hold_active_slot(handle)
                 start = asyncio.create_task(self._start(adapter, task))
                 route = _Route(handle, adapter_id, task, start)
                 self._routes[handle] = route
                 self._requests[task.request_id] = route
         return route
+
+    def _hold_active_slot(self, handle: str) -> bool:
+        """Reserve capacity on the owning event loop before entering an adapter."""
+        limit = self._max_active_runs
+        if limit is None or handle in self._active_handles:
+            return False
+        if len(self._active_handles) >= limit:
+            raise AgentSyncError(
+                "running_capacity_exceeded", "Manager active run capacity is exhausted.", 409,
+            )
+        self._active_handles.add(handle)
+        return True
+
+    def _observe_active_slot(self, route: _Route[R], run: AdapterRun, *, epoch: int) -> None:
+        if self._max_active_runs is None or route.resuming or route.resume_epoch != epoch:
+            return
+        if (
+            isinstance(run, _HostRun) and not run.slot_held and run.parent_ended
+            and run.status in ("succeeded", "failed")
+        ) or (
+            isinstance(run, RunSnapshot) and run.finished_at is not None
+            and run.status in ("succeeded", "failed", "cancelled", "timed_out")
+        ):
+            self._active_handles.discard(route.handle)
 
     async def _started(self, route: _Route[R]) -> tuple[R, str]:
         outcome = await asyncio.shield(route.start)
@@ -340,13 +378,16 @@ class RunManager(Generic[C, R, T]):
 
     async def get_status(self, handle: str) -> ManagedRun[R]:
         route, run_id = await self._lookup(handle)
+        epoch = route.resume_epoch
         adapter = self._adapter(route.adapter_id)
         run = await _call_adapter(lambda: adapter.get_status(run_id))
         self._validate_run(run, route.task, run_id)
+        self._observe_active_slot(route, run, epoch=epoch)
         return ManagedRun(handle, route.adapter_id, run)
 
     async def get_result(self, handle: str) -> T:
         route, run_id = await self._lookup(handle)
+        epoch = route.resume_epoch
         adapter = self._adapter(route.adapter_id)
         result = await _call_adapter(lambda: adapter.get_result(run_id))
         _raise_pending_cancellation()
@@ -355,13 +396,16 @@ class RunManager(Generic[C, R, T]):
         except (Exception, asyncio.CancelledError):
             run = None
         self._validate_run(cast(R, run), route.task, run_id)
+        self._observe_active_slot(route, cast(R, run), epoch=epoch)
         return result
 
     async def cancel_task(self, handle: str) -> ManagedRun[R]:
         route, run_id = await self._lookup(handle)
+        epoch = route.resume_epoch
         adapter = self._adapter(route.adapter_id)
         run = await _call_adapter(lambda: adapter.cancel_task(run_id))
         self._validate_run(run, route.task, run_id)
+        self._observe_active_slot(route, run, epoch=epoch)
         return ManagedRun(handle, route.adapter_id, run)
 
     async def cancel_bounded(self, handle: str, *, timeout_seconds: float) -> CancellationObservation[R]:
@@ -409,6 +453,22 @@ class RunManager(Generic[C, R, T]):
     async def resume_task(self, handle: str) -> ManagedRun[R]:
         route, run_id = await self._lookup(handle)
         adapter = self._adapter(route.adapter_id)
-        run = await _call_adapter(lambda: adapter.resume_task(run_id))
+        bounded = self._max_active_runs is not None
+        if bounded and route.resuming:
+            raise AgentSyncError("task_already_active", "An adapter resume is already active.", 409)
+        reacquired = self._hold_active_slot(handle)
+        if bounded:
+            route.resuming = True
+            route.resume_epoch += 1
+        try:
+            run = await _call_adapter(lambda: adapter.resume_task(run_id))
+        except AgentSyncError as error:
+            if reacquired and error.code == "unsupported":
+                self._active_handles.discard(handle)
+            raise
+        finally:
+            if bounded:
+                route.resuming = False
         self._validate_run(run, route.task, run_id)
+        self._observe_active_slot(route, run, epoch=route.resume_epoch)
         return ManagedRun(handle, route.adapter_id, run)
