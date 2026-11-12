@@ -21,10 +21,14 @@ guest stopped normally after all 96 fixture container IDs were absent. See
 [Linux package evidence](acceptance/evidence/a109-linux-packages.json).
 The first Windows full source suite logged 46 failures from affected
 subprocess-based cases, 1,998 passes and 41 skips. The runner at `4f08dc8`
-passed all 46 formerly failing cases in a separate targeted recheck. Full
-source retest and the Windows installed-package checks are tracked in
-PROGRESS.md. Current macOS and real clients are NOT RUN. Formal Release is
-BLOCKED.
+passed all 46 formerly failing cases in a separate targeted recheck. The full
+corrected Windows source suite and the frozen offline Windows wheel each
+passed 2,044 cases and skipped 41. Ruff, format, mypy, build and pip check
+also passed on the corrected source. Windows sdist is running. The local
+Windows archives contain the same member bytes as the archives tested on
+Linux, with separately recorded archive hashes. See
+[Windows evidence](acceptance/evidence/a109-windows-local.json).
+Current macOS and real clients are NOT RUN. Formal Release is BLOCKED.
 
 # Historical local M6 checkpoint — 2026-10-26 America/Tijuana
 

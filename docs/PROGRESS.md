@@ -18,7 +18,9 @@ changes release tooling and its regression fixture. Development branch
 - The initial Windows full source run had 46 failures, 1,998 passes and 41
   skips. Its test subprocesses could import the old installed version. With
   the fixed import path all 46 failed cases and all 151 runner tests passed
-  separately. The corrected full source run is in progress.
+  separately. The corrected full source run and the frozen offline Windows
+  wheel suite each had 2,044 passes and 41 skips. The Windows sdist full suite
+  is running. See [Windows evidence](acceptance/evidence/a109-windows-local.json).
 - The frozen Linux source suite completed with 2,080 passed and 5 platform
   skips. All 84 imported runtime modules matched the frozen bytes before and
   after the suite. The post-check found none of the 32 recorded fixture
@@ -27,10 +29,11 @@ changes release tooling and its regression fixture. Development branch
   skips. All three suites had the same ordered test IDs, and the final
   post-check found none of the 96 recorded fixture containers. See
   [Linux package evidence](acceptance/evidence/a109-linux-packages.json).
-  Full Windows package checks remain in progress.
 - The local Windows M8 diagnostic passed 256 claim attempts with 256 matching
   audit outcomes and 117.46 ms p95 under its 1,000 ms budget. The host also
   ran other local validation workloads, so this is a diagnostic observation.
+  A second local test with four processes split between Core and loopback HTTP
+  passed 32 attempts with 32 matching audit outcomes and 110.64 ms p95.
 - The previous turn policy allowed a Git checkpoint to end the turn. AGENTS and
   WORKFLOW now require checking and continuing the next authorized task.
   Continuation in this Codex chat is active. A separate Work return callback
@@ -38,12 +41,12 @@ changes release tooling and its regression fixture. Development branch
   review on PR #33 applies to its historical frozen Linux evidence.
 
 Resume under `D:/agentsync-debug/continuation-cc30ed21` from
-`fixed-windows-driver.log` for the corrected Windows source,
-and `windows-driver.log` for the Windows packages. If a run is still active,
-read its existing evidence before launching another. Windows uses the release
-runner with the local wheelhouse and short D-drive scratch root. The owned
-Linux guest stopped normally after its evidence was copied and checked.
-Diagnose failures against the recorded revision before rerunning affected checks.
+`windows-driver.log` for the remaining Windows sdist run. The corrected source
+report is under `fixed-windows/`. If a run is still active, read its existing
+evidence before launching another. Windows uses the release runner with a local
+wheelhouse and short D-drive scratch root. The owned Linux guest stopped normally
+after its evidence was copied and checked. Diagnose failures against the
+recorded revision before rerunning affected checks.
 
 Current macOS, live client relay, final M5 evidence review and formal Release
 remain open. No GitHub Actions test was dispatched.

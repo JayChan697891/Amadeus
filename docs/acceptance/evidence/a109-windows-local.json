@@ -1,0 +1,134 @@
+{
+  "version": "0.3.0a109",
+  "scope": "Frozen Windows local source and isolated package evidence",
+  "source_runner_fix_commit": "4f08dc80d245e2ce807b12031434b4dd92b4c63a",
+  "runtime_and_artifact_commit": "de44e7bdbc2b1209fb40045cb2cb576886e696aa",
+  "runtime_modules_unchanged_across_freezes": 84,
+  "source_baseline_failed": {
+    "tests": 2085,
+    "failures": 46,
+    "errors": 0,
+    "skipped": 41,
+    "passed": 1998,
+    "junit_sha256": "561c56a42dd13d977127333bf1c52441fea314ae2df027497976b470582ddc7d"
+  },
+  "formerly_failing_retest": {
+    "tests": 46,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 46,
+    "junit_sha256": "407197b511a415b914fc3bc046d503dc51933cd24a9f8a7375e2c27ea78d1fc1"
+  },
+  "corrected_full_source": {
+    "tests": 2085,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 41,
+    "passed": 2044,
+    "junit_sha256": "f981fde72963d22450fe3b2a73b8690ed5a7d6ce01e38564f6a4276db9345a15",
+    "report_sha256": "4b8724d22230682b5bf4c80acfa071668d3912c1154cd72692f1de568a08f941",
+    "pytest_log_sha256": "41c020562669370ae41552e4960fcc2f93cae933827622ed4cb5ee7374e9f2c8",
+    "static_checks": {
+      "ruff": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "format": "d7d371da4c5c0caa6b0d25ce322bbf740378a9b197ab5620949398c9fb7c4713",
+      "mypy": "bbb3d71d2ce68df846085bd16f39270501c87b9ac6c0d739047923b8084327b5",
+      "pip_check": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    }
+  },
+  "installed_packages": {
+    "wheel": {
+      "archive_name": "agentsync_local-0.3.0a109-py3-none-any.whl",
+      "archive_sha256": "999ac1d4d738705ac86de3e9443acfb9b3fd846444fbe35c4f89bfe8003ff9c8",
+      "members_matching_archives_tested_on_linux": 91,
+      "tests": 2085,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 41,
+      "passed": 2044,
+      "junit_sha256": "fb8536671b7857dafa64f1f5fed39c9a268f1a0535992b190244d5ab5da710a6",
+      "suite_status": "passed",
+      "pytest_log_sha256": "e92f7ea03add81dfa30ea7b175b5b67ead93e7d8af1f750e532d926aa5d53196",
+      "origin_and_sdk_log_sha256": "bc883d0a5dab3bd1fd3c1654916818974f65b2f0780f47efcd7b3cfbd43e9cef"
+    },
+    "sdist": {
+      "archive_name": "agentsync_local-0.3.0a109.tar.gz",
+      "archive_sha256": "e1d868dc44893270b13ad08b695d44d75960f2406e3da137cab63e2175482049",
+      "members_matching_archives_tested_on_linux": 405,
+      "suite_status": "running"
+    }
+  },
+  "focused_checks": {
+    "3.11": {
+      "tests": 154,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 154,
+      "junit_sha256": "64d5b2732bb5a0c39463d7736ee8735264fb799dcd883889651503e298b62bc1"
+    },
+    "3.12": {
+      "tests": 154,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 154,
+      "junit_sha256": "84beeb15adc383b27215f6898adcb4568bc6d854b613e387162119d728e0be53"
+    }
+  },
+  "m8_diagnostic_only": {
+    "m8-windows-32x8": {
+      "workload": {
+        "workers": 32,
+        "rounds": 8,
+        "claims": 256,
+        "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+        "throughput_denominator": "sum_of_round_claim_spans"
+      },
+      "p95_ms": 117.45519999931275,
+      "declared_p95_budget_ms": 1000.0,
+      "audit_outcomes": {
+        "expected": 256,
+        "observed": 256,
+        "success": 8,
+        "denied": 248,
+        "missing": 0,
+        "duplicate": 0,
+        "unexpected": 0,
+        "mismatch": 0
+      },
+      "evidence_sha256": "5dfbddd1e62b39c9cf4f2b71a3c104b47aeb5650ba43fbc4983b55b1dfc3e6b7"
+    },
+    "m8-windows-mixed-4x8": {
+      "workload": {
+        "workers": 4,
+        "rounds": 8,
+        "claims": 32,
+        "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+        "throughput_denominator": "sum_of_parent_round_spans_including_process_dispatch",
+        "worker_mode": "spawned_processes",
+        "requested_transports": [
+          "core",
+          "loopback_http"
+        ]
+      },
+      "p95_ms": 110.63959999955841,
+      "declared_p95_budget_ms": 1000.0,
+      "audit_outcomes": {
+        "expected": 32,
+        "observed": 32,
+        "success": 8,
+        "denied": 24,
+        "missing": 0,
+        "duplicate": 0,
+        "unexpected": 0,
+        "mismatch": 0
+      },
+      "evidence_sha256": "85cbb0a5d068f0097e83246ba83b47577ba19c6287a936b7331d38b752f7af87"
+    }
+  },
+  "evidence_local": "D:/agentsync-debug/continuation-cc30ed21",
+  "actual_model_clients": "NOT RUN",
+  "macos": "NOT RUN",
+  "formal_release": "BLOCKED"
+}
