@@ -38,6 +38,7 @@ docs/acceptance/evidence/m6-full-regression/*full.log -whitespace
 docs/acceptance/evidence/m6-full-regression/*full.xml -whitespace
 docs/acceptance/evidence/m6-full-regression/windows-repair.log -whitespace
 # Preserve original evidence hashes from bounded local validation.
+docs/acceptance/evidence/m7-full-regression/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m7-queue-preflight/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m7-sdist-install/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m7-heartbeat-regression/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,52 @@
+{
+  "runtime_product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "test_source_sha": "74e1527b93a70a18120de80b151561c836af14a7",
+  "sdist_sha256": "f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351",
+  "source_zip_sha256": "b821ed3cbcc06cac7979bea37191f600d89eb537850def11b8f0a6c5c6e5cb6c",
+  "scope": "Complete existing local suite against previously fresh source-distribution installations; actual models excluded",
+  "linux": {
+    "status": "pass",
+    "python": "3.14.7",
+    "passed": 2290,
+    "skipped": 6,
+    "failures": 0,
+    "errors": 0,
+    "actual_docker_cases_passed": 14,
+    "same_core_docker_proposal_cases_passed": 2,
+    "skip_reasons": {
+      "Actual Linux backend belongs to the separately controlled Docker fixture": 1,
+      "Git for Windows path-length regression": 1,
+      "Windows conflict keys case-fold": 1,
+      "Windows junction-specific ancestor boundary": 1,
+      "Windows junction-specific boundary": 1,
+      "The opt-in MXC plan requires native Windows": 1
+    }
+  },
+  "windows": {
+    "status": "RUNNING",
+    "result_not_yet_accepted": true
+  },
+  "source_files_unchanged": 1222,
+  "runtime_package_members_matched": 88,
+  "python_modules": 87,
+  "source_shadowing": false,
+  "independent_review": "Linux process record, complete XML/log/hash, guarded all-tests command and source/runtime identity checked. Five Windows-specific skips and one non-Linux unsupported-backend case; actual Linux Docker cases passed. Windows not yet terminal.",
+  "dedicated_docker_containers_remaining": 0,
+  "owned_vm_stopped": true,
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "evidence_sha256": {
+    "linux-result.json": "71d8f885e960b595d631a6e64e5d806e4ff80c4227d796d86417634bb5363731",
+    "linux-origin.json": "7e3282a393ea7dddb3d49c081fa20eff580ebe047be0f10d81b0adbee05fe458",
+    "linux-junit.xml": "696d2e003fa9c80b8a364b73cf9c684c6578d914c108fac0fc01ae946718f203",
+    "linux-sdist_pytest.log": "033a4701602a1fa5dcd05f6600d27f5943f21141d3789d520efc8fc60b9cbd7e",
+    "linux-sdist_pytest.process.json": "7031ce7b7242d40c0280f68d2e981b02b438aec25c895a4ed15ed6080ef6ceed",
+    "identity.json": "677525194ff64a436d6d9b28d5611e7a48960d2107be82619fb2bd94edc2f48a",
+    "docker-cleanup-observation.log": "38f653afd18cef06e82f257c1f62674c83642fa4a336bfb28c05eb909bb7ef53",
+    "vm-stop.log": "7092ce8f5445d8dec6c87a52a3c4096bd46c21b49da9d2a1aaa264bfafd92681",
+    "driver.py.txt": "8d7dc08f678c1abbe9c184473da6cb79925b9fd4e0286bcae970b66c318fb3d1",
+    "run-linux.sh.txt": "cdab9c7eeeba4390b1659982b9bc2cf68382603a599e1c5d9dbae8e186a4d851",
+    "observe-docker-cleanup.sh.txt": "ae83cbf2d57c5fe210d3e55a6b60c6cbdffdbf68b7ec80344e982a7b9d1a8a9e"
+  }
+}

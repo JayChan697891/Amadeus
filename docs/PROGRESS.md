@@ -22,12 +22,18 @@ environments; one existing queue integration smoke case passes per platform.
 All88 runtime members/87Python modules match before/after; dependencies are valid.
 [Installation evidence](acceptance/evidence/m7-sdist-install/summary.json).
 
-A complete local regression is now RUNNING against those installed sdist runtimes,
-using frozen test/source74e1527; Linux requires the existing local Docker image.
-No full-run pass is claimed yet. Recovery: D:/agentsync-debug/m7-full-74e1527;
+A complete local regression uses those installed sdist runtimes with frozen
+test/source74e1527. Linux is complete:2290passed/6skipped, zero failures/errors;
+14actual Docker and2same-Core Docker proposal cases passed. The six skips are
+five Windows-only cases and one non-Linux unsupported-backend case. Independent
+review checked the complete command/XML/log and source/runtime identity.
+Windows is still RUNNING; no Windows/full-matrix pass is claimed yet.
+[Full regression evidence](acceptance/evidence/m7-full-regression/summary.json).
+Recovery: D:/agentsync-debug/m7-full-74e1527;
 Linux guest /root/amadeus-full-74e1527. Inspect existing result.json and live
 processes before any rerun; driver.py has a guarded main for multiprocessing.
-The VM is running for these tests. No new live client attempt is scheduled.
+The dedicated Docker daemon has zero containers and the owned VM is stopped.
+No new live client attempt is scheduled.
 Claude/Cursor real runs remain unavailable: owner has neither subscription.
 M5/M6/M7 and formal Release remain BLOCKED.
 

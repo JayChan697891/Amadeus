@@ -19,8 +19,14 @@ checks, not real clients or a full regression.
 [Regression](evidence/m7-heartbeat-regression/summary.json),
 [sdist installation](evidence/m7-sdist-install/summary.json).
 
-Full local tests using74e1527 source and the6017005 sdist runtime are RUNNING;
-their result is not yet accepted. Cross-client remains NOT RUN because the owner
+Full local tests use74e1527 source and the6017005 sdist runtime. Linux is complete:
+2290passed/6skipped, zero failures/errors, including14actual Docker cases and two
+same-Core Docker proposal cases. The six skips concern five Windows-only cases
+and one non-Linux unsupported-backend check. Independent review accepts this
+Linux environment's B6 regression portion only. Windows is still RUNNING;
+the complete matrix is not yet accepted.
+[Full regression evidence](evidence/m7-full-regression/summary.json).
+Cross-client remains NOT RUN because the owner
 has neither Claude nor Cursor subscription. Formal M5/M6/M7/Release remain BLOCKED.
 
 ## Prepared proposal queue: limited offline acceptance
