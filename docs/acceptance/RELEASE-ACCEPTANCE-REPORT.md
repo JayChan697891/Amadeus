@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Linux read-only single-task prerequisite
+
+a2634ec adds an explicit pinned Linux profile while retaining default/legacy/MXC
+plan compatibility. Source48passed; fresh Windows package48passed; fresh Linux
+package47passed/1Windows-native-only skip.87 module hashes match before/after,
+dependencies and static checks pass. Independent limited review accepted these
+results and the native observations below.
+
+The official0.167 musl package hash matches its publisher metadata. Actual CLI
+strict configuration and no-model prompt rendering succeed.18 requested features
+are effectively false; unified_exec remains true. Remaining advertised/nested
+tools are listed rather than misrepresented as absent. Exact frozen source native
+probes show project reads allowed, writes denied, outside synthetic canary reads
+denied and loopback sockets denied with a successful control. No model calls,
+credentials or external target probes occurred. Native source proof and final
+installed-package proof retain separate execution scopes and matching runtime hashes.
+
+Earlier command/test-helper failures and the portable re-exec path fix are recorded
+in [the evidence summary](evidence/m6-linux-readonly/summary.json). This is not whole
+CLI containment, real Linux agent task execution, complete M6 or Release acceptance.
+Real same-Core generated artifact acceptance, cross-client checks and current full
+matrix remain NOT RUN/BLOCKED. Existing M5/M6/M7/Release gates are unchanged.
+
 ## Same-Core pipeline integration, model boundary still a fixture
 
 Runtime d4c7cf9 with test c181f99 passes2 actual local Linux Docker integration

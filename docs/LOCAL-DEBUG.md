@@ -11,7 +11,11 @@ debug runtime, dependencies, caches, fixtures and VM disks live in D:/agentsync-
 - Portable QEMU11.1.0, published Windows build20260811, SHA512 checked against the
   publisher; no system installer was run.
 - Official Alpine3.24.2 cloud-init VM image, SHA512 checked against Alpine's index.
-- A private QCOW2 overlay on D: was expanded to16GiB; the downloaded base is retained.
+- A private32GiB QCOW2 overlay on D: now layers over the preserved complete16GiB
+  `vm/guest-before-growth-20261112.qcow2`, which still refers to the downloaded base.
+  Keep the whole backing chain. The guest expanded its partition/filesystem via
+  existing cloud-init at boot; the partition start stayed unchanged. About15GiB
+  free was observed afterward. No previous fixtures were removed.
 -3GiB guest RAM, one virtual CPU, WHPX acceleration with kernel-irqchip=off.
 - Linux6.18.54-0-virt, Python3.14.7, Docker29.8.2, cgroupv2 and builtin seccomp.
 - Only127.0.0.1 ports22222(SSH) and22223(QMP) are bound. No host directory is shared.
@@ -21,6 +25,12 @@ The explicit userspace interrupt controller and one vCPU configuration was then
 booted and used successfully for package installation, transfer and real tests.
 No WSL/Hyper-V Windows feature was enabled or host restart requested.
 These observations describe this machine, not universal Windows compatibility.
+
+The dedicated guest also contains the official Codex0.167.0-alpha.3.2 musl package
+at `/root/amadeus-codex-linux-0167`. Archive SHA256:
+`e5d9533df7e949cb145b8dc3f40c2f86bba5408cdf07301f9188f273df3409a1`.
+Only no-model version/configuration/tool/boundary probes have run there; no cached
+account credentials were copied. See `acceptance/evidence/m6-linux-readonly/summary.json`.
 
 ## Recreate and operate
 

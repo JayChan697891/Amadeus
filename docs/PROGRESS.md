@@ -1,5 +1,42 @@
 # Amadeus current progress
 
+## Linux single-task host readiness
+
+Runtime a2634ec adds explicit `linux_readonly=True` for the pinned0.167.0-alpha.3.2
+CLI, with strict boolean/platform/version checks and mutual exclusion with MXC.
+Default/legacy/MXC plans retain their parameters. Linux selects a named minimal/
+project read-only profile, network denied, exact pinned executable read permission
+for portable re-exec, restricted feature settings and no collaboration registration.
+The45-argument plan remains below the unchanged64-argument limit.
+
+Actual official musl CLI package digest matched before execution. Native no-model
+checks accept strict configuration and render the limited tool surface.18 requested
+features are effectively false; unified_exec remains true, explicitly retained in
+the evidence. Advertised tools are exec/wait/questions/sleep with apply_patch,
+resource reads and clock nested headings. This does not mean all tools are absent.
+Known local commands read the project, cannot write it, cannot read the outside
+synthetic canary, and cannot connect to an owned loopback listener; the unsandboxed
+control connects. No external target, credential copy or model call occurred.
+
+Frozen source48pass; fresh Windows wheel48pass; fresh Linux wheel47pass/1Windows
+MXC-only skip.87 runtime modules match before/after on both platforms. Ruff,
+format329 and mypy87 pass. Independent review accepts this scoped implementation,
+native evidence and packages. Earlier failed command forms, portable path probe
+and network-test helper correction remain recorded, not counted as passes.
+[Evidence](acceptance/evidence/m6-linux-readonly/summary.json).
+
+The D-drive VM now uses a32GiB overlay with the original complete16GiB image retained
+as its backing/rollback layer. Guest cloud-init grew the filesystem at boot; about
+15GiB was available afterward. All earlier work remains. The owned VM is stopped.
+CLI: /root/amadeus-codex-linux-0167/bin/codex in this VM; no default-home/PATH changes.
+Debug: D:/agentsync-debug/m6-linux-codex-preflight and m6-package-linux-readonly-portable.
+
+Next prepare one bounded real Codex proposal capture/review on the same Linux
+Core/Docker host, with authentication/fee gates, exact launch consent and temporary
+credential cleanup before isolated candidate verification. No real Linux run is
+started or scheduled yet. Earlier consumed runs stay untouched. Cross-client remains
+NOT RUN (no Claude/Cursor subscription); full M5/M6/M7/Release remain BLOCKED.
+
 ## Same-Core proposal pipeline with actual local Docker
 
 Runtime d4c7cf9 is unchanged. Test c181f99 exercises fixed local Python protocol

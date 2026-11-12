@@ -9,6 +9,12 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+The real Linux host prerequisite is now available at a2634ec: explicit single-task
+read-only profile, pinned official0.167 CLI, native configuration/tool projection
+and actual bounded file/loopback checks.48 source/48 Windows installed/47 Linux
+installed checks pass, with1Windows-only Linux skip. Default/legacy/MXC plans remain
+compatible. Next prepare a fee-gated, one-shot real Codex proposal task on this same
+Linux Core/Docker host; do not infer real-client execution from these no-model checks.
 The same-Core fixture pipeline now passes actual Linux Docker integration at
 c181f99 against unchanged runtime d4c7cf9: correct output completes through a
 distinct Core reviewer; wrong output and self-review are rejected.7fe0c28 fixes

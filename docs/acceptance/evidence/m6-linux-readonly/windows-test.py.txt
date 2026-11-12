@@ -1,0 +1,13 @@
+from pathlib import Path
+import hashlib,json,sys
+import agentsync,pytest
+base=Path('D:/agentsync-debug/m6-package-linux-readonly-portable');site=Path(agentsync.__file__).resolve().parent.parent;assert site.is_relative_to(base/'installed');manifest=json.loads((base/'manifest.json').read_text(encoding='utf-8'))
+def verify():
+ for rel,expected in manifest.items():assert hashlib.sha256((site/rel).read_bytes()).hexdigest()==expected,rel
+ for name,module in tuple(sys.modules.items()):
+  if name=='agentsync' or name.startswith('agentsync.'):assert Path(module.__file__).resolve().is_relative_to(site/'agentsync'),name
+verify();source=base/'source'
+code=pytest.main([str(source/'tests/unit/test_codex_invocation.py'),str(source/'tests/unit/test_codex_process.py'),str(source/'tests/integration/test_codex_invocation_process.py'),'-q','-p','no:cacheprovider','--basetemp='+str(base/'test-tmp'),'--junitxml='+str(base/'installed.xml')]);verify()
+(base/'origin.json').write_text(json.dumps({'product_sha':'a2634ecb9a65b666f617942fb3deb9f67fdd2a76','scope':'Fresh offline wheel installation, Explicit Linux single-task plans and existing Codex process/invocation regression; synthetic process fixtures, no real model','python':sys.version,'runtime_modules_matched_before_and_after':len(manifest),'source_shadowing':False,'exit_code':code,'model_requests':0},indent=2)+'\n',encoding='utf-8');raise SystemExit(code)
+
+
