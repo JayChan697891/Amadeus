@@ -164,7 +164,7 @@ def test_codex_host_factory_components_keep_actual_client_acceptance_unverified(
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
     assert item["execution_status"] == "not_run"
-    assert len(item["existing_tests"]) == 12
+    assert len(item["existing_tests"]) == 14
     assert {
         "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
         "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
