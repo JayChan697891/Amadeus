@@ -9,6 +9,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -26,8 +27,35 @@ from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.verification.candidate import OwnerCandidateExporter
 from agentsync.verification.candidate_jobs import CandidateVerificationJobs
-from agentsync.verification.docker import DockerProfile, JsonCase
+from agentsync.verification.docker import DockerProfile, JsonCase, _trusted_cli
 from agentsync.verification.owner_flow import OwnerCandidateFlow
+
+
+def assert_local_container_absent(container_id):
+    """Observe the same local daemon and trusted CLI as the product verifier."""
+    cli = _trusted_cli()
+    with tempfile.TemporaryDirectory(prefix="proposal-cleanup-observation-") as config:
+        containers = subprocess.run(
+            [
+                cli,
+                "--host",
+                "unix:///var/run/docker.sock",
+                "--config",
+                config,
+                "container",
+                "ls",
+                "--all",
+                "--no-trunc",
+                "--format",
+                "{{.ID}}",
+            ],
+            env={"PATH": "/usr/bin:/bin", "HOME": config, "LC_ALL": "C"},
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+    assert container_id not in containers.stdout.splitlines()
 
 
 @pytest.fixture
@@ -152,14 +180,7 @@ async def test_same_core_proposal_to_independent_docker_acceptance(
     assert result["source_sha256"] == hashlib.sha256(code.encode()).hexdigest()
     assert result["cleanup_confirmed"] is True
     assert result["isolation"]["checks"] and all(result["isolation"]["checks"].values())
-    containers = subprocess.run(
-        ["docker", "container", "ls", "--all", "--no-trunc", "--format", "{{.ID}}"],
-        check=True,
-        capture_output=True,
-        text=True,
-        timeout=15,
-    )
-    assert result["container_id"] not in containers.stdout.splitlines()
+    assert_local_container_absent(result["container_id"])
     reviewer = core.execute("register_agent", {**owner, "name": "Independent reviewer"})
     owner_grant(core, owner, reviewer, ("reviewer",))
     completion_args = {
