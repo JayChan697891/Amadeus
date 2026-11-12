@@ -16,9 +16,10 @@ and installed-package tests. The actual failed Core receipt remains unchanged.
 The separately authorized repaired run now has scoped acceptance: real fixed-text
 Codex to adapter to Core review, followed by a distinct host-mediated reviewer.
 Two actual isolated Codex sessions now completed automatic structured handoff and
-shared-context confirmation, followed by a third Core reviewer. Next: Cursor native
-Node-bundle invocation support and separate Claude/Cursor authentication/boundary
-checks. Same-client relay cannot replace cross-client acceptance. Do not retry consumed tasks or create
+shared-context confirmation, followed by a third Core reviewer. Cursor native
+Node-bundle preparation is implemented at f74f29f with local Windows/Linux evidence.
+Next: establish separate Claude/Cursor account availability, no-extra-fee state and
+actual execution boundaries before live cross-client validation. Same-client relay cannot replace cross-client acceptance. Do not retry consumed tasks or create
 a new M5 subdivision.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe

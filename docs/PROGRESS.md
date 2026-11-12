@@ -85,16 +85,28 @@ fixtures/runtime unchanged. Raw output remains local only. No source changes or
 redundant tests were needed. See
 [real two-session evidence](acceptance/evidence/m7-real-codex-relay/summary.json).
 
-Next: cross-client preparation. Claude2.1.295 version matches but default login
-credentials are absent. The official Cursor Windows package was downloaded to D:
-without changing account configuration, PATH or the desktop installation. It uses
-node.exe plus index.js; the current adapter accepts only a direct executable.
-Implement bounded explicit bundle pinning and direct native Node invocation,
-then validate the local CLI without model calls. Same-client evidence cannot
-replace Claude/Cursor compatibility, full M6/M7, real failure recovery or Release.
-The owner's standing first-choice approval preference remains bounded by no
-extra fees, no paid APIs, no main merge and no GitHub Actions. Missing account
-access must not be fabricated. No new M5 subdivision.
+Cursor native-bundle support is now implemented at
+`f74f29f73148d0e0e9a69ebb486eaffe6061d936`. The official Windows package uses
+node.exe plus index.js; preparation pins the complete bounded package inventory,
+rechecks queued directories and binds the bundle digest to exact launch consent.
+Legacy hashes remain unchanged. Explicit home/config paths support private D-drive
+environments. Node external resolution and filesystem atomicity remain unverified;
+this is not a sandbox assertion. Windows source47passed/2symlink skips; fresh
+Windows wheel16passed/2same skips; the same wheel on Linux18passed/0skips, including
+actual file/directory symlinks. Both installs matched84 runtime modules; pip check,
+Ruff/format/mypy84 pass. Astra found no remaining source blocker after the traversal
+fix. M6-05 coverage maps the new tests;92 traceability tests pass without upgrading
+formal execution_status. See [Cursor bundle evidence](acceptance/evidence/m6-cursor-node-bundle/summary.json).
+
+Next: cross-client account and isolation readiness. The official Cursor CLI was
+installed only under D: and passed version/help/plan preparation, with no model
+call, account/PATH or desktop-install changes. Claude2.1.295 version matches, but
+default login credentials are absent. The owner was asked which existing Claude
+or Cursor subscription/login is available and whether extra billing is disabled;
+that factual answer remains pending. First-choice approval does not supply missing
+credentials or establish fee state. Do not switch to paid API fallback. Same-client
+real relay evidence remains scoped to ee45690, not full M6/M7/Release. No new M5
+subdivision or duplicate baseline tests.
 
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.

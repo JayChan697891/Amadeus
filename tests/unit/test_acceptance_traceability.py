@@ -16,6 +16,7 @@ CODEX_COMPONENT_PATHS = {
     "tests/integration/test_codex_adapter_core_boundary.py",
 }
 CURSOR_COMPONENT_SELECTORS = {
+    "tests/unit/test_cursor_node_bundle.py",
     "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
     "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
     "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",

@@ -1,0 +1,80 @@
+{
+  "runtime_sha": "f74f29f73148d0e0e9a69ebb486eaffe6061d936",
+  "scope": "Cursor native Node-bundle preparation and consent binding; no actual Cursor model task",
+  "implemented": [
+    "optional paired sibling index.js and whole-bundle hash",
+    "bounded complete inventory before/after, per-file identity and queued-directory recheck",
+    "native Node invocation, no batch shell",
+    "bundle-bound consent; unchanged legacy consent hashes",
+    "explicit home/config environment; injection/API variables rejected"
+  ],
+  "windows_source": {
+    "passed": 47,
+    "skipped": 2,
+    "reason": "Host cannot create real symlinks"
+  },
+  "windows_fresh_offline_wheel": {
+    "passed": 16,
+    "skipped": 2,
+    "reason": "Host cannot create real symlinks",
+    "runtime_module_hashes_matched": 84
+  },
+  "linux_fresh_offline_same_wheel": {
+    "passed": 18,
+    "skipped": 0,
+    "runtime_module_hashes_matched": 84,
+    "actual_file_and_directory_symlinks_tested": true,
+    "owned_vm_stopped": true
+  },
+  "traceability_delta": {
+    "passed": 92,
+    "requirement": "M6-05",
+    "execution_status": "not_run",
+    "coverage": "partial"
+  },
+  "ruff_and_format": "PASS",
+  "mypy_84_modules": "PASS",
+  "review": "Astra scoped source no-blocker after queued-directory traversal fix; no client acceptance",
+  "initial_test_invocation": "Exit4: two nonexistent selector paths; no tests ran; preserved separately",
+  "actual_package": {
+    "version": "2026.11.11-b912975",
+    "archive_source": "https://downloads.cursor.com/lab/2026.11.11-b912975/windows/x64/agent-cli-package.zip",
+    "archive_sha256": "0ea5e57da6af09f4717397c22d1c31c3bc18e40a1453b89f643069b86d28ba59",
+    "version_help": "Observed exit0 with isolated local environment; no credentials or model calls",
+    "bundle_hash": "c575393b2f600bef568793bdac3b8c3ed9923bbd67f3dd9bb6e5dc3dc2112f3d"
+  },
+  "limitations": [
+    "Package pin is not entire Node module/DLL loading scope",
+    "Path checks are not atomic immutability",
+    "Cursor/Claude subscription authentication and no-extra-fee state unavailable",
+    "Actual Cursor sandbox/permissions/model run NOT RUN",
+    "macOS and full new-source matrix NOT RUN",
+    "M5/M6/M7/Release not passed"
+  ],
+  "model_calls": 0,
+  "artifact_sha256": {
+    "agentsync_local-0.3.0a109-py3-none-any.whl": "c1a82eb9586e8e372625c3578952546687ce153965756d719a5309245c8c0d63",
+    "agentsync_local-0.3.0a109.tar.gz": "6a42fa8a165d24eb4a34f87c2259b9a9b3c68c85f677fcb0f01f497c08930b0f"
+  },
+  "evidence_sha256": {
+    "windows-source.log": "4cac77bd0bf5d9b9d3fc5577c02aaf04a7a4fb5efb132083213b350d5cbacf3f",
+    "windows-source.xml": "a05edc666f3210cb55f6db01649a22e263a04aa50187e71cc029b68db12ca26a",
+    "initial-selector-error.log": "3377e0e75b4e5d71355ffd79e189c3b5b96d1b875dcacc8993154d76ae251fbc",
+    "traceability.log": "5f5a1a06243f814d17a263a754cb17ef039e13c198f8fd79e3ed525c9b5e72f6",
+    "traceability.xml": "3d7b95a7d67db7e16c7573dd4243fe6b8586d1b3ad726747960ea9d897c5ed90",
+    "actual-package-preview.json": "621d255dc385ac4723215536a812c131522d21bbf775f16973d63b6304b99468",
+    "cursor-version-help.json": "8ed29fdef85ccb7c9f6ebb25f211306c21b6c457ca9e4a1fb813fd790bd84ec8",
+    "claude-version-help.json": "ccffe010ae26268dad2f25c05f52f6aa99f52119c3763394fc74cb60aac4ce58",
+    "claude-local-readiness.json": "e4f9eedf18779ae1c42b3847504d4ea3d73068c69fa8d91673503c4a5d7dd75e",
+    "windows-installed.log": "33ebbec5a841b2ac2d58000c30946a8e5038041b60fd75dce71f47393c87524d",
+    "windows-installed.xml": "f83f5a67e24217d277a087788d32730e14a130bd47ae420f419a42cc606097ae",
+    "windows-origin.json": "929c97612b356528c26e30d50160b3968db7d26b9e9d15b9e2eb8d3027849d65",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "linux-tests.log": "2ff158e0598d4e92245e9df28474438ab9988395c696e6ab3d61327663a2cf7b",
+    "linux-installed.xml": "3958f4aa99fe11f8d716da880fbe24cc921fedd74e427691d952bdba6d42a790",
+    "linux-origin.json": "e79315ff62b93b0a1ef31f780156ae4414958152521a5eab136268d655263fab",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-build-binding.json": "09b5c680bc474a5154cfa896fc8305b0f63bd275966155dd7d664e5bc93cec8d"
+  },
+  "formal_release": "BLOCKED"
+}

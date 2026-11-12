@@ -1,5 +1,20 @@
 # Release Acceptance Report
 
+## Cursor native Node-bundle preparation
+
+Runtime f74f29f adds explicit sibling Node/entrypoint support, bounded package
+content pinning and bundle-bound approval. Windows source47passed/2symlink skips;
+fresh offline wheel16passed/2same skips. The same wheel on Linux18passed without
+skips, including actual file/directory links;84 runtime modules match each install.
+Pip check, Ruff/format and mypy pass;92 requirement traceability cases pass. Astra
+review found no remaining blocker after the queued-directory recheck fix.
+
+Actual Cursor2026.11.11-b912975 passed isolated version/help and package preparation
+only. Credentials/model execution/permissions/full external module resolution are
+unverified. Claude default login credentials absent; subscription/extra-billing
+facts pending. Full M6/M7 and Release remain BLOCKED. Historical successful Codex
+runs stay bound to ee45690. See [evidence](evidence/m6-cursor-node-bundle/summary.json).
+
 ## Actual same-client two-session relay
 
 Runtime ee45690/head58d473c completed two real Codex sessions on2026-11-12

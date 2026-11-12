@@ -15,6 +15,7 @@ docs/acceptance/evidence/m6-single-stop/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-single-stop/red-product.* -whitespace
 docs/acceptance/evidence/m6-native-mxc/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m7-real-codex-relay/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-cursor-node-bundle/** -text whitespace=cr-at-eol
 # Keep indentation in the unmodified failing pytest traceback evidence.
 docs/acceptance/evidence/m6-native-mxc/diagnostic-red.* -whitespace
 

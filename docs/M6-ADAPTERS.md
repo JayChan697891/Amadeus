@@ -258,11 +258,25 @@ prototype requires separately approved synthetic instructions without secrets.
 It uses a caller-supplied system environment allowlist. Actual auth, billing,
 tool restrictions, isolation and CLI/OS compatibility remain unverified.
 
+The official Windows package2026.11.11-b912975 invokes its sibling `node.exe`
+and `index.js`. Optional `node_entrypoint` and `expected_bundle_sha256` must be
+supplied together. `inspect_node_bundle(explicit_package_directory)` computes a
+bounded versioned relative-path/content digest; it launches nothing. Preparation
+rejects changed/missing/added dependencies, reparse/symlink entries and changed
+queued directories, then inserts the entrypoint before the fixed Cursor flags.
+The package hash is included in approval binding only for this mode, preserving
+legacy plan hashes. HOME/USERPROFILE/APPDATA/LOCALAPPDATA/CURSOR_CONFIG_DIR can be
+explicitly supplied for a private environment; Node injection and API variables
+remain rejected. Package pinning does not prove Node's full external resolution
+scope or eliminate filesystem races. Live authentication, cost and isolation gates
+remain required. See [version-bound local checks](acceptance/evidence/m6-cursor-node-bundle/summary.json).
+
 The supported schema is based on the official
 [Cursor output format](https://cursor.com/docs/cli/reference/output-format).
 Invocation flags are based on [Cursor CLI parameters](https://cursor.com/docs/cli/reference/parameters).
-Only synthetic known-Python fixtures have been exercised. Actual Cursor, CLI/OS
-compatibility, permissions, server cancellation and autonomous relay are NOT RUN.
+A real downloaded Cursor package passed version/help and native-bundle preparation
+without model requests. Lifecycle fixtures remain synthetic; actual Cursor task,
+permissions, server cancellation and cross-client relay are NOT RUN.
 
 ## Claude restricted invocation preparation
 

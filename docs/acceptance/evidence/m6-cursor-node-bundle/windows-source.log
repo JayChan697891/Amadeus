@@ -1,0 +1,4 @@
+................ss...............................                        [100%]
+=========================== short test summary info ===========================
+SKIPPED [2] tests\unit\test_cursor_node_bundle.py:203: This host cannot create the actual symlink fixture
+47 passed, 2 skipped in 30.38s
