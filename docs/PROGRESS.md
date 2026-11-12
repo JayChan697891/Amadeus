@@ -1,5 +1,35 @@
 # Amadeus current progress
 
+## Continuous local validation for 0.3.0a109
+
+Frozen product and tests: `de44e7bdbc2b1209fb40045cb2cb576886e696aa`.
+Development branch: `feat/implementation-first-20261107`.
+
+- Repaired managed delivery status after reopening the database, Windows Git ref
+  locks beyond MAX_PATH, source imports in a clean release environment, and
+  historical SQLite migration fixtures. No approval or verification checks were
+  removed.
+- Windows Ruff check, format check and mypy pass on the frozen source. During
+  development, 19 focused path, delivery and migration cases and 151 release
+  runner cases passed. The full suites are recorded separately when they finish.
+- The previous turn policy allowed a Git checkpoint to end the turn. AGENTS and
+  WORKFLOW now require checking and continuing the next authorized task.
+  Continuation in this Codex chat is active. A separate Work return callback
+  followed by automatic dispatch has no observed execution. The existing Work
+  review on PR #33 applies to its historical frozen Linux evidence.
+
+Resume by reading the Windows driver at
+`D:/agentsync-debug/continuation-cc30ed21/windows-driver.log` and the Linux
+driver at `D:/agentsync-debug/continuation-cc30ed21/linux-driver.log`. If a run
+is still active, read its existing evidence before launching another. Windows
+uses the repository release runner with the local wheelhouse and short D-drive
+scratch root. The Linux source run uses the existing isolated guest and
+preloaded Docker image. Diagnose any failure against the recorded revision
+before rerunning affected checks.
+
+Current macOS, live client relay, final M5 evidence review and formal Release
+remain open. No GitHub Actions test was dispatched.
+
 0.3.0a38 development source adds the Amadeus project name and `amadeus` command.
 Validation is NOT RUN for this checkpoint. M5 and Release remain BLOCKED.
 

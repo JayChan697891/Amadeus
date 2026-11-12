@@ -1,4 +1,15 @@
-# Latest local M6 checkpoint — 2026-10-26 America/Tijuana
+# Local validation in progress — 0.3.0a109
+
+Ruff lint and format passed on frozen `de44e7b` (317 files already formatted).
+mypy passed for 84 source files. Local development rechecks returned 19
+passing migration and managed Git cases, plus 151 passing release runner cases.
+The saved JUnit files are `path-and-migration.xml` and `runner-recheck.xml` in
+`D:/agentsync-debug/continuation-cc30ed21`. Superseded diagnostic runs retain
+their failed or interrupted status. Full Windows and Linux runs are tracked
+in PROGRESS.md. Current macOS and real clients are NOT RUN. Formal Release is
+BLOCKED.
+
+# Historical local M6 checkpoint — 2026-10-26 America/Tijuana
 
 Final local source test-infrastructure: 1041pass/5skip, Ruff/format/mypy/diff pass.
 Owned child cleanup and opt-in bounded private per-phase journal verified.

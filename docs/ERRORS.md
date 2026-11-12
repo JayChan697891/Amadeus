@@ -182,3 +182,17 @@ A second trusted-profile fault injection used an enormous timeout integer and
 revealed a raw OverflowError during profile validation. Validation must safely
 map this to invalid_profile. Both findings require frozen full-suite regression
 and separate independent repair confirmation before final stage acceptance.
+## 0.3.0a109 local debugging
+
+Stored snapshot receipts use the workspace serializer. The delivery observer
+was applying the candidate-queue canonical JSON requirement to those receipts.
+It now uses the existing bounded workspace receipt reader and checks the
+canonical digest against the approved plan. A clean Windows release run also
+exposed a source import failure and fixtures that downgraded the database
+version without removing the v15 usage table.
+
+Git for Windows could fail to create the managed delivery lock once the full
+path exceeded MAX_PATH. A process-local Git option fixes the tested ref path.
+Extremely deep linked-worktree paths can still produce Git's own
+`'$GIT_DIR' too big` merge error. Acceptance uses a short scratch path on D:
+and separately tests a ref beyond MAX_PATH.

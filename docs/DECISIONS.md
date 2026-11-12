@@ -168,3 +168,10 @@ a candidate SHA. History receipts are original mutation observations; current
 state is a distinct get/list projection. Replay is owner-authenticated and DB-only,
 not renewed Git freshness or execution authority. Final binding comparison and
 insert/request/audit share the write transaction, while export stays outside it.
+## Continuous execution and acceptance evidence
+
+Use one authorized execution loop across implementation, local tests, repair
+and retest. An intermediate commit is a recovery point. A completed Codex
+turn or native chat handoff alone does not establish a Work callback or later
+automatic dispatch. Keep the existing Release Gate and retain incomplete
+test observations with their actual status.
