@@ -1,5 +1,35 @@
 # Amadeus current progress
 
+## Current product: actual Codex proposal capture
+
+Productbf54d44 integrates exact approved proposal contracts with the existing
+one-attempt Codex lifecycle and atomic Core publication. Capture and immutable
+context are linked by canonical file and envelope hashes plus producer/task/
+worktree/head/launch pins. Proposal storage never satisfies ordinary relay review,
+changes task state or imports/executes code. Unknown/crash states remain fenced.
+
+Windows187passed including92 traceability cases; fresh offline wheel36passed,
+85 runtime module hashes matched before/after. Pip check/Ruff/format/mypy85 pass.
+Initial test-only version assertion failures are retained without weakening gates.
+Linux/macOS and the full new-SHA matrix are NOT RUN.
+
+One real Codex call at2026-11-12 09:49:48UTC exited0 in22.014s. It generated a63-byte
+add.py proposal; Core reopened proposal_stored/contextversion1/taskversion4, while
+the task stays running/unverified and legacy relay observation stays incomplete.
+Astra independently accepted actual capture-to-Core only. Syntax-only inspection
+found one add function/no imports/top-level actions; semantic correctness and code
+execution remain UNVERIFIED/NOT RUN. Raw695stdout/119unclassifiedstderr bytes stay
+restricted locally. Temporary auth removed; original, fixtures and runtime unchanged.
+See [source/package and real capture evidence](acceptance/evidence/m6-proposal-capture/summary.json).
+
+Resume from bf54d44: independently validate the generated artifact through existing
+isolated verification, with an explicitly reviewed owner import that creates real
+managed candidate provenance. No fabricated CandidateInput/receipts, workspace apply
+or host execution of model code. The consumed pilot is not retried. Its private
+local directory is D:/agentsync-debug/m6-codex-proposal-live-20261112; raw output,
+credentials and Core state must not be uploaded. Existing M5/Release gates remain.
+Claude/Cursor account/no-extra-fee facts remain pending; no additional call is started.
+
 ## Current product: inert task-bound source proposals
 
 Product80754db adds publish_task_proposal across Core/SDK/HTTP/MCP. Authenticated
@@ -14,8 +44,8 @@ Windows source241passed; requirement mapping92passed; fresh offline wheel55passe
 mypy85 pass. Initial fixture/setup failures are preserved. Astra accepted this scoped source/package evidence. Linux/macOS and full matrix for this new delta NOT RUN.
 See [frozen proposal storage evidence](acceptance/evidence/m6-task-proposal/summary.json).
 
-Resume: integrate successful complete adapter output with a host-pinned proposal
-contract and this atomic receiver. Preserve unknown/timeout/cancel fences, hash-only
+The following was the prior checkpoint: integrate successful complete adapter output
+with a host-pinned proposal contract and this atomic receiver (implemented above). Preserve unknown/timeout/cancel fences, hash-only
 receipts and unchanged task state. A later owner importer must produce a genuine
 managed merge candidate before existing isolated verification/completion gates;
 never fabricate CandidateInput or trust a context source label. This remains M6

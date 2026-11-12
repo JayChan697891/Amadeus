@@ -1,5 +1,24 @@
 # Release Acceptance Report
 
+## Actual Codex source proposal capture
+
+Productbf54d44:187 Windows source cases pass (including92 traceability), fresh
+offline wheel36pass with85 runtime hashes matching before/after; pip check,
+Ruff/format/mypy85 pass. Tests cover output-contract binding, timeout/cancel,
+expired lease, concurrent admission, publication crash, receipt/content mismatch,
+foreign observer and historical version reads. Existing fixed-reply paths remain.
+
+Actual Codex on2026-11-12 09:49:48UTC exited0 after22.014s and stored a63-byte
+add.py proposal in immutable Core context. Reopening verified the exact context,
+version and hash. Task remains running/unverified. Astra accepted only actual
+capture-to-Core; code correctness, import, execution and independent artifact
+verification are NOT RUN/UNVERIFIED. Temp auth removed; original/fixtures/runtime
+unchanged. Raw695stdout/119unclassifiedstderr bytes remain restricted locally.
+
+Linux/macOS and full Release matrix for this new SHA remain NOT RUN. Historical
+results retain their original SHA scope. M5/M6/M7 and formal Release stay BLOCKED.
+See [exact evidence and helper sources](evidence/m6-proposal-capture/summary.json).
+
 ## Task-bound inert proposal publication
 
 Product80754db passes241 Windows source cases across proposals, permissions and

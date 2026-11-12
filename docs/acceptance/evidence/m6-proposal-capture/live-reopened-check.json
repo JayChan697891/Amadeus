@@ -1,0 +1,50 @@
+{
+  "runtime_sha": "bf54d44cd2e9550e902ca3d5d18ab6c7e296862b",
+  "plan_sha256": "af02675e6a76360065885aff1a4e54c520252e5daf02b4a378b05bc98e7ce52b",
+  "observation": {
+    "state": "proposal_stored",
+    "context_id": "b54a167b-96ba-446e-96ab-477f6e25c748",
+    "context_version": 1,
+    "content_sha256": "42b9b483667af196eb93db7b263ae0036a0741523e5e6fe963c5b0d3af9b0b8f",
+    "task_version": 4,
+    "verification": "unverified"
+  },
+  "task_status": "running",
+  "task_verification": "unverified",
+  "legacy_observation": {
+    "state": "incomplete",
+    "verification": "unverified"
+  },
+  "model_calls": 1,
+  "retry": false,
+  "code_executed": false,
+  "code_imported": false,
+  "artifact_verification": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "legacy_title_note": "The inherited Core title is not the specification; the pinned launch instruction and JSON contract define this task.",
+  "proposal_file": {
+    "path": "add.py",
+    "utf8_bytes": 63,
+    "sha256": "0049214146c09e015865e54237ecc4d15c9e043886cb20d1d9c68659bf744bc9"
+  },
+  "syntax_only_shape": {
+    "parsed": true,
+    "one_add_function": true,
+    "no_imports": true,
+    "no_top_level_actions": true,
+    "code_executed": false,
+    "semantic_correctness": "UNVERIFIED"
+  },
+  "event_types": [
+    "thread.started",
+    "item.completed",
+    "turn.started",
+    "item.completed",
+    "turn.completed"
+  ],
+  "item_types": [
+    "error",
+    "agent_message"
+  ],
+  "raw_uploaded": false
+}

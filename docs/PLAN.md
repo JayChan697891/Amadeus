@@ -23,9 +23,11 @@ after the owned parent ends; server cancellation and descendants remain unverifi
 The actual15-second Codex deadline also preserved an unknown result despite a
 captured completed turn; active-generation timeout remains unverified.
 Product80754db now provides atomic task-bound inert proposal publication, with
-local source and fresh Windows wheel evidence. Next implement successful adapter
-output capture against a host-pinned proposal contract, then separately authorized
-managed candidate import and existing isolated artifact verification. Establish
+local source and fresh Windows wheel evidence. Productbf54d44 now captures actual
+Codex code proposals into Core under the pinned contract; the real task remains
+running/unverified. Next: separately reviewed owner import creating genuine managed
+candidate provenance, then existing isolated artifact verification. No host execution
+or direct workspace application of generated code. Establish
 Claude/Cursor account availability, no-extra-fee state and actual execution
 boundaries before live cross-client validation. Same-client relay cannot replace cross-client acceptance. Do not retry consumed tasks or create
 a new M5 subdivision.

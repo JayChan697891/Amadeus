@@ -1,0 +1,101 @@
+{
+  "result": "18 new scenarios rejected the unsupported fixture version before any capture;56 other cases passed",
+  "correction": "Test fixture now declares a supported version; production version gate unchanged",
+  "local_failure_evidence_sha256": {
+    "first.log": "9e5cb0795224fd53d0ac62897eba70df6b885c2bbc435c0febe19c80e1974e39",
+    "first.xml": "f1782aa4d9c0d96aedd5a761867cfb597b9291d5f937d240995f04e31f2bd268"
+  },
+  "failures": [
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[success]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[bad-schema]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[wrong-path]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[multiple-messages]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[denied]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[stale-consent]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[timeout]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[cancel]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[failed-exit]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[dirty-after-launch]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[version-after-launch]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[crash-after-publication]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[changed-capture-digest]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[changed-context-and-final-digest]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[changed-final-launch-key]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[removed-observed-receipt]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[newer-context-and-task]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    },
+    {
+      "test": "test_proposal_capture_with_actual_core_git_and_owned_fixture_process[concurrent-start]",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Invalid Codex invocation input."
+    }
+  ],
+  "raw_failure_logs": "Retained locally; may contain synthetic test Core credentials, so not uploaded"
+}
