@@ -12,7 +12,7 @@ import pytest
 from conftest import owner_grant
 from test_m4b_workspaces import commit_edit, git, source_fingerprint
 
-from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.approved_launch import LaunchConsent, digest
 from agentsync.adapters.codex_invocation import CodexHostProfile
 from agentsync.adapters.cursor_invocation import CursorHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
@@ -199,6 +199,15 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
     assert len(launches) == len(approvals) == 2
     attempts = relay.owner_inspect_attempts(project_id, task["id"], admin_token=owner["admin_token"])
     assert [attempt.status for attempt in attempts] == ["expected_reply", "expected_reply"]
+    assert [attempt.agent_sha256 for attempt in attempts] == [
+        digest(first["agent_id"]), digest(second["agent_id"]),
+    ]
+    assert [attempt.protocol_session_sha256 for attempt in attempts] == [
+        digest("fixture-thread"), digest("fixture-session"),
+    ]
+    assert attempts[0].declared_client_version == first_profile.expected_cli_version
+    assert attempts[1].declared_client_version == second_profile.expected_cli_version
+    assert all(attempt.verification == "unverified" for attempt in attempts)
     with pytest.raises(AgentSyncError):
         relay.review_once(
             RelayReviewer(project_id, first["session_id"], first["session_token"]),

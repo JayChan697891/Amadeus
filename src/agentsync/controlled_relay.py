@@ -42,6 +42,7 @@ from agentsync.errors import AgentSyncError
 
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
 _REVIEW_MARKER = "Two controlled client replies matched the pilot input. Independent review pending."
+_CLIENT_VERSION = r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}"
 
 
 def _reject() -> NoReturn:
@@ -124,6 +125,9 @@ class RelayAttemptObservation:
     adapter_elapsed_ms: int | None = None
     reported_input_tokens: int | None = None
     reported_output_tokens: int | None = None
+    agent_sha256: str | None = None
+    declared_client_version: str | None = None
+    protocol_session_sha256: str | None = None
     billing_verified: Literal[False] = field(default=False, init=False)
     cost_usd: None = field(default=None, init=False)
     verification: Literal["unverified"] = field(default="unverified", init=False)
@@ -144,15 +148,21 @@ def _receipt_uint(value: Any) -> int | None:
 def _terminal_metrics(
     run: _HostRun, result: CodexResult | ClaudeResult | CursorResult | None = None,
 ) -> dict[str, object]:
-    """Report local elapsed time and protocol counters, not billing or subscription usage."""
+    """Record elapsed time and sanitized observations from the matching adapter result."""
     metrics: dict[str, object] = {}
     if run.finished_at is not None:
         elapsed_ms = (run.finished_at - run.started_at) * 1000
         if math.isfinite(elapsed_ms) and 0 <= elapsed_ms < 2**63:
             metrics["adapter_elapsed_ms"] = int(elapsed_ms)
-    if isinstance(result, (CodexResult, ClaudeResult)) and result.run == run and result.usage is not None:
-        metrics["reported_input_tokens"] = _receipt_uint(result.usage.input_tokens)
-        metrics["reported_output_tokens"] = _receipt_uint(result.usage.output_tokens)
+    if result is not None and result.run == run:
+        session = (
+            result.client_thread_id if isinstance(result, CodexResult) else result.client_session_id
+        )
+        if type(session) is str and session:
+            metrics["protocol_session_sha256"] = digest(session)
+        if isinstance(result, (CodexResult, ClaudeResult)) and result.usage is not None:
+            metrics["reported_input_tokens"] = _receipt_uint(result.usage.input_tokens)
+            metrics["reported_output_tokens"] = _receipt_uint(result.usage.output_tokens)
     return metrics
 
 
@@ -443,12 +453,17 @@ class ControlledRelay:
             return RelayAttemptObservation(leg, "not_dispatched")
         client = _matched_text((dispatch or {}).get("client"), r"codex|claude|cursor")
         request = _matched_text((dispatch or {}).get("launch_request_sha256"), r"[0-9a-f]{64}")
+        agent = _matched_text((dispatch or {}).get("agent_sha256"), r"[0-9a-f]{64}")
+        version = _matched_text((dispatch or {}).get("declared_client_version"), _CLIENT_VERSION)
         admission = (
             _observe_admission(self._receipt_store, request, client)
             if request is not None and client is not None else None
         )
         if client is None or (observed is None) == (stopped is None):
-            return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
+            return RelayAttemptObservation(
+                leg, "outcome_unknown", client, admission=admission,
+                agent_sha256=agent, declared_client_version=version,
+            )
         terminal = observed if observed is not None else stopped
         assert terminal is not None
         status = _matched_text(
@@ -461,7 +476,10 @@ class ControlledRelay:
             status == "expected_reply"
             and (type(exit_code) is not int or exit_code != 0 or parent_ended is not True)
         ):
-            return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
+            return RelayAttemptObservation(
+                leg, "outcome_unknown", client, admission=admission,
+                agent_sha256=agent, declared_client_version=version,
+            )
         return RelayAttemptObservation(
             leg, "terminal_recorded", client, status,
             exit_code=exit_code if type(exit_code) is int and -(2**63) <= exit_code < 2**63 else None,
@@ -474,6 +492,9 @@ class ControlledRelay:
             adapter_elapsed_ms=_receipt_uint(terminal.get("adapter_elapsed_ms")),
             reported_input_tokens=_receipt_uint(terminal.get("reported_input_tokens")) if client != "cursor" else None,
             reported_output_tokens=_receipt_uint(terminal.get("reported_output_tokens")) if client != "cursor" else None,
+            agent_sha256=agent,
+            declared_client_version=version,
+            protocol_session_sha256=_matched_text(terminal.get("protocol_session_sha256"), r"[0-9a-f]{64}"),
         )
 
     def review_once(
@@ -576,6 +597,8 @@ class ControlledRelay:
             adapter = CursorAdapter(*namespace, contextual_factory=factory)
         self._record(
             key, stage + "-dispatched", client=factory.client, launch_request_sha256=_launch_key(task),
+            agent_sha256=digest(actor.agent_id),
+            declared_client_version=_matched_text(actor.profile.expected_cli_version, _CLIENT_VERSION),
         )
         run = await adapter.start_task(task)
         try:
