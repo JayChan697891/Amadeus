@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import math
 import re
 import time
 from collections.abc import Awaitable, Callable
@@ -80,6 +81,11 @@ class LaunchAdmissionObservation:
 
 
 LaunchAuthority = Callable[[LaunchReview], Awaitable[LaunchConsent | None]]
+
+
+def _check_execution_deadline(deadline: float | None) -> None:
+    if deadline is not None and asyncio.get_running_loop().time() >= deadline:
+        raise AgentSyncError("relay_execution_limit", "The controlled relay execution budget expired.", 409)
 
 
 def prepare_launch_review(
@@ -165,6 +171,7 @@ class ApprovedLaunchFactory:
         authority: LaunchAuthority,
         revalidate: Callable[[AdapterTask], None],
         _receipt_store: _ReceiptDirectory | None = None,
+        _execution_deadline: float | None = None,
     ) -> None:
         self.client = client_kind(profile)
         if type(environment) is not dict or not callable(authority) or not callable(revalidate):
@@ -180,6 +187,11 @@ class ApprovedLaunchFactory:
         self._receipt_store.check()
         self._authority = authority
         self._revalidate = revalidate
+        if _execution_deadline is not None and (
+            type(_execution_deadline) is not float or not math.isfinite(_execution_deadline)
+        ):
+            raise AgentSyncError("validation_error", "Invalid host execution deadline.")
+        self._execution_deadline = _execution_deadline
 
     def _prepare(self, task: AdapterTask) -> Invocation:
         return self._review(task).plan
@@ -190,6 +202,7 @@ class ApprovedLaunchFactory:
     async def __call__(self, task: AdapterTask, context: LaunchContext) -> CapturedProcess:
         if type(context) is not LaunchContext:
             raise AgentSyncError("validation_error", "Adapter-issued launch context required.")
+        _check_execution_deadline(self._execution_deadline)
         context.check(task)
         review = await context.wait_before_start(task, lambda: asyncio.to_thread(self._review, task))
         plan = review.plan
@@ -216,6 +229,7 @@ class ApprovedLaunchFactory:
         self._receipt_store.check()
         if not _consent_is_current(consent, review):
             raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
+        _check_execution_deadline(self._execution_deadline)
         return await context.start(
             task, plan.argv, cwd=plan.cwd, stdin_text=plan.stdin_text,
             timeout_seconds=plan.timeout_seconds, output_limit=plan.output_limit, env=child_env,

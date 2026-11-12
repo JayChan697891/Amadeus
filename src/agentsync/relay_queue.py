@@ -17,9 +17,9 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Literal, NoReturn
 
-from agentsync.adapters.approved_launch import ClientKind, client_kind, digest
+from agentsync.adapters.approved_launch import ClientKind, _check_execution_deadline, client_kind, digest
 from agentsync.adapters.base import _identifier
-from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput, _check_execution_deadline
+from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
 from agentsync.errors import AgentSyncError
 from agentsync.relay_wave_journal import JournalState, RelayWaveJournal
 from agentsync.scheduling import plan_tasks

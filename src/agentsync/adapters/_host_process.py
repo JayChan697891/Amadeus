@@ -31,6 +31,7 @@ _ContextualCaptureFactory = Callable[[AdapterTask, LaunchContext], Awaitable[Cap
 _HostStatus = Literal["starting", "running", "succeeded", "failed", "unknown"]
 _LAUNCH_ADMISSION_ERRORS = frozenset({
     "attempt_already_reserved", "launch_not_authorized", "launch_plan_changed", "receipt_unavailable",
+    "relay_execution_limit",
 })
 
 

@@ -25,6 +25,7 @@ from agentsync.adapters.approved_launch import (
     LaunchAdmissionObservation,
     LaunchAuthority,
     LaunchReview,
+    _check_execution_deadline,
     _launch_key,
     _observe_admission,
     client_kind,
@@ -45,11 +46,6 @@ _REVIEW_MARKER = "Two controlled client replies matched the pilot input. Indepen
 
 def _reject() -> NoReturn:
     raise AgentSyncError("relay_boundary", "The controlled relay no longer matches its scope.", 409)
-
-
-def _check_execution_deadline(deadline: float | None) -> None:
-    if deadline is not None and asyncio.get_running_loop().time() >= deadline:
-        raise AgentSyncError("relay_execution_limit", "The controlled relay execution budget expired.", 409)
 
 
 @dataclass(frozen=True, slots=True)
@@ -548,6 +544,7 @@ class ControlledRelay:
         factory = ApprovedLaunchFactory(
             actor.profile, environment=actor.environment, receipts=self._receipts,
             authority=actor.authority, revalidate=renew, _receipt_store=self._receipt_store,
+            _execution_deadline=execution_deadline,
         )
         adapter: _ActorAdapter
         namespace = (task.project_id, task.session_id)
