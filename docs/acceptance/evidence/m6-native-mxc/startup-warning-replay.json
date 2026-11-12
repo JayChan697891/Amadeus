@@ -1,0 +1,15 @@
+{
+  "kind": "offline_replay_of_private_capture",
+  "stdout_sha256": "3f90da570f9b2df44f5500eeb34ee0b3bffc5f03ba3e6890a93d4d297bceb8a9",
+  "stdout_bytes": 606,
+  "state": "succeeded",
+  "expected_reply_matches": true,
+  "event_count": 5,
+  "item_event_count": 2,
+  "non_message_item_event_count": 1,
+  "verification": "unverified",
+  "real_client_verified": false,
+  "core_receipt_modified": false,
+  "new_model_calls": 0,
+  "raw_uploaded": false
+}

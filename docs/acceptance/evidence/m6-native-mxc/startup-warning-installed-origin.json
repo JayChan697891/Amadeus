@@ -1,0 +1,9 @@
+{
+  "product_sha": "ee456900fad6bb4cfc09cad0eecdc9ce1371ab74",
+  "scope": "Fresh offline wheel installation, startup-warning parser and Core integration regressions only",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_modules_matched_before_and_after": 84,
+  "source_shadowing": false,
+  "exit_code": 0,
+  "model_requests": 0
+}

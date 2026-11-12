@@ -12,7 +12,11 @@ installed suites each184pass; full suites and real models NOT RUN. The once-auth
 were consumed at6a8ff41. The authenticated CLI exited0 but protocol_invalid left
 an unknown/incomplete result. Temp auth removed, original unchanged; no retry.
 080722e preserves sanitized parser diagnostics without changing acceptance.
-See current PROGRESS; another live task requires separate explicit authorization.
+The subsequent authorized diagnostic at080722e is also consumed. Its private
+capture localized pre-turn completed warning items; ee45690 repairs their parsing.
+101 source tests and17 fresh installed tests passed; private replay is not real
+Core acceptance. See PROGRESS and startup-warning-summary.json. A newly prepared
+live validation still requires separate explicit authorization.
 PR33 Linux supplement at8671c2d has limited Work acceptance; alpha29 awaits review.
 
 Read docs/acceptance/CANCELLATION-REPAIR-20261105.md for current security-repair

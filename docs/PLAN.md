@@ -9,12 +9,13 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
-M6's authenticated fixed-text Codex attempt at `6a8ff41` exited with an unknown
-protocol result. Diagnostic preservation is implemented at `080722e`; no parser
-rules were relaxed. Next: prepare bounded private capture, obtain a separately
-authorized diagnostic task, and identify the actual stream failure. Only a real
-accepted single-client result permits the separately authorized second-client
-relay. Do not retry the consumed task or create a new M5 subdivision.
+M6's first authenticated attempt at `6a8ff41` remains unknown. A separately
+authorized diagnostic at `080722e` captured the startup-warning ordering failure;
+`ee45690` narrowly repairs it and passes offline replay plus affected local source
+and installed-package tests. The actual failed Core receipt remains unchanged.
+Next: a prepared new one-shot validation awaits explicit call/copy authorization;
+only a real accepted single-client result permits the separately authorized
+second-client relay. Do not retry consumed tasks or create a new M5 subdivision.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe
 its startup receipt with a bounded wait; this does not enable automatic scheduling.

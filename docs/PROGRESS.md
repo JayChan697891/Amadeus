@@ -38,18 +38,34 @@ with one Windows-only MXC skip and all 84 runtime modules matched. Its owned
 D-drive virtual machine stopped normally after evidence retrieval. These results
 do not cover `080722e` installed packages/Linux/macOS or any formal Release gate.
 
-Resume offline from `080722e`. A NEW diagnostic task is now prepared at
-`D:\agentsync-debug\m6-protocol-diagnostic-20261112`; see
-[the exact plan](acceptance/evidence/m6-native-mxc/next-diagnostic-summary.json).
-Its forward-only capture wrapper passed a local Python fixture and Astra review.
-It can retain at most 1MiB combined raw output under the private local ACL, never
-automatically upload it. Separate explicit model-call, temporary-credential copy
-and private-retention authorization are still required; no credentials copied,
-no new real attempt started. Do not restart the consumed task at
-`D:\agentsync-debug\m6-live-single-20261112`, print/upload its state.json, private
-home, Core database or credentials. No new M5 stage exists; B1/B3/M6 and Release
-remain unresolved. Historical preflight and package evidence remain scoped to
-[6a8ff41](acceptance/evidence/m6-native-mxc/package-summary.json).
+Resume from repaired product `ee456900fad6bb4cfc09cad0eecdc9ce1371ab74`.
+The separately authorized diagnostic ran once at the preceding `080722e` runtime
+on 2026-11-12 at 07:17:31 UTC. After normal Core session refresh, its actual plan
+was `806d85f2da3ca833394a468410cb342dccd9cc3e19d78e348b2fe910696846b0`.
+The CLI exited0 but the old parser rejected a completed startup error item before
+turn.started (`invalid_event_sequence`). The 606-byte private stream then contains
+the exact fixed reply and turn completion. The grant is consumed, temp auth is
+removed and the original unchanged. The Core attempt remains incomplete and was
+not rewritten. Raw output remains restricted locally and is not uploaded.
+
+The parser now accepts only completed error items with a string message after
+thread.started and before turn.started. Fatal errors, duplicate IDs, turn ordering
+and input bounds remain enforced; warning text is never projected. Official
+upstream warning emission corroborates this shape, without proving installed
+binary equivalence. Offline replay of the exact saved bytes now parses the fixed
+reply; this is not a new live execution or Core acceptance. Windows source:101
+passed; fresh offline wheel rebuilt from sdist:17 passed,46 deselected,84 module
+hashes matched before/after. Ruff/format and mypy84 pass. Astra scoped review found
+no blocker. Linux/macOS and full release matrix for this delta are NOT RUN.
+See [repair and actual diagnostic evidence](acceptance/evidence/m6-native-mxc/startup-warning-summary.json).
+
+A new one-shot fixed-text validation is prepared under
+`D:\agentsync-debug\m6-startup-warning-live-20261112`; plan
+`ce6032da2c3624ef3aee259da404c2f15e82a1ef2d60681e730148f3976499b3`.
+Authorization is pending: no credential copied or real model launched. Existing
+billing confirmation is retained. Do not retry either consumed attempt, upload
+private output/state/credentials, or mark M6 accepted from offline replay.
+M5/B1/B3, M6, M7 and formal Release remain unresolved; no new M5 subdivision.
 
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.
