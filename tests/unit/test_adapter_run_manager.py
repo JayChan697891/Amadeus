@@ -33,6 +33,27 @@ class GateAdapter(MockAdapter):
         return await super().start_task(task)
 
 
+async def test_manager_start_limit_rejects_new_requests_without_spawning_queued_starts():
+    slow = GateAdapter()
+    fast = MockAdapter("project", "session")
+    manager = RunManager(
+        "project", "session", {"slow": slow, "fast": fast}, max_pending_starts=1,
+    )
+    first = await manager.dispatch_task("slow", task())
+    await slow.entered.wait()
+    try:
+        assert await manager.dispatch_task("slow", task()) == first
+        with pytest.raises(AgentSyncError) as rejected:
+            await manager.dispatch_task("fast", task("second"))
+        assert rejected.value.code == "pending_start_capacity_exceeded"
+        assert manager.history() == (first.handle,)
+    finally:
+        slow.release.set()
+        await asyncio.wait_for(manager.start_task("slow", task()), 5)
+    second = await manager.start_task("fast", task("second"))
+    assert manager.history() == (first.handle, second.handle)
+
+
 async def test_cancelled_caller_concurrent_replay_and_independent_start():
     slow = GateAdapter()
     fast = MockAdapter("project", "session")

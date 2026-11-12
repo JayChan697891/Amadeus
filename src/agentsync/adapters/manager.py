@@ -6,6 +6,7 @@ A dispatched start owns its history slot even if it raises, hangs, or its caller
 cancels. The loop must remain alive for outstanding starts. Adapter timeouts and
 cleanup remain the adapter's responsibility. Raw observations retain their own
 markers: this router makes no success, verification, or authorization claims.
+Hosts may bound pending starts across all adapters without creating a waiting queue.
 """
 
 from __future__ import annotations
@@ -138,11 +139,16 @@ class RunManager(Generic[C, R, T]):
         adapters: Mapping[str, AgentAdapter[C, R, T]],
         *,
         max_runs: int = 100,
+        max_pending_starts: int | None = None,
     ) -> None:
         _identifier(project_id)
         _identifier(session_id)
         if type(max_runs) is not int or not 1 <= max_runs <= 10000:
             raise AgentSyncError("validation_error", "Invalid manager capacity.")
+        if max_pending_starts is not None and (
+            type(max_pending_starts) is not int or not 1 <= max_pending_starts <= max_runs
+        ):
+            raise AgentSyncError("validation_error", "Invalid pending start capacity.")
         if not isinstance(adapters, Mapping) or not 1 <= len(adapters) <= 32:
             raise AgentSyncError("validation_error", "Invalid adapter registration.")
         self._adapters = dict(adapters)
@@ -152,6 +158,7 @@ class RunManager(Generic[C, R, T]):
                 raise AgentSyncError("validation_error", "Invalid adapter registration.")
         self._project_id, self._session_id = project_id, session_id
         self._max_runs = max_runs
+        self._max_pending_starts = max_pending_starts
         self._lock = asyncio.Lock()
         self._routes: dict[str, _Route[R]] = {}
         self._requests: dict[str, _Route[R]] = {}
@@ -249,6 +256,13 @@ class RunManager(Generic[C, R, T]):
                 if len(self._routes) >= self._max_runs:
                     raise AgentSyncError(
                         "history_capacity_exceeded", "Manager history is exhausted.", 409
+                    )
+                limit = self._max_pending_starts
+                if limit is not None and sum(
+                    not entry.start.done() for entry in self._routes.values()
+                ) >= limit:
+                    raise AgentSyncError(
+                        "pending_start_capacity_exceeded", "Manager pending start capacity is exhausted.", 409
                     )
                 handle = uuid.uuid4().hex
                 start = asyncio.create_task(self._start(adapter, task))
