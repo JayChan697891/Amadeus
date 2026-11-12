@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## M6 native Windows plan delta
+
+Product `dcd7ca1` passed 48 affected Windows Python 3.12 tests, Ruff/format and
+mypy (84 modules). The real installed CLI passed non-model named-MXC-profile
+filesystem checks and rejected an owned loopback connection whose positive
+control succeeded. Strict config validation passed; default restricted
+permissions appeared in the supported prompt renderer. These are preflight
+observations, not real Agent acceptance. See the [evidence index](evidence/m6-native-mxc/summary.json).
+
+The renderer still advertised collaboration tools despite the disable request;
+actual dispatch enforcement is UNVERIFIED. Isolated authentication is unavailable.
+The owner confirmed the spending condition, but no credentials were copied and
+the one conditional real-call grant remains unconsumed. A direct default sandbox
+probe exited 2 before execution because its command requires an explicit profile;
+it was not counted as a boundary pass. This delta's installed-package/Linux/macOS
+and real-client execution are NOT RUN. Independent Astra review accepts neither
+complete B3 nor M5/Release; the remaining launch prerequisite is recorded above.
+
 ## M6 single-client pilot delta
 
 At product `2016554`, a cancelled controlled attempt saves its actual adapter

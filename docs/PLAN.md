@@ -240,6 +240,10 @@ The single-client pilot now retains observed cancellation results across restart
 local process regressions cover cancellation, timeout and abnormal exit without
 releasing its one-attempt fence. This is M6 lifecycle implementation, not a new
 M5 stage or real-client acceptance.
+The opt-in native Windows permissions plan has local boundary evidence. The
+current live-launch dependency is effective extra-tool dispatch restriction and
+isolated authentication, with the owner's no-extra-cost confirmation recorded.
+Keep the one real-call grant unconsumed until those prerequisites are met.
 
 Use one Core for every integration. Locks in M4 will be cooperative. Local SQLite WAL
 must not be shared across machines/network filesystems. Native control adapters are M6,

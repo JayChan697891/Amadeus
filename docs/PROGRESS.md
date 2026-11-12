@@ -2,6 +2,26 @@
 
 ## M6 single Codex pilot
 
+Native-boundary delta `dcd7ca1` adds an opt-in Windows MXC plan for the exact
+current desktop CLI. It preserves required explicit platform/temp variables,
+pins the read-only filesystem/no-network profile inline and retains unverified
+markers. Forty-eight affected local Windows Python 3.12 cases and static checks
+passed. Actual non-model tests verified fixture read/write boundaries and denied
+a connection to the same owned loopback listener reached by a positive control.
+Strict configuration validation and the rendered default permissions were checked.
+See [native preflight evidence](acceptance/evidence/m6-native-mxc/summary.json).
+
+The owner has now confirmed the no-extra-cost account condition. The one
+conditional subscription test remains unconsumed. Live startup is still BLOCKED:
+the prompt renderer advertises collaboration tools despite `multi_agent=false`,
+so extra model-task dispatch is not established as disabled. `unified_exec` also
+remains effectively true; the tested command boundary is not proof of controls
+on CLI-managed collaboration. The clean home has no reusable keyring login;
+no credentials were copied. First resolve the effective tool-dispatch control,
+then the isolated authentication decision, before consuming the real-call grant.
+This is a specific B1/B3 prerequisite, not an additional M5 stage. Source and
+saved evidence received independent Astra review, not final Work acceptance.
+
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.
 The pilot reuses exact launch consent, the task/worktree ownership check,

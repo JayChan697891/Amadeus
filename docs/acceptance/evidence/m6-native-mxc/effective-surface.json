@@ -1,0 +1,25 @@
+{
+  "scope": "Non-model prompt renderer with exact inline policy plus approval_policy=never; advertised tools do not prove callable handlers",
+  "exit_code": 0,
+  "tools": [
+    "functions.exec",
+    "functions.wait",
+    "functions.request_user_input",
+    "functions.request_user_input_async",
+    "clock.sleep",
+    "collaboration.followup_task",
+    "collaboration.interrupt_agent",
+    "collaboration.list_agents",
+    "collaboration.send_message",
+    "collaboration.spawn_agent",
+    "collaboration.wait_agent"
+  ],
+  "default_profile_restricted": true,
+  "minimal_read_scope": true,
+  "project_root_present": true,
+  "approval_never_present": false,
+  "model_requests": 0,
+  "raw_prompt_saved": false,
+  "output_sha256": "6cf946e531c5b2932032e3fc29061e2e6e084053a22c0c72b272e82edce62070",
+  "dispatch_enforcement": "UNVERIFIED"
+}
