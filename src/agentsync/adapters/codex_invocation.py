@@ -227,11 +227,14 @@ def _linux_arguments(profile: CodexHostProfile) -> tuple[str, ...]:
     """Explicit single-task Linux plan; effective tools still need host evidence."""
     if sys.platform != "linux" or profile.expected_cli_version != "0.167.0-alpha.3.2":
         _invalid("unsupported_linux_profile")
-    return (
-        "--sandbox",
-        "read-only",
-        *(argument for value in _single_task_config() for argument in ("-c", value)),
+    root = json.dumps(profile.root.as_posix(), ensure_ascii=False)
+    config = (
+        'default_permissions="amadeus_readonly"',
+        f'permissions.amadeus_readonly.filesystem={{":minimal"="read",{root}="read"}}',
+        "permissions.amadeus_readonly.network.enabled=false",
+        *_single_task_config(),
     )
+    return tuple(argument for value in config for argument in ("-c", value))
 
 
 def _mxc_arguments(profile: CodexHostProfile, environment: dict[str, str]) -> tuple[str, ...]:
