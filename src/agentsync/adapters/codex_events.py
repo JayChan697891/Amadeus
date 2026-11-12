@@ -133,6 +133,8 @@ def parse_codex_jsonl(text: str, *, exit_code: int | None) -> CodexEventReport:
     Non-message item counts include reasoning and error items as well as tools.
     Unknown event/item types fail unsupported; extra fields on supported records
     are checked as bounded JSON but otherwise ignored. No raw errors are retained.
+    Completed startup warnings may follow thread.started before turn.started;
+    they count as non-message items and cannot establish turn success.
     """
     if type(text) is not str or (
         exit_code is not None
@@ -183,12 +185,17 @@ def parse_codex_jsonl(text: str, *, exit_code: int | None) -> CodexEventReport:
                 _sequence_error()
             started = True
         elif kind in {"item.started", "item.updated", "item.completed"}:
-            if not started:
-                _sequence_error()
             item = event.get("item")
             if type(item) is not dict:
                 _invalid()
             identity, item_type = _identifier(item.get("id")), _identifier(item.get("type"))
+            if not started:
+                # Codex emits startup warnings as completed error items. No
+                # other pre-turn item can enter the single-turn projection.
+                if thread_id is None or kind != "item.completed" or item_type != "error":
+                    _sequence_error()
+                if type(item.get("message")) is not str:
+                    _invalid()
             if item_type not in _ITEM_TYPES:
                 raise AgentSyncError("unsupported_event", "Unsupported Codex event subset.")
             old = items.get(identity)

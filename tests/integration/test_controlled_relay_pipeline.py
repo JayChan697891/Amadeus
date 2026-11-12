@@ -41,6 +41,7 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
         "swapped-worktrees",
         "unmet-dependency",
         "single-codex-success",
+        "single-codex-startup-warning",
         "single-codex-mismatch",
         "single-codex-denied",
         "single-codex-cancelled",
@@ -186,6 +187,18 @@ async def test_controlled_relay_with_disposable_core_and_git(
                     "result": "SECOND_FIXTURE",
                 }
             ]
+        if scenario == "single-codex-startup-warning":
+            events.insert(
+                1,
+                {
+                    "type": "item.completed",
+                    "item": {
+                        "id": "fixture-warning",
+                        "type": "error",
+                        "message": "private fixture warning",
+                    },
+                },
+            )
         stream = "\n".join(json.dumps(event) for event in events)
         if scenario == "single-codex-invalid-protocol":
             stream = "private malformed protocol fixture"
@@ -275,7 +288,7 @@ async def test_controlled_relay_with_disposable_core_and_git(
         assert preview.plan_sha256 != alternative.plan_sha256
         assert not approvals and not launches
         assert list(receipts.iterdir()) == []
-        if scenario == "single-codex-success":
+        if scenario in {"single-codex-success", "single-codex-startup-warning"}:
             outcome = await relay.run_codex_once(actor, pilot, admin_token=token)
             assert outcome.state == "ready_for_review"
             assert outcome.verification == "unverified"
@@ -302,7 +315,9 @@ async def test_controlled_relay_with_disposable_core_and_git(
         reopened = ControlledRelay(Core(core.data_dir), scratch, receipts)
         state = reopened.observe(actor, task["id"])
         assert state.state == (
-            "ready_for_review" if scenario == "single-codex-success" else "incomplete"
+            "ready_for_review"
+            if scenario in {"single-codex-success", "single-codex-startup-warning"}
+            else "incomplete"
         )
         current = call(first, "get_project_state")["tasks"][0]
         if scenario == "single-codex-invalid-protocol":
@@ -344,7 +359,7 @@ async def test_controlled_relay_with_disposable_core_and_git(
                 actor, replace(pilot, expected_version=current["version"]), admin_token=token
             )
         assert len(approvals) == 1
-        if scenario == "single-codex-success":
+        if scenario in {"single-codex-success", "single-codex-startup-warning"}:
             review = {
                 "task_id": task["id"],
                 "expected_version": current["version"],
