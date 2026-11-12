@@ -4,8 +4,12 @@
   "platform": "Windows",
   "reports": {
     "3.11": {
-      "state": "running",
-      "completed_suites": {
+      "state": "passed",
+      "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+      "report_sha256": "e185758846b748ab317fbf33a119fad62e4b175a914163daa24e3eb70d1d99de",
+      "source_snapshot_sha256": "fcd639d34b8ce9dd1f231744b316f34864500b6f4956caac5f048f3d9dd919d0",
+      "local_checks": 26,
+      "suites": {
         "source": {
           "tests": 2085,
           "passed": 2044,
@@ -17,6 +21,22 @@
           "passed": 2044,
           "skipped": 41,
           "junit_sha256": "504bd9a213717514de4be0e563759f9ad3b1efd9fd1f885b87a11e4abd9979e4"
+        },
+        "sdist": {
+          "tests": 2085,
+          "passed": 2044,
+          "skipped": 41,
+          "junit_sha256": "e0f2c556f3e9af46db3199fbba005d6cfb042eb1f2fa0c23dc5c7ee7fdf2e714"
+        }
+      },
+      "installations": {
+        "wheel": {
+          "artifact_sha256": "b6ec9a2ba79aaa59cb25f94c974dd9b130e558f64b919b11941e47a8708e7357",
+          "license_inventory_sha256": "67013cdf309182c8f8fbf37f880db96193228044491d2fe5fe1664f0f65dc4df"
+        },
+        "sdist": {
+          "artifact_sha256": "4a184b90f16de990b7ada84656530dab430ca4e1e030b4bce0738fa0e61c564d",
+          "license_inventory_sha256": "67013cdf309182c8f8fbf37f880db96193228044491d2fe5fe1664f0f65dc4df"
         }
       }
     },

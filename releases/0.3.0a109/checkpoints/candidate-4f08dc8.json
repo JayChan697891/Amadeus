@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    {
+      "filename": "agentsync_local-0.3.0a109-py3-none-any.whl",
+      "kind": "wheel",
+      "path": "artifacts/agentsync_local-0.3.0a109-py3-none-any.whl",
+      "sha256": "1e52c448b16ea38b58fb12427b18d8e7ef2ea2791aabbbb59e45bd45560af6d6",
+      "size": 243636
+    },
+    {
+      "filename": "agentsync_local-0.3.0a109.tar.gz",
+      "kind": "sdist",
+      "path": "artifacts/agentsync_local-0.3.0a109.tar.gz",
+      "sha256": "de633120621d6d02375adece9abf01c1354231e8d93788ac424a5fd6f6b420f2",
+      "size": 1027689
+    }
+  ],
+  "build_report": {
+    "path": "report.json",
+    "sha256": "44e31ce6fa4e1b03d449bf9dbc437acb63a976f6d26657905e0d8c51184c8978",
+    "system": "Windows"
+  },
+  "distribution": "agentsync-local",
+  "formal_release_acceptance": "blocked",
+  "frozen": {
+    "commit_sha": "4f08dc80d245e2ce807b12031434b4dd92b4c63a",
+    "source_snapshot_sha256": "fcd639d34b8ce9dd1f231744b316f34864500b6f4956caac5f048f3d9dd919d0",
+    "tree_sha": "5cb593f69a5b2316388117020d73179ecbe22f1b",
+    "version": "0.3.0a109"
+  },
+  "local_matrix": "incomplete",
+  "matrix_sha256": "f153617e5213feb6cafd527d51a3f7faa0c6dff97669fd2c4f037c2e1df75393",
+  "producer_authenticated": false,
+  "publication_authorized": false,
+  "schema_version": 1,
+  "scope": "local_release_artifact_manifest"
+}

@@ -14,10 +14,9 @@ changes release tooling and its regression fixture. Development branch
 - Windows Ruff check, format check and mypy pass on the frozen source. During
   development, 19 focused path, delivery and migration cases and 151 release
   runner cases passed. Windows Python 3.11 source and Python 3.12 offline
-  wheel each passed 154 frozen focused cases. Windows 3.12 then passed all 26
-  local checks, including full source, wheel and sdist. The Windows 3.11 source
-  and wheel also passed. Every finished suite had 2,044 passes and 41 skips,
-  matching the 3.14 corrected source IDs. Windows 3.11 sdist is active. See
+  wheel each passed 154 frozen focused cases. Windows 3.11 and 3.12 then each
+  passed all 26 local checks, including full source, wheel and sdist. Every
+  suite had 2,044 passes and 41 skips, matching the corrected 3.14 source IDs. See
   [Windows minor-version evidence](acceptance/evidence/a109-windows-minors.json).
 - The initial Windows full source run had 46 failures, 1,998 passes and 41
   skips. Its test subprocesses could import the old installed version. With
@@ -52,9 +51,9 @@ changes release tooling and its regression fixture. Development branch
   review on PR #33 applies to its historical frozen Linux evidence.
 
 Resume under `D:/agentsync-debug/continuation-cc30ed21` from
-`windows-py311-full-driver.log` and
-`linux-minor-runtime/linux-3.12-recheck-driver.log` for the active full runs.
-The 3.14 package report is under `windows/` and the corrected
+`linux-minor-runtime/linux-3.12-recheck-driver.log` for the active full run.
+The finished Windows 3.11 and 3.12 reports are under `windows-py311-full/`
+and `windows-py312-full/`. The 3.14 package report is under `windows/` and the corrected
 3.14 source report is under `fixed-windows/`. If a run is active, read its existing
 evidence before launching another. Windows uses the release runner with a local
 wheelhouse and short D-drive scratch root. The Linux guest stopped normally
