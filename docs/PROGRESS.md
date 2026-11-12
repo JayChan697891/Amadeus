@@ -1,5 +1,35 @@
 # Amadeus current progress
 
+## Actual queued Codex proposal and verified same-task completion
+
+Runtime6017005 now has an actual single queued Codex proposal: authenticated
+heartbeat before temporary credential copying, exact launch/selection/wave pins,
+one34.689second model call, exit0, immutable proposal capture and submitted review.
+One wave resolved and no pending fence remains. The sequence's no_ready_tasks
+reason means there was no next task after that successful wave; it is not the
+earlier preflight refusal. The previous failed controller remains unmodified.
+
+After inspecting the actual153byte source and approving its exact staging plan,
+the host created a genuine candidate and ran8/8 actual local Docker cases with
+19isolation checks. A distinct Core reviewer completed the same task; independent
+reopening confirms completed/v6/verified and the recorded container is absent.
+Source/proposer worktrees and original authentication are unchanged; temporary
+authentication was removed/unmounted before candidate execution.88runtime members
+match the installed wheel. Independent review accepts this limited real queue
+path. It is not a second model reviewer, multi-task artifact relay or full M7.
+[Evidence](acceptance/evidence/m7-queue-live/summary.json).
+
+357bytes of raw stderr remain unclassified in the private guest fixture; raw
+capture, credentials and Core state are not uploaded. Fee eligibility was owner
+confirmed and CLI ChatGPT login observed, not independently billed. The dedicated
+Docker daemon has zero containers and owned VM is stopped. Debug entry:
+D:/agentsync-debug/m7-heartbeat-live-20261112; the run-once controller is consumed.
+Next implement pinned proposal-context input for a distinct second actor, reusing
+authenticated immutable publication, exact launch consent and queue selection.
+Its review output remains inert/unverified; candidate execution and independent
+Core verification retain their existing gates. No new model run is scheduled.
+Claude/Cursor and unverified lifecycle capabilities remain blocked as recorded.
+
 ## Queue liveness diagnosis and source-distribution installation
 
 The bounded queued pilot on6017005 stopped before login-status/model dispatch at

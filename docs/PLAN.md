@@ -9,7 +9,15 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
-The latest queued live preflight stopped without model dispatch because the
+The6017005 queued proposal path now has one actual Codex execution, followed by
+explicit host-approved staging,8/8actual Docker inputs and distinct Core reviewer
+completion of the same task. Reopened state is completed/v6/verified; temporary
+authentication is cleaned and original source/auth unchanged. This limited scope
+has independent review; it is not a second-model or multi-task artifact relay.
+Next reuse existing immutable context, launch consent and queue machinery for a
+pinned producer-proposal input to a distinct actor's independent task. Keep review
+output inert/unverified and preserve all candidate/verification gates.
+The earlier queued live preflight stopped without model dispatch because the
 producer heartbeat aged beyond120seconds during review. This is an observed
 eligibility refusal, not a completed real queue run. Test-only74e1527 covers
 authenticated heartbeat recovery while preserving exact consent and expiry
@@ -25,7 +33,7 @@ at6017005. Dependency/load/capability selection and durable wave reconciliation
 stop at submitted review; exact launch approval and separate candidate execution
 remain required. Final fresh Windows/Linux wheels each pass72 scoped cases.
 Independent code/package review accepted the limited implementation. Actual
-queued-model acceptance, cross-client support and full Release remain unverified.
+queued-model evidence is now recorded above; cross-client and full Release remain unverified.
 The actual same-Core Linux proposal pipeline at a2634ec now passes a bounded
 real Codex task: immutable capture/review, explicitly approved genuine candidate,
 8/8 actual local Docker inputs and a distinct host-mediated Core review. Reopened

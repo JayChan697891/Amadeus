@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-11-12T13:32:25.268079+00:00",
+  "observation": "read-only reopened Core and pinned local Docker daemon",
+  "product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "wheel_sha256": "846d61a432368956bfa9837925ff60a9db88d7ee3b07d34b3665dff19583035e",
+  "runtime_package_members_matched": 88,
+  "runtime_python_modules_matched": 87,
+  "installed_origin": "/root/amadeus-proposal-queue-6017005/venv/lib/python3.14/site-packages/agentsync/__init__.py",
+  "task": {
+    "id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "verified"
+  },
+  "container_id": "bc63d068333b16c34022500f0b94ff8389b06e0f7a792c35761873834f9057a9",
+  "container_absent": true,
+  "docker_host": "unix:///var/run/docker.sock",
+  "docker_cli": "/usr/bin/docker",
+  "source_sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+  "candidate_sha": "398336869fdb52aa297754a9473f75f016044b63",
+  "source_and_producer_unchanged": true,
+  "reviewer_distinct_from_producer_and_stager": true,
+  "reviewer_kind": "host-mediated distinct Core identity, not a second model",
+  "auth_cleanup_confirmed": true,
+  "formal_release": "BLOCKED",
+  "queue_history": {
+    "waves": [
+      {
+        "wave_id": "edfa162d33339016db52effd322759473900f174fcb30eda3e88127d2746ef1f",
+        "journal_state": "resolved",
+        "outcome": {
+          "state": "resolved",
+          "tasks": [
+            {
+              "task_id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+              "state": "ready_for_review",
+              "failure_code": null
+            }
+          ],
+          "verification": "unverified"
+        }
+      }
+    ],
+    "next_before": null
+  },
+  "queue_pending": false,
+  "queue_history_kind": "Historical submitted review only; task completion independently read from Core"
+}

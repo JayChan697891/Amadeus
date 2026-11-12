@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-11-12T13:30:21.914259+00:00",
+  "authorization": "New bounded heartbeat-maintained queued Linux run under owner standing continuous execution and first-choice approval; subscription only, no extra payment; old single-use attempts not reused",
+  "retry_allowed": false,
+  "source_route_chatgpt": true,
+  "temporary_copy_destination": "/root/amadeus-queued-heartbeat-live-20261112/private-home/auth.json",
+  "temporary_storage": "guest RAM filesystem",
+  "plan_sha256": "5934907c6d3b2b76bcb6cd46ec84e1c1feffc90bac74b6f4603a1a9c4ecf1aef"
+}

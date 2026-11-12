@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Actual single queued proposal: limited acceptance
+
+On runtime6017005, one actual subscription-route Codex call completed through the
+queue in34.689seconds, exit0. The approved plan, current heartbeat, selection and
+wave were checked. The captured immutable153byte proposal was submitted for review;
+one wave resolved and no pending fence remains. Separate explicit host approval of
+the actual source/staging digest produced a genuine candidate.8/8actual local
+Docker cases and19isolation checks passed, followed by completion through a distinct
+Core reviewer. Independent reopening confirms the same task completed/v6/verified;
+source hashes match context/candidate/execution/proof and the container is absent.
+
+Temporary auth was removed/unmounted before candidate execution; original auth,
+source and producer worktrees are unchanged.88installed runtime members match.
+Independent review accepts only this single-real-client queue path with host
+approval and independent Core identity.357raw stderr bytes remain private and
+unclassified; billing was owner-confirmed, not independently verified. The old
+failed preflight is preserved and was not retried. Private raw/state/auth excluded.
+[Actual queue evidence](evidence/m7-queue-live/summary.json).
+
+Independent model review, actual multi-task artifact/dependency relay, unavailable
+Claude/Cursor access, and unverified lifecycle capabilities remain outstanding.
+Formal M5/M6/M7/Release remain BLOCKED; no automatic source application is enabled.
+
 ## Queue preflight and source-distribution installation
 
 The6017005 queued pilot failed its local eligibility preflight before any actual

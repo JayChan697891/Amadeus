@@ -14,7 +14,9 @@ Windows2251通过/45跳过；Linux2290通过/6跳过；两端均零失败/错误
 或在 Windows 获得 Linux 隔离能力。源码1222文件与安装包88成员前后不变。
 证据见 [当前完整本地回归](acceptance/evidence/m7-full-regression/summary.json)。
 这补齐 B6 的上述两环境回归证据，不新增退出条件，也不自动通过 M5。
-真实队列入口仍 NOT RUN；此前预检因心跳超过120秒而拒绝启动，未重试。
+同一运行时的单 Codex 队列入口随后完成真实提案、显式候选批准、Docker8/8及
+独立 Core 身份完成同任务的限定验证，见 [真实队列证据](acceptance/evidence/m7-queue-live/summary.json)。
+此前因心跳超过120秒而拒绝启动的预检记录保留；该旧控制器未重试。
 B1/B3 仍受真实运行和生命周期能力边界约束，Claude/Cursor 无订阅仍未执行；
 已有真实单 Codex/Core/Docker 限定成果保留，危险应用继续关闭。
 
