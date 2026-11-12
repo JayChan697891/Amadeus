@@ -15,6 +15,7 @@ from conftest import owner_grant
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.sdk import AgentSyncClient
+from agentsync.workspaces.git import GitWorkspaceStore
 
 GIT = shutil.which("git")
 
@@ -98,6 +99,22 @@ def world(tmp_path):
 def capture(world):
     core, _, (a, _), _ = world
     return call(core, a, "capture_repository", request_id=uuid4().hex)
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Git for Windows path-length regression")
+def test_managed_git_creates_private_ref_beyond_win32_path_limit(tmp_path, world):
+    state = tmp_path / ("nested-" + "a" * 48)
+    store = GitWorkspaceStore(state)
+    receipt = store.capture_repository(world[3], str(uuid4()))
+    repo = Path(receipt["repository_path"])
+    ref = "refs/agentsync/deliveries/" + "a" * 64
+    assert len(str(repo / ref)) > 260
+
+    sha = receipt["base_sha"]
+    store._git(repo, "update-ref", "--no-deref", ref, sha, "0" * len(sha))
+
+    assert store._git(repo, "rev-parse", ref)[1].strip() == sha.encode("ascii")
+    store.verify_snapshot(receipt)
 
 
 def worktree(world, snapshot, actor):

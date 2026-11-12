@@ -104,6 +104,9 @@ class GitWorkspaceStore:
         if physical(self.root) != self.root_identity:
             fail("workspace_boundary", "Managed root identity changed.")
         argv = [self.binary, "--no-pager"]
+        if os.name == "nt":
+            # Linked worktree metadata and hashed ref lock paths can exceed MAX_PATH.
+            argv.extend(["-c", "core.longpaths=true"])
         for setting in (
             f"core.hooksPath={self.root / 'hooks'}",
             "core.fsmonitor=false",
