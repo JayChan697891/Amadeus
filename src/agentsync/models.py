@@ -248,6 +248,10 @@ class GetUsageRun(AdminAuth):
     run_id: str = Field(min_length=1, max_length=200, repr=False)
 
 
+class GetTaskVerification(AdminAuth):
+    task_id: str = Field(min_length=1, max_length=200)
+
+
 OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "set_agent_roles": SetAgentRoles,
     "list_members": OwnerPage,
@@ -257,6 +261,7 @@ OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "import_usage_checkpoint": ImportUsageCheckpoint,
     "get_usage_summary": AdminAuth,
     "get_usage_run": GetUsageRun,
+    "get_task_verification": GetTaskVerification,
 }
 
 

@@ -221,6 +221,19 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, UsageMixin, Perm
         public.update(task_projection(db, task))
         return public
 
+    def _owner_get_task_verification(
+        self, db: sqlite3.Connection, payload: dict[str, Any], _: float,
+    ) -> dict[str, Any]:
+        from agentsync.verification.task_completion import task_projection
+
+        task = self._task(db, payload)
+        return {
+            "task_id": task["id"],
+            "task_version": task["version"],
+            "status": task["status"],
+            **task_projection(db, task),
+        }
+
     @staticmethod
     def _claim_token(p: dict[str, Any]) -> str:
         message = canonical(

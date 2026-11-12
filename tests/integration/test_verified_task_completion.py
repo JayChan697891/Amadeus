@@ -127,6 +127,14 @@ def test_atomic_completion_reopen_replay_and_immutable_old_receipts(ready):
     reopened = Core(prepared[0].data_dir)
     assert OwnerVerifiedTaskCompletion(reopened).complete_once(**args) == result
     assert public_task(reopened, args["task_id"])["verification"] == result["verification"]
+    lookup = {key: args[key] for key in ("project_id", "admin_token", "task_id")}
+    assert reopened.execute_owner("get_task_verification", lookup) == {
+        "task_id": args["task_id"],
+        "task_version": result["version"],
+        "status": "completed",
+        "task_verification": "verified",
+        "verification": result["verification"],
+    }
     assert public_task(reopened, prepared[3]["task_id"])["task_verification"] == "unverified"
     # The second side has a fresh target version but a stale paired version.
     with pytest.raises(AgentSyncError) as exc:
@@ -140,6 +148,10 @@ def test_atomic_completion_reopen_replay_and_immutable_old_receipts(ready):
             "UPDATE tasks SET version=version+1,status='pending' WHERE id=?", (args["task_id"],)
         )
     assert public_task(reopened, args["task_id"])["task_verification"] == "unverified"
+    current_proof = reopened.execute_owner("get_task_verification", lookup)
+    assert current_proof["task_version"] == result["version"] + 1
+    assert current_proof["task_verification"] == "unverified"
+    assert current_proof["verification"] is None
     assert complete.complete_once(**args) == result
     assert (
         CandidateVerificationJobs(reopened).enqueue(
