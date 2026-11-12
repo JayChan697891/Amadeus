@@ -1,0 +1,32 @@
+"""Guarded installed-package focused regression; no real clients or candidate execution."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import sys
+
+BASE=Path(__file__).resolve().parent
+
+def main():
+    import agentsync
+    import pytest
+    config=json.loads((BASE/'config.json').read_text())
+    site=Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(BASE/('installed' if sys.platform=='win32' else 'venv'))
+    def verify():
+        for name,expected in config['runtime_members'].items():
+            assert hashlib.sha256((site/name).read_bytes()).hexdigest()==expected,name
+        for name,module in tuple(sys.modules.items()):
+            if name=='agentsync' or name.startswith('agentsync.'):
+                assert Path(module.__file__).resolve().is_relative_to(site/'agentsync'),name
+    for name in tuple(os.environ):
+        if name.upper().startswith(('PYTEST_','OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AGENTSYNC_','GIT_')) or name.upper() in {'PYTHONPATH','PYTHONHOME','CODEX_HOME','CODEX_API_KEY'}:os.environ.pop(name,None)
+    for name in ('home','codex-home','tmp'):(BASE/name).mkdir(exist_ok=True)
+    os.environ.update(PYTHONDONTWRITEBYTECODE='1',PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,HOME=str(BASE/'home'),USERPROFILE=str(BASE/'home'),CODEX_HOME=str(BASE/'codex-home'),TEMP=str(BASE/'tmp'),TMP=str(BASE/'tmp'),TMPDIR=str(BASE/'tmp'),GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull)
+    verify()
+    code=pytest.main([*[str(BASE/config['test_root']/name) for name in config['selected']],'-q','-p','no:cacheprovider','--basetemp='+str(BASE/'test-tmp'),'--junitxml='+str(BASE/'installed.xml')])
+    verify()
+    (BASE/'origin.json').write_text(json.dumps({'product_sha':config['product_sha'],'source_distribution_sha256':config['sdist_sha256'],'python':sys.version,'runtime_package_members_matched_before_after':len(config['runtime_members']),'runtime_python_modules':sum(name.endswith('.py') for name in config['runtime_members']),'source_shadowing':False,'origin':str(site/'agentsync'),'exit_code':code,'model_calls':0,'candidate_execution':False,'formal_release':'BLOCKED'},indent=2)+'\n')
+    return code
+
+if __name__=='__main__':raise SystemExit(main())

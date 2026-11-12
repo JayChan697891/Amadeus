@@ -1,0 +1,19 @@
+"""Read the isolated producer's public liveness fields; no heartbeat mutation."""
+from datetime import UTC,datetime
+import json
+from pathlib import Path
+import sys
+import time
+BASE=Path(__file__).resolve().parent
+sys.path.insert(0,str(BASE))
+import pilot
+state=pilot.load('state.json')
+core=pilot.Core(BASE/'core')
+snapshot=pilot.relay(core)._project_state(pilot.actor_for(state))
+session=next(row for row in snapshot['sessions'] if row['id']==state['producer']['session_id'])
+task=next(row for row in snapshot['tasks'] if row['id']==state['task']['id'])
+entry=pilot.load('execute-entry.json')
+when=datetime.fromisoformat(entry['timestamp']).timestamp()
+result={'timestamp':datetime.now(UTC).isoformat(),'read_only':True,'online':session['online'],'heartbeat_at_utc':datetime.fromtimestamp(session['heartbeat_at'],UTC).isoformat(),'heartbeat_age_at_execution_seconds':when-session['heartbeat_at'],'session_valid_at_execution':session['expires_at']>when,'session_valid_now':session['expires_at']>time.time(),'task':{key:task[key] for key in ('id','version','status','task_verification')},'captured_attempts':[pilot.asdict(item) for item in pilot.relay(core).owner_inspect_attempts(state['owner']['project_id'],state['task']['id'],admin_token=state['owner']['admin_token'])],'queue_pending':pilot.RelayQueue(pilot.relay(core)).owner_observe_pending(state['owner']['project_id'],admin_token=state['owner']['admin_token']) is not None}
+pilot.save('liveness-diagnosis.json',result)
+print(json.dumps(result))

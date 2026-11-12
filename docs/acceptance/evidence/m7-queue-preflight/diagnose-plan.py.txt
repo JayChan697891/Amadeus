@@ -1,0 +1,17 @@
+"""Read-only plan comparison. No authentication read, approval, or process start."""
+import hashlib
+import json
+from pathlib import Path
+import sys
+BASE=Path(__file__).resolve().parent
+sys.path.insert(0,str(BASE))
+import pilot
+state=pilot.load('state.json')
+old=pilot.load('plan.json')
+core=pilot.Core(BASE/'core')
+actor=pilot.actor_for(state)
+selection=pilot.RelayQueue(pilot.relay(core)).preview((pilot.CodexProposalQueueItem(actor,pilot.spec(state)),),admin_token=state['owner']['admin_token'],parallel_limit=1)
+new=pilot.queued_launch_preview(core,state,actor)
+checks={'selection_state':selection.state,'selection_sha256':selection.selection_sha256,'expected_selection_sha256':state['selection_sha256'],'selection_matches':selection.selection_sha256==state['selection_sha256'],'plan_sha256':new.plan_sha256,'expected_plan_sha256':state['plan_sha256'],'plan_matches':new.plan_sha256==state['plan_sha256'],'argv_matches':list(new.plan.argv)==old['argv'],'environment_matches':new.plan.child_env()==old['environment'],'source_unchanged':pilot.intact(state),'model_attempt_absent':not (BASE/'attempt.json').exists(),'auth_route_absent':not (BASE/'auth-route.json').exists(),'auth_absent':not (BASE/'private-home'/'auth.json').exists()}
+pilot.save('plan-diagnosis.json',checks)
+print(json.dumps(checks))

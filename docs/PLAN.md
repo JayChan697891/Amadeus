@@ -9,6 +9,13 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+The latest queued live preflight stopped without model dispatch because the
+producer heartbeat aged beyond120seconds during review. This is an observed
+eligibility refusal, not a completed real queue run. Test-only74e1527 covers
+authenticated heartbeat recovery while preserving exact consent and expiry
+gates. The6017005 sdist has fresh offline Windows/Linux install smoke evidence.
+One full local matrix using74e1527 tests is in progress; await actual terminal
+results before acceptance. Keep this failed attempt consumed, with no retry.
 M7-01/02 now connect prepared Codex code proposals to the existing bounded queue
 at6017005. Dependency/load/capability selection and durable wave reconciliation
 stop at submitted review; exact launch approval and separate candidate execution

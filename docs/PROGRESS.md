@@ -1,5 +1,36 @@
 # Amadeus current progress
 
+## Queue liveness diagnosis and source-distribution installation
+
+The bounded queued pilot on6017005 stopped before login-status/model dispatch at
+2026-11-12T12:43:02UTC. Its producer heartbeat was277.944664seconds old, beyond the
+120second online window, although the authentication session remained valid.
+The queue correctly returned no_ready_tasks; exact launch plan, argv, environment
+and workspaces were unchanged. Task remains pending/v1/unverified, both attempts
+not_dispatched and no pending wave. The temporary authentication copy was removed
+and its RAM filesystem unmounted; original authentication is unchanged. No retry.
+Real queued-client acceptance remains NOT RUN, not a model failure or success.
+[Failed preflight evidence](acceptance/evidence/m7-queue-preflight/summary.json).
+
+Test-only74e1527 adds the actual liveness regression without changing product
+rules: stale heartbeat refuses launch; legal authenticated heartbeat restores
+the original selection and exact plan. Existing expired-session and online tests
+were reused.13Windows checks pass, with independent diff/XML review.
+[Regression](acceptance/evidence/m7-heartbeat-regression/summary.json).
+The frozen6017005 sdist now installs offline on fresh Windows3.12.16 and Linux3.14.7
+environments; one existing queue integration smoke case passes per platform.
+All88 runtime members/87Python modules match before/after; dependencies are valid.
+[Installation evidence](acceptance/evidence/m7-sdist-install/summary.json).
+
+A complete local regression is now RUNNING against those installed sdist runtimes,
+using frozen test/source74e1527; Linux requires the existing local Docker image.
+No full-run pass is claimed yet. Recovery: D:/agentsync-debug/m7-full-74e1527;
+Linux guest /root/amadeus-full-74e1527. Inspect existing result.json and live
+processes before any rerun; driver.py has a guarded main for multiprocessing.
+The VM is running for these tests. No new live client attempt is scheduled.
+Claude/Cursor real runs remain unavailable: owner has neither subscription.
+M5/M6/M7 and formal Release remain BLOCKED.
+
 ## M7 prepared proposal scheduling
 
 Frozen product6017005 adds CodexProposalQueueItem to the existing bounded queue.

@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+## Queue preflight and source-distribution installation
+
+The6017005 queued pilot failed its local eligibility preflight before any actual
+model dispatch. The producer was offline because its last heartbeat was277.944664
+seconds old; its authentication session had not expired. The exact launch plan
+was unchanged. Both attempts remain not_dispatched; task remains pending/v1 and
+unverified. Temporary authentication was removed/unmounted and its original left
+unchanged. Real queued-client test: NOT RUN. This attempt was not retried.
+[Evidence](evidence/m7-queue-preflight/summary.json).
+
+Test-only74e1527 adds an independent regression of stale-online refusal and legal
+heartbeat recovery, preserving exact consent;13Windows checks pass. Fresh offline
+installation from the frozen6017005 sdist passes one existing deterministic queue
+integration smoke case on each of Windows3.12.16/Linux3.14.7, with88 runtime members
+matching before/after and valid dependencies. These are limited installation
+checks, not real clients or a full regression.
+[Regression](evidence/m7-heartbeat-regression/summary.json),
+[sdist installation](evidence/m7-sdist-install/summary.json).
+
+Full local tests using74e1527 source and the6017005 sdist runtime are RUNNING;
+their result is not yet accepted. Cross-client remains NOT RUN because the owner
+has neither Claude nor Cursor subscription. Formal M5/M6/M7/Release remain BLOCKED.
+
 ## Prepared proposal queue: limited offline acceptance
 
 Product6017005 integrates single Codex proposal tasks into the existing queue,
