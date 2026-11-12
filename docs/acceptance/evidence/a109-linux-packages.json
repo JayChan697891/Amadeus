@@ -1,0 +1,58 @@
+{
+  "version": "0.3.0a109",
+  "commit_sha": "de44e7bdbc2b1209fb40045cb2cb576886e696aa",
+  "scope": "Fresh isolated offline Linux wheel and rebuilt sdist full suites",
+  "source_report": "a109-linux-source.json",
+  "same_ordered_test_ids_and_skip_ids_in_all_three_suites": true,
+  "packages": {
+    "wheel": {
+      "passed": 2080,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 5,
+      "actual_imports": 84,
+      "junit_sha256": "a1ac7cb893cc3ca9fa01847209ff75f6acc47e13a15177138c3ca4232e789fca",
+      "artifact": {
+        "name": "agentsync_local-0.3.0a109-py3-none-any.whl",
+        "sha256": "c78f71ec44063cb0b2aa84616e91635cac390f2cdd4744ec9c83ed73421a8ce8",
+        "size": 242975
+      },
+      "license_inventory": {
+        "distributions": 31,
+        "review_items": 0,
+        "sha256": "0abe408076b1415747e0ce4a7bcb0783d80ec5174fcb1743c4aa6fb6793ec983"
+      },
+      "docker_observations": 32
+    },
+    "sdist": {
+      "passed": 2080,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 5,
+      "actual_imports": 84,
+      "junit_sha256": "60fc76993879f869f145f86e8750e13417701073b7d86f74f6bca8c2e63ecaeb",
+      "artifact": {
+        "name": "agentsync_local-0.3.0a109.tar.gz",
+        "sha256": "593583535b3356566b3e59286992025df720c188fae2b9eaad77001e3074b864",
+        "size": 1031274
+      },
+      "license_inventory": {
+        "distributions": 31,
+        "review_items": 0,
+        "sha256": "0abe408076b1415747e0ce4a7bcb0783d80ec5174fcb1743c4aa6fb6793ec983"
+      },
+      "docker_observations": 32
+    }
+  },
+  "verified_docker_container_cleanup": {
+    "recorded_full_ids": 96,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "local_guest_stopped": true,
+  "artifact_build_sha256": "fc4489f4f59dc1fd0ce34781ed3540418c49846f52ee5c3929fdb078078e63ad",
+  "evidence_archive_sha256": "13b4b3e09d47f365174f6bb38569c82021bde9e831e343613be3fbe85b0ee363",
+  "evidence_local": "D:/agentsync-debug/continuation-linux-packages-9a6091v9",
+  "actual_model_clients": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

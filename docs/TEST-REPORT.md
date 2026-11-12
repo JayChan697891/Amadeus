@@ -13,11 +13,16 @@ The frozen Linux source suite passed 2,080 cases and skipped 5 platform cases,
 with zero failures or errors. All 84 imported runtime modules matched the
 frozen manifest and 32 exact fixture container IDs were absent after cleanup.
 See [Linux source evidence](acceptance/evidence/a109-linux-source.json).
-Linux installed wheel also returned 2,080 passes and 5 platform skips.
+The fresh Linux wheel and rebuilt sdist each returned 2,080 passes and 5
+platform skips. JUnit identities and skip IDs matched all three suites, all
+84 installed runtime modules matched the frozen source, and both installation
+receipts matched their archive hashes. Both license inventories ran, and the
+guest stopped normally after all 96 fixture container IDs were absent. See
+[Linux package evidence](acceptance/evidence/a109-linux-packages.json).
 The first Windows full source suite logged 46 failures from affected
 subprocess-based cases, 1,998 passes and 41 skips. The runner at `4f08dc8`
 passed all 46 formerly failing cases in a separate targeted recheck. Full
-source retest and the remaining installed-package checks are tracked in
+source retest and the Windows installed-package checks are tracked in
 PROGRESS.md. Current macOS and real clients are NOT RUN. Formal Release is
 BLOCKED.
 

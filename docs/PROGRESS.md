@@ -23,8 +23,11 @@ changes release tooling and its regression fixture. Development branch
   skips. All 84 imported runtime modules matched the frozen bytes before and
   after the suite. The post-check found none of the 32 recorded fixture
   containers. See [Linux source evidence](acceptance/evidence/a109-linux-source.json).
-  Linux wheel passed 2,080 with 5 platform skips. Linux sdist and the full
-  Windows package checks remain in progress.
+  Fresh Linux wheel and rebuilt sdist each also passed 2,080 with 5 platform
+  skips. All three suites had the same ordered test IDs, and the final
+  post-check found none of the 96 recorded fixture containers. See
+  [Linux package evidence](acceptance/evidence/a109-linux-packages.json).
+  Full Windows package checks remain in progress.
 - The local Windows M8 diagnostic passed 256 claim attempts with 256 matching
   audit outcomes and 117.46 ms p95 under its 1,000 ms budget. The host also
   ran other local validation workloads, so this is a diagnostic observation.
@@ -36,12 +39,11 @@ changes release tooling and its regression fixture. Development branch
 
 Resume under `D:/agentsync-debug/continuation-cc30ed21` from
 `fixed-windows-driver.log` for the corrected Windows source,
-`windows-driver.log` for the Windows packages, and
-`linux-packages-driver.log` for the Linux packages. If a run is still active,
+and `windows-driver.log` for the Windows packages. If a run is still active,
 read its existing evidence before launching another. Windows uses the release
-runner with the local wheelhouse and short D-drive scratch root. Linux uses
-the isolated guest and preloaded Docker image. Diagnose failures against the
-recorded revision before rerunning affected checks.
+runner with the local wheelhouse and short D-drive scratch root. The owned
+Linux guest stopped normally after its evidence was copied and checked.
+Diagnose failures against the recorded revision before rerunning affected checks.
 
 Current macOS, live client relay, final M5 evidence review and formal Release
 remain open. No GitHub Actions test was dispatched.
