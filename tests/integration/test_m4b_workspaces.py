@@ -244,6 +244,19 @@ def test_owner_can_inspect_pending_delivery_without_exposing_it_to_agents(world)
     )
     assert wrong["error"]["code"] == "unauthorized"
     assert sdk.call(operation, **first, approval_id=approval["id"])["error"]["code"] == "unknown_operation"
+    rejected = sdk.owner_call(
+        "approve_candidate_delivery",
+        **owner,
+        approval_id=approval["id"],
+        expected_version=approval["version"],
+        task_id=left["task_id"],
+        expected_task_version=1,
+        session_id=first["session_id"],
+        session_token=first["session_token"],
+        plan_sha256="0" * 64,
+    )
+    assert rejected["error"]["code"] == "delivery_plan_changed"
+    assert sdk.owner_call(operation, **owner, approval_id=approval["id"])["data"]["approval_status"] == "pending"
     assert source_fingerprint(root) == original
 
 

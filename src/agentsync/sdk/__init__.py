@@ -24,12 +24,17 @@ class AgentSyncClient:
     def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
-            if operation in ("preview_candidate_delivery", "get_candidate_delivery_status"):
+            if operation in (
+                "preview_candidate_delivery", "get_candidate_delivery_status", "approve_candidate_delivery",
+            ):
                 from agentsync.verification.candidate_delivery import OwnerCandidateDelivery
 
                 service = OwnerCandidateDelivery(self.core)
-                inspect = service.preview if operation == "preview_candidate_delivery" else service.status
-                return {"ok": True, "data": inspect(**payload)}
+                if operation == "preview_candidate_delivery":
+                    return {"ok": True, "data": service.preview(**payload)}
+                if operation == "get_candidate_delivery_status":
+                    return {"ok": True, "data": service.status(**payload)}
+                return {"ok": True, "data": service.approve(**payload)}
             return {"ok": True, "data": self.core.execute_owner(operation, payload)}
         except AgentSyncError as error:
             return error_envelope(error)
