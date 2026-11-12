@@ -1,5 +1,21 @@
 # Release Acceptance Report
 
+## Actual local Codex cancellation
+
+Runtime f74f29f/head7d573a0 executed one isolated fixed-text task on2026-11-12
+08:58:19UTC. After turn.started, with no observed terminal event and the parent
+still running, caller cancellation propagated and the owned parent exited1.
+The durable receipt remains unknown/local_cancel_requested; after reopening,
+controller is incomplete and Core task running/unverified. No retry or completion
+was attempted. Total adapter elapsed5.546s is not measured cancellation latency.
+Temporary auth removed; original, fixtures and runtime unchanged. Raw335 stdout
+bytes remain local only. Astra independently accepted this limited observation.
+
+Server cancellation, descendant cleanup, billing, actual timeout and full M6/M7
+remain unverified. Formal Release remains BLOCKED. No product code changed and
+no previously passing suite was rerun for this evidence-only checkpoint.
+See [safe records and exact helper sources](evidence/m6-native-mxc/cancel-live-summary.json).
+
 ## Cursor native Node-bundle preparation
 
 Runtime f74f29f adds explicit sibling Node/entrypoint support, bounded package

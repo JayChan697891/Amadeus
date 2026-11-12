@@ -1,0 +1,8 @@
+{
+  "requested": true,
+  "turn_started_observed": true,
+  "terminal_event_observed": false,
+  "propagated": true,
+  "parent_ended_before_cancel": false,
+  "completed_before_cancel": false
+}

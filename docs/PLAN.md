@@ -18,6 +18,8 @@ Codex to adapter to Core review, followed by a distinct host-mediated reviewer.
 Two actual isolated Codex sessions now completed automatic structured handoff and
 shared-context confirmation, followed by a third Core reviewer. Cursor native
 Node-bundle preparation is implemented at f74f29f with local Windows/Linux evidence.
+Actual local Codex cancellation at f74f29f now preserves a durable unknown result
+after the owned parent ends; server cancellation and descendants remain unverified.
 Next: establish separate Claude/Cursor account availability, no-extra-fee state and
 actual execution boundaries before live cross-client validation. Same-client relay cannot replace cross-client acceptance. Do not retry consumed tasks or create
 a new M5 subdivision.

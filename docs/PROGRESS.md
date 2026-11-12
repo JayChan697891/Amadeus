@@ -98,6 +98,16 @@ Ruff/format/mypy84 pass. Astra found no remaining source blocker after the trave
 fix. M6-05 coverage maps the new tests;92 traceability tests pass without upgrading
 formal execution_status. See [Cursor bundle evidence](acceptance/evidence/m6-cursor-node-bundle/summary.json).
 
+Actual local cancellation is now scoped accepted at runtime f74f29f/head7d573a0.
+On2026-11-12 08:58:19UTC, one actual Codex turn was observed started with the parent
+still running and no terminal event. Caller cancellation propagated; the owned
+parent ended with exit1. Reopened Core remains running/unverified and controller
+incomplete, preserving unknown/local_cancel_requested. The5.546s value is total
+adapter elapsed time, not cancellation latency. Temporary auth was removed,
+original/fixtures/runtime unchanged, no retry. Astra independently reviewed the
+safe records. Server cancellation, descendant cleanup and billing remain unverified.
+See [actual cancellation evidence](acceptance/evidence/m6-native-mxc/cancel-live-summary.json).
+
 Next: cross-client account and isolation readiness. The official Cursor CLI was
 installed only under D: and passed version/help/plan preparation, with no model
 call, account/PATH or desktop-install changes. Claude2.1.295 version matches, but
