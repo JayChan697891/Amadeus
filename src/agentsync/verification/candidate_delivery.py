@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING, Any, NoReturn
 from pydantic import Field
 
 from agentsync.errors import AgentSyncError
-from agentsync.verification.binding import OwnerCandidateBindings
+from agentsync.verification.binding import OwnerCandidateBindings, _receipt
 from agentsync.verification.candidate import OwnerCandidateExporter
 from agentsync.verification.candidate_jobs import (
     CandidateVerificationJobs,
@@ -396,7 +396,7 @@ class OwnerCandidateDelivery:
         ).fetchone()
         if row is None or plan["destination_ref"] != _ref(plan["candidate_id"]):
             _reject_plan()
-        snapshot = _load(row["receipt"], 16384)
+        snapshot = _receipt(row["receipt"])
         if _hash(_dump(snapshot)) != plan["snapshot_receipt_sha256"]:
             _reject_plan()
         store = GitWorkspaceStore(self._core.data_dir, create=False)

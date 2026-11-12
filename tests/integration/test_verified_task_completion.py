@@ -483,6 +483,7 @@ def test_text_review_and_legacy_cached_response_remain_unverified(prepared, worl
 def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready, monkeypatch):
     prepared, _, _, _ = ready
     with connect(prepared[0].db_path) as db:
+        db.execute("DROP TABLE project_usage")
         db.execute("DROP TABLE task_verification_requests")
         db.execute("DROP TABLE task_verifications")
         db.execute("DROP INDEX completion_execution_binding")
@@ -509,7 +510,7 @@ def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready,
     monkeypatch.setattr(database, "MIGRATION_V14", migration)
     database.migrate(prepared[0].db_path)
     with connect(prepared[0].db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == database.SCHEMA_VERSION
         assert all(
             [tuple(row) for row in db.execute("SELECT * FROM " + name)] == rows
             for name, rows in before.items()
