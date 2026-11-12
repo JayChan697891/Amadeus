@@ -1073,7 +1073,8 @@
         "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
         "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
         "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
-        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging"
+        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging",
+        "tests/integration/test_proposal_docker_pipeline.py::test_same_core_proposal_to_independent_docker_acceptance"
       ],
       "planned_cases": [
         {
