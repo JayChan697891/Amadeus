@@ -116,6 +116,7 @@ def test_real_mcp_stdio_tools_and_core(tmp_path):
                 "review_task",
                 "reclaim_expired",
                 "publish_context",
+                "publish_task_proposal",
                 "get_context",
                 "search_context",
                 "submit_handoff",
