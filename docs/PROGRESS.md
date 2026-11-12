@@ -2,25 +2,33 @@
 
 ## M6 single Codex pilot
 
-Native-boundary delta `dcd7ca1` adds an opt-in Windows MXC plan for the exact
-current desktop CLI. It preserves required explicit platform/temp variables,
-pins the read-only filesystem/no-network profile inline and retains unverified
-markers. Forty-eight affected local Windows Python 3.12 cases and static checks
-passed. Actual non-model tests verified fixture read/write boundaries and denied
-a connection to the same owned loopback listener reached by a positive control.
-Strict configuration validation and the rendered default permissions were checked.
-See [native preflight evidence](acceptance/evidence/m6-native-mxc/summary.json).
+The current product is `6a8ff41`: the native MXC plan now sets the supported
+`agents.enabled=false` control and disables goals. Its non-model prompt projection
+no longer includes collaboration, shell, browser, image or extra-model tools.
+Strict configuration recognition passed; 39 affected Windows Python 3.12 tests,
+Ruff and format checks passed. Exact tested source bytes match the frozen commit.
+`unified_exec` ignores user opt-outs in this CLI; this is not represented as
+successfully disabled. The prior named MXC file/network observations remain
+scoped to `dcd7ca1`. Historical evidence is retained without rewriting it.
+See [current preflight evidence](acceptance/evidence/m6-native-mxc/single-task-summary.json).
 
-The owner has now confirmed the no-extra-cost account condition. The one
-conditional subscription test remains unconsumed. Live startup is still BLOCKED:
-the prompt renderer advertises collaboration tools despite `multi_agent=false`,
-so extra model-task dispatch is not established as disabled. `unified_exec` also
-remains effectively true; the tested command boundary is not proof of controls
-on CLI-managed collaboration. The clean home has no reusable keyring login;
-no credentials were copied. First resolve the effective tool-dispatch control,
-then the isolated authentication decision, before consuming the real-call grant.
-This is a specific B1/B3 prerequisite, not an additional M5 stage. Source and
-saved evidence received independent Astra review, not final Work acceptance.
+The owner confirmed credits=0 and auto-recharge disabled. The one authorized
+subscription model task remains unconsumed. A concrete Core task, disposable Git
+source and managed worktree are prepared in
+`D:\agentsync-debug\m6-live-single-20261112`; runtime origins and separate original/
+worktree baseline hashes were checked. The private home inherits only current-user
+and SYSTEM access. No authentication material was copied. A narrow permission
+request is pending for only the original `auth.json` to that private home, with
+cleanup after the owned process ends. The first authenticated metadata check must
+recognize ChatGPT; errors or ambiguity stop before model start. No retries after
+a possible model start. Resume from the saved plan and `pilot.py`; do not recreate
+the project, print local `state.json`, or upload the private home/Core database.
+
+Independent Astra source/evidence review cleared the prior projected-tool gap for
+this fixed-text preflight and found two harness bindings, both repaired: imported
+runtime origin and the actual execution worktree. This is not real-client, M5,
+Work or Release acceptance. Live execution is NOT RUN pending temporary credential
+transfer permission and authenticated-route recognition. No new M5 stage exists.
 
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.
@@ -108,7 +116,7 @@ Windows reports are under `windows-py311-full/`, `windows-py312-full/`,
 `windows/` and `fixed-windows/`. Linux minor-version evidence is under
 `linux-minor-runtime/`. The owned guest stopped normally after verification,
 with both disks preserved. Resume from the
-[M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
+[M5â€“M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
 `feat/m6-single-codex-pilot` branch. Reuse this baseline and rerun affected
 checks only for changes in code or tests.
 
@@ -409,11 +417,11 @@ Actual8processes completed in~0.356s; parent file preserved. No production edits
 Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
 See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
 
-Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 Ã—wheel/sdist)
 environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
 junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
 785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
-IndependentAstra source+result review approves scopeddevelopment only. Same32×8
+IndependentAstra source+result review approves scopeddevelopment only. Same32Ã—8
 budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
 256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
 OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
@@ -423,7 +431,7 @@ M8 bounded process-local Core admission implemented; existing SQL/auth/replay/le
 audit/close body byte-identical, owner/migration paths unchanged. Astra source
 review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
 37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
-andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
+andtwo-MCPprocessclaim passed. Same32Ã—8/1000ms workload p95 observed107.837ms
 versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
 Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
 core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
@@ -437,7 +445,7 @@ Formal42not_run/releaseBLOCKED.
 M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
 Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
 Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
-Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
+Actual32Ã—8 strict run matched256events(8success/248denied), audit errors0; p95
 2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
 diagnostic extends the earlier2982539 packaged checkpoint.
 D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
@@ -465,7 +473,7 @@ preparation observed; completeflags/auth/realturn NOT RUN.
 Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
 
 M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
-11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker Ã—8round
 workloads measured456 claim attempts: all functional checks passed, no unexpected
 errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
 budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
@@ -910,7 +918,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiry→pending/unverified. These development runs used unfrozen overlays, not a
+expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
