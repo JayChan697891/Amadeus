@@ -5,15 +5,21 @@ mypy passed for 84 source files. Local development rechecks returned 19
 passing migration and managed Git cases, plus 151 passing release runner cases.
 The saved JUnit files are `path-and-migration.xml` and `runner-recheck.xml` in
 `D:/agentsync-debug/continuation-cc30ed21`, alongside the frozen Windows
-Python 3.11 JUnit report for 154 passing focused cases.
+Python 3.11 source and Python 3.12 wheel JUnit reports, each with 154 passes.
+The Python 3.12 wheel hash matched its installation receipt and the import
+origin was inside the fresh offline environment.
 
 The frozen Linux source suite passed 2,080 cases and skipped 5 platform cases,
 with zero failures or errors. All 84 imported runtime modules matched the
 frozen manifest and 32 exact fixture container IDs were absent after cleanup.
 See [Linux source evidence](acceptance/evidence/a109-linux-source.json).
-Superseded diagnostics retain their failed or interrupted status. PROGRESS.md
-tracks full Windows and Linux installed-package checks. Current macOS and real
-clients are NOT RUN. Formal Release is BLOCKED.
+Linux installed wheel also returned 2,080 passes and 5 platform skips.
+The first Windows full source suite logged 46 failures from affected
+subprocess-based cases, 1,998 passes and 41 skips. The runner at `4f08dc8`
+passed all 46 formerly failing cases in a separate targeted recheck. Full
+source retest and the remaining installed-package checks are tracked in
+PROGRESS.md. Current macOS and real clients are NOT RUN. Formal Release is
+BLOCKED.
 
 # Historical local M6 checkpoint — 2026-10-26 America/Tijuana
 

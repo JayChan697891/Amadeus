@@ -2,8 +2,10 @@
 
 ## Continuous local validation for 0.3.0a109
 
-Frozen product and tests: `de44e7bdbc2b1209fb40045cb2cb576886e696aa`.
-Development branch: `feat/implementation-first-20261107`.
+Frozen product and package tests: `de44e7bdbc2b1209fb40045cb2cb576886e696aa`.
+The Windows source runner fix at `4f08dc80d245e2ce807b12031434b4dd92b4c63a`
+changes release tooling and its regression fixture. Development branch
+`feat/implementation-first-20261107`.
 
 - Repaired managed delivery status after reopening the database, Windows Git ref
   locks beyond MAX_PATH, source imports in a clean release environment, and
@@ -11,27 +13,35 @@ Development branch: `feat/implementation-first-20261107`.
   removed.
 - Windows Ruff check, format check and mypy pass on the frozen source. During
   development, 19 focused path, delivery and migration cases and 151 release
-  runner cases passed. Windows Python 3.11 passed 154 frozen focused cases.
+  runner cases passed. Windows Python 3.11 source and Python 3.12 offline
+  wheel each passed 154 frozen focused cases.
+- The initial Windows full source run had 46 failures, 1,998 passes and 41
+  skips. Its test subprocesses could import the old installed version. With
+  the fixed import path all 46 failed cases and all 151 runner tests passed
+  separately. The corrected full source run is in progress.
 - The frozen Linux source suite completed with 2,080 passed and 5 platform
   skips. All 84 imported runtime modules matched the frozen bytes before and
   after the suite. The post-check found none of the 32 recorded fixture
   containers. See [Linux source evidence](acceptance/evidence/a109-linux-source.json).
-  Linux wheel and sdist checks and the full Windows matrix remain in progress.
+  Linux wheel passed 2,080 with 5 platform skips. Linux sdist and the full
+  Windows package checks remain in progress.
+- The local Windows M8 diagnostic passed 256 claim attempts with 256 matching
+  audit outcomes and 117.46 ms p95 under its 1,000 ms budget. The host also
+  ran other local validation workloads, so this is a diagnostic observation.
 - The previous turn policy allowed a Git checkpoint to end the turn. AGENTS and
   WORKFLOW now require checking and continuing the next authorized task.
   Continuation in this Codex chat is active. A separate Work return callback
   followed by automatic dispatch has no observed execution. The existing Work
   review on PR #33 applies to its historical frozen Linux evidence.
 
-Resume by reading the Windows driver at
-`D:/agentsync-debug/continuation-cc30ed21/windows-driver.log` and the Linux
-installed-package driver at
-`D:/agentsync-debug/continuation-cc30ed21/linux-packages-driver.log`. If a run
-is still active, read its existing evidence before launching another. Windows
-uses the repository release runner with the local wheelhouse and short D-drive
-scratch root. The Linux runs use the existing isolated guest and preloaded
-Docker image. Diagnose any failure against the recorded revision
-before rerunning affected checks.
+Resume under `D:/agentsync-debug/continuation-cc30ed21` from
+`fixed-windows-driver.log` for the corrected Windows source,
+`windows-driver.log` for the Windows packages, and
+`linux-packages-driver.log` for the Linux packages. If a run is still active,
+read its existing evidence before launching another. Windows uses the release
+runner with the local wheelhouse and short D-drive scratch root. Linux uses
+the isolated guest and preloaded Docker image. Diagnose failures against the
+recorded revision before rerunning affected checks.
 
 Current macOS, live client relay, final M5 evidence review and formal Release
 remain open. No GitHub Actions test was dispatched.

@@ -191,6 +191,13 @@ canonical digest against the approved plan. A clean Windows release run also
 exposed a source import failure and fixtures that downgraded the database
 version without removing the v15 usage table.
 
+The first full Windows source run then exposed a second import boundary.
+Pytest loaded the pinned source, but its CLI and multiprocessing fixtures
+inherited no source path and loaded a stale installed version. The runner now
+pins its source path for the entire process tree and keeps both installed
+suites free of that path. All 46 originally failing cases passed the targeted
+rerun. The failed baseline and separate full retest retain their own records.
+
 Git for Windows could fail to create the managed delivery lock once the full
 path exceeded MAX_PATH. A process-local Git option fixes the tested ref path.
 Extremely deep linked-worktree paths can still produce Git's own
