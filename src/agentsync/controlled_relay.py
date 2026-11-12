@@ -15,6 +15,7 @@ import json
 import math
 import re
 import time
+from collections.abc import Callable
 from contextlib import suppress
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -46,6 +47,7 @@ from agentsync.scheduling import _task_eligible
 from agentsync.verification.proposal_staging import OwnerProposalStaging
 
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
+_ContextReader = Callable[[str], dict[str, Any]]
 _REVIEW_MARKER = (
     "Two controlled client replies matched the pilot input. Independent review pending."
 )
@@ -201,7 +203,12 @@ class CodexProposalReviewOutcome:
 
 
 def _proposal_contract(
-    actor: RelayActor, version: int, paths: tuple[str, ...], submit_for_review: bool
+    worktree_id: str,
+    base_head: str,
+    version: int,
+    paths: tuple[str, ...],
+    submit_for_review: bool,
+    wave_key: str | None = None,
 ) -> dict[str, Any]:
     # Preserve historical default contracts and their insertion-order digest.
     contract: dict[str, Any] = {
@@ -210,11 +217,13 @@ def _proposal_contract(
         "max_json_bytes": 32768,
         "max_file_bytes": 8192,
         "expected_task_version": version,
-        "worktree_id": actor.worktree_id,
-        "base_head": actor.expected_head,
+        "worktree_id": worktree_id,
+        "base_head": base_head,
     }
     if submit_for_review:
         contract["submit_for_review"] = True
+    if wave_key is not None:
+        contract["wave_sha256"] = wave_key
     return contract
 
 
@@ -564,15 +573,13 @@ class ControlledRelay:
     def _matches_submission(
         task: dict[str, Any],
         receipt: dict[str, Any],
-        *,
-        version_advance: int = 0,
     ) -> bool:
         version = receipt.get("task_version")
         owner_pin = receipt.get("owner_session_sha256")
         owner = task["owner_session_id"]
         return (
             type(version) is int
-            and task["version"] == version + version_advance
+            and task["version"] == version
             and task["result"] == _REVIEW_MARKER
             and (owner_pin is None or (type(owner) is str and digest(owner) == owner_pin))
         )
@@ -585,13 +592,19 @@ class ControlledRelay:
     ) -> Literal["ready_for_review", "conflict"] | None:
         """Bind historical submission or conflict to the same durable wave."""
         task = self._state(actor, task_id)
-        return self._wave_terminal_from_task(actor.profile.project_id, task, wave_key)
+        return self._wave_terminal_from_task(
+            actor.profile.project_id,
+            task,
+            wave_key,
+            lambda context_id: self._call(actor, "get_context", context_id=context_id, version=1),
+        )
 
     def _wave_terminal_from_task(
         self,
         project_id: str,
         task: dict[str, Any],
         wave_key: str,
+        get_context: _ContextReader,
     ) -> Literal["ready_for_review", "conflict"] | None:
         if task["project_id"] != project_id:
             _reject()
@@ -601,6 +614,22 @@ class ControlledRelay:
         admission = self._read_receipt(key, "incomplete")
         if not admission or admission.get("wave_sha256") != wave_key:
             return None
+        if admission.get("mode") == "codex_proposal":
+            stored = self._proposal_storage(project_id, task_id, key, admission, get_context)
+            intent = self._proposal_review_submission(key, admission, stored)
+            if (
+                intent
+                and stored
+                and self._historical_submission_matches(
+                    task,
+                    intent["review_task_version"],
+                    _PROPOSAL_REVIEW_MARKER,
+                    intent["owner_session_sha256"],
+                    (stored["agent_sha256"],),
+                )
+            ):
+                return "ready_for_review"
+            return None
         ready = self._review_submission(key)
         conflict = self._read_receipt(key, "conflict")
         if ready is None and conflict and conflict.get("wave_sha256") == wave_key:
@@ -608,35 +637,51 @@ class ControlledRelay:
         if not ready or conflict is not None or ready.get("wave_sha256") != wave_key:
             return None
         version = ready.get("task_version")
-        if type(version) is not int or task["result"] != _REVIEW_MARKER:
+        if type(version) is not int:
             return None
-        if task["status"] == "review" and self._matches_submission(task, ready):
-            return "ready_for_review"
-        if task["status"] not in ("completed", "pending") or task["version"] != version + 1:
-            return None
-        accepted = task["status"] == "completed"
-        if accepted and not self._matches_submission(task, ready, version_advance=1):
-            return None
-        if not accepted and task["owner_session_id"] is not None:
-            return None
-        review = task["latest_review"]
         sender = _matched_text(ready.get("sender_sha256"), r"[0-9a-f]{64}")
         recipient = _matched_text(ready.get("recipient_sha256"), r"[0-9a-f]{64}")
-        if (
-            type(review) is not dict
-            or review.get("accept") is not accepted
-            or review.get("version") != version + 1
-            or review.get("task_id") != task_id
-            or review.get("project_id") != project_id
-            or type(review.get("reviewer_agent_id")) is not str
-            or sender is None
-            or recipient is None
-            or sender == recipient
-            or digest(review["reviewer_agent_id"]) in (sender, recipient)
+        participants = (
+            (sender, recipient)
+            if sender is not None and recipient is not None and sender != recipient
+            else ()
+        )
+        if self._historical_submission_matches(
+            task, version, _REVIEW_MARKER, ready.get("owner_session_sha256"), participants
         ):
-            return None
-        # This describes the historical submission, not current task status or proof of verification.
-        return "ready_for_review"
+            return "ready_for_review"
+        return None
+
+    @staticmethod
+    def _historical_submission_matches(
+        task: dict[str, Any],
+        version: int,
+        marker: str,
+        owner_pin: str | None,
+        participant_pins: tuple[str, ...],
+    ) -> bool:
+        if task["result"] != marker:
+            return False
+        owner = task["owner_session_id"]
+        matches_owner = owner_pin is None or (type(owner) is str and digest(owner) == owner_pin)
+        if task["status"] == "review":
+            return task["version"] == version and matches_owner
+        if task["status"] not in ("completed", "pending") or task["version"] != version + 1:
+            return False
+        accepted = task["status"] == "completed"
+        if (accepted and not matches_owner) or (not accepted and owner is not None):
+            return False
+        review = task["latest_review"]
+        return (
+            type(review) is dict
+            and review.get("accept") is accepted
+            and review.get("version") == version + 1
+            and review.get("task_id") == task["id"]
+            and review.get("project_id") == task["project_id"]
+            and type(review.get("reviewer_agent_id")) is str
+            and bool(participant_pins)
+            and digest(review["reviewer_agent_id"]) not in participant_pins
+        )
 
     def inspect_attempts(
         self, actor: RelayActor, task_id: str, *, admin_token: str
@@ -1027,7 +1072,12 @@ class ControlledRelay:
         return _AttemptOutcome({**active, "lease_token": lease_token}, proposal_json)
 
     def _single_codex_task(
-        self, actor: RelayActor, spec: SingleCodexInput | CodexProposalInput, admin_token: str
+        self,
+        actor: RelayActor,
+        spec: SingleCodexInput | CodexProposalInput,
+        admin_token: str,
+        *,
+        wave_key: str | None = None,
     ) -> AdapterTask:
         if type(actor) is not RelayActor or type(spec) not in {
             SingleCodexInput,
@@ -1057,7 +1107,12 @@ class ControlledRelay:
         self._workspace(actor, spec.task_id)
         if isinstance(spec, CodexProposalInput):
             contract = _proposal_contract(
-                actor, spec.expected_version, spec.allowed_paths, spec.submit_for_review
+                actor.worktree_id,
+                actor.expected_head,
+                spec.expected_version,
+                spec.allowed_paths,
+                spec.submit_for_review,
+                wave_key,
             )
             instruction = (
                 spec.instruction
@@ -1144,23 +1199,38 @@ class ControlledRelay:
         return prepare_launch_review(actor.profile, task, environment=actor.environment)
 
     async def run_codex_proposal_once(
-        self, actor: RelayActor, spec: CodexProposalInput, *, admin_token: str
+        self,
+        actor: RelayActor,
+        spec: CodexProposalInput,
+        *,
+        admin_token: str,
+        _wave_key: str | None = None,
+        _execution_deadline: float | None = None,
     ) -> CodexProposalOutcome:
         """Capture one successful Codex message as data; never import or execute it."""
-        if type(spec) is not CodexProposalInput:
+        if type(spec) is not CodexProposalInput or (
+            _wave_key is not None
+            and (
+                _matched_text(_wave_key, r"[0-9a-f]{64}") is None
+                or spec.submit_for_review is not True
+            )
+        ):
             _reject()
-        task = self._single_codex_task(actor, spec, admin_token)
+        _check_execution_deadline(_execution_deadline)
+        task = self._single_codex_task(actor, spec, admin_token, wave_key=_wave_key)
         self._check_receipt_anchor(actor.profile.project_id, bind=True)
+        _check_execution_deadline(_execution_deadline)
         key = self._key(actor, spec.task_id)
         self._record(
             key,
             "incomplete",
             mode="codex_proposal",
-            wave_sha256=None,
+            wave_sha256=_wave_key,
             initial_task_version=spec.expected_version,
             paths_sha256=digest(spec.allowed_paths),
             **({"submit_for_review": True} if spec.submit_for_review else {}),
         )
+        _check_execution_deadline(_execution_deadline)
         attempt = await self._attempt(
             actor,
             self._claim(actor, spec.task_id, spec.expected_version, f"relay:{key}:proposal:claim"),
@@ -1168,14 +1238,16 @@ class ControlledRelay:
             "first",
             task,
             "",
-            None,
+            _execution_deadline,
             allowed_proposal_paths=spec.allowed_paths,
         )
         active = attempt.active
         if attempt.proposal_json is None:
             _reject()
         self._workspace(actor, spec.task_id)
+        _check_execution_deadline(_execution_deadline)
         self._record(key, "proposal-publish-intent", task_version=active["version"])
+        _check_execution_deadline(_execution_deadline)
         published = self._call(
             actor,
             "publish_task_proposal",
@@ -1206,6 +1278,7 @@ class ControlledRelay:
             _reject()
         if spec.submit_for_review:
             self._workspace(actor, spec.task_id)
+            _check_execution_deadline(_execution_deadline)
             review_version = active["version"] + 1
             self._record(
                 key,
@@ -1216,7 +1289,9 @@ class ControlledRelay:
                 review_task_version=review_version,
                 owner_session_sha256=digest(actor.profile.session_id),
                 launch_request_sha256=_launch_key(task),
+                **({"wave_sha256": _wave_key} if _wave_key is not None else {}),
             )
+            _check_execution_deadline(_execution_deadline)
             submitted = self._call(
                 actor,
                 "update_task",
@@ -1238,32 +1313,60 @@ class ControlledRelay:
 
     def observe_codex_proposal(self, actor: RelayActor, task_id: str) -> CodexProposalOutcome:
         """Read historical storage after restart, without resuming or authorizing a run."""
-        if type(actor) is not RelayActor:
-            _reject()
-        if client_kind(actor.profile) != "codex":
+        if type(actor) is not RelayActor or client_kind(actor.profile) != "codex":
             _reject()
         self._state(actor, task_id)
-        self._check_receipt_anchor(actor.profile.project_id)
+        project_id = actor.profile.project_id
+        self._check_receipt_anchor(project_id)
         key = self._key(actor, task_id)
         admission = self._read_receipt(key, "incomplete")
         if admission is None:
             return CodexProposalOutcome("not_started")
-        missing = CodexProposalOutcome("incomplete")
+        stored = self._proposal_storage(
+            project_id,
+            task_id,
+            key,
+            admission,
+            lambda context_id: self._call(actor, "get_context", context_id=context_id, version=1),
+            actor=actor,
+        )
+        if stored is None:
+            return CodexProposalOutcome("incomplete")
+        return CodexProposalOutcome(
+            "proposal_stored",
+            stored["context_id"],
+            1,
+            stored["content_sha256"],
+            stored["task_version"],
+        )
+
+    def _proposal_storage(
+        self,
+        project_id: str,
+        task_id: str,
+        key: str,
+        admission: dict[str, Any],
+        get_context: _ContextReader,
+        *,
+        actor: RelayActor | None = None,
+    ) -> dict[str, Any] | None:
         if admission.get("mode") != "codex_proposal":
-            return missing
+            return None
         stored = self._read_receipt(key, "proposal-stored")
         intent = self._read_receipt(key, "proposal-publish-intent")
         observed = self._inspect_attempt(key, "first")
         dispatched = self._read_receipt(key, "first-dispatched")
         captured = self._read_receipt(key, "first-observed")
-        if not stored or not intent or observed.status != "proposal_received":
-            return missing
-        if not dispatched or not captured:
-            return missing
+        if not stored or not intent or not dispatched or not captured:
+            return None
+        if observed.status != "proposal_received":
+            return None
         proposal_sha = _matched_text(captured.get("proposal_sha256"), r"[0-9a-f]{64}")
         context_id = _matched_text(stored.get("context_id"), r"[0-9a-f-]{36}")
         content_sha = _matched_text(stored.get("content_sha256"), r"[0-9a-f]{64}")
         version = stored.get("task_version")
+        wave = admission.get("wave_sha256")
+        submit = admission.get("submit_for_review", False)
         if (
             context_id is None
             or content_sha is None
@@ -1273,45 +1376,76 @@ class ControlledRelay:
             or stored["context_version"] != 1
             or type(intent.get("task_version")) is not int
             or intent["task_version"] != version
-            or stored.get("agent_sha256") != digest(actor.agent_id)
-            or stored.get("session_sha256") != digest(actor.profile.session_id)
-            or stored.get("worktree_sha256") != digest(actor.worktree_id)
-            or stored.get("base_head") != actor.expected_head
-            or observed.agent_sha256 != digest(actor.agent_id)
-            or observed.session_sha256 != digest(actor.profile.session_id)
+            or observed.agent_sha256 != stored.get("agent_sha256")
+            or observed.session_sha256 != stored.get("session_sha256")
             or proposal_sha is None
             or _matched_text(stored.get("launch_request_sha256"), r"[0-9a-f]{64}") is None
             or stored["launch_request_sha256"] != dispatched.get("launch_request_sha256")
             or type(admission.get("initial_task_version")) is not int
             or not 1 <= admission["initial_task_version"] < version
+            or type(submit) is not bool
+            or (
+                wave is not None
+                and (
+                    _matched_text(wave, r"[0-9a-f]{64}") is None
+                    or submit is not True
+                    or observed.admission is None
+                    or observed.admission.state != "both_reservations_recorded"
+                )
+            )
         ):
-            return missing
-        context = self._call(actor, "get_context", context_id=context_id, version=1)
+            return None
+        try:
+            context = get_context(context_id)
+        except AgentSyncError as error:
+            if wave is not None and error.code == "not_found":
+                return None
+            raise
         content = context["content"]
+        agent_id, session_id = context["author_agent_id"], context["author_session_id"]
         _bounded_text(content, 65536)
         if (
             hashlib.sha256(content.encode("utf-8")).hexdigest() != content_sha
-            or context["author_agent_id"] != actor.agent_id
-            or context["author_session_id"] != actor.profile.session_id
+            or type(agent_id) is not str
+            or type(session_id) is not str
+            or digest(agent_id) != stored.get("agent_sha256")
+            or digest(session_id) != stored.get("session_sha256")
         ):
-            return missing
+            return None
         try:
             value = json.loads(content)
         except (ValueError, RecursionError):
-            return missing
+            return None
         if type(value) is not dict or any(
             value.get(name) != expected
             for name, expected in {
                 "format": "amadeus-source-proposal-v1",
-                "project_id": actor.profile.project_id,
+                "project_id": project_id,
                 "task_id": task_id,
                 "task_version": version,
-                "worktree_id": actor.worktree_id,
-                "base_head": actor.expected_head,
                 "execution_provenance": "unverified",
             }.items()
         ):
-            return missing
+            return None
+        worktree_id = value.get("worktree_id")
+        base_head = _matched_text(value.get("base_head"), r"[0-9a-f]{40}|[0-9a-f]{64}")
+        if (
+            type(worktree_id) is not str
+            or base_head is None
+            or digest(worktree_id) != stored.get("worktree_sha256")
+            or base_head != stored.get("base_head")
+            or (
+                actor is not None
+                and (agent_id, session_id, worktree_id, base_head)
+                != (
+                    actor.agent_id,
+                    actor.profile.session_id,
+                    actor.worktree_id,
+                    actor.expected_head,
+                )
+            )
+        ):
+            return None
         try:
             files = value["files"]
             paths = proposal_paths([item["path"] for item in files])
@@ -1319,73 +1453,84 @@ class ControlledRelay:
                 json.dumps({"files": files}, ensure_ascii=False, separators=(",", ":")), list(paths)
             )
         except (AgentSyncError, KeyError, TypeError):
-            return missing
+            return None
         if digest(canonical_files) != proposal_sha or digest(paths) != admission.get(
             "paths_sha256"
         ):
-            return missing
-        submit = admission.get("submit_for_review", False)
-        if type(submit) is not bool:
-            return missing
-        contract = _proposal_contract(actor, admission["initial_task_version"], paths, submit)
-        request = f"relay:{key}:codex-proposal:{digest(contract)}"
-        expected_launch = digest(
-            [actor.profile.project_id, actor.profile.session_id, task_id, request]
+            return None
+        contract = _proposal_contract(
+            worktree_id, base_head, admission["initial_task_version"], paths, submit, wave
         )
-        if stored["launch_request_sha256"] != expected_launch:
-            return missing
-        return CodexProposalOutcome("proposal_stored", context_id, 1, content_sha, version)
+        request = f"relay:{key}:codex-proposal:{digest(contract)}"
+        expected_launch = digest([project_id, session_id, task_id, request])
+        return stored if stored["launch_request_sha256"] == expected_launch else None
 
     def observe_codex_proposal_review(
         self, actor: RelayActor, task_id: str
     ) -> CodexProposalReviewOutcome:
         """Require complete receipts plus the current exact review-state task."""
-        stored = self.observe_codex_proposal(actor, task_id)
+        if type(actor) is not RelayActor or client_kind(actor.profile) != "codex":
+            _reject()
+        self._state(actor, task_id)
+        project_id = actor.profile.project_id
+        self._check_receipt_anchor(project_id)
         key = self._key(actor, task_id)
         admission = self._read_receipt(key, "incomplete")
-        if admission is None or (
-            admission.get("mode") == "codex_proposal"
-            and admission.get("submit_for_review", False) is False
-            and stored.state == "proposal_stored"
-        ):
+        if admission is None:
             return CodexProposalReviewOutcome("not_requested")
-        missing = CodexProposalReviewOutcome("incomplete")
-        if (
-            not admission
-            or admission.get("submit_for_review") is not True
-            or stored.state != "proposal_stored"
-        ):
-            return missing
-        intent = self._read_receipt(key, "proposal-review-intent")
-        submitted = self._read_receipt(key, "proposal-review-submitted")
-        captured = self._read_receipt(key, "proposal-stored")
-        if not intent or not submitted or not captured or stored.task_version is None:
-            return missing
+        stored = self._proposal_storage(
+            project_id,
+            task_id,
+            key,
+            admission,
+            lambda context_id: self._call(actor, "get_context", context_id=context_id, version=1),
+            actor=actor,
+        )
+        if stored is not None and admission.get("submit_for_review", False) is False:
+            return CodexProposalReviewOutcome("not_requested")
+        intent = self._proposal_review_submission(key, admission, stored)
+        if not intent or not stored:
+            return CodexProposalReviewOutcome("incomplete")
         task = self._state(actor, task_id)
-        version = stored.task_version + 1
-        if (
-            intent.get("context_id") != stored.context_id
-            or intent.get("content_sha256") != stored.content_sha256
-            or type(intent.get("publication_task_version")) is not int
-            or intent["publication_task_version"] != stored.task_version
-            or type(intent.get("review_task_version")) is not int
-            or intent["review_task_version"] != version
-            or intent.get("owner_session_sha256") != digest(actor.profile.session_id)
-            or intent.get("launch_request_sha256") != captured.get("launch_request_sha256")
-            or submitted.get("review_intent_sha256") != digest(intent)
-            or task["status"] != "review"
-            or task["version"] != version
-            or task["owner_session_id"] != actor.profile.session_id
-            or task["result"] != _PROPOSAL_REVIEW_MARKER
+        if task["status"] != "review" or not self._historical_submission_matches(
+            task,
+            intent["review_task_version"],
+            _PROPOSAL_REVIEW_MARKER,
+            intent["owner_session_sha256"],
+            (stored["agent_sha256"],),
         ):
-            return missing
+            return CodexProposalReviewOutcome("incomplete")
         return CodexProposalReviewOutcome(
             "submitted_for_review",
-            stored.context_id,
-            stored.content_sha256,
-            stored.task_version,
-            version,
+            stored["context_id"],
+            stored["content_sha256"],
+            stored["task_version"],
+            intent["review_task_version"],
         )
+
+    def _proposal_review_submission(
+        self, key: str, admission: dict[str, Any], stored: dict[str, Any] | None
+    ) -> dict[str, Any] | None:
+        if not stored or admission.get("submit_for_review") is not True:
+            return None
+        intent = self._read_receipt(key, "proposal-review-intent")
+        submitted = self._read_receipt(key, "proposal-review-submitted")
+        if not intent or not submitted:
+            return None
+        if (
+            intent.get("context_id") != stored["context_id"]
+            or intent.get("content_sha256") != stored["content_sha256"]
+            or type(intent.get("publication_task_version")) is not int
+            or intent["publication_task_version"] != stored["task_version"]
+            or type(intent.get("review_task_version")) is not int
+            or intent["review_task_version"] != stored["task_version"] + 1
+            or intent.get("owner_session_sha256") != stored["session_sha256"]
+            or intent.get("launch_request_sha256") != stored["launch_request_sha256"]
+            or intent.get("wave_sha256") != admission.get("wave_sha256")
+            or submitted.get("review_intent_sha256") != digest(intent)
+        ):
+            return None
+        return intent
 
     def _proposal_staging_request(
         self,

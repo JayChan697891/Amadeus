@@ -1,5 +1,33 @@
 # M6 host-factory adapter prototype
 
+## Scheduling prepared Codex proposals
+
+The existing `RelayQueue` also accepts
+`CodexProposalQueueItem(first=actor, task=proposal, first_capabilities=(...))`.
+The `CodexProposalInput` must explicitly set `submit_for_review=True`. A queue
+may contain both single-producer proposals and existing two-client relay items.
+Its dependency, priority, active-load, capability and disjoint participant/root
+selection rules apply to both. The existing pair preview fields, selection pins
+and durable journal format remain compatible.
+
+`preview` pins the selected tasks, not their execution permission. Every launch
+still calls the actor's authority with its exact plan; a proposal wave is included
+in that plan's host contract. A standalone proposal preview is therefore not the
+approval for a queued launch. `run_ready_once` and `drain_ready` retain their
+bounded admission/execution budgets. A proposal counts as `ready_for_review` only
+when its captured immutable context and complete same-wave submission receipts
+match Core state. Storage alone, cancellation, unknown output or corrupted receipts
+leave the wave incomplete. No automatic retry, staging, candidate execution or
+verified completion is introduced.
+
+Existing owner/session reconciliation can recognize a historical submitted
+proposal after restart, including after the original producer session expires.
+The observing session must be currently authenticated; the immutable author,
+launch/wave, content and review bindings are still checked. A later independent
+ordinary review may explain the next task version, but it is not proof of verified
+artifact execution. Results remain `unverified`. Local protocol-fixture tests of
+this queue are separate from real-client and unattended relay acceptance.
+
 ## Controlled proposal submission and staging bridge
 
 `CodexProposalInput(..., submit_for_review=True)` opts into lease-controlled

@@ -58,6 +58,7 @@ async def captured_processes():
         "changed-task-version",
         "changed-task-owner",
         "changed-marker",
+        "review-during-observation",
         "stale-stage-plan",
         "wrong-stager",
         "wrong-owner",
@@ -156,7 +157,9 @@ async def test_controlled_proposal_review_and_native_staging(
         "base_head": actor.expected_head,
     }
     assert digest(
-        _proposal_contract(actor, spec.expected_version, spec.allowed_paths, False)
+        _proposal_contract(
+            actor.worktree_id, actor.expected_head, spec.expected_version, spec.allowed_paths, False
+        )
     ) == digest(old_contract)
     assert relay.observe_codex_proposal_review(actor, task["id"]).state == "not_requested"
     record = relay._record
@@ -225,7 +228,34 @@ async def test_controlled_proposal_review_and_native_staging(
             else:
                 db.execute("UPDATE tasks SET result='other' WHERE id=?", (task["id"],))
     reopened = ControlledRelay(core, parent, receipts)
-    observed = reopened.observe_codex_proposal_review(actor, task["id"])
+    with monkeypatch.context() as patch:
+        if scenario == "review-during-observation":
+            reviewer = core.execute("register_agent", {**owner, "name": "Independent reviewer"})
+            owner_grant(core, owner, reviewer, ("reviewer",))
+            current = reopened._state(actor, task["id"])
+            call = reopened._call
+
+            def complete_during_context_read(actor, operation, **payload):
+                result = call(actor, operation, **payload)
+                if operation == "get_context":
+                    completed = core.execute(
+                        "review_task",
+                        {
+                            "project_id": owner["project_id"],
+                            "session_id": reviewer["session_id"],
+                            "session_token": reviewer["session_token"],
+                            "task_id": task["id"],
+                            "expected_version": current["version"],
+                            "accept": True,
+                            "evidence": "Independent fixture review",
+                            "request_id": "review-during-context-read",
+                        },
+                    )
+                    assert completed["status"] == "completed"
+                return result
+
+            patch.setattr(reopened, "_call", complete_during_context_read)
+        observed = reopened.observe_codex_proposal_review(actor, task["id"])
     ready = {"success", "stale-stage-plan", "wrong-stager", "wrong-owner"}
     assert observed.state == (
         "submitted_for_review"
