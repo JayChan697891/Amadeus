@@ -463,7 +463,9 @@ For the pinned `0.167.0-alpha.3.2` CLI on Linux, a trusted host may select
 `CodexHostProfile(..., linux_readonly=True)`. This is an opt-in plan, mutually
 exclusive with `windows_mxc`; default and earlier-version plans remain unchanged.
 It selects a named minimal/project read-only permission profile with network
-disabled, the same restricted feature set as the native
+disabled. The exact pinned executable also has read access so a portable Linux
+CLI can re-execute inside its filesystem boundary; its parent directory is not
+added. It requests the same restricted feature set as the native
 Windows single-task plan, browser/computer default denial, no project instruction
 loading and no collaboration-agent registration. The compact inline feature table
 keeps the existing64-argument limit. A different plan requires its own consent.

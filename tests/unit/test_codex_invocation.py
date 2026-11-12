@@ -124,7 +124,11 @@ def test_linux_opt_in_plan_is_explicit_bounded_and_preserves_legacy(tmp_path, mo
     assert "--sandbox" not in selected.argv
     assert settings["default_permissions"] == "amadeus_readonly"
     assert settings["permissions"]["amadeus_readonly"] == {
-        "filesystem": {":minimal": "read", profile.root.as_posix(): "read"},
+        "filesystem": {
+            ":minimal": "read",
+            profile.root.as_posix(): "read",
+            profile.executable.as_posix(): "read",
+        },
         "network": {"enabled": False},
     }
     assert len(selected.argv) <= 64 and "--disable" not in selected.argv

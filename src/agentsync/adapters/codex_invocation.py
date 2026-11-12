@@ -228,9 +228,12 @@ def _linux_arguments(profile: CodexHostProfile) -> tuple[str, ...]:
     if sys.platform != "linux" or profile.expected_cli_version != "0.167.0-alpha.3.2":
         _invalid("unsupported_linux_profile")
     root = json.dumps(profile.root.as_posix(), ensure_ascii=False)
+    executable = json.dumps(profile.executable.as_posix(), ensure_ascii=False)
     config = (
         'default_permissions="amadeus_readonly"',
-        f'permissions.amadeus_readonly.filesystem={{":minimal"="read",{root}="read"}}',
+        # Bubblewrap re-executes the pinned CLI inside its filesystem boundary.
+        # A portable install can live outside the minimal system read roots.
+        f'permissions.amadeus_readonly.filesystem={{":minimal"="read",{root}="read",{executable}="read"}}',
         "permissions.amadeus_readonly.network.enabled=false",
         *_single_task_config(),
     )
