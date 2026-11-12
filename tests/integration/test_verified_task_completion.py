@@ -21,12 +21,15 @@ from test_candidate_execution import (
 from test_candidate_jobs import owner, profile
 from test_candidate_jobs import prepared as prepared
 from test_candidate_jobs import world as world
+from test_m4b_workspaces import source_fingerprint
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+from agentsync.sdk import AgentSyncClient
 from agentsync.storage import database
 from agentsync.storage.database import connect
 from agentsync.verification import candidate_executor, task_completion
+from agentsync.verification.candidate_delivery import OwnerCandidateDelivery
 from agentsync.verification.candidate_jobs import CandidateVerificationJobs, _dump, _hash
 from agentsync.verification.docker import DockerProfile, JsonCase
 from agentsync.verification.task_completion import OwnerVerifiedTaskCompletion
@@ -168,6 +171,50 @@ def test_atomic_completion_reopen_replay_and_immutable_old_receipts(ready):
             ("agent", "task_verified_complete"),
             ("owner", "task_verified_complete"),
         ]
+
+
+def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan(ready, world):
+    prepared, complete, args, _ = ready
+    core, candidate = prepared[:2]
+    source = world[3]
+    original = source_fingerprint(source)
+    completed = complete.complete_once(**args)
+    requester = world[2][0]
+    approval = core.execute("request_approval", {
+        **requester, "action": "apply_merge_candidate",
+        "subject_id": candidate["candidate_id"], "subject_sha": candidate["expected_candidate_sha"],
+        "request_id": "fixture-delivery-approval",
+    })
+    lookup = {**owner(prepared), "approval_id": approval["id"]}
+    payload = {
+        **lookup, "expected_version": approval["version"], "task_id": args["task_id"],
+        "expected_task_version": completed["version"], "session_id": requester["session_id"],
+        "session_token": requester["session_token"],
+    }
+    client = AgentSyncClient(core.data_dir)
+    preview = client.owner_call("preview_candidate_delivery", **payload)["data"]
+    plan = preview["plan"]
+    assert plan["candidate_sha"] == candidate["expected_candidate_sha"]
+    assert plan["destination_ref"].startswith("refs/agentsync/deliveries/")
+    denied = client.owner_call("approve_candidate_delivery", **payload, plan_sha256="0" * 64)
+    assert denied["error"]["code"] == "delivery_plan_changed"
+    approved = client.owner_call(
+        "approve_candidate_delivery", **payload, plan_sha256=preview["plan_sha256"],
+    )["data"]
+    before = client.owner_call("get_candidate_delivery_status", **lookup)["data"]
+    assert before == {"plan": plan, "approval_status": "approved", "effect": "not_attempted"}
+    publish = {
+        **payload, "expected_version": approved["approval"]["version"],
+        "plan_sha256": preview["plan_sha256"],
+    }
+    delivery = OwnerCandidateDelivery(core)
+    result = delivery.publish_once(**publish)
+    assert result == {"plan": plan, "approval_status": "consumed", "effect": "exact"}
+    with pytest.raises(AgentSyncError):
+        delivery.publish_once(**publish)
+    reopened = AgentSyncClient(core.data_dir)
+    assert reopened.owner_call("get_candidate_delivery_status", **lookup)["data"] == result
+    assert source_fingerprint(source) == original
 
 
 @pytest.mark.parametrize(
