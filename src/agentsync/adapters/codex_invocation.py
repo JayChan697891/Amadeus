@@ -86,6 +86,7 @@ _MXC_DISABLE = _DISABLE + (
     "view_image",
     "plugins",
     "image_generation",
+    "goals",
 )
 
 
@@ -235,6 +236,7 @@ def _mxc_arguments(profile: CodexHostProfile, environment: dict[str, str]) -> tu
         'browser_use.default_origin_policy.access="deny"',
         'computer_use.default_app_access="deny"',
         "project_doc_max_bytes=0",
+        "agents.enabled=false",
     )
     return tuple(argument for value in config for argument in ("-c", value))
 

@@ -258,6 +258,8 @@ def test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_lim
     assert effective["browser_use"]["default_origin_policy"]["access"] == "deny"
     assert effective["computer_use"]["default_app_access"] == "deny"
     assert effective["features"]["image_generation"] is False
+    assert effective["features"]["goals"] is False
+    assert effective["agents"]["enabled"] is False
     assert all(value is False for value in effective["features"].values())
     assert effective["forced_login_method"] == "chatgpt"
     assert effective["model_provider"] == "openai"
