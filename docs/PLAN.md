@@ -236,6 +236,10 @@ single exit checklist while the isolated M6 branch proceeds. Codex launch
 preview, lifecycle capture and Core review binding are available on the pilot
 branch. The next M6 acceptance step requires the verified execution conditions
 and a real result. M7's second live client depends on that result.
+The single-client pilot now retains observed cancellation results across restart;
+local process regressions cover cancellation, timeout and abnormal exit without
+releasing its one-attempt fence. This is M6 lifecycle implementation, not a new
+M5 stage or real-client acceptance.
 
 Use one Core for every integration. Locks in M4 will be cooperative. Local SQLite WAL
 must not be shared across machines/network filesystems. Native control adapters are M6,

@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+## M6 single-client pilot delta
+
+At product `2016554`, a cancelled controlled attempt saves its actual adapter
+stop observation before re-raising cancellation. The task remains incomplete,
+the durable attempt cannot replay, and parent termination does not certify
+descendant cleanup or result correctness. Local Windows Python 3.12 passed
+14 pipeline/budget cases and 2 owner-status/journal regressions, with zero skips,
+failures or errors. The pre-repair cancellation failure is retained alongside
+the passing JUnit and logs in [the evidence index](evidence/m6-single-stop/summary.json).
+Ruff check/format and mypy (84 modules) passed. These tests use disposable Python
+processes and synthetic client protocols. Real Codex/Claude/Cursor, this delta's
+installed packages and Linux/macOS tests are NOT RUN. M5 and Release remain BLOCKED.
+
 ## 0.3.0a109 local validation
 
 The runtime and package test baseline is `de44e7b`. Windows source revalidation

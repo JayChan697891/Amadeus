@@ -9,6 +9,18 @@ the durable one-attempt fence and the existing lifecycle adapter. A matching
 reply submits the task for independent Core review with verification still
 unverified. A denied or mismatched result leaves an incomplete attempt.
 
+Cancellation repair `2016554` preserves the actual adapter stop observation
+before propagating caller cancellation. Reopening can distinguish a recorded
+unknown result with a confirmed ended parent from a missing observation. This
+does not confirm descendant cleanup, authorize retries or verify task completion.
+The new disposable-process cancellation regression failed before repair; after
+repair, 14 pipeline/budget and 2 owner-status/journal tests passed on local
+Windows Python 3.12. Timeout and exit-code-3 cases preserve incomplete tasks and
+the no-retry fence. Ruff, formatting and mypy (84 modules) passed. See
+[saved failure and retest](acceptance/evidence/m6-single-stop/summary.json).
+New installed-package, Linux/macOS and live-client execution tests are NOT RUN
+for this delta; earlier full suites remain scoped to their frozen product.
+
 Windows local evidence comprises 11 relay integration cases and 77 lifecycle
 cases. The installed Codex CLI `0.167.0-alpha.3.2` produced a verified
 read-only launch preview against a disposable Core task and managed Git worktree.

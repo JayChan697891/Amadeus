@@ -1,0 +1,53 @@
+{
+  "commit_sha": "2016554359edf8d521eb08ef3ebc0eac9833b886",
+  "recorded_at_utc": "2026-11-12T04:55:24.730757+00:00",
+  "scope": "Windows Python 3.12 affected source tests, real disposable Python subprocesses with synthetic client protocols; no real model",
+  "source_sha256": {
+    "src/agentsync/controlled_relay.py": "47dac3a2e557088b934b80824fffda6f06261ddbe449376cd33037604d3b2f96",
+    "tests/integration/test_controlled_relay_pipeline.py": "acc0609c48f201fc5a09d62eb1c05a05b5c745304213c3189165d75fb04ad168"
+  },
+  "checks": {
+    "red-product": {
+      "cases": 3,
+      "passed": 2,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "source_commit": "9a65ed67275bba96b2e8c1d655cd3a38dedb7f62",
+      "note": "Regression tests added to parent source; cancellation loses terminal observation. An earlier fixture-only missing keyword error is retained locally in red.log/red.xml."
+    },
+    "green": {
+      "cases": 14,
+      "passed": 14,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "regression": {
+      "cases": 2,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "static_checks": {
+    "ruff_check": "passed (tool output)",
+    "ruff_format_check": "passed (tool output)",
+    "mypy_84_modules": "passed (tool output)",
+    "git_diff_check": "passed (tool output)"
+  },
+  "evidence_sha256": {
+    "green.log": "958ec268711ac681d4cf8cf75b6a27103814316ad852167f2dd688fd04056519",
+    "green.xml": "c21c837d26f18eea6613e3e05dec35922de26dc2cdeba1f4aa25de8f41a91e6c",
+    "red-product.log": "a098acec2550c24113a3413408bbcece433dd8b5fe92e747a396ef118afa8461",
+    "red-product.xml": "fff3f018832a607a19ea8c3e4a3ad39ff5d72f1ba560d288f2231e7dcd96dde1",
+    "regression.log": "eab22d37fd283a8ce347a87f499747b3dd021a89e12fd967581abf902b29d68e",
+    "regression.xml": "27113c1394cd14be86cead1543013c2957666bc59bd173767b381b9680548809"
+  },
+  "real_client_execution": "NOT RUN",
+  "installed_package_retest": "NOT RUN for this delta",
+  "linux_macos_delta_tests": "NOT RUN",
+  "release": "BLOCKED",
+  "local_evidence": "D:\\agentsync-debug\\m6-single-stop-9a65ed6"
+}
