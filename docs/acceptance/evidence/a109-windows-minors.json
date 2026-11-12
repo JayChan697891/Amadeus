@@ -1,0 +1,37 @@
+{
+  "commit_sha": "4f08dc80d245e2ce807b12031434b4dd92b4c63a",
+  "version": "0.3.0a109",
+  "platform": "Windows",
+  "reports": {
+    "3.11": {
+      "state": "running",
+      "completed_suites": {
+        "source": {
+          "tests": 2085,
+          "passed": 2044,
+          "skipped": 41,
+          "junit_sha256": "6abe822842e85e7394c4a9a287bd3943e36bc31502e9f454fdc3f24a6a6e4849"
+        }
+      }
+    },
+    "3.12": {
+      "state": "running",
+      "completed_suites": {
+        "source": {
+          "tests": 2085,
+          "passed": 2044,
+          "skipped": 41,
+          "junit_sha256": "26b8b58f0a7e9048d81a8428b47cbbd956200e1700cca6bad74418e4ef16bc1d"
+        },
+        "wheel": {
+          "tests": 2085,
+          "passed": 2044,
+          "skipped": 41,
+          "junit_sha256": "69ad0c5c4e8690da288147bf95583683c2a5a6931f3305c0f53cf4d38373aa2a"
+        }
+      }
+    }
+  },
+  "evidence_local": "D:/agentsync-debug/continuation-cc30ed21",
+  "formal_release": "BLOCKED"
+}

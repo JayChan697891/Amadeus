@@ -14,7 +14,10 @@ changes release tooling and its regression fixture. Development branch
 - Windows Ruff check, format check and mypy pass on the frozen source. During
   development, 19 focused path, delivery and migration cases and 151 release
   runner cases passed. Windows Python 3.11 source and Python 3.12 offline
-  wheel each passed 154 frozen focused cases.
+  wheel each passed 154 frozen focused cases. The full 3.11 and 3.12 source
+  suites and the full 3.12 wheel each passed 2,044 with 41 skips, matching
+  the 3.14 corrected source IDs. Remaining 3.11 and 3.12 package checks are
+  active. See [Windows minor-version evidence](acceptance/evidence/a109-windows-minors.json).
 - The initial Windows full source run had 46 failures, 1,998 passes and 41
   skips. Its test subprocesses could import the old installed version. With
   the fixed import path all 46 failed cases and all 151 runner tests passed

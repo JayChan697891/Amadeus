@@ -12,7 +12,7 @@ recorded revision.
 | Linux Python 3.14 source, wheel and rebuilt sdist | Passed | Each suite passed 2,080, skipped 5 and had zero failures or errors. All test IDs matched and 96 recorded Docker fixture containers were absent after cleanup. |
 | Windows Python 3.14 corrected source, wheel and rebuilt sdist | Passed | Each suite passed 2,044, skipped 41 and had zero failures or errors. Ruff, format, mypy, build and pip check passed in the corrected source run. Both fresh installs recorded their archive origin, CLI smoke and license inventory. |
 | Windows Python 3.14 initial source | Failed | The runner's child processes loaded a stale installation. All 46 failing cases passed after repair in a targeted retest and the corrected full suite. The initial collector retained its failed exit. |
-| Windows Python 3.11 and 3.12 | Limited | Each passed 154 focused checks. The Python 3.12 focused run used a fresh offline wheel and checked the installed archive hash. The two separate full runs are active. |
+| Windows Python 3.11 and 3.12 | Partially complete | Both source suites and the Python 3.12 wheel suite each passed 2,044 and skipped 41, matching the corrected 3.14 source test and skip IDs. Remaining package checks are active. |
 | Windows M8 coordination | Passed within tested load | 256 direct Core and 32 mixed Core/loopback HTTP claim attempts had exact audit counts and p95 below the respective 1,000 ms diagnostic thresholds. |
 | macOS and the full OS/Python matrix | Not run or incomplete | No macOS test environment is available in the current local workflow. |
 | Live Codex, Claude Code, Cursor and autonomous relay | Unverified | Historical client evidence remains scoped to its own runs. The current frozen client and real dual-agent scenarios have no execution evidence. |
@@ -24,8 +24,9 @@ scenario decisions still require their specified execution evidence.
 
 [Linux source](evidence/a109-linux-source.json),
 [Linux installations](evidence/a109-linux-packages.json), and
-[Windows results](evidence/a109-windows-local.json) bind the local reports, JUnit,
-logs and archive bytes. The tested distributables are stored under
+[Windows 3.14 results](evidence/a109-windows-local.json) bind the local reports,
+JUnit, logs and archive bytes. [Windows 3.11 and 3.12 results](evidence/a109-windows-minors.json)
+retain the finished suites and the pending checks. The tested distributables are stored under
 [`releases/0.3.0a109`](../../releases/0.3.0a109/).
 
 ## Historical source-only checkpoints
