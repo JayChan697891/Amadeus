@@ -125,14 +125,15 @@ def test_v12_failed_addition_rolls_back_tables_indexes_history_and_version(v11, 
     database.migrate(path)
 
 
-def test_future_schema15_rejected_without_any_mutation(v11):
+def test_future_schema_rejected_without_any_mutation(v11):
+    future_version = database.SCHEMA_VERSION + 1
     path, before, old_schema, _, _, _ = v11
     with database.connect(path) as db:
-        db.execute("PRAGMA user_version=15")
+        db.execute(f"PRAGMA user_version={future_version}")
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == future_version
         assert history(db) == before and schema(db) == old_schema
 
 

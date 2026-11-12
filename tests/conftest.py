@@ -24,7 +24,8 @@ def owner_grant(core, project, actor, roles=("worker", "reviewer")):
 
 
 def drop_candidate_queue_schema(db):
-    """Remove candidate additions when constructing pre-v10 migration fixtures."""
+    """Remove schema additions from v10 onward for older migration fixtures."""
+    db.execute("DROP TABLE IF EXISTS project_usage")
     db.execute("DROP TABLE IF EXISTS task_verification_requests")
     db.execute("DROP TABLE IF EXISTS task_verifications")
     db.execute("DROP TABLE IF EXISTS candidate_executions")

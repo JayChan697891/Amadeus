@@ -1379,6 +1379,34 @@ def test_full_suite_subprocess_cannot_inherit_pytest_selection_or_plugins(
     assert all(runner.os.environ[name] == value for name, value in inherited.items())
 
 
+def test_source_suite_imports_frozen_checkout_without_editable_install(
+    repository, tmp_path, monkeypatch
+):
+    source = repository / "src"
+    source.mkdir()
+    (source / "source_binding_probe.py").write_text("VERSION = 'frozen'\n", encoding="utf-8")
+    (repository / "test_source_binding.py").write_text(
+        "from source_binding_probe import VERSION\n\n"
+        "def test_checkout_origin():\n"
+        "    assert VERSION == 'frozen'\n",
+        encoding="utf-8",
+    )
+    foreign = tmp_path / "foreign"
+    foreign.mkdir()
+    (foreign / "source_binding_probe.py").write_text("VERSION = 'foreign'\n", encoding="utf-8")
+    monkeypatch.setenv("PYTHONPATH", str(foreign))
+    run = tmp_path / "evidence"
+    (run / "logs").mkdir(parents=True)
+    scratch = tmp_path / "scratch"
+    scratch.mkdir()
+
+    check_id, command = runner.check_plan(runner.sys.executable, run, scratch)[0]
+    result = runner.execute(check_id, command, repository, run, scratch)
+
+    assert result["status"] == "pass"
+    assert runner.junit_counts(scratch / "junit.xml")["tests"] == 1
+
+
 def test_sdist_flag_requires_run_and_is_independent_of_wheel(tmp_path, monkeypatch):
     monkeypatch.setattr(
         runner.sys, "argv", ["runner", "--output", str(tmp_path), "--sdist-install"]

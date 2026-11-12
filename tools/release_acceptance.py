@@ -725,6 +725,8 @@ def check_plan(python: str, run: Path, scratch: Path) -> list[tuple[str, list[st
                 python,
                 "-m",
                 "pytest",
+                "-o",
+                "pythonpath=src",
                 "--junitxml",
                 str(scratch / "junit.xml"),
                 "--basetemp",

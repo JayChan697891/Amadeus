@@ -561,6 +561,7 @@ def test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed
         before = {
             name: [tuple(row) for row in db.execute("SELECT * FROM " + name)] for name in tables
         }
+        db.execute("DROP TABLE project_usage")
         db.execute("DROP TABLE task_verification_requests")
         db.execute("DROP TABLE task_verifications")
         db.execute("DROP TABLE candidate_executions")

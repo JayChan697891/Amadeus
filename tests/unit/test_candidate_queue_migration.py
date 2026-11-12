@@ -74,16 +74,17 @@ def test_v10_failure_rolls_back_schema_indexes_version_and_rows(pending, transpo
     database.migrate(path)
 
 
-def test_future_schema15_rejected_without_mutating_existing_database(tmp_path):
+def test_future_schema_rejected_without_mutating_existing_database(tmp_path):
+    future_version = database.SCHEMA_VERSION + 1
     path = tmp_path / "future.db"
     database.migrate(path)
     with database.connect(path) as db:
-        db.execute("PRAGMA user_version=15")
+        db.execute(f"PRAGMA user_version={future_version}")
         before, old_schema = history(db), schema(db)
     with pytest.raises(RuntimeError, match="Unsupported"):
         database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == future_version
         assert history(db) == before and schema(db) == old_schema
 
 
