@@ -820,7 +820,23 @@ class ControlledRelay:
         except (TimeoutError, asyncio.CancelledError):
             with suppress(AgentSyncError, TimeoutError):
                 async with asyncio.timeout(2):
-                    await adapter.cancel_task(run.run_id)
+                    stopped = await adapter.cancel_task(run.run_id)
+                # Keep the adapter's actual observation across restart, including
+                # unknown parent termination. Cancellation never proves a reply
+                # matched or that descendants stopped, and never releases the fence.
+                if stopped.finished_at is not None:
+                    self._record(
+                        key,
+                        stage + "-stopped",
+                        status=stopped.status,
+                        timed_out=stopped.timed_out,
+                        exit_code=stopped.exit_code,
+                        parent_ended=stopped.parent_ended,
+                        run_sha256=digest(stopped.run_id),
+                        session_sha256=digest(stopped.session_id),
+                        error_code=_matched_text(stopped.error_code, r"[a-z_]{1,64}"),
+                        **_terminal_metrics(stopped),
+                    )
             raise
         matches = (
             result.agent_messages == (expected_reply,)

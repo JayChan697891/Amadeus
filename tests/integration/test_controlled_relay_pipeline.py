@@ -1,5 +1,6 @@
 """Exercise Core and Git with local protocol fixtures, never with real clients."""
 
+import asyncio
 import hashlib
 import io
 import json
@@ -42,6 +43,9 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
         "single-codex-success",
         "single-codex-mismatch",
         "single-codex-denied",
+        "single-codex-cancelled",
+        "single-codex-timeout",
+        "single-codex-exit-failure",
     ],
 )
 async def test_controlled_relay_with_disposable_core_and_git(
@@ -125,6 +129,8 @@ async def test_controlled_relay_with_disposable_core_and_git(
     receipts.mkdir()
     approvals = []
     launches = []
+    captures = []
+    capture_started = asyncio.Event()
 
     async def allow_fixture(review):
         approvals.append(review)
@@ -181,14 +187,22 @@ async def test_controlled_relay_with_disposable_core_and_git(
             ]
         stream = "\n".join(json.dumps(event) for event in events)
         helper_env = {"SYSTEMROOT": os.environ["SYSTEMROOT"]} if "SYSTEMROOT" in os.environ else {}
-        return await real_capture(
-            (sys.executable, "-I", "-u", "-c", f"print({stream!r})"),
+        script = f"print({stream!r})"
+        if scenario in {"single-codex-cancelled", "single-codex-timeout"}:
+            script = "import time; time.sleep(60)"
+        elif scenario == "single-codex-exit-failure":
+            script = "raise SystemExit(3)"
+        capture = await real_capture(
+            (sys.executable, "-I", "-u", "-c", script),
             cwd=cwd,
             stdin_text="",
             timeout_seconds=timeout_seconds,
             output_limit=output_limit,
             env=helper_env,
         )
+        captures.append(capture)
+        capture_started.set()
+        return capture
 
     monkeypatch.setattr(CapturedProcess, "start", classmethod(launch_fixture))
     first_profile = CodexHostProfile(
@@ -249,7 +263,7 @@ async def test_controlled_relay_with_disposable_core_and_git(
             task["version"],
             "Return the first fixture value",
             "WRONG_REPLY" if scenario == "single-codex-mismatch" else "FIRST_FIXTURE",
-            timeout_seconds=10,
+            timeout_seconds=1 if scenario == "single-codex-timeout" else 10,
         )
         preview = relay.preview_codex(actor, pilot, admin_token=token)
         alternative = relay.preview_codex(
@@ -262,6 +276,21 @@ async def test_controlled_relay_with_disposable_core_and_git(
             outcome = await relay.run_codex_once(actor, pilot, admin_token=token)
             assert outcome.state == "ready_for_review"
             assert outcome.verification == "unverified"
+        elif scenario == "single-codex-cancelled":
+            execution = asyncio.create_task(relay.run_codex_once(actor, pilot, admin_token=token))
+            try:
+                async with asyncio.timeout(5):
+                    await capture_started.wait()
+                execution.cancel()
+                with pytest.raises(asyncio.CancelledError):
+                    await execution
+                assert (await captures[0].snapshot()).parent_ended is True
+            finally:
+                if not execution.done():
+                    execution.cancel()
+                await asyncio.gather(execution, return_exceptions=True)
+                for capture in captures:
+                    await capture.cancel()
         else:
             with pytest.raises(AgentSyncError):
                 await relay.run_codex_once(actor, pilot, admin_token=token)
@@ -273,6 +302,21 @@ async def test_controlled_relay_with_disposable_core_and_git(
             "ready_for_review" if scenario == "single-codex-success" else "incomplete"
         )
         current = call(first, "get_project_state")["tasks"][0]
+        if scenario in {
+            "single-codex-cancelled",
+            "single-codex-timeout",
+            "single-codex-exit-failure",
+        }:
+            observed, unused = reopened.inspect_attempts(actor, task["id"], admin_token=token)
+            assert observed.state == "terminal_recorded"
+            assert observed.parent_ended is True
+            assert observed.status != "expected_reply"
+            assert unused.state == "not_dispatched"
+            assert observed.timed_out is (scenario == "single-codex-timeout")
+            if scenario == "single-codex-exit-failure":
+                assert observed.status == "failed"
+                assert observed.exit_code == 3
+            assert observed.error_code is not None
         assert current["status"] == ("review" if state.state == "ready_for_review" else "running")
         assert current["task_verification"] == "unverified"
         assert "FIRST_FIXTURE" not in (current["result"] or "")
