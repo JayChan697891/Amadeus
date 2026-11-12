@@ -447,15 +447,17 @@ async def test_model_review_queue_uses_exact_pinned_proposal_after_producer_expi
     ],
     indirect=True,
 )
-async def test_invalid_model_review_source_prevents_claim_and_launch(
+async def test_invalid_model_review_source_prevents_wave_admission_claim_and_launch(
     pilot,
     proposal_wave,
     pinned_proposal,
     monkeypatch,
 ):
-    core, owner, _, _, _, _, _, _, _ = pilot
-    relay, _, reviewer, approvals, captures, _ = proposal_wave
+    core, owner, _, _, producer_task, _, _, _, _ = pilot
+    relay, producer, reviewer, approvals, captures, _ = proposal_wave
     scenario, queue, receiver, worker, _, context = pinned_proposal
+    token = owner["admin_token"]
+    request = "invalid-source-wave"
     if scenario == "oversize":
         assert len(context["content"]) < 16000 < len(context["content"].encode("utf-8"))
     if scenario == "read-denied":
@@ -471,8 +473,8 @@ async def test_invalid_model_review_source_prevents_claim_and_launch(
         scenario, "relay_boundary"
     )
     with pytest.raises(AgentSyncError) as denied:
-        await relay.run_codex_proposal_once(
-            receiver.first, receiver.task, admin_token=owner["admin_token"]
+        await queue.run_ready_once(
+            (receiver,), request_id=request, admin_token=token, parallel_limit=2
         )
     assert denied.value.code == expected
     assert len(approvals) == len(captures) == 1
@@ -482,9 +484,62 @@ async def test_invalid_model_review_source_prevents_claim_and_launch(
         if row["id"] == receiver.task.task_id
     )
     assert state["status"] == "pending" and state["version"] == receiver.task.expected_version
-    assert (
-        queue.owner_observe_pending(owner["project_id"], admin_token=owner["admin_token"]) is None
+    assert queue.observe(producer.first, request).state == "not_started"
+    assert relay.observe(producer.first, receiver.task.task_id).state == "not_started"
+    assert queue.owner_observe_pending(owner["project_id"], admin_token=token) is None
+
+    if scenario in {"wrong-hash", "missing-submitted", "oversize"}:
+        pin = None
+        if scenario == "wrong-hash":
+            pin = ProposalContextPin(
+                producer_task["id"],
+                context["id"],
+                context["version"],
+                hashlib.sha256(context["content"].encode("utf-8")).hexdigest(),
+            )
+        valid = replace(receiver, task=replace(receiver.task, input_context=pin))
+        wave = await queue.run_ready_once(
+            (valid,), request_id="valid-source-wave", admin_token=token
+        )
+        assert wave.state == "resolved" and wave.tasks[0].state == "ready_for_review"
+        assert len(approvals) == len(captures) == 2
+
+
+@pytest.mark.parametrize("pinned_proposal", ["admission-race"], indirect=True)
+async def test_pinned_proposal_rechecks_source_after_wave_admission(
+    pilot,
+    proposal_wave,
+    pinned_proposal,
+    monkeypatch,
+):
+    core, owner, _, _, producer_task, _, _, receipts, _ = pilot
+    relay, producer, reviewer, approvals, captures, _ = proposal_wave
+    _, queue, receiver, _, _, _ = pinned_proposal
+    token = owner["admin_token"]
+    producer_key = relay._key(producer.first, producer_task["id"])
+    proof = receipts / relay._receipt_name(producer_key, "proposal-review-submitted")
+    admit = queue._journal.admit
+
+    def remove_proof_after_admit(*args):
+        admit(*args)
+        proof.unlink()
+
+    monkeypatch.setattr(queue._journal, "admit", remove_proof_after_admit)
+    wave = await queue.run_ready_once(
+        (receiver,), request_id="admitted-source-wave", admin_token=token
     )
+    assert wave.state == "incomplete" and wave.tasks[0].failure_code == "relay_boundary"
+    assert len(approvals) == len(captures) == 1
+    task = next(
+        row
+        for row in core.execute("get_project_state", reviewer)["tasks"]
+        if row["id"] == receiver.task.task_id
+    )
+    assert task["status"] == "pending" and task["version"] == receiver.task.expected_version
+    assert queue.owner_observe_pending(owner["project_id"], admin_token=token) is not None
+    with pytest.raises(AgentSyncError) as fenced:
+        await queue.run_ready_once((receiver,), request_id="after-admission", admin_token=token)
+    assert fenced.value.code == "wave_incomplete"
 
 
 @pytest.mark.parametrize("pinned_proposal", ["stale-consent"], indirect=True)

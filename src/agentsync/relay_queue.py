@@ -846,6 +846,12 @@ class RelayQueue:
             raise AgentSyncError(
                 "forbidden", "A selected relay participant lost the worker role.", 403
             )
+        # Reject invalid pinned inputs before reserving the wave. The launch path
+        # prepares the task again after admission and keeps its failure fence.
+        for item in selected:
+            if isinstance(item, CodexProposalQueueItem) and item.task.input_context is not None:
+                _check_execution_deadline(_execution_deadline)
+                self._relay._single_codex_task(item.first, item.task, admin_token, wave_key=key)
         self._relay._check_receipt_anchor(project_id, bind=True)
         self._check_journal_anchor(project_key, bind=True)
         _check_execution_deadline(_execution_deadline)
