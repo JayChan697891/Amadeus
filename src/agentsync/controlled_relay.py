@@ -1,4 +1,4 @@
-"""Host-only two-client relay for an isolated, explicitly approved pilot.
+"""Host-only client pilots for isolated, explicitly approved execution.
 
 The host supplies prepared Core tasks, isolated managed worktrees and fixed
 synthetic inputs. Each start needs a separate approval for its exact plan.
@@ -44,6 +44,9 @@ from agentsync.scheduling import _task_eligible
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
 _REVIEW_MARKER = (
     "Two controlled client replies matched the pilot input. Independent review pending."
+)
+_SINGLE_REVIEW_MARKER = (
+    "The controlled Codex reply matched the pilot input. Independent review pending."
 )
 _CLIENT_VERSION = r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}"
 
@@ -106,6 +109,26 @@ class RelayInput:
             self.first_reply,
             self.second_reply,
         ):
+            _bounded_text(value, 1500)
+            if not value.strip():
+                _reject()
+        if type(self.timeout_seconds) is not int or not 1 <= self.timeout_seconds <= 180:
+            _reject()
+
+
+@dataclass(frozen=True, slots=True)
+class SingleCodexInput:
+    task_id: str
+    expected_version: int
+    instruction: str = field(repr=False)
+    expected_reply: str = field(repr=False)
+    timeout_seconds: int = 90
+
+    def __post_init__(self) -> None:
+        _identifier(self.task_id)
+        if type(self.expected_version) is not int or not 1 <= self.expected_version < 2**63 - 10:
+            _reject()
+        for value in (self.instruction, self.expected_reply):
             _bounded_text(value, 1500)
             if not value.strip():
                 _reject()
@@ -362,6 +385,21 @@ class ControlledRelay:
         task = self._state(actor, task_id)
         self._check_receipt_anchor(actor.profile.project_id)
         key = self._key(actor, task_id)
+        admission = self._read_receipt(key, "incomplete")
+        if admission and admission.get("mode") == "single_codex":
+            intent = self._read_receipt(key, "single-review-intent")
+            if (
+                intent
+                and task["status"] == "review"
+                and type(intent.get("task_version")) is int
+                and task["version"] == intent.get("task_version")
+                and task["result"] == _SINGLE_REVIEW_MARKER
+                and type(task["owner_session_id"]) is str
+                and digest(task["owner_session_id"]) == intent.get("owner_session_sha256")
+                and self._inspect_attempt(key, "first").status == "expected_reply"
+            ):
+                return RelayOutcome("ready_for_review")
+            return RelayOutcome("incomplete")
         ready = self._review_submission(key)
         if ready is not None:
             if self._matches_submission(task, ready) and task["status"] == "review":
@@ -370,7 +408,7 @@ class ControlledRelay:
         conflict = self._read_receipt(key, "conflict")
         if conflict is not None:
             return RelayOutcome("conflict" if conflict else "incomplete")
-        if self._read_receipt(key, "incomplete") is not None:
+        if admission is not None:
             return RelayOutcome("incomplete")
         return RelayOutcome("not_started")
 
@@ -691,7 +729,6 @@ class ControlledRelay:
     async def _attempt(
         self,
         actor: RelayActor,
-        spec: RelayInput,
         claim: dict[str, Any],
         key: str,
         stage: str,
@@ -705,7 +742,7 @@ class ControlledRelay:
         active = self._call(
             actor,
             "update_task",
-            task_id=spec.task_id,
+            task_id=task.task_id,
             lease_token=lease_token,
             expected_version=claim["version"],
             status="running",
@@ -715,21 +752,21 @@ class ControlledRelay:
         def renew(_: AdapterTask) -> None:
             nonlocal active
             _check_execution_deadline(execution_deadline)
-            self._workspace(actor, spec.task_id)
+            self._workspace(actor, task.task_id)
             active = self._call(
                 actor,
                 "renew_lease",
-                task_id=spec.task_id,
+                task_id=task.task_id,
                 lease_token=lease_token,
                 expected_version=active["version"],
                 request_id=prefix + ":capture",
             )
-            current = self._state(actor, spec.task_id, min_session_seconds=spec.timeout_seconds + 2)
+            current = self._state(actor, task.task_id, min_session_seconds=task.timeout_seconds + 2)
             if (
                 current["status"] != "running"
                 or current["version"] != active["version"]
                 or current["owner_session_id"] != actor.profile.session_id
-                or current["lease_expires_at"] <= time.time() + spec.timeout_seconds + 2
+                or current["lease_expires_at"] <= time.time() + task.timeout_seconds + 2
             ):
                 _reject()
             _check_execution_deadline(execution_deadline)
@@ -763,7 +800,7 @@ class ControlledRelay:
         )
         run = await adapter.start_task(task)
         try:
-            run = await adapter.wait_terminal(run.run_id, timeout_seconds=spec.timeout_seconds + 2)
+            run = await adapter.wait_terminal(run.run_id, timeout_seconds=task.timeout_seconds + 2)
             if run.status != "succeeded" or run.exit_code != 0 or not run.parent_ended:
                 self._record(
                     key,
@@ -816,6 +853,87 @@ class ControlledRelay:
             **_terminal_metrics(run, result),
         )
         return {**active, "lease_token": lease_token}
+
+    def _single_codex_task(
+        self, actor: RelayActor, spec: SingleCodexInput, admin_token: str
+    ) -> AdapterTask:
+        if type(actor) is not RelayActor or type(spec) is not SingleCodexInput:
+            _reject()
+        if client_kind(actor.profile) != "codex":
+            _reject()
+        needed = {actor.agent_id}
+        if self._owner_worker_ids(actor.profile.project_id, needed, admin_token) != needed:
+            raise AgentSyncError(
+                "forbidden", "The Codex participant must hold the worker role.", 403
+            )
+        self._check_receipt_anchor(actor.profile.project_id)
+        key = self._key(actor, spec.task_id)
+        if self._read_receipt(key, "incomplete") is not None:
+            _reject()
+        snapshot = self._project_state(actor, min_session_seconds=spec.timeout_seconds + 2)
+        tasks = {row["id"]: row for row in snapshot["tasks"]}
+        current = tasks.get(spec.task_id)
+        if (
+            current is None
+            or current["version"] != spec.expected_version
+            or not _task_eligible(current, tasks, actor.agent_id, time.time())
+        ):
+            _reject()
+        self._workspace(actor, spec.task_id)
+        return AdapterTask(
+            actor.profile.project_id,
+            actor.profile.session_id,
+            spec.task_id,
+            f"relay:{key}:single-codex:{digest(spec.expected_reply)}",
+            spec.instruction,
+            spec.timeout_seconds,
+        )
+
+    def preview_codex(
+        self, actor: RelayActor, spec: SingleCodexInput, *, admin_token: str
+    ) -> LaunchReview:
+        """Prepare the exact host-private plan for one Codex worker."""
+        task = self._single_codex_task(actor, spec, admin_token)
+        return prepare_launch_review(actor.profile, task, environment=actor.environment)
+
+    async def run_codex_once(
+        self, actor: RelayActor, spec: SingleCodexInput, *, admin_token: str
+    ) -> RelayOutcome:
+        """Bind one approved Codex execution to Core's independent review state."""
+        task = self._single_codex_task(actor, spec, admin_token)
+        self._check_receipt_anchor(actor.profile.project_id, bind=True)
+        key = self._key(actor, spec.task_id)
+        self._record(key, "incomplete", mode="single_codex", wave_sha256=None)
+        active = await self._attempt(
+            actor,
+            self._claim(actor, spec.task_id, spec.expected_version, f"relay:{key}:single:claim"),
+            key,
+            "first",
+            task,
+            spec.expected_reply,
+            None,
+        )
+        self._workspace(actor, spec.task_id)
+        version = active["version"] + 1
+        self._record(
+            key,
+            "single-review-intent",
+            task_version=version,
+            owner_session_sha256=digest(task.session_id),
+        )
+        submitted = self._call(
+            actor,
+            "update_task",
+            task_id=spec.task_id,
+            lease_token=active["lease_token"],
+            expected_version=active["version"],
+            status="review",
+            result=_SINGLE_REVIEW_MARKER,
+            request_id=f"relay:{key}:single:review",
+        )
+        if submitted["version"] != version:
+            _reject()
+        return RelayOutcome("ready_for_review")
 
     def _pinned_inputs(
         self,
@@ -942,7 +1060,6 @@ class ControlledRelay:
         _check_execution_deadline(_execution_deadline)
         a = await self._attempt(
             first,
-            spec,
             self._claim(first, spec.task_id, task["version"], f"relay:{key}:claim-a"),
             key,
             "first",
@@ -987,7 +1104,6 @@ class ControlledRelay:
         _check_execution_deadline(_execution_deadline)
         b = await self._attempt(
             second,
-            spec,
             self._claim(second, spec.task_id, current["version"], f"relay:{key}:claim-b"),
             key,
             "second",

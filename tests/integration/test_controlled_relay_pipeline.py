@@ -18,7 +18,13 @@ from agentsync.adapters.codex_invocation import CodexHostProfile
 from agentsync.adapters.cursor_invocation import CursorHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.cli import main
-from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput, RelayReviewer
+from agentsync.controlled_relay import (
+    ControlledRelay,
+    RelayActor,
+    RelayInput,
+    RelayReviewer,
+    SingleCodexInput,
+)
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue, RelayQueueItem
@@ -33,6 +39,9 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
         "viewer-before-admission",
         "swapped-worktrees",
         "unmet-dependency",
+        "single-codex-success",
+        "single-codex-mismatch",
+        "single-codex-denied",
     ],
 )
 async def test_controlled_relay_with_disposable_core_and_git(
@@ -119,6 +128,8 @@ async def test_controlled_relay_with_disposable_core_and_git(
 
     async def allow_fixture(review):
         approvals.append(review)
+        if scenario == "single-codex-denied":
+            return None
         return LaunchConsent(
             f"fixture-approval-{len(approvals)}",
             review.plan_sha256,
@@ -230,6 +241,62 @@ async def test_controlled_relay_with_disposable_core_and_git(
     items = (RelayQueueItem(*prepared, request),)
     request_id = "fixture-wave"
     token = owner["admin_token"]
+    if scenario.startswith("single-codex-"):
+        owner_grant(core, owner, second, ("viewer",))
+        actor = prepared[0]
+        pilot = SingleCodexInput(
+            task["id"],
+            task["version"],
+            "Return the first fixture value",
+            "WRONG_REPLY" if scenario == "single-codex-mismatch" else "FIRST_FIXTURE",
+            timeout_seconds=10,
+        )
+        preview = relay.preview_codex(actor, pilot, admin_token=token)
+        alternative = relay.preview_codex(
+            actor, replace(pilot, expected_reply="OTHER_FIXTURE"), admin_token=token
+        )
+        assert preview.plan_sha256 != alternative.plan_sha256
+        assert not approvals and not launches
+        assert list(receipts.iterdir()) == []
+        if scenario == "single-codex-success":
+            outcome = await relay.run_codex_once(actor, pilot, admin_token=token)
+            assert outcome.state == "ready_for_review"
+            assert outcome.verification == "unverified"
+        else:
+            with pytest.raises(AgentSyncError):
+                await relay.run_codex_once(actor, pilot, admin_token=token)
+        assert [approval.plan_sha256 for approval in approvals] == [preview.plan_sha256]
+        assert launches == ([] if scenario == "single-codex-denied" else [actor.profile.root])
+        reopened = ControlledRelay(Core(core.data_dir), scratch, receipts)
+        state = reopened.observe(actor, task["id"])
+        assert state.state == (
+            "ready_for_review" if scenario == "single-codex-success" else "incomplete"
+        )
+        current = call(first, "get_project_state")["tasks"][0]
+        assert current["status"] == ("review" if state.state == "ready_for_review" else "running")
+        assert current["task_verification"] == "unverified"
+        assert "FIRST_FIXTURE" not in (current["result"] or "")
+        with pytest.raises(AgentSyncError):
+            await reopened.run_codex_once(
+                actor, replace(pilot, expected_version=current["version"]), admin_token=token
+            )
+        assert len(approvals) == 1
+        if scenario == "single-codex-success":
+            review = {
+                "task_id": task["id"],
+                "expected_version": current["version"],
+                "accept": True,
+                "evidence": "Fixture result observed by independent reviewer",
+                "request_id": "single-fixture-review",
+            }
+            with pytest.raises(AgentSyncError) as denied:
+                call(first, "review_task", **review)
+            assert denied.value.code == "separate_reviewer_required"
+            completed = call(reviewer, "review_task", **review)
+            assert completed["status"] == "completed"
+            assert completed["task_verification"] == "unverified"
+        assert source_fingerprint(source) == original
+        return
     if scenario == "unmet-dependency":
         assert queue.preview(items, admin_token=token).state == "no_ready_tasks"
         with pytest.raises(AgentSyncError) as denied:
