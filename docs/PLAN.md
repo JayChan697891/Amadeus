@@ -176,7 +176,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
+expiry→pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
@@ -235,7 +235,7 @@ paid provider calls. See M4A-CONTRACT.md and acceptance/DESIGN.md.
 | M8 | M8-01 usage/source/unknown costs; M8-02 recovery/stress/performance | Do not invent third-party subscription usage or bills |
 | M9 | M9-01 platform compatibility; M9-02 docs/license/build/release | Separately approved public push/release only |
 
-The [M5â€“M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) keeps M5 on its
+The [M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) keeps M5 on its
 single exit checklist while the isolated M6 branch proceeds. Codex launch
 preview, lifecycle capture and Core review binding are available on the pilot
 branch. The next M6 acceptance step requires the verified execution conditions

@@ -12,6 +12,17 @@ successfully disabled. The prior named MXC file/network observations remain
 scoped to `dcd7ca1`. Historical evidence is retained without rewriting it.
 See [current preflight evidence](acceptance/evidence/m6-native-mxc/single-task-summary.json).
 
+A fresh offline Windows Python 3.12 installation now passes all 51 selected
+Codex invocation/process and Core pipeline tests. Its wheel was rebuilt from
+the frozen sdist, and all 84 installed runtime module byte hashes matched before
+and after testing; source-checkout shadowing was excluded. The original build
+environment lacked setuptools; its failure is retained, and a dedicated offline
+build environment resolved it without product edits. Artifacts and JUnit are
+saved in [package evidence](acceptance/evidence/m6-native-mxc/package-summary.json).
+This closes the selected Windows installation check only, not full release,
+Linux/macOS or real-client acceptance.
+
+
 The owner confirmed credits=0 and auto-recharge disabled. The one authorized
 subscription model task remains unconsumed. A concrete Core task, disposable Git
 source and managed worktree are prepared in
@@ -116,7 +127,7 @@ Windows reports are under `windows-py311-full/`, `windows-py312-full/`,
 `windows/` and `fixed-windows/`. Linux minor-version evidence is under
 `linux-minor-runtime/`. The owned guest stopped normally after verification,
 with both disks preserved. Resume from the
-[M5â€“M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
+[M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
 `feat/m6-single-codex-pilot` branch. Reuse this baseline and rerun affected
 checks only for changes in code or tests.
 
@@ -417,11 +428,11 @@ Actual8processes completed in~0.356s; parent file preserved. No production edits
 Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
 See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
 
-Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 Ã—wheel/sdist)
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
 environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
 junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
 785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
-IndependentAstra source+result review approves scopeddevelopment only. Same32Ã—8
+IndependentAstra source+result review approves scopeddevelopment only. Same32×8
 budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
 256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
 OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
@@ -431,7 +442,7 @@ M8 bounded process-local Core admission implemented; existing SQL/auth/replay/le
 audit/close body byte-identical, owner/migration paths unchanged. Astra source
 review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
 37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
-andtwo-MCPprocessclaim passed. Same32Ã—8/1000ms workload p95 observed107.837ms
+andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
 versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
 Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
 core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
@@ -445,7 +456,7 @@ Formal42not_run/releaseBLOCKED.
 M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
 Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
 Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
-Actual32Ã—8 strict run matched256events(8success/248denied), audit errors0; p95
+Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
 2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
 diagnostic extends the earlier2982539 packaged checkpoint.
 D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
@@ -473,7 +484,7 @@ preparation observed; completeflags/auth/realturn NOT RUN.
 Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
 
 M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
-11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker Ã—8round
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
 workloads measured456 claim attempts: all functional checks passed, no unexpected
 errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
 budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
@@ -918,7 +929,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
+expiry→pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
