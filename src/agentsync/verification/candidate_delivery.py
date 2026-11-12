@@ -308,27 +308,70 @@ class OwnerCandidateDelivery:
             if plan is None:
                 _error("not_found", "No managed delivery intent exists.", 404)
             approval = self._core._approval(db, p)
-            if (
-                approval["status"] != "consumed"
-                or approval["version"] != plan["pending_version"] + 2
-                or approval["subject_id"] != plan["candidate_id"]
-                or approval["subject_sha"] != plan["candidate_sha"]
-                or _entry(db, p["project_id"], _APPROVED, p["approval_id"]) != plan
-                or _entry(db, p["project_id"], _FENCE, plan["candidate_id"])
-                != {"approval_id": p["approval_id"]}
+            approved = _entry(db, p["project_id"], _APPROVED, p["approval_id"])
+            return self._observe_reserved(db, p, approval, approved, plan)
+
+    def status(self, **payload: Any) -> dict[str, Any]:
+        """Inspect saved approval and delivery evidence without an active requester session."""
+        p = self._core._validated_payload(_Lookup, payload)
+        project, approval_id = p["project_id"], p["approval_id"]
+        with self._jobs._transaction(p) as (db, now):
+            approval = self._core._approval(db, p)
+            if approval["action"] != "apply_merge_candidate":
+                _error("not_found", "No managed delivery approval exists.", 404)
+            approved = _entry(db, project, _APPROVED, approval_id)
+            intent = _entry(db, project, _INTENT, approval_id)
+            if intent is not None:
+                return self._observe_reserved(db, p, approval, approved, intent)
+            fence = _entry(db, project, _FENCE, approval["subject_id"])
+            if approval["status"] == "consumed" or fence == {"approval_id": approval_id}:
+                _reject_plan()
+            if approved is not None and (
+                approved.get("approval_id") != approval_id
+                or approved.get("candidate_id") != approval["subject_id"]
+                or approved.get("candidate_sha") != approval["subject_sha"]
+                or approved.get("requester_agent_id") != approval["requester_agent_id"]
+                or type(approved.get("pending_version")) is not int
+                or approval["version"] <= approved["pending_version"]
             ):
                 _reject_plan()
-            row = db.execute(
-                "SELECT receipt FROM repository_snapshots WHERE id=? AND project_id=?",
-                (plan["snapshot_id"], p["project_id"]),
-            ).fetchone()
-            if row is None or plan["destination_ref"] != _ref(plan["candidate_id"]):
-                _reject_plan()
-            snapshot = _load(row["receipt"], 16384)
-            if _hash(_dump(snapshot)) != plan["snapshot_receipt_sha256"]:
-                _reject_plan()
-            store = GitWorkspaceStore(self._core.data_dir, create=False)
             return {
-                "plan": plan, "approval_status": "consumed",
-                "effect": self._observe_ref(store, _managed_repo(store, snapshot), plan),
+                "plan": approved,
+                "approval_status": self._core._public_approval(approval, now)["status"],
+                "effect": "not_attempted",
             }
+
+    def _observe_reserved(
+        self,
+        db: sqlite3.Connection,
+        p: dict[str, Any],
+        approval: sqlite3.Row,
+        approved: dict[str, Any] | None,
+        plan: dict[str, Any],
+    ) -> dict[str, Any]:
+        if (
+            approval["action"] != "apply_merge_candidate"
+            or approval["status"] != "consumed"
+            or plan["approval_id"] != p["approval_id"]
+            or approval["version"] != plan["pending_version"] + 2
+            or approval["subject_id"] != plan["candidate_id"]
+            or approval["subject_sha"] != plan["candidate_sha"]
+            or approved != plan
+            or _entry(db, p["project_id"], _FENCE, plan["candidate_id"])
+            != {"approval_id": p["approval_id"]}
+        ):
+            _reject_plan()
+        row = db.execute(
+            "SELECT receipt FROM repository_snapshots WHERE id=? AND project_id=?",
+            (plan["snapshot_id"], p["project_id"]),
+        ).fetchone()
+        if row is None or plan["destination_ref"] != _ref(plan["candidate_id"]):
+            _reject_plan()
+        snapshot = _load(row["receipt"], 16384)
+        if _hash(_dump(snapshot)) != plan["snapshot_receipt_sha256"]:
+            _reject_plan()
+        store = GitWorkspaceStore(self._core.data_dir, create=False)
+        return {
+            "plan": plan, "approval_status": "consumed",
+            "effect": self._observe_ref(store, _managed_repo(store, snapshot), plan),
+        }

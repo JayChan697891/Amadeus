@@ -14,6 +14,7 @@ from conftest import owner_grant
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+from agentsync.sdk import AgentSyncClient
 
 GIT = shutil.which("git")
 
@@ -212,6 +213,37 @@ def test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable(world)
     assert len(candidate["candidate_sha"]) in (40, 64)
     assert "approved" not in candidate
     assert call(core, a, "prepare_merge_candidate", **args, request_id="prepare-once") == candidate
+    assert source_fingerprint(root) == original
+
+
+def test_owner_can_inspect_pending_delivery_without_exposing_it_to_agents(world):
+    core, owner, (first, second), root = world
+    original = source_fingerprint(root)
+    snapshot = capture(world)
+    left, right = worktree(world, snapshot, first), worktree(world, snapshot, second)
+    lsha = commit_edit(left, "left.txt", "delivery fixture left\n")
+    rsha = commit_edit(right, "right.txt", "delivery fixture right\n")
+    candidate = call(
+        core, first, "prepare_merge_candidate", **comparison(left, right, lsha, rsha),
+        request_id="delivery-fixture",
+    )
+    approval = call(
+        core, first, "request_approval", action="apply_merge_candidate",
+        subject_id=candidate["candidate_id"], subject_sha=candidate["candidate_sha"],
+        request_id="approval-fixture",
+    )
+    sdk = AgentSyncClient(core.data_dir)
+    operation = "get_candidate_delivery_status"
+    assert sdk.owner_call(operation, **owner, approval_id=approval["id"]) == {
+        "ok": True,
+        "data": {"plan": None, "approval_status": "pending", "effect": "not_attempted"},
+    }
+    wrong = sdk.owner_call(
+        operation, project_id=owner["project_id"], admin_token="fixture-wrong-token",
+        approval_id=approval["id"],
+    )
+    assert wrong["error"]["code"] == "unauthorized"
+    assert sdk.call(operation, **first, approval_id=approval["id"])["error"]["code"] == "unknown_operation"
     assert source_fingerprint(root) == original
 
 
