@@ -171,8 +171,13 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     relay_status = commands.add_parser(
         "relay-status", help="Inspect a local relay journal with project owner credentials on stdin"
     )
-    relay_status.add_argument("--scratch-root", type=Path, required=True)
-    relay_status.add_argument("--receipts", type=Path, required=True)
+    relay_reconcile = commands.add_parser(
+        "relay-reconcile", help="Reconcile one saved local wave using owner and session credentials"
+    )
+    for relay_command in (relay_status, relay_reconcile):
+        relay_command.add_argument("--scratch-root", type=Path, required=True)
+        relay_command.add_argument("--receipts", type=Path, required=True)
+    relay_reconcile.add_argument("wave_id")
     relay_view = relay_status.add_mutually_exclusive_group()
     relay_view.add_argument("--history", action="store_true")
     relay_view.add_argument("--task-id", help="Show saved attempt observations for this task")
@@ -212,16 +217,22 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
-    if args.command == "relay-status":
+    if args.command in {"relay-status", "relay-reconcile"}:
         if not data_dir:
-            parser.error("relay-status requires an explicit --data-dir")
-        if not args.history and (args.before is not None or args.limit != 16):
+            parser.error(f"{args.command} requires an explicit --data-dir")
+        if args.command == "relay-status" and not args.history and (
+            args.before is not None or args.limit != 16
+        ):
             parser.error("relay-status paging options require --history")
-        from agentsync.relay_status_cli import run_relay_status_cli
+        from agentsync.relay_status_cli import run_relay_cli
 
-        return run_relay_status_cli(
+        return run_relay_cli(
             Path(data_dir), args.scratch_root, args.receipts,
-            history=args.history, limit=args.limit, before=args.before, task_id=args.task_id,
+            history=getattr(args, "history", False),
+            limit=getattr(args, "limit", 16),
+            before=getattr(args, "before", None),
+            task_id=getattr(args, "task_id", None),
+            wave_id=getattr(args, "wave_id", None),
         )
     if args.command == "owner":
         try:

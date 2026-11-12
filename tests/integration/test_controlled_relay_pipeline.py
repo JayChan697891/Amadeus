@@ -1,6 +1,7 @@
 """Exercise Core and Git with local protocol fixtures, never with real clients."""
 
 import hashlib
+import io
 import json
 import os
 import sys
@@ -15,6 +16,7 @@ from agentsync.adapters.approved_launch import LaunchConsent
 from agentsync.adapters.codex_invocation import CodexHostProfile
 from agentsync.adapters.cursor_invocation import CursorHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.cli import main
 from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput, RelayReviewer
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
@@ -22,7 +24,7 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
 
 
 @pytest.mark.parametrize("scenario", ["handoff-and-review", "conflict-before-launch", "restart-after-replies"])
-async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, scenario):
+async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, capsys, scenario):
     scratch = tmp_path.resolve()
     source = scratch / "source"
     source.mkdir()
@@ -161,10 +163,22 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
                 admin_token=token, expected_wave_id=pending.wave_id,
             )
         assert queue.owner_observe_pending(project_id, admin_token=token) == pending
-        wave = queue.reconcile_pending_from_session(
-            project_id, session_id=reviewer["session_id"], session_token=reviewer["session_token"],
-            admin_token=token, expected_wave_id=pending.wave_id,
+        credentials = json.dumps({
+            "project_id": project_id, "admin_token": token,
+            "session_id": reviewer["session_id"], "session_token": reviewer["session_token"],
+        }).encode("utf-8")
+        monkeypatch.setattr(
+            sys, "stdin", io.TextIOWrapper(io.BytesIO(credentials), encoding="utf-8"),
         )
+        assert main([
+            "--data-dir", str(core.data_dir), "relay-reconcile", pending.wave_id,
+            "--scratch-root", str(scratch), "--receipts", str(receipts),
+        ]) == 0
+        output = capsys.readouterr().out
+        assert token not in output and reviewer["session_token"] not in output
+        observed = json.loads(output)["data"]
+        assert observed["state"] == "resolved" and observed["verification"] == "unverified"
+        wave = queue.observe(prepared[0], request_id)
         assert queue.owner_observe_pending(project_id, admin_token=token) is None
     else:
         wave = await queue.run_ready_once(items, request_id=request_id, admin_token=token)

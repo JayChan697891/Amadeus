@@ -1,4 +1,4 @@
-"""Project-owner inspection of local relay receipts and the wave journal."""
+"""Project-owner inspection and reconciliation of saved local relay receipts."""
 
 import json
 import sqlite3
@@ -17,7 +17,7 @@ from agentsync.workspaces.git import physical
 _INPUT_LIMIT = 8192
 
 
-def run_relay_status_cli(
+def run_relay_cli(
     data_dir: Path,
     scratch_root: Path,
     receipts: Path,
@@ -26,15 +26,19 @@ def run_relay_status_cli(
     limit: int,
     before: str | None,
     task_id: str | None = None,
+    wave_id: str | None = None,
 ) -> int:
     try:
         raw = sys.stdin.buffer.read(_INPUT_LIMIT + 1)
         if len(raw) > _INPUT_LIMIT:
             raise ValueError
         credentials = json.loads(raw.decode("utf-8"))
+        required = {"project_id", "admin_token"}
+        if wave_id is not None:
+            required.update(("session_id", "session_token"))
         if (
             type(credentials) is not dict
-            or set(credentials) != {"project_id", "admin_token"}
+            or set(credentials) != required
             or any(type(value) is not str for value in credentials.values())
             or not all(path.is_absolute() for path in (data_dir, scratch_root, receipts))
         ):
@@ -65,7 +69,11 @@ def run_relay_status_cli(
             result = {"task_id": task_id, "attempts": [asdict(attempt) for attempt in attempts]}
         else:
             queue = RelayQueue(relay)
-            if history:
+            if wave_id is not None:
+                result = asdict(queue.reconcile_pending_from_session(
+                    **credentials, expected_wave_id=wave_id,
+                ))
+            elif history:
                 result = asdict(queue.owner_history(**credentials, limit=limit, before=before))
             else:
                 pending = queue.owner_observe_pending(**credentials)
