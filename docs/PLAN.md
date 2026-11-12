@@ -13,9 +13,12 @@ M6's first authenticated attempt at `6a8ff41` remains unknown. A separately
 authorized diagnostic at `080722e` captured the startup-warning ordering failure;
 `ee45690` narrowly repairs it and passes offline replay plus affected local source
 and installed-package tests. The actual failed Core receipt remains unchanged.
-Next: a prepared new one-shot validation awaits explicit call/copy authorization;
-only a real accepted single-client result permits the separately authorized
-second-client relay. Do not retry consumed tasks or create a new M5 subdivision.
+The separately authorized repaired run now has scoped acceptance: real fixed-text
+Codex to adapter to Core review, followed by a distinct host-mediated reviewer.
+Next: prepare two actual isolated sessions for handoff; Claude/Cursor need their
+own available supported authentication and execution boundaries. Same-client relay
+cannot replace cross-client acceptance. Do not retry consumed tasks or create
+a new M5 subdivision.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe
 its startup receipt with a bounded wait; this does not enable automatic scheduling.

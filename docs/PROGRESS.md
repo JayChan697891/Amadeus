@@ -61,13 +61,26 @@ Ruff/format and mypy84 pass. Astra scoped review found no blocker. macOS and the
 full release matrix for this delta are NOT RUN.
 See [repair and actual diagnostic evidence](acceptance/evidence/m6-native-mxc/startup-warning-summary.json).
 
-A new one-shot fixed-text validation is prepared under
-`D:\agentsync-debug\m6-startup-warning-live-20261112`; plan
+The separately authorized new validation actually ran on 2026-11-12 at
+08:15:51 UTC (00:15:51 America/Tijuana), using the same prepared plan
 `ce6032da2c3624ef3aee259da404c2f15e82a1ef2d60681e730148f3976499b3`.
-Authorization is pending: no credential copied or real model launched. Existing
-billing confirmation is retained. Do not retry either consumed attempt, upload
-private output/state/credentials, or mark M6 accepted from offline replay.
-M5/B1/B3, M6, M7 and formal Release remain unresolved; no new M5 subdivision.
+It recognized ChatGPT login, exited0 after55.953s, matched the exact reply and
+reopened in Core review/unverified. Independent Astra/root review accepted this
+limited submission path; a distinct Core reviewer then completed the task, still
+unverified for code artifacts. No tool items were observed. Original auth and
+fixtures/runtime stayed unchanged; temp auth was removed. The606-byte failed
+stream belongs to the previous diagnostic; this successful run retained602 stdout
+and476 unclassified stderr bytes locally only. The one-shot grant is consumed.
+See [actual repaired run](acceptance/evidence/m6-native-mxc/live-repaired-summary.json).
+
+Next: real two-Agent preparation. The owner subsequently instructed first-choice
+approval for future requests within existing constraints; this does not establish
+missing account access, extra-fee permission, or full acceptance. Claude2.1.295
+matches the supported version, but default subscription credentials are absent.
+Only Cursor desktop CLI was found, not a standalone Agent executable. A two-Codex
+isolated read-only relay can exercise two actual sessions and Core handoff under
+the existing subscription; it cannot substitute for Claude/Cursor compatibility.
+M5/B1/B3, full M6, M7 and Release remain open. No new M5 subdivision.
 
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.

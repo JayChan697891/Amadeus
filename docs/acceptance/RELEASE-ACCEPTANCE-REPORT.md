@@ -1,6 +1,21 @@
 # Release Acceptance Report
 
-## M6 startup-warning compatibility repair
+## Actual repaired single-client validation
+
+On2026-11-12 08:15:51UTC, runtime ee45690 executed one explicitly authorized
+subscription fixed-text task through the adapter. Parent exit0 after55.953s, exact
+reply matched, Core reopened review/unverified. Native Astra/root evidence review
+accepted only this path; a distinct host-mediated Core reviewer completed the task
+without upgrading task_verification. Temp auth removed, original/fixtures/runtime
+unchanged. No tool items observed. Raw stdout602/stderr476 bytes remain local;
+stderr is unclassified, and reported tokens are not verified billing.
+
+This is real single-client submission evidence, not a full M6, B1/B3, M7 or Release
+pass. Historical failed attempts are untouched. Next is real two-session handoff;
+Claude and Cursor compatibility remain unverified. See
+[actual execution and independent review](evidence/m6-native-mxc/live-repaired-summary.json).
+
+## Historical M6 startup-warning compatibility repair
 
 Product `ee45690` repairs the observed completed warning item before turn.started,
 while preserving input bounds, lifecycle checks and fatal-error behavior. Windows

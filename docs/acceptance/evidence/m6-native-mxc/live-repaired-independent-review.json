@@ -1,0 +1,37 @@
+{
+  "review_basis": "Independent native Astra scoped review plus root physical checks; host-mediated Core reviewer, not a second real model client",
+  "task_id_sha256": "6af4f5c54569675fbedb59260904cabee6dc9738a7d7a25fe291fc68a1fa1dd5",
+  "reviewer_distinct_from_worker": true,
+  "reviewer_role": "reviewer",
+  "before_status": "review",
+  "after_status": "completed",
+  "task_verification": "unverified",
+  "reopened_after_review": true,
+  "task_version": 6,
+  "scope": "Fixed-text single Codex submission and distinct-identity Core review only",
+  "not_established": [
+    "full M6",
+    "general B1/B3",
+    "actual cancellation or descendant cleanup",
+    "verified code-artifact completion",
+    "second real client",
+    "M7",
+    "billing verification",
+    "Release"
+  ],
+  "audit_operation_outcome_counts": {
+    "create_project:success": 1,
+    "register_agent:success": 2,
+    "set_agent_roles:success": 2,
+    "create_task:success": 1,
+    "capture_repository:success": 1,
+    "create_worktree:success": 1,
+    "claim_task:success": 1,
+    "update_task:success": 2,
+    "renew_lease:success": 1,
+    "review_task:success": 1
+  },
+  "raw_output_uploaded": false,
+  "additional_model_calls": 0,
+  "formal_release": "BLOCKED"
+}

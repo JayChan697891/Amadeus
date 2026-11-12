@@ -15,8 +15,11 @@ an unknown/incomplete result. Temp auth removed, original unchanged; no retry.
 The subsequent authorized diagnostic at080722e is also consumed. Its private
 capture localized pre-turn completed warning items; ee45690 repairs their parsing.
 101 source tests and17 fresh installed tests passed; private replay is not real
-Core acceptance. See PROGRESS and startup-warning-summary.json. A newly prepared
-live validation still requires separate explicit authorization.
+Core acceptance. A subsequently authorized real run succeeded through Core review
+and a distinct host-mediated reviewer; see live-repaired-summary.json. It is scoped
+single-client acceptance, not full M6/Release. The owner now directs first-choice
+approvals within existing no-extra-fee/safety constraints; do not fabricate missing
+account access or reinterpret old consumed attempts as retried.
 PR33 Linux supplement at8671c2d has limited Work acceptance; alpha29 awaits review.
 
 Read docs/acceptance/CANCELLATION-REPAIR-20261105.md for current security-repair
