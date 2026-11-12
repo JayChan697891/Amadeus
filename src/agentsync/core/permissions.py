@@ -274,6 +274,18 @@ class PermissionsMixin:
             "has_more": len(rows) > p["limit"],
         }
 
+    def _owner_list_selected_members(
+        self, db: sqlite3.Connection, p: dict[str, Any], _: float
+    ) -> dict[str, Any]:
+        agent_ids = p["agent_ids"]
+        placeholders = ",".join("?" for _ in agent_ids)
+        rows = db.execute(
+            "SELECT * FROM agent_memberships WHERE project_id=? "
+            f"AND agent_id IN ({placeholders}) ORDER BY agent_id",
+            (p["project_id"], *agent_ids),
+        ).fetchall()
+        return {"members": [self._public_member(row) for row in rows]}
+
     @staticmethod
     def _approval(
         db: sqlite3.Connection, p: dict[str, Any], agent_id: str | None = None

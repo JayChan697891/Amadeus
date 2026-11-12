@@ -276,10 +276,10 @@ class RelayQueue:
         """Preview the scheduler's current selection without reserving work or invoking a client."""
         items = self._validate_items(items, parallel_limit)
         actor = items[0].first
-        project_key, snapshot = self._owner_candidate_snapshot(items, admin_token)
+        project_key, snapshot, workers = self._owner_candidate_snapshot(items, admin_token)
         if self._fenced(actor.profile.project_id, project_key):
             return RelayQueuePreview("fenced")
-        selected = self._select(items, snapshot, parallel_limit)
+        selected = self._select(items, snapshot, workers, parallel_limit)
         self._check_selected(selected)
         if not selected:
             return RelayQueuePreview("no_ready_tasks")
@@ -461,15 +461,18 @@ class RelayQueue:
 
     def _owner_candidate_snapshot(
         self, items: tuple[RelayQueueItem, ...], admin_token: str,
-    ) -> tuple[str, dict[str, Any]]:
+    ) -> tuple[str, dict[str, Any], set[str]]:
         first = items[0].first
-        self._relay._authorize_owner(first, admin_token)
         project = first.profile.project_id
+        actors = {actor.agent_id for item in items for actor in (item.first, item.second)}
+        workers = self._relay._owner_worker_ids(project, actors, admin_token)
         self._relay._check_receipt_anchor(project)
         project_key = digest(project)
         seen: set[str] = set()
         for item in items:
             for actor in (item.first, item.second):
+                if workers and actor.agent_id not in workers:
+                    continue
                 session_id = actor.profile.session_id
                 if session_id in seen:
                     continue
@@ -481,7 +484,7 @@ class RelayQueue:
                         raise
                 else:
                     self._check_journal_anchor(project_key)
-                    return project_key, snapshot
+                    return project_key, snapshot, workers
         raise AgentSyncError("session_expired", "No prepared relay session remains valid.", 401)
 
     def _reconcile_open(
@@ -529,7 +532,7 @@ class RelayQueue:
         return RelayQueueOutcome("incomplete" if incomplete else "resolved", tuple(results))
 
     def _select(
-        self, items: tuple[RelayQueueItem, ...], snapshot: dict[str, Any], limit: int
+        self, items: tuple[RelayQueueItem, ...], snapshot: dict[str, Any], workers: set[str], limit: int,
     ) -> tuple[RelayQueueItem, ...]:
         project_id = snapshot["project"]["id"]
         now = time.time()
@@ -546,7 +549,7 @@ class RelayQueue:
         for item in items:
             actors = (item.first, item.second)
             if any(
-                actor.agent_id in busy
+                actor.agent_id not in workers or actor.agent_id in busy
                 or not (session := sessions.get(actor.profile.session_id))
                 or session["agent_id"] != actor.agent_id
                 or session["online"] is not True
@@ -628,7 +631,7 @@ class RelayQueue:
         actor = items[0].first
         project_id = actor.profile.project_id
         key = self._key(actor, request_id)
-        project_key, snapshot = self._owner_candidate_snapshot(items, admin_token)
+        project_key, snapshot, workers = self._owner_candidate_snapshot(items, admin_token)
         if (
             self._journal.get(project_key, key) is not None
             or self._relay._read_receipt(key, "wave-admitted") is not None
@@ -636,7 +639,7 @@ class RelayQueue:
             raise AgentSyncError("attempt_already_reserved", "This relay wave already has a receipt.", 409)
         if self._fenced(project_id, project_key):
             raise AgentSyncError("wave_incomplete", "An earlier relay wave still holds the project fence.", 409)
-        selected = self._select(items, snapshot, parallel_limit)
+        selected = self._select(items, snapshot, workers, parallel_limit)
         if expected_selection_sha256 is not None and (
             not selected or not hmac.compare_digest(expected_selection_sha256, _selection_pin(selected))
         ):
@@ -644,6 +647,9 @@ class RelayQueue:
         if not selected:
             return RelayQueueOutcome("no_ready_tasks")
         self._check_selected(selected)
+        required_workers = {participant.agent_id for item in selected for participant in (item.first, item.second)}
+        if self._relay._owner_worker_ids(project_id, required_workers, admin_token) != required_workers:
+            raise AgentSyncError("forbidden", "A selected relay participant lost the worker role.", 403)
         self._relay._check_receipt_anchor(project_id, bind=True)
         self._check_journal_anchor(project_key, bind=True)
         _check_execution_deadline(_execution_deadline)

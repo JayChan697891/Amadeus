@@ -214,6 +214,17 @@ class OwnerPage(AdminAuth):
     offset: int = Field(default=0, ge=0, le=10000)
 
 
+class OwnerSelectedMembers(AdminAuth):
+    agent_ids: list[str] = Field(min_length=1, max_length=32)
+
+    @field_validator("agent_ids")
+    @classmethod
+    def valid_agent_ids(cls, values: list[str]) -> list[str]:
+        if len(set(values)) != len(values) or any(not 1 <= len(value) <= 200 for value in values):
+            raise ValueError("Agent IDs must be bounded and unique")
+        return values
+
+
 class SetAgentRoles(AdminAuth):
     agent_id: str
     roles: list[Literal["viewer", "worker", "reviewer"]] = Field(max_length=3)
@@ -255,6 +266,7 @@ class GetTaskVerification(AdminAuth):
 OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "set_agent_roles": SetAgentRoles,
     "list_members": OwnerPage,
+    "list_selected_members": OwnerSelectedMembers,
     "decide_approval": DecideApproval,
     "revoke_approval": RevokeApproval,
     "list_audit": OwnerPage,

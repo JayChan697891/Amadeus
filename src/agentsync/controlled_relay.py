@@ -443,6 +443,24 @@ class ControlledRelay:
             {"project_id": project_id, "admin_token": admin_token, "limit": 1},
         )
 
+    def _owner_worker_ids(
+        self, project_id: str, agent_ids: set[str], admin_token: str,
+    ) -> set[str]:
+        response = self._core.execute_owner("list_selected_members", {
+            "project_id": project_id, "admin_token": admin_token, "agent_ids": sorted(agent_ids),
+        })
+        return {member["agent_id"] for member in response["members"] if "worker" in member["roles"]}
+
+    def _require_relay_workers(self, first: RelayActor, second: RelayActor, admin_token: str) -> None:
+        if type(first) is not RelayActor or type(second) is not RelayActor:
+            _reject()
+        project_id = first.profile.project_id
+        if second.profile.project_id != project_id or first.agent_id == second.agent_id:
+            _reject()
+        needed = {first.agent_id, second.agent_id}
+        if self._owner_worker_ids(project_id, needed, admin_token) != needed:
+            raise AgentSyncError("forbidden", "Both relay participants must hold the worker role.", 403)
+
     def _inspect_attempt(
         self, key: str, leg: Literal["first", "second"]
     ) -> RelayAttemptObservation:
@@ -686,7 +704,7 @@ class ControlledRelay:
         """Prepare host-private plans; conflict checks and exact consent still gate execution."""
         if type(first) is not RelayActor:
             _reject()
-        self._authorize_owner(first, admin_token)
+        self._require_relay_workers(first, second, admin_token)
         self._check_receipt_anchor(first.profile.project_id)
         _, _, _, (first_task, second_task) = self._pinned_inputs(first, second, spec)
         return (
@@ -705,7 +723,7 @@ class ControlledRelay:
             or any(c not in "0123456789abcdef" for c in _wave_key)
         ):
             _reject()
-        self._authorize_owner(first, admin_token)
+        self._require_relay_workers(first, second, admin_token)
         task, reference, revision, (first_task, second_task) = self._pinned_inputs(first, second, spec)
         _check_execution_deadline(_execution_deadline)
         self._check_receipt_anchor(first.profile.project_id, bind=True)

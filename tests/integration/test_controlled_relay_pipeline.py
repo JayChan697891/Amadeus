@@ -23,7 +23,10 @@ from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue, RelayQueueItem
 
 
-@pytest.mark.parametrize("scenario", ["handoff-and-review", "conflict-before-launch", "restart-after-replies"])
+@pytest.mark.parametrize(
+    "scenario",
+    ["handoff-and-review", "conflict-before-launch", "restart-after-replies", "viewer-before-admission"],
+)
 async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, capsys, scenario):
     scratch = tmp_path.resolve()
     source = scratch / "source"
@@ -145,6 +148,16 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
     items = (RelayQueueItem(*prepared, request),)
     request_id = "fixture-wave"
     token = owner["admin_token"]
+    if scenario == "viewer-before-admission":
+        owner_grant(core, owner, first, ("viewer",))
+        assert queue.preview(items, admin_token=token).state == "no_ready_tasks"
+        assert (await queue.run_ready_once(items, request_id=request_id, admin_token=token)).state == "no_ready_tasks"
+        with pytest.raises(AgentSyncError) as denied:
+            await relay.run_once(*prepared, request, admin_token=token)
+        assert denied.value.code == "forbidden"
+        assert not launches and not approvals
+        assert list(receipts.iterdir()) == []
+        return
     if scenario == "restart-after-replies":
         def interrupted_record(*_args, **_kwargs):
             raise AgentSyncError("storage_error", "Fixture interrupted before wave result was saved.")
