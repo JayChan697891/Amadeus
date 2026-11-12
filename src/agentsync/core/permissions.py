@@ -48,6 +48,7 @@ WORKER_OPERATIONS = frozenset(
         "release_file_lock",
         "capture_repository",
         "create_worktree",
+        "inspect_owned_worktree",
         "compare_worktrees",
         "prepare_merge_candidate",
         "request_approval",
@@ -55,7 +56,7 @@ WORKER_OPERATIONS = frozenset(
 )
 REVIEWER_OPERATIONS = frozenset({"review_task", "list_audit"})
 BOOTSTRAP_OPERATIONS = frozenset({"create_project", "register_agent"})
-AGENT_WRITES = WORKER_OPERATIONS | {"review_task", "heartbeat"} | BOOTSTRAP_OPERATIONS
+AGENT_WRITES = (WORKER_OPERATIONS - {"inspect_owned_worktree"}) | {"review_task", "heartbeat"} | BOOTSTRAP_OPERATIONS
 OWNER_WRITES = frozenset(
     {"set_agent_roles", "decide_approval", "revoke_approval", "import_usage_checkpoint"}
 )

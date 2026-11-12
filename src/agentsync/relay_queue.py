@@ -265,6 +265,8 @@ class RelayQueue:
     def _check_selected(self, selected: tuple[RelayQueueItem, ...]) -> None:
         for item in selected:
             self._relay._state(item.second, item.task.task_id)
+            self._relay._check_worktree_owner(item.first, item.task.task_id)
+            self._relay._check_worktree_owner(item.second, item.task.task_id)
             if self._relay.observe(item.first, item.task.task_id).state != "not_started":
                 raise AgentSyncError(
                     "attempt_already_reserved", "A selected task already has a relay receipt.", 409

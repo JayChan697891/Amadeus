@@ -272,7 +272,9 @@ class ControlledRelay:
         raise AgentSyncError("relay_boundary", "The controlled relay task is unavailable.", 409)
 
     def _workspace(self, actor: RelayActor, task_id: str) -> dict[str, Any]:
-        view = self._call(actor, "inspect_worktree", worktree_id=actor.worktree_id)
+        view = self._call(
+            actor, "inspect_owned_worktree", worktree_id=actor.worktree_id, task_id=task_id,
+        )
         root = Path(view["path"]).resolve(strict=True)
         if (
             view["task_id"] != task_id
@@ -286,6 +288,12 @@ class ControlledRelay:
         ):
             _reject()
         return view
+
+    def _check_worktree_owner(self, actor: RelayActor, task_id: str) -> None:
+        self._call(
+            actor, "inspect_owned_worktree", worktree_id=actor.worktree_id,
+            task_id=task_id, metadata_only=True,
+        )
 
     @staticmethod
     def _receipt_name(key: str, stage: str) -> str:

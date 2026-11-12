@@ -37,6 +37,7 @@ WORKER = {
     "release_file_lock",
     "capture_repository",
     "create_worktree",
+    "inspect_owned_worktree",
     "compare_worktrees",
     "prepare_merge_candidate",
     "request_approval",
@@ -129,6 +130,7 @@ def payload(operation):
         },
         "create_worktree": {"snapshot_id": "unknown", "task_id": "unknown"},
         "inspect_worktree": {"worktree_id": "unknown"},
+        "inspect_owned_worktree": {"worktree_id": "unknown", "task_id": "unknown", "metadata_only": True},
         "compare_worktrees": {
             "left_id": "unknown",
             "right_id": "unknown",

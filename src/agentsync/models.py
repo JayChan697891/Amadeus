@@ -172,6 +172,11 @@ class InspectWorktree(Auth):
     worktree_id: str
 
 
+class InspectOwnedWorktree(InspectWorktree):
+    task_id: str = Field(min_length=1, max_length=200)
+    metadata_only: bool = False
+
+
 CommitSHA = Annotated[str, Field(pattern=r"^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$")]
 
 
@@ -305,6 +310,7 @@ OPERATIONS: dict[str, type[StrictModel]] = {
     "capture_repository": CaptureRepository,
     "create_worktree": CreateWorktree,
     "inspect_worktree": InspectWorktree,
+    "inspect_owned_worktree": InspectOwnedWorktree,
     "compare_worktrees": CompareWorktrees,
     "prepare_merge_candidate": PrepareMergeCandidate,
     "request_approval": RequestApproval,

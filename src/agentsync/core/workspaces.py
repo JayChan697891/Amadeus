@@ -142,6 +142,25 @@ class WorkspacesMixin:
         actual = self._workspace_store().inspect_worktree(receipt)
         return {**self._worktree_public(receipt), **self._worktree_current(actual)}
 
+    def _inspect_owned_worktree(
+        self, db: sqlite3.Connection, p: dict[str, Any], now: float, session: sqlite3.Row
+    ) -> dict[str, Any]:
+        bound = db.execute(
+            "SELECT 1 FROM managed_worktrees AS worktree "
+            "JOIN sessions AS creator ON creator.id=worktree.creator_session_id "
+            "AND creator.project_id=worktree.project_id "
+            "WHERE worktree.project_id=? AND worktree.id=? AND worktree.task_id=? "
+            "AND creator.agent_id=?",
+            (p["project_id"], p["worktree_id"], p["task_id"], session["agent_id"]),
+        ).fetchone()
+        if bound is None:
+            raise AgentSyncError(
+                "workspace_boundary", "The managed worktree does not belong to this agent and task.", 409,
+            )
+        if p["metadata_only"]:
+            return {"worktree_id": p["worktree_id"], "task_id": p["task_id"]}
+        return self._inspect_worktree(db, p, now, session)
+
     def _workspace_pair(
         self, db: sqlite3.Connection, p: dict[str, Any]
     ) -> tuple[dict[str, Any], dict[str, Any]]:

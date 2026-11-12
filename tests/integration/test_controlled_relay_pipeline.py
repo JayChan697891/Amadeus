@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -25,7 +26,10 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
 
 @pytest.mark.parametrize(
     "scenario",
-    ["handoff-and-review", "conflict-before-launch", "restart-after-replies", "viewer-before-admission"],
+    [
+        "handoff-and-review", "conflict-before-launch", "restart-after-replies",
+        "viewer-before-admission", "swapped-worktrees",
+    ],
 )
 async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, capsys, scenario):
     scratch = tmp_path.resolve()
@@ -148,6 +152,22 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
     items = (RelayQueueItem(*prepared, request),)
     request_id = "fixture-wave"
     token = owner["admin_token"]
+    if scenario == "swapped-worktrees":
+        swapped = [
+            replace(
+                actor, profile=replace(actor.profile, root=Path(tree["path"])),
+                worktree_id=tree["worktree_id"], expected_head=tree["head_sha"],
+            )
+            for actor, tree in zip(prepared, reversed(trees), strict=True)
+        ]
+        with pytest.raises(AgentSyncError) as denied:
+            await queue.run_ready_once(
+                (RelayQueueItem(*swapped, request),), request_id=request_id, admin_token=token,
+            )
+        assert denied.value.code == "workspace_boundary"
+        assert not launches and not approvals
+        assert list(receipts.iterdir()) == []
+        return
     if scenario == "viewer-before-admission":
         owner_grant(core, owner, first, ("viewer",))
         assert queue.preview(items, admin_token=token).state == "no_ready_tasks"
