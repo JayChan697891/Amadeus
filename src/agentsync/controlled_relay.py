@@ -39,6 +39,7 @@ from agentsync.adapters.cursor import CursorAdapter, CursorResult
 from agentsync.adapters.host_receipts import _ReceiptDirectory
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+from agentsync.scheduling import _task_eligible
 
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
 _REVIEW_MARKER = "Two controlled client replies matched the pilot input. Independent review pending."
@@ -680,9 +681,15 @@ class ControlledRelay:
             or second.profile.root.is_relative_to(first.profile.root)
         ):
             _reject()
-        task = self._state(first, spec.task_id)
-        self._state(second, spec.task_id)
-        if task["status"] != "pending" or task["version"] != spec.expected_version:
+        minimum_session_time = spec.timeout_seconds + 2
+        snapshot = self._project_state(first, min_session_seconds=minimum_session_time)
+        tasks = {row["id"]: row for row in snapshot["tasks"]}
+        task = tasks.get(spec.task_id)
+        self._state(second, spec.task_id, min_session_seconds=minimum_session_time)
+        if (
+            task is None or task["version"] != spec.expected_version
+            or not _task_eligible(task, tasks, first.agent_id, time.time())
+        ):
             _reject()
         left = self._workspace(first, spec.task_id)
         right = self._workspace(second, spec.task_id)

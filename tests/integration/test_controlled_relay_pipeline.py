@@ -28,7 +28,7 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
     "scenario",
     [
         "handoff-and-review", "conflict-before-launch", "restart-after-replies",
-        "viewer-before-admission", "swapped-worktrees",
+        "viewer-before-admission", "swapped-worktrees", "unmet-dependency",
     ],
 )
 async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypatch, capsys, scenario):
@@ -61,7 +61,13 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
         })
 
     first, second, reviewer = actors
-    task = call(first, "create_task", title="Fixture relay", request_id="task")
+    dependencies = []
+    if scenario == "unmet-dependency":
+        predecessor = call(first, "create_task", title="Fixture predecessor", request_id="dependency")
+        dependencies.append(predecessor["id"])
+    task = call(
+        first, "create_task", title="Fixture relay", request_id="task", dependencies=dependencies,
+    )
     snapshot = call(first, "capture_repository", request_id="snapshot")
     context = call(
         first, "publish_context", title="Fixture context", kind="progress",
@@ -152,6 +158,14 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
     items = (RelayQueueItem(*prepared, request),)
     request_id = "fixture-wave"
     token = owner["admin_token"]
+    if scenario == "unmet-dependency":
+        assert queue.preview(items, admin_token=token).state == "no_ready_tasks"
+        with pytest.raises(AgentSyncError) as denied:
+            await relay.run_once(*prepared, request, admin_token=token)
+        assert denied.value.code == "relay_boundary"
+        assert not launches and not approvals
+        assert list(receipts.iterdir()) == []
+        return
     if scenario == "swapped-worktrees":
         swapped = [
             replace(

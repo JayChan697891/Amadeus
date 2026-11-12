@@ -73,6 +73,22 @@ def _timestamp(value: Any) -> float:
     return float(value)
 
 
+def _task_eligible(
+    row: dict[str, Any], rows: dict[str, dict[str, Any]], agent_id: str, observed: float,
+) -> bool:
+    return (
+        row["status"] == "pending"
+        and row["owner_session_id"] is None
+        and row["lease_expires_at"] is None
+        and all(dependency in rows and rows[dependency]["status"] == "completed" for dependency in row["dependencies"])
+        and (
+            row["assigned_agent_id"] is None
+            or row["assignment_expires_at"] <= observed
+            or row["assigned_agent_id"] == agent_id
+        )
+    )
+
+
 def _capability_tokens(value: Any) -> frozenset[str]:
     _require(type(value) is tuple and len(value) <= 128)
     for token in value:
@@ -194,24 +210,8 @@ def _plan(
             continue
         if requirements is not None and not requirements[row["id"]] <= declared:
             continue
-        if (
-            row["status"] != "pending"
-            or row["owner_session_id"] is not None
-            or row["lease_expires_at"] is not None
-        ):
-            continue
-        if any(
-            dependency not in rows or rows[dependency]["status"] != "completed"
-            for dependency in row["dependencies"]
-        ):
-            continue
-        if (
-            row["assigned_agent_id"] is not None
-            and row["assignment_expires_at"] > observed
-            and row["assigned_agent_id"] != agent_id
-        ):
-            continue
-        candidates.append(row)
+        if _task_eligible(row, rows, agent_id, observed):
+            candidates.append(row)
     candidates.sort(key=lambda row: (-row["priority"], row["created_at"], row["id"]))
     return SchedulingPlan(
         project_id,
