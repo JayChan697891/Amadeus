@@ -13,7 +13,8 @@ recorded revision.
 | Windows Python 3.14 corrected source, wheel and rebuilt sdist | Passed | Each suite passed 2,044, skipped 41 and had zero failures or errors. Ruff, format, mypy, build and pip check passed in the corrected source run. Both fresh installs recorded their archive origin, CLI smoke and license inventory. |
 | Windows Python 3.14 initial source | Failed | The runner's child processes loaded a stale installation. All 46 failing cases passed after repair in a targeted retest and the corrected full suite. The initial collector retained its failed exit. |
 | Windows Python 3.11 and 3.12 source, wheel and rebuilt sdist | Passed | Each minor passed all 26 local checks. Every suite had 2,044 passes and 41 skips, matching the corrected 3.14 IDs. Exact archive and license inventory hashes are recorded. |
-| Linux Python 3.11 and 3.12 | In progress | Both isolated runtimes are ready. The initial 3.12 candidate preflight failed before tests on line endings. The corrected collector staged the exact Windows 3.12 artifacts. Linux 3.12 is running and Linux 3.11 awaits that result. |
+| Linux Python 3.12 source, wheel and rebuilt sdist | Passed | All 26 checks passed. Each suite had 2,080 passes and 5 skips. The corrected collector used the exact Windows 3.12 candidate archives. The initial line-ending preflight failure is preserved separately. |
+| Linux Python 3.11 | Running | The same candidate and frozen source are under full local verification. |
 | Windows M8 coordination | Passed within tested load | 256 direct Core and 32 mixed Core/loopback HTTP claim attempts had exact audit counts and p95 below the respective 1,000 ms diagnostic thresholds. |
 | macOS and the full OS/Python matrix | Not run or incomplete | No macOS test environment is available in the current local workflow. |
 | Live Codex, Claude Code, Cursor and autonomous relay | Unverified | Historical client evidence remains scoped to its own runs. The current frozen client and real dual-agent scenarios have no execution evidence. |
@@ -27,7 +28,8 @@ scenario decisions still require their specified execution evidence.
 [Linux installations](evidence/a109-linux-packages.json), and
 [Windows 3.14 results](evidence/a109-windows-local.json) bind the local reports,
 JUnit, logs and archive bytes. [Windows 3.11 and 3.12 results](evidence/a109-windows-minors.json)
-retain the finished suites and inventory hashes. The tested distributables are stored under
+and [Linux 3.11 and 3.12 results](evidence/a109-linux-minors.json) retain the
+finished suites and inventory hashes. The tested distributables are stored under
 [`releases/0.3.0a109`](../../releases/0.3.0a109/).
 The [4f08dc8 candidate checkpoint](../../releases/0.3.0a109/checkpoints/candidate-4f08dc8.tar.gz)
 contains the two exact Windows 3.12 archives, original build evidence and

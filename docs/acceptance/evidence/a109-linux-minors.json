@@ -1,0 +1,67 @@
+{
+  "commit_sha": "4f08dc80d245e2ce807b12031434b4dd92b4c63a",
+  "collector_commit_sha": "0be709a5d589115fecfbbdba2ecd62c303e56493",
+  "version": "0.3.0a109",
+  "platform": "Linux",
+  "candidate_manifest_sha256": "096ebf8b4b48dedf626d7f8e62e1c3564b76bc0586fd3638bb9008c81d0242d8",
+  "candidate_archives_equal_to_verified_windows_3_12": {
+    "wheel": "1e52c448b16ea38b58fb12427b18d8e7ef2ea2791aabbbb59e45bd45560af6d6",
+    "sdist": "de633120621d6d02375adece9abf01c1354231e8d93788ac424a5fd6f6b420f2"
+  },
+  "canonical_source_snapshot_sha256": "0eb19959e0986a583cf294b07e277a803c76e72269e0cce0f4e5b148352f2436",
+  "reports": {
+    "3.12": {
+      "state": "passed",
+      "python": "3.12.16 (main, Nov 12 2026, 03:19:15) [GCC 15.2.0]",
+      "report_sha256": "e2d82618960835cad569c619b09ae263c39e0a5d83387878489d3f5419ccd618",
+      "local_checks": 26,
+      "suites": {
+        "source": {
+          "tests": 2085,
+          "passed": 2080,
+          "skipped": 5,
+          "junit_sha256": "fbf3943065c87ee77a69bc72a938dc0f8ba581cbdad0b202459b091fb4d2aae9"
+        },
+        "wheel": {
+          "tests": 2085,
+          "passed": 2080,
+          "skipped": 5,
+          "junit_sha256": "7130cf290b2a13657613576647841fd3e0f634b777612d2a537962ce7c16263f"
+        },
+        "sdist": {
+          "tests": 2085,
+          "passed": 2080,
+          "skipped": 5,
+          "junit_sha256": "c423fe51d604cba1af3127e89111f5be312b37366d457ed92d96893e0dbe93b9"
+        }
+      },
+      "installations": {
+        "wheel": {
+          "artifact_sha256": "1e52c448b16ea38b58fb12427b18d8e7ef2ea2791aabbbb59e45bd45560af6d6",
+          "license_inventory_sha256": "e4cb505d5e15d0cc4fc4248b665046d72801cd30583c07c7f0bcc9d32d0943f1"
+        },
+        "sdist": {
+          "artifact_sha256": "de633120621d6d02375adece9abf01c1354231e8d93788ac424a5fd6f6b420f2",
+          "license_inventory_sha256": "e4cb505d5e15d0cc4fc4248b665046d72801cd30583c07c7f0bcc9d32d0943f1"
+        }
+      },
+      "docker_observations_by_suite": {
+        "pytest": 32,
+        "sdist_pytest": 32,
+        "wheel_pytest": 32
+      },
+      "evidence_archive_sha256": "80aaa8ba392544f53ba6af97ab7e07cf24e10e97a19e8cf460a8a088953c1871"
+    },
+    "3.11": {
+      "state": "running"
+    }
+  },
+  "evidence_local": "D:/agentsync-debug/continuation-cc30ed21/linux-minor-runtime",
+  "formal_release": "BLOCKED",
+  "actual_model_clients": "NOT RUN",
+  "docker_postcheck": {
+    "recorded_full_ids": 96,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  }
+}

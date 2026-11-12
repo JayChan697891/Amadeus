@@ -37,8 +37,11 @@ changes release tooling and its regression fixture. Development branch
   804 manifest entries because the Windows snapshot used CRLF. Collector fix
   `0be709a` makes new snapshots LF and accepts an exact historical CRLF
   encoding. All 161 targeted release tests and a real Linux staging probe passed.
-  The Linux 3.12 full run is active using the same archive hashes as Windows 3.12.
-  Linux 3.11 is ready for the next local run.
+  Linux 3.12 passed all 26 local checks, including full source, wheel and sdist
+  using the same archive hashes as Windows 3.12. Each Linux suite had 2,080
+  passes and 5 skips. Its 96 recorded fixture containers were absent after
+  cleanup. Linux 3.11 is running. See
+  [Linux minor-version evidence](acceptance/evidence/a109-linux-minors.json).
 - The local Windows M8 diagnostic passed 256 claim attempts with 256 matching
   audit outcomes and 117.46 ms p95 under its 1,000 ms budget. The host also
   ran other local validation workloads, so this is a diagnostic observation.
@@ -51,7 +54,7 @@ changes release tooling and its regression fixture. Development branch
   review on PR #33 applies to its historical frozen Linux evidence.
 
 Resume under `D:/agentsync-debug/continuation-cc30ed21` from
-`linux-minor-runtime/linux-3.12-recheck-driver.log` for the active full run.
+`linux-minor-runtime/linux-3.11-recheck-driver.log` for the active full run.
 The finished Windows 3.11 and 3.12 reports are under `windows-py311-full/`
 and `windows-py312-full/`. The 3.14 package report is under `windows/` and the corrected
 3.14 source report is under `fixed-windows/`. If a run is active, read its existing
