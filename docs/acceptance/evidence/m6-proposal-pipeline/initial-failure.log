@@ -1,0 +1,20 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+______ test_same_core_proposal_to_independent_docker_acceptance[verified] ______
+source/tests/integration/test_proposal_docker_pipeline.py:204: in test_same_core_proposal_to_independent_docker_acceptance
+    current = reopened.execute("get_task", {**auth, "task_id": task["id"]})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../amadeus-proposal-review-d4c7cf9/venv/lib/python3.14/site-packages/agentsync/core/service.py:47: in execute
+    raise AgentSyncError("unknown_operation", "Unknown operation.", 404)
+E   agentsync.errors.AgentSyncError: Unknown operation.
+____ test_same_core_proposal_to_independent_docker_acceptance[wrong-result] ____
+source/tests/integration/test_proposal_docker_pipeline.py:204: in test_same_core_proposal_to_independent_docker_acceptance
+    current = reopened.execute("get_task", {**auth, "task_id": task["id"]})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../amadeus-proposal-review-d4c7cf9/venv/lib/python3.14/site-packages/agentsync/core/service.py:47: in execute
+    raise AgentSyncError("unknown_operation", "Unknown operation.", 404)
+E   agentsync.errors.AgentSyncError: Unknown operation.
+=========================== short test summary info ============================
+FAILED source/tests/integration/test_proposal_docker_pipeline.py::test_same_core_proposal_to_independent_docker_acceptance[verified]
+FAILED source/tests/integration/test_proposal_docker_pipeline.py::test_same_core_proposal_to_independent_docker_acceptance[wrong-result]
+2 failed in 11.29s

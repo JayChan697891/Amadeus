@@ -1,0 +1,14 @@
+set -eu
+umask 077
+/root/jobs-env/bin/python - <<'PY'
+from pathlib import Path
+import zipfile
+root=Path('/root/amadeus-proposal-pipeline-c181f99')
+root.mkdir(mode=0o700)
+with zipfile.ZipFile('/root/amadeus-proposal-pipeline-c181f99.zip') as archive:
+ for name in archive.namelist():assert (root/name).resolve().is_relative_to(root)
+ archive.extractall(root)
+PY
+cd /root/amadeus-proposal-pipeline-c181f99
+/root/amadeus-proposal-review-d4c7cf9/venv/bin/python -I -B run.py > installed.log 2>&1
+cat installed.log

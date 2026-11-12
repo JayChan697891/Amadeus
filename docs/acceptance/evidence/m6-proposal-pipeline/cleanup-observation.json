@@ -1,0 +1,24 @@
+{
+  "test_source_sha": "7fe0c28e3c0112e03c888dd2f2f1da9d222a8d02",
+  "tested_pipeline_sha": "c181f99c2b3ea535061d2aab0babc4c1db40785e",
+  "runtime_product_sha": "d4c7cf9c578aec2f7d61b321db438a5e47612e5c",
+  "timestamp": "2026-11-12T10:58:23.827490+00:00",
+  "socket": "unix:///var/run/docker.sock",
+  "trusted_cli_and_empty_config": true,
+  "read_only": true,
+  "new_model_calls": 0,
+  "candidate_execution_rerun": false,
+  "observations": [
+    {
+      "scenario": "verified",
+      "container_id": "7901aaf3b4b771a49160d2ad1026af5a9c4727f783e0a1142b78738085dbc2dc",
+      "absent": true
+    },
+    {
+      "scenario": "wrong-result",
+      "container_id": "083ef577ed6f21a28dfb8a8daa392df58b41143141437686bb0049da08ab69c6",
+      "absent": true
+    }
+  ],
+  "test_file_sha256": "160e091c1d23b65ec06d3d725634f1e241b9ece13428489a205eeb6c4c60b112"
+}

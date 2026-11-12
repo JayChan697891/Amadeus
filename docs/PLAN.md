@@ -9,6 +9,13 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+The same-Core fixture pipeline now passes actual Linux Docker integration at
+c181f99 against unchanged runtime d4c7cf9: correct output completes through a
+distinct Core reviewer; wrong output and self-review are rejected.7fe0c28 fixes
+only the independent local-daemon absence observation, then checks both recorded
+containers read-only. This is deterministic integration, not a real model run.
+Next assess compatible real Codex hosting on that same isolated Core/Docker host;
+do not repeat the historical Windows attempt or infer cross-host authentication.
 Controlled proposal review submission and the owner staging bridge are implemented
 at d4c7cf9:151 affected source checks,45 Windows installed checks and23 Linux
 installed checks pass. Explicit launch consent, live lease/revision and independent

@@ -1,0 +1,69 @@
+{
+  "runtime_product_sha": "d4c7cf9c578aec2f7d61b321db438a5e47612e5c",
+  "pipeline_test_sha": "c181f99c2b3ea535061d2aab0babc4c1db40785e",
+  "delivery_test_sha": "7fe0c28e3c0112e03c888dd2f2f1da9d222a8d02",
+  "scope": "Same-Core proposal capture, review submission, explicit owner staging, actual Git candidate, real local Linux Docker and independent Core identity completion. Model boundary is a fixed known local Python JSONL process.",
+  "linux_pipeline": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "windows_at_ba941c2": {
+    "tests": 94,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "windows_skips": "2 actual Docker cases: no Windows local Linux Docker backend; exercised in dedicated local Linux VM.",
+  "initial_failure": {
+    "test_sha": "ba941c20a9f9e1ba991f92d1f6136906a5a635bb",
+    "results": {
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "cause": "Test called unsupported get_task after execution; corrected to authenticated list_tasks. New isolated projects used for affected two-case rerun; original failures retained."
+  },
+  "review_correction": "7fe0c28 only pins independent absence check to the verifier local socket, trusted CLI and empty config/minimal environment. New helper executed read-only against both c181 container IDs; absent. Pipeline was not unnecessarily rerun.",
+  "runtime_modules_matched_before_after": 87,
+  "wheel_sha256": "4bc4bbfa7c2b6ab2e2d5217f33989095db0cbcc19bed88f6966ebf2a37cb4ed7",
+  "fresh_install_reference": "../m6-proposal-review/summary.json",
+  "package_scope": "Existing exact d4c7cf9 installed artifact with frozen standalone test bundle; no rebuilt 7fe0c28 package claimed.",
+  "positive_cases": 3,
+  "negative_scenario": "Wrong output rejected; remains review/unverified",
+  "producer_self_review": "Rejected even with reviewer role",
+  "repeat_model_and_execution": "Rejected; no repeated process/container execution",
+  "source_and_original_worktree": "Unchanged",
+  "reopened_state": "Positive completed/verified; negative review/unverified",
+  "independent_review": "Final scoped review accepted c181f99 same-Core fixture/Docker/independent-identity pipeline and 7fe0c28 local-socket cleanup correction with read-only absence evidence. Runtime d4c7cf9 unchanged. Formal Work/Release remains separate.",
+  "model_calls": 0,
+  "credential_copy": false,
+  "source_workspace_apply": false,
+  "cross_client": "NOT RUN: no Claude/Cursor subscription",
+  "real_client_same_core_pipeline": "NOT RUN",
+  "full_matrix": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "next": "Assess a supported real Codex CLI on the same isolated Linux Core/Docker host; existing Windows capture cannot be reinterpreted as this same-Core run. Preserve authorization and no-extra-fee conditions.",
+  "evidence_sha256": {
+    "cleanup-check.sh.txt": "4cf3bd624c3152f99852571a28a53cf8a1f093e15c188e8c1df5c79f8caacdc0",
+    "cleanup-observation.json": "6fcd8f734ab913f75fd7759d432d5123a327f1361182d8cb53b7874a7d1e0d07",
+    "format.log": "01f1b6425f37ad44b469d7f1faaf1ef3a45596832e5586dcf7d4bf2ffb236fbe",
+    "initial-failure.log": "b58daf1a6c20231963a53c5b7be8d07e3398bb20b580ebd23fd913d063198217",
+    "initial-failure.xml": "8c22528623bf3f91519b7f5843370bcd14c507cae874535890215f80b2e3fcac",
+    "initial-origin.json": "3a7ebebde244ff52fdd01cb59ad3e68fe3facadb31086b4f269e7659fd79a388",
+    "linux-installed.log": "45e95213013a4c8e2bbcecb626715bebcd05b0a2b45ba24038ff0fdb1e1f328d",
+    "linux-installed.xml": "f8cd423e915860281986deb3476cff3200964d59a8896ff0ff87877866714048",
+    "linux-origin.json": "13eaf9c2fb0d141360c32a828e8e67677b3ad6abb5a6ffd34cb14f9b168171c3",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "run-linux.sh.txt": "0191654a097481c6632b1600d7b522296c280fb76dc20c9efe4fb4542038498f",
+    "run.py.txt": "78b326c0245b89042f5454c2b90db4425d637220c1a3ae20e813879ced4d7029",
+    "test-files.json": "b364cdd8862285c9c3f2fa963034a047cc77a5c13d3f2f4831908894b6e952c3",
+    "verified.json": "4c8b7ed7d7020ca2f8aef397044bfe5c9539e9fa09befb9f65048433aa7855d1",
+    "vm-stop.log": "96c86f5e7bf04c4fdb09fcb87c6b31fcf099888f3402363c4e940a08e5178230",
+    "windows-traceability.log": "ff4c63a88dbca997112d4fa086370b20b1be389a016c246d8e7338e59856b07c",
+    "windows-traceability.xml": "4f9da39735f0ce4078f0cfe0dd7c09658dcfb598cc6d38941dcf35bc0315f38f",
+    "wrong-result.json": "fcdfb3ff3627b2b0ca6201d17f70f1355ba5aecb69d151173abdf5dbc36bc5d4"
+  }
+}

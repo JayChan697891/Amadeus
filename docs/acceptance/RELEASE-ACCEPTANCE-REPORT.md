@@ -1,5 +1,26 @@
 # Release Acceptance Report
 
+## Same-Core pipeline integration, model boundary still a fixture
+
+Runtime d4c7cf9 with test c181f99 passes2 actual local Linux Docker integration
+scenarios. Controlled proposal capture/review, owner/stager-approved managed Git
+candidate and independent Core identity completion share one Core. Three positive
+inputs pass; the wrong-output scenario cannot complete. Producer self-review and
+duplicate starts are refused; original workspaces and reopened state are checked.
+The model boundary is explicitly a fixed local Python JSONL emitter, with0 model
+calls. This does not prove real-client control or an independent model reviewer.
+
+The initial2 test failures at ba941c2 were an unsupported final observation API;
+their logs/XML are retained. Windows92 traceability passes/2 Docker skips belong to
+that test source. c181f99 reruns both affected cases in fresh Linux projects.
+7fe0c28 pins the independent cleanup observation to the actual verifier socket,
+trusted CLI and empty configuration. The new helper checks both old container IDs
+absent without rerunning candidate execution.87 runtime hashes match; the exact
+existing d4c7cf9 wheel was used. Full latest-SHA matrix/package rebuild NOT RUN.
+[Evidence, failures, source identities and cleanup observation](evidence/m6-proposal-pipeline/summary.json).
+Real same-Core model execution, cross-client validation and formal Release remain
+unverified/BLOCKED; existing M5/M6/M7 gates are unchanged.
+
 ## Controlled review submission and native staging bridge
 
 d4c7cf9 adds explicit launch-bound review submission and owner-reviewed staging

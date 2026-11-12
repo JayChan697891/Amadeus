@@ -1,0 +1,24 @@
+set -eu
+umask 077
+cd /root/amadeus-proposal-pipeline-c181f99
+/root/amadeus-proposal-review-d4c7cf9/venv/bin/python -I -B - <<'PY'
+from pathlib import Path
+from datetime import datetime,timezone
+import hashlib,json,runpy,sys
+root=Path.cwd()
+sys.path[:0]=[str(root/'source/tests'),str(root/'source/tests/integration')]
+functions=runpy.run_path(str(root/'cleanup-test-7fe0c28.py'))
+config=json.loads(Path('/root/amadeus-proposal-review-d4c7cf9/linux-config.json').read_text())
+import agentsync
+site=Path(agentsync.__file__).resolve().parent.parent
+for name,expected in config['module_hashes'].items():assert hashlib.sha256((site/name).read_bytes()).hexdigest()==expected
+observations=[]
+for name in ('verified','wrong-result'):
+ record=json.loads((root/'safe-evidence'/f'{name}.json').read_text())
+ container=record['execution']['execution']['result']['container_id']
+ functions['assert_local_container_absent'](container)
+ observations.append({'scenario':name,'container_id':container,'absent':True})
+result={'test_source_sha':'7fe0c28e3c0112e03c888dd2f2f1da9d222a8d02','tested_pipeline_sha':'c181f99c2b3ea535061d2aab0babc4c1db40785e','runtime_product_sha':config['product_sha'],'timestamp':datetime.now(timezone.utc).isoformat(),'socket':'unix:///var/run/docker.sock','trusted_cli_and_empty_config':True,'read_only':True,'new_model_calls':0,'candidate_execution_rerun':False,'observations':observations,'test_file_sha256':hashlib.sha256((root/'cleanup-test-7fe0c28.py').read_bytes()).hexdigest()}
+with (root/'cleanup-observation.json').open('x') as output:json.dump(result,output,indent=2)
+print(json.dumps(result))
+PY

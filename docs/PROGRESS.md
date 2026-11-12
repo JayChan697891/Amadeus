@@ -1,5 +1,38 @@
 # Amadeus current progress
 
+## Same-Core proposal pipeline with actual local Docker
+
+Runtime d4c7cf9 is unchanged. Test c181f99 exercises fixed local Python protocol
+output through controlled capture, review submission, explicit owner/stager pins,
+genuine managed Git candidate, actual Linux Docker and a distinct Core reviewer.
+Two scenarios pass: correct output completes with durable verified status; wrong
+output stays review/unverified. The producer is refused self-review even with the
+reviewer role. Repeat model/execution starts are rejected. Original source/producer
+trees remain unchanged and reopened task states match the persisted outcomes.
+
+The initial ba941c2 test used unsupported get_task only at its final reopen check;
+both failures are preserved. c181f99 uses authenticated list_tasks and passes both
+scenarios in fresh isolated projects. Windows traceability92pass and Docker2skip
+belong to ba941c2; Linux executes those two Docker cases. No product fix was needed.
+Review found the independent absence check could consult a different Docker context.
+7fe0c28 pins it to the verifier's trusted CLI/local socket and an empty config/minimal
+environment. The new helper subsequently confirmed both c181f99 container IDs absent
+on that socket. No repeated Docker scenario was needed for this observation-only fix.
+
+Evidence: [m6-proposal-pipeline/summary.json](acceptance/evidence/m6-proposal-pipeline/summary.json).
+87 runtime module hashes match before/after; exact d4c7cf9 installed wheel reused.
+Ruff/format329 pass. Source/test/package SHAs are separately recorded, not collapsed
+into a full new-SHA acceptance claim. The dedicated owned VM is stopped.
+Debug: D:/agentsync-debug/m6-proposal-pipeline and m6-proposal-pipeline-recheck.
+No model calls or credential copies. Core reviewer identities are host-mediated;
+the protocol fixture is not a real Agent. Full M5/M6/M7/Release remain BLOCKED.
+
+Next recovery entry: assess a supported real Codex CLI on the same isolated Linux
+Core/Docker host, then a separately authorized real run of this existing path.
+The older Windows capture is historical and must not be retroactively submitted or
+retried. No Claude/Cursor subscription is available; cross-client remains NOT RUN.
+No new real-client run has been launched or scheduled by this checkpoint.
+
 ## Controlled proposal submission and staging bridge
 
 Frozen d4c7cf9 binds optional submit_for_review to the approved launch contract.
