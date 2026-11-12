@@ -229,11 +229,23 @@ class ControlledRelay:
         })
 
     def _project_state(self, actor: RelayActor, *, min_session_seconds: float = 0) -> dict[str, Any]:
-        state = self._call(actor, "get_project_state")
+        return self._session_project_state(
+            actor.profile.project_id, actor.profile.session_id, actor.session_token,
+            expected_agent_id=actor.agent_id, min_session_seconds=min_session_seconds,
+        )
+
+    def _session_project_state(
+        self, project_id: str, session_id: str, session_token: str, *,
+        expected_agent_id: str | None = None, min_session_seconds: float = 0,
+    ) -> dict[str, Any]:
+        state = self._core.execute("get_project_state", {
+            "project_id": project_id, "session_id": session_id, "session_token": session_token,
+        })
         project_root = Path(state["project"]["root_path"]).resolve(strict=True)
         deadline = time.time() + min_session_seconds
         if not project_root.is_relative_to(self._scratch) or not any(
-            session["id"] == actor.profile.session_id and session["agent_id"] == actor.agent_id
+            session["id"] == session_id
+            and (expected_agent_id is None or session["agent_id"] == expected_agent_id)
             and session["expires_at"] > deadline
             for session in state["sessions"]
         ):
@@ -339,8 +351,16 @@ class ControlledRelay:
     ) -> Literal["ready_for_review", "conflict"] | None:
         """Bind historical submission or conflict to the same durable wave."""
         task = self._state(actor, task_id)
-        self._check_receipt_anchor(actor.profile.project_id)
-        key = self._key(actor, task_id)
+        return self._wave_terminal_from_task(actor.profile.project_id, task, wave_key)
+
+    def _wave_terminal_from_task(
+        self, project_id: str, task: dict[str, Any], wave_key: str,
+    ) -> Literal["ready_for_review", "conflict"] | None:
+        if task["project_id"] != project_id:
+            _reject()
+        self._check_receipt_anchor(project_id)
+        task_id = task["id"]
+        key = self._task_receipt_key(project_id, task_id)
         admission = self._read_receipt(key, "incomplete")
         if not admission or admission.get("wave_sha256") != wave_key:
             return None
@@ -368,7 +388,7 @@ class ControlledRelay:
         if (
             type(review) is not dict or review.get("accept") is not accepted
             or review.get("version") != version + 1 or review.get("task_id") != task_id
-            or review.get("project_id") != actor.profile.project_id
+            or review.get("project_id") != project_id
             or type(review.get("reviewer_agent_id")) is not str
             or sender is None or recipient is None or sender == recipient
             or digest(review["reviewer_agent_id"]) in (sender, recipient)

@@ -155,8 +155,15 @@ async def test_controlled_relay_with_disposable_core_and_git(tmp_path, monkeypat
         queue = RelayQueue(relay)
         pending = queue.owner_observe_pending(project_id, admin_token=token)
         assert pending is not None and pending.receipt_state == "admitted"
-        wave = queue.reconcile_pending(
-            prepared[0], admin_token=token, expected_wave_id=pending.wave_id,
+        with pytest.raises(AgentSyncError):
+            queue.reconcile_pending_from_session(
+                project_id, session_id=reviewer["session_id"], session_token="fixture-wrong-token",
+                admin_token=token, expected_wave_id=pending.wave_id,
+            )
+        assert queue.owner_observe_pending(project_id, admin_token=token) == pending
+        wave = queue.reconcile_pending_from_session(
+            project_id, session_id=reviewer["session_id"], session_token=reviewer["session_token"],
+            admin_token=token, expected_wave_id=pending.wave_id,
         )
         assert queue.owner_observe_pending(project_id, admin_token=token) is None
     else:

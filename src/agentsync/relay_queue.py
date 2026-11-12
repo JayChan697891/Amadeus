@@ -13,7 +13,9 @@ import hmac
 import math
 import re
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field, replace
+from functools import partial
 from pathlib import Path
 from typing import Any, Literal, NoReturn
 
@@ -26,6 +28,7 @@ from agentsync.scheduling import plan_tasks
 
 BatchState = Literal["not_started", "no_ready_tasks", "resolved", "incomplete"]
 TaskState = Literal["ready_for_review", "conflict", "incomplete"]
+_TerminalReader = Callable[[str, str], Literal["ready_for_review", "conflict"] | None]
 _FAILURE_CODES = frozenset({
     "attempt_already_reserved", "forbidden", "idempotency_conflict", "lease_expired", "not_found",
     "receipt_unavailable", "relay_boundary", "relay_operation_failed", "relay_outcome_unknown",
@@ -325,7 +328,9 @@ class RelayQueue:
         saved = self._journal.get(project_key, key)
         if saved is None or saved[0] not in ("admitted", "incomplete"):
             return self.observe(actor, request_id)
-        return self._reconcile_open(actor, project_key, key, saved)
+        return self._reconcile_open(
+            project_key, key, saved, partial(self._relay._wave_terminal_state, actor),
+        )
 
     def observe_pending(self, actor: RelayActor, *, admin_token: str) -> PendingRelayWave | None:
         """Discover the current project fence when the original request ID was lost."""
@@ -400,12 +405,39 @@ class RelayQueue:
         if type(expected_wave_id) is not str or not re.fullmatch(r"[0-9a-f]{64}", expected_wave_id):
             _invalid()
         project_key, _ = self._owner_project(actor, admin_token)
+        return self._reconcile_pending_wave(
+            project_key, expected_wave_id, partial(self._relay._wave_terminal_state, actor),
+        )
+
+    def reconcile_pending_from_session(
+        self, project_id: str, *, session_id: str, session_token: str,
+        admin_token: str, expected_wave_id: str,
+    ) -> RelayQueueOutcome:
+        """Reconcile saved receipts with an enrolled session and owner authorization."""
+        if type(expected_wave_id) is not str or not re.fullmatch(r"[0-9a-f]{64}", expected_wave_id):
+            _invalid()
+        for value in (project_id, session_id, session_token):
+            _identifier(value)
+        self._relay._authorize_project_owner(project_id, admin_token)
+        snapshot = self._relay._session_project_state(project_id, session_id, session_token)
+        project_key = self._checked_journal_key(project_id)
+        tasks = {task["id"]: task for task in snapshot["tasks"]}
+
+        def terminal(task_id: str, wave_id: str) -> Literal["ready_for_review", "conflict"] | None:
+            task = tasks.get(task_id)
+            return None if task is None else self._relay._wave_terminal_from_task(project_id, task, wave_id)
+
+        return self._reconcile_pending_wave(project_key, expected_wave_id, terminal)
+
+    def _reconcile_pending_wave(
+        self, project_key: str, expected_wave_id: str, read_terminal: _TerminalReader,
+    ) -> RelayQueueOutcome:
         saved = self._journal.get(project_key, expected_wave_id)
         if saved is None:
             raise AgentSyncError("not_found", "The relay wave was not found.", 404)
         state, selected, rows = saved
         if state in ("admitted", "incomplete"):
-            return self._reconcile_open(actor, project_key, expected_wave_id, saved)
+            return self._reconcile_open(project_key, expected_wave_id, saved, read_terminal)
         outcome = self._outcome(selected, rows)
         return outcome if outcome.state == state else RelayQueueOutcome("incomplete")
 
@@ -453,7 +485,8 @@ class RelayQueue:
         raise AgentSyncError("session_expired", "No prepared relay session remains valid.", 401)
 
     def _reconcile_open(
-        self, actor: RelayActor, project_key: str, key: str, saved: tuple[str, Any, Any],
+        self, project_key: str, key: str, saved: tuple[str, Any, Any],
+        read_terminal: _TerminalReader,
     ) -> RelayQueueOutcome:
         _, selected, rows = saved
         task_ids = _selected_tasks(selected)
@@ -464,7 +497,7 @@ class RelayQueue:
             return prior
         results: list[dict[str, str]] = []
         for task_id in task_ids:
-            state = self._relay._wave_terminal_state(actor, task_id, key)
+            state = read_terminal(task_id, key)
             if state is None:
                 return prior
             results.append({"task_id": task_id, "state": state})
