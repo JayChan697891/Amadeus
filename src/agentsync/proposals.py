@@ -53,13 +53,8 @@ def _path(value: Any) -> str:
     return value
 
 
-def parse_proposal(text: str, allowed_paths: list[str]) -> list[dict[str, str]]:
-    """Require exactly the declared files; paths are labels, not write authority.
-
-    At most eight UTF-8 text files, 8192 bytes each, within a 32768-byte JSON
-    message. No Markdown extraction, extra fields, duplicate keys, aliases or
-    partial-path matching. This function performs no filesystem operations.
-    """
+def proposal_paths(allowed_paths: list[str]) -> tuple[str, ...]:
+    """Validate and canonicalize inert file labels without touching the filesystem."""
     if type(allowed_paths) is not list or not 1 <= len(allowed_paths) <= 8:
         _invalid()
     allowed = [_path(value) for value in allowed_paths]
@@ -68,6 +63,17 @@ def parse_proposal(text: str, allowed_paths: list[str]) -> list[dict[str, str]]:
         right.startswith(left + "/") for left in folded for right in folded if left != right
     ):
         _invalid()
+    return tuple(sorted(allowed))
+
+
+def parse_proposal(text: str, allowed_paths: list[str]) -> list[dict[str, str]]:
+    """Require exactly the declared files; paths are labels, not write authority.
+
+    At most eight UTF-8 text files, 8192 bytes each, within a 32768-byte JSON
+    message. No Markdown extraction, extra fields, duplicate keys, aliases or
+    partial-path matching. This function performs no filesystem operations.
+    """
+    allowed = proposal_paths(allowed_paths)
     _text(text, 32768)
     try:
         value = json.loads(text, object_pairs_hook=_members, parse_constant=_constant)

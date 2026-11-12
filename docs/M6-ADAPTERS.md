@@ -351,5 +351,32 @@ Worker-supplied allowed paths and the context source label are not authorization
 ordinary context publication can imitate labels. A later host importer must verify
 its own approved contract, actual publication receipt/audit, pinned immutable context
 revision and current source baseline. It must create a genuine managed candidate
-before entering existing owner-only verification gates. Adapter capture integration,
-import, isolated artifact execution and verified completion are still outstanding.
+before entering existing owner-only verification gates. Import, isolated artifact execution and verified completion remain outstanding.
+The opt-in capture path below does not authorize those stages.
+
+## Opt-in Codex proposal capture
+
+`CodexProposalInput` declares a task revision, bounded instruction and exact file
+labels. `preview_codex_proposal` binds the visible JSON contract, paths, task
+revision, worktree and Git head into the existing exact launch approval. The host
+still supplies an explicitly authorized private environment; preview never starts
+a model. Existing fixed-text plans and scheduler/reviewer rules are unchanged.
+
+`run_codex_proposal_once` shares the task-global attempt fence and lifecycle path.
+Only a complete successful Codex result, owned parent exit0, no timeout and exactly
+one strict final message can reach `publish_task_proposal`. The task stays running;
+no code is written, evaluated or imported. Internal source and lease data are
+excluded from object representations and private receipt contents.
+
+`observe_codex_proposal` authenticates before reading receipts and returns historical
+`proposal_stored` only when the observed canonical-files digest, final context hash,
+exact immutable context revision, producer/task/worktree/head and launch bindings
+match. It never equates this with `ready_for_review` or verified completion. Later
+task or context revisions do not rewrite the historical proposal. A crash between
+Core publication and final receipt leaves the attempt incomplete; the context/audit
+may exist, but there is no automatic relaunch or fabricated successful recovery.
+
+Local Python protocol fixtures test this integration separately from real-client
+acceptance. Actual model-generated proposals and independent artifact execution
+require their own recorded authorized execution; consult the current progress and
+Release Acceptance Report instead of treating this API as an acceptance certificate.

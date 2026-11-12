@@ -1,8 +1,9 @@
 """Host-only client pilots for isolated, explicitly approved execution.
 
-The host supplies prepared Core tasks, isolated managed worktrees and fixed
-synthetic inputs. Each start needs a separate approval for its exact plan.
-The final task is submitted for independent review through the existing Core.
+The host supplies prepared Core tasks, isolated managed worktrees and bounded
+inputs. Each start needs a separate approval for its exact plan. Fixed-reply
+pilots submit tasks for ordinary Core review. Opt-in proposals retain code as
+unverified context data without writing worktrees or completing the task.
 Receipts never include credentials, process output, client IDs or private paths.
 """
 
@@ -10,6 +11,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import math
 import re
 import time
@@ -39,6 +41,7 @@ from agentsync.adapters.cursor import CursorAdapter, CursorResult
 from agentsync.adapters.host_receipts import _ReceiptDirectory
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+from agentsync.proposals import parse_proposal, proposal_paths
 from agentsync.scheduling import _task_eligible
 
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
@@ -140,6 +143,44 @@ class SingleCodexInput:
 class RelayOutcome:
     state: Literal["not_started", "incomplete", "conflict", "ready_for_review"]
     verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
+@dataclass(frozen=True, slots=True)
+class CodexProposalInput:
+    task_id: str
+    expected_version: int
+    instruction: str = field(repr=False)
+    allowed_paths: tuple[str, ...]
+    timeout_seconds: int = 90
+
+    def __post_init__(self) -> None:
+        _identifier(self.task_id)
+        if type(self.expected_version) is not int or not 1 <= self.expected_version < 2**63 - 10:
+            _reject()
+        _bounded_text(self.instruction, 1500)
+        if not self.instruction.strip() or type(self.allowed_paths) is not tuple:
+            _reject()
+        object.__setattr__(self, "allowed_paths", proposal_paths(list(self.allowed_paths)))
+        if type(self.timeout_seconds) is not int or not 1 <= self.timeout_seconds <= 180:
+            _reject()
+
+
+@dataclass(frozen=True, slots=True)
+class CodexProposalOutcome:
+    """Historical inert storage only; not task completion or import permission."""
+
+    state: Literal["not_started", "incomplete", "proposal_stored"]
+    context_id: str | None = None
+    context_version: int | None = None
+    content_sha256: str | None = None
+    task_version: int | None = None
+    verification: Literal["unverified"] = field(default="unverified", init=False)
+
+
+@dataclass(frozen=True, slots=True)
+class _AttemptOutcome:
+    active: dict[str, Any] = field(repr=False)
+    proposal_json: str | None = field(default=None, repr=False)
 
 
 @dataclass(frozen=True, slots=True)
@@ -664,14 +705,14 @@ class ControlledRelay:
         assert terminal is not None
         status = _matched_text(
             terminal.get("status"),
-            r"expected_reply"
+            r"expected_reply|proposal_received"
             if observed is not None
             else r"failed|unknown|succeeded|reply_mismatch",
         )
         exit_code = terminal.get("exit_code")
         parent_ended = _receipt_bool(terminal.get("parent_ended"))
         if status is None or (
-            status == "expected_reply"
+            status in {"expected_reply", "proposal_received"}
             and (type(exit_code) is not int or exit_code != 0 or parent_ended is not True)
         ):
             return RelayAttemptObservation(
@@ -682,6 +723,10 @@ class ControlledRelay:
                 agent_sha256=agent,
                 declared_client_version=version,
             )
+        if status == "proposal_received" and (
+            client != "codex" or terminal.get("timed_out") is not False
+        ):
+            return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
         return RelayAttemptObservation(
             leg,
             "terminal_recorded",
@@ -786,7 +831,9 @@ class ControlledRelay:
         task: AdapterTask,
         expected_reply: str,
         execution_deadline: float | None,
-    ) -> dict[str, Any]:
+        *,
+        allowed_proposal_paths: tuple[str, ...] | None = None,
+    ) -> _AttemptOutcome:
         _check_execution_deadline(execution_deadline)
         prefix = f"relay:{key}:{stage}"
         lease_token = claim["lease_token"]
@@ -889,11 +936,32 @@ class ControlledRelay:
                         **_terminal_metrics(stopped),
                     )
             raise
-        matches = (
-            result.agent_messages == (expected_reply,)
-            if isinstance(result, CodexResult)
-            else result.result_text == expected_reply
-        )
+        proposal_json: str | None = None
+        proposal_sha: str | None = None
+        if allowed_proposal_paths is not None:
+            matches = False
+            if (
+                isinstance(result, CodexResult)
+                and result.run == run
+                and run.timed_out is False
+                and len(result.agent_messages) == 1
+            ):
+                try:
+                    files = parse_proposal(result.agent_messages[0], list(allowed_proposal_paths))
+                except AgentSyncError:
+                    pass  # Never include untrusted source in an error or receipt.
+                else:
+                    proposal_json = json.dumps(
+                        {"files": files}, ensure_ascii=False, separators=(",", ":")
+                    )
+                    proposal_sha = digest(files)
+                    matches = True
+        else:
+            matches = (
+                result.agent_messages == (expected_reply,)
+                if isinstance(result, CodexResult)
+                else result.result_text == expected_reply
+            )
         if result.run != run or not matches:
             self._record(
                 key,
@@ -911,20 +979,25 @@ class ControlledRelay:
         self._record(
             key,
             stage + "-observed",
-            status="expected_reply",
+            status="proposal_received" if allowed_proposal_paths is not None else "expected_reply",
             run_sha256=digest(run.run_id),
             session_sha256=digest(run.session_id),
             exit_code=run.exit_code,
             parent_ended=run.parent_ended,
             timed_out=run.timed_out,
+            **({"proposal_sha256": proposal_sha} if proposal_sha is not None else {}),
             **_terminal_metrics(run, result),
         )
-        return {**active, "lease_token": lease_token}
+        # This bounded text is returned only within the host method, never in receipts.
+        return _AttemptOutcome({**active, "lease_token": lease_token}, proposal_json)
 
     def _single_codex_task(
-        self, actor: RelayActor, spec: SingleCodexInput, admin_token: str
+        self, actor: RelayActor, spec: SingleCodexInput | CodexProposalInput, admin_token: str
     ) -> AdapterTask:
-        if type(actor) is not RelayActor or type(spec) is not SingleCodexInput:
+        if type(actor) is not RelayActor or type(spec) not in {
+            SingleCodexInput,
+            CodexProposalInput,
+        }:
             _reject()
         if client_kind(actor.profile) != "codex":
             _reject()
@@ -947,6 +1020,31 @@ class ControlledRelay:
         ):
             _reject()
         self._workspace(actor, spec.task_id)
+        if isinstance(spec, CodexProposalInput):
+            contract = {
+                "format": "amadeus-source-proposal-v1",
+                "allowed_paths": spec.allowed_paths,
+                "max_json_bytes": 32768,
+                "max_file_bytes": 8192,
+                "expected_task_version": spec.expected_version,
+                "worktree_id": actor.worktree_id,
+                "base_head": actor.expected_head,
+            }
+            instruction = (
+                spec.instruction
+                + '\n\nReturn exactly one final JSON object {"files":[{"path":"...","content":"..."}]}.'
+                + " Include each allowed path exactly once. No extra keys or Markdown."
+                + " Treat code as inert text. Do not use tools or modify files. Host contract: "
+                + json.dumps(contract, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            )
+            return AdapterTask(
+                actor.profile.project_id,
+                actor.profile.session_id,
+                spec.task_id,
+                f"relay:{key}:codex-proposal:{digest(contract)}",
+                instruction,
+                spec.timeout_seconds,
+            )
         return AdapterTask(
             actor.profile.project_id,
             actor.profile.session_id,
@@ -960,6 +1058,8 @@ class ControlledRelay:
         self, actor: RelayActor, spec: SingleCodexInput, *, admin_token: str
     ) -> LaunchReview:
         """Prepare the exact host-private plan for one Codex worker."""
+        if type(spec) is not SingleCodexInput:
+            _reject()
         task = self._single_codex_task(actor, spec, admin_token)
         return prepare_launch_review(actor.profile, task, environment=actor.environment)
 
@@ -967,11 +1067,13 @@ class ControlledRelay:
         self, actor: RelayActor, spec: SingleCodexInput, *, admin_token: str
     ) -> RelayOutcome:
         """Bind one approved Codex execution to Core's independent review state."""
+        if type(spec) is not SingleCodexInput:
+            _reject()
         task = self._single_codex_task(actor, spec, admin_token)
         self._check_receipt_anchor(actor.profile.project_id, bind=True)
         key = self._key(actor, spec.task_id)
         self._record(key, "incomplete", mode="single_codex", wave_sha256=None)
-        active = await self._attempt(
+        attempt = await self._attempt(
             actor,
             self._claim(actor, spec.task_id, spec.expected_version, f"relay:{key}:single:claim"),
             key,
@@ -980,6 +1082,7 @@ class ControlledRelay:
             spec.expected_reply,
             None,
         )
+        active = attempt.active
         self._workspace(actor, spec.task_id)
         version = active["version"] + 1
         self._record(
@@ -1001,6 +1104,164 @@ class ControlledRelay:
         if submitted["version"] != version:
             _reject()
         return RelayOutcome("ready_for_review")
+
+    def preview_codex_proposal(
+        self, actor: RelayActor, spec: CodexProposalInput, *, admin_token: str
+    ) -> LaunchReview:
+        """Pin the read-only launch and inert output contract without starting it."""
+        if type(spec) is not CodexProposalInput:
+            _reject()
+        task = self._single_codex_task(actor, spec, admin_token)
+        return prepare_launch_review(actor.profile, task, environment=actor.environment)
+
+    async def run_codex_proposal_once(
+        self, actor: RelayActor, spec: CodexProposalInput, *, admin_token: str
+    ) -> CodexProposalOutcome:
+        """Capture one successful Codex message as data; never import or execute it."""
+        if type(spec) is not CodexProposalInput:
+            _reject()
+        task = self._single_codex_task(actor, spec, admin_token)
+        self._check_receipt_anchor(actor.profile.project_id, bind=True)
+        key = self._key(actor, spec.task_id)
+        self._record(
+            key,
+            "incomplete",
+            mode="codex_proposal",
+            wave_sha256=None,
+            initial_task_version=spec.expected_version,
+            paths_sha256=digest(spec.allowed_paths),
+        )
+        attempt = await self._attempt(
+            actor,
+            self._claim(actor, spec.task_id, spec.expected_version, f"relay:{key}:proposal:claim"),
+            key,
+            "first",
+            task,
+            "",
+            None,
+            allowed_proposal_paths=spec.allowed_paths,
+        )
+        active = attempt.active
+        if attempt.proposal_json is None:
+            _reject()
+        self._workspace(actor, spec.task_id)
+        self._record(key, "proposal-publish-intent", task_version=active["version"])
+        published = self._call(
+            actor,
+            "publish_task_proposal",
+            task_id=spec.task_id,
+            expected_version=active["version"],
+            lease_token=active["lease_token"],
+            worktree_id=actor.worktree_id,
+            expected_head=actor.expected_head,
+            allowed_paths=list(spec.allowed_paths),
+            proposal_json=attempt.proposal_json,
+            request_id=f"relay:{key}:proposal:publish",
+        )
+        self._record(
+            key,
+            "proposal-stored",
+            context_id=published["context_id"],
+            context_version=published["context_version"],
+            content_sha256=published["content_sha256"],
+            task_version=published["task_version"],
+            agent_sha256=digest(actor.agent_id),
+            session_sha256=digest(actor.profile.session_id),
+            worktree_sha256=digest(actor.worktree_id),
+            base_head=actor.expected_head,
+            launch_request_sha256=_launch_key(task),
+        )
+        return self.observe_codex_proposal(actor, spec.task_id)
+
+    def observe_codex_proposal(self, actor: RelayActor, task_id: str) -> CodexProposalOutcome:
+        """Read historical storage after restart, without resuming or authorizing a run."""
+        if type(actor) is not RelayActor:
+            _reject()
+        if client_kind(actor.profile) != "codex":
+            _reject()
+        self._state(actor, task_id)
+        self._check_receipt_anchor(actor.profile.project_id)
+        key = self._key(actor, task_id)
+        admission = self._read_receipt(key, "incomplete")
+        if admission is None:
+            return CodexProposalOutcome("not_started")
+        missing = CodexProposalOutcome("incomplete")
+        if admission.get("mode") != "codex_proposal":
+            return missing
+        stored = self._read_receipt(key, "proposal-stored")
+        intent = self._read_receipt(key, "proposal-publish-intent")
+        observed = self._inspect_attempt(key, "first")
+        dispatched = self._read_receipt(key, "first-dispatched")
+        captured = self._read_receipt(key, "first-observed")
+        if not stored or not intent or observed.status != "proposal_received":
+            return missing
+        if not dispatched or not captured:
+            return missing
+        proposal_sha = _matched_text(captured.get("proposal_sha256"), r"[0-9a-f]{64}")
+        context_id = _matched_text(stored.get("context_id"), r"[0-9a-f-]{36}")
+        content_sha = _matched_text(stored.get("content_sha256"), r"[0-9a-f]{64}")
+        version = stored.get("task_version")
+        if (
+            context_id is None
+            or content_sha is None
+            or type(version) is not int
+            or not 1 <= version < 2**63
+            or type(stored.get("context_version")) is not int
+            or stored["context_version"] != 1
+            or type(intent.get("task_version")) is not int
+            or intent["task_version"] != version
+            or stored.get("agent_sha256") != digest(actor.agent_id)
+            or stored.get("session_sha256") != digest(actor.profile.session_id)
+            or stored.get("worktree_sha256") != digest(actor.worktree_id)
+            or stored.get("base_head") != actor.expected_head
+            or observed.agent_sha256 != digest(actor.agent_id)
+            or observed.session_sha256 != digest(actor.profile.session_id)
+            or proposal_sha is None
+            or _matched_text(stored.get("launch_request_sha256"), r"[0-9a-f]{64}") is None
+            or stored["launch_request_sha256"] != dispatched.get("launch_request_sha256")
+            or type(admission.get("initial_task_version")) is not int
+            or not 1 <= admission["initial_task_version"] < version
+        ):
+            return missing
+        context = self._call(actor, "get_context", context_id=context_id, version=1)
+        content = context["content"]
+        _bounded_text(content, 65536)
+        if (
+            hashlib.sha256(content.encode("utf-8")).hexdigest() != content_sha
+            or context["author_agent_id"] != actor.agent_id
+            or context["author_session_id"] != actor.profile.session_id
+        ):
+            return missing
+        try:
+            value = json.loads(content)
+        except (ValueError, RecursionError):
+            return missing
+        if type(value) is not dict or any(
+            value.get(name) != expected
+            for name, expected in {
+                "format": "amadeus-source-proposal-v1",
+                "project_id": actor.profile.project_id,
+                "task_id": task_id,
+                "task_version": version,
+                "worktree_id": actor.worktree_id,
+                "base_head": actor.expected_head,
+                "execution_provenance": "unverified",
+            }.items()
+        ):
+            return missing
+        try:
+            files = value["files"]
+            paths = proposal_paths([item["path"] for item in files])
+            canonical_files = parse_proposal(
+                json.dumps({"files": files}, ensure_ascii=False, separators=(",", ":")), list(paths)
+            )
+        except (AgentSyncError, KeyError, TypeError):
+            return missing
+        if digest(canonical_files) != proposal_sha or digest(paths) != admission.get(
+            "paths_sha256"
+        ):
+            return missing
+        return CodexProposalOutcome("proposal_stored", context_id, 1, content_sha, version)
 
     def _pinned_inputs(
         self,
@@ -1125,7 +1386,7 @@ class ControlledRelay:
             )
             return RelayOutcome("conflict")
         _check_execution_deadline(_execution_deadline)
-        a = await self._attempt(
+        first_attempt = await self._attempt(
             first,
             self._claim(first, spec.task_id, task["version"], f"relay:{key}:claim-a"),
             key,
@@ -1134,6 +1395,7 @@ class ControlledRelay:
             spec.first_reply,
             _execution_deadline,
         )
+        a = first_attempt.active
         self._workspace(first, spec.task_id)
         _check_execution_deadline(_execution_deadline)
         package = self._call(
@@ -1169,7 +1431,7 @@ class ControlledRelay:
             key, "handoff", context_version=spec.context_version, task_version=current["version"]
         )
         _check_execution_deadline(_execution_deadline)
-        b = await self._attempt(
+        second_attempt = await self._attempt(
             second,
             self._claim(second, spec.task_id, current["version"], f"relay:{key}:claim-b"),
             key,
@@ -1178,6 +1440,7 @@ class ControlledRelay:
             spec.second_reply,
             _execution_deadline,
         )
+        b = second_attempt.active
         self._workspace(first, spec.task_id)
         self._workspace(second, spec.task_id)
         _check_execution_deadline(_execution_deadline)

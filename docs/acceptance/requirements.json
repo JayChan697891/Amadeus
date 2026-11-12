@@ -1069,7 +1069,8 @@
         "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
         "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
         "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
-        "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay"
+        "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
+        "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process"
       ],
       "planned_cases": [
         {
