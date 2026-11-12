@@ -10,6 +10,7 @@ data, never event conversion or authenticated client evidence.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import math
 import uuid
 from collections.abc import Awaitable, Callable
@@ -29,6 +30,15 @@ from agentsync.errors import AgentSyncError
 _CaptureFactory = Callable[[AdapterTask], Awaitable[CapturedProcess]]
 _ContextualCaptureFactory = Callable[[AdapterTask, LaunchContext], Awaitable[CapturedProcess]]
 _HostStatus = Literal["starting", "running", "succeeded", "failed", "unknown"]
+_PROTOCOL_ERROR_REASONS = frozenset(
+    {
+        "invalid_utf8",
+        "validation_error",
+        "invalid_event_sequence",
+        "unsupported_event",
+        "unclassified",
+    }
+)
 _LAUNCH_ADMISSION_ERRORS = frozenset(
     {
         "attempt_already_reserved",
@@ -70,6 +80,13 @@ class _HostRun(_HostMarkers):
     timed_out: bool = False
     slot_held: bool = True
     error_code: str | None = None
+    protocol_error_reason: str | None = None
+    stdout_bytes: int | None = None
+    stderr_bytes: int | None = None
+    stdout_sha256: str | None = None
+    stderr_sha256: str | None = None
+    stdout_truncated: bool | None = None
+    stderr_truncated: bool | None = None
 
 
 _CapabilitiesT = TypeVar("_CapabilitiesT")
@@ -286,24 +303,40 @@ class _HostProcessAdapter(
         messages: tuple[str, ...] = ()
         usage: _UsageT | None = None
         client_thread_id = None
+        protocol_error_reason = None
         error: str | None = entry.stop_code or capture.error_code or "capture_unknown"
         if capture.state == "exited":
             if capture.exit_code is not None and capture.exit_code != 0:
                 status, error = "failed", "process_failed"
             elif capture.exit_code == 0:
                 try:
-                    report = self._parse(raw.stdout.decode("utf-8"))
-                except (UnicodeError, AgentSyncError):
+                    text = raw.stdout.decode("utf-8")
+                except UnicodeDecodeError:
                     error = "protocol_invalid"
+                    protocol_error_reason = "invalid_utf8"
                 else:
-                    error = report.error_code
-                    if report.state == "succeeded":
-                        status = "succeeded"
-                    elif report.state == "failed":
-                        status = "failed"
-                    if status != "unknown":
-                        messages, usage = report.messages, report.usage
-                        client_thread_id = report.client_id
+                    try:
+                        report = self._parse(text)
+                    except UnicodeError:
+                        error, protocol_error_reason = "protocol_invalid", "unclassified"
+                    except AgentSyncError as exc:
+                        error = "protocol_invalid"
+                        protocol_error_reason = (
+                            exc.code
+                            if type(exc.code) is str
+                            and exc.code
+                            in {"validation_error", "invalid_event_sequence", "unsupported_event"}
+                            else "unclassified"
+                        )
+                    else:
+                        error = report.error_code
+                        if report.state == "succeeded":
+                            status = "succeeded"
+                        elif report.state == "failed":
+                            status = "failed"
+                        if status != "unknown":
+                            messages, usage = report.messages, report.usage
+                            client_thread_id = report.client_id
         async with self._lock:
             self._finish(
                 entry,
@@ -313,6 +346,13 @@ class _HostProcessAdapter(
                 messages=messages,
                 usage=usage,
                 client_thread_id=client_thread_id,
+                protocol_error_reason=protocol_error_reason,
+                stdout_sha256=hashlib.sha256(raw.stdout).hexdigest()
+                if protocol_error_reason is not None
+                else None,
+                stderr_sha256=hashlib.sha256(raw.stderr).hexdigest()
+                if protocol_error_reason is not None
+                else None,
             )
 
     def _finish(
@@ -325,6 +365,9 @@ class _HostProcessAdapter(
         messages: tuple[str, ...] = (),
         usage: _UsageT | None = None,
         client_thread_id: str | None = None,
+        protocol_error_reason: str | None = None,
+        stdout_sha256: str | None = None,
+        stderr_sha256: str | None = None,
     ) -> None:
         if entry.result is not None:
             return
@@ -341,6 +384,17 @@ class _HostProcessAdapter(
             else False,
             slot_held=status == "unknown",
             error_code=error,
+            protocol_error_reason=protocol_error_reason,
+            stdout_bytes=capture.stdout_bytes if capture and protocol_error_reason else None,
+            stderr_bytes=capture.stderr_bytes if capture and protocol_error_reason else None,
+            stdout_sha256=stdout_sha256,
+            stderr_sha256=stderr_sha256,
+            stdout_truncated=capture.stdout_truncated
+            if capture and protocol_error_reason
+            else None,
+            stderr_truncated=capture.stderr_truncated
+            if capture and protocol_error_reason
+            else None,
         )
         entry.result = self._new_result(
             entry.view,

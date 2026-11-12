@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal, NoReturn
 
-from agentsync.adapters._host_process import _HostRun
+from agentsync.adapters._host_process import _PROTOCOL_ERROR_REASONS, _HostRun
 from agentsync.adapters.approved_launch import (
     ApprovedLaunchFactory,
     HostProfile,
@@ -161,6 +161,13 @@ class RelayAttemptObservation:
     agent_sha256: str | None = None
     declared_client_version: str | None = None
     protocol_session_sha256: str | None = None
+    protocol_error_reason: str | None = None
+    stdout_bytes: int | None = None
+    stderr_bytes: int | None = None
+    stdout_sha256: str | None = None
+    stderr_sha256: str | None = None
+    stdout_truncated: bool | None = None
+    stderr_truncated: bool | None = None
     billing_verified: Literal[False] = field(default=False, init=False)
     cost_usd: None = field(default=None, init=False)
     verification: Literal["unverified"] = field(default="unverified", init=False)
@@ -178,12 +185,55 @@ def _receipt_uint(value: Any) -> int | None:
     return value if type(value) is int and 0 <= value < 2**63 else None
 
 
+def _protocol_metadata(value: dict[str, Any]) -> dict[str, Any]:
+    """Project fixed diagnostic fields only; malformed/legacy records disclose none."""
+    reason = value.get("protocol_error_reason")
+    if (
+        value.get("error_code") != "protocol_invalid"
+        or type(reason) is not str
+        or reason not in _PROTOCOL_ERROR_REASONS
+    ):
+        return {}
+    fields: dict[str, Any] = {"protocol_error_reason": reason}
+    for stream in ("stdout", "stderr"):
+        size = _receipt_uint(value.get(stream + "_bytes"))
+        checksum = _matched_text(value.get(stream + "_sha256"), r"[0-9a-f]{64}")
+        truncated = _receipt_bool(value.get(stream + "_truncated"))
+        if size is None or checksum is None or truncated is None:
+            return {}
+        fields.update(
+            {
+                stream + "_bytes": size,
+                stream + "_sha256": checksum,
+                stream + "_truncated": truncated,
+            }
+        )
+    return fields
+
+
 def _terminal_metrics(
     run: _HostRun,
     result: CodexResult | ClaudeResult | CursorResult | None = None,
 ) -> dict[str, object]:
     """Record elapsed time and sanitized observations from the matching adapter result."""
     metrics: dict[str, object] = {}
+    metrics.update(
+        _protocol_metadata(
+            {
+                name: getattr(run, name)
+                for name in (
+                    "error_code",
+                    "protocol_error_reason",
+                    "stdout_bytes",
+                    "stderr_bytes",
+                    "stdout_sha256",
+                    "stderr_sha256",
+                    "stdout_truncated",
+                    "stderr_truncated",
+                )
+            }
+        )
+    )
     if run.finished_at is not None:
         elapsed_ms = (run.finished_at - run.started_at) * 1000
         if math.isfinite(elapsed_ms) and 0 <= elapsed_ms < 2**63:
@@ -645,6 +695,7 @@ class ControlledRelay:
             run_sha256=_matched_text(terminal.get("run_sha256"), r"[0-9a-f]{64}"),
             session_sha256=_matched_text(terminal.get("session_sha256"), r"[0-9a-f]{64}"),
             error_code=_matched_text(terminal.get("error_code"), r"[a-z_]{1,64}"),
+            **_protocol_metadata(terminal),
             admission=admission,
             adapter_elapsed_ms=_receipt_uint(terminal.get("adapter_elapsed_ms")),
             reported_input_tokens=_receipt_uint(terminal.get("reported_input_tokens"))

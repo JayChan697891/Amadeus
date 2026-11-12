@@ -46,6 +46,7 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
         "single-codex-cancelled",
         "single-codex-timeout",
         "single-codex-exit-failure",
+        "single-codex-invalid-protocol",
     ],
 )
 async def test_controlled_relay_with_disposable_core_and_git(
@@ -186,6 +187,8 @@ async def test_controlled_relay_with_disposable_core_and_git(
                 }
             ]
         stream = "\n".join(json.dumps(event) for event in events)
+        if scenario == "single-codex-invalid-protocol":
+            stream = "private malformed protocol fixture"
         helper_env = {"SYSTEMROOT": os.environ["SYSTEMROOT"]} if "SYSTEMROOT" in os.environ else {}
         script = f"print({stream!r})"
         if scenario in {"single-codex-cancelled", "single-codex-timeout"}:
@@ -302,6 +305,22 @@ async def test_controlled_relay_with_disposable_core_and_git(
             "ready_for_review" if scenario == "single-codex-success" else "incomplete"
         )
         current = call(first, "get_project_state")["tasks"][0]
+        if scenario == "single-codex-invalid-protocol":
+            observed, unused = reopened.inspect_attempts(actor, task["id"], admin_token=token)
+            assert observed.protocol_error_reason == "validation_error"
+            assert observed.error_code == "protocol_invalid" and observed.status == "unknown"
+            assert observed.parent_ended is True and observed.exit_code == 0
+            captured = (
+                b"private malformed protocol fixture\r\n"
+                if os.name == "nt"
+                else b"private malformed protocol fixture\n"
+            )
+            assert observed.stdout_bytes == len(captured)
+            assert observed.stdout_sha256 == hashlib.sha256(captured).hexdigest()
+            assert observed.stderr_bytes == 0
+            assert observed.stdout_truncated is False
+            assert "private malformed" not in repr(observed)
+            assert unused.state == "not_dispatched"
         if scenario in {
             "single-codex-cancelled",
             "single-codex-timeout",

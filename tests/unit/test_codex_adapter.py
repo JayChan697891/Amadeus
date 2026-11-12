@@ -1,6 +1,7 @@
 """Trusted factory and known Python process fixtures, never real Codex evidence."""
 
 import asyncio
+import hashlib
 import json
 import sys
 from dataclasses import FrozenInstanceError
@@ -118,6 +119,66 @@ async def test_process_and_protocol_observations_are_not_task_acceptance(
     assert "private failure" not in repr(finished)
     if status == "unknown":
         assert (await adapter.get_result(started.run_id)).agent_messages == ()
+
+
+@pytest.mark.parametrize(
+    "payload,reason,unexpected_code",
+    [
+        (b"\xff", "invalid_utf8", False),
+        (b"private malformed payload", "validation_error", False),
+        (b'{"type":"turn.started"}', "invalid_event_sequence", False),
+        (b'{"type":"private_future_event"}', "unsupported_event", False),
+        (b"private parser failure", "unclassified", True),
+        (b"private valid UTF8", "unclassified", "unicode"),
+    ],
+)
+@pytest.mark.asyncio
+async def test_protocol_failure_retains_only_fixed_reason_and_capture_metadata(
+    tmp_path, payload, reason, unexpected_code
+):
+    launches = []
+    stderr = b"private stderr fixture"
+
+    async def factory(_task):
+        launches.append(True)
+        return await CapturedProcess.start(
+            (
+                sys.executable,
+                "-I",
+                "-u",
+                "-c",
+                f"import sys;sys.stdout.buffer.write({payload!r});"
+                f"sys.stderr.buffer.write({stderr!r})",
+            ),
+            cwd=tmp_path,
+            stdin_text="",
+            timeout_seconds=3,
+            output_limit=1024,
+        )
+
+    adapter = CodexAdapter("p", "s", factory=factory)
+    if unexpected_code:
+
+        def private_failure(_text):
+            if unexpected_code == "unicode":
+                raise UnicodeEncodeError("utf-8", "\ud800", 0, 1, "private parser Unicode error")
+            raise AgentSyncError("private_error_code", "private exception message")
+
+        adapter._parse = private_failure
+    started = await adapter.start_task(task())
+    end = await terminal(adapter, started.run_id)
+    result = await adapter.get_result(started.run_id)
+    assert end.protocol_error_reason == reason
+    assert end.error_code == "protocol_invalid" and end.status == "unknown"
+    assert end.parent_ended and end.slot_held
+    assert end.stdout_bytes == len(payload) and end.stderr_bytes == len(stderr)
+    assert end.stdout_sha256 == hashlib.sha256(payload).hexdigest()
+    assert end.stderr_sha256 == hashlib.sha256(stderr).hexdigest()
+    assert end.stdout_truncated is False and end.stderr_truncated is False
+    assert result.agent_messages == () and result.usage is None
+    assert "private" not in repr(end)
+    assert (await adapter.start_task(task())).run_id == started.run_id
+    assert len(launches) == 1
 
 
 @pytest.mark.parametrize(
