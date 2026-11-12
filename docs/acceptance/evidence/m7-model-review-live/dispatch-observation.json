@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-11-12T14:21:26.175351+00:00",
+  "error_code": null,
+  "captured_start_invoked": true,
+  "exact_authorizations": 1,
+  "attempts": [
+    {
+      "leg": "first",
+      "state": "terminal_recorded",
+      "client": "codex",
+      "status": "proposal_received",
+      "exit_code": 0,
+      "timed_out": false,
+      "parent_ended": true,
+      "run_sha256": "6eca1f6f1aef8590a9056508b3ef2a49de304975e95ceb37192b708ec902233e",
+      "session_sha256": "a0852d1831d0fde7311ec7419b014dc72e8ae5d7b88deaa29e5579fb7e66f608",
+      "error_code": null,
+      "admission": {
+        "state": "both_reservations_recorded",
+        "plan_sha256": "65dd408aa937f4d30b4017dce4ec03f0d16af6021596a0684293f7c5cf63823b",
+        "execution_verified": false
+      },
+      "adapter_elapsed_ms": 20121,
+      "reported_input_tokens": 8573,
+      "reported_output_tokens": 112,
+      "agent_sha256": "23f60a42356c47f81b1bf283cf962c93029839d4dafa28ac49d4a14404018529",
+      "declared_client_version": "0.167.0-alpha.3.2",
+      "protocol_session_sha256": "f6479ea1854b282facda566c7041a5870dfbc60d22dec4cf5f0baa101c6b3289",
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null
+    },
+    {
+      "leg": "second",
+      "state": "not_dispatched",
+      "client": null,
+      "status": null,
+      "exit_code": null,
+      "timed_out": null,
+      "parent_ended": null,
+      "run_sha256": null,
+      "session_sha256": null,
+      "error_code": null,
+      "admission": null,
+      "adapter_elapsed_ms": null,
+      "reported_input_tokens": null,
+      "reported_output_tokens": null,
+      "agent_sha256": null,
+      "declared_client_version": null,
+      "protocol_session_sha256": null,
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null
+    }
+  ],
+  "queue_outcome": {
+    "state": "resolved",
+    "tasks": [
+      {
+        "task_id": "5a6028b1-48bd-4f15-a8ba-d632d12ce9f1",
+        "state": "ready_for_review",
+        "failure_code": null
+      }
+    ],
+    "verification": "unverified"
+  }
+}

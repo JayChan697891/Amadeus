@@ -1,5 +1,14 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Latest milestone: a distinct real Codex reviewer on2ac4557 received and reviewed
+the saved6017005 producer artifact. Exact context pin, separate identities and
+full407byte document were independently checked. New review task completed as
+unverified; original verified producer unchanged. This is a host-prepared,
+cross-upgrade two-run handoff, not unattended or cross-vendor M7 acceptance.
+Next repair queue admission ordering so deterministic invalid pinned input is
+rejected before reserving a wave; preserve all post-admission failure fences.
+Evidence: acceptance/evidence/m7-model-review-live/summary.json. Release stays blocked.
+
 Use [M5-FINAL-ACCEPTANCE.md](M5-FINAL-ACCEPTANCE.md) as the only M5 exit checklist.
 M5 remains the original five requirements; no new stages for documentation,
 duplicate evidence or noncritical enhancements. Existing stage records below are

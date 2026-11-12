@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Actual pinned artifact handoff: limited cross-upgrade acceptance
+
+One real receiver on2ac4557 consumed the saved real6017005 producer through its own
+Core identity and returned a407byte source-only review in20.121seconds, exit0.
+The exact producer pin, launch/selection/wave, distinct authors and full document
+were independently checked. Host acceptance completed only the review document
+atv6/unverified; original producer remainsv6/verified. Workspaces and candidate
+state are unchanged, queue resolved, temporary auth removed/unmounted and original
+auth unchanged.88runtime members match. Raw stdout stays private; stderr empty.
+[Evidence](evidence/m7-model-review-live/summary.json).
+
+This is actual cross-upgrade artifact handoff between two Codex runs, with host
+preparation/acceptance. It does not establish unattended orchestration, two fresh
+agents on2ac4557, other vendors, active-generation cancellation, or new full-matrix/
+sdist acceptance. Claude/Cursor are NOT RUN because neither subscription exists.
+Formal M5/M6/M7/Release remains BLOCKED. Historical limitations below retain their
+original execution scope; this new observation only fills the stated handoff gap.
+
 ## Pinned producer input: limited source and package acceptance
 
 Runtime2ac4557 lets a distinct actor consume a producer's exact immutable proposal

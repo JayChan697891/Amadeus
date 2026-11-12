@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-11-12T14:21:03.324450+00:00",
+  "online": true,
+  "heartbeat_age_seconds": 1.0218548774719238,
+  "session_remaining_seconds": 3598.978145122528,
+  "plan_sha256": "65dd408aa937f4d30b4017dce4ec03f0d16af6021596a0684293f7c5cf63823b",
+  "selection_sha256": "ddf6749a5a0e00b925cc8b96fe9287f87438f8c2cf3a539ea9d447ec74dfed70",
+  "wave_id": "09a3f82c9e06c281b08dce1793290d9dfca8aeb30871aab15d61a18688565ba5",
+  "source_and_worktrees_unchanged": true,
+  "model_calls": 0,
+  "credential_copy": false
+}

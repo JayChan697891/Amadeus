@@ -1,5 +1,30 @@
 # Amadeus current progress
 
+## Actual independent model review of the saved producer artifact
+
+The first pinned-context real receiver completed on2ac4557 against the already
+saved6017005 producer. One distinct Codex call took20.121seconds, exit0; the exact
+producer task/context revision/hash was consumed through the receiver's Core
+identity. The407byte review explicitly reasons about source only and does not
+claim tests. Root and independent reviewer read its full text and checked hashes.
+After explicit host document acceptance, reopening shows review taskv6/completed/
+unverified; original producer remainsv6/completed/verified. Both queue waves are
+resolved, no pending fence; workspaces, original task and candidate state unchanged.
+
+Temporary auth was removed and its RAM home unmounted; original auth unchanged.
+88installed runtime members match. Raw1044byte stdout remains private; stderr is
+empty. Fee eligibility remains owner-confirmed, not independently billed. This
+establishes two actual Codex runs connected by a pinned artifact across an upgrade,
+with host preparation and acceptance. It is not unattended two-agent orchestration,
+cross-client acceptance or full M7. Claude/Cursor remain NOT RUN: neither account
+subscription exists. [Evidence](acceptance/evidence/m7-model-review-live/summary.json).
+
+Controller in D:/agentsync-debug/m7-model-review-live-20261112 is consumed; do not
+rerun. Dedicated VM remains available for local work. Next fix a queue pre-admission
+validation gap: rejected pinned source/input must not reserve a wave before any
+claim or launch. Preserve execution-time revalidation and uncertain-run fences.
+No new model call is needed for this repair. Release remains BLOCKED.
+
 ## Pinned proposal input for the next actor
 
 Frozen2ac4557 adds optional ProposalContextPin to CodexProposalInput. The receiving

@@ -49,3 +49,5 @@ docs/acceptance/evidence/m7-full-regression/windows-sdist_pytest.log -whitespace
 docs/acceptance/evidence/m7-queue-preflight/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m7-sdist-install/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m7-heartbeat-regression/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+docs/acceptance/evidence/m7-model-review-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
