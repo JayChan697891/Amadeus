@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+## Actual same-client two-session relay
+
+Runtime ee45690/head58d473c completed two real Codex sessions on2026-11-12
+08:29:04UTC. Both exit0 with exact replies, distinct sessions/worktrees and no
+observed tool items. Core's structured handoff preserved the pinned context and
+started the second agent automatically. Reopen reached review/unverified; after
+Astra/root scoped evidence review, a third Core identity completed the task using
+review_once. Task verification remains unverified for code artifacts. Temp auth
+copies removed, original and fixtures/runtime unchanged. Raw output local only.
+
+Accepted only for actual same-client fixed-text sequential relay. Cross-client
+compatibility, full M7, real failure recovery, billing and Release remain open.
+See [execution, hash derivation and independent review](evidence/m7-real-codex-relay/summary.json).
+
 ## Actual repaired single-client validation
 
 On2026-11-12 08:15:51UTC, runtime ee45690 executed one explicitly authorized

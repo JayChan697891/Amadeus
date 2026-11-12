@@ -1,0 +1,5 @@
+{
+  "task_owner_is_second_session": true,
+  "assignment_projection_is_none": true,
+  "explanation": "Assignment is an active pending handoff reservation, not historical ownership; current owner_session_id is authoritative after claim."
+}

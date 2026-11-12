@@ -73,14 +73,28 @@ stream belongs to the previous diagnostic; this successful run retained602 stdou
 and476 unclassified stderr bytes locally only. The one-shot grant is consumed.
 See [actual repaired run](acceptance/evidence/m6-native-mxc/live-repaired-summary.json).
 
-Next: real two-Agent preparation. The owner subsequently instructed first-choice
-approval for future requests within existing constraints; this does not establish
-missing account access, extra-fee permission, or full acceptance. Claude2.1.295
-matches the supported version, but default subscription credentials are absent.
-Only Cursor desktop CLI was found, not a standalone Agent executable. A two-Codex
-isolated read-only relay can exercise two actual sessions and Core handoff under
-the existing subscription; it cannot substitute for Claude/Cursor compatibility.
-M5/B1/B3, full M6, M7 and Release remain open. No new M5 subdivision.
+The next bounded same-client relay actually completed on2026-11-12 08:29:04UTC.
+Two distinct Codex workers, protocol sessions, private homes and managed worktrees
+ran once each (38.108s and56.125s, both exit0). Core created/claimed the task,
+compared worktrees, transferred a structured handoff and pinned context, then
+submitted the second reply for independent review. The second response matched
+the shared context. Astra/root accepted this limited automatic sequential relay;
+a third Core identity used review_once and completed the task, still unverified
+for code artifacts. Both temporary auth copies were removed, original and all
+fixtures/runtime unchanged. Raw output remains local only. No source changes or
+redundant tests were needed. See
+[real two-session evidence](acceptance/evidence/m7-real-codex-relay/summary.json).
+
+Next: cross-client preparation. Claude2.1.295 version matches but default login
+credentials are absent. The official Cursor Windows package was downloaded to D:
+without changing account configuration, PATH or the desktop installation. It uses
+node.exe plus index.js; the current adapter accepts only a direct executable.
+Implement bounded explicit bundle pinning and direct native Node invocation,
+then validate the local CLI without model calls. Same-client evidence cannot
+replace Claude/Cursor compatibility, full M6/M7, real failure recovery or Release.
+The owner's standing first-choice approval preference remains bounded by no
+extra fees, no paid APIs, no main merge and no GitHub Actions. Missing account
+access must not be fabricated. No new M5 subdivision.
 
 The isolated branch `feat/m6-single-codex-pilot` adds host-only
 `ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.

@@ -1,0 +1,89 @@
+{
+  "runtime_sha": "ee456900fad6bb4cfc09cad0eecdc9ce1371ab74",
+  "execution_head": "58d473c",
+  "model_launches": 2,
+  "client_types": [
+    "codex",
+    "codex"
+  ],
+  "independent_workers": true,
+  "distinct_protocol_sessions": true,
+  "protocol_session_sha256": [
+    "097a6a205944d6d2c17942fa0a1df274f8ecd76e46be5eafe109385b2d08f354",
+    "658663f5f7c3cd59cdf7edc57dbcbf779be925dfb51b26755ca6ff86bbb50a92"
+  ],
+  "separate_worktrees": true,
+  "reopened_observation": {
+    "state": "ready_for_review",
+    "verification": "unverified"
+  },
+  "task_status": "review",
+  "task_verification": "unverified",
+  "task_assigned_to_second_agent": false,
+  "handoff_status": "accepted",
+  "handoff_context_matches": true,
+  "handoff_id_sha256": "0fec1fdc3ac11b06ec2825e40dca2db5d393bd66fe36057fa7cef2da53d95594",
+  "context_version": 1,
+  "context_content_sha256": "0bc086f15f6098ebc88c9f2c948c446ca02a5470f1b3ea35b8519f3b49bc3762",
+  "capture_checks": [
+    {
+      "expected_reply_matches": true,
+      "protocol_state": "succeeded",
+      "event_types": [
+        "thread.started",
+        "item.completed",
+        "turn.started",
+        "item.completed",
+        "turn.completed"
+      ],
+      "item_types": [
+        "error",
+        "agent_message"
+      ],
+      "stdout_sha256": "28e047796a9dc30b520aae79c10785ce235bab242cd194668273d7ee95b910a2",
+      "tool_items_observed": false
+    },
+    {
+      "expected_reply_matches": true,
+      "protocol_state": "succeeded",
+      "event_types": [
+        "thread.started",
+        "item.completed",
+        "turn.started",
+        "item.completed",
+        "turn.completed"
+      ],
+      "item_types": [
+        "error",
+        "agent_message"
+      ],
+      "stdout_sha256": "c0e090a856e57b75208a630fd24a3c6447a069298e1291980e163d0a5655eb21",
+      "tool_items_observed": false
+    }
+  ],
+  "audit_counts": {
+    "create_project:success": 1,
+    "register_agent:success": 2,
+    "set_agent_roles:success": 2,
+    "create_task:success": 1,
+    "publish_context:success": 1,
+    "capture_repository:success": 1,
+    "create_worktree:success": 2,
+    "compare_worktrees:success": 1,
+    "claim_task:success": 2,
+    "update_task:success": 3,
+    "renew_lease:success": 2,
+    "submit_handoff:success": 1,
+    "resolve_handoff:success": 1
+  },
+  "audit_has_more": false,
+  "source_worktrees_runtime_unchanged": true,
+  "raw_uploaded": false,
+  "full_m7": "NOT ACCEPTED",
+  "formal_release": "BLOCKED",
+  "protocol_session_utf8_sha256": [
+    "bf57b27f340a59ad6dd84f089b67e14a88eaf108d6f7197116ac52a8848cbb73",
+    "482221edcf70552c5a9ffd3566cd5efe7d9a398336e90e81fab9f71176cc453b"
+  ],
+  "session_hash_derivation": "protocol_session_sha256 uses approved_launch.digest(canonical JSON string), matching adapter receipt; protocol_session_utf8_sha256 hashes raw UTF-8 identifier. Neither exposes identifiers."
+}

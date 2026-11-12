@@ -1,0 +1,111 @@
+{
+  "time_utc": "2026-11-12T08:29:04.240240+00:00",
+  "outcome": {
+    "state": "ready_for_review",
+    "verification": "unverified"
+  },
+  "error_code": null,
+  "start_requests": 2,
+  "captures_returned": 2,
+  "approved_plans": [
+    "8bd0dafec68727f2319947c03602846b6bdda726e02a5ace8e0587c307452913",
+    "3d97008c0c9e777131db0ba3a6005a0aa3f650025b9d28fe046ffabe56ecdb58"
+  ],
+  "attempts": [
+    {
+      "leg": "first",
+      "state": "terminal_recorded",
+      "client": "codex",
+      "status": "expected_reply",
+      "exit_code": 0,
+      "timed_out": false,
+      "parent_ended": true,
+      "run_sha256": "d64893c57a27aece7ed902f6c6cbb6d53bb857ab286b63fa3c1c71db92e51103",
+      "session_sha256": "4f4e05b3016e650b923fd600a74cd3ca86b1945e75b323e3511535ddca5b4481",
+      "error_code": null,
+      "admission": {
+        "state": "both_reservations_recorded",
+        "plan_sha256": "8bd0dafec68727f2319947c03602846b6bdda726e02a5ace8e0587c307452913",
+        "execution_verified": false
+      },
+      "adapter_elapsed_ms": 38108,
+      "reported_input_tokens": 8022,
+      "reported_output_tokens": 11,
+      "agent_sha256": "c56e45a22a52f8fdf18f3578b3f581ecc260b6ab8042df0db8714c60ee5456bd",
+      "declared_client_version": "0.167.0-alpha.3.2",
+      "protocol_session_sha256": "097a6a205944d6d2c17942fa0a1df274f8ecd76e46be5eafe109385b2d08f354",
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    },
+    {
+      "leg": "second",
+      "state": "terminal_recorded",
+      "client": "codex",
+      "status": "expected_reply",
+      "exit_code": 0,
+      "timed_out": false,
+      "parent_ended": true,
+      "run_sha256": "7d019baae570ac5d458cd580f8dc49355409028cad79e1a3963ab9bd804b95dc",
+      "session_sha256": "c7434a3e43b90ab9ba9408b817c0e5da3490dde9ad9c9713ba3424998034db62",
+      "error_code": null,
+      "admission": {
+        "state": "both_reservations_recorded",
+        "plan_sha256": "3d97008c0c9e777131db0ba3a6005a0aa3f650025b9d28fe046ffabe56ecdb58",
+        "execution_verified": false
+      },
+      "adapter_elapsed_ms": 56125,
+      "reported_input_tokens": 8076,
+      "reported_output_tokens": 13,
+      "agent_sha256": "c9bfb405c4d17e01e25bfd8dd71eb27ed074e07403772d9ad25dbb7ce50f77a7",
+      "declared_client_version": "0.167.0-alpha.3.2",
+      "protocol_session_sha256": "658663f5f7c3cd59cdf7edc57dbcbf779be925dfb51b26755ca6ff86bbb50a92",
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    }
+  ],
+  "private_capture_metadata": [
+    {
+      "index": 0,
+      "parent_ended": true,
+      "exit_code": 0,
+      "saved": true,
+      "stdout_bytes": 598,
+      "stdout_sha256": "28e047796a9dc30b520aae79c10785ce235bab242cd194668273d7ee95b910a2",
+      "stderr_bytes": 119,
+      "stderr_sha256": "d3060180941569b2723405852661b0b48cea98b073b765ef9ec240dcc4eec38e",
+      "stdout_truncated": false,
+      "stderr_truncated": false
+    },
+    {
+      "index": 1,
+      "parent_ended": true,
+      "exit_code": 0,
+      "saved": true,
+      "stdout_bytes": 600,
+      "stdout_sha256": "c0e090a856e57b75208a630fd24a3c6447a069298e1291980e163d0a5655eb21",
+      "stderr_bytes": 357,
+      "stderr_sha256": "f60e4b1791b8bbc5a1348763744bbdbc055f356892ad505ec4df18b182086be3",
+      "stdout_truncated": false,
+      "stderr_truncated": false
+    }
+  ],
+  "source_worktrees_runtime_unchanged": true,
+  "formal_release": "BLOCKED",
+  "independent_review": "pending"
+}
