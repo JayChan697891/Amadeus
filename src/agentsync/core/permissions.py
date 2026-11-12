@@ -84,6 +84,8 @@ VERIFICATION_AUDIT_OPERATIONS = frozenset(
         "candidate_execution_cleanup_record",
         "candidate_delivery_approve",
         "candidate_delivery_admit",
+        "proposal_staging_admit",
+        "proposal_staging_finish",
         "verification_cancel",
         "verification_claim",
         "verification_renew",

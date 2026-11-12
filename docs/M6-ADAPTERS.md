@@ -1,5 +1,48 @@
 # M6 host-factory adapter prototype
 
+## Owner-reviewed proposal staging
+
+`agentsync.verification.proposal_staging.OwnerProposalStaging(core)` now exposes
+`preview`, `stage_once` and `status` to trusted owner-side Python hosts. There is
+no worker/MCP/HTTP staging operation. Supply project owner credentials plus an
+active worker session for staging attribution. The original producer may have
+expired; a different independent reviewer is still required for later completion.
+
+Preview arguments are `project_id`, `admin_token`, `session_id`, `session_token`,
+`task_id`, `expected_task_version`, `context_id`, `expected_content_sha256`,
+`publication_session_id` and `publication_request_id`. The task must already be
+in `review` through the existing producer lease-controlled submission operation.
+The immutable first context revision, real `publish_task_proposal` response and
+successful audit event must agree. A copied context source label is insufficient.
+This authenticates publication, not model authorship; preserve separate real-client
+capture evidence when making that claim.
+
+Review `preview(**arguments)["plan"]` and its exact file hashes, producer baseline,
+task revision and new destination IDs. Pass its `plan_sha256` as
+`expected_plan_sha256` to `stage_once(**arguments, ...)`. That call commits a
+permanent task-wide intent before Git and rechecks all pins. It creates a genuine
+new managed worktree and candidate, paired with the untouched original worktree
+on the same task/snapshot. Exact UTF-8 blobs are staged without content filters;
+no generated code is executed and no task status is changed. Nothing is applied
+to the registered source checkout or an existing actor worktree.
+
+Use `status(project_id=..., admin_token=..., task_id=...)` after interruption.
+`incomplete` retains both the intent and any partial private files; it does not
+retry or repair them. `staged` is historical metadata, never fresh verification
+or application authority. Every repeat mutation for that task is rejected.
+Normal candidate export, owner queue/execution and independent completion gates
+remain separate. In particular the current Docker profile still requires root
+`solution.py` implementing its fixed JSON-lines interface; arbitrary proposals
+are not silently wrapped, executed or called verified.
+
+Supported staging trees exclude `.gitattributes` and `.gitmodules` in either the
+snapshot/head or proposal, executable Git filters/drivers, links/reparse points,
+path aliases and file/directory collisions. Existing executable file modes are
+preserved; new files are mode100644. Git metadata/indirection/receipt checks run
+before effects. The service and private managed storage are trusted; the checks
+do not claim atomic protection against a malicious administrator replacing paths
+between operating-system calls. Full M5/Release gates remain unchanged.
+
 `agentsync.adapters.codex.CodexAdapter` implements the six generic `AgentAdapter`
 methods. It composes `CapturedProcess` and the bounded Codex JSONL parser. The
 default adapter has no launcher. The explicit trusted-host helper described below

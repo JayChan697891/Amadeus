@@ -1070,7 +1070,9 @@
         "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
         "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
         "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
-        "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process"
+        "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
+        "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
+        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it"
       ],
       "planned_cases": [
         {

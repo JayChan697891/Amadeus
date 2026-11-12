@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = json.loads((ROOT / "docs/acceptance/requirements.json").read_text(encoding="utf-8"))
 REQUIREMENTS = MANIFEST["requirements"]
 CODEX_COMPONENT_PATHS = {
+    "tests/integration/test_proposal_staging.py",
     "tests/integration/test_codex_proposal_capture.py",
     "tests/unit/test_proposals.py",
     "tests/integration/test_task_proposals.py",
@@ -107,6 +108,8 @@ def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
     assert set(item["existing_tests"]) == {
+        "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
+        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
         "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
         "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
         "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
