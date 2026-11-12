@@ -1,5 +1,6 @@
 """Runner policy tests; these mocks do not represent actual-client acceptance."""
 
+import importlib
 import importlib.util
 import json
 from pathlib import Path
@@ -998,6 +999,66 @@ def test_source_snapshot_includes_untracked_source_but_omits_secret_files(reposi
     assert snapshot == [
         {"path": "new.py", "sha256": runner.sha256(repository / "new.py"), "size": 12}
     ]
+    run = runner.collect(
+        repository, repository.parent / "evidence", run_checks=False, package_install=False
+    )
+    assert (run / "source-snapshot.json").read_bytes() == json.dumps(snapshot, indent=2).encode()
+
+
+@pytest.mark.parametrize("encoding", ["lf", "legacy_crlf", "changed_entry"])
+def test_candidate_staging_matches_snapshot_contents_across_line_endings(
+    repository, tmp_path, monkeypatch, encoding
+):
+    monkeypatch.syspath_prepend(str(Path(runner.__file__).parent))
+    release_manifest = importlib.import_module("release_manifest")
+    monkeypatch.setattr(
+        runner, "git_value", lambda _repo, *args: "" if args[0] == "status" else args[-1]
+    )
+    snapshot = b'[\n  {"path": "source.py", "sha256": "example", "size": 1}\n]'
+    expected = {
+        "lf": snapshot,
+        "legacy_crlf": snapshot.replace(b"\n", b"\r\n"),
+        "changed_entry": snapshot.replace(b"source.py", b"other.py"),
+    }[encoding]
+    run = tmp_path / "run"
+    run.mkdir()
+    (run / "source-snapshot.json").write_bytes(snapshot)
+    evidence = tmp_path / "artifact-evidence"
+    evidence.mkdir()
+    archive = evidence / "fixture.whl"
+    archive.write_bytes(b"exact archive")
+    manifest = evidence / "manifest.json"
+    manifest.write_text("fixture")
+    monkeypatch.setattr(
+        release_manifest,
+        "verify_manifest",
+        lambda *_args, **_kwargs: {
+            "frozen": {
+                "version": "0.2.0a2",
+                "commit_sha": "HEAD",
+                "tree_sha": "HEAD^{tree}",
+                "source_snapshot_sha256": runner.hashlib.sha256(expected).hexdigest(),
+            },
+            "checked_artifacts": [
+                {
+                    "path": archive.name,
+                    "filename": archive.name,
+                    "kind": "wheel",
+                    "size": archive.stat().st_size,
+                    "sha256": runner.sha256(archive),
+                }
+            ],
+            "manifest_sha256": "0" * 64,
+        },
+    )
+    if encoding == "changed_entry":
+        with pytest.raises(ValueError, match="matching clean frozen source"):
+            runner._stage_candidate(repository, run, "0.2.0a2", (manifest, evidence, "0" * 64))
+        assert not (run / "artifacts").exists()
+    else:
+        staged = runner._stage_candidate(repository, run, "0.2.0a2", (manifest, evidence, "0" * 64))
+        assert staged["artifact_sha256"] == {"wheel": runner.sha256(archive)}
+        assert (run / "artifacts" / archive.name).read_bytes() == archive.read_bytes()
 
 
 @pytest.mark.parametrize("flag,expected", [([], 0), (["--require-release"], 2)])

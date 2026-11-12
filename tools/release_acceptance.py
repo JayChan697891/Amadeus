@@ -944,13 +944,25 @@ def _stage_candidate(
     verified = verify_manifest(
         manifest_path, evidence_root, manifest_sha256=checksum, source_repo=repo
     )
+    snapshot = (run / "source-snapshot.json").read_bytes()
+    # Historical Windows reports used CRLF for JSON indentation. Accept only the
+    # byte-for-byte equivalent encoding of this freshly generated frozen snapshot.
+    snapshot_hashes = {
+        hashlib.sha256(snapshot).hexdigest(),
+        hashlib.sha256(snapshot.replace(b"\n", b"\r\n")).hexdigest(),
+    }
+    manifest_snapshot = verified["frozen"]["source_snapshot_sha256"]
     frozen = {
         "version": version,
         "commit_sha": git_value(repo, "rev-parse", "HEAD"),
         "tree_sha": git_value(repo, "rev-parse", "HEAD^{tree}"),
-        "source_snapshot_sha256": sha256(run / "source-snapshot.json"),
+        "source_snapshot_sha256": manifest_snapshot,
     }
-    if verified["frozen"] != frozen or git_value(repo, "status", "--porcelain") != "":
+    if (
+        verified["frozen"] != frozen
+        or manifest_snapshot not in snapshot_hashes
+        or git_value(repo, "status", "--porcelain") != ""
+    ):
         raise ValueError("Candidate archives require their matching clean frozen source.")
 
     checked_root = evidence_root.resolve(strict=True)
@@ -1069,7 +1081,9 @@ def _collect(
     safe_patch, patch_redactions = redact_credentials(diff or "")
     (run / "working-tree.patch").write_text(safe_patch, encoding="utf-8")
     source = source_snapshot(repo)
-    (run / "source-snapshot.json").write_text(json.dumps(source, indent=2), encoding="utf-8")
+    (run / "source-snapshot.json").write_text(
+        json.dumps(source, indent=2), encoding="utf-8", newline="\n"
+    )
     checks = []
     candidate_input = None
     candidate_rejected = False
