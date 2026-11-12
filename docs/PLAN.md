@@ -22,8 +22,12 @@ Actual local Codex cancellation at f74f29f now preserves a durable unknown resul
 after the owned parent ends; server cancellation and descendants remain unverified.
 The actual15-second Codex deadline also preserved an unknown result despite a
 captured completed turn; active-generation timeout remains unverified.
-Next: establish separate Claude/Cursor account availability, no-extra-fee state and
-actual execution boundaries before live cross-client validation. Same-client relay cannot replace cross-client acceptance. Do not retry consumed tasks or create
+Product80754db now provides atomic task-bound inert proposal publication, with
+local source and fresh Windows wheel evidence. Next implement successful adapter
+output capture against a host-pinned proposal contract, then separately authorized
+managed candidate import and existing isolated artifact verification. Establish
+Claude/Cursor account availability, no-extra-fee state and actual execution
+boundaries before live cross-client validation. Same-client relay cannot replace cross-client acceptance. Do not retry consumed tasks or create
 a new M5 subdivision.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe

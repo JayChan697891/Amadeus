@@ -1,5 +1,27 @@
 # Amadeus current progress
 
+## Current product: inert task-bound source proposals
+
+Product80754db adds publish_task_proposal across Core/SDK/HTTP/MCP. Authenticated
+worker+running task version+live lease+owned clean Git head bind a new immutable
+context revision atomically with idempotency/audit. Code remains inert data; task,
+worktrees, candidate queues and verification remain unchanged. Historical replay
+returns the same context without renewing authority. Source/path labels are not
+proof of a model run or permission to import code.
+
+Windows source241passed; requirement mapping92passed; fresh offline wheel55passed,
+85 runtime module hashes matched before/after and pip check passed. Ruff/format/
+mypy85 pass. Initial fixture/setup failures are preserved. Astra accepted this scoped source/package evidence. Linux/macOS and full matrix for this new delta NOT RUN.
+See [frozen proposal storage evidence](acceptance/evidence/m6-task-proposal/summary.json).
+
+Resume: integrate successful complete adapter output with a host-pinned proposal
+contract and this atomic receiver. Preserve unknown/timeout/cancel fences, hash-only
+receipts and unchanged task state. A later owner importer must produce a genuine
+managed merge candidate before existing isolated verification/completion gates;
+never fabricate CandidateInput or trust a context source label. This remains M6
+work under the existing M5 checklist, not a new M5 substage. Cross-client account
+facts remain pending and historical real tests below keep their original SHA scope.
+
 ## M6 single Codex pilot
 
 The once-authorized real Codex task ran at product `6a8ff41`. The CLI recognized

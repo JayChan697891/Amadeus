@@ -21,3 +21,5 @@ docs/acceptance/evidence/m6-native-mxc/diagnostic-red.* -whitespace
 
 # Preserve the exact manifest bytes referenced by the saved candidate SHA-256.
 releases/0.3.0a109/checkpoints/candidate-4f08dc8.json -text whitespace=cr-at-eol
+
+docs/acceptance/evidence/m6-task-proposal/** -text whitespace=cr-at-eol

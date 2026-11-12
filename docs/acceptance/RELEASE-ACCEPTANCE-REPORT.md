@@ -1,5 +1,20 @@
 # Release Acceptance Report
 
+## Task-bound inert proposal publication
+
+Product80754db passes241 Windows source cases across proposals, permissions and
+existing transports;92 traceability cases pass with formal requirement status
+unchanged. Fresh offline wheel55passed; all85 runtime module hashes matched before/
+after, pip check passed. Ruff/format/mypy85 pass. Actual temporary Core/Git and
+HTTP/MCP/SDK tests establish atomic publication, rollback, historical replay,
+revocation-before-replay and workspace/task preservation. Astra accepted this scoped source/package evidence. Initial setup/fixture failures and corrections are retained.
+
+This is authenticated inert data storage, not authenticated model provenance,
+code import, code execution or verified completion. Real generated-code capture,
+Linux/macOS and the new full release matrix remain NOT RUN. Earlier real-client
+results retain their earlier SHA scopes. M5/M6/M7 and Release remain BLOCKED.
+See [exact source/package evidence](evidence/m6-task-proposal/summary.json).
+
 ## Actual local Codex deadline
 
 Runtime f74f29f/head d73e044 ran one isolated fixed-text task with a15-second
