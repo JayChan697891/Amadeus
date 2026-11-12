@@ -1367,9 +1367,12 @@ def test_full_suite_subprocess_cannot_inherit_pytest_selection_or_plugins(
     (run / "logs").mkdir(parents=True)
     scratch = tmp_path / "scratch"
     scratch.mkdir()
+    monkeypatch.setenv("PYTHONPATH", str(tmp_path / "foreign"))
+    source_import = str(repository.resolve() / "src") if check_id == "pytest" else None
     probe = (
         "import os; "
         f"assert not set({list(inherited)!r}).intersection(os.environ); "
+        f"assert os.environ.get('PYTHONPATH') == {source_import!r}; "
         "print('pytest invocation environment is isolated')"
     )
     result = runner.execute(
@@ -1379,16 +1382,21 @@ def test_full_suite_subprocess_cannot_inherit_pytest_selection_or_plugins(
     assert all(runner.os.environ[name] == value for name, value in inherited.items())
 
 
-def test_source_suite_imports_frozen_checkout_without_editable_install(
+def test_source_suite_and_its_children_import_frozen_checkout_without_editable_install(
     repository, tmp_path, monkeypatch
 ):
     source = repository / "src"
     source.mkdir()
     (source / "source_binding_probe.py").write_text("VERSION = 'frozen'\n", encoding="utf-8")
     (repository / "test_source_binding.py").write_text(
+        "import subprocess\n"
+        "import sys\n"
         "from source_binding_probe import VERSION\n\n"
-        "def test_checkout_origin():\n"
-        "    assert VERSION == 'frozen'\n",
+        "def test_checkout_origin(tmp_path):\n"
+        "    assert VERSION == 'frozen'\n"
+        "    subprocess.run([sys.executable, '-c', "
+        "\"from source_binding_probe import VERSION; assert VERSION == 'frozen'\"], "
+        "cwd=tmp_path, check=True)\n",
         encoding="utf-8",
     )
     foreign = tmp_path / "foreign"

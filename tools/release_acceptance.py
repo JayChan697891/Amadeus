@@ -415,6 +415,10 @@ def execute(
     env = os.environ.copy()
     env.pop("PYTHONPATH", None)
     env.pop("PYTHONHOME", None)
+    if check_id == "pytest":
+        # Source tests launch CLI and process fixtures with the same interpreter.
+        # Pin their imports to the frozen checkout too. Installed suites stay isolated.
+        env["PYTHONPATH"] = str(repo.resolve() / "src")
     if check_id in {"pytest", "wheel_pytest", "sdist_pytest"}:
         # A user's pytest options can silently select a nonempty subset. These
         # runs attest the checked-in suite, with its declared plugin setup.
@@ -725,8 +729,6 @@ def check_plan(python: str, run: Path, scratch: Path) -> list[tuple[str, list[st
                 python,
                 "-m",
                 "pytest",
-                "-o",
-                "pythonpath=src",
                 "--junitxml",
                 str(scratch / "junit.xml"),
                 "--basetemp",
