@@ -27,13 +27,23 @@ test/source74e1527. Linux is complete:2290passed/6skipped, zero failures/errors;
 14actual Docker and2same-Core Docker proposal cases passed. The six skips are
 five Windows-only cases and one non-Linux unsupported-backend case. Independent
 review checked the complete command/XML/log and source/runtime identity.
-Windows is still RUNNING; no Windows/full-matrix pass is claimed yet.
+Windows is complete:2251passed/45skipped, zero failures/errors. Both environments
+have the same2296case IDs; each skipped case passed on the other platform.
+This does not provide missing Windows symlink privileges or Linux container
+capabilities on Windows. Independent review accepts this complete local matrix
+for the exact installed runtime/test-source pair; no additional full rerun needed.
 [Full regression evidence](acceptance/evidence/m7-full-regression/summary.json).
 Recovery: D:/agentsync-debug/m7-full-74e1527;
-Linux guest /root/amadeus-full-74e1527. Inspect existing result.json and live
-processes before any rerun; driver.py has a guarded main for multiprocessing.
+Linux guest /root/amadeus-full-74e1527. Both result.json records are terminal;
+driver.py has a guarded main for multiprocessing.1222source files and88 installed
+package members remained unchanged; sanitized logs/JUnit and version pins saved.
 The dedicated Docker daemon has zero containers and the owned VM is stopped.
 No new live client attempt is scheduled.
+Next prepare a separate bounded live-queue fixture only under the existing
+authorization/fee gates, maintaining its own valid Core heartbeat before current
+selection and exact-plan checks. Do not retry the consumed preflight controller.
+Keep unknown cancellation/timeout and missing second-client access explicitly
+unverified; this local matrix does not replace those actual-client requirements.
 Claude/Cursor real runs remain unavailable: owner has neither subscription.
 M5/M6/M7 and formal Release remain BLOCKED.
 

@@ -14,8 +14,12 @@ producer heartbeat aged beyond120seconds during review. This is an observed
 eligibility refusal, not a completed real queue run. Test-only74e1527 covers
 authenticated heartbeat recovery while preserving exact consent and expiry
 gates. The6017005 sdist has fresh offline Windows/Linux install smoke evidence.
-One full local matrix using74e1527 tests is in progress; await actual terminal
-results before acceptance. Keep this failed attempt consumed, with no retry.
+One full local matrix using74e1527 tests is complete and independently reviewed:
+Windows2251pass/45skip and Linux2290pass/6skip, zero failures/errors. Both contain
+2296identicalcase IDs; skipped cases pass on the other platform, without claiming
+missing platform capabilities. Keep the failed live preflight consumed, with no
+retry. The next real-queue fixture still requires current authenticated heartbeat
+and exact launch consent; offline passes do not replace actual-client acceptance.
 M7-01/02 now connect prepared Codex code proposals to the existing bounded queue
 at6017005. Dependency/load/capability selection and durable wave reconciliation
 stop at submitted review; exact launch approval and separate candidate execution

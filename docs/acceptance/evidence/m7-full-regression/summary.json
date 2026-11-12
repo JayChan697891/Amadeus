@@ -23,14 +23,34 @@
     }
   },
   "windows": {
-    "status": "RUNNING",
-    "result_not_yet_accepted": true
+    "status": "pass",
+    "python": "3.12.16",
+    "passed": 2251,
+    "skipped": 45,
+    "failures": 0,
+    "errors": 0,
+    "skip_reasons": {
+      "Requires separately controlled local Linux Docker and preloaded immutable image": 6,
+      "POSIX FIFO metadata fixture requires Linux": 1,
+      "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+      "Actual reconciliation requires an explicitly configured local Linux image": 5,
+      "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+      "Proposal execution requires an explicitly pinned local Linux Docker image": 2,
+      "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+      "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+      "Requires Linux/POSIX fork": 1,
+      "This host cannot create the actual symlink fixture": 2,
+      "FIFO fixture requires os.mkfifo": 1,
+      "Local symlink creation unavailable": 2,
+      "Local FIFO creation unavailable": 1,
+      "Creating directory symlinks requires unavailable host privileges": 1
+    }
   },
   "source_files_unchanged": 1222,
   "runtime_package_members_matched": 88,
   "python_modules": 87,
   "source_shadowing": false,
-  "independent_review": "Linux process record, complete XML/log/hash, guarded all-tests command and source/runtime identity checked. Five Windows-specific skips and one non-Linux unsupported-backend case; actual Linux Docker cases passed. Windows not yet terminal.",
+  "independent_review": "Accepted limited complete local regression in Windows3.12.16 and Linux3.14.7 installed sdist environments: process records, guarded all-tests driver, XML/log hashes and16 evidence files match;1222 source files unchanged;88 runtime members matched before/after. This does not accept actual models or formal Release.",
   "dedicated_docker_containers_remaining": 0,
   "owned_vm_stopped": true,
   "model_calls": 0,
@@ -47,6 +67,19 @@
     "vm-stop.log": "7092ce8f5445d8dec6c87a52a3c4096bd46c21b49da9d2a1aaa264bfafd92681",
     "driver.py.txt": "8d7dc08f678c1abbe9c184473da6cb79925b9fd4e0286bcae970b66c318fb3d1",
     "run-linux.sh.txt": "cdab9c7eeeba4390b1659982b9bc2cf68382603a599e1c5d9dbae8e186a4d851",
-    "observe-docker-cleanup.sh.txt": "ae83cbf2d57c5fe210d3e55a6b60c6cbdffdbf68b7ec80344e982a7b9d1a8a9e"
+    "observe-docker-cleanup.sh.txt": "ae83cbf2d57c5fe210d3e55a6b60c6cbdffdbf68b7ec80344e982a7b9d1a8a9e",
+    "windows-result.json": "24363cf6303e910d0164e4afc21105830f3825ee7ba685634f0d4e174317dbba",
+    "windows-origin.json": "70b18178636b3647349c084dc0e23ffa76788aa9bd12e182eb4d941853e5830d",
+    "windows-junit.xml": "631eef5ce56aae4b818f4caaba0ab3fe213565072f14dd9f8299f6536e3a775b",
+    "windows-sdist_pytest.log": "36158f1df51fd78891f13efedf4ab22eee2ba43c5472626c4d11a909d6b985bd",
+    "windows-sdist_pytest.process.json": "aaf6d46278b969dcea808b8cb6ae8ea8fa7d034a0c77989d3352774e9bf4a88b"
+  },
+  "windows_independent_review": "Accepted:2251passed/45skipped, zero failures/errors, terminal exit0",
+  "cross_platform_case_mapping": {
+    "same_case_ids": 2296,
+    "windows_skipped_linux_passed": 45,
+    "linux_skipped_windows_passed": 6,
+    "both_skipped": 0,
+    "limitation": "Cross-platform case coverage does not grant Windows symlink privileges or Linux container capability to Windows; platform-specific restrictions remain explicit."
   }
 }

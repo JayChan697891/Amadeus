@@ -23,8 +23,16 @@ Full local tests use74e1527 source and the6017005 sdist runtime. Linux is comple
 2290passed/6skipped, zero failures/errors, including14actual Docker cases and two
 same-Core Docker proposal cases. The six skips concern five Windows-only cases
 and one non-Linux unsupported-backend check. Independent review accepts this
-Linux environment's B6 regression portion only. Windows is still RUNNING;
-the complete matrix is not yet accepted.
+Linux environment's B6 regression portion. Windows is also terminal:
+2251passed/45skipped, zero failures/errors. Both contain2296identicalcase IDs;
+Windows45skipped cases pass in Linux and Linux6skipped cases pass in Windows.
+The Windows symlink privilege limitations and Linux-only Docker/POSIX capabilities
+remain platform-specific limitations, not silently granted capabilities.
+Independent review accepts the complete local matrix in these two installed
+environments.1222source files and88runtime package members match before/after;
+all16evidence hashes, process records, sanitized logs and JUnit were checked.
+No full rerun is necessary absent a relevant change. This supports B6 only within
+the stated frozen runtime/test-source and platform scope, not formal M5 acceptance.
 [Full regression evidence](evidence/m7-full-regression/summary.json).
 Cross-client remains NOT RUN because the owner
 has neither Claude nor Cursor subscription. Formal M5/M6/M7/Release remain BLOCKED.

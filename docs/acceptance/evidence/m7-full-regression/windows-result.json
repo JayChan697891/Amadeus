@@ -1,0 +1,70 @@
+{
+  "product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "test_source_sha": "74e1527b93a70a18120de80b151561c836af14a7",
+  "sdist_sha256": "f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351",
+  "source_zip_sha256": "b821ed3cbcc06cac7979bea37191f600d89eb537850def11b8f0a6c5c6e5cb6c",
+  "scope": "Complete existing suite, frozen test source74e1527, installed sdist runtime6017005, no actual clients",
+  "started_at": "2026-11-12T12:49:18.564865+00:00",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "win32",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m7-sdist-6017005\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-full-74e1527\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-full-74e1527\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-12T12:49:18.565866+00:00",
+    "finished_at": "2026-11-12T13:20:50.359991+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "36158f1df51fd78891f13efedf4ab22eee2ba43c5472626c4d11a909d6b985bd",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  },
+  "source_unchanged": true,
+  "source_files": 1222,
+  "source_fingerprint_sha256": "63c12e819d4c2204cf30bf4c19d7d3992ded89c692e78787cc4f72cf254bae5d",
+  "changed_source_paths": [],
+  "installed_identity": {
+    "origin": "D:\\agentsync-debug\\m7-sdist-6017005\\installed\\Lib\\site-packages\\agentsync",
+    "runtime_package_members_matched": 88,
+    "runtime_python_modules": 87,
+    "source_shadowing": false
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 2296,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 45
+  },
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 6,
+    "POSIX FIFO metadata fixture requires Linux": 1,
+    "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+    "Actual reconciliation requires an explicitly configured local Linux image": 5,
+    "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+    "Proposal execution requires an explicitly pinned local Linux Docker image": 2,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+    "Requires Linux/POSIX fork": 1,
+    "This host cannot create the actual symlink fixture": 2,
+    "FIFO fixture requires os.mkfifo": 1,
+    "Local symlink creation unavailable": 2,
+    "Local FIFO creation unavailable": 1,
+    "Creating directory symlinks requires unavailable host privileges": 1
+  },
+  "failed_cases": [],
+  "finished_at": "2026-11-12T13:20:50.622577+00:00"
+}
