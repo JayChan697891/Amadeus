@@ -6,7 +6,8 @@ It does not authenticate the reviewer or approve a release.
 
 A passing client or relay decision cites a JSON execution receipt with the
 frozen commit, client versions, hashed agent/run/session IDs and the SHA-256
-of a separate file cited as execution_artifact.
+of a separate file cited as execution_artifact. Use release_execution_receipt.py
+to prepare this declaration from saved observations.
 """
 
 from __future__ import annotations
@@ -149,7 +150,10 @@ def _execution_artifact_digest(root: Path, record: dict[str, Any], commit: str) 
         raise ValueError("Execution receipt exceeds its byte limit.")
     evidence = _Evidence(root, [{key: record[key] for key in ("path", "size", "sha256")}])
     receipt = read_json(evidence.check(record["path"], retain=True))
-    kind = record["kind"]
+    return _validate_execution_receipt(receipt, record["kind"], commit)
+
+
+def _validate_execution_receipt(receipt: Any, kind: str, commit: str) -> str:
     if (
         type(receipt) is not dict
         or set(receipt) != {"schema_version", "kind", "commit_sha", "runs", "artifact_sha256"}

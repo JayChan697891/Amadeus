@@ -82,3 +82,22 @@ def test_relay_receipt_pins_frozen_source_and_distinct_client_identities(review_
     duplicate = member(tmp_path, "duplicate-fixture", "real_relay", json.dumps(document).encode())
     with pytest.raises(ValueError, match="separate agent"):
         review_tool._execution_artifact_digest(tmp_path, duplicate, commit)
+
+
+def test_prepared_receipt_uses_the_artifact_bytes_from_the_review_directory(review_tool, tmp_path):
+    producer = importlib.import_module("release_execution_receipt")
+    artifact_record = member(tmp_path, "artifact", "execution_artifact", b"fixture artifact")
+    pin = {key: artifact_record[key] for key in ("path", "size", "sha256")}
+    run = {
+        "client": "codex", "client_version": "fixture-version",
+        "agent_sha256": "1" * 64, "run_sha256": "2" * 64, "session_sha256": "3" * 64,
+    }
+    commit = "a" * 40
+    declaration = {"artifact": pin, "runs": [run]}
+    receipt = producer.prepare_execution_receipt(tmp_path, "codex", commit, declaration)
+    record = member(tmp_path, "client", "codex", json.dumps(receipt).encode())
+    assert review_tool._execution_artifact_digest(tmp_path, record, commit) == pin["sha256"]
+
+    (tmp_path / pin["path"]).write_bytes(b"altered artifact")
+    with pytest.raises(ValueError):
+        producer.prepare_execution_receipt(tmp_path, "codex", commit, declaration)
