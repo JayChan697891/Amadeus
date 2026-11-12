@@ -113,14 +113,20 @@ ordinary review. Verified completion still uses its independent evidence gate.
 Keep the same private receipt directory on restart. An unfinished fence remains
 incomplete and prevents another launch for the task through this pilot. Existing
 Core lease recovery is separate. Filesystem receipts and Core changes are separate
-transactions, so a crash between them can require human reconciliation. Runtime
-validation of the relay and its operating-system isolation is pending.
+transactions, so a crash between them can require human reconciliation. Two actual
+Codex sessions have now completed a fixed-text sequential relay at ee45690 with
+structured handoff, pinned context and a distinct reviewer. Broader operating-system
+isolation, cross-client compatibility and full M7 remain unverified.
 
-Offline tests use known local Python helpers and hand-authored JSONL. One separately
-authorized actual installed-wheel adapter+plan+explicit-env run returned a synthetic
-inline token successfully; it did not use tools or complete a Core task. Permissions,
-server cancellation, real timeout, Claude, Cursor and autonomous relay remain
-NOT RUN/UNVERIFIED. See RELEASE-ACCEPTANCE-REPORT.md for exact evidence.
+Offline tests use known local Python helpers and hand-authored JSONL; their results
+are separate from actual-client evidence. A repaired real single-Codex run and the
+same-client relay reached ordinary Core review/completion at ee45690, with artifact
+verification still unverified. At f74f29f, actual local cancellation and a15-second
+deadline preserved unknown/incomplete state after parent termination. The deadline
+capture also contains a completed turn, so timeout during active generation is not
+verified. Permissions, server cancellation, descendant cleanup, Claude/Cursor and
+full autonomous collaboration remain unverified. See RELEASE-ACCEPTANCE-REPORT.md
+for the exact SHA-bound evidence and limits.
 
 ## Optional pure host invocation preparation
 

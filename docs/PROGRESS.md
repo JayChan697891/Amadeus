@@ -108,6 +108,15 @@ original/fixtures/runtime unchanged, no retry. Astra independently reviewed the
 safe records. Server cancellation, descendant cleanup and billing remain unverified.
 See [actual cancellation evidence](acceptance/evidence/m6-native-mxc/cancel-live-summary.json).
 
+A new real15-second Codex deadline at runtime f74f29f/head d73e044 recorded
+adapter_timeout/timed_out=true and parent exit1 after15.014s. Reopened state stays
+incomplete/running/unverified. The600-byte private stream also contains the exact
+reply and turn.completed: active-generation timeout and event/deadline ordering
+are NOT VERIFIED. The completed text did not override the unknown stop receipt.
+Astra accepted only the real local deadline and durable fail-closed outcome.
+Temp auth removed, original/fixtures/runtime unchanged; no retry. See
+[actual deadline evidence](acceptance/evidence/m6-native-mxc/timeout-live-summary.json).
+
 Next: cross-client account and isolation readiness. The official Cursor CLI was
 installed only under D: and passed version/help/plan preparation, with no model
 call, account/PATH or desktop-install changes. Claude2.1.295 version matches, but

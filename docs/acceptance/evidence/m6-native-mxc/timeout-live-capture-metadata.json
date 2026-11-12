@@ -1,0 +1,10 @@
+{
+  "scope": "Private bounded raw capture; never automatically upload",
+  "saved": true,
+  "stdout_bytes": 600,
+  "stderr_bytes": 0,
+  "stdout_sha256": "13aecd0cd96d2c1923c695642e20b857a378fbbc2d9965b90eb3e1c4a0d673fe",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_truncated": false,
+  "stderr_truncated": false
+}

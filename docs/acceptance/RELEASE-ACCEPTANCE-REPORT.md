@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+## Actual local Codex deadline
+
+Runtime f74f29f/head d73e044 ran one isolated fixed-text task with a15-second
+limit. Receipt: adapter_timeout, timed_out=true, parent ended/exit1, elapsed15.014s.
+Core reopened running/unverified; controller incomplete. The600-byte private stream
+also contains the expected reply and turn.completed. Thus active-generation timeout
+and event-versus-deadline order remain UNVERIFIED; the captured reply does not
+replace the durable unknown result. Astra accepted only the real local deadline
+and fail-closed persistence. Auth cleanup and unchanged fixtures/runtime confirmed.
+
+No retry, server-cancellation claim, descendant-cleanup claim or Release upgrade.
+This evidence-only checkpoint did not rerun passing product suites. Exact records,
+method and limits: [deadline evidence](evidence/m6-native-mxc/timeout-live-summary.json).
+
 ## Actual local Codex cancellation
 
 Runtime f74f29f/head7d573a0 executed one isolated fixed-text task on2026-11-12
