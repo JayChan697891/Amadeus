@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+## Pinned-input queue admission repair: limited regression acceptance
+
+Frozen8a4ba72 rejects deterministic invalid pinned source before wave reservation.
+The task remains unclaimed and no launch consent is requested; a later valid wave
+can proceed. Post-admission source change still produces an incomplete fence.
+Windows source23passed; fresh Windows/Linux wheels each86passed with zero failures,
+errors or skips.88runtime members remain exact; dependency and static checks pass.
+[Evidence](evidence/m7-pinned-admission/summary.json).
+
+This is offline affected-scope regression, with no new model/candidate execution.
+Earlier real handoff remains bound to6017005->2ac4557. New8a4ba72 full matrix and
+sdist installation are NOT RUN. M5/M6/M7/Release gates remain unchanged and formal
+Release remains BLOCKED. Work is paused at the owner's request after this checkpoint.
+
 ## Actual pinned artifact handoff: limited cross-upgrade acceptance
 
 One real receiver on2ac4557 consumed the saved real6017005 producer through its own

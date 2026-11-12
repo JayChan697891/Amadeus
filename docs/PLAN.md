@@ -1,5 +1,14 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Checkpoint8a4ba72: deterministic invalid pinned proposal input is now rejected
+before wave admission. Post-admission revalidation/failure fences remain intact.
+23source tests and86fresh-wheel tests on each local Windows/Linux platform pass.
+Evidence: acceptance/evidence/m7-pinned-admission/summary.json. Current work is
+paused at the owner's request after this checkpoint. On explicit resume, compose
+existing public APIs for host-side automatic pin derivation/next-task preparation;
+retain independent completion, exact launch consent and inert output gates. No
+new queue API or model attempt has started for that next item.
+
 Latest milestone: a distinct real Codex reviewer on2ac4557 received and reviewed
 the saved6017005 producer artifact. Exact context pin, separate identities and
 full407byte document were independently checked. New review task completed as

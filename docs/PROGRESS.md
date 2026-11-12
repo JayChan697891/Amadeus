@@ -1,5 +1,33 @@
 # Amadeus current progress
 
+## Paused at the owner's request after the current repair
+
+Frozen8a4ba72 repairs a real queue admission ordering bug. Wrong pinned hashes,
+missing submitted proof or oversized source input used to be discovered only
+after a wave reservation, leaving an incomplete project fence despite no claim,
+consent or launch. Selected pinned items now run the existing read-only input
+construction before reservation. Launch still revalidates after admission; an
+injected source-proof change after admission retains the incomplete fence.
+Unpinned and legacy pair paths are unchanged. No validation or release rule relaxed.
+
+Windows focused source23passed. Fresh Windows/Linux wheels each86passed, zero
+failures/errors/skips;88installed runtime members match before/after, dependency
+checks pass, no source shadowing. Root Ruff/format2files and mypy87modules pass.
+Independent source review accepted the limited change. Package review is recorded
+in the [evidence summary](acceptance/evidence/m7-pinned-admission/summary.json).
+Artifacts: releases/0.3.0a109/m7-admission-8a4ba72. No model was called for this fix.
+Actual model review remains bound to6017005->2ac4557; it is not upgraded to8a4ba72.
+New full-matrix/sdist-install checks remain NOT RUN; formal Release stays BLOCKED.
+
+The owner requested stopping after this current goal. Do not start the next task
+without a resume instruction. All local checks ended; dedicated Docker has zero
+containers and owned VM16924 was stopped. Source/evidence remain in F:/syuc;
+debug resume entry is D:/agentsync-debug/m7-package-pinned-admission.
+When resumed, use existing public Core/relay APIs for a bounded host coordinator
+that derives the next exact context pin from a real returned proposal and waits
+for independent producer completion. Do not expand the queue API or auto-complete
+producer tasks. This next implementation and any new model attempt have NOT started.
+
 ## Actual independent model review of the saved producer artifact
 
 The first pinned-context real receiver completed on2ac4557 against the already

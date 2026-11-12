@@ -1,0 +1,13 @@
+{
+  "product_sha": "8a4ba72ac171871c16014b2a4b14f1b056580873",
+  "wheel_sha256": "dfe80522e06f0d8a3742929d52441d5cb627f0248bc705aeac19d15862eed513",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "runtime_package_members_matched_before_after": 88,
+  "runtime_python_modules": 87,
+  "source_shadowing": false,
+  "origin": "/root/amadeus-pinned-admission-8a4ba72/venv/lib/python3.14/site-packages/agentsync",
+  "exit_code": 0,
+  "model_calls": 0,
+  "candidate_execution": false,
+  "formal_release": "BLOCKED"
+}
