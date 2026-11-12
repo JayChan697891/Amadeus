@@ -1,0 +1,163 @@
+"""One local, owner-authorized real pilot. Never copies authentication material."""
+import asyncio
+from dataclasses import asdict
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.controlled_relay import ControlledRelay, RelayActor, SingleCodexInput
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+from private_capture import PrivateCapture
+
+BASE = Path(__file__).resolve().parent
+REPO = Path('F:/syuc/amadeus-m6-single')
+EXE = Path('C:/Users/JayChan/AppData/Local/OpenAI/Codex/bin/5449c1f0f26f1f98/codex.exe')
+HOME = BASE / 'private-home'
+REPLY = 'AMADEUS_PROTOCOL_DIAGNOSTIC_OK'
+INSTRUCTION = 'Reply with exactly AMADEUS_PROTOCOL_DIAGNOSTIC_OK. Do not use any tools, access files, start tasks or perform other actions.'
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+
+def git(root, *args):
+    return subprocess.check_output(['git', '-C', str(root), *args], stderr=subprocess.PIPE).decode().strip()
+
+
+def sources():
+    return {str(p.relative_to(REPO)): sha(p) for p in sorted((REPO / 'src').rglob('*.py'))}
+
+
+def assert_runtime_origin():
+    for name, module in tuple(sys.modules.items()):
+        if name == 'agentsync' or name.startswith('agentsync.'):
+            path = getattr(module, '__file__', None)
+            if not path or not Path(path).resolve().is_relative_to((REPO / 'src').resolve()):
+                raise RuntimeError('Runtime import is outside the pinned source checkout.')
+
+
+def fixture_intact(state, root):
+    expected = state['worktree_fixture_sha256'] if root == Path(state['tree']['path']) else state['fixture_sha256']
+    return sha(root / 'fixture.txt') == expected and git(root, 'rev-parse', 'HEAD') == state['fixture_head'] and not git(root, 'status', '--porcelain')
+
+
+def environment():
+    env = {n: os.environ[n] for n in ('SYSTEMROOT', 'SystemDrive', 'WINDIR', 'COMSPEC', 'PATHEXT') if n in os.environ}
+    env.update(PATH=str(Path(os.environ['SYSTEMROOT']) / 'System32'), CODEX_HOME=str(HOME), USERPROFILE=str(BASE / 'profile'), APPDATA=str(BASE / 'profile/AppData/Roaming'), LOCALAPPDATA=str(BASE / 'profile/AppData/Local'), TEMP=str(BASE / 'tmp'), TMP=str(BASE / 'tmp'))
+    return env
+
+
+def actor_for(state, authority):
+    member = state['member']
+    tree = state['tree']
+    profile = CodexHostProfile(state['owner']['project_id'], member['session_id'], EXE, Path(tree['path']), state['binary_sha256'], expected_cli_version='0.167.0-alpha.3.2', max_timeout_seconds=90, windows_mxc=True)
+    return RelayActor(member['agent_id'], member['session_token'], profile, tree['worktree_id'], tree['head_sha'], state['environment'], authority)
+
+
+def spec_for(state):
+    return SingleCodexInput(state['task']['id'], state['task']['version'], INSTRUCTION, REPLY, 90)
+
+
+async def deny(_review):
+    return None
+
+
+def prepare():
+    assert_runtime_origin()
+    if (BASE / 'state.json').exists() or (BASE / 'source').exists():
+        raise RuntimeError('Preserve existing pilot; preparation is not repeatable.')
+    for name in ('source', 'receipts', 'private-home', 'profile/AppData/Local', 'profile/AppData/Roaming', 'tmp'):
+        (BASE / name).mkdir(parents=True, exist_ok=False)
+    source = BASE / 'source'
+    git(source, 'init', '--initial-branch=fixture-main')
+    (source / 'fixture.txt').write_text('Amadeus isolated read-only fixture\n', encoding='utf-8')
+    git(source, 'add', 'fixture.txt')
+    git(source, '-c', 'user.name=Amadeus fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'Isolated baseline')
+    core = Core(BASE / 'core')
+    owner = core.execute('create_project', {'name': 'Single Codex fixed-text pilot', 'root_path': str(source)})
+    member = core.execute('register_agent', {**owner, 'name': 'Isolated Codex worker'})
+    listed = core.execute_owner('list_members', {**owner, 'limit': 100, 'offset': 0})['members']
+    current = next(m for m in listed if m['agent_id'] == member['agent_id'])
+    core.execute_owner('set_agent_roles', {**owner, 'agent_id': member['agent_id'], 'roles': ['worker'], 'expected_version': current['version'], 'request_id': 'pilot-worker-role'})
+    def call(op, **payload):
+        return core.execute(op, {'project_id': owner['project_id'], 'session_id': member['session_id'], 'session_token': member['session_token'], **payload})
+    task = call('create_task', title='Fresh fixed-text protocol diagnostic', request_id='pilot-task')
+    snapshot = call('capture_repository', request_id='pilot-snapshot')
+    tree = call('create_worktree', snapshot_id=snapshot['snapshot_id'], task_id=task['id'], request_id='pilot-worktree')
+    state = {'owner': owner, 'member': member, 'task': task, 'tree': tree, 'binary_sha256': sha(EXE), 'environment': environment(), 'source_hashes': sources(), 'fixture_sha256': sha(source / 'fixture.txt'), 'fixture_head': git(source, 'rev-parse', 'HEAD')}
+    # Git may use CRLF for the Windows checkout; pin its actual bytes separately.
+    state['worktree_fixture_sha256'] = sha(Path(tree['path']) / 'fixture.txt')
+    actor = actor_for(state, deny)
+    review = ControlledRelay(core, BASE, BASE / 'receipts').preview_codex(actor, spec_for(state), admin_token=owner['admin_token'])
+    state['plan_sha256'] = review.plan_sha256
+    save('state.json', state)  # Synthetic local Core tokens; never upload this file.
+    save('plan.json', {'time_utc': datetime.now(timezone.utc).isoformat(), 'product_sha': git(REPO, 'rev-parse', 'HEAD'), 'source_hashes': state['source_hashes'], 'binary_sha256': state['binary_sha256'], 'plan_sha256': review.plan_sha256, 'argv': review.plan.argv, 'cwd': str(review.plan.cwd), 'environment': review.plan.child_env(), 'instruction': INSTRUCTION, 'expected_reply': REPLY, 'timeout_seconds': 90, 'model_requests': 0, 'private_capture_retention': 'At most plan.output_limit combined bytes, local owner/SYSTEM-only directory; no raw output upload', 'authentication': 'NOT RUN; no authentication material copied', 'credential_source': 'C:/Users/JayChan/.codex/auth.json', 'credential_destination': str(HOME / 'auth.json'), 'temporary_auth_cleanup': 'Delete only private-home/auth.json after owned CLI checks and execution finish; original preserved; unknown process status requires host inspection before cleanup', 'acceptance': 'NOT RUN'})
+    print(json.dumps({'prepared': True, 'plan_sha256': review.plan_sha256, 'model_requests': 0}))
+
+
+async def execute():
+    assert_runtime_origin()
+    state = json.loads((BASE / 'state.json').read_text())
+    if sources() != state['source_hashes'] or sha(EXE) != state['binary_sha256']:
+        raise RuntimeError('Pinned source or binary changed; stop before authentication.')
+    if (BASE / 'attempt.json').exists():
+        raise RuntimeError('Prior possible model start exists; no retries.')
+    async def approve(review):
+        if review.plan_sha256 != state['plan_sha256']:
+            return None
+        return LaunchConsent('owner-once-protocol-diagnostic-20261112', review.plan_sha256, time.time() + 120, True, True)
+    actor = actor_for(state, approve)
+    relay = ControlledRelay(Core(BASE / 'core'), BASE, BASE / 'receipts')
+    review = relay.preview_codex(actor, spec_for(state), admin_token=state['owner']['admin_token'])
+    if review.plan_sha256 != state['plan_sha256']:
+        raise RuntimeError('Plan changed; stop before authentication.')
+    if not fixture_intact(state, review.plan.cwd) or not fixture_intact(state, BASE / 'source'):
+        raise RuntimeError('Source or actual execution worktree changed before launch.')
+    config = [value for i, arg in enumerate(review.plan.argv) if arg == '-c' for value in ('-c', review.plan.argv[i + 1])]
+    result = subprocess.run([str(EXE), *config, 'login', 'status'], cwd=review.plan.cwd, env=review.plan.child_env(), capture_output=True, timeout=20)
+    # Never emit authentication stdout/stderr or accept an API-key/ambiguous route.
+    route = (result.stdout + result.stderr).decode('utf-8', errors='replace').strip()
+    recognized = result.returncode == 0 and route == 'Logged in using ChatGPT'
+    save('auth-route.json', {'recognized_chatgpt_route': recognized, 'exit_code': result.returncode, 'model_requests': 0})
+    if not recognized:
+        raise RuntimeError('Authentication route not recognized; no model start.')
+    save('attempt.json', {'time_utc': datetime.now(timezone.utc).isoformat(), 'plan_sha256': review.plan_sha256, 'single_call_authorization': 'consumed at first possible model start', 'retry_allowed': False})
+    outcome = None
+    error_code = None
+    capture = PrivateCapture(review.plan, BASE / 'private-capture')
+    try:
+        with capture:
+            outcome = asdict(await relay.run_codex_once(actor, spec_for(state), admin_token=state['owner']['admin_token']))
+    except AgentSyncError as error:
+        error_code = error.code
+    finally:
+        await capture.retain()
+        observed = relay.inspect_attempts(actor, state['task']['id'], admin_token=state['owner']['admin_token'])
+        source = BASE / 'source'
+        assert_runtime_origin()
+        save('result.json', {'time_utc': datetime.now(timezone.utc).isoformat(), 'outcome': outcome, 'error_code': error_code, 'attempts': [asdict(a) for a in observed], 'source_fixture_unchanged': fixture_intact(state, source), 'execution_worktree_unchanged': fixture_intact(state, review.plan.cwd), 'runtime_sources_unchanged': sources() == state['source_hashes'], 'formal_release': 'BLOCKED', 'independent_review': 'pending'})
+    print(json.dumps({'outcome': outcome, 'error_code': error_code}))
+
+
+if __name__ == '__main__':
+    if sys.argv[1:] == ['prepare']:
+        prepare()
+    elif sys.argv[1:] == ['execute-once-after-credential-authorization']:
+        asyncio.run(execute())
+    else:
+        raise SystemExit('Choose prepare or the explicitly authorized single execution mode.')

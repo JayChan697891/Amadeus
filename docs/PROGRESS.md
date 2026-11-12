@@ -29,9 +29,14 @@ with one Windows-only MXC skip and all 84 runtime modules matched. Its owned
 D-drive virtual machine stopped normally after evidence retrieval. These results
 do not cover `080722e` installed packages/Linux/macOS or any formal Release gate.
 
-Resume offline from `080722e`. A future diagnostic task needs bounded private raw
-capture retention and a new exact plan, then separate explicit model-call and
-temporary-credential authorization. Do not restart the consumed task at
+Resume offline from `080722e`. A NEW diagnostic task is now prepared at
+`D:\agentsync-debug\m6-protocol-diagnostic-20261112`; see
+[the exact plan](acceptance/evidence/m6-native-mxc/next-diagnostic-summary.json).
+Its forward-only capture wrapper passed a local Python fixture and Astra review.
+It can retain at most 1MiB combined raw output under the private local ACL, never
+automatically upload it. Separate explicit model-call, temporary-credential copy
+and private-retention authorization are still required; no credentials copied,
+no new real attempt started. Do not restart the consumed task at
 `D:\agentsync-debug\m6-live-single-20261112`, print/upload its state.json, private
 home, Core database or credentials. No new M5 stage exists; B1/B3/M6 and Release
 remain unresolved. Historical preflight and package evidence remain scoped to

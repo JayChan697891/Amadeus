@@ -1,0 +1,17 @@
+{
+  "known_python_fixture_only": true,
+  "model_requests": 0,
+  "exact_raw_bytes_retained": true,
+  "second_launch_refused": true,
+  "original_capture_method_restored": true,
+  "metadata": {
+    "scope": "Private bounded raw capture; never automatically upload",
+    "saved": true,
+    "stdout_bytes": 15,
+    "stderr_bytes": 13,
+    "stdout_sha256": "cf344a64f6cec64dbff0e9b385a892773860c9f92a86726398d6830bb3339ed8",
+    "stderr_sha256": "f37b42c743fa9416415b4dbbd08edba048555397325328bba3a827372be1b111",
+    "stdout_truncated": false,
+    "stderr_truncated": false
+  }
+}

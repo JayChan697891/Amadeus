@@ -1,0 +1,22 @@
+{
+  "scope": "Fresh diagnostic task preparation only; not a retry or model authorization",
+  "product_sha": "080722e8882a7c4d83a7afa80fc6427170e93fec",
+  "plan_sha256": "f3408a2b224b03d7aeb5a3caa7e9d217a62ec483349dd84974dfd203a619700b",
+  "known_python_capture_fixture": "passed: exact bounded raw bytes retained; second launch refused; original capture method restored",
+  "real_model_requests": 0,
+  "credential_copy": "NOT RUN",
+  "authorization": "NOT GRANTED",
+  "raw_output_policy": "At most 1MiB combined, owner/SYSTEM-only local directory, no automatic upload; byte-preserving private capture does not replace original adapter processing",
+  "private_runtime_root": "D:\\agentsync-debug\\m6-protocol-diagnostic-20261112",
+  "next": "Explicit authorization for one NEW subscription diagnostic task, exact temporary auth copy and bounded local raw retention; old task not retried.",
+  "evidence_sha256": {
+    "next-diagnostic-plan.json": "64ecfdf05965a39210e3656acfc84f75d729e93ab5ac0987fa76f718dc0d7663",
+    "next-capture-fixture.json": "68cd07390308b0e572ddf6b0bd5925c847dceba529feed851541becafad219c9",
+    "next-pilot-harness.py.txt": "ba38f108e1a157577f8e51182d7afa71201a06d628d5e14d71dc69f85f249b45",
+    "next-private-capture.py.txt": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "next-cleanup-auth.ps1": "b8d6d4e60e2993124bddde436c13f9652cb6615edb8d7a0dae275912ebbd3b3e"
+  },
+  "independent_review": "Astra read-only review found no substantive blocker in exact forward-only observer, bounded private retention and cleanup plan; not real acceptance.",
+  "raw_retention_limit_bytes": 1048576,
+  "retention_failure_note": "Partial private files may remain when saved=false; no raw output is automatically published."
+}
