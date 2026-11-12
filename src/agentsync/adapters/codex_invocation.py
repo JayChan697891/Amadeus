@@ -11,6 +11,7 @@ atomicity or authorize later execution. A real launch needs fresh authorization.
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 import os
 import re
@@ -31,6 +32,7 @@ _ENV_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_()]*\Z")
 _ENV_KEYS = frozenset(
     {
         "SYSTEMROOT",
+        "SYSTEMDRIVE",
         "WINDIR",
         "PATH",
         "PATHEXT",
@@ -50,6 +52,8 @@ _ENV_KEYS = frozenset(
         "SSL_CERT_DIR",
         "CODEX_HOME",
         "CODEX_CA_CERTIFICATE",
+        "TEMP",
+        "TMP",
     }
 )
 _CONFIG = (
@@ -70,6 +74,18 @@ _DISABLE = (
     "remote_plugin",
     "skill_search",
     "skill_mcp_dependency_install",
+)
+_MXC_DISABLE = _DISABLE + (
+    "browser_use",
+    "browser_use_external",
+    "browser_use_full_cdp_access",
+    "computer_use",
+    "code_mode",
+    "code_mode_host",
+    "unified_exec",
+    "view_image",
+    "plugins",
+    "image_generation",
 )
 
 
@@ -106,6 +122,7 @@ class CodexHostProfile:
     model: str = "gpt-6.1-sol"
     max_timeout_seconds: float = 300.0
     output_limit: int = 1024 * 1024
+    windows_mxc: bool = False
 
     def __post_init__(self) -> None:
         # Structural validation performs no filesystem or environment reads.
@@ -131,6 +148,7 @@ class CodexHostProfile:
             valid_timeout = False
         if (
             not valid_timeout
+            or type(self.windows_mxc) is not bool
             or type(self.output_limit) is not int
             or not 1 <= self.output_limit <= 1024 * 1024
         ):
@@ -187,6 +205,38 @@ def _environment(value: dict[str, str]) -> tuple[tuple[str, str], ...]:
                 _invalid("ambiguous_environment")
             selected[canonical] = content
     return tuple(sorted(selected.items()))
+
+
+def _mxc_arguments(profile: CodexHostProfile, environment: dict[str, str]) -> tuple[str, ...]:
+    """Select an explicit native boundary; host evidence and consent remain required."""
+    if os.name != "nt" or profile.expected_cli_version != "0.167.0-alpha.3.2":
+        _invalid("unsupported_mxc_profile")
+    required = (
+        "SYSTEMROOT",
+        "SYSTEMDRIVE",
+        "LOCALAPPDATA",
+        "USERPROFILE",
+        "CODEX_HOME",
+        "TEMP",
+        "TMP",
+    )
+    if any(not environment.get(key) for key in required):
+        _invalid("host_environment_unavailable")
+    # Inline settings are part of the approved plan; no mutable named config
+    # file can broaden the profile after the host reviews it.
+    root = json.dumps(profile.root.as_posix(), ensure_ascii=False)
+    disabled = ",".join(f"{feature}=false" for feature in _MXC_DISABLE)
+    config = (
+        'windows.sandbox="mxc"',
+        'default_permissions="amadeus_readonly"',
+        f'permissions.amadeus_readonly.filesystem={{":minimal"="read",{root}="read"}}',
+        "permissions.amadeus_readonly.network.enabled=false",
+        f"features={{{disabled}}}",
+        'browser_use.default_origin_policy.access="deny"',
+        'computer_use.default_app_access="deny"',
+        "project_doc_max_bytes=0",
+    )
+    return tuple(argument for value in config for argument in ("-c", value))
 
 
 def _ordinary(info: os.stat_result, *, directory: bool = False) -> bool:
@@ -254,6 +304,11 @@ def prepare_invocation(
     if profile.expected_cli_version not in SUPPORTED_CLI_VERSIONS:
         _invalid("unsupported_cli_version")
     selected_environment = _environment(environment)
+    boundary = (
+        _mxc_arguments(profile, dict(selected_environment))
+        if profile.windows_mxc
+        else ("--sandbox", "read-only")
+    )
     binary_sha256 = _binary_hash(profile)
     argv = (
         str(profile.executable),
@@ -262,8 +317,7 @@ def prepare_invocation(
         "exec",
         "--ignore-user-config",
         "--strict-config",
-        "--sandbox",
-        "read-only",
+        *boundary,
         "--ephemeral",
         "--json",
         "--color",
@@ -273,7 +327,11 @@ def prepare_invocation(
         "-C",
         str(profile.root),
         *(argument for config in _CONFIG for argument in ("-c", config)),
-        *(argument for feature in _DISABLE for argument in ("--disable", feature)),
+        *(
+            ()
+            if profile.windows_mxc
+            else tuple(argument for feature in _DISABLE for argument in ("--disable", feature))
+        ),
         "-",
     )
     if len(argv) > 64 or sum(len(_text(argument, 4096)) for argument in argv) > 32768:

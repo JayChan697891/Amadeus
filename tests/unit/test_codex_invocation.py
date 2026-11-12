@@ -1,12 +1,15 @@
 """Pure plans using synthetic, non-executable fake binaries; never actual CLI tests."""
 
 import hashlib
+import os
+import tomllib
 from dataclasses import FrozenInstanceError, replace
 from pathlib import Path
 
 import pytest
 
 from agentsync.adapters import codex_invocation
+from agentsync.adapters.approved_launch import prepare_launch_review
 from agentsync.adapters.base import AdapterTask
 from agentsync.adapters.codex_invocation import CodexHostProfile, prepare_invocation
 from agentsync.errors import AgentSyncError
@@ -174,6 +177,9 @@ def test_explicit_environment_filters_dummy_secrets_and_copies_immutable_plan(tm
     source = {
         "Path": "fixture-bin",
         "SystemRoot": "fixture-system-root",
+        "SystemDrive": "C:",
+        "TEMP": "fixture-temp",
+        "TMP": "fixture-tmp",
         "https_proxy": "fixture-proxy",
         "SSL_CERT_FILE": "fixture-ca-file",
         "SSL_CERT_DIR": "fixture-ca-directory",
@@ -190,6 +196,9 @@ def test_explicit_environment_filters_dummy_secrets_and_copies_immutable_plan(tm
     expected = {
         "PATH": "fixture-bin",
         "SYSTEMROOT": "fixture-system-root",
+        "SYSTEMDRIVE": "C:",
+        "TEMP": "fixture-temp",
+        "TMP": "fixture-tmp",
         "HTTPS_PROXY": "fixture-proxy",
         "SSL_CERT_FILE": "fixture-ca-file",
         "SSL_CERT_DIR": "fixture-ca-directory",
@@ -220,6 +229,58 @@ def test_case_ambiguous_allowed_environment_is_rejected_not_arbitrarily_selected
         profile, task(), environment={"DUMMY_TOKEN": "one", "dummy_token": "two"}
     )
     assert plan.environment == ()
+
+
+@pytest.mark.skipif(os.name != "nt", reason="The opt-in MXC plan requires native Windows")
+def test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit(tmp_path):
+    profile = profile_for(tmp_path, windows_mxc=True, expected_cli_version="0.167.0-alpha.3.2")
+    environment = {
+        key: "explicit-fixture-value"
+        for key in (
+            "SYSTEMROOT",
+            "SYSTEMDRIVE",
+            "LOCALAPPDATA",
+            "USERPROFILE",
+            "CODEX_HOME",
+            "TEMP",
+            "TMP",
+        )
+    }
+    plan = prepare_invocation(profile, task(), environment=environment)
+    configs = [plan.argv[index + 1] for index, value in enumerate(plan.argv) if value == "-c"]
+    effective = tomllib.loads("\n".join(configs))
+    assert effective["windows"]["sandbox"] == "mxc"
+    assert effective["default_permissions"] == "amadeus_readonly"
+    assert effective["permissions"]["amadeus_readonly"] == {
+        "filesystem": {":minimal": "read", profile.root.as_posix(): "read"},
+        "network": {"enabled": False},
+    }
+    assert effective["browser_use"]["default_origin_policy"]["access"] == "deny"
+    assert effective["computer_use"]["default_app_access"] == "deny"
+    assert effective["features"]["image_generation"] is False
+    assert all(value is False for value in effective["features"].values())
+    assert effective["forced_login_method"] == "chatgpt"
+    assert effective["model_provider"] == "openai"
+    assert "--sandbox" not in plan.argv  # The legacy setting would override the named profile.
+    assert len(plan.argv) <= 64
+    assert plan.child_env() == environment
+    assert plan.sandbox_verified is plan.auth_verified is plan.billing_verified is False
+    native_review = prepare_launch_review(profile, task(), environment=environment)
+    legacy_review = prepare_launch_review(
+        replace(profile, windows_mxc=False), task(), environment=environment
+    )
+    assert native_review.plan_sha256 != legacy_review.plan_sha256
+    with pytest.raises(AgentSyncError) as missing_environment:
+        prepare_invocation(profile, task(), environment={})
+    assert missing_environment.value.code == "host_environment_unavailable"
+
+
+def test_mxc_plan_rejects_legacy_cli_before_binary_access(tmp_path):
+    profile = profile_for(tmp_path, windows_mxc=True)
+    profile.executable.unlink()
+    with pytest.raises(AgentSyncError) as rejected:
+        prepare_invocation(profile, task(), environment={})
+    assert rejected.value.code == "unsupported_mxc_profile"
 
 
 def test_environment_type_text_count_and_total_size_bounds_are_strict(tmp_path):
