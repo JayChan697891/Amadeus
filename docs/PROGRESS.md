@@ -14,10 +14,11 @@ changes release tooling and its regression fixture. Development branch
 - Windows Ruff check, format check and mypy pass on the frozen source. During
   development, 19 focused path, delivery and migration cases and 151 release
   runner cases passed. Windows Python 3.11 source and Python 3.12 offline
-  wheel each passed 154 frozen focused cases. The full 3.11 and 3.12 source
-  suites and the full 3.12 wheel each passed 2,044 with 41 skips, matching
-  the 3.14 corrected source IDs. Remaining 3.11 and 3.12 package checks are
-  active. See [Windows minor-version evidence](acceptance/evidence/a109-windows-minors.json).
+  wheel each passed 154 frozen focused cases. Windows 3.12 then passed all 26
+  local checks, including full source, wheel and sdist. The Windows 3.11 source
+  and wheel also passed. Every finished suite had 2,044 passes and 41 skips,
+  matching the 3.14 corrected source IDs. Windows 3.11 sdist is active. See
+  [Windows minor-version evidence](acceptance/evidence/a109-windows-minors.json).
 - The initial Windows full source run had 46 failures, 1,998 passes and 41
   skips. Its test subprocesses could import the old installed version. With
   the fixed import path all 46 failed cases and all 151 runner tests passed
@@ -32,6 +33,13 @@ changes release tooling and its regression fixture. Development branch
   skips. All three suites had the same ordered test IDs, and the final
   post-check found none of the 96 recorded fixture containers. See
   [Linux package evidence](acceptance/evidence/a109-linux-packages.json).
+- Linux 3.11.18 and 3.12.16 were built from checksum-verified CPython sources in
+  the D-drive guest. An initial Linux candidate preflight rejected the same
+  804 manifest entries because the Windows snapshot used CRLF. Collector fix
+  `0be709a` makes new snapshots LF and accepts an exact historical CRLF
+  encoding. All 161 targeted release tests and a real Linux staging probe passed.
+  The Linux 3.12 full run is active using the same archive hashes as Windows 3.12.
+  Linux 3.11 is ready for the next local run.
 - The local Windows M8 diagnostic passed 256 claim attempts with 256 matching
   audit outcomes and 117.46 ms p95 under its 1,000 ms budget. The host also
   ran other local validation workloads, so this is a diagnostic observation.
@@ -44,12 +52,14 @@ changes release tooling and its regression fixture. Development branch
   review on PR #33 applies to its historical frozen Linux evidence.
 
 Resume under `D:/agentsync-debug/continuation-cc30ed21` from
-`windows-py311-full-driver.log` and `windows-py312-full-driver.log` for the
-active full runs. The 3.14 package report is under `windows/` and the corrected
+`windows-py311-full-driver.log` and
+`linux-minor-runtime/linux-3.12-recheck-driver.log` for the active full runs.
+The 3.14 package report is under `windows/` and the corrected
 3.14 source report is under `fixed-windows/`. If a run is active, read its existing
 evidence before launching another. Windows uses the release runner with a local
-wheelhouse and short D-drive scratch root. The owned Linux guest stopped normally
-after its evidence was copied and checked. Diagnose failures against the
+wheelhouse and short D-drive scratch root. The Linux guest stopped normally
+after its 3.14 evidence was copied. It now uses a separate virtual disk for
+the minor-version runs. Diagnose failures against the
 recorded revision before rerunning affected checks.
 
 Current macOS, live client relay, final M5 evidence review and formal Release

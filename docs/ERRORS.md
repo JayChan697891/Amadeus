@@ -203,3 +203,10 @@ path exceeded MAX_PATH. A process-local Git option fixes the tested ref path.
 Extremely deep linked-worktree paths can still produce Git's own
 `'$GIT_DIR' too big` merge error. Acceptance uses a short scratch path on D:
 and separately tests a ref beyond MAX_PATH.
+
+The initial Linux 3.12 candidate preflight recorded FAIL with all tests NOT RUN.
+The Windows and Linux snapshots described the same 804 entries. The bytes
+differed only in JSON line endings, which changed the frozen snapshot hash.
+New collectors write LF on every platform and also recognize the exact legacy
+CRLF form of the current snapshot. The originating report, tree, clean checkout
+and archive hashes remain required. A changed entry still fails.

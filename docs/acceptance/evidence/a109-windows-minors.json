@@ -11,12 +11,22 @@
           "passed": 2044,
           "skipped": 41,
           "junit_sha256": "6abe822842e85e7394c4a9a287bd3943e36bc31502e9f454fdc3f24a6a6e4849"
+        },
+        "wheel": {
+          "tests": 2085,
+          "passed": 2044,
+          "skipped": 41,
+          "junit_sha256": "504bd9a213717514de4be0e563759f9ad3b1efd9fd1f885b87a11e4abd9979e4"
         }
       }
     },
     "3.12": {
-      "state": "running",
-      "completed_suites": {
+      "state": "passed",
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "report_sha256": "44e31ce6fa4e1b03d449bf9dbc437acb63a976f6d26657905e0d8c51184c8978",
+      "source_snapshot_sha256": "fcd639d34b8ce9dd1f231744b316f34864500b6f4956caac5f048f3d9dd919d0",
+      "local_checks": 26,
+      "suites": {
         "source": {
           "tests": 2085,
           "passed": 2044,
@@ -28,6 +38,22 @@
           "passed": 2044,
           "skipped": 41,
           "junit_sha256": "69ad0c5c4e8690da288147bf95583683c2a5a6931f3305c0f53cf4d38373aa2a"
+        },
+        "sdist": {
+          "tests": 2085,
+          "passed": 2044,
+          "skipped": 41,
+          "junit_sha256": "3fa52a07e92ed165c550d994aa1cfb74d36af7bacb0a2a7860c61863475cd8bd"
+        }
+      },
+      "installations": {
+        "wheel": {
+          "artifact_sha256": "1e52c448b16ea38b58fb12427b18d8e7ef2ea2791aabbbb59e45bd45560af6d6",
+          "license_inventory_sha256": "67013cdf309182c8f8fbf37f880db96193228044491d2fe5fe1664f0f65dc4df"
+        },
+        "sdist": {
+          "artifact_sha256": "de633120621d6d02375adece9abf01c1354231e8d93788ac424a5fd6f6b420f2",
+          "license_inventory_sha256": "67013cdf309182c8f8fbf37f880db96193228044491d2fe5fe1664f0f65dc4df"
         }
       }
     }
