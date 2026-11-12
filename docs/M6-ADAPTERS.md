@@ -20,6 +20,13 @@ match Core state. Storage alone, cancellation, unknown output or corrupted recei
 leave the wave incomplete. No automatic retry, staging, candidate execution or
 verified completion is introduced.
 
+The host maintains each participant's Core session during planning and review.
+An online preview records eligibility at that moment. The queue checks current
+online status again at admission. When the last heartbeat is more than 120
+seconds old, the host can refresh a still-valid session through Core `heartbeat`,
+then check the selection again. An expired session requires new enrollment.
+Exact launch consent is still required after a heartbeat.
+
 Existing owner/session reconciliation can recognize a historical submitted
 proposal after restart, including after the original producer session expires.
 The observing session must be currently authenticated; the immutable author,

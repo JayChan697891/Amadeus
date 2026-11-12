@@ -15,7 +15,7 @@ from test_task_proposals import counts
 from test_task_proposals import world as world
 
 import agentsync.controlled_relay as controlled_relay
-from agentsync.adapters.approved_launch import LaunchConsent, digest
+from agentsync.adapters.approved_launch import LaunchConsent, digest, prepare_launch_review
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor, RelayInput
 from agentsync.core.service import Core
@@ -149,6 +149,57 @@ def accept_fixture_review(core, review_auth, task_id, version):
             "request_id": "accept-fixture-review-" + task_id,
         },
     )
+
+
+async def test_proposal_queue_requires_current_heartbeat_before_launch(pilot, world, proposal_wave):
+    core, owner, _, auth, _, _, _, _, _ = pilot
+    relay, item, _, approvals, captures, _ = proposal_wave
+    cancel_fixture_load(world)
+    queue = RelayQueue(relay)
+    token = owner["admin_token"]
+    request_id = "heartbeat-wave"
+    initial = queue.preview((item,), admin_token=token)
+    assert initial.state == "selected" and initial.selection_sha256 is not None
+    queued_task = relay._single_codex_task(
+        item.first, item.task, token, wave_key=queue._key(item.first, request_id)
+    )
+    expected_plan = prepare_launch_review(
+        item.first.profile, queued_task, environment=item.first.environment
+    )
+
+    with connect(core.db_path) as db:
+        db.execute(
+            "UPDATE sessions SET heartbeat_at=? WHERE id=?",
+            (time.time() - 121, auth["session_id"]),
+        )
+    session = next(
+        row
+        for row in core.execute("get_project_state", auth)["sessions"]
+        if row["id"] == auth["session_id"]
+    )
+    assert session["expires_at"] > time.time() and session["online"] is False
+    assert queue.preview((item,), admin_token=token).state == "no_ready_tasks"
+    with pytest.raises(AgentSyncError) as rejected:
+        await queue.run_ready_once(
+            (item,),
+            request_id=request_id,
+            admin_token=token,
+            expected_selection_sha256=initial.selection_sha256,
+        )
+    assert rejected.value.code == "selection_changed"
+    assert queue.observe(item.first, request_id).state == "not_started"
+    assert not approvals and not captures
+
+    core.execute("heartbeat", auth)
+    assert queue.preview((item,), admin_token=token) == initial
+    wave = await queue.run_ready_once(
+        (item,),
+        request_id=request_id,
+        admin_token=token,
+        expected_selection_sha256=initial.selection_sha256,
+    )
+    assert wave.state == "resolved" and wave.tasks[0].state == "ready_for_review"
+    assert approvals == [expected_plan] and len(captures) == 1
 
 
 async def test_proposal_queue_uses_load_capabilities_and_core_dependencies(
