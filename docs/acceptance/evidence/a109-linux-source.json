@@ -1,0 +1,47 @@
+{
+  "version": "0.3.0a109",
+  "commit_sha": "de44e7bdbc2b1209fb40045cb2cb576886e696aa",
+  "tree_sha": "f161fd4f7242e891f09366da019711a86383ae9a",
+  "scope": "Frozen local Linux source suite with the pinned Docker fixture and no model clients",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "sqlite": "3.53.4",
+  "source_files": 804,
+  "source_unchanged": true,
+  "runtime_imports_matched_before_and_after": 84,
+  "junit": {
+    "tests": 2085,
+    "passed": 2080,
+    "skipped": 5,
+    "failures": 0,
+    "errors": 0
+  },
+  "skip_cases": [
+    "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution",
+    "tests.integration.test_m4b_workspaces::test_managed_git_creates_private_ref_beyond_win32_path_limit",
+    "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict",
+    "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root",
+    "tests.security.test_resource_paths::test_junction_is_denied"
+  ],
+  "docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "docker_observations_by_group": {
+    "candidate-evidence": 5,
+    "docker-evidence": 14,
+    "owner-evidence": 7,
+    "reconciliation-evidence": 5,
+    "task-completion-evidence": 1
+  },
+  "docker_postcheck": {
+    "recorded_full_ids": 32,
+    "remaining_recorded_ids": [],
+    "all_recorded_ids_absent": true
+  },
+  "sha256": {
+    "junit.xml": "352b5089daf8029a180ce66406265ced6d8b5e623b921ff5e49efec7c168dd5f",
+    "pytest.log": "85cc3eec6c8c57336113610360c0d584f68bd0b2df09d1f548aa975ba4a543ed",
+    "source-manifest": "5c682970ee181bb7b66ba971ede6ef45681192d3291582c4685152ceeea121dc",
+    "evidence.tar": "4952ab65bbdac35a099178ba193987593662f277f64e4b54296203da999010f2"
+  },
+  "evidence_local": "D:/agentsync-debug/continuation-linux-source-z6nxw6a1",
+  "formal_release": "BLOCKED",
+  "actual_model_clients": "NOT RUN"
+}

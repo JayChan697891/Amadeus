@@ -6,8 +6,11 @@ version stay at the M5A checkpoint. This is test tooling, not completed M9 accep
 Run the collector outside production state with a fresh evidence directory:
 
 ```powershell
-python tools/release_acceptance.py --output F:/syuc/work/release-evidence --run --package-install --sdist-install
+python tools/release_acceptance.py --output D:/agentsync-debug/release-evidence --scratch-root D:/agentsync-debug/ra --run --package-install --sdist-install
 ```
+
+On Windows, use a short scratch path so temporary Git worktree metadata stays
+within Git for Windows' path limits.
 
 The source, wheel and source-distribution checks have separate identities, logs and
 JUnit files. Each artifact uses a fresh environment; a successful wheel cannot hide

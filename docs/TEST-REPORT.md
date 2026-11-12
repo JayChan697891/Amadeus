@@ -4,10 +4,16 @@ Ruff lint and format passed on frozen `de44e7b` (317 files already formatted).
 mypy passed for 84 source files. Local development rechecks returned 19
 passing migration and managed Git cases, plus 151 passing release runner cases.
 The saved JUnit files are `path-and-migration.xml` and `runner-recheck.xml` in
-`D:/agentsync-debug/continuation-cc30ed21`. Superseded diagnostic runs retain
-their failed or interrupted status. Full Windows and Linux runs are tracked
-in PROGRESS.md. Current macOS and real clients are NOT RUN. Formal Release is
-BLOCKED.
+`D:/agentsync-debug/continuation-cc30ed21`, alongside the frozen Windows
+Python 3.11 JUnit report for 154 passing focused cases.
+
+The frozen Linux source suite passed 2,080 cases and skipped 5 platform cases,
+with zero failures or errors. All 84 imported runtime modules matched the
+frozen manifest and 32 exact fixture container IDs were absent after cleanup.
+See [Linux source evidence](acceptance/evidence/a109-linux-source.json).
+Superseded diagnostics retain their failed or interrupted status. PROGRESS.md
+tracks full Windows and Linux installed-package checks. Current macOS and real
+clients are NOT RUN. Formal Release is BLOCKED.
 
 # Historical local M6 checkpoint — 2026-10-26 America/Tijuana
 

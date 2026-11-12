@@ -11,7 +11,12 @@ Development branch: `feat/implementation-first-20261107`.
   removed.
 - Windows Ruff check, format check and mypy pass on the frozen source. During
   development, 19 focused path, delivery and migration cases and 151 release
-  runner cases passed. The full suites are recorded separately when they finish.
+  runner cases passed. Windows Python 3.11 passed 154 frozen focused cases.
+- The frozen Linux source suite completed with 2,080 passed and 5 platform
+  skips. All 84 imported runtime modules matched the frozen bytes before and
+  after the suite. The post-check found none of the 32 recorded fixture
+  containers. See [Linux source evidence](acceptance/evidence/a109-linux-source.json).
+  Linux wheel and sdist checks and the full Windows matrix remain in progress.
 - The previous turn policy allowed a Git checkpoint to end the turn. AGENTS and
   WORKFLOW now require checking and continuing the next authorized task.
   Continuation in this Codex chat is active. A separate Work return callback
@@ -20,11 +25,12 @@ Development branch: `feat/implementation-first-20261107`.
 
 Resume by reading the Windows driver at
 `D:/agentsync-debug/continuation-cc30ed21/windows-driver.log` and the Linux
-driver at `D:/agentsync-debug/continuation-cc30ed21/linux-driver.log`. If a run
+installed-package driver at
+`D:/agentsync-debug/continuation-cc30ed21/linux-packages-driver.log`. If a run
 is still active, read its existing evidence before launching another. Windows
 uses the repository release runner with the local wheelhouse and short D-drive
-scratch root. The Linux source run uses the existing isolated guest and
-preloaded Docker image. Diagnose any failure against the recorded revision
+scratch root. The Linux runs use the existing isolated guest and preloaded
+Docker image. Diagnose any failure against the recorded revision
 before rerunning affected checks.
 
 Current macOS, live client relay, final M5 evidence review and formal Release
