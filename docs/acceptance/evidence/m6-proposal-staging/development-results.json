@@ -1,0 +1,21 @@
+{
+  "first": {
+    "passed": 5,
+    "failed": 18,
+    "cause": "New audit matcher incorrectly expected context target; existing audit uses worktree target. Fixed matcher without dropping authentication."
+  },
+  "second": {
+    "passed": 22,
+    "failed": 1,
+    "cause": "Test fixture expected name in membership list; corrected lookup through actual session agent ID."
+  },
+  "third": {
+    "passed": 6,
+    "failed": 24,
+    "cause": "New importer used canonical queue parser for existing ordinary JSON Git receipts. Reused existing strict receipt parser and exact semantic comparisons."
+  },
+  "fourth": {
+    "passed": 30,
+    "failed": 0
+  }
+}

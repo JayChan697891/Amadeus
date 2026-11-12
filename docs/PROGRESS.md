@@ -1,5 +1,39 @@
 # Amadeus current progress
 
+## Product owner-reviewed proposal staging
+
+Implementation193d9b2 adds OwnerProposalStaging.preview/stage_once/status. Owner
+and active staging-worker authority bind an exact reviewed digest to authenticated
+publication/context, current review-state task, original worktree/head and file
+hashes. New worktree/candidate records use genuine Git operations and the staging
+identity; original producer/source workspaces remain untouched. A permanent
+task-wide intent precedes effects. Any interrupted attempt stays incomplete and
+cannot be retried. No automatic queue, code execution, task completion or apply.
+Tracked Git attributes/modules, foreign metadata indirection and path aliases are
+explicitly unsupported/rejected. The unique M5 safety/Release gates are unchanged.
+
+Frozen source run:179passed,1Windows POSIX-FIFO skip,1traceability-count failure.
+0712899 fixes only that test count (12 to14); affected92 traceability cases pass.
+Fresh193d9b2 Windows/Linux wheel installations each pass32 staging tests, with87
+runtime modules matching before/after and pip check passing. The0712899 rebuilt
+package passes92 affected traceability cases in a fresh Windows installation;
+all88 runtime package members and staging tests are byte-identical to the tested
+193d9b2 artifact. Staging tests were not unnecessarily rerun after the count-only
+fix; the final artifact's Linux installation and full new-SHA matrix are NOT RUN.
+Ruff/format327 and mypy87 pass. Development failures and the corrected audit-target/
+Git-receipt parsing assumptions remain recorded. Independent review accepted the
+implementation and the193d9b2 Windows/Linux package checks; final evidence review
+is tracked in [the hash-bound summary](acceptance/evidence/m6-proposal-staging/summary.json).
+
+Recovery: source0712899, debug D:/agentsync-debug/m6-proposal-staging,
+D:/agentsync-debug/m6-package-proposal-staging and m6-package-staging-final.
+The owned VM has stopped. No new model call, candidate execution or credentials.
+Next connect controlled proposal submission-to-review with this owner staging
+service and existing candidate verification flow. Preserve producer lease/attempt
+fences and a distinct completion reviewer; do not recover unknown model runs by
+inventing success. Claude/Cursor have no subscription, so cross-client stays NOT RUN.
+Full M5/M6/M7/Release remain BLOCKED.
+
 ## Actual proposal artifact: isolated owner-mediated verification
 
 Runtimebf54d44 and pilot8520691 now bridge the captured actual Codex add.py into

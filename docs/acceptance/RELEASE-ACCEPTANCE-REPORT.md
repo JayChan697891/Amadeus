@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## Owner-reviewed product staging
+
+193d9b2 implements real Core/Git proposal staging behind separate owner and worker
+authority, an exact preview digest and a durable once-per-task intent. Immutable
+publication proof and current review-state task/head pins are rechecked; generated
+bytes go only to a new managed worktree, then genuine candidate preparation.
+No model call, code execution, task completion or source-workspace application.
+Redirected Git metadata is rejected before consultation; failed effects are fenced.
+
+Source:179passed,1Windows POSIX-FIFO skip,1obsolete traceability-count failure.
+The sole0712899 change corrects12 to14;92 affected source checks pass. Fresh193d9b2
+Windows and Linux packages each pass32 staging cases. Both validate87 module hashes
+before/after and dependencies. Rebuilt0712899 Windows package passes92 affected
+traceability checks; all88 runtime package members and staging tests are identical
+to the previously tested artifact. Original failures and exact artifacts are saved.
+This is affected-scope revalidation, not a claimed single full green matrix.
+
+Full new-SHA matrix, final0712899 Linux artifact installation, current real-model
+staging and unattended verified relay are NOT RUN. Cross-client tests remain NOT RUN
+because the owner has neither Claude nor Cursor subscription. Existing M5/M6/M7 and
+Release gates remain BLOCKED. [Evidence and artifact hashes](evidence/m6-proposal-staging/summary.json).
+
 ## Actual generated artifact through local isolation
 
 Runtimebf54d44, tool8520691, existing wheel9e4b64bf: one owner-mediated import of

@@ -9,6 +9,12 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+Owner-reviewed proposal staging is implemented at193d9b2 (0712899 only corrects
+a traceability test count). It creates genuine isolated managed candidates from
+authenticated publications while preserving source/producer worktrees and task
+state. Scoped Windows/Linux installed-package checks pass; full Release remains
+unaccepted. Next connect controlled producer submission-to-review and this staging
+service with existing candidate verification; do not add new M5 subdivisions.
 The actual captured add.py now passed8 inputs through genuine managed candidate
 creation and the existing local Linux Docker verifier (runtimebf54d44/pilot8520691).
 Only the new isolated fixture task is verified; import and reviewer operation were

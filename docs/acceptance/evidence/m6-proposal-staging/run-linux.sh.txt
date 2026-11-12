@@ -1,0 +1,18 @@
+set -eu
+umask 077
+test ! -e /root/amadeus-proposal-staging-193d9b2
+/root/jobs-env/bin/python - <<'PY'
+from pathlib import Path
+import zipfile
+base=Path('/root/amadeus-proposal-staging-193d9b2')
+base.mkdir(mode=0o700)
+with zipfile.ZipFile('/root/amadeus-proposal-staging-193d9b2.zip') as archive:
+ for name in archive.namelist():assert (base/name).resolve().is_relative_to(base)
+ archive.extractall(base)
+PY
+cd /root/amadeus-proposal-staging-193d9b2
+/root/jobs-env/bin/python -m venv venv
+venv/bin/python -m pip install --no-index --find-links /root/intent-wheelhouse ./agentsync_local-0.3.0a109-py3-none-any.whl pytest==9.1.1 pytest-asyncio==1.4.0 httpx==0.28.1 > install.log 2>&1
+venv/bin/python -m pip check > pip-check.log
+venv/bin/python -I -B linux-installed.py > installed.log 2>&1
+cat installed.log

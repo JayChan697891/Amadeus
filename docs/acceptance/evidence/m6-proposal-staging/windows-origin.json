@@ -1,0 +1,9 @@
+{
+  "product_sha": "193d9b26d41d533d33a4bd3736e21ff8588ee0c9",
+  "scope": "Fresh offline wheel installation, Owner-reviewed proposal staging, actual Git/Core, no candidate execution or real model",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_modules_matched_before_and_after": 87,
+  "source_shadowing": false,
+  "exit_code": 0,
+  "model_requests": 0
+}
