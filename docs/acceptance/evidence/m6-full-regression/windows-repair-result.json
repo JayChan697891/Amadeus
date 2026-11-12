@@ -1,0 +1,54 @@
+{
+  "test_commit_sha": "6e2975e9f27ae25c195739faf089b0d527a7155b",
+  "runtime_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "source_zip_sha256": "7c0b0abc4cad319d286c9590c94079cde2b7feccd096e8983f9915a36ddb1abf",
+  "scope": "tests/tools/requirements/pyproject only, no source runtime",
+  "started_at": "2026-11-12T12:12:06.014218+00:00",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "status": "pass",
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "wheel_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m6-package-linux-readonly-portable\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m6-regression-repair-6e2975e\\source\\tests\\unit\\test_release_acceptance.py",
+      "D:\\agentsync-debug\\m6-regression-repair-6e2975e\\source\\tests\\integration\\test_transports.py",
+      "D:\\agentsync-debug\\m6-regression-repair-6e2975e\\source\\tests\\unit\\test_verification_jobs.py::test_two_claimants_have_exactly_one_winner",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=D:\\agentsync-debug\\m6-regression-repair-6e2975e\\test-tmp",
+      "--junitxml=D:\\agentsync-debug\\m6-regression-repair-6e2975e\\junit.raw.xml"
+    ],
+    "cwd": "D:\\agentsync-debug\\m6-regression-repair-6e2975e\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-12T12:12:06.014218+00:00",
+    "finished_at": "2026-11-12T12:12:13.892305+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "45a6460683ce4c88971d56386f4dc1667f62927e49cc4170f26f8eb779f891ea",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 1800
+  },
+  "installed_identity": {
+    "origin": "D:\\agentsync-debug\\m6-package-linux-readonly-portable\\installed\\Lib\\site-packages\\agentsync",
+    "runtime_modules_matched": 87
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 163,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skip_reasons": {},
+  "failed_cases": [],
+  "finished_at": "2026-11-12T12:12:13.905326+00:00"
+}

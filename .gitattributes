@@ -31,3 +31,9 @@ docs/acceptance/evidence/m6-proposal-review/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-proposal-pipeline/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-linux-readonly/** -text whitespace=cr-at-eol
 docs/acceptance/evidence/m6-linux-live/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m7-proposal-queue/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-full-regression/** -text whitespace=cr-at-eol
+# Preserve original failed pytest traceback whitespace for the evidence digest.
+docs/acceptance/evidence/m6-full-regression/*full.log -whitespace
+docs/acceptance/evidence/m6-full-regression/*full.xml -whitespace
+docs/acceptance/evidence/m6-full-regression/windows-repair.log -whitespace

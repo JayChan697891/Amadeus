@@ -1,0 +1,49 @@
+"""Build and install the frozen queue checkpoint offline on the authorized D drive."""
+from pathlib import Path
+import hashlib
+import json
+import os
+import subprocess
+import zipfile
+
+BASE=Path('D:/agentsync-debug/m7-package-proposal-queue')
+REPO=Path('F:/syuc/amadeus-m6-single')
+PRODUCT='6017005203f22b472aea2a8f017c7df4af8b9e8a'
+BUILDER=Path('D:/agentsync-debug/m6-package-6a8ff41/builder/Scripts/python.exe')
+WHEELS=Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse')
+BASE.mkdir(exist_ok=False)
+for name in ('tmp','home','codex-home'):(BASE/name).mkdir()
+env=dict(os.environ)
+for name in tuple(env):
+    if name.upper().startswith(('PYTEST_','OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AGENTSYNC_','GIT_')) or name.upper() in {'PYTHONPATH','PYTHONHOME','CODEX_HOME','CODEX_API_KEY'}:env.pop(name,None)
+env.update(PYTHONDONTWRITEBYTECODE='1',PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,PIP_DISABLE_PIP_VERSION_CHECK='1',TEMP=str(BASE/'tmp'),TMP=str(BASE/'tmp'),HOME=str(BASE/'home'),USERPROFILE=str(BASE/'home'),CODEX_HOME=str(BASE/'codex-home'),GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull)
+def run(name,argv,cwd=BASE):
+    with (BASE/(name+'.log')).open('xb') as out:
+        result=subprocess.run([str(item) for item in argv],cwd=cwd,env=env,stdout=out,stderr=subprocess.STDOUT,timeout=300)
+    print(name,result.returncode,flush=True)
+    assert result.returncode==0,name
+
+with (BASE/'source.zip').open('wb') as out:subprocess.run(['git','-C',str(REPO),'archive','--format=zip',PRODUCT],stdout=out,check=True)
+source=BASE/'source';source.mkdir()
+with zipfile.ZipFile(BASE/'source.zip') as archive:
+    for item in archive.infolist():assert (source/item.filename).resolve().is_relative_to(source.resolve())
+    archive.extractall(source)
+manifest={p.relative_to(source/'src').as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((source/'src/agentsync').rglob('*')) if p.is_file()}
+run('build',[BUILDER,'-m','build','--no-isolation','--outdir',BASE/'dist'],source)
+run('venv',[BUILDER,'-m','venv','--without-pip',BASE/'installed'])
+python=BASE/'installed/Scripts/python.exe'
+wheel=next((BASE/'dist').glob('*.whl'))
+run('install',[BUILDER,'-m','pip','--python',python,'install','--no-index','--find-links',WHEELS,wheel,'pytest==9.1.1','pytest-asyncio==1.4.0','httpx==0.28.1'])
+run('pip-check',[BUILDER,'-m','pip','--python',python,'check'])
+config={'product_sha':PRODUCT,'wheel_sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'runtime_members':manifest,'selected':['tests/integration/test_codex_proposal_relay_queue.py','tests/integration/test_codex_proposal_capture.py','tests/integration/test_codex_proposal_review.py','tests/integration/test_controlled_relay_pipeline.py','tests/integration/test_relay_wave_journal.py','tests/unit/test_relay_execution_budget.py']}
+(BASE/'config.json').write_text(json.dumps(config,indent=2)+'\n')
+driver=Path('D:/agentsync-debug/m7-proposal-queue-installed.py')
+(BASE/'test-installed.py').write_bytes(driver.read_bytes())
+with zipfile.ZipFile(BASE/'linux-bundle.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
+    archive.write(wheel,wheel.name)
+    archive.write(BASE/'config.json','config.json')
+    archive.write(BASE/'test-installed.py','test-installed.py')
+    archive.write(source/'pyproject.toml','source/pyproject.toml')
+    for path in sorted((source/'tests').rglob('*')):
+        if path.is_file():archive.write(path,'source/'+path.relative_to(source).as_posix())
+run('installed',[python,'-I','-B',BASE/'test-installed.py'])

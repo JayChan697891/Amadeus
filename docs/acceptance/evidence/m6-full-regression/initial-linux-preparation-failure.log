@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/root/amadeus-linux-readonly-a2634ec/full-regression.py", line 57, in <module>
+    collector=load_collector()
+  File "/root/amadeus-linux-readonly-a2634ec/full-regression.py", line 40, in load_collector
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 755, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 892, in get_code
+  File "<frozen importlib._bootstrap_external>", line 950, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/root/amadeus-linux-readonly-a2634ec/source/tools/release_acceptance.py'

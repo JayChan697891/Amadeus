@@ -1,5 +1,40 @@
 # Release Acceptance Report
 
+## Prepared proposal queue: limited offline acceptance
+
+Product6017005 integrates single Codex proposal tasks into the existing queue,
+including dependency/priority/load/capability selection, exact wave-bound consent,
+execution budget and authenticated historical reconciliation. It stops at Core
+review and keeps results unverified; there is no automatic staging or candidate
+execution. Independent review found and closed one current-observer race, with a
+legitimate concurrent reviewer regression proving stale review is no longer shown.
+
+Final fresh Windows3.12.16/Linux3.14.7 wheel suites each72passed, no skips/failures.
+88 runtime package members match before/after; no source shadowing, pip check and
+static checks pass. Independent code/package review accepted this scope and matched
+642 sdist source members to6017005. Earlier71 source passes and final affected33
+passes retain separate scopes. [Evidence and artifacts](evidence/m7-proposal-queue/summary.json).
+
+NOT RUN: sdist installation, new full matrix, actual queued client and independent
+model review. The a2634ec actual task below is not promoted to this revision.
+Cross-client remains NOT RUN due to unavailable subscriptions. Full Release BLOCKED.
+
+## Full a2634ec baseline and affected repairs
+
+The original full installed suites remain recorded as Windows2206passed/34failed/
+45skipped and Linux2245passed/34failed/6skipped. Linux includes actual Docker.
+The34 matching failures are1 stale exact MCP tool-set expectation,32 stale
+acceptance-selector/count expectations and1 local driver multiprocessing reentry.
+No product change was needed for those failures. Test-only6e2975e retains precise
+matching and all unverified/formal-blocked gates; the guarded pytest driver avoids
+reentering the suite from a spawned worker. Each platform's affected163cases pass.
+Independent review accepted the limited repair; original failure logs/XML and all
+skip reasons remain saved. Initial Linux preparation failure occurred before tests.
+[Frozen baseline and repair evidence](evidence/m6-full-regression/summary.json).
+
+Full rerun after repair and the newer6017005 full matrix are NOT RUN. Neither the
+targeted repair nor package72-case checks replace the unique final M5/Release gate.
+
 ## Actual Linux same-Core single-client pipeline
 
 At runtime a2634ec, one actual Codex subscription-route task returned the pinned

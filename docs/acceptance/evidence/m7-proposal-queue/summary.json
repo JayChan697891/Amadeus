@@ -1,0 +1,78 @@
+{
+  "product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "version": "0.3.0a109",
+  "requirements": [
+    "M7-01",
+    "M7-02"
+  ],
+  "scope": "Explicit Codex proposal queue items in existing bounded waves, to submitted Core review only",
+  "implemented": [
+    "single-producer proposals and existing two-client items share dependency/capability/load/participant-root selection",
+    "queued proposal wave binds exact launch consent and submission receipts",
+    "budget/revocation/unknown/cancel fences preserved, no automatic retry",
+    "authenticated current observer can reconcile historical submission after producer session expires",
+    "current review observer rereads task after context/receipt validation"
+  ],
+  "source_checks": {
+    "pre_final_observer_fix": {
+      "passed": 71,
+      "frozen_final_claim": false
+    },
+    "affected_final_observer_and_queue_suites": {
+      "passed": 33
+    },
+    "ruff": "pass",
+    "format_files": 330,
+    "mypy_modules": 87,
+    "diff_check": "pass"
+  },
+  "fresh_windows_wheel": {
+    "passed": 72,
+    "skipped": 0,
+    "python": "3.12.16"
+  },
+  "fresh_linux_wheel": {
+    "passed": 72,
+    "skipped": 0,
+    "python": "3.14.7"
+  },
+  "runtime_package_members_matched_before_after": 88,
+  "runtime_python_modules": 87,
+  "independent_review": "Limited source/package accepted after observer race repair; XML72 per platform, pip checks,88 runtime wheel members and642 tracked sdist files matched frozen6017005",
+  "review_fix": "Recheck current task after context read; legitimate concurrent independent review must make stale submitted_for_review observation incomplete",
+  "model_calls": 0,
+  "candidate_execution": false,
+  "real_queued_client_acceptance": "NOT RUN",
+  "new_full_matrix": "NOT RUN; a263 baseline full regression and 6e2975e test-only repair have separate evidence",
+  "sdist_install": "NOT RUN",
+  "same_core_actual_client_evidence": "Historical a2634ec pipeline only, not replayed or promoted to new code",
+  "formal_release": "BLOCKED",
+  "cross_client": "NOT RUN: owner has neither Claude nor Cursor subscription",
+  "owned_vm_stopped": true,
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m7-queue-6017005/agentsync_local-0.3.0a109-py3-none-any.whl": "846d61a432368956bfa9837925ff60a9db88d7ee3b07d34b3665dff19583035e",
+    "releases/0.3.0a109/m7-queue-6017005/agentsync_local-0.3.0a109.tar.gz": "f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351"
+  },
+  "evidence_sha256": {
+    "build-package.py.txt": "e98f2641cff9490f32eaab3b46b17ebda8d869e003c6b468e1f72b3a5047f31f",
+    "build.log": "75958acbdd2b0e7d56608b3f54cbd5bc986621759f280554c1b97fd8c2f435c7",
+    "config.json": "99f660b36b0d25f7610554295ae79787ccdc6ed9d84084e95ea51c8ddabd30b3",
+    "docker-cleanup-observation.log": "9d3d20d5a9544f3186a7f1925e6c67c822c49903076306a59b1e9f019ecfed7d",
+    "install.log": "5b34978662d3c8ac893e7b0db09e189517ab8df0b25d610577769bb40c1d3c0b",
+    "installed-driver.py.txt": "3ec42b69aee60ca98ea7e0685130dbb955cdbcb53780472cc40e973021667978",
+    "installed.log": "5a75c40ee2fbfb136ca82853ec9f13e5385163d763a496922f1c736d23f98c9a",
+    "installed.xml": "c85eb596336cf74d8f84fd7f18512e6ad695d4bea7673be12f3e625dd6024ed3",
+    "linux-installed.log": "7f1b38f8913b1a65902c054c0a9b1ec3011acc066ea1d61b97639f3859e96010",
+    "linux-installed.xml": "7ca45baa4bd47edea32295a2650a640ab3691cdf401809449e70ea6436a5d8e6",
+    "linux-origin.json": "c9e3e75b21b4c0669181ba029d66a57a581884fb8c112e074c605616b21fbe85",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "m7-proposal-current-review.log": "16ea5ef5ef68cb1b69ba07a4bb24e02cb89bd5f71101d22eb2862392eb0eadd7",
+    "m7-proposal-current-review.xml": "393d6994b93ab4673b6996edd97dee7086b7d3884ecb66c00ab0fb6678195398",
+    "m7-proposal-queue-focused.log": "0af9c2adc98cc58db7561fdb80f71b8ff3e5024d293e70ebd71d79444cac37cf",
+    "m7-proposal-queue-focused.xml": "cb8191f0f319a43d3aca5e2ec4564d8b195278dc1a085751d730bb3f5dee2e83",
+    "origin.json": "2ba71d3752683367421131c023a3e78d8fa5f06fa7e3aa08d74fddf5e6d8951d",
+    "pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "run-linux.sh.txt": "b95a56857e195da44673f3ef4058d257ba72dbd4c92ec5fc4e2ef24762f98475",
+    "vm-stop.log": "0c47703a9542a46e42722d75b1c796fa69c4ae77e6b14e41f1a237466f9a8b3d"
+  }
+}

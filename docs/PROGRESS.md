@@ -1,5 +1,64 @@
 # Amadeus current progress
 
+## M7 prepared proposal scheduling
+
+Frozen product6017005 adds CodexProposalQueueItem to the existing bounded queue.
+Prepared single-producer proposals share dependency/priority/capability/load and
+disjoint participant/worktree selection with existing two-client fixed-reply
+items. Explicit submit_for_review and exact per-launch consent remain mandatory;
+the wave is bound into the proposal contract. Only complete same-wave capture,
+immutable publication and review receipts count as ready_for_review/unverified.
+Unknown, cancellation, missing receipts and budget exhaustion keep the fence.
+There is no automatic candidate staging, execution, completion or source apply.
+
+Authenticated restart reconciliation can recognize historical submission after
+the producer expires. A review finding corrected the current-state observer:
+re-read the task after context/receipt validation so a concurrent legal independent
+review cannot leave a stale submitted_for_review answer. The new race regression
+passes. Old pair previews/pins/journal and standalone proposal contracts remain
+compatible. No new M5 subdivision or release-gate change was made.
+
+Before the observer correction,71 source cases passed; afterward the two affected
+suites33passed. Those are separate scopes. Final frozen fresh Windows3.12.16 and
+Linux3.14.7 wheel installations each pass72cases, zero skips/failures. All88 runtime
+package members (87Python modules) match before/after, with no source shadowing and
+valid dependencies. Ruff/format330/mypy87 pass. Independent review accepted the
+code and packages;642 tracked sdist members match the frozen commit. Sdist install,
+new full matrix and actual queued model execution remain NOT RUN.
+[Evidence](acceptance/evidence/m7-proposal-queue/summary.json).
+
+Debug: D:/agentsync-debug/m7-package-proposal-queue; artifacts under
+releases/0.3.0a109/m7-queue-6017005. The dedicated Docker daemon has no containers and
+the owned VM is stopped. No model calls or credentials were used for this feature.
+The actual a2634ec client evidence below is historical, not a new-SHA model pass.
+Next assess one bounded real queued proposal under an exact approved launch plan;
+no such run has started or been scheduled. Cross-client remains unavailable and
+full M5/M6/M7/Release remain BLOCKED.
+
+## Consolidated a2634ec regression and test-only repair
+
+Complete existing suites against the earlier installed a2634ec wheel finished:
+Windows2206passed/34failed/45skipped; Linux2245passed/34failed/6skipped, including
+actual local Docker. Both have the same34 failed cases: the exact MCP tool list
+missed publish_task_proposal (1), acceptance test counts/selector fixtures lagged
+implemented Codex/Cursor components (32), and the local test driver lacked a main
+guard so multiprocessing reentered pytest (1). Source and87 runtime module bytes
+are unchanged. Platform skips and original failures remain in the saved XML/logs.
+
+Test-only6e2975e updates the exact tool/selector expectations without deleting tests
+or weakening unverified/Release-blocked assertions. A guarded driver uses the normal
+pytest module entry point. The two affected suites and unchanged process/thread
+competition case pass163checks on each existing Windows/Linux installation.
+Independent review accepts the repair and driver diagnosis. Initial Linux preparation
+failed before collection because the prior limited fixture bundle lacked the runner;
+a fresh complete Git archive supplied the missing files. That failure is retained.
+[All original results and scoped repairs](acceptance/evidence/m6-full-regression/summary.json).
+
+This is a full baseline plus targeted repair, not a claimed full rerun or a6017005
+full-matrix pass. No new model calls, source application or GitHub Actions occurred.
+Debug: D:/agentsync-debug/m6-full-a2634ec, m6-linux-live-20261112 and
+m6-regression-repair-6e2975e. Formal M5/M6/M7/Release gates remain unchanged.
+
 ## Actual Linux proposal to same-Core verified completion
 
 Runtime a2634ec now has one actual subscription-route Codex pipeline on the local

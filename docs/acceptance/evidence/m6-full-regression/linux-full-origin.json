@@ -1,0 +1,7 @@
+{
+  "origin": "/root/amadeus-linux-readonly-a2634ec/venv/lib/python3.14/site-packages/agentsync",
+  "runtime_modules_matched": 87,
+  "runtime_manifest_sha256": "43fe649a5d2d3c1c52676ea9feff091d6d201aacaf2ef7b56747fb32df976adc",
+  "verified_before_after": true,
+  "exit_code": 1
+}

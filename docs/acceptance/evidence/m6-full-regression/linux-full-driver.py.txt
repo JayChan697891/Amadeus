@@ -1,0 +1,95 @@
+"""Run the existing complete suite against a pinned installed package, without clients."""
+from collections import Counter
+from datetime import UTC, datetime
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+import xml.etree.ElementTree as ET
+
+WINDOWS=sys.platform=='win32'
+PACKAGE=Path('D:/agentsync-debug/m6-package-linux-readonly-portable') if WINDOWS else Path('/root/amadeus-linux-readonly-a2634ec')
+BASE=Path('D:/agentsync-debug/m6-full-a2634ec') if WINDOWS else Path('/root/amadeus-full-a2634ec-ready1')
+SOURCE=PACKAGE/'source' if WINDOWS else BASE/'source'
+PRODUCT='a2634ecb9a65b666f617942fb3deb9f67fdd2a76'
+WHEEL='bdd8fc4e98de6824d3a6f5a6be7fa2a477df7acfe9bb06f061d8479f50ee1b33'
+
+def sha(path):
+    with path.open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
+
+def source_fingerprint():
+    # Existing archive includes original docs/fixtures required by traceability checks.
+    return {p.relative_to(SOURCE).as_posix():sha(p) for p in sorted(SOURCE.rglob('*')) if p.is_file()}
+
+def installed_identity():
+    import agentsync
+    site=Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(PACKAGE/('installed' if WINDOWS else 'venv'))
+    manifest=json.loads((PACKAGE/'manifest.json').read_text()) if WINDOWS else json.loads((PACKAGE/'linux-config.json').read_text())['module_hashes']
+    for name,expected in manifest.items():assert sha(site/name)==expected,name
+    for name,module in tuple(sys.modules.items()):
+        if name=='agentsync' or name.startswith('agentsync.'):
+            assert Path(module.__file__).resolve().is_relative_to(site/'agentsync'),name
+    return {'origin':str(site/'agentsync'),'runtime_modules_matched':len(manifest),'runtime_manifest_sha256':hashlib.sha256(json.dumps(manifest,sort_keys=True).encode()).hexdigest()}
+
+def load_collector():
+    spec=importlib.util.spec_from_file_location('amadeus_acceptance_collector',SOURCE/'tools/release_acceptance.py')
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+if sys.argv[1:]==['child']:
+    import pytest
+    before=installed_identity()
+    code=pytest.main([str(SOURCE/'tests'),'-q','-p','no:cacheprovider','--basetemp='+str(BASE/'test-tmp'),'--junitxml='+str(BASE/'junit.raw.xml')])
+    after=installed_identity()
+    assert before==after
+    (BASE/'origin.json').write_text(json.dumps(before|{'verified_before_after':True,'exit_code':code},indent=2))
+    raise SystemExit(code)
+
+assert not sys.argv[1:]
+BASE.mkdir(exist_ok=False)
+if not WINDOWS:
+    import zipfile
+    archive=PACKAGE/'full-source-a2634ec.zip'
+    assert sha(archive)=='30bf054c82dbe91739ecbe4115d124f0b173bafa32abdf44e9684e3e45bc3a4b'
+    SOURCE.mkdir()
+    with zipfile.ZipFile(archive) as bundle:
+        for item in bundle.infolist():
+            assert (SOURCE/item.filename).resolve().is_relative_to(SOURCE.resolve())
+        bundle.extractall(SOURCE)
+
+for name in ('logs','tmp','home','codex-home'):(BASE/name).mkdir()
+before=source_fingerprint()
+installed_identity()
+collector=load_collector()
+for name in tuple(os.environ):
+    upper=name.upper()
+    if upper.startswith(('PYTEST_','AGENTSYNC_','GIT_','OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AZURE_OPENAI_')) or upper in {'PYTHONPATH','PYTHONHOME','CODEX_HOME','CODEX_API_KEY','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY'}:
+        os.environ.pop(name,None)
+os.environ.update(PYTHONDONTWRITEBYTECODE='1',PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,HOME=str(BASE/'home'),USERPROFILE=str(BASE/'home'),CODEX_HOME=str(BASE/'codex-home'),TEMP=str(BASE/'tmp'),TMP=str(BASE/'tmp'),TMPDIR=str(BASE/'tmp'))
+if not WINDOWS:
+    os.environ.update(AGENTSYNC_DOCKER_TEST_IMAGE='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258',AGENTSYNC_REQUIRE_DOCKER_TESTS='1')
+report={'product_sha':PRODUCT,'wheel_sha256':WHEEL,'started_at':datetime.now(UTC).isoformat(),'platform':sys.platform,'python':sys.version,'scope':'complete existing suite against previously fresh installed a2634ec wheel; not a new installation','model_calls':0,'github_actions_used':False,'formal_release':'BLOCKED','status':'running'}
+(BASE/'result.json').write_text(json.dumps(report,indent=2))
+command=[sys.executable,'-I','-B',str(Path(__file__).resolve()),'child']
+check=collector.execute('wheel_pytest',command,SOURCE,BASE,BASE/'tmp',pytest_timeout=3600)
+report['check']=check
+after=source_fingerprint()
+report['source_unchanged']=before==after
+report['source_file_count']=len(before)
+report['source_fingerprint_sha256']=hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest()
+report['changed_source_paths']=sorted(name for name in before.keys()|after.keys() if before.get(name)!=after.get(name))
+if (BASE/'junit.raw.xml').exists():
+    report['junit_redactions']=collector.persist_junit(BASE/'junit.raw.xml',BASE/'junit.xml')
+    report['junit']=collector.junit_counts(BASE/'junit.xml')
+    cases=list(ET.parse(BASE/'junit.xml').getroot().iter('testcase'))
+    report['skip_reasons']=dict(Counter(n.get('message','') for case in cases for n in case.findall('skipped')))
+    report['failed_cases']=[{'class':case.get('classname'),'name':case.get('name'),'kind':kind,'message':n.get('message','')} for case in cases for kind in ('failure','error') for n in case.findall(kind)]
+report['status']='pass' if check['exit_code']==0 and report['source_unchanged'] and (BASE/'origin.json').exists() else 'fail'
+report['finished_at']=datetime.now(UTC).isoformat()
+(BASE/'result.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(report))
+raise SystemExit(0 if report['status']=='pass' else 1)

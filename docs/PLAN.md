@@ -9,6 +9,12 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+M7-01/02 now connect prepared Codex code proposals to the existing bounded queue
+at6017005. Dependency/load/capability selection and durable wave reconciliation
+stop at submitted review; exact launch approval and separate candidate execution
+remain required. Final fresh Windows/Linux wheels each pass72 scoped cases.
+Independent code/package review accepted the limited implementation. Actual
+queued-model acceptance, cross-client support and full Release remain unverified.
 The actual same-Core Linux proposal pipeline at a2634ec now passes a bounded
 real Codex task: immutable capture/review, explicitly approved genuine candidate,
 8/8 actual local Docker inputs and a distinct host-mediated Core review. Reopened

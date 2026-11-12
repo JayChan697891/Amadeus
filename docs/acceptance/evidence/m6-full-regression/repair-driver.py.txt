@@ -1,0 +1,52 @@
+"""Affected regression only; module guard keeps spawn from rerunning pytest."""
+from collections import Counter
+from datetime import UTC, datetime
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+import xml.etree.ElementTree as ET
+
+BASE=Path(__file__).resolve().parent
+SOURCE=BASE/'source'
+PACKAGE=Path('D:/agentsync-debug/m6-package-linux-readonly-portable') if sys.platform=='win32' else Path('/root/amadeus-linux-readonly-a2634ec')
+
+def identity():
+    import agentsync
+    site=Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(PACKAGE/('installed' if sys.platform=='win32' else 'venv'))
+    manifest=json.loads((PACKAGE/'manifest.json').read_text()) if sys.platform=='win32' else json.loads((PACKAGE/'linux-config.json').read_text())['module_hashes']
+    for name,expected in manifest.items():assert hashlib.sha256((site/name).read_bytes()).hexdigest()==expected
+    return {'origin':str(site/'agentsync'),'runtime_modules_matched':len(manifest)}
+
+def main():
+    assert not (BASE/'result.json').exists()
+    before=identity()
+    for name in ('logs','tmp','home','codex-home'):(BASE/name).mkdir()
+    for name in tuple(os.environ):
+        upper=name.upper()
+        if upper.startswith(('PYTEST_','AGENTSYNC_','GIT_','OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AZURE_OPENAI_')) or upper in {'PYTHONPATH','PYTHONHOME','CODEX_HOME','CODEX_API_KEY','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY'}:os.environ.pop(name,None)
+    os.environ.update(PYTHONDONTWRITEBYTECODE='1',PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,HOME=str(BASE/'home'),USERPROFILE=str(BASE/'home'),CODEX_HOME=str(BASE/'codex-home'),TEMP=str(BASE/'tmp'),TMP=str(BASE/'tmp'),TMPDIR=str(BASE/'tmp'))
+    spec=importlib.util.spec_from_file_location('acceptance_collector',SOURCE/'tools/release_acceptance.py')
+    collector=importlib.util.module_from_spec(spec);spec.loader.exec_module(collector)
+    selected=('tests/unit/test_release_acceptance.py','tests/integration/test_transports.py','tests/unit/test_verification_jobs.py::test_two_claimants_have_exactly_one_winner')
+    command=[sys.executable,'-I','-B','-m','pytest',*[str(SOURCE/name) for name in selected],'-q','-p','no:cacheprovider','--basetemp='+str(BASE/'test-tmp'),'--junitxml='+str(BASE/'junit.raw.xml')]
+    report=json.loads((BASE/'identity.json').read_text())|{'started_at':datetime.now(UTC).isoformat(),'python':sys.version,'status':'running','model_calls':0,'formal_release':'BLOCKED'}
+    (BASE/'result.json').write_text(json.dumps(report,indent=2))
+    report['check']=collector.execute('wheel_pytest',command,SOURCE,BASE,BASE/'tmp',pytest_timeout=1800)
+    assert identity()==before
+    report['installed_identity']=before
+    report['junit_redactions']=collector.persist_junit(BASE/'junit.raw.xml',BASE/'junit.xml')
+    report['junit']=collector.junit_counts(BASE/'junit.xml')
+    cases=list(ET.parse(BASE/'junit.xml').getroot().iter('testcase'))
+    report['skip_reasons']=dict(Counter(n.get('message','') for case in cases for n in case.findall('skipped')))
+    report['failed_cases']=[{'class':case.get('classname'),'name':case.get('name'),'kind':kind,'message':n.get('message','')} for case in cases for kind in ('failure','error') for n in case.findall(kind)]
+    report['status']='pass' if report['check']['exit_code']==0 else 'fail'
+    report['finished_at']=datetime.now(UTC).isoformat()
+    (BASE/'result.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(json.dumps({'status':report['status'],'junit':report['junit'],'failed_cases':report['failed_cases']}))
+    return report['check']['exit_code']
+
+if __name__=='__main__':raise SystemExit(main())

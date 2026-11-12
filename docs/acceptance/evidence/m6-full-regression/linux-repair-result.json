@@ -1,0 +1,54 @@
+{
+  "test_commit_sha": "6e2975e9f27ae25c195739faf089b0d527a7155b",
+  "runtime_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "source_zip_sha256": "7c0b0abc4cad319d286c9590c94079cde2b7feccd096e8983f9915a36ddb1abf",
+  "scope": "tests/tools/requirements/pyproject only, no source runtime",
+  "started_at": "2026-11-12T12:12:35.077839+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "status": "pass",
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "wheel_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-linux-readonly-a2634ec/venv/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-regression-repair-6e2975e/source/tests/unit/test_release_acceptance.py",
+      "/root/amadeus-regression-repair-6e2975e/source/tests/integration/test_transports.py",
+      "/root/amadeus-regression-repair-6e2975e/source/tests/unit/test_verification_jobs.py::test_two_claimants_have_exactly_one_winner",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=/root/amadeus-regression-repair-6e2975e/test-tmp",
+      "--junitxml=/root/amadeus-regression-repair-6e2975e/junit.raw.xml"
+    ],
+    "cwd": "/root/amadeus-regression-repair-6e2975e/source",
+    "exit_code": 0,
+    "started_at": "2026-11-12T12:12:35.077973+00:00",
+    "finished_at": "2026-11-12T12:12:43.703974+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "a7d2c259de741452f7e8d0d760b335cc172a363623d9b9735b89a9d77612c771",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 1800
+  },
+  "installed_identity": {
+    "origin": "/root/amadeus-linux-readonly-a2634ec/venv/lib/python3.14/site-packages/agentsync",
+    "runtime_modules_matched": 87
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 163,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skip_reasons": {},
+  "failed_cases": [],
+  "finished_at": "2026-11-12T12:12:43.714663+00:00"
+}

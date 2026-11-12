@@ -1,0 +1,66 @@
+{
+  "runtime_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "test_repair_sha": "6e2975e9f27ae25c195739faf089b0d527a7155b",
+  "scope": "Full existing suite against previously fresh installed a263 wheel, then affected test-only repair; not a full rerun",
+  "windows_full": {
+    "passed": 2206,
+    "failed": 34,
+    "skipped": 45,
+    "python": "3.12.16"
+  },
+  "linux_full": {
+    "passed": 2245,
+    "failed": 34,
+    "skipped": 6,
+    "python": "3.14.7",
+    "actual_local_docker": true
+  },
+  "same_failed_cases_on_both_platforms": true,
+  "failure_classification": {
+    "mcp_expected_tool_set_missing_implemented_publish_task_proposal": 1,
+    "release_test_stale_component_counts_and_module_selector_fixture": 32,
+    "local_driver_spawn_reentered_pytest_without_main_guard": 1
+  },
+  "initial_linux_preparation": "FAILED before test collection: limited prior fixture bundle lacked tools/release_acceptance.py. Complete exact Git archive supplied to fresh directory before full execution. No source or product failure claimed.",
+  "repair": "Refresh exact test expectations only, preserve all formal-not-run/unverified and Release-blocked assertions; guarded driver invokes python -m pytest so multiprocessing does not rerun pytest",
+  "windows_affected_repair": {
+    "passed": 163,
+    "failed": 0,
+    "skipped": 0
+  },
+  "linux_affected_repair": {
+    "passed": 163,
+    "failed": 0,
+    "skipped": 0
+  },
+  "independent_review": "Test-only assertion updates and failure classification accepted; Linux repair XML/result/log and Windows repair checked. Original failures retained.",
+  "runtime_product_changes_for_repair": false,
+  "full_rerun_after_repair": "NOT RUN: affected suites rerun; original whole-suite results remain failures",
+  "new_6017005_full_matrix": "NOT RUN; new queue has separate focused source/installed evidence",
+  "source_and_runtime_unchanged": true,
+  "model_calls": 0,
+  "raw_junit": "Retained locally; only existing collector-redacted logs/XML uploaded",
+  "formal_release": "BLOCKED",
+  "evidence_sha256": {
+    "initial-linux-preparation-failure.log": "f26972cf7cbb1293f21cb1162c8a2a96e1d552fcdd868781486c8e44391c3382",
+    "linux-full-driver.py.txt": "b5aa1a3af0bdd16db306385796dd8051b70621bfae3230cf609f728c3ecba26b",
+    "linux-full-origin.json": "3cbe351cb865f3e1eb98675778db3a0ba953980bb8945525b0661240bf69bfe6",
+    "linux-full-result.json": "092614d6305a54ab371dcb90bd5ffc8e4aae255262864e2991a663874d08425f",
+    "linux-full.log": "dfb570df4d1793bd138a11baf7f1f458ace7a88b3a1b1c2bd912acee052d731f",
+    "linux-full.xml": "61428855d205c7e223532931d514a8ac025a982d89a777cddf5a933c2c4c1322",
+    "linux-repair-result.json": "6dd3bd2157edfa217ac17ae6942b2ebfa2e379176233cce9812afa168ab12549",
+    "linux-repair.log": "a7d2c259de741452f7e8d0d760b335cc172a363623d9b9735b89a9d77612c771",
+    "linux-repair.xml": "f89f27d9ebf8ca6d68fbe6826b370450b81a9d3a83c24d2f0a7ce88fbb6bb970",
+    "repair-driver.py.txt": "f0974dc7b638f9afe273dbd75305cd922716742bd4b1a0094c58863fb9209471",
+    "repair-source-identity.json": "0fcc13535c1ed35e4c1041415b603c4f7c7f4aa6cc92a780ef8542704bd09a95",
+    "source-identity.json": "30b53d5847680e4c201a27767c59a756d9a70384976df07cdb5404a926f03e8e",
+    "windows-full-driver.py.txt": "d95bfbbc63c616071204673fb5017234f277d36f96cecec708c90bb124fb62fe",
+    "windows-full-origin.json": "a87d1bdf683af618e8bbf7446613a2ac69a843741f4cf91b64aafbf440bcb2f5",
+    "windows-full-result.json": "2da72249db31b346a5760c1f6eb5e24b9457511b88911b83623c649cdd260561",
+    "windows-full.log": "bd390f4081c28e4386ba0a116d512085c28d5d8e78d7346d00081dd236cdba82",
+    "windows-full.xml": "7af8bde4a34ead9699792d5bb36e2f185ebde52c362fbe445fad1a247474c297",
+    "windows-repair-result.json": "a28fedf687de82c2875e527436f8f3bb6e03540dd263217838deeb66e3d3f944",
+    "windows-repair.log": "45a6460683ce4c88971d56386f4dc1667f62927e49cc4170f26f8eb779f891ea",
+    "windows-repair.xml": "4b41627af52eac83ebaefa8d943179882c504128347fe34d2f8989ef1253fd37"
+  }
+}
