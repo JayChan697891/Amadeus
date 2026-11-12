@@ -2,6 +2,7 @@
   "version": "0.3.0a109",
   "commit_sha": "de44e7bdbc2b1209fb40045cb2cb576886e696aa",
   "scope": "Fresh isolated offline Linux wheel and rebuilt sdist full suites",
+  "artifact_storage": "releases/0.3.0a109",
   "source_report": "a109-linux-source.json",
   "same_ordered_test_ids_and_skip_ids_in_all_three_suites": true,
   "packages": {
