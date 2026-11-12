@@ -37,7 +37,10 @@ async def test_manager_start_limit_rejects_new_requests_without_spawning_queued_
     slow = GateAdapter()
     fast = MockAdapter("project", "session")
     manager = RunManager(
-        "project", "session", {"slow": slow, "fast": fast}, max_pending_starts=1,
+        "project",
+        "session",
+        {"slow": slow, "fast": fast},
+        max_pending_starts=1,
     )
     first = await manager.dispatch_task("slow", task())
     await slow.entered.wait()
@@ -59,7 +62,10 @@ async def test_active_run_limit_waits_for_a_terminal_observation_across_adapters
     first = MockAdapter("project", "session")
     second = MockAdapter("project", "session")
     manager = RunManager(
-        "project", "session", {"one": first, "two": second}, max_active_runs=1,
+        "project",
+        "session",
+        {"one": first, "two": second},
+        max_active_runs=1,
     )
     running = await manager.start_task("one", task())
     assert await manager.start_task("one", task()) == running

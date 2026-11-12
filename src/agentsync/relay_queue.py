@@ -17,9 +17,14 @@ from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from functools import partial
 from pathlib import Path
-from typing import Any, Literal, NoReturn
+from typing import Any, Literal, NoReturn, cast
 
-from agentsync.adapters.approved_launch import ClientKind, _check_execution_deadline, client_kind, digest
+from agentsync.adapters.approved_launch import (
+    ClientKind,
+    _check_execution_deadline,
+    client_kind,
+    digest,
+)
 from agentsync.adapters.base import _identifier
 from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
 from agentsync.errors import AgentSyncError
@@ -29,12 +34,25 @@ from agentsync.scheduling import plan_tasks
 BatchState = Literal["not_started", "no_ready_tasks", "resolved", "incomplete"]
 TaskState = Literal["ready_for_review", "conflict", "incomplete"]
 _TerminalReader = Callable[[str, str], Literal["ready_for_review", "conflict"] | None]
-_FAILURE_CODES = frozenset({
-    "attempt_already_reserved", "forbidden", "idempotency_conflict", "lease_expired", "not_found",
-    "receipt_unavailable", "relay_boundary", "relay_operation_failed", "relay_outcome_unknown",
-    "relay_execution_limit", "session_expired", "storage_error", "unauthorized", "version_conflict",
-    "workspace_boundary",
-})
+_FAILURE_CODES = frozenset(
+    {
+        "attempt_already_reserved",
+        "forbidden",
+        "idempotency_conflict",
+        "lease_expired",
+        "not_found",
+        "receipt_unavailable",
+        "relay_boundary",
+        "relay_operation_failed",
+        "relay_outcome_unknown",
+        "relay_execution_limit",
+        "session_expired",
+        "storage_error",
+        "unauthorized",
+        "version_conflict",
+        "workspace_boundary",
+    }
+)
 
 
 def _invalid() -> NoReturn:
@@ -141,7 +159,8 @@ class RelaySequenceOutcome:
 
 def _selected_tasks(selected: Any) -> tuple[str, ...]:
     if (
-        type(selected) is not list or not 1 <= len(selected) <= 4
+        type(selected) is not list
+        or not 1 <= len(selected) <= 4
         or any(type(task_id) is not str for task_id in selected)
         or len(set(selected)) != len(selected)
     ):
@@ -155,23 +174,37 @@ def _roots(item: RelayQueueItem) -> tuple[Path, Path]:
 
 def _selection_pin(selected: tuple[RelayQueueItem, ...]) -> str:
     """Bind the displayed selection, independently of each launch approval."""
-    return digest([
-        "relay-queue-selection-v1",
+    return digest(
         [
+            "relay-queue-selection-v1",
             [
-                item.task.task_id, item.task.expected_version, item.task.context_id,
-                item.task.context_version, item.task.context_sha256, item.task.timeout_seconds,
                 [
-                    [actor.profile.project_id, actor.profile.session_id, actor.agent_id,
-                     actor.worktree_id, actor.expected_head, client_kind(actor.profile),
-                     actor.profile.expected_cli_version, actor.profile.expected_binary_sha256]
-                    for actor in (item.first, item.second)
-                ],
-                item.first_capabilities, item.second_capabilities,
-            ]
-            for item in selected
-        ],
-    ])
+                    item.task.task_id,
+                    item.task.expected_version,
+                    item.task.context_id,
+                    item.task.context_version,
+                    item.task.context_sha256,
+                    item.task.timeout_seconds,
+                    [
+                        [
+                            actor.profile.project_id,
+                            actor.profile.session_id,
+                            actor.agent_id,
+                            actor.worktree_id,
+                            actor.expected_head,
+                            client_kind(actor.profile),
+                            actor.profile.expected_cli_version,
+                            actor.profile.expected_binary_sha256,
+                        ]
+                        for actor in (item.first, item.second)
+                    ],
+                    item.first_capabilities,
+                    item.second_capabilities,
+                ]
+                for item in selected
+            ],
+        ]
+    )
 
 
 class RelayQueue:
@@ -224,9 +257,11 @@ class RelayQueue:
             pairs = alternatives.setdefault(task_id, set())
             pair = item.first.agent_id, item.second.agent_id
             if (
-                item.task != first_option.task or item.first_capabilities != first_option.first_capabilities
+                item.task != first_option.task
+                or item.first_capabilities != first_option.first_capabilities
                 or item.second_capabilities != first_option.second_capabilities
-                or pair in pairs or len(pairs) >= 4
+                or pair in pairs
+                or len(pairs) >= 4
             ):
                 _invalid()
             pairs.add(pair)
@@ -259,7 +294,9 @@ class RelayQueue:
             saved = anchors.read(name, durable=True)
         if not saved or type(saved.get("schema_version")) is not int or saved != expected:
             raise AgentSyncError(
-                "wave_journal_unavailable", "The wave journal does not match its saved identity.", 409,
+                "wave_journal_unavailable",
+                "The wave journal does not match its saved identity.",
+                409,
             )
 
     def _check_selected(self, selected: tuple[RelayQueueItem, ...]) -> None:
@@ -287,8 +324,12 @@ class RelayQueue:
             return RelayQueuePreview("no_ready_tasks")
         tasks = tuple(
             RelayPreviewTask(
-                item.task.task_id, item.task.expected_version, item.first.agent_id, item.second.agent_id,
-                client_kind(item.first.profile), client_kind(item.second.profile),
+                item.task.task_id,
+                item.task.expected_version,
+                item.first.agent_id,
+                item.second.agent_id,
+                client_kind(item.first.profile),
+                client_kind(item.second.profile),
             )
             for item in selected
         )
@@ -331,7 +372,10 @@ class RelayQueue:
         if saved is None or saved[0] not in ("admitted", "incomplete"):
             return self.observe(actor, request_id)
         return self._reconcile_open(
-            project_key, key, saved, partial(self._relay._wave_terminal_state, actor),
+            project_key,
+            key,
+            saved,
+            partial(self._relay._wave_terminal_state, actor),
         )
 
     def observe_pending(self, actor: RelayActor, *, admin_token: str) -> PendingRelayWave | None:
@@ -339,7 +383,9 @@ class RelayQueue:
         project_key, _ = self._owner_project(actor, admin_token)
         return self._observe_pending(actor.profile.project_id, project_key)
 
-    def owner_observe_pending(self, project_id: str, *, admin_token: str) -> PendingRelayWave | None:
+    def owner_observe_pending(
+        self, project_id: str, *, admin_token: str
+    ) -> PendingRelayWave | None:
         """Inspect a project fence when agent sessions have expired or are unavailable."""
         project_key = self._owner_journal_key(project_id, admin_token)
         return self._observe_pending(project_id, project_key)
@@ -364,7 +410,12 @@ class RelayQueue:
         return PendingRelayWave(key, "incomplete", outcome)
 
     def history(
-        self, actor: RelayActor, *, admin_token: str, limit: int = 16, before: str | None = None,
+        self,
+        actor: RelayActor,
+        *,
+        admin_token: str,
+        limit: int = 16,
+        before: str | None = None,
     ) -> RelayWaveHistoryPage:
         """Read this project's journal, newest first, without knowing original request IDs."""
         self._validate_history_page(limit, before)
@@ -372,7 +423,12 @@ class RelayQueue:
         return self._history(project_key, limit=limit, before=before)
 
     def owner_history(
-        self, project_id: str, *, admin_token: str, limit: int = 16, before: str | None = None,
+        self,
+        project_id: str,
+        *,
+        admin_token: str,
+        limit: int = 16,
+        before: str | None = None,
     ) -> RelayWaveHistoryPage:
         """Read the project's journal without a live agent session or client profile."""
         self._validate_history_page(limit, before)
@@ -381,8 +437,13 @@ class RelayQueue:
 
     @staticmethod
     def _validate_history_page(limit: int, before: str | None) -> None:
-        if type(limit) is not int or not 1 <= limit <= 32 or (
-            before is not None and (type(before) is not str or re.fullmatch(r"[0-9a-f]{64}", before) is None)
+        if (
+            type(limit) is not int
+            or not 1 <= limit <= 32
+            or (
+                before is not None
+                and (type(before) is not str or re.fullmatch(r"[0-9a-f]{64}", before) is None)
+            )
         ):
             _invalid()
 
@@ -393,7 +454,11 @@ class RelayQueue:
             outcome = self._outcome(selected, results)
             if state == "admitted":
                 outcome = RelayQueueOutcome(
-                    "incomplete", tuple(RelayQueueResult(task_id, "incomplete") for task_id in _selected_tasks(selected)),
+                    "incomplete",
+                    tuple(
+                        RelayQueueResult(task_id, "incomplete")
+                        for task_id in _selected_tasks(selected)
+                    ),
                 )
             elif outcome.state != state:
                 outcome = RelayQueueOutcome("incomplete")
@@ -408,12 +473,19 @@ class RelayQueue:
             _invalid()
         project_key, _ = self._owner_project(actor, admin_token)
         return self._reconcile_pending_wave(
-            project_key, expected_wave_id, partial(self._relay._wave_terminal_state, actor),
+            project_key,
+            expected_wave_id,
+            partial(self._relay._wave_terminal_state, actor),
         )
 
     def reconcile_pending_from_session(
-        self, project_id: str, *, session_id: str, session_token: str,
-        admin_token: str, expected_wave_id: str,
+        self,
+        project_id: str,
+        *,
+        session_id: str,
+        session_token: str,
+        admin_token: str,
+        expected_wave_id: str,
     ) -> RelayQueueOutcome:
         """Reconcile saved receipts with an enrolled session and owner authorization."""
         if type(expected_wave_id) is not str or not re.fullmatch(r"[0-9a-f]{64}", expected_wave_id):
@@ -427,12 +499,19 @@ class RelayQueue:
 
         def terminal(task_id: str, wave_id: str) -> Literal["ready_for_review", "conflict"] | None:
             task = tasks.get(task_id)
-            return None if task is None else self._relay._wave_terminal_from_task(project_id, task, wave_id)
+            return (
+                None
+                if task is None
+                else self._relay._wave_terminal_from_task(project_id, task, wave_id)
+            )
 
         return self._reconcile_pending_wave(project_key, expected_wave_id, terminal)
 
     def _reconcile_pending_wave(
-        self, project_key: str, expected_wave_id: str, read_terminal: _TerminalReader,
+        self,
+        project_key: str,
+        expected_wave_id: str,
+        read_terminal: _TerminalReader,
     ) -> RelayQueueOutcome:
         saved = self._journal.get(project_key, expected_wave_id)
         if saved is None:
@@ -462,7 +541,9 @@ class RelayQueue:
         return project_key
 
     def _owner_candidate_snapshot(
-        self, items: tuple[RelayQueueItem, ...], admin_token: str,
+        self,
+        items: tuple[RelayQueueItem, ...],
+        admin_token: str,
     ) -> tuple[str, dict[str, Any], set[str]]:
         first = items[0].first
         project = first.profile.project_id
@@ -490,7 +571,10 @@ class RelayQueue:
         raise AgentSyncError("session_expired", "No prepared relay session remains valid.", 401)
 
     def _reconcile_open(
-        self, project_key: str, key: str, saved: tuple[str, Any, Any],
+        self,
+        project_key: str,
+        key: str,
+        saved: tuple[str, Any, Any],
         read_terminal: _TerminalReader,
     ) -> RelayQueueOutcome:
         _, selected, rows = saved
@@ -515,11 +599,16 @@ class RelayQueue:
             return RelayQueueOutcome("incomplete")
         results = []
         for row in rows:
-            if type(row) is not dict or set(row) not in ({"task_id", "state"}, {"task_id", "state", "failure_code"}):
+            if type(row) is not dict or set(row) not in (
+                {"task_id", "state"},
+                {"task_id", "state", "failure_code"},
+            ):
                 return RelayQueueOutcome("incomplete")
             state = row["state"]
-            if type(row["task_id"]) is not str or type(state) is not str or state not in (
-                "ready_for_review", "conflict", "incomplete"
+            if (
+                type(row["task_id"]) is not str
+                or type(state) is not str
+                or state not in ("ready_for_review", "conflict", "incomplete")
             ):
                 return RelayQueueOutcome("incomplete")
             failure = row.get("failure_code")
@@ -527,21 +616,27 @@ class RelayQueue:
                 state != "incomplete" or type(failure) is not str or failure not in _FAILURE_CODES
             ):
                 return RelayQueueOutcome("incomplete")
-            results.append(RelayQueueResult(row["task_id"], state, failure))
+            results.append(RelayQueueResult(row["task_id"], cast(TaskState, state), failure))
         if [result.task_id for result in results] != selected:
             return RelayQueueOutcome("incomplete")
         incomplete = any(result.state == "incomplete" for result in results)
         return RelayQueueOutcome("incomplete" if incomplete else "resolved", tuple(results))
 
     def _select(
-        self, items: tuple[RelayQueueItem, ...], snapshot: dict[str, Any], workers: set[str], limit: int,
+        self,
+        items: tuple[RelayQueueItem, ...],
+        snapshot: dict[str, Any],
+        workers: set[str],
+        limit: int,
     ) -> tuple[RelayQueueItem, ...]:
         project_id = snapshot["project"]["id"]
         now = time.time()
         sessions = {row["id"]: row for row in snapshot["sessions"]}
         capabilities = {row["id"]: set(row["capabilities"]) for row in snapshot["agents"]}
         tasks = {row["id"]: row for row in snapshot["tasks"]}
-        active = [row for row in tasks.values() if row["status"] in ("claimed", "running", "blocked")]
+        active = [
+            row for row in tasks.values() if row["status"] in ("claimed", "running", "blocked")
+        ]
         busy = {sessions[row["owner_session_id"]]["agent_id"] for row in active}
         budget = max(0, limit - len(active))
         if not budget:
@@ -551,7 +646,8 @@ class RelayQueue:
         for item in items:
             actors = (item.first, item.second)
             if any(
-                actor.agent_id not in workers or actor.agent_id in busy
+                actor.agent_id not in workers
+                or actor.agent_id in busy
                 or not (session := sessions.get(actor.profile.session_id))
                 or session["agent_id"] != actor.agent_id
                 or session["online"] is not True
@@ -564,14 +660,20 @@ class RelayQueue:
             if not set(item.second_capabilities) <= capabilities[item.second.agent_id]:
                 continue
             if item.first.agent_id not in ready:
-                scoped = tuple(dict.fromkeys(
-                    candidate.task.task_id for candidate in items
-                    if candidate.first.agent_id == item.first.agent_id
-                    and candidate.task.task_id in tasks
-                ))
+                scoped = tuple(
+                    dict.fromkeys(
+                        candidate.task.task_id
+                        for candidate in items
+                        if candidate.first.agent_id == item.first.agent_id
+                        and candidate.task.task_id in tasks
+                    )
+                )
                 plan = plan_tasks(
-                    {"tasks": snapshot["tasks"]}, project_id=project_id,
-                    agent_id=item.first.agent_id, now=now, limit=100,
+                    {"tasks": snapshot["tasks"]},
+                    project_id=project_id,
+                    agent_id=item.first.agent_id,
+                    now=now,
+                    limit=100,
                     candidate_task_ids=scoped,
                 )
                 ready[item.first.agent_id] = {
@@ -579,18 +681,23 @@ class RelayQueue:
                 }
             if ready[item.first.agent_id].get(item.task.task_id) == item.task.expected_version:
                 eligible.append(item)
-        eligible.sort(key=lambda item: (
-            -tasks[item.task.task_id]["priority"],
-            tasks[item.task.task_id]["created_at"],
-            item.task.task_id,
-        ))
+        eligible.sort(
+            key=lambda item: (
+                -tasks[item.task.task_id]["priority"],
+                tasks[item.task.task_id]["created_at"],
+                item.task.task_id,
+            )
+        )
         grouped: dict[str, list[RelayQueueItem]] = {}
         for item in eligible:
             grouped.setdefault(item.task.task_id, []).append(item)
         groups = tuple(grouped.values())
 
         def select_pairs(
-            start: int, slots: int, occupied: set[str], roots: tuple[Path, ...],
+            start: int,
+            slots: int,
+            occupied: set[str],
+            roots: tuple[Path, ...],
         ) -> tuple[tuple[int, ...], tuple[RelayQueueItem, ...]]:
             if not slots:
                 return (), ()
@@ -602,10 +709,13 @@ class RelayQueue:
                     pair_roots = _roots(item)
                     if participants & occupied or any(
                         root.is_relative_to(previous) or previous.is_relative_to(root)
-                        for root in pair_roots for previous in roots
+                        for root in pair_roots
+                        for previous in roots
                     ):
                         continue
-                    tail_ranks, tail = select_pairs(index + 1, slots - 1, occupied | participants, roots + pair_roots)
+                    tail_ranks, tail = select_pairs(
+                        index + 1, slots - 1, occupied | participants, roots + pair_roots
+                    )
                     ranks = (index, *tail_ranks)
                     # Keep task priority first, then prefer filling earlier remaining slots.
                     padded = ranks + (len(groups),) * (slots - len(ranks))
@@ -618,8 +728,13 @@ class RelayQueue:
         return select_pairs(0, budget, busy, ())[1]
 
     async def run_ready_once(
-        self, items: tuple[RelayQueueItem, ...], *, request_id: str, admin_token: str,
-        parallel_limit: int = 1, expected_selection_sha256: str | None = None,
+        self,
+        items: tuple[RelayQueueItem, ...],
+        *,
+        request_id: str,
+        admin_token: str,
+        parallel_limit: int = 1,
+        expected_selection_sha256: str | None = None,
         _execution_deadline: float | None = None,
     ) -> RelayQueueOutcome:
         """Run at most one wave, optionally bound to a previously previewed selection."""
@@ -638,20 +753,32 @@ class RelayQueue:
             self._journal.get(project_key, key) is not None
             or self._relay._read_receipt(key, "wave-admitted") is not None
         ):
-            raise AgentSyncError("attempt_already_reserved", "This relay wave already has a receipt.", 409)
+            raise AgentSyncError(
+                "attempt_already_reserved", "This relay wave already has a receipt.", 409
+            )
         if self._fenced(project_id, project_key):
-            raise AgentSyncError("wave_incomplete", "An earlier relay wave still holds the project fence.", 409)
+            raise AgentSyncError(
+                "wave_incomplete", "An earlier relay wave still holds the project fence.", 409
+            )
         selected = self._select(items, snapshot, workers, parallel_limit)
         if expected_selection_sha256 is not None and (
-            not selected or not hmac.compare_digest(expected_selection_sha256, _selection_pin(selected))
+            not selected
+            or not hmac.compare_digest(expected_selection_sha256, _selection_pin(selected))
         ):
             raise AgentSyncError("selection_changed", "The previewed relay selection changed.", 409)
         if not selected:
             return RelayQueueOutcome("no_ready_tasks")
         self._check_selected(selected)
-        required_workers = {participant.agent_id for item in selected for participant in (item.first, item.second)}
-        if self._relay._owner_worker_ids(project_id, required_workers, admin_token) != required_workers:
-            raise AgentSyncError("forbidden", "A selected relay participant lost the worker role.", 403)
+        required_workers = {
+            participant.agent_id for item in selected for participant in (item.first, item.second)
+        }
+        if (
+            self._relay._owner_worker_ids(project_id, required_workers, admin_token)
+            != required_workers
+        ):
+            raise AgentSyncError(
+                "forbidden", "A selected relay participant lost the worker role.", 403
+            )
         self._relay._check_receipt_anchor(project_id, bind=True)
         self._check_journal_anchor(project_key, bind=True)
         _check_execution_deadline(_execution_deadline)
@@ -660,11 +787,19 @@ class RelayQueue:
         async def run(item: RelayQueueItem) -> RelayQueueResult:
             try:
                 outcome = await self._relay.run_once(
-                    item.first, item.second, item.task, admin_token=admin_token, _wave_key=key,
+                    item.first,
+                    item.second,
+                    item.task,
+                    admin_token=admin_token,
+                    _wave_key=key,
                     _execution_deadline=_execution_deadline,
                 )
             except AgentSyncError as error:
-                failure = error.code if type(error.code) is str and error.code in _FAILURE_CODES else "relay_operation_failed"
+                failure = (
+                    error.code
+                    if type(error.code) is str and error.code in _FAILURE_CODES
+                    else "relay_operation_failed"
+                )
                 return RelayQueueResult(item.task.task_id, "incomplete", failure)
             except Exception:
                 return RelayQueueResult(item.task.task_id, "incomplete", "relay_outcome_unknown")
@@ -705,18 +840,25 @@ class RelayQueue:
         items = self._validate_items(items, parallel_limit)
         _identifier(request_id)
         if (
-            type(max_waves) is not int or not 1 <= max_waves <= 4
+            type(max_waves) is not int
+            or not 1 <= max_waves <= 4
             or type(start_window_seconds) not in (int, float)
-            or not 0 < start_window_seconds <= 900 or not math.isfinite(start_window_seconds)
-            or (execution_budget_seconds is not None and (
-                type(execution_budget_seconds) not in (int, float)
-                or not 0 < execution_budget_seconds <= 900
-            ))
+            or not 0 < start_window_seconds <= 900
+            or not math.isfinite(start_window_seconds)
+            or (
+                execution_budget_seconds is not None
+                and (
+                    type(execution_budget_seconds) not in (int, float)
+                    or not 0 < execution_budget_seconds <= 900
+                )
+            )
         ):
             _invalid()
         loop = asyncio.get_running_loop()
         deadline = loop.time() + start_window_seconds
-        execution_deadline = None if execution_budget_seconds is None else loop.time() + execution_budget_seconds
+        execution_deadline = (
+            None if execution_budget_seconds is None else loop.time() + execution_budget_seconds
+        )
         project = items[0].first.profile.project_id
         outcomes: list[RelayQueueOutcome] = []
         remaining = items
@@ -730,8 +872,11 @@ class RelayQueue:
             try:
                 async with timer:
                     wave = await self.run_ready_once(
-                        remaining, request_id=wave_request, admin_token=admin_token,
-                        parallel_limit=parallel_limit, _execution_deadline=execution_deadline,
+                        remaining,
+                        request_id=wave_request,
+                        admin_token=admin_token,
+                        parallel_limit=parallel_limit,
+                        _execution_deadline=execution_deadline,
                     )
             except TimeoutError:
                 if not timer.expired():

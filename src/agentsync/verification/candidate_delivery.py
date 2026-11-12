@@ -138,8 +138,10 @@ class OwnerCandidateDelivery:
         if job["candidate_id"] != approval["subject_id"]:
             _reject_plan()
         exported = OwnerCandidateExporter(self._core).export(
-            project_id=p["project_id"], admin_token=p["admin_token"],
-            candidate_id=job["candidate_id"], expected_candidate_sha=job["candidate_sha"],
+            project_id=p["project_id"],
+            admin_token=p["admin_token"],
+            candidate_id=job["candidate_id"],
+            expected_candidate_sha=job["candidate_sha"],
         )
         binding = exported.binding
         prior = _load(job["metadata_json"], 4 * 1024 * 1024)["binding"]
@@ -155,7 +157,8 @@ class OwnerCandidateDelivery:
                 _reject_plan()
         snapshot = exported.snapshot
         if (
-            snapshot.commit_sha != proof["candidate_sha"] or snapshot.tree_sha != proof["tree_sha"]
+            snapshot.commit_sha != proof["candidate_sha"]
+            or snapshot.tree_sha != proof["tree_sha"]
             or snapshot.input_sha256 != proof["input_sha256"]
             or _hash(snapshot.source) != proof["source_sha256"]
         ):
@@ -166,13 +169,18 @@ class OwnerCandidateDelivery:
             "pending_version": approval["version"] - int(state == "approved"),
             "requester_agent_id": approval["requester_agent_id"],
             "requester_session_id": p["session_id"],
-            "task_id": task["id"], "task_version": task["version"],
-            "verification_id": proof["id"], "verification_sha256": _hash(_dump(proof)),
-            "candidate_id": job["candidate_id"], "candidate_sha": snapshot.commit_sha,
-            "tree_sha": snapshot.tree_sha, "snapshot_id": binding.snapshot_id,
+            "task_id": task["id"],
+            "task_version": task["version"],
+            "verification_id": proof["id"],
+            "verification_sha256": _hash(_dump(proof)),
+            "candidate_id": job["candidate_id"],
+            "candidate_sha": snapshot.commit_sha,
+            "tree_sha": snapshot.tree_sha,
+            "snapshot_id": binding.snapshot_id,
             "snapshot_receipt_sha256": _hash(binding.receipts[0]),
             "current_binding_sha256": binding.provenance_sha256,
-            "destination_ref": _ref(job["candidate_id"]), "expires_at": approval["expires_at"],
+            "destination_ref": _ref(job["candidate_id"]),
+            "expires_at": approval["expires_at"],
         }
         return plan, _load(binding.receipts[0], 16384)
 
@@ -201,15 +209,27 @@ class OwnerCandidateDelivery:
             self._approval(db, p, final_now, "pending")
             approval = self._core._change_approval(db, p, final_now, "approved", {"pending"})
             _save(db, p["project_id"], _APPROVED, p["approval_id"], plan)
-            self._core._audit_event(db, p["project_id"], "owner", p["project_id"],
-                                    _APPROVED, p, "allowed", "ok", approval)
+            self._core._audit_event(
+                db,
+                p["project_id"],
+                "owner",
+                p["project_id"],
+                _APPROVED,
+                p,
+                "allowed",
+                "ok",
+                approval,
+            )
             return {"plan_sha256": p["plan_sha256"], "approval": approval}
 
     @staticmethod
     def _observe_ref(store: GitWorkspaceStore, repo: Path, plan: dict[str, Any]) -> str:
         _, raw = store._git(
-            repo, "for-each-ref", "--format=%(refname)%00%(objectname)%00%(symref)",
-            "--", plan["destination_ref"],
+            repo,
+            "for-each-ref",
+            "--format=%(refname)%00%(objectname)%00%(symref)",
+            "--",
+            plan["destination_ref"],
         )
         if not raw:
             loose = repo.joinpath(*plan["destination_ref"].split("/"))
@@ -251,7 +271,9 @@ class OwnerCandidateDelivery:
             consumed = self._core._change_approval(db, p, final_now, "consumed", {"approved"})
             _save(db, project, _INTENT, approval_id, plan)
             _save(db, project, _FENCE, plan["candidate_id"], {"approval_id": approval_id})
-            self._core._audit_event(db, project, "owner", project, _INTENT, p, "allowed", "ok", consumed)
+            self._core._audit_event(
+                db, project, "owner", project, _INTENT, p, "allowed", "ok", consumed
+            )
         try:
             # The durable intent is irrevocable. A late failure retains it and
             # the consumed approval without creating or retrying another ref.
@@ -275,8 +297,11 @@ class OwnerCandidateDelivery:
                 ):
                     _reject_plan()
                 binding = OwnerCandidateBindings(self._core)._capture_in_transaction(
-                    db, project_id=project, admin_token=p["admin_token"],
-                    candidate_id=plan["candidate_id"], expected_candidate_sha=plan["candidate_sha"],
+                    db,
+                    project_id=project,
+                    admin_token=p["admin_token"],
+                    candidate_id=plan["candidate_id"],
+                    expected_candidate_sha=plan["candidate_sha"],
                 )
                 if binding.provenance_sha256 != plan["current_binding_sha256"]:
                     _reject_plan()
@@ -287,14 +312,18 @@ class OwnerCandidateDelivery:
                 hooks = store.root / "hooks"
                 physical(hooks)
                 if not hooks.is_dir() or any(hooks.iterdir()):
-                    _error("workspace_boundary", "Managed delivery requires an empty hooks directory.")
+                    _error(
+                        "workspace_boundary", "Managed delivery requires an empty hooks directory."
+                    )
                 if self._observe_ref(store, repo, plan) != "absent":
                     _error("delivery_reserved", "The managed delivery destination already exists.")
                 dispatch_now = self._now(admitted_now)
                 if dispatch_now >= min(plan["expires_at"], requester["expires_at"]):
                     _reject_plan()
                 sha = valid_sha(plan["candidate_sha"])
-                store._git(repo, "update-ref", "--no-deref", plan["destination_ref"], sha, "0" * len(sha))
+                store._git(
+                    repo, "update-ref", "--no-deref", plan["destination_ref"], sha, "0" * len(sha)
+                )
                 observed = self._observe_ref(store, repo, plan)
         except (AgentSyncError, OSError, UnicodeError, ValueError):
             observed = "unresolved"
@@ -372,6 +401,7 @@ class OwnerCandidateDelivery:
             _reject_plan()
         store = GitWorkspaceStore(self._core.data_dir, create=False)
         return {
-            "plan": plan, "approval_status": "consumed",
+            "plan": plan,
+            "approval_status": "consumed",
             "effect": self._observe_ref(store, _managed_repo(store, snapshot), plan),
         }

@@ -38,7 +38,9 @@ class UsageMixin:
         if added:
             document = merged.to_json()
             if len(document.encode("utf-8")) > _MAX_STORED_BYTES:
-                raise AgentSyncError("history_capacity_exceeded", "Usage history is exhausted.", 409)
+                raise AgentSyncError(
+                    "history_capacity_exceeded", "Usage history is exhausted.", 409
+                )
             db.execute(
                 "INSERT INTO project_usage(project_id,checkpoint,updated_at) VALUES(?,?,?) "
                 "ON CONFLICT(project_id) DO UPDATE SET "
@@ -57,7 +59,5 @@ class UsageMixin:
         return asdict(_project_ledger(db, p["project_id"]).summary())
 
     @staticmethod
-    def _owner_get_usage_run(
-        db: sqlite3.Connection, p: dict[str, Any], _: float
-    ) -> dict[str, Any]:
+    def _owner_get_usage_run(db: sqlite3.Connection, p: dict[str, Any], _: float) -> dict[str, Any]:
         return asdict(_project_ledger(db, p["project_id"]).get_run(p["kind"], p["run_id"]))

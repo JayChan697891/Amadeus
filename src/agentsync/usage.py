@@ -410,7 +410,12 @@ class UsageLedger:
         simulated = kind == "mock"
         input_tokens, output_tokens = record.counters[:2]
         return UsageRunSummary(
-            kind, run_id, record.status, simulated, input_tokens, output_tokens,
+            kind,
+            run_id,
+            record.status,
+            simulated,
+            input_tokens,
+            output_tokens,
             None if simulated else record.elapsed_ms,
         )
 

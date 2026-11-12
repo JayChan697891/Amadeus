@@ -19,8 +19,11 @@ def member(root, identity, kind, data):
     name = identity + ".json"
     (root / name).write_bytes(data)
     return {
-        "id": identity, "kind": kind, "path": name,
-        "size": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+        "id": identity,
+        "kind": kind,
+        "path": name,
+        "size": len(data),
+        "sha256": hashlib.sha256(data).hexdigest(),
     }
 
 
@@ -34,7 +37,10 @@ def member(root, identity, kind, data):
     ],
 )
 def test_review_rejects_relabelled_evidence_even_at_distinct_paths(
-    review_tool, tmp_path, first_kind, second_kind,
+    review_tool,
+    tmp_path,
+    first_kind,
+    second_kind,
 ):
     records = [
         member(tmp_path, "first", first_kind, b'{"fixture":1}'),
@@ -70,8 +76,11 @@ def test_relay_receipt_pins_frozen_source_and_distinct_client_identities(review_
         for client in ("codex", "cursor")
     ]
     document = {
-        "schema_version": 1, "kind": "real_relay", "commit_sha": commit,
-        "runs": runs, "artifact_sha256": artifact,
+        "schema_version": 1,
+        "kind": "real_relay",
+        "commit_sha": commit,
+        "runs": runs,
+        "artifact_sha256": artifact,
     }
     record = member(tmp_path, "relay-fixture", "real_relay", json.dumps(document).encode())
     assert review_tool._execution_artifact_digest(tmp_path, record, commit) == artifact
@@ -89,8 +98,11 @@ def test_prepared_receipt_uses_the_artifact_bytes_from_the_review_directory(revi
     artifact_record = member(tmp_path, "artifact", "execution_artifact", b"fixture artifact")
     pin = {key: artifact_record[key] for key in ("path", "size", "sha256")}
     run = {
-        "client": "codex", "client_version": "fixture-version",
-        "agent_sha256": "1" * 64, "run_sha256": "2" * 64, "session_sha256": "3" * 64,
+        "client": "codex",
+        "client_version": "fixture-version",
+        "agent_sha256": "1" * 64,
+        "run_sha256": "2" * 64,
+        "session_sha256": "3" * 64,
     }
     commit = "a" * 40
     declaration = {"artifact": pin, "runs": [run]}

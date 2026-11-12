@@ -23,7 +23,9 @@ JournalState = Literal["admitted", "incomplete", "resolved"]
 
 
 def _unavailable() -> AgentSyncError:
-    return AgentSyncError("wave_journal_unavailable", "The private relay wave journal is unavailable.", 409)
+    return AgentSyncError(
+        "wave_journal_unavailable", "The private relay wave journal is unavailable.", 409
+    )
 
 
 def _reject(code: str, message: str) -> AgentSyncError:
@@ -69,7 +71,8 @@ class RelayWaveJournal:
         except OSError:
             raise _unavailable() from None
         if (
-            not stat.S_ISREG(info.st_mode) or info.st_nlink != 1
+            not stat.S_ISREG(info.st_mode)
+            or info.st_nlink != 1
             or getattr(info, "st_file_attributes", 0) & 0x400
         ):
             raise _unavailable()
@@ -93,7 +96,10 @@ class RelayWaveJournal:
 
     @staticmethod
     def _check_schema(
-        db: sqlite3.Connection, *, initialize: bool, allow_empty: bool = False,
+        db: sqlite3.Connection,
+        *,
+        initialize: bool,
+        allow_empty: bool = False,
     ) -> bool:
         application_id = db.execute("PRAGMA application_id").fetchone()[0]
         version = db.execute("PRAGMA user_version").fetchone()[0]
@@ -132,7 +138,10 @@ class RelayWaveJournal:
                 raise _unavailable()
             mode = "rwc" if create else "rw"
             db = sqlite3.connect(
-                self._path.as_uri() + f"?mode={mode}", uri=True, timeout=5, isolation_level=None,
+                self._path.as_uri() + f"?mode={mode}",
+                uri=True,
+                timeout=5,
+                isolation_level=None,
             )
             db.execute("PRAGMA synchronous=EXTRA")
             db.execute("BEGIN IMMEDIATE")
@@ -150,28 +159,42 @@ class RelayWaveJournal:
 
     def admit(self, project_key: str, request_key: str, task_ids: tuple[str, ...]) -> None:
         with self._write() as db:
-            if db.execute(
-                "SELECT 1 FROM relay_waves WHERE project_key=? AND request_key=?",
-                (project_key, request_key),
-            ).fetchone() is not None:
+            if (
+                db.execute(
+                    "SELECT 1 FROM relay_waves WHERE project_key=? AND request_key=?",
+                    (project_key, request_key),
+                ).fetchone()
+                is not None
+            ):
                 raise _reject("attempt_already_reserved", "This relay wave already has a receipt.")
-            if db.execute(
-                "SELECT 1 FROM relay_waves WHERE project_key=? AND state IN ('admitted','incomplete')",
-                (project_key,),
-            ).fetchone() is not None:
-                raise _reject("wave_incomplete", "An earlier relay wave still holds the project fence.")
+            if (
+                db.execute(
+                    "SELECT 1 FROM relay_waves WHERE project_key=? AND state IN ('admitted','incomplete')",
+                    (project_key,),
+                ).fetchone()
+                is not None
+            ):
+                raise _reject(
+                    "wave_incomplete", "An earlier relay wave still holds the project fence."
+                )
             db.execute(
                 "INSERT INTO relay_waves VALUES (?,?,'admitted',?,NULL)",
                 (project_key, request_key, json.dumps(task_ids)),
             )
 
     def record(
-        self, project_key: str, request_key: str, *, incomplete: bool, results: list[dict[str, str]],
+        self,
+        project_key: str,
+        request_key: str,
+        *,
+        incomplete: bool,
+        results: list[dict[str, str]],
         reconciled: bool = False,
     ) -> None:
         if (
             type(incomplete) is not bool
-            or type(results) is not list or not 1 <= len(results) <= 4
+            or type(results) is not list
+            or not 1 <= len(results) <= 4
             or any(
                 type(result) is not dict
                 or set(result) not in ({"task_id", "state"}, {"task_id", "state", "failure_code"})
@@ -186,7 +209,9 @@ class RelayWaveJournal:
             or incomplete != any(result["state"] == "incomplete" for result in results)
             or (reconciled and incomplete)
         ):
-            raise _reject("wave_receipt_mismatch", "The wave state does not match its task outcomes.")
+            raise _reject(
+                "wave_receipt_mismatch", "The wave state does not match its task outcomes."
+            )
         with self._write() as db:
             row = db.execute(
                 "SELECT tasks_json,state,results_json FROM relay_waves "
@@ -194,16 +219,22 @@ class RelayWaveJournal:
                 (project_key, request_key),
             ).fetchone()
             if row is None or json.loads(row[0]) != [result["task_id"] for result in results]:
-                raise _reject("wave_receipt_mismatch", "The relay result does not match the admitted wave.")
+                raise _reject(
+                    "wave_receipt_mismatch", "The relay result does not match the admitted wave."
+                )
             state = "incomplete" if incomplete else "resolved"
             may_reconcile = reconciled and not incomplete and row[1] == "incomplete"
             if may_reconcile:
                 previous = json.loads(row[2])
                 if (
-                    type(previous) is not list or len(previous) != len(results)
+                    type(previous) is not list
+                    or len(previous) != len(results)
                     or any(
-                        type(old) is not dict or set(old) not in (
-                            {"task_id", "state"}, {"task_id", "state", "failure_code"},
+                        type(old) is not dict
+                        or set(old)
+                        not in (
+                            {"task_id", "state"},
+                            {"task_id", "state", "failure_code"},
                         )
                         or old["task_id"] != new["task_id"]
                         or old["state"] not in ("incomplete", new["state"])
@@ -211,7 +242,9 @@ class RelayWaveJournal:
                         for old, new in zip(previous, results, strict=True)
                     )
                 ):
-                    raise _reject("wave_receipt_mismatch", "Reconciliation cannot replace a terminal result.")
+                    raise _reject(
+                        "wave_receipt_mismatch", "Reconciliation cannot replace a terminal result."
+                    )
             if row[1] != "admitted" and not may_reconcile:
                 if row[1] == state and json.loads(row[2]) == results:
                     return
@@ -242,7 +275,9 @@ class RelayWaveJournal:
             db.execute("PRAGMA query_only=ON")
             # Keep schema and row reads on the same database snapshot.
             db.execute("BEGIN")
-            ready = self._check_schema(db, initialize=False, allow_empty=self._file_identity is None)
+            ready = self._check_schema(
+                db, initialize=False, allow_empty=self._file_identity is None
+            )
             yield db if ready else None
         finally:
             db.close()
@@ -251,21 +286,29 @@ class RelayWaveJournal:
     def _decode(row: tuple[Any, ...]) -> tuple[str, JournalState, Any, Any]:
         key, state, tasks, results = row
         if (
-            type(key) is not str or _WAVE_KEY.fullmatch(key) is None
-            or state not in ("admitted", "incomplete", "resolved") or len(tasks) > 8192
+            type(key) is not str
+            or _WAVE_KEY.fullmatch(key) is None
+            or state not in ("admitted", "incomplete", "resolved")
+            or len(tasks) > 8192
             or (results is not None and len(results) > 8192)
         ):
             raise _unavailable()
         return key, state, json.loads(tasks), None if results is None else json.loads(results)
 
     def history(
-        self, project_key: str, *, limit: int, before: str | None,
+        self,
+        project_key: str,
+        *,
+        limit: int,
+        before: str | None,
     ) -> tuple[list[tuple[str, JournalState, Any, Any]], str | None]:
         try:
             with self._query() as db:
                 if db is None:
                     if before is not None:
-                        raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
+                        raise AgentSyncError(
+                            "not_found", "The relay history cursor was not found.", 404
+                        )
                     return [], None
                 cursor = None
                 if before is not None:
@@ -274,7 +317,9 @@ class RelayWaveJournal:
                         (project_key, before),
                     ).fetchone()
                     if found is None:
-                        raise AgentSyncError("not_found", "The relay history cursor was not found.", 404)
+                        raise AgentSyncError(
+                            "not_found", "The relay history cursor was not found.", 404
+                        )
                     cursor = found[0]
                 rows = db.execute(
                     "SELECT request_key, state, tasks_json, results_json FROM relay_waves "
@@ -310,4 +355,3 @@ class RelayWaveJournal:
             return self._decode(row)
         except (OSError, sqlite3.Error, TypeError, ValueError, RecursionError):
             raise _unavailable() from None
-

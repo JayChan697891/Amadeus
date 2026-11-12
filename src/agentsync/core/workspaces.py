@@ -155,7 +155,9 @@ class WorkspacesMixin:
         ).fetchone()
         if bound is None:
             raise AgentSyncError(
-                "workspace_boundary", "The managed worktree does not belong to this agent and task.", 409,
+                "workspace_boundary",
+                "The managed worktree does not belong to this agent and task.",
+                409,
             )
         if p["metadata_only"]:
             return {"worktree_id": p["worktree_id"], "task_id": p["task_id"]}

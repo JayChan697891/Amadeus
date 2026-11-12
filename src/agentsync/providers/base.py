@@ -7,7 +7,7 @@ import math
 from dataclasses import dataclass, field, replace
 from threading import Lock
 from time import monotonic
-from typing import Any, Literal, NoReturn, Protocol
+from typing import Any, Literal, NoReturn, Protocol, SupportsIndex
 
 from agentsync.errors import AgentSyncError
 
@@ -116,7 +116,7 @@ class OwnerAuthorization:
     def __init__(self) -> None:
         _invalid()
 
-    def __reduce_ex__(self, protocol: int) -> NoReturn:
+    def __reduce_ex__(self, protocol: SupportsIndex) -> NoReturn:
         raise TypeError("Owner authorization is process-local.")
 
     def _consume(self, provider: object, request: ModelRequest) -> float:

@@ -51,7 +51,9 @@ def inspect_capture(raw: bytes, *, exit_code: int | None) -> dict[str, Any]:
         "exit_code_provenance": "caller_provided",
         "state": report.state,
         "session_present": report.session_id is not None,
-        "reported_timing": None if metadata is None else {
+        "reported_timing": None
+        if metadata is None
+        else {
             "duration_ms": metadata.duration_ms,
             "duration_api_ms": metadata.duration_api_ms,
             "request_present": metadata.request_id is not None,
@@ -66,7 +68,9 @@ def inspect_capture(raw: bytes, *, exit_code: int | None) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True, help="Explicit terminal JSON capture")
-    parser.add_argument("--exit-code", type=exit_code, help="Observed process exit code if available")
+    parser.add_argument(
+        "--exit-code", type=exit_code, help="Observed process exit code if available"
+    )
     args = parser.parse_args(argv)
     try:
         raw = read_capture(args.input)

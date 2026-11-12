@@ -29,10 +29,15 @@ from agentsync.errors import AgentSyncError
 _CaptureFactory = Callable[[AdapterTask], Awaitable[CapturedProcess]]
 _ContextualCaptureFactory = Callable[[AdapterTask, LaunchContext], Awaitable[CapturedProcess]]
 _HostStatus = Literal["starting", "running", "succeeded", "failed", "unknown"]
-_LAUNCH_ADMISSION_ERRORS = frozenset({
-    "attempt_already_reserved", "launch_not_authorized", "launch_plan_changed", "receipt_unavailable",
-    "relay_execution_limit",
-})
+_LAUNCH_ADMISSION_ERRORS = frozenset(
+    {
+        "attempt_already_reserved",
+        "launch_not_authorized",
+        "launch_plan_changed",
+        "receipt_unavailable",
+        "relay_execution_limit",
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -261,8 +266,10 @@ class _HostProcessAdapter(
         except Exception as exc:
             error = "factory_failed"
             if (
-                isinstance(exc, AgentSyncError) and type(exc.code) is str
-                and self._contextual_factory is not None and entry.process is None
+                isinstance(exc, AgentSyncError)
+                and type(exc.code) is str
+                and self._contextual_factory is not None
+                and entry.process is None
                 and exc.code in _LAUNCH_ADMISSION_ERRORS
             ):
                 error = exc.code
@@ -359,7 +366,8 @@ class _HostProcessAdapter(
     async def wait_terminal(self, run_id: str, *, timeout_seconds: float) -> _RunT:
         """Wait for a terminal local observation; timeout never cancels the run."""
         if (
-            type(timeout_seconds) not in (int, float) or not 0 < timeout_seconds <= 7202
+            type(timeout_seconds) not in (int, float)
+            or not 0 < timeout_seconds <= 7202
             or not math.isfinite(timeout_seconds)
         ):
             raise AgentSyncError("validation_error", "Invalid terminal observation timeout.")

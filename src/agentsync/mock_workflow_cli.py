@@ -20,7 +20,12 @@ _WORKFLOW_OPTIONS = {
     "parallel_limit",
 }
 _TASK_REQUIRED = {"label", "priority", "capability"}
-_TASK_OPTIONAL = {"dependencies", "fail_first_attempt", "handoff_on_success", "first_retry_after_seconds"}
+_TASK_OPTIONAL = {
+    "dependencies",
+    "fail_first_attempt",
+    "handoff_on_success",
+    "first_retry_after_seconds",
+}
 
 
 def _unique_members(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -103,7 +108,9 @@ async def _decompose(document: Any) -> tuple[MockWorkflowTask, ...]:
     return tuple(tasks)
 
 
-async def _run(scratch_parent: Path, payload: dict[str, Any], options: dict[str, Any]) -> dict[str, Any]:
+async def _run(
+    scratch_parent: Path, payload: dict[str, Any], options: dict[str, Any]
+) -> dict[str, Any]:
     if "decomposition" in payload:
         tasks = await _decompose(payload["decomposition"])
         result = await run_mock_workflow(scratch_parent, tasks=tasks, **options)
@@ -118,7 +125,9 @@ async def _run(scratch_parent: Path, payload: dict[str, Any], options: dict[str,
     rows = payload["tasks"]
     if type(rows) is not list or not 1 <= len(rows) <= 16:
         raise ValueError("Invalid workflow task list.")
-    return await run_mock_workflow(scratch_parent, tasks=tuple(_task(row) for row in rows), **options)
+    return await run_mock_workflow(
+        scratch_parent, tasks=tuple(_task(row) for row in rows), **options
+    )
 
 
 def _error(code: str, message: str) -> int:

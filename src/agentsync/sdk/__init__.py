@@ -25,7 +25,9 @@ class AgentSyncClient:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
             if operation in (
-                "preview_candidate_delivery", "get_candidate_delivery_status", "approve_candidate_delivery",
+                "preview_candidate_delivery",
+                "get_candidate_delivery_status",
+                "approve_candidate_delivery",
             ):
                 from agentsync.verification.candidate_delivery import OwnerCandidateDelivery
 

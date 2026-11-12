@@ -162,7 +162,9 @@ def prepare_handoff(
         "Keep verified observations and open questions distinct. Do not invent evidence.",
         notes,
     )
-    return AdviceRequest("handoff", ModelRequest(prompt, max_output_tokens, timeout_seconds), max_items)
+    return AdviceRequest(
+        "handoff", ModelRequest(prompt, max_output_tokens, timeout_seconds), max_items
+    )
 
 
 def _fields(value: Any, expected: set[str]) -> dict[str, Any]:
@@ -264,4 +266,6 @@ async def get_advice(
         data = _roles(document, request.allowed_roles)
     else:
         data = _handoff(document, request.max_items)
-    return AdviceResult(request.kind, data, result.provider, result.model, result.usage, result.simulated)
+    return AdviceResult(
+        request.kind, data, result.provider, result.model, result.usage, result.simulated
+    )

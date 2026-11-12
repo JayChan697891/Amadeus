@@ -92,7 +92,9 @@ class OwnerCandidateFlow:
         }:
             _error("profile_mismatch", "Trusted profile differs from the queued candidate policy.")
         if lease_seconds <= profile.timeout_seconds + 60:
-            _error("reservation_expired", "Insufficient reservation time for execution and cleanup.")
+            _error(
+                "reservation_expired", "Insufficient reservation time for execution and cleanup."
+            )
 
         claimed = self._claims.claim_once(
             project_id=project_id,
@@ -104,7 +106,10 @@ class OwnerCandidateFlow:
         )
         claimed_job = claimed["job"]
         reservation = claimed["reservation"]
-        if claimed_job["id"] != job_id or claimed_job["metadata_sha256"] != expected_metadata_sha256:
+        if (
+            claimed_job["id"] != job_id
+            or claimed_job["metadata_sha256"] != expected_metadata_sha256
+        ):
             _error("version_conflict", "Candidate pin changed during reservation.")
         prepared = self._intents.prepare_once(
             project_id=project_id,

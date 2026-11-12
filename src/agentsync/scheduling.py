@@ -49,7 +49,13 @@ def plan_tasks(
 ) -> SchedulingPlan:
     try:
         return _plan(
-            snapshot, project_id, agent_id, now, limit, required_capabilities, agent_capabilities,
+            snapshot,
+            project_id,
+            agent_id,
+            now,
+            limit,
+            required_capabilities,
+            agent_capabilities,
             candidate_task_ids,
         )
     except (KeyError, TypeError, ValueError, OverflowError, UnicodeError):
@@ -74,13 +80,19 @@ def _timestamp(value: Any) -> float:
 
 
 def _task_eligible(
-    row: dict[str, Any], rows: dict[str, dict[str, Any]], agent_id: str, observed: float,
+    row: dict[str, Any],
+    rows: dict[str, dict[str, Any]],
+    agent_id: str,
+    observed: float,
 ) -> bool:
     return (
         row["status"] == "pending"
         and row["owner_session_id"] is None
         and row["lease_expires_at"] is None
-        and all(dependency in rows and rows[dependency]["status"] == "completed" for dependency in row["dependencies"])
+        and all(
+            dependency in rows and rows[dependency]["status"] == "completed"
+            for dependency in row["dependencies"]
+        )
         and (
             row["assigned_agent_id"] is None
             or row["assignment_expires_at"] <= observed

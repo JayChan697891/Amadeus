@@ -8,7 +8,7 @@ import re
 import socket
 import ssl
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from email.utils import parsedate_to_datetime
 from threading import Lock
 from time import monotonic
@@ -74,7 +74,7 @@ def _retry_after(value: str | None) -> int | None:
         moment = parsedate_to_datetime(value)
         if moment.tzinfo is None:
             return None
-        seconds = max(0, math.ceil((moment - datetime.now(timezone.utc)).total_seconds()))
+        seconds = max(0, math.ceil((moment - datetime.now(UTC)).total_seconds()))
     except (TypeError, ValueError, OverflowError):
         return None
     return seconds if seconds <= 2**31 - 1 else None

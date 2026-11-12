@@ -180,15 +180,23 @@ def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_
     original = source_fingerprint(source)
     completed = complete.complete_once(**args)
     requester = world[2][0]
-    approval = core.execute("request_approval", {
-        **requester, "action": "apply_merge_candidate",
-        "subject_id": candidate["candidate_id"], "subject_sha": candidate["expected_candidate_sha"],
-        "request_id": "fixture-delivery-approval",
-    })
+    approval = core.execute(
+        "request_approval",
+        {
+            **requester,
+            "action": "apply_merge_candidate",
+            "subject_id": candidate["candidate_id"],
+            "subject_sha": candidate["expected_candidate_sha"],
+            "request_id": "fixture-delivery-approval",
+        },
+    )
     lookup = {**owner(prepared), "approval_id": approval["id"]}
     payload = {
-        **lookup, "expected_version": approval["version"], "task_id": args["task_id"],
-        "expected_task_version": completed["version"], "session_id": requester["session_id"],
+        **lookup,
+        "expected_version": approval["version"],
+        "task_id": args["task_id"],
+        "expected_task_version": completed["version"],
+        "session_id": requester["session_id"],
         "session_token": requester["session_token"],
     }
     client = AgentSyncClient(core.data_dir)
@@ -199,12 +207,15 @@ def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_
     denied = client.owner_call("approve_candidate_delivery", **payload, plan_sha256="0" * 64)
     assert denied["error"]["code"] == "delivery_plan_changed"
     approved = client.owner_call(
-        "approve_candidate_delivery", **payload, plan_sha256=preview["plan_sha256"],
+        "approve_candidate_delivery",
+        **payload,
+        plan_sha256=preview["plan_sha256"],
     )["data"]
     before = client.owner_call("get_candidate_delivery_status", **lookup)["data"]
     assert before == {"plan": plan, "approval_status": "approved", "effect": "not_attempted"}
     publish = {
-        **payload, "expected_version": approved["approval"]["version"],
+        **payload,
+        "expected_version": approved["approval"]["version"],
         "plan_sha256": preview["plan_sha256"],
     }
     delivery = OwnerCandidateDelivery(core)

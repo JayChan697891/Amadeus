@@ -220,14 +220,18 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     if args.command in {"relay-status", "relay-reconcile"}:
         if not data_dir:
             parser.error(f"{args.command} requires an explicit --data-dir")
-        if args.command == "relay-status" and not args.history and (
-            args.before is not None or args.limit != 16
+        if (
+            args.command == "relay-status"
+            and not args.history
+            and (args.before is not None or args.limit != 16)
         ):
             parser.error("relay-status paging options require --history")
         from agentsync.relay_status_cli import run_relay_cli
 
         return run_relay_cli(
-            Path(data_dir), args.scratch_root, args.receipts,
+            Path(data_dir),
+            args.scratch_root,
+            args.receipts,
             history=getattr(args, "history", False),
             limit=getattr(args, "limit", 16),
             before=getattr(args, "before", None),

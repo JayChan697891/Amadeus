@@ -222,7 +222,10 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, UsageMixin, Perm
         return public
 
     def _owner_get_task_verification(
-        self, db: sqlite3.Connection, payload: dict[str, Any], _: float,
+        self,
+        db: sqlite3.Connection,
+        payload: dict[str, Any],
+        _: float,
     ) -> dict[str, Any]:
         from agentsync.verification.task_completion import task_projection
 

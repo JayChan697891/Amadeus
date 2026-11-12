@@ -224,12 +224,19 @@ def test_owner_can_inspect_pending_delivery_without_exposing_it_to_agents(world)
     lsha = commit_edit(left, "left.txt", "delivery fixture left\n")
     rsha = commit_edit(right, "right.txt", "delivery fixture right\n")
     candidate = call(
-        core, first, "prepare_merge_candidate", **comparison(left, right, lsha, rsha),
+        core,
+        first,
+        "prepare_merge_candidate",
+        **comparison(left, right, lsha, rsha),
         request_id="delivery-fixture",
     )
     approval = call(
-        core, first, "request_approval", action="apply_merge_candidate",
-        subject_id=candidate["candidate_id"], subject_sha=candidate["candidate_sha"],
+        core,
+        first,
+        "request_approval",
+        action="apply_merge_candidate",
+        subject_id=candidate["candidate_id"],
+        subject_sha=candidate["candidate_sha"],
         request_id="approval-fixture",
     )
     sdk = AgentSyncClient(core.data_dir)
@@ -239,11 +246,16 @@ def test_owner_can_inspect_pending_delivery_without_exposing_it_to_agents(world)
         "data": {"plan": None, "approval_status": "pending", "effect": "not_attempted"},
     }
     wrong = sdk.owner_call(
-        operation, project_id=owner["project_id"], admin_token="fixture-wrong-token",
+        operation,
+        project_id=owner["project_id"],
+        admin_token="fixture-wrong-token",
         approval_id=approval["id"],
     )
     assert wrong["error"]["code"] == "unauthorized"
-    assert sdk.call(operation, **first, approval_id=approval["id"])["error"]["code"] == "unknown_operation"
+    assert (
+        sdk.call(operation, **first, approval_id=approval["id"])["error"]["code"]
+        == "unknown_operation"
+    )
     rejected = sdk.owner_call(
         "approve_candidate_delivery",
         **owner,
@@ -256,7 +268,10 @@ def test_owner_can_inspect_pending_delivery_without_exposing_it_to_agents(world)
         plan_sha256="0" * 64,
     )
     assert rejected["error"]["code"] == "delivery_plan_changed"
-    assert sdk.owner_call(operation, **owner, approval_id=approval["id"])["data"]["approval_status"] == "pending"
+    assert (
+        sdk.owner_call(operation, **owner, approval_id=approval["id"])["data"]["approval_status"]
+        == "pending"
+    )
     assert source_fingerprint(root) == original
 
 

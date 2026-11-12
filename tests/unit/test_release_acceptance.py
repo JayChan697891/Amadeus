@@ -1160,7 +1160,7 @@ def test_sdist_uses_exact_archive_fresh_venv_isolated_origin_and_full_suite(
 ):
     run, scratch, archive, calls, _, _ = isolated_install_plan
     checks = runner.sdist_checks(repository, run, scratch, "0.3.0a1", True)
-    assert len(checks) == 6 and all(c["status"] == "pass" for c in checks)
+    assert len(checks) == 7 and all(c["status"] == "pass" for c in checks)
     commands = {check_id: command for check_id, command, _, _ in calls}
     install = commands["sdist_install"]
     assert install[-1] == str(archive) + "[dev]"
@@ -1171,7 +1171,12 @@ def test_sdist_uses_exact_archive_fresh_venv_isolated_origin_and_full_suite(
     assert all(command[1] == "-I" for name, command in commands.items() if name != "sdist_venv")
     assert "origin.is_relative_to" in commands["sdist_origin_sdk"][-1]
     assert str(repository / "tests") in commands["sdist_pytest"]
-    assert all(cwd == run for _, _, cwd, _ in calls)
+    probe_dir = scratch / "sdist-console-probe"
+    assert commands["sdist_console_smoke"][-1] == str(probe_dir)
+    assert all(
+        cwd == (probe_dir if check_id == "sdist_console_smoke" else run)
+        for check_id, _, cwd, _ in calls
+    )
     assert checks[1]["artifact"]["sha256"] == runner.sha256(archive)
     assert checks[-1]["junit"]["tests"] == 1
     assert (run / "sdist-junit.xml").exists()

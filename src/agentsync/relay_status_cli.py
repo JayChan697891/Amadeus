@@ -70,9 +70,12 @@ def run_relay_cli(
         else:
             queue = RelayQueue(relay)
             if wave_id is not None:
-                result = asdict(queue.reconcile_pending_from_session(
-                    **credentials, expected_wave_id=wave_id,
-                ))
+                result = asdict(
+                    queue.reconcile_pending_from_session(
+                        **credentials,
+                        expected_wave_id=wave_id,
+                    )
+                )
             elif history:
                 result = asdict(queue.owner_history(**credentials, limit=limit, before=before))
             else:
@@ -82,7 +85,9 @@ def run_relay_cli(
     except AgentSyncError as error:
         response = error_envelope(error)
     except sqlite3.Error:
-        response = error_envelope(AgentSyncError("storage_error", "The local Core database is unavailable."))
+        response = error_envelope(
+            AgentSyncError("storage_error", "The local Core database is unavailable.")
+        )
     except (OSError, ValueError, RecursionError):
         response = error_envelope(
             AgentSyncError("validation_error", "Invalid credentials input or local relay paths.")

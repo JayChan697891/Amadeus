@@ -22,11 +22,15 @@ async def test_claude_request_is_bound_to_one_approval_and_usage_stays_unverifie
     def response(post, active):
         active.remaining()
         requests.append(post)
-        return json.dumps({
-            "type": "message", "role": "assistant", "stop_reason": "end_turn",
-            "content": [{"type": "text", "text": "fixture response"}],
-            "usage": {"input_tokens": 4, "output_tokens": 2},
-        }).encode("ascii")
+        return json.dumps(
+            {
+                "type": "message",
+                "role": "assistant",
+                "stop_reason": "end_turn",
+                "content": [{"type": "text", "text": "fixture response"}],
+                "usage": {"input_tokens": 4, "output_tokens": 2},
+            }
+        ).encode("ascii")
 
     monkeypatch.setattr(provider_http, "send", response)
     profile = ProviderProfile("anthropic", "fixture-model", key)
@@ -34,7 +38,8 @@ async def test_claude_request_is_bound_to_one_approval_and_usage_stays_unverifie
     request = ModelRequest("fixture prompt", max_output_tokens=12)
     grant = provider.authorize(request)
     for caller, modified in (
-        (HTTPProvider(profile), request), (provider, replace(request, max_output_tokens=13)),
+        (HTTPProvider(profile), request),
+        (provider, replace(request, max_output_tokens=13)),
     ):
         with pytest.raises(AgentSyncError) as denied:
             await caller.complete(modified, authorization=grant)
@@ -46,7 +51,12 @@ async def test_claude_request_is_bound_to_one_approval_and_usage_stays_unverifie
     assert observed.verification == "unverified"
     assert len(requests) == 1
     post = requests[0]
-    assert (post.host, post.port, post.tls, post.path) == ("api.anthropic.com", 443, True, "/v1/messages")
+    assert (post.host, post.port, post.tls, post.path) == (
+        "api.anthropic.com",
+        443,
+        True,
+        "/v1/messages",
+    )
     assert post.headers["anthropic-version"] == "2026-10-21"
     body = json.loads(post.body)
     assert body["messages"] == [{"role": "user", "content": "fixture prompt"}]
@@ -79,8 +89,13 @@ async def test_rate_limit_returns_advice_without_reusing_grant_or_calling_again(
     with pytest.raises(ProviderError) as failure:
         await provider.complete(request, authorization=grant)
     decision = plan_provider_retry(
-        failure.value, RetryPolicy(), attempts_used=1, outcome_confirmed=True,
-        now=100, deadline=110, remaining_attempt_budget=1,
+        failure.value,
+        RetryPolicy(),
+        attempts_used=1,
+        outcome_confirmed=True,
+        now=100,
+        deadline=110,
+        remaining_attempt_budget=1,
     )
     assert decision.state == "retry" and decision.retry_at == 107
     with pytest.raises(AgentSyncError) as replay:

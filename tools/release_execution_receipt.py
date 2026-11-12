@@ -26,11 +26,16 @@ _LIMIT = 16 * 1024
 
 
 def prepare_execution_receipt(
-    evidence_root: Path, kind: str, commit: str, declaration: Any,
+    evidence_root: Path,
+    kind: str,
+    commit: str,
+    declaration: Any,
 ) -> dict[str, Any]:
     if (
-        kind not in _REAL_EXECUTION_KINDS or not re.fullmatch(r"[0-9a-f]{40}", commit)
-        or type(declaration) is not dict or set(declaration) != {"artifact", "runs"}
+        kind not in _REAL_EXECUTION_KINDS
+        or not re.fullmatch(r"[0-9a-f]{40}", commit)
+        or type(declaration) is not dict
+        or set(declaration) != {"artifact", "runs"}
     ):
         raise ValueError("Invalid execution declaration.")
     artifact = declaration["artifact"]
@@ -59,7 +64,9 @@ def main() -> int:
         raw = sys.stdin.buffer.read(_LIMIT + 1)
         if len(raw) > _LIMIT:
             raise ValueError("Execution declaration exceeds its byte limit.")
-        receipt = prepare_execution_receipt(args.evidence_root, args.kind, args.commit, read_json(raw))
+        receipt = prepare_execution_receipt(
+            args.evidence_root, args.kind, args.commit, read_json(raw)
+        )
     except (OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid or inconsistent execution declaration.\n")
     print(json.dumps(receipt, ensure_ascii=True, indent=2, sort_keys=True))

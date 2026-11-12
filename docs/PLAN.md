@@ -5,7 +5,9 @@ M5 remains the original five requirements; no new stages for documentation,
 duplicate evidence or noncritical enhancements. Existing stage records below are
 historical. Current M6 has typed host-factory Codex/Claude/Cursor protocol adapters,
 bounded offline parsers/inspectors and explicit pinned invocation plans.
-The current code-first phase defers validation until implementation is ready.
+The 2026-11-11 continuation rule authorizes local implementation, testing,
+repair and retesting in one task. Start from the exact source and outstanding
+checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
 Owner-only candidate execution and independent completion have limited local evidence.
 M6's instance-local manager can return a nonblocking dispatch handle and observe

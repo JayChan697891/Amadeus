@@ -81,7 +81,9 @@ def _prepare_offline_packages(
         try:
             requirement = Requirement(value)
         except InvalidRequirement:
-            raise ValueError("Offline dependency metadata contains an invalid requirement") from None
+            raise ValueError(
+                "Offline dependency metadata contains an invalid requirement"
+            ) from None
         if requirement.url is not None:
             raise ValueError("Offline dependency metadata contains a direct URL requirement")
         return requirement
@@ -102,7 +104,9 @@ def _prepare_offline_packages(
 
     runtime = active_requirements(metadata.get("dependencies", []), ("", "dev"))
     dev = active_requirements(metadata.get("optional-dependencies", {}).get("dev", []), ("dev",))
-    frontends = [str(requirement) for requirement in dev if canonicalize_name(requirement.name) == "build"]
+    frontends = [
+        str(requirement) for requirement in dev if canonicalize_name(requirement.name) == "build"
+    ]
     if len(frontends) != 1:
         raise ValueError("Offline source build requires one declared build frontend")
 
@@ -321,17 +325,23 @@ def requirement_results(manifest: dict | None, run: Path) -> list[dict]:
 def scenario_results(manifest: dict | None, requirements: list[dict]) -> list[dict]:
     """Index original scenarios without reusing component observations as scenario evidence."""
     observed_requirements = {
-        row["id"] for row in requirements
+        row["id"]
+        for row in requirements
         if any(
             observed["counts"]["tests"] > 0
-            for component in row["component_evidence"] for observed in component["observations"]
+            for component in row["component_evidence"]
+            for observed in component["observations"]
         )
     }
     return [
         {
-            "id": row["id"], "title": row["title"], "expected": row["expected"],
-            "requirements": row["requirements"], "planned_evidence": row["evidence"],
-            "execution_status": "not_run", "scenario_evidence": [],
+            "id": row["id"],
+            "title": row["title"],
+            "expected": row["expected"],
+            "requirements": row["requirements"],
+            "planned_evidence": row["evidence"],
+            "execution_status": "not_run",
+            "scenario_evidence": [],
             "requirements_with_component_observations": [
                 identity for identity in row["requirements"] if identity in observed_requirements
             ],
@@ -451,7 +461,7 @@ def execute(
     # placed in the durable/uploadable log directory, even for failed commands.
     with (
         tempfile.TemporaryFile(mode="w+b", dir=temporary) as stream,
-        (capture_stdout.open("wb") if capture_stdout is not None else nullcontext(stream)) as stdout,
+        capture_stdout.open("wb") if capture_stdout is not None else nullcontext(stream) as stdout,
     ):
         try:
             result = subprocess.run(
@@ -507,8 +517,13 @@ def _execute_check(
 
 
 def _offline_build_command(
-    repo: Path, run: Path, scratch: Path, packages: OfflinePackages, checks: list[dict],
-    *, artifact_output: Path | None = None,
+    repo: Path,
+    run: Path,
+    scratch: Path,
+    packages: OfflinePackages,
+    checks: list[dict],
+    *,
+    artifact_output: Path | None = None,
 ) -> list[str] | None:
     environment = scratch / "offline-build"
     created = execute(
@@ -532,7 +547,12 @@ def _offline_build_command(
     if tools["status"] != "pass":
         return None
     return [
-        python, "-I", "-m", "build", "--no-isolation", "--outdir",
+        python,
+        "-I",
+        "-m",
+        "build",
+        "--no-isolation",
+        "--outdir",
         str(artifact_output if artifact_output is not None else run / "artifacts"),
     ]
 
@@ -572,12 +592,17 @@ raise SystemExit(0 if passed else 1)
 """
 
 
-def _installed_console_smoke(kind: str, python: str, run: Path, scratch: Path, artifact: dict) -> dict:
+def _installed_console_smoke(
+    kind: str, python: str, run: Path, scratch: Path, artifact: dict
+) -> dict:
     directory = scratch / f"{kind}-console-probe"
     directory.mkdir()
     result = execute(
-        f"{kind}_console_smoke", [python, "-I", "-c", _CONSOLE_PROBE, str(directory)],
-        directory, run, scratch,
+        f"{kind}_console_smoke",
+        [python, "-I", "-c", _CONSOLE_PROBE, str(directory)],
+        directory,
+        run,
+        scratch,
     )
     result["artifact"] = artifact.copy()
     return result
@@ -597,7 +622,13 @@ def _installed_license_inventory(
     stdout = scratch / f"{kind}-license-inventory.json"
     result = execute(
         check_id,
-        [python, "-I", str(repo / "tools" / "license_inventory.py"), "--distribution", "agentsync-local"],
+        [
+            python,
+            "-I",
+            str(repo / "tools" / "license_inventory.py"),
+            "--distribution",
+            "agentsync-local",
+        ],
         run,
         run,
         scratch,
@@ -633,7 +664,9 @@ def _installed_license_inventory(
             or not isinstance(inventory.get("review_items"), list)
             or bool(inventory["review_items"]) != (result["exit_code"] == 1)
         ):
-            raise ValueError("License inventory does not match the installed distribution or expected schema")
+            raise ValueError(
+                "License inventory does not match the installed distribution or expected schema"
+            )
         json.dumps(inventory, allow_nan=False)
         target = run / stdout.name
         target.write_bytes(raw)
@@ -789,7 +822,13 @@ def sdist_checks(
             )
             return checks
         install_command = _offline_install(
-            python, wheelhouse, "--no-build-isolation", "--no-deps", "--force-reinstall", "--", str(archive)
+            python,
+            wheelhouse,
+            "--no-build-isolation",
+            "--no-deps",
+            "--force-reinstall",
+            "--",
+            str(archive),
         )
     else:
         install_command = [
@@ -883,7 +922,10 @@ def sdist_checks(
 
 
 def _stage_candidate(
-    repo: Path, run: Path, version: str, candidate: tuple[Path, Path, str],
+    repo: Path,
+    run: Path,
+    version: str,
+    candidate: tuple[Path, Path, str],
 ) -> dict:
     if __package__:
         from .acceptance_evidence import _member_parts, _physical
@@ -895,9 +937,12 @@ def _stage_candidate(
     manifest_path, evidence_root, checksum = candidate
     if any(path.resolve(strict=True).drive.startswith("\\\\") for path in candidate[:2]):
         raise ValueError("Candidate installation requires local evidence files.")
-    verified = verify_manifest(manifest_path, evidence_root, manifest_sha256=checksum, source_repo=repo)
+    verified = verify_manifest(
+        manifest_path, evidence_root, manifest_sha256=checksum, source_repo=repo
+    )
     frozen = {
-        "version": version, "commit_sha": git_value(repo, "rev-parse", "HEAD"),
+        "version": version,
+        "commit_sha": git_value(repo, "rev-parse", "HEAD"),
         "tree_sha": git_value(repo, "rev-parse", "HEAD^{tree}"),
         "source_snapshot_sha256": sha256(run / "source-snapshot.json"),
     }
@@ -954,10 +999,11 @@ def collect(
     if candidate is not None and not (
         run_checks and package_install and sdist_install and offline_wheelhouse is not None
     ):
-        raise ValueError("Candidate installs require --run, both installs and --offline-wheelhouse.")
+        raise ValueError(
+            "Candidate installs require --run, both installs and --offline-wheelhouse."
+        )
     if offline_wheelhouse is not None and any(
-        path is not None and path.drive.startswith("\\\\")
-        for path in (repo, output, scratch_root)
+        path is not None and path.drive.startswith("\\\\") for path in (repo, output, scratch_root)
     ):
         raise ValueError("Offline mode requires local source, output and scratch paths")
     output = output.resolve()
@@ -1026,20 +1072,36 @@ def _collect(
     if candidate is not None:
         try:
             candidate_input = _stage_candidate(repo, run, project["project"]["version"], candidate)
-        except (AttributeError, ImportError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
+        except (
+            AttributeError,
+            ImportError,
+            IndexError,
+            KeyError,
+            OSError,
+            RecursionError,
+            TypeError,
+            ValueError,
+        ):
             candidate_rejected = True
-            checks.append({
-                "id": "candidate_preflight", "status": "fail",
-                "reason": "Could not verify and stage the exact candidate from its original build and frozen source",
-            })
+            checks.append(
+                {
+                    "id": "candidate_preflight",
+                    "status": "fail",
+                    "reason": "Could not verify and stage the exact candidate from its original build and frozen source",
+                }
+            )
     if candidate_input is None:
         (run / "artifacts").mkdir(exist_ok=True)
     plan = check_plan(sys.executable, run, scratch)
     offline_packages = None
     if candidate_rejected:
-        checks.append({
-            "id": "offline_wheelhouse", "status": "not_run", "reason": "Candidate preflight failed",
-        })
+        checks.append(
+            {
+                "id": "offline_wheelhouse",
+                "status": "not_run",
+                "reason": "Candidate preflight failed",
+            }
+        )
     elif offline_wheelhouse is not None:
         try:
             if offline_wheelhouse.drive.startswith("\\\\"):
@@ -1048,7 +1110,15 @@ def _collect(
             if wheelhouse.drive.startswith("\\\\"):
                 raise ValueError("Offline wheelhouse must use a local filesystem path")
             offline_packages = _prepare_offline_packages(project, wheelhouse, scratch, run)
-        except (ImportError, KeyError, OSError, RuntimeError, TypeError, ValueError, zipfile.BadZipFile) as exc:
+        except (
+            ImportError,
+            KeyError,
+            OSError,
+            RuntimeError,
+            TypeError,
+            ValueError,
+            zipfile.BadZipFile,
+        ) as exc:
             checks.append(
                 {
                     "id": "offline_wheelhouse",
@@ -1059,7 +1129,9 @@ def _collect(
     for check_id, command in plan:
         if candidate_rejected:
             item = {
-                "id": check_id, "command": command, "status": "not_run",
+                "id": check_id,
+                "command": command,
+                "status": "not_run",
                 "reason": "Candidate preflight failed",
             }
         elif check_id == "build" and offline_wheelhouse is not None:
@@ -1067,15 +1139,28 @@ def _collect(
                 None
                 if offline_packages is None
                 else _offline_build_command(
-                    repo, run, scratch, offline_packages, checks,
+                    repo,
+                    run,
+                    scratch,
+                    offline_packages,
+                    checks,
                     **({"artifact_output": scratch / "local-rebuild"} if candidate_input else {}),
                 )
             )
             if build is None or offline_packages is None:
-                item = {"id": "build", "status": "not_run", "reason": "Offline build prerequisites failed"}
+                item = {
+                    "id": "build",
+                    "status": "not_run",
+                    "reason": "Offline build prerequisites failed",
+                }
             else:
                 item = execute(
-                    "build", build, repo, run, scratch, offline_wheelhouse=offline_packages.wheelhouse
+                    "build",
+                    build,
+                    repo,
+                    run,
+                    scratch,
+                    offline_wheelhouse=offline_packages.wheelhouse,
                 )
         elif check_id == "pip_check" and offline_wheelhouse is not None:
             item = execute(
@@ -1131,7 +1216,14 @@ def _collect(
             if checks[-1]["status"] == "pass":
                 options = {}
                 if offline_packages is None:
-                    install_command = [python, "-I", "-m", "pip", "install", str(wheels[0]) + "[dev]"]
+                    install_command = [
+                        python,
+                        "-I",
+                        "-m",
+                        "pip",
+                        "install",
+                        str(wheels[0]) + "[dev]",
+                    ]
                 else:
                     wheelhouse = offline_packages.wheelhouse
                     options["offline_wheelhouse"] = wheelhouse
@@ -1203,7 +1295,9 @@ def _collect(
                 checks.append(origin)
                 if next(c for c in checks if c["id"] == "wheel_install")["status"] == "pass":
                     if origin["status"] == "pass":
-                        checks.append(_installed_console_smoke("wheel", python, run, scratch, wheel_artifact))
+                        checks.append(
+                            _installed_console_smoke("wheel", python, run, scratch, wheel_artifact)
+                        )
                     if license_inventory and origin["status"] == "pass":
                         checks.append(
                             _installed_license_inventory(
@@ -1266,7 +1360,8 @@ def _collect(
                     "id": "wheel_install",
                     "status": "not_run" if build_blocked else "fail",
                     "reason": "Source build did not succeed"
-                    if build_blocked else "Build produced no unique successful wheel",
+                    if build_blocked
+                    else "Build produced no unique successful wheel",
                 }
             )
     else:
@@ -1280,7 +1375,11 @@ def _collect(
     if sdist_install:
         if offline_wheelhouse is not None and not build_passed:
             checks.append(
-                {"id": "sdist_install", "status": "not_run", "reason": "Source build did not succeed"}
+                {
+                    "id": "sdist_install",
+                    "status": "not_run",
+                    "reason": "Source build did not succeed",
+                }
             )
         else:
             options = {}
@@ -1342,15 +1441,25 @@ def _collect(
             if "requirement_count" in manifest and manifest["requirement_count"] != len(ids):
                 raise ValueError("requirement_count does not match requirement rows")
             scenarios = manifest.get("scenarios", [])
-            if type(scenarios) is not list or any(
-                type(row) is not dict
-                or any(type(row.get(key)) is not str for key in ("id", "title", "expected", "evidence"))
-                or re.fullmatch(r"T(?:0[1-9]|1[0-6])", row["id"]) is None
-                or type(row.get("requirements")) is not list
-                or not row["requirements"]
-                or any(type(identity) is not str or identity not in ids for identity in row["requirements"])
-                for row in scenarios
-            ) or len({row["id"] for row in scenarios}) != len(scenarios):
+            if (
+                type(scenarios) is not list
+                or any(
+                    type(row) is not dict
+                    or any(
+                        type(row.get(key)) is not str
+                        for key in ("id", "title", "expected", "evidence")
+                    )
+                    or re.fullmatch(r"T(?:0[1-9]|1[0-6])", row["id"]) is None
+                    or type(row.get("requirements")) is not list
+                    or not row["requirements"]
+                    or any(
+                        type(identity) is not str or identity not in ids
+                        for identity in row["requirements"]
+                    )
+                    for row in scenarios
+                )
+                or len({row["id"] for row in scenarios}) != len(scenarios)
+            ):
                 raise ValueError("Invalid original acceptance scenarios")
             (run / "requirements.json").write_bytes(manifest_bytes)
             manifest_digest = hashlib.sha256(manifest_bytes).hexdigest()
@@ -1435,7 +1544,9 @@ def _collect(
     if offline_wheelhouse is not None:
         report["package_resolution"] = {
             "mode": "offline_wheelhouse",
-            "wheelhouse_manifest": "offline-wheelhouse.json" if offline_packages is not None else None,
+            "wheelhouse_manifest": "offline-wheelhouse.json"
+            if offline_packages is not None
+            else None,
             "source_build": "Fresh environment with build tools preloaded from the staged wheels",
             "artifact_install": "Fresh environment with declared runtime and dev requirements preloaded from the staged wheels, then exact local artifact installation without dependency resolution",
             "network_scope": "Pip package resolution only. Trusted build, package and test code is not isolated from the operating system network.",
@@ -1512,12 +1623,17 @@ def _collect(
             "No valid requirements manifest was available; per-requirement acceptance remains not_run."
         )
     if report["scenarios"]:
-        rows.extend([
-            "", "## Original acceptance scenarios", "",
-            "Related component observations are references only. The collector does not execute the full original scenarios.",
-            "", "| Scenario | Execution | Related requirements with component observations |",
-            "| --- | --- | --- |",
-        ])
+        rows.extend(
+            [
+                "",
+                "## Original acceptance scenarios",
+                "",
+                "Related component observations are references only. The collector does not execute the full original scenarios.",
+                "",
+                "| Scenario | Execution | Related requirements with component observations |",
+                "| --- | --- | --- |",
+            ]
+        )
         for scenario in report["scenarios"]:
             related = ", ".join(scenario["requirements_with_component_observations"]) or "None"
             rows.append(f"| {scenario['id']} | {scenario['execution_status']} | {related} |")
@@ -1590,8 +1706,12 @@ def main() -> int:
         action="store_true",
         help="Collect runtime license metadata after verifying each requested fresh install",
     )
-    parser.add_argument("--candidate-manifest", type=Path, help="Manifest for exact offline archives to install")
-    parser.add_argument("--candidate-evidence-root", type=Path, help="Local root of the manifest's archives")
+    parser.add_argument(
+        "--candidate-manifest", type=Path, help="Manifest for exact offline archives to install"
+    )
+    parser.add_argument(
+        "--candidate-evidence-root", type=Path, help="Local root of the manifest's archives"
+    )
     parser.add_argument("--candidate-sha256", help="Independently trusted manifest digest")
     args = parser.parse_args()
     try:
@@ -1616,9 +1736,15 @@ def main() -> int:
     candidate = (args.candidate_manifest, args.candidate_evidence_root, args.candidate_sha256)
     if any(value is not None for value in candidate):
         if any(value is None for value in candidate):
-            parser.error("Candidate installs require the manifest, evidence root and trusted SHA-256.")
-        if not (args.run and args.package_install and args.sdist_install and args.offline_wheelhouse):
-            parser.error("Candidate installs require --run, both installs and --offline-wheelhouse.")
+            parser.error(
+                "Candidate installs require the manifest, evidence root and trusted SHA-256."
+            )
+        if not (
+            args.run and args.package_install and args.sdist_install and args.offline_wheelhouse
+        ):
+            parser.error(
+                "Candidate installs require --run, both installs and --offline-wheelhouse."
+            )
         collect_options["candidate"] = candidate
     run = collect(
         Path(__file__).resolve().parents[1],

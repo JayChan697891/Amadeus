@@ -132,7 +132,9 @@ class ModelCallMeter:
         if (output_limit is not None and output > output_limit) or (
             timeout_limit is not None and timeout > timeout_limit
         ):
-            raise AgentSyncError("model_budget_exhausted", "Model invocation budget is exhausted.", 409)
+            raise AgentSyncError(
+                "model_budget_exhausted", "Model invocation budget is exhausted.", 409
+            )
         self._requested_output_tokens = output
         self._requested_timeout_ms = timeout
         return request
@@ -194,6 +196,8 @@ class ModelCallMeter:
             response_tokens_unknown=sum(
                 call.input_tokens is None or call.output_tokens is None for call in external
             ),
-            estimated_cost_picodollars=sum(estimates) if estimates and not unknown_estimates else None,
+            estimated_cost_picodollars=sum(estimates)
+            if estimates and not unknown_estimates
+            else None,
             estimate_unknown_invocations=unknown_estimates,
         )

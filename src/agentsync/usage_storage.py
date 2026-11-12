@@ -15,7 +15,11 @@ from tempfile import NamedTemporaryFile
 
 from agentsync.errors import AgentSyncError
 from agentsync.model_usage import ModelCallMeter, ModelUsageSummary
-from agentsync.model_usage_checkpoint import MODEL_CHECKPOINT_LIMIT, dump_model_usage, load_model_usage
+from agentsync.model_usage_checkpoint import (
+    MODEL_CHECKPOINT_LIMIT,
+    dump_model_usage,
+    load_model_usage,
+)
 from agentsync.usage import _JSON_LIMIT, UsageLedger
 from agentsync.workspaces.git import physical
 
@@ -27,7 +31,8 @@ def _checkpoint_path(path: Path) -> None:
 
 def _file_stamp(info: os.stat_result) -> tuple[int, int, int, int]:
     if (
-        not stat.S_ISREG(info.st_mode) or info.st_nlink != 1
+        not stat.S_ISREG(info.st_mode)
+        or info.st_nlink != 1
         or getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
     ):
         raise OSError("A regular checkpoint file is required.")

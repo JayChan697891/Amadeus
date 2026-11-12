@@ -12,7 +12,9 @@ from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue
 
 
-def test_owner_recovers_pending_wave_identity_without_an_agent_session(tmp_path, monkeypatch, capsys):
+def test_owner_recovers_pending_wave_identity_without_an_agent_session(
+    tmp_path, monkeypatch, capsys
+):
     scratch = tmp_path.resolve()
     data = scratch / "core"
     receipts = scratch / "receipts"
@@ -32,17 +34,28 @@ def test_owner_recovers_pending_wave_identity_without_an_agent_session(tmp_path,
     with pytest.raises(AgentSyncError) as rejected:
         reopened.owner_history(project_id, admin_token=other["admin_token"])
     assert rejected.value.code == "unauthorized"
-    assert reopened.owner_observe_pending(
-        other["project_id"], admin_token=other["admin_token"]
-    ) is None
+    assert (
+        reopened.owner_observe_pending(other["project_id"], admin_token=other["admin_token"])
+        is None
+    )
 
     credentials = {"project_id": project_id, "admin_token": owner["admin_token"]}
     payload = json.dumps(credentials).encode("utf-8")
     monkeypatch.setattr(sys, "stdin", io.TextIOWrapper(io.BytesIO(payload), encoding="utf-8"))
-    assert main([
-        "--data-dir", str(data), "relay-status", "--scratch-root", str(scratch),
-        "--receipts", str(receipts),
-    ]) == 0
+    assert (
+        main(
+            [
+                "--data-dir",
+                str(data),
+                "relay-status",
+                "--scratch-root",
+                str(scratch),
+                "--receipts",
+                str(receipts),
+            ]
+        )
+        == 0
+    )
     output = capsys.readouterr().out
     assert owner["admin_token"] not in output
     pending = json.loads(output)["data"]
@@ -53,18 +66,34 @@ def test_owner_recovers_pending_wave_identity_without_an_agent_session(tmp_path,
 
     task_id = "isolated-task"
     queue._relay._record(
-        digest([project_id, task_id]), "first-dispatched", client="codex",
+        digest([project_id, task_id]),
+        "first-dispatched",
+        client="codex",
         launch_request_sha256=digest("fixture request"),
     )
     other_attempts = reopened._relay.owner_inspect_attempts(
-        other["project_id"], task_id, admin_token=other["admin_token"],
+        other["project_id"],
+        task_id,
+        admin_token=other["admin_token"],
     )
     assert all(attempt.state == "not_dispatched" for attempt in other_attempts)
     monkeypatch.setattr(sys, "stdin", io.TextIOWrapper(io.BytesIO(payload), encoding="utf-8"))
-    assert main([
-        "--data-dir", str(data), "relay-status", "--scratch-root", str(scratch),
-        "--receipts", str(receipts), "--task-id", task_id,
-    ]) == 0
+    assert (
+        main(
+            [
+                "--data-dir",
+                str(data),
+                "relay-status",
+                "--scratch-root",
+                str(scratch),
+                "--receipts",
+                str(receipts),
+                "--task-id",
+                task_id,
+            ]
+        )
+        == 0
+    )
     output = capsys.readouterr().out
     assert owner["admin_token"] not in output
     first, second = json.loads(output)["data"]["attempts"]

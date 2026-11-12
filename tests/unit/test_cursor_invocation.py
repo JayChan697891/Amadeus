@@ -24,11 +24,22 @@ def test_cursor_preparation_keeps_prompt_out_of_flag_parsing_and_pins_binary(tmp
         max_timeout_seconds=12,
     )
     request = AdapterTask(
-        "project", "session", "task", "request", "--force untrusted option", 30,
+        "project",
+        "session",
+        "task",
+        "request",
+        "--force untrusted option",
+        30,
     )
     plan = prepare_invocation(profile, request, environment={"PATH": "explicit-path"})
     assert plan.argv[1:-1] == (
-        "--print", "--output-format", "json", "--mode", "ask", "--sandbox", "enabled",
+        "--print",
+        "--output-format",
+        "json",
+        "--mode",
+        "ask",
+        "--sandbox",
+        "enabled",
     )
     assert plan.argv[-1] == "Instruction:\n--force untrusted option"
     assert plan.stdin_text == ""

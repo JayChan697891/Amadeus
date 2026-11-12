@@ -30,7 +30,9 @@ def run_usage_cli(project_id: str, *, model: bool = False) -> int:
         text = raw.decode("utf-8")
         if model:
             observation = asdict(load_model_usage(project_id, text))
-            observation.update(project_id=project_id, verification="unverified", historical_snapshot=True)
+            observation.update(
+                project_id=project_id, verification="unverified", historical_snapshot=True
+            )
         else:
             observation = asdict(UsageLedger.from_json(project_id, text).summary())
         output = json.dumps(observation, allow_nan=False)

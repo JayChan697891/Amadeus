@@ -15,7 +15,13 @@ _SYSTEMS = {"windows": "Windows", "linux": "Linux", "macos": "macOS", "darwin": 
 _REQUIRED_SYSTEMS = {"Windows", "Linux", "macOS"}
 _SUITES = {"pytest", "wheel_pytest", "sdist_pytest"}
 _REQUIRED_CHECKS = _SUITES | {
-    "ruff", "format", "mypy", "build", "pip_check", "wheel_install", "sdist_install"
+    "ruff",
+    "format",
+    "mypy",
+    "build",
+    "pip_check",
+    "wheel_install",
+    "sdist_install",
 }
 _IDENTITY_FIELDS = ("version", "commit_sha", "tree_sha", "source_snapshot_sha256")
 RELEASE_PYTHON_MINORS = ("3.11", "3.12", "3.14")
@@ -70,7 +76,14 @@ def _observation(report: dict[str, Any], digest: str) -> dict[str, Any]:
         name, status = row["id"], row["status"]
         if type(name) is not str or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", name):
             raise ValueError("Invalid check ID.")
-        if name in checks or status not in ("pass", "fail", "blocked", "not_run", "restricted", "unverified"):
+        if name in checks or status not in (
+            "pass",
+            "fail",
+            "blocked",
+            "not_run",
+            "restricted",
+            "unverified",
+        ):
             raise ValueError("Invalid or repeated check.")
         checks[name] = status
         if name in _SUITES and "junit" in row:
@@ -98,11 +111,19 @@ def _observation(report: dict[str, Any], digest: str) -> dict[str, Any]:
 
 
 def _complete_observation(
-    observation: dict[str, Any], *, verify_artifacts: bool, require_license_inventory: bool,
+    observation: dict[str, Any],
+    *,
+    verify_artifacts: bool,
+    require_license_inventory: bool,
 ) -> bool:
     required = _REQUIRED_CHECKS
     if verify_artifacts:
-        required = required | {"wheel_origin_sdk", "sdist_origin_sdk", "wheel_pip_check", "sdist_pip_check"}
+        required = required | {
+            "wheel_origin_sdk",
+            "sdist_origin_sdk",
+            "wheel_pip_check",
+            "sdist_pip_check",
+        }
     if require_license_inventory:
         required = required | {"wheel_license_inventory", "sdist_license_inventory"}
     return all(observation["checks"].get(name) == "pass" for name in required) and (
@@ -111,7 +132,8 @@ def _complete_observation(
 
 
 def _platform_gaps(
-    observations: list[dict[str, Any]], python_minors: tuple[str, ...],
+    observations: list[dict[str, Any]],
+    python_minors: tuple[str, ...],
 ) -> tuple[list[str], list[dict[str, str]]]:
     missing_systems = sorted(_REQUIRED_SYSTEMS - {row["system"] for row in observations})
     observed_matrix = set()
@@ -121,15 +143,21 @@ def _platform_gaps(
             observed_matrix.add((row["system"], match.group(1)))
     combinations = [
         {"system": system, "python_minor": minor}
-        for system, minor in sorted((system, minor) for system in _REQUIRED_SYSTEMS for minor in python_minors)
+        for system, minor in sorted(
+            (system, minor) for system in _REQUIRED_SYSTEMS for minor in python_minors
+        )
         if (system, minor) not in observed_matrix
     ]
     return missing_systems, combinations
 
 
 def summarize(
-    paths: list[Path], expected_commit: str, *, verify_artifacts: bool = False,
-    require_license_inventory: bool = False, python_minors: tuple[str, ...] = (),
+    paths: list[Path],
+    expected_commit: str,
+    *,
+    verify_artifacts: bool = False,
+    require_license_inventory: bool = False,
+    python_minors: tuple[str, ...] = (),
     source_repo: Path | None = None,
 ) -> dict[str, Any]:
     if not 1 <= len(paths) <= 12 or not re.fullmatch(r"[0-9a-f]{40}", expected_commit):
@@ -139,8 +167,12 @@ def summarize(
     if source_repo is not None and not verify_artifacts:
         raise ValueError("Git source binding needs artifact verification.")
     if (
-        type(python_minors) is not tuple or len(python_minors) > 4
-        or any(type(value) is not str or not re.fullmatch(r"3\.(?:1[1-9]|[2-9][0-9])", value) for value in python_minors)
+        type(python_minors) is not tuple
+        or len(python_minors) > 4
+        or any(
+            type(value) is not str or not re.fullmatch(r"3\.(?:1[1-9]|[2-9][0-9])", value)
+            for value in python_minors
+        )
         or len(set(python_minors)) != len(python_minors)
     ):
         raise ValueError("Supply distinct supported Python minor versions.")
@@ -176,7 +208,9 @@ def summarize(
         report_digests.add(digest)
         observation = _observation(report, digest)
         if verifier is not None:
-            audit = verifier(path, report, source_repo=source_repo if source_audit is None else None)
+            audit = verifier(
+                path, report, source_repo=source_repo if source_audit is None else None
+            )
             git_source = audit.pop("git_source_audit")
             if git_source is not None:
                 source_audit = git_source
@@ -189,7 +223,9 @@ def summarize(
         observation
         for observation in observations
         if _complete_observation(
-            observation, verify_artifacts=verify_artifacts, require_license_inventory=require_license_inventory,
+            observation,
+            verify_artifacts=verify_artifacts,
+            require_license_inventory=require_license_inventory,
         )
     ]
     failed = any(
@@ -206,8 +242,13 @@ def summarize(
         "systems_without_full_reported_checks": missing,
         "missing_os_python_combinations": missing_python,
         "local_matrix": (
-            "failed" if failed else "incomplete" if missing or missing_python
-            else "artifact_verified_pass" if verify_artifacts else "reported_pass"
+            "failed"
+            if failed
+            else "incomplete"
+            if missing or missing_python
+            else "artifact_verified_pass"
+            if verify_artifacts
+            else "reported_pass"
         ),
         "artifact_bytes_verified": verify_artifacts,
         "git_source_audit": source_audit,
@@ -226,7 +267,9 @@ def main() -> int:
     args = parser.parse_args()
     try:
         matrix = summarize(
-            args.report, args.commit, verify_artifacts=args.verify_artifacts,
+            args.report,
+            args.commit,
+            verify_artifacts=args.verify_artifacts,
             require_license_inventory=args.require_license_inventory,
             python_minors=tuple(args.require_python),
             source_repo=args.source_repo,
@@ -236,7 +279,9 @@ def main() -> int:
     print(json.dumps(matrix, indent=2))
     if matrix["local_matrix"] == "failed":
         return 1
-    if (args.require_license_inventory or args.require_python) and matrix["local_matrix"] == "incomplete":
+    if (args.require_license_inventory or args.require_python) and matrix[
+        "local_matrix"
+    ] == "incomplete":
         return 2
     return 0
 

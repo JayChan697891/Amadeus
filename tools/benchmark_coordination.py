@@ -44,10 +44,17 @@ def _loopback_claim_server(data_dir: Path) -> Iterator[tuple[int, str]]:
 
     token = secrets.token_urlsafe(32)
     app = create_app(data_dir, token)
-    server = uvicorn.Server(uvicorn.Config(
-        app, access_log=False, log_config=None, log_level="critical", proxy_headers=False,
-        lifespan="off", timeout_graceful_shutdown=3,
-    ))
+    server = uvicorn.Server(
+        uvicorn.Config(
+            app,
+            access_log=False,
+            log_config=None,
+            log_level="critical",
+            proxy_headers=False,
+            lifespan="off",
+            timeout_graceful_shutdown=3,
+        )
+    )
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
         listener.bind(("127.0.0.1", 0))
         listener.listen()
@@ -72,7 +79,9 @@ def _http_claim(endpoint: tuple[int, str], payload: dict[str, Any]) -> tuple[str
     port, token = endpoint
     with closing(http.client.HTTPConnection("127.0.0.1", port, timeout=5)) as connection:
         connection.request(
-            "POST", "/v1/claim_task", json.dumps(payload),
+            "POST",
+            "/v1/claim_task",
+            json.dumps(payload),
             {"Authorization": "Bearer " + token, "Content-Type": "application/json"},
         )
         with connection.getresponse() as response:
@@ -87,7 +96,9 @@ def _http_claim(endpoint: tuple[int, str], payload: dict[str, Any]) -> tuple[str
     if code == 200 and envelope.get("ok") is True and type(data) is dict:
         return "winner", data
     if (
-        code == 409 and envelope.get("ok") is False and type(error) is dict
+        code == 409
+        and envelope.get("ok") is False
+        and type(error) is dict
         and error.get("code") == "version_conflict"
     ):
         return "version_conflict", {}
@@ -95,7 +106,11 @@ def _http_claim(endpoint: tuple[int, str], payload: dict[str, Any]) -> tuple[str
 
 
 def _claim(
-    core: Core, auth: dict[str, str], task_id: str, barrier: Barrier, request: str,
+    core: Core,
+    auth: dict[str, str],
+    task_id: str,
+    barrier: Barrier,
+    request: str,
     endpoint: tuple[int, str] | None = None,
 ) -> _ClaimResult:
     try:
@@ -125,7 +140,10 @@ def _init_process_worker(data_dir: Path, barrier: Barrier) -> None:
 
 
 def _claim_in_process(
-    auth: dict[str, str], task_id: str, request: str, endpoint: tuple[int, str] | None = None,
+    auth: dict[str, str],
+    task_id: str,
+    request: str,
+    endpoint: tuple[int, str] | None = None,
 ) -> _ClaimResult:
     if _process_core is None or _process_barrier is None:
         return "worker_unavailable", None, None, {}
@@ -254,7 +272,9 @@ def run_benchmark(
                 )
             with ExitStack() as stack:
                 endpoint = (
-                    stack.enter_context(_loopback_claim_server(core.data_dir)) if transport_mix else None
+                    stack.enter_context(_loopback_claim_server(core.data_dir))
+                    if transport_mix
+                    else None
                 )
                 if processes:
                     context = multiprocessing.get_context("spawn")
@@ -279,7 +299,10 @@ def run_benchmark(
                     if processes:
                         futures = [
                             process_pool.submit(
-                                _claim_in_process, auth, task["id"], requests[index],
+                                _claim_in_process,
+                                auth,
+                                task["id"],
+                                requests[index],
                                 endpoint if index % 2 else None,
                             )
                             for index, auth in enumerate(actors)
@@ -330,14 +353,21 @@ def run_benchmark(
                             "winners": len(winners),
                             "expected_version_conflicts": conflicts,
                             "unexpected_errors": workers - len(winners) - conflicts,
-                            **({
-                                "winner_transport": ("loopback_http" if winners[0] % 2 else "core")
-                                if len(winners) == 1 else None,
-                                "http_observed_claims": sum(
-                                    outcome in {"winner", "version_conflict"}
-                                    for outcome, _, _, _ in results[1::2]
-                                ),
-                            } if transport_mix else {}),
+                            **(
+                                {
+                                    "winner_transport": (
+                                        "loopback_http" if winners[0] % 2 else "core"
+                                    )
+                                    if len(winners) == 1
+                                    else None,
+                                    "http_observed_claims": sum(
+                                        outcome in {"winner", "version_conflict"}
+                                        for outcome, _, _, _ in results[1::2]
+                                    ),
+                                }
+                                if transport_mix
+                                else {}
+                            ),
                         }
                     )
                     if len(winners) != 1:
@@ -417,7 +447,8 @@ def run_benchmark(
             "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
             "throughput_denominator": (
                 "sum_of_parent_round_spans_including_process_dispatch"
-                if processes else "sum_of_round_claim_spans"
+                if processes
+                else "sum_of_round_claim_spans"
             ),
             **({"worker_mode": "spawned_processes"} if processes else {}),
             **({"requested_transports": ["core", "loopback_http"]} if transport_mix else {}),
@@ -449,7 +480,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--rounds", type=int, required=True)
     parser.add_argument("--p95-budget-ms", type=float, required=True)
     parser.add_argument("--processes", action="store_true", help="Use up to eight spawned workers")
-    parser.add_argument("--transport-mix", action="store_true", help="Split spawned workers between Core and local HTTP")
+    parser.add_argument(
+        "--transport-mix",
+        action="store_true",
+        help="Split spawned workers between Core and local HTTP",
+    )
     try:
         options = parser.parse_args(argv)
         report = run_benchmark(

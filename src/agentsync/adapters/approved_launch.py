@@ -85,7 +85,9 @@ LaunchAuthority = Callable[[LaunchReview], Awaitable[LaunchConsent | None]]
 
 def _check_execution_deadline(deadline: float | None) -> None:
     if deadline is not None and asyncio.get_running_loop().time() >= deadline:
-        raise AgentSyncError("relay_execution_limit", "The controlled relay execution budget expired.", 409)
+        raise AgentSyncError(
+            "relay_execution_limit", "The controlled relay execution budget expired.", 409
+        )
 
 
 def prepare_launch_review(
@@ -94,19 +96,34 @@ def prepare_launch_review(
     """Prepare the exact host plan without invoking a client or requesting consent."""
     client = client_kind(profile)
     if isinstance(profile, codex_invocation.CodexHostProfile):
-        plan: Invocation = codex_invocation.prepare_invocation(profile, task, environment=environment)
+        plan: Invocation = codex_invocation.prepare_invocation(
+            profile, task, environment=environment
+        )
     elif isinstance(profile, claude_invocation.ClaudeHostProfile):
         plan = claude_invocation.prepare_invocation(profile, task, environment=environment)
     else:
         plan = cursor_invocation.prepare_invocation(profile, task, environment=environment)
     return LaunchReview(
         client,
-        digest([
-            client, task.project_id, task.session_id, task.task_id, task.request_id,
-            task.timeout_seconds, task.instruction, plan.argv, str(plan.cwd), plan.stdin_text,
-            sorted(plan.child_env().items()), plan.timeout_seconds, plan.output_limit,
-            plan.expected_cli_version, plan.binary_sha256,
-        ]),
+        digest(
+            [
+                client,
+                task.project_id,
+                task.session_id,
+                task.task_id,
+                task.request_id,
+                task.timeout_seconds,
+                task.instruction,
+                plan.argv,
+                str(plan.cwd),
+                plan.stdin_text,
+                sorted(plan.child_env().items()),
+                plan.timeout_seconds,
+                plan.output_limit,
+                plan.expected_cli_version,
+                plan.binary_sha256,
+            ]
+        ),
         plan,
         task,
     )
@@ -130,7 +147,9 @@ def _valid_digest(value: object) -> bool:
 
 
 def _observe_admission(
-    store: _ReceiptDirectory, request_key: str, client: str,
+    store: _ReceiptDirectory,
+    request_key: str,
+    client: str,
 ) -> LaunchAdmissionObservation:
     if not _valid_digest(request_key):
         return LaunchAdmissionObservation("unknown")
@@ -140,8 +159,10 @@ def _observe_admission(
     plan = launch.get("plan_sha256")
     consent_key = launch.get("consent_sha256")
     if (
-        type(plan) is not str or not _valid_digest(plan)
-        or launch.get("client") != client or launch.get("request_sha256") != request_key
+        type(plan) is not str
+        or not _valid_digest(plan)
+        or launch.get("client") != client
+        or launch.get("request_sha256") != request_key
         or not _valid_digest(consent_key)
     ):
         return LaunchAdmissionObservation("unknown")
@@ -177,13 +198,21 @@ class ApprovedLaunchFactory:
         if type(environment) is not dict or not callable(authority) or not callable(revalidate):
             raise AgentSyncError("validation_error", "Invalid host launch authority configuration.")
         if not isinstance(receipts, Path) or not receipts.is_absolute() or not receipts.is_dir():
-            raise AgentSyncError("validation_error", "An existing private receipt directory is required.")
+            raise AgentSyncError(
+                "validation_error", "An existing private receipt directory is required."
+            )
         self._profile = replace(profile)
         self._environment = dict(environment)
         root = receipts.resolve(strict=True)
-        if _receipt_store is not None and (type(_receipt_store) is not _ReceiptDirectory or _receipt_store.root != root):
-            raise AgentSyncError("validation_error", "The shared private receipt directory must match.")
-        self._receipt_store = _receipt_store if _receipt_store is not None else _ReceiptDirectory(root)
+        if _receipt_store is not None and (
+            type(_receipt_store) is not _ReceiptDirectory or _receipt_store.root != root
+        ):
+            raise AgentSyncError(
+                "validation_error", "The shared private receipt directory must match."
+            )
+        self._receipt_store = (
+            _receipt_store if _receipt_store is not None else _ReceiptDirectory(root)
+        )
         self._receipt_store.check()
         self._authority = authority
         self._revalidate = revalidate
@@ -204,15 +233,21 @@ class ApprovedLaunchFactory:
             raise AgentSyncError("validation_error", "Adapter-issued launch context required.")
         _check_execution_deadline(self._execution_deadline)
         context.check(task)
-        review = await context.wait_before_start(task, lambda: asyncio.to_thread(self._review, task))
+        review = await context.wait_before_start(
+            task, lambda: asyncio.to_thread(self._review, task)
+        )
         plan = review.plan
         child_env = plan.child_env()
         consent = await context.wait_before_start(task, lambda: self._authority(review))
         if consent is None or not _consent_is_current(consent, review):
-            raise AgentSyncError("launch_not_authorized", "The exact client launch is not authorized.", 403)
+            raise AgentSyncError(
+                "launch_not_authorized", "The exact client launch is not authorized.", 403
+            )
         _identifier(consent.approval_id)
         # Hash the binary and resolve the configured paths again after approval.
-        fresh = await context.wait_before_start(task, lambda: asyncio.to_thread(self._prepare, task))
+        fresh = await context.wait_before_start(
+            task, lambda: asyncio.to_thread(self._prepare, task)
+        )
         if fresh != plan:
             raise AgentSyncError("launch_plan_changed", "The approved client plan changed.", 409)
         if not _consent_is_current(consent, review):
@@ -220,8 +255,10 @@ class ApprovedLaunchFactory:
         request_key = _launch_key(task)
         consent_key = digest(consent.approval_id)
         receipt: dict[str, object] = {
-            "plan_sha256": review.plan_sha256, "client": self.client,
-            "request_sha256": request_key, "consent_sha256": consent_key,
+            "plan_sha256": review.plan_sha256,
+            "client": self.client,
+            "request_sha256": request_key,
+            "consent_sha256": consent_key,
         }
         self._receipt_store.write(f"launch-{request_key}.json", receipt)
         self._receipt_store.write(f"consent-{consent_key}.json", receipt)
@@ -231,6 +268,11 @@ class ApprovedLaunchFactory:
             raise AgentSyncError("launch_not_authorized", "The client launch consent expired.", 403)
         _check_execution_deadline(self._execution_deadline)
         return await context.start(
-            task, plan.argv, cwd=plan.cwd, stdin_text=plan.stdin_text,
-            timeout_seconds=plan.timeout_seconds, output_limit=plan.output_limit, env=child_env,
+            task,
+            plan.argv,
+            cwd=plan.cwd,
+            stdin_text=plan.stdin_text,
+            timeout_seconds=plan.timeout_seconds,
+            output_limit=plan.output_limit,
+            env=child_env,
         )

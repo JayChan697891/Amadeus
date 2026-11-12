@@ -20,15 +20,24 @@ _MAX_BLOB = 1024 * 1024 * 1024
 
 @contextmanager
 def _git(repo: Path, *args: str, input_pipe: bool = False) -> Iterator[subprocess.Popen[bytes]]:
-    environment = {name: value for name, value in os.environ.items() if not name.upper().startswith("GIT_")}
+    environment = {
+        name: value for name, value in os.environ.items() if not name.upper().startswith("GIT_")
+    }
     environment.update(
-        GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_SYSTEM=os.devnull,
-        GIT_CONFIG_NOSYSTEM="1", GIT_NO_REPLACE_OBJECTS="1", GIT_NO_LAZY_FETCH="1",
-        GIT_ALLOW_PROTOCOL="", GIT_TERMINAL_PROMPT="0", GIT_OPTIONAL_LOCKS="0",
+        GIT_CONFIG_GLOBAL=os.devnull,
+        GIT_CONFIG_SYSTEM=os.devnull,
+        GIT_CONFIG_NOSYSTEM="1",
+        GIT_NO_REPLACE_OBJECTS="1",
+        GIT_NO_LAZY_FETCH="1",
+        GIT_ALLOW_PROTOCOL="",
+        GIT_TERMINAL_PROMPT="0",
+        GIT_OPTIONAL_LOCKS="0",
     )
     process = subprocess.Popen(
         ["git", "-C", str(repo), *args],
-        env=environment, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        env=environment,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
         stdin=subprocess.PIPE if input_pipe else subprocess.DEVNULL,
     )
 
@@ -65,7 +74,8 @@ def _output(repo: Path, *args: str, maximum: int) -> bytes:
 def _excluded(name: str) -> bool:
     path = PurePosixPath(name)
     return (
-        path.name.startswith(".env") or path.suffix.lower() in {".pem", ".key"}
+        path.name.startswith(".env")
+        or path.suffix.lower() in {".pem", ".key"}
         or path.name.lower() in {"auth.json", "credentials.json", "secrets.json"}
     )
 
@@ -83,15 +93,20 @@ def _tree_entries(repo: Path, commit: str) -> dict[str, str]:
             continue
         oid = raw_oid.decode("ascii")
         if (
-            mode not in (b"100644", b"100755") or kind != b"blob"
-            or not _OID.fullmatch(oid) or name in result or len(result) >= 20000
+            mode not in (b"100644", b"100755")
+            or kind != b"blob"
+            or not _OID.fullmatch(oid)
+            or name in result
+            or len(result) >= 20000
         ):
             raise ValueError("Git source includes an unsupported tree member.")
         result[name] = oid
     return result
 
 
-def verify_git_source(repo: Path, commit: str, tree: str, snapshot: list[dict[str, Any]]) -> dict[str, Any]:
+def verify_git_source(
+    repo: Path, commit: str, tree: str, snapshot: list[dict[str, Any]]
+) -> dict[str, Any]:
     """Match all included paths, sizes and SHA-256 values against committed blobs."""
     if not _OID.fullmatch(commit) or not _OID.fullmatch(tree):
         raise ValueError("Invalid frozen Git source identity.")
@@ -133,7 +148,11 @@ def verify_git_source(repo: Path, commit: str, tree: str, snapshot: list[dict[st
                 remaining -= len(data)
                 checksum.update(data)
                 object_hash.update(data)
-            if process.stdout.read(1) != b"\n" or checksum.hexdigest() != digest or object_hash.hexdigest() != oid:
+            if (
+                process.stdout.read(1) != b"\n"
+                or checksum.hexdigest() != digest
+                or object_hash.hexdigest() != oid
+            ):
                 raise ValueError("Git object bytes differ from the recorded source.")
         process.stdin.close()
         if process.stdout.read(1):

@@ -18,7 +18,9 @@ _LIMIT = 4096
 
 
 def _unavailable() -> AgentSyncError:
-    return AgentSyncError("receipt_unavailable", "The private receipt directory is unavailable.", 409)
+    return AgentSyncError(
+        "receipt_unavailable", "The private receipt directory is unavailable.", 409
+    )
 
 
 def _members(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -40,7 +42,8 @@ def _file_stamp(info: os.stat_result) -> tuple[int, int, int, int]:
 
 def _ordinary(info: os.stat_result) -> bool:
     return (
-        stat.S_ISREG(info.st_mode) and not getattr(info, "st_file_attributes", 0) & 0x400
+        stat.S_ISREG(info.st_mode)
+        and not getattr(info, "st_file_attributes", 0) & 0x400
         and info.st_nlink == 1
     )
 
@@ -70,7 +73,9 @@ def _exclusive_receipt_fd(path: str, flags: int) -> int:
     share_read_write = 0x00000003
     create_new = 1
     write_through = 0x80000000
-    handle = create_file(path, generic_write, share_read_write, None, create_new, write_through, None)
+    handle = create_file(
+        path, generic_write, share_read_write, None, create_new, write_through, None
+    )
     if handle is None or handle == wintypes.HANDLE(-1).value:
         raise ctypes.WinError(ctypes.get_last_error())
     close_handle = kernel.CloseHandle
@@ -138,7 +143,9 @@ class _ReceiptDirectory:
         """An exclusive write remains a fence even if interrupted."""
         path = self._path(name)
         try:
-            with open(path, "x", encoding="ascii", newline="\n", opener=_exclusive_receipt_fd) as stream:
+            with open(
+                path, "x", encoding="ascii", newline="\n", opener=_exclusive_receipt_fd
+            ) as stream:
                 self.check()
                 json.dump(data, stream, ensure_ascii=True, allow_nan=False)
                 stream.flush()
@@ -151,7 +158,9 @@ class _ReceiptDirectory:
                 self.check()
         except FileExistsError:
             self.check()
-            raise AgentSyncError("attempt_already_reserved", "An attempt is already reserved.", 409) from None
+            raise AgentSyncError(
+                "attempt_already_reserved", "An attempt is already reserved.", 409
+            ) from None
         except OSError:
             raise _unavailable() from None
 

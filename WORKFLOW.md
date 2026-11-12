@@ -11,6 +11,16 @@ benchmarks must use local or other authorized environments. Never dispatch hoste
 Actions. Upload commits with [skip ci] and preserve manual-only workflow triggers.
 Historical remote CI gates below are historical evidence, not current instructions.
 
+Continuous execution, authorized 2026-11-11: a commit or a component pass is a
+checkpoint. Check the remaining plan and continue the next authorized item in the
+same task. Local testing, repair and retesting are authorized. Pause only for a
+specific external blocker, required human authorization, an execution limit or
+completion of the authorized objective. Record the exact source SHA, results,
+remaining work and resume command when a checkpoint may need to be resumed.
+Separate Work acceptance and live-client validation require actual observed
+evidence. A local agent, checkout transfer or completion notification alone is
+not proof of a Work-to-Codex-to-Work automatic handoff.
+
 1. Read the uploaded specification, docs/PLAN.md, docs/PROGRESS.md, docs/CONTRACT.md and Git status.
 2. Classify complexity before a bounded stage. Sol High handles ordinary work;
    Astra High/Extra High handles major architecture, difficult unresolved failures,
@@ -23,7 +33,7 @@ Historical remote CI gates below are historical evidence, not current instructio
 5. Update progress with commands, results, limitations and exact remaining work.
 
 Ask only for missing essential requirements, external blockers or high-impact authorization.
-The user authorized GitHub branch/PR publication and continuous plan execution (M4 now).
+The user authorized GitHub branch/PR publication and continuous plan execution.
 Do not modify/merge main or make paid provider calls. Review submission is not acceptance.
 
 6. Check available quota before a new bounded stage. Reserve completion capacity

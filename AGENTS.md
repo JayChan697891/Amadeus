@@ -1,9 +1,10 @@
-# Current continuation entry (2026-11-07)
+# Current continuation entry (2026-11-11)
 
-The owner requested a code-first phase. Continue implementation and publish
-reviewable source checkpoints. Defer debugging, tests, package builds and live
-client calls until the implementation phase ends. Record unrun validation as
-NOT RUN. Existing safety gates remain in effect. See docs/PROGRESS.md.
+The owner authorized continuous implementation, local tests, fixes and retests.
+After each checkpoint, take the next authorized item in WORKFLOW.md without
+waiting for another prompt. Record unrun validation as NOT RUN. Existing safety
+gates and separately authorized real-client boundaries remain in effect.
+See docs/PROGRESS.md for the recovery entry point.
 
 Alpha29 exact desktop declaration is frozen at05a811a; see current PROGRESS and
 acceptance/evidence/alpha29-local-summary.json. Four selected Windows source/

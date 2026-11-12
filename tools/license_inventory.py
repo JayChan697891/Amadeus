@@ -33,7 +33,8 @@ def _license_files(distribution: metadata.Distribution) -> list[dict[str, Any]]:
         relative = PurePosixPath(member.as_posix())
         parts = relative.parts
         if (
-            relative.is_absolute() or len(parts) < 2
+            relative.is_absolute()
+            or len(parts) < 2
             or not parts[0].endswith((".dist-info", ".egg-info"))
             or any(part in (".", "..") or "\\" in part or ":" in part for part in parts)
         ):
@@ -50,7 +51,11 @@ def _license_files(distribution: metadata.Distribution) -> list[dict[str, Any]]:
                 with actual.open("rb") as stream:
                     content = stream.read(_FILE_LIMIT + 1)
                 if len(content) <= _FILE_LIMIT:
-                    entry.update(status="recorded", bytes=len(content), sha256=hashlib.sha256(content).hexdigest())
+                    entry.update(
+                        status="recorded",
+                        bytes=len(content),
+                        sha256=hashlib.sha256(content).hexdigest(),
+                    )
                 else:
                     entry["status"] = "size_limit"
         except OSError:
@@ -67,15 +72,24 @@ def _declaration(distribution: metadata.Distribution) -> dict[str, Any]:
         "version": distribution.version,
         "license_expression": expression if expression and len(expression) <= 512 else None,
         "legacy_license": legacy.strip() if legacy and len(legacy) <= 512 else None,
-        "license_classifiers": sorted({
-            value for value in fields.get_all("Classifier", [])
-            if value.startswith("License ::") and len(value) <= 256
-        }),
-        "declared_license_files": sorted({
-            value for value in fields.get_all("License-File", [])
-            if 0 < len(value) <= 512 and not PurePosixPath(value).is_absolute()
-            and ".." not in PurePosixPath(value).parts and "\\" not in value and ":" not in value
-        }),
+        "license_classifiers": sorted(
+            {
+                value
+                for value in fields.get_all("Classifier", [])
+                if value.startswith("License ::") and len(value) <= 256
+            }
+        ),
+        "declared_license_files": sorted(
+            {
+                value
+                for value in fields.get_all("License-File", [])
+                if 0 < len(value) <= 512
+                and not PurePosixPath(value).is_absolute()
+                and ".." not in PurePosixPath(value).parts
+                and "\\" not in value
+                and ":" not in value
+            }
+        ),
         "license_files": _license_files(distribution),
     }
 
@@ -129,21 +143,29 @@ def inventory(root: str) -> dict[str, Any]:
             try:
                 if child not in distributions:
                     distributions[child] = metadata.distribution(child)
-                if not dependency.specifier.contains(Version(distributions[child].version), prereleases=True):
+                if not dependency.specifier.contains(
+                    Version(distributions[child].version), prereleases=True
+                ):
                     issues.add((child, "dependency_version_mismatch"))
             except metadata.PackageNotFoundError:
                 issues.add((child, "missing_distribution"))
             except InvalidVersion:
                 issues.add((child, "invalid_installed_version"))
-            pending.append((child, frozenset(canonicalize_name(item) for item in dependency.extras)))
+            pending.append(
+                (child, frozenset(canonicalize_name(item) for item in dependency.extras))
+            )
             if len(pending) > 8192:
                 raise ValueError("Dependency graph exceeds the pending item bound.")
     for dependency, declaration in declarations.items():
-        if not any(declaration[key] for key in ("license_expression", "legacy_license", "license_classifiers")):
+        if not any(
+            declaration[key]
+            for key in ("license_expression", "legacy_license", "license_classifiers")
+        ):
             issues.add((dependency, "no_license_declaration"))
         recorded = {
             entry["member"].split("/", 1)[1]
-            for entry in declaration["license_files"] if entry["status"] == "recorded"
+            for entry in declaration["license_files"]
+            if entry["status"] == "recorded"
         }
         if not recorded:
             issues.add((dependency, "no_recorded_license_file"))

@@ -13,13 +13,23 @@ if __package__:
     from .acceptance_evidence import _SHA256, _Evidence, _member_parts, _physical, read_json
     from .acceptance_git_source import _output
     from .acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize,
+        _IDENTITY_FIELDS,
+        _REQUIRED_SYSTEMS,
+        RELEASE_PYTHON_MINORS,
+        _read_report,
+        matrix_digest,
+        summarize,
     )
 else:
     from acceptance_evidence import _SHA256, _Evidence, _member_parts, _physical, read_json
     from acceptance_git_source import _output
     from acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _IDENTITY_FIELDS, _REQUIRED_SYSTEMS, _read_report, matrix_digest, summarize,
+        _IDENTITY_FIELDS,
+        _REQUIRED_SYSTEMS,
+        RELEASE_PYTHON_MINORS,
+        _read_report,
+        matrix_digest,
+        summarize,
     )
 
 if TYPE_CHECKING:
@@ -30,8 +40,16 @@ _KINDS = ("wheel", "sdist")
 _BUILD_CHECKS = {"build", "wheel_install", "sdist_install", "wheel_origin_sdk", "sdist_origin_sdk"}
 _SCOPE = "local_release_artifact_manifest"
 _MANIFEST_FIELDS = {
-    "schema_version", "scope", "distribution", "frozen", "build_report", "artifacts",
-    "matrix_sha256", "local_matrix", "producer_authenticated", "formal_release_acceptance",
+    "schema_version",
+    "scope",
+    "distribution",
+    "frozen",
+    "build_report",
+    "artifacts",
+    "matrix_sha256",
+    "local_matrix",
+    "producer_authenticated",
+    "formal_release_acceptance",
     "publication_authorized",
 }
 
@@ -51,9 +69,15 @@ def _check_archive_filename(kind: str, filename: str, distribution: str, version
 
 def _source_distribution(source_repo: Path, frozen: dict[str, str]) -> str:
     commit = frozen["commit_sha"]
-    pyproject = _output(source_repo, "cat-file", "blob", f"{commit}:pyproject.toml", maximum=1024 * 1024)
+    pyproject = _output(
+        source_repo, "cat-file", "blob", f"{commit}:pyproject.toml", maximum=1024 * 1024
+    )
     project = tomllib.loads(pyproject.decode("utf-8"))["project"]
-    if type(project["name"]) is not str or not project["name"] or project["version"] != frozen["version"]:
+    if (
+        type(project["name"]) is not str
+        or not project["name"]
+        or project["version"] != frozen["version"]
+    ):
         raise ValueError("The distribution identity differs from the frozen Git source.")
     return project["name"]
 
@@ -75,8 +99,12 @@ def build_manifest(
     parts = _member_parts(artifact_report)
     selected, _ = _physical(root, parts)
     matrix = summarize(
-        [selected, *other_reports], commit, verify_artifacts=True,
-        require_license_inventory=True, python_minors=python_minors, source_repo=source_repo,
+        [selected, *other_reports],
+        commit,
+        verify_artifacts=True,
+        require_license_inventory=True,
+        python_minors=python_minors,
+        source_repo=source_repo,
     )
     observation = matrix["observations"][0]
     if matrix["local_matrix"] == "failed" or any(
@@ -123,7 +151,11 @@ def build_manifest(
         "scope": _SCOPE,
         "distribution": name,
         "frozen": frozen,
-        "build_report": {"path": artifact_report, "sha256": digest, "system": observation["system"]},
+        "build_report": {
+            "path": artifact_report,
+            "sha256": digest,
+            "system": observation["system"],
+        },
         "artifacts": artifacts,
         "matrix_sha256": matrix_digest(matrix),
         "local_matrix": matrix["local_matrix"],
@@ -138,7 +170,11 @@ def _is_sha256(value: Any) -> bool:
 
 
 def verify_manifest(
-    manifest_path: Path, evidence_root: Path, *, manifest_sha256: str, source_repo: Path | None = None,
+    manifest_path: Path,
+    evidence_root: Path,
+    *,
+    manifest_sha256: str,
+    source_repo: Path | None = None,
 ) -> dict[str, Any]:
     """Check candidate bytes and, when requested, their originating report and Git source."""
     from packaging.utils import canonicalize_name
@@ -150,13 +186,18 @@ def verify_manifest(
     manifest_root = manifest_path.parent.resolve(strict=True)
     manifest_name = manifest_path.name
     _, info = _physical(manifest_root, _member_parts(manifest_name))
-    manifest_file = _Evidence(manifest_root, [
-        {"path": manifest_name, "sha256": manifest_sha256, "size": info.st_size},
-    ])
+    manifest_file = _Evidence(
+        manifest_root,
+        [
+            {"path": manifest_name, "sha256": manifest_sha256, "size": info.st_size},
+        ],
+    )
     manifest = read_json(manifest_file.check(manifest_name, retain=True))
     if (
-        type(manifest) is not dict or set(manifest) != _MANIFEST_FIELDS
-        or type(manifest["schema_version"]) is not int or manifest["schema_version"] != 1
+        type(manifest) is not dict
+        or set(manifest) != _MANIFEST_FIELDS
+        or type(manifest["schema_version"]) is not int
+        or manifest["schema_version"] != 1
         or manifest["scope"] != _SCOPE
         or manifest["local_matrix"] not in ("incomplete", "artifact_verified_pass")
         or not _is_sha256(manifest["matrix_sha256"])
@@ -168,7 +209,8 @@ def verify_manifest(
 
     frozen = manifest["frozen"]
     if (
-        type(frozen) is not dict or set(frozen) != set(_IDENTITY_FIELDS)
+        type(frozen) is not dict
+        or set(frozen) != set(_IDENTITY_FIELDS)
         or any(type(frozen[field]) is not str for field in _IDENTITY_FIELDS)
         or not re.fullmatch(r"[0-9A-Za-z][0-9A-Za-z.+-]{0,63}", frozen["version"])
         or not re.fullmatch(r"[0-9a-f]{40}", frozen["commit_sha"])
@@ -182,9 +224,11 @@ def verify_manifest(
 
     build_report = manifest["build_report"]
     if (
-        type(build_report) is not dict or set(build_report) != {"path", "sha256", "system"}
+        type(build_report) is not dict
+        or set(build_report) != {"path", "sha256", "system"}
         or not _is_sha256(build_report["sha256"])
-        or type(build_report["system"]) is not str or build_report["system"] not in _REQUIRED_SYSTEMS
+        or type(build_report["system"]) is not str
+        or build_report["system"] not in _REQUIRED_SYSTEMS
     ):
         raise ValueError("Invalid build report reference.")
     report_parts = _member_parts(build_report["path"])
@@ -195,11 +239,20 @@ def verify_manifest(
     pins = []
     seen = set()
     for artifact in artifacts:
-        if type(artifact) is not dict or set(artifact) != {"kind", "filename", "path", "sha256", "size"}:
+        if type(artifact) is not dict or set(artifact) != {
+            "kind",
+            "filename",
+            "path",
+            "sha256",
+            "size",
+        }:
             raise ValueError("Invalid candidate archive record.")
         kind, filename, size = artifact["kind"], artifact["filename"], artifact["size"]
         if (
-            kind not in _KINDS or kind in seen or type(size) is not int or size <= 0
+            kind not in _KINDS
+            or kind in seen
+            or type(size) is not int
+            or size <= 0
             or _member_parts(artifact["path"]) != (*report_parts[:-1], "artifacts", filename)
         ):
             raise ValueError("Invalid or repeated candidate archive.")
@@ -216,8 +269,11 @@ def verify_manifest(
         if digest != build_report["sha256"] or "candidate_input" in report:
             raise ValueError("Candidate archives require their original build report.")
         origin = summarize(
-            [selected], frozen["commit_sha"], verify_artifacts=True,
-            require_license_inventory=True, source_repo=source_repo,
+            [selected],
+            frozen["commit_sha"],
+            verify_artifacts=True,
+            require_license_inventory=True,
+            source_repo=source_repo,
         )
         observation = origin["observations"][0]
         report_pins = {row["kind"]: row["sha256"] for row in artifacts}
@@ -231,15 +287,22 @@ def verify_manifest(
             or observation["artifact_audit"]["installed_artifact_sha256"] != report_pins
             or _source_distribution(source_repo, frozen) != manifest["distribution"]
         ):
-            raise ValueError("The original build evidence does not match the candidate archives and source.")
-        installations = {row["kind"]: row["artifact"] for row in report["distribution_installations"]}
+            raise ValueError(
+                "The original build evidence does not match the candidate archives and source."
+            )
+        installations = {
+            row["kind"]: row["artifact"] for row in report["distribution_installations"]
+        }
         for artifact in artifacts:
             original = installations[artifact["kind"]]
             if (
-                _member_parts(artifact["path"]) != (*report_parts[:-1], *_member_parts(original["path"]))
+                _member_parts(artifact["path"])
+                != (*report_parts[:-1], *_member_parts(original["path"]))
                 or artifact["size"] != original["size"]
             ):
-                raise ValueError("The candidate archive path or size differs from its original installation.")
+                raise ValueError(
+                    "The candidate archive path or size differs from its original installation."
+                )
 
     return {
         "schema_version": 1,
@@ -261,13 +324,21 @@ def verify_manifest(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--commit")
-    parser.add_argument("--source-repo", type=Path, help="Bind evidence to the frozen local Git source")
+    parser.add_argument(
+        "--source-repo", type=Path, help="Bind evidence to the frozen local Git source"
+    )
     parser.add_argument("--evidence-root", type=Path, required=True)
     parser.add_argument("--artifact-report", help="Build report path relative to the evidence root")
     parser.add_argument("--require-python", action="append")
-    parser.add_argument("--verify-manifest", type=Path, help="Check a saved manifest and its copied archives")
-    parser.add_argument("--manifest-sha256", help="Independently trusted SHA-256 of the original manifest bytes")
-    parser.add_argument("report", type=Path, nargs="*", help="Additional local reports for the release matrix")
+    parser.add_argument(
+        "--verify-manifest", type=Path, help="Check a saved manifest and its copied archives"
+    )
+    parser.add_argument(
+        "--manifest-sha256", help="Independently trusted SHA-256 of the original manifest bytes"
+    )
+    parser.add_argument(
+        "report", type=Path, nargs="*", help="Additional local reports for the release matrix"
+    )
     args = parser.parse_args()
     if args.verify_manifest is not None:
         if args.manifest_sha256 is None:
@@ -283,13 +354,19 @@ def main() -> int:
     try:
         if args.verify_manifest is not None:
             manifest = verify_manifest(
-                args.verify_manifest, args.evidence_root, manifest_sha256=args.manifest_sha256,
+                args.verify_manifest,
+                args.evidence_root,
+                manifest_sha256=args.manifest_sha256,
                 source_repo=args.source_repo,
             )
         else:
             manifest = build_manifest(
-                args.evidence_root, args.artifact_report, args.report, args.commit,
-                source_repo=args.source_repo, python_minors=tuple(args.require_python or _PYTHON_MINORS),
+                args.evidence_root,
+                args.artifact_report,
+                args.report,
+                args.commit,
+                source_repo=args.source_repo,
+                python_minors=tuple(args.require_python or _PYTHON_MINORS),
             )
     except (AttributeError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid or inconsistent release artifact evidence.\n")

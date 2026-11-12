@@ -57,11 +57,14 @@ class MockWorkflowTask:
             or self.label in self.dependencies
             or type(self.fail_first_attempt) is not bool
             or type(self.handoff_on_success) is not bool
-            or (self.first_retry_after_seconds is not None and (
-                type(self.first_retry_after_seconds) is not int
-                or not 0 <= self.first_retry_after_seconds <= 3600
-                or self.fail_first_attempt
-            ))
+            or (
+                self.first_retry_after_seconds is not None
+                and (
+                    type(self.first_retry_after_seconds) is not int
+                    or not 0 <= self.first_retry_after_seconds <= 3600
+                    or self.fail_first_attempt
+                )
+            )
         ):
             raise ValueError("Invalid mock workflow task.")
 
@@ -121,8 +124,7 @@ def _copy_workers(
         raise ValueError("Mock workflow requires distinct workers covering all tasks.")
     for task in scenario:
         if task.handoff_on_success and (
-            len(copies) < 3
-            or sum(task.capability in worker.capabilities for worker in copies) < 2
+            len(copies) < 3 or sum(task.capability in worker.capabilities for worker in copies) < 2
         ):
             raise ValueError("A Mock handoff requires two capable workers and a separate reviewer.")
     return copies
@@ -260,10 +262,10 @@ async def _run(
     project = core.execute("create_project", {"name": _MARKER, "root_path": str(root)})
     project_id = project["project_id"]
     actors = []
-    for worker in roster:
+    for worker_spec in roster:
         actor = core.execute(
             "register_agent",
-            {**project, "name": worker.label, "capabilities": list(worker.capabilities)},
+            {**project, "name": worker_spec.label, "capabilities": list(worker_spec.capabilities)},
         )
         core.execute_owner(
             "set_agent_roles",
@@ -272,7 +274,7 @@ async def _run(
                 "agent_id": actor["agent_id"],
                 "roles": ["worker", "reviewer"],
                 "expected_version": 1,
-                "request_id": "grant-" + worker.label,
+                "request_id": "grant-" + worker_spec.label,
             },
         )
         actors.append(actor)
@@ -305,7 +307,8 @@ async def _run(
     fail_first = {definition.label for definition in scenario if definition.fail_first_attempt}
     rate_limits = {
         definition.label: definition.first_retry_after_seconds
-        for definition in scenario if definition.first_retry_after_seconds is not None
+        for definition in scenario
+        if definition.first_retry_after_seconds is not None
     }
     transfer_tasks = {
         definition.label: definition.capability
@@ -429,7 +432,7 @@ async def _run(
                 break
             eligible_retries = [
                 label for label, ready_at in retries.items() if ready_at <= virtual_seconds
-            ][:min(remaining, parallel_limit)]
+            ][: min(remaining, parallel_limit)]
             batch: list[tuple[str, int, int | None]] = [
                 (label, owned[label].worker, None) for label in eligible_retries
             ]
@@ -454,7 +457,9 @@ async def _run(
             if not batch:
                 if retries:
                     virtual_seconds = min(retries.values())
-                    trace.append({"event": "retry_clock_advanced", "virtual_seconds": virtual_seconds})
+                    trace.append(
+                        {"event": "retry_clock_advanced", "virtual_seconds": virtual_seconds}
+                    )
                     continue
                 raise RuntimeError("Owned mock workflow unexpectedly has no eligible work.")
             # All starts in this bounded batch precede every simulated finish.
@@ -535,23 +540,32 @@ async def _run(
                             retries[label] = virtual_seconds
                     else:
                         decision = plan_retry(
-                            RetryPolicy(max_attempts=max_attempts), attempts_used=attempts[label],
-                            failure_kind="rate_limited", outcome_confirmed=True, now=virtual_seconds,
+                            RetryPolicy(max_attempts=max_attempts),
+                            attempts_used=attempts[label],
+                            failure_kind="rate_limited",
+                            outcome_confirmed=True,
+                            now=virtual_seconds,
                             retry_after_seconds=retry_after,
                             remaining_attempt_budget=budget - sum(attempts.values()),
                         )
                         if decision.retry_at is None:
                             stop_reason = (
                                 "per_task_attempts_exhausted"
-                                if decision.reason == "attempts_exhausted" else decision.reason
+                                if decision.reason == "attempts_exhausted"
+                                else decision.reason
                             )
                         else:
                             retries[label] = decision.retry_at
-                        trace.append({
-                            "event": "simulated_rate_limit", "task": label,
-                            "retry_after_seconds": retry_after, "retry_at_virtual_seconds": decision.retry_at,
-                            "decision": decision.state, "reason": decision.reason,
-                        })
+                        trace.append(
+                            {
+                                "event": "simulated_rate_limit",
+                                "task": label,
+                                "retry_after_seconds": retry_after,
+                                "retry_at_virtual_seconds": decision.retry_at,
+                                "decision": decision.state,
+                                "reason": decision.reason,
+                            }
+                        )
                     continue
                 if label in transfer_tasks and label not in transfers:
                     if attempts[label] >= max_attempts:

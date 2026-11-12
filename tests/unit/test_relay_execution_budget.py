@@ -44,9 +44,13 @@ async def test_drain_budget_interrupts_the_current_wave_without_starting_another
     assert len(deadlines) == 1 and deadlines[0] is not None
 
 
-async def test_expired_relay_budget_prevents_launch_preparation_and_reservation(tmp_path, monkeypatch):
+async def test_expired_relay_budget_prevents_launch_preparation_and_reservation(
+    tmp_path, monkeypatch
+):
     root = tmp_path.resolve()
-    profile = CursorHostProfile("project", "session", root / "unused.exe", root, "0" * 64, "fixture")
+    profile = CursorHostProfile(
+        "project", "session", root / "unused.exe", root, "0" * 64, "fixture"
+    )
     task = AdapterTask("project", "session", "task", "request", "fixture")
     loop = asyncio.get_running_loop()
     context = _new_launch_context(task, loop, loop.time() + 30, lambda: False)
@@ -55,7 +59,11 @@ async def test_expired_relay_budget_prevents_launch_preparation_and_reservation(
         pytest.fail("An expired relay budget must prevent preparation and launch")
 
     factory = ApprovedLaunchFactory(
-        profile, environment={}, receipts=root, authority=unexpected, revalidate=unexpected,
+        profile,
+        environment={},
+        receipts=root,
+        authority=unexpected,
+        revalidate=unexpected,
         _execution_deadline=loop.time() - 1,
     )
     monkeypatch.setattr(factory, "_review", unexpected)

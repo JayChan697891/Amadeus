@@ -259,9 +259,7 @@ class HTTPProvider:
         if type(authorization) is not OwnerAuthorization:
             _authorization_required()
         post = _post(self._profile, request)
-        deadline = min(
-            authorization._consume(self, request), monotonic() + request.timeout_seconds
-        )
+        deadline = min(authorization._consume(self, request), monotonic() + request.timeout_seconds)
         active = InFlight(deadline)
         try:
             timeout = active.remaining()

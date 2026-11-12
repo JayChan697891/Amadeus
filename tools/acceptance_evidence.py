@@ -23,12 +23,26 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _MAX_MEMBER = 1024 * 1024 * 1024
 _MAX_TOTAL = 4 * _MAX_MEMBER
 _MAX_STRUCTURED = 16 * 1024 * 1024
-_SUITES = {"pytest": "junit.xml", "wheel_pytest": "wheel-junit.xml", "sdist_pytest": "sdist-junit.xml"}
+_SUITES = {
+    "pytest": "junit.xml",
+    "wheel_pytest": "wheel-junit.xml",
+    "sdist_pytest": "sdist-junit.xml",
+}
 _COUNT_FIELDS = ("tests", "failures", "errors", "skipped")
 _DEVICE = re.compile(r"(?:con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])(?:\.|$)", re.IGNORECASE)
 _PROCESS_FIELDS = (
-    "id", "command", "cwd", "exit_code", "started_at", "finished_at", "log", "log_sha256",
-    "credential_redactions", "log_truncated", "provenance", "timeout_seconds",
+    "id",
+    "command",
+    "cwd",
+    "exit_code",
+    "started_at",
+    "finished_at",
+    "log",
+    "log_sha256",
+    "credential_redactions",
+    "log_truncated",
+    "provenance",
+    "timeout_seconds",
 )
 
 
@@ -54,8 +68,10 @@ def _finite(text: str) -> float:
 
 def read_json(data: bytes) -> Any:
     return json.loads(
-        data.decode("utf-8"), object_pairs_hook=_unique,
-        parse_constant=_invalid_constant, parse_float=_finite,
+        data.decode("utf-8"),
+        object_pairs_hook=_unique,
+        parse_constant=_invalid_constant,
+        parse_float=_finite,
     )
 
 
@@ -65,9 +81,14 @@ def _member_parts(name: Any) -> tuple[str, ...]:
     if any(ord(char) < 32 or char in '\\:*?"<>|' for char in name):
         raise ValueError("Invalid evidence member path.")
     relative = PurePosixPath(name)
-    if not relative.parts or relative.is_absolute() or relative.as_posix() != name or any(
-        part in (".", "..") or part.endswith((".", " ")) or _DEVICE.match(part)
-        for part in relative.parts
+    if (
+        not relative.parts
+        or relative.is_absolute()
+        or relative.as_posix() != name
+        or any(
+            part in (".", "..") or part.endswith((".", " ")) or _DEVICE.match(part)
+            for part in relative.parts
+        )
     ):
         raise ValueError("Invalid evidence member path.")
     return relative.parts
@@ -111,8 +132,11 @@ class _Evidence:
             _member_parts(name)
             portable = unicodedata.normalize("NFC", name).casefold()
             if (
-                portable in names or type(digest) is not str or not _SHA256.fullmatch(digest)
-                or type(size) is not int or not 0 <= size <= _MAX_MEMBER
+                portable in names
+                or type(digest) is not str
+                or not _SHA256.fullmatch(digest)
+                or type(size) is not int
+                or not 0 <= size <= _MAX_MEMBER
             ):
                 raise ValueError("Invalid or repeated evidence artifact.")
             names.add(portable)
@@ -146,7 +170,8 @@ class _Evidence:
             if _identity(os.fstat(stream.fileno())) != _identity(info):
                 raise ValueError("Evidence file changed while reading.")
         if (
-            read != item.size or digest.hexdigest() != item.sha256
+            read != item.size
+            or digest.hexdigest() != item.sha256
             or _identity(_physical(self.root, parts)[1]) != _identity(info)
         ):
             raise ValueError("Evidence file bytes do not match the manifest.")
@@ -175,13 +200,19 @@ def _junit(data: bytes) -> tuple[dict[str, int], str]:
         if not classname or not name or identity in identities or len(identities) >= 50000:
             raise ValueError("Invalid or repeated JUnit case identity.")
         identities.add(identity)
-        statuses = [element.tag for element in case if element.tag in ("failure", "error", "skipped")]
+        statuses = [
+            element.tag for element in case if element.tag in ("failure", "error", "skipped")
+        ]
         if len(statuses) > 1:
             raise ValueError("JUnit case has conflicting outcomes.")
         counts["tests"] += 1
         if statuses:
-            counts[{"failure": "failures", "error": "errors", "skipped": "skipped"}[statuses[0]]] += 1
-    case_hash = hashlib.sha256(json.dumps(sorted(identities), ensure_ascii=True).encode("ascii")).hexdigest()
+            counts[
+                {"failure": "failures", "error": "errors", "skipped": "skipped"}[statuses[0]]
+            ] += 1
+    case_hash = hashlib.sha256(
+        json.dumps(sorted(identities), ensure_ascii=True).encode("ascii")
+    ).hexdigest()
     return counts, case_hash
 
 
@@ -207,8 +238,11 @@ def _bound_installations(report: dict[str, Any], evidence: _Evidence) -> dict[st
         suffix = ".whl" if kind == "wheel" else ".tar.gz"
         parts = _member_parts(name)
         if (
-            len(parts) != 2 or parts[0] != "artifacts" or not parts[1].endswith(suffix)
-            or artifact["kind"] != kind or install.get("artifact") != artifact
+            len(parts) != 2
+            or parts[0] != "artifacts"
+            or not parts[1].endswith(suffix)
+            or artifact["kind"] != kind
+            or install.get("artifact") != artifact
             or install.get("log") != row.get("evidence_log")
         ):
             raise ValueError("Installed distribution is not tied to its build artifact.")
@@ -224,8 +258,11 @@ def _bound_installations(report: dict[str, Any], evidence: _Evidence) -> dict[st
 
 
 def _verify_install_operand(
-    report: dict[str, Any], kind: str, checks: dict[str, dict[str, Any]],
-    artifact: dict[str, Any], parts: tuple[str, ...],
+    report: dict[str, Any],
+    kind: str,
+    checks: dict[str, dict[str, Any]],
+    artifact: dict[str, Any],
+    parts: tuple[str, ...],
 ) -> None:
     path_type = PureWindowsPath if report["platform"].startswith("Windows") else PurePosixPath
     base = path_type(report["evidence_directory"])
@@ -234,7 +271,8 @@ def _verify_install_operand(
     expected = base.joinpath(*parts)
     command = checks[kind + "_install"]["command"]
     if (
-        type(command) is not list or len(command) < 6
+        type(command) is not list
+        or len(command) < 6
         or command[1:4] != ["-I", "-m", "pip"]
         or (command[4] != "install" and command[4:6] != ["--disable-pip-version-check", "install"])
         or path_type(command[-1].removesuffix("[dev]")).as_posix() != expected.as_posix()
@@ -247,8 +285,11 @@ def _verify_install_operand(
     if origin.get("status") == "pass":
         probe = origin["command"]
         if (
-            type(probe) is not list or len(probe) != 4 or probe[1:3] != ["-I", "-c"]
-            or repr(expected.as_uri()) not in probe[3] or repr(artifact["sha256"]) not in probe[3]
+            type(probe) is not list
+            or len(probe) != 4
+            or probe[1:3] != ["-I", "-c"]
+            or repr(expected.as_uri()) not in probe[3]
+            or repr(artifact["sha256"]) not in probe[3]
             or "direct_url.json" not in probe[3]
         ):
             raise ValueError("Installed origin process lacks the exact archive pins.")
@@ -261,18 +302,23 @@ def _bound_licenses(
     result: dict[str, dict[str, Any]] = {}
     for kind in ("wheel", "sdist"):
         row = checks.get(kind + "_license_inventory")
-        if row is None or (row["status"] in ("fail", "blocked", "not_run") and "inventory" not in row):
+        if row is None or (
+            row["status"] in ("fail", "blocked", "not_run") and "inventory" not in row
+        ):
             continue
         info = row["inventory"]
         name = f"{kind}-license-inventory.json"
         origin = kind + "_origin_sdk"
         install = checks.get(kind + "_install", {})
         if (
-            kind not in installed or checks.get(origin, {}).get("status") != "pass"
-            or info["path"] != name or info["installed_origin_check"] != origin
+            kind not in installed
+            or checks.get(origin, {}).get("status") != "pass"
+            or info["path"] != name
+            or info["installed_origin_check"] != origin
             or row.get("artifact") != install.get("artifact")
             or info["scope"] != "installed_runtime_dependency_metadata"
-            or info["license_review"] != "pending" or info["publication_authorized"] is not False
+            or info["license_review"] != "pending"
+            or info["publication_authorized"] is not False
         ):
             raise ValueError("License inventory is not tied to the installed package.")
         evidence.require_digest(name, info["sha256"])
@@ -281,18 +327,25 @@ def _bound_licenses(
         content = read_json(evidence.check(name, retain=True))
         items = content["review_items"]
         if (
-            type(content["schema_version"]) is not int or content["schema_version"] != 1
+            type(content["schema_version"]) is not int
+            or content["schema_version"] != 1
             or content["root"] != "agentsync-local"
-            or content["scope"] != info["scope"] or content["license_review"] != "pending"
+            or content["scope"] != info["scope"]
+            or content["license_review"] != "pending"
             or content["publication_authorized"] is not False
             or content["distributions"]["agentsync-local"]["version"] != report["version"]
-            or type(items) is not list or type(info["review_item_count"]) is not int
+            or type(items) is not list
+            or type(info["review_item_count"]) is not int
             or len(items) != info["review_item_count"]
             or row["status"] != ("unverified" if items else "pass")
             or row["exit_code"] != (1 if items else 0)
         ):
             raise ValueError("License inventory and its check record disagree.")
-        result[kind] = {"sha256": info["sha256"], "review_item_count": len(items), "review": "pending"}
+        result[kind] = {
+            "sha256": info["sha256"],
+            "review_item_count": len(items),
+            "review": "pending",
+        }
     return result
 
 
@@ -307,14 +360,14 @@ def _offline_resolution(report: dict[str, Any], evidence: _Evidence) -> dict[str
     member = scope.get("wheelhouse_manifest")
     if candidate_rejected:
         if (
-            member is not None or "candidate_input" in report
+            member is not None
+            or "candidate_input" in report
             or any(
                 checks.get(name, {}).get("status") != "not_run"
                 for name in ("pytest", "build", "wheel_install", "sdist_install")
             )
             or any(
-                row["status"] == "pass" or "log" in row or "junit" in row
-                for row in checks.values()
+                row["status"] == "pass" or "log" in row or "junit" in row for row in checks.values()
             )
         ):
             raise ValueError("Rejected candidate report claims execution or staged inputs.")
@@ -334,21 +387,31 @@ def _offline_resolution(report: dict[str, Any], evidence: _Evidence) -> dict[str
             raise ValueError("Invalid offline package record.")
         name = row["filename"]
         if (
-            len(_member_parts(name)) != 1 or not name.endswith(".whl") or name.casefold() in names
-            or type(row["size"]) is not int or row["size"] <= 0
-            or type(row["sha256"]) is not str or not _SHA256.fullmatch(row["sha256"])
+            len(_member_parts(name)) != 1
+            or not name.endswith(".whl")
+            or name.casefold() in names
+            or type(row["size"]) is not int
+            or row["size"] <= 0
+            or type(row["sha256"]) is not str
+            or not _SHA256.fullmatch(row["sha256"])
         ):
             raise ValueError("Invalid or repeated offline package record.")
         names.add(name.casefold())
     build = checks.get("build", {})
     if build.get("status") == "pass" and (
         "--no-isolation" not in build["command"]
-        or any(checks.get(name, {}).get("status") != "pass" for name in ("offline_build_venv", "offline_build_tools"))
+        or any(
+            checks.get(name, {}).get("status") != "pass"
+            for name in ("offline_build_venv", "offline_build_tools")
+        )
     ):
         raise ValueError("Offline build is missing the preloaded toolchain checks.")
     ids = {
-        "offline_build_tools", "wheel_offline_dependencies", "sdist_offline_dependencies",
-        "wheel_install", "sdist_install",
+        "offline_build_tools",
+        "wheel_offline_dependencies",
+        "sdist_offline_dependencies",
+        "wheel_install",
+        "sdist_install",
     }
     for check_id in ids:
         row = checks.get(check_id, {})
@@ -386,8 +449,11 @@ def _snapshot_entries(rows: Any) -> int:
         name, digest, size = row["path"], row["sha256"], row["size"]
         _member_parts(name)
         if (
-            name in seen or type(digest) is not str or not _SHA256.fullmatch(digest)
-            or type(size) is not int or size < 0
+            name in seen
+            or type(digest) is not str
+            or not _SHA256.fullmatch(digest)
+            or type(size) is not int
+            or size < 0
         ):
             raise ValueError("Invalid or repeated frozen source entry.")
         seen.add(name)
@@ -398,16 +464,20 @@ def _verify_process(evidence: _Evidence, row: dict[str, Any], log: str) -> None:
     process_name = PurePosixPath(log).with_suffix(".process.json").as_posix()
     attempt = read_json(evidence.check(process_name, retain=True))
     if (
-        type(attempt) is not dict or attempt.get("schema") != "agentsync.local-process-attempt.v1"
-        or attempt.get("phase") != "finished" or attempt.get("check_id") != row["id"]
-        or attempt.get("formal_acceptance") is not False or attempt.get("junit_validated") is not False
+        type(attempt) is not dict
+        or attempt.get("schema") != "agentsync.local-process-attempt.v1"
+        or attempt.get("phase") != "finished"
+        or attempt.get("check_id") != row["id"]
+        or attempt.get("formal_acceptance") is not False
+        or attempt.get("junit_validated") is not False
         or attempt.get("outcome") not in ("exited", "timed_out", "runner_error")
     ):
         raise ValueError("Process receipt is incomplete or belongs to another check.")
     original = attempt.get("result")
     request = attempt.get("request")
     if (
-        type(original) is not dict or type(request) is not dict
+        type(original) is not dict
+        or type(request) is not dict
         or any(original.get(field) != row.get(field) for field in _PROCESS_FIELDS)
         or any(request.get(field) != row.get(field) for field in ("command", "cwd", "started_at"))
         or request.get("timeout_seconds") != row.get("timeout_seconds", 900)
@@ -442,7 +512,9 @@ def verify_report_evidence(
         else:
             from acceptance_git_source import verify_git_source
 
-        git_source = verify_git_source(source_repo, report["commit_sha"], report["tree_sha"], source)
+        git_source = verify_git_source(
+            source_repo, report["commit_sha"], report["tree_sha"], source
+        )
     logs = set()
     cases: dict[str, str] = {}
     for row in report["checks"]:
@@ -456,8 +528,10 @@ def verify_report_evidence(
             evidence.require_digest(log, row["log_sha256"])
             _verify_process(evidence, row, log)
         if status == "pass" and (
-            log is None or row.get("provenance") != "local_process"
-            or type(row.get("exit_code")) is not int or row["exit_code"] != 0
+            log is None
+            or row.get("provenance") != "local_process"
+            or type(row.get("exit_code")) is not int
+            or row["exit_code"] != 0
         ):
             raise ValueError("Passing check lacks a matching successful process observation.")
         junit_name = _SUITES.get(name)
@@ -472,7 +546,8 @@ def verify_report_evidence(
     if "candidate_input" in report:
         intake = report["candidate_input"]
         if (
-            type(intake) is not dict or set(intake) != {"manifest_sha256", "artifact_sha256"}
+            type(intake) is not dict
+            or set(intake) != {"manifest_sha256", "artifact_sha256"}
             or type(intake["manifest_sha256"]) is not str
             or _SHA256.fullmatch(intake["manifest_sha256"]) is None
             or type(intake["artifact_sha256"]) is not dict
@@ -482,7 +557,8 @@ def verify_report_evidence(
         pins = intake["artifact_sha256"]
         for kind, suffix in (("wheel", ".whl"), ("sdist", ".tar.gz")):
             names = [
-                name for name in evidence.members
+                name
+                for name in evidence.members
                 if name.startswith("artifacts/") and name.count("/") == 1 and name.endswith(suffix)
             ]
             if len(names) != 1 or (kind in installed and installed[kind] != pins[kind]):

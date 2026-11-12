@@ -123,7 +123,9 @@ class ManagerCapacity:
 @dataclass(frozen=True, slots=True)
 class CancellationObservation(Generic[R]):
     handle: str
-    state: Literal["start_unresolved", "start_error", "unsupported", "cancel_unresolved", "returned"]
+    state: Literal[
+        "start_unresolved", "start_error", "unsupported", "cancel_unresolved", "returned"
+    ]
     run: ManagedRun[R] | None = field(default=None, repr=False)
     error_code: str | None = None
     cleanup_verified: Literal[False] = field(default=False, init=False)
@@ -297,7 +299,9 @@ class RunManager(Generic[C, R, T]):
                 limit = self._max_pending_starts
                 if limit is not None and self._pending_start_count() >= limit:
                     raise AgentSyncError(
-                        "pending_start_capacity_exceeded", "Manager pending start capacity is exhausted.", 409
+                        "pending_start_capacity_exceeded",
+                        "Manager pending start capacity is exhausted.",
+                        409,
                     )
                 handle = uuid.uuid4().hex
                 self._hold_active_slot(handle)
@@ -314,7 +318,9 @@ class RunManager(Generic[C, R, T]):
             return False
         if len(self._active_handles) >= limit:
             raise AgentSyncError(
-                "running_capacity_exceeded", "Manager active run capacity is exhausted.", 409,
+                "running_capacity_exceeded",
+                "Manager active run capacity is exhausted.",
+                409,
             )
         self._active_handles.add(handle)
         return True
@@ -323,10 +329,13 @@ class RunManager(Generic[C, R, T]):
         if self._max_active_runs is None or route.resuming or route.resume_epoch != epoch:
             return
         if (
-            isinstance(run, _HostRun) and not run.slot_held and run.parent_ended
+            isinstance(run, _HostRun)
+            and not run.slot_held
+            and run.parent_ended
             and run.status in ("succeeded", "failed")
         ) or (
-            isinstance(run, RunSnapshot) and run.finished_at is not None
+            isinstance(run, RunSnapshot)
+            and run.finished_at is not None
             and run.status in ("succeeded", "failed", "cancelled", "timed_out")
         ):
             self._active_handles.discard(route.handle)
@@ -430,7 +439,9 @@ class RunManager(Generic[C, R, T]):
         self._observe_active_slot(route, run, epoch=epoch)
         return ManagedRun(handle, route.adapter_id, run)
 
-    async def cancel_bounded(self, handle: str, *, timeout_seconds: float) -> CancellationObservation[R]:
+    async def cancel_bounded(
+        self, handle: str, *, timeout_seconds: float
+    ) -> CancellationObservation[R]:
         """Observe one cancel request within a shared startup and operation deadline.
 
         An unreturned start is left alone. After adapter entry, a timeout means
@@ -451,25 +462,35 @@ class RunManager(Generic[C, R, T]):
                     snapshot = await self.wait_dispatch(handle, timeout_seconds=timeout_seconds)
                 if snapshot.state == "error":
                     return CancellationObservation(
-                        handle, "start_unresolved" if snapshot.error_code == "adapter_start_unknown" else "start_error",
+                        handle,
+                        "start_unresolved"
+                        if snapshot.error_code == "adapter_start_unknown"
+                        else "start_error",
                         error_code=snapshot.error_code,
                     )
                 if snapshot.state == "pending" or loop.time() >= end:
-                    return CancellationObservation(handle, "start_unresolved", error_code="observation_timeout")
+                    return CancellationObservation(
+                        handle, "start_unresolved", error_code="observation_timeout"
+                    )
                 entered = True
                 observed = await self.cancel_task(handle)
         except TimeoutError:
             return CancellationObservation(
-                handle, "cancel_unresolved" if entered else "start_unresolved", error_code="observation_timeout",
+                handle,
+                "cancel_unresolved" if entered else "start_unresolved",
+                error_code="observation_timeout",
             )
         except AgentSyncError as error:
             # cancel_task routes failures through fixed public adapter codes.
             return CancellationObservation(
-                handle, "unsupported" if error.code == "unsupported" else "cancel_unresolved",
+                handle,
+                "unsupported" if error.code == "unsupported" else "cancel_unresolved",
                 error_code=error.code,
             )
         if window.expired() or loop.time() >= end:
-            return CancellationObservation(handle, "cancel_unresolved", error_code="observation_timeout")
+            return CancellationObservation(
+                handle, "cancel_unresolved", error_code="observation_timeout"
+            )
         return CancellationObservation(handle, "returned", observed)
 
     async def resume_task(self, handle: str) -> ManagedRun[R]:

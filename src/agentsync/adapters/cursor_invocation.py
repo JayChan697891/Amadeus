@@ -165,9 +165,8 @@ def _binary_hash(profile: CursorHostProfile) -> str:
             opener=lambda name, flags: os.open(name, flags | read_flags),
         ) as source:
             opened = os.fstat(source.fileno())
-            if (
-                not _ordinary(opened, directory=False)
-                or _file_identity(opened) != _file_identity(before)
+            if not _ordinary(opened, directory=False) or _file_identity(opened) != _file_identity(
+                before
             ):
                 _invalid("binary_changed")
             remaining = opened.st_size

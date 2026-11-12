@@ -25,14 +25,24 @@ if __package__:
     from .acceptance_evidence import _Evidence, read_json
     from .acceptance_git_source import _output
     from .acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
+        RELEASE_PYTHON_MINORS,
+        _complete_observation,
+        _platform_gaps,
+        _read_report,
+        matrix_digest,
+        summarize,
     )
     from .release_manifest import verify_manifest
 else:
     from acceptance_evidence import _Evidence, read_json
     from acceptance_git_source import _output
     from acceptance_matrix import (
-        RELEASE_PYTHON_MINORS, _complete_observation, _platform_gaps, _read_report, matrix_digest, summarize,
+        RELEASE_PYTHON_MINORS,
+        _complete_observation,
+        _platform_gaps,
+        _read_report,
+        matrix_digest,
+        summarize,
     )
     from release_manifest import verify_manifest
 
@@ -42,14 +52,25 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _CLIENT_VERSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,99}")
 _STATUSES = ("passed", "failed", "not_run", "blocked", "restricted", "unverified")
 _COUNTS = (5, 5, 5, 4, 5, 5, 5, 4, 2, 2)
-_REQUIREMENTS = {f"M{milestone}-{index:02d}" for milestone, count in enumerate(_COUNTS) for index in range(1, count + 1)}
+_REQUIREMENTS = {
+    f"M{milestone}-{index:02d}"
+    for milestone, count in enumerate(_COUNTS)
+    for index in range(1, count + 1)
+}
 _SCENARIOS = {f"T{index:02d}" for index in range(1, 17)}
 _REGISTER_PATH = "docs/acceptance/requirements.json"
 _REAL_CLIENT_KINDS = {"codex", "claude_code", "cursor"}
 _REAL_EXECUTION_KINDS = _REAL_CLIENT_KINDS | {"real_relay"}
 _EVIDENCE_KINDS = {
-    "component", "security", "package", "license", "mcp_host", "conflict",
-    "cross_platform", "independent_review", "execution_artifact",
+    "component",
+    "security",
+    "package",
+    "license",
+    "mcp_host",
+    "conflict",
+    "cross_platform",
+    "independent_review",
+    "execution_artifact",
 } | _REAL_EXECUTION_KINDS
 _REQUIRED_KINDS = {
     "M2-05": {"mcp_host"},
@@ -74,7 +95,8 @@ _REQUIRED_KINDS = {
 
 def _read(path: Path) -> tuple[dict[str, Any], str]:
     if (
-        not path.is_file() or path.is_symlink()
+        not path.is_file()
+        or path.is_symlink()
         or getattr(path.lstat(), "st_file_attributes", 0) & 0x400
     ):
         raise ValueError("A regular review input file is required.")
@@ -83,13 +105,19 @@ def _read(path: Path) -> tuple[dict[str, Any], str]:
     if len(raw) > _LIMIT:
         raise ValueError("Review input exceeds its size limit.")
     data = read_json(raw)
-    if type(data) is not dict or type(data.get("schema_version")) is not int or data["schema_version"] != 1:
+    if (
+        type(data) is not dict
+        or type(data.get("schema_version")) is not int
+        or data["schema_version"] != 1
+    ):
         raise ValueError("Unsupported review input schema.")
     return data, hashlib.sha256(raw).hexdigest()
 
 
 def _traceability(manifest: dict[str, Any]) -> dict[str, str]:
-    if type(manifest.get("requirement_count")) is not int or manifest["requirement_count"] != len(_REQUIREMENTS):
+    if type(manifest.get("requirement_count")) is not int or manifest["requirement_count"] != len(
+        _REQUIREMENTS
+    ):
         raise ValueError("Invalid formal requirement count.")
     labels: dict[str, str] = {}
     for key, expected in (("requirements", _REQUIREMENTS), ("scenarios", _SCENARIOS)):
@@ -134,7 +162,9 @@ def _checked_members(root: Path, records: Any) -> dict[str, dict[str, Any]]:
         if len(kinds & _REAL_CLIENT_KINDS) > 1:
             raise ValueError("Real-client evidence must be recorded separately for each client.")
         if kinds & _REAL_EXECUTION_KINDS and kinds & {"component", "independent_review"}:
-            raise ValueError("Real execution requires evidence separate from component checks and independent review.")
+            raise ValueError(
+                "Real execution requires evidence separate from component checks and independent review."
+            )
         members[key] = record
         rows[path] = member
     if rows:
@@ -157,23 +187,34 @@ def _validate_execution_receipt(receipt: Any, kind: str, commit: str) -> str:
     if (
         type(receipt) is not dict
         or set(receipt) != {"schema_version", "kind", "commit_sha", "runs", "artifact_sha256"}
-        or type(receipt["schema_version"]) is not int or receipt["schema_version"] != 1
-        or receipt["kind"] != kind or receipt["commit_sha"] != commit
-        or type(receipt["artifact_sha256"]) is not str or not _SHA256.fullmatch(receipt["artifact_sha256"])
+        or type(receipt["schema_version"]) is not int
+        or receipt["schema_version"] != 1
+        or receipt["kind"] != kind
+        or receipt["commit_sha"] != commit
+        or type(receipt["artifact_sha256"]) is not str
+        or not _SHA256.fullmatch(receipt["artifact_sha256"])
         or type(receipt["runs"]) is not list
     ):
         raise ValueError("Execution receipt does not match the reviewed client or source.")
     runs = receipt["runs"]
-    if (kind == "real_relay" and not 2 <= len(runs) <= 8) or (kind != "real_relay" and len(runs) != 1):
+    if (kind == "real_relay" and not 2 <= len(runs) <= 8) or (
+        kind != "real_relay" and len(runs) != 1
+    ):
         raise ValueError("Execution receipt has an invalid number of runs.")
     identity_fields = ("agent_sha256", "run_sha256", "session_sha256")
     for run in runs:
         if (
-            type(run) is not dict or set(run) != {"client", "client_version", *identity_fields}
-            or type(run["client"]) is not str or run["client"] not in _REAL_CLIENT_KINDS
+            type(run) is not dict
+            or set(run) != {"client", "client_version", *identity_fields}
+            or type(run["client"]) is not str
+            or run["client"] not in _REAL_CLIENT_KINDS
             or (kind != "real_relay" and run["client"] != kind)
-            or type(run["client_version"]) is not str or not _CLIENT_VERSION.fullmatch(run["client_version"])
-            or any(type(run[field]) is not str or not _SHA256.fullmatch(run[field]) for field in identity_fields)
+            or type(run["client_version"]) is not str
+            or not _CLIENT_VERSION.fullmatch(run["client_version"])
+            or any(
+                type(run[field]) is not str or not _SHA256.fullmatch(run[field])
+                for field in identity_fields
+            )
         ):
             raise ValueError("Invalid real-client execution observation.")
     if any(len({run[field] for run in runs}) != len(runs) for field in identity_fields):
@@ -182,17 +223,28 @@ def _validate_execution_receipt(receipt: Any, kind: str, commit: str) -> str:
 
 
 def _inputs(
-    manifest_path: Path, local_reports: list[Path], commit: str,
-    python_minors: tuple[str, ...], source_repo: Path | None,
+    manifest_path: Path,
+    local_reports: list[Path],
+    commit: str,
+    python_minors: tuple[str, ...],
+    source_repo: Path | None,
 ) -> tuple[dict[str, Any], str, dict[str, str]]:
     matrix = summarize(
-        local_reports, commit, verify_artifacts=True,
-        require_license_inventory=True, python_minors=python_minors, source_repo=source_repo,
+        local_reports,
+        commit,
+        verify_artifacts=True,
+        require_license_inventory=True,
+        python_minors=python_minors,
+        source_repo=source_repo,
     )
     manifest, manifest_sha = _read(manifest_path)
     if source_repo is not None:
         frozen_register = _output(
-            source_repo, "cat-file", "blob", f"{commit}:{_REGISTER_PATH}", maximum=_LIMIT,
+            source_repo,
+            "cat-file",
+            "blob",
+            f"{commit}:{_REGISTER_PATH}",
+            maximum=_LIMIT,
         )
         if hashlib.sha256(frozen_register).hexdigest() != manifest_sha:
             raise ValueError("The requirements register differs from the frozen Git revision.")
@@ -200,8 +252,12 @@ def _inputs(
 
 
 def prepare(
-    manifest_path: Path, local_reports: list[Path], commit: str, reviewer_id: str,
-    *, python_minors: tuple[str, ...] = RELEASE_PYTHON_MINORS,
+    manifest_path: Path,
+    local_reports: list[Path],
+    commit: str,
+    reviewer_id: str,
+    *,
+    python_minors: tuple[str, ...] = RELEASE_PYTHON_MINORS,
     source_repo: Path | None = None,
     evidence_root: Path | None = None,
     candidate_manifest: Path | None = None,
@@ -212,7 +268,9 @@ def prepare(
         raise ValueError("Invalid declared reviewer ID.")
     if (candidate_manifest is None) != (candidate_sha256 is None):
         raise ValueError("Candidate manifest and its trusted SHA-256 are required together.")
-    matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
+    matrix, manifest_sha, labels = _inputs(
+        manifest_path, local_reports, commit, python_minors, source_repo
+    )
     digest = matrix_digest(matrix)
     form = {
         "schema_version": 1,
@@ -232,25 +290,41 @@ def prepare(
         if evidence_root is None:
             raise ValueError("Candidate review preparation requires the evidence root.")
         candidate = _bind_candidate(
-            matrix, digest, evidence_root, candidate_manifest, candidate_sha256,
-            python_minors, source_repo, local_reports,
+            matrix,
+            digest,
+            evidence_root,
+            candidate_manifest,
+            candidate_sha256,
+            python_minors,
+            source_repo,
+            local_reports,
         )
         form["candidate_manifest_sha256"] = candidate["manifest_sha256"]
     return form
 
 
 def _bind_candidate(
-    matrix: dict[str, Any], digest: str, evidence_root: Path, path: Path, manifest_sha256: str,
-    python_minors: tuple[str, ...], source_repo: Path | None, local_reports: list[Path],
+    matrix: dict[str, Any],
+    digest: str,
+    evidence_root: Path,
+    path: Path,
+    manifest_sha256: str,
+    python_minors: tuple[str, ...],
+    source_repo: Path | None,
+    local_reports: list[Path],
 ) -> dict[str, Any]:
     if source_repo is None or matrix["git_source_audit"] is None:
         raise ValueError("Release candidate review requires the frozen Git source.")
     candidate = verify_manifest(
-        path, evidence_root, manifest_sha256=manifest_sha256, source_repo=source_repo,
+        path,
+        evidence_root,
+        manifest_sha256=manifest_sha256,
+        source_repo=source_repo,
     )
     if (
         candidate["frozen"] != matrix["frozen"]
-        or candidate["matrix_sha256"] != digest or candidate["local_matrix"] != matrix["local_matrix"]
+        or candidate["matrix_sha256"] != digest
+        or candidate["local_matrix"] != matrix["local_matrix"]
     ):
         raise ValueError("Release candidate describes a different frozen matrix.")
     build = candidate["build_report"]
@@ -259,7 +333,8 @@ def _bind_candidate(
     )
     pins = {item["kind"]: item["sha256"] for item in candidate["checked_artifacts"]}
     if (
-        observation is None or observation["system"] != build["system"]
+        observation is None
+        or observation["system"] != build["system"]
         or observation["checks"].get("build") != "pass"
         or observation["artifact_audit"]["installed_artifact_sha256"] != pins
         or any(observation["checks"].get(kind + "_origin_sdk") != "pass" for kind in pins)
@@ -312,12 +387,21 @@ def assemble(
 ) -> dict[str, Any]:
     if (candidate_manifest is None) != (candidate_sha256 is None):
         raise ValueError("Candidate manifest and its trusted SHA-256 are required together.")
-    matrix, manifest_sha, labels = _inputs(manifest_path, local_reports, commit, python_minors, source_repo)
+    matrix, manifest_sha, labels = _inputs(
+        manifest_path, local_reports, commit, python_minors, source_repo
+    )
     digest = matrix_digest(matrix)
     review, review_sha = _read(review_path)
     fields = {
-        "schema_version", "commit_sha", "version", "requirements_sha256", "matrix_sha256",
-        "reviewer_id", "independence_declared", "evidence", "decisions",
+        "schema_version",
+        "commit_sha",
+        "version",
+        "requirements_sha256",
+        "matrix_sha256",
+        "reviewer_id",
+        "independence_declared",
+        "evidence",
+        "decisions",
     }
     if candidate_sha256 is not None:
         fields.add("candidate_manifest_sha256")
@@ -326,10 +410,14 @@ def assemble(
     if set(review) != fields:
         raise ValueError("Invalid independent review envelope.")
     if (
-        type(review["schema_version"]) is not int or review["schema_version"] != 1
-        or review["commit_sha"] != commit or review["version"] != matrix["frozen"]["version"]
-        or review["requirements_sha256"] != manifest_sha or review["matrix_sha256"] != digest
-        or type(review["reviewer_id"]) is not str or not _IDENTIFIER.fullmatch(review["reviewer_id"])
+        type(review["schema_version"]) is not int
+        or review["schema_version"] != 1
+        or review["commit_sha"] != commit
+        or review["version"] != matrix["frozen"]["version"]
+        or review["requirements_sha256"] != manifest_sha
+        or review["matrix_sha256"] != digest
+        or type(review["reviewer_id"]) is not str
+        or not _IDENTIFIER.fullmatch(review["reviewer_id"])
         or type(review["independence_declared"]) is not bool
     ):
         raise ValueError("Independent review describes a different release input.")
@@ -345,23 +433,32 @@ def assemble(
         identity, status, refs = row["id"], row["status"], row["evidence_ids"]
         reason = row["reason"]
         if (
-            type(identity) is not str or identity not in labels or identity in decisions
-            or type(status) is not str or status not in _STATUSES
-            or type(refs) is not list or len(refs) > 32
+            type(identity) is not str
+            or identity not in labels
+            or identity in decisions
+            or type(status) is not str
+            or status not in _STATUSES
+            or type(refs) is not list
+            or len(refs) > 32
             or any(type(ref) is not str or ref not in members for ref in refs)
             or len(set(refs)) != len(refs)
-            or type(reason) is not str or len(reason) > 1000 or "\0" in reason
+            or type(reason) is not str
+            or len(reason) > 1000
+            or "\0" in reason
             or (status != "passed" and not reason.strip())
         ):
             raise ValueError("Invalid, unknown or repeated review decision.")
         kinds = {members[ref]["kind"] for ref in refs}
         if status == "passed" and (
-            not review["independence_declared"] or not refs or not _REQUIRED_KINDS.get(identity, set()) <= kinds
+            not review["independence_declared"]
+            or not refs
+            or not _REQUIRED_KINDS.get(identity, set()) <= kinds
         ):
             raise ValueError("A declared pass lacks its required independent evidence classes.")
         if status == "passed" and kinds & _REAL_EXECUTION_KINDS:
             artifacts = {
-                members[ref]["sha256"] for ref in refs
+                members[ref]["sha256"]
+                for ref in refs
                 if members[ref]["kind"] == "execution_artifact" and members[ref]["size"] > 0
             }
             for ref in refs:
@@ -375,18 +472,32 @@ def assemble(
         decisions[identity] = (status, refs, reason)
     cases = []
     for identity, title in labels.items():
-        status, refs, reason = decisions.get(identity, ("not_run", [], "No independent review recorded."))
-        cases.append({
-            "id": identity, "title": title, "declared_status": status,
-            "evidence_ids": refs, "reason": reason,
-        })
+        status, refs, reason = decisions.get(
+            identity, ("not_run", [], "No independent review recorded.")
+        )
+        cases.append(
+            {
+                "id": identity,
+                "title": title,
+                "declared_status": status,
+                "evidence_ids": refs,
+                "reason": reason,
+            }
+        )
     counts = Counter(case["declared_status"] for case in cases)
     candidate = (
         _bind_candidate(
-            matrix, digest, evidence_root, candidate_manifest, candidate_sha256,
-            python_minors, source_repo, local_reports,
+            matrix,
+            digest,
+            evidence_root,
+            candidate_manifest,
+            candidate_sha256,
+            python_minors,
+            source_repo,
+            local_reports,
         )
-        if candidate_manifest is not None and candidate_sha256 is not None else None
+        if candidate_manifest is not None and candidate_sha256 is not None
+        else None
     )
     blockers = []
     if counts["passed"] != len(cases):
@@ -397,7 +508,10 @@ def assemble(
         blockers.append("git_source_not_audited")
     if candidate is None:
         blockers.append("release_candidate_not_bound")
-    elif candidate["systems_without_exact_candidate_checks"] or candidate["missing_exact_candidate_os_python_combinations"]:
+    elif (
+        candidate["systems_without_exact_candidate_checks"]
+        or candidate["missing_exact_candidate_os_python_combinations"]
+    ):
         blockers.append("exact_candidate_platform_matrix_incomplete")
     packet = {
         "schema_version": 1,
@@ -444,8 +558,11 @@ def render_markdown(packet: dict[str, Any]) -> str:
         f"- Version `{frozen['version']}`",
         f"- Git commit `{frozen['commit_sha']}`",
         f"- Requirements SHA-256 `{packet['requirements_sha256']}`",
-        "- Requirements source: " + (
-            "matched to the frozen Git revision" if packet["requirements_git_bound"] else "not checked against Git"
+        "- Requirements source: "
+        + (
+            "matched to the frozen Git revision"
+            if packet["requirements_git_bound"]
+            else "not checked against Git"
         ),
         f"- Review SHA-256 `{packet['review_sha256']}`",
         f"- Matrix SHA-256 `{packet['matrix_sha256']}`",
@@ -453,21 +570,30 @@ def render_markdown(packet: dict[str, Any]) -> str:
         f"- Local matrix `{packet['local_matrix']}`",
         f"- Frozen source check {source_check}",
         f"- Packet state `{packet['packet_state']}`",
-        "- Packet blockers: " + (", ".join(f"`{item}`" for item in packet["packet_blockers"]) or "none"),
+        "- Packet blockers: "
+        + (", ".join(f"`{item}`" for item in packet["packet_blockers"]) or "none"),
         "",
         "## Declared results",
         "",
         "| Status | Count |",
         "| --- | ---: |",
     ]
-    lines.extend(f"| `{status}` | {packet['declared_status_counts'][status]} |" for status in _STATUSES)
+    lines.extend(
+        f"| `{status}` | {packet['declared_status_counts'][status]} |" for status in _STATUSES
+    )
     candidate = packet.get("release_candidate")
     if candidate is not None:
-        lines.extend([
-            "", "## Bound release archives", "",
-            f"Manifest SHA-256 `{candidate['manifest_sha256']}`", "",
-            "| Kind | Relative path | Bytes | SHA-256 |", "| --- | --- | ---: | --- |",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Bound release archives",
+                "",
+                f"Manifest SHA-256 `{candidate['manifest_sha256']}`",
+                "",
+                "| Kind | Relative path | Bytes | SHA-256 |",
+                "| --- | --- | ---: | --- |",
+            ]
+        )
         for artifact in candidate["checked_artifacts"]:
             lines.append(
                 f"| `{artifact['kind']}` | {_cell(artifact['path'])} | "
@@ -475,32 +601,51 @@ def render_markdown(packet: dict[str, Any]) -> str:
             )
         systems = candidate["systems_without_exact_candidate_checks"]
         combinations = candidate["missing_exact_candidate_os_python_combinations"]
-        lines.extend([
-            "", "Platforms missing full checks against these exact archives: "
-            + (", ".join(_cell(system) for system in systems) or "none"),
-            "", "Missing platform/Python combinations for these exact archives: "
-            + (", ".join(f"{_cell(row['system'])} {row['python_minor']}" for row in combinations) or "none"),
-        ])
+        lines.extend(
+            [
+                "",
+                "Platforms missing full checks against these exact archives: "
+                + (", ".join(_cell(system) for system in systems) or "none"),
+                "",
+                "Missing platform/Python combinations for these exact archives: "
+                + (
+                    ", ".join(
+                        f"{_cell(row['system'])} {row['python_minor']}" for row in combinations
+                    )
+                    or "none"
+                ),
+            ]
+        )
     missing = packet["missing_os_python_combinations"]
     if missing:
         lines.extend(["", "## OS and Python combinations without complete evidence", ""])
-        lines.extend(f"- {_cell(row['system'])} / Python {_cell(row['python_minor'])}" for row in missing)
-    lines.extend([
-        "", "## Requirements and scenarios", "",
-        "| ID | Case | Declared status | Evidence IDs | Reason |",
-        "| --- | --- | --- | --- | --- |",
-    ])
+        lines.extend(
+            f"- {_cell(row['system'])} / Python {_cell(row['python_minor'])}" for row in missing
+        )
+    lines.extend(
+        [
+            "",
+            "## Requirements and scenarios",
+            "",
+            "| ID | Case | Declared status | Evidence IDs | Reason |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+    )
     for case in packet["cases"]:
         refs = ", ".join(f"`{ref}`" for ref in case["evidence_ids"]) or "—"
         lines.append(
             f"| `{case['id']}` | {_cell(case['title'])} | `{case['declared_status']}` | "
             f"{refs} | {_cell(case['reason'])} |"
         )
-    lines.extend([
-        "", "## Checked evidence files", "",
-        "| ID | Declared kind | Relative path | Bytes | SHA-256 |",
-        "| --- | --- | --- | ---: | --- |",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Checked evidence files",
+            "",
+            "| ID | Declared kind | Relative path | Bytes | SHA-256 |",
+            "| --- | --- | --- | ---: | --- |",
+        ]
+    )
     for identity, item in sorted(packet["evidence"].items()):
         lines.append(
             f"| `{identity}` | `{item['kind']}` | {_cell(item['path'])} | "
@@ -530,22 +675,35 @@ def main() -> int:
         parser.error("--prepare emits the JSON decision template")
     if (args.candidate_manifest is None) != (args.candidate_sha256 is None):
         parser.error("--candidate-manifest and --candidate-sha256 are required together")
-    if args.candidate_manifest is not None and (args.evidence_root is None or args.source_repo is None):
+    if args.candidate_manifest is not None and (
+        args.evidence_root is None or args.source_repo is None
+    ):
         parser.error("candidate binding requires --evidence-root and --source-repo")
     minors = tuple(args.require_python or RELEASE_PYTHON_MINORS)
     try:
         if args.prepare is not None:
             packet = prepare(
-                args.requirements, args.report, args.commit, args.prepare,
-                python_minors=minors, source_repo=args.source_repo,
+                args.requirements,
+                args.report,
+                args.commit,
+                args.prepare,
+                python_minors=minors,
+                source_repo=args.source_repo,
                 evidence_root=args.evidence_root,
-                candidate_manifest=args.candidate_manifest, candidate_sha256=args.candidate_sha256,
+                candidate_manifest=args.candidate_manifest,
+                candidate_sha256=args.candidate_sha256,
             )
         else:
             packet = assemble(
-                args.requirements, args.review, args.evidence_root, args.report, args.commit,
-                python_minors=minors, source_repo=args.source_repo,
-                candidate_manifest=args.candidate_manifest, candidate_sha256=args.candidate_sha256,
+                args.requirements,
+                args.review,
+                args.evidence_root,
+                args.report,
+                args.commit,
+                python_minors=minors,
+                source_repo=args.source_repo,
+                candidate_manifest=args.candidate_manifest,
+                candidate_sha256=args.candidate_sha256,
             )
     except (AttributeError, IndexError, KeyError, OSError, RecursionError, TypeError, ValueError):
         parser.exit(2, "Invalid or inconsistent release review inputs.\n")
