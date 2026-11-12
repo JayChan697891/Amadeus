@@ -1,5 +1,32 @@
 # Amadeus current progress
 
+## Controlled proposal submission and staging bridge
+
+Frozen d4c7cf9 binds optional submit_for_review to the approved launch contract.
+After immutable publication, the original live lease and exact task revision are
+required for review submission. Missing completion receipts remain incomplete.
+Default capture behavior and old launch digests are preserved. The new owner-only
+bridge requires a separate staging worker and the exact caller-reviewed plan hash;
+queue creation, isolated execution and independent completion remain explicit.
+
+Frozen source:151passed; fresh Windows wheel:45passed; fresh Linux wheel:23passed.
+Both installations match87 runtime module hashes before/after with no source
+shadowing and valid dependencies. Ruff/format328/mypy87 pass. The first Linux
+preparation failed before tests because its archive was absent; the preserved
+empty directory was checked, upload repaired and the tests executed once.
+Independent frozen-source review found no blocker. The original actual bf54d44
+capture remains proposal_stored, running/v4/unverified with review not requested
+and unchanged source/worktree, observed read-only under the new code.
+
+Evidence: [m6-proposal-review/summary.json](acceptance/evidence/m6-proposal-review/summary.json).
+Debug: D:/agentsync-debug/m6-proposal-review and m6-package-proposal-review.
+No new model call, credentials, candidate execution or source apply. Full matrix,
+current real-model pipeline and cross-client checks are NOT RUN. Claude/Cursor
+subscriptions are unavailable. M5/M6/M7/Release gates remain BLOCKED.
+Next: exercise the same-Core capture-to-review-to-staging-to-Docker-to-independent
+completion path using a known local protocol fixture; distinguish this integration
+check from actual client/model acceptance. The owned VM remains available for it.
+
 ## Product owner-reviewed proposal staging
 
 Implementation193d9b2 adds OwnerProposalStaging.preview/stage_once/status. Owner

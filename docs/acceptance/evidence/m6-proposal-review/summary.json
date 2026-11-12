@@ -1,0 +1,71 @@
+{
+  "product_sha": "d4c7cf9c578aec2f7d61b321db438a5e47612e5c",
+  "scope": "Explicit launch-bound proposal review submission and owner-controlled staging bridge; actual Core/Git and known local Python JSONL process fixtures",
+  "source": {
+    "tests": 151,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "windows_installed": {
+    "tests": 45,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "linux_installed": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runtime_modules_matched_before_after": 87,
+  "source_shadowing": false,
+  "development_failures": [
+    {
+      "tests_failed": 17,
+      "tests_passed": 6,
+      "reason": "Test helper used non-existent CapturedProcess.parent_ended instead of await snapshot(); helper and teardown corrected; final frozen tests pass."
+    }
+  ],
+  "linux_preparation_failure": "Archive was absent before any test execution; uploaded, required previous preparation directory empty, then ran tests once.",
+  "independent_review": "Existing Astra reviewer inspected frozen source, corrupted opt-in fix, source/Windows results and legacy capture observation; no blocking issue. Linux result independently inspectable in saved evidence; formal Work acceptance separate.",
+  "real_model_calls": 0,
+  "credential_copy": false,
+  "candidate_code_execution": false,
+  "source_workspace_apply": false,
+  "historical_real_capture": "Read-only compatibility observation under current product; original bf54 capture remains stored and unverified, review not requested, original workspaces unchanged.",
+  "full_matrix": "NOT RUN",
+  "current_real_model_pipeline": "NOT RUN",
+  "cross_client": "NOT RUN: owner has neither Claude nor Cursor subscription",
+  "formal_release": "BLOCKED",
+  "next": "Same-Core controlled capture/review/staging and existing isolated verification integration; preserve explicit owner pins and independent reviewer gates.",
+  "evidence_sha256": {
+    "build.py.txt": "90582271fb2c431ea17fb38a59f8b32b9f2e19f789dce0a93d311d03f1824da8",
+    "format.log": "20b00e38608e20ddc7929c0267c32bb4755492aa202503022dabff0aec9f2313",
+    "historical-capture-observation.json": "730d716d5a9962558f5c1618f174dbc5c6d42d0a03c1dd69e383e67174be3357",
+    "linux-config.json": "a4d6d5a9f875fca3306062fa5f2cca25fdc0303f017f4b07980e69193c4567f7",
+    "linux-installed.log": "4fd72d398be803663929a86cccda13c3d4dbe51490bff74b274b2cf7cb45ec19",
+    "linux-installed.py.txt": "154c9839e8676b331811a526ff0426ed2a68e2d8044b88f856d145a11b25d951",
+    "linux-installed.xml": "a4f7d1049c0df936c1d88aa3b5d7b6298f4498446b337ab5ab03c13f456e34c5",
+    "linux-origin.json": "1668270d3191bd4e6012ef33c2248c1c145adf2005351927517a63edbf7bec60",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-preparation-failure.log": "f817c87e7b1bce269b292bf6dc73ed3d8dbb3bb344df06aca6d1eb2559b5fd44",
+    "mypy.log": "e5e2f5ad00c77c77911b70e177d9653cd94b6f1b3f5cf2ec0ef3ae641b33f7f0",
+    "resume-linux.sh.txt": "880e51c1047552e98e711376b1d0cd0edb83c96ed345b0df3797676960acf5a4",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "run-linux.sh.txt": "6b8b1bc72040ff0a4352d09d9c58b5b2300873ea3abc9e77d02f868a5d598415",
+    "runtime-files.json": "5d82ac74f0eec6919c7576cea6f0c234259eb790394fc6c2d49c9594f5c226ca",
+    "source.log": "a0518ec6be78d6f61bd2ba64ab93eb67cb837b0a9bc5b21321ab9af4dcdc27cd",
+    "source.xml": "f7b3ad1b009ceae4ed1f52801063ee8ee3303ccaf52ef0cf41af9133c90d40a8",
+    "windows-installed.log": "698559f5bb06ebd6ba439d4f030b909605193d258fc7c00d92d6c6d1f1ab2009",
+    "windows-installed.py.txt": "a7531662e5f4a22f6d8f5c665ec4fcf4dae52a833d8ca640032f519d10afc268",
+    "windows-installed.xml": "f1c2375b7e2fb9c9688daeee5b4a29819ca2dae9c6f2961a9dbcd820b1257f63",
+    "windows-origin.json": "fb8c74c7ee82c9e95bddf55acbbafd61d7ad88d85884e8a61f73196f6f2a8663",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf"
+  },
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m6-review-d4c7cf9/agentsync_local-0.3.0a109-py3-none-any.whl": "4bc4bbfa7c2b6ab2e2d5217f33989095db0cbcc19bed88f6966ebf2a37cb4ed7",
+    "releases/0.3.0a109/m6-review-d4c7cf9/agentsync_local-0.3.0a109.tar.gz": "f1831eb1fbad5d31a219b87179d2b9a6bac7349e2650f9cd692fa40d24b1db1b"
+  }
+}

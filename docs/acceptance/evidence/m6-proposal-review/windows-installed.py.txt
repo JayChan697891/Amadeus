@@ -1,0 +1,11 @@
+from pathlib import Path
+import hashlib,json,sys
+import agentsync,pytest
+base=Path('D:/agentsync-debug/m6-package-proposal-review');site=Path(agentsync.__file__).resolve().parent.parent;assert site.is_relative_to(base/'installed');manifest=json.loads((base/'manifest.json').read_text(encoding='utf-8'))
+def verify():
+ for rel,expected in manifest.items():assert hashlib.sha256((site/rel).read_bytes()).hexdigest()==expected,rel
+ for name,module in tuple(sys.modules.items()):
+  if name=='agentsync' or name.startswith('agentsync.'):assert Path(module.__file__).resolve().is_relative_to(site/'agentsync'),name
+verify();source=base/'source'
+code=pytest.main([str(source/'tests/integration/test_codex_proposal_capture.py'),str(source/'tests/integration/test_codex_proposal_review.py'),'-q','-p','no:cacheprovider','--basetemp='+str(base/'test-tmp'),'--junitxml='+str(base/'installed.xml')]);verify()
+(base/'origin.json').write_text(json.dumps({'product_sha':'d4c7cf9c578aec2f7d61b321db438a5e47612e5c','scope':'Fresh offline wheel installation, Opt-in proposal review submission and historical capture regression; actual Core/Git with known local process fixtures, no real model','python':sys.version,'runtime_modules_matched_before_and_after':len(manifest),'source_shadowing':False,'exit_code':code,'model_requests':0},indent=2)+'\n',encoding='utf-8');raise SystemExit(code)

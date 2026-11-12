@@ -9,6 +9,12 @@ The 2026-11-11 continuation rule authorizes local implementation, testing,
 repair and retesting in one task. Start from the exact source and outstanding
 checks in PROGRESS.md, and continue after each component checkpoint.
 See [current progress](PROGRESS.md) for source changes and unrun checks.
+Controlled proposal review submission and the owner staging bridge are implemented
+at d4c7cf9:151 affected source checks,45 Windows installed checks and23 Linux
+installed checks pass. Explicit launch consent, live lease/revision and independent
+owner/stager pins remain required. Next integrate the same-Core path with actual
+local Docker and independent completion using a clearly labeled protocol fixture;
+then separately assess the real-client prerequisites. This is not full M6 acceptance.
 Owner-reviewed proposal staging is implemented at193d9b2 (0712899 only corrects
 a traceability test count). It creates genuine isolated managed candidates from
 authenticated publications while preserving source/producer worktrees and task

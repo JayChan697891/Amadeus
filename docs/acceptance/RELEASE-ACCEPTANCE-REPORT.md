@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+## Controlled review submission and native staging bridge
+
+d4c7cf9 adds explicit launch-bound review submission and owner-reviewed staging
+composition.151 source,45 fresh Windows wheel and23 fresh Linux wheel tests pass;
+87 runtime modules match before/after in both installations. Ruff/format/mypy pass.
+The original actual bf54d44 capture remains stored and unverified under a read-only
+compatibility observation. First test-helper failures and the Linux pre-test upload
+failure are retained in [the evidence summary](evidence/m6-proposal-review/summary.json).
+Independent source review found no blocker. These checks use known local process
+fixtures, actual Core/Git and queue operations; no new model call or candidate code
+execution occurred. Current full matrix, real-model end-to-end staging and cross-client
+validation are NOT RUN. Formal M5/M6/M7 and Release remain BLOCKED.
+
 ## Owner-reviewed product staging
 
 193d9b2 implements real Core/Git proposal staging behind separate owner and worker

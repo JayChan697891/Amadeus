@@ -1,0 +1,20 @@
+from pathlib import Path
+import hashlib,json,os,subprocess,zipfile
+base=Path('D:/agentsync-debug/m6-package-proposal-review');repo=Path('F:/syuc/amadeus-m6-single');builder=Path('D:/agentsync-debug/m6-package-6a8ff41/builder/Scripts/python.exe');wh=Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse')
+env=dict(os.environ)
+for name in ('PYTHONPATH','PYTEST_ADDOPTS','PYTEST_PLUGINS'):env.pop(name,None)
+(base/'tmp').mkdir();env.update(PYTHONDONTWRITEBYTECODE='1',PIP_NO_INDEX='1',PIP_DISABLE_PIP_VERSION_CHECK='1',TEMP=str(base/'tmp'),TMP=str(base/'tmp'))
+def run(name,args,cwd=base):
+ with (base/(name+'.log')).open('xb') as log:r=subprocess.run([str(x) for x in args],cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=240)
+ print(name,r.returncode,flush=True)
+ if r.returncode:raise SystemExit(r.returncode)
+archive=base/'source.zip';archive.write_bytes(subprocess.check_output(['git','archive','--format=zip','d4c7cf9c578aec2f7d61b321db438a5e47612e5c'],cwd=repo));source=base/'source';source.mkdir()
+with zipfile.ZipFile(archive) as z:
+ for info in z.infolist():assert (source/info.filename).resolve().is_relative_to(source.resolve())
+ z.extractall(source)
+manifest={str(p.relative_to(source/'src')).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((source/'src/agentsync').rglob('*.py'))};(base/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
+run('build',[builder,'-m','build','--no-isolation','--outdir',base/'dist'],source)
+run('venv',[builder,'-m','venv','--without-pip',base/'installed'])
+installed=base/'installed/Scripts/python.exe';wheel=next((base/'dist').glob('*.whl'))
+run('install',[builder,'-m','pip','--python',installed,'install','--no-index','--find-links',wh,wheel,'pytest==9.1.1','pytest-asyncio==1.4.0','httpx==0.28.1'])
+run('pip-check',[builder,'-m','pip','--python',installed,'check'])

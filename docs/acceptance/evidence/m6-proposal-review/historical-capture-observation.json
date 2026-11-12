@@ -1,0 +1,26 @@
+{
+  "observer_product_sha": "d4c7cf9c578aec2f7d61b321db438a5e47612e5c",
+  "original_capture_product_sha": "bf54d44cd2e9550e902ca3d5d18ab6c7e296862b",
+  "storage": {
+    "state": "proposal_stored",
+    "context_id": "b54a167b-96ba-446e-96ab-477f6e25c748",
+    "context_version": 1,
+    "content_sha256": "42b9b483667af196eb93db7b263ae0036a0741523e5e6fe963c5b0d3af9b0b8f",
+    "task_version": 4,
+    "verification": "unverified"
+  },
+  "review": {
+    "state": "not_requested",
+    "context_id": null,
+    "content_sha256": null,
+    "publication_task_version": null,
+    "review_task_version": null,
+    "verification": "unverified"
+  },
+  "task_status": "running",
+  "task_version": 4,
+  "original_workspaces_unchanged": true,
+  "additional_model_calls": 0,
+  "credential_copy": false,
+  "formal_release": "BLOCKED"
+}
