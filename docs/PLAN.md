@@ -226,10 +226,16 @@ paid provider calls. See M4A-CONTRACT.md and acceptance/DESIGN.md.
 | M3 | M3-01 context store; M3-02 FTS/source/version search; M3-03 structured handoff; M3-04 accept/reject/reassign | Agent B continues A's actual work from authorized handoff |
 | M4 | M4-01 canonical path boundaries; M4-02 lock leases; M4-03 Git worktrees; M4-04 version/diff/conflict detection; M4-05 confirmed safe merge | Isolated parallel edits; manufactured conflicts detected |
 | M5 | M5-01 permissions; M5-02 risk approvals; M5-03 redacted audit; M5-04 independent evidence checks; M5-05 security regression | Neither model assertions nor arbitrary submitted commands authorize acceptance |
-| M6 | M6-01 adapter contract; M6-02 Mock; M6-03 Codex; M6-04 Claude; M6-05 Cursor/manager | Official supported interfaces, capability matrix, paid execution approval |
-| M7 | M7-01 dependency scheduler; M7-02 capabilities/load; M7-03 optional BYOK; M7-04 decomposition/retries/budgets | Mock-only deterministic end-to-end before optional paid execution |
+| M6 | M6-01 adapter contract; M6-02 Mock; M6-03 Codex; M6-04 Claude; M6-05 Cursor/manager | One actual approved, isolated client result bound to Core; use a supported public interface and the current no-extra-cost constraint |
+| M7 | M7-01 dependency scheduler; M7-02 capabilities/load; M7-03 optional BYOK; M7-04 decomposition/retries/budgets | Reproducible automatic handoff between two real clients after the M6 single-client gate; Mock covers deterministic cases |
 | M8 | M8-01 usage/source/unknown costs; M8-02 recovery/stress/performance | Do not invent third-party subscription usage or bills |
 | M9 | M9-01 platform compatibility; M9-02 docs/license/build/release | Separately approved public push/release only |
+
+The [M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) keeps M5 on its
+single exit checklist while the isolated M6 branch proceeds. Codex launch
+preview, lifecycle capture and Core review binding are available on the pilot
+branch. The next M6 acceptance step requires the verified execution conditions
+and a real result. M7's second live client depends on that result.
 
 Use one Core for every integration. Locks in M4 will be cooperative. Local SQLite WAL
 must not be shared across machines/network filesystems. Native control adapters are M6,

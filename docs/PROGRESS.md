@@ -1,5 +1,23 @@
 # Amadeus current progress
 
+## M6 single Codex pilot
+
+The isolated branch `feat/m6-single-codex-pilot` adds host-only
+`ControlledRelay.preview_codex` and `run_codex_once` at `3685555`.
+The pilot reuses exact launch consent, the task/worktree ownership check,
+the durable one-attempt fence and the existing lifecycle adapter. A matching
+reply submits the task for independent Core review with verification still
+unverified. A denied or mismatched result leaves an incomplete attempt.
+
+Windows local evidence comprises 11 relay integration cases and 77 lifecycle
+cases. The installed Codex CLI `0.167.0-alpha.3.2` produced a verified
+read-only launch preview against a disposable Core task and managed Git worktree.
+See [M6 preview evidence](acceptance/evidence/m6-single-codex-preview.json).
+The next step is one authorized real execution after B1/B3 verify no extra
+cost and the isolated execution boundary. Live execution and the second
+client's relay remain NOT RUN. The [M5 final checklist](M5-FINAL-ACCEPTANCE.md)
+governs the independent review and the M5 exit.
+
 ## Continuous local validation for 0.3.0a109
 
 Frozen product and package tests: `de44e7bdbc2b1209fb40045cb2cb576886e696aa`.

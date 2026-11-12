@@ -53,7 +53,8 @@ b70cd1b9671de3910979b66f8c711b0f0f1f51af。42模块Git字节与实际测试/安�
 ## 五项实际状态
 
 VERIFIED 仅指明确绑定冻结提交且具有充分证据的限定功能。
-BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该功能时可后置。
+BLOCKER 表示相关危险功能启用前必须解除；REQUIRED 表示 M5 退出必须满足；
+DEFERRED 表示保持相关能力关闭时可以后置。
 同一缺口可以阻止特定功能、同时不阻止隔离原型开发；不得把后置写成通过。
 
 | 原定任务 | 已有实际能力与证据 | 剩余状态 |
@@ -62,13 +63,13 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
 | M5-02 风险审批 | VERIFIED：同一历史 M5A 限定审批元数据；绑定请求者/candidate/SHA、过期、撤销、并发；批准本身不执行 | BLOCKER B2：危险执行/应用的最终校验与单次消费未接通；不启用 apply 时 DEFERRED D1，不能记已实现 |
 | M5-03 审计日志 | VERIFIED：历史 M5A 限定事务审计与脱敏；当前白名单、拒绝事件和审计失败回滚有回归 | BLOCKER B3：真实适配器输出/凭据处理及生命周期审计未验证；数据库管理员防篡改不在本范围 |
 | M5-04 独立验证 | VERIFIED：历史 M5B1–B2C 等各自冻结提交的固定 snapshot/profile 容器验证器限定证据；不是当前 candidate 执行或任务验收 | B4 VERIFIED（仅内部 owner-mediated 完成门禁）：e0b1d7c 的固定候选/真实隔离结果/独立审核人强制绑定及持久证明已验证；普通文字 review 仍只能标 unverified，自动接线未开放（D2）；B5 VERIFIED（仅内部 owner-only 单次隔离 candidate 生命周期）：bda2772 的源码与 fresh Linux wheel/sdist 各36通过/1平台跳过，真实成功/错误/超时/运行中取消/created 后崩溃重开及精确清理有证据；不代表任务 verified completion 或真实客户端通过 |
-| M5-05 安全回归 | 最新冻结 alpha23/Linux 完整回归1895通过/4平台跳过，fresh Linux wheel/sdist受影响模块各63通过/1平台跳过、Windows Python3.11关键组6项通过；均为限定组件证据，详见当前验收报告 | BLOCKER B6：冻结提交最终安全清单、适用隔离/安装测试及独立审查未完成；五项正式完整场景仍 NOT RUN |
+| M5-05 安全回归 | 各冻结提交的限定回归见当前验收报告，含源码、安装包和实际隔离验证 | REQUIRED B6：对拟验收的同一冻结 SHA 做一次完整独立核验，保留适用结果及跳过原因 |
 
 单独 completed 仅表示协作状态；只有 B4 持久证明匹配当前完成版本时才显示 verified。
 模型文本、Mock 成功、
 协议回放、approved、prepared intent、旧 Docker 成功均不能替代独立验证。
 
-## 固定门槛状态与全部剩余 BLOCKER
+## 固定门槛状态与唯一退出条件
 
 - B1，启用真实客户端前：确定官方接口/版本、明确授权及可能费用、专用临时
   项目和运行身份、最小权限/资源/网络边界；未满足时不启动，不借用宿主凭据。
@@ -91,9 +92,12 @@ BLOCKER 表示相关危险功能启用前必须解除；DEFERRED 表示关闭该
   崩溃位置为 created 后、start 前；不扩称所有崩溃时点或真实时间等待。独立 Astra 复核
   接受此限定范围；证据 acceptance/evidence/alpha22-lifecycle-summary.json。自动调度、
   面向 Agent 接线和自动恢复仍为原 D2/D3，不能使 B1/B3/B4/B6 或整个 M5 通过。
-- B6，M5 最终验收前：冻结产品 SHA/tree，独立核验对应源码、安装包、JUnit、
+- B6，REQUIRED，M5 最终验收前：冻结产品 SHA/tree，独立核验对应源码、安装包、JUnit、
   日志、迁移/故障/并发/关键安全用例及逐文件 manifest；未执行/跳过逐项解释。
   各自冻结 SHA 的组件回归不能冒充 PR25 原 SHA 的最终包验收或整个 M5 的 Work 接受。
+
+退出条件：五项正式要求均有适用的独立核验证据，拟启用能力的 BLOCKER 已解除，
+B6 已满足。保持关闭的能力可按 DEFERRED 管理。
 
 未发现额外可复现阻断缺陷时，不再扩大此清单。上述缺失功能/证据不是新发现漏洞。
 
