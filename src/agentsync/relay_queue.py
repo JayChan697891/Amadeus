@@ -14,7 +14,7 @@ import math
 import re
 import time
 from collections.abc import Callable
-from dataclasses import dataclass, field, replace
+from dataclasses import asdict, dataclass, field, replace
 from functools import partial
 from pathlib import Path
 from typing import Any, Literal, NoReturn, cast
@@ -252,6 +252,7 @@ def _selection_pin(selected: tuple[_QueueItem, ...]) -> str:
                     item.task.submit_for_review,
                     actors,
                     item.first_capabilities,
+                    *([asdict(item.task.input_context)] if item.task.input_context else []),
                 ]
             )
     return digest(["relay-queue-selection-v1", rows])
@@ -554,7 +555,7 @@ class RelayQueue:
         project_key = self._checked_journal_key(project_id)
         tasks = {task["id"]: task for task in snapshot["tasks"]}
 
-        def context(context_id: str) -> dict[str, Any]:
+        def context(context_id: str, version: int) -> dict[str, Any]:
             return self._relay._core.execute(
                 "get_context",
                 {
@@ -562,7 +563,7 @@ class RelayQueue:
                     "session_id": session_id,
                     "session_token": session_token,
                     "context_id": context_id,
-                    "version": 1,
+                    "version": version,
                 },
             )
 

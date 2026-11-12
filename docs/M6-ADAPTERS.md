@@ -27,6 +27,17 @@ seconds old, the host can refresh a still-valid session through Core `heartbeat`
 then check the selection again. An expired session requires new enrollment.
 Exact launch consent is still required after a heartbeat.
 
+For a separate review task, the host can supply
+`CodexProposalInput(..., input_context=ProposalContextPin(producer_task_id,
+context_id, context_version, content_sha256))`. The receiving worker reads that
+exact Core revision using its own session. The relay checks the direct producer's
+capture, publication and submission receipts and requires a different Core agent.
+The exact launch plan includes the proposal as untrusted text. The relay rejects
+inputs that exceed the existing adapter limit and reads only the direct producer
+artifact. A prepared review task can return `review.md` as an unverified proposal.
+Dependency readiness still requires `completed`. A model response does not record
+a Core review or start candidate staging or verification.
+
 Existing owner/session reconciliation can recognize a historical submitted
 proposal after restart, including after the original producer session expires.
 The observing session must be currently authenticated; the immutable author,
