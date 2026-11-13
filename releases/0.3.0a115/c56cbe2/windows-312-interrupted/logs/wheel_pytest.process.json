@@ -1,0 +1,25 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "started",
+  "outcome": "unknown",
+  "check_id": "wheel_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115r\\.scratch-wxx6qnqm\\wheel-x21wf320\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m115-candidate\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\t115r\\.scratch-wxx6qnqm\\wheel-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t115r\\.scratch-wxx6qnqm\\wheel-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-candidate\\windows-312\\release-20261113T132425Z-8c123f11a31b",
+    "started_at": "2026-11-13T14:08:57.453516+00:00",
+    "timeout_seconds": 3600
+  }
+}

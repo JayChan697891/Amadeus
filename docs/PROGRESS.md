@@ -1,6 +1,37 @@
 # Amadeus current progress
 
-## 0.3.0a115 affected source debugging passed; full candidate execution active
+## a115 traceability repair passed; freeze a corrected candidate next
+
+Repair b471a6a6efef02c4fde536c92d5c032cfd41ca4c expands M7-02's continuation
+mapping into nine explicit test nodes and updates the exact expected set. The
+requirement for explicit selectors, partial coverage, NOT RUN real-client status
+and exact selector membership remains enforced. No product/runtime or tool code
+changed from c56cbe2. All 253 affected traceability/collector/review-evidence tests
+passed on Windows; Ruff and formatting of the changed test pass. The 251 input
+bindings are 244 byte-exact plus seven LF-normalization-only matches to b471a6a.
+Evidence: acceptance/evidence/m115-source-checks/traceability-repair/summary.json.
+The first repair command named nonexistent test files and ran zero product tests;
+its selection error is retained separately, not counted as a product failure/pass.
+
+The original c56cbe2 full source suite ended at 2026-11-13 14:08:29 UTC: 2404 pass,
+56 skip, one failure in the strict traceability test above (2461 unique cases).
+All 1891 frozen source files remained unchanged. Existing partial collector files,
+packages and the source failure are preserved under
+releases/0.3.0a115/c56cbe2/windows-312-interrupted/interruption-summary.json.
+After that known failure, the owned collector was stopped to avoid duplicating
+the same failure in package suites. Wheel tests are INTERRUPTED, sdist and later
+matrix rows NOT RUN. The stop command returned 128 with two child-stop errors;
+its full output is retained. The held original parent handle confirmed exit,
+both original sessions 83040 and 22389 terminated with exit 1, and subsequent
+identity checks found no original remaining processes. A later unrelated process
+reused an old PID and was left untouched. No automatic retry occurred.
+
+Next freeze the repaired inputs into a new isolated candidate and run the existing
+full local matrix. Do not restart the old collector/controller or treat its failed
+row as passed. Earlier 197-case Windows/Linux source checks retain their limited
+scope; full current packages, real clients, macOS and Release remain unverified.
+
+## Earlier a115 checkpoint (process states superseded above)
 
 Frozen product c56cbe2cd4c772b92992f3e4571da6d08eefc292 is uploaded on
 feat/m6-single-codex-pilot, PR #35 remains draft/open and main is untouched.

@@ -1,0 +1,111 @@
+{
+  "repair_commit": "b471a6a6efef02c4fde536c92d5c032cfd41ca4c",
+  "runtime_unchanged_from": "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+  "scope": "Explicit M7-02 case mapping and strict traceability expectations; no assertion removed or release gate lowered",
+  "runs": [
+    {
+      "started": "2026-11-13T14:13:52.508037+00:00",
+      "source_sha": "5f60ef4f866492003e1b56ecd6898b31990dcb97",
+      "status_before": "M docs/acceptance/requirements.json\n M tests/unit/test_acceptance_traceability.py",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/unit/test_acceptance_traceability.py",
+        "tests/unit/test_release_acceptance.py",
+        "tests/unit/test_release_matrix.py",
+        "tests/unit/test_release_manifest.py",
+        "tests/unit/test_release_review.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:/agentsync-debug/t115/trace-repair-01",
+        "--junitxml",
+        "D:\\agentsync-debug\\m115\\trace-repair-01\\junit.xml"
+      ],
+      "interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py\r\n0.3.0a115\r\n",
+      "exit_code": 4,
+      "ended": "2026-11-13T14:13:52.966955+00:00",
+      "source_unchanged": true,
+      "name": "trace-repair-01",
+      "junit": {
+        "total": 0,
+        "passed": 0,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "note": "Selector error: nonexistent test filenames; no product tests executed."
+    },
+    {
+      "started": "2026-11-13T14:14:03.415689+00:00",
+      "source_sha": "5f60ef4f866492003e1b56ecd6898b31990dcb97",
+      "status_before": "M docs/acceptance/requirements.json\n M tests/unit/test_acceptance_traceability.py",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/unit/test_acceptance_traceability.py",
+        "tests/unit/test_release_acceptance.py",
+        "tests/unit/test_release_review_evidence.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:/agentsync-debug/t115/trace-repair-02",
+        "--junitxml",
+        "D:\\agentsync-debug\\m115\\trace-repair-02\\junit.xml"
+      ],
+      "interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py\r\n0.3.0a115\r\n",
+      "exit_code": 0,
+      "ended": "2026-11-13T14:14:06.974630+00:00",
+      "source_unchanged": true,
+      "name": "trace-repair-02",
+      "junit": {
+        "total": 253,
+        "passed": 253,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "note": "All 253 affected acceptance and release-evidence cases passed."
+    }
+  ],
+  "files": [
+    {
+      "path": "trace-repair-01/pytest.log",
+      "size": 98,
+      "sha256": "842ec85968e955888f7b6138b8fb7e6666132a7b67d947379c10b4ae3867c542"
+    },
+    {
+      "path": "trace-repair-01/junit.xml",
+      "size": 241,
+      "sha256": "15f983cab356864c5bea838b879027a7bdab3fb2d48fa0778180caf0775376e9"
+    },
+    {
+      "path": "trace-repair-02/pytest.log",
+      "size": 345,
+      "sha256": "43cf0b456629355e0741b9d2fd9d5ac4ad3138d5f9c576daf41d3b1868938b1c"
+    },
+    {
+      "path": "trace-repair-02/junit.xml",
+      "size": 38996,
+      "sha256": "8e45a46e9fa97c7ddb567af4db02a6b676895ecb797d6f26bb3fb5a998281a73"
+    },
+    {
+      "path": "source-bindings.json",
+      "size": 65630,
+      "sha256": "37940a35dd2cb8fc5053b33bd7edf6c42eb144c54d05d01fab777af99e361b7e"
+    }
+  ],
+  "formal_release": "BLOCKED",
+  "bindings": {
+    "exact": 244,
+    "lf_normalization_only": 7
+  }
+}

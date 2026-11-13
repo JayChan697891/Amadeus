@@ -1,12 +1,16 @@
 # Release Acceptance Report
 
-## Current candidate: a115 source regression passed; full matrix running
+## Current candidate: a115 traceability repaired; full matrix incomplete
 
 Frozen product c56cbe2cd4c772b92992f3e4571da6d08eefc292 (0.3.0a115) completes
 the original-plan code-first pass, including abandoned-handoff recovery, confirmed
 failed-work continuation and project-persistent provider advice accounting.
 Implementation presence is not final acceptance. Current evidence is
 [the affected source report](evidence/m115-source-checks/summary.json).
+Repair b471a6a updates only the acceptance catalog and its strict expected test
+set; product/tool bytes remain unchanged. Its
+[253-case affected retest](evidence/m115-source-checks/traceability-repair/summary.json)
+passes, with the original failure and initial zero-test selector error retained.
 
 | Scope | Observed result and limit |
 | --- | --- |
@@ -14,7 +18,8 @@ Implementation presence is not final acceptance. Current evidence is
 | Linux Python 3.14 affected source | PASS: same 197 JUnit identities and outcomes; all 228 source hashes match frozen Git bytes and remain unchanged |
 | Source static checks | PASS after repairs: Ruff/format and mypy, 95 source modules; initial typing errors retained |
 | Initial Windows harness preparation | FAILED, repaired: missing temporary parent directory caused 34 fixture setup errors before product test bodies; original log/XML retained, corrected run is separate |
-| Full a115 Windows source, wheel and sdist | RUNNING since 2026-11-13 13:24:25 UTC, original session 83040; no completed row or package pass claimed |
+| First full a115 Windows source | FAILED: 2404 pass, 56 skip, one traceability failure across 2461 unique cases; all 1891 frozen source files unchanged; explicit-node mapping repaired and affected 253-case retest passed |
+| Original a115 wheel and sdist suites | Wheel INTERRUPTED after known source failure; sdist NOT RUN. Original collector 83040 and waiting controller 22389 are terminal; no completed package row claimed |
 | Remaining current candidate platform/package rows | NOT RUN; exact frozen candidate archives must be shared after the original build evidence is available |
 | Real Claude/Cursor and cross-client acceptance | BLOCKED by unavailable accounts; protocol fixtures are not real-client evidence |
 | macOS, final license classification and independent Release decision | NOT RUN / BLOCKED; existing release gates remain unchanged |

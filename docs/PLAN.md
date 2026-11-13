@@ -1,12 +1,14 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
-Current debugging checkpoint: c56cbe2 / a115 has 197 unique affected Windows
-source passes (34 new, 163 existing), with unchanged source and retained initial
-harness failure. Linux Python 3.14 also passed all 197 identical cases; all 228
-source hashes match frozen Git bytes. The full Windows source/wheel/sdist collector
-remains active, not passed. See PROGRESS.md for the exact
-original handles and acceptance/evidence/m115-source-checks/summary.json for the
-completed evidence. Continue the original matrix and real-client release gates.
+Current debugging checkpoint: c56cbe2 / a115's first complete source run produced
+2404 pass, 56 skip and one strict traceability failure. Repair b471a6a enumerates
+the new continuation nodes explicitly without weakening the assertions; 253
+affected traceability and release-evidence tests pass. Product/tool code is
+unchanged. The failed collector and its waiting controller are terminal; package
+tests were interrupted and later rows never started. Preserve the failed evidence
+and freeze corrected inputs for the required local matrix. Earlier 197-case
+Windows/Linux source checks remain valid only within their original scope.
+See PROGRESS.md and acceptance/evidence/m115-source-checks/traceability-repair/summary.json.
 
 Owner execution order updated on 2026-11-13: finish the original plan's remaining
 product code before starting further debugging. The original Windows 3.12 a114
