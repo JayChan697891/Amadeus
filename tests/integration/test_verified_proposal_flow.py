@@ -43,6 +43,7 @@ class VerifiedCheckpoint(Exception):
         "deny-execution",
         "deny-completion",
         "budget-staging",
+        "budget-resume",
     ],
 )
 async def test_verified_flow_gates_and_reopen(
@@ -165,6 +166,22 @@ async def test_verified_flow_gates_and_reopen(
     stages = []
     loop = asyncio.get_running_loop()
     real_clock = loop.time
+    original_execute = core.execute
+
+    def delayed_verified_state(operation, payload):
+        result = original_execute(operation, payload)
+        if (
+            scenario == "budget-resume"
+            and operation == "get_project_state"
+            and any(
+                item["id"] == task["id"] and item["task_verification"] == "verified"
+                for item in result["tasks"]
+            )
+        ):
+            monkeypatch.setattr(loop, "time", lambda: real_clock() + 1000)
+        return result
+
+    monkeypatch.setattr(core, "execute", delayed_verified_state)
 
     async def decide(stage, decision, key):
         stages.append(stage)
@@ -223,7 +240,7 @@ async def test_verified_flow_gates_and_reopen(
         approve_completion=approve_completion,
         build_receiver=build_receiver,
     )
-    if scenario == "budget-staging":
+    if scenario in {"budget-staging", "budget-resume"}:
         try:
             with pytest.raises(AgentSyncError) as expired:
                 await flow.run_once(actor, proposal, request, **args)
@@ -269,8 +286,9 @@ async def test_verified_flow_gates_and_reopen(
     successful = scenario in {"verified", "reopen"}
     assert launched == (["solution.py", "review.md"] if successful else ["solution.py"])
     final = current_task()
-    assert final["status"] == ("completed" if successful else "review")
-    assert final["task_verification"] == ("verified" if successful else "unverified")
+    verified_source = successful or scenario == "budget-resume"
+    assert final["status"] == ("completed" if verified_source else "review")
+    assert final["task_verification"] == ("verified" if verified_source else "unverified")
     assert len(core.execute("list_tasks", auth)["tasks"]) == len(initial_tasks) + int(successful)
     jobs = CandidateVerificationJobs(core).list(**owner)["jobs"]
     assert len(jobs) == (0 if scenario in {"deny-staging", "budget-staging"} else 1)

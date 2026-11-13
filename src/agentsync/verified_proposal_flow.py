@@ -290,8 +290,14 @@ class VerifiedProposalFlow:
         This does not rerun producer, staging, candidate execution or acceptance.
         Their interrupted/unknown attempts remain fenced by their existing services.
         """
-        if type(request) is not ProposalHandoffRequest:
+        if (
+            type(request) is not ProposalHandoffRequest
+            or type(budget) not in (int, float)
+            or not math.isfinite(budget)
+            or not 0 < budget <= 900
+        ):
             _boundary()
+        deadline = asyncio.get_running_loop().time() + budget
         state = self._core.execute("get_project_state", request.receiver.authentication())
         source = next((t for t in state["tasks"] if t["id"] == request.source_task_id), None)
         if (
@@ -307,5 +313,5 @@ class VerifiedProposalFlow:
             admin_token=admin_token,
             build_receiver=build_receiver,
             wait_seconds=0,
-            budget=budget,
+            budget=self._remaining(deadline),
         )
