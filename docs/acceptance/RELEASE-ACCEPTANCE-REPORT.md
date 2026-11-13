@@ -2,7 +2,7 @@
 
 ## Approved target integration: source checks only
 
-Version 0.3.0a114 adds explicit owner approval and create-only integration of the
+Frozen ddd4b42 (0.3.0a114) adds explicit owner approval and create-only integration of the
 verified candidate into a new target branch and independent worktree. Original
 checkout contents are preserved; partial/unknown effects retain their reservations.
 Windows affected regression reconciles 120 unique cases: 119 pass and one Linux
@@ -12,9 +12,10 @@ failures remain retained. Product bytes were unchanged by the fixture correction
 Ruff/format and source mypy pass. Only disposable Git projects were modified;
 verifier proofs in this source scope are synthetic, not real Docker/client evidence.
 
-Current a114 installed packages, actual Linux Docker integration and complete M9
-matrix remain NOT RUN. The next execution uses the original full source/wheel/sdist
-collector and one pinned candidate pair across available Windows/Linux minors.
+Source evidence: [affected run and repaired subset](evidence/m4-owner-integration/summary.json).
+The original full source/wheel/sdist collector is RUNNING on Windows 3.12; no result
+is inferred yet. Current a114 installed packages, actual Linux Docker integration
+and other M9 rows remain NOT RUN. Later rows will use one pinned candidate pair.
 Formal Release remains BLOCKED; macOS, unavailable real clients, final license
 classification and independent Release decision are not waived.
 

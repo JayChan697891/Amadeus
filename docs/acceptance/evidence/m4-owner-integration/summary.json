@@ -1,0 +1,143 @@
+{
+  "base_sha": "cf2be83095d09d5383bb719136c1d5298dc0b5c7",
+  "scope": "a114 affected Windows source regression using real disposable Git and synthetic verifier fixtures",
+  "initial_long_path": {
+    "tests": 114,
+    "counts": {
+      "passed": 34,
+      "failure": 6,
+      "error": 73,
+      "skipped": 1
+    },
+    "sha256": "6b304c716793f6bd997ad73aa52d4ec30cb637b177a0811705c25e5f7cc0774b"
+  },
+  "original_short_path": {
+    "tests": 120,
+    "counts": {
+      "passed": 113,
+      "failure": 0,
+      "error": 6,
+      "skipped": 1
+    },
+    "sha256": "325af4febb31b20d2dd385e21c6d1eccfb7edc4690d46658d6f6db3077ac27dd"
+  },
+  "repaired_fixture": {
+    "tests": 24,
+    "counts": {
+      "passed": 24,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "sha256": "94f6934966763ab1d7e737f1def0d92f3b0fd562bf2f2fa79beb83d0ab451ecc"
+  },
+  "combined_unique": {
+    "tests": 120,
+    "counts": {
+      "passed": 119,
+      "failure": 0,
+      "error": 0,
+      "skipped": 1
+    },
+    "fresh_full_rerun": false
+  },
+  "reused_unaffected_cases": 96,
+  "replaced_case_results": 24,
+  "changed_between_runs": [
+    "tests/integration/test_candidate_integration.py"
+  ],
+  "source_members": 226,
+  "working_tree_raw_bytes_match": true,
+  "static": {
+    "ruff": 0,
+    "format": 0,
+    "mypy": 0
+  },
+  "full_release": "BLOCKED",
+  "new_installed_packages": "NOT RUN",
+  "actual_linux_docker_integration": "NOT RUN",
+  "real_model_calls": 0,
+  "product_sha": "ddd4b42a3d6b44b7b09ef734220e8e0bb9a8918f",
+  "version": "0.3.0a114",
+  "artifacts": [
+    {
+      "path": "source-manifest.json",
+      "sha256": "c2660fcc561d2bfbac196754fc8248afbcd946859a45e2585687769dfe390c27",
+      "size": 25753
+    },
+    {
+      "path": "original-fixture.py.txt",
+      "sha256": "3744211f2ff4e868dc4aba8569f2422f9ad559d0feb7518073b0ae5f43957116",
+      "size": 17771
+    },
+    {
+      "path": "original-affected.xml",
+      "sha256": "4c5f18ecf1f6d7a2f89a940642fcb877cad0298c2578b86e0b2a42a17216d9dd",
+      "size": 28382,
+      "credential_redactions": 0,
+      "raw_local_sha256": "325af4febb31b20d2dd385e21c6d1eccfb7edc4690d46658d6f6db3077ac27dd"
+    },
+    {
+      "path": "repaired-module.xml",
+      "sha256": "48121731bc4c0ab27d184d8d1746deae77f9ac2b91832954e35fbaff048981f2",
+      "size": 4014,
+      "credential_redactions": 0,
+      "raw_local_sha256": "94f6934966763ab1d7e737f1def0d92f3b0fd562bf2f2fa79beb83d0ab451ecc"
+    },
+    {
+      "path": "original-affected.log",
+      "sha256": "12222c6ae6f8554c02bdeee53fb71d1b855ecd20f118b41942b66f22326d2207",
+      "size": 11273,
+      "credential_redactions": 0
+    },
+    {
+      "path": "repaired-module.log",
+      "sha256": "c8943d169e738f80af7e534d7bcbfd6bef03cfb3ebdcd41d44d4d209fc536149",
+      "size": 702,
+      "credential_redactions": 0
+    },
+    {
+      "path": "ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "size": 19,
+      "credential_redactions": 0
+    },
+    {
+      "path": "format.log",
+      "sha256": "8e94ed78209e71558d9bcb04ee84a4a93b82507489ea08908162411df0aef622",
+      "size": 28,
+      "credential_redactions": 0
+    },
+    {
+      "path": "mypy.log",
+      "sha256": "e82a76bfc0eb45231afea17b5228a00a04ed2e11d057f838437ba67a912b5bd8",
+      "size": 44,
+      "credential_redactions": 0
+    }
+  ],
+  "frozen_git_binding": {
+    "matched_source_members": 226,
+    "raw_matches": 219,
+    "lf_only_normalization": [
+      "docs/acceptance/requirements.json",
+      "tests/integration/test_controlled_relay_pipeline.py",
+      "tests/integration/test_m3_transports.py",
+      "tests/integration/test_m4_transports.py",
+      "tests/integration/test_m4b_transports.py",
+      "tests/integration/test_m5_transports.py",
+      "tests/unit/test_acceptance_traceability.py"
+    ]
+  },
+  "original_fixture_sha256": "3744211f2ff4e868dc4aba8569f2422f9ad559d0feb7518073b0ae5f43957116",
+  "original_before_after_manifest_sha256": "080f9db8cd8852bc0ad379aec3935c21f66e4be37cf4a8535bbc2ad16ed42f10",
+  "repaired_before_after_manifest_sha256": "29fe5f97060ea856702267d105401e0c26f7d9ab12033fee84c034a2cfd602ba",
+  "debug_root": "D:\\agentsync-debug\\m4-owner-integration-a114-sol",
+  "initial_failures_retained_locally": true,
+  "technical_review": "Independent Astra technical review accepted the limited frozen source evidence; no external Work or Release approval",
+  "limitations": [
+    "Affected source regression only; not a full-suite run",
+    "New integration Docker and installed-artifact checks are pending M9",
+    "Synthetic proof fixtures do not prove real-client acceptance",
+    "No real user workspace integration or formal Release approval"
+  ]
+}

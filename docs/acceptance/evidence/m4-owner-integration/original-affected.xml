@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="6" failures="0" skipped="1" tests="120" time="669.820" timestamp="2026-11-13T02:17:11.379688-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_candidate_integration" name="test_exact_owner_cli_integration_materializes_verified_blob_bytes" time="0.913"><error message="failed on setup with &quot;agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.&quot;">tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.</error></testcase><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[dirty]" time="0.951"><error message="failed on setup with &quot;agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.&quot;">tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.</error></testcase><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[dirty-after-approval]" time="0.928"><error message="failed on setup with &quot;agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.&quot;">tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.</error></testcase><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[staged]" time="0.968"><error message="failed on setup with &quot;agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.&quot;">tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.</error></testcase><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[untracked]" time="12.561" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[hidden-index]" time="12.427" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[skip-worktree]" time="12.687" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[stale-base]" time="12.024" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[existing-branch]" time="12.745" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[existing-path]" time="12.704" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[include]" time="10.650" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[filter]" time="12.363" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[external-attributes]" time="12.457" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[expired]" time="14.720" /><testcase classname="tests.integration.test_candidate_integration" name="test_rejects_unsafe_target_or_unbound_approval[private-approval]" time="15.035" /><testcase classname="tests.integration.test_candidate_integration" name="test_integration_git_rejects_unsupported_committed_tree_or_attributes[gitlink]" time="0.504" /><testcase classname="tests.integration.test_candidate_integration" name="test_integration_git_rejects_unsupported_committed_tree_or_attributes[symlink]" time="0.534" /><testcase classname="tests.integration.test_candidate_integration" name="test_integration_git_rejects_unsupported_committed_tree_or_attributes[filter]" time="0.617" /><testcase classname="tests.integration.test_candidate_integration" name="test_integration_git_rejects_unsupported_committed_tree_or_attributes[working-tree-encoding]" time="0.598" /><testcase classname="tests.integration.test_candidate_integration" name="test_integration_git_rejects_unsupported_committed_tree_or_attributes[ident]" time="0.530" /><testcase classname="tests.integration.test_candidate_integration" name="test_process_exit_after_each_effect_preserves_fence[import_objects-unknown]" time="25.679" /><testcase classname="tests.integration.test_candidate_integration" name="test_process_exit_after_each_effect_preserves_fence[create_branch-partial]" time="20.134" /><testcase classname="tests.integration.test_candidate_integration" name="test_process_exit_after_each_effect_preserves_fence[write_worktree-partial]" time="0.898"><error message="failed on setup with &quot;agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.&quot;">tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.</error></testcase><testcase classname="tests.integration.test_candidate_integration" name="test_cross_approval_branch_and_path_reservations_are_atomic" time="0.914"><error message="failed on setup with &quot;agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.&quot;">tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.</error></testcase><testcase classname="tests.integration.test_m4b_workspaces" name="test_fixture_git_disables_automatic_maintenance_even_with_repository_overrides" time="0.132" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_managed_git_creates_private_ref_beyond_win32_path_limit" time="0.670" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_committed_only_capture_and_independent_owned_worktrees_preserve_original" time="1.303" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_actual_same_line_conflict_uses_third_tree_and_preserves_both_actors" time="3.205" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable" time="4.205" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_owner_can_inspect_pending_delivery_without_exposing_it_to_agents" time="2.688" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_dirty_and_stale_worktree_inputs_fail_without_discarding_edits" time="1.756" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_concurrent_create_request_has_one_owned_worktree_and_restart_replays" time="1.315" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_cross_project_objects_and_invalid_auth_are_rejected" time="1.041" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_revision_expressions_are_not_accepted_as_expected_commits[HEAD]" time="1.297" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_revision_expressions_are_not_accepted_as_expected_commits[HEAD~1]" time="1.361" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_revision_expressions_are_not_accepted_as_expected_commits[--help]" time="1.246" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_revision_expressions_are_not_accepted_as_expected_commits[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]" time="1.589" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_revision_expressions_are_not_accepted_as_expected_commits[zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz]" time="1.240" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_revision_expressions_are_not_accepted_as_expected_commits[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa;echo injected]" time="1.273" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_source_hooks_fsmonitor_and_inherited_git_configuration_never_execute" time="0.993" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_external_git_directory_indirection_is_rejected_without_modification" time="0.212" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_create_intent_recovers_after_side_effect_before_receipt" time="1.257" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_existing_unknown_managed_work_is_not_deleted_on_retry" time="0.875" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_unsupported_external_object_and_committed_link_boundaries[alternate_objects]" time="0.205" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_unsupported_external_object_and_committed_link_boundaries[submodule]" time="0.440" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_unsupported_external_object_and_committed_link_boundaries[committed_symlink]" time="0.479" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_nul_parsed_unicode_and_space_filenames_survive_conflict_comparison" time="2.425" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_managed_repository_configuration_tampering_is_rejected" time="0.981" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_merge_candidate_recovers_after_commit_before_receipt" time="3.671" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_active_source_filters_and_includes_cannot_execute_before_status[clean]" time="0.315" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_active_source_filters_and_includes_cannot_execute_before_status[smudge]" time="0.316" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_active_source_filters_and_includes_cannot_execute_before_status[process]" time="0.321" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_active_source_filters_and_includes_cannot_execute_before_status[include]" time="0.317" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_active_source_filters_and_includes_cannot_execute_before_status[includeIf]" time="0.409" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_persisted_create_receipt_cannot_rebind_snapshot_after_database_rollback" time="1.476" /><testcase classname="tests.integration.test_m4b_workspaces" name="test_persisted_candidate_cannot_rebind_pair_after_database_rollback" time="3.096" /><testcase classname="tests.integration.test_candidate_export" name="test_real_merged_candidate_bytes_and_immutable_provenance" time="6.712" /><testcase classname="tests.integration.test_candidate_export" name="test_single_parent_when_right_is_ancestor" time="4.004" /><testcase classname="tests.integration.test_candidate_export" name="test_changed_worktree_is_rejected[dirty-left]" time="4.304" /><testcase classname="tests.integration.test_candidate_export" name="test_changed_worktree_is_rejected[dirty-right]" time="4.295" /><testcase classname="tests.integration.test_candidate_export" name="test_changed_worktree_is_rejected[dirty-candidate]" time="4.442" /><testcase classname="tests.integration.test_candidate_export" name="test_changed_worktree_is_rejected[head-left]" time="4.112" /><testcase classname="tests.integration.test_candidate_export" name="test_changed_worktree_is_rejected[head-right]" time="4.283" /><testcase classname="tests.integration.test_candidate_export" name="test_changed_worktree_is_rejected[head-candidate]" time="4.560" /><testcase classname="tests.integration.test_candidate_export" name="test_missing_existing_evidence_is_not_reconstructed[capture_receipt]" time="4.056" /><testcase classname="tests.integration.test_candidate_export" name="test_missing_existing_evidence_is_not_reconstructed[create_receipt]" time="4.213" /><testcase classname="tests.integration.test_candidate_export" name="test_missing_existing_evidence_is_not_reconstructed[candidate_receipt]" time="4.105" /><testcase classname="tests.integration.test_candidate_export" name="test_missing_existing_evidence_is_not_reconstructed[capture_intent]" time="4.101" /><testcase classname="tests.integration.test_candidate_export" name="test_missing_existing_evidence_is_not_reconstructed[create_intent]" time="4.045" /><testcase classname="tests.integration.test_candidate_export" name="test_missing_existing_evidence_is_not_reconstructed[candidate_intent]" time="3.949" /><testcase classname="tests.integration.test_candidate_export" name="test_disk_receipt_is_strict_and_bounded[duplicate]" time="4.084" /><testcase classname="tests.integration.test_candidate_export" name="test_disk_receipt_is_strict_and_bounded[nonfinite]" time="3.934" /><testcase classname="tests.integration.test_candidate_export" name="test_disk_receipt_is_strict_and_bounded[array]" time="4.034" /><testcase classname="tests.integration.test_candidate_export" name="test_disk_receipt_is_strict_and_bounded[malformed]" time="4.217" /><testcase classname="tests.integration.test_candidate_export" name="test_disk_receipt_is_strict_and_bounded[oversized]" time="3.967" /><testcase classname="tests.integration.test_candidate_export" name="test_final_capture_rejects_authority_or_task_race[task]" time="5.359" /><testcase classname="tests.integration.test_candidate_export" name="test_final_capture_rejects_authority_or_task_race[owner]" time="5.243" /><testcase classname="tests.integration.test_candidate_export" name="test_final_capture_rejects_authority_or_task_race[candidate]" time="5.130" /><testcase classname="tests.integration.test_candidate_export" name="test_storage_open_existing_never_creates_missing_root" time="0.002" /><testcase classname="tests.integration.test_candidate_export" name="test_repository_and_link_metadata_tampering[config]" time="3.883" /><testcase classname="tests.integration.test_candidate_export" name="test_repository_and_link_metadata_tampering[alternates]" time="3.987" /><testcase classname="tests.integration.test_candidate_export" name="test_repository_and_link_metadata_tampering[backpointer]" time="4.049" /><testcase classname="tests.integration.test_candidate_export" name="test_repository_and_link_metadata_tampering[commondir]" time="4.211" /><testcase classname="tests.integration.test_candidate_export" name="test_post_export_disk_change_rejected" time="5.442" /><testcase classname="tests.integration.test_candidate_export" name="test_wrong_owner_rejected_before_storage_open" time="4.072" /><testcase classname="tests.integration.test_candidate_export" name="test_bare_git_redirect_is_rejected_before_git" time="4.043" /><testcase classname="tests.integration.test_candidate_export" name="test_storage_open_existing_never_creates_missing_group[receipts]" time="0.007" /><testcase classname="tests.integration.test_candidate_export" name="test_storage_open_existing_never_creates_missing_group[intents]" time="0.007" /><testcase classname="tests.integration.test_candidate_export" name="test_storage_open_existing_never_creates_missing_group[comparisons]" time="0.006" /><testcase classname="tests.integration.test_candidate_export" name="test_storage_open_existing_never_creates_missing_group[home]" time="0.006" /><testcase classname="tests.integration.test_candidate_export" name="test_storage_open_existing_never_creates_missing_group[hooks]" time="0.006" /><testcase classname="tests.integration.test_candidate_export" name="test_export_seam_exists" time="0.000" /><testcase classname="tests.integration.test_verified_task_completion" name="test_atomic_completion_reopen_replay_and_immutable_old_receipts" time="11.386" /><testcase classname="tests.integration.test_verified_task_completion" name="test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan" time="17.914" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[owner]" time="10.075" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[token]" time="10.369" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[role]" time="10.560" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[expiry]" time="10.289" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[author]" time="10.210" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[same_agent_new_session]" time="10.449" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[left_version]" time="10.665" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[right_version]" time="10.249" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[profile]" time="10.571" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[revision]" time="10.418" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[failed]" time="10.228" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[result_hash]" time="10.366" /><testcase classname="tests.integration.test_verified_task_completion" name="test_failclosed_current_authority_binding_and_execution[source_removed]" time="10.675" /><testcase classname="tests.integration.test_verified_task_completion" name="test_auth_and_conflict_before_historical_replay[owner]" time="11.806" /><testcase classname="tests.integration.test_verified_task_completion" name="test_auth_and_conflict_before_historical_replay[role]" time="11.799" /><testcase classname="tests.integration.test_verified_task_completion" name="test_auth_and_conflict_before_historical_replay[expiry]" time="11.662" /><testcase classname="tests.integration.test_verified_task_completion" name="test_auth_and_conflict_before_historical_replay[token]" time="11.891" /><testcase classname="tests.integration.test_verified_task_completion" name="test_auth_and_conflict_before_historical_replay[request_conflict]" time="11.994" /><testcase classname="tests.integration.test_verified_task_completion" name="test_concurrent_requests_commit_once_and_audit_failure_rolls_back" time="20.896" /><testcase classname="tests.integration.test_verified_task_completion" name="test_completed_proof_review_and_result_corruption_reject_projection_and_replay" time="11.834" /><testcase classname="tests.integration.test_verified_task_completion" name="test_expiry_during_work_or_replay_rechecks_authority_and_rolls_back[export]" time="11.470" /><testcase classname="tests.integration.test_verified_task_completion" name="test_expiry_during_work_or_replay_rechecks_authority_and_rolls_back[audit]" time="11.639" /><testcase classname="tests.integration.test_verified_task_completion" name="test_expiry_during_work_or_replay_rechecks_authority_and_rolls_back[replay]" time="11.629" /><testcase classname="tests.integration.test_verified_task_completion" name="test_text_review_and_legacy_cached_response_remain_unverified" time="3.862" /><testcase classname="tests.integration.test_verified_task_completion" name="test_schema13_upgrade_preserves_history_and_atomic_migration_rollback" time="10.243" /><testcase classname="tests.integration.test_verified_task_completion" name="test_actual_linux_docker_to_independent_verified_completion" time="0.174"><skipped type="pytest.skip" message="Requires separately controlled local Linux Docker and preloaded immutable image">F:\syuc\amadeus-m6-single\tests\integration\test_candidate_execution.py:608: Requires separately controlled local Linux Docker and preloaded immutable image</skipped></testcase></testsuite></testsuites>

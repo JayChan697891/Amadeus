@@ -2,6 +2,9 @@
 
 ## 0.3.0a114 approved target integration: affected source checks complete
 
+Product ddd4b42a3d6b44b7b09ef734220e8e0bb9a8918f is frozen and uploaded.
+Source evidence: acceptance/evidence/m4-owner-integration/summary.json.
+
 Owner SDK/CLI preview, exact-plan approval, integrate and status now bind a verified
 candidate to a clean ordinary target repository at its original base, a create-only
 branch and a separate new worktree. Local bundle import and exact blob materialization
@@ -24,15 +27,18 @@ Debug: D:/agentsync-debug/m4-owner-integration-a114-sol. Original handles 51636,
 projects. Verifier fixtures are synthetic; a114 actual Linux Docker integration,
 installed-package checks and full Release are NOT RUN/BLOCKED, not inferred passes.
 
-Next: M9 full matrix from this frozen source. D:/agentsync-debug/m9-bootstrap.py
-prepares and runs the existing Windows 3.12 collector once; source, wheel and sdist
+M9 Windows 3.12 is RUNNING from a separate clean frozen snapshot. Original handle
+56056 started at 2026-11-13 10:36:51 UTC; poll this handle, never restart because an
+observation expires. D:/agentsync-debug/m114/bootstrap-attempt.json records its
+collector PID and command; terminal outcome belongs in bootstrap-result.json.
+D:/agentsync-debug/m9-bootstrap.py runs the existing collector once; source, wheel and sdist
 each retain a full suite and 3600-second controller limit. D:/agentsync-debug/m114
 holds preparation evidence. All six Windows/Linux interpreter/dependency preflights
 are now available offline. Linux 3.11/3.12 reuse the existing dedicated disk through
 a loopback-only read-only NBD mount at /root/amadeus-minor-volume; do not format,
 unmount or stop that helper while its rows run. Later rows must install the exact
 bootstrap candidate archives. Preserve its manifest, then create a separate final
-matrix manifest. macOS and unavailable real clients remain incomplete. No Actions,
+matrix manifest. Subsequent rows have NOT started. macOS and unavailable real clients remain incomplete. No Actions,
 paid APIs, main merge, real user-target application or new M5 stage is authorized.
 
 ## 0.3.0a113 receipt-backed usage: installed checks passed
