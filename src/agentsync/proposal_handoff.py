@@ -24,12 +24,18 @@ from agentsync.controlled_relay import (
     CodexProposalOutcome,
     ControlledRelay,
     ProposalContextPin,
+    ProposalReviewInput,
     RelayActor,
 )
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.proposals import proposal_paths
-from agentsync.relay_queue import CodexProposalQueueItem, RelayQueue, RelayQueueOutcome
+from agentsync.relay_queue import (
+    CodexProposalQueueItem,
+    ProposalReviewQueueItem,
+    RelayQueue,
+    RelayQueueOutcome,
+)
 
 
 def _reject() -> NoReturn:
@@ -291,6 +297,7 @@ class ProposalHandoff:
         )
         if (
             attempts[0].state != "terminal_recorded"
+            or attempts[0].client != "codex"
             or attempts[0].status != "proposal_received"
             or attempts[0].parent_ended is not True
         ):
@@ -397,8 +404,9 @@ class ProposalHandoff:
             Path(tree["path"]),
         )
         actor = build_receiver(receiver, workspace)
-        if type(actor) is not RelayActor or client_kind(actor.profile) != "codex":
+        if type(actor) is not RelayActor:
             _reject()
+        client = client_kind(actor.profile)
         if (
             actor.agent_id,
             actor.profile.project_id,
@@ -423,6 +431,10 @@ class ProposalHandoff:
             "worktree_id": workspace.worktree_id,
             "source_sha256": digest(source),
         }
+        # The legacy Codex intent omits the client. It matches only the Codex route.
+        if client != "codex":
+            intent["client"] = client
+            wave_request = prefix + "-wave-" + client
 
         def observe() -> ProposalHandoffOutcome:
             wave = self._queue.observe(actor, wave_request)
@@ -443,22 +455,43 @@ class ProposalHandoff:
             if existing_intent != intent:
                 _reject()
             return observe()
-        spec = CodexProposalInput(
-            workspace.task_id,
-            workspace.task_version,
-            request.instruction,
-            request.allowed_paths,
-            request.execution_seconds,
-            True,
-            pin,
-        )
-        item = CodexProposalQueueItem(actor, spec)
+        item: CodexProposalQueueItem | ProposalReviewQueueItem
+        if client == "codex":
+            item = CodexProposalQueueItem(
+                actor,
+                CodexProposalInput(
+                    workspace.task_id,
+                    workspace.task_version,
+                    request.instruction,
+                    request.allowed_paths,
+                    request.execution_seconds,
+                    True,
+                    pin,
+                ),
+            )
+        else:
+            if request.allowed_paths != ("review.md",):
+                _reject()
+            item = ProposalReviewQueueItem(
+                actor,
+                ProposalReviewInput(
+                    workspace.task_id,
+                    workspace.task_version,
+                    request.instruction,
+                    request.execution_seconds,
+                    input_context=pin,
+                ),
+            )
         self._check(deadline)
         self._call(receiver, "heartbeat")
         preview = self._queue.preview((item,), admin_token=admin_token, parallel_limit=1)
         if preview.state != "selected":
             return ProposalHandoffOutcome(
                 "not_ready", pin, workspace.task_id, workspace.worktree_id
+            )
+        if isinstance(item, ProposalReviewQueueItem):
+            self._queue._check_review_input(
+                item, admin_token, self._queue._key(actor, wave_request)
             )
         self._check(deadline)
         await asyncio.sleep(0)

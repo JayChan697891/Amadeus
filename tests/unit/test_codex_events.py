@@ -66,6 +66,18 @@ def test_completed_startup_warning_is_counted_without_exposing_its_message():
     assert "private startup detail" not in repr(report)
     assert report.real_client_verified is False
     assert report.verification == "unverified"
+    assert report.tool_item_event_count == 0
+
+
+def test_reasoning_and_startup_warning_do_not_count_as_tool_events():
+    events = list(map(json.loads, complete().splitlines()))
+    events.insert(1, startup_warning())
+    events.insert(3, {"type": "item.completed", "item": {"id": "r1", "type": "reasoning"}})
+    report = parse_codex_jsonl(lines(*events), exit_code=0)
+    assert report.state == "succeeded"
+    assert report.agent_messages == ("Hello",)
+    assert report.non_message_item_event_count == 2
+    assert report.tool_item_event_count == 0
 
 
 @pytest.mark.parametrize("exit_code", [0, 7, None])
@@ -381,6 +393,7 @@ def test_documented_non_message_items_are_counted_without_content_projection():
     report = parse_codex_jsonl(lines(*events, {"type": "turn.completed"}), exit_code=0)
     assert report.state == "succeeded"
     assert report.non_message_item_event_count == 7
+    assert report.tool_item_event_count == 4
     assert report.agent_messages == ()
     assert "private tool content" not in repr(report)
 

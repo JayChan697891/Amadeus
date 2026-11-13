@@ -26,6 +26,7 @@ _ITEM_TYPES = frozenset(
         "error",
     }
 )
+_TOOL_ITEM_TYPES = {"command_execution", "file_change", "mcp_tool_call", "web_search"}
 
 
 def _sequence_error() -> NoReturn:
@@ -118,6 +119,7 @@ class CodexEventReport:
     item_event_count: int
     non_message_item_event_count: int
     error_code: str | None
+    tool_item_event_count: int | None = None
     protocol_only: Literal[True] = field(default=True, init=False)
     provenance: Literal["caller_supplied"] = field(default="caller_supplied", init=False)
     real_client_verified: Literal[False] = field(default=False, init=False)
@@ -169,7 +171,7 @@ def parse_codex_jsonl(text: str, *, exit_code: int | None) -> CodexEventReport:
     terminal = None
     messages = []
     usage = None
-    item_count = tool_count = 0
+    item_count = non_message_count = tool_count = 0
     output_size = 0
     items: dict[str, tuple[str, bool]] = {}
     for event in events:
@@ -205,8 +207,10 @@ def parse_codex_jsonl(text: str, *, exit_code: int | None) -> CodexEventReport:
                 _sequence_error()
             items[identity] = (item_type, kind == "item.completed")
             item_count += 1
-            if item_type != "agent_message":
+            if item_type in _TOOL_ITEM_TYPES:
                 tool_count += 1
+            if item_type != "agent_message":
+                non_message_count += 1
             elif kind == "item.completed":
                 message = item.get("text")
                 if type(message) is not str:
@@ -252,6 +256,7 @@ def parse_codex_jsonl(text: str, *, exit_code: int | None) -> CodexEventReport:
         usage,
         len(events),
         item_count,
-        tool_count,
+        non_message_count,
         error_code,
+        tool_count,
     )

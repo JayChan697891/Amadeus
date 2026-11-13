@@ -58,6 +58,7 @@ class CodexResult(_Markers):
     agent_messages: tuple[str, ...] = field(default=(), repr=False)
     usage: CodexUsage | None = None
     client_thread_id: str | None = field(default=None, repr=False)
+    tool_item_event_count: int | None = None
 
 
 def _new_run(task: AdapterTask, identity: str, started_at: float) -> CodexRun:
@@ -75,8 +76,23 @@ def _new_run(task: AdapterTask, identity: str, started_at: float) -> CodexRun:
 def _parse(text: str) -> _ProtocolObservation[CodexUsage]:
     report = parse_codex_jsonl(text, exit_code=0)
     return _ProtocolObservation(
-        report.state, report.agent_messages, report.usage, report.thread_id, report.error_code
+        report.state,
+        report.agent_messages,
+        report.usage,
+        report.thread_id,
+        report.error_code,
+        report.tool_item_event_count,
     )
+
+
+def _new_result(
+    run: CodexRun,
+    messages: tuple[str, ...],
+    usage: CodexUsage | None,
+    client_id: str | None,
+    tool_item_event_count: int | None,
+) -> CodexResult:
+    return CodexResult(run, messages, usage, client_id, tool_item_event_count)
 
 
 class CodexAdapter(_HostProcessAdapter[CodexCapabilities, CodexRun, CodexResult, CodexUsage]):
@@ -99,7 +115,7 @@ class CodexAdapter(_HostProcessAdapter[CodexCapabilities, CodexRun, CodexResult,
             running_limit=running_limit,
             new_capabilities=CodexCapabilities,
             new_run=_new_run,
-            new_result=CodexResult,
+            new_result=_new_result,
             parse=_parse,
             configuration_error="Invalid Codex adapter configuration.",
         )

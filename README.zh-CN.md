@@ -5,7 +5,15 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a110 开发源码，正式发布仍处于阻断状态**。
+当前为 **0.3.0a111 开发源码，正式发布仍处于阻断状态**。
+
+新增受限的跨客户端评审路径：`ProposalReviewInput` 和 `ProposalReviewQueueItem`
+可接收已准备好的 Codex、Claude Code 或 Cursor 适配器，将已验证的来源产物固定到
+有依赖关系的后续任务，只保存 `review.md` 评审文档，文档仍未经过独立验证。
+`ProposalHandoff` 对 Claude/Cursor 使用该路径，保留已有 Codex 交接格式。
+启动仍需精确批准；评审模式拒绝 Codex/Claude 报告的工具事件。
+Cursor 的终态响应不能证明未调用工具，仍须满足原有宿主隔离条件。
+真实 Claude/Cursor 兼容性尚未验证，协议模拟进程测试不能替代真实验收。
 已完成一次受明确审批控制的真实 Codex 双身份连续流程：生成提案、独立 Docker
 验证、自动创建下游任务并共享固定版本上下文，再接收独立模型审查文档。
 文档接受不等于测试验证；当前证据不涵盖 Claude/Cursor 或无人审批的自动应用。

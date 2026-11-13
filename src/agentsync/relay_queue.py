@@ -24,9 +24,16 @@ from agentsync.adapters.approved_launch import (
     _check_execution_deadline,
     client_kind,
     digest,
+    prepare_launch_review,
 )
 from agentsync.adapters.base import _identifier
-from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor, RelayInput
+from agentsync.controlled_relay import (
+    CodexProposalInput,
+    ControlledRelay,
+    ProposalReviewInput,
+    RelayActor,
+    RelayInput,
+)
 from agentsync.errors import AgentSyncError
 from agentsync.relay_wave_journal import JournalState, RelayWaveJournal
 from agentsync.scheduling import plan_tasks
@@ -113,7 +120,21 @@ class CodexProposalQueueItem:
         _validate_capabilities(self.first_capabilities)
 
 
-_QueueItem = RelayQueueItem | CodexProposalQueueItem
+@dataclass(frozen=True, slots=True)
+class ProposalReviewQueueItem:
+    """One prepared reviewer for a dependent verified-source task."""
+
+    first: RelayActor = field(repr=False)
+    task: ProposalReviewInput
+    first_capabilities: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if type(self.first) is not RelayActor or type(self.task) is not ProposalReviewInput:
+            _invalid()
+        _validate_capabilities(self.first_capabilities)
+
+
+_QueueItem = RelayQueueItem | CodexProposalQueueItem | ProposalReviewQueueItem
 
 
 def _participants(item: _QueueItem) -> tuple[tuple[RelayActor, tuple[str, ...]], ...]:
@@ -184,9 +205,17 @@ class CodexProposalPreviewTask:
 
 
 @dataclass(frozen=True, slots=True)
+class ProposalReviewPreviewTask:
+    task_id: str
+    expected_version: int
+    agent_id: str
+    client: ClientKind
+
+
+@dataclass(frozen=True, slots=True)
 class RelayQueuePreview:
     state: Literal["selected", "no_ready_tasks", "fenced"]
-    tasks: tuple[RelayPreviewTask | CodexProposalPreviewTask, ...] = ()
+    tasks: tuple[RelayPreviewTask | CodexProposalPreviewTask | ProposalReviewPreviewTask, ...] = ()
     selection_sha256: str | None = None
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
@@ -243,7 +272,9 @@ def _selection_pin(selected: tuple[_QueueItem, ...]) -> str:
         else:
             rows.append(
                 [
-                    "codex-proposal",
+                    "proposal-review"
+                    if isinstance(item, ProposalReviewQueueItem)
+                    else "codex-proposal",
                     item.task.task_id,
                     item.task.expected_version,
                     digest(item.task.instruction),
@@ -291,7 +322,10 @@ class RelayQueue:
         if (
             type(items) is not tuple
             or not 1 <= len(items) <= 16
-            or any(type(item) not in (RelayQueueItem, CodexProposalQueueItem) for item in items)
+            or any(
+                type(item) not in (RelayQueueItem, CodexProposalQueueItem, ProposalReviewQueueItem)
+                for item in items
+            )
             or type(parallel_limit) is not int
             or not 1 <= parallel_limit <= 4
         ):
@@ -363,6 +397,12 @@ class RelayQueue:
                     "attempt_already_reserved", "A selected task already has a relay receipt.", 409
                 )
 
+    def _check_review_input(
+        self, item: ProposalReviewQueueItem, admin_token: str, wave_key: str
+    ) -> None:
+        task = self._relay._single_codex_task(item.first, item.task, admin_token, wave_key=wave_key)
+        prepare_launch_review(item.first.profile, task, environment=item.first.environment)
+
     def preview(
         self, items: tuple[_QueueItem, ...], *, admin_token: str, parallel_limit: int = 1
     ) -> RelayQueuePreview:
@@ -386,6 +426,13 @@ class RelayQueue:
                 client_kind(item.second.profile),
             )
             if isinstance(item, RelayQueueItem)
+            else ProposalReviewPreviewTask(
+                item.task.task_id,
+                item.task.expected_version,
+                item.first.agent_id,
+                client_kind(item.first.profile),
+            )
+            if isinstance(item, ProposalReviewQueueItem)
             else CodexProposalPreviewTask(
                 item.task.task_id, item.task.expected_version, item.first.agent_id
             )
@@ -849,9 +896,12 @@ class RelayQueue:
         # Reject invalid pinned inputs before reserving the wave. The launch path
         # prepares the task again after admission and keeps its failure fence.
         for item in selected:
-            if isinstance(item, CodexProposalQueueItem) and item.task.input_context is not None:
+            if not isinstance(item, RelayQueueItem) and item.task.input_context is not None:
                 _check_execution_deadline(_execution_deadline)
-                self._relay._single_codex_task(item.first, item.task, admin_token, wave_key=key)
+                if isinstance(item, ProposalReviewQueueItem):
+                    self._check_review_input(item, admin_token, key)
+                else:
+                    self._relay._single_codex_task(item.first, item.task, admin_token, wave_key=key)
         self._relay._check_receipt_anchor(project_id, bind=True)
         self._check_journal_anchor(project_key, bind=True)
         _check_execution_deadline(_execution_deadline)
@@ -861,7 +911,16 @@ class RelayQueue:
             task_id = item.task.task_id
             state: TaskState | Literal["not_started"] | None
             try:
-                if isinstance(item, CodexProposalQueueItem):
+                if isinstance(item, ProposalReviewQueueItem):
+                    await self._relay.run_proposal_review_once(
+                        item.first,
+                        item.task,
+                        admin_token=admin_token,
+                        _wave_key=key,
+                        _execution_deadline=_execution_deadline,
+                    )
+                    state = self._relay._wave_terminal_state(item.first, task_id, key)
+                elif isinstance(item, CodexProposalQueueItem):
                     await self._relay.run_codex_proposal_once(
                         item.first,
                         item.task,

@@ -19,11 +19,12 @@ from collections.abc import Callable
 from contextlib import suppress
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Literal, NoReturn
+from typing import Any, Literal, NoReturn, cast
 
 from agentsync.adapters._host_process import _PROTOCOL_ERROR_REASONS, _HostRun
 from agentsync.adapters.approved_launch import (
     ApprovedLaunchFactory,
+    ClientKind,
     HostProfile,
     LaunchAdmissionObservation,
     LaunchAuthority,
@@ -55,6 +56,10 @@ _SINGLE_REVIEW_MARKER = (
     "The controlled Codex reply matched the pilot input. Independent review pending."
 )
 _PROPOSAL_REVIEW_MARKER = "Controlled Codex proposal stored as inert data. Owner staging and independent verification pending."
+_DEPENDENT_REVIEW_MARKER = (
+    "Dependent review stored as an unverified document. Independent review pending."
+)
+_PROPOSAL_MODES = ("codex_proposal", "proposal_review")
 _CLIENT_VERSION = r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}"
 
 
@@ -199,6 +204,20 @@ class CodexProposalInput:
 
 
 @dataclass(frozen=True, slots=True)
+class ProposalReviewInput(CodexProposalInput):
+    """One text-only document on a dependent task with a verified source pin."""
+
+    input_context: ProposalContextPin = field(kw_only=True)
+    allowed_paths: tuple[str, ...] = field(default=("review.md",), init=False)
+    submit_for_review: bool = field(default=True, init=False)
+
+    def __post_init__(self) -> None:
+        CodexProposalInput.__post_init__(self)
+        if type(self.input_context) is not ProposalContextPin:
+            _reject()
+
+
+@dataclass(frozen=True, slots=True)
 class CodexProposalOutcome:
     """Historical inert storage only; not task completion or import permission."""
 
@@ -243,6 +262,7 @@ def _proposal_contract(
     submit_for_review: bool,
     wave_key: str | None = None,
     input_context: ProposalContextPin | None = None,
+    review_client: ClientKind | None = None,
 ) -> dict[str, Any]:
     # Preserve historical default contracts and their insertion-order digest.
     contract: dict[str, Any] = {
@@ -260,7 +280,15 @@ def _proposal_contract(
         contract["wave_sha256"] = wave_key
     if input_context is not None:
         contract["input_context"] = asdict(input_context)
+    if review_client is not None:
+        contract["mode"] = "proposal_review"
+        contract["client"] = review_client
     return contract
+
+
+def _proposal_request_id(key: str, contract: dict[str, Any]) -> str:
+    mode = "proposal-review" if contract.get("mode") == "proposal_review" else "codex-proposal"
+    return f"relay:{key}:{mode}:{digest(contract)}"
 
 
 @dataclass(frozen=True, slots=True)
@@ -652,7 +680,7 @@ class ControlledRelay:
         admission = self._read_receipt(key, "incomplete")
         if not admission or admission.get("wave_sha256") != wave_key:
             return None
-        if admission.get("mode") == "codex_proposal":
+        if admission.get("mode") in _PROPOSAL_MODES:
             stored = self._observe_proposal_storage(
                 project_id, task_id, key, admission, get_context
             )
@@ -663,7 +691,9 @@ class ControlledRelay:
                 and self._historical_submission_matches(
                     task,
                     intent["review_task_version"],
-                    _PROPOSAL_REVIEW_MARKER,
+                    _DEPENDENT_REVIEW_MARKER
+                    if admission["mode"] == "proposal_review"
+                    else _PROPOSAL_REVIEW_MARKER,
                     intent["owner_session_sha256"],
                     (stored["agent_sha256"],),
                 )
@@ -825,14 +855,14 @@ class ControlledRelay:
         assert terminal is not None
         status = _matched_text(
             terminal.get("status"),
-            r"expected_reply|proposal_received"
+            r"expected_reply|proposal_received|dependent_review_received"
             if observed is not None
             else r"failed|unknown|succeeded|reply_mismatch",
         )
         exit_code = terminal.get("exit_code")
         parent_ended = _receipt_bool(terminal.get("parent_ended"))
         if status is None or (
-            status in {"expected_reply", "proposal_received"}
+            status in {"expected_reply", "proposal_received", "dependent_review_received"}
             and (type(exit_code) is not int or exit_code != 0 or parent_ended is not True)
         ):
             return RelayAttemptObservation(
@@ -845,6 +875,11 @@ class ControlledRelay:
             )
         if status == "proposal_received" and (
             client != "codex" or terminal.get("timed_out") is not False
+        ):
+            return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
+        if status == "dependent_review_received" and (
+            terminal.get("timed_out") is not False
+            or (client != "cursor" and _receipt_uint(terminal.get("tool_events")) != 0)
         ):
             return RelayAttemptObservation(leg, "outcome_unknown", client, admission=admission)
         return RelayAttemptObservation(
@@ -953,6 +988,7 @@ class ControlledRelay:
         execution_deadline: float | None,
         *,
         allowed_proposal_paths: tuple[str, ...] | None = None,
+        recheck_review: Callable[[dict[str, Any], str], None] | None = None,
     ) -> _AttemptOutcome:
         _check_execution_deadline(execution_deadline)
         prefix = f"relay:{key}:{stage}"
@@ -970,7 +1006,7 @@ class ControlledRelay:
         def renew(_: AdapterTask) -> None:
             nonlocal active
             _check_execution_deadline(execution_deadline)
-            self._workspace(actor, task.task_id)
+            workspace = self._workspace(actor, task.task_id)
             active = self._call(
                 actor,
                 "renew_lease",
@@ -987,6 +1023,8 @@ class ControlledRelay:
                 or current["lease_expires_at"] <= time.time() + task.timeout_seconds + 2
             ):
                 _reject()
+            if recheck_review is not None:
+                recheck_review(current, workspace["snapshot_id"])
             _check_execution_deadline(execution_deadline)
 
         factory = ApprovedLaunchFactory(
@@ -1058,16 +1096,30 @@ class ControlledRelay:
             raise
         proposal_json: str | None = None
         proposal_sha: str | None = None
+        tool_events = None
         if allowed_proposal_paths is not None:
             matches = False
+            text = None
+            if isinstance(result, CodexResult) and len(result.agent_messages) == 1:
+                text = result.agent_messages[0]
+                tool_events = result.tool_item_event_count
+            elif recheck_review is not None and isinstance(result, (ClaudeResult, CursorResult)):
+                text = result.result_text
+                if isinstance(result, ClaudeResult):
+                    tool_events = result.tool_block_count
             if (
-                isinstance(result, CodexResult)
+                text is not None
                 and result.run == run
                 and run.timed_out is False
-                and len(result.agent_messages) == 1
+                and (
+                    recheck_review is None
+                    or isinstance(result, CursorResult)
+                    or type(tool_events) is int
+                    and tool_events == 0
+                )
             ):
                 try:
-                    files = parse_proposal(result.agent_messages[0], list(allowed_proposal_paths))
+                    files = parse_proposal(text, list(allowed_proposal_paths))
                 except AgentSyncError:
                     pass  # Never include untrusted source in an error or receipt.
                 else:
@@ -1096,16 +1148,26 @@ class ControlledRelay:
                 **_terminal_metrics(run, result),
             )
             _reject()
+        observed_status = "expected_reply"
+        if allowed_proposal_paths is not None:
+            observed_status = (
+                "dependent_review_received" if recheck_review is not None else "proposal_received"
+            )
         self._record(
             key,
             stage + "-observed",
-            status="proposal_received" if allowed_proposal_paths is not None else "expected_reply",
+            status=observed_status,
             run_sha256=digest(run.run_id),
             session_sha256=digest(run.session_id),
             exit_code=run.exit_code,
             parent_ended=run.parent_ended,
             timed_out=run.timed_out,
             **({"proposal_sha256": proposal_sha} if proposal_sha is not None else {}),
+            **(
+                {"tool_events": tool_events}
+                if recheck_review is not None and tool_events is not None
+                else {}
+            ),
             **_terminal_metrics(run, result),
         )
         # This bounded text is returned only within the host method, never in receipts.
@@ -1122,9 +1184,12 @@ class ControlledRelay:
         if type(actor) is not RelayActor or type(spec) not in {
             SingleCodexInput,
             CodexProposalInput,
+            ProposalReviewInput,
         }:
             _reject()
-        if client_kind(actor.profile) != "codex":
+        review = isinstance(spec, ProposalReviewInput)
+        client = client_kind(actor.profile)
+        if not review and client != "codex":
             _reject()
         needed = {actor.agent_id}
         if self._owner_worker_ids(actor.profile.project_id, needed, admin_token) != needed:
@@ -1144,7 +1209,7 @@ class ControlledRelay:
             or not _task_eligible(current, tasks, actor.agent_id, time.time())
         ):
             _reject()
-        self._workspace(actor, spec.task_id)
+        workspace = self._workspace(actor, spec.task_id)
         if isinstance(spec, CodexProposalInput):
             pin = spec.input_context
             contract = _proposal_contract(
@@ -1155,6 +1220,7 @@ class ControlledRelay:
                 spec.submit_for_review,
                 wave_key,
                 pin,
+                client if review else None,
             )
             instruction = (
                 spec.instruction
@@ -1167,6 +1233,15 @@ class ControlledRelay:
                 producer = tasks.get(pin.producer_task_id)
                 if producer is None:
                     _reject()
+                if review:
+                    self._verified_review_source(
+                        actor,
+                        pin,
+                        current,
+                        admin_token,
+                        workspace["snapshot_id"],
+                        producer=producer,
+                    )
                 source = self._proposal_source(
                     actor.profile.project_id,
                     digest(actor.agent_id),
@@ -1186,7 +1261,7 @@ class ControlledRelay:
                 actor.profile.project_id,
                 actor.profile.session_id,
                 spec.task_id,
-                f"relay:{key}:codex-proposal:{digest(contract)}",
+                _proposal_request_id(key, contract),
                 instruction,
                 spec.timeout_seconds,
             )
@@ -1198,6 +1273,47 @@ class ControlledRelay:
             spec.instruction,
             spec.timeout_seconds,
         )
+
+    def _verified_review_source(
+        self,
+        actor: RelayActor,
+        pin: ProposalContextPin,
+        target: dict[str, Any],
+        admin_token: str,
+        snapshot_id: str,
+        *,
+        producer: dict[str, Any] | None = None,
+    ) -> None:
+        if pin.producer_task_id not in target["dependencies"]:
+            _reject()
+        if producer is None:
+            producer = self._state(actor, pin.producer_task_id)
+        proof = producer.get("verification")
+        if (
+            producer["status"] != "completed"
+            or producer["task_verification"] != "verified"
+            or not isinstance(proof, dict)
+        ):
+            _reject()
+        staged = OwnerProposalStaging(self._core).status(
+            project_id=actor.profile.project_id,
+            admin_token=admin_token,
+            task_id=pin.producer_task_id,
+        )
+        if staged["state"] != "staged" or (
+            staged["plan"]["context_id"],
+            staged["plan"]["context_version"],
+            staged["plan"]["content_sha256"],
+            staged["plan"]["snapshot_id"],
+            staged["result"]["candidate_sha"],
+        ) != (
+            pin.context_id,
+            pin.context_version,
+            pin.content_sha256,
+            snapshot_id,
+            proof["candidate_sha"],
+        ):
+            _reject()
 
     def preview_codex(
         self, actor: RelayActor, spec: SingleCodexInput, *, admin_token: str
@@ -1277,6 +1393,41 @@ class ControlledRelay:
             )
         ):
             _reject()
+        return await self._run_proposal(actor, spec, admin_token, _wave_key, _execution_deadline)
+
+    async def run_proposal_review_once(
+        self,
+        actor: RelayActor,
+        spec: ProposalReviewInput,
+        *,
+        admin_token: str,
+        _wave_key: str,
+        _execution_deadline: float | None = None,
+    ) -> CodexProposalOutcome:
+        """Submit one document about the exact verified source for Core review."""
+        if (
+            type(spec) is not ProposalReviewInput
+            or _matched_text(_wave_key, r"[0-9a-f]{64}") is None
+        ):
+            _reject()
+        return await self._run_proposal(actor, spec, admin_token, _wave_key, _execution_deadline)
+
+    async def _run_proposal(
+        self,
+        actor: RelayActor,
+        spec: CodexProposalInput,
+        admin_token: str,
+        _wave_key: str | None,
+        _execution_deadline: float | None,
+    ) -> CodexProposalOutcome:
+        review = isinstance(spec, ProposalReviewInput)
+
+        def recheck_review(current: dict[str, Any], snapshot_id: str) -> None:
+            assert isinstance(spec, ProposalReviewInput)
+            self._verified_review_source(
+                actor, spec.input_context, current, admin_token, snapshot_id
+            )
+
         _check_execution_deadline(_execution_deadline)
         task = self._single_codex_task(actor, spec, admin_token, wave_key=_wave_key)
         self._check_receipt_anchor(actor.profile.project_id, bind=True)
@@ -1285,12 +1436,13 @@ class ControlledRelay:
         self._record(
             key,
             "incomplete",
-            mode="codex_proposal",
+            mode="proposal_review" if review else "codex_proposal",
             wave_sha256=_wave_key,
             initial_task_version=spec.expected_version,
             paths_sha256=digest(spec.allowed_paths),
             **({"submit_for_review": True} if spec.submit_for_review else {}),
             **({"input_context": asdict(spec.input_context)} if spec.input_context else {}),
+            **({"review_client": client_kind(actor.profile)} if review else {}),
         )
         _check_execution_deadline(_execution_deadline)
         attempt = await self._attempt(
@@ -1302,11 +1454,14 @@ class ControlledRelay:
             "",
             _execution_deadline,
             allowed_proposal_paths=spec.allowed_paths,
+            recheck_review=recheck_review if review else None,
         )
         active = attempt.active
         if attempt.proposal_json is None:
             _reject()
-        self._workspace(actor, spec.task_id)
+        workspace = self._workspace(actor, spec.task_id)
+        if review:
+            recheck_review(active, workspace["snapshot_id"])
         _check_execution_deadline(_execution_deadline)
         self._record(key, "proposal-publish-intent", task_version=active["version"])
         _check_execution_deadline(_execution_deadline)
@@ -1335,7 +1490,7 @@ class ControlledRelay:
             base_head=actor.expected_head,
             launch_request_sha256=_launch_key(task),
         )
-        stored = self.observe_codex_proposal(actor, spec.task_id)
+        stored = self._observe_proposal(actor, spec.task_id, review=review)
         if stored.state != "proposal_stored":
             _reject()
         if spec.submit_for_review:
@@ -1361,7 +1516,7 @@ class ControlledRelay:
                 lease_token=active["lease_token"],
                 expected_version=active["version"],
                 status="review",
-                result=_PROPOSAL_REVIEW_MARKER,
+                result=_DEPENDENT_REVIEW_MARKER if review else _PROPOSAL_REVIEW_MARKER,
                 request_id=f"relay:{key}:proposal:review",
             )
             if submitted["version"] != review_version:
@@ -1377,6 +1532,11 @@ class ControlledRelay:
         """Read historical storage after restart, without resuming or authorizing a run."""
         if type(actor) is not RelayActor or client_kind(actor.profile) != "codex":
             _reject()
+        return self._observe_proposal(actor, task_id, review=False)
+
+    def _observe_proposal(
+        self, actor: RelayActor, task_id: str, *, review: bool
+    ) -> CodexProposalOutcome:
         self._state(actor, task_id)
         project_id = actor.profile.project_id
         self._check_receipt_anchor(project_id)
@@ -1384,6 +1544,8 @@ class ControlledRelay:
         admission = self._read_receipt(key, "incomplete")
         if admission is None:
             return CodexProposalOutcome("not_started")
+        if admission.get("mode") != ("proposal_review" if review else "codex_proposal"):
+            return CodexProposalOutcome("incomplete")
         stored = self._observe_proposal_storage(
             project_id,
             task_id,
@@ -1439,7 +1601,7 @@ class ControlledRelay:
     ) -> str | None:
         key = self._task_receipt_key(project_id, pin.producer_task_id)
         admission = self._read_receipt(key, "incomplete")
-        if not admission:
+        if not admission or admission.get("mode") != "codex_proposal":
             return None
         # Validate the producer's own launch binding without reading its input context.
         stored = self._proposal_storage(
@@ -1472,8 +1634,10 @@ class ControlledRelay:
         actor: RelayActor | None = None,
         expected_source: ProposalContextPin | None = None,
     ) -> _StoredProposal | None:
-        if admission.get("mode") != "codex_proposal":
+        mode = admission.get("mode")
+        if mode not in _PROPOSAL_MODES:
             return None
+        review = mode == "proposal_review"
         pin = None
         if "input_context" in admission:
             raw_pin = admission["input_context"]
@@ -1492,8 +1656,9 @@ class ControlledRelay:
         captured = self._read_receipt(key, "first-observed")
         if not stored or not intent or not dispatched or not captured:
             return None
-        if observed.status != "proposal_received":
+        if observed.status != ("dependent_review_received" if review else "proposal_received"):
             return None
+        review_client = observed.client if review else None
         proposal_sha = _matched_text(captured.get("proposal_sha256"), r"[0-9a-f]{64}")
         context_id = _matched_text(stored.get("context_id"), r"[0-9a-f-]{36}")
         content_sha = _matched_text(stored.get("content_sha256"), r"[0-9a-f]{64}")
@@ -1518,6 +1683,17 @@ class ControlledRelay:
             or type(admission.get("initial_task_version")) is not int
             or not 1 <= admission["initial_task_version"] < version
             or type(submit) is not bool
+            or (
+                review
+                and (
+                    pin is None
+                    or wave is None
+                    or submit is not True
+                    or expected_source is not None
+                    or review_client != admission.get("review_client")
+                    or (actor is not None and review_client != client_kind(actor.profile))
+                )
+            )
             or (
                 wave is not None
                 and (_matched_text(wave, r"[0-9a-f]{64}") is None or submit is not True)
@@ -1616,14 +1792,23 @@ class ControlledRelay:
             )
         except (AgentSyncError, KeyError, TypeError):
             return None
-        if digest(canonical_files) != proposal_sha or digest(paths) != admission.get(
-            "paths_sha256"
+        if (
+            digest(canonical_files) != proposal_sha
+            or digest(paths) != admission.get("paths_sha256")
+            or (review and paths != ("review.md",))
         ):
             return None
         contract = _proposal_contract(
-            worktree_id, base_head, admission["initial_task_version"], paths, submit, wave, pin
+            worktree_id,
+            base_head,
+            admission["initial_task_version"],
+            paths,
+            submit,
+            wave,
+            pin,
+            cast(ClientKind | None, review_client),
         )
-        request = f"relay:{key}:codex-proposal:{digest(contract)}"
+        request = _proposal_request_id(key, contract)
         expected_launch = digest([project_id, session_id, task_id, request])
         if stored["launch_request_sha256"] != expected_launch:
             return None
@@ -1642,6 +1827,8 @@ class ControlledRelay:
         admission = self._read_receipt(key, "incomplete")
         if admission is None:
             return CodexProposalReviewOutcome("not_requested")
+        if admission.get("mode") != "codex_proposal":
+            return CodexProposalReviewOutcome("incomplete")
         stored = self._observe_proposal_storage(
             project_id,
             task_id,

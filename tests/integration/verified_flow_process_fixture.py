@@ -11,7 +11,9 @@ from unittest.mock import patch
 
 import agentsync
 from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.claude_invocation import ClaudeHostProfile
 from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.adapters.cursor_invocation import CursorHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.controlled_relay import RelayActor
 from agentsync.core.service import Core
@@ -21,25 +23,103 @@ from agentsync.verification.owner_flow import OwnerCandidateFlow
 from agentsync.verified_proposal_flow import VerifiedProposalFlow
 
 
-async def emit_proposal(start, path, content, *, cwd, timeout_seconds, output_limit, env):
+def receiver_profile(client, original, receiver, workspace):
+    fields = dict(
+        project_id=receiver.project_id,
+        session_id=receiver.session_id,
+        executable=original.executable,
+        root=workspace.path,
+        expected_binary_sha256=original.expected_binary_sha256,
+    )
+    if client == "claude":
+        return ClaudeHostProfile(**fields, model="fixture")
+    if client == "cursor":
+        return CursorHostProfile(**fields, expected_cli_version="fixture-1")
+    assert client == "codex"
+    return CodexHostProfile(**fields, expected_cli_version=original.expected_cli_version)
+
+
+async def emit_proposal(
+    start, path, content, *, cwd, timeout_seconds, output_limit, env, client="codex", fault=None
+):
     message = json.dumps({"files": [{"path": path, "content": content}]})
-    events = [
-        {"type": "thread.started", "thread_id": "local-verified-flow-fixture"},
-        {"type": "turn.started"},
-        {
-            "type": "item.completed",
-            "item": {"id": "reply", "type": "agent_message", "text": message},
-        },
-        {
-            "type": "turn.completed",
-            "usage": {"input_tokens": 1, "cached_input_tokens": 0, "output_tokens": 1},
-        },
-    ]
+    if fault == "bad-output":
+        message = '{"files":[{"path":"wrong.md","content":"invalid"}]}'
+    if client == "claude":
+        events = [
+            {"type": "system", "subtype": "init", "session_id": "owned-fixture"},
+            {
+                "type": "result",
+                "subtype": "success",
+                "session_id": "owned-fixture",
+                "is_error": False,
+                "result": message,
+            },
+        ]
+        if fault == "tool-block":
+            events.insert(
+                1,
+                {
+                    "type": "assistant",
+                    "session_id": "owned-fixture",
+                    "message": {
+                        "role": "assistant",
+                        "stop_reason": "end_turn",
+                        "content": [
+                            {
+                                "type": "tool_use",
+                                "id": "fixture-tool",
+                                "name": "Fixture",
+                                "input": {},
+                            }
+                        ],
+                    },
+                },
+            )
+    elif client == "cursor":
+        events = [
+            {
+                "type": "result",
+                "subtype": "success",
+                "is_error": False,
+                "duration_ms": 2,
+                "duration_api_ms": 1,
+                "session_id": "owned-fixture",
+                "result": message,
+            }
+        ]
+    else:
+        assert client == "codex"
+        events = [
+            {"type": "thread.started", "thread_id": "local-verified-flow-fixture"},
+            {"type": "turn.started"},
+            {
+                "type": "item.completed",
+                "item": {"id": "reply", "type": "agent_message", "text": message},
+            },
+            {
+                "type": "turn.completed",
+                "usage": {"input_tokens": 1, "cached_input_tokens": 0, "output_tokens": 1},
+            },
+        ]
+        if fault == "codex-tool":
+            events.insert(
+                2,
+                {
+                    "type": "item.completed",
+                    "item": {
+                        "id": "fixture-tool",
+                        "type": "command_execution",
+                    },
+                },
+            )
     payload = "\n".join(json.dumps(event) for event in events) + "\n"
+    if fault == "unknown":
+        payload = ""
     return await start(
-        (sys.executable, "-I", "-c", "import sys;sys.stdout.write(" + repr(payload) + ")"),
+        (sys.executable, "-I", "-c", "import sys;sys.stdout.buffer.write(sys.stdin.buffer.read())"),
         cwd=cwd,
-        stdin_text="",
+        stdin_text=payload,
         timeout_seconds=timeout_seconds,
         output_limit=output_limit,
         env=env,

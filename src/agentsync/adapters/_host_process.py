@@ -102,6 +102,7 @@ class _ProtocolObservation(Generic[_UsageT]):
     usage: _UsageT | None
     client_id: str | None
     error_code: str | None
+    tool_block_count: int | None = None
 
 
 @dataclass
@@ -133,7 +134,9 @@ class _HostProcessAdapter(
         contextual_factory: _ContextualCaptureFactory | None = None,
         new_capabilities: Callable[[bool, int, int], _CapabilitiesT],
         new_run: Callable[[AdapterTask, str, float], _RunT],
-        new_result: Callable[[_RunT, tuple[str, ...], _UsageT | None, str | None], _ResultT],
+        new_result: Callable[
+            [_RunT, tuple[str, ...], _UsageT | None, str | None, int | None], _ResultT
+        ],
         parse: Callable[[str], _ProtocolObservation[_UsageT]],
         configuration_error: str,
         max_runs: int = 100,
@@ -304,6 +307,7 @@ class _HostProcessAdapter(
         usage: _UsageT | None = None
         client_thread_id = None
         protocol_error_reason = None
+        tool_block_count = None
         error: str | None = entry.stop_code or capture.error_code or "capture_unknown"
         if capture.state == "exited":
             if capture.exit_code is not None and capture.exit_code != 0:
@@ -337,6 +341,7 @@ class _HostProcessAdapter(
                         if status != "unknown":
                             messages, usage = report.messages, report.usage
                             client_thread_id = report.client_id
+                            tool_block_count = report.tool_block_count
         async with self._lock:
             self._finish(
                 entry,
@@ -347,6 +352,7 @@ class _HostProcessAdapter(
                 usage=usage,
                 client_thread_id=client_thread_id,
                 protocol_error_reason=protocol_error_reason,
+                tool_block_count=tool_block_count,
                 stdout_sha256=hashlib.sha256(raw.stdout).hexdigest()
                 if protocol_error_reason is not None
                 else None,
@@ -366,6 +372,7 @@ class _HostProcessAdapter(
         usage: _UsageT | None = None,
         client_thread_id: str | None = None,
         protocol_error_reason: str | None = None,
+        tool_block_count: int | None = None,
         stdout_sha256: str | None = None,
         stderr_sha256: str | None = None,
     ) -> None:
@@ -401,6 +408,7 @@ class _HostProcessAdapter(
             messages if status != "unknown" else (),
             usage if status != "unknown" else None,
             client_thread_id if status != "unknown" else None,
+            tool_block_count if status != "unknown" else None,
         )
         if entry.deadline is not None:
             entry.deadline.cancel()

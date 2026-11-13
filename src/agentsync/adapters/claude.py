@@ -51,6 +51,8 @@ class ClaudeResult(_HostMarkers):
     usage: ClaudeUsage | None = None
     client_session_id: str | None = field(default=None, repr=False)
 
+    tool_block_count: int | None = None
+
 
 def _new_run(task: AdapterTask, identity: str, started_at: float) -> ClaudeRun:
     return ClaudeRun(
@@ -65,9 +67,13 @@ def _new_run(task: AdapterTask, identity: str, started_at: float) -> ClaudeRun:
 
 
 def _new_result(
-    run: ClaudeRun, messages: tuple[str, ...], usage: ClaudeUsage | None, client_id: str | None
+    run: ClaudeRun,
+    messages: tuple[str, ...],
+    usage: ClaudeUsage | None,
+    client_id: str | None,
+    tool_block_count: int | None,
 ) -> ClaudeResult:
-    return ClaudeResult(run, messages[0] if messages else "", usage, client_id)
+    return ClaudeResult(run, messages[0] if messages else "", usage, client_id, tool_block_count)
 
 
 def _parse(text: str) -> _ProtocolObservation[ClaudeUsage]:
@@ -78,6 +84,7 @@ def _parse(text: str) -> _ProtocolObservation[ClaudeUsage]:
         report.usage,
         report.session_id,
         report.error_code,
+        report.tool_block_count,
     )
 
 

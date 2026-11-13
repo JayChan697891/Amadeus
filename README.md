@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a110 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a111 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -23,6 +23,14 @@ The trusted host flow now has a [continuous real Codex producer/reviewer example
 including exact approval gates, independent Docker verification and automatic context/task handoff.
 The model review is accepted as a document only; it does not become test evidence.
 Original-workspace source application and uncertain execution retries remain disabled.
+The new `ProposalReviewInput` / `ProposalReviewQueueItem` path accepts a prepared
+Codex, Claude Code or Cursor reviewer for a dependent task. It pins the current
+verified producer artifact and accepts only `review.md` as an unverified document.
+`ProposalHandoff` uses this restricted path for Claude/Cursor and preserves the
+existing Codex handoff format. Each launch still needs exact host approval;
+reported Codex/Claude tool events are rejected in this review mode. Cursor's
+terminal response cannot prove that no tools ran, so fixed flags do not replace
+host isolation requirements. Real Claude/Cursor compatibility remains NOT RUN.
 All checks run locally; GitHub Actions
 are manual-only and are not used for development testing.
 

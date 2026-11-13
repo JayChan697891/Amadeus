@@ -1,5 +1,27 @@
 # Amadeus current progress
 
+## 0.3.0a111 restricted cross-client review: source checks passed
+
+New ProposalReviewInput/ProposalReviewQueueItem accepts prepared Codex/Claude/Cursor
+reviewers for a task depending on the exact verified producer artifact. Current
+staging context/candidate/snapshot are checked before admission, after approval and
+before publishing. Only review.md is stored as unverified text; the new mode cannot
+enter the producer/staging route. Legacy Codex contracts and receipts remain intact.
+New handoff intents bind client; uncertain dispatch remains fenced. Reported Codex/
+Claude tool events are rejected; Cursor output cannot prove absence of tool use.
+
+Windows working-tree regression:357passed/11Linux Docker skips. Subsequent5-case
+gate/parser supplement passes after test-only additions (two earlier cases receive
+extra assertions and three new IDs): combined360unique passing IDs/11skips, not a
+new whole-suite run. Ruff/format and mypy89modules pass. Original10fixture failures
+and the10-case corrected run remain in D:/agentsync-debug/m7-dependent-review-a111-sol;
+they preceded the final regression and are not hidden as product passes. Source and
+final source hashes identify the exact changes. Independent source review accepted
+the design and requested the now-passing directed source/approval tests. Final frozen
+wheel/sdist and actual Linux Docker review composition are NOT RUN yet. Real Claude/
+Cursor and formal Release remain unverified/blocked. Next freeze this product and
+run the affected installed suites; preserve host approvals and original-source gates.
+
 ## 0.3.0a110 owner delivery entry: installed validation passed
 
 Product529df3b3e073b9975fc1e722511ade59423fa330 exposes explicit owner SDK/CLI
