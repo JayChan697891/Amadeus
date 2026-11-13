@@ -290,8 +290,14 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
     assert by_id["M6-05"]["coverage"] == "partial"
     assert set(by_id["M6-05"]["existing_tests"]) == CURSOR_COMPONENT_SELECTORS
     assert by_id["M6-05"]["execution_status"] == "not_run"
-    assert by_id["M7-03"]["coverage"] == "missing"
-    assert by_id["M7-03"]["existing_tests"] == []
+    assert by_id["M7-03"]["coverage"] == "partial"
+    assert set(by_id["M7-03"]["existing_tests"]) == {
+        "tests/unit/test_http_providers.py",
+        "tests/integration/test_provider_loopback_transport.py",
+        "tests/unit/test_provider_usage_and_budget.py",
+    }
+    assert by_id["M7-03"]["execution_status"] == "not_run"
+    assert "separate cost authorization" in by_id["M7-03"]["method"]
     assert by_id["M7-04"]["coverage"] == "partial"
     assert set(by_id["M7-04"]["existing_tests"]) == {
         "tests/unit/test_retry_planning.py::test_exponential_backoff_caps_and_retry_after_remains_an_uncapped_floor",

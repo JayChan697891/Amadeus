@@ -1258,13 +1258,17 @@
       "milestone": "M7",
       "title": "Optional BYOK multi-model providers",
       "acceptance": "No key required for core; provider configs isolated and secrets redacted; paid paths remain explicitly unexecuted without approval.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "security"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_http_providers.py",
+        "tests/integration/test_provider_loopback_transport.py",
+        "tests/unit/test_provider_usage_and_budget.py"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M7-03",
