@@ -37,6 +37,14 @@ result. Ruff, format, mypy, build and pip checks pass. The fresh wheel origin,
 dependency and license-inventory checks also pass; wheel full-suite execution is
 now RUNNING and sdist full-suite execution remains NOT RUN. This is not a completed
 matrix row. Intermediate observation: D:/agentsync-debug/m114/source-observation.json.
+Windows license/archive review found no blocker to continued testing. Root checked
+43 installed license-file hashes, recorded both archive hashes and matched the
+sdist license/notice documents to the frozen source;
+Astra additionally checked the complete notices, including pywin32's component
+licenses outside its top-level PSF metadata. THIRD-PARTY-LICENSES.md now clarifies
+that distinction without changing the frozen packages. Other platform inventories
+and final classification remain pending. Local record:
+D:/agentsync-debug/m114/windows-license-observation.json.
 D:/agentsync-debug/m9-bootstrap.py runs the existing collector once; source, wheel and sdist
 each retain a full suite and 3600-second controller limit. D:/agentsync-debug/m114
 holds preparation evidence. All six Windows/Linux interpreter/dependency preflights

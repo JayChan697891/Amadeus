@@ -8,6 +8,17 @@ This metadata check does not change the pending final license/release review.
 This covers the runtime transitive dependency closure, including Windows-only pywin32.
 Project code is MIT; dependencies retain their own licenses. See THIRD-PARTY-NOTICES.txt.
 
+The table records upstream metadata, not a complete classification of every bundled
+component. In particular, pywin32's `PSF` label does not replace its component
+licenses: its installed files include adodbapi under LGPL 2.1, Mark Hammond/Greg
+Stein terms, Scintilla and Python historical terms, and MAPI MIT text and NOTICE.
+Those texts are retained in THIRD-PARTY-NOTICES.txt. Cryptography's declared
+`Apache-2.0 OR BSD-3-Clause` is an alternative-license expression; both license
+texts are retained. The current Amadeus wheel/sdist do not bundle third-party
+wheels, binaries or site-packages. Redistributing a dependency bundle would need
+its own scope review. The complete multi-platform license/release review remains
+pending; this clarification does not alter the frozen a114 artifacts under test.
+
 | Package | Version | Declared license |
 |---|---|---|
 | annotated-doc | 0.0.5 | MIT |
