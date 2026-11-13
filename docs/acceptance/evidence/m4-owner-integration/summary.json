@@ -139,5 +139,14 @@
     "New integration Docker and installed-artifact checks are pending M9",
     "Synthetic proof fixtures do not prove real-client acceptance",
     "No real user workspace integration or formal Release approval"
-  ]
+  ],
+  "publication_correction": {
+    "original_commit": "5986b9b",
+    "reason": "Git normalized two redacted XML files on first publication; the source test and reviewed local evidence bytes were unchanged. Explicit evidence attributes restore the originally pinned XML bytes.",
+    "affected": [
+      "original-affected.xml",
+      "repaired-module.xml"
+    ],
+    "tests_repeated": false
+  }
 }

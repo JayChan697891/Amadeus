@@ -72,3 +72,5 @@ docs/acceptance/evidence/m4-owner-delivery/** -text -whitespace
 docs/acceptance/evidence/m7-dependent-review/** -text -whitespace
 docs/acceptance/evidence/m7-durable-workflow/** -text -whitespace
 docs/acceptance/evidence/m8-receipt-usage/** -text -whitespace
+
+docs/acceptance/evidence/m4-owner-integration/** -text -whitespace
