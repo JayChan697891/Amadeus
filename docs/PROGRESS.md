@@ -1,5 +1,30 @@
 # Amadeus current progress
 
+## Actual coordinator-process exit and disk recovery
+
+Tests frozen07aba94 retain runtime09425da unchanged. The10-case installed Linux
+flow suite passed in112.164seconds, zero failure/error/skip. Two added cases first
+obtain an actual Docker/Core verified source, then terminate a separate coordinator
+process with os._exit(73): before dispatch after saved task/worktree, or after
+durable dispatch intent immediately before queue entry. Two fresh recovery children
+follow each exit. The former starts one owned receiver and then returns the saved
+result; the latter staysunknown/not_started with zero authority/launches. Source
+pin, task/worktree and candidate job remain unchanged; producer/verifier do not rerun.
+
+This uses real process exits and real Docker with deterministic owned client
+protocol emitters, zero model calls. It does not prove a model crash during output,
+whole-machine power failure or an entire continuous flow crashing in one process.
+The existing8case semantics remain. All90installed members/89modules match before/
+after;7Docker executions (6passed/1expected wrong),5verified proofs and absence of
+all7containers were checked. Ruff/format pass. Native Astra accepted this limited
+scope after inspecting source and evidence. [Evidence](acceptance/evidence/m8-process-recovery/summary.json).
+
+Debug: D:/agentsync-debug/m8-process-recovery-07aba94; test and postcheck terminal0.
+Agent-reported Windows17pass/10skip has no persisted log/XML and is not part of
+this acceptance evidence. Next complete one frozen current package-install/full
+local regression matrix; do not repeat the consumed real-client controllers.
+M5/M6/M7/M8/Release are not declared complete by these two recovery cases.
+
 ## Continuous real producer, verifier and receiver
 
 Installed09425da now completed one uninterrupted VerifiedProposalFlow invocation:

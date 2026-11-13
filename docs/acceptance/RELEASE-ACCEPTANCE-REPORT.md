@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Verified-source coordinator process recovery: limited scope passed
+
+Tests07aba94 reuse installed runtime09425da (90members/89modules unchanged) and
+pass10Linux cases in112.164seconds, no failure/error/skip. Two new cases terminate
+an actual separate coordinator process with os._exit(73), after durable task/tree
+preparation or after dispatch intent before queue entry. Each is followed by two
+fresh-process recovery calls. Recoverable preparation launches the owned receiver
+once; uncertain intent remainsunknown and never dispatches. Source pin, task/tree,
+candidate job and source verification remain unchanged; candidate execution is
+explicitly prohibited in the recovery children. The previous8cases retain semantics.
+
+Actual Docker postcheck:7executions,6passed/1expected wrong,5verified task proofs,
+all7containers absent. Client output is an owned protocol fixture, not a real model.
+Ruff/format and independent Astra source/evidence review passed. [Evidence](evidence/m8-process-recovery/summary.json).
+Windows agent tool-output-only17pass/10skip is not promoted into persisted evidence.
+NOT PROVEN: model generation crash, whole-machine power failure, all lifecycle
+checkpoints, full current matrix or entire M8/Release. Formal Release stays BLOCKED.
+
 ## Continuous actual Codex flow on09425da: limited scope passed
 
 One installed VerifiedProposalFlow invocation ran a fresh real producer and receiver

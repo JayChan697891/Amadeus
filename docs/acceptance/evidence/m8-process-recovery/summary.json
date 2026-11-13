@@ -1,0 +1,63 @@
+{
+  "test_source_sha": "07aba94888ed2243f44cbc81ac26fefab9826c86",
+  "runtime_product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "wheel_sha256": "8763059784278bb611f591792c9d5d1c5fe4730dbeb00a384366dc4dedf7dcdd",
+  "scope": "Abrupt coordinator child exit after independently verified source; disk recovery and uncertain dispatch fencing",
+  "status": "PASS_WITH_LIMITED_SCOPE",
+  "linux": {
+    "passed": 10,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 112.164,
+    "runtime_members_matched_before_after": 90,
+    "python_modules": 89,
+    "source_shadowing": false,
+    "installation_reused": true
+  },
+  "model_calls": 0,
+  "new_cases": [
+    "host-exit-pre-dispatch",
+    "host-exit-dispatch-intent"
+  ],
+  "method": "Parent first produces an owned protocol proposal and real Docker/Core verified proof; child then os._exit(73) at a durable checkpoint; two separate fresh children reopen the saved Core/receipts.",
+  "observed": {
+    "pre_dispatch_receiver_launches": [
+      1,
+      0
+    ],
+    "uncertain_intent_receiver_launches": [
+      0,
+      0
+    ],
+    "uncertain_intent_state": "unknown",
+    "producer_and_candidate_not_reexecuted": true,
+    "source_pin_task_tree_and_job_unchanged": true,
+    "docker_executions": 7,
+    "docker_passed": 6,
+    "docker_expected_wrong_result": 1,
+    "verified_task_proofs": 5,
+    "all_recorded_containers_absent": true
+  },
+  "windows": "Agent reported 17 existing tests passed/10 Docker skips in tool output only; no persisted log/XML, not included as acceptance evidence here.",
+  "independent_review": "Native Astra reviewed test diff, unchanged runtime, frozen test identities, 10-case XML/log and 7 actual Docker receipts; limited scope accepted.",
+  "not_proven": [
+    "real model crash during generation",
+    "whole-machine power failure",
+    "full current matrix",
+    "cross-vendor clients",
+    "complete M8 or Release"
+  ],
+  "formal_release": "BLOCKED",
+  "artifact_sha256": {
+    "config.json": "c63b5d5b7ec64be782eb8a4a8614b58b85bb5da0cd08eb2314aaaefb147100af",
+    "docker-observation.json": "54df452b4acdf92c157cb4a46d7d480874bf7056e6065a8eeae85736cd010ff0",
+    "format.log": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "linux-installed.log": "f054de62ec0da9fd856254cff6d8293af9201280330b20cd14f9b9abbde584d7",
+    "linux-installed.xml": "8d66af6fd0d926edccabd2c2faa915e08bb822d606d66409ddb22cf6bda6d2cb",
+    "linux-origin.json": "fb723886ec057f4d3a4668877359b7b88d3817abf525153d7ddef15697a7725b",
+    "observe-docker.py": "31a4875e82bf4e4a7237f7002b92403fdb0b9c9cf29a388f77146dcfe60aa40d",
+    "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "test-installed.py": "9626ffbeaee3902a2049883c16147fd1e5718337918f0c0ef9859af8dc57922b"
+  }
+}

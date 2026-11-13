@@ -64,3 +64,4 @@ docs/acceptance/evidence/m7-verified-handoff/** -text whitespace=blank-at-eol,bl
 docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.log -whitespace
 docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.xml -whitespace
 docs/acceptance/evidence/m7-continuous-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m8-process-recovery/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

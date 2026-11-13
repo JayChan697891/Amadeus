@@ -1,5 +1,12 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Tests07aba94 now cover actual coordinator subprocess exit after verified source,
+both recoverable preparation and uncertain dispatch intent. Installed unchanged
+runtime09425da passes all10flow cases with7actual Docker executions and zero models;
+independent review accepts only this limited recovery scope. Evidence:
+acceptance/evidence/m8-process-recovery/summary.json. Next complete current frozen
+installation/full local regression, retaining unsupported vendors and release gates.
+
 Installed09425da now has one continuous actual two-Codex flow through explicit host
 decisions, Docker8/8, independent verified producer completion and an automatically
 prepared receiver. Full358byte model review accepted as a document only/unverified;
