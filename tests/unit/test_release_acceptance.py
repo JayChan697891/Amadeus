@@ -927,7 +927,9 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
             "tests.integration.test_capability_planning_core_boundary",
             "test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
         ),
-        # Ordinary neighboring names/classes are not the declared selectors.
+    ]
+    # Ordinary neighboring names/classes are not the declared selectors.
+    neighbors = [
         (
             "tests.unit.test_scheduling",
             "test_dependencies_require_completed_and_missing_is_never_completed_extra",
@@ -936,7 +938,9 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
     ]
     (tmp_path / junit_name).write_text(
         "<testsuites><testsuite>"
-        + "".join(f'<testcase classname="{module}" name="{name}"/>' for module, name in cases)
+        + "".join(
+            f'<testcase classname="{module}" name="{name}"/>' for module, name in cases + neighbors
+        )
         + "</testsuite></testsuites>",
         encoding="utf-8",
     )
@@ -945,23 +949,33 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
     assert by_id["M7-02"]["acceptance_evidence_status"] == "unverified"
     assert by_id["M7-01"]["acceptance_evidence_status"] == "not_run"
     assert len(rows) == 42 and all(row["execution_status"] == "not_run" for row in rows)
+    declared = {item["id"]: item["existing_tests"] for item in manifest["requirements"]}
+    fixture_selectors = {f"{module.replace('.', '/')}.py::{name}" for module, name in cases}
+    observed_selectors = set()
     for requirement_id in ("M7-01", "M7-02"):
         row = by_id[requirement_id]
         assert row["coverage"] == "partial"
-        assert len(row["component_evidence"]) == (6 if requirement_id == "M7-01" else 8)
-        for component in row["component_evidence"]:
+        components = row["component_evidence"]
+        assert [component["selector"] for component in components] == declared[requirement_id]
+        for component in components:
+            selector = component["selector"]
+            # The fixture XML includes planning cases only. Missing handoff cases have zero counts.
+            expected = int(selector in fixture_selectors)
             assert component["observations"] == [
                 {
                     "junit": junit_name,
                     "counts": {
-                        "tests": 1,
-                        "passed": 1,
+                        "tests": expected,
+                        "passed": expected,
                         "failures": 0,
                         "errors": 0,
                         "skipped": 0,
                     },
                 }
-            ]
+            ], selector
+            if expected:
+                observed_selectors.add(selector)
+    assert observed_selectors == fixture_selectors
     for requirement_id in ("M6-03", "M6-04", "M6-05"):
         assert by_id[requirement_id]["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:

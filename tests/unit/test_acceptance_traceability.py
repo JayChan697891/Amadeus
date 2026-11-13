@@ -252,14 +252,31 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
             "tests/integration/test_capability_planning_core_boundary.py",
         },
     }
+    verified_flow = (
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
+    )
+    handoff_components = {
+        "M7-01": {
+            "tests/integration/test_proposal_handoff.py::test_concurrent_and_repeated_triggers_launch_only_once",
+            "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent",
+            verified_flow,
+        },
+        "M7-02": {
+            "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
+            "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
+            verified_flow,
+        },
+    }
     for requirement_id, allowed_paths in paths.items():
         item = by_id[requirement_id]
         assert item["coverage"] == "partial"
-        assert item["existing_tests"]
-        assert all(
-            "::" in selector and selector.split("::")[0] in allowed_paths
-            for selector in item["existing_tests"]
-        )
+        selectors = set(item["existing_tests"])
+        assert all("::" in selector for selector in selectors)
+        planning_components = {
+            selector for selector in selectors if selector.split("::", 1)[0] in allowed_paths
+        }
+        assert planning_components
+        assert selectors - planning_components == handoff_components[requirement_id]
         assert item["execution_status"] == "not_run" and item["original_scenarios"] == []
     assert "real authorized agents" in by_id["M7-02"]["acceptance"]
     assert by_id["M6-03"]["coverage"] == "partial"

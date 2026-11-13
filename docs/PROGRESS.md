@@ -1,11 +1,28 @@
 # Amadeus current progress
 
-## Current frozen source-distribution matrix: RUNNING
+## Current frozen source-distribution matrix: FAIL; targeted repair validation pending
+
+Windows collector terminated at2026-11-13T07:10:07Z with2334cases:
+2275passed,55skipped,4failed,0errors. The4failures are confined to the planning
+traceability assertion and three source/wheel/sdist XML variants of the same
+component-observation test. Earlier6839a1f/e6f3e34 added3host-handoff/flow selectors
+to each M7 planning requirement; the assertions still expect only the original
+planning paths and6/8selectors. Preserve this failed result and its original XML/logs.
+The unchanged runtime,90installed members and source fingerprints passed their
+before/after checks. This is not a passing matrix or M5 acceptance. Repair is in
+progress, retaining unobserved components and formal acceptance as unverified.
+Linux terminated at2026-11-13T07:16:53Z with2324passed,6skipped and the same4failed
+case IDs. Both platforms collected2334identical case IDs. The dedicated Docker
+daemon has zero remaining containers. Handles68618/98726 are both terminal exit1;
+do not restart either collector. All61platform skips passed on the other platform,
+without implying native Windows Docker or Windows symlink-creation privileges.
+The two corrected test files pass246source cases with0fail/error/skip; installed
+package delta validation and final case-set/hash reconciliation remain pending.
 
 Source/test/package input isc262a29602fdaf3be3ee322dff997a3a1e2c629f; runtime bytes
 remain09425da. Sdist SHA256 is6e78b871c978a179b4edb48d09b928c5088ed5f44584694b9d3c3f1a99397965.
 887packaged Git input files and90runtime members were independently checked.
-Fresh offline Windows3.12.16 and Linux3.14.7 installations are running the full
+Fresh offline Windows3.12.16 and Linux3.14.7 installations use the full
 tests tree with bounded collectors; neither final matrix has been accepted yet.
 Local debug root: D:/agentsync-debug/m9-sdist-c262a29; Linux guest root:
 /root/amadeus-sdist-c262a29. Controllers were started once; inspect current process
