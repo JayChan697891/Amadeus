@@ -1,5 +1,50 @@
 # Amadeus current progress
 
+## Verified producer-to-receiver composition: local Docker integration
+
+Frozen09425da adds VerifiedProposalFlow, composing one new producer with exact
+host staging/execution/completion decisions, existing independent Docker proof,
+verified producer completion and the saved dependent handoff. No new acceptance
+policy, queue protocol, automatic approval or source application was introduced.
+Resume is limited to a currently verified source and its existing receiver intent;
+unknown producer/staging/execution work is not retried. Non-passing execution
+retains its actual assessment, including unverified states. Synchronous Docker
+keeps its own timeout/cleanup policy; explicit overall-deadline checks prevent
+later completion or dispatch once that budget is exhausted.
+
+Fresh offline Linux3.14.7 wheel:8affected flow cases passed in30.74seconds,
+zero failures/errors/skips. They cover success, wrong output, verified-source
+reopen, three exact-decision denials, synchronous approval budget expiry and
+verified-state lookup budget expiry.90runtime members/89Python modules match
+before/after; no source shadowing; Ruff/format2files and mypy89modules pass.
+Post-run inspection confirms5actual Docker executions,4passed/1expected wrong
+result,3independent verified proofs and all5containers absent. Clients are owned
+protocol emitters; no real model was called for this new flow.
+
+Prior17e0ab4 passed24checks in52.33seconds (7flow+17existing component cases).
+Independent review then found that the synchronous verified-state query could
+spend the receiver's budget before the inner handoff clock was started.09425da
+fixes this and adds the eighth case. Only the flow module and its tests changed;
+the17unchanged component cases retain their original SHA evidence, not a claim
+that24or25tests ran against the final wheel. Both frozen packages are retained.
+
+Initial6db02e5 run21passed/2failed because the fixture reused one single-use launch
+approval ID. Saved receipts show attempt_already_reserved; per-plan fixture IDs
+fix the test without changing admission. Original failures remain in transparently
+sanitized log/XML, with private-original hashes. Evidence and frozen wheel:
+[summary](acceptance/evidence/m7-verified-handoff/summary.json),
+releases/0.3.0a109/m7-verified-09425da. Independent source/package review accepted this limited integration scope.
+Debug: D:/agentsync-debug/m7-verified-handoff-budget; Linux install:
+/root/amadeus-verified-handoff-09425da. All reported runs are terminal.
+
+Next verify one continuous real producer/independent-verifier/receiver flow with
+fresh bounded approvals, then address genuinely recoverable interrupted work.
+No new real controller has been prepared or launched for this module. Historical
+b455d9b staged real continuation below keeps its exact scope. New full matrix,
+Windows/macOS integration and sdist installation remain NOT RUN; M5/M6/M7/Release
+remain incomplete/BLOCKED. Unsupported server cancellation is a declared client
+capability limitation permitted by SPECIFICATION, not a new unconditional gate.
+
 ## Actual coordinator continuation: one receiver and safe reopen
 
 Frozenb455d9b now has a real installed coordinator continuation from the independently

@@ -59,3 +59,7 @@ docs/acceptance/evidence/m7-host-handoff/** -text whitespace=blank-at-eol,blank-
 docs/acceptance/evidence/m7-host-handoff/source-budget-first.log -whitespace
 docs/acceptance/evidence/m7-host-handoff/source-budget-first.xml -whitespace
 docs/acceptance/evidence/m7-host-handoff-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m7-verified-handoff/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve pytest traceback whitespace in the transparently sanitized failed run.
+docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.log -whitespace
+docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.xml -whitespace

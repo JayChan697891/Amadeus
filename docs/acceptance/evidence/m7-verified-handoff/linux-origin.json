@@ -1,0 +1,13 @@
+{
+  "product_sha": "17e0ab41c84c6ac9ebf5e371013cdbcf12e065d8",
+  "wheel_sha256": "01e37eb3627c3a9c8e20194e8d34a6f442d4645445fb55bc1d4bdc52946b3fa8",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "runtime_package_members_matched_before_after": 90,
+  "runtime_python_modules": 89,
+  "source_shadowing": false,
+  "origin": "/root/amadeus-verified-handoff-17e0ab4/venv/lib/python3.14/site-packages/agentsync",
+  "exit_code": 0,
+  "model_calls": 0,
+  "candidate_execution": "actual local Linux Docker",
+  "formal_release": "BLOCKED"
+}

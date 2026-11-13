@@ -903,7 +903,8 @@
         "tests/integration/test_candidate_claims.py",
         "tests/integration/test_candidate_claim_migration.py",
         "tests/integration/test_candidate_intents.py",
-        "tests/integration/test_candidate_intent_migration.py"
+        "tests/integration/test_candidate_intent_migration.py",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
       ],
       "planned_cases": [
         {
@@ -1194,7 +1195,8 @@
         "tests/integration/test_scheduling_core_boundary.py::test_core_rejects_stale_recommendation_after_another_worker_claims",
         "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is",
         "tests/integration/test_proposal_handoff.py::test_concurrent_and_repeated_triggers_launch_only_once",
-        "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent"
+        "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
       ],
       "planned_cases": [
         {
@@ -1233,7 +1235,8 @@
         "tests/unit/test_dispatch_planning.py::test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker",
         "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
         "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
-        "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry"
+        "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
       ],
       "planned_cases": [
         {

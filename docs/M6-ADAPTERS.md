@@ -563,3 +563,43 @@ The source is revalidated by the receiving relay, selection is pinned, and the
 receiver's result stops at ordinary review/unverified. No automatic task acceptance,
 candidate staging/execution, source application or paid-provider configuration is
 introduced. Local protocol-fixture tests are separate from real-client acceptance.
+## Verified proposal flow (trusted host API)
+
+`agentsync.verified_proposal_flow.VerifiedProposalFlow` composes the existing
+producer capture, source-reference checkpoint, candidate staging, independent
+Docker verification and dependent `ProposalHandoff`. It is a host API, not an
+Agent-facing permission grant or automatic candidate application.
+
+Call `run_once(producer, proposal, handoff_request, ...)` with the owner token,
+separate staging and reviewer `RelayReviewer` identities, a trusted `DockerProfile`,
+the receiver factory and three async host decisions:
+
+- `approve_staging(preview)` returns the reviewed `plan_sha256`.
+- `approve_execution(job)` returns the reviewed `metadata_sha256`.
+- `approve_completion(decision)` returns the reviewed `decision_sha256` only after
+  inspecting the exact execution and independent reviewer binding.
+
+Missing or mismatched decisions stop the corresponding step. Callback inputs are
+copies; the actual services revalidate their exact pins and existing permissions.
+The completion service still requires the actual passed verifier proof and a
+different reviewer. A model's PASS text is never sufficient. The returned flow
+and receiver outcome remain `unverified`; only the producer's Core task can gain
+the existing independent `verified` proof. Non-passing execution keeps its exact
+`execution_assessment`, including unknown/unverified states.
+
+`run_once` is deliberately single-use. A partial or unknown producer, staging or
+candidate execution must be inspected through the existing owner services, never
+retried by this wrapper. Once the producer is currently completed/verified,
+`resume_receiver(request, admin_token=..., build_receiver=...)` can use the saved
+handoff reference without rerunning those steps. An expired/missing receiver or
+lost/changed receipts remain errors. Existing dispatch intent prevents relaunch.
+
+The total budget is checked between synchronous steps and forwarded to producer
+and receiver dispatch. Docker execution/cleanup retain their own bounded policy;
+they are not detached into an unobserved background thread. Exceeding the outer
+budget during synchronous work prevents later approval, completion and dispatch,
+but is not a claim that Python can interrupt that synchronous work immediately.
+
+The local integration fixtures emit protocol data from owned Python processes;
+only the dedicated Linux Docker verifier executes proposal bytes. These fixtures
+do not establish a continuous real-model chain or extend historical client evidence.

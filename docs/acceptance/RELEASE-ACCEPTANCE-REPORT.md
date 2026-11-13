@@ -1,5 +1,34 @@
 # Release Acceptance Report
 
+## Verified proposal flow: actual local Docker, protocol-fixture clients
+
+Frozen09425da connects producer output, saved source reference, three exact host
+decisions, independent candidate verification/completion and dependent handoff.
+The existing services retain all permission, single-use, candidate/version and
+reviewer checks. Only currently verified sources can resume a saved receiver;
+unknown execution is not retried and non-passing assessments remain distinguishable.
+
+Final Linux3.14.7 wheel8affected cases passed/0failed/error/skip in30.74seconds.
+90runtime members/89modules match before/after; dependency/static checks pass.
+5actual Docker executions comprise4passing and1expected incorrect-source result;
+3independent verified-task proofs and absence of all5containers were inspected.
+Protocol emitters are owned Python fixtures, with zero real models.
+[Evidence](evidence/m7-verified-handoff/summary.json).
+
+Earlier17e0ab4 passed24checks, including17unchanged component cases. Review found
+the synchronous verified-state lookup was not deducted from the receiver budget;
+09425da fixes this and the eighth affected test proves no downstream task/launch
+after that lookup exhausts the deadline. Prior24and final8are separate runs/SHAs,
+not one combined final suite. Both frozen evidence sets and wheels are retained.
+
+The initial21pass/2failure run is retained: duplicate fixture launch approval IDs
+were correctly refused. The fixture now supplies separate per-plan IDs. Explicit
+deadline checks also prevent later mutation/dispatch after synchronous work spends
+the flow budget; this does not promise immediate interruption of synchronous Docker.
+Independent review accepted this limited final source/package scope. New continuous real-client evidence,
+full matrix, Windows/macOS integration and sdist installation are NOT RUN. Earlier
+real-client evidence retains its own versions. Formal Release remains BLOCKED.
+
 ## Actual host coordinator: staged continuation and reopen
 
 An installedb455d9b ProposalHandoff derived the saved real6017005 producer reference

@@ -1,0 +1,69 @@
+"""Build a frozen wheel and a compact local Linux test bundle, offline."""
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
+import zipfile
+from pathlib import Path
+
+repo = Path('F:/syuc/amadeus-m6-single')
+base = Path('D:/agentsync-debug/m7-verified-handoff-budget')
+product = sys.argv[1]
+selected = sys.argv[2:]
+assert re.fullmatch('[0-9a-f]{40}', product) and selected
+assert all(re.fullmatch(r'tests/(integration|unit)/test_[a-z_]+\.py', n) for n in selected)
+base.mkdir(exist_ok=False)
+for name in ('tmp', 'home'):
+    (base / name).mkdir()
+env = {k: v for k, v in os.environ.items() if not k.upper().startswith(
+    ('PYTEST_', 'OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'AGENTSYNC_', 'GIT_', 'CODEX_'))
+    and k.upper() not in {'PYTHONPATH', 'PYTHONHOME'}}
+env.update(PYTHONDONTWRITEBYTECODE='1', PIP_NO_INDEX='1', PIP_CONFIG_FILE=os.devnull,
+    PIP_DISABLE_PIP_VERSION_CHECK='1', TEMP=str(base / 'tmp'), TMP=str(base / 'tmp'),
+    HOME=str(base / 'home'), USERPROFILE=str(base / 'home'), GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull)
+# Only wheel inputs/tests: no redundant historical release archives or evidence copies.
+with (base / 'source.zip').open('xb') as out:
+    subprocess.run(['git', '-C', str(repo), 'archive', '--format=zip', product, '--',
+        'src', 'tests', 'pyproject.toml', 'README.md', 'LICENSE'], stdout=out, check=True)
+source = base / 'source'
+source.mkdir()
+with zipfile.ZipFile(base / 'source.zip') as archive:
+    for name in archive.namelist():
+        assert (source / name).resolve().is_relative_to(source.resolve())
+    archive.extractall(source)
+for name in selected:
+    assert (source / name).is_file()
+manifest = {p.relative_to(source / 'src').as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+    for p in sorted((source / 'src/agentsync').rglob('*')) if p.is_file()}
+builder = 'D:/agentsync-debug/m6-package-6a8ff41/builder/Scripts/python.exe'
+with (base / 'build.log').open('xb') as log:
+    result = subprocess.run([builder, '-m', 'build', '--wheel', '--no-isolation', '--outdir',
+        str(base / 'dist')], cwd=source, env=env, stdout=log, stderr=subprocess.STDOUT, timeout=120)
+assert result.returncode == 0
+wheel = next((base / 'dist').glob('*.whl'))
+config = {'product_sha': product, 'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(),
+    'runtime_members': manifest, 'selected': selected,
+    'test_members': {p.relative_to(source).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in sorted((source / 'tests').rglob('*.py'))}}
+(base / 'config.json').write_text(json.dumps(config, indent=2) + '\n', encoding='utf-8')
+driver = Path('D:/agentsync-debug/m7-proposal-queue-installed.py').read_text(encoding='utf-8')
+driver = driver.replace('no real clients or candidate execution', 'no real clients; actual dedicated Linux Docker candidate execution')
+driver = driver.replace('    verify()\n    code=pytest.main(', '''    assert sys.platform == 'linux'
+    os.environ.update(AGENTSYNC_REQUIRE_DOCKER_TESTS='1',
+        AGENTSYNC_DOCKER_TEST_IMAGE='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258')
+    for name, expected in config['test_members'].items():
+        assert hashlib.sha256((BASE/'source'/name).read_bytes()).hexdigest()==expected
+    verify()
+    code=pytest.main(''')
+driver = driver.replace("'candidate_execution':False", "'candidate_execution':'actual local Linux Docker'")
+(base / 'test-installed.py').write_text(driver, encoding='utf-8', newline='\n')
+with zipfile.ZipFile(base / 'linux-bundle.zip', 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+    for path in (wheel, base / 'config.json', base / 'test-installed.py'):
+        archive.write(path, path.name)
+    archive.write(source / 'pyproject.toml', 'source/pyproject.toml')
+    for name in config['test_members']:
+        archive.write(source / name, 'source/' + name)
+print(json.dumps({'product_sha': product, 'wheel_sha256': config['wheel_sha256'],
+    'runtime_members': len(manifest), 'selected': selected, 'model_calls': 0}))

@@ -1,5 +1,17 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Current product09425da composes the producer, explicit exact staging/execution/
+completion decisions, actual independent Docker proof and receiver handoff in
+VerifiedProposalFlow. A verified-source checkpoint can resume the receiver without
+rerunning producer or verifier. Unknown execution remains fenced. The local fresh
+Linux wheel passes8affected checks with5actual Docker executions and no real models.
+Earlier17e0ab4 retains its24check regression; counts remain separate by SHA.
+Evidence: acceptance/evidence/m7-verified-handoff/summary.json; limited source/package review
+accepted. No new M5 substage, permission strategy, queue protocol or apply operation.
+Next exercise this combined flow with actual clients and then recoverable host
+interruption. Unsupported client features stay explicitly unsupported under the
+original specification, rather than becoming new unconditional exit conditions.
+
 Latest actual milestone: installedb455d9b coordinator derives the saved real6017005
 producer reference, automatically prepares one dependent task/worktree, checkpoints
 for exact-plan review and resumes one real Codex receiver.21.635seconds/exit0;
