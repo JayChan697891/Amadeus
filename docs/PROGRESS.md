@@ -34,9 +34,12 @@ collector PID and command; terminal outcome belongs in bootstrap-result.json.
 The complete source suite finished at 2026-11-13 11:19:51 UTC: 2427 unique cases,
 2371 passed, 56 skipped, no failures/errors. Root read the actual JUnit and process
 result. Ruff, format, mypy, build and pip checks pass. The fresh wheel origin,
-dependency and license-inventory checks also pass; wheel full-suite execution is
-now RUNNING and sdist full-suite execution remains NOT RUN. This is not a completed
-matrix row. Intermediate observation: D:/agentsync-debug/m114/source-observation.json.
+dependency and license-inventory checks also pass. Wheel full-suite execution finished
+at 2026-11-13 12:03:03 UTC: 2371 passed, 56 skipped, no failures/errors. Root verified
+all 2427 case IDs and outcomes exactly match the source suite. Fresh sdist installation,
+origin, dependency and inventory checks pass; its full suite is RUNNING from
+12:03:19 UTC in the original handle. This is not a completed matrix row. Intermediate
+observations: D:/agentsync-debug/m114/source-observation.json and wheel-observation.json.
 Windows license/archive review found no blocker to continued testing. Root checked
 43 installed license-file hashes, recorded both archive hashes and matched the
 sdist license/notice documents to the frozen source;

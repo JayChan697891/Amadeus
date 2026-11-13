@@ -16,9 +16,11 @@ Source evidence: [affected run and repaired subset](evidence/m4-owner-integratio
 The original full source/wheel/sdist collector is RUNNING on Windows 3.12. Its
 complete source suite has 2371 passes and 56 skips across 2427 unique cases, with
 zero failures/errors; root checked the JUnit and exit record. Static/build checks
-and fresh wheel origin/dependency/inventory checks pass. Wheel full tests are
-RUNNING; sdist full tests, actual Linux Docker integration and other M9 rows remain
-NOT RUN. Later rows will use one pinned candidate pair. No complete row is claimed.
+and fresh wheel origin/dependency/inventory checks pass. The complete wheel suite
+also has 2371 passes and 56 skips, with identical 2427 case IDs and outcomes. Fresh
+sdist installation checks pass and its full suite is RUNNING. Actual Linux Docker
+integration and other M9 rows remain NOT RUN. Later rows will use one pinned candidate
+pair. No complete row is claimed.
 Formal Release remains BLOCKED; macOS, unavailable real clients, final license
 classification and independent Release decision are not waived.
 
