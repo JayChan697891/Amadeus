@@ -1,5 +1,38 @@
 # Amadeus current progress
 
+## 0.3.0a113 receipt-backed usage: source checks passed
+
+Owner SDK/CLI `sync_relay_usage` reconciles existing controlled-relay receipts into
+the same `project_usage` store. Exact task/owner, existing receipt anchor, historical
+actor/session, launch and consent bindings are checked. Caller v1 history remains
+compatible; v2 retains separately attributed receipt metrics without adding them
+to caller totals. Unknown attempts can gain one matching terminal; conflicting
+terminals, cross-project inputs and capacity/overflow errors reject atomically.
+Token counts remain client-reported, elapsed time local, timestamps/cost unknown.
+Legacy two-leg bindings are explicitly weaker; unsupported old single/proposal
+receipts are rejected without modification. No new models or accounts are used.
+
+Windows source validation: 80 passed, no skips/failures/errors; test manifests
+before/after match. Owned protocol subprocesses cover CLI/SDK, timeout/failure,
+producer and Codex/Claude/Cursor review paths, not real vendor compatibility.
+Ruff/format (218 selected files) and mypy (91 source modules) pass. Separate root
+traceability/collector checks pass 246 cases. Initial four test-variable-shadowing
+failures and three mypy exception-variable diagnostics remain in the debug directory.
+Review found a missing capture witness on timeout normalization; it is fixed and
+covered by a negative case asserting zero usage write and a denial audit.
+
+Evidence is local: D:/agentsync-debug/m8-receipt-usage-a113-sol. Final process56424
+is terminal0; do not restart. Source hashes describe the tested working tree;
+Git normalizes CRLF in the mapping and pipeline test file. Fresh frozen-package
+Windows/Linux checks are NOT RUN yet. Next run those affected installations and
+review the evidence, then continue the original remaining release requirements.
+No full-suite, real-client, macOS or formal Release pass is claimed.
+
+Existing M9 dependency metadata was also rechecked using installed a112: all31
+third-party versions/declarations/license hashes match the prior retained Windows
+inventory. Only two stale version labels in the notices were corrected; license
+text and final license/release review status are unchanged.
+
 ## 0.3.0a112 durable Mock execution: installed checks passed
 
 Owner-only CLI/SDK start/resume/status/cancel now persists one simulation run in a

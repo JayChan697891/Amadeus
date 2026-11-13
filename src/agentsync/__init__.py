@@ -1,3 +1,3 @@
 """Amadeus local coordination engine."""
 
-__version__ = "0.3.0a112"
+__version__ = "0.3.0a113"

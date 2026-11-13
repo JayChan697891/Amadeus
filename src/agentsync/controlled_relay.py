@@ -444,14 +444,16 @@ class ControlledRelay:
         self._receipt_store = _ReceiptDirectory(self._receipts)
         self._receipt_anchors = _ReceiptDirectory(core_data)
 
-    def _check_receipt_anchor(self, project_id: str, *, bind: bool = False) -> None:
+    def _check_receipt_anchor(
+        self, project_id: str, *, bind: bool = False, require_existing: bool = False
+    ) -> None:
         """The separate Core data directory retains the selected receipt root across restart."""
         name = f"controlled-relay-{digest(project_id)}.json"
         expected: dict[str, object] = {
             "schema_version": 1,
             "receipt_root_sha256": self._receipt_store.location_pin(),
         }
-        current = self._receipt_anchors.read(name, durable=bind)
+        current = self._receipt_anchors.read(name, durable=bind or require_existing)
         if current is None and bind:
             try:
                 self._receipt_anchors.write(name, expected)
@@ -459,7 +461,7 @@ class ControlledRelay:
                 if error.code != "attempt_already_reserved":
                     raise
             current = self._receipt_anchors.read(name, durable=True)
-        if (current is not None or bind) and (
+        if (current is not None or bind or require_existing) and (
             not current or type(current.get("schema_version")) is not int or current != expected
         ):
             raise AgentSyncError(
@@ -573,8 +575,10 @@ class ControlledRelay:
     def _task_receipt_key(project_id: str, task_id: str) -> str:
         return digest([project_id, task_id])
 
-    def _read_receipt(self, key: str, stage: str) -> dict[str, Any] | None:
-        receipt = self._receipt_store.read(self._receipt_name(key, stage))
+    def _read_receipt(
+        self, key: str, stage: str, *, durable: bool = False
+    ) -> dict[str, Any] | None:
+        receipt = self._receipt_store.read(self._receipt_name(key, stage), durable=durable)
         if receipt is None:
             return None
         return receipt if receipt.get("stage") == stage else {}
@@ -831,17 +835,28 @@ class ControlledRelay:
         dispatch = self._read_receipt(key, leg + "-dispatched")
         observed = self._read_receipt(key, leg + "-observed")
         stopped = self._read_receipt(key, leg + "-stopped")
-        if dispatch is None and observed is None and stopped is None:
-            return RelayAttemptObservation(leg, "not_dispatched")
-        client = _matched_text((dispatch or {}).get("client"), r"codex|claude|cursor")
         request = _matched_text((dispatch or {}).get("launch_request_sha256"), r"[0-9a-f]{64}")
-        agent = _matched_text((dispatch or {}).get("agent_sha256"), r"[0-9a-f]{64}")
-        version = _matched_text((dispatch or {}).get("declared_client_version"), _CLIENT_VERSION)
+        client = _matched_text((dispatch or {}).get("client"), r"codex|claude|cursor")
         admission = (
             _observe_admission(self._receipt_store, request, client)
             if request is not None and client is not None
             else None
         )
+        return self._attempt_observation(leg, dispatch, observed, stopped, admission)
+
+    @staticmethod
+    def _attempt_observation(
+        leg: Literal["first", "second"],
+        dispatch: dict[str, Any] | None,
+        observed: dict[str, Any] | None,
+        stopped: dict[str, Any] | None,
+        admission: LaunchAdmissionObservation | None,
+    ) -> RelayAttemptObservation:
+        if dispatch is None and observed is None and stopped is None:
+            return RelayAttemptObservation(leg, "not_dispatched")
+        client = _matched_text((dispatch or {}).get("client"), r"codex|claude|cursor")
+        agent = _matched_text((dispatch or {}).get("agent_sha256"), r"[0-9a-f]{64}")
+        version = _matched_text((dispatch or {}).get("declared_client_version"), _CLIENT_VERSION)
         if client is None or (observed is None) == (stopped is None):
             return RelayAttemptObservation(
                 leg,
@@ -1044,11 +1059,14 @@ class ControlledRelay:
             adapter = ClaudeAdapter(*namespace, contextual_factory=factory)
         else:
             adapter = CursorAdapter(*namespace, contextual_factory=factory)
+        launch_request = _launch_key(task)
         self._record(
             key,
             stage + "-dispatched",
             client=factory.client,
-            launch_request_sha256=_launch_key(task),
+            launch_request_sha256=launch_request,
+            relay_request_id=task.request_id,
+            session_sha256=digest(task.session_id),
             agent_sha256=digest(actor.agent_id),
             declared_client_version=_matched_text(
                 actor.profile.expected_cli_version, _CLIENT_VERSION
@@ -1067,6 +1085,7 @@ class ControlledRelay:
                     parent_ended=run.parent_ended,
                     run_sha256=digest(run.run_id),
                     session_sha256=digest(run.session_id),
+                    launch_request_sha256=launch_request,
                     error_code=_matched_text(run.error_code, r"[a-z_]{1,64}"),
                     **_terminal_metrics(run),
                 )
@@ -1090,6 +1109,7 @@ class ControlledRelay:
                         parent_ended=stopped.parent_ended,
                         run_sha256=digest(stopped.run_id),
                         session_sha256=digest(stopped.session_id),
+                        launch_request_sha256=launch_request,
                         error_code=_matched_text(stopped.error_code, r"[a-z_]{1,64}"),
                         **_terminal_metrics(stopped),
                     )
@@ -1144,6 +1164,7 @@ class ControlledRelay:
                 parent_ended=run.parent_ended,
                 run_sha256=digest(run.run_id),
                 session_sha256=digest(run.session_id),
+                launch_request_sha256=launch_request,
                 error_code="reply_mismatch",
                 **_terminal_metrics(run, result),
             )
@@ -1159,6 +1180,7 @@ class ControlledRelay:
             status=observed_status,
             run_sha256=digest(run.run_id),
             session_sha256=digest(run.session_id),
+            launch_request_sha256=launch_request,
             exit_code=run.exit_code,
             parent_ended=run.parent_ended,
             timed_out=run.timed_out,

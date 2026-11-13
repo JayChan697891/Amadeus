@@ -1,5 +1,12 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+The a113 M8-01 owner SDK/CLI now reconciles bound controlled-relay observations
+into the existing project usage store. Caller and receipt totals remain separate;
+unknown values, legacy v1 records, immutable terminals and atomic capacity limits
+are preserved. Windows source checks pass 80 selected cases, plus 246 separate
+traceability/collector checks. Freeze and validate fresh installations next.
+This adds no client launch, billing verification or new M5 stage.
+
 Product 7fa4597 (0.3.0a112) implements original M7-04/M8-02 durable owner-only
 Mock retries, budget reservations, driver generations, cancellation, handoff and
 independent review in Core schema16. Windows wheel 630 passed / 1 skip and Linux sdist 631 passed / 0 skips;

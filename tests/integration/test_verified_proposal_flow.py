@@ -36,6 +36,7 @@ from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.proposal_handoff import HandoffReceiver, HandoffWorkspace, ProposalHandoffRequest
 from agentsync.relay_queue import ProposalReviewQueueItem, RelayQueue
+from agentsync.sdk import AgentSyncClient
 from agentsync.verification import candidate_executor
 from agentsync.verification.candidate_executor import OwnerCandidateExecutor
 from agentsync.verification.candidate_jobs import CandidateVerificationJobs
@@ -663,6 +664,33 @@ async def check_review_receiver(
             "content": "Owned receiver protocol fixture, not a model review.\n",
         }
     ]
+    usage_source = "controlled_relay_receipts"
+    usage = AgentSyncClient(core.data_dir)
+    for observed_task, kind in ((request.source_task_id, "codex"), (task_id, client)):
+        payload = {
+            **owner,
+            "task_id": observed_task,
+            "scratch_root": str(source.parent),
+            "receipts": str(receipts),
+        }
+        result = usage.owner_call("sync_relay_usage", **payload)
+        assert result["ok"], result
+        first, second = result["data"]["attempts"]
+        assert first["state"] == "added" and first["kind"] == kind
+        assert second["state"] == "not_dispatched"
+        usage = AgentSyncClient(core.data_dir)
+        replay = usage.owner_call("sync_relay_usage", **payload)["data"]["attempts"]
+        assert replay == [dict(first, state="unchanged"), second]
+        reading = usage.owner_call(
+            "get_usage_run", **owner, kind=kind, run_id=first["run_id"], provenance=usage_source
+        )["data"]
+        assert reading["status"] == "succeeded" and reading["terminal_recorded"] is True
+        assert reading["input_tokens"] == (1 if kind == "codex" else None)
+        assert reading["billing_verified"] is False
+    assert (
+        usage.owner_call("get_usage_summary", **owner)["data"][usage_source]["total_records"] == 2
+    )
+    assert launched == ["solution.py", "review.md"] and len(authorities) == 1
     return {
         "client": client,
         "status": observation.status,

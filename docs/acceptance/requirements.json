@@ -1347,7 +1347,8 @@
         "tests/unit/test_usage.py::test_mixed_protocol_and_simulated_records_keep_metrics_separate",
         "tests/unit/test_usage.py::test_empty_missing_and_reported_zero_are_distinct",
         "tests/unit/test_usage.py::test_cumulative_overflow_rejects_admission_atomically",
-        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core"
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+        "tests/integration/test_relay_usage.py"
       ],
       "planned_cases": [
         {

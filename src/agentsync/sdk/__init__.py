@@ -24,6 +24,10 @@ class AgentSyncClient:
     def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
+            if operation == "sync_relay_usage":
+                from agentsync.relay_usage import sync_relay_usage
+
+                return {"ok": True, "data": sync_relay_usage(self.core, payload)}
             if operation in {
                 "start_mock_workflow",
                 "resume_mock_workflow",

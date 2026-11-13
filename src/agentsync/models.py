@@ -275,6 +275,9 @@ class ImportUsageCheckpoint(AdminAuth):
 class GetUsageRun(AdminAuth):
     kind: Literal["codex", "claude", "cursor", "mock"]
     run_id: str = Field(min_length=1, max_length=200, repr=False)
+    provenance: Literal["caller_reported_adapter_results", "controlled_relay_receipts"] = (
+        "caller_reported_adapter_results"
+    )
 
 
 class GetTaskVerification(AdminAuth):

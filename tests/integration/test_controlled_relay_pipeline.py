@@ -29,6 +29,8 @@ from agentsync.controlled_relay import (
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue, RelayQueueItem
+from agentsync.sdk import AgentSyncClient
+from agentsync.storage.database import connect
 
 
 @pytest.mark.parametrize(
@@ -354,6 +356,43 @@ async def test_controlled_relay_with_disposable_core_and_git(
         assert current["status"] == ("review" if state.state == "ready_for_review" else "running")
         assert current["task_verification"] == "unverified"
         assert "FIRST_FIXTURE" not in (current["result"] or "")
+        if scenario in {
+            "single-codex-timeout",
+            "single-codex-invalid-protocol",
+            "single-codex-exit-failure",
+            "single-codex-denied",
+        }:
+            client = AgentSyncClient(core.data_dir)
+            result = client.owner_call(
+                "sync_relay_usage",
+                **owner,
+                task_id=task["id"],
+                scratch_root=str(scratch),
+                receipts=str(receipts),
+            )
+            assert result["ok"], result
+            first_attempt = result["data"]["attempts"][0]
+            usage_source = "controlled_relay_receipts"
+            summary = client.owner_call("get_usage_summary", **owner)["data"][usage_source]
+            if scenario == "single-codex-denied":
+                assert first_attempt["state"] == "not_recorded" and summary["total_records"] == 0
+            else:
+                status = {
+                    "single-codex-timeout": "timed_out",
+                    "single-codex-invalid-protocol": "unknown",
+                    "single-codex-exit-failure": "failed",
+                }[scenario]
+                observation = client.owner_call(
+                    "get_usage_run",
+                    **owner,
+                    provenance=usage_source,
+                    kind="codex",
+                    run_id=first_attempt["run_id"],
+                )["data"]
+                assert observation["status"] == status and observation["terminal_recorded"]
+                assert observation["input_tokens"] is None and observation["output_tokens"] is None
+                assert summary["statuses"][status] == 1 and summary["total_records"] == 1
+                assert summary["failure_rate"] == (None if status == "unknown" else 1.0)
         with pytest.raises(AgentSyncError):
             await reopened.run_codex_once(
                 actor, replace(pilot, expected_version=current["version"]), admin_token=token
@@ -520,3 +559,49 @@ async def test_controlled_relay_with_disposable_core_and_git(
     )
     assert checked["status"] == "completed"
     assert checked["latest_review"]["reviewer_agent_id"] == reviewer["agent_id"]
+    if scenario == "handoff-and-review":
+        with connect(core.db_path) as db:
+            db.execute("UPDATE sessions SET expires_at=0 WHERE project_id=?", (project_id,))
+        payload = {
+            **owner,
+            "task_id": task["id"],
+            "scratch_root": str(scratch),
+            "receipts": str(receipts),
+        }
+        monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(payload)))
+        assert main(["--data-dir", str(core.data_dir), "owner", "sync_relay_usage"]) == 0
+        output = capsys.readouterr().out
+        assert all(value not in output for value in (token, "fixture-thread", "FIRST_FIXTURE"))
+        reconciled = json.loads(output)["data"]["attempts"]
+        assert [attempt["state"] for attempt in reconciled] == ["added", "added"]
+        client = AgentSyncClient(core.data_dir)
+        usage_source = "controlled_relay_receipts"
+        readings = [
+            client.owner_call(
+                "get_usage_run",
+                **owner,
+                provenance=usage_source,
+                kind=attempt["kind"],
+                run_id=attempt["run_id"],
+            )["data"]
+            for attempt in reconciled
+        ]
+        assert [item["input_tokens"] for item in readings] == [2, None]
+        assert [item["output_tokens"] for item in readings] == [1, None]
+        assert [item["adapter_elapsed_ms"] for item in readings] == [
+            attempt.adapter_elapsed_ms for attempt in attempts
+        ]
+        assert all(item["started_at"] is None and item["finished_at"] is None for item in readings)
+        summary = client.owner_call("get_usage_summary", **owner)["data"]
+        assert summary["total_records"] == 0 and summary[usage_source]["total_records"] == 2
+        assert summary[usage_source]["failure_rate"] == 0.0
+        assert summary[usage_source]["input_tokens"] == {
+            "value": None,
+            "known_sum": 2,
+            "reported_runs": 1,
+            "unknown_runs": 1,
+        }
+        assert summary[usage_source]["billing_verified"] is False
+        again = client.owner_call("sync_relay_usage", **payload)["data"]["attempts"]
+        assert again == [dict(attempt, state="unchanged") for attempt in reconciled]
+        assert len(launches) == len(approvals) == 2

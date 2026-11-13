@@ -5,7 +5,7 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a112 开发源码，正式发布仍处于阻断状态**。
+当前为 **0.3.0a113 开发源码，正式发布仍处于阻断状态**。
 
 新增可恢复的持久 Mock 工作流入口：
 `amadeus --data-dir 绝对路径 workflow start|resume|status|cancel`，或 SDK 的
@@ -65,6 +65,14 @@ MCP 标识、`AGENTSYNC_*` 设置、默认数据目录名 `AgentSync` 和数据�
 所有 MCP 进程都应指定同一个**绝对路径**数据目录，运行命令为
 `python -m agentsync --data-dir 绝对路径 mcp`。配置样例在 examples/mcp_clients。
 项目管理员令牌用于注册 Agent，会话令牌用于项目操作；不要提交到仓库。
+
+项目所有者可用 `amadeus --data-dir DATA_DIR owner sync_relay_usage` 同步受控中继回执。
+从标准输入提供包含 `project_id`、`admin_token`、`task_id`、原绑定的绝对路径
+`scratch_root` 和 `receipts` 的 JSON 对象。SDK 可调用 `owner_call("sync_relay_usage", **payload)`。
+`get_usage_summary` 将回执和调用方导入的用量分开显示。查询单次回执时，使用返回的
+`run_id`、`kind` 和 `provenance="controlled_relay_receipts"` 调用 `get_usage_run`。
+缺失的终态和用量保持未知。同步不会启动客户端，回执也不能证明账单或实际费用。
+缺少精确启动绑定的历史单客户端或提案回执会返回 `relay_usage_unsupported`。
 
 交付已验证候选时，所有者可通过 SDK 的 `owner_call` 或 `amadeus owner`
 预览并批准交付计划，再凭批准后的版本和计划摘要显式调用

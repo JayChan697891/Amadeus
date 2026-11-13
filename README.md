@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a112 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a113 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -290,6 +290,25 @@ database and writes no files. The project ID is a caller namespace assertion,
 not authentication. Costs stay unknown and client/billing verification stays
 false. Extra options, invalid input and a mismatched checkpoint project return
 a fixed error with exit status2, without printing the private input.
+
+To reconcile an existing controlled-relay task into Core project usage, call
+`AgentSyncClient(data_dir).owner_call("sync_relay_usage", **payload)` or run
+`amadeus --data-dir DATA_DIR owner sync_relay_usage` with a JSON object on stdin.
+Supply `project_id`, `admin_token`, `task_id`, and the absolute `scratch_root` and
+`receipts` directories originally bound to that project. The operation reads
+saved receipts without starting a client. Historical two-leg dispatches can be
+bound using Core's saved operations. Older single-client and proposal dispatches
+without exact launch pins return `relay_usage_unsupported`.
+
+`get_usage_summary` keeps caller-reported totals and reports a separate
+`controlled_relay_receipts` subtotal. To inspect a receipt observation, pass its
+returned `run_id` and `kind` to `get_usage_run` with
+`provenance="controlled_relay_receipts"`. An admitted attempt without a terminal
+receipt keeps its metrics unknown. Resync can fill in a matching terminal once.
+The receipt failure rate counts failed and confirmed timed-out outcomes against
+known outcomes and is available only when every outcome is known.
+Elapsed time describes the adapter lifecycle. The receipt source does not verify
+client execution, provider charges, or billing. Neither subtotal counts as a bill.
 
 ## Local contention diagnostic
 
