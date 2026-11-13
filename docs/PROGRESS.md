@@ -27,6 +27,18 @@ summary under linux-01, with local originals D:/agentsync-debug/m115/linux-01.
 Only the full Windows candidate collector remains active, not passed. No new
 real-client call or GitHub Actions run.
 
+To reduce idle time between rows, original session 22389 is now a waiting local
+continuation controller, started 2026-11-13 13:44:06 UTC. It tracks the original
+bootstrap process identity and never starts it again. Only an exit-zero bootstrap,
+all passing collector checks, matching three-suite JUnit identities/outcomes and
+verified frozen manifest/artifacts permit subsequent rows. Windows 3.11 then 3.14
+and Linux 3.14 then 3.11 then 3.12 use the existing sequential host queues, at most
+two collectors concurrently. Each host queue stops at its first failed/unknown
+row without retry; independent final review remains required. At this checkpoint
+the controller is WAITING, all later rows are NOT RUN. Revalidate session 22389 and
+D:/agentsync-debug/m115-candidate/matrix-continuation before any manual launch.
+Helpers and their hashes: acceptance/evidence/m9-a115-preparation/summary.json.
+
 Next inspect these original processes/results, repair only actual failures and
 continue the frozen-package matrix with the same exact artifacts. Remaining
 macOS, real Claude/Cursor/cross-client and external acceptance gates stay explicit;

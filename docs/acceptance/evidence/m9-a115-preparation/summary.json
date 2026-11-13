@@ -1,0 +1,51 @@
+{
+  "product_sha": "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+  "tree_sha": "64cc41ae1d4709029ab471bc41868450d66ad113",
+  "scope": "Execution preparation, never test or Release acceptance",
+  "collector_session": 83040,
+  "continuation_session": 22389,
+  "controller_started_at": "2026-11-13T13:44:06.068206+00:00",
+  "status_at_recording": "WAITING for original bootstrap; later rows NOT RUN",
+  "maximum_concurrent_collectors": 2,
+  "automatic_retry": false,
+  "artifacts": [
+    {
+      "path": "bootstrap.py.txt",
+      "sha256": "1b9ba9d15d987206efe1e3ca66450a8b3ad11056f8483b82b134e103ad471f3e",
+      "size": 5491
+    },
+    {
+      "path": "finalize.py.txt",
+      "sha256": "bfcdae8097038260575ae9a643c73bdeca91eb4214a1289cd923a249e0831d86",
+      "size": 7205
+    },
+    {
+      "path": "linux-queue.py.txt",
+      "sha256": "5ed9828be04ea61f48fa4292c01d2add137e8e749b3c1edf45acdb5b6e8ce71c",
+      "size": 3341
+    },
+    {
+      "path": "continue-matrix.py.txt",
+      "sha256": "6cd48c9c6e4ffd0e72a900ac8ec9345b42247c3fb74e2df26b9e6c2f64d79158",
+      "size": 4845
+    }
+  ],
+  "reused_helpers": [
+    {
+      "path": "docs/acceptance/evidence/m9-a114-preparation/m9-candidate-row.py.txt",
+      "sha256": "ed10f8d8e6b500d8e5e6d5f223a9bf019d7752d8d6dd3c092bc8e309d8cd8680",
+      "size": 5259
+    },
+    {
+      "path": "docs/acceptance/evidence/m9-a114-preparation/m9-candidate-queue.py.txt",
+      "sha256": "a1c55bb54e51d56a68f02e8473a2a979d51edd2bc96a6fd732210e37ba6c442a",
+      "size": 3483
+    }
+  ],
+  "conditions": [
+    "Original bootstrap finished with exit 0, exact source SHA, all checks pass",
+    "Source/wheel/sdist JUnit identities and outcomes match",
+    "Exact manifest, report and archive bytes verify against frozen Git source",
+    "No existing destination or queue is overwritten; unknown state is not retried"
+  ]
+}

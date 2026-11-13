@@ -1,0 +1,95 @@
+"""Continue existing local M9 rows once; never restart the bootstrap or any row."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT = Path('D:/agentsync-debug')
+BASE = ROOT / 'm115-candidate'
+HELPERS = ROOT / 'm115'
+PYTHON = ROOT / 'venv/Scripts/python.exe'
+COMMIT = 'c56cbe2cd4c772b92992f3e4571da6d08eefc292'
+STATE = BASE / 'matrix-continuation'
+STATE.mkdir()
+
+def save(name, value):
+    with (STATE / name).open('x', encoding='utf-8') as stream:
+        json.dump(value, stream, indent=2)
+
+def now():
+    return datetime.now(timezone.utc).isoformat()
+
+def inspect_process(pid):
+    assert type(pid) is int and pid > 0
+    command = ['powershell', '-NoProfile', '-NonInteractive', '-Command',
+               f'Get-CimInstance Win32_Process -Filter "ProcessId={pid}" | Select-Object ProcessId,CreationDate,CommandLine | ConvertTo-Json -Compress']
+    raw = subprocess.check_output(command, timeout=15, creationflags=subprocess.CREATE_NO_WINDOW).decode().strip()
+    return json.loads(raw) if raw else None
+
+helpers = [HELPERS/'finalize.py', HELPERS/'linux-queue.py', ROOT/'m9-candidate-queue.py', ROOT/'m9-candidate-row.py']
+pins = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in helpers}
+attempt = json.loads((BASE/'bootstrap-attempt.json').read_text())
+assert attempt['commit_sha'] == COMMIT
+identity = inspect_process(attempt['pid'])
+terminal_path = BASE/'bootstrap-result.json'
+if not terminal_path.exists():
+    assert identity and 'm115' in identity['CommandLine'] and 'bootstrap.py' in identity['CommandLine']
+save('attempt.json', {'pid':os.getpid(),'started_at':now(),'bootstrap_identity':identity,'bootstrap_attempt':attempt,'helper_hashes':pins,'maximum_concurrent_collectors':2,'automatic_retry':False})
+print('Waiting for the original bootstrap; later matrix rows have NOT started.', flush=True)
+
+def run_step(name, command):
+    for path, expected in pins.items():
+        assert hashlib.sha256(Path(path).read_bytes()).hexdigest() == expected
+    save(name+'-request.json', {'command':command,'started_at':now()})
+    with (STATE/(name+'.log')).open('xb') as log:
+        child = subprocess.Popen(command, cwd=BASE, stdout=log, stderr=subprocess.STDOUT)
+        save(name+'-process.json', {'pid':child.pid,'command':command})
+        code = child.wait()
+    save(name+'-result.json', {'exit_code':code,'ended_at':now()})
+    if code:
+        raise RuntimeError(name+' failed; inspect original evidence, no retry')
+
+try:
+    while not terminal_path.exists():
+        if inspect_process(attempt['pid']) != identity:
+            if terminal_path.exists():
+                break
+            raise RuntimeError('Original process identity missing or changed without terminal result')
+        time.sleep(30)
+    terminal = json.loads(terminal_path.read_text())
+    assert terminal['phase']=='finished' and terminal['exit_code']==0 and terminal['commit_sha']==COMMIT
+    run_step('finalize', [str(PYTHON),'-I','-B',str(HELPERS/'finalize.py'),'finalize'])
+    run_step('stage', [str(PYTHON),'-I','-B',str(HELPERS/'finalize.py'),'stage-linux'])
+    manifest_sha = hashlib.sha256((BASE/'candidate-bootstrap.json').read_bytes()).hexdigest()
+    commands = {
+        'windows': [str(PYTHON),'-I','-B',str(ROOT/'m9-candidate-queue.py'),'--base',str(BASE),'--manifest-sha256',manifest_sha,'--commit',COMMIT],
+        'linux': [str(PYTHON),'-I','-B',str(HELPERS/'linux-queue.py'),'run'],
+    }
+    running = []
+    try:
+        for name, command in commands.items():
+            for path, expected in pins.items():
+                assert hashlib.sha256(Path(path).read_bytes()).hexdigest() == expected
+            log = (STATE/(name+'.log')).open('xb')
+            child = subprocess.Popen(command, cwd=BASE, stdout=log, stderr=subprocess.STDOUT)
+            running.append((name, child, log))
+            save(name+'-process.json', {'pid':child.pid,'command':command,'started_at':now()})
+            print(name+' queue started after validated bootstrap.', flush=True)
+    finally:
+        outcomes = []
+        for name, child, log in running:
+            code = child.wait()
+            log.close()
+            result = {'host':name,'exit_code':code,'ended_at':now()}
+            save(name+'-result.json', result)
+            outcomes.append(result)
+    assert len(outcomes)==2 and all(row['exit_code']==0 for row in outcomes)
+    save('result.json', {'state':'local_queues_finished','outcomes':outcomes,'formal_release':'BLOCKED','ended_at':now()})
+    print('Both queues finished; independent report inspection is still required.', flush=True)
+except BaseException as exc:
+    save('failure.json', {'state':'stopped','error_type':type(exc).__name__,'reason':str(exc),'ended_at':now(),'automatic_retry':False})
+    raise
