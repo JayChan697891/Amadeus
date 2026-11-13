@@ -1,5 +1,16 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Latest actual milestone: installedb455d9b coordinator derives the saved real6017005
+producer reference, automatically prepares one dependent task/worktree, checkpoints
+for exact-plan review and resumes one real Codex receiver.21.635seconds/exit0;
+the372byte review was independently accepted as a document only, completed/unverified.
+Fresh reopen returns the same result with zero authority calls or new attempts.
+No candidate/application behavior or release gate changed. Evidence:
+acceptance/evidence/m7-host-handoff-live/summary.json (limited evidence independently accepted).
+Next close continuous producer-to-independent-verification-to-receiver composition
+and real interrupted-agent recovery; the staged continuation does not prove those.
+No new M5 substage or duplicate implementation is authorized by this milestone.
+
 Latest product milestone: installed host coordinator atb455d9b automatically derives
 source pins, waits for independent completion and prepares/dispatches one dependent
 receiver through existing Core/queue APIs. Same-session preparation is recoverable;

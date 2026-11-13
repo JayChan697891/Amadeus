@@ -58,3 +58,4 @@ docs/acceptance/evidence/m7-host-handoff/** -text whitespace=blank-at-eol,blank-
 # Preserve pytest's original traceback spacing in the failed assertion evidence.
 docs/acceptance/evidence/m7-host-handoff/source-budget-first.log -whitespace
 docs/acceptance/evidence/m7-host-handoff/source-budget-first.xml -whitespace
+docs/acceptance/evidence/m7-host-handoff-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

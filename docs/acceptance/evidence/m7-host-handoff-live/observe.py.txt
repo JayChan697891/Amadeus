@@ -1,0 +1,165 @@
+"""Reopen and inspect the model review. Optional explicit host document acceptance."""
+
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+BASE = Path('/root/amadeus-host-handoff-live-20261113')
+sys.path.insert(0, str(BASE))
+
+import pilot
+from agentsync.proposals import parse_proposal
+from agentsync.relay_queue import RelayQueue
+from credential_home import mounts
+
+PRODUCER_WAVE = 'edfa162d33339016db52effd322759473900f174fcb30eda3e88127d2746ef1f'
+
+
+def cleanup_observed():
+    clean = pilot.load('auth-cleanup.json')
+    assert clean['temporary_auth_absent'] and clean['home_unmounted'] and clean['private_home_empty']
+    pilot.private_directory(pilot.HOME)
+    assert not mounts() and not any(pilot.HOME.iterdir())
+
+
+def inspect(final=False):
+    members = pilot.runtime()
+    cleanup_observed()
+    core, runner = pilot.core_and_relay()
+    state, source = pilot.pinned_state(core)
+    task_id = state['task']['id']
+    actor = pilot.actor_for(state)
+    queue = RelayQueue(runner)
+    result = pilot.load('result.json')
+    dispatch = pilot.load('dispatch-observation.json')
+    assert result['wave_id'] == state['wave_id'] and result['plan_sha256'] == state['plan_sha256']
+    assert result['captured_start_invoked'] is True and result['error_code'] is None
+    assert dispatch['captured_start_invoked'] is True and dispatch['exact_authorizations'] == 1
+    assert pilot.load('auth-route.json')['recognized_chatgpt_route'] is True
+    assert pilot.load('attempt.json')['single_attempt_consumed'] is True
+    attempts = runner.owner_inspect_attempts(state['owner']['project_id'], task_id,
+                                            admin_token=state['owner']['admin_token'])
+    first, second = attempts
+    assert [pilot.attempt_summary(attempt) for attempt in attempts] == dispatch['attempts']
+    assert first.status == 'proposal_received' and first.parent_ended is True and first.exit_code == 0
+    assert first.admission is not None and first.admission.state == 'both_reservations_recorded'
+    assert first.admission.plan_sha256 == state['plan_sha256'] and second.state == 'not_dispatched'
+    assert first.agent_sha256 == pilot.digest(state['worker']['agent_id'])
+
+    task = pilot.current_task(core, state, task_id)
+    assert task['status'] == ('completed' if final else 'review') and task['task_verification'] == 'unverified'
+    assert task['dependencies'] == [pilot.PRODUCER_TASK]
+    submitted = result['review']
+    assert submitted['state'] == 'submitted_for_review' and submitted['verification'] == 'unverified'
+    if final:
+        receipt = pilot.load('host-acceptance.json')
+        assert receipt['review_task'] == pilot.task_summary(task)
+        assert task['version'] == submitted['review_task_version'] + 1
+        assert task['latest_review']['reviewer_agent_id'] == state['reviewer']['agent_id']
+        assert task['latest_review']['reviewer_session_id'] == state['reviewer']['session_id']
+        assert task['latest_review']['accept'] is True
+    else:
+        assert pilot.asdict(runner.observe_codex_proposal_review(actor, task_id)) == submitted
+        assert task['version'] == submitted['review_task_version']
+
+    stored = runner.observe_codex_proposal(actor, task_id)
+    assert stored.state == 'proposal_stored' and stored.context_version == 1
+    assert (stored.context_id, stored.content_sha256) == (submitted['context_id'], submitted['content_sha256'])
+    context = core.execute('get_context', {**pilot.auth(state), 'context_id': stored.context_id, 'version': 1})
+    assert context['author_agent_id'] == state['worker']['agent_id']
+    assert context['author_agent_id'] != source['author_agent_id']
+    assert len({source['author_agent_id'], context['author_agent_id'], state['reviewer']['agent_id']}) == 3
+    assert pilot.text_sha(context['content']) == stored.content_sha256
+    value = json.loads(context['content'])
+    assert value['task_id'] == task_id and value['execution_provenance'] == 'unverified'
+    files = parse_proposal(json.dumps({'files': value['files']}, ensure_ascii=False), ['review.md'])
+    note = files[0]['content']
+    heading, separator, reasons = note.strip().partition('\n')
+    assert separator and heading in ('Verdict: PASS', 'Verdict: NEEDS_CHANGES')
+    assert reasons.lstrip().startswith('Reasons:') and reasons.lstrip().removeprefix('Reasons:').strip()
+    note_sha = pilot.text_sha(note)
+    if final:
+        assert (receipt['review_context_sha256'], receipt['review_note_sha256']) == (stored.content_sha256, note_sha)
+
+    journal = queue.observe(actor, pilot.wave_request(state))
+    assert journal.state == 'resolved' and journal.verification == 'unverified'
+    assert len(journal.tasks) == 1 and journal.tasks[0].task_id == task_id
+    assert journal.tasks[0].state == 'ready_for_review'
+    assert result['queue'] == json.loads(json.dumps(pilot.asdict(journal)))
+    history = queue.owner_history(state['owner']['project_id'], admin_token=state['owner']['admin_token'])
+    waves = {row.wave_id: row for row in history.waves}
+    assert waves[PRODUCER_WAVE].journal_state == 'resolved'
+    assert waves[PRODUCER_WAVE].outcome.tasks[0].task_id == pilot.PRODUCER_TASK
+    assert waves[state['wave_id']].journal_state == 'resolved' and waves[state['wave_id']].outcome == journal
+    assert queue.owner_observe_pending(state['owner']['project_id'], admin_token=state['owner']['admin_token']) is None
+
+    record = {'timestamp': pilot.timestamp(), 'producer_product_sha': pilot.PRODUCER_PRODUCT,
+        'receiver_product_sha': pilot.RECEIVER_PRODUCT, 'wheel_sha256': pilot.WHEEL_SHA,
+        'producer_task': {'id': pilot.PRODUCER_TASK, 'status': 'completed', 'version': 6, 'task_verification': 'verified'},
+        'producer_context_id': pilot.PRODUCER_CONTEXT, 'producer_context_sha256': pilot.PRODUCER_CONTEXT_SHA,
+        'source_sha256': pilot.SOURCE_SHA, 'source_utf8_bytes': 153, 'producer_task_unchanged': True,
+        'source_and_worktrees_unchanged': True, 'different_core_model_authors': True,
+        'host_reviewer_distinct_from_both': True, 'review_task': pilot.task_summary(task),
+        'review_context_id': stored.context_id, 'review_context_sha256': stored.content_sha256,
+        'review_note_sha256': note_sha, 'review_note_utf8_bytes': len(note.encode('utf-8')),
+        'review_verdict': heading.removeprefix('Verdict: '), 'review_reasons_present': True,
+        'plan_sha256': state['plan_sha256'], 'selection_sha256': state['selection_sha256'],
+        'producer_wave_id': PRODUCER_WAVE, 'review_wave_id': state['wave_id'], 'queue_pending': False,
+        'candidate_state_unchanged': True, 'auth_cleanup_confirmed': True,
+        'host_document_acceptance': final, 'billing_independently_verified': False, **members}
+    return core, state, task, record, note
+
+
+def observe(final):
+    _, _, _, record, note = inspect(final)
+    if not final:
+        with (BASE / 'private-review.md').open('x', encoding='utf-8') as out:
+            out.write(note)
+    pilot.save('final-observation.json' if final else 'review-observation.json', record)
+    print(json.dumps({'observed': True, 'review_task': record['review_task'],
+                      'review_note_sha256': record['review_note_sha256']}))
+
+
+def review_once(context_sha, note_sha):
+    core, state, task, observed, _ = inspect()
+    saved = pilot.load('review-observation.json')
+    assert context_sha == saved['review_context_sha256'] == observed['review_context_sha256']
+    assert note_sha == saved['review_note_sha256'] == observed['review_note_sha256']
+    assert pilot.sha(BASE / 'private-review.md') == note_sha
+    pilot.save('host-review-entry.json', {'timestamp': pilot.timestamp(), 'review_context_sha256': context_sha,
+                                         'review_note_sha256': note_sha, 'expected_version': task['version']})
+    completed = core.execute('review_task', {**pilot.auth(state, 'reviewer'), 'task_id': task['id'],
+        'expected_version': task['version'], 'accept': True,
+        'evidence': 'Explicit host acceptance of unverified model review document SHA256 ' + note_sha,
+        'request_id': pilot.REQUEST + '-host-document-acceptance'})
+    assert completed['status'] == 'completed' and completed['task_verification'] == 'unverified'
+    pilot.pinned_state(core)
+    pilot.save('host-acceptance.json', {'timestamp': pilot.timestamp(), 'review_task': pilot.task_summary(completed),
+        'review_context_sha256': context_sha, 'review_note_sha256': note_sha, 'verification': 'unverified'})
+    print(json.dumps({'host_document_accepted': True, 'verification': 'unverified'}))
+
+
+def main():
+    os.umask(0o077)
+    assert Path(__file__).resolve() == BASE / 'observe.py'
+    pilot.private_directory(BASE)
+    args = sys.argv[1:]
+    if args == ['submitted']:
+        observe(False)
+    elif args == ['final']:
+        observe(True)
+    elif (len(args) == 4 and args[0] == 'review-once' and args[3] == '--document-reviewed'
+          and all(re.fullmatch('[0-9a-f]{64}', arg) for arg in args[1:3])):
+        review_once(*args[1:3])
+    else:
+        raise SystemExit('Use submitted, final, or review-once REVIEW_CONTEXT_SHA REVIEW_NOTE_SHA --document-reviewed.')
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as exc:
+        print(json.dumps({'error_code': pilot.error_code(exc)}))
+        raise SystemExit(1) from None

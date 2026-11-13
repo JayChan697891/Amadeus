@@ -1,5 +1,26 @@
 # Release Acceptance Report
 
+## Actual host coordinator: staged continuation and reopen
+
+An installedb455d9b ProposalHandoff derived the saved real6017005 producer reference
+and created its dependent task/worktree. After a pre-dispatch exact-plan review,
+reopening dispatched one actual Codex receiver (21.635seconds, exit0). Root read its
+complete372byte source-only review; a distinct Core reviewer accepted the document
+asv6/completed/unverified. The original producer remainsv6/completed/verified.
+Fresh Core/coordinator reopen after completion returned the same result with no
+authority calls, new tasks, attempts or queue waves. Authentication cleanup and
+89installed runtime member hashes were checked. Candidate/workspace state is intact.
+
+[Evidence](evidence/m7-host-handoff-live/summary.json) includes31hash-bound artifacts
+and two receipt-derived JUnit observations, explicitly not pytest results. Independent review accepted these31artifacts
+and the complete model review within this limited scope. Raw model capture and private Core/credential
+state are excluded. Fees remain owner-confirmed, not independently billed.
+
+This is staged continuation from an already accepted source with host document
+acceptance, not two fresh agents, unattended source verification or interrupted-agent
+recovery. New full matrix/sdist installation, unavailable Claude/Cursor and remaining
+M5/M6/M7 lifecycle requirements remain unverified. Formal Release is BLOCKED.
+
 ## Host handoff coordinator: limited implementation acceptance
 
 Frozenb455d9b connects source-outcome pin derivation, bounded independent-completion

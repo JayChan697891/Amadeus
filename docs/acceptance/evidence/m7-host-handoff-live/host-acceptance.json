@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-11-13T03:48:04.777695+00:00",
+  "review_task": {
+    "id": "594bc9b3-79d1-43e1-883e-8fbaa4b89fb2",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "unverified"
+  },
+  "review_context_sha256": "00e8bc3da22073b655560ee700e7a1234747d1ef9c10c6cb7306e4ccd975fed7",
+  "review_note_sha256": "7af8c81445e1f194550072b981ea34656f80c9430597ba2ba1f7e7d0a9963b06",
+  "verification": "unverified"
+}

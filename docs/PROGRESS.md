@@ -1,5 +1,37 @@
 # Amadeus current progress
 
+## Actual coordinator continuation: one receiver and safe reopen
+
+Frozenb455d9b now has a real installed coordinator continuation from the independently
+completed6017005 producer. ProposalHandoff derived the source reference from the
+hash-bound saved producer outcome and created the dependent task/worktree itself.
+Preparation stopped before dispatch intent for host exact-plan review. Reopening
+with the coordinator's saved reference dispatched exactly one real Codex receiver:
+21.635seconds, exit0, reported8561input/115output tokens. This is staged exact-plan
+authorization, not uninterrupted unattended orchestration or two fresh agents.
+
+Root read the complete372byte source-only review. A distinct Core reviewer then
+accepted the document atv6/completed/unverified; the producer stayedv6/verified.
+The queue resolved with no pending fence. A further fresh Core/coordinator reopen
+returned the same result with zero launch-authority calls and unchanged tasks,
+attempts and queue history. Candidate state and all fixture workspaces are unchanged.
+89installed runtime members still match; temporary authentication was removed and
+its RAM home unmounted, original authentication unchanged. Raw1009byte stdout
+remains private in the guest; stderr is empty. Billing is owner-confirmed only.
+
+Evidence: [actual coordinator continuation](acceptance/evidence/m7-host-handoff-live/summary.json).
+Independent evidence review accepted this limited scope, including all31hashes and the full review text. Debug entry:
+D:/agentsync-debug/m7-host-handoff-live-20261113. Its run-once controller is consumed;
+never rerun it. All reported commands are terminal. No product code changed and no
+unrelated regression matrix was repeated. GitHub PR/Issue feedback retrieval failed
+with a connector transport error this turn; it is not an observed review approval.
+
+Next address the remaining continuous producer/independent-verifier/receiver
+composition and lost-agent lifecycle requirements, using existing exact-consent
+and candidate gates. Historical cross-version evidence must retain its versions.
+New full matrix/sdist installation and full M5/M6/M7/Release remain NOT RUN/BLOCKED.
+Claude/Cursor real clients remain NOT RUN because the owner has no subscriptions.
+
 ## Automatic handoff coordinator: implemented and locally checked
 
 Frozenb455d9b adds installed host-only ProposalHandoff. It derives an exact source

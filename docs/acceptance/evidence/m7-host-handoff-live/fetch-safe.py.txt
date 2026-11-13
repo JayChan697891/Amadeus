@@ -1,0 +1,137 @@
+"""Fetch safe JSON evidence or, explicitly, the exact observed review document."""
+
+import hashlib
+import json
+import re
+import stat
+import sys
+from pathlib import Path
+
+import paramiko
+
+BASE = Path('D:/agentsync-debug/m7-host-handoff-live-20261113')
+REMOTE = '/root/amadeus-host-handoff-live-20261113'
+OBSERVATION = {
+    'timestamp', 'producer_product_sha', 'receiver_product_sha', 'wheel_sha256', 'producer_task',
+    'producer_context_id', 'producer_context_sha256', 'source_sha256', 'source_utf8_bytes',
+    'producer_task_unchanged', 'source_and_worktrees_unchanged', 'different_core_model_authors',
+    'host_reviewer_distinct_from_both', 'review_task', 'review_context_id', 'review_context_sha256',
+    'review_note_sha256', 'review_note_utf8_bytes', 'review_verdict', 'review_reasons_present',
+    'plan_sha256', 'selection_sha256', 'producer_wave_id', 'review_wave_id', 'queue_pending',
+    'candidate_state_unchanged', 'auth_cleanup_confirmed', 'host_document_acceptance',
+    'billing_independently_verified', 'runtime_package_members_matched', 'runtime_python_modules_matched',
+}
+ALLOWED = {
+    'resume-observation.json': {'timestamp', 'state', 'task_id', 'same_result', 'same_tasks',
+        'same_attempts', 'same_queue_history', 'launch_authority_calls', 'auth_absent',
+        'source_and_worktrees_unchanged', 'verification', 'product_sha'},
+    'coordinator-preparation.json': {'timestamp', 'source_result_sha256', 'source_reference_derived_from_saved_result',
+        'task_created_by_coordinator', 'worktree_created_by_coordinator', 'dispatch_intent_absent',
+        'attempts_not_dispatched', 'checkpoint', 'model_calls'},
+    'coordinator-result.json': {'timestamp', 'outcome', 'resumed_from_saved_reference',
+        'exact_plan_authorizations', 'source_result_sha256', 'verification'},
+    'plan.json': {'producer_product_sha', 'receiver_product_sha', 'wheel_sha256', 'binary_sha256',
+        'client_version', 'producer_task', 'producer_context_id', 'producer_context_version',
+        'producer_context_sha256', 'source_sha256', 'source_utf8_bytes', 'review_task_id',
+        'review_task_initial_version', 'plan_sha256', 'selection_sha256', 'wave_id', 'queue_request',
+        'allowed_paths', 'timeout_seconds', 'output_limit', 'execution_budget_seconds', 'helper_sha256',
+        'source_and_worktrees_unchanged', 'model_calls', 'credential_copy',
+        'runtime_package_members_matched', 'runtime_python_modules_matched'},
+    'prepare-entry.json': {'timestamp', 'model_calls'},
+    'credential-home.json': {'timestamp', 'temporary_storage', 'mode', 'credentials_copied'},
+    'readiness-entry.json': {'timestamp', 'model_calls', 'retry_allowed'},
+    'readiness.json': {'timestamp', 'online', 'heartbeat_age_seconds', 'session_remaining_seconds',
+        'plan_sha256', 'selection_sha256', 'wave_id', 'source_and_worktrees_unchanged', 'model_calls',
+        'credential_copy'},
+    'execute-entry.json': {'timestamp', 'plan_sha256', 'retry_allowed'},
+    'attempt.json': {'timestamp', 'plan_sha256', 'wave_id', 'single_attempt_consumed', 'retry_allowed'},
+    'auth-route.json': {'recognized_chatgpt_route', 'exit_code', 'model_calls'},
+    'dispatch-observation.json': {'timestamp', 'error_code', 'captured_start_invoked',
+        'exact_authorizations', 'attempts', 'queue_outcome'},
+    'result.json': {'timestamp', 'plan_sha256', 'wave_id', 'queue', 'queue_pending', 'review',
+        'captured_start_invoked', 'error_code', 'verification'},
+    'auth-cleanup.json': {'timestamp', 'temporary_auth_absent', 'home_unmounted', 'private_home_empty'},
+    'review-observation.json': OBSERVATION,
+    'final-observation.json': OBSERVATION,
+    'host-review-entry.json': {'timestamp', 'review_context_sha256', 'review_note_sha256', 'expected_version'},
+    'host-acceptance.json': {'timestamp', 'review_task', 'review_context_sha256', 'review_note_sha256', 'verification'},
+}
+CAPTURE_META = {'scope', 'saved', 'reason', 'stdout_bytes', 'stderr_bytes', 'stdout_sha256', 'stderr_sha256',
+                'stdout_truncated', 'stderr_truncated'}
+REVIEW_DOCUMENT = 'private-review.md'
+REVIEW_LIMIT = 8 * 1024
+
+
+def read_remote(sftp, name, limit):
+    path = REMOTE + '/' + name
+    entry = sftp.lstat(path)
+    assert stat.S_ISREG(entry.st_mode) and entry.st_uid == 0 and stat.S_IMODE(entry.st_mode) == 0o600
+    assert 0 < entry.st_size <= limit
+    with sftp.open(path, 'rb') as source:
+        opened = source.stat()
+        assert stat.S_ISREG(opened.st_mode) and opened.st_uid == 0
+        assert stat.S_IMODE(opened.st_mode) == 0o600 and opened.st_size == entry.st_size
+        data = source.read(limit + 1)
+    assert len(data) == entry.st_size
+    return data
+
+
+def fetch_document(sftp, context_sha, note_sha):
+    observation_name = 'review-observation.json'
+    expected = json.loads((BASE / observation_name).read_text(encoding='utf-8'))
+    observed = json.loads(read_remote(sftp, observation_name, 65535))
+    assert type(observed) is dict and set(observed) == OBSERVATION and observed == expected
+    assert observed['review_context_sha256'] == context_sha and observed['review_note_sha256'] == note_sha
+    assert observed['review_task']['status'] == 'review' and observed['review_task']['task_verification'] == 'unverified'
+    assert observed['auth_cleanup_confirmed'] is True and observed['host_document_acceptance'] is False
+    size = observed['review_note_utf8_bytes']
+    assert type(size) is int and 0 < size <= REVIEW_LIMIT
+    data = read_remote(sftp, REVIEW_DOCUMENT, REVIEW_LIMIT)
+    assert len(data) == size and hashlib.sha256(data).hexdigest() == note_sha
+    assert '\x00' not in data.decode('utf-8')
+    with (BASE / REVIEW_DOCUMENT).open('xb') as dest:
+        dest.write(data)
+    print(json.dumps({'file': REVIEW_DOCUMENT, 'bytes': size,
+                      'review_context_sha256': context_sha, 'review_note_sha256': note_sha}))
+
+
+def main():
+    names = sys.argv[1:]
+    document = bool(names) and names[0] == 'review-document'
+    if document:
+        assert len(names) == 3 and all(re.fullmatch('[0-9a-f]{64}', arg) for arg in names[1:])
+        assert not (BASE / REVIEW_DOCUMENT).exists()
+    else:
+        assert names and len(names) == len(set(names)) and set(names) <= set(ALLOWED) | {'capture-metadata.json'}
+        assert not any((BASE / name).exists() for name in names)
+    client = paramiko.SSHClient()
+    client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    client.connect('127.0.0.1', port=22222, username='root',
+                   key_filename='D:/agentsync-debug/vm/debug_ed25519', look_for_keys=False,
+                   allow_agent=False, timeout=10, auth_timeout=15)
+    try:
+        with client.open_sftp() as sftp:
+            if document:
+                fetch_document(sftp, *names[1:])
+                return
+            for name in names:
+                data = read_remote(sftp, name, 65535)
+                value = json.loads(data)
+                assert type(value) is dict
+                if name == 'capture-metadata.json':
+                    assert {'scope', 'saved'} <= set(value) <= CAPTURE_META
+                else:
+                    assert set(value) == ALLOWED[name]
+                with (BASE / name).open('xb') as dest:
+                    dest.write(data)
+                print(json.dumps({'file': name, 'bytes': len(data)}))
+    finally:
+        client.close()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception:
+        raise SystemExit('Safe evidence retrieval stopped.') from None
