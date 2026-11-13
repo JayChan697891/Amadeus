@@ -705,25 +705,16 @@
     "repair-linux-sdist_delta_pytest.process.json": "b07da4d2935968cb45b00bcfd96c355ebc32b1622e8567943bf7464415de10f8",
     "repair-linux-sdist_console_smoke.log": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f",
     "repair-linux-sdist_license_inventory.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "original-driver.py": "46a840fd89d08bccd32a42f07e46087cff24c4125d15758115438468cd975afe",
     "original-identity.json": "56969800ae133aa85477144d293dd8a18ff05aea15b7a2600bfa7c4796d4f2d6",
-    "original-run-windows.py": "1fb96857bb5b952c37761edf7d8065b2eeb93e348846b3c66d05b8ce5ae4a33c",
     "original-run-linux.sh": "cc4ebf9206b50e4002d0f0845336fe3b55aeb107140e85bab903f907cb31ec2b",
     "original-build.log": "2258776fb705be18b6a100ecc33c7f4e6ac4781a11d34f9debcfe95ae8ef0d39",
-    "original-inspect-install-first.py": "3c2e8eba009b0b7df54b47813cb597d109b06904178dae16035585bb169a5f7c",
-    "original-inspect-install.py": "8c2085b21cc9ae87c7f8e809e622b55fb1466e456b58e83b707848fba062cbb3",
     "original-linux-installation-first.log": "8e2cf0eead89cc278d8e244f418b1485632431b9cc180f959bca3f3f1cc53f64",
     "original-linux-docker-cleanup-observation.json": "8659850e694fae07713005baf333cb352ca8fe5e8a8260696ddbd8dfd7366662",
     "original-observe-docker-cleanup.sh": "44c10dc7ad78063570deb4b9189cdcaf9357b6e03efcca43bd5f33d27045b7c5",
-    "repair-driver.py": "5258915bc96ec1d663ceaa22c3b4b92e659d916d375ccf0f399a43e8a9225253",
-    "repair-driver-repaired.py": "285e973ffc16c01b0b3be38a3cdfb6118fee324e89fb7afe1826019017615b29",
     "repair-identity.json": "7b026abb565ea88a789cd7f041b6ccb9bc3dfc2597599ff8f315bccf57af43d9",
-    "repair-run-windows.py": "1fb96857bb5b952c37761edf7d8065b2eeb93e348846b3c66d05b8ce5ae4a33c",
     "repair-run-linux.sh": "b5af4d8582d6d91f97700dd45db79ba79638085a46728084bf77c29391ffbf54",
     "repair-run-linux-repaired.sh": "839062ac2c6d7ffa37d3f38ac5382581caeadd3a6ab5a95ee0cfe4c48879feac",
     "repair-build.log": "2258776fb705be18b6a100ecc33c7f4e6ac4781a11d34f9debcfe95ae8ef0d39",
-    "repair-inspect-install.py": "8c2085b21cc9ae87c7f8e809e622b55fb1466e456b58e83b707848fba062cbb3",
-    "repair-reconcile.py": "eb9026fc918c50bc44a491a462538e380876c04125cc9f9c210adf28caeb080f",
     "repair-reconciliation.json": "b8813a3506fb7a19c6443eab263ac36d2a2b518339ac61ff19d47895dc1fa9ee",
     "repair-collection-sanitized.json": "bae2a84031e132414fa5f04e5855b3b7576b5db8c1f35ab8740f158caa2cfd23",
     "source-junit.xml": "70404936bb26f4c934cecc2955e36b0a944053269aa92ce5007b31570334fa83",
@@ -731,7 +722,16 @@
     "source-pytest-result.json": "63067a67537d7383ead224b52e9cca3cfa670936f728180e57810ef9db6998fb",
     "source-ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
     "source-ruff-format.log": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
-    "source-static-result.json": "aa93dc9995fb915091689c77604a8856100873e2bda6b5b7997bd095ade07de5"
+    "source-static-result.json": "aa93dc9995fb915091689c77604a8856100873e2bda6b5b7997bd095ade07de5",
+    "original-driver.py.txt": "46a840fd89d08bccd32a42f07e46087cff24c4125d15758115438468cd975afe",
+    "original-inspect-install-first.py.txt": "3c2e8eba009b0b7df54b47813cb597d109b06904178dae16035585bb169a5f7c",
+    "original-inspect-install.py.txt": "8c2085b21cc9ae87c7f8e809e622b55fb1466e456b58e83b707848fba062cbb3",
+    "original-run-windows.py.txt": "1fb96857bb5b952c37761edf7d8065b2eeb93e348846b3c66d05b8ce5ae4a33c",
+    "repair-driver-repaired.py.txt": "285e973ffc16c01b0b3be38a3cdfb6118fee324e89fb7afe1826019017615b29",
+    "repair-driver.py.txt": "5258915bc96ec1d663ceaa22c3b4b92e659d916d375ccf0f399a43e8a9225253",
+    "repair-inspect-install.py.txt": "8c2085b21cc9ae87c7f8e809e622b55fb1466e456b58e83b707848fba062cbb3",
+    "repair-reconcile.py.txt": "eb9026fc918c50bc44a491a462538e380876c04125cc9f9c210adf28caeb080f",
+    "repair-run-windows.py.txt": "1fb96857bb5b952c37761edf7d8065b2eeb93e348846b3c66d05b8ce5ae4a33c"
   },
   "packages_sha256": {
     "releases/0.3.0a109/m9-sdist-c262a29/agentsync_local-0.3.0a109.tar.gz": "6e78b871c978a179b4edb48d09b928c5088ed5f44584694b9d3c3f1a99397965",
@@ -755,5 +755,71 @@
     "Claude/Cursor actual clients NOT RUN: no subscriptions",
     "Windows symlink creation and Linux Docker native Windows capability not inferred",
     "No fresh real-client attempts; prior separate real-flow evidence retains its own SHA and scope"
-  ]
+  ],
+  "raw_execution_sources": {
+    "original-driver.py.txt": {
+      "previous_archive_name": "original-driver.py",
+      "execution_filenames": [
+        "driver.py"
+      ],
+      "sha256": "46a840fd89d08bccd32a42f07e46087cff24c4125d15758115438468cd975afe"
+    },
+    "original-inspect-install-first.py.txt": {
+      "previous_archive_name": "original-inspect-install-first.py",
+      "execution_filenames": [
+        "inspect-install.py"
+      ],
+      "sha256": "3c2e8eba009b0b7df54b47813cb597d109b06904178dae16035585bb169a5f7c"
+    },
+    "original-inspect-install.py.txt": {
+      "previous_archive_name": "original-inspect-install.py",
+      "execution_filenames": [
+        "inspect-install.py"
+      ],
+      "sha256": "8c2085b21cc9ae87c7f8e809e622b55fb1466e456b58e83b707848fba062cbb3"
+    },
+    "original-run-windows.py.txt": {
+      "previous_archive_name": "original-run-windows.py",
+      "execution_filenames": [
+        "run-windows.py"
+      ],
+      "sha256": "1fb96857bb5b952c37761edf7d8065b2eeb93e348846b3c66d05b8ce5ae4a33c"
+    },
+    "repair-driver-repaired.py.txt": {
+      "previous_archive_name": "repair-driver-repaired.py",
+      "execution_filenames": [
+        "driver-repaired.py"
+      ],
+      "sha256": "285e973ffc16c01b0b3be38a3cdfb6118fee324e89fb7afe1826019017615b29"
+    },
+    "repair-driver.py.txt": {
+      "previous_archive_name": "repair-driver.py",
+      "execution_filenames": [
+        "driver.py"
+      ],
+      "sha256": "5258915bc96ec1d663ceaa22c3b4b92e659d916d375ccf0f399a43e8a9225253"
+    },
+    "repair-inspect-install.py.txt": {
+      "previous_archive_name": "repair-inspect-install.py",
+      "execution_filenames": [
+        "inspect-install.py"
+      ],
+      "sha256": "8c2085b21cc9ae87c7f8e809e622b55fb1466e456b58e83b707848fba062cbb3"
+    },
+    "repair-reconcile.py.txt": {
+      "previous_archive_name": "repair-reconcile.py",
+      "execution_filenames": [
+        "reconcile.py"
+      ],
+      "sha256": "eb9026fc918c50bc44a491a462538e380876c04125cc9f9c210adf28caeb080f"
+    },
+    "repair-run-windows.py.txt": {
+      "previous_archive_name": "repair-run-windows.py",
+      "execution_filenames": [
+        "run-windows.py"
+      ],
+      "sha256": "1fb96857bb5b952c37761edf7d8065b2eeb93e348846b3c66d05b8ce5ae4a33c"
+    }
+  },
+  "raw_source_note": "Immutable historical execution source stored as text. Restore recorded filenames in an isolated reproduction directory; prior model/credential authorization limits still apply. No historical source bytes were reformatted or rerun; current active-code lint does not certify these archived scripts."
 }

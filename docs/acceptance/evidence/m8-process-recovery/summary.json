@@ -56,8 +56,25 @@
     "linux-installed.log": "f054de62ec0da9fd856254cff6d8293af9201280330b20cd14f9b9abbde584d7",
     "linux-installed.xml": "8d66af6fd0d926edccabd2c2faa915e08bb822d606d66409ddb22cf6bda6d2cb",
     "linux-origin.json": "fb723886ec057f4d3a4668877359b7b88d3817abf525153d7ddef15697a7725b",
-    "observe-docker.py": "31a4875e82bf4e4a7237f7002b92403fdb0b9c9cf29a388f77146dcfe60aa40d",
     "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
-    "test-installed.py": "9626ffbeaee3902a2049883c16147fd1e5718337918f0c0ef9859af8dc57922b"
-  }
+    "observe-docker.py.txt": "31a4875e82bf4e4a7237f7002b92403fdb0b9c9cf29a388f77146dcfe60aa40d",
+    "test-installed.py.txt": "9626ffbeaee3902a2049883c16147fd1e5718337918f0c0ef9859af8dc57922b"
+  },
+  "raw_execution_sources": {
+    "observe-docker.py.txt": {
+      "previous_archive_name": "observe-docker.py",
+      "execution_filenames": [
+        "observe-docker.py"
+      ],
+      "sha256": "31a4875e82bf4e4a7237f7002b92403fdb0b9c9cf29a388f77146dcfe60aa40d"
+    },
+    "test-installed.py.txt": {
+      "previous_archive_name": "test-installed.py",
+      "execution_filenames": [
+        "test-installed.py"
+      ],
+      "sha256": "9626ffbeaee3902a2049883c16147fd1e5718337918f0c0ef9859af8dc57922b"
+    }
+  },
+  "raw_source_note": "Immutable historical execution source stored as text. Restore recorded filenames in an isolated reproduction directory; prior model/credential authorization limits still apply. No historical source bytes were reformatted or rerun; current active-code lint does not certify these archived scripts."
 }

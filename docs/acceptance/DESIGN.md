@@ -7,6 +7,14 @@ those requirements passed. The machine-readable traceability register is
 execution method, expected outcome, existing selectors, missing work, and target
 evidence location. The original T01–T16 scenarios remain mapped separately.
 
+Historical execution scripts may be stored as `.py.txt` evidence data. Their
+original bytes and SHA-256 remain unchanged; each summary's `raw_execution_sources`
+maps the archive name to the recorded execution filename(s). To reproduce, restore
+those names in an isolated temporary directory, respecting any original one-shot
+model/credential authorization limits. Logs and commands retain their original
+names. Current active Python lint results do not claim that archived execution
+scripts were reformatted, linted successfully or rerun.
+
 ## Initial audit and gaps
 
 The code inspection found 14 requirements with existing component coverage,

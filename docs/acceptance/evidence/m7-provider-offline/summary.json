@@ -58,11 +58,21 @@
     "linux-junit.xml": "264a665b1edbbd7b3663ddfc3baa0a604287cfacd7b57d6dd1226112c1a24f0b",
     "linux-provider_pytest.log": "49b04444f371873270e6f89943046674c10923f4cbf4ab1915655c4bbe17a383",
     "linux-provider_pytest.process.json": "033421da2de46ccdbdb9b9b0d3ee98a7acbe2acfd78f15cef0753dd562c77bf7",
-    "driver.py": "be845219a535c69a0153009a0c014aa485fc89d26bf51742ee93c9f5b2efdc59",
     "run-linux.sh": "836ee8cc66f3af1cc598f2d9f5ca3d754eeb123793d622db2fb187e944be51d5",
     "identity.json": "72cd484a0283985b6ae9877d2152147c44c3f1112b48164f86adf365f8fcd418",
     "source.zip": "3130e337f76dbe8ddbc815fd18242eda6c8a84cfaffe1ffc094a7325cfc5783f",
     "source-ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
-    "source-ruff-format.log": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
-  }
+    "source-ruff-format.log": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
+    "driver.py.txt": "be845219a535c69a0153009a0c014aa485fc89d26bf51742ee93c9f5b2efdc59"
+  },
+  "raw_execution_sources": {
+    "driver.py.txt": {
+      "previous_archive_name": "driver.py",
+      "execution_filenames": [
+        "driver.py"
+      ],
+      "sha256": "be845219a535c69a0153009a0c014aa485fc89d26bf51742ee93c9f5b2efdc59"
+    }
+  },
+  "raw_source_note": "Immutable historical execution source stored as text. Restore recorded filenames in an isolated reproduction directory; prior model/credential authorization limits still apply. No historical source bytes were reformatted or rerun; current active-code lint does not certify these archived scripts."
 }

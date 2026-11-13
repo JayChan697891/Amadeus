@@ -210,7 +210,18 @@
     "linux-threads.process.json": "b153889dfb0f6e69590c3d0591e14f70603dce79dff736eca861620798862bb5",
     "linux-process-http.log": "70949376ca8503c804bdbec8603cf9e97df1473a4a932f919a1046c665896fd9",
     "linux-process-http.process.json": "aff16a59fe4df21ba527598de0e9aee7a9803935650430fe43c4835fd0d1986f",
-    "run-bounded-coordination.py": "e632ba8ecbff7efc4f05289dbc693085878935c9177cd7052ca736cc11f5a2ff",
-    "run-linux.sh": "914d3e3cf0c140eac6e33734097cfea3379e5ff4e9612c71e9c2f08f0a5eda7a"
-  }
+    "run-linux.sh": "914d3e3cf0c140eac6e33734097cfea3379e5ff4e9612c71e9c2f08f0a5eda7a",
+    "run-bounded-coordination.py.txt": "e632ba8ecbff7efc4f05289dbc693085878935c9177cd7052ca736cc11f5a2ff"
+  },
+  "raw_execution_sources": {
+    "run-bounded-coordination.py.txt": {
+      "previous_archive_name": "run-bounded-coordination.py",
+      "execution_filenames": [
+        "run-bounded-coordination.py",
+        "amadeus-bounded-coordination.py"
+      ],
+      "sha256": "e632ba8ecbff7efc4f05289dbc693085878935c9177cd7052ca736cc11f5a2ff"
+    }
+  },
+  "raw_source_note": "Immutable historical execution source stored as text. Restore recorded filenames in an isolated reproduction directory; prior model/credential authorization limits still apply. No historical source bytes were reformatted or rerun; current active-code lint does not certify these archived scripts."
 }
