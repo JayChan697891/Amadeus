@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-11-13T06:14:52.802796+00:00",
+  "plan_sha256": "04cd7280ffe2697a1eeceff35e75638fa2f7e7519257b0e91d677310c810aa1a",
+  "subscription_only_confirmed_by_operator": true,
+  "api_key_allowed": false,
+  "retry_allowed": false
+}

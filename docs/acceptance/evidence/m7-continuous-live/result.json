@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-11-13T06:18:11.752772+00:00",
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "outcome": {
+    "state": "handoff",
+    "job_id": "2f50c3ec-b27e-4a9e-82e4-b532e7babc51",
+    "execution_id": "c1fdc3d9-681a-4f2a-9482-1830e9d4cac0",
+    "handoff": {
+      "state": "resolved",
+      "pin": {
+        "producer_task_id": "48de88f9-f4c5-4415-96ea-26c45621e47e",
+        "context_id": "5eb50584-8e1d-4dac-ae4b-ef6883521197",
+        "context_version": 1,
+        "content_sha256": "3803168e2077c0c9a7652b0c926236387a5c07ae0c80be7db2c3385e222c06b9"
+      },
+      "task_id": "2f81d34a-8ea5-45fe-968b-21f1e1c0badb",
+      "worktree_id": "8fb9302d-25b1-50e1-be8b-9d77ad339548",
+      "wave": {
+        "state": "resolved",
+        "tasks": [
+          {
+            "task_id": "2f81d34a-8ea5-45fe-968b-21f1e1c0badb",
+            "state": "ready_for_review",
+            "failure_code": null
+          }
+        ],
+        "verification": "unverified"
+      },
+      "verification": "unverified"
+    },
+    "execution_assessment": "passed",
+    "verification": "unverified"
+  },
+  "producer_task": {
+    "id": "48de88f9-f4c5-4415-96ea-26c45621e47e",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "verified"
+  },
+  "receiver_task": {
+    "id": "2f81d34a-8ea5-45fe-968b-21f1e1c0badb",
+    "status": "review",
+    "version": 5,
+    "task_verification": "unverified"
+  },
+  "review": {
+    "state": "submitted_for_review",
+    "context_id": "8ba8a286-74e0-4a53-9f16-02409a8a292d",
+    "content_sha256": "b781d67eba3a9763b8b5322eef1151fa539ab97eaf3fc25fd54d8241ce9f5dea",
+    "publication_task_version": 4,
+    "review_task_version": 5,
+    "verification": "unverified"
+  },
+  "source_and_worktrees_unchanged": true,
+  "queue_pending": false,
+  "real_model_calls": 2,
+  "verification": "unverified",
+  "runtime_members_matched": 90,
+  "runtime_python_modules": 89
+}

@@ -1,0 +1,162 @@
+{
+  "timestamp": "2026-11-13T06:18:06.370054+00:00",
+  "error_code": null,
+  "actors": {
+    "producer": {
+      "captured_start_invoked": true,
+      "exact_authorizations": 1,
+      "task_id": "48de88f9-f4c5-4415-96ea-26c45621e47e",
+      "attempts": [
+        {
+          "leg": "first",
+          "state": "terminal_recorded",
+          "client": "codex",
+          "status": "proposal_received",
+          "exit_code": 0,
+          "timed_out": false,
+          "parent_ended": true,
+          "run_sha256": "cc4074cd1601810c1777c84342401e5a03f6fe9ab3346124b30423cced6a0d33",
+          "session_sha256": "7a20e894f946866dba7badc3af74af58a79a449f2ceeac7797e81b88566b2698",
+          "error_code": null,
+          "admission": {
+            "state": "both_reservations_recorded",
+            "plan_sha256": "04cd7280ffe2697a1eeceff35e75638fa2f7e7519257b0e91d677310c810aa1a",
+            "execution_verified": false
+          },
+          "adapter_elapsed_ms": 46810,
+          "reported_input_tokens": 8157,
+          "reported_output_tokens": 61,
+          "agent_sha256": "e470aa8cebf3946ddea9601da308b77978b1246d2b4ee622c1f9b7d1572bc895",
+          "declared_client_version": "0.167.0-alpha.3.2",
+          "protocol_session_sha256": "6386d8b09f1563617cab3f3c46075d65bac296e370a0e008536294ef52715952",
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null
+        },
+        {
+          "leg": "second",
+          "state": "not_dispatched",
+          "client": null,
+          "status": null,
+          "exit_code": null,
+          "timed_out": null,
+          "parent_ended": null,
+          "run_sha256": null,
+          "session_sha256": null,
+          "error_code": null,
+          "admission": null,
+          "adapter_elapsed_ms": null,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": null,
+          "declared_client_version": null,
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null
+        }
+      ]
+    },
+    "receiver": {
+      "captured_start_invoked": true,
+      "exact_authorizations": 1,
+      "task_id": "2f81d34a-8ea5-45fe-968b-21f1e1c0badb",
+      "attempts": [
+        {
+          "leg": "first",
+          "state": "terminal_recorded",
+          "client": "codex",
+          "status": "proposal_received",
+          "exit_code": 0,
+          "timed_out": false,
+          "parent_ended": true,
+          "run_sha256": "609aefd97811889485cc399982196578395bab4a148b7008b1cb71f5ae4cc983",
+          "session_sha256": "68c21caed14a672a38b0f19bd6662ff9f977a9a0c3f7f6b586b1747a990d7858",
+          "error_code": null,
+          "admission": {
+            "state": "both_reservations_recorded",
+            "plan_sha256": "2a34050d07de3865a278b8e864eaf79bba789c16a3c5412d4c22749d03f5c4e5",
+            "execution_verified": false
+          },
+          "adapter_elapsed_ms": 59985,
+          "reported_input_tokens": 8554,
+          "reported_output_tokens": 115,
+          "agent_sha256": "33636ff9d3e35dc67c5973a093628ee196ed6bb66d6f164a3a3a0cbdaaa8312b",
+          "declared_client_version": "0.167.0-alpha.3.2",
+          "protocol_session_sha256": "6bc52de4b182dbb651f5d605afdfc119e0b77f3d10138fe180b6b15bc3041a66",
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null
+        },
+        {
+          "leg": "second",
+          "state": "not_dispatched",
+          "client": null,
+          "status": null,
+          "exit_code": null,
+          "timed_out": null,
+          "parent_ended": null,
+          "run_sha256": null,
+          "session_sha256": null,
+          "error_code": null,
+          "admission": null,
+          "adapter_elapsed_ms": null,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": null,
+          "declared_client_version": null,
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null
+        }
+      ]
+    }
+  },
+  "outcome": {
+    "state": "handoff",
+    "job_id": "2f50c3ec-b27e-4a9e-82e4-b532e7babc51",
+    "execution_id": "c1fdc3d9-681a-4f2a-9482-1830e9d4cac0",
+    "handoff": {
+      "state": "resolved",
+      "pin": {
+        "producer_task_id": "48de88f9-f4c5-4415-96ea-26c45621e47e",
+        "context_id": "5eb50584-8e1d-4dac-ae4b-ef6883521197",
+        "context_version": 1,
+        "content_sha256": "3803168e2077c0c9a7652b0c926236387a5c07ae0c80be7db2c3385e222c06b9"
+      },
+      "task_id": "2f81d34a-8ea5-45fe-968b-21f1e1c0badb",
+      "worktree_id": "8fb9302d-25b1-50e1-be8b-9d77ad339548",
+      "wave": {
+        "state": "resolved",
+        "tasks": [
+          {
+            "task_id": "2f81d34a-8ea5-45fe-968b-21f1e1c0badb",
+            "state": "ready_for_review",
+            "failure_code": null
+          }
+        ],
+        "verification": "unverified"
+      },
+      "verification": "unverified"
+    },
+    "execution_assessment": "passed",
+    "verification": "unverified"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-11-13T06:10:31.943197+00:00",
+  "plan_sha256": "a0694f3e8cc396e69c6a8bfa079139daaf6fd5b98f2c01f7b6489b956ee6359b",
+  "online": true,
+  "heartbeat_age_seconds": 6.114561080932617,
+  "session_remaining_seconds": 3593.885435819626,
+  "model_calls": 0
+}

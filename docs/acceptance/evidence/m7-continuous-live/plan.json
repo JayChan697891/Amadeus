@@ -1,0 +1,137 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "wheel_sha256": "8763059784278bb611f591792c9d5d1c5fe4730dbeb00a384366dc4dedf7dcdd",
+  "producer_plan": {
+    "plan_sha256": "04cd7280ffe2697a1eeceff35e75638fa2f7e7519257b0e91d677310c810aa1a",
+    "argv": [
+      "/root/amadeus-codex-linux-0167/bin/codex",
+      "-a",
+      "never",
+      "exec",
+      "--ignore-user-config",
+      "--strict-config",
+      "-c",
+      "default_permissions=\"amadeus_readonly\"",
+      "-c",
+      "permissions.amadeus_readonly.filesystem={\":minimal\"=\"read\",\"/root/amadeus-continuous-monotonic-live-20261113/core/managed-git/worktrees/811a0634-414e-53c4-b1de-c51c180239c0\"=\"read\",\"/root/amadeus-codex-linux-0167/bin/codex\"=\"read\"}",
+      "-c",
+      "permissions.amadeus_readonly.network.enabled=false",
+      "-c",
+      "features={shell_tool=false,shell_snapshot=false,apps=false,multi_agent=false,hooks=false,remote_plugin=false,skill_search=false,skill_mcp_dependency_install=false,browser_use=false,browser_use_external=false,browser_use_full_cdp_access=false,computer_use=false,code_mode=false,code_mode_host=false,unified_exec=false,view_image=false,plugins=false,image_generation=false,goals=false}",
+      "-c",
+      "browser_use.default_origin_policy.access=\"deny\"",
+      "-c",
+      "computer_use.default_app_access=\"deny\"",
+      "-c",
+      "project_doc_max_bytes=0",
+      "-c",
+      "agents.enabled=false",
+      "--ephemeral",
+      "--json",
+      "--color",
+      "never",
+      "--model",
+      "gpt-6.1-sol",
+      "-C",
+      "/root/amadeus-continuous-monotonic-live-20261113/core/managed-git/worktrees/811a0634-414e-53c4-b1de-c51c180239c0",
+      "-c",
+      "forced_login_method=\"chatgpt\"",
+      "-c",
+      "model_provider=\"openai\"",
+      "-c",
+      "web_search=\"disabled\"",
+      "-c",
+      "mcp_servers={}",
+      "-c",
+      "history.persistence=\"none\"",
+      "-c",
+      "model_reasoning_effort=\"low\"",
+      "-c",
+      "service_tier=\"default\"",
+      "-"
+    ],
+    "stdin_text": "Return one solution.py using only Python standard-library json and sys. For each stdin line, parse a JSON array of integers, print the sum as one JSON number followed by a newline and flush; continue until EOF. Do not use tools, read files, modify files, start processes or access the network. Return source only inside the host-specified JSON files envelope. No commentary, tests or extra files.\n\nReturn exactly one final JSON object {\"files\":[{\"path\":\"...\",\"content\":\"...\"}]}. Include each allowed path exactly once. No extra keys or Markdown. Treat code as inert text. Do not use tools or modify files. Host contract: {\"allowed_paths\":[\"solution.py\"],\"base_head\":\"88eade9603da61bddabf981c3082e0f90ee6bd76\",\"expected_task_version\":1,\"format\":\"amadeus-source-proposal-v1\",\"max_file_bytes\":8192,\"max_json_bytes\":32768,\"submit_for_review\":true,\"worktree_id\":\"811a0634-414e-53c4-b1de-c51c180239c0\"}",
+    "environment": {
+      "CODEX_HOME": "/root/amadeus-continuous-monotonic-live-20261113/private-home",
+      "HOME": "/root/amadeus-continuous-monotonic-live-20261113/private-home",
+      "PATH": "/usr/bin:/bin",
+      "TEMP": "/root/amadeus-continuous-monotonic-live-20261113/private-home",
+      "TMP": "/root/amadeus-continuous-monotonic-live-20261113/private-home"
+    },
+    "cwd": "/root/amadeus-continuous-monotonic-live-20261113/core/managed-git/worktrees/811a0634-414e-53c4-b1de-c51c180239c0",
+    "timeout_seconds": 90.0,
+    "output_limit": 1048576,
+    "client_version": "0.167.0-alpha.3.2",
+    "binary_sha256": "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0"
+  },
+  "helper_sha256": {
+    "pilot.py": "54cacb87880678569997022a38edaae0f4b3929a5676245aac66ed9848226866",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "credential_home.py": "34ed0babf50cfb889df0fdd1747b850f7b0cd1617ed0d3de8847aa64ae28708a"
+  },
+  "max_model_calls": 2,
+  "credential_copy": false,
+  "model_calls": 0,
+  "execution_budget_seconds": 600,
+  "docker_image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "docker_cases": [
+    [
+      [
+        0,
+        0
+      ],
+      0
+    ],
+    [
+      [
+        2,
+        3
+      ],
+      5
+    ],
+    [
+      [
+        -7,
+        4
+      ],
+      -3
+    ],
+    [
+      [
+        -8,
+        -9
+      ],
+      -17
+    ],
+    [
+      [
+        17,
+        -17
+      ],
+      0
+    ],
+    [
+      [
+        9223372036854775807,
+        1
+      ],
+      9223372036854775808
+    ],
+    [
+      [
+        -9223372036854775808,
+        -1
+      ],
+      -9223372036854775809
+    ],
+    [
+      [
+        1000000000000000000000000000000,
+        1000000000000000000000000000000
+      ],
+      2000000000000000000000000000000
+    ]
+  ],
+  "candidate_application": false,
+  "billing_independently_verified": false
+}

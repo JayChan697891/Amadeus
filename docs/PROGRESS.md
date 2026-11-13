@@ -1,5 +1,40 @@
 # Amadeus current progress
 
+## Continuous real producer, verifier and receiver
+
+Installed09425da now completed one uninterrupted VerifiedProposalFlow invocation:
+two new real Codex identities, exact host staging/execution/completion/receiver
+decisions, actual local Docker8/8 and all19isolation checks. The producer finished
+in46.810seconds and receiver in59.985seconds, both exit0/parent ended. The coordinator
+derived the saved producer context and created the dependent task/worktree itself;
+no manual producer/receiver checkpoint restart was required. These explicit host
+decisions remain part of the flow, not evidence of an unattended approval policy.
+
+Producer task isv6/completed/verified. Root read all153source bytes and the358byte
+receiver document; a separate Core reviewer accepted that document only, leaving
+itv6/completed/unverified. Fresh Core/flow reopen returned the same handoff with
+zero authority/model calls and unchanged tasks, attempts and queue history.
+90installed members/89Python modules, original workspaces and container absence
+were checked. Temporary authentication was removed, RAM home unmounted and the
+original unchanged. Raw model captures and private Core/credentials remain local.
+
+The initial controller stopped before copying authentication or starting a model:
+the guest clock was0.38-0.48seconds ahead of Windows and a cross-clock freshness
+assertion rejected it. Its zero-call failure and successful cleanup are preserved,
+and that controller was not retried. A separate controller uses host monotonic
+elapsed time from before readiness through the immediate pre-copy check;10offline
+checks passed, retaining plan/heartbeat/session constraints. Billing remains owner-
+confirmed, not independently verified. Evidence: [continuous live flow](acceptance/evidence/m7-continuous-live/summary.json).
+Independent Astra review accepted this limited scope after checking all48artifact
+hashes, full source/review and actual gate/run/cleanup/reopen receipts.
+
+Debug: D:/agentsync-debug/m7-continuous-monotonic-live-20261113; both controllers
+are consumed, never rerun. All live/observation commands are terminal. GitHub PR35
+and Issues7/11 were read successfully; PR35 had no comments and main is unchanged.
+Next add actual host-process exit/recovery checks, reusing existing fixtures and
+keeping uncertain dispatch fenced. New full094matrix, Windows/macOS live and sdist
+installation remain NOT RUN; Claude/Cursor unavailable; formal Release BLOCKED.
+
 ## Verified producer-to-receiver composition: local Docker integration
 
 Frozen09425da adds VerifiedProposalFlow, composing one new producer with exact

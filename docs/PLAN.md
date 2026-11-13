@@ -1,5 +1,15 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Installed09425da now has one continuous actual two-Codex flow through explicit host
+decisions, Docker8/8, independent verified producer completion and an automatically
+prepared receiver. Full358byte model review accepted as a document only/unverified;
+fresh reopen creates no model calls/tasks/attempts. See
+acceptance/evidence/m7-continuous-live/summary.json. This closes the previously
+unrun same-version continuous composition example, not cross-vendor compatibility,
+unattended approvals, crash recovery or complete M7/Release. Next verify actual
+host-process interruption at recoverable and uncertain dispatch boundaries; reuse
+existing local integration fixtures without another model call. No new M5 phase.
+
 Current product09425da composes the producer, explicit exact staging/execution/
 completion decisions, actual independent Docker proof and receiver handoff in
 VerifiedProposalFlow. A verified-source checkpoint can resume the receiver without

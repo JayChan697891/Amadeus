@@ -1,5 +1,36 @@
 # Release Acceptance Report
 
+## Continuous actual Codex flow on09425da: limited scope passed
+
+One installed VerifiedProposalFlow invocation ran a fresh real producer and receiver
+with four explicit host decisions, independent local Docker8/8 and19isolation checks.
+Both CLI parents ended/exit0:46.810seconds with reported8157input/61output tokens,
+and59.985seconds with8554input/115output. Shared context was bound to the actual
+producer task/version/hash; the coordinator created the dependent task/worktree.
+Producer completion is Core verified. The358byte source-only model review was
+separately read and host-accepted as an unverified document, not test evidence.
+
+Fresh Core/flow reopen returned the same result with no authority/model calls or
+changed tasks, attempts or queue history.90installed members/89Python modules and
+fixture workspaces remain unchanged; the actual container is absent. Temporary
+authentication was removed and RAM storage unmounted, original authentication
+unchanged. Raw809/995byte model stdout stays private; both stderr streams are empty.
+Billing/credits are owner-confirmed only. [Evidence](evidence/m7-continuous-live/summary.json)
+contains48hash-bound artifacts plus a summary, including3receipt-derived JUnit
+observations (not pytest or additional model runs) and10offline controller checks.
+Independent Astra review accepted this limited scope, including all48artifact
+hashes, exact context/plan bindings, full source/review and final receipts.
+
+Preserved failure: an earlier controller rejected a guest timestamp0.38-0.48seconds
+ahead of the host, before credential copy/model execution. Cleanup succeeded and
+the controller was not retried. A distinct corrected controller bounds freshness
+with the host monotonic clock and retains exact-plan/guest-heartbeat/session checks.
+
+NOT RUN/unproven: actual interrupted-host recovery for this flow, other real vendors
+(no Claude/Cursor subscriptions), unattended approval policy, full094regression,
+Windows/macOS live integration and094sdist installation. This is one same-vendor
+continuous example, not full M5/M6/M7 or Release acceptance. Release stays BLOCKED.
+
 ## Verified proposal flow: actual local Docker, protocol-fixture clients
 
 Frozen09425da connects producer output, saved source reference, three exact host
