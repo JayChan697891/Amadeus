@@ -1,6 +1,18 @@
 # Amadeus current progress
 
-## a115 traceability repair passed; freeze a corrected candidate next
+## a115 traceability repair passed; corrected candidate running
+
+Corrected frozen candidate 4a27a00a7ef5e055c99b0724374506a867ae62e8 / tree
+488cc352dde12ed170b100955b9ebca7525ef90d is uploaded and clean in the separate
+D:/agentsync-debug/m115-r2/s snapshot. Original session 61366 started the full
+Windows source/wheel/sdist collector at 2026-11-13 14:26:16 UTC; it is RUNNING,
+not passed. Session 95010 is its waiting continuation controller, started at
+14:28:13 UTC. Later platform rows are NOT RUN. The same frozen Linux source and
+existing queue helper are staged and hash-verified in /root/amadeus-m115-r2.
+The same no-retry gates and at-most-two concurrent collectors apply. Resume by
+observing these original handles and D:/agentsync-debug/m115-r2, never by starting
+the retired old attempts. Compact, byte-reconstructible helper configuration:
+acceptance/evidence/m9-a115-preparation/r2.json.
 
 Repair b471a6a6efef02c4fde536c92d5c032cfd41ca4c expands M7-02's continuation
 mapping into nine explicit test nodes and updates the exact expected set. The
@@ -26,8 +38,8 @@ both original sessions 83040 and 22389 terminated with exit 1, and subsequent
 identity checks found no original remaining processes. A later unrelated process
 reused an old PID and was left untouched. No automatic retry occurred.
 
-Next freeze the repaired inputs into a new isolated candidate and run the existing
-full local matrix. Do not restart the old collector/controller or treat its failed
+Continue the corrected candidate's existing full local matrix. Do not restart
+the old collector/controller or treat its failed
 row as passed. Earlier 197-case Windows/Linux source checks retain their limited
 scope; full current packages, real clients, macOS and Release remain unverified.
 

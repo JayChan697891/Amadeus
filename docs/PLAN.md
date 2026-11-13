@@ -6,7 +6,9 @@ the new continuation nodes explicitly without weakening the assertions; 253
 affected traceability and release-evidence tests pass. Product/tool code is
 unchanged. The failed collector and its waiting controller are terminal; package
 tests were interrupted and later rows never started. Preserve the failed evidence
-and freeze corrected inputs for the required local matrix. Earlier 197-case
+and retain the corrected 4a27a00 candidate's running full Windows collector
+(session 61366) and waiting matrix controller (95010). Later rows are NOT RUN;
+the same Linux source is staged and verified. Earlier 197-case
 Windows/Linux source checks remain valid only within their original scope.
 See PROGRESS.md and acceptance/evidence/m115-source-checks/traceability-repair/summary.json.
 

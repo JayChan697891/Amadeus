@@ -20,6 +20,7 @@ passes, with the original failure and initial zero-test selector error retained.
 | Initial Windows harness preparation | FAILED, repaired: missing temporary parent directory caused 34 fixture setup errors before product test bodies; original log/XML retained, corrected run is separate |
 | First full a115 Windows source | FAILED: 2404 pass, 56 skip, one traceability failure across 2461 unique cases; all 1891 frozen source files unchanged; explicit-node mapping repaired and affected 253-case retest passed |
 | Original a115 wheel and sdist suites | Wheel INTERRUPTED after known source failure; sdist NOT RUN. Original collector 83040 and waiting controller 22389 are terminal; no completed package row claimed |
+| Corrected 4a27a00 Windows source/wheel/sdist | RUNNING from a new clean isolated snapshot since 2026-11-13 14:26:16 UTC; original session 61366, continuation 95010 waiting; not passed |
 | Remaining current candidate platform/package rows | NOT RUN; exact frozen candidate archives must be shared after the original build evidence is available |
 | Real Claude/Cursor and cross-client acceptance | BLOCKED by unavailable accounts; protocol fixtures are not real-client evidence |
 | macOS, final license classification and independent Release decision | NOT RUN / BLOCKED; existing release gates remain unchanged |
