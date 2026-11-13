@@ -1919,7 +1919,7 @@ def test_mock_workflow_components_never_establish_formal_or_real_relay_acceptanc
     manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     requirement = next(row for row in manifest["requirements"] if row["id"] == "M7-04")
-    assert requirement["coverage"] == "partial" and len(requirement["existing_tests"]) == 10
+    assert requirement["coverage"] == "partial" and len(requirement["existing_tests"]) == 11
     (tmp_path / "junit.xml").write_text(
         '<testsuites><testsuite><testcase classname="tests.integration.test_mock_workflow" '
         'name="test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews"/>'
@@ -1933,7 +1933,7 @@ def test_mock_workflow_components_never_establish_formal_or_real_relay_acceptanc
     counts = [
         component["observations"][0]["counts"]["passed"] for component in row["component_evidence"]
     ]
-    assert counts == [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    assert counts == [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["status"] == "blocked" and gate["formal_acceptance"] is False
     assert "autonomous_relay" in gate["blockers"]

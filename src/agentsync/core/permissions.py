@@ -86,6 +86,7 @@ VERIFICATION_AUDIT_OPERATIONS = frozenset(
         "candidate_delivery_admit",
         "proposal_staging_admit",
         "proposal_staging_finish",
+        "mock_workflow_transition",
         "verification_cancel",
         "verification_claim",
         "verification_renew",

@@ -60,6 +60,28 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, UsageMixin, Perm
                 session = self._authenticate(db, p, now)
                 actor = (p["project_id"], "agent", session["agent_id"])
                 self._authorize_session(db, operation, session)
+                if (
+                    operation
+                    in {"claim_task", "renew_lease", "update_task", "review_task", "submit_handoff"}
+                    and db.execute(
+                        "SELECT 1 FROM mock_workflow_tasks m JOIN mock_workflows w ON w.id=m.run_id "
+                        "WHERE m.task_id=? AND w.project_id=?",
+                        (p["task_id"], p["project_id"]),
+                    ).fetchone()
+                ):
+                    raise AgentSyncError(
+                        "workflow_managed_task", "The task belongs to a durable Mock workflow.", 409
+                    )
+                if (
+                    operation in {"resolve_handoff", "withdraw_handoff"}
+                    and db.execute(
+                        "SELECT 1 FROM handoffs h JOIN mock_workflow_tasks m ON m.task_id=h.task_id WHERE h.id=? AND h.project_id=?",
+                        (p["handoff_id"], p["project_id"]),
+                    ).fetchone()
+                ):
+                    raise AgentSyncError(
+                        "workflow_managed_task", "The task belongs to a durable Mock workflow.", 409
+                    )
             request_id = p.get("request_id")
             fingerprint = digest(canonical(p))
             if request_id:
@@ -500,12 +522,15 @@ class Core(CollaborationMixin, ResourcesMixin, WorkspacesMixin, UsageMixin, Perm
         self, db: sqlite3.Connection, p: dict[str, Any], now: float, session: sqlite3.Row | None
     ) -> dict[str, Any]:
         rows = db.execute(
-            "SELECT id FROM tasks WHERE project_id=? AND status IN ('claimed','running','blocked') AND lease_expires_at<=?",
+            "SELECT id FROM tasks WHERE project_id=? AND status IN ('claimed','running','blocked') AND lease_expires_at<=? "
+            "AND NOT EXISTS(SELECT 1 FROM mock_workflow_tasks WHERE task_id=tasks.id)",
             (p["project_id"], now),
         ).fetchall()
         ids = [row["id"] for row in rows]
         db.execute(
-            "UPDATE tasks SET status='pending',version=version+1,owner_session_id=NULL,lease_hash=NULL,lease_expires_at=NULL,updated_at=? WHERE project_id=? AND status IN ('claimed','running','blocked') AND lease_expires_at<=?",
+            "UPDATE tasks SET status='pending',version=version+1,owner_session_id=NULL,lease_hash=NULL,lease_expires_at=NULL,updated_at=? "
+            "WHERE project_id=? AND status IN ('claimed','running','blocked') AND lease_expires_at<=? "
+            "AND NOT EXISTS(SELECT 1 FROM mock_workflow_tasks WHERE task_id=tasks.id)",
             (now, p["project_id"], now),
         )
         return {"reclaimed_task_ids": ids}

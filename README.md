@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a111 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a112 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -122,6 +122,38 @@ The returned `capability_filter` identifies the mode, while capability verificat
 and Core authorization remain unverified. Recommendations never claim or run work.
 
 ## Isolated simulated workflow
+
+For a simulation that must survive a coordinator restart, use the owner-only
+`start_mock_workflow`, `resume_mock_workflow`, `status_mock_workflow` and
+`cancel_mock_workflow` operations through `AgentSyncClient.owner_call`. The CLI
+equivalent is `amadeus --data-dir ABSOLUTE_PATH workflow start|resume|status|cancel`.
+Provide `project_id` and `admin_token` through bounded stdin JSON, never command
+arguments. Use a dedicated empty project; one durable run is bound to that project.
+Keep the owner credential yourself: the driver stores no recoverable credentials.
+
+`start` also takes `request_id` and `config`; `resume`/`cancel` take `request_id`
+and the latest `expected_version` returned by `status`. A minimal config is:
+
+```json
+{
+  "tasks": [{"label": "build", "priority": 1, "capability": "build"}],
+  "budget": {
+    "steps": 8, "calls": 8, "requested_output": 4096,
+    "estimated_tokens": 50000, "estimated_cost": 500000, "concurrency": 2
+  },
+  "deadline_seconds": 60
+}
+```
+
+Start/resume drives ready work and returns `waiting` when a retry is not yet due;
+call resume with current version after its persisted `retry_at`. Reopening does not
+reset reservations or the deadline. Missing results after dispatch remain unknown
+and cannot be retried. Cancellation persists before stopping owned Mock activity.
+`handoff_on_success` reuses the normal structured handoff and requires a distinct
+third reviewer in the worker roster. The existing disposable entry below is unchanged.
+All durable effects are Mock: cost units use the disclosed fixed synthetic tariff,
+estimated token values are planning units, and neither represents a real bill or
+permission to launch a model. See [progress](docs/PROGRESS.md) for validation status.
 
 The Python API also accepts a validated graph of 1–16 simulation tasks. Tasks may
 arrive out of dependency order; duplicate labels, missing dependencies and cycles

@@ -50,7 +50,7 @@ def test_v9_populated_execution_history_survives_v10_and_reopen(pending, transpo
     database.migrate(path)
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 16
         after = history(db)
         assert all(after[name] == rows for name, rows in before.items())
         assert after["candidate_verification_jobs"] == []
@@ -92,7 +92,7 @@ def test_fresh_schema10_starts_with_empty_candidate_queue(tmp_path):
     path = tmp_path / "new.db"
     database.migrate(path)
     with database.connect(path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 16
         assert db.execute("SELECT count(*) FROM candidate_verification_jobs").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM candidate_verification_requests").fetchone()[0] == 0
         assert db.execute("PRAGMA foreign_key_check").fetchall() == []

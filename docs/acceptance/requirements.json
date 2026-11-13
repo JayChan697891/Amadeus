@@ -1310,7 +1310,8 @@
         "tests/integration/test_mock_workflow.py::test_existing_parent_core_unchanged_and_no_credentials_or_private_child_returned",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
-        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io"
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io",
+        "tests/integration/test_durable_mock_workflow.py"
       ],
       "planned_cases": [
         {
@@ -1397,7 +1398,8 @@
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",
         "tests/unit/test_verification_reconciliation.py",
-        "tests/integration/test_execution_reconciliation.py"
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/integration/test_durable_mock_workflow.py"
       ],
       "planned_cases": [
         {

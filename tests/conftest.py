@@ -25,6 +25,7 @@ def owner_grant(core, project, actor, roles=("worker", "reviewer")):
 
 def drop_candidate_queue_schema(db):
     """Remove schema additions from v10 onward for older migration fixtures."""
+    drop_mock_workflow_schema(db)
     db.execute("DROP TABLE IF EXISTS project_usage")
     db.execute("DROP TABLE IF EXISTS task_verification_requests")
     db.execute("DROP TABLE IF EXISTS task_verifications")
@@ -40,6 +41,12 @@ def drop_candidate_queue_schema(db):
     ).fetchall()
     for row in indexes:
         db.execute('DROP INDEX "' + row[0].replace('"', '""') + '"')
+
+
+def drop_mock_workflow_schema(db):
+    for table in ("requests", "attempts", "tasks", "members"):
+        db.execute(f"DROP TABLE IF EXISTS mock_workflow_{table}")
+    db.execute("DROP TABLE IF EXISTS mock_workflows")
 
 
 def run_owned_processes(commands, *, env=None, timeout=30):

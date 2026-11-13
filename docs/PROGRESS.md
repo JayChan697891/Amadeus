@@ -1,5 +1,33 @@
 # Amadeus current progress
 
+## 0.3.0a112 durable Mock execution: source regression passed
+
+Owner-only CLI/SDK start/resume/status/cancel now persists one simulation run in a
+dedicated Core project (schema16). The existing Mock planner/manager, decomposition,
+structured handoff and independent reviewer remain the execution path. Attempt and
+budget reservations share a transaction; confirmed failures can retry, reserved work
+can resume without a second charge, and dispatch without a terminal stays unknown.
+Restart retains deadline/clock/cancellation state. Session rotation preserves agent
+identity without recoverable credentials, and ordinary Core writes/reclaim cannot
+bypass managed-task fences. Synthetic cost/token reservations are not real billing
+or model authorization. The original disposable Mock mode remains available.
+
+Windows working-tree affected regression:325passed/6Linux Docker skips. Three
+strengthened existing cases pass separately; the generation case was subsequently
+made discriminating while the new driver still has a valid lease and passes1/1.
+These supplements do not add to325unique passing cases. Root traceability/collector
+checks pass246cases after mapping the new module to M7-04/M8-02, retainingpartial/
+not_run formal status. Whole-repository Ruff and342-file format checks pass; source
+mypy90files passes. Review found and fixed truthful late cancellation outcomes,
+owned-process cleanup, project-scoped guards and audit completeness. Product bytes
+remained fixed through the final supplements; original manifests/logs are retained.
+Evidence is currently local: D:/agentsync-debug/m7-durable-a112-sol. Source process
+13004 is terminal0; do not restart. Frozen package/Linux checks are NOT RUN yet.
+Next freeze and validate the affected CLI/recovery/permission/migration paths on
+fresh Windows wheel/Linux sdist, plus the existing actual Linux Docker delivery
+smoke. Do not repeat unchanged slow verifier modules merely to inflate counts.
+Real-client recovery, billing, macOS and formal Release remain unverified/blocked.
+
 ## 0.3.0a111 restricted cross-client review: installed checks passed
 
 New ProposalReviewInput/ProposalReviewQueueItem accepts prepared Codex/Claude/Cursor

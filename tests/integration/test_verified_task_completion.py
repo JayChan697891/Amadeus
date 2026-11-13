@@ -10,7 +10,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-from conftest import owner_grant
+from conftest import drop_mock_workflow_schema, owner_grant
 from test_candidate_execution import (
     JSON_LINES_CANDIDATE,
     actual_docker_image,
@@ -538,6 +538,7 @@ def test_text_review_and_legacy_cached_response_remain_unverified(prepared, worl
 def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready, monkeypatch):
     prepared, _, _, _ = ready
     with connect(prepared[0].db_path) as db:
+        drop_mock_workflow_schema(db)
         db.execute("DROP TABLE project_usage")
         db.execute("DROP TABLE task_verification_requests")
         db.execute("DROP TABLE task_verifications")

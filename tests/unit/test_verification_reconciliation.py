@@ -483,7 +483,7 @@ def test_migration9_preserves_schema8_rows_and_rolls_back(pending, monkeypatch):
     database.migrate(core.db_path)
     database.migrate(core.db_path)
     with database.connect(core.db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 16
         assert all(
             db.execute('SELECT * FROM "' + name + '"').fetchall() == rows
             for name, rows in before.items()

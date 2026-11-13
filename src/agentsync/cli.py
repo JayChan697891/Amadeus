@@ -199,6 +199,8 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         "mock-workflow", help="Run a disposable Mock task graph from bounded stdin JSON"
     )
     mock_workflow.add_argument("--scratch-parent", type=Path, required=True)
+    workflow = commands.add_parser("workflow", help="Operate an owner-only durable Mock workflow")
+    workflow.add_argument("operation", choices=("start", "resume", "status", "cancel"))
     args = parser.parse_args(argv)
     if args.command in {"plan", "plan-retry"}:
         from agentsync.planning_cli import invalid_input
@@ -217,6 +219,33 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
+    if args.command == "workflow":
+        if not data_dir:
+            parser.error("workflow requires an explicit --data-dir")
+        from agentsync.mock_workflow_cli import read_workflow_document
+
+        try:
+            payload = read_workflow_document()
+            if type(payload) is not dict or {"operation", "self"}.intersection(payload):
+                raise ValueError
+        except (ValueError, RecursionError, OverflowError):
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "error": {
+                            "code": "validation_error",
+                            "message": "Expected bounded workflow input.",
+                        },
+                    }
+                )
+            )
+            return 1
+        response = AgentSyncClient(data_dir).owner_call(
+            f"{args.operation}_mock_workflow", **payload
+        )
+        print(json.dumps(response, ensure_ascii=True, allow_nan=False))
+        return 0 if response["ok"] else 1
     if args.command in {"relay-status", "relay-reconcile"}:
         if not data_dir:
             parser.error(f"{args.command} requires an explicit --data-dir")

@@ -24,6 +24,19 @@ class AgentSyncClient:
     def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
+            if operation in {
+                "start_mock_workflow",
+                "resume_mock_workflow",
+                "status_mock_workflow",
+                "cancel_mock_workflow",
+            }:
+                from agentsync.durable_mock_workflow import OwnerMockWorkflow
+
+                workflow = OwnerMockWorkflow(self.core)
+                return {
+                    "ok": True,
+                    "data": getattr(workflow, operation.removesuffix("_mock_workflow"))(**payload),
+                }
             if operation in (
                 "preview_candidate_delivery",
                 "get_candidate_delivery_status",

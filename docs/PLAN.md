@@ -1,4 +1,12 @@
-# Amadeus current direction: M5 scope frozen; conditional M6 prototypes
+# Amadeus current direction: finish M7/M8 and remaining release gates
+
+The a112 owner-only persistent Mock execution path now implements original M7-04/
+M8-02 restartable retries and budget reservations, exact driver generations,
+cancellation, task handoff and independent review through Core schema16. Windows
+source325pass/6Docker skips, targeted supplements and246traceability/collector
+checks pass. Freeze and validate fresh installations next; this is not full M7/M8,
+real-model billing, real-client recovery or Release acceptance. Keep M5's original
+five requirements frozen and reuse existing evidence where inputs are unchanged.
 
 Product1014307 (0.3.0a111) adds strict dependent review using prepared Codex/Claude/
 Cursor profiles, pinned verified source and review.md-only unverified output.

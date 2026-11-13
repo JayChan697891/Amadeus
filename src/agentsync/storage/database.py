@@ -2,7 +2,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-SCHEMA_VERSION = 15
+SCHEMA_VERSION = 16
 
 # Historical v1 schema, applied only to empty databases before incremental upgrades.
 SCHEMA = """
@@ -456,6 +456,36 @@ PRAGMA user_version=15;
 """
 
 
+MIGRATION_V16 = """
+CREATE TABLE mock_workflows(
+ id TEXT PRIMARY KEY, project_id TEXT NOT NULL UNIQUE REFERENCES projects(id),
+ start_request_sha256 TEXT NOT NULL, config TEXT NOT NULL, config_sha256 TEXT NOT NULL,
+ state TEXT NOT NULL CHECK(state IN ('ready','running','waiting','completed','stopped','cancelled','unknown')),
+ reason TEXT, version INTEGER NOT NULL CHECK(version>0), generation INTEGER NOT NULL CHECK(generation>=0),
+ driver_until REAL, deadline REAL NOT NULL, last_wall REAL NOT NULL,
+ spent TEXT NOT NULL, cancelled INTEGER NOT NULL CHECK(cancelled IN (0,1)));
+CREATE TABLE mock_workflow_members(
+ run_id TEXT NOT NULL REFERENCES mock_workflows(id), position INTEGER NOT NULL,
+ agent_id TEXT NOT NULL UNIQUE REFERENCES agents(id), session_id TEXT REFERENCES sessions(id),
+ PRIMARY KEY(run_id,position));
+CREATE TABLE mock_workflow_tasks(
+ run_id TEXT NOT NULL REFERENCES mock_workflows(id), task_id TEXT NOT NULL UNIQUE REFERENCES tasks(id),
+ label TEXT NOT NULL, PRIMARY KEY(run_id,label));
+CREATE TABLE mock_workflow_attempts(
+ run_id TEXT NOT NULL REFERENCES mock_workflows(id), request_id TEXT NOT NULL UNIQUE,
+ task_id TEXT REFERENCES tasks(id), sequence INTEGER NOT NULL CHECK(sequence BETWEEN 1 AND 3),
+ kind TEXT NOT NULL CHECK(kind IN ('task','decomposition')),
+ state TEXT NOT NULL CHECK(state IN ('scheduled','reserved','dispatch_intent','succeeded','failed','cancelled','unknown','abandoned')),
+ retry_at REAL NOT NULL, generation INTEGER, agent_id TEXT REFERENCES agents(id), evidence_sha256 TEXT,
+ CHECK((kind='decomposition') = (task_id IS NULL)),
+ PRIMARY KEY(run_id,request_id), UNIQUE(run_id,task_id,sequence));
+CREATE TABLE mock_workflow_requests(
+ run_id TEXT NOT NULL REFERENCES mock_workflows(id), request_sha256 TEXT NOT NULL,
+ operation TEXT NOT NULL, input_sha256 TEXT NOT NULL, PRIMARY KEY(run_id,request_sha256));
+PRAGMA user_version=16;
+"""
+
+
 def connect(path: Path) -> sqlite3.Connection:
     db = sqlite3.connect(path, timeout=30, isolation_level=None)
     db.row_factory = sqlite3.Row
@@ -549,6 +579,11 @@ def migrate(path: Path) -> None:
                 if statement.strip():
                     db.execute(statement)
             version = 15
+        if version == 15:
+            for statement in MIGRATION_V16.split(";"):
+                if statement.strip():
+                    db.execute(statement)
+            version = 16
         if version != SCHEMA_VERSION:
             raise RuntimeError("Unsupported AgentSync database schema version.")
         if db.execute("PRAGMA foreign_key_check").fetchone() is not None:

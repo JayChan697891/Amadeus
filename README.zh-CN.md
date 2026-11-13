@@ -5,7 +5,17 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a111 开发源码，正式发布仍处于阻断状态**。
+当前为 **0.3.0a112 开发源码，正式发布仍处于阻断状态**。
+
+新增可恢复的持久 Mock 工作流入口：
+`amadeus --data-dir 绝对路径 workflow start|resume|status|cancel`，或 SDK 的
+`owner_call("start_mock_workflow", ...)` 等对应操作。通过有界标准输入 JSON 提供
+专用空项目的所有者认证，不把凭据放在命令参数中；每个项目绑定一个持久运行。
+重试时间、预算预留、取消状态和交接进度会保存；重开不重置预算，派发后结果未知
+时不重试。`waiting` 表示需到保存的重试时间后，以当前版本再次调用 `resume`。
+这仍是模拟工作流，不启动真实模型；费用与 Token 预留是明确标注的模拟估算，
+不代表实际账单。[英文用法与配置](README.md#isolated-simulated-workflow)及
+[当前验证状态](docs/PROGRESS.md)分别记录使用方式和未完成验收。
 
 新增受限的跨客户端评审路径：`ProposalReviewInput` 和 `ProposalReviewQueueItem`
 可接收已准备好的 Codex、Claude Code 或 Cursor 适配器，将已验证的来源产物固定到

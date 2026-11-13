@@ -310,5 +310,6 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io",
+        "tests/integration/test_durable_mock_workflow.py",
     }
     assert by_id["M7-04"]["execution_status"] == "not_run"
