@@ -1,5 +1,14 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+M8's existing benchmark tool has now run one declared local contention load on
+both installed platforms:4threads/20rounds and2spawned workers with mixed Core/HTTP/
+20rounds. All four commands pass, audit totals exactly match120claims per platform,
+one winner per round and no leftovers. Evidence:
+acceptance/evidence/m8-bounded-load/summary.json. This is not exhaustive stress or
+a production SLO. Next inspect M4-05's actual remaining integration capability
+against the original requirement before deciding whether new product code is needed;
+do not reimplement existing private-ref delivery or create another M5 phase.
+
 M7-03 tests2af7ccc now cover the existing five provider serializers/parsers and
 actual owned-loopback transport (success,429,redirect refusal,limits,cancellation).
 Windows/Linux installed-runtime regressions each269pass; no product change or paid

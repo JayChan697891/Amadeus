@@ -1,5 +1,27 @@
 # Amadeus current progress
 
+## M8 declared contention diagnostic: passed on both local platforms
+
+The existing benchmark tool frozen2af7ccc ran against unchanged installed09425da.
+Each platform ran4threads/20rounds (80claim attempts) then2spawned workers/20rounds
+mixing direct Core with actual loopback HTTP (40attempts). The platforms ran
+sequentially, not concurrently. Every round has one persistent winner and expected
+version conflicts; all120audit events/platform match, with0missing/duplicate/
+unexpected/mismatch entries. Database integrity, foreign keys, cancellation state
+versions, final task count and scratch cleanup pass.90runtime members match before/
+after. No models, external endpoints, Actions or user data were involved.
+
+Declared diagnostic p95 budget:1000ms. Observed Windows14.88ms threads/25.46ms mixed;
+Linux VM121.84ms threads/113.43ms mixed. Claim timing excludes setup, validation and
+cleanup; process throughput includes dispatch/barrier time. Different host/VM
+hardware is not an OS performance comparison. This bounded load does not establish
+scalability saturation, exhaustive stress or a production Release SLO.
+[Evidence](acceptance/evidence/m8-bounded-load/summary.json).
+Debug: D:/agentsync-debug/m8-load-2af7ccc; all four command runs are terminalpass.
+Next: inspect actual M4-05 safe integration/private-ref delivery against the original
+acceptance before choosing the next product change. Existing M5 closure and all
+unverified-client/platform/release limitations remain in force.
+
 ## M7-03 optional provider offline coverage: passed, live providers NOT RUN
 
 Frozen2af7ccc45892a0387833e31f945897c47d50fe71 adds20cases across two files, reusing

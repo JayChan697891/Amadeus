@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "process-http",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-providers-2af7ccc\\source\\tools\\benchmark_coordination.py",
+      "--scratch-parent",
+      "D:\\agentsync-debug\\m8-load-2af7ccc\\scratch",
+      "--workers",
+      "2",
+      "--rounds",
+      "20",
+      "--p95-budget-ms",
+      "1000",
+      "--processes",
+      "--transport-mix"
+    ],
+    "cwd": "D:\\agentsync-debug\\m8-load-2af7ccc",
+    "started_at": "2026-11-13T07:38:22.153303+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "process-http",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-providers-2af7ccc\\source\\tools\\benchmark_coordination.py",
+      "--scratch-parent",
+      "D:\\agentsync-debug\\m8-load-2af7ccc\\scratch",
+      "--workers",
+      "2",
+      "--rounds",
+      "20",
+      "--p95-budget-ms",
+      "1000",
+      "--processes",
+      "--transport-mix"
+    ],
+    "cwd": "D:\\agentsync-debug\\m8-load-2af7ccc",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:38:22.153303+00:00",
+    "finished_at": "2026-11-13T07:38:23.819794+00:00",
+    "log": "logs/process-http.log",
+    "log_sha256": "cce79141104d91d241f078ab503c0ad810adade5630dc9dee8a2f018685d5c88",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+## Declared M8 local contention load: diagnostic pass
+
+Existing2af7ccc tool and unchanged installed09425da runtime completed four actual
+commands:4threads/20rounds and2processes with Core/loopback HTTP/20rounds on each
+platform. All120claim audit events per platform match (40successful/80denied),
+one winner per round, no unexpected errors, valid database/foreign keys and empty
+scratch after cleanup. Windows p95:14.88/25.46ms; Linux VM:121.84/113.43ms, against
+the predeclared1000ms diagnostic budget. Hardware differs, so these numbers are not
+an OS ranking or production SLO. No model/provider/Actions calls. This supplements
+M8 recovery evidence without claiming complete M8 or Release acceptance.
+[Logs, process receipts and actual observations](evidence/m8-bounded-load/summary.json).
+
 ## Optional provider offline coverage: limited pass
 
 Tests2af7ccc with unchanged installed09425da runtime pass269cases on each of

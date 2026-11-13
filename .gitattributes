@@ -67,3 +67,4 @@ docs/acceptance/evidence/m7-continuous-live/** -text whitespace=blank-at-eol,bla
 docs/acceptance/evidence/m8-process-recovery/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/acceptance/evidence/m9-sdist-regression/** -text -whitespace
 docs/acceptance/evidence/m7-provider-offline/** -text -whitespace
+docs/acceptance/evidence/m8-bounded-load/** -text -whitespace

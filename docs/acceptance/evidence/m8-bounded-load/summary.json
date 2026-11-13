@@ -1,0 +1,216 @@
+{
+  "runtime_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "tool_source_sha": "2af7ccc45892a0387833e31f945897c47d50fe71",
+  "scope": "Bounded contention diagnostic, not exhaustive stress or a formal Release SLO",
+  "platforms": {
+    "windows": {
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "observations": [
+        {
+          "mode": "threads",
+          "workload": {
+            "workers": 4,
+            "rounds": 20,
+            "claims": 80,
+            "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+            "throughput_denominator": "sum_of_round_claim_spans"
+          },
+          "claim_latency_ms": {
+            "p50": 10.361500000726664,
+            "p95": 14.877699999487959,
+            "p99": 18.230499998026062
+          },
+          "audit": {
+            "expected": 80,
+            "observed": 80,
+            "success": 20,
+            "denied": 60,
+            "missing": 0,
+            "duplicate": 0,
+            "unexpected": 0,
+            "mismatch": 0
+          },
+          "functional_checks": {
+            "persisted_winners": true,
+            "cancelled_status_versions": true,
+            "persisted_task_count": true,
+            "sqlite_integrity": true,
+            "foreign_keys": true,
+            "claim_audit_complete": true,
+            "rounds_completed": true,
+            "claims_measured": true,
+            "single_winner_each_round": true,
+            "expected_conflicts": true,
+            "valid_timing": true
+          },
+          "declared_p95_budget_ms": 1000,
+          "p95_budget_passed": true
+        },
+        {
+          "mode": "process-http",
+          "workload": {
+            "workers": 2,
+            "rounds": 20,
+            "claims": 40,
+            "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+            "throughput_denominator": "sum_of_parent_round_spans_including_process_dispatch",
+            "worker_mode": "spawned_processes",
+            "requested_transports": [
+              "core",
+              "loopback_http"
+            ]
+          },
+          "claim_latency_ms": {
+            "p50": 7.0144999990588985,
+            "p95": 25.464399997872533,
+            "p99": 39.496700002928264
+          },
+          "audit": {
+            "expected": 40,
+            "observed": 40,
+            "success": 20,
+            "denied": 20,
+            "missing": 0,
+            "duplicate": 0,
+            "unexpected": 0,
+            "mismatch": 0
+          },
+          "functional_checks": {
+            "persisted_winners": true,
+            "cancelled_status_versions": true,
+            "persisted_task_count": true,
+            "sqlite_integrity": true,
+            "foreign_keys": true,
+            "claim_audit_complete": true,
+            "rounds_completed": true,
+            "claims_measured": true,
+            "single_winner_each_round": true,
+            "expected_conflicts": true,
+            "valid_timing": true
+          },
+          "declared_p95_budget_ms": 1000,
+          "p95_budget_passed": true
+        }
+      ],
+      "scratch_empty_after": true
+    },
+    "linux": {
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+      "observations": [
+        {
+          "mode": "threads",
+          "workload": {
+            "workers": 4,
+            "rounds": 20,
+            "claims": 80,
+            "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+            "throughput_denominator": "sum_of_round_claim_spans"
+          },
+          "claim_latency_ms": {
+            "p50": 64.15229099911812,
+            "p95": 121.84362299922213,
+            "p99": 169.96136600027967
+          },
+          "audit": {
+            "expected": 80,
+            "observed": 80,
+            "success": 20,
+            "denied": 60,
+            "missing": 0,
+            "duplicate": 0,
+            "unexpected": 0,
+            "mismatch": 0
+          },
+          "functional_checks": {
+            "persisted_winners": true,
+            "cancelled_status_versions": true,
+            "persisted_task_count": true,
+            "sqlite_integrity": true,
+            "foreign_keys": true,
+            "claim_audit_complete": true,
+            "rounds_completed": true,
+            "claims_measured": true,
+            "single_winner_each_round": true,
+            "expected_conflicts": true,
+            "valid_timing": true
+          },
+          "declared_p95_budget_ms": 1000,
+          "p95_budget_passed": true
+        },
+        {
+          "mode": "process-http",
+          "workload": {
+            "workers": 2,
+            "rounds": 20,
+            "claims": 40,
+            "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+            "throughput_denominator": "sum_of_parent_round_spans_including_process_dispatch",
+            "worker_mode": "spawned_processes",
+            "requested_transports": [
+              "core",
+              "loopback_http"
+            ]
+          },
+          "claim_latency_ms": {
+            "p50": 53.385291999802575,
+            "p95": 113.42534499999601,
+            "p99": 403.4284169993043
+          },
+          "audit": {
+            "expected": 40,
+            "observed": 40,
+            "success": 20,
+            "denied": 20,
+            "missing": 0,
+            "duplicate": 0,
+            "unexpected": 0,
+            "mismatch": 0
+          },
+          "functional_checks": {
+            "persisted_winners": true,
+            "cancelled_status_versions": true,
+            "persisted_task_count": true,
+            "sqlite_integrity": true,
+            "foreign_keys": true,
+            "claim_audit_complete": true,
+            "rounds_completed": true,
+            "claims_measured": true,
+            "single_winner_each_round": true,
+            "expected_conflicts": true,
+            "valid_timing": true
+          },
+          "declared_p95_budget_ms": 1000,
+          "p95_budget_passed": true
+        }
+      ],
+      "scratch_empty_after": true
+    }
+  },
+  "runtime_members_matched_before_after": 90,
+  "max_spawned_workers_per_platform": 2,
+  "rounds_per_mode": 20,
+  "latency_scope": "Claim calls after barrier, excludes setup/verification/cleanup; process throughput includes dispatch and barrier waits",
+  "limitations": [
+    "Single declared load, not scalability saturation",
+    "Host Windows and Linux VM hardware are not comparable",
+    "No actual model/client invocation"
+  ],
+  "root_review": "Actual commands, all four result records and complete audits inspected; no duplicate winners or unexpected errors; temporary project directories empty after exit",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "evidence_sha256": {
+    "windows-result.json": "70ec1a10a7c01aa240e59dd23a58039707f3456b75f95fdc459ee299769169da",
+    "windows-threads.log": "584d84ee19054370ef5ae4541623cb4e5e615fba79725c9dbce5cfaf1c45ab1f",
+    "windows-threads.process.json": "e21e62bcf6417c942ff74cbca7fa95065ac4a9541455bb22db9f99a211c4413e",
+    "windows-process-http.log": "cce79141104d91d241f078ab503c0ad810adade5630dc9dee8a2f018685d5c88",
+    "windows-process-http.process.json": "c140162c7c60164e2cab2c651663b560949956df789001b60bee9323be853969",
+    "linux-result.json": "36f6b5cafa1a460db0db1458ddd697ab5b6c0c09e2d1960534aff35eab05c32a",
+    "linux-threads.log": "7808d483b71530f0cd5a58de2fe979abd97c506d95dfeb4e3877b4f8b19ab91e",
+    "linux-threads.process.json": "b153889dfb0f6e69590c3d0591e14f70603dce79dff736eca861620798862bb5",
+    "linux-process-http.log": "70949376ca8503c804bdbec8603cf9e97df1473a4a932f919a1046c665896fd9",
+    "linux-process-http.process.json": "aff16a59fe4df21ba527598de0e9aee7a9803935650430fe43c4835fd0d1986f",
+    "run-bounded-coordination.py": "e632ba8ecbff7efc4f05289dbc693085878935c9177cd7052ca736cc11f5a2ff",
+    "run-linux.sh": "914d3e3cf0c140eac6e33734097cfea3379e5ff4e9612c71e9c2f08f0a5eda7a"
+  }
+}
