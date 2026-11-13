@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-## 0.3.0a110 owner delivery entry: installed validation RUNNING
+## 0.3.0a110 owner delivery entry: installed validation passed
 
 Product529df3b3e073b9975fc1e722511ade59423fa330 exposes explicit owner SDK/CLI
 publish_candidate_delivery through the existing single-use private-ref engine.
@@ -14,17 +14,29 @@ coverage selectors and corrected stale README descriptions before freezing529df3
 Both archives built from964Git input files;90runtime members match wheel/sdist.
 Wheel SHA256:cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93.
 Sdist SHA256:b2f40ede0792652a545b1da5397a2bc05de8d2c2540d0f0c4242c6445ec034d8.
-Fresh Windows wheel and Linux sdist affected checks are currently running; original
-handles90923/80892 were polled live. Revalidate these handles and result/log records
-before resuming; do not restart on an observation timeout. Debug root:
+Fresh Windows wheel and Linux sdist affected checks each pass496cases with1platform
+skip,0failures/errors. All497parameterized case IDs match. Windows skips actual Linux
+Docker; Linux skips the Git-for-Windows path-length regression. Both original
+handles90923/80892 are terminal exit0; do not restart either controller. Debug root:
 D:/agentsync-debug/m4-delivery-529df3b; guest:/root/amadeus-delivery-529df3b.
-Linux reuses the existing actual Docker completion scenario, then exact SDK approval,
-CLI publication and reopened status; that new installed observation is not yet passed.
+Linux reused the existing actual Docker completion scenario, then exact SDK approval,
+CLI publication and reopened status. Actual exit0/exact/consumed delivery points to
+the independently verified candidate; original source remains unchanged. Reopen
+returns the same status, and the dedicated daemon has0remaining containers. Installed
+origin/archive checks, console probes and source/runtime before-after checks pass.
 Root full active-code static checks pass: Ruff,340formatted Python files and mypy89
 source modules. The21historical execution-source archives were preserved byte-for-
 byte as.txt with original-name maps; all166evidence/package Git blobs still match.
-Next inspect installed results, actual delivery/cleanup observation and final scope
-review, then address only concrete original-plan gaps from the read-only audit.
+Root independently compared964packaged source files with Git and90runtime members
+with the wheel. [Evidence](acceptance/evidence/m4-owner-delivery/summary.json) preserves
+29artifacts plus both release packages. This is an eight-file affected regression,
+not a new full run, real-client run or formal Release approval. Independent Astra
+review accepted this limited scope after checking the actual files, all hashes,
+case IDs and delivery bindings. Original-workspace apply remains deferred.
+Next product work is a111 strict cross-client review of a verified producer artifact:
+keep the legacy Codex producer/handoff compatible, pin current verification and task
+dependency, and return only an inert review document. Claude/Cursor live acceptance
+remains unavailable; do not fabricate it or launch accounts/models to fill that gap.
 
 ## M8 declared contention diagnostic: passed on both local platforms
 

@@ -1,0 +1,97 @@
+{
+  "product_sha": "529df3b3e073b9975fc1e722511ade59423fa330",
+  "test_source_sha": "529df3b3e073b9975fc1e722511ade59423fa330",
+  "scope": "Current public owner delivery route; affected installed package regression, not full Release acceptance",
+  "platform": "win32",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "started_at": "2026-11-13T07:57:24.156460+00:00",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "owner_delivery_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m4-delivery-529df3b\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:57:24.157466+00:00",
+    "finished_at": "2026-11-13T08:02:56.986207+00:00",
+    "log": "logs/owner_delivery_pytest.log",
+    "log_sha256": "c3c5494ea8834cdf78622e7760d961d5f43967a0f488b0e519e799369e2f6872",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "source_unchanged": true,
+  "installed_identity": {
+    "origin": "D:\\agentsync-debug\\m4-delivery-529df3b\\installed\\Lib\\site-packages\\agentsync",
+    "version": "0.3.0a110",
+    "artifact": "agentsync_local-0.3.0a110-py3-none-any.whl",
+    "artifact_sha256": "cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93",
+    "runtime_members_matched": 90,
+    "source_shadowing": false,
+    "direct_archive": {
+      "archive_info": {
+        "hash": "sha256=cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93",
+        "hashes": {
+          "sha256": "cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93"
+        }
+      },
+      "url": "file:///D:/agentsync-debug/m4-delivery-529df3b/agentsync_local-0.3.0a110-py3-none-any.whl"
+    }
+  },
+  "selectors": [
+    "tests/integration/test_verified_task_completion.py",
+    "tests/security/test_m5_permissions.py",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_m4b_workspaces.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/integration/test_transports.py",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 497,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 1
+  },
+  "failed_cases": [],
+  "console_check": {
+    "id": "wheel_console_smoke",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\installed\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\tmp\\wheel-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\m4-delivery-529df3b\\tmp\\wheel-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-13T08:02:57.154972+00:00",
+    "finished_at": "2026-11-13T08:02:57.729876+00:00",
+    "log": "logs/wheel_console_smoke.log",
+    "log_sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "agentsync_local-0.3.0a110-py3-none-any.whl",
+      "sha256": "cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93",
+      "size": 270056
+    }
+  },
+  "finished_at": "2026-11-13T08:02:57.730874+00:00"
+}

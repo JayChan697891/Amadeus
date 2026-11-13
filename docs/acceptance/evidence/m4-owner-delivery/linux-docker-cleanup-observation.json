@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-11-13T08:07:14.165535+00:00",
+  "docker_host": "unix:///var/run/docker.sock",
+  "trusted_cli": "/usr/bin/docker",
+  "container_count": 0,
+  "all_containers_absent": true,
+  "scope": "Read-only postcheck of dedicated local test daemon after the affected529df3b owner delivery installed-sdist suite"
+}

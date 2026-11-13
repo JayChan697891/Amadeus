@@ -1,5 +1,16 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Product529df3b (0.3.0a110) now exposes the existing approved private-ref delivery
+through explicit owner SDK/CLI calls. Fresh Windows wheel/Linux sdist affected
+checks each pass496cases/1platform skip; the actual Linux Docker-to-verified-task,
+SDK approval, separate CLI delivery and reopened status pass with original source
+unchanged and no remaining containers. Evidence:
+acceptance/evidence/m4-owner-delivery/summary.json. This is limited M4-05 progress;
+source-workspace apply remains deferred and formal Release blocked. Independent
+technical evidence review accepted the limited scope. Next fill the original M6/M7 cross-client dependent-review gap,
+then evaluate durable confirmed-failure retries and budget admission against the
+original requirements. Keep unknown executions fenced and live vendors NOT RUN.
+
 M8's existing benchmark tool has now run one declared local contention load on
 both installed platforms:4threads/20rounds and2spawned workers with mixed Core/HTTP/
 20rounds. All four commands pass, audit totals exactly match120claims per platform,

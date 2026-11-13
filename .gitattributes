@@ -68,3 +68,4 @@ docs/acceptance/evidence/m8-process-recovery/** -text whitespace=blank-at-eol,bl
 docs/acceptance/evidence/m9-sdist-regression/** -text -whitespace
 docs/acceptance/evidence/m7-provider-offline/** -text -whitespace
 docs/acceptance/evidence/m8-bounded-load/** -text -whitespace
+docs/acceptance/evidence/m4-owner-delivery/** -text -whitespace

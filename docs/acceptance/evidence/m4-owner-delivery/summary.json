@@ -1,0 +1,198 @@
+{
+  "product_sha": "529df3b3e073b9975fc1e722511ade59423fa330",
+  "test_source_sha": "529df3b3e073b9975fc1e722511ade59423fa330",
+  "version": "0.3.0a110",
+  "scope": "Explicit owner SDK/CLI publication of a single approved candidate to a Core-private create-only Git ref",
+  "platforms": {
+    "windows": {
+      "tests": 497,
+      "passed": 496,
+      "skipped": [
+        {
+          "class": "tests.integration.test_verified_task_completion",
+          "name": "test_actual_linux_docker_to_independent_verified_completion",
+          "reason": "Requires separately controlled local Linux Docker and preloaded immutable image"
+        }
+      ],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "started_at": "2026-11-13T07:57:24.156460+00:00",
+      "finished_at": "2026-11-13T08:02:57.730874+00:00",
+      "result": "windows-result.json"
+    },
+    "linux": {
+      "tests": 497,
+      "passed": 496,
+      "skipped": [
+        {
+          "class": "tests.integration.test_m4b_workspaces",
+          "name": "test_managed_git_creates_private_ref_beyond_win32_path_limit",
+          "reason": "Git for Windows path-length regression"
+        }
+      ],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+      "started_at": "2026-11-13T07:58:48.389495+00:00",
+      "finished_at": "2026-11-13T08:05:01.974635+00:00",
+      "result": "linux-result.json"
+    }
+  },
+  "selected_test_files": [
+    "tests/integration/test_verified_task_completion.py",
+    "tests/security/test_m5_permissions.py",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_m4b_workspaces.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/integration/test_transports.py",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "packaged_git_files_verified": 964,
+  "runtime_members_verified": 90,
+  "identical_parameterized_case_ids": 497,
+  "source_shadowing": false,
+  "actual_linux_delivery": {
+    "owner_cli_exit_code": 0,
+    "result": {
+      "plan": {
+        "schema": "agentsync.managed-delivery-plan.v1",
+        "approval_id": "e3f83ae0-27ea-47d9-a696-8fe76640cffa",
+        "pending_version": 1,
+        "requester_agent_id": "4b08cd95-d1ca-4281-bcd9-7d532d7535ee",
+        "requester_session_id": "c1b87944-d210-4d0b-81e6-aeaa38ea3073",
+        "task_id": "0a4cbba7-a91c-4c14-b5c2-9b808e70a70a",
+        "task_version": 4,
+        "verification_id": "7d27b83d-02a6-414f-81be-d100a34735d8",
+        "verification_sha256": "2232d61539a186139ee7ec73dc1f0a44234d2b8b340e8a6d37bb5d84e11c2f9f",
+        "candidate_id": "f8aa5653-1834-53fa-bd8d-e8b3eed40084",
+        "candidate_sha": "a0d373155c845fdb0d3ff71936414ed75caaa771",
+        "tree_sha": "8f60ac6f776d03110e2002b3b17da84a83bce6d7",
+        "snapshot_id": "70f67c70-287c-5e57-9946-4b05143e3752",
+        "snapshot_receipt_sha256": "6022d4ddfd032a7141ad4334857e0cccfa6c3797845fdc44314c0ffa09177411",
+        "current_binding_sha256": "e01c13fa7b131e6f27f301658cdff5d9094d8f4302e35bb9ca537d17224c24b5",
+        "destination_ref": "refs/agentsync/deliveries/9824a1ef946d02c7aec19528d03eb0dbd115458eb70970ddc193e88073c4ca75",
+        "expires_at": 1794557253.1792543
+      },
+      "approval_status": "consumed",
+      "effect": "exact"
+    },
+    "reopened_status_matches": true,
+    "source_unchanged": true
+  },
+  "docker_cleanup": {
+    "timestamp": "2026-11-13T08:07:14.165535+00:00",
+    "docker_host": "unix:///var/run/docker.sock",
+    "trusted_cli": "/usr/bin/docker",
+    "container_count": 0,
+    "all_containers_absent": true,
+    "scope": "Read-only postcheck of dedicated local test daemon after the affected529df3b owner delivery installed-sdist suite"
+  },
+  "static_checks": {
+    "ruff": "pass",
+    "format": {
+      "status": "pass",
+      "files": 340
+    },
+    "mypy": {
+      "status": "pass",
+      "source_files": 89
+    }
+  },
+  "source_precheck": {
+    "location": "D:/agentsync-debug/m4-owner-delivery-508934d-sol",
+    "status": "73 passed / 1 Linux Docker skip; working-tree evidence only; installed frozen results above are authoritative"
+  },
+  "model_calls": 0,
+  "github_actions_used": false,
+  "paid_api_calls": 0,
+  "limitations": [
+    "Affected eight-file regression, not a new full-suite run",
+    "Original user-workspace application remains disabled/deferred",
+    "No new real Agent run; no Claude/Cursor or macOS acceptance",
+    "The console demo is explicitly Mock; actual Docker/SDK/CLI observation is separately recorded"
+  ],
+  "formal_release": "BLOCKED",
+  "external_work_acceptance": "NOT RUN",
+  "raw_execution_sources": {
+    "driver.py.txt": {
+      "original_execution_name": "driver.py",
+      "sha256": "ad08746205d7d5c224213ded1777f5eccc504fa69a6114ebc452c79c81ec1539"
+    },
+    "observe-docker-cleanup.sh.txt": {
+      "original_execution_name": "observe-docker-cleanup.sh",
+      "sha256": "7539071b01ecda0861199308f5b798de5c231f5bb2b8593b1568027be4803d71"
+    },
+    "prepare-owner-delivery-package.py.txt": {
+      "original_execution_name": "prepare-owner-delivery-package.py",
+      "sha256": "911a57a6c8c03044ad44f9168e80877f590c5ae79b70193c73a4a011563c400e"
+    },
+    "run-linux.sh.txt": {
+      "original_execution_name": "run-linux.sh",
+      "sha256": "49cb960d3430df55ceb586fa8d3973246520e3f9bfbfe0643d81dfe38a74262b"
+    },
+    "run-windows.py.txt": {
+      "original_execution_name": "run-windows.py",
+      "sha256": "64fe580484f6b3d96fe51dfc93337fdde6588e3e7798c53128eda09ae43ad73d"
+    }
+  },
+  "artifacts": {
+    "build.log": "a0e3aa58d4d91146cf805c6feec2b998d257fce0752f7b4a0d4a836451205911",
+    "driver.py.txt": "ad08746205d7d5c224213ded1777f5eccc504fa69a6114ebc452c79c81ec1539",
+    "format.log": "8806c4b0804ec660bcea16a3665e53aed4abd041f089e9573f3afd7b7351fd3b",
+    "identity.json": "d88d1ff75250146690e87086fa5a2c1189dacba02df187d6a0de62c02e0e29da",
+    "linux-actual-verified-task-completion.json": "a6fa198dc871d028dac1d5e1eea4e1863b18d6eadbb63b5b9ed952f47b59ebc0",
+    "linux-console.log": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f",
+    "linux-docker-cleanup-observation.json": "c3aa3ac47b88c0a8fb9af1f4bc035a99aad1768122f0325f909170b00a92d22d",
+    "linux-install.log": "e30d4a2eafa2fd0c65a1206d1d23d1c982297fe3b5d6a1dee20c72c1653e16c0",
+    "linux-junit.xml": "9a045cca7f688f4c21f0cc18a89b1a315132890c0bd39980f7ec223d34fd92da",
+    "linux-origin.json": "fac1936a304839fd63e8025cc2bfc9505ae1282e1bda2c5a21c14298f427560d",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-pytest.log": "a97b1faac6f86be175fbd3bd778c816fbabddd7dd2407e386857a8314f87dc87",
+    "linux-pytest.process.json": "62924b02a2f495ff9b0e1e896b72bad382a8dac000fd3301a36e637ab2a91ac3",
+    "linux-result.json": "3089db3afd77d48f26c581a1908eb3ce1eebdc3624142878a94b0fdcfae23786",
+    "mypy.log": "1c13773bc21d8ae3a759614f3a828d16af7aa66d04f93c4daeeb51d5d6be16c1",
+    "observe-docker-cleanup.sh.txt": "7539071b01ecda0861199308f5b798de5c231f5bb2b8593b1568027be4803d71",
+    "prepare-owner-delivery-package.py.txt": "911a57a6c8c03044ad44f9168e80877f590c5ae79b70193c73a4a011563c400e",
+    "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "run-linux.sh.txt": "49cb960d3430df55ceb586fa8d3973246520e3f9bfbfe0643d81dfe38a74262b",
+    "run-windows.py.txt": "64fe580484f6b3d96fe51dfc93337fdde6588e3e7798c53128eda09ae43ad73d",
+    "windows-console.log": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "windows-console.process.json": "d8a0076b8a770ce05f1ab67de12c25822b9a104ae4c9de1cf651a1abdc7ea7e8",
+    "windows-install.log": "3eb6bb4de1b5f6269bb0bb725c9a35f75f71b38aaabfaa60c906382e5e1c3da3",
+    "windows-junit.xml": "804f21fcffff98dd7887285df0bc8d475ec43dee3891f7fbba75974e5d362429",
+    "windows-origin.json": "bfee25f14550819a9ef1ac9184080c82e92505359423b4874f03ae6c53b982b8",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-pytest.log": "c3c5494ea8834cdf78622e7760d961d5f43967a0f488b0e519e799369e2f6872",
+    "windows-pytest.process.json": "3ccab88e1c2c89d3878b88e3868243751d58958fae2467eb9d7e2c03bf87f4e5",
+    "windows-result.json": "8b0c75e342f02292d9e39777c8df6d8e7a12ced4539dacbe3752c67f12cbcc5a"
+  },
+  "packages": {
+    "releases/0.3.0a110/529df3b/agentsync_local-0.3.0a110-py3-none-any.whl": {
+      "sha256": "cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93",
+      "size": 270056
+    },
+    "releases/0.3.0a110/529df3b/agentsync_local-0.3.0a110.tar.gz": {
+      "sha256": "b2f40ede0792652a545b1da5397a2bc05de8d2c2540d0f0c4242c6445ec034d8",
+      "size": 2162670
+    }
+  },
+  "independent_technical_review": {
+    "reviewer": "Native Astra review agent",
+    "status": "accepted_limited_scope",
+    "product_sha": "529df3b3e073b9975fc1e722511ade59423fa330",
+    "checked": [
+      "29 evidence hashes and two package hashes",
+      "964 packaged Git files and 90 runtime files",
+      "497 unique matching case IDs per platform; actual terminal status and logs",
+      "actual Docker 1/1 case with 19 isolation checks",
+      "independent completion and exact owner SDK/CLI delivery bindings",
+      "source preservation, reopened status and absent containers",
+      "credential exposure inspection and immutable raw execution sources"
+    ],
+    "blockers": [],
+    "formal_release": "BLOCKED",
+    "external_work_acceptance": "NOT RUN"
+  }
+}

@@ -1,5 +1,27 @@
 # Release Acceptance Report
 
+## Explicit owner candidate delivery: installed affected checks passed
+
+Frozen529df3b3e073b9975fc1e722511ade59423fa330 (0.3.0a110) adds an owner-only
+SDK/CLI entry into the existing create-only private-ref delivery. Approval and
+publication are separate decisions; agent/HTTP/MCP access is not added. Windows
+3.12.16 wheel and Linux3.14.7 sdist each pass496cases/1platform skip,0failures/errors
+across eight affected test files. Both contain the same497unique parameterized IDs.
+This is not a full-suite rerun.964packaged files match Git;90runtime members match
+the wheel and installed environments. Archive identities, source preservation,
+console probes, Ruff, formatting340files and mypy89modules pass.
+
+The actual Linux observation binds Docker verification, independent task completion,
+SDK approval and separate owner CLI delivery to the same task/version/proof/candidate.
+CLI exit0 consumed the exact approval; reopen matches, the original source is
+unchanged and the dedicated daemon has no containers left. No real model calls,
+paid APIs or Actions were used. The console demo is Mock and is separately labeled.
+[Logs, JUnit XML, hashes and actual observation](evidence/m4-owner-delivery/summary.json).
+Independent Astra review accepted this limited scope after inspecting the frozen
+code, package members, evidence hashes, case IDs and exact delivery bindings.
+This is technical review, not external Work/PR approval. Original-workspace apply remains
+deferred; unavailable vendors, macOS and full Release remain unverified/blocked.
+
 ## Declared M8 local contention load: diagnostic pass
 
 Existing2af7ccc tool and unchanged installed09425da runtime completed four actual
