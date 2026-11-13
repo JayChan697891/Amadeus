@@ -24,6 +24,22 @@ class AgentSyncClient:
     def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
+            if operation in {
+                "preview_candidate_integration",
+                "approve_candidate_integration",
+                "integrate_candidate",
+                "get_candidate_integration_status",
+            }:
+                from agentsync.verification.candidate_integration import OwnerCandidateIntegration
+
+                integration = OwnerCandidateIntegration(self.core)
+                handlers = {
+                    "preview_candidate_integration": integration.preview,
+                    "approve_candidate_integration": integration.approve,
+                    "integrate_candidate": integration.integrate_once,
+                    "get_candidate_integration_status": integration.status,
+                }
+                return {"ok": True, "data": handlers[operation](**payload)}
             if operation == "sync_relay_usage":
                 from agentsync.relay_usage import sync_relay_usage
 

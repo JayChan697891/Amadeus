@@ -5,7 +5,7 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a113 开发源码，正式发布仍处于阻断状态**。
+当前为 **0.3.0a114 开发源码，正式发布仍处于阻断状态**。
 
 新增可恢复的持久 Mock 工作流入口：
 `amadeus --data-dir 绝对路径 workflow start|resume|status|cancel`，或 SDK 的
@@ -78,6 +78,14 @@ MCP 标识、`AGENTSYNC_*` 设置、默认数据目录名 `AgentSync` 和数据�
 预览并批准交付计划，再凭批准后的版本和计划摘要显式调用
 `publish_candidate_delivery`，创建受管仓库的私有 Git 引用。通过
 `get_candidate_delivery_status` 查看交付结果。
+
+要把已验证候选集成到普通本地仓库，请另行申请 `apply_merge_candidate` 审批。
+在交付参数中增加绝对路径 `target_root`、`worktree_path` 和新分支名 `destination_branch`，
+调用 `preview_candidate_integration`。用返回的计划哈希调用 `approve_candidate_integration`，
+再用该哈希与审批后的版本调用 `integrate_candidate`。目标仓库必须干净，且 HEAD 等于候选基线。
+新分支和独立工作树使用候选的确切文件字节，保留原工作树及索引。
+`get_candidate_integration_status` 只观察结果。中断后保留已使用的审批及目标预留，
+`partial` 或 `unknown` 状态不会触发重试或自动清理。
 
 HTTP 需要单独设置 `AGENTSYNC_HTTP_TOKEN`，再执行 `amadeus serve`，
 默认监听 127.0.0.1:8765。向 `/v1/操作名` 提交 JSON，并附带 Bearer 身份凭据。

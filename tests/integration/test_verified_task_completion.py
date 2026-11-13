@@ -575,6 +575,8 @@ def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready,
 
 
 def test_actual_linux_docker_to_independent_verified_completion(world):
+    from test_candidate_integration import approve, original_checkout, request
+
     policy = DockerProfile(actual_docker_image(), (JsonCase(None, "candidate"),))
     prepared = protocol_candidate(world, JSON_LINES_CANDIDATE)
     submit_pair(prepared, world)
@@ -628,6 +630,32 @@ def test_actual_linux_docker_to_independent_verified_completion(world):
             "result": delivered,
             "reopened_status_matches": True,
             "source_unchanged": True,
+        }
+        target = source.parent / "integration-target"
+        destination = source.parent / "integrated-candidate"
+        git(source, "clone", "--no-local", str(source), str(target))
+        baseline = original_checkout(target)
+        integration_lookup, integration_input = request(
+            prepared, world[2][0], receipt, target, destination
+        )
+        integration_plan, admission = approve(reopened, integration_input)
+        integrated = reopened.owner_call("integrate_candidate", **admission)
+        assert integrated == {
+            "ok": True,
+            "data": {"plan": integration_plan, "approval_status": "consumed", "effect": "exact"},
+        }
+        assert (
+            reopened.owner_call("get_candidate_integration_status", **integration_lookup)
+            == integrated
+        )
+        assert (destination / "solution.py").read_bytes() == JSON_LINES_CANDIDATE
+        assert git(destination, "rev-parse", "HEAD^{tree}") == receipt["verification"]["tree_sha"]
+        assert original_checkout(target) == baseline
+        assert source_fingerprint(source) == original
+        observation["integration"] = {
+            "result": integrated["data"],
+            "exact_verified_blob": True,
+            "original_checkout_unchanged": True,
         }
     finally:
         with connect(prepared[0].db_path) as db:

@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a113 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a114 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -370,6 +370,25 @@ For verified candidate delivery, use `preview_candidate_delivery` and
 `publish_candidate_delivery` separately with the approved version and exact plan
 hash to create the private managed Git ref. Inspect the outcome with
 `get_candidate_delivery_status`.
-Approvals only store a pinned authorization decision: no user-repository apply or
-arbitrary command execution endpoint exists. Existing task review remains asserted
-evidence; verified completion uses its independent proof gate. Formal release remains blocked.
+
+To integrate the same verified candidate into a local repository, request a
+separate `apply_merge_candidate` approval. Use `preview_candidate_integration`
+with `project_id`, `admin_token`, `approval_id`, `expected_version`, `task_id`,
+`expected_task_version`, the requesting worker's `session_id` and `session_token`,
+and `target_root`, `worktree_path` and `destination_branch`. Call
+`approve_candidate_integration` with the returned `plan_sha256`, then
+`integrate_candidate` with that hash and the approved version. These commands use
+SDK `owner_call` or `amadeus --data-dir DATA_DIR owner OPERATION` with JSON on stdin.
+The target must be an ordinary clean local repository at the verified candidate's
+base. The destination branch and separate absolute worktree path must be new.
+The new checkout contains the exact candidate blob bytes. Ordinary Git line-ending
+attributes are supported. Filters, custom encodings, symlinks, submodules and
+external Git configuration are unsupported. The target's current branch, index
+and working files retain their contents.
+
+`get_candidate_integration_status` takes the project owner credentials and
+`approval_id`. It reads the saved intent and checks the result. An interrupted
+operation can return `partial` or `unknown`; the consumed approval and destination
+reservation persist. A status check never retries or removes a destination.
+Existing task review remains asserted evidence. Verified completion uses its
+independent proof gate. Formal release remains blocked.

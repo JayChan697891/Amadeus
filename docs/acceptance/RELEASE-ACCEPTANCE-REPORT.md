@@ -1,5 +1,23 @@
 # Release Acceptance Report
 
+## Approved target integration: source checks only
+
+Version 0.3.0a114 adds explicit owner approval and create-only integration of the
+verified candidate into a new target branch and independent worktree. Original
+checkout contents are preserved; partial/unknown effects retain their reservations.
+Windows affected regression reconciles 120 unique cases: 119 pass and one Linux
+Docker skip. This combines 96 unaffected results with a repaired 24-case module,
+not a new complete run. The original six fixture errors and earlier long-path
+failures remain retained. Product bytes were unchanged by the fixture correction.
+Ruff/format and source mypy pass. Only disposable Git projects were modified;
+verifier proofs in this source scope are synthetic, not real Docker/client evidence.
+
+Current a114 installed packages, actual Linux Docker integration and complete M9
+matrix remain NOT RUN. The next execution uses the original full source/wheel/sdist
+collector and one pinned candidate pair across available Windows/Linux minors.
+Formal Release remains BLOCKED; macOS, unavailable real clients, final license
+classification and independent Release decision are not waived.
+
 ## Bound receipt usage: affected installed checks passed
 
 Frozen 95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f now passes 18 selected installed

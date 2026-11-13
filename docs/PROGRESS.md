@@ -1,5 +1,40 @@
 # Amadeus current progress
 
+## 0.3.0a114 approved target integration: affected source checks complete
+
+Owner SDK/CLI preview, exact-plan approval, integrate and status now bind a verified
+candidate to a clean ordinary target repository at its original base, a create-only
+branch and a separate new worktree. Local bundle import and exact blob materialization
+preserve the original checkout/index. Normal text/eol attributes are supported;
+unsupported filters, encodings, symlinks, submodules and external configuration reject.
+Approval consumption and permanent branch/path reservations precede effects.
+Interrupted operations remain partial/unknown; status never retries or removes files.
+
+Windows source evidence covers 120 unique affected cases, combined 119 passed and
+one Linux Docker skip. The first short-path run retained 113 passes, one skip and
+six setup errors. A one-line test-only renormalization repaired nondeterministic
+CRLF index input; all 24 cases in that module then passed. The other 96 case results
+are reused, not rerun or counted twice. Both runs have unchanged before/after source
+manifests; their only differing member is that fixture. Root independently checked
+all 226 current source hashes and JUnit identities. Ruff/format (221 selected files)
+and mypy (93 source modules) pass. Initial long-path Git failures are retained too.
+
+Debug: D:/agentsync-debug/m4-owner-integration-a114-sol. Original handles 51636,
+61383 and 92781 are terminal; do not restart. All Git mutations used disposable
+projects. Verifier fixtures are synthetic; a114 actual Linux Docker integration,
+installed-package checks and full Release are NOT RUN/BLOCKED, not inferred passes.
+
+Next: M9 full matrix from this frozen source. D:/agentsync-debug/m9-bootstrap.py
+prepares and runs the existing Windows 3.12 collector once; source, wheel and sdist
+each retain a full suite and 3600-second controller limit. D:/agentsync-debug/m114
+holds preparation evidence. All six Windows/Linux interpreter/dependency preflights
+are now available offline. Linux 3.11/3.12 reuse the existing dedicated disk through
+a loopback-only read-only NBD mount at /root/amadeus-minor-volume; do not format,
+unmount or stop that helper while its rows run. Later rows must install the exact
+bootstrap candidate archives. Preserve its manifest, then create a separate final
+matrix manifest. macOS and unavailable real clients remain incomplete. No Actions,
+paid APIs, main merge, real user-target application or new M5 stage is authorized.
+
 ## 0.3.0a113 receipt-backed usage: installed checks passed
 
 Owner SDK/CLI `sync_relay_usage` reconciles existing controlled-relay receipts into

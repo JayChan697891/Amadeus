@@ -1,5 +1,21 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Version 0.3.0a114 implements original M4-05 owner-approved integration into an
+ordinary target repository's new branch and independent new worktree. The exact
+verified candidate is imported locally; the original checkout is preserved.
+Approval, task/proof/source bindings and permanent destination reservations are
+checked before effects. Interrupted effects remain partial/unknown, without retry.
+Windows affected source evidence reconciles 120 unique cases: 119 pass and one
+Linux Docker skip. The original 120-case run and repaired 24-case subset remain
+separate; this is not a new full-suite run. No real user workspace was touched.
+
+Next freeze this implementation for M9. Run the existing complete source, wheel
+and sdist collector first on Windows 3.12, then pin its exact two archives for the
+remaining available Windows/Linux 3.11/3.12/3.14 rows. Keep bootstrap and final
+matrix manifests distinct. Actual Linux Docker integration, current installed
+regression and full matrix are still NOT RUN for a114. macOS, unsupported real
+vendors and external Release approval remain explicit gaps. No new M5 phase.
+
 Product 95244e2 (0.3.0a113) connects bound controlled-relay receipts to the
 existing owner project usage store without combining caller and receipt totals.
 Windows wheel 510 passed / 1 Docker skip and Linux sdist 511 passed / 0 skips
