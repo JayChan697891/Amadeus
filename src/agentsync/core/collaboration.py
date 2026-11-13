@@ -310,8 +310,13 @@ class CollaborationMixin:
             "AND (? IS NULL OR task_id=?) AND (? IS NULL OR status=?) "
             "ORDER BY created_at,id LIMIT ? OFFSET ?",
             (
-                p["project_id"], p["task_id"], p["task_id"], p["status"], p["status"],
-                p["limit"] + 1, p["offset"],
+                p["project_id"],
+                p["task_id"],
+                p["task_id"],
+                p["status"],
+                p["status"],
+                p["limit"] + 1,
+                p["offset"],
             ),
         ).fetchall()
         return {

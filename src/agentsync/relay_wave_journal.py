@@ -199,7 +199,8 @@ class RelayWaveJournal:
                 type(result) is not dict
                 or set(result) not in ({"task_id", "state"}, {"task_id", "state", "failure_code"})
                 or type(result["task_id"]) is not str
-                or result.get("state") not in ("conflict", "ready_for_review", "incomplete")
+                or result.get("state")
+                not in ("conflict", "ready_for_review", "confirmed_failed", "incomplete")
                 or (
                     "failure_code" in result
                     and (result["state"] != "incomplete" or type(result["failure_code"]) is not str)

@@ -1240,7 +1240,8 @@
         "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
         "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
         "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
-        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen",
+        "tests/integration/test_unfinished_continuation.py"
       ],
       "planned_cases": [
         {

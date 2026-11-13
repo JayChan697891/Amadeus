@@ -63,7 +63,7 @@ class _CallLookup(AdminAuth):
     request_id: str | None = Field(default=None, min_length=1, max_length=200)
 
     @model_validator(mode="after")
-    def one_identity(self) -> "_CallLookup":
+    def one_identity(self) -> _CallLookup:
         if (self.call_id is None) == (self.request_id is None):
             raise ValueError("Supply exactly one call ID or original request ID.")
         return self
@@ -83,7 +83,9 @@ class OwnerProviderUsage:
             try:
                 db = connect(self._core.db_path)
             except sqlite3.Error:
-                raise AgentSyncError("storage_error", "Usage storage is unavailable.", 503) from None
+                raise AgentSyncError(
+                    "storage_error", "Usage storage is unavailable.", 503
+                ) from None
             actor = None
             try:
                 db.execute("BEGIN IMMEDIATE" if operation else "BEGIN")
@@ -101,7 +103,9 @@ class OwnerProviderUsage:
                 raise AgentSyncError("validation_error", "Invalid usage request text.") from None
             except sqlite3.Error:
                 db.rollback()
-                raise AgentSyncError("storage_error", "Usage storage is unavailable.", 503) from None
+                raise AgentSyncError(
+                    "storage_error", "Usage storage is unavailable.", 503
+                ) from None
             finally:
                 db.close()
 
@@ -162,7 +166,9 @@ class OwnerProviderUsage:
                     _authorization_required()
                 authorization._check(provider, request.model_request)
             elif authorization is not None:
-                raise AgentSyncError("validation_error", "Mock advice does not take a provider grant.")
+                raise AgentSyncError(
+                    "validation_error", "Mock advice does not take a provider grant."
+                )
             history.provider[intent.call_id] = intent
             history.save(db, project, now)
             self._core._audit_event(db, project, "owner", project, _ADMIT, p, "allowed", "ok")
@@ -204,7 +210,10 @@ class OwnerProviderUsage:
         if (
             type(request) is not AdviceRequest
             or (type(provider) is not HTTPProvider and type(provider) is not MockProvider)
-            or (rate is not None and (type(rate) is not FlatRate or isinstance(provider, MockProvider)))
+            or (
+                rate is not None
+                and (type(rate) is not FlatRate or isinstance(provider, MockProvider))
+            )
         ):
             raise AgentSyncError("validation_error", "Expected trusted provider and advice inputs.")
         request = replace(request)

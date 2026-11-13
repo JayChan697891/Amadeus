@@ -1,11 +1,11 @@
 # Amadeus current progress
 
-## Code-first continuation (2026-11-13; not yet validated)
+## 0.3.0a115 code-first pass complete; debugging next
 
 The owner now requires all remaining original-plan code before further debugging.
-No new test, build, lint, installed-package or real-client run is started for this
-pass. The already-running frozen a114 bootstrap is preserved; its result, when
-available, applies only to ddd4b42. Prepared M9 continuation queues have NOT RUN.
+No new test, build, lint, installed-package or real-client run started during the
+code-writing pass. The previously started a114 bootstrap completed naturally;
+its result applies only to ddd4b42. Prepared old M9 continuation queues have NOT RUN.
 
 Read-only implementation audit found concrete gaps rather than inferring missing
 code from partial acceptance coverage. The owner-only `recover_handoff` operation
@@ -25,12 +25,33 @@ are not persisted in usage. Original request IDs can query observations without
 another dispatch. Counter/rate estimates never claim billing or client acceptance.
 The new regression source is NOT RUN, including its isolated process-exit fixture.
 
-M7 positively terminated failed-producer continuation is being implemented.
+M7 positively terminated failed-producer continuation is now authored. Live-lease
+host progress checkpoints retain real Core publication bindings; confirmed failure
+requires the exact captured task version and ended process. OwnerContinuation pins
+progress and source scope, previews the dependency transfer, then creates one new
+task/worktree with fresh exact recipient launch consent. Only the winner of the
+durable dispatch-intent write receives a process-local start right. Alternate
+waves, ordinary relay modes, missing anchors, old receipts after a newer claim,
+and uncertain attempts cannot recreate that right. A distinct receiver's proposal
+remains unverified. Root and Sol inspected actual source; identified entry/version
+binding defects were corrected before any new tests were run.
+
+All original 42 work items now have implementation located in the code-first
+inventory in PLAN.md. The three identified code gaps are authored; this closes the
+code-writing pass, not product acceptance. Next run static checks and the new M3,
+M7 and M8 suites, repair actual failures, then relevant existing regressions and
+the required freshly frozen package matrix. Initial static debugging is complete:
+Ruff safe-fix corrected one import issue, formatting covered 353 Python files,
+and mypy's five typing errors were repaired without suppressions. Ruff and format
+checks pass, including the two files changed by typing repair; mypy passes all
+95 source modules. Runtime suites remain NOT RUN at this source checkpoint.
+Logs are under D:/agentsync-debug/m115. Unavailable real clients/platforms remain
+separate release gaps.
+
 Retain source/usage/receipt provenance, fresh recipient approval, and existing
 independent verification gates. Neither code writing nor historical passing tests
-constitutes acceptance of these changes. Finish these original-scope connections,
-inspect the complete implementation, then resume affected debugging followed by
-the required frozen-package matrix. No new M5 phase, paid call or Actions run.
+constitutes acceptance of these changes. Proceed with the outstanding debugging
+scope and required frozen-package matrix. No new M5 phase, paid call or Actions run.
 
 ## 0.3.0a114 approved target integration: affected source checks complete
 

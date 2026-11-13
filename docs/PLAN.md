@@ -5,14 +5,33 @@ product code before starting further debugging. The original Windows 3.12 a114
 collector may finish naturally; retain its evidence. Do not start the prepared
 Windows/Linux continuation queues until the implementation audit is complete.
 
-The current code audit identifies three original-scope connections to finish:
+The code audit identified three original-scope connections, now authored:
 M3/M1 owner recovery of a pending handoff after both participants lose all valid
 sessions; M7 continuation of saved unfinished work after a positively terminated
 failed attempt, with fresh recipient authority and unknown executions fenced;
 and M8 project-persistent usage for the application's explicit model advice calls.
-These are product changes, not additional M5 phases. All newly authored code and
-test modules remain NOT RUN until the code-first pass finishes. Existing evidence
+These are product changes, not additional M5 phases. The code-first pass is now
+complete: implementation and independent source review cover these connections.
+Start debugging the previously unrun a115 source and affected existing paths next;
+do not interpret this inventory as runtime acceptance. Existing evidence
 continues to describe its original frozen SHA, never these later changes.
+
+The code-first inventory below covers the original 42 tasks. "Present" means
+implementation was located and read; it does not mean a requirement passed its
+acceptance tests. The release requirements register retains its independent gates.
+
+| Original scope | Product implementation | Code-first remaining work |
+| --- | --- | --- |
+| M0-01–05 | Packaging, dependency locks, architecture, workflow and local tooling | Present; hosted Actions remain prohibited |
+| M1-01–05 | Core projects/sessions/tasks, transactional leases and SQLite migrations | Present; new abandoned-handoff recovery authored |
+| M2-01–05 | Shared Core through MCP stdio, HTTP and Python SDK; client examples | Present; actual-client evidence stays separate |
+| M3-01–04 | Versioned context/search, structured handoff and owner recovery | Present; new recovery regression source NOT RUN |
+| M4-01–05 | Paths/locks, snapshots/worktrees, conflicts and approved target integration | Present at a114; no original-checkout overwrite required |
+| M5-01–05 | Permissions, approvals, audit, independent verification and security regressions | Present; retain the single frozen M5 exit checklist |
+| M6-01–05 | Common lifecycle, Mock and Codex/Claude/Cursor factories, capture and manager | Present; unsupported capabilities explicit, real clients not inferred |
+| M7-01–04 | DAG/capacity scheduling, queue, providers/advice, durable Mock budgets/retries and confirmed-failure continuation | Present; new continuation regression source NOT RUN |
+| M8-01–02 | Usage, durable recovery and benchmark tools; new project provider accounting | Present; new provider accounting regression source NOT RUN |
+| M9-01–02 | Existing collectors, matrix/manifest/review, package/license tooling and examples | Present; current-code execution and publication remain gated |
 
 Frozen ddd4b42 (0.3.0a114) implements original M4-05 owner-approved integration into an
 ordinary target repository's new branch and independent new worktree. The exact

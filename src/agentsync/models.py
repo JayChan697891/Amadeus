@@ -242,9 +242,7 @@ class OwnerPage(AdminAuth):
 
 class OwnerHandoffs(OwnerPage):
     task_id: str | None = Field(default=None, min_length=1, max_length=200)
-    status: Literal["pending", "accepted", "rejected", "withdrawn", "recovered"] | None = (
-        "pending"
-    )
+    status: Literal["pending", "accepted", "rejected", "withdrawn", "recovered"] | None = "pending"
 
 
 class OwnerSelectedMembers(AdminAuth):

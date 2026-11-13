@@ -29,6 +29,7 @@ from agentsync.adapters.approved_launch import (
 from agentsync.adapters.base import _identifier
 from agentsync.controlled_relay import (
     CodexProposalInput,
+    ContinuationInput,
     ControlledRelay,
     ProposalReviewInput,
     RelayActor,
@@ -39,8 +40,10 @@ from agentsync.relay_wave_journal import JournalState, RelayWaveJournal
 from agentsync.scheduling import plan_tasks
 
 BatchState = Literal["not_started", "no_ready_tasks", "resolved", "incomplete"]
-TaskState = Literal["ready_for_review", "conflict", "incomplete"]
-_TerminalReader = Callable[[str, str], Literal["ready_for_review", "conflict"] | None]
+TaskState = Literal["ready_for_review", "conflict", "confirmed_failed", "incomplete"]
+_TerminalReader = Callable[
+    [str, str], Literal["ready_for_review", "conflict", "confirmed_failed"] | None
+]
 _FAILURE_CODES = frozenset(
     {
         "attempt_already_reserved",
@@ -134,7 +137,21 @@ class ProposalReviewQueueItem:
         _validate_capabilities(self.first_capabilities)
 
 
-_QueueItem = RelayQueueItem | CodexProposalQueueItem | ProposalReviewQueueItem
+@dataclass(frozen=True, slots=True)
+class ContinuationQueueItem:
+    first: RelayActor = field(repr=False)
+    task: ContinuationInput
+    first_capabilities: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if type(self.first) is not RelayActor or type(self.task) is not ContinuationInput:
+            _invalid()
+        _validate_capabilities(self.first_capabilities)
+
+
+_QueueItem = (
+    RelayQueueItem | CodexProposalQueueItem | ProposalReviewQueueItem | ContinuationQueueItem
+)
 
 
 def _participants(item: _QueueItem) -> tuple[tuple[RelayActor, tuple[str, ...]], ...]:
@@ -272,7 +289,9 @@ def _selection_pin(selected: tuple[_QueueItem, ...]) -> str:
         else:
             rows.append(
                 [
-                    "proposal-review"
+                    "proposal-continuation"
+                    if isinstance(item, ContinuationQueueItem)
+                    else "proposal-review"
                     if isinstance(item, ProposalReviewQueueItem)
                     else "codex-proposal",
                     item.task.task_id,
@@ -284,6 +303,11 @@ def _selection_pin(selected: tuple[_QueueItem, ...]) -> str:
                     actors,
                     item.first_capabilities,
                     *([asdict(item.task.input_context)] if item.task.input_context else []),
+                    *(
+                        [asdict(item.task.continuation)]
+                        if isinstance(item, ContinuationQueueItem)
+                        else []
+                    ),
                 ]
             )
     return digest(["relay-queue-selection-v1", rows])
@@ -323,7 +347,13 @@ class RelayQueue:
             type(items) is not tuple
             or not 1 <= len(items) <= 16
             or any(
-                type(item) not in (RelayQueueItem, CodexProposalQueueItem, ProposalReviewQueueItem)
+                type(item)
+                not in (
+                    RelayQueueItem,
+                    CodexProposalQueueItem,
+                    ProposalReviewQueueItem,
+                    ContinuationQueueItem,
+                )
                 for item in items
             )
             or type(parallel_limit) is not int
@@ -398,7 +428,7 @@ class RelayQueue:
                 )
 
     def _check_review_input(
-        self, item: ProposalReviewQueueItem, admin_token: str, wave_key: str
+        self, item: ProposalReviewQueueItem | ContinuationQueueItem, admin_token: str, wave_key: str
     ) -> None:
         task = self._relay._single_codex_task(item.first, item.task, admin_token, wave_key=wave_key)
         prepare_launch_review(item.first.profile, task, environment=item.first.environment)
@@ -432,7 +462,7 @@ class RelayQueue:
                 item.first.agent_id,
                 client_kind(item.first.profile),
             )
-            if isinstance(item, ProposalReviewQueueItem)
+            if isinstance(item, (ProposalReviewQueueItem, ContinuationQueueItem))
             else CodexProposalPreviewTask(
                 item.task.task_id, item.task.expected_version, item.first.agent_id
             )
@@ -614,7 +644,9 @@ class RelayQueue:
                 },
             )
 
-        def terminal(task_id: str, wave_id: str) -> Literal["ready_for_review", "conflict"] | None:
+        def terminal(
+            task_id: str, wave_id: str
+        ) -> Literal["ready_for_review", "conflict", "confirmed_failed"] | None:
             task = tasks.get(task_id)
             return (
                 None
@@ -725,7 +757,7 @@ class RelayQueue:
             if (
                 type(row["task_id"]) is not str
                 or type(state) is not str
-                or state not in ("ready_for_review", "conflict", "incomplete")
+                or state not in ("ready_for_review", "conflict", "confirmed_failed", "incomplete")
             ):
                 return RelayQueueOutcome("incomplete")
             failure = row.get("failure_code")
@@ -850,6 +882,7 @@ class RelayQueue:
         parallel_limit: int = 1,
         expected_selection_sha256: str | None = None,
         _execution_deadline: float | None = None,
+        _continuation_authority: object | None = None,
     ) -> RelayQueueOutcome:
         """Run at most one wave, optionally bound to a previously previewed selection."""
         _check_execution_deadline(_execution_deadline)
@@ -862,6 +895,20 @@ class RelayQueue:
         actor = items[0].first
         project_id = actor.profile.project_id
         key = self._key(actor, request_id)
+        from agentsync.continuation import check_start, reject_managed_target
+
+        for item in items:
+            if isinstance(item, ContinuationQueueItem):
+                check_start(
+                    self._relay,
+                    item.first,
+                    item.task,
+                    key,
+                    _continuation_authority,
+                    selection=expected_selection_sha256,
+                )
+            else:
+                reject_managed_target(self._relay, project_id, item.task.task_id)
         project_key, snapshot, workers = self._owner_candidate_snapshot(items, admin_token)
         if (
             self._journal.get(project_key, key) is not None
@@ -896,9 +943,11 @@ class RelayQueue:
         # Reject invalid pinned inputs before reserving the wave. The launch path
         # prepares the task again after admission and keeps its failure fence.
         for item in selected:
-            if not isinstance(item, RelayQueueItem) and item.task.input_context is not None:
+            if not isinstance(item, RelayQueueItem) and (
+                item.task.input_context is not None or isinstance(item, ContinuationQueueItem)
+            ):
                 _check_execution_deadline(_execution_deadline)
-                if isinstance(item, ProposalReviewQueueItem):
+                if isinstance(item, (ProposalReviewQueueItem, ContinuationQueueItem)):
                     self._check_review_input(item, admin_token, key)
                 else:
                     self._relay._single_codex_task(item.first, item.task, admin_token, wave_key=key)
@@ -911,7 +960,17 @@ class RelayQueue:
             task_id = item.task.task_id
             state: TaskState | Literal["not_started"] | None
             try:
-                if isinstance(item, ProposalReviewQueueItem):
+                if isinstance(item, ContinuationQueueItem):
+                    await self._relay.run_continuation_once(
+                        item.first,
+                        item.task,
+                        admin_token=admin_token,
+                        _wave_key=key,
+                        _execution_deadline=_execution_deadline,
+                        _continuation_authority=_continuation_authority,
+                    )
+                    state = self._relay._wave_terminal_state(item.first, task_id, key)
+                elif isinstance(item, ProposalReviewQueueItem):
                     await self._relay.run_proposal_review_once(
                         item.first,
                         item.task,
@@ -948,7 +1007,7 @@ class RelayQueue:
                 return RelayQueueResult(task_id, "incomplete", failure)
             except Exception:
                 return RelayQueueResult(task_id, "incomplete", "relay_outcome_unknown")
-            if state in ("ready_for_review", "conflict"):
+            if state in ("ready_for_review", "conflict", "confirmed_failed"):
                 return RelayQueueResult(task_id, state)
             return RelayQueueResult(task_id, "incomplete", "relay_outcome_unknown")
 

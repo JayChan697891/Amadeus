@@ -295,9 +295,8 @@ class _ProjectUsage:
         return {
             name: _metric(
                 [getattr(record, name) for record in records],
-                limit=(
-                    _ESTIMATE_LIMIT if name == "estimated_cost_picodollars" else _LIMIT
-                ) * self.caller._max_records,
+                limit=(_ESTIMATE_LIMIT if name == "estimated_cost_picodollars" else _LIMIT)
+                * self.caller._max_records,
             )
             for name in _PROVIDER_METRICS
         }
@@ -396,7 +395,8 @@ class _ProjectUsage:
                 ),
                 "simulated_statuses": {
                     status: sum(
-                        call.status == status for call in self.provider.values()
+                        call.status == status
+                        for call in self.provider.values()
                         if call.provider == "mock"
                     )
                     for status in provider_counts

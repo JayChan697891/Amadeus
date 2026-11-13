@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a114 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a115 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -261,6 +261,19 @@ estimates and remote uncertainty remain distinct; actual bills stay unknown.
 This new connection is authored but NOT RUN during the current code-first pass.
 
 ## Retry advice
+
+The local host can continue saved unfinished code through
+`agentsync.continuation.OwnerContinuation`. During a producer's live task lease,
+`ControlledRelay.publish_progress_checkpoint` stores already-known, typed inert
+progress through Core; it does not recover a partial response from failed stdout
+or prove that the model authored it. After a positively ended failed attempt,
+`pin_failed_progress` binds that exact historical publication and capture.
+`preview` exposes the new recipient task and pending downstream dependency changes;
+`run_once` requires that exact plan digest and a recipient factory with its own
+fresh launch consent and independent managed worktree. The old task remains failed,
+and the new task's output still requires normal staging and independent verification.
+Unknown attempts do not qualify. A saved dispatch intent cannot be replayed into
+another launch. Source review is complete; runtime validation is still NOT RUN.
 
 `agentsync.retry_planning.plan_retry(RetryPolicy(...), ...)` calculates deterministic
 capped exponential backoff from a caller-reported failure. A numeric Retry-After

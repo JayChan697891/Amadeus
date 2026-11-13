@@ -123,7 +123,8 @@ def test_owner_recovery_preserves_package_and_new_worker_can_continue(abandoned)
         )
     audit = reopened.execute_owner("list_audit", project)["events"]
     successful = [
-        item for item in audit
+        item
+        for item in audit
         if item["operation"] == "recover_handoff" and item["outcome"] == "success"
     ]
     assert len(successful) == 1
@@ -150,7 +151,10 @@ def test_recovery_rejects_wrong_owner_task_version_and_changed_replay(abandoned)
     core, _, _, _, original, request, clock = abandoned
     clock[0] = 5000.0
     for change in (
-        {"admin_token": "wrong"}, {"task_id": "wrong"}, {"expected_version": 1}, {"reason": "   "}
+        {"admin_token": "wrong"},
+        {"task_id": "wrong"},
+        {"expected_version": 1},
+        {"reason": "   "},
     ):
         with pytest.raises(AgentSyncError):
             core.execute_owner("recover_handoff", request | change)
@@ -177,7 +181,10 @@ def test_another_live_session_of_either_identity_still_blocks_recovery(abandoned
             "INSERT INTO sessions SELECT ?,project_id,agent_id,token_hash,?,?,? "
             "FROM sessions WHERE id=?",
             (
-                "additional-session", clock[0], clock[0], clock[0] + 600,
+                "additional-session",
+                clock[0],
+                clock[0],
+                clock[0] + 600,
                 actors[participant]["session_id"],
             ),
         )
@@ -203,8 +210,20 @@ def test_recovery_never_changes_durable_workflow_tasks(abandoned):
         db.execute(
             "INSERT INTO mock_workflows VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (
-                "owned-workflow", project["project_id"], "a" * 64, "{}", "b" * 64,
-                "unknown", None, 1, 0, None, 9000, 1000, "{}", 0,
+                "owned-workflow",
+                project["project_id"],
+                "a" * 64,
+                "{}",
+                "b" * 64,
+                "unknown",
+                None,
+                1,
+                0,
+                None,
+                9000,
+                1000,
+                "{}",
+                0,
             ),
         )
         db.execute(
@@ -215,5 +234,7 @@ def test_recovery_never_changes_durable_workflow_tasks(abandoned):
         core.execute_owner("recover_handoff", request)
     assert failure.value.code == "workflow_managed_task"
     with connect(core.db_path) as db:
-        row = db.execute("SELECT status,version FROM tasks WHERE id=?", (original["task_id"],)).fetchone()
+        row = db.execute(
+            "SELECT status,version FROM tasks WHERE id=?", (original["task_id"],)
+        ).fetchone()
         assert (row["status"], row["version"]) == ("handoff", original["task_version"])

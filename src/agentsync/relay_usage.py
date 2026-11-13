@@ -110,6 +110,7 @@ def _bound_dispatch(
         "single_codex": r"single-codex:[0-9a-f]{64}",
         "codex_proposal": r"codex-proposal:[0-9a-f]{64}",
         "proposal_review": r"proposal-review:[0-9a-f]{64}",
+        "proposal_continuation": r"proposal-continuation:[0-9a-f]{64}",
     }[mode]
     if (
         type(pin) is not str
@@ -143,11 +144,19 @@ def _observe_leg(
     mode = incomplete.get("mode", "two_leg")
     client = dispatch.get("client")
     if (
-        mode not in ("two_leg", "single_codex", "codex_proposal", "proposal_review")
+        mode
+        not in (
+            "two_leg",
+            "single_codex",
+            "codex_proposal",
+            "proposal_review",
+            "proposal_continuation",
+        )
         or client not in ("codex", "claude", "cursor")
         or (mode != "two_leg" and leg != "first")
         or (mode in ("single_codex", "codex_proposal") and client != "codex")
         or (mode == "proposal_review" and client != incomplete.get("review_client"))
+        or (mode == "proposal_continuation" and client != incomplete.get("continuation_client"))
     ):
         raise _boundary()
     session, binding, captured = _bound_dispatch(db, project_id, task_id, key, leg, mode, dispatch)
@@ -169,6 +178,7 @@ def _observe_leg(
             "single_codex": "expected_reply",
             "codex_proposal": "proposal_received",
             "proposal_review": "dependent_review_received",
+            "proposal_continuation": "continuation_proposal_received",
         }[mode]
         if (
             attempt.state != "terminal_recorded"

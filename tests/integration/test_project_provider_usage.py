@@ -65,7 +65,10 @@ async def test_owned_advice_joins_existing_usage_and_replays_without_a_grant(pro
         return json.dumps(
             {
                 "choices": [
-                    {"finish_reason": "stop", "message": {"role": "assistant", "content": MOCK_REPLY}}
+                    {
+                        "finish_reason": "stop",
+                        "message": {"role": "assistant", "content": MOCK_REPLY},
+                    }
                 ],
                 "usage": {"prompt_tokens": 0, "completion_tokens": 3},
             }
@@ -89,9 +92,10 @@ async def test_owned_advice_joins_existing_usage_and_replays_without_a_grant(pro
     assert record["estimated_cost_picodollars"] == 15 and record["input_tokens"] == 0
     assert record["cost_usd"] is None and record["billing_verified"] is False
     reopened = AgentSyncClient(client.core.data_dir)
-    assert reopened.owner_call(
-        "get_provider_usage_call", **owner, request_id="owner-call"
-    )["data"] == record
+    assert (
+        reopened.owner_call("get_provider_usage_call", **owner, request_id="owner-call")["data"]
+        == record
+    )
     assert (await reopened.request_model_advice(**request))["data"] == {
         "replayed": True,
         "observation": record,
@@ -112,7 +116,12 @@ async def test_owned_advice_joins_existing_usage_and_replays_without_a_grant(pro
     document = stored(client, project_id)
     assert all(
         secret not in document
-        for secret in ("owned-fixture-key", "private fixture prompt", "Only advice", owner["admin_token"])
+        for secret in (
+            "owned-fixture-key",
+            "private fixture prompt",
+            "Only advice",
+            owner["admin_token"],
+        )
     )
     rejected = reopened.owner_call(
         "import_usage_checkpoint", **owner, checkpoint=document, request_id="forged"
@@ -131,7 +140,9 @@ async def test_owned_advice_joins_existing_usage_and_replays_without_a_grant(pro
 
 
 @pytest.mark.parametrize("fault", ["throttled", "timeout", "invalid_advice", "exception"])
-async def test_failed_call_is_retained_with_exact_observed_cost_sources(project, monkeypatch, fault):
+async def test_failed_call_is_retained_with_exact_observed_cost_sources(
+    project, monkeypatch, fault
+):
     client, owner, _ = project
     provider = HTTPProvider(ProviderProfile("openai", "fixture-model", "owned-fixture-key"))
     advice = prepare_handoff("Bounded fixture notes")
@@ -146,7 +157,10 @@ async def test_failed_call_is_retained_with_exact_observed_cost_sources(project,
         return json.dumps(
             {
                 "choices": [
-                    {"finish_reason": "stop", "message": {"role": "assistant", "content": "not advice"}}
+                    {
+                        "finish_reason": "stop",
+                        "message": {"role": "assistant", "content": "not advice"},
+                    }
                 ],
                 "usage": {"prompt_tokens": 2, "completion_tokens": 3},
             }
@@ -160,12 +174,15 @@ async def test_failed_call_is_retained_with_exact_observed_cost_sources(project,
     assert result["ok"] and result["data"]["advice"] is None
     record = result["data"]["observation"]
     assert record["status"] == "failed" and record["cost_usd"] is None
-    assert record["remote_outcome"] == {
-        "throttled": "http_error",
-        "timeout": "unknown",
-        "invalid_advice": "response_received",
-        "exception": "unknown",
-    }[fault]
+    assert (
+        record["remote_outcome"]
+        == {
+            "throttled": "http_error",
+            "timeout": "unknown",
+            "invalid_advice": "response_received",
+            "exception": "unknown",
+        }[fault]
+    )
     assert record["estimated_cost_picodollars"] == (23 if fault == "invalid_advice" else None)
     assert record["retry_after_seconds"] == (7 if fault == "throttled" else None)
     assert "private exception text" not in stored(client, owner["project_id"])
@@ -188,7 +205,9 @@ async def test_pending_replay_and_cancellation_never_dispatch_again(project, mon
     monkeypatch.setattr(HTTPProvider, "complete", complete)
     request = dict(owner, request_id="cancelled", provider=provider, request=advice)
     first = asyncio.create_task(
-        client.request_model_advice(**request, authorization=provider.authorize(advice.model_request))
+        client.request_model_advice(
+            **request, authorization=provider.authorize(advice.model_request)
+        )
     )
     try:
         await asyncio.wait_for(entered.wait(), 5)

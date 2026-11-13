@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.3.0a115 - implementation complete, validation pending
+
+- Recover abandoned ordinary handoffs through exact owner/version checks; retain
+  original context, expiry boundaries, history and separate execution fences.
+- Persist project-scoped model-advice call intents and outcomes, separating
+  provider observations, client receipts and imported usage; unknown calls never
+  dispatch again on replay, and estimates remain distinct from actual billing.
+- Continue pinned unfinished code after a confirmed ended failure using a new
+  task, transferred pending dependencies, independent worktree and fresh exact
+  launch authority. Permanent dispatch intent is not a restart permission.
+- Complete the original-plan code inventory before beginning the outstanding
+  debugging pass. Newly authored regression suites have not yet run; no real
+  model execution or formal Release acceptance is claimed.
+
+## 0.3.0a114 - approved target integration
+
+- Integrate an exactly approved, independently verified candidate into a new
+  branch and worktree while preserving the original checkout and index.
+- Keep interrupted effects observable without implicit retries or cleanup.
+- Frozen ddd4b42 Windows 3.12 source/wheel/sdist each recorded 2371 passing and
+  56 skipped cases. Other platforms and formal Release remain incomplete.
+- Earlier a32-a113 implementation checkpoints and their individual acceptance
+  limits are retained in docs/PROGRESS.md and the versioned evidence archives.
+
 ## 0.3.0a31 - controlled relay and model assistance source
 
 - Add a host-controlled two-client relay with exact launch approval, one-attempt
