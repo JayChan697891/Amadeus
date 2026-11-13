@@ -1,5 +1,14 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+M7-03 tests2af7ccc now cover the existing five provider serializers/parsers and
+actual owned-loopback transport (success,429,redirect refusal,limits,cancellation).
+Windows/Linux installed-runtime regressions each269pass; no product change or paid
+calls. The requirement mapping ispartial rather thanmissing; no real provider
+compatibility is claimed. Evidence: acceptance/evidence/m7-provider-offline/summary.json.
+Next execute the existing bounded M8 concurrency diagnostic with a declared load,
+then address remaining original-plan product gaps. M5 closure is not reopened by
+test-only coverage additions; all full Release gates remain in force.
+
 Runtime09425da has completed current Windows/Linux installed-sdist regression with
 an affected-test repair at9fb36a1. Original c262 full runs retain4failures each;
 two repaired test files pass246cases on each platform, with all2334final case IDs

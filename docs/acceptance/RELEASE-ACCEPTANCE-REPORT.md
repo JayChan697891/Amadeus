@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+## Optional provider offline coverage: limited pass
+
+Tests2af7ccc with unchanged installed09425da runtime pass269cases on each of
+Windows3.12.16/Linux3.14.7,0failure/error/skip. Twenty added cases cover five
+providers' synthetic request/response handling and six actual owned-loopback HTTP
+scenarios; three existing provider/usage and246acceptance tests also pass.
+Real provider compatibility is **NOT RUN**. No paid/provider calls, account changes
+or Actions occurred. The mapping now recordspartial component coverage instead of
+missing, while all42formal requirement execution statuses remainnot_run in the
+design register. [Evidence](evidence/m7-provider-offline/summary.json).
+No product/runtime change; the separately frozen M5 technical closure remains.
+Formal Release stays **BLOCKED** and no new full-matrix execution is claimed.
+
 ## Current installed-source archive regression: PASS after affected-file repair
 
 Runtime09425da remains unchanged. Full c262 Windows/Linux runs each collected2334

@@ -1,5 +1,26 @@
 # Amadeus current progress
 
+## M7-03 optional provider offline coverage: passed, live providers NOT RUN
+
+Frozen2af7ccc45892a0387833e31f945897c47d50fe71 adds20cases across two files, reusing
+three existing provider/usage cases. Five synthetic provider responses exercise
+request serialization, text/counter parsing, single-use consent and rejected
+outputs. Six real local-socket cases use dedicated127.0.0.1ephemeral HTTP servers,
+with a connection guard limiting all connections to the fixture. They cover success,
+429withoutretry, redirect refusal, declared/streamed size limits and actual socket
+closure on cancellation. No provider key, external request or paid call was used.
+
+Root inspected code and actual results. Both Windows3.12.16 and Linux3.14.7 pass
+269cases:23provider/usage plus246traceability/collector tests,0skip/fail/error.
+The five selected files run from889Git-frozen source inputs against the unchanged
+09425da installed runtime;90members match before/after. This reuses the previously
+verified installation and is not a newly built package or full-suite execution.
+M7-03 coverage mapping ispartial, execution_status staysnot_run in the design
+register. [Evidence](acceptance/evidence/m7-provider-offline/summary.json).
+Debug: D:/agentsync-debug/m7-providers-2af7ccc; all test processes are terminal.
+Next use tools/benchmark_coordination.py for one bounded declared-load M8 diagnostic
+on the existing local environments, retaining distinct diagnostic/Release status.
+
 ## Current installed-sdist regression accepted; M5 fixed-scope technical closure
 
 Repair9fb36a10a18755be116cc2564a42450c453a9524 changes only two test files plus ordinary
