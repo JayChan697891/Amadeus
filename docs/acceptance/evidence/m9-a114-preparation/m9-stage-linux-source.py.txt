@@ -1,0 +1,43 @@
+"""Stage the exact public frozen source and row driver in the existing local VM."""
+import hashlib
+import json
+from pathlib import Path
+import shlex
+import paramiko
+
+root=Path('D:/agentsync-debug');base=root/'m114'
+config=json.loads((base/'bootstrap-config.json').read_text())
+bundle=base/'ddd4b42.bundle';driver=root/'m9-candidate-row.py'
+pins={p.name:{'size':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in (bundle,driver)}
+guest='/root/amadeus-m114'
+c=paramiko.SSHClient();c.load_host_keys(str(root/'vm/known_hosts'));c.set_missing_host_key_policy(paramiko.RejectPolicy())
+c.connect('127.0.0.1',port=22222,username='root',key_filename=str(root/'vm/debug_ed25519'),look_for_keys=False,allow_agent=False,timeout=10)
+try:
+    with c.open_sftp() as sftp:
+        try:sftp.stat(guest)
+        except FileNotFoundError:pass
+        else:raise RuntimeError('Linux staging root already exists; inspect it instead of retrying')
+        sftp.mkdir(guest,0o700)
+        for file in (bundle,driver):sftp.put(str(file),guest+'/'+file.name)
+    script='''import hashlib,json,pathlib,subprocess,os
+base=pathlib.Path(%r);pins=%r;commit=%r;tree=%r
+for name,pin in pins.items():
+ p=base/name;assert p.stat().st_size==pin['size'] and hashlib.sha256(p.read_bytes()).hexdigest()==pin['sha256']
+home=base/'home';home.mkdir();source=base/'s'
+env={'PATH':'/usr/bin:/bin','HOME':str(home),'GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_TERMINAL_PROMPT':'0'}
+subprocess.run(['git','clone','--no-checkout',str(base/'ddd4b42.bundle'),str(source)],env=env,check=True,timeout=120)
+subprocess.run(['git','-C',str(source),'config','core.autocrlf','false'],env=env,check=True)
+subprocess.run(['git','-C',str(source),'checkout','--detach',commit],env=env,check=True,timeout=120)
+def git(*args):return subprocess.check_output(['git','-C',str(source),*args],env=env,timeout=30).decode().strip()
+assert git('rev-parse','HEAD')==commit and git('rev-parse','HEAD^{tree}')==tree and not git('status','--porcelain')
+result={'source':str(source),'commit_sha':commit,'tree_sha':tree,'inputs':pins,'tests_started':False,'candidate_packages_staged':False}
+(base/'source-staging.json').write_text(json.dumps(result,indent=2)+'\\n')
+print(json.dumps(result),flush=True)
+'''%(guest,pins,config['commit_sha'],config['tree_sha'])
+    channel=c.get_transport().open_session(timeout=10);channel.settimeout(180)
+    channel.exec_command('/root/jobs-env/bin/python -I -B -');channel.sendall(script.encode());channel.shutdown_write()
+    stdout=channel.makefile('rb').read(32768);stderr=channel.makefile_stderr('rb').read(32768);code=channel.recv_exit_status()
+    result={'exit_code':code,'output':stdout.decode(),'error':stderr.decode(),'guest':guest,'inputs':pins}
+finally:c.close()
+(base/'linux-source-staging.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(result,indent=2));raise SystemExit(code)

@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "python": "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+  "wheelhouse": "D:\\agentsync-debug\\evidence\\windows-final-aac28a0\\windows-wheelhouse",
+  "tests_started": false,
+  "initial_wrong_platform_wheelhouse": "intent-wheelhouse contains Linux musllinux wheels; unchanged"
+}

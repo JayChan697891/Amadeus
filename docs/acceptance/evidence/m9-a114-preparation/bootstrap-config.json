@@ -1,0 +1,9 @@
+{
+  "commit_sha": "ddd4b42a3d6b44b7b09ef734220e8e0bb9a8918f",
+  "tree_sha": "d2144e32344d231ab2c41e8a3f74aeb9eb517c38",
+  "source": "D:\\agentsync-debug\\m114\\s",
+  "python": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+  "wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-wheelhouse",
+  "scope": "Windows 3.12 original build and complete source, wheel, sdist suites; formal Release remains blocked",
+  "collector_sha256": "5f319a112ee7eefb50d3b3231f3135c142558106a1b0b595d43ec0774dc62df1"
+}

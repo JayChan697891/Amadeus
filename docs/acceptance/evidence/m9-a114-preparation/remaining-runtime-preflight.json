@@ -1,0 +1,32 @@
+{
+  "windows-311": {
+    "exit_code": 0,
+    "python": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-venv\\Scripts\\python.exe",
+    "wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-wheelhouse",
+    "tests_started": false
+  },
+  "windows-314": {
+    "exit_code": 1,
+    "python": "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+    "wheelhouse": "D:\\agentsync-debug\\intent-wheelhouse",
+    "tests_started": false
+  },
+  "linux-311": {
+    "exit_code": 0,
+    "python": "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+    "wheelhouse": "/root/amadeus-minor-volume/work/wheelhouse",
+    "tests_started": false
+  },
+  "linux-312": {
+    "exit_code": 0,
+    "python": "/root/amadeus-minor-volume/work/venv-3.12/bin/python",
+    "wheelhouse": "/root/amadeus-minor-volume/work/wheelhouse",
+    "tests_started": false
+  },
+  "linux-314": {
+    "exit_code": 0,
+    "python": "/root/jobs-env/bin/python",
+    "wheelhouse": "/root/intent-wheelhouse",
+    "tests_started": false
+  }
+}
