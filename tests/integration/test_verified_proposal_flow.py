@@ -1,5 +1,6 @@
 """Owned protocol emitters plus actual local Docker, never real model acceptance."""
 
+import asyncio
 import json
 import sys
 import time
@@ -34,7 +35,15 @@ class VerifiedCheckpoint(Exception):
 
 @pytest.mark.parametrize(
     "scenario",
-    ["verified", "wrong-result", "reopen", "deny-staging", "deny-execution", "deny-completion"],
+    [
+        "verified",
+        "wrong-result",
+        "reopen",
+        "deny-staging",
+        "deny-execution",
+        "deny-completion",
+        "budget-staging",
+    ],
 )
 async def test_verified_flow_gates_and_reopen(
     pilot, world, pipeline_image, captured_processes, monkeypatch, scenario
@@ -120,7 +129,11 @@ async def test_verified_flow_gates_and_reopen(
 
     async def approve_launch(plan):
         return LaunchConsent(
-            "owned-protocol-fixture", plan.plan_sha256, time.time() + 30, True, True
+            "owned-protocol-fixture-" + plan.plan_sha256,
+            plan.plan_sha256,
+            time.time() + 30,
+            True,
+            True,
         )
 
     monkeypatch.setattr(CapturedProcess, "start", classmethod(fixture_start))
@@ -150,6 +163,8 @@ async def test_verified_flow_gates_and_reopen(
         ),
     )
     stages = []
+    loop = asyncio.get_running_loop()
+    real_clock = loop.time
 
     async def decide(stage, decision, key):
         stages.append(stage)
@@ -161,7 +176,12 @@ async def test_verified_flow_gates_and_reopen(
         return "wrong-exact-pin" if scenario == "deny-" + stage else decision[key]
 
     async def approve_staging(plan):
-        return await decide("staging", plan, "plan_sha256")
+        decision = await decide("staging", plan, "plan_sha256")
+        if scenario == "budget-staging":
+            # Simulate synchronous work consuming the deadline without yielding.
+            # Restore the clock before the test returns to the event loop.
+            monkeypatch.setattr(loop, "time", lambda: real_clock() + 1000)
+        return decision
 
     async def approve_execution(job):
         return await decide("execution", job, "metadata_sha256")
@@ -203,7 +223,14 @@ async def test_verified_flow_gates_and_reopen(
         approve_completion=approve_completion,
         build_receiver=build_receiver,
     )
-    if scenario == "reopen":
+    if scenario == "budget-staging":
+        try:
+            with pytest.raises(AgentSyncError) as expired:
+                await flow.run_once(actor, proposal, request, **args)
+            assert expired.value.code == "relay_execution_limit"
+        finally:
+            monkeypatch.setattr(loop, "time", real_clock)
+    elif scenario == "reopen":
         with pytest.raises(VerifiedCheckpoint):
             await flow.run_once(actor, proposal, request, **args)
         assert launched == ["solution.py"]
@@ -220,12 +247,16 @@ async def test_verified_flow_gates_and_reopen(
         result = await flow.run_once(actor, proposal, request, **args)
         expected = {
             "verified": "handoff",
-            "wrong-result": "verification_failed",
+            "wrong-result": "verification_not_passed",
             "deny-staging": "staging_denied",
             "deny-execution": "execution_denied",
             "deny-completion": "completion_denied",
         }[scenario]
         assert result.state == expected
+        if scenario in {"verified", "wrong-result", "deny-completion"}:
+            assert result.execution_assessment == (
+                "failed" if scenario == "wrong-result" else "passed"
+            )
         if scenario == "verified":
             assert result.handoff.state == "resolved"
         else:
@@ -242,8 +273,8 @@ async def test_verified_flow_gates_and_reopen(
     assert final["task_verification"] == ("verified" if successful else "unverified")
     assert len(core.execute("list_tasks", auth)["tasks"]) == len(initial_tasks) + int(successful)
     jobs = CandidateVerificationJobs(core).list(**owner)["jobs"]
-    assert len(jobs) == (0 if scenario == "deny-staging" else 1)
-    if scenario not in {"deny-staging", "deny-execution"}:
+    assert len(jobs) == (0 if scenario in {"deny-staging", "budget-staging"} else 1)
+    if scenario not in {"deny-staging", "deny-execution", "budget-staging"}:
         execution = OwnerCandidateExecutor(core).get(**owner, job_id=jobs[0]["id"])
         result = execution["execution"]["result"]
         assert result["backend"] == "local-linux-docker" and result["cleanup_confirmed"]

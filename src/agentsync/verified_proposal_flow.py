@@ -43,11 +43,16 @@ ReceiverBuilder = Callable[[HandoffReceiver, HandoffWorkspace], RelayActor]
 @dataclass(frozen=True, slots=True)
 class VerifiedProposalOutcome:
     state: Literal[
-        "staging_denied", "execution_denied", "verification_failed", "completion_denied", "handoff"
+        "staging_denied",
+        "execution_denied",
+        "verification_not_passed",
+        "completion_denied",
+        "handoff",
     ]
     job_id: str | None = None
     execution_id: str | None = None
     handoff: ProposalHandoffOutcome | None = None
+    execution_assessment: str | None = None
     verification: Literal["unverified"] = field(default="unverified", init=False)
 
 
@@ -76,6 +81,13 @@ class VerifiedProposalFlow:
         self._core = core
         self._relay = ControlledRelay(core, scratch, receipts)
         self._handoff = ProposalHandoff(core, scratch, receipts)
+
+    @staticmethod
+    def _remaining(deadline: float) -> float:
+        remaining = deadline - asyncio.get_running_loop().time()
+        if remaining <= 0:
+            raise AgentSyncError("relay_execution_limit", "The verified flow budget expired.", 409)
+        return remaining
 
     async def run_once(
         self,
@@ -120,7 +132,8 @@ class VerifiedProposalFlow:
             or not 0 < budget <= 900
         ):
             _boundary()
-        async with asyncio.timeout(budget):
+        deadline = asyncio.get_running_loop().time() + budget
+        async with asyncio.timeout_at(deadline):
             return await self._run_once(
                 producer,
                 proposal,
@@ -133,6 +146,7 @@ class VerifiedProposalFlow:
                 approve_execution,
                 approve_completion,
                 build_receiver,
+                deadline,
             )
 
     async def _run_once(
@@ -148,10 +162,11 @@ class VerifiedProposalFlow:
         approve_execution: ExactDecision,
         approve_completion: ExactDecision,
         build_receiver: ReceiverBuilder,
+        deadline: float,
     ) -> VerifiedProposalOutcome:
         owner = {"project_id": producer.profile.project_id, "admin_token": admin_token}
         stored = await self._relay.run_codex_proposal_once(
-            producer, proposal, admin_token=admin_token
+            producer, proposal, admin_token=admin_token, _execution_deadline=deadline
         )
         if stored.state != "proposal_stored":
             _boundary()
@@ -161,6 +176,7 @@ class VerifiedProposalFlow:
             build_receiver=_blocked_receiver,
             source_outcome=stored,
             wait_seconds=0,
+            budget=self._remaining(deadline),
         )
         if saved.state != "waiting_for_review":
             _boundary()
@@ -174,7 +190,9 @@ class VerifiedProposalFlow:
         )
         staging_sha = preview["plan_sha256"]
         # The callback receives a copy; it cannot replace the plan used below.
-        if await approve_staging(copy.deepcopy(preview)) != staging_sha:
+        staging_decision = await approve_staging(copy.deepcopy(preview))
+        self._remaining(deadline)
+        if staging_decision != staging_sha:
             return VerifiedProposalOutcome("staging_denied")
         staged = self._relay.stage_codex_proposal_once(
             producer,
@@ -182,6 +200,7 @@ class VerifiedProposalFlow:
             **staging_auth,
             expected_plan_sha256=staging_sha,
         )
+        self._remaining(deadline)
         job = CandidateVerificationJobs(self._core).enqueue(
             **owner,
             candidate_id=staged["candidate_id"],
@@ -189,7 +208,9 @@ class VerifiedProposalFlow:
             profile=profile,
             request_id="verified-flow-job-" + digest([request.request_id, proposal.task_id]),
         )
-        if await approve_execution(copy.deepcopy(job)) != job["metadata_sha256"]:
+        execution_decision = await approve_execution(copy.deepcopy(job))
+        self._remaining(deadline)
+        if execution_decision != job["metadata_sha256"]:
             return VerifiedProposalOutcome("execution_denied", job["id"])
         flow = OwnerCandidateFlow(self._core)
         # Synchronous Docker work has its own bounded execution/cleanup policy.
@@ -203,8 +224,14 @@ class VerifiedProposalFlow:
             profile=profile,
         )
         execution_id = execution["execution_id"]
+        self._remaining(deadline)
         if execution["execution_assessment"] != "passed":
-            return VerifiedProposalOutcome("verification_failed", job["id"], execution_id)
+            return VerifiedProposalOutcome(
+                "verification_not_passed",
+                job["id"],
+                execution_id,
+                execution_assessment=execution["execution_assessment"],
+            )
         submitted = self._relay.observe_codex_proposal_review(producer, proposal.task_id)
         if submitted.state != "submitted_for_review" or submitted.review_task_version is None:
             _boundary()
@@ -218,11 +245,17 @@ class VerifiedProposalFlow:
             "reviewer_session_id": reviewer.session_id,
         }
         completion_sha = digest(decision)
-        if (
-            await approve_completion({**copy.deepcopy(decision), "decision_sha256": completion_sha})
-            != completion_sha
-        ):
-            return VerifiedProposalOutcome("completion_denied", job["id"], execution_id)
+        completion_decision = await approve_completion(
+            {**copy.deepcopy(decision), "decision_sha256": completion_sha}
+        )
+        self._remaining(deadline)
+        if completion_decision != completion_sha:
+            return VerifiedProposalOutcome(
+                "completion_denied",
+                job["id"],
+                execution_id,
+                execution_assessment="passed",
+            )
         flow.complete_once(
             project_id=producer.profile.project_id,
             admin_token=admin_token,
@@ -237,9 +270,12 @@ class VerifiedProposalFlow:
             request_id="verified-flow-complete-" + digest([request.request_id, proposal.task_id]),
         )
         handoff = await self.resume_receiver(
-            request, admin_token=admin_token, build_receiver=build_receiver
+            request,
+            admin_token=admin_token,
+            build_receiver=build_receiver,
+            budget=self._remaining(deadline),
         )
-        return VerifiedProposalOutcome("handoff", job["id"], execution_id, handoff)
+        return VerifiedProposalOutcome("handoff", job["id"], execution_id, handoff, "passed")
 
     async def resume_receiver(
         self,
