@@ -1,0 +1,105 @@
+{
+  "product_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+  "test_source_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+  "scope": "Owner reconciliation of bound relay usage receipts; affected installed regression, not full Release acceptance",
+  "platform": "linux",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "started_at": "2026-11-13T09:44:06.264287+00:00",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "receipt_usage_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-usage-95244e2/installed/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-usage-95244e2/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-usage-95244e2/source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T09:44:06.264782+00:00",
+    "finished_at": "2026-11-13T09:48:48.277191+00:00",
+    "log": "logs/receipt_usage_pytest.log",
+    "log_sha256": "395253b3c718cb52d2c681ccdb663f8018d576cee6a6a7f7a4574d541cb8c07f",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "source_unchanged": true,
+  "installed_identity": {
+    "origin": "/root/amadeus-usage-95244e2/installed/lib/python3.14/site-packages/agentsync",
+    "version": "0.3.0a113",
+    "artifact": "agentsync_local-0.3.0a113.tar.gz",
+    "artifact_sha256": "fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be",
+    "runtime_members_matched": 92,
+    "source_shadowing": false,
+    "direct_archive": {
+      "archive_info": {
+        "hash": "sha256=fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be",
+        "hashes": {
+          "sha256": "fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be"
+        }
+      },
+      "url": "file:///root/amadeus-usage-95244e2/agentsync_local-0.3.0a113.tar.gz"
+    }
+  },
+  "selectors": [
+    "tests/integration/test_relay_usage.py",
+    "tests/integration/test_controlled_relay_pipeline.py",
+    "tests/integration/test_relay_owner_status.py",
+    "tests/integration/test_relay_wave_journal.py",
+    "tests/integration/test_codex_proposal_relay_queue.py",
+    "tests/unit/test_usage.py",
+    "tests/unit/test_usage_checkpoint_storage.py",
+    "tests/unit/test_usage_cli.py",
+    "tests/unit/test_relay_execution_budget.py",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-codex]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-claude]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-cursor]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[docker-cursor]",
+    "tests/security/test_m5_permissions.py",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 511,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skip_reasons": {},
+  "failed_cases": [],
+  "console_check": {
+    "id": "sdist_console_smoke",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-usage-95244e2/installed/bin/python",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "/root/amadeus-usage-95244e2/tmp/sdist-console-probe"
+    ],
+    "cwd": "/root/amadeus-usage-95244e2/tmp/sdist-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-13T09:48:49.042686+00:00",
+    "finished_at": "2026-11-13T09:48:53.781711+00:00",
+    "log": "logs/sdist_console_smoke.log",
+    "log_sha256": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "agentsync_local-0.3.0a113.tar.gz",
+      "sha256": "fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be",
+      "size": 2470403
+    }
+  },
+  "finished_at": "2026-11-13T09:48:53.792451+00:00"
+}

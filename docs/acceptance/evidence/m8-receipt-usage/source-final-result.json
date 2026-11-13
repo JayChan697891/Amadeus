@@ -1,0 +1,19 @@
+{
+  "manifest_unchanged": true,
+  "source_base": "aa4bf6c9ed328cc0b9f2b841951261b617bd7889",
+  "tests": [
+    "tests/integration/test_relay_usage.py",
+    "tests/integration/test_controlled_relay_pipeline.py",
+    "tests/integration/test_relay_owner_status.py",
+    "tests/integration/test_relay_wave_journal.py",
+    "tests/integration/test_codex_proposal_relay_queue.py",
+    "tests/unit/test_usage.py",
+    "tests/unit/test_usage_checkpoint_storage.py",
+    "tests/unit/test_usage_cli.py",
+    "tests/unit/test_relay_execution_budget.py",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-codex]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-claude]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-cursor]"
+  ],
+  "exit_code": 0
+}

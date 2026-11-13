@@ -1,11 +1,16 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
-The a113 M8-01 owner SDK/CLI now reconciles bound controlled-relay observations
-into the existing project usage store. Caller and receipt totals remain separate;
-unknown values, legacy v1 records, immutable terminals and atomic capacity limits
-are preserved. Windows source checks pass 80 selected cases, plus 246 separate
-traceability/collector checks. Freeze and validate fresh installations next.
-This adds no client launch, billing verification or new M5 stage.
+Product 95244e2 (0.3.0a113) connects bound controlled-relay receipts to the
+existing owner project usage store without combining caller and receipt totals.
+Windows wheel 510 passed / 1 Docker skip and Linux sdist 511 passed / 0 skips
+cover the same 511 IDs; exact packages, source/runtime identity and actual local
+Docker-to-owned-review usage sync pass. Evidence:
+acceptance/evidence/m8-receipt-usage/summary.json. Independent Astra technical review
+accepted this limited scope; no external Work or formal Release approval is claimed. This is not actual billing or
+real-vendor acceptance. Next implement original M4-05's owner-approved target
+new-branch/worktree integration, preserving the original checkout. Private-ref
+delivery alone remains insufficient. Then freeze and run M9's current full local
+matrix. No new M5 phase or real user-workspace application is authorized here.
 
 Product 7fa4597 (0.3.0a112) implements original M7-04/M8-02 durable owner-only
 Mock retries, budget reservations, driver generations, cancellation, handoff and
@@ -15,8 +20,8 @@ independent review in Core schema16. Windows wheel 630 passed / 1 skip and Linux
 Evidence: acceptance/evidence/m7-durable-workflow/summary.json.
 Independent Astra technical review accepted this limited scope; external Work
 approval and formal Release are not claimed. This limited scope
-does not prove real-client recovery/billing or formal Release. Next close M8-01's
-receipt-to-project-usage integration; keep M5 frozen at its original five items.
+does not prove real-client recovery/billing or formal Release. Subsequent a113
+closes the receipt-to-project-usage connection; M5 stays at its original five items.
 
 Product1014307 (0.3.0a111) adds strict dependent review using prepared Codex/Claude/
 Cursor profiles, pinned verified source and review.md-only unverified output.

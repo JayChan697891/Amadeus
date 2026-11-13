@@ -1,0 +1,41 @@
+{
+  "frozen_product_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+  "raw_before_after_equal": true,
+  "members_compared": 223,
+  "exact_byte_matches": 216,
+  "git_lf_normalization_only": [
+    "docs/acceptance/requirements.json",
+    "tests/integration/test_controlled_relay_pipeline.py",
+    "tests/integration/test_m3_transports.py",
+    "tests/integration/test_m4_transports.py",
+    "tests/integration/test_m4b_transports.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/unit/test_acceptance_traceability.py"
+  ],
+  "source_final": {
+    "tests": 80,
+    "passed": 80,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "source_initial": {
+    "tests": 76,
+    "passed": 72,
+    "failure": 4,
+    "error": 0,
+    "skipped": 0
+  },
+  "separate_traceability_collector": {
+    "tests": 246,
+    "passed": 246,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "scope": "Windows working-tree source checks; fresh frozen installed runs recorded separately",
+  "initial_failure": "Four newly added test assertions shadowed the source Path with a provenance string; corrected. Original raw reports retained locally.",
+  "initial_static_failure": "Three mypy exception-variable-reuse diagnostics corrected; initial log retained locally.",
+  "review_fix": "Require Core capture witness before classifying timed_out; negative and owned proposal/reviewer sync cases pass.",
+  "helper_correction": "Initial helper expected only two changed-file CRLF normalizations and failed its list assertion. Actual comparison found seven, including five unchanged baseline files; all seven differ from Git only by CRLF to LF. No product/test rerun or edit was made for this correction."
+}

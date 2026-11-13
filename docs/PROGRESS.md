@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-## 0.3.0a113 receipt-backed usage: source checks passed
+## 0.3.0a113 receipt-backed usage: installed checks passed
 
 Owner SDK/CLI `sync_relay_usage` reconciles existing controlled-relay receipts into
 the same `project_usage` store. Exact task/owner, existing receipt anchor, historical
@@ -21,12 +21,34 @@ failures and three mypy exception-variable diagnostics remain in the debug direc
 Review found a missing capture witness on timeout normalization; it is fixed and
 covered by a negative case asserting zero usage write and a denial audit.
 
-Evidence is local: D:/agentsync-debug/m8-receipt-usage-a113-sol. Final process56424
-is terminal0; do not restart. Source hashes describe the tested working tree;
-Git normalizes CRLF in the mapping and pipeline test file. Fresh frozen-package
-Windows/Linux checks are NOT RUN yet. Next run those affected installations and
-review the evidence, then continue the original remaining release requirements.
-No full-suite, real-client, macOS or formal Release pass is claimed.
+Frozen 95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f now passes 18 selected installed
+test files/nodes: Windows 3.12.16 wheel 510 passed / 1 Linux Docker skip; Linux
+3.14.7 sdist 511 passed / 0 skips. The same 511 unique case IDs are collected,
+with no failures/errors. All 1033 packaged Git inputs and 92 runtime members
+match; installed archive/origin, before-after source/runtime and console checks
+pass. The existing Linux Docker-Cursor case verifies a candidate, resumes an owned
+reviewer and checks producer/reviewer usage sync, query and reopen without extra
+launches. The daemon has no containers left. The saved Docker observation retains
+its existing schema; usage assertions are evidenced by the exact test and JUnit.
+
+The source manifest covers 223 unchanged before/after members: 216 match frozen
+Git bytes and 7 differ only by CRLF-to-LF normalization, including five unchanged
+baseline files. The initial helper incorrectly expected only two such files;
+the corrected comparison and explanation are retained. No product change or test
+rerun was made for that metadata correction. Original four source-test failures
+and three mypy diagnostics remain local; final source 80/80 and separate 246-case
+traceability/collector results are not added to the installed unique count.
+
+Evidence: acceptance/evidence/m8-receipt-usage/summary.json. Independent Astra technical review
+accepted this limited scope; no external Work or formal Release approval is claimed.
+Original installation handles92562/48653 are terminal0; do not restart. Debug:
+D:/agentsync-debug/m8-usage-95244e2; guest:/root/amadeus-usage-95244e2.
+This is affected regression, not a full-suite or real-vendor/billing acceptance.
+Formal Release remains BLOCKED. Next finish original M4-05's explicitly approved
+integration into a target repository's new branch and separate worktree; private
+ref delivery alone does not complete it. That implementation is in progress and
+does not authorize applying anything to a real user workspace. Then freeze for
+M9's current full local matrix; unavailable real clients/platforms stay explicit.
 
 Existing M9 dependency metadata was also rechecked using installed a112: all31
 third-party versions/declarations/license hashes match the prior retained Windows

@@ -1,0 +1,63 @@
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import xml.etree.ElementTree as ET
+
+base=Path(__file__).resolve().parent
+prior=base.parent/'m8-receipt-usage-a113-sol'
+repo=Path('F:/syuc/amadeus-m6-single')
+sha='95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f'
+before=json.loads((prior/'source-final-before.json').read_text())
+after=json.loads((prior/'source-final-after.json').read_text())
+assert before==after
+names=list(before['members'])
+result=subprocess.run(['git','-C',str(repo),'cat-file','--batch'],
+    input=''.join(f'{sha}:{n}\n' for n in names).encode(),capture_output=True,check=True)
+offset=0
+normalized=[]
+for name in names:
+    raw=(repo/name).read_bytes()
+    assert hashlib.sha256(raw).hexdigest()==before['members'][name],name
+    end=result.stdout.index(b'\n',offset)
+    header=result.stdout[offset:end].split();assert header[1]==b'blob',name
+    size=int(header[2]);offset=end+1
+    frozen=result.stdout[offset:offset+size];offset+=size+1
+    if raw!=frozen:
+        assert raw.replace(b'\r\n',b'\n')==frozen,name
+        normalized.append(name)
+assert offset==len(result.stdout)
+assert set(normalized)=={
+    'docs/acceptance/requirements.json',
+    'tests/integration/test_controlled_relay_pipeline.py',
+    'tests/integration/test_m3_transports.py',
+    'tests/integration/test_m4_transports.py',
+    'tests/integration/test_m4b_transports.py',
+    'tests/integration/test_m5_transports.py',
+    'tests/unit/test_acceptance_traceability.py',
+}, normalized
+
+def cases(path):
+    rows=list(ET.parse(path).getroot().iter('testcase'))
+    assert len(rows)==len({(c.get('classname'),c.get('name')) for c in rows})
+    counts={tag:sum(c.find(tag) is not None for c in rows) for tag in ('failure','error','skipped')}
+    return dict(tests=len(rows),passed=len(rows)-sum(counts.values()),**counts)
+
+final=cases(prior/'source-final-junit.xml')
+initial=cases(prior/'source-initial-junit.xml')
+trace=cases(prior/'root-trace.xml')
+assert final==dict(tests=80,passed=80,failure=0,error=0,skipped=0)
+assert initial==dict(tests=76,passed=72,failure=4,error=0,skipped=0)
+assert trace==dict(tests=246,passed=246,failure=0,error=0,skipped=0)
+assert json.loads((prior/'static-final-result.json').read_text())==dict(ruff=0,format=0,mypy=0)
+record={'frozen_product_sha':sha,'raw_before_after_equal':True,
+        'members_compared':len(names),'exact_byte_matches':len(names)-len(normalized),
+        'git_lf_normalization_only':normalized,'source_final':final,'source_initial':initial,
+        'separate_traceability_collector':trace,
+        'scope':'Windows working-tree source checks; fresh frozen installed runs recorded separately',
+        'initial_failure':'Four newly added test assertions shadowed the source Path with a provenance string; corrected. Original raw reports retained locally.',
+        'initial_static_failure':'Three mypy exception-variable-reuse diagnostics corrected; initial log retained locally.',
+        'review_fix':'Require Core capture witness before classifying timed_out; negative and owned proposal/reviewer sync cases pass.',
+        'helper_correction':'Initial helper expected only two changed-file CRLF normalizations and failed its list assertion. Actual comparison found seven, including five unchanged baseline files; all seven differ from Git only by CRLF to LF. No product/test rerun or edit was made for this correction.'}
+(base/'source-prechecks-identity.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(record))
