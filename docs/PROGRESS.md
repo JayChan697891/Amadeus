@@ -75,6 +75,10 @@ JUnit files and final report: all collector checks pass and frozen source did no
 change. No new tests were started after the code-first directive. The later code
 changes are NOT covered, the remaining rows have NOT RUN, and formal Release stays
 blocked. Intermediate observations remain under D:/agentsync-debug/m114.
+The original 65 collector files, including all three JUnit reports, logs, source
+identity, inventories and exact two packages, are archived byte-for-byte under
+releases/0.3.0a114/ddd4b42/windows-312. This archival copy starts no additional checks
+and does not grant formal Release approval or cover the later code-first changes.
 Windows license/archive review found no blocker to continued testing. Root checked
 43 installed license-file hashes, recorded both archive hashes and matched the
 sdist license/notice documents to the frozen source;

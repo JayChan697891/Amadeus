@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\wheel-pz4dl15m\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba\\artifacts\\agentsync_local-0.3.0a114-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba",
+    "started_at": "2026-11-13T11:20:16.276866+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\wheel-pz4dl15m\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba\\artifacts\\agentsync_local-0.3.0a114-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba",
+    "exit_code": 0,
+    "started_at": "2026-11-13T11:20:16.276866+00:00",
+    "finished_at": "2026-11-13T11:20:16.972939+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "59f37eb96d61504adf99ef651239571b3cee3047255c2399c121aee84168c980",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

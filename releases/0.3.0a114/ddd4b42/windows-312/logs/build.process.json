@@ -1,0 +1,46 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "build",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba\\artifacts"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\s",
+    "started_at": "2026-11-13T11:20:00.121945+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "build",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba\\artifacts"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-13T11:20:00.121945+00:00",
+    "finished_at": "2026-11-13T11:20:06.201059+00:00",
+    "log": "logs/build.log",
+    "log_sha256": "4caccce9596e6eb404229ffdafbeea6c93a716a9500293b90a023f3c091dd3be",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
