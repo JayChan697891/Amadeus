@@ -1,6 +1,31 @@
 # Release Acceptance Report
 
-## Approved target integration: source checks only
+## Current candidate: a115 source regression passed; full matrix running
+
+Frozen product c56cbe2cd4c772b92992f3e4571da6d08eefc292 (0.3.0a115) completes
+the original-plan code-first pass, including abandoned-handoff recovery, confirmed
+failed-work continuation and project-persistent provider advice accounting.
+Implementation presence is not final acceptance. Current evidence is
+[the affected source report](evidence/m115-source-checks/summary.json).
+
+| Scope | Observed result and limit |
+| --- | --- |
+| Windows Python 3.12 affected source | PASS: 34 new and 163 existing cases, 197 unique passes, no failures/errors/skips; unchanged 228-file source manifest |
+| Linux Python 3.14 affected source | PASS: same 197 JUnit identities and outcomes; all 228 source hashes match frozen Git bytes and remain unchanged |
+| Source static checks | PASS after repairs: Ruff/format and mypy, 95 source modules; initial typing errors retained |
+| Initial Windows harness preparation | FAILED, repaired: missing temporary parent directory caused 34 fixture setup errors before product test bodies; original log/XML retained, corrected run is separate |
+| Full a115 Windows source, wheel and sdist | RUNNING since 2026-11-13 13:24:25 UTC, original session 83040; no completed row or package pass claimed |
+| Remaining current candidate platform/package rows | NOT RUN; exact frozen candidate archives must be shared after the original build evidence is available |
+| Real Claude/Cursor and cross-client acceptance | BLOCKED by unavailable accounts; protocol fixtures are not real-client evidence |
+| macOS, final license classification and independent Release decision | NOT RUN / BLOCKED; existing release gates remain unchanged |
+
+Windows source bindings distinguish 222 byte-exact files from six CRLF-to-LF-only
+matches; Linux has 228 exact Git matches. All 20 published evidence members were
+checked against staged Git bytes. No real model call, GitHub Actions, main merge
+or user-workspace candidate application occurred. Resume details are in
+[current progress](../PROGRESS.md). Formal Release remains BLOCKED.
+
+## Approved target integration: frozen a114 Windows row complete
 
 Frozen ddd4b42 (0.3.0a114) adds explicit owner approval and create-only integration of the
 verified candidate into a new target branch and independent worktree. Original
@@ -13,14 +38,19 @@ Ruff/format and source mypy pass. Only disposable Git projects were modified;
 verifier proofs in this source scope are synthetic, not real Docker/client evidence.
 
 Source evidence: [affected run and repaired subset](evidence/m4-owner-integration/summary.json).
-The original full source/wheel/sdist collector is RUNNING on Windows 3.12. Its
-complete source suite has 2371 passes and 56 skips across 2427 unique cases, with
-zero failures/errors; root checked the JUnit and exit record. Static/build checks
-and fresh wheel origin/dependency/inventory checks pass. The complete wheel suite
-also has 2371 passes and 56 skips, with identical 2427 case IDs and outcomes. Fresh
-sdist installation checks pass and its full suite is RUNNING. Actual Linux Docker
-integration and other M9 rows remain NOT RUN. Later rows will use one pinned candidate
-pair. No complete row is claimed.
+The original full source/wheel/sdist collector completed on Windows 3.12 at
+2026-11-13 12:46:46 UTC, exit 0. All 26 collector checks pass. Each of the three
+complete suites has 2371 passes and 56 skips across 2427 unique cases, with zero
+failures/errors. Root read the archived report and compared every case identity
+and outcome across all three JUnit files: exact match. Frozen source remained
+unchanged; static/build, fresh installation, origin/dependency and inventory
+checks pass. The archived report SHA-256 is
+`a207c6730b2acc6eccce7c6a77520f3f6286e502adcabd16a3255ea8a74cd377`.
+Full evidence and the two exact packages are in
+[the frozen a114 archive](../../releases/0.3.0a114/ddd4b42/windows-312/report.json).
+Actual Linux Docker integration and other a114 rows were NOT RUN; they were
+superseded by the a115 implementation and current candidate execution above.
+This completed a114 row is not acceptance of later a115 product changes.
 Formal Release remains BLOCKED; macOS, unavailable real clients, final license
 classification and independent Release decision are not waived.
 
