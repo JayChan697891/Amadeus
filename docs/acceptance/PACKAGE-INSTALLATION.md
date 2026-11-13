@@ -1,7 +1,10 @@
 # Independent release artifact installation
 
-Issue #13 extends the acceptance collector's package evidence. Runtime behavior and
-version stay at the M5A checkpoint. This is test tooling, not completed M9 acceptance.
+Issue #13 originally extended the acceptance collector's package evidence without
+changing the then-current M5A runtime. The procedure below remains applicable;
+current frozen artifacts and actual results are listed in
+[Release Acceptance Report](RELEASE-ACCEPTANCE-REPORT.md). Package installation
+alone is not completed M9 acceptance.
 
 Run the collector outside production state with a fresh evidence directory:
 

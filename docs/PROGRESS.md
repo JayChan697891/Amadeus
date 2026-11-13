@@ -1,5 +1,26 @@
 # Amadeus current progress
 
+## Current frozen source-distribution matrix: RUNNING
+
+Source/test/package input isc262a29602fdaf3be3ee322dff997a3a1e2c629f; runtime bytes
+remain09425da. Sdist SHA256 is6e78b871c978a179b4edb48d09b928c5088ed5f44584694b9d3c3f1a99397965.
+887packaged Git input files and90runtime members were independently checked.
+Fresh offline Windows3.12.16 and Linux3.14.7 installations are running the full
+tests tree with bounded collectors; neither final matrix has been accepted yet.
+Local debug root: D:/agentsync-debug/m9-sdist-c262a29; Linux guest root:
+/root/amadeus-sdist-c262a29. Controllers were started once; inspect current process
+state and result.json/logs before any continuation, never restart on an observation
+timeout. At this checkpoint both unified-exec handles68618(Windows)/98726(Linux)
+were live. Revalidate handles and actual state; this paragraph is not a live signal.
+
+Separate installed archive identity, SDK and console probes passed on both platforms.
+License metadata inventories have32Windows/31Linux runtime distributions and zero
+review items; license_review stayspending, publication is not authorized by this.
+The first Linux probe stopped before SDK work because its guard resolved the venv
+executable symlink into the base interpreter. Preserve linux-installation-first.log
+and inspect-install-first.py; the corrected sys.prefix guard passed without changing
+product code or rerunning the matrix. All smoke state is isolated under install-smoke.
+
 ## Actual coordinator-process exit and disk recovery
 
 Tests frozen07aba94 retain runtime09425da unchanged. The10-case installed Linux

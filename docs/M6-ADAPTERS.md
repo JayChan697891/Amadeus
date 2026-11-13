@@ -603,3 +603,6 @@ but is not a claim that Python can interrupt that synchronous work immediately.
 The local integration fixtures emit protocol data from owned Python processes;
 only the dedicated Linux Docker verifier executes proposal bytes. These fixtures
 do not establish a continuous real-model chain or extend historical client evidence.
+A separate [actual continuous Codex run](acceptance/evidence/m7-continuous-live/summary.json)
+now covers installed09425da with four explicit host gates. Its two real calls,
+independent Docker/Core proof and document acceptance remain distinct from fixtures.

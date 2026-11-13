@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a38 development source. Validation pending. M5 and Release BLOCKED.** Permissions,
+Status: **0.3.0a109 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -19,8 +19,11 @@ fails closed. The internal `OwnerVerifiedTaskCompletion.complete_once` requires 
 authority, an independent reviewer and a passed execution bound to the exact current
 candidate/task versions. Completion, durable proof and audit commit together.
 Ordinary text reviews remain unverified, and historical receipts stay immutable.
-Approval consumption, source application, automatic
-retries and actual-client relay remain gated. All checks run locally; GitHub Actions
+The trusted host flow now has a [continuous real Codex producer/reviewer example](docs/acceptance/evidence/m7-continuous-live/summary.json),
+including exact approval gates, independent Docker verification and automatic context/task handoff.
+The model review is accepted as a document only; it does not become test evidence.
+Original-workspace source application and uncertain execution retries remain disabled.
+All checks run locally; GitHub Actions
 are manual-only and are not used for development testing.
 
 Codex host profiles may explicitly declare desktop CLI `0.167.0-alpha.3.2`,
@@ -30,7 +33,8 @@ preparation and the opt-in process factory. Unlisted versions remain rejected.
 Host version declarations and fixed CLI flags do not establish authentication,
 billing or sandbox isolation; every real factory invocation still needs its
 existing authorization and safety conditions. Local version/help/feature listing
-is recorded separately from model-task testing, which remains unverified.
+is recorded separately from actual model-task evidence. The current real evidence
+is limited to the pinned Linux Codex flow; Claude/Cursor remain unverified.
 
 To obtain a handle before an adapter start finishes, await
 `manager.dispatch_task(adapter_id, task)`. This admits the same request once and
