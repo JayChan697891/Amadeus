@@ -119,15 +119,22 @@ class OwnerAuthorization:
     def __reduce_ex__(self, protocol: SupportsIndex) -> NoReturn:
         raise TypeError("Owner authorization is process-local.")
 
+    def _check(self, provider: object, request: ModelRequest) -> None:
+        with self._lock:
+            self._require_current(provider, request)
+
+    def _require_current(self, provider: object, request: ModelRequest) -> None:
+        if (
+            self._used
+            or self._provider is not provider
+            or self._request != request
+            or monotonic() >= self._deadline
+        ):
+            _authorization_required()
+
     def _consume(self, provider: object, request: ModelRequest) -> float:
         with self._lock:
-            if (
-                self._used
-                or self._provider is not provider
-                or self._request != request
-                or monotonic() >= self._deadline
-            ):
-                _authorization_required()
+            self._require_current(provider, request)
             self._used = True
             return self._deadline
 

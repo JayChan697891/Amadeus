@@ -227,9 +227,24 @@ class AdminAuth(StrictModel):
     admin_token: str
 
 
+class RecoverHandoff(AdminAuth):
+    task_id: str = Field(min_length=1, max_length=200)
+    handoff_id: str = Field(min_length=1, max_length=200)
+    expected_version: int = Field(ge=1, le=2**63 - 2)
+    reason: str = Field(min_length=1, max_length=2000)
+    request_id: str = Field(min_length=1, max_length=200)
+
+
 class OwnerPage(AdminAuth):
     limit: int = Field(default=20, ge=1, le=100)
     offset: int = Field(default=0, ge=0, le=10000)
+
+
+class OwnerHandoffs(OwnerPage):
+    task_id: str | None = Field(default=None, min_length=1, max_length=200)
+    status: Literal["pending", "accepted", "rejected", "withdrawn", "recovered"] | None = (
+        "pending"
+    )
 
 
 class OwnerSelectedMembers(AdminAuth):
@@ -295,6 +310,8 @@ OWNER_OPERATIONS: dict[str, type[StrictModel]] = {
     "get_usage_summary": AdminAuth,
     "get_usage_run": GetUsageRun,
     "get_task_verification": GetTaskVerification,
+    "recover_handoff": RecoverHandoff,
+    "list_handoffs": OwnerHandoffs,
 }
 
 

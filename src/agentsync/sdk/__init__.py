@@ -1,10 +1,16 @@
 """In-process SDK; every operation is dispatched through the shared Core."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+
+if TYPE_CHECKING:
+    from agentsync.model_usage import FlatRate
+    from agentsync.providers import AdviceRequest, HTTPProvider, MockProvider, OwnerAuthorization
 
 
 def error_envelope(error: AgentSyncError) -> dict[str, Any]:
@@ -21,9 +27,43 @@ class AgentSyncClient:
         except AgentSyncError as error:
             return error_envelope(error)
 
+    async def request_model_advice(
+        self,
+        *,
+        project_id: str,
+        admin_token: str,
+        request_id: str,
+        provider: HTTPProvider | MockProvider,
+        request: AdviceRequest,
+        authorization: OwnerAuthorization | None = None,
+        rate: FlatRate | None = None,
+    ) -> dict[str, Any]:
+        """Make one local owner-authorized advisory call and persist its usage observation."""
+        from agentsync.provider_usage import OwnerProviderUsage
+
+        try:
+            return {
+                "ok": True,
+                "data": await OwnerProviderUsage(self.core).request_advice(
+                    project_id=project_id,
+                    admin_token=admin_token,
+                    request_id=request_id,
+                    provider=provider,
+                    request=request,
+                    authorization=authorization,
+                    rate=rate,
+                ),
+            }
+        except AgentSyncError as error:
+            return error_envelope(error)
+
     def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
+            if operation == "get_provider_usage_call":
+                from agentsync.provider_usage import OwnerProviderUsage
+
+                return {"ok": True, "data": OwnerProviderUsage(self.core).get(**payload)}
             if operation in {
                 "preview_candidate_integration",
                 "approve_candidate_integration",

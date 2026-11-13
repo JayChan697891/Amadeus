@@ -1,4 +1,4 @@
-"""Project-owner persistence for unverified adapter usage observations."""
+"""Project-owner persistence for adapter and local model-provider observations."""
 
 import json
 import sqlite3
@@ -9,7 +9,9 @@ from pydantic import Field, model_validator
 
 from agentsync.adapters.approved_launch import ClientKind, digest
 from agentsync.errors import AgentSyncError
+from agentsync.model_usage import FlatRate
 from agentsync.models import StrictModel
+from agentsync.providers.base import ProviderKind
 from agentsync.usage import (
     _LIMIT,
     MetricTotal,
@@ -22,10 +24,101 @@ from agentsync.usage import (
 
 _MAX_IMPORT_BYTES = 48 * 1024
 _MAX_STORED_BYTES = 512 * 1024
+_PROVIDER_TERMINAL_HEADROOM = 320  # Reserve space for a terminal update before any call.
 RELAY_USAGE_SOURCE = "controlled_relay_receipts"
+PROVIDER_USAGE_SOURCE = "local_provider_calls"
 _METRICS = ("input_tokens", "output_tokens", "adapter_elapsed_ms")
+_PROVIDER_COUNTERS = (
+    "input_tokens",
+    "output_tokens",
+    "total_tokens",
+    "cache_read_input_tokens",
+    "cache_creation_input_tokens",
+    "reasoning_tokens",
+)
+_PROVIDER_METRICS = (*_PROVIDER_COUNTERS, "elapsed_ms", "estimated_cost_picodollars")
 _Digest = Annotated[str, Field(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
 _Counter = Annotated[int, Field(ge=0, le=_LIMIT)]
+_Rate = Annotated[int, Field(ge=0, le=10**12)]
+_ESTIMATE_LIMIT = 2 * _LIMIT * 10**12
+
+
+class ProviderCallObservation(StrictModel):
+    call_id: _Digest
+    binding_sha256: _Digest
+    provider: ProviderKind | Literal["mock"]
+    model: str = Field(min_length=1, max_length=128, pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]*$")
+    kind: Literal["decomposition", "roles", "handoff"]
+    input_rate: _Rate | None = None
+    output_rate: _Rate | None = None
+    status: Literal["unknown", "succeeded", "failed", "cancelled"] = "unknown"
+    remote_outcome: Literal[
+        "unknown", "response_received", "http_error", "not_sent", "simulated"
+    ] = "unknown"
+    error_code: str | None = Field(default=None, pattern=r"^[a-z_]{1,64}$")
+    http_status: int | None = Field(default=None, ge=100, le=599)
+    retry_after_seconds: int | None = Field(default=None, ge=0, le=2**31 - 1)
+    input_tokens: _Counter | None = None
+    output_tokens: _Counter | None = None
+    total_tokens: _Counter | None = None
+    cache_read_input_tokens: _Counter | None = None
+    cache_creation_input_tokens: _Counter | None = None
+    reasoning_tokens: _Counter | None = None
+    elapsed_ms: _Counter | None = None
+
+    @model_validator(mode="after")
+    def consistent_observation(self) -> "ProviderCallObservation":
+        if (
+            (self.input_rate is None) != (self.output_rate is None)
+            or (self.status == "unknown") != (self.elapsed_ms is None)
+            or (self.status in {"failed", "cancelled"}) != (self.error_code is not None)
+            or (self.remote_outcome == "http_error") != (self.http_status is not None)
+            or (self.retry_after_seconds is not None and self.http_status not in {429, 503})
+            or (self.status == "unknown" and self.remote_outcome != "unknown")
+            or (
+                self.status == "succeeded"
+                and self.remote_outcome not in {"response_received", "simulated"}
+            )
+            or (self.provider == "mock" and self.remote_outcome not in {"unknown", "simulated"})
+            or (self.provider != "mock" and self.remote_outcome == "simulated")
+            or (self.provider == "mock" and self.input_rate is not None)
+            or (
+                self.remote_outcome != "response_received"
+                and any(getattr(self, name) is not None for name in _PROVIDER_COUNTERS)
+            )
+        ):
+            raise ValueError("Invalid provider usage observation.")
+        return self
+
+    @property
+    def estimated_cost_picodollars(self) -> int | None:
+        if self.input_rate is None or self.output_rate is None:
+            return None
+        return FlatRate(self.input_rate, self.output_rate).estimate(
+            self.input_tokens, self.output_tokens
+        )
+
+    def public(self) -> dict[str, Any]:
+        return self.model_dump(exclude={"binding_sha256"}) | {
+            "provenance": PROVIDER_USAGE_SOURCE,
+            "field_provenance": {
+                "elapsed_ms": "local_monotonic" if self.elapsed_ms is not None else "unknown",
+                **{
+                    name: "provider_reported" if getattr(self, name) is not None else "unknown"
+                    for name in _PROVIDER_COUNTERS
+                },
+                "estimated_cost_picodollars": "caller_flat_rates"
+                if self.estimated_cost_picodollars is not None
+                else "unknown",
+            },
+            "estimated_cost_picodollars": self.estimated_cost_picodollars,
+            "estimate_rate_unit": "microdollars_per_million_reported_tokens"
+            if self.input_rate is not None
+            else None,
+            "verification": "unverified",
+            "billing_verified": False,
+            "cost_usd": None,
+        }
 
 
 class RelayUsageObservation(StrictModel):
@@ -118,12 +211,12 @@ def _relay_provenance() -> dict[str, Any]:
     }
 
 
-def _relay_metric(records: list[RelayUsageObservation], name: str) -> MetricTotal:
-    known = [value for record in records if (value := getattr(record, name)) is not None]
+def _metric(values: list[int | None], *, limit: int = _LIMIT) -> MetricTotal:
+    known = [value for value in values if value is not None]
     total = sum(known)
-    if total > _LIMIT:
+    if total > limit:
         raise AgentSyncError("usage_overflow", "Usage total exceeds its bound.", 409)
-    unknown = len(records) - len(known)
+    unknown = len(values) - len(known)
     return MetricTotal(
         total if known and not unknown else None, total if known else None, len(known), unknown
     )
@@ -133,6 +226,7 @@ def _relay_metric(records: list[RelayUsageObservation], name: str) -> MetricTota
 class _ProjectUsage:
     caller: UsageLedger
     relay: dict[tuple[str, str], RelayUsageObservation] = field(default_factory=dict)
+    provider: dict[str, ProviderCallObservation] = field(default_factory=dict)
 
     @classmethod
     def load(cls, db: sqlite3.Connection, project_id: str) -> "_ProjectUsage":
@@ -155,11 +249,16 @@ class _ProjectUsage:
             if (
                 type(document) is dict
                 and type(document.get("schema_version")) is int
-                and document["schema_version"] == 2
+                and document["schema_version"] in (2, 3)
             ):
+                v3 = document["schema_version"] == 3
+                fields = {"schema_version", "caller", RELAY_USAGE_SOURCE}
+                if v3:
+                    fields.add(PROVIDER_USAGE_SOURCE)
                 if (
-                    set(document) != {"schema_version", "caller", RELAY_USAGE_SOURCE}
+                    set(document) != fields
                     or type(document[RELAY_USAGE_SOURCE]) is not list
+                    or (v3 and type(document[PROVIDER_USAGE_SOURCE]) is not list)
                 ):
                     raise ValueError
                 caller = UsageLedger.from_json(
@@ -172,33 +271,69 @@ class _ProjectUsage:
                     if index in history.relay:
                         raise ValueError
                     history.relay[index] = record
+                for item in document.get(PROVIDER_USAGE_SOURCE, []):
+                    call = ProviderCallObservation.model_validate(item)
+                    if call.call_id in history.provider:
+                        raise ValueError
+                    history.provider[call.call_id] = call
                 history._validate_totals()
                 return history
             return cls(UsageLedger.from_json(project_id, raw))
         except (AgentSyncError, ValueError, RecursionError):
             raise AgentSyncError("storage_error", "Stored usage history is invalid.", 503) from None
 
-    def _validate_totals(self) -> dict[str, MetricTotal]:
-        if self.caller.summary().total_records + len(self.relay) > self.caller._max_records:
+    def _relay_totals(self) -> dict[str, MetricTotal]:
+        return {
+            name: _metric([getattr(record, name) for record in self.relay.values()])
+            for name in _METRICS
+        }
+
+    def _provider_totals(self) -> dict[str, MetricTotal]:
+        records = [record for record in self.provider.values() if record.provider != "mock"]
+        # Bound the sum by the number and maximum size of admitted records. A
+        # provider response must never overflow and strand its already-sent call.
+        return {
+            name: _metric(
+                [getattr(record, name) for record in records],
+                limit=(
+                    _ESTIMATE_LIMIT if name == "estimated_cost_picodollars" else _LIMIT
+                ) * self.caller._max_records,
+            )
+            for name in _PROVIDER_METRICS
+        }
+
+    def _validate_totals(self) -> None:
+        if (
+            self.caller.summary().total_records + len(self.relay) + len(self.provider)
+            > self.caller._max_records
+        ):
             raise AgentSyncError("history_capacity_exceeded", "Usage history is exhausted.", 409)
-        records = list(self.relay.values())
-        return {name: _relay_metric(records, name) for name in _METRICS}
+        self._relay_totals()
+        self._provider_totals()
 
     def save(self, db: sqlite3.Connection, project_id: str, now: float) -> None:
         self._validate_totals()
         document = self.caller.to_json()
-        if self.relay:
+        if self.relay or self.provider:
+            stored: dict[str, Any] = {
+                "schema_version": 3 if self.provider else 2,
+                "caller": json.loads(document),
+                RELAY_USAGE_SOURCE: [record.model_dump() for record in self.relay.values()],
+            }
+            if self.provider:
+                stored[PROVIDER_USAGE_SOURCE] = [
+                    record.model_dump() for record in self.provider.values()
+                ]
             document = json.dumps(
-                {
-                    "schema_version": 2,
-                    "caller": json.loads(document),
-                    RELAY_USAGE_SOURCE: [record.model_dump() for record in self.relay.values()],
-                },
+                stored,
                 ensure_ascii=False,
                 allow_nan=False,
                 separators=(",", ":"),
             )
-        if len(document.encode("utf-8")) > _MAX_STORED_BYTES:
+        headroom = _PROVIDER_TERMINAL_HEADROOM * sum(
+            call.status == "unknown" for call in self.provider.values()
+        )
+        if len(document.encode("utf-8")) + headroom > _MAX_STORED_BYTES:
             raise AgentSyncError("history_capacity_exceeded", "Usage history is exhausted.", 409)
         db.execute(
             "INSERT INTO project_usage(project_id,checkpoint,updated_at) VALUES(?,?,?) "
@@ -232,6 +367,16 @@ class _ProjectUsage:
         failures = counts["failed"] + counts["timed_out"]
         denominator = counts["succeeded"] + failures
         complete = denominator > 0 and counts["unknown"] == 0
+        provider_counts = {
+            status: sum(
+                call.status == status for call in self.provider.values() if call.provider != "mock"
+            )
+            for status in ("succeeded", "failed", "cancelled", "unknown")
+        }
+        provider_denominator = provider_counts["succeeded"] + provider_counts["failed"]
+        provider_complete = bool(provider_denominator) and not (
+            provider_counts["unknown"] or provider_counts["cancelled"]
+        )
         return {
             **asdict(self.caller.summary()),
             RELAY_USAGE_SOURCE: {
@@ -241,8 +386,37 @@ class _ProjectUsage:
                 "failure_rate": failures / denominator if complete else None,
                 "failure_rate_denominator": denominator,
                 "failure_rate_complete": complete,
-                **{name: asdict(total) for name, total in self._validate_totals().items()},
+                **{name: asdict(total) for name, total in self._relay_totals().items()},
                 **_relay_provenance(),
+            },
+            PROVIDER_USAGE_SOURCE: {
+                "total_records": len(self.provider),
+                "simulated_records": sum(
+                    call.provider == "mock" for call in self.provider.values()
+                ),
+                "simulated_statuses": {
+                    status: sum(
+                        call.status == status for call in self.provider.values()
+                        if call.provider == "mock"
+                    )
+                    for status in provider_counts
+                },
+                "statuses": provider_counts,
+                "remote_unknown": sum(
+                    call.remote_outcome == "unknown"
+                    for call in self.provider.values()
+                    if call.provider != "mock"
+                ),
+                "local_failure_rate": provider_counts["failed"] / provider_denominator
+                if provider_complete
+                else None,
+                "local_failure_rate_denominator": provider_denominator,
+                "local_failure_rate_complete": provider_complete,
+                **{name: asdict(total) for name, total in self._provider_totals().items()},
+                "provenance": PROVIDER_USAGE_SOURCE,
+                "estimate_basis": "caller_flat_rates",
+                "billing_verified": False,
+                "cost_usd": None,
             },
         }
 

@@ -246,6 +246,20 @@ and cost totals, and preserves unknown costs. Optional `FlatRate` inputs provide
 an estimate in picodollars for the reported tokens. It does not read tariffs or
 establish a bill.
 
+For project-persistent advice calls, use the local SDK's async
+`request_model_advice(project_id=..., admin_token=..., request_id=..., provider=...,
+request=..., authorization=..., rate=...)`. Supply an already constructed provider
+and its exact, explicit one-use authorization; Mock needs no grant or rate.
+The operation records an unknown intent before sending. Repeating the same request
+returns saved observations and never sends again. Advice itself is returned only
+by the original invocation and is not stored as trusted task instructions.
+`owner_call("get_provider_usage_call", ..., request_id=...)` reads an interrupted
+call without sending; its returned `call_id` can also be used for later lookups.
+`get_usage_summary` keeps these `local_provider_calls` separate from client receipts
+and imported usage. Reported token counts, measured elapsed time, optional flat-rate
+estimates and remote uncertainty remain distinct; actual bills stay unknown.
+This new connection is authored but NOT RUN during the current code-first pass.
+
 ## Retry advice
 
 `agentsync.retry_planning.plan_retry(RetryPolicy(...), ...)` calculates deterministic

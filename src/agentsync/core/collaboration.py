@@ -241,6 +241,84 @@ class CollaborationMixin:
     ) -> dict[str, Any]:
         return self._decide_handoff(db, p, now, session, withdraw=True)
 
+    def _owner_recover_handoff(
+        self, db: sqlite3.Connection, p: dict[str, Any], now: float
+    ) -> dict[str, Any]:
+        """Recover abandoned coordination metadata, without restarting an execution.
+
+        execute_owner authenticates the project owner and holds BEGIN IMMEDIATE.
+        A pending handoff has already relinquished its sender's task lease. This
+        operation neither proves that an external process stopped nor clears any
+        host receipt, execution intent, worktree or launch-approval fence.
+        """
+        validate_text(p)
+        if not p["reason"].strip():
+            raise AgentSyncError("validation_error", "A recovery reason is required.")
+        old = handoff(db, p)
+        if old["task_id"] != p["task_id"]:
+            raise AgentSyncError("handoff_denied", "Handoff belongs to another task.", 409)
+        task = self._task(db, p)
+        self._version(task, p)
+        if (
+            old["status"] != "pending"
+            or task["status"] != "handoff"
+            or old["task_version"] != task["version"]
+        ):
+            raise AgentSyncError("invalid_transition", "Handoff is no longer pending.", 409)
+        if db.execute(
+            "SELECT 1 FROM mock_workflow_tasks m JOIN mock_workflows w ON w.id=m.run_id "
+            "WHERE m.task_id=? AND w.project_id=?",
+            (task["id"], p["project_id"]),
+        ).fetchone():
+            raise AgentSyncError(
+                "workflow_managed_task", "The task belongs to a durable Mock workflow.", 409
+            )
+        if db.execute(
+            "SELECT 1 FROM sessions WHERE project_id=? AND agent_id IN (?,?) "
+            "AND expires_at>? LIMIT 1",
+            (p["project_id"], old["sender_agent_id"], old["recipient_agent_id"], now),
+        ).fetchone():
+            raise AgentSyncError(
+                "handoff_participant_active", "A handoff participant still has a live session.", 409
+            )
+        db.execute(
+            "UPDATE tasks SET status='pending',version=version+1,owner_session_id=NULL,"
+            "lease_hash=NULL,lease_expires_at=NULL,updated_at=? WHERE id=? AND project_id=?",
+            (now, task["id"], p["project_id"]),
+        )
+        db.execute(
+            "UPDATE handoffs SET status='recovered',reason=?,resolved_at=?,task_version=?,"
+            "assigned_agent_id=NULL,reservation_expires_at=NULL WHERE id=? AND project_id=?",
+            (p["reason"], now, task["version"] + 1, old["id"], p["project_id"]),
+        )
+        return {
+            **handoff(db, p),
+            "version": task["version"] + 1,
+            "recovery_scope": "handoff_metadata_only",
+            "execution_restarted": False,
+        }
+
+    def _owner_list_handoffs(
+        self, db: sqlite3.Connection, p: dict[str, Any], now: float
+    ) -> dict[str, Any]:
+        """Let the owner find the exact abandoned handoff without old credentials."""
+        validate_text(p)
+        rows = db.execute(
+            "SELECT id,project_id,task_id,status,task_version,sender_agent_id,"
+            "recipient_agent_id,created_at,resolved_at,assigned_agent_id,reservation_expires_at "
+            "FROM handoffs WHERE project_id=? "
+            "AND (? IS NULL OR task_id=?) AND (? IS NULL OR status=?) "
+            "ORDER BY created_at,id LIMIT ? OFFSET ?",
+            (
+                p["project_id"], p["task_id"], p["task_id"], p["status"], p["status"],
+                p["limit"] + 1, p["offset"],
+            ),
+        ).fetchall()
+        return {
+            "handoffs": [dict(row) for row in rows[: p["limit"]]],
+            "has_more": len(rows) > p["limit"],
+        }
+
     def _decide_handoff(
         self,
         db: sqlite3.Connection,

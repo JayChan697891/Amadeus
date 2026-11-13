@@ -74,6 +74,18 @@ MCP 标识、`AGENTSYNC_*` 设置、默认数据目录名 `AgentSync` 和数据�
 缺失的终态和用量保持未知。同步不会启动客户端，回执也不能证明账单或实际费用。
 缺少精确启动绑定的历史单客户端或提案回执会返回 `relay_usage_unsupported`。
 
+项目自身的模型建议调用可使用本地 SDK 异步方法 `request_model_advice`，传入所有者身份、
+固定 `request_id`、已构造的 provider、建议请求和该请求的明确单次授权。
+它先持久记录未知意图再调用；相同请求重放只读历史，不重复发送。
+通过 `owner_call("get_provider_usage_call", ..., request_id=...)` 查询中断后的观察，
+不需要为查询再调用模型。`get_usage_summary` 将 `local_provider_calls` 与客户端回执、
+导入用量分开汇总；Token 上报、实际耗时、可选费率估算和远端未知结果分别标注，
+不把估算视为真实账单。此连接已编写，按当前“先写完整代码”安排尚未执行测试。
+
+双方会话都过期而交接仍待接收时，所有者可先通过 `list_handoffs` 查询交接，
+再以精确任务版本调用 `recover_handoff`。原交接包和上下文保留，任务恢复待认领；
+此操作只恢复协作状态，不会重启模型或解除未知执行的限制。
+
 交付已验证候选时，所有者可通过 SDK 的 `owner_call` 或 `amadeus owner`
 预览并批准交付计划，再凭批准后的版本和计划摘要显式调用
 `publish_candidate_delivery`，创建受管仓库的私有 Git 引用。通过

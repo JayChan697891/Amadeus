@@ -1,5 +1,37 @@
 # Amadeus current progress
 
+## Code-first continuation (2026-11-13; not yet validated)
+
+The owner now requires all remaining original-plan code before further debugging.
+No new test, build, lint, installed-package or real-client run is started for this
+pass. The already-running frozen a114 bootstrap is preserved; its result, when
+available, applies only to ddd4b42. Prepared M9 continuation queues have NOT RUN.
+
+Read-only implementation audit found concrete gaps rather than inferring missing
+code from partial acceptance coverage. The owner-only `recover_handoff` operation
+is now authored in Core: exact task/handoff version, both participants without a
+valid session, atomic transition back to pending, preserved package/context,
+separate recovered status, idempotent historical receipt and safe audit. Durable
+managed tasks are rejected; no execution receipt or unknown attempt is released.
+SDK and the existing owner HTTP dispatcher share this Core operation. Its new
+integration test source is authored but NOT RUN.
+
+M8 explicit model-advice invocation and persistent per-call project usage are now
+authored. The local owner SDK records an intent before one explicitly granted
+provider call; exact replays only return history, including unknown calls after
+interruption. v3 project checkpoints retain v1/v2 input compatibility, with caller,
+relay and local-provider sources separate. Raw prompts, credentials and advice
+are not persisted in usage. Original request IDs can query observations without
+another dispatch. Counter/rate estimates never claim billing or client acceptance.
+The new regression source is NOT RUN, including its isolated process-exit fixture.
+
+M7 positively terminated failed-producer continuation is being implemented.
+Retain source/usage/receipt provenance, fresh recipient approval, and existing
+independent verification gates. Neither code writing nor historical passing tests
+constitutes acceptance of these changes. Finish these original-scope connections,
+inspect the complete implementation, then resume affected debugging followed by
+the required frozen-package matrix. No new M5 phase, paid call or Actions run.
+
 ## 0.3.0a114 approved target integration: affected source checks complete
 
 Product ddd4b42a3d6b44b7b09ef734220e8e0bb9a8918f is frozen and uploaded.
@@ -27,19 +59,22 @@ Debug: D:/agentsync-debug/m4-owner-integration-a114-sol. Original handles 51636,
 projects. Verifier fixtures are synthetic; a114 actual Linux Docker integration,
 installed-package checks and full Release are NOT RUN/BLOCKED, not inferred passes.
 
-M9 Windows 3.12 is RUNNING from a separate clean frozen snapshot. Original handle
-56056 started at 2026-11-13 10:36:51 UTC; poll this handle, never restart because an
-observation expires. D:/agentsync-debug/m114/bootstrap-attempt.json records its
-collector PID and command; terminal outcome belongs in bootstrap-result.json.
+M9 Windows 3.12 completed from a separate clean frozen snapshot. Original handle
+56056 started at 2026-11-13 10:36:51 UTC and terminated with exit 0 at 12:46:46 UTC.
+Do not restart it. D:/agentsync-debug/m114/bootstrap-attempt.json records its
+collector PID and command; bootstrap-result.json records the terminal outcome.
 The complete source suite finished at 2026-11-13 11:19:51 UTC: 2427 unique cases,
 2371 passed, 56 skipped, no failures/errors. Root read the actual JUnit and process
 result. Ruff, format, mypy, build and pip checks pass. The fresh wheel origin,
 dependency and license-inventory checks also pass. Wheel full-suite execution finished
 at 2026-11-13 12:03:03 UTC: 2371 passed, 56 skipped, no failures/errors. Root verified
 all 2427 case IDs and outcomes exactly match the source suite. Fresh sdist installation,
-origin, dependency and inventory checks pass; its full suite is RUNNING from
-12:03:19 UTC in the original handle. This is not a completed matrix row. Intermediate
-observations: D:/agentsync-debug/m114/source-observation.json and wheel-observation.json.
+origin, dependency and inventory checks pass; its full suite completed with the same
+counts: 2371 passed, 56 skipped, zero failures/errors. Root read the existing three
+JUnit files and final report: all collector checks pass and frozen source did not
+change. No new tests were started after the code-first directive. The later code
+changes are NOT covered, the remaining rows have NOT RUN, and formal Release stays
+blocked. Intermediate observations remain under D:/agentsync-debug/m114.
 Windows license/archive review found no blocker to continued testing. Root checked
 43 installed license-file hashes, recorded both archive hashes and matched the
 sdist license/notice documents to the frozen source;

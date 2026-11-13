@@ -64,6 +64,35 @@ rewrite an earlier handoff. Concurrent resolve/withdraw yields one winner. Use c
 task version plus pending state checks; completed/old handoffs cannot affect new work.
 Replays authenticate, return stored responses and do not mutate or revive old ownership.
 
+## Owner recovery of abandoned handoffs
+
+The owner SDK and existing authenticated `/owner/v1/{operation}` HTTP route expose:
+
+- `list_handoffs`: owner credentials, optional `task_id`, `status` (defaults to
+  `pending`; null selects all decisions), and the normal bounded limit/offset.
+  It returns project-scoped identifiers, status, version and participant metadata
+  without expanding packages or context bodies. Recovery does not depend on
+  retaining either expired participant's credentials.
+- `recover_handoff`: owner credentials, exact `task_id`, `handoff_id`,
+  `expected_version` (both current task version and the handoff's task version),
+  nonblank `reason`, and `request_id`.
+
+Recovery requires a still-pending handoff and no unexpired session for either
+participant identity. It rejects durable-workflow tasks. The owner transaction
+records `recovered`, clears ownership/lease/reservation, and returns the task to
+pending with a new version. It preserves the original package, context revisions,
+sender/recipient identities and task result. Any newly authorized worker must
+claim through the normal capability-independent Core lease/permission checks;
+the operation neither impersonates the old sender nor grants an execution approval.
+An exact request replay returns its historical receipt without changing later
+task state. Audits record owner identity and task versions, without copying the
+reason or package into audit text.
+
+This is metadata recovery only. It does not prove an external process ended,
+restart a model, clear receipt/intent fences, modify worktrees or accept results.
+The new implementation and regression source are authored; execution remains
+NOT RUN during the owner's code-first pass.
+
 ## Schema and transports
 
 Transactional schema v3 upgrades empty/v1/v2 databases and rejects future versions.

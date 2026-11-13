@@ -1,5 +1,19 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Owner execution order updated on 2026-11-13: finish the original plan's remaining
+product code before starting further debugging. The original Windows 3.12 a114
+collector may finish naturally; retain its evidence. Do not start the prepared
+Windows/Linux continuation queues until the implementation audit is complete.
+
+The current code audit identifies three original-scope connections to finish:
+M3/M1 owner recovery of a pending handoff after both participants lose all valid
+sessions; M7 continuation of saved unfinished work after a positively terminated
+failed attempt, with fresh recipient authority and unknown executions fenced;
+and M8 project-persistent usage for the application's explicit model advice calls.
+These are product changes, not additional M5 phases. All newly authored code and
+test modules remain NOT RUN until the code-first pass finishes. Existing evidence
+continues to describe its original frozen SHA, never these later changes.
+
 Frozen ddd4b42 (0.3.0a114) implements original M4-05 owner-approved integration into an
 ordinary target repository's new branch and independent new worktree. The exact
 verified candidate is imported locally; the original checkout is preserved.
@@ -9,11 +23,13 @@ Windows affected source evidence reconciles 120 unique cases: 119 pass and one
 Linux Docker skip. The original 120-case run and repaired 24-case subset remain
 separate; this is not a new full-suite run. No real user workspace was touched.
 
-M9's existing complete source, wheel and sdist collector is now running first on
-Windows 3.12. Once its actual result is checked, pin its exact two archives for the
-remaining available Windows/Linux 3.11/3.12/3.14 rows. Keep bootstrap and final
-matrix manifests distinct. Actual Linux Docker integration, current installed
-regression and full matrix are not complete for a114. Source evidence is in
+M9's existing complete source, wheel and sdist collector finished on Windows 3.12
+at 2026-11-13 12:46:46 UTC, exit 0: each suite 2371 pass / 56 skip with no failures
+or errors. Preserve this frozen a114 evidence. The code-first continuation above
+supersedes the prepared later-row launch: do not run old candidate packages as
+validation of the new product code. After implementation finishes, freeze a new
+candidate and resume the incomplete debugging scope and required matrix. Actual
+Linux Docker integration and full matrix are not complete for a114. Source evidence is in
 acceptance/evidence/m4-owner-integration/summary.json. macOS, unsupported real
 vendors and external Release approval remain explicit gaps. No new M5 phase.
 

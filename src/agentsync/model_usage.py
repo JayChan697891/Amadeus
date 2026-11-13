@@ -33,6 +33,11 @@ class FlatRate:
         ):
             raise AgentSyncError("validation_error", "Invalid model estimate rate.")
 
+    def estimate(self, input_tokens: int | None, output_tokens: int | None) -> int | None:
+        if input_tokens is None or output_tokens is None:
+            return None
+        return input_tokens * self.input_rate + output_tokens * self.output_rate
+
 
 @dataclass(frozen=True, slots=True)
 class ModelUsageSummary:
@@ -154,11 +159,7 @@ class ModelCallMeter:
                 input_tokens = _counter(response.usage.input_tokens)
                 output_tokens = _counter(response.usage.output_tokens)
                 rate = self._rates.get((response.provider, response.model))
-                estimate = (
-                    input_tokens * rate.input_rate + output_tokens * rate.output_rate
-                    if rate is not None and input_tokens is not None and output_tokens is not None
-                    else None
-                )
+                estimate = rate.estimate(input_tokens, output_tokens) if rate is not None else None
                 call = _Call("response", elapsed, False, input_tokens, output_tokens, estimate)
         except asyncio.CancelledError:
             self._calls.append(_Call("cancelled", monotonic_ns() - start))
