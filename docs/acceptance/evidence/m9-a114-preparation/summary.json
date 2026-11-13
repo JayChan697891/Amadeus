@@ -42,6 +42,16 @@
       "path": "linux-source-staging.json",
       "sha256": "6d9ce9ece80bf5e2fff5e55c94b748d3e7b2b14e188b09129ef7f4fb28908ad4",
       "size": 1024
+    },
+    {
+      "path": "m9-finalize-bootstrap.py.txt",
+      "sha256": "0a381ca751adc2c4981de38467313146099b69b248e0244d548b50b2e0920cb2",
+      "size": 7048
+    },
+    {
+      "path": "m9-candidate-queue.py.txt",
+      "sha256": "a1c55bb54e51d56a68f02e8473a2a979d51edd2bc96a6fd732210e37ba6c442a",
+      "size": 3483
     }
   ],
   "bootstrap_started_at": "2026-11-13T10:36:51.679129+00:00",
@@ -57,5 +67,6 @@
   "linux_root": "/root/amadeus-m114",
   "formal_release": "BLOCKED",
   "real_models": "NOT RUN",
-  "actions": "NOT RUN"
+  "actions": "NOT RUN",
+  "continuation_helpers": "Astra read-only review accepted terminal-result/JUnit checks, exact candidate staging and one sequential queue per OS. Helpers prepared, not yet executed; no automatic retry."
 }
