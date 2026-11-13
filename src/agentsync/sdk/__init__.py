@@ -28,6 +28,7 @@ class AgentSyncClient:
                 "preview_candidate_delivery",
                 "get_candidate_delivery_status",
                 "approve_candidate_delivery",
+                "publish_candidate_delivery",
             ):
                 from agentsync.verification.candidate_delivery import OwnerCandidateDelivery
 
@@ -36,6 +37,8 @@ class AgentSyncClient:
                     return {"ok": True, "data": service.preview(**payload)}
                 if operation == "get_candidate_delivery_status":
                     return {"ok": True, "data": service.status(**payload)}
+                if operation == "publish_candidate_delivery":
+                    return {"ok": True, "data": service.publish_once(**payload)}
                 return {"ok": True, "data": service.approve(**payload)}
             return {"ok": True, "data": self.core.execute_owner(operation, payload)}
         except AgentSyncError as error:

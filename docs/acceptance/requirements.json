@@ -735,7 +735,9 @@
         "integration"
       ],
       "existing_tests": [
-        "tests/integration/test_m4b_workspaces.py::test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable"
+        "tests/integration/test_m4b_workspaces.py::test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable",
+        "tests/integration/test_verified_task_completion.py::test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan",
+        "tests/integration/test_verified_task_completion.py::test_actual_linux_docker_to_independent_verified_completion"
       ],
       "planned_cases": [
         {

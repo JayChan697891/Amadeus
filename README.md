@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a109 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a110 development source. Formal Release BLOCKED.** Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -284,13 +284,14 @@ unchanged. Unused gates are reclaimed, and fork children reset inherited gates.
 & .\.venv\Scripts\python.exe -m build
 ```
 
-Review evidence is stored text, not verified execution. Task submitters cannot accept their own
-work, but Alpha does not independently run or validate tests submitted by other agents.
+Ordinary review evidence is stored text, not verified execution. Task submitters cannot accept
+their own work. Verified completion separately requires the pinned Docker/Core proof.
 M3 context and handoffs are implemented. M4 now adds read-only path/version inspection and
 cooperative file/directory lease locks, shared across all transports. These do not enforce
 OS locking or prevent external editors. Independent managed Git worktrees and real merge conflict detection are implemented.
 Merge candidates await human approval; there is no apply-to-user-branch endpoint.
-Independent evidence execution, control adapters and autonomous scheduling remain incomplete.
+Independent Docker execution and a controlled real two-Codex handoff have limited evidence.
+Cross-vendor compatibility and broader autonomous scheduling remain incomplete.
 See [the plan](docs/PLAN.md) and [release acceptance design](docs/acceptance/DESIGN.md).
 Passing local checks does not establish formal release acceptance.
 Model fees, if later enabled, are the user's.
@@ -305,6 +306,11 @@ are not inferred. See [M5A guide](docs/M5A-GUIDE.md) before upgrading a live dat
 Owner role/approval operations use SDK `owner_call`, CLI JSON stdin or the separate
 loopback HTTP `/owner/v1/` route. They are absent from MCP discovery. Possession of
 the admin credential is an owner capability, not proof of a physical human.
+For verified candidate delivery, use `preview_candidate_delivery` and
+`approve_candidate_delivery` through `owner_call` or `amadeus owner`. Call
+`publish_candidate_delivery` separately with the approved version and exact plan
+hash to create the private managed Git ref. Inspect the outcome with
+`get_candidate_delivery_status`.
 Approvals only store a pinned authorization decision: no user-repository apply or
 arbitrary command execution endpoint exists. Existing task review remains asserted
-evidence; sandboxed independent verification and formal release are still blocked.
+evidence; verified completion uses its independent proof gate. Formal release remains blocked.
