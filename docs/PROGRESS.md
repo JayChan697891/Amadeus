@@ -1,5 +1,31 @@
 # Amadeus current progress
 
+## 0.3.0a110 owner delivery entry: installed validation RUNNING
+
+Product529df3b3e073b9975fc1e722511ade59423fa330 exposes explicit owner SDK/CLI
+publish_candidate_delivery through the existing single-use private-ref engine.
+No Core agent, HTTP or MCP operation was added. Approval and publication remain
+separate; source-workspace apply stays disabled. Independent Astra source review
+accepted this narrow route and the strengthened original-source preservation tests.
+Windows source checks pass73cases/1Linux Docker skip; the evidence describes working
+tree hashes, not the earlier base commit as tested product. Root added two M4-05
+coverage selectors and corrected stale README descriptions before freezing529df3b.
+
+Both archives built from964Git input files;90runtime members match wheel/sdist.
+Wheel SHA256:cf27958b204baeb9c61f1894a60f45e9c8e333be357044c7dc88c88eb4245d93.
+Sdist SHA256:b2f40ede0792652a545b1da5397a2bc05de8d2c2540d0f0c4242c6445ec034d8.
+Fresh Windows wheel and Linux sdist affected checks are currently running; original
+handles90923/80892 were polled live. Revalidate these handles and result/log records
+before resuming; do not restart on an observation timeout. Debug root:
+D:/agentsync-debug/m4-delivery-529df3b; guest:/root/amadeus-delivery-529df3b.
+Linux reuses the existing actual Docker completion scenario, then exact SDK approval,
+CLI publication and reopened status; that new installed observation is not yet passed.
+Root full active-code static checks pass: Ruff,340formatted Python files and mypy89
+source modules. The21historical execution-source archives were preserved byte-for-
+byte as.txt with original-name maps; all166evidence/package Git blobs still match.
+Next inspect installed results, actual delivery/cleanup observation and final scope
+review, then address only concrete original-plan gaps from the read-only audit.
+
 ## M8 declared contention diagnostic: passed on both local platforms
 
 The existing benchmark tool frozen2af7ccc ran against unchanged installed09425da.
