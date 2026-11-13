@@ -520,3 +520,46 @@ Requested settings do not prove effective features or absent tools. The host mus
 check the actual pinned Linux CLI's configuration and tool projection before a
 live run. Plan flags do not authorize credential copying, attest billing, contain
 the whole CLI, or establish real-client/Release acceptance.
+
+## Automatic host-side proposal handoff
+
+`agentsync.proposal_handoff.ProposalHandoff(core, scratch, receipts)` composes
+the existing Core and relay APIs for one producer-to-receiver handoff. Supply a
+`ProposalHandoffRequest` with the producer task, a distinct `HandoffReceiver`,
+stable request ID, bounded instruction and output paths. The receiver's credentials
+remain in memory. An owner-authored `build_receiver(receiver, workspace)` callback
+returns a `RelayActor` for the actual dependent task/worktree; its identity,
+worktree, root and head are checked. Its authority still decides each exact launch.
+
+Pass the `CodexProposalOutcome` returned by the producer as `source_outcome`.
+Alternatively supply its original `source_actor` while that session remains valid.
+The coordinator derives and saves the exact context pin before waiting for a
+current independent accepted Core review. It does not accept the producer itself
+or require document-review tasks to have code-execution verification. An expired
+producer may be consumed using an already saved reference and a valid receiver;
+an absent reference is not reconstructed by impersonating a new producer session.
+
+```python
+handoff = ProposalHandoff(core, scratch, receipts)
+result = await handoff.run(
+    request,
+    admin_token=owner_token,
+    build_receiver=owner_receiver_factory,
+    source_outcome=producer_outcome,
+    wait_seconds=60,
+    budget=180,
+)
+```
+
+On restart, reuse the same request, receiver session, Core and receipt directory;
+omit the source arguments when its reference was saved. Fixed Core requests can
+recover interrupted task/worktree preparation. Configuration changes are rejected.
+Only the call that creates the exclusive dispatch intent may start the queue.
+After that, reentry observes or reconciles its existing wave, never launches again.
+An intent without an observable wave is `unknown`, including a crash immediately
+before dispatch. Timeout/cancellation retains fences and does not prove client exit.
+
+The source is revalidated by the receiving relay, selection is pinned, and the
+receiver's result stops at ordinary review/unverified. No automatic task acceptance,
+candidate staging/execution, source application or paid-provider configuration is
+introduced. Local protocol-fixture tests are separate from real-client acceptance.
