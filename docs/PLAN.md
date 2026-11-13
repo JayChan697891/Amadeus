@@ -2,8 +2,9 @@
 
 Current debugging checkpoint: c56cbe2 / a115 has 197 unique affected Windows
 source passes (34 new, 163 existing), with unchanged source and retained initial
-harness failure. The full Windows source/wheel/sdist collector and the matching
-Linux affected source run are active, not passed. See PROGRESS.md for their exact
+harness failure. Linux Python 3.14 also passed all 197 identical cases; all 228
+source hashes match frozen Git bytes. The full Windows source/wheel/sdist collector
+remains active, not passed. See PROGRESS.md for the exact
 original handles and acceptance/evidence/m115-source-checks/summary.json for the
 completed evidence. Continue the original matrix and real-client release gates.
 

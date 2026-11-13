@@ -18,10 +18,14 @@ D:/agentsync-debug/m115-candidate/s snapshot, using only the offline wheelhouse.
 Original session 83040 started 2026-11-13 13:24:25 UTC; wrapper PID 2484 and collector
 PID 7480 are historical identifiers to revalidate, never authority to restart.
 Observe that session and bootstrap-attempt/result.json before any further launch.
-Prepared source staging in the existing local Linux VM matches the same commit
-and tree. Its affected source run is active in original session 49351; current
-evidence is under D:/agentsync-debug/m115/linux-01 when it completes. Neither
-active run is counted as passed. No new real-client call or GitHub Actions run.
+The existing local Linux VM ran the same affected source cases on Python 3.14:
+197 passed, no skips, 415.99 seconds. Original session 49351 ended with exit 0
+at 2026-11-13 13:33:06 UTC; do not restart it. Root compared all 197 JUnit IDs
+and outcomes with Windows: exact match. All 228 Linux source hashes match the
+frozen Git bytes and remained unchanged. Its evidence is in the same public
+summary under linux-01, with local originals D:/agentsync-debug/m115/linux-01.
+Only the full Windows candidate collector remains active, not passed. No new
+real-client call or GitHub Actions run.
 
 Next inspect these original processes/results, repair only actual failures and
 continue the frozen-package matrix with the same exact artifacts. Remaining
