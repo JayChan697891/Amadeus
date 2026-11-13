@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "dependent_review_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m7-review-1014307\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-review-1014307\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-review-1014307\\source",
+    "started_at": "2026-11-13T08:30:50.888165+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "dependent_review_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m7-review-1014307\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-review-1014307\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-review-1014307\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T08:30:50.888165+00:00",
+    "finished_at": "2026-11-13T08:37:33.193144+00:00",
+    "log": "logs/dependent_review_pytest.log",
+    "log_sha256": "9da62a1bd21b047bc6ba9d45968c6920a492f75b2a396fbab7a34b6d4758c886",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

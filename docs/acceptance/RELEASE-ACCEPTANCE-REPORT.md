@@ -1,5 +1,26 @@
 # Release Acceptance Report
 
+## Restricted cross-client dependent review: installed affected checks passed
+
+Frozen10143077d512583a1e0efb9e5355dd54f2a2ce57 (0.3.0a111) passes the twelve-file
+affected regression: Windows3.12.16 wheel360passed/11Docker skips; Linux3.14.7 sdist
+371passed/0skips, zero failures/errors. Both collect the same371unique parameterized
+IDs.982sdist Git inputs and90runtime files match; installed origin/archive identity,
+before-after source/runtime and console probes pass. Packaged-source Ruff, formatting
+327files and mypy89modules pass. [Evidence](evidence/m7-dependent-review/summary.json).
+
+New source/dependency/staging binding gates, approved-launch rechecks, strict tool
+event handling, unknown dispatch/reopen and legacy paths are covered. The source
+mutation during approval is a controlled injected staging observation; it is not
+a persistent database mutation. Actual Linux Docker3/3cases with19isolation checks
+produce a verified source; a resumed owned Cursor protocol emitter produces an
+unverified review document, and reopen retains one total reviewer launch. Containers
+are absent. This is not real Cursor, uninterrupted cross-vendor model execution,
+full-suite rerun, or universal crash-recovery evidence. All model/API calls are0.
+Independent Astra review accepted the exact files, installation evidence and limited
+scope; this is not external Work/PR approval. Formal Release remains BLOCKED, and
+this evidence does not apply to the later a112 Core/schema work in progress.
+
 ## Explicit owner candidate delivery: installed affected checks passed
 
 Frozen529df3b3e073b9975fc1e722511ade59423fa330 (0.3.0a110) adds an owner-only

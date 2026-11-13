@@ -1,0 +1,28 @@
+set -eu
+umask 077
+export PYTHONDONTWRITEBYTECODE=1 PIP_NO_INDEX=1 PIP_CONFIG_FILE=/dev/null PIP_DISABLE_PIP_VERSION_CHECK=1
+/root/jobs-env/bin/python -I -B - <<'PY'
+from pathlib import Path
+import hashlib,json,tarfile,zipfile
+base=Path('/root/amadeus-review-1014307')
+base.mkdir(mode=0o700)
+with zipfile.ZipFile('/root/amadeus-review-1014307.zip') as archive:
+    assert all((base/n).resolve().is_relative_to(base) for n in archive.namelist())
+    archive.extractall(base)
+config=json.loads((base/'identity.json').read_text())
+for name,digest in config['artifacts'].items():assert hashlib.sha256((base/name).read_bytes()).hexdigest()==digest
+with tarfile.open(base/'agentsync_local-0.3.0a111.tar.gz') as archive:
+    for member in archive.getmembers():
+        assert member.isfile() or member.isdir()
+        assert (base/'unpacked'/member.name).resolve().is_relative_to(base/'unpacked')
+    archive.extractall(base/'unpacked',filter='data')
+next((base/'unpacked').iterdir()).rename(base/'source')
+PY
+cd /root/amadeus-review-1014307
+mkdir home tmp
+export HOME="$PWD/home" CODEX_HOME="$PWD/home" TMPDIR="$PWD/tmp" PIP_CACHE_DIR="$PWD/pip-cache"
+/root/jobs-env/bin/python -m venv installed
+installed/bin/python -m pip install --no-index --no-cache-dir --find-links /root/intent-wheelhouse ./agentsync_local-0.3.0a111.tar.gz pytest==9.1.1 pytest-asyncio==1.4.0 httpx==0.28.1 > install.log 2>&1
+installed/bin/python -m pip check > pip-check.log
+installed/bin/python -I -B driver.py > driver.log 2>&1
+cat driver.log

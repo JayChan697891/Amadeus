@@ -1,0 +1,19 @@
+"""Fresh Windows wheel install, offline and without credential inheritance."""
+import os
+from pathlib import Path
+import subprocess
+BASE=Path(__file__).resolve().parent
+env=os.environ.copy()
+for name in tuple(env):
+    if name.upper().startswith(('OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AGENTSYNC_','GIT_','PYTEST_')) or name.upper() in {'CODEX_HOME','CODEX_API_KEY','PYTHONPATH','PYTHONHOME'}:env.pop(name,None)
+for name in ('home','tmp'):(BASE/name).mkdir(exist_ok=True)
+env.update(PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,PIP_DISABLE_PIP_VERSION_CHECK='1',PIP_CACHE_DIR=str(BASE/'pip-cache'),TEMP=str(BASE/'tmp'),TMP=str(BASE/'tmp'),HOME=str(BASE/'home'),USERPROFILE=str(BASE/'home'),CODEX_HOME=str(BASE/'home'),GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,PYTHONDONTWRITEBYTECODE='1')
+def run(args,name):
+    with (BASE/name).open('xb') as log:subprocess.run(args,cwd=BASE,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+assert not (BASE/'installed').exists()
+run(['D:/agentsync-debug/m6-package-6a8ff41/builder/Scripts/python.exe','-I','-B','-m','venv',str(BASE/'installed')],'venv.log')
+python=str(BASE/'installed/Scripts/python.exe')
+run([python,'-I','-B','-m','pip','install','--no-index','--no-cache-dir','--find-links','D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse',str(BASE/'agentsync_local-0.3.0a111-py3-none-any.whl'),'pytest==9.1.1','pytest-asyncio==1.4.0','httpx==0.28.1'],'install.log')
+run([python,'-I','-B','-m','pip','check'],'pip-check.log')
+run([python,'-I','-B',str(BASE/'driver.py')],'driver.log')
+print('Fresh offline Windows wheel installation and affected dependent review checks completed.')

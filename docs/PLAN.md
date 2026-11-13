@@ -1,5 +1,16 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Product1014307 (0.3.0a111) adds strict dependent review using prepared Codex/Claude/
+Cursor profiles, pinned verified source and review.md-only unverified output.
+Legacy Codex handoff remains compatible. Windows wheel360pass/11Docker skips and
+Linux sdist371pass/0skips cover the same371case IDs. Actual Linux Docker3/3 then an
+owned Cursor protocol emitter and reopen pass; real Claude/Cursor remain NOT RUN.
+Evidence: acceptance/evidence/m7-dependent-review/summary.json. Independent technical
+review accepted this limited scope. Next implement the original M7-04/M8-02 durable Mock execution path,
+including persisted retry/budget/generation/cancel/handoff, with actual CLI/SDK entry.
+Unknown dispatch cannot be retried, budgets do not replace authority, and estimated
+costs must not be represented as real bills. Keep existing temporary Mock mode.
+
 Product529df3b (0.3.0a110) now exposes the existing approved private-ref delivery
 through explicit owner SDK/CLI calls. Fresh Windows wheel/Linux sdist affected
 checks each pass496cases/1platform skip; the actual Linux Docker-to-verified-task,

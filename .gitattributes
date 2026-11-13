@@ -69,3 +69,4 @@ docs/acceptance/evidence/m9-sdist-regression/** -text -whitespace
 docs/acceptance/evidence/m7-provider-offline/** -text -whitespace
 docs/acceptance/evidence/m8-bounded-load/** -text -whitespace
 docs/acceptance/evidence/m4-owner-delivery/** -text -whitespace
+docs/acceptance/evidence/m7-dependent-review/** -text -whitespace

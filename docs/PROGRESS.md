@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-## 0.3.0a111 restricted cross-client review: source checks passed
+## 0.3.0a111 restricted cross-client review: installed checks passed
 
 New ProposalReviewInput/ProposalReviewQueueItem accepts prepared Codex/Claude/Cursor
 reviewers for a task depending on the exact verified producer artifact. Current
@@ -17,10 +17,25 @@ new whole-suite run. Ruff/format and mypy89modules pass. Original10fixture failu
 and the10-case corrected run remain in D:/agentsync-debug/m7-dependent-review-a111-sol;
 they preceded the final regression and are not hidden as product passes. Source and
 final source hashes identify the exact changes. Independent source review accepted
-the design and requested the now-passing directed source/approval tests. Final frozen
-wheel/sdist and actual Linux Docker review composition are NOT RUN yet. Real Claude/
-Cursor and formal Release remain unverified/blocked. Next freeze this product and
-run the affected installed suites; preserve host approvals and original-source gates.
+the design and the directed source/approval tests. The approval-time mutation is an
+injected staging read, not a persistent context edit.
+
+Frozen10143077d512583a1e0efb9e5355dd54f2a2ce57 now passes fresh Windows wheel360cases/
+11Docker skips and Linux sdist371cases/0skips, with371identical parameterized IDs.
+982packaged Git inputs and90runtime members match; source/runtime before-after and
+archive/console checks pass. Packaged-source Ruff/format327files and mypy89modules
+pass. The existing Linux scenario verifies3actual Docker cases with19isolation checks,
+then resumes an owned Cursor protocol emitter from the verified-source checkpoint.
+The review remains unverified; reopen adds no launch and the daemon has0containers.
+[Evidence](acceptance/evidence/m7-dependent-review/summary.json) binds28files and both
+packages. Original handles39000/86480 are terminal0; do not restart. Debug root:
+D:/agentsync-debug/m7-review-1014307; guest:/root/amadeus-review-1014307.
+Independent Astra review accepted the exact package evidence and limited scope.
+Real Claude/Cursor and formal Release
+remain unverified/blocked. Next product work is a112 durable owner-only Mock workflow
+start/resume/status/cancel: confirmed-failure retries, non-resetting budgets, task
+handoff and independent review through existing Core. That working tree is unfinished
+and unverified; a111 evidence does not cover its schema or permission changes.
 
 ## 0.3.0a110 owner delivery entry: installed validation passed
 
