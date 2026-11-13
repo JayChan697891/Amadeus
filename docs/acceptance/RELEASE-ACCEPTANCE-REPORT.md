@@ -13,9 +13,12 @@ Ruff/format and source mypy pass. Only disposable Git projects were modified;
 verifier proofs in this source scope are synthetic, not real Docker/client evidence.
 
 Source evidence: [affected run and repaired subset](evidence/m4-owner-integration/summary.json).
-The original full source/wheel/sdist collector is RUNNING on Windows 3.12; no result
-is inferred yet. Current a114 installed packages, actual Linux Docker integration
-and other M9 rows remain NOT RUN. Later rows will use one pinned candidate pair.
+The original full source/wheel/sdist collector is RUNNING on Windows 3.12. Its
+complete source suite has 2371 passes and 56 skips across 2427 unique cases, with
+zero failures/errors; root checked the JUnit and exit record. Static/build checks
+and fresh wheel origin/dependency/inventory checks pass. Wheel full tests are
+RUNNING; sdist full tests, actual Linux Docker integration and other M9 rows remain
+NOT RUN. Later rows will use one pinned candidate pair. No complete row is claimed.
 Formal Release remains BLOCKED; macOS, unavailable real clients, final license
 classification and independent Release decision are not waived.
 

@@ -31,6 +31,12 @@ M9 Windows 3.12 is RUNNING from a separate clean frozen snapshot. Original handl
 56056 started at 2026-11-13 10:36:51 UTC; poll this handle, never restart because an
 observation expires. D:/agentsync-debug/m114/bootstrap-attempt.json records its
 collector PID and command; terminal outcome belongs in bootstrap-result.json.
+The complete source suite finished at 2026-11-13 11:19:51 UTC: 2427 unique cases,
+2371 passed, 56 skipped, no failures/errors. Root read the actual JUnit and process
+result. Ruff, format, mypy, build and pip checks pass. The fresh wheel origin,
+dependency and license-inventory checks also pass; wheel full-suite execution is
+now RUNNING and sdist full-suite execution remains NOT RUN. This is not a completed
+matrix row. Intermediate observation: D:/agentsync-debug/m114/source-observation.json.
 D:/agentsync-debug/m9-bootstrap.py runs the existing collector once; source, wheel and sdist
 each retain a full suite and 3600-second controller limit. D:/agentsync-debug/m114
 holds preparation evidence. All six Windows/Linux interpreter/dependency preflights
