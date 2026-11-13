@@ -1,0 +1,31 @@
+import hashlib
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+base=Path(__file__).resolve().parent
+prior=base.parent/'m7-durable-a112-sol'
+original=json.loads((prior/'source-members.json').read_text())['working_tree_source_sha256']
+final=json.loads((prior/'source-members-generation-strengthened.json').read_text())['working_tree_source_sha256']
+assert set(original)==set(final)
+changed=[n for n in original if original[n]!=final[n]]
+assert changed==['tests/integration/test_durable_mock_workflow.py'],changed
+mismatches=[n for n,h in final.items() if hashlib.sha256((base/'source'/n).read_bytes()).hexdigest()!=h]
+assert not mismatches,mismatches
+cases=list(ET.parse(prior/'junit.xml').getroot().iter('testcase'))
+assert len(cases)==331 and len({(c.get('classname'),c.get('name')) for c in cases})==331
+assert sum(c.find('skipped') is not None for c in cases)==6
+assert not any(c.find('failure') is not None or c.find('error') is not None for c in cases)
+for name,count in [('supplement.xml',3),('generation-strengthened.xml',1),('trace-junit.xml',246)]:
+    selected=list(ET.parse(prior/name).getroot().iter('testcase'))
+    assert len(selected)==count
+    assert not any(c.find(tag) is not None for c in selected for tag in ('failure','error','skipped'))
+record={'frozen_product_sha':'7fa459758e42c94e70bb0d4829d54a8b07db3a6d',
+        'final_manifest_members_match_frozen_package':len(final),
+        'files_changed_between_main_and_supplements':changed,
+        'main_source':{'passed':325,'skipped':6,'failed':0,'errors':0},
+        'supplements':'3 then 1 strengthened prior case IDs, not extra unique tests',
+        'separate_traceability_collector':{'passed':246},
+        'scope':'Windows source evidence only; not fresh package or Linux execution of the slow verifier modules'}
+(base/'source-prechecks-identity.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps(record))

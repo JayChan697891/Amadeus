@@ -1,0 +1,19 @@
+{
+  "origin": "/root/amadeus-durable-7fa4597/installed/lib/python3.14/site-packages/agentsync",
+  "version": "0.3.0a112",
+  "artifact": "agentsync_local-0.3.0a112.tar.gz",
+  "artifact_sha256": "bd05f7c3f1046a8954add8b4bec32c108393bce88eb057b7a3337fea57f70fd3",
+  "runtime_members_matched": 91,
+  "source_shadowing": false,
+  "direct_archive": {
+    "archive_info": {
+      "hash": "sha256=bd05f7c3f1046a8954add8b4bec32c108393bce88eb057b7a3337fea57f70fd3",
+      "hashes": {
+        "sha256": "bd05f7c3f1046a8954add8b4bec32c108393bce88eb057b7a3337fea57f70fd3"
+      }
+    },
+    "url": "file:///root/amadeus-durable-7fa4597/agentsync_local-0.3.0a112.tar.gz"
+  },
+  "verified_before_after": true,
+  "exit_code": 0
+}

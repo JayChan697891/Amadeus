@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-## 0.3.0a112 durable Mock execution: source regression passed
+## 0.3.0a112 durable Mock execution: installed checks passed
 
 Owner-only CLI/SDK start/resume/status/cancel now persists one simulation run in a
 dedicated Core project (schema16). The existing Mock planner/manager, decomposition,
@@ -21,12 +21,27 @@ not_run formal status. Whole-repository Ruff and342-file format checks pass; sou
 mypy90files passes. Review found and fixed truthful late cancellation outcomes,
 owned-process cleanup, project-scoped guards and audit completeness. Product bytes
 remained fixed through the final supplements; original manifests/logs are retained.
-Evidence is currently local: D:/agentsync-debug/m7-durable-a112-sol. Source process
-13004 is terminal0; do not restart. Frozen package/Linux checks are NOT RUN yet.
-Next freeze and validate the affected CLI/recovery/permission/migration paths on
-fresh Windows wheel/Linux sdist, plus the existing actual Linux Docker delivery
-smoke. Do not repeat unchanged slow verifier modules merely to inflate counts.
-Real-client recovery, billing, macOS and formal Release remain unverified/blocked.
+Frozen 7fa459758e42c94e70bb0d4829d54a8b07db3a6d (0.3.0a112) now passes the
+25-selector affected installed regression: Windows wheel 630 passed / 1 skip and Linux sdist 631 passed / 0 skips.
+The same 631 unique parameterized IDs are collected, with no failures/errors.
+All 1001 packaged Git inputs and 91 runtime members match. Installed origin/archive,
+before-after source/runtime, dependency and console checks pass. Linux also runs
+the existing actual Docker verification, independent task completion and exact
+owner SDK/CLI private-ref delivery; reopen matches, source is unchanged and the
+dedicated daemon has no containers left. These are local checks with zero models.
+
+Unchanged slow verifier modules reuse the source evidence above, not a new Linux
+package run. This is not a full-suite rerun, real-client recovery or actual billing.
+Evidence: acceptance/evidence/m7-durable-workflow/summary.json.
+Independent Astra technical review accepted this limited scope; external Work
+approval and formal Release are not claimed.
+Original process handles24863/57158 are terminal; do not restart. Debug roots:
+D:/agentsync-debug/m7-durable-7fa4597 and guest:/root/amadeus-durable-7fa4597.
+
+Next product work: M8-01 explicitly reconcile existing controlled-attempt receipts
+into owner project usage queries. Preserve reported/unknown metrics, idempotency,
+historical imports and existing authority; do not create a second dispatcher,
+infer bills, launch clients or reopen M5. This next implementation is in progress; its validation is NOT RUN.
 
 ## 0.3.0a111 restricted cross-client review: installed checks passed
 

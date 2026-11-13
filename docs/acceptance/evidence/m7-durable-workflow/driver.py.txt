@@ -1,0 +1,83 @@
+"""Affected installed package checks for durable Mock recovery and Core schema16."""
+from collections import Counter
+from datetime import UTC,datetime
+import hashlib,importlib.metadata,importlib.util,json,os,sys
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+BASE=Path(__file__).resolve().parent
+SOURCE=BASE/'source'
+SELECTORS=('tests/integration/test_durable_mock_workflow.py', 'tests/integration/test_mock_workflow.py', 'tests/unit/test_mock_run_manager.py', 'tests/unit/test_retry_planning.py', 'tests/recovery/test_process_recovery.py', 'tests/unit/test_core.py', 'tests/unit/test_core_startup_diagnostic.py', 'tests/security/test_m5_permissions.py', 'tests/security/test_m5_owner_cli_inputs.py', 'tests/integration/test_m5_transports.py', 'tests/integration/test_transports.py', 'tests/integration/test_candidate_claim_migration.py', 'tests/integration/test_candidate_intent_migration.py', 'tests/integration/test_m3_migration.py', 'tests/integration/test_m4_migration.py', 'tests/integration/test_m4b_migration.py', 'tests/integration/test_m5_migration.py', 'tests/unit/test_candidate_queue_migration.py', 'tests/integration/test_verified_task_completion.py', 'tests/integration/test_candidate_execution.py::test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed', 'tests/unit/test_verification_executor.py::test_schema_seven_historical_rows_and_fk_survive_transactional_rebuild', 'tests/unit/test_verification_jobs.py::test_schema_six_upgrade_preserves_all_existing_rows_and_failure_rolls_back', 'tests/unit/test_verification_reconciliation.py::test_migration9_preserves_schema8_rows_and_rolls_back', 'tests/unit/test_acceptance_traceability.py', 'tests/unit/test_release_acceptance.py')
+def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def fingerprint():return {p.relative_to(SOURCE).as_posix():sha(p) for p in SOURCE.rglob('*') if p.is_file()}
+def identity():
+    import agentsync
+    config=json.loads((BASE/'identity.json').read_text())
+    environment=BASE/'installed'
+    assert Path(sys.prefix).resolve()==environment.resolve()
+    site=Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(environment)
+    distribution=importlib.metadata.distribution('agentsync-local')
+    assert distribution.version==agentsync.__version__=='0.3.0a112'
+    direct=json.loads(distribution.read_text('direct_url.json'))
+    artifact=next(n for n in config['artifacts'] if n.endswith('.whl' if sys.platform=='win32' else '.tar.gz'))
+    assert direct['url']==(BASE/artifact).as_uri()
+    assert direct['archive_info']['hashes']['sha256']==config['artifacts'][artifact]
+    for name,digest in config['runtime_members'].items():assert sha(site/name)==digest,name
+    for name,module in tuple(sys.modules.items()):
+        if name=='agentsync' or name.startswith('agentsync.'):
+            assert Path(module.__file__).resolve().is_relative_to(site/'agentsync'),name
+    return {'origin':str(site/'agentsync'),'version':distribution.version,'artifact':artifact,
+            'artifact_sha256':config['artifacts'][artifact],'runtime_members_matched':len(config['runtime_members']),
+            'source_shadowing':False,'direct_archive':direct}
+def main():
+    if sys.argv[1:]==['child']:
+        import pytest
+        before=identity()
+        code=pytest.main([*(str(SOURCE/n) for n in SELECTORS),'-q','-p','no:cacheprovider',
+                         '--basetemp='+str(BASE/'test-tmp'),'--junitxml='+str(BASE/'junit.raw.xml')])
+        assert identity()==before
+        (BASE/'origin.json').write_text(json.dumps(before|{'verified_before_after':True,'exit_code':code},indent=2))
+        return code
+    assert not sys.argv[1:] and not (BASE/'result.json').exists()
+    config=json.loads((BASE/'identity.json').read_text())
+    for name,digest in config['artifacts'].items():assert sha(BASE/name)==digest
+    before=fingerprint()
+    for name,digest in config['sdist_source_members'].items():assert before[name]==digest,name
+    identity()
+    for name in tuple(os.environ):
+        upper=name.upper()
+        if upper.startswith(('PYTEST_','AGENTSYNC_','GIT_','OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AZURE_OPENAI_','GEMINI_','GOOGLE_','DEEPSEEK_')) or upper in {'PYTHONPATH','PYTHONHOME','CODEX_HOME','CODEX_API_KEY','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY'}:
+            os.environ.pop(name,None)
+    for name in ('home','tmp','logs','observations'):(BASE/name).mkdir(exist_ok=True)
+    os.environ.update(HOME=str(BASE/'home'),USERPROFILE=str(BASE/'home'),CODEX_HOME=str(BASE/'home'),
+                      TEMP=str(BASE/'tmp'),TMP=str(BASE/'tmp'),TMPDIR=str(BASE/'tmp'),
+                      PYTHONDONTWRITEBYTECODE='1',GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,
+                      PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull)
+    if sys.platform!='win32':
+        os.environ.update(AGENTSYNC_DOCKER_TEST_IMAGE='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258',
+                          AGENTSYNC_REQUIRE_DOCKER_TESTS='1',AGENTSYNC_TASK_COMPLETION_EVIDENCE_DIR=str(BASE/'observations'))
+    spec=importlib.util.spec_from_file_location('collector',SOURCE/'tools/release_acceptance.py')
+    collector=importlib.util.module_from_spec(spec);spec.loader.exec_module(collector)
+    report={k:config[k] for k in ('product_sha','test_source_sha','scope')}
+    report.update(platform=sys.platform,python=sys.version,started_at=datetime.now(UTC).isoformat(),
+                  status='running',model_calls=0,github_actions_used=False,formal_release='BLOCKED')
+    (BASE/'result.json').write_text(json.dumps(report,indent=2))
+    result=collector.execute('durable_workflow_pytest',[sys.executable,'-I','-B',str(Path(__file__).resolve()),'child'],SOURCE,BASE,BASE/'tmp')
+    report.update(check=result,source_unchanged=before==fingerprint(),installed_identity=identity(),selectors=list(SELECTORS))
+    if (BASE/'junit.raw.xml').exists():
+        report['junit_redactions']=collector.persist_junit(BASE/'junit.raw.xml',BASE/'junit.xml')
+        report['junit']=collector.junit_counts(BASE/'junit.xml')
+        entries=list(ET.parse(BASE/'junit.xml').getroot().iter('testcase'))
+        report['skip_reasons']=dict(Counter(n.get('message','') for c in entries for n in c.findall('skipped')))
+        report['failed_cases']=[{'class':c.get('classname'),'name':c.get('name'),'message':n.get('message','')}
+                                for c in entries for tag in ('failure','error') for n in c.findall(tag)]
+    installed=report['installed_identity'];artifact=BASE/installed['artifact']
+    report['console_check']=collector._installed_console_smoke('wheel' if sys.platform=='win32' else 'sdist',sys.executable,BASE,BASE/'tmp',
+        {'path':artifact.name,'sha256':installed['artifact_sha256'],'size':artifact.stat().st_size})
+    report['status']='pass' if result['exit_code']==0 and report['source_unchanged'] and (BASE/'origin.json').exists() and report['console_check']['status']=='pass' else 'fail'
+    report['finished_at']=datetime.now(UTC).isoformat()
+    (BASE/'result.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(json.dumps({'status':report['status'],'junit':report.get('junit')}))
+    return 0 if report['status']=='pass' else 1
+if __name__=='__main__':raise SystemExit(main())

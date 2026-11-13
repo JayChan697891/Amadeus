@@ -1,0 +1,114 @@
+{
+  "product_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+  "test_source_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+  "scope": "Durable owner-only Mock workflow and schema16 affected installed regression; not full Release acceptance",
+  "platform": "win32",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "started_at": "2026-11-13T09:07:57.476830+00:00",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "durable_workflow_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m7-durable-7fa4597\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-durable-7fa4597\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-durable-7fa4597\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T09:07:57.476830+00:00",
+    "finished_at": "2026-11-13T09:14:29.225622+00:00",
+    "log": "logs/durable_workflow_pytest.log",
+    "log_sha256": "bbf7bd0ced0a862b6f17a285ce2965f0783d4686fd0be503b5b10c81feef0efc",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "source_unchanged": true,
+  "installed_identity": {
+    "origin": "D:\\agentsync-debug\\m7-durable-7fa4597\\installed\\Lib\\site-packages\\agentsync",
+    "version": "0.3.0a112",
+    "artifact": "agentsync_local-0.3.0a112-py3-none-any.whl",
+    "artifact_sha256": "be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3",
+    "runtime_members_matched": 91,
+    "source_shadowing": false,
+    "direct_archive": {
+      "archive_info": {
+        "hash": "sha256=be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3",
+        "hashes": {
+          "sha256": "be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3"
+        }
+      },
+      "url": "file:///D:/agentsync-debug/m7-durable-7fa4597/agentsync_local-0.3.0a112-py3-none-any.whl"
+    }
+  },
+  "selectors": [
+    "tests/integration/test_durable_mock_workflow.py",
+    "tests/integration/test_mock_workflow.py",
+    "tests/unit/test_mock_run_manager.py",
+    "tests/unit/test_retry_planning.py",
+    "tests/recovery/test_process_recovery.py",
+    "tests/unit/test_core.py",
+    "tests/unit/test_core_startup_diagnostic.py",
+    "tests/security/test_m5_permissions.py",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/integration/test_transports.py",
+    "tests/integration/test_candidate_claim_migration.py",
+    "tests/integration/test_candidate_intent_migration.py",
+    "tests/integration/test_m3_migration.py",
+    "tests/integration/test_m4_migration.py",
+    "tests/integration/test_m4b_migration.py",
+    "tests/integration/test_m5_migration.py",
+    "tests/unit/test_candidate_queue_migration.py",
+    "tests/integration/test_verified_task_completion.py",
+    "tests/integration/test_candidate_execution.py::test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed",
+    "tests/unit/test_verification_executor.py::test_schema_seven_historical_rows_and_fk_survive_transactional_rebuild",
+    "tests/unit/test_verification_jobs.py::test_schema_six_upgrade_preserves_all_existing_rows_and_failure_rolls_back",
+    "tests/unit/test_verification_reconciliation.py::test_migration9_preserves_schema8_rows_and_rolls_back",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 631,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 1
+  },
+  "failed_cases": [],
+  "console_check": {
+    "id": "wheel_console_smoke",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m7-durable-7fa4597\\installed\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\m7-durable-7fa4597\\tmp\\wheel-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-durable-7fa4597\\tmp\\wheel-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-13T09:14:29.391790+00:00",
+    "finished_at": "2026-11-13T09:14:30.060646+00:00",
+    "log": "logs/wheel_console_smoke.log",
+    "log_sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "agentsync_local-0.3.0a112-py3-none-any.whl",
+      "sha256": "be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3",
+      "size": 284825
+    }
+  },
+  "finished_at": "2026-11-13T09:14:30.061646+00:00"
+}

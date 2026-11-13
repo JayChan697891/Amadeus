@@ -1,5 +1,33 @@
 # Release Acceptance Report
 
+## Durable owner-only Mock workflow: affected installed checks passed
+
+Frozen 7fa459758e42c94e70bb0d4829d54a8b07db3a6d (0.3.0a112) now passes the
+25-selector affected installed regression: Windows wheel 630 passed / 1 skip and Linux sdist 631 passed / 0 skips.
+The same 631 unique parameterized IDs are collected, with no failures/errors.
+All 1001 packaged Git inputs and 91 runtime members match. Installed origin/archive,
+before-after source/runtime, dependency and console checks pass. Linux also runs
+the existing actual Docker verification, independent task completion and exact
+owner SDK/CLI private-ref delivery; reopen matches, source is unchanged and the
+dedicated daemon has no containers left. These are local checks with zero models.
+
+Source325pass/6Linux Docker skips and the strengthened3-case/1-case supplements
+are retained with exact frozen-file hashes; supplements are prior IDs, not new
+unique cases. The separate246traceability/collector checks pass. Unchanged slow
+verifier modules reuse this Windows source evidence, not a new Linux package run.
+Source Ruff/format342files and mypy90modules pass. This is not a full-suite rerun,
+real-client recovery, actual billing or formal Release acceptance.
+Evidence: evidence/m7-durable-workflow/summary.json.
+Independent Astra technical review accepted this limited scope; external Work
+approval and formal Release are not claimed.
+Original process handles24863/57158 are terminal; do not restart. Debug roots:
+D:/agentsync-debug/m7-durable-7fa4597 and guest:/root/amadeus-durable-7fa4597.
+
+Next product work: M8-01 explicitly reconcile existing controlled-attempt receipts
+into owner project usage queries. Preserve reported/unknown metrics, idempotency,
+historical imports and existing authority; do not create a second dispatcher,
+infer bills, launch clients or reopen M5. This next implementation is in progress; its validation is NOT RUN.
+
 ## Restricted cross-client dependent review: installed affected checks passed
 
 Frozen10143077d512583a1e0efb9e5355dd54f2a2ce57 (0.3.0a111) passes the twelve-file

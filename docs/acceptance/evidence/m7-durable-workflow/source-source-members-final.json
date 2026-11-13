@@ -1,0 +1,30 @@
+{
+  "base": "2cee79c4184b75d30996b063c9432560eab30c27",
+  "working_tree_source_sha256": {
+    "src/agentsync/__init__.py": "91c7d98791baf1e24072385a2a72025391684ecc708e3f6fff31b8af3c477b13",
+    "src/agentsync/cli.py": "a560458e6bd5326175cae760668f879fc72d5bc20e1987d7c1b1c9b9d198be9b",
+    "src/agentsync/core/permissions.py": "4c4f555d5656870d7f9648af6b289c971f2584788f84dd579369231f5ae96e64",
+    "src/agentsync/core/service.py": "ebf36798f427ed613db0a877ca2fb69b052da9db1f0d215768e2cefdf486a9e5",
+    "src/agentsync/mock_workflow_cli.py": "d92780116b1901cd5f5357a4d4b1382f496f532bb1c5efacbbccea5406b1bdfa",
+    "src/agentsync/sdk/__init__.py": "90f3f2cfc5587bc4ba8ce19948c88d8bbd9dc0f97efdd8bf00c89a25370165d6",
+    "src/agentsync/storage/database.py": "5171c92efd074f0f639dd1b95a867bf5a6248b850fbbecf0c23c1692def26962",
+    "tests/conftest.py": "1a974db60ab904e10456203464d64ecfa51688954062a1b3bd2885e73aa4ff78",
+    "tests/integration/test_candidate_claim_migration.py": "ab719fa410ad566bb1a3106062683855a710b36a0e40f8ed81a393a63edad9a2",
+    "tests/integration/test_candidate_execution.py": "3ee67b0f2630ca102de0b5215d0b69ce916d9500255a9e7aadc367661982fae9",
+    "tests/integration/test_candidate_intent_migration.py": "c9116b125a239748ad215a70f91a6ce511a0fba4aeae7a519614b1da72610cff",
+    "tests/integration/test_m3_migration.py": "000919cdec551f2d4cd3ac172233778ff0a5d3a0cb9a8b97f74c142169505cfc",
+    "tests/integration/test_m4_migration.py": "a4af11ebbe3ee7f4283163934752e6c41080743705e7cd33df1598048f0ffb5d",
+    "tests/integration/test_m4b_migration.py": "483dc382c6dbc7b0fd1c3f267d1f464c3d945337549ccc8cd9349ab352e775b9",
+    "tests/integration/test_m5_migration.py": "f17a0e793e852d1205bc10e77030852d26fc830e9098cef3e67e28e36426e4f0",
+    "tests/integration/test_verified_task_completion.py": "130d4e3468016b171e142cbd88445ae3440857b477cf848492986cedb322dc8a",
+    "tests/unit/test_candidate_queue_migration.py": "b841c2f28e4a48788eb2ccb02b0bbb6dbce5682d12ef81d2e83dd29a84542ea0",
+    "tests/unit/test_core.py": "5dc8628b9a00f4b62ea34c546b54828bf05b6947bc998cc221dd4ea1c575d9ae",
+    "tests/unit/test_core_startup_diagnostic.py": "97b980807685768da867b6f293fe9b888cdeadcf020d217505c3611c10a9dd53",
+    "tests/unit/test_verification_executor.py": "82096d9f50a639576d5edb9df87b029d47d73e2ec0144172c861d67ac4541eb5",
+    "tests/unit/test_verification_jobs.py": "9249bf3e4f8abb455c13c47810519689b8569d700cfb69a28c963f455c022d21",
+    "tests/unit/test_verification_reconciliation.py": "85a796af48baef10c4d9c0f36196cbbf930e64cfd808635b16a52ada3ade0634",
+    "src/agentsync/durable_mock_workflow.py": "7f385987732687878f0f2212030295eaba91c81b7f8d6e015a31aeea49417277",
+    "tests/integration/test_durable_mock_workflow.py": "4eaa6930bd3e0cbcf59c00fcddac00089938e116003aabdf7cc2565f96de230a",
+    "pyproject.toml": "3b19d99a1e1562742a1b549c41d45c49033327ec0e4cc8df64464aa648492f5c"
+  }
+}

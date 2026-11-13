@@ -1,0 +1,19 @@
+{
+  "origin": "D:\\agentsync-debug\\m7-durable-7fa4597\\installed\\Lib\\site-packages\\agentsync",
+  "version": "0.3.0a112",
+  "artifact": "agentsync_local-0.3.0a112-py3-none-any.whl",
+  "artifact_sha256": "be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3",
+  "runtime_members_matched": 91,
+  "source_shadowing": false,
+  "direct_archive": {
+    "archive_info": {
+      "hash": "sha256=be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3",
+      "hashes": {
+        "sha256": "be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3"
+      }
+    },
+    "url": "file:///D:/agentsync-debug/m7-durable-7fa4597/agentsync_local-0.3.0a112-py3-none-any.whl"
+  },
+  "verified_before_after": true,
+  "exit_code": 0
+}

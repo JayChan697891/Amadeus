@@ -1,0 +1,21 @@
+{
+  "command": [
+    "D:/agentsync-debug/venv/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "pytest_asyncio.plugin",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=D:/agentsync-debug/m7-durable-a112-sol/generation-strengthened-temp",
+    "--junitxml=D:/agentsync-debug/m7-durable-a112-sol/generation-strengthened.xml",
+    "tests/integration/test_durable_mock_workflow.py::test_resume_rotates_only_run_members_and_rejects_revoked_authority"
+  ],
+  "start": "2026-11-13T09:06:12.9389268Z",
+  "finished": "2026-11-13T09:06:13.8132774Z",
+  "exit_code": 0,
+  "source": "working tree; source-members-generation-strengthened.json"
+}

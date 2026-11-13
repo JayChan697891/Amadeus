@@ -1,12 +1,15 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
-The a112 owner-only persistent Mock execution path now implements original M7-04/
-M8-02 restartable retries and budget reservations, exact driver generations,
-cancellation, task handoff and independent review through Core schema16. Windows
-source325pass/6Docker skips, targeted supplements and246traceability/collector
-checks pass. Freeze and validate fresh installations next; this is not full M7/M8,
-real-model billing, real-client recovery or Release acceptance. Keep M5's original
-five requirements frozen and reuse existing evidence where inputs are unchanged.
+Product 7fa4597 (0.3.0a112) implements original M7-04/M8-02 durable owner-only
+Mock retries, budget reservations, driver generations, cancellation, handoff and
+independent review in Core schema16. Windows wheel 630 passed / 1 skip and Linux sdist 631 passed / 0 skips;
+631 matching case IDs and actual Linux Docker delivery pass. Preserve source
+325pass/6skip evidence and supplements for unchanged slow verifier modules.
+Evidence: acceptance/evidence/m7-durable-workflow/summary.json.
+Independent Astra technical review accepted this limited scope; external Work
+approval and formal Release are not claimed. This limited scope
+does not prove real-client recovery/billing or formal Release. Next close M8-01's
+receipt-to-project-usage integration; keep M5 frozen at its original five items.
 
 Product1014307 (0.3.0a111) adds strict dependent review using prepared Codex/Claude/
 Cursor profiles, pinned verified source and review.md-only unverified output.
@@ -14,8 +17,8 @@ Legacy Codex handoff remains compatible. Windows wheel360pass/11Docker skips and
 Linux sdist371pass/0skips cover the same371case IDs. Actual Linux Docker3/3 then an
 owned Cursor protocol emitter and reopen pass; real Claude/Cursor remain NOT RUN.
 Evidence: acceptance/evidence/m7-dependent-review/summary.json. Independent technical
-review accepted this limited scope. Next implement the original M7-04/M8-02 durable Mock execution path,
-including persisted retry/budget/generation/cancel/handoff, with actual CLI/SDK entry.
+review accepted this limited scope. The original M7-04/M8-02 durable Mock execution path is implemented
+and separately checked at7fa4597 above.
 Unknown dispatch cannot be retried, budgets do not replace authority, and estimated
 costs must not be represented as real bills. Keep existing temporary Mock mode.
 
