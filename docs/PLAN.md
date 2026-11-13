@@ -1,10 +1,20 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Latest product milestone: installed host coordinator atb455d9b automatically derives
+source pins, waits for independent completion and prepares/dispatches one dependent
+receiver through existing Core/queue APIs. Same-session preparation is recoverable;
+uncertain dispatch is never retried.15source and101fresh-wheel checks on each local
+Windows/Linux platform pass. No new Core/queue protocol, M5 stage or acceptance
+policy was added. Evidence: acceptance/evidence/m7-host-handoff/summary.json.
+Next validate this coordinator with an actual authorized client, retaining current
+launch/fee/source/independent-review gates. That real run has NOT started; local
+protocol fixtures and historical two-run evidence do not satisfy full M7/Release.
+
 Checkpoint8a4ba72: deterministic invalid pinned proposal input is now rejected
 before wave admission. Post-admission revalidation/failure fences remain intact.
 23source tests and86fresh-wheel tests on each local Windows/Linux platform pass.
-Evidence: acceptance/evidence/m7-pinned-admission/summary.json. Current work is
-paused at the owner's request after this checkpoint. On explicit resume, compose
+Evidence: acceptance/evidence/m7-pinned-admission/summary.json. The owner resumed
+work after the requested pause. The current next task is to compose
 existing public APIs for host-side automatic pin derivation/next-task preparation;
 retain independent completion, exact launch consent and inert output gates. No
 new queue API or model attempt has started for that next item.

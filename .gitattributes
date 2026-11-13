@@ -53,3 +53,8 @@ docs/acceptance/evidence/m7-heartbeat-regression/** -text whitespace=blank-at-eo
 docs/acceptance/evidence/m7-model-review-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 
 docs/acceptance/evidence/m7-pinned-admission/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+docs/acceptance/evidence/m7-host-handoff/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve pytest's original traceback spacing in the failed assertion evidence.
+docs/acceptance/evidence/m7-host-handoff/source-budget-first.log -whitespace
+docs/acceptance/evidence/m7-host-handoff/source-budget-first.xml -whitespace

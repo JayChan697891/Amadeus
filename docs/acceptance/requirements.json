@@ -1192,7 +1192,9 @@
         "tests/unit/test_scheduling.py::test_cycles_duplicate_ids_and_oversized_snapshots_are_invalid",
         "tests/integration/test_scheduling_core_boundary.py::test_planning_uses_core_dependencies_and_priority_without_changing_tasks",
         "tests/integration/test_scheduling_core_boundary.py::test_core_rejects_stale_recommendation_after_another_worker_claims",
-        "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is"
+        "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is",
+        "tests/integration/test_proposal_handoff.py::test_concurrent_and_repeated_triggers_launch_only_once",
+        "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent"
       ],
       "planned_cases": [
         {
@@ -1229,7 +1231,9 @@
         "tests/integration/test_dispatch_planning_core_boundary.py::test_expired_lease_keeps_slot_until_explicit_core_reclamation",
         "tests/integration/test_dispatch_planning_core_boundary.py::test_offline_handoff_recipient_is_not_replaced_by_another_available_worker",
         "tests/unit/test_dispatch_planning.py::test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker",
-        "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role"
+        "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
+        "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
+        "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry"
       ],
       "planned_cases": [
         {

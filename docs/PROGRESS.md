@@ -1,6 +1,50 @@
 # Amadeus current progress
 
-## Paused at the owner's request after the current repair
+## Automatic handoff coordinator: implemented and locally checked
+
+Frozenb455d9b adds installed host-only ProposalHandoff. It derives an exact source
+pin from a returned producer outcome (or its still-valid original observer),
+saves the reference, waits for current independent Core completion, creates one
+dependent task/worktree and dispatches through the existing queue/launch authority.
+Receiver heartbeats maintain bounded waiting; existing source proofs are checked
+again before launch. No producer/receiver acceptance, staging, candidate execution,
+source apply or account setup is performed by the coordinator.
+
+Same-session fixed Core requests recover interrupted preparation. Append-only
+receipts bind the original receiver session and input; only the invocation that
+exclusively writes dispatch intent may launch. Reentry observes/reconciles the
+existing wave. Intent with no observable wave stays unknown and is not retried.
+Expired producers work with saved references; absent references do not authorize
+impersonation. Callback executable/environment remain trusted host policy and
+actual exact-plan consent, not a claim of complete configuration freezing.
+
+Source15passed; fresh Windows3.12.16/Linux3.14.7 wheels each101passed, zero failures,
+errors or skips.89runtime members/88Python modules match before/after, pip checks
+pass and no source shadowing. Ruff/format2files and mypy88pass. Independent source
+and package-content checks accepted the limited scope; final package evidence is
+in [summary](acceptance/evidence/m7-host-handoff/summary.json). The original extended
+source run14pass/1budget-assertion failure is retained. The test now precisely
+accepts either async TimeoutError or synchronous relay_execution_limit, while
+still requiring no downstream task or launch. No product limit was relaxed.
+
+Artifacts: releases/0.3.0a109/m7-handoff-b455d9b. Debug:
+D:/agentsync-debug/m7-package-handoff; installed Linux:
+/root/amadeus-host-handoff-b455d9b. Owned debug VM4680 is running for continuation;
+all reported test processes are terminal. No new model call occurred. The active
+goal is resumed, not paused. Next prepare one bounded real coordinator run using
+existing Core/receipt evidence and a new isolated receiver, preserving exact
+launch/fee/auth cleanup gates. No live helper or model attempt for that step has
+started. Prior real6017005->2ac4557 results retain their exact versions. New full
+matrix/sdist installation and full M5/M6/M7/Release remain unverified/BLOCKED.
+
+## Resumed: automatic host-side proposal handoff
+
+The owner resumed the active goal after the pause below. Current implementation
+work composes existing Core and relay APIs for automatic source-pin derivation,
+independent-completion waiting and one dependent receiver task. No new model
+attempt has started; existing consumed controllers remain consumed.
+
+## Completed checkpoint before the requested pause
 
 Frozen8a4ba72 repairs a real queue admission ordering bug. Wrong pinned hashes,
 missing submitted proof or oversized source input used to be discovered only
@@ -19,8 +63,8 @@ Artifacts: releases/0.3.0a109/m7-admission-8a4ba72. No model was called for this
 Actual model review remains bound to6017005->2ac4557; it is not upgraded to8a4ba72.
 New full-matrix/sdist-install checks remain NOT RUN; formal Release stays BLOCKED.
 
-The owner requested stopping after this current goal. Do not start the next task
-without a resume instruction. All local checks ended; dedicated Docker has zero
+The owner previously requested stopping after this checkpoint and has now resumed.
+At that pause all local checks ended; dedicated Docker has zero
 containers and owned VM16924 was stopped. Source/evidence remain in F:/syuc;
 debug resume entry is D:/agentsync-debug/m7-package-pinned-admission.
 When resumed, use existing public Core/relay APIs for a bounded host coordinator

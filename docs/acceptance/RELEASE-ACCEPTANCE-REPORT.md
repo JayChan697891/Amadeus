@@ -1,5 +1,25 @@
 # Release Acceptance Report
 
+## Host handoff coordinator: limited implementation acceptance
+
+Frozenb455d9b connects source-outcome pin derivation, bounded independent-completion
+waiting, idempotent dependent task/worktree preparation and one exact-authorized
+queue dispatch. Reentry observes/reconciles an existing intent; it never restarts
+an uncertain run. Source expiry with a saved pin, same-Agent session replacement,
+concurrent triggers, preparation interruption, authority denial, active protocol
+fixture cancellation, missing source proof and budget exhaustion have local checks.
+The coordinator does not accept tasks, execute candidates or apply source changes.
+
+Final source15passed; new Windows/Linux installed wheels each101passed, no failures,
+errors or skips.89runtime members/88Python modules match, dependencies/static checks
+pass. The original14pass/1over-narrow budget-assertion failure is preserved with its
+precise test correction. [Evidence](evidence/m7-host-handoff/summary.json).
+
+No real model ran for this feature; actual coordinator acceptance is NOT RUN.
+Earlier6017005->2ac4557 real artifact-review evidence remains historical. New full
+matrix/sdist installation, unavailable Claude/Cursor and remaining lifecycle/relay
+requirements are not passed. Formal Release remains BLOCKED; the goal is active.
+
 ## Pinned-input queue admission repair: limited regression acceptance
 
 Frozen8a4ba72 rejects deterministic invalid pinned source before wave reservation.
