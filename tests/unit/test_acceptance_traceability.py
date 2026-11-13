@@ -264,6 +264,15 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
         "M7-02": {
             "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
             "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
+            "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph",
+            "tests/integration/test_unfinished_continuation.py::test_untrusted_or_uncertain_source_cannot_dispatch",
+            "tests/integration/test_unfinished_continuation.py::test_dispatch_intent_without_wave_remains_unknown",
+            "tests/integration/test_unfinished_continuation.py::test_exact_plan_and_approval_time_source_recheck",
+            "tests/integration/test_unfinished_continuation.py::test_concurrent_requests_consume_one_new_dispatch",
+            "tests/integration/test_unfinished_continuation.py::test_continuation_keeps_known_tool_event_rejection",
+            "tests/integration/test_unfinished_continuation.py::test_changed_graph_rejects_previously_approved_plan",
+            "tests/integration/test_unfinished_continuation.py::test_preparation_checkpoint_resumes_without_second_source_attempt",
+            "tests/integration/test_unfinished_continuation.py::test_old_failed_receipt_cannot_cancel_reclaimed_same_session",
             verified_flow,
         },
     }
