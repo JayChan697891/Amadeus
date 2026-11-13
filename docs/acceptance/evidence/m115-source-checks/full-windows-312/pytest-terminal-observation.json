@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-13T15:10:15.674580+00:00",
+  "pid": 228,
+  "creation_epoch_ms": 1794579976651,
+  "exit_code": 0,
+  "termination": "natural; observed through held original handle",
+  "candidate_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "collector_finalization": "NOT RUN: collector suspended for user-requested pause",
+  "wheel_tests": "NOT RUN",
+  "sdist_tests": "NOT RUN",
+  "formal_acceptance": false
+}

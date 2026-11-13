@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-13T15:10:15.674580+00:00",
+  "pid": 228,
+  "creation_epoch_ms": 1794579976651,
+  "exit_code": 0,
+  "termination": "natural; observed through held original handle",
+  "candidate_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "collector_finalization": "NOT RUN: collector suspended for user-requested pause",
+  "wheel_tests": "NOT RUN",
+  "sdist_tests": "NOT RUN",
+  "formal_acceptance": false,
+  "case_count": 2461,
+  "unique_case_count": 2461,
+  "passed": 2405,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 56,
+  "log_redactions": 0,
+  "junit_redactions": 6,
+  "files": {
+    "pytest-observed.log": "9737ae6be96fb5641e9ce1a055d86511b0fc018a51d9220e50fa1b712d9a43a9",
+    "pytest-observed.junit.xml": "83c240d5791dc5b1ac37f086ecd85e7906caf573c91b97ba5170e10363227862"
+  }
+}

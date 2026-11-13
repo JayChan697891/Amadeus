@@ -1,5 +1,15 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Current resumption: the safe pause has ended by explicit owner instruction.
+4a27a00's original full Windows 3.12 source process finished naturally with
+2405 pass / 56 skip / zero failures or errors. Its independent pause observation
+is preserved separately from the interrupted collector receipt. Remaining
+build/package checks now run in D:/agentsync-debug/m115-resume-20261113 (session
+49009); source is not repeated or falsely marked executed in this invocation.
+Package, platform and formal Release acceptance remain incomplete. See the newest
+PROGRESS entry and m115-source-checks/full-windows-312 evidence. The earlier
+RUNNING collector/controller references below are historical, not resume commands.
+
 Current debugging checkpoint: c56cbe2 / a115's first complete source run produced
 2404 pass, 56 skip and one strict traceability failure. Repair b471a6a enumerates
 the new continuation nodes explicitly without weakening the assertions; 253

@@ -1168,6 +1168,42 @@ def test_redaction_handles_json_repr_assignment_and_bearer_forms(text):
     assert "[REDACTED]" in clean and count > 0
 
 
+@pytest.mark.parametrize(
+    "text",
+    [
+        "test_case[session_token=fixture-secret]",
+        "test_case[admin_token='fixture-secret']",
+        '{"password": "fixture-secret"}',
+        "Authorization: Bearer fixture-secret",
+        "api_key=[REDACTED]fixture-secret",
+        "api_key='[REDACTED]fixture-secret'",
+    ],
+)
+def test_redaction_is_stable_when_evidence_is_processed_again(text):
+    clean, count = runner.redact_credentials(text)
+    assert "fixture-secret" not in clean and count > 0
+    assert runner.redact_credentials(clean) == (clean, 0)
+
+
+@pytest.mark.parametrize("suffix", ["", "]", ")", ", next", "\n", ";", "}"])
+def test_existing_redaction_marker_keeps_parameter_boundaries(suffix):
+    text = "session_token=[REDACTED]" + suffix
+    assert runner.redact_credentials(text) == (text, 0)
+
+
+def test_junit_reprocessing_preserves_parameterized_case_identity(tmp_path):
+    raw, first, second = (tmp_path / name for name in ("raw.xml", "first.xml", "second.xml"))
+    raw.write_text(
+        '<testsuites><testsuite><testcase classname="suite" '
+        'name="case[session_token=fixture-secret]"/></testsuite></testsuites>',
+        encoding="utf-8",
+    )
+    assert runner.persist_junit(raw, first) == 1
+    assert runner.persist_junit(first, second) == 0
+    assert second.read_bytes() == first.read_bytes()
+    assert runner.junit_counts(second) == runner.junit_counts(raw)
+
+
 def test_junit_redacts_traceback_and_attributes_without_losing_counts(tmp_path):
     raw = tmp_path / "scratch.xml"
     durable = tmp_path / "junit.xml"

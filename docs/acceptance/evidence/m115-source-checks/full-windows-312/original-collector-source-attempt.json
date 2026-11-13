@@ -1,0 +1,23 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "started",
+  "outcome": "unknown",
+  "check_id": "pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\t115s\\.scratch-srflbp1f\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t115s\\.scratch-srflbp1f\\pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r2\\s",
+    "started_at": "2026-11-13T14:26:16.644003+00:00",
+    "timeout_seconds": 3600
+  }
+}

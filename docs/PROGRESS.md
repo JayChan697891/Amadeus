@@ -1,5 +1,58 @@
 # Amadeus current progress
 
+## Resumed after safe pause: full source passed, packages running
+
+The owner resumed the original Goal on 2026-11-13. The repository was clean at
+a7f318d and all original collector/controller processes were terminal. The safe
+pause checkpoint remains in F:/syuc/checkpoints/amadeus-safe-pause-20261113T144420Z;
+it must not be interpreted as a completed M9 or Release.
+
+The exact 4a27a00 Windows 3.12 source pytest naturally exited 0 at
+2026-11-13 15:10:15 UTC: 2405 pass, 56 skip, zero failures/errors, 2461 unique
+case IDs. All IDs match the original failed source run; only its traceability
+failure changed to pass. All 1963 frozen snapshot files remained unchanged.
+The observer saved actual output/JUnit before the suspended collector was stopped.
+Its original canonical process receipt remains started/unknown; do not manufacture
+a finished collector receipt. Sanitized evidence and the observer are retained in
+acceptance/evidence/m115-source-checks/full-windows-312/summary.json.
+
+Remaining static/build/package checks started at 2026-11-13 23:45:39 UTC in
+D:/agentsync-debug/m115-resume-20261113, original session 49009. Source pytest is
+explicitly NOT RUN in this new invocation, with the earlier observation retained
+separately. Existing frozen collector functions run all other checks unchanged.
+Ruff, format, mypy, build, wheel installation/origin/CLI and dependency checks
+have terminal exit 0 receipts; the full wheel suite is RUNNING, not passed.
+sdist and later platform rows remain pending. Observe this original session and
+attempt/result files; never restart the terminated r2 bootstrap or controller.
+The strict combined-source evidence question remains separate from package
+execution; no matrix or Release gate has been relaxed to count this as complete.
+
+Independent Astra review identified a collector redaction defect: processing an
+already-redacted JUnit again appends a bracket to five parameterized identities.
+The original once-redacted source evidence is intact; the running frozen
+collector's derived source XML must not be used for a three-suite identity claim.
+The current workspace fixes marker handling without removing any credential
+rules, including secrets attached to the marker. All 267 affected release,
+traceability and evidence unit cases pass; targeted Ruff/format pass. Reprocessing
+the actual prior 2461-case source XML now changes zero bytes and zero identities.
+Independent read-only Astra review found no weakened filtering. Evidence:
+acceptance/evidence/m115-source-checks/redaction-stability/summary.json.
+These are tool-repair results, not full acceptance of this later workspace.
+
+Keep the ongoing 4a27a00 package run unchanged. After it ends, preserve its original
+report and derived XML. A separately identified package-only projection may retain
+source NOT RUN and exclude the derived source JUnit/component claims; actual
+package process evidence must remain byte-identical. The existing manifest permits
+an incomplete matrix for artifact binding, but this does not complete Windows 3.12
+or formal Release. Current tool changes do not inherit the frozen candidate's runs.
+
+The original 42-task implementation inventory stands. Continue the unrun package
+and platform validation, preserve known failures and scoped prior results, and
+keep real-client/macOS/final independent release gates explicit. No Actions,
+paid model calls, main changes or real workspace application were performed.
+
+## Earlier execution record (process status superseded above)
+
 ## a115 traceability repair passed; corrected candidate running
 
 Corrected frozen candidate 4a27a00a7ef5e055c99b0724374506a867ae62e8 / tree

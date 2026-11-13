@@ -10,9 +10,12 @@
 - Continue pinned unfinished code after a confirmed ended failure using a new
   task, transferred pending dependencies, independent worktree and fresh exact
   launch authority. Permanent dispatch intent is not a restart permission.
-- Complete the original-plan code inventory before beginning the outstanding
-  debugging pass. Newly authored regression suites have not yet run; no real
-  model execution or formal Release acceptance is claimed.
+- Complete the original-plan code inventory and begin the remaining debugging
+  pass. Frozen 4a27a00 Windows source records 2405 pass / 56 skip; package and
+  platform validation remain incomplete. No formal Release acceptance is claimed.
+- Preserve already-redacted evidence and parameterized JUnit identities when
+  processing it again; attached secret suffixes are still removed. The repair
+  has 267 affected unit passes and targeted lint/format checks, not a new full run.
 
 ## 0.3.0a114 - approved target integration
 
