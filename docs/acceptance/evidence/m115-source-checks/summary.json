@@ -1,0 +1,222 @@
+{
+  "product_sha": "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+  "version": "0.3.0a115",
+  "scope": "Windows Python 3.12 affected source checks; not installed or real-client acceptance",
+  "runs": [
+    {
+      "started": "2026-11-13T13:17:16.181100+00:00",
+      "source_sha": "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+      "status_before": "",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/integration/test_handoff_recovery.py",
+        "tests/integration/test_project_provider_usage.py",
+        "tests/integration/test_unfinished_continuation.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:/agentsync-debug/t115/new-01",
+        "--junitxml",
+        "D:\\agentsync-debug\\m115\\new-01\\junit.xml"
+      ],
+      "interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py\r\n0.3.0a115\r\n",
+      "exit_code": 1,
+      "ended": "2026-11-13T13:17:18.936893+00:00",
+      "source_unchanged": true,
+      "run": "new-01",
+      "counts": {
+        "failure": 0,
+        "error": 34,
+        "skipped": 0,
+        "total": 34,
+        "passed": 0
+      },
+      "note": "Harness parent directory missing; all 34 cases failed in fixture setup, no product test ran."
+    },
+    {
+      "started": "2026-11-13T13:17:31.690479+00:00",
+      "source_sha": "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+      "status_before": "",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/integration/test_handoff_recovery.py",
+        "tests/integration/test_project_provider_usage.py",
+        "tests/integration/test_unfinished_continuation.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:/agentsync-debug/t115/new-02",
+        "--junitxml",
+        "D:\\agentsync-debug\\m115\\new-02\\junit.xml"
+      ],
+      "interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py\r\n0.3.0a115\r\n",
+      "exit_code": 0,
+      "ended": "2026-11-13T13:18:22.904695+00:00",
+      "source_unchanged": true,
+      "run": "new-02",
+      "counts": {
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "total": 34,
+        "passed": 34
+      },
+      "note": "Offline owned fixtures; source unchanged."
+    },
+    {
+      "started": "2026-11-13T13:21:15.716618+00:00",
+      "source_sha": "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+      "status_before": "",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/unit/test_usage.py",
+        "tests/unit/test_usage_cli.py",
+        "tests/unit/test_usage_checkpoint_storage.py",
+        "tests/unit/test_provider_usage_and_budget.py",
+        "tests/unit/test_http_providers.py",
+        "tests/unit/test_relay_execution_budget.py",
+        "tests/integration/test_relay_usage.py",
+        "tests/integration/test_m3_transports.py",
+        "tests/integration/test_m3_migration.py",
+        "tests/integration/test_m5_governance.py",
+        "tests/integration/test_task_proposals.py",
+        "tests/integration/test_codex_proposal_relay_queue.py",
+        "tests/integration/test_relay_wave_journal.py",
+        "tests/integration/test_relay_owner_status.py",
+        "tests/integration/test_controlled_relay_pipeline.py",
+        "tests/integration/test_proposal_handoff.py",
+        "tests/integration/test_durable_mock_workflow.py",
+        "tests/integration/test_provider_loopback_transport.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:/agentsync-debug/t115/regression-01",
+        "--junitxml",
+        "D:\\agentsync-debug\\m115\\regression-01\\junit.xml"
+      ],
+      "interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py\r\n0.3.0a115\r\n",
+      "exit_code": 0,
+      "ended": "2026-11-13T13:24:13.055574+00:00",
+      "source_unchanged": true,
+      "run": "regression-01",
+      "counts": {
+        "failure": 0,
+        "error": 0,
+        "skipped": 0,
+        "total": 163,
+        "passed": 163
+      },
+      "note": "Offline owned fixtures; source unchanged."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "new-01/pytest.log",
+      "size": 68435,
+      "sha256": "738676efa0b17276da1b8db1fbdf95d5bd910a87e2c1dfe533cd5ab5a81d408c"
+    },
+    {
+      "path": "new-01/junit.xml",
+      "size": 71426,
+      "sha256": "d5cb1b48e146f926e1266d6f121d7f324723168d25a77e228da5c117e5a3236e"
+    },
+    {
+      "path": "new-02/pytest.log",
+      "size": 102,
+      "sha256": "5ad5f8a8a14461c51de2acc9cbcac95ca42d7bcb21ffa59fa72927787cdb4705"
+    },
+    {
+      "path": "new-02/junit.xml",
+      "size": 5501,
+      "sha256": "2eb8bc2c85defdf7ebe3b3e0da6310040ffcfe843e0aba7e79840e8d0a98ea97"
+    },
+    {
+      "path": "regression-01/pytest.log",
+      "size": 276,
+      "sha256": "88d5ca396eb8ad86069ba2cd2d1ffe504d5b65bddb00f254b9c4b589971e5597"
+    },
+    {
+      "path": "regression-01/junit.xml",
+      "size": 24980,
+      "sha256": "3664347797b48000a99b1cb35c1c5b90e35485d1f04ec21ad676ae02faf8ec49"
+    },
+    {
+      "path": "source-bindings.json",
+      "size": 59810,
+      "sha256": "007f5273f354c3e1e9bc632579b416f88d09ee713fe871970ba819d04fb737a7"
+    },
+    {
+      "path": "static/ruff-fix.log",
+      "size": 39,
+      "sha256": "4b9315462a6ef4a2fe64e4dc2aec1252bf2299ac92f4976c0e81c84799cff44a"
+    },
+    {
+      "path": "static/format.log",
+      "size": 48,
+      "sha256": "b348749d2f16538a473fe995f373230aa46c5926a7194999ee6c559651c62373"
+    },
+    {
+      "path": "static/ruff.log",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "static/format-check.log",
+      "size": 29,
+      "sha256": "887cf4080dec287c93aef6bdf5545f6315a9422b50bbed39ad255bd01aa6a0a8"
+    },
+    {
+      "path": "static/mypy.log",
+      "size": 1049,
+      "sha256": "bb5928b158313e3e2ac2c954ed09c143670a326a982405f646269fc8406a8f05"
+    },
+    {
+      "path": "static/mypy-fixed.log",
+      "size": 45,
+      "sha256": "e1933d29513c905ba6bf6828838a39f7d132a341e1fb63954bb71e0b3341fcff"
+    },
+    {
+      "path": "static/ruff-typefix.log",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "static/format-typefix.log",
+      "size": 27,
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
+    },
+    {
+      "path": "run-source.py.txt",
+      "size": 2861,
+      "sha256": "0eab0d48762fcc9b0a160df26c7a074d63446222ce941aaad642a59ba527dac8"
+    }
+  ],
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_candidate_matrix": "IN PROGRESS, not a pass",
+  "unique_passed_cases": 197,
+  "source_binding_counts": {
+    "exact": 222,
+    "lf_normalization_only": 6
+  },
+  "static": {
+    "ruff": "pass after one safe import fix",
+    "format": "pass, 353 files; two type-repaired files rechecked",
+    "mypy": "five original errors preserved; repaired result passes 95 source files"
+  }
+}

@@ -1,5 +1,12 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Current debugging checkpoint: c56cbe2 / a115 has 197 unique affected Windows
+source passes (34 new, 163 existing), with unchanged source and retained initial
+harness failure. The full Windows source/wheel/sdist collector and the matching
+Linux affected source run are active, not passed. See PROGRESS.md for their exact
+original handles and acceptance/evidence/m115-source-checks/summary.json for the
+completed evidence. Continue the original matrix and real-client release gates.
+
 Owner execution order updated on 2026-11-13: finish the original plan's remaining
 product code before starting further debugging. The original Windows 3.12 a114
 collector may finish naturally; retain its evidence. Do not start the prepared

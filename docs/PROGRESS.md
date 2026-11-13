@@ -1,5 +1,33 @@
 # Amadeus current progress
 
+## 0.3.0a115 affected source debugging passed; full candidate execution active
+
+Frozen product c56cbe2cd4c772b92992f3e4571da6d08eefc292 is uploaded on
+feat/m6-single-codex-pilot, PR #35 remains draft/open and main is untouched.
+After the original 42-task implementation pass, Windows Python 3.12 debugging
+completed 34 new recovery/continuation/provider-accounting tests and 163 existing
+affected regressions: 197 unique passes, no skips. Both runs preserve identical
+228-file source manifests. Git binding is 222 exact bytes plus six CRLF-to-LF-only
+matches. Evidence: acceptance/evidence/m115-source-checks/summary.json.
+The initial harness attempt failed all 34 cases in temporary-directory setup;
+its log and JUnit remain separate. It did not execute product test bodies.
+Original mypy failures and their repaired passing output are retained too.
+
+Full Windows 3.12 source, wheel and sdist validation is now running from the clean
+D:/agentsync-debug/m115-candidate/s snapshot, using only the offline wheelhouse.
+Original session 83040 started 2026-11-13 13:24:25 UTC; wrapper PID 2484 and collector
+PID 7480 are historical identifiers to revalidate, never authority to restart.
+Observe that session and bootstrap-attempt/result.json before any further launch.
+Prepared source staging in the existing local Linux VM matches the same commit
+and tree. Its affected source run is active in original session 49351; current
+evidence is under D:/agentsync-debug/m115/linux-01 when it completes. Neither
+active run is counted as passed. No new real-client call or GitHub Actions run.
+
+Next inspect these original processes/results, repair only actual failures and
+continue the frozen-package matrix with the same exact artifacts. Remaining
+macOS, real Claude/Cursor/cross-client and external acceptance gates stay explicit;
+source passes and protocol fixtures are not formal Release acceptance.
+
 ## 0.3.0a115 code-first pass complete; debugging next
 
 The owner now requires all remaining original-plan code before further debugging.
