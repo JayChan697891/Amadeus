@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\agentsync-debug\m9-sdist-repair-9fb36a1\driver.py", line 100, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ^^^^^^
+  File "D:\agentsync-debug\m9-sdist-repair-9fb36a1\driver.py", line 77, in main
+    report['collection_check']=collector.execute('sdist_collect',[sys.executable,'-I','-B',str(Path(__file__).resolve()),'collect'],SOURCE,BASE,BASE/'tmp',pytest_timeout=120)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\agentsync-debug\m9-sdist-repair-9fb36a1\source\tools\release_acceptance.py", line 395, in execute
+    raise ValueError("Custom pytest controller timeout is only valid for full-suite checks")
+ValueError: Custom pytest controller timeout is only valid for full-suite checks

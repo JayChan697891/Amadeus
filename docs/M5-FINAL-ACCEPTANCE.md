@@ -5,6 +5,38 @@
 SPECIFICATION.md 的 M5-01 至 M5-05。文档整理、重复证据、非关键增强不增加阶段。
 只允许为真实安全阻断缺陷增加必要修复；说明失败行为、复现与受影响门禁。
 
+## 当前结论：M5 固定开放范围技术验收通过（2026-11-13 UTC）
+
+冻结运行时09425da；完整基线c262a29与修复测试9fb36a1组成可追溯的最终证据。
+根负责人读取实际文件和结果，独立 Astra 复核接受 B6 及原五项要求的适用证据。
+这是技术结项，不声称外部 Work 已接受 PR，也不代表 M6–M9 或正式 Release 完成。
+本节取代下方历史基线中的“仍 BLOCKED”状态；唯一退出条件本身不变。
+
+| 原定任务 | 当前结论及证据边界 |
+| --- | --- |
+| M5-01 权限控制 | VERIFIED：Core 身份/角色/项目/撤权后重放及当前实际 Codex 精确授权、专用运行边界；仅覆盖既定开放路径 |
+| M5-02 风险审批 | VERIFIED：已开放 staging、隔离执行、独立完成和交接的精确审批与单次消费；原工作区 apply 未开放，B2/D1 对该能力仍 DEFERRED |
+| M5-03 审计日志 | VERIFIED：事务审计、失败回滚、受限输出、静态错误及真实 CLI 临时凭据清理；不宣称数据库管理员防篡改 |
+| M5-04 独立验证 | VERIFIED：实际 Docker/Core 完成证明与当前连续提案验证交接；普通文字 review 仍 unverified |
+| M5-05 安全回归 | VERIFIED：本节冻结输入的完整基线加受影响复测，安全、并发、迁移和恢复用例具适用结果；平台跳过明示 |
+
+当前开放范围：受信 host 显式授权的 Codex 只读提案、受管候选操作、Linux Docker
+独立验证、独立 Core 完成和受控交接。该范围无剩余 BLOCKER/REQUIRED；B1/B3
+由实际连续两 Codex 流程补齐，B4/B5 的关键产品文件未变且获得本轮适用回归，
+B6 已由独立综合审查满足。关闭的 apply 不被记作已实现，未来启用仍须满足 B2。
+无须新增 M5 子阶段或重复真实模型调用。
+
+Windows 综合2279通过/55跳过；Linux2328通过/6跳过。原 c262 全量各4失败仍保留，
+修复后两文件在 fresh sdist 安装各246通过，2334个唯一用例身份及不变输入逐项
+对应。不是9fb36a1全量重跑。79份证据、两份包、887个 Git 文件和90个运行时成员
+由独立审查复核；61个平台跳过均在另一平台通过，不扩称本平台支持。
+见 [最终本地综合证据](acceptance/evidence/m9-sdist-regression/summary.json) 与
+[真实连续流程](acceptance/evidence/m7-continuous-live/summary.json)。
+
+DEFERRED 保持：原工作区 apply；未覆盖的跨客户端及更广泛自动恢复/重试；未验证
+平台及账单/许可证/发布事项，分别回到 M4、M6–M9 原有计划。Claude/Cursor 无订阅
+和不支持的服务器取消不得扩成新的 M5 门槛。完整 Release 仍 BLOCKED。
+
 ## 0.3.0a109 本地证据补充
 
 最新限定证据：运行时6017005、测试/源码74e1527，在 Windows3.12.16 和
@@ -34,8 +66,8 @@ B1/B3 仍受真实运行和生命周期能力边界约束，Claude/Cursor 无订
 - M5-05 安全回归：已保存限定 Windows 和 Linux 的实际结果与失败复测。
   冻结完整适用矩阵及独立 Work 核验仍需满足 B6。
 
-最新 [Release Acceptance Report](acceptance/RELEASE-ACCEPTANCE-REPORT.md)
-记录各次执行范围和状态。M5 最终结论仍为 BLOCKED。
+[Release Acceptance Report](acceptance/RELEASE-ACCEPTANCE-REPORT.md) 保留各次范围。
+上面这一段是较早基线，当时 M5 为 BLOCKED；当前结论以本文件首节为准。
 
 ## 实际核查基线
 
@@ -64,7 +96,7 @@ b70cd1b9671de3910979b66f8c711b0f0f1f51af。42模块Git字节与实际测试/安�
   前2归档未提供全文件 manifest，记 NOT PROVIDED，不能声称全部清单齐备。
   历史结论只适用于各自 SHA，不能提升当前未提交源码的验收状态。
 
-## 五项实际状态
+## 五项历史基线状态（当前结论见首节）
 
 VERIFIED 仅指明确绑定冻结提交且具有充分证据的限定功能。
 BLOCKER 表示相关危险功能启用前必须解除；REQUIRED 表示 M5 退出必须满足；

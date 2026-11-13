@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_delta_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-sdist-repair-9fb36a1/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-repair-9fb36a1/driver-repaired.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-sdist-repair-9fb36a1/source",
+    "started_at": "2026-11-13T07:21:59.104992+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_delta_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-sdist-repair-9fb36a1/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-repair-9fb36a1/driver-repaired.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-sdist-repair-9fb36a1/source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:21:59.104992+00:00",
+    "finished_at": "2026-11-13T07:22:18.128533+00:00",
+    "log": "logs/sdist_delta_pytest.log",
+    "log_sha256": "b39c6c6ab91e7015fe48eff3a6a36014b96620e363108426f2601f1fa7f9f771",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "test_source_sha": "c262a29602fdaf3be3ee322dff997a3a1e2c629f",
+  "sdist_sha256": "6e78b871c978a179b4edb48d09b928c5088ed5f44584694b9d3c3f1a99397965",
+  "scope": "Full local regression from one newly built frozen sdist on Windows and Linux; no real model calls, no Actions",
+  "started_at": "2026-11-13T06:38:54.532652+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "platform": "linux",
+  "status": "fail",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "sdist_pytest",
+    "status": "fail",
+    "command": [
+      "/root/amadeus-sdist-c262a29/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-c262a29/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-sdist-c262a29/source",
+    "exit_code": 1,
+    "started_at": "2026-11-13T06:38:54.533817+00:00",
+    "finished_at": "2026-11-13T07:16:52.025534+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "31dccd01c20256850722ea245a4c4ff196b90daef836f9af49605e09bdebc660",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  },
+  "source_unchanged": true,
+  "source_files": 895,
+  "source_fingerprint_sha256": "0d0f90cbca60812b345da4afe80654ca6023e4082b29eb6239092b4a032aecde",
+  "changed_source_paths": [],
+  "installed_identity": {
+    "origin": "/root/amadeus-sdist-c262a29/venv/lib/python3.14/site-packages/agentsync",
+    "runtime_package_members_matched": 90,
+    "runtime_python_modules": 89,
+    "source_shadowing": false
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 2334,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 6
+  },
+  "skip_reasons": {
+    "Actual Linux backend belongs to the separately controlled Docker fixture": 1,
+    "Git for Windows path-length regression": 1,
+    "Windows conflict keys case-fold": 1,
+    "Windows junction-specific ancestor boundary": 1,
+    "Windows junction-specific boundary": 1,
+    "The opt-in MXC plan requires native Windows": 1
+  },
+  "failed_cases": [
+    {
+      "class": "tests.unit.test_acceptance_traceability",
+      "name": "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims",
+      "kind": "failure",
+      "message": "assert False\n +  where False = all(<generator object test_planning_foundations_remain_partial_without_real_relay_or_execution_claims.<locals>.<genexpr> at 0x7f35e5b21fc0>)"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 6\n +  where 9 = len([{'selector': 'tests/unit/test_scheduling.py::test_dependencies_require_completed_and_missing_is_never_completed', 'ob... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 6\n +  where 9 = len([{'selector': 'tests/unit/test_scheduling.py::test_dependencies_require_completed_and_missing_is_never_completed', 'ob...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 6\n +  where 9 = len([{'selector': 'tests/unit/test_scheduling.py::test_dependencies_require_completed_and_missing_is_never_completed', 'ob...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    }
+  ],
+  "finished_at": "2026-11-13T07:16:53.806945+00:00"
+}

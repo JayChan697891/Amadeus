@@ -1,0 +1,81 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "test_source_sha": "9fb36a10a18755be116cc2564a42450c453a9524",
+  "sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "platform": "win32",
+  "version": "0.3.0a109",
+  "installed_origin": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Lib\\site-packages\\agentsync",
+  "direct_archive": {
+    "archive_info": {
+      "hash": "sha256=068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+      "hashes": {
+        "sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c"
+      }
+    },
+    "url": "file:///D:/agentsync-debug/m9-sdist-repair-9fb36a1/agentsync_local-0.3.0a109.tar.gz"
+  },
+  "runtime_members_matched": 90,
+  "sdk_smoke": "pass",
+  "console_smoke": {
+    "id": "sdist_console_smoke",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\install-smoke\\sdist-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\install-smoke\\sdist-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:21:18.028102+00:00",
+    "finished_at": "2026-11-13T07:21:18.646689+00:00",
+    "log": "logs/sdist_console_smoke.log",
+    "log_sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "agentsync_local-0.3.0a109.tar.gz",
+      "sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+      "size": 1773105
+    }
+  },
+  "license_inventory": {
+    "id": "sdist_license_inventory",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\source\\tools\\license_inventory.py",
+      "--distribution",
+      "agentsync-local"
+    ],
+    "cwd": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:21:18.648892+00:00",
+    "finished_at": "2026-11-13T07:21:18.938154+00:00",
+    "log": "logs/sdist_license_inventory.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "agentsync_local-0.3.0a109.tar.gz",
+      "sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+      "size": 1773105
+    },
+    "inventory": {
+      "path": "sdist-license-inventory.json",
+      "sha256": "67013cdf309182c8f8fbf37f880db96193228044491d2fe5fe1664f0f65dc4df",
+      "size": 23086,
+      "scope": "installed_runtime_dependency_metadata",
+      "review_item_count": 0,
+      "license_review": "pending",
+      "publication_authorized": false,
+      "installed_origin_check": "sdist_origin_sdk"
+    }
+  },
+  "model_calls": 0,
+  "formal_release": "BLOCKED"
+}

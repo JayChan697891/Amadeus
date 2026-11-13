@@ -1,5 +1,15 @@
 # Amadeus current direction: M5 scope frozen; conditional M6 prototypes
 
+Runtime09425da has completed current Windows/Linux installed-sdist regression with
+an affected-test repair at9fb36a1. Original c262 full runs retain4failures each;
+two repaired test files pass246cases on each platform, with all2334final case IDs
+and unchanged inputs reconciled. Combined Windows2279pass/55skip and Linux2328pass/
+6skip; no product change or new M5 stage. Evidence:
+acceptance/evidence/m9-sdist-regression/summary.json. Independent technical review
+accepts B6 and closes the original five M5 requirements for the fixed open scope;
+apply remains deferred and Release blocked. No external Work/PR approval is claimed.
+Next improve existing M7-03 BYOK offline coverage, not reimplement its provider layer.
+
 Tests07aba94 now cover actual coordinator subprocess exit after verified source,
 both recoverable preparation and uncertain dispatch intent. Installed unchanged
 runtime09425da passes all10flow cases with7actual Docker executions and zero models;

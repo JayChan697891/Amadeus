@@ -1,0 +1,26 @@
+{
+  "base": "e4bb8089263aef26395be2d9a8513b9ee2bfe1fe",
+  "command": [
+    "D:/agentsync-debug/venv/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=D:\\agentsync-debug\\m9-m7-traceability-e4bb808-sol\\pytest-temp",
+    "--junitxml=D:\\agentsync-debug\\m9-m7-traceability-e4bb808-sol\\junit.xml",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "exit_code": 0,
+  "started": "2026-11-13T07:17:38.0210146Z",
+  "finished": "2026-11-13T07:17:41.7697168Z",
+  "runtime": [
+    "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+    "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py"
+  ],
+  "junit": "junit.xml",
+  "log": "pytest.log"
+}

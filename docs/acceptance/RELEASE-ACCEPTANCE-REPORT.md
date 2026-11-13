@@ -1,5 +1,40 @@
 # Release Acceptance Report
 
+## Current installed-source archive regression: PASS after affected-file repair
+
+Runtime09425da remains unchanged. Full c262 Windows/Linux runs each collected2334
+cases and failed the same4outdated M7 component-mapping assertions. Their original
+failed reports remain intact. Repair9fb36a1 updates only those two test files and
+ordinary documentation; all other test/runtime/collector/requirement/dependency
+inputs match. Fresh repair-sdist installations pass246affected cases per platform.
+Full collection and exact parameterized IDs prove coverage of all2334final cases
+by the retained full results plus the rerun; no new full run is claimed.
+
+| Platform | Original full run | Repair rerun | Reconciled result |
+| --- | --- | --- | --- |
+| Windows3.12.16 | 2275pass / 55skip / 4fail | 246pass / 0skip / 0fail | 2279pass / 55skip |
+| Linux3.14.7 | 2324pass / 6skip / 4fail | 246pass / 0skip / 0fail | 2328pass / 6skip |
+
+All61skip IDs pass on the other platform, with reasons preserved. This does not
+prove Windows symlink creation privileges, native Windows Linux-Docker support,
+or macOS compatibility.887packaged source files match Git,90runtime members match
+before/after; installed archive URI/hash, SDK/console probes and dependency checks
+pass. The dedicated Docker daemon has no leftover containers. No real model calls
+or GitHub Actions were used. [Evidence and preserved failures](evidence/m9-sdist-regression/summary.json).
+
+The first repair-driver attempt failed before tests due to a collector timeout
+parameter mismatch; a distinct corrected driver passed. Both attempts remain
+visible. The original Linux install-probe symlink guard failure and correction
+also remain recorded. These are validation-helper corrections, not product fixes.
+
+Independent technical review accepts B6 and closes M5 for its fixed open scope;
+the unique checklist records the five requirement decisions. This is not external
+Work approval or acceptance of all42formal requirements. Release remains **BLOCKED**:
+cross-vendor actual clients remain NOT RUN, macOS remains NOT RUN, dependency
+license review/publication approval are pending, and original-workspace apply
+remains disabled/deferred. Current real Codex flow retains its separate bounded
+evidence below; this offline matrix is not new live-client or whole-plan acceptance.
+
 ## Verified-source coordinator process recovery: limited scope passed
 
 Tests07aba94 reuse installed runtime09425da (90members/89modules unchanged) and

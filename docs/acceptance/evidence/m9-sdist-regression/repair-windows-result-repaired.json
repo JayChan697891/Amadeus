@@ -1,0 +1,77 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "test_source_sha": "9fb36a10a18755be116cc2564a42450c453a9524",
+  "sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "scope": "Two modified test modules rerun from a fresh frozen sdist; full case collection reconciles with retained c262 results; no models or Actions",
+  "started_at": "2026-11-13T07:20:31.854049+00:00",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "win32",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "collection_check": {
+    "id": "sdist_collect",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\driver-repaired.py",
+      "collect"
+    ],
+    "cwd": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:20:31.854049+00:00",
+    "finished_at": "2026-11-13T07:20:35.474963+00:00",
+    "log": "logs/sdist_collect.log",
+    "log_sha256": "120e19fe01ca475bcecd97a1f2661fce6d8c1e917a656a24380e5c484a3d00bb",
+    "credential_redactions": 6,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "rerun_test_files": [
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "check": {
+    "id": "sdist_delta_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\driver-repaired.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:20:35.476959+00:00",
+    "finished_at": "2026-11-13T07:20:38.938678+00:00",
+    "log": "logs/sdist_delta_pytest.log",
+    "log_sha256": "e9dda18f278eeccadbf7df15ae7138c4ced990984bc73e2c8ab1fb84c855f8b1",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "source_unchanged": true,
+  "source_files": 895,
+  "source_fingerprint_sha256": "ab42bd78f14f2a982c5a578e54a70f16b2bfc8de607ecffcf56de8f854506487",
+  "changed_source_paths": [],
+  "installed_identity": {
+    "origin": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Lib\\site-packages\\agentsync",
+    "runtime_package_members_matched": 90,
+    "runtime_python_modules": 89,
+    "source_shadowing": false
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 246,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skip_reasons": {},
+  "failed_cases": [],
+  "finished_at": "2026-11-13T07:20:39.075557+00:00"
+}

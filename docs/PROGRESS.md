@@ -1,6 +1,38 @@
 # Amadeus current progress
 
-## Current frozen source-distribution matrix: FAIL; targeted repair validation pending
+## Current installed-sdist regression accepted; M5 fixed-scope technical closure
+
+Repair9fb36a10a18755be116cc2564a42450c453a9524 changes only two test files plus ordinary
+documentation relative to the prior full run. Runtime09425da, requirements, collector,
+dependencies, other tests and fixtures remain byte-identical. New sdist SHA256:
+068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c.
+Fresh Windows3.12.16/Linux3.14.7 installs each pass246affected-file cases. Full
+collection matches all2334original parameterized IDs;2088unchanged cases per
+platform reuse the actual original full run. Combined results: Windows2279passed/
+55skipped; Linux2328passed/6skipped,0remaining failures/errors. This is a full
+baseline plus affected-file rerun, not a new full-suite execution at9fb36a1.
+All887packaged Git source files and90runtime members were checked. Both installed
+archive identities, SDK and console probes pass. License inventory review remains
+pending. Original failures, logs, JUnit, all61skip explanations and controller
+corrections are preserved in [evidence](acceptance/evidence/m9-sdist-regression/summary.json).
+
+The first new test driver exited before collection because it supplied a custom
+timeout for a non-full-suite collector ID. Both initial tracebacks/status files
+remain; a separate corrected driver used the existing default and passed. Its
+initial status JSON saysrunning because the exception preceded final persistence;
+the terminal process/traceback proves failure, not a still-running test. Collection
+comparison applies the existing JUnit credential-pattern redaction to five fixture
+IDs (12field substitutions) and verifies uniqueness; it discards no unmatched cases.
+No model calls, Actions or user workspace changes. Debug root:
+D:/agentsync-debug/m9-sdist-repair-9fb36a1. All original and repair sessions are
+terminal; do not restart old controllers. Independent Astra review accepted all79
+artifact hashes, both packages, the exact case reconciliation and unchanged inputs.
+B6 and the original five M5 requirements are technically closed for the fixed open
+scope in M5-FINAL-ACCEPTANCE.md. Apply stays deferred; external Work review is not
+claimed and formal Release remains BLOCKED.
+Next product work: fill M7-03 offline provider/transport test gaps in existing code;
+paid APIs and unavailable real vendors remain uncalled. The notes below preserve
+the original full-run chronology.
 
 Windows collector terminated at2026-11-13T07:10:07Z with2334cases:
 2275passed,55skipped,4failed,0errors. The4failures are confined to the planning
