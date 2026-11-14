@@ -92,3 +92,6 @@ releases/0.3.0a115/b6f05f0/linux-314/** -text -whitespace
 releases/0.3.0a115/b6f05f0/matrix-after-linux314.json -text -whitespace
 releases/0.3.0a115/b6f05f0/linux-311/** -text -whitespace
 releases/0.3.0a115/b6f05f0/matrix-after-linux311.json -text -whitespace
+
+releases/0.3.0a115/b6f05f0/windows-311/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-windows311.json -text -whitespace

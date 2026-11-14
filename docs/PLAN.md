@@ -10,13 +10,14 @@ Current M9 execution: Linux3.14 and3.11 completed their full source/wheel/sdist
 rows, each with26 passing checks and each suite2476pass6skip. Strict source,
 archive and case-identity verification passed; Linux3.11 case outcomes match the
 previously reviewed Linux3.14 row. Each row's105 separate Docker observation
-files include expected negative cases, not real models. Windows3.11 source/wheel
-each passed2426/56skip; sdist runs. Linux3.12 source completed2476pass6skip
-at10:25 UTC; wheel now runs, sdist and whole-row validation remain pending.
-Windows3.14 remains queued, and Windows3.12 canonical wheel-only followup waits
-for the current Windows queue. Seven OS/Python rows remain incomplete, including
+files include expected negative cases, not real models. Windows3.11 completed
+all26 checks at10:38 UTC; each source/wheel/sdist suite2426pass56skip, with exact
+archive/source/2482-case identities verified. Windows3.14 now runs in the original
+queue. Linux3.12 source completed2476pass6skip at10:25 UTC; wheel runs, sdist and
+whole-row validation remain pending. Windows3.12 canonical wheel-only followup
+waits for the Windows queue. Six OS/Python rows remain incomplete, including
 unavailable macOS. No completed source/package suite is repeated; Release stays
-BLOCKED. Evidence: docs/acceptance/evidence/m9-a115-preparation/linux311-complete/summary.json.
+BLOCKED. Evidence: docs/acceptance/evidence/m9-a115-preparation/windows311-complete/summary.json.
 
 Existing M8-02 bounded-load observations bind to older09425da. Repeat the same
 4-thread/20-round and2-process/mixed-loopback/20-round profiles on fresh b6

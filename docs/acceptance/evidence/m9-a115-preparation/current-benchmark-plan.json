@@ -54,5 +54,22 @@
   ],
   "model_calls": 0,
   "github_actions_used": false,
-  "formal_release": "BLOCKED"
+  "formal_release": "BLOCKED",
+  "prepared_driver": {
+    "path": "current-benchmark-driver.py.txt",
+    "sha256": "58d2b7e854958037865472f3ad423e02762ff9bbfd2082b955f18c03e4c1f752",
+    "validation": "Syntax compiled only; not executed",
+    "windows_command": [
+      "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "D:/agentsync-debug/m115-benchmark-current.py"
+    ],
+    "linux_command": [
+      "/root/jobs-env/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-m115-r3/m115-benchmark-current.py"
+    ]
+  }
 }

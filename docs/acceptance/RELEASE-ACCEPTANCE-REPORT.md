@@ -30,14 +30,20 @@ are retained with the same limitations as above; no containers remained.
 Complete report: ../../releases/0.3.0a115/b6f05f0/linux-311/report.json.
 Summary: evidence/m9-a115-preparation/linux311-complete/summary.json.
 
-Windows3.11 source/wheel each completed2426pass56skip/exit0; sdist remains running
-since09:49:57 UTC. Linux3.12 source completed10:25:02 UTC:2476pass6skip,
+Windows3.11 whole row completed10:38:36 UTC:26 checks pass, each source/wheel/
+sdist suite2426pass56skip/exit0. Strict verification covered78 transferred files,
+2083 Git inputs and2482 unique case identities per suite. The same case IDs occur
+in Linux3.14; all56 Windows skips passed on Linux and all6 Linux skips passed on
+Windows. No platform row is waived. Whole-row report:
+../../releases/0.3.0a115/b6f05f0/windows-311/report.json.
+The original queue started Windows3.14 at10:38:37 UTC; its result is pending.
+Linux3.12 source completed10:25:02 UTC:2476pass6skip,
 exit0 and2083 source hashes unchanged. Wheel is running; sdist/whole-row gates
 remain pending. See evidence/m9-a115-preparation/linux312-source-observation.
 The current-b6 M8-02 bounded installed benchmark is NOT RUN; historical09425da
 results are retained but do not establish current-version performance. The same
 profiles and1000ms diagnostic budget will run after each host's matrix/followup.
-The new strict matrix snapshot retains7 incomplete OS/Python combinations.
+The new strict matrix-after-windows311.json retains6 incomplete OS/Python combinations.
 Cross-platform skip observations do not waive any complete row or macOS gate.
 
 The historical wheel observer did not persist a native-handle creation-time
@@ -66,7 +72,7 @@ not whole-requirement or formal Release acceptance.
 | Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
 | New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
 | New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Sdist completed08:08:36 UTC,2426pass56skip/exit0, canonical receipt and label recovery verified. Composite manifest verified; matrix remains incomplete |
-| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.14 and3.11 complete and artifact verified; each source/wheel/sdist2476pass6skip. Windows3.11 source/wheel each2426pass56skip; sdist running. Linux3.12 running; Windows3.14 queued. No actual client acceptance inferred |
+| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.14 and3.11 complete and artifact verified; each source/wheel/sdist2476pass6skip. Windows3.11 full row complete: each source/wheel/sdist2426pass56skip. Linux3.12 and Windows3.14 running. No actual client acceptance inferred |
 | Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
 | Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
 | First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |

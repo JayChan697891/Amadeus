@@ -17,17 +17,22 @@ these include expected negative and non-started cases. They are not105 successfu
 executions or real-client acceptance, nor all semantically covered by the original
 72-artifact report verifier. Known protocol fixtures remain distinct from real models.
 
-Windows3.11 source and wheel each completed2426pass56skip/exit0; sdist remains
-running since09:49:57 UTC, actual pytest PID24052. Its completed component evidence
-remains under m9-a115-preparation/windows311-source-observation and
-windows311-wheel-observation. Whole-row identity validation remains pending.
+Windows3.11 completed its whole row at10:38:36 UTC, exit0:26 checks pass; each
+source/wheel/sdist suite2426pass56skip and2482 unique case identities. All78
+transferred file hashes and2083 Git inputs verified. Original reports/receipts/XML
+remain unchanged; only six proven labels per derived XML changed. The same2482
+case IDs appear in Linux3.14; all56 Windows skips passed there, and all6 Linux
+skips passed on Windows. This observation does not waive any platform row.
+Evidence: releases/0.3.0a115/b6f05f0/windows-311/report.json and
+acceptance/evidence/m9-a115-preparation/windows311-complete/summary.json.
+The original queue started Windows3.14 at10:38:37 UTC, actual row PID22928.
 
 The original Linux queue started linux-312 at10:06:07 UTC. Its source suite
 completed at10:25:02 UTC:2476pass6skip, canonical exit0,2083 frozen files unchanged.
 Sanitized component evidence: m9-a115-preparation/linux312-source-observation.
 Wheel pytest PID1255 is active; sdist and whole-row identity validation remain
-pending. Windows3.14 remains queued. Do not restart either original queue.
-Matrix-after-linux311.json now verifies two complete Linux rows and retains7
+pending. Windows3.14 is now running. Do not restart either original queue.
+Matrix-after-windows311.json verifies three complete rows and retains6
 incomplete OS/Python combinations. Original candidate-bootstrap.json is unchanged.
 The Windows3.12 canonical wheel gap and all other Release gates remain BLOCKED.
 
