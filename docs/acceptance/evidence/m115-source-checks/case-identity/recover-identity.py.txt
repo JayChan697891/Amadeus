@@ -1,0 +1,103 @@
+"""Recover fixed fixture labels; never replace original execution evidence."""
+import argparse
+import ast
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+BASE = Path(__file__).resolve().parent
+RUN = Path('D:/agentsync-debug/m115-r3/windows-312/release-20261114T035240Z-6756b7e7fa0d')
+SCRATCH = Path('D:/agentsync-debug/t115u/.scratch-u_ak32ml')
+SOURCE = Path('D:/agentsync-debug/m115-r3/s')
+NAME = 'test_redaction_is_stable_when_evidence_is_processed_again'
+parser = argparse.ArgumentParser()
+parser.add_argument('suite', choices=('source', 'wheel', 'sdist'))
+args = parser.parse_args()
+prefix = '' if args.suite == 'source' else args.suite + '-'
+check = 'pytest' if args.suite == 'source' else args.suite + '_pytest'
+raw = SCRATCH / (prefix + 'junit.xml')
+original = RUN / (prefix + 'junit.xml')
+receipt_path = RUN / 'logs' / (check + '.process.json')
+receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+assert receipt['phase'] == 'finished' and receipt['result']['exit_code'] == 0
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+assert sha(RUN / receipt['result']['log']) == receipt['result']['log_sha256']
+old_tree = ast.parse((SOURCE / 'tests/unit/test_release_acceptance.py').read_text(encoding='utf-8'))
+new_tree = ast.parse((BASE / 'tests/unit/test_release_acceptance.py').read_text(encoding='utf-8'))
+old = next(n for n in old_tree.body if isinstance(n, ast.FunctionDef) and n.name == NAME)
+new = next(n for n in new_tree.body if isinstance(n, ast.FunctionDef) and n.name == NAME)
+labels = ast.literal_eval(next(k.value for k in new.decorator_list[0].keywords if k.arg == 'ids'))
+values = ast.literal_eval(old.decorator_list[0].args[1])
+new.decorator_list[0].keywords = []
+assert ast.dump(old_tree) == ast.dump(new_tree)
+aliases = {NAME + '[' + value + ']': NAME + '[' + label + ']'
+           for value, label in zip(values, labels, strict=True)}
+assert len(aliases) == len(set(aliases.values())) == 6
+spec = importlib.util.spec_from_file_location('runner', SOURCE / 'tools/release_acceptance.py')
+runner = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(runner)
+assert sha(SOURCE / 'tools/release_acceptance.py') == 'd942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+destination = BASE / args.suite
+destination.mkdir(exist_ok=False)
+private = BASE / 'private' / (args.suite + '-junit.xml')
+if private.exists():
+    assert private.read_bytes() == raw.read_bytes()
+else:
+    with private.open('xb') as stream:
+        stream.write(raw.read_bytes())
+replay = destination / 'redacted-replay.xml'
+runner.persist_junit(raw, replay)
+assert replay.read_bytes() == original.read_bytes()
+raw_cases = list(ET.parse(raw).getroot().iter('testcase'))
+tree = ET.parse(original)
+saved_cases = list(tree.getroot().iter('testcase'))
+assert len(raw_cases) == len(saved_cases) and raw_cases
+raw_ids, recovered_ids, original_ids = set(), set(), set()
+mapping, outcomes = [], {}
+for ordinal, (raw_case, saved) in enumerate(zip(raw_cases, saved_cases, strict=True)):
+    key = (raw_case.get('classname'), raw_case.get('name'))
+    assert key not in raw_ids
+    raw_ids.add(key)
+    assert runner.redact_credentials(key[0])[0] == saved.get('classname')
+    assert runner.redact_credentials(key[1])[0] == saved.get('name')
+    original_ids.add((saved.get('classname'), saved.get('name')))
+    statuses = [tag for tag in ('failure', 'error', 'skipped') if raw_case.find(tag) is not None]
+    assert len(statuses) <= 1
+    assert statuses == [tag for tag in ('failure', 'error', 'skipped') if saved.find(tag) is not None]
+    outcome = statuses[0] if statuses else 'pass'
+    assert outcome in ('pass', 'skipped')
+    outcomes[outcome] = outcomes.get(outcome, 0) + 1
+    if key[1] in aliases:
+        mapping.append({'ordinal': ordinal, 'classname': key[0], 'original_saved_name': saved.get('name'),
+                        'recovered_name': aliases[key[1]], 'outcome': outcome,
+                        'raw_identity_sha256': hashlib.sha256(json.dumps(key, separators=(',', ':')).encode()).hexdigest()})
+        saved.set('name', aliases[key[1]])
+    recovered = (saved.get('classname'), saved.get('name'))
+    assert recovered not in recovered_ids
+    recovered_ids.add(recovered)
+assert len(mapping) == 6
+assert len({item['recovered_name'] for item in mapping}) == 6
+recovered_path = destination / 'recovered-junit.xml'
+tree.write(recovered_path, encoding='utf-8', xml_declaration=True)
+proof = {'observed_at': datetime.now(timezone.utc).isoformat(), 'suite': args.suite,
+         'scope': 'Derived identity recovery of the original b6f05f0 execution, not a new test run or formal acceptance',
+         'source_commit': 'b6f05f0473591dc568be25591047fdea963ef86c',
+         'raw_sha256': sha(raw), 'original_persisted_sha256': sha(original),
+         'recovered_sha256': sha(recovered_path), 'receipt_sha256': sha(receipt_path),
+         'converter_sha256': sha(SOURCE / 'tools/release_acceptance.py'),
+         'helper_sha256': sha(Path(__file__)), 'label_fixture_sha256': sha(BASE / 'tests/unit/test_release_acceptance.py'),
+         'finished_at': receipt['result']['finished_at'], 'raw_unique_cases': len(raw_ids),
+         'original_persisted_unique_cases': len(original_ids), 'recovered_unique_cases': len(recovered_ids),
+         'outcomes': outcomes, 'exact_redaction_replay': True, 'only_label_changes': True, 'mapping': mapping,
+         'raw_storage': 'Restricted local private directory; do not upload',
+         'original_canonical_identity_gate': 'BLOCKED; original XML retained unchanged'}
+with (destination / 'proof.json').open('x', encoding='utf-8', newline='\n') as stream:
+    json.dump(proof, stream, indent=2)
+    stream.write('\n')
+print(json.dumps({k: v for k, v in proof.items() if k != 'mapping'}, indent=2))

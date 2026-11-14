@@ -1,0 +1,80 @@
+{
+  "observed_at": "2026-11-14T04:42:33.002062+00:00",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "source_run": {
+    "finished_at": "2026-11-14T04:34:55.571873+00:00",
+    "exit_code": 0,
+    "passed": 2426,
+    "skipped": 56,
+    "failed": 0,
+    "errors": 0,
+    "raw_unique_cases": 2482,
+    "persisted_unique_cases": 2481,
+    "source_snapshot_files_unchanged": 2083
+  },
+  "issue": "Two fixture parameter values coalesce after credential redaction; original persisted identity gate remains blocked",
+  "repair": "Only six explicit safe parameter labels added; AST including all other tests is identical",
+  "validation": {
+    "affected_cases_passed": 6,
+    "safe_unique_ids_after_redaction": 6,
+    "ruff": "pass",
+    "format_check": "pass"
+  },
+  "original_artifacts": {
+    "junit.xml": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/junit.xml",
+      "sha256": "f6da0cb48bced7fd17a708294b21b1e789767a2e88000dc8678534dae6f5df70",
+      "size": 391409
+    },
+    "logs/pytest.log": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pytest.log",
+      "sha256": "a9e921c38d624fd6442b5c2916d7cc1077dea693bed31fa752be76b3ac86827d",
+      "size": 17842
+    },
+    "logs/pytest.process.json": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pytest.process.json",
+      "sha256": "9ed9a45115e60772bcea1efd7a7c35f3d5d171c5101047e1c4ab1a02e4676bdd",
+      "size": 1532
+    },
+    "source-snapshot.json": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/source-snapshot.json",
+      "sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+      "size": 391801
+    }
+  },
+  "artifacts": {
+    "fixed.log": {
+      "sha256": "17c28b0de14bd689fdd2e3a6fe3af516159fbb5a525165f261eceda1d126833a",
+      "size": 642
+    },
+    "fixed-junit.xml": {
+      "sha256": "358aed0b9ef25ece9fcd2ddc6fec6e15f59b2a37464247c584d89c8a4affa69f",
+      "size": 1197
+    },
+    "fixed-process.json": {
+      "sha256": "653c4bb0a2d13e0aee10f24465dd8d552cab0d7640c435bb632371bab3caa038",
+      "size": 1140
+    },
+    "fixed-redacted-junit.xml": {
+      "sha256": "ed6c90fc76cbfd0b8ebdc2ce792b89895d7d09c92d8680688ac00b7ecf3e37f0",
+      "size": 1199
+    },
+    "source-proof.json": {
+      "sha256": "72ca5461edf17c6482256d526da168132168f6a31caa303a470b82f5d4b642b5",
+      "size": 3973
+    },
+    "source-recovered-junit.xml": {
+      "sha256": "95204cbf95417899441d301df0bec97c24d02f1280d54e789880fdbb678df077",
+      "size": 391347
+    },
+    "recover-identity.py.txt": {
+      "sha256": "ef21d1fea43d5d0c082d892e1c396a3ef23502392ed56985ae664f962d5accb6",
+      "size": 5887
+    },
+    "tested-fixture.py.txt": {
+      "sha256": "41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df",
+      "size": 86119
+    }
+  },
+  "remaining": "Wheel RUNNING, sdist NOT RUN. Capture each raw XML locally before collector cleanup; recover only proven six identities in separate derived evidence, then run unchanged strict validators. Do not run original finalizer on ambiguous XML or relabel old execution as new HEAD. Release BLOCKED."
+}

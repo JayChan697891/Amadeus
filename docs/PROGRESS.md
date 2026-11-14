@@ -35,13 +35,25 @@ acceptance/evidence/m115-source-checks/deadline-repair/final/summary.json.
 Corrected product b6f05f0473591dc568be25591047fdea963ef86c is uploaded.
 Its canonical full Windows3.12 source/wheel/sdist collector started at
 2026-11-14 03:52:40 UTC, session75435; original bootstrap PID3764 and collector
-PID4488. The source suite is RUNNING, not passed. Its separate clean snapshot
+PID4488. Source naturally finished at 2026-11-14 04:34:55 UTC, exit0:
+2426 pass / 56 skip / zero failures or errors. The raw report has2482 unique
+identities, but two redaction-fixture names collide in the original sanitized XML
+(2481 unique). The original strict identity gate remains BLOCKED. Six explicit
+safe labels fix the fixture; all six existing cases pass, Ruff/format pass, and
+AST comparison proves no assertions or product logic changed. Raw evidence is
+restricted locally; separate safe mapping/recovered XML proves source identities
+without rewriting originals. See m115-source-checks/case-identity/summary.json.
+The same collector started wheel pytest at04:35:22 UTC (PID14416); wheel RUNNING,
+sdist NOT RUN. Capture each raw package XML before scratch cleanup, then recover
+only proven identities and validate separate derived evidence with unchanged
+strict gates. Do not run the original finalizer against duplicate XML or claim
+a new HEAD was fully executed. Its separate clean snapshot
 is D:/agentsync-debug/m115-r3/s, report under windows-312/release-20261114T035240Z-6756b7e7fa0d.
 Linux has the identical frozen source and queued driver staged; Python3.11/3.12
 runtimes are mounted read-only and3.14 is available. No Linux or later Windows
 row has started; no continuation controller was launched. Root observes the
 original session and only after real exit0 and canonical evidence validation
-will use the existing pinned finalizer/stager and per-host queues. Recovery
+will validate reviewed derived identity evidence before staging and per-host queues. Recovery
 entry and actual identities are in m9-a115-preparation/r3-execution.json.
 Maximum2 collectors, no blind retries, no Actions or paid models. No installed-package
 or full-platform result is inferred from this targeted repair. macOS, missing

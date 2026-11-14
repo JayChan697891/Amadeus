@@ -1,0 +1,75 @@
+{
+  "observed_at": "2026-11-14T04:41:27.955120+00:00",
+  "suite": "source",
+  "scope": "Derived identity recovery of the original b6f05f0 execution, not a new test run or formal acceptance",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "raw_sha256": "a473b1cf062849d17ba62e94aa4beea1743c881c1532d7c62c111f950a6ce337",
+  "original_persisted_sha256": "f6da0cb48bced7fd17a708294b21b1e789767a2e88000dc8678534dae6f5df70",
+  "recovered_sha256": "95204cbf95417899441d301df0bec97c24d02f1280d54e789880fdbb678df077",
+  "receipt_sha256": "9ed9a45115e60772bcea1efd7a7c35f3d5d171c5101047e1c4ab1a02e4676bdd",
+  "converter_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "helper_sha256": "ef21d1fea43d5d0c082d892e1c396a3ef23502392ed56985ae664f962d5accb6",
+  "label_fixture_sha256": "41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df",
+  "finished_at": "2026-11-14T04:34:55.571873+00:00",
+  "raw_unique_cases": 2482,
+  "original_persisted_unique_cases": 2481,
+  "recovered_unique_cases": 2482,
+  "outcomes": {
+    "pass": 2426,
+    "skipped": 56
+  },
+  "exact_redaction_replay": true,
+  "only_label_changes": true,
+  "mapping": [
+    {
+      "ordinal": 2032,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[test_case[session_token=[REDACTED]]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[session-assignment]",
+      "outcome": "pass",
+      "raw_identity_sha256": "03a4ab9421e7f4595d99015dbc0f107779891f4baf3f9f790cf237c1bd1df770"
+    },
+    {
+      "ordinal": 2033,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[test_case[admin_token=[REDACTED]]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[quoted-admin-assignment]",
+      "outcome": "pass",
+      "raw_identity_sha256": "fa57b848ec9e8425232d146a1cdd7bbdf2976b91aa6e454fd33490841d06a280"
+    },
+    {
+      "ordinal": 2034,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[{\"password\": [REDACTED]}]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[json-password]",
+      "outcome": "pass",
+      "raw_identity_sha256": "4bd91e70f48e7671ca8932fb4dca1d212828dfb3fd9e5b9097f96f08b6231b75"
+    },
+    {
+      "ordinal": 2035,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[Authorization: [REDACTED] [REDACTED]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[bearer-header]",
+      "outcome": "pass",
+      "raw_identity_sha256": "dffd46aafc38aa191c724fd697ce2f6da28e74f4ae097c8863703c8cd39242e7"
+    },
+    {
+      "ordinal": 2036,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[api_key=[REDACTED]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[marker-attached-key]",
+      "outcome": "pass",
+      "raw_identity_sha256": "b279f23d855a04b7328c688437161db4891690b0909dcdabf05ff3b19d9d8eef"
+    },
+    {
+      "ordinal": 2037,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[api_key=[REDACTED]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[quoted-marker-attached-key]",
+      "outcome": "pass",
+      "raw_identity_sha256": "7d4110a20cfd2a4185d97afc116730251408f3f45143a3fc37c62d017553a0b6"
+    }
+  ],
+  "raw_storage": "Restricted local private directory; do not upload",
+  "original_canonical_identity_gate": "BLOCKED; original XML retained unchanged"
+}

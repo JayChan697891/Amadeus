@@ -1178,6 +1178,14 @@ def test_redaction_handles_json_repr_assignment_and_bearer_forms(text):
         "api_key=[REDACTED]fixture-secret",
         "api_key='[REDACTED]fixture-secret'",
     ],
+    ids=[
+        "session-assignment",
+        "quoted-admin-assignment",
+        "json-password",
+        "bearer-header",
+        "marker-attached-key",
+        "quoted-marker-attached-key",
+    ],
 )
 def test_redaction_is_stable_when_evidence_is_processed_again(text):
     clean, count = runner.redact_credentials(text)

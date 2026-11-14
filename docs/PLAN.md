@@ -8,7 +8,11 @@ The original42-task code inventory still stands. Repair actual premature timeout
 handling without weakening the assertion, then freeze corrected source and run
 the existing canonical package/matrix workflow. Targeted142 source checks and
 static checks pass. Frozenb6f05f0 canonical Windows3.12 collector now runs in
-original session75435; Linux source is staged but no later rows have started.
+original session75435; source finished2426pass56skip, but one sanitized fixture-ID
+collision blocks strict evidence acceptance. Repair six safe labels (six affected
+cases pass) and recover proven identities in separate derived evidence; preserve
+originals and unchanged strict gates. Wheel runs; sdist/later rows remain NOT RUN.
+Linux source is staged.
 Complete current package/platform/Release acceptance does
 not follow from those checks. See the latest PROGRESS entry and deadline-repair
 evidence. No new M5 phase or relaxation of the original release gates.
