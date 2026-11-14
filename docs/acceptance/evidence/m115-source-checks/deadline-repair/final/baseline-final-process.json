@@ -1,0 +1,15 @@
+{
+  "started_at": "2026-11-14T03:47:21.152386+00:00",
+  "command": [
+    "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-c",
+    "import sys;sys.path.insert(0,'D:\\\\agentsync-debug\\\\m115-r2\\\\s\\\\src');import agentsync,pytest;print(\"IMPORTED\",agentsync.__file__,flush=True);raise SystemExit(pytest.main(['-p', 'no:cacheprovider', '--junitxml', 'D:\\\\agentsync-debug\\\\m115-deadline-final-20261114\\\\baseline-final-junit.xml', '--basetemp', 'D:\\\\agentsync-debug\\\\m115-deadline-final-20261114\\\\baseline-final-tmp', 'tests/unit/test_process_capture_deadline.py']))"
+  ],
+  "cwd": "D:\\agentsync-debug\\m115-deadline-final-20261114\\source",
+  "scope": "Local known process fixtures; no actual Agent client",
+  "exit_code": 1,
+  "finished_at": "2026-11-14T03:47:21.589131+00:00",
+  "log_sha256": "675654091c2940ce164f4cf87b3fd24e01746d6859263589f4a57711787b9232"
+}

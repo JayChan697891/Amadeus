@@ -1,0 +1,52 @@
+[
+  {
+    "id": "ruff",
+    "command": [
+      "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "ruff",
+      "check",
+      "--no-cache",
+      "src/agentsync/adapters/process_capture.py",
+      "tests/unit/test_process_capture_deadline.py"
+    ],
+    "started_at": "2026-11-14T03:43:14.313088+00:00",
+    "finished_at": "2026-11-14T03:43:14.415758+00:00",
+    "exit_code": 0,
+    "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  {
+    "id": "format",
+    "command": [
+      "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "src/agentsync/adapters/process_capture.py",
+      "tests/unit/test_process_capture_deadline.py"
+    ],
+    "started_at": "2026-11-14T03:43:14.416004+00:00",
+    "finished_at": "2026-11-14T03:43:14.519540+00:00",
+    "exit_code": 0,
+    "log_sha256": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938"
+  },
+  {
+    "id": "mypy",
+    "command": [
+      "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "mypy"
+    ],
+    "started_at": "2026-11-14T03:43:14.519788+00:00",
+    "finished_at": "2026-11-14T03:43:18.463681+00:00",
+    "exit_code": 0,
+    "log_sha256": "e1933d29513c905ba6bf6828838a39f7d132a341e1fb63954bb71e0b3341fcff"
+  }
+]

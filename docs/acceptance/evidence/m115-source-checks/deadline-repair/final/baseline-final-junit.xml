@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="7" time="0.117" timestamp="2026-11-13T19:47:21.399410-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.unit.test_process_capture_deadline" name="test_early_callbacks_cannot_terminate_parent_before_deadline[0]" time="0.005"><failure message="AssertionError: assert ('timed_out' is None)&#10; +  where 'timed_out' = CaptureSnapshot(capture_id='dce8c6bab20748458b98def2f86799a2', state='running', exit_code=-9, started_at=100.0, deadli...ode='timed_out', termination_scope='parent_only', tree_cleanup='unverified', sandbox=False, real_client_verified=False).error_code">tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-final-20261114/baseline-final-tmp/test_early_callbacks_cannot_te0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029B76203290&gt;
+late_by = 0
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("late_by", [0, 0.007])
+    async def test_early_callbacks_cannot_terminate_parent_before_deadline(
+        tmp_path, monkeypatch, late_by
+    ):
+        monkeypatch.setattr(
+            process_capture,
+            "get_clock_info",
+            lambda name: SimpleNamespace(resolution=0.025),
+            raising=False,
+        )
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        assert clock.timers[0].when == deadline
+        for early_by in (0.006, 0.001):
+            timer = clock.timers[-1]
+            clock.fire(timer, deadline - early_by)
+            snapshot = await process.snapshot()
+            assert snapshot.state == "running" and snapshot.finished_at is None
+&gt;           assert snapshot.error_code is None and clock.transport.kills == 0
+E           AssertionError: assert ('timed_out' is None)
+E            +  where 'timed_out' = CaptureSnapshot(capture_id='dce8c6bab20748458b98def2f86799a2', state='running', exit_code=-9, started_at=100.0, deadli...ode='timed_out', termination_scope='parent_only', tree_cleanup='unverified', sandbox=False, real_client_verified=False).error_code
+
+tests\unit\test_process_capture_deadline.py:116: AssertionError</failure></testcase><testcase classname="tests.unit.test_process_capture_deadline" name="test_early_callbacks_cannot_terminate_parent_before_deadline[0.007]" time="0.003"><failure message="AssertionError: assert ('timed_out' is None)&#10; +  where 'timed_out' = CaptureSnapshot(capture_id='f018a15c3e3b498d819866416ba038ab', state='running', exit_code=-9, started_at=100.0, deadli...ode='timed_out', termination_scope='parent_only', tree_cleanup='unverified', sandbox=False, real_client_verified=False).error_code">tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-final-20261114/baseline-final-tmp/test_early_callbacks_cannot_te1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029B76219340&gt;
+late_by = 0.007
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("late_by", [0, 0.007])
+    async def test_early_callbacks_cannot_terminate_parent_before_deadline(
+        tmp_path, monkeypatch, late_by
+    ):
+        monkeypatch.setattr(
+            process_capture,
+            "get_clock_info",
+            lambda name: SimpleNamespace(resolution=0.025),
+            raising=False,
+        )
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        assert clock.timers[0].when == deadline
+        for early_by in (0.006, 0.001):
+            timer = clock.timers[-1]
+            clock.fire(timer, deadline - early_by)
+            snapshot = await process.snapshot()
+            assert snapshot.state == "running" and snapshot.finished_at is None
+&gt;           assert snapshot.error_code is None and clock.transport.kills == 0
+E           AssertionError: assert ('timed_out' is None)
+E            +  where 'timed_out' = CaptureSnapshot(capture_id='f018a15c3e3b498d819866416ba038ab', state='running', exit_code=-9, started_at=100.0, deadli...ode='timed_out', termination_scope='parent_only', tree_cleanup='unverified', sandbox=False, real_client_verified=False).error_code
+
+tests\unit\test_process_capture_deadline.py:116: AssertionError</failure></testcase><testcase classname="tests.unit.test_process_capture_deadline" name="test_rearmed_deadline_cannot_override_cancel_or_natural_exit[cancelled]" time="0.002"><failure message="AssertionError: assert ('timed_out' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + timed_out)">tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-final-20261114/baseline-final-tmp/test_rearmed_deadline_cannot_o0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029B76219B50&gt;
+outcome = 'cancelled'
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("outcome", ["cancelled", "exited"])
+    async def test_rearmed_deadline_cannot_override_cancel_or_natural_exit(
+        tmp_path, monkeypatch, outcome
+    ):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        clock.fire(clock.timers[-1], deadline - 0.006)
+        rearmed = clock.timers[-1]
+        if outcome == "cancelled":
+            snapshot = await process.cancel()
+        else:
+            clock.transport.exit(0)
+            snapshot = await process.wait()
+&gt;       assert snapshot.state == outcome and snapshot.finished_at &lt; deadline
+E       AssertionError: assert ('timed_out' == 'cancelled'
+E         
+E         - cancelled
+E         + timed_out)
+
+tests\unit\test_process_capture_deadline.py:142: AssertionError</failure></testcase><testcase classname="tests.unit.test_process_capture_deadline" name="test_rearmed_deadline_cannot_override_cancel_or_natural_exit[exited]" time="0.003"><failure message="AssertionError: assert ('timed_out' == 'exited'&#10;  &#10;  - exited&#10;  + timed_out)">tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-final-20261114/baseline-final-tmp/test_rearmed_deadline_cannot_o1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029B76219040&gt;
+outcome = 'exited'
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("outcome", ["cancelled", "exited"])
+    async def test_rearmed_deadline_cannot_override_cancel_or_natural_exit(
+        tmp_path, monkeypatch, outcome
+    ):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        clock.fire(clock.timers[-1], deadline - 0.006)
+        rearmed = clock.timers[-1]
+        if outcome == "cancelled":
+            snapshot = await process.cancel()
+        else:
+            clock.transport.exit(0)
+            snapshot = await process.wait()
+&gt;       assert snapshot.state == outcome and snapshot.finished_at &lt; deadline
+E       AssertionError: assert ('timed_out' == 'exited'
+E         
+E         - exited
+E         + timed_out)
+
+tests\unit\test_process_capture_deadline.py:142: AssertionError</failure></testcase><testcase classname="tests.unit.test_process_capture_deadline" name="test_deadline_observes_returncode_before_queued_exit_callback" time="0.002" /><testcase classname="tests.unit.test_process_capture_deadline" name="test_timeout_reason_survives_later_cancel_and_exit" time="0.002" /><testcase classname="tests.unit.test_process_capture_deadline" name="test_pending_cancel_blocks_old_deadline_before_parent_exit" time="0.002"><failure message="AssertionError: assert not True&#10; +  where True = &lt;built-in method done of _asyncio.Task object at 0x0000029B76241780&gt;()&#10; +    where &lt;built-in method done of _asyncio.Task object at 0x0000029B76241780&gt; = &lt;Task finished name='Task-27' coro=&lt;CapturedProcess.cancel() done, defined at D:\agentsync-debug\m115-r2\s\src\agentsync\adapters\process_capture.py:355&gt; result=CaptureSnapsh...erified=False)&gt;.done">tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-final-20261114/baseline-final-tmp/test_pending_cancel_blocks_old0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000029B762189B0&gt;
+
+    @pytest.mark.asyncio
+    async def test_pending_cancel_blocks_old_deadline_before_parent_exit(tmp_path, monkeypatch):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        clock.fire(clock.timers[0], deadline - 0.006)
+        rearmed = clock.timers[-1]
+    
+        def delayed_kill():
+            clock.transport.kills += 1
+    
+        monkeypatch.setattr(clock.transport, "kill", delayed_kill)
+        cancelled = asyncio.create_task(process.cancel())
+        try:
+            await asyncio.sleep(0)
+&gt;           assert not cancelled.done()
+E           AssertionError: assert not True
+E            +  where True = &lt;built-in method done of _asyncio.Task object at 0x0000029B76241780&gt;()
+E            +    where &lt;built-in method done of _asyncio.Task object at 0x0000029B76241780&gt; = &lt;Task finished name='Task-27' coro=&lt;CapturedProcess.cancel() done, defined at D:\agentsync-debug\m115-r2\s\src\agentsync\adapters\process_capture.py:355&gt; result=CaptureSnapsh...erified=False)&gt;.done
+
+tests\unit\test_process_capture_deadline.py:187: AssertionError</failure></testcase></testsuite></testsuites>

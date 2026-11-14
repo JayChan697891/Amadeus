@@ -1,0 +1,78 @@
+{
+  "at": "2026-11-14T03:48:55.267437+00:00",
+  "scope": "142 unique affected Windows3.12 local process/adapter protocol cases; not full release or actual-client acceptance",
+  "baseline": {
+    "frozen_source": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+    "pass": 2,
+    "fail": 5,
+    "total": 7
+  },
+  "fixed": {
+    "pass": 45,
+    "fail": 0,
+    "skip": 0
+  },
+  "unchanged_adapter_regressions": {
+    "junit": "../adapters-junit.xml",
+    "sha256": "631be5f4108510b235c82ba3c07a7a2d3deee0b22da111a1be6ebdef1817c336",
+    "pass": 97,
+    "reuse_basis": "All product source and these six adapter test modules are byte-identical; only deadline regression test was strengthened"
+  },
+  "source_hashes": {
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_process_capture_deadline.py": "53ecddaa1bd5c6aa5fdb55e67a773a8cdc0c33fdc08a0d61be7092fdc763ede8"
+  },
+  "first_v2_baseline_note": "First extended baseline probe needed a clock-info patch compatible with old source. Fixture-attribute errors and first45pass run remain in local baseline.log/fixed.log; authoritative comparison is baseline-final/fixed-final.",
+  "input_scope": "229 source/test/config files; runtime .ruff_cache files excluded explicitly",
+  "excluded_runtime_cache": [
+    ".ruff_cache/.gitignore",
+    ".ruff_cache/CACHEDIR.TAG",
+    ".ruff_cache/0.17.1/16425969798823627571",
+    ".ruff_cache/0.17.1/17135615237952649801"
+  ],
+  "independent_review": "Astra found no product correctness defect; pending-cancel and minimum-resolution coverage suggestions implemented.",
+  "static_checks": "Targeted Ruff/format observed pass after final test edit; earlier full-source mypy pass applies to byte-identical product source.",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "baseline-final-junit.xml",
+      "sha256": "9e48ac98d91e4935ba87d51ecb907770eea88aa63ba8210d836129f2d5edb75e",
+      "size": 9475
+    },
+    {
+      "path": "baseline-final-process.json",
+      "sha256": "d94b7a905c01efd8e339104d95f5471e0018e1cbcea5312c7ca806ae4a8050f6",
+      "size": 941
+    },
+    {
+      "path": "baseline-final.log",
+      "sha256": "6b3b1988ba32232cd75e459c18ec9be6dc1468402fd92b0eb067f4738a767b68",
+      "size": 8418
+    },
+    {
+      "path": "fixed-final-junit.xml",
+      "sha256": "cdcdc3136cef5aac4bb9f75c546e3c39749f4725d1b074c502ae0153da4ce856",
+      "size": 6800
+    },
+    {
+      "path": "fixed-final-process.json",
+      "sha256": "7057d5280e4f8c3e73b29724326795133cce0983677fb5da178e0061ff090429",
+      "size": 1098
+    },
+    {
+      "path": "fixed-final.log",
+      "sha256": "042bf08aa7508c9202e481ebe1e0c8927f1a46dfbffa4e6d34abc974b4956377",
+      "size": 994
+    },
+    {
+      "path": "input-snapshot.json",
+      "sha256": "c0bd58750e537b12d0868d26cad5a2dd08e01473c6ab137cd3e58efd98167cad",
+      "size": 33877
+    },
+    {
+      "path": "run-checks.py.txt",
+      "sha256": "54abd7e7d1840aa5b46f8202796e33e2fcb01f4f94eb714d6efccde7bef34e61",
+      "size": 2450
+    }
+  ]
+}

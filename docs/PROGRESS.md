@@ -1,5 +1,45 @@
 # Amadeus current progress
 
+## Active again: repair premature process timeout before the next full candidate
+
+The owner explicitly resumed the original full Goal after the second safe pause.
+Checkpoint F:/syuc/checkpoints/amadeus-safe-pause-20261114T003417Z preserves all
+eight previously staged files and the exact index. All old collector/controller
+handles are terminal; the local VM and NBD server were stopped gracefully.
+Do not restart old sessions 49009 or 8990, or their consumed helper attempts.
+
+Frozen 4a27a00's sdist suite naturally ended at 2026-11-14 01:11:11 UTC with
+2404 pass / 56 skip / one failure (2461 unique cases). The failed assertion in
+test_deadline_observation_runs_without_polling_and_stdin_reader observed actual
+finished_at 6194.453 before deadline_at 6194.459000000001. The package collector
+ended with exit 1; source remains NOT RUN in that invocation. Its complete
+original report, logs, JUnit, snapshots and packages are now retained under
+releases/0.3.0a115/4a27a00/windows-312-packages. Source and wheel's earlier
+2405 pass / 56 skip results retain their original limited scope. The source
+receipt gap and double-redacted derived XML remain explicit, not rewritten.
+
+The product timeout callback previously trusted asyncio timer delivery as proof
+of deadline expiry. Python's event loop can deliver timers one clock-resolution
+early. The repair checks the actual monotonic deadline before stopping a parent,
+rearms early delivery without a coarse-clock busy loop, and leaves measured
+finished timestamps and the original assertion unchanged. Cancellation and
+natural exit retain precedence when they happen first.
+
+Seven deterministic protocol cases run against frozen old code give five failures
+and two passes. The corrected source gives 45 process/lifecycle passes plus
+97 direct-adapter protocol passes (142 unique cases), with Ruff, format and mypy
+passing. Input hashes match 229 source/test files copied to the isolated D-drive
+environment. No actual Agent model or account was called. Evidence is in
+acceptance/evidence/m115-source-checks/deadline-repair/final/summary.json.
+
+Next: freeze the reviewed corrected candidate and run the existing canonical
+source/wheel/sdist collector once, then continue remaining Windows/Linux rows
+only from actual successful reports and pinned artifacts. No installed-package
+or full-platform result is inferred from this targeted repair. macOS, missing
+real clients and final independent Release/license gates remain incomplete.
+
+## Historical execution records (live states superseded above)
+
 ## Resumed after safe pause: full source passed, packages running
 
 The owner resumed the original Goal on 2026-11-13. The repository was clean at
@@ -21,8 +61,13 @@ D:/agentsync-debug/m115-resume-20261113, original session 49009. Source pytest i
 explicitly NOT RUN in this new invocation, with the earlier observation retained
 separately. Existing frozen collector functions run all other checks unchanged.
 Ruff, format, mypy, build, wheel installation/origin/CLI and dependency checks
-have terminal exit 0 receipts; the full wheel suite is RUNNING, not passed.
-sdist and later platform rows remain pending. Observe this original session and
+have terminal exit 0 receipts. The full wheel suite ended at 2026-11-14 00:28:30
+UTC, exit 0: 2405 pass / 56 skip, zero failures/errors, 2461 unique cases exactly
+matching the original source IDs and outcomes. Root checked its real JUnit, log
+hash and finished process receipt. These durable files are archived once under
+releases/0.3.0a115/4a27a00/windows-312-packages; the remaining package evidence will
+join that same directory after completion. Full sdist pytest actually started at
+00:28:46 UTC and is RUNNING; later platform rows remain NOT RUN. Observe this original session and
 attempt/result files; never restart the terminated r2 bootstrap or controller.
 The strict combined-source evidence question remains separate from package
 execution; no matrix or Release gate has been relaxed to count this as complete.
@@ -1443,7 +1488,7 @@ Windows reports are under `windows-py311-full/`, `windows-py312-full/`,
 `windows/` and `fixed-windows/`. Linux minor-version evidence is under
 `linux-minor-runtime/`. The owned guest stopped normally after verification,
 with both disks preserved. Resume from the
-[M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
+[M5â€“M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
 `feat/m6-single-codex-pilot` branch. Reuse this baseline and rerun affected
 checks only for changes in code or tests.
 
@@ -1744,11 +1789,11 @@ Actual8processes completed in~0.356s; parent file preserved. No production edits
 Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
 See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
 
-Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 Ã—wheel/sdist)
 environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
 junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
 785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
-IndependentAstra source+result review approves scopeddevelopment only. Same32×8
+IndependentAstra source+result review approves scopeddevelopment only. Same32Ã—8
 budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
 256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
 OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
@@ -1758,7 +1803,7 @@ M8 bounded process-local Core admission implemented; existing SQL/auth/replay/le
 audit/close body byte-identical, owner/migration paths unchanged. Astra source
 review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
 37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
-andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
+andtwo-MCPprocessclaim passed. Same32Ã—8/1000ms workload p95 observed107.837ms
 versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
 Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
 core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
@@ -1772,7 +1817,7 @@ Formal42not_run/releaseBLOCKED.
 M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
 Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
 Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
-Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
+Actual32Ã—8 strict run matched256events(8success/248denied), audit errors0; p95
 2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
 diagnostic extends the earlier2982539 packaged checkpoint.
 D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
@@ -1800,7 +1845,7 @@ preparation observed; completeflags/auth/realturn NOT RUN.
 Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
 
 M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
-11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker Ã—8round
 workloads measured456 claim attempts: all functional checks passed, no unexpected
 errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
 budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
@@ -2245,7 +2290,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiry→pending/unverified. These development runs used unfrozen overlays, not a
+expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.

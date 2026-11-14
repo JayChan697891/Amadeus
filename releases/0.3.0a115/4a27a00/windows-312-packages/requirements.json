@@ -1,0 +1,1674 @@
+{
+  "schema_version": 1,
+  "specification": "docs/SPECIFICATION.md: formal M0–M9 work-package tables and T01–T16",
+  "plan": "docs/PLAN.md",
+  "requirement_count": 42,
+  "scope": "v1.0 final acceptance; staged implementation; design is not execution evidence",
+  "status_vocabulary": [
+    "passed",
+    "failed",
+    "not_run",
+    "blocked",
+    "unverified"
+  ],
+  "coverage_vocabulary": {
+    "existing": "Selectors exercise the stated implemented behavior; not a passed requirement claim.",
+    "partial": "Some component evidence/selectors exist; complete requirement acceptance has gaps.",
+    "missing": "No implemented acceptance coverage found for the complete work package."
+  },
+  "evidence_convention": {
+    "shared": "<run>/report.json; <run>/logs/pytest.log; <run>/junit.xml; <run>/artifacts/; manifest includes version, source SHA, dirty state, commands, platform, timestamps and hashes",
+    "planned_per_requirement": "Per-requirement subdirectories describe target evidence layout; current aggregate execution must not claim these files exist.",
+    "live_clients": "client executable/version, public interface and auth category (no secrets), run/session IDs with safe correlation, sanitized transcript, fixture SHA, independent artifact verification, capability outcomes"
+  },
+  "requirements": [
+    {
+      "id": "M0-01",
+      "milestone": "M0",
+      "title": "Windows environment and local install",
+      "acceptance": "Installed version and import path match the artifact; Windows 11 environment and Python version recorded.",
+      "coverage": "existing",
+      "layers": [
+        "release",
+        "platform"
+      ],
+      "existing_tests": [
+        "tests/integration/test_transports.py::test_documented_sdk_import"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M0-01",
+          "title": "Windows environment and local install",
+          "method": "Build wheel and sdist; install each in a fresh isolated environment; run CLI help and SDK import from outside checkout.",
+          "expected": "Installed version and import path match the artifact; Windows 11 environment and Python version recorded."
+        }
+      ],
+      "method": "Build wheel and sdist; install each in a fresh isolated environment; run CLI help and SDK import from outside checkout.",
+      "expected": "Installed version and import path match the artifact; Windows 11 environment and Python version recorded.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M0-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T16"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M0-02",
+      "milestone": "M0",
+      "title": "Architecture, state machine and shared interfaces",
+      "acceptance": "Every transport delegates to Core; illegal transitions fail without persisted changes.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration"
+      ],
+      "existing_tests": [
+        "tests/unit/test_core.py",
+        "tests/integration/test_transports.py::test_sdk_http_share_one_persistent_workflow"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M0-02",
+          "title": "Architecture, state machine and shared interfaces",
+          "method": "Compare Core operation schemas and legal task transitions to ARCHITECTURE/CONTRACT; execute invalid transitions through SDK, HTTP and MCP.",
+          "expected": "Every transport delegates to Core; illegal transitions fail without persisted changes."
+        }
+      ],
+      "method": "Compare Core operation schemas and legal task transitions to ARCHITECTURE/CONTRACT; execute invalid transitions through SDK, HTTP and MCP.",
+      "expected": "Every transport delegates to Core; illegal transitions fail without persisted changes.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M0-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M0-03",
+      "milestone": "M0",
+      "title": "Git repository, MIT license and dependencies",
+      "acceptance": "MIT and required notices included; dependency inventory matches installed artifacts; no credentials or private data.",
+      "coverage": "partial",
+      "layers": [
+        "release",
+        "security"
+      ],
+      "existing_tests": [],
+      "planned_cases": [
+        {
+          "id": "RAT-M0-03",
+          "title": "Git repository, MIT license and dependencies",
+          "method": "Inspect source and distribution manifests; scan tracked files and built archives for credential patterns and private state; generate third-party license inventory.",
+          "expected": "MIT and required notices included; dependency inventory matches installed artifacts; no credentials or private data."
+        }
+      ],
+      "method": "Inspect source and distribution manifests; scan tracked files and built archives for credential patterns and private state; generate third-party license inventory.",
+      "expected": "MIT and required notices included; dependency inventory matches installed artifacts; no credentials or private data.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M0-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M0-04",
+      "milestone": "M0",
+      "title": "Automated tests, Ruff, typing and CI",
+      "acceptance": "All required commands succeed at the recorded SHA; failures preserve logs and JUnit.",
+      "coverage": "existing",
+      "layers": [
+        "unit",
+        "integration",
+        "platform"
+      ],
+      "existing_tests": [],
+      "planned_cases": [
+        {
+          "id": "RAT-M0-04",
+          "title": "Automated tests, Ruff, typing and CI",
+          "method": "Run pytest with JUnit XML, Ruff check/format check, mypy and package builds on supported CI matrix.",
+          "expected": "All required commands succeed at the recorded SHA; failures preserve logs and JUnit."
+        }
+      ],
+      "method": "Run pytest with JUnit XML, Ruff check/format check, mypy and package builds on supported CI matrix.",
+      "expected": "All required commands succeed at the recorded SHA; failures preserve logs and JUnit.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M0-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M0-05",
+      "milestone": "M0",
+      "title": "Plan, progress, errors and decisions recovery",
+      "acceptance": "A maintainer can identify current checkpoint, blockers and next task using repository files alone.",
+      "coverage": "partial",
+      "layers": [
+        "release",
+        "recovery"
+      ],
+      "existing_tests": [],
+      "planned_cases": [
+        {
+          "id": "RAT-M0-05",
+          "title": "Plan, progress, errors and decisions recovery",
+          "method": "Follow saved PROGRESS recovery instructions in a fresh checkout without chat history; compare referenced commands/files against current repository.",
+          "expected": "A maintainer can identify current checkpoint, blockers and next task using repository files alone."
+        }
+      ],
+      "method": "Follow saved PROGRESS recovery instructions in a fresh checkout without chat history; compare referenced commands/files against current repository.",
+      "expected": "A maintainer can identify current checkpoint, blockers and next task using repository files alone.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M0-05/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M1-01",
+      "milestone": "M1",
+      "title": "Agent identity, session, heartbeat and online state",
+      "acceptance": "Identities remain distinct; online state follows heartbeat; expired credentials cannot mutate state.",
+      "coverage": "existing",
+      "layers": [
+        "unit",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/unit/test_core.py::test_heartbeat_extends_session_and_online_window",
+        "tests/security/test_core_security.py::test_online_status_comes_from_heartbeat_not_registration",
+        "tests/security/test_core_security.py::test_expired_session_cannot_heartbeat_or_replay_write"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M1-01",
+          "title": "Agent identity, session, heartbeat and online state",
+          "method": "Register two instances; heartbeat one; expire sessions and attempt stale reads/writes/replays.",
+          "expected": "Identities remain distinct; online state follows heartbeat; expired credentials cannot mutate state."
+        }
+      ],
+      "method": "Register two instances; heartbeat one; expire sessions and attempt stale reads/writes/replays.",
+      "expected": "Identities remain distinct; online state follows heartbeat; expired credentials cannot mutate state.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M1-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M1-02",
+      "milestone": "M1",
+      "title": "Projects, membership, tasks and dependencies",
+      "acceptance": "Project/member credentials cannot cross boundaries; dependencies block claims until valid completion.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/unit/test_core.py::test_persistence_review_and_dependencies",
+        "tests/security/test_core_security.py::test_session_and_project_credentials_are_bound"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M1-02",
+          "title": "Projects, membership, tasks and dependencies",
+          "method": "Create two projects and members; create dependency tasks; attempt foreign project reads/writes and premature dependent claim.",
+          "expected": "Project/member credentials cannot cross boundaries; dependencies block claims until valid completion."
+        }
+      ],
+      "method": "Create two projects and members; create dependency tasks; attempt foreign project reads/writes and premature dependent claim.",
+      "expected": "Project/member credentials cannot cross boundaries; dependencies block claims until valid completion.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M1-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T07"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M1-03",
+      "milestone": "M1",
+      "title": "Atomic task claims, versions and state transitions",
+      "acceptance": "Exactly one owner; replay does not duplicate effects; changed payload and stale versions are rejected.",
+      "coverage": "existing",
+      "layers": [
+        "concurrency",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",
+        "tests/security/test_core_security.py::test_cross_process_claim_has_exactly_one_winner",
+        "tests/security/test_core_security.py::test_idempotency_replay_collision_and_authentication",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M1-03",
+          "title": "Atomic task claims, versions and state transitions",
+          "method": "Synchronize independent contenders; replay request IDs with same and changed bodies; submit stale versions.",
+          "expected": "Exactly one owner; replay does not duplicate effects; changed payload and stale versions are rejected."
+        }
+      ],
+      "method": "Synchronize independent contenders; replay request IDs with same and changed bodies; submit stale versions.",
+      "expected": "Exactly one owner; replay does not duplicate effects; changed payload and stale versions are rejected.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M1-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T01",
+        "T02"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M1-04",
+      "milestone": "M1",
+      "title": "Task lease renewal, timeout and recovery",
+      "acceptance": "Expired owner cannot write or revive a lease; new owner alone progresses task.",
+      "coverage": "existing",
+      "layers": [
+        "unit",
+        "security",
+        "recovery"
+      ],
+      "existing_tests": [
+        "tests/unit/test_core.py::test_expired_lease_replay_reclaim_and_new_owner",
+        "tests/security/test_core_security.py::test_renewal_replay_does_not_extend_lease_and_expiry_still_wins"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M1-04",
+          "title": "Task lease renewal, timeout and recovery",
+          "method": "Expire a lease, reassign to another agent, replay old claim/renew/update requests; repeat across restart.",
+          "expected": "Expired owner cannot write or revive a lease; new owner alone progresses task."
+        }
+      ],
+      "method": "Expire a lease, reassign to another agent, replay old claim/renew/update requests; repeat across restart.",
+      "expected": "Expired owner cannot write or revive a lease; new owner alone progresses task.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M1-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T04"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M1-05",
+      "milestone": "M1",
+      "title": "SQLite persistence, transactions and migrations",
+      "acceptance": "Committed rows survive; aborted transaction leaves no partial ownership or schema; migration is atomic.",
+      "coverage": "partial",
+      "layers": [
+        "integration",
+        "concurrency",
+        "recovery"
+      ],
+      "existing_tests": [
+        "tests/concurrency/test_claims.py::test_concurrent_first_process_migrations",
+        "tests/integration/test_m3_migration.py",
+        "tests/integration/test_m4_migration.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M1-05",
+          "title": "SQLite persistence, transactions and migrations",
+          "method": "Migrate each historical schema and reopen; race first initialization; kill an isolated writer between transaction stages and reopen.",
+          "expected": "Committed rows survive; aborted transaction leaves no partial ownership or schema; migration is atomic."
+        }
+      ],
+      "method": "Migrate each historical schema and reopen; race first initialization; kill an isolated writer between transaction stages and reopen.",
+      "expected": "Committed rows survive; aborted transaction leaves no partial ownership or schema; migration is atomic.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M1-05/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T03"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M2-01",
+      "milestone": "M2",
+      "title": "Official MCP stdio server",
+      "acceptance": "Schemas match operations; valid calls persist and invalid calls return structured errors.",
+      "coverage": "existing",
+      "layers": [
+        "integration"
+      ],
+      "existing_tests": [
+        "tests/integration/test_transports.py::test_real_mcp_stdio_tools_and_core",
+        "tests/integration/test_m3_transports.py::test_mcp_handoff_has_explicit_nested_typed_schema"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M2-01",
+          "title": "Official MCP stdio server",
+          "method": "Start official MCP client/server subprocesses and discover/call typed tools including error paths.",
+          "expected": "Schemas match operations; valid calls persist and invalid calls return structured errors."
+        }
+      ],
+      "method": "Start official MCP client/server subprocesses and discover/call typed tools including error paths.",
+      "expected": "Schemas match operations; valid calls persist and invalid calls return structured errors.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M2-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M2-02",
+      "milestone": "M2",
+      "title": "Multiple MCP processes share one state database",
+      "acceptance": "Both observe identical state and exactly one claim winner.",
+      "coverage": "existing",
+      "layers": [
+        "integration",
+        "concurrency"
+      ],
+      "existing_tests": [
+        "tests/integration/test_transports.py::test_two_mcp_processes_share_atomic_claim"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M2-02",
+          "title": "Multiple MCP processes share one state database",
+          "method": "Start two independent MCP server processes configured to the same absolute temporary data path; race task claim.",
+          "expected": "Both observe identical state and exactly one claim winner."
+        }
+      ],
+      "method": "Start two independent MCP server processes configured to the same absolute temporary data path; race task claim.",
+      "expected": "Both observe identical state and exactly one claim winner.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M2-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T05"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M2-03",
+      "milestone": "M2",
+      "title": "Python SDK",
+      "acceptance": "SDK exercises Core rules and the persisted state is readable through other transports.",
+      "coverage": "existing",
+      "layers": [
+        "unit",
+        "integration"
+      ],
+      "existing_tests": [
+        "tests/integration/test_transports.py::test_documented_sdk_import",
+        "tests/integration/test_transports.py::test_sdk_http_share_one_persistent_workflow"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M2-03",
+          "title": "Python SDK",
+          "method": "Use installed SDK to create/register/claim/update/review using documented imports and arguments.",
+          "expected": "SDK exercises Core rules and the persisted state is readable through other transports."
+        }
+      ],
+      "method": "Use installed SDK to create/register/claim/update/review using documented imports and arguments.",
+      "expected": "SDK exercises Core rules and the persisted state is readable through other transports.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M2-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T06"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M2-04",
+      "milestone": "M2",
+      "title": "Authenticated local HTTP API",
+      "acceptance": "Correct state returned; missing/foreign credentials and nonloopback boundary attempts are denied; state survives restart.",
+      "coverage": "existing",
+      "layers": [
+        "integration",
+        "security",
+        "recovery"
+      ],
+      "existing_tests": [
+        "tests/integration/test_live_http.py::test_real_loopback_http_and_process_restart",
+        "tests/security/test_http_boundary.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M2-04",
+          "title": "Authenticated local HTTP API",
+          "method": "Run actual loopback server; test auth, origin/host boundaries, SDK parity and server restart.",
+          "expected": "Correct state returned; missing/foreign credentials and nonloopback boundary attempts are denied; state survives restart."
+        }
+      ],
+      "method": "Run actual loopback server; test auth, origin/host boundaries, SDK parity and server restart.",
+      "expected": "Correct state returned; missing/foreign credentials and nonloopback boundary attempts are denied; state survives restart.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M2-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T06"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M2-05",
+      "milestone": "M2",
+      "title": "Real MCP client connection and configuration",
+      "acceptance": "At least one real compatible client connects and a second is attempted; protocol/saved evidence tests never impersonate live client execution.",
+      "coverage": "partial",
+      "layers": [
+        "real_client"
+      ],
+      "existing_tests": [
+        "tests/integration/test_host_report.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M2-05",
+          "title": "Real MCP client connection and configuration",
+          "method": "Rerun manual native Codex probes and Claude CLI probe in isolated configuration; separately record user-confirmed desktop connectivity and attempt second client.",
+          "expected": "At least one real compatible client connects and a second is attempted; protocol/saved evidence tests never impersonate live client execution."
+        }
+      ],
+      "method": "Rerun manual native Codex probes and Claude CLI probe in isolated configuration; separately record user-confirmed desktop connectivity and attempt second client.",
+      "expected": "At least one real compatible client connects and a second is attempted; protocol/saved evidence tests never impersonate live client execution.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M2-05/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M3-01",
+      "milestone": "M3",
+      "title": "Authorized project context store",
+      "acceptance": "Authorized agents see correct records; foreign reads fail without data disclosure.",
+      "coverage": "existing",
+      "layers": [
+        "unit",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/unit/test_context.py::test_context_history_idempotency_and_metadata",
+        "tests/security/test_m3_security.py::test_context_and_handoff_project_isolation"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M3-01",
+          "title": "Authorized project context store",
+          "method": "Publish requirement/decision/constraint/progress entries and retrieve from another authorized agent and a foreign project.",
+          "expected": "Authorized agents see correct records; foreign reads fail without data disclosure."
+        }
+      ],
+      "method": "Publish requirement/decision/constraint/progress entries and retrieve from another authorized agent and a foreign project.",
+      "expected": "Authorized agents see correct records; foreign reads fail without data disclosure.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M3-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T07"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M3-02",
+      "milestone": "M3",
+      "title": "Context search, summaries, source and revisions",
+      "acceptance": "Search stays project-scoped and literal; source and user-authored summary preserved; pinned history remains immutable.",
+      "coverage": "existing",
+      "layers": [
+        "unit",
+        "concurrency",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/unit/test_context.py",
+        "tests/concurrency/test_m3_races.py::test_context_update_concurrent_with_handoff_pins_requested_revision"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M3-02",
+          "title": "Context search, summaries, source and revisions",
+          "method": "Search literal punctuation and short Chinese queries; edit revisions concurrently; pin old revision into a handoff.",
+          "expected": "Search stays project-scoped and literal; source and user-authored summary preserved; pinned history remains immutable."
+        }
+      ],
+      "method": "Search literal punctuation and short Chinese queries; edit revisions concurrently; pin old revision into a handoff.",
+      "expected": "Search stays project-scoped and literal; source and user-authored summary preserved; pinned history remains immutable.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M3-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T07"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M3-03",
+      "milestone": "M3",
+      "title": "Structured handoff package",
+      "acceptance": "Complete typed package and immutable snapshots persist; invalid submission rolls back; paths/URLs are metadata, never executed.",
+      "coverage": "existing",
+      "layers": [
+        "integration",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/security/test_m3_security.py::test_handoff_pins_context_and_invalid_reference_is_atomic",
+        "tests/integration/test_m3_transports.py::test_http_m3_operations_share_sdk_core_and_fixed_snapshots"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M3-03",
+          "title": "Structured handoff package",
+          "method": "Submit completed work, changed files, questions, evidence and fixed context references through all transports; send invalid foreign references.",
+          "expected": "Complete typed package and immutable snapshots persist; invalid submission rolls back; paths/URLs are metadata, never executed."
+        }
+      ],
+      "method": "Submit completed work, changed files, questions, evidence and fixed context references through all transports; send invalid foreign references.",
+      "expected": "Complete typed package and immutable snapshots persist; invalid submission rolls back; paths/URLs are metadata, never executed.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M3-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M3-04",
+      "milestone": "M3",
+      "title": "Handoff acceptance, rejection, withdrawal and reassignment",
+      "acceptance": "Old lease invalidated; only recipient continues; reservation expires; real continuation evidence is separately required.",
+      "coverage": "partial",
+      "layers": [
+        "integration",
+        "concurrency",
+        "real_client"
+      ],
+      "existing_tests": [
+        "tests/integration/test_m3_transports.py::test_real_independent_mcp_client_process_handoff",
+        "tests/concurrency/test_m3_races.py::test_resolve_withdraw_race_never_changes_completed_decision",
+        "tests/security/test_m3_security.py",
+        "tests/integration/test_handoff_recovery.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M3-04",
+          "title": "Handoff acceptance, rejection, withdrawal and reassignment",
+          "method": "Execute protocol A-to-B-to-A handoff plus a separate real-client development continuation; reject/withdraw and expire recipient reservation.",
+          "expected": "Old lease invalidated; only recipient continues; reservation expires; real continuation evidence is separately required."
+        }
+      ],
+      "method": "Execute protocol A-to-B-to-A handoff plus a separate real-client development continuation; reject/withdraw and expire recipient reservation.",
+      "expected": "Old lease invalidated; only recipient continues; reservation expires; real continuation evidence is separately required.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M3-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M4-01",
+      "milestone": "M4",
+      "title": "Workspace path validation and canonical identity",
+      "acceptance": "Escapes/ambiguous unsafe aliases are rejected; legitimate canonical paths have stable identity; unsupported filesystem tests are explicit skips.",
+      "coverage": "existing",
+      "layers": [
+        "security",
+        "platform"
+      ],
+      "existing_tests": [
+        "tests/security/test_resource_paths.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M4-01",
+          "title": "Workspace path validation and canonical identity",
+          "method": "Exercise traversal, absolute/UNC/ADS/device aliases, symlinks, junctions, hardlinks, root replacement and platform case/Unicode behavior inside temporary roots.",
+          "expected": "Escapes/ambiguous unsafe aliases are rejected; legitimate canonical paths have stable identity; unsupported filesystem tests are explicit skips."
+        }
+      ],
+      "method": "Exercise traversal, absolute/UNC/ADS/device aliases, symlinks, junctions, hardlinks, root replacement and platform case/Unicode behavior inside temporary roots.",
+      "expected": "Escapes/ambiguous unsafe aliases are rejected; legitimate canonical paths have stable identity; unsupported filesystem tests are explicit skips.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M4-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M4-02",
+      "milestone": "M4",
+      "title": "Cooperative file/directory locks and leases",
+      "acceptance": "Only one overlapping exclusive lease; stale tokens cannot affect replacement; token hashes only stored; locks explicitly cooperative.",
+      "coverage": "existing",
+      "layers": [
+        "security",
+        "concurrency",
+        "integration"
+      ],
+      "existing_tests": [
+        "tests/security/test_file_locks.py",
+        "tests/concurrency/test_file_lock_races.py::test_two_independent_processes_have_exactly_one_lock_winner",
+        "tests/integration/test_m4_transports.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M4-02",
+          "title": "Cooperative file/directory locks and leases",
+          "method": "Race file/directory ancestor locks across sessions and overlapping projects; renew/release/replay/expire locks.",
+          "expected": "Only one overlapping exclusive lease; stale tokens cannot affect replacement; token hashes only stored; locks explicitly cooperative."
+        }
+      ],
+      "method": "Race file/directory ancestor locks across sessions and overlapping projects; renew/release/replay/expire locks.",
+      "expected": "Only one overlapping exclusive lease; stale tokens cannot affect replacement; token hashes only stored; locks explicitly cooperative.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M4-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T08"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M4-03",
+      "milestone": "M4",
+      "title": "Independent Git worktrees",
+      "acceptance": "Worktree paths and branches differ; each sees its own edit; original worktree and user modifications remain unchanged.",
+      "coverage": "existing",
+      "layers": [
+        "integration",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/integration/test_m4b_workspaces.py::test_committed_only_capture_and_independent_owned_worktrees_preserve_original",
+        "tests/integration/test_m4b_workspaces.py::test_concurrent_create_request_has_one_owned_worktree_and_restart_replays"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M4-03",
+          "title": "Independent Git worktrees",
+          "method": "Create a dedicated temporary Git repository; ask two agents to create separate managed worktrees and edit the same relative file.",
+          "expected": "Worktree paths and branches differ; each sees its own edit; original worktree and user modifications remain unchanged."
+        }
+      ],
+      "method": "Create a dedicated temporary Git repository; ask two agents to create separate managed worktrees and edit the same relative file.",
+      "expected": "Worktree paths and branches differ; each sees its own edit; original worktree and user modifications remain unchanged.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M4-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T09"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M4-04",
+      "milestone": "M4",
+      "title": "File versions, diffs and merge conflict detection",
+      "acceptance": "Changed hash and unstable read detected; actual conflict paths reported with base/ours/theirs evidence; no user file overwritten.",
+      "coverage": "existing",
+      "layers": [
+        "security",
+        "integration",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/security/test_resource_paths.py::test_unicode_backslashes_hash_changes_missing_and_directory",
+        "tests/security/test_resource_paths.py::test_mutation_during_real_hash_read_is_explicitly_unstable",
+        "tests/integration/test_m4b_workspaces.py::test_actual_same_line_conflict_uses_third_tree_and_preserves_both_actors",
+        "tests/integration/test_m4b_workspaces.py::test_dirty_and_stale_worktree_inputs_fail_without_discarding_edits",
+        "tests/integration/test_m4b_workspaces.py::test_nul_parsed_unicode_and_space_filenames_survive_conflict_comparison",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M4-04",
+          "title": "File versions, diffs and merge conflict detection",
+          "method": "Verify stale file hash rejection; manufacture conflicting commits in two isolated worktrees and run conflict detection without merging.",
+          "expected": "Changed hash and unstable read detected; actual conflict paths reported with base/ours/theirs evidence; no user file overwritten."
+        }
+      ],
+      "method": "Verify stale file hash rejection; manufacture conflicting commits in two isolated worktrees and run conflict detection without merging.",
+      "expected": "Changed hash and unstable read detected; actual conflict paths reported with base/ours/theirs evidence; no user file overwritten.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M4-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T09"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M4-05",
+      "milestone": "M4",
+      "title": "Safe merge policy and human approval",
+      "acceptance": "No unauthorized or stale-approved overwrite; approved merge remains confined and auditable; conflicts require resolution.",
+      "coverage": "partial",
+      "layers": [
+        "security",
+        "integration"
+      ],
+      "existing_tests": [
+        "tests/integration/test_m4b_workspaces.py::test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable",
+        "tests/integration/test_verified_task_completion.py::test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan",
+        "tests/integration/test_verified_task_completion.py::test_actual_linux_docker_to_independent_verified_completion",
+        "tests/integration/test_candidate_integration.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M4-05",
+          "title": "Safe merge policy and human approval",
+          "method": "In a disposable repository preserve dirty tracked/untracked files; attempt merge without approval, with stale approval and with explicit scoped approval.",
+          "expected": "No unauthorized or stale-approved overwrite; approved merge remains confined and auditable; conflicts require resolution."
+        }
+      ],
+      "method": "In a disposable repository preserve dirty tracked/untracked files; attempt merge without approval, with stale approval and with explicit scoped approval.",
+      "expected": "No unauthorized or stale-approved overwrite; approved merge remains confined and auditable; conflicts require resolution.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M4-05/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T09"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M5-01",
+      "milestone": "M5",
+      "title": "Identity, project and operation authorization",
+      "acceptance": "Every denied operation fails closed without mutation or secret exposure; no transport bypass.",
+      "coverage": "existing",
+      "layers": [
+        "security"
+      ],
+      "existing_tests": [
+        "tests/security/test_core_security.py",
+        "tests/security/test_m3_security.py",
+        "tests/security/test_file_locks.py::test_only_owning_session_can_mutate_even_for_same_agent",
+        "tests/security/test_m5_permissions.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py",
+        "tests/unit/test_verification_reconciliation.py",
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py",
+        "tests/integration/test_candidate_queue_security.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py",
+        "tests/integration/test_candidate_intents.py",
+        "tests/integration/test_candidate_intent_migration.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M5-01",
+          "title": "Identity, project and operation authorization",
+          "method": "Apply a complete role-operation matrix to every current and future tool, including reads, replays, adapters and workspace operations.",
+          "expected": "Every denied operation fails closed without mutation or secret exposure; no transport bypass."
+        }
+      ],
+      "method": "Apply a complete role-operation matrix to every current and future tool, including reads, replays, adapters and workspace operations.",
+      "expected": "Every denied operation fails closed without mutation or secret exposure; no transport bypass.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M5-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M5-02",
+      "milestone": "M5",
+      "title": "High-risk approvals and default read-only execution",
+      "acceptance": "Default read-only; arbitrary model-supplied shell text cannot authorize execution; exact approval identity/scope checked.",
+      "coverage": "partial",
+      "layers": [
+        "security",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/integration/test_m5_governance.py",
+        "tests/concurrency/test_m5_approval_races.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M5-02",
+          "title": "High-risk approvals and default read-only execution",
+          "method": "Attempt dangerous operations without approval and with expired/wrong-project approval in a temporary sandbox; then grant exact-scoped approval.",
+          "expected": "Default read-only; arbitrary model-supplied shell text cannot authorize execution; exact approval identity/scope checked."
+        }
+      ],
+      "method": "Attempt dangerous operations without approval and with expired/wrong-project approval in a temporary sandbox; then grant exact-scoped approval.",
+      "expected": "Default read-only; arbitrary model-supplied shell text cannot authorize execution; exact approval identity/scope checked.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M5-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M5-03",
+      "milestone": "M5",
+      "title": "Structured redacted audit logs",
+      "acceptance": "No raw synthetic secret in saved evidence; authorized audit reconstructs actor/action/version/time without credential disclosure.",
+      "coverage": "existing",
+      "layers": [
+        "security",
+        "recovery"
+      ],
+      "existing_tests": [
+        "tests/security/test_core_security.py::test_secrets_absent_from_state_list_and_database",
+        "tests/unit/test_core.py::test_strict_schema_and_no_secret_validation_echo",
+        "tests/security/test_m5_audit_transactions.py",
+        "tests/integration/test_m5_governance.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py",
+        "tests/unit/test_verification_reconciliation.py",
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py",
+        "tests/integration/test_candidate_intents.py",
+        "tests/integration/test_candidate_intent_migration.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M5-03",
+          "title": "Structured redacted audit logs",
+          "method": "Inject synthetic API/session secrets into failures/tool outputs; inspect stdout, stderr, audit, HTTP/MCP errors and report archives; correlate state changes.",
+          "expected": "No raw synthetic secret in saved evidence; authorized audit reconstructs actor/action/version/time without credential disclosure."
+        }
+      ],
+      "method": "Inject synthetic API/session secrets into failures/tool outputs; inspect stdout, stderr, audit, HTTP/MCP errors and report archives; correlate state changes.",
+      "expected": "No raw synthetic secret in saved evidence; authorized audit reconstructs actor/action/version/time without credential disclosure.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M5-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T11"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M5-04",
+      "milestone": "M5",
+      "title": "Independent acceptance criteria and evidence verification",
+      "acceptance": "Self-declared completion stays review; reviewer identity distinct; only matching independently verified evidence permits completed.",
+      "coverage": "partial",
+      "layers": [
+        "integration",
+        "e2e",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/integration/test_acceptance.py::test_dependency_review_rejection_rework_and_persistence",
+        "tests/security/test_core_security.py::test_owner_version_and_review_identity_are_enforced",
+        "tests/unit/test_verification_snapshot.py",
+        "tests/unit/test_verification_docker.py",
+        "tests/integration/test_docker_verifier.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py",
+        "tests/unit/test_verification_reconciliation.py",
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py",
+        "tests/integration/test_candidate_queue_security.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py",
+        "tests/integration/test_candidate_intents.py",
+        "tests/integration/test_candidate_intent_migration.py",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M5-04",
+          "title": "Independent acceptance criteria and evidence verification",
+          "method": "Implementer submits claim; independent reviewer reruns allowlisted tests against immutable artifact/SHA; test fabricated JUnit and stale/modified artifacts.",
+          "expected": "Self-declared completion stays review; reviewer identity distinct; only matching independently verified evidence permits completed."
+        }
+      ],
+      "method": "Implementer submits claim; independent reviewer reruns allowlisted tests against immutable artifact/SHA; test fabricated JUnit and stale/modified artifacts.",
+      "expected": "Self-declared completion stays review; reviewer identity distinct; only matching independently verified evidence permits completed.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M5-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T10"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M5-05",
+      "milestone": "M5",
+      "title": "Security regression and untrusted tool output",
+      "acceptance": "Untrusted text remains data; no arbitrary execution, approval bypass, secret leakage or cross-project access.",
+      "coverage": "partial",
+      "layers": [
+        "security",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/security/test_http_boundary.py",
+        "tests/security/test_core_security.py::test_strict_schemas_reject_unknown_and_coerced_fields",
+        "tests/security/test_m3_security.py::test_replayed_writes_and_reads_always_authenticate",
+        "tests/security/test_m5_permissions.py",
+        "tests/integration/test_m5_migration.py",
+        "tests/security/test_m5_owner_cli_inputs.py",
+        "tests/unit/test_verification_snapshot.py",
+        "tests/unit/test_verification_docker.py",
+        "tests/integration/test_docker_verifier.py",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py",
+        "tests/unit/test_verification_reconciliation.py",
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/unit/test_candidate_binding.py",
+        "tests/integration/test_candidate_binding_git_records.py",
+        "tests/integration/test_candidate_export.py",
+        "tests/integration/test_candidate_export_security.py",
+        "tests/integration/test_candidate_jobs.py",
+        "tests/unit/test_candidate_queue_migration.py",
+        "tests/integration/test_candidate_queue_security.py",
+        "tests/integration/test_candidate_claims.py",
+        "tests/integration/test_candidate_claim_migration.py",
+        "tests/integration/test_candidate_intents.py",
+        "tests/integration/test_candidate_intent_migration.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M5-05",
+          "title": "Security regression and untrusted tool output",
+          "method": "Embed instruction-looking payloads in context, handoff, stderr and adapter responses; malformed/fuzz inputs try to widen tool permissions.",
+          "expected": "Untrusted text remains data; no arbitrary execution, approval bypass, secret leakage or cross-project access."
+        }
+      ],
+      "method": "Embed instruction-looking payloads in context, handoff, stderr and adapter responses; malformed/fuzz inputs try to widen tool permissions.",
+      "expected": "Untrusted text remains data; no arbitrary execution, approval bypass, secret leakage or cross-project access.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M5-05/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T12"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M6-01",
+      "milestone": "M6",
+      "title": "Uniform adapter lifecycle and capability declarations",
+      "acceptance": "Consistent typed lifecycle; unsupported cancel/resume/usage reported explicitly, never fabricated success.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration",
+        "real_client"
+      ],
+      "existing_tests": [
+        "tests/unit/test_adapters.py::test_start_and_observe_running_adapter_run",
+        "tests/unit/test_adapters.py::test_capabilities_honestly_declare_simulation_and_cancel",
+        "tests/unit/test_adapters.py::test_unsupported_cancel_and_resume_do_not_change_run"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M6-01",
+          "title": "Uniform adapter lifecycle and capability declarations",
+          "method": "Contract-test each adapter lifecycle and compare advertised capabilities with actual supported SDK/CLI methods.",
+          "expected": "Consistent typed lifecycle; unsupported cancel/resume/usage reported explicitly, never fabricated success."
+        }
+      ],
+      "method": "Contract-test each adapter lifecycle and compare advertised capabilities with actual supported SDK/CLI methods.",
+      "expected": "Consistent typed lifecycle; unsupported cancel/resume/usage reported explicitly, never fabricated success.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M6-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T14"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M6-02",
+      "milestone": "M6",
+      "title": "MockAdapter for multiple simulated agents",
+      "acceptance": "Mock scheduling reproducible and cost-free; all reports label mock evidence and cannot satisfy real-client gate.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_adapters.py::test_only_explicit_finish_produces_simulated_result",
+        "tests/unit/test_adapters.py::test_concurrent_duplicate_start_is_one_run",
+        "tests/unit/test_adapters.py::test_observing_clock_only_times_out_never_completes",
+        "tests/unit/test_adapters.py::test_separate_mock_instances_do_not_share_runs_or_authorize_core_access",
+        "tests/integration/test_mock_adapter_core_boundary.py::test_mock_terminal_result_preserves_core_task_and_persisted_state",
+        "tests/unit/test_mock_run_manager.py::test_global_running_limit_is_atomic_across_workers",
+        "tests/unit/test_mock_run_manager.py::test_same_task_concurrently_started_on_workers_has_one_active_winner",
+        "tests/unit/test_mock_run_manager.py::test_replay_precedes_running_and_history_capacity",
+        "tests/integration/test_mock_run_manager_core_boundary.py::test_dispatch_plan_to_mock_manager_preserves_complete_core_snapshot"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M6-02",
+          "title": "MockAdapter for multiple simulated agents",
+          "method": "Use deterministic fake clients with success, timeout, failure, malformed output and cancellation scripts; run without provider keys/network.",
+          "expected": "Mock scheduling reproducible and cost-free; all reports label mock evidence and cannot satisfy real-client gate."
+        }
+      ],
+      "method": "Use deterministic fake clients with success, timeout, failure, malformed output and cancellation scripts; run without provider keys/network.",
+      "expected": "Mock scheduling reproducible and cost-free; all reports label mock evidence and cannot satisfy real-client gate.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M6-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T15"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M6-03",
+      "milestone": "M6",
+      "title": "Real Codex control adapter",
+      "acceptance": "Real run/session ID, client version and command recorded; artifact validated; unavailable credentials/quota reported blocked rather than passed.",
+      "coverage": "partial",
+      "layers": [
+        "real_client",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
+        "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
+        "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
+        "tests/unit/test_codex_events.py::test_only_completed_agent_messages_are_projected_and_usage_can_be_absent",
+        "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
+        "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
+        "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
+        "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
+        "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
+        "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
+        "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
+        "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
+        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
+        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging",
+        "tests/integration/test_proposal_docker_pipeline.py::test_same_core_proposal_to_independent_docker_acceptance"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M6-03",
+          "title": "Real Codex control adapter",
+          "method": "Using public supported Codex SDK/CLI and authorized subscription in an isolated worktree, start bounded coding task; poll, collect output, independently test artifact and probe advertised cancel/resume.",
+          "expected": "Real run/session ID, client version and command recorded; artifact validated; unavailable credentials/quota reported blocked rather than passed."
+        }
+      ],
+      "method": "Using public supported Codex SDK/CLI and authorized subscription in an isolated worktree, start bounded coding task; poll, collect output, independently test artifact and probe advertised cancel/resume.",
+      "expected": "Real run/session ID, client version and command recorded; artifact validated; unavailable credentials/quota reported blocked rather than passed.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M6-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T13",
+        "T14"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M6-04",
+      "milestone": "M6",
+      "title": "Real Claude Code control adapter",
+      "acceptance": "Claude-specific real evidence and capabilities saved; MCP health check alone cannot satisfy adapter acceptance.",
+      "coverage": "partial",
+      "layers": [
+        "real_client",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_claude_events.py::test_literal_complete_response_needs_exit_zero_and_is_unverified",
+        "tests/unit/test_claude_events.py::test_unsuccessful_observations_never_expose_final_text",
+        "tests/unit/test_claude_events.py::test_last_assistant_incomplete_stop_cannot_be_hidden_by_optimistic_result",
+        "tests/unit/test_inspect_claude_events.py::test_cli_summarizes_explicit_fixture_with_no_raw_text_or_verified_claims",
+        "tests/unit/test_claude_adapter.py::test_default_adapter_contract_is_unverified_and_start_unsupported",
+        "tests/unit/test_claude_adapter.py::test_reused_capture_is_rejected_without_stopping_first_run_parent",
+        "tests/unit/test_claude_adapter.py::test_factory_deadline_freezes_unknown_then_cleans_only_fresh_late_parent",
+        "tests/integration/test_claude_adapter_core_boundary.py::test_claude_protocol_success_preserves_actual_core_and_reopened_state",
+        "tests/unit/test_claude_invocation.py::test_fixed_argv_stdin_environment_privacy_and_unverified_markers",
+        "tests/unit/test_claude_invocation.py::test_profile_namespace_version_and_environment_validation_precede_io",
+        "tests/unit/test_claude_invocation.py::test_binary_changes_during_bounded_hash_and_size_limit_fail_closed"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M6-04",
+          "title": "Real Claude Code control adapter",
+          "method": "Use public Claude Agent SDK/CLI with explicit bounded tool permissions and approved auth/cost; start isolated task and verify lifecycle/output/artifact.",
+          "expected": "Claude-specific real evidence and capabilities saved; MCP health check alone cannot satisfy adapter acceptance."
+        }
+      ],
+      "method": "Use public Claude Agent SDK/CLI with explicit bounded tool permissions and approved auth/cost; start isolated task and verify lifecycle/output/artifact.",
+      "expected": "Claude-specific real evidence and capabilities saved; MCP health check alone cannot satisfy adapter acceptance.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M6-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T13",
+        "T14"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M6-05",
+      "milestone": "M6",
+      "title": "Real Cursor adapter and run manager",
+      "acceptance": "Run/session/project IDs and errors tracked; unavailable OS/client features explicit unsupported; no GUI/internal API substitution.",
+      "coverage": "partial",
+      "layers": [
+        "real_client",
+        "integration",
+        "platform"
+      ],
+      "existing_tests": [
+        "tests/unit/test_cursor_node_bundle.py",
+        "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
+        "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
+        "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
+        "tests/integration/test_adapter_manager_core_boundary.py::test_heterogeneous_routes_preserve_protocol_markers_and_core",
+        "tests/unit/test_cursor_events.py::test_missing_exit_or_nonzero_and_empty_capture_never_expose_text",
+        "tests/unit/test_cursor_events.py::test_invalid_json_encoding_structure_and_bounds_are_static_errors",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_default_cursor_route_cannot_launch_or_change_core"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M6-05",
+          "title": "Real Cursor adapter and run manager",
+          "method": "Exercise supported Cursor noninteractive CLI in each claimed environment; run manager observes success, nonzero exit, timeout and process loss.",
+          "expected": "Run/session/project IDs and errors tracked; unavailable OS/client features explicit unsupported; no GUI/internal API substitution."
+        }
+      ],
+      "method": "Exercise supported Cursor noninteractive CLI in each claimed environment; run manager observes success, nonzero exit, timeout and process loss.",
+      "expected": "Run/session/project IDs and errors tracked; unavailable OS/client features explicit unsupported; no GUI/internal API substitution.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M6-05/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T13",
+        "T14"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M7-01",
+      "milestone": "M7",
+      "title": "Dependency graph and deterministic scheduling",
+      "acceptance": "Only eligible nodes start; cycles rejected; duplicate triggers never launch duplicate runs.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "concurrency",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_scheduling.py::test_dependencies_require_completed_and_missing_is_never_completed",
+        "tests/unit/test_scheduling.py::test_priority_then_created_at_then_id_sort_is_input_order_independent",
+        "tests/unit/test_scheduling.py::test_cycles_duplicate_ids_and_oversized_snapshots_are_invalid",
+        "tests/integration/test_scheduling_core_boundary.py::test_planning_uses_core_dependencies_and_priority_without_changing_tasks",
+        "tests/integration/test_scheduling_core_boundary.py::test_core_rejects_stale_recommendation_after_another_worker_claims",
+        "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is",
+        "tests/integration/test_proposal_handoff.py::test_concurrent_and_repeated_triggers_launch_only_once",
+        "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M7-01",
+          "title": "Dependency graph and deterministic scheduling",
+          "method": "Create dependency DAG, cycles and unsatisfied prerequisites; tick scheduler repeatedly/restart it while completions race.",
+          "expected": "Only eligible nodes start; cycles rejected; duplicate triggers never launch duplicate runs."
+        }
+      ],
+      "method": "Create dependency DAG, cycles and unsatisfied prerequisites; tick scheduler repeatedly/restart it while completions race.",
+      "expected": "Only eligible nodes start; cycles rejected; duplicate triggers never launch duplicate runs.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M7-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M7-02",
+      "milestone": "M7",
+      "title": "Capability, availability and load allocation",
+      "acceptance": "Capabilities and capacity enforced; real authorized agents continue automatically without human forwarding; mock run cannot satisfy real relay gate.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "concurrency",
+        "real_client",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_dispatch_planning.py::test_global_priority_order_and_least_load_balancing_are_deterministic",
+        "tests/unit/test_dispatch_planning.py::test_load_aggregates_all_sessions_but_dispatch_selects_one_fresh_session",
+        "tests/unit/test_dispatch_planning.py::test_reserved_worker_at_capacity_does_not_fall_back_to_another_worker",
+        "tests/integration/test_dispatch_planning_core_boundary.py::test_real_task_load_limits_suggestions_without_mutating_core",
+        "tests/integration/test_dispatch_planning_core_boundary.py::test_expired_lease_keeps_slot_until_explicit_core_reclamation",
+        "tests/integration/test_dispatch_planning_core_boundary.py::test_offline_handoff_recipient_is_not_replaced_by_another_available_worker",
+        "tests/unit/test_dispatch_planning.py::test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker",
+        "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
+        "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
+        "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen",
+        "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph",
+        "tests/integration/test_unfinished_continuation.py::test_untrusted_or_uncertain_source_cannot_dispatch",
+        "tests/integration/test_unfinished_continuation.py::test_dispatch_intent_without_wave_remains_unknown",
+        "tests/integration/test_unfinished_continuation.py::test_exact_plan_and_approval_time_source_recheck",
+        "tests/integration/test_unfinished_continuation.py::test_concurrent_requests_consume_one_new_dispatch",
+        "tests/integration/test_unfinished_continuation.py::test_continuation_keeps_known_tool_event_rejection",
+        "tests/integration/test_unfinished_continuation.py::test_changed_graph_rejects_previously_approved_plan",
+        "tests/integration/test_unfinished_continuation.py::test_preparation_checkpoint_resumes_without_second_source_attempt",
+        "tests/integration/test_unfinished_continuation.py::test_old_failed_receipt_cannot_cancel_reclaimed_same_session"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M7-02",
+          "title": "Capability, availability and load allocation",
+          "method": "Schedule two capable agents with bounded parallelism; lose one agent and hand off actual unfinished work automatically through adapters.",
+          "expected": "Capabilities and capacity enforced; real authorized agents continue automatically without human forwarding; mock run cannot satisfy real relay gate."
+        }
+      ],
+      "method": "Schedule two capable agents with bounded parallelism; lose one agent and hand off actual unfinished work automatically through adapters.",
+      "expected": "Capabilities and capacity enforced; real authorized agents continue automatically without human forwarding; mock run cannot satisfy real relay gate.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M7-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M7-03",
+      "milestone": "M7",
+      "title": "Optional BYOK multi-model providers",
+      "acceptance": "No key required for core; provider configs isolated and secrets redacted; paid paths remain explicitly unexecuted without approval.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration",
+        "security"
+      ],
+      "existing_tests": [
+        "tests/unit/test_http_providers.py",
+        "tests/integration/test_provider_loopback_transport.py",
+        "tests/unit/test_provider_usage_and_budget.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M7-03",
+          "title": "Optional BYOK multi-model providers",
+          "method": "Run full core with all provider keys absent; exercise provider abstraction using fake endpoints; credentialed real provider tests only with separate cost authorization.",
+          "expected": "No key required for core; provider configs isolated and secrets redacted; paid paths remain explicitly unexecuted without approval."
+        }
+      ],
+      "method": "Run full core with all provider keys absent; exercise provider abstraction using fake endpoints; credentialed real provider tests only with separate cost authorization.",
+      "expected": "No key required for core; provider configs isolated and secrets redacted; paid paths remain explicitly unexecuted without approval.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M7-03/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T15"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M7-04",
+      "milestone": "M7",
+      "title": "AI-assisted decomposition, retries and budgets",
+      "acceptance": "Bounded backoff/retries and idempotent scheduling; hard budgets stop execution; no unbounded automatic paid calls.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration",
+        "recovery",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_retry_planning.py::test_exponential_backoff_caps_and_retry_after_remains_an_uncapped_floor",
+        "tests/unit/test_retry_planning.py::test_unknown_and_unconfirmed_outcomes_never_recommend_retries",
+        "tests/unit/test_retry_planning.py::test_attempt_global_and_deadline_budgets_do_not_fake_an_immediate_retry",
+        "tests/unit/test_retry_planning.py::test_caller_composes_one_bounded_wait_and_second_mock_attempt_only",
+        "tests/integration/test_mock_workflow.py::test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews",
+        "tests/integration/test_mock_workflow.py::test_exhaustion_finishes_started_batch_and_preserves_unstarted_descendants",
+        "tests/integration/test_mock_workflow.py::test_existing_parent_core_unchanged_and_no_credentials_or_private_child_returned",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io",
+        "tests/integration/test_durable_mock_workflow.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M7-04",
+          "title": "AI-assisted decomposition, retries and budgets",
+          "method": "Mock decomposition and 429 Retry-After/timeout/5xx; duplicate callbacks; exhaust step/time/call/token/cost limits; restart between retry scheduling and launch.",
+          "expected": "Bounded backoff/retries and idempotent scheduling; hard budgets stop execution; no unbounded automatic paid calls."
+        }
+      ],
+      "method": "Mock decomposition and 429 Retry-After/timeout/5xx; duplicate callbacks; exhaust step/time/call/token/cost limits; restart between retry scheduling and launch.",
+      "expected": "Bounded backoff/retries and idempotent scheduling; hard budgets stop execution; no unbounded automatic paid calls.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M7-04/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M8-01",
+      "milestone": "M8",
+      "title": "Usage, cost, elapsed time and failure rate",
+      "acceptance": "Provenance separates measured/estimated/unknown; unknown never shown as zero real bill; no invented subscription quotas.",
+      "coverage": "partial",
+      "layers": [
+        "unit",
+        "integration",
+        "real_client"
+      ],
+      "existing_tests": [
+        "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
+        "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
+        "tests/unit/test_usage.py::test_checkpoint_rejects_malformed_namespaces_duplicates_and_overflow",
+        "tests/unit/test_usage.py::test_checkpoint_preflight_project_size_utf8_and_depth_before_parse",
+        "tests/unit/test_usage.py::test_mixed_protocol_and_simulated_records_keep_metrics_separate",
+        "tests/unit/test_usage.py::test_empty_missing_and_reported_zero_are_distinct",
+        "tests/unit/test_usage.py::test_cumulative_overflow_rejects_admission_atomically",
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+        "tests/integration/test_relay_usage.py",
+        "tests/integration/test_project_provider_usage.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M8-01",
+          "title": "Usage, cost, elapsed time and failure rate",
+          "method": "Provide measured, estimated, partial and absent usage records; aggregate by run/project and test duplicate ingestion, failed runs and unknown provider cost.",
+          "expected": "Provenance separates measured/estimated/unknown; unknown never shown as zero real bill; no invented subscription quotas."
+        }
+      ],
+      "method": "Provide measured, estimated, partial and absent usage records; aggregate by run/project and test duplicate ingestion, failed runs and unknown provider cost.",
+      "expected": "Provenance separates measured/estimated/unknown; unknown never shown as zero real bill; no invented subscription quotas.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M8-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M8-02",
+      "milestone": "M8",
+      "title": "Recovery, retry, performance and concurrency stress",
+      "acceptance": "Committed state survives; no duplicate active runs/owners; recoverable runs resume or explicit terminal/blocked state; latency/errors reported against declared budgets.",
+      "coverage": "partial",
+      "layers": [
+        "recovery",
+        "concurrency",
+        "integration",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_core_admission.py::test_same_database_core_instances_share_admission_while_other_database_progresses",
+        "tests/unit/test_core_admission.py::test_waiter_strong_reference_prevents_gate_replacement_and_unused_gate_is_reaped",
+        "tests/unit/test_core_admission.py::test_timeout_precedes_sql_or_denial_audit_and_payload_validation_precedes_gate",
+        "tests/unit/test_core_admission.py::test_admission_releases_after_connection_body_audit_close_and_base_exceptions",
+        "tests/unit/test_core_admission.py::test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent",
+        "tests/unit/test_coordination_benchmark.py::test_missing_denial_audit_fails_even_when_claims_and_latency_pass",
+        "tests/unit/test_coordination_benchmark.py::test_equal_audit_totals_do_not_mask_identity_or_outcome_corruption",
+        "tests/unit/test_coordination_benchmark.py::test_actual_two_worker_rounds_verify_claims_privacy_and_owned_cleanup",
+        "tests/unit/test_coordination_benchmark.py::test_cli_actual_tiny_latency_budget_fails_and_invalid_options_return_json",
+        "tests/unit/test_coordination_benchmark.py::test_unexpected_claim_exception_fails_without_raw_exception_text",
+        "tests/unit/test_usage.py::test_checkpoint_mixed_roundtrip_preserves_unknown_zero_and_omits_raw_metadata",
+        "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
+        "tests/recovery/test_process_recovery.py::test_abrupt_process_exit_preserves_commits_and_rolls_back_transaction",
+        "tests/recovery/test_process_recovery.py::test_crashed_running_owner_is_reclaimed_and_dependency_resumes_after_restart",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen",
+        "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",
+        "tests/concurrency/test_claims.py::test_concurrent_first_process_migrations",
+        "tests/unit/test_verification_jobs.py",
+        "tests/unit/test_verification_executor.py",
+        "tests/integration/test_owner_execution.py",
+        "tests/unit/test_verification_reconciliation.py",
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/integration/test_durable_mock_workflow.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M8-02",
+          "title": "Recovery, retry, performance and concurrency stress",
+          "method": "Kill isolated Core/MCP/HTTP/scheduler/adapter processes at persisted boundaries, restart with same DB, replay events; load a declared worker/task count with fixed seed and deadline.",
+          "expected": "Committed state survives; no duplicate active runs/owners; recoverable runs resume or explicit terminal/blocked state; latency/errors reported against declared budgets."
+        }
+      ],
+      "method": "Kill isolated Core/MCP/HTTP/scheduler/adapter processes at persisted boundaries, restart with same DB, replay events; load a declared worker/task count with fixed seed and deadline.",
+      "expected": "Committed state survives; no duplicate active runs/owners; recoverable runs resume or explicit terminal/blocked state; latency/errors reported against declared budgets.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M8-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T03",
+        "T04"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M9-01",
+      "milestone": "M9",
+      "title": "Windows, Linux and macOS compatibility",
+      "acceptance": "OS/Python/client/FS and SHA evidenced; skipped or unavailable capabilities explicitly limited; CI config alone is not an executed platform result.",
+      "coverage": "partial",
+      "layers": [
+        "platform",
+        "release"
+      ],
+      "existing_tests": [
+        "tests/security/test_resource_paths.py",
+        "tests/concurrency/test_claims.py",
+        "tests/integration/test_transports.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M9-01",
+          "title": "Windows, Linux and macOS compatibility",
+          "method": "Execute full required suite and clean installs on Windows/Linux/macOS for supported Python versions; separately run real client checks per OS and actual filesystem.",
+          "expected": "OS/Python/client/FS and SHA evidenced; skipped or unavailable capabilities explicitly limited; CI config alone is not an executed platform result."
+        }
+      ],
+      "method": "Execute full required suite and clean installs on Windows/Linux/macOS for supported Python versions; separately run real client checks per OS and actual filesystem.",
+      "expected": "OS/Python/client/FS and SHA evidenced; skipped or unavailable capabilities explicitly limited; CI config alone is not an executed platform result.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M9-01/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    },
+    {
+      "id": "M9-02",
+      "milestone": "M9",
+      "title": "Packaging, licenses, docs and authorized release",
+      "acceptance": "Artifacts and hashes reproducible with exact SHA; reports complete; no release while critical/security/real-relay gates fail or lack evidence; publication separately authorized.",
+      "coverage": "partial",
+      "layers": [
+        "release",
+        "security",
+        "e2e"
+      ],
+      "existing_tests": [
+        "tests/unit/test_release_acceptance.py"
+      ],
+      "planned_cases": [
+        {
+          "id": "RAT-M9-02",
+          "title": "Packaging, licenses, docs and authorized release",
+          "method": "Build wheel/sdist; inspect contents and licenses; clean-install each outside source tree; run documented examples and complete release gate before separately approved GitHub Release.",
+          "expected": "Artifacts and hashes reproducible with exact SHA; reports complete; no release while critical/security/real-relay gates fail or lack evidence; publication separately authorized."
+        }
+      ],
+      "method": "Build wheel/sdist; inspect contents and licenses; clean-install each outside source tree; run documented examples and complete release gate before separately approved GitHub Release.",
+      "expected": "Artifacts and hashes reproducible with exact SHA; reports complete; no release while critical/security/real-relay gates fail or lack evidence; publication separately authorized.",
+      "evidence": "<evidence_root>/<run_id>/requirements/M9-02/ (case.json, stdout.log, stderr.log, junit.xml or observations.json, artifact hashes)",
+      "original_scenarios": [
+        "T16"
+      ],
+      "release_gate": "required_for_v1_0",
+      "execution_status": "not_run"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "T01",
+      "title": "Two agents claim one task",
+      "expected": "One winner; ownership unique",
+      "requirements": [
+        "M1-03"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T01/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T02",
+      "title": "Concurrent claim requests",
+      "expected": "One winner across processes and transports",
+      "requirements": [
+        "M1-03"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T02/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T03",
+      "title": "Crash and restart",
+      "expected": "Committed records preserved; interrupted state reconciled",
+      "requirements": [
+        "M1-05",
+        "M8-02"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T03/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T04",
+      "title": "Lease expiry and reassignment",
+      "expected": "Stale owner and replay cannot mutate replacement",
+      "requirements": [
+        "M1-04",
+        "M8-02"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T04/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T05",
+      "title": "Two MCP processes share state",
+      "expected": "Same absolute database; coherent state",
+      "requirements": [
+        "M2-02"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T05/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T06",
+      "title": "SDK and HTTP access same task",
+      "expected": "Same Core state and errors",
+      "requirements": [
+        "M2-03",
+        "M2-04"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T06/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T07",
+      "title": "Cross-project context access",
+      "expected": "Unauthorized read denied without disclosure",
+      "requirements": [
+        "M1-02",
+        "M3-01",
+        "M3-02"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T07/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T08",
+      "title": "File lock contention",
+      "expected": "One exclusive overlapping lock",
+      "requirements": [
+        "M4-02"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T08/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T09",
+      "title": "Parallel Git edits and conflicts",
+      "expected": "Isolated worktrees and actual conflict detection",
+      "requirements": [
+        "M4-03",
+        "M4-04",
+        "M4-05"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T09/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T10",
+      "title": "Completion assertion",
+      "expected": "Independent verified review required",
+      "requirements": [
+        "M5-04"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T10/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T11",
+      "title": "API key in exception",
+      "expected": "All persisted/returned logs redacted",
+      "requirements": [
+        "M5-03"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T11/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T12",
+      "title": "Malicious MCP tool output",
+      "expected": "Untrusted data cannot widen permissions",
+      "requirements": [
+        "M5-05"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T12/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T13",
+      "title": "Adapter starts task",
+      "expected": "Actual supported client run ID and independently checked artifact",
+      "requirements": [
+        "M6-03",
+        "M6-04",
+        "M6-05"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T13/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T14",
+      "title": "Unsupported adapter cancellation",
+      "expected": "Explicit unsupported with truthful capability record",
+      "requirements": [
+        "M6-01",
+        "M6-03",
+        "M6-04",
+        "M6-05"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T14/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T15",
+      "title": "No paid model API",
+      "expected": "Core and mock scheduler operate without keys",
+      "requirements": [
+        "M6-02",
+        "M7-03"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T15/ (planned case-specific observations; shared run evidence does not imply execution)"
+    },
+    {
+      "id": "T16",
+      "title": "Fresh release installation",
+      "expected": "Wheel and sdist install outside checkout; documented startup works",
+      "requirements": [
+        "M0-01",
+        "M9-02"
+      ],
+      "execution_status": "not_run",
+      "evidence": "<run>/scenarios/T16/ (planned case-specific observations; shared run evidence does not imply execution)"
+    }
+  ],
+  "coverage_checkpoint_note": "M5A adds defaultviewer roles, separate owner approvals/audit component coverage. Full requirement acceptance never inferred; actual approval consumption/application, sandbox verifier and M6-M9 remain incomplete."
+}

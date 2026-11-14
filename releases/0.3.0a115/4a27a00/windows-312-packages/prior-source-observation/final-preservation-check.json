@@ -1,0 +1,93 @@
+{
+  "at": "2026-11-13T15:11:27.757161+00:00",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--short",
+        "--branch"
+      ],
+      "exit_code": 0,
+      "stdout": "## feat/m6-single-codex-pilot...origin/feat/m6-single-codex-pilot\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit_code": 0,
+      "stdout": "feat/m6-single-codex-pilot\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "a7f318d2ac4b84d49602c7af4f420059cff2a891\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--stat"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--stat"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "ls-files",
+        "--others",
+        "--exclude-standard"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "plan_files_unchanged": true,
+  "frozen_source_count": 1963,
+  "changed_frozen_files": [],
+  "junit_ids_same_as_original_source_run": 2461,
+  "outcome_changes": [
+    {
+      "id": [
+        "tests.unit.test_acceptance_traceability",
+        "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims"
+      ],
+      "before": "fail",
+      "after": "pass"
+    }
+  ],
+  "collector_files": [
+    "offline-wheelhouse.json",
+    "source-snapshot.json",
+    "working-tree.patch",
+    "logs/pytest.process.json"
+  ],
+  "matrix_controller_files": [
+    "attempt.json"
+  ],
+  "new_builds_or_package_tests": false,
+  "formal_acceptance": false
+}

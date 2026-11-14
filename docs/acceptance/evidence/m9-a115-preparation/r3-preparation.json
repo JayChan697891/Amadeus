@@ -1,0 +1,19 @@
+{
+  "scope": "New corrected-candidate bootstrap preparation, not executed tests",
+  "helper": "D:\\agentsync-debug\\m115-r3-tools\\bootstrap.py",
+  "helper_sha256": "d7a200ae3f0f4356d4b122a9980a9c33468dc82ed89bd643c25770b8e1fd869f",
+  "prior_template_sha256": "abd40ea6f53b051a0b56b5f01843d684bc68dff4d7cebe7b414db51857cc84f7",
+  "changes": [
+    "Dedicated m115-r3 result/source directory",
+    "Dedicated t115u scratch directory"
+  ],
+  "source": "D:/agentsync-debug/m115-r3/s",
+  "candidate_sha": "Assigned after this repair and evidence are committed",
+  "automatic_retry": false,
+  "old_sessions_terminal": [
+    49009,
+    8990
+  ],
+  "tests_started": false,
+  "formal_release": "BLOCKED"
+}

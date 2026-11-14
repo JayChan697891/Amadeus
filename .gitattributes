@@ -80,3 +80,5 @@ releases/0.3.0a114/ddd4b42/windows-312/** -text -whitespace
 docs/acceptance/evidence/m115-source-checks/** -text -whitespace
 docs/acceptance/evidence/m9-a115-preparation/** -text -whitespace
 releases/0.3.0a115/c56cbe2/windows-312-interrupted/** -text -whitespace
+releases/0.3.0a115/4a27a00/windows-312-packages/** -text -whitespace
+docs/acceptance/evidence/m115-source-checks/deadline-repair/** -text -whitespace

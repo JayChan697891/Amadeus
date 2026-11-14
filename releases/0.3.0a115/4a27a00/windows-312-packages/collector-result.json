@@ -1,0 +1,20 @@
+{
+  "phase": "finished",
+  "pid": 3584,
+  "started_at": "2026-11-13T23:45:39.564242+00:00",
+  "commit_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "scope": "Unrun build/static/package checks; prior source observation kept separate",
+  "source_tests_reexecuted": false,
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "helper_sha256": "f96d51edd416ea702d4650be71ca48088a5668b08615e9ce2f08e92432a8f401",
+  "finished_at": "2026-11-14T01:11:29.287879+00:00",
+  "report": "D:\\agentsync-debug\\m115-resume-20261113\\reports\\release-20261113T234539Z-90510b71d108\\report.json",
+  "unsuccessful_remaining_checks": [
+    {
+      "id": "sdist_pytest",
+      "status": "fail"
+    }
+  ],
+  "source_clean": true
+}

@@ -13,7 +13,7 @@
     "automatic_retry": false,
     "helper_sha256": "f96d51edd416ea702d4650be71ca48088a5668b08615e9ce2f08e92432a8f401"
   },
-  "status": "RUNNING: full wheel suite; no terminal result yet",
+  "status": "FINISHED FAILED: sdist2404pass56skip1fail; source observation and wheel retain2405pass56skip",
   "frozen_source": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
   "current_tool_repair": "3550fab87dff98753ac0e0239e9c07f3d2500005",
   "finalizer": {
@@ -27,11 +27,9 @@
     ]
   },
   "next_steps": [
-    "Observe original sessions49009 and8990; never start duplicates",
-    "Controller owns finalization and staging only after held original package process exits0 and remaining checks pass",
-    "Controller then launches existing Windows/Linux queues, at most one collector per host",
-    "Inspect real step receipts/reports; stop on failed/unknown steps, never infer a completed Windows312 source collector",
-    "Keep current tool-repair3550fab distinct from frozen4a27a00 package and matrix evidence"
+    "Owner has explicitly resumed after checkpoint20261114T003417Z",
+    "Fix saved process-capture deadline failure; retain failed frozen-candidate evidence",
+    "Freeze corrected current source, then run a new canonical collector; do not restart old attempts"
   ],
   "linux_recovery": {
     "vm_pid": 6936,
@@ -49,11 +47,12 @@
       "No VM was running: connection refused",
       "Initial boot SSH banner not ready",
       "First mount guard stopped before mount; continued from existing read-only NBD connection after inspecting actual device identity"
-    ]
+    ],
+    "status": "Stopped gracefully at owner pause; revalidate before any later use"
   },
   "automatic_retry": false,
   "formal_release": "BLOCKED",
-  "updated_at": "2026-11-14T00:22:02.997810+00:00",
+  "updated_at": "2026-11-14T03:45:07.723534+00:00",
   "continuation_session": 8990,
   "continuation_attempt": {
     "pid": 22376,
@@ -80,5 +79,27 @@
     "status": "RUNNING: waiting on held original package process",
     "new_matrix_rows_started": false,
     "review": "Independent review identified IO-error cleanup risk; root added unconditional observation of all started handles. Syntax parsed; future finalization/staging/host rows NOT RUN."
-  }
+  },
+  "phase_observed_at": "2026-11-14T00:30:21.814745+00:00",
+  "package_result": {
+    "phase": "finished",
+    "pid": 3584,
+    "started_at": "2026-11-13T23:45:39.564242+00:00",
+    "commit_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+    "scope": "Unrun build/static/package checks; prior source observation kept separate",
+    "source_tests_reexecuted": false,
+    "formal_release": "BLOCKED",
+    "automatic_retry": false,
+    "helper_sha256": "f96d51edd416ea702d4650be71ca48088a5668b08615e9ce2f08e92432a8f401",
+    "finished_at": "2026-11-14T01:11:29.287879+00:00",
+    "report": "D:\\agentsync-debug\\m115-resume-20261113\\reports\\release-20261113T234539Z-90510b71d108\\report.json",
+    "unsuccessful_remaining_checks": [
+      {
+        "id": "sdist_pytest",
+        "status": "fail"
+      }
+    ],
+    "source_clean": true
+  },
+  "continuation_status": "STOPPED at owner safe pause; no finalizer, staging or later rows started"
 }

@@ -1,0 +1,18 @@
+IMPORTED D:\agentsync-debug\m115-deadline-20261114\source\src\agentsync\__init__.py
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\agentsync-debug\m115-deadline-20261114\source
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 97 items
+
+tests\unit\test_capture_creation_fence.py .......                        [  7%]
+tests\unit\test_codex_adapter.py ......................................  [ 46%]
+tests\unit\test_codex_process.py ............                            [ 58%]
+tests\unit\test_claude_adapter.py ......................                 [ 81%]
+tests\unit\test_claude_process.py .....                                  [ 86%]
+tests\unit\test_cursor_adapter.py .............                          [100%]
+
+- generated xml file: D:\agentsync-debug\m115-deadline-20261114\adapters-junit.xml -
+============================= 97 passed in 10.04s =============================

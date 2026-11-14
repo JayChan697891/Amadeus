@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from itertools import count
 from pathlib import Path
 from threading import Lock
+from time import get_clock_info
 from typing import Literal, TypedDict, cast
 
 from agentsync.errors import AgentSyncError
@@ -211,7 +212,7 @@ class CapturedProcess:
         owner = cls()
         owner._deadline = owner._started + timeout_seconds
         owner._limit = output_limit
-        owner._timer = owner._loop.call_later(timeout_seconds, owner._stop, "timed_out")
+        owner._timer = owner._loop.call_at(owner._deadline, owner._on_deadline)
         owner._spawn_task = asyncio.create_task(owner._spawn(argv, cwd, encoded_stdin, environment))
         try:
             await asyncio.shield(owner._spawn_task)
@@ -277,6 +278,20 @@ class CapturedProcess:
             self._grace = self._loop.call_later(
                 0.25, self._finish, "capture_incomplete", "capture_incomplete"
             )
+
+    def _on_deadline(self) -> None:
+        if self._done.done() or self._reason is not None:
+            return
+        remaining = self._deadline - self._loop.time()
+        if remaining > 0:
+            # asyncio timers may fire one clock-resolution early. Recheck the
+            # actual monotonic deadline before terminating the owned parent.
+            # Waiting at least one resolution avoids spinning on a coarse clock.
+            self._timer = self._loop.call_later(
+                max(remaining, get_clock_info("monotonic").resolution), self._on_deadline
+            )
+            return
+        self._stop("timed_out")
 
     def _stop(self, reason: CaptureState) -> None:
         if self._done.done():

@@ -1,0 +1,121 @@
+IMPORTED D:\agentsync-debug\m115-r2\s\src\agentsync\__init__.py
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\agentsync-debug\m115-deadline-20261114\source
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 6 items
+
+tests\unit\test_process_capture_deadline.py FFFF..                       [100%]
+
+================================== FAILURES ===================================
+_______ test_early_callbacks_cannot_terminate_parent_before_deadline[0] _______
+
+tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-20261114/baseline-tmp/test_early_callbacks_cannot_te0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000202DD18BAA0>
+late_by = 0
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("late_by", [0, 0.007])
+    async def test_early_callbacks_cannot_terminate_parent_before_deadline(
+        tmp_path, monkeypatch, late_by
+    ):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        assert clock.timers[0].when == deadline
+        for early_by in (0.006, 0.001):
+            timer = clock.timers[-1]
+            clock.fire(timer, deadline - early_by)
+            snapshot = await process.snapshot()
+            assert snapshot.state == "running" and snapshot.finished_at is None
+>           assert snapshot.error_code is None and clock.transport.kills == 0
+E           AssertionError: assert ('timed_out' is None)
+E            +  where 'timed_out' = CaptureSnapshot(capture_id='04c84fa2545440e1843f9dcfb2a29da5', state='running', exit_code=-9, started_at=100.0, deadli...ode='timed_out', termination_scope='parent_only', tree_cleanup='unverified', sandbox=False, real_client_verified=False).error_code
+
+tests\unit\test_process_capture_deadline.py:108: AssertionError
+_____ test_early_callbacks_cannot_terminate_parent_before_deadline[0.007] _____
+
+tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-20261114/baseline-tmp/test_early_callbacks_cannot_te1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000202DD1A8800>
+late_by = 0.007
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("late_by", [0, 0.007])
+    async def test_early_callbacks_cannot_terminate_parent_before_deadline(
+        tmp_path, monkeypatch, late_by
+    ):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        assert clock.timers[0].when == deadline
+        for early_by in (0.006, 0.001):
+            timer = clock.timers[-1]
+            clock.fire(timer, deadline - early_by)
+            snapshot = await process.snapshot()
+            assert snapshot.state == "running" and snapshot.finished_at is None
+>           assert snapshot.error_code is None and clock.transport.kills == 0
+E           AssertionError: assert ('timed_out' is None)
+E            +  where 'timed_out' = CaptureSnapshot(capture_id='55a941e058ec47f08227b32d02f8d908', state='running', exit_code=-9, started_at=100.0, deadli...ode='timed_out', termination_scope='parent_only', tree_cleanup='unverified', sandbox=False, real_client_verified=False).error_code
+
+tests\unit\test_process_capture_deadline.py:108: AssertionError
+___ test_rearmed_deadline_cannot_override_cancel_or_natural_exit[cancelled] ___
+
+tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-20261114/baseline-tmp/test_rearmed_deadline_cannot_o0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000202DD1A9670>
+outcome = 'cancelled'
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("outcome", ["cancelled", "exited"])
+    async def test_rearmed_deadline_cannot_override_cancel_or_natural_exit(
+        tmp_path, monkeypatch, outcome
+    ):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        clock.fire(clock.timers[-1], deadline - 0.006)
+        rearmed = clock.timers[-1]
+        if outcome == "cancelled":
+            snapshot = await process.cancel()
+        else:
+            clock.transport.exit(0)
+            snapshot = await process.wait()
+>       assert snapshot.state == outcome and snapshot.finished_at < deadline
+E       AssertionError: assert ('timed_out' == 'cancelled'
+E         
+E         - cancelled
+E         + timed_out)
+
+tests\unit\test_process_capture_deadline.py:133: AssertionError
+____ test_rearmed_deadline_cannot_override_cancel_or_natural_exit[exited] _____
+
+tmp_path = WindowsPath('D:/agentsync-debug/m115-deadline-20261114/baseline-tmp/test_rearmed_deadline_cannot_o1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000202DD1AA660>
+outcome = 'exited'
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("outcome", ["cancelled", "exited"])
+    async def test_rearmed_deadline_cannot_override_cancel_or_natural_exit(
+        tmp_path, monkeypatch, outcome
+    ):
+        process, clock = await start_fixture(tmp_path, monkeypatch)
+        deadline = (await process.snapshot()).deadline_at
+        clock.fire(clock.timers[-1], deadline - 0.006)
+        rearmed = clock.timers[-1]
+        if outcome == "cancelled":
+            snapshot = await process.cancel()
+        else:
+            clock.transport.exit(0)
+            snapshot = await process.wait()
+>       assert snapshot.state == outcome and snapshot.finished_at < deadline
+E       AssertionError: assert ('timed_out' == 'exited'
+E         
+E         - exited
+E         + timed_out)
+
+tests\unit\test_process_capture_deadline.py:133: AssertionError
+- generated xml file: D:\agentsync-debug\m115-deadline-20261114\baseline-junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/unit/test_process_capture_deadline.py::test_early_callbacks_cannot_terminate_parent_before_deadline[0]
+FAILED tests/unit/test_process_capture_deadline.py::test_early_callbacks_cannot_terminate_parent_before_deadline[0.007]
+FAILED tests/unit/test_process_capture_deadline.py::test_rearmed_deadline_cannot_override_cancel_or_natural_exit[cancelled]
+FAILED tests/unit/test_process_capture_deadline.py::test_rearmed_deadline_cannot_override_cancel_or_natural_exit[exited]
+========================= 4 failed, 2 passed in 0.18s =========================

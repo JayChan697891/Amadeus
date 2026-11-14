@@ -1,0 +1,82 @@
+"""Run the unmodified release collector once on an exact clean local snapshot."""
+import argparse
+from datetime import UTC, datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tomllib
+
+ROOT = Path('D:/agentsync-debug')
+BASE = ROOT/'m115-r3'
+REPO = Path('F:/syuc/amadeus-m6-single')
+PYTHON = ROOT/'continuation-cc30ed21/windows-py312-venv/Scripts/python.exe'
+WHEELS = ROOT/'continuation-cc30ed21/windows-py312-wheelhouse'
+parser = argparse.ArgumentParser()
+parser.add_argument('action', choices=('preflight', 'prepare', 'run'))
+parser.add_argument('--commit')
+args = parser.parse_args()
+BASE.mkdir(exist_ok=True)
+env = {k:v for k,v in os.environ.items() if not k.upper().startswith(
+    ('OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'AGENTSYNC_', 'CODEX_', 'GIT_', 'PYTEST_', 'GOOGLE_', 'GEMINI_', 'DEEPSEEK_', 'PIP_'))
+    and k.upper() not in {'PYTHONPATH', 'PYTHONHOME'} and not k.upper().endswith(('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN'))}
+for name in ('home', 'tmp'):
+    (BASE/name).mkdir(exist_ok=True)
+env.update(HOME=str(BASE/'home'), USERPROFILE=str(BASE/'home'), CODEX_HOME=str(BASE/'home'),
+           TEMP=str(BASE/'tmp'), TMP=str(BASE/'tmp'), TMPDIR=str(BASE/'tmp'),
+           GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT='0',
+           PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTHONUNBUFFERED='1',
+           PIP_NO_INDEX='1', PIP_CONFIG_FILE=os.devnull, PIP_DISABLE_PIP_VERSION_CHECK='1')
+
+def output(command, cwd=REPO):
+    return subprocess.check_output(command, cwd=cwd, env=env, timeout=120).decode().strip()
+
+if args.action == 'preflight':
+    project=tomllib.loads((REPO/'pyproject.toml').read_text(encoding='utf-8'))
+    requirements=[*project['project']['dependencies'], *project['project']['optional-dependencies']['dev'], *project['build-system']['requires']]
+    command=[str(PYTHON), '-I', '-B', '-m', 'pip', 'install', '--dry-run', '--ignore-installed', '--no-index', '--no-cache-dir', '--only-binary=:all:', '--find-links', str(WHEELS), *requirements]
+    with (BASE/'preflight.log').open('xb') as log:
+        run=subprocess.run(command, cwd=BASE, env=env, stdout=log, stderr=subprocess.STDOUT, timeout=120)
+    evidence={'exit_code':run.returncode, 'command':command, 'requirements':requirements, 'tests_started':False, 'timestamp':datetime.now(UTC).isoformat()}
+    (BASE/'preflight.json').write_text(json.dumps(evidence,indent=2)+'\n',encoding='utf-8')
+    print(json.dumps(evidence));raise SystemExit(run.returncode)
+
+if args.action == 'prepare':
+    assert args.commit and len(args.commit)==40 and all(c in '0123456789abcdef' for c in args.commit)
+    assert output(['git','rev-parse','HEAD']) == args.commit
+    assert not output(['git','status','--porcelain'])
+    assert json.loads((BASE/'preflight.json').read_text())['exit_code']==0
+    source=BASE/'s';assert not source.exists()
+    subprocess.run(['git','clone','--no-hardlinks','--no-checkout',str(REPO),str(source)],env=env,check=True,timeout=120)
+    subprocess.run(['git','-C',str(source),'config','core.autocrlf','false'],env=env,check=True)
+    subprocess.run(['git','-C',str(source),'checkout','--detach',args.commit],env=env,check=True,timeout=120)
+    assert not output(['git','status','--porcelain'],source)
+    config={'commit_sha':args.commit,'tree_sha':output(['git','rev-parse','HEAD^{tree}'],source),
+            'source':str(source),'python':str(PYTHON),'wheelhouse':str(WHEELS),
+            'scope':'Windows 3.12 original build and complete source, wheel, sdist suites; formal Release remains blocked',
+            'collector_sha256':hashlib.sha256((source/'tools/release_acceptance.py').read_bytes()).hexdigest()}
+    (BASE/'bootstrap-config.json').write_text(json.dumps(config,indent=2)+'\n',encoding='utf-8')
+    print(json.dumps(config));raise SystemExit(0)
+
+config=json.loads((BASE/'bootstrap-config.json').read_text())
+source=Path(config['source'])
+assert output(['git','rev-parse','HEAD'],source)==config['commit_sha']
+assert not output(['git','status','--porcelain'],source)
+assert hashlib.sha256((source/'tools/release_acceptance.py').read_bytes()).hexdigest()==config['collector_sha256']
+command=[str(PYTHON),'-B',str(source/'tools/release_acceptance.py'),'--output',str(BASE/'windows-312'),
+         '--scratch-root',str(ROOT/'t115u'),'--run','--package-install','--sdist-install','--offline-wheelhouse',str(WHEELS),
+         '--license-inventory','--pytest-timeout','3600']
+started={'phase':'started','pid':os.getpid(),'command':command,'started_at':datetime.now(UTC).isoformat(),'commit_sha':config['commit_sha']}
+with (BASE/'bootstrap-attempt.json').open('x',encoding='utf-8') as stream:json.dump(started,stream,indent=2)
+print('Starting one existing collector; no retry on timeout or unknown status.',flush=True)
+with (BASE/'bootstrap-driver.log').open('xb') as log:
+    process=subprocess.Popen(command,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+    started['collector_pid']=process.pid
+    (BASE/'bootstrap-attempt.json').write_text(json.dumps(started,indent=2)+'\n',encoding='utf-8')
+    code=process.wait()
+result=started|{'phase':'finished','exit_code':code,'finished_at':datetime.now(UTC).isoformat()}
+(BASE/'bootstrap-result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(result),flush=True)
+raise SystemExit(code)

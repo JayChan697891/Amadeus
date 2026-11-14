@@ -1,0 +1,126 @@
+{
+  "at": "2026-11-14T03:45:07.871484+00:00",
+  "scope": "Windows3.12 local process and adapter protocol regressions; not full package/platform/real-client acceptance",
+  "baseline_source": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "input_source_files": 229,
+  "input_source_unchanged": true,
+  "source_hashes": {
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_process_capture_deadline.py": "879aaaa162c826d2ce7ac0442b5b8b3dc2d5969d1abba6e6815a2d8600f7f74e"
+  },
+  "results": {
+    "baseline": {
+      "total": 6,
+      "failure": 4,
+      "error": 0,
+      "skipped": 0,
+      "passed": 2
+    },
+    "fixed": {
+      "total": 44,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "passed": 44
+    },
+    "adapters": {
+      "total": 97,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "passed": 97
+    }
+  },
+  "passed_unique_affected_cases": 141,
+  "static_checks": [
+    "ruff PASS",
+    "format PASS",
+    "mypy PASS"
+  ],
+  "original_failed_assertion_unchanged": true,
+  "actual_client_calls": 0,
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "adapters-junit.xml",
+      "sha256": "631be5f4108510b235c82ba3c07a7a2d3deee0b22da111a1be6ebdef1817c336",
+      "size": 16028
+    },
+    {
+      "path": "adapters-process.json",
+      "sha256": "898ae722bd5cf182ba1982b9d8731dea7b21b37d50b8c5f58bc2f11e213e1b02",
+      "size": 1112
+    },
+    {
+      "path": "adapters.log",
+      "sha256": "2c2085ec206aba9c81ec74b2eb88c2c2f99cc64e23b6be54fcaabf9074779ae1",
+      "size": 1133
+    },
+    {
+      "path": "baseline-junit.xml",
+      "sha256": "d8aa47f735afd64d4a321e24f7bf095050187457da7cc18c2e55f90885b121f2",
+      "size": 7044
+    },
+    {
+      "path": "baseline-process.json",
+      "sha256": "e5d8b43b40b51fd309cc344d3c7139ab9e467cce095f1a193c32295cbb433051",
+      "size": 911
+    },
+    {
+      "path": "baseline.log",
+      "sha256": "9aff382c889b581d5c2462766e63c702bb97ed9cc17763159645b0ee8858fb1b",
+      "size": 6458
+    },
+    {
+      "path": "fixed-junit.xml",
+      "sha256": "c242eab2973e87ac520e0bdbfd8aab2391492791f7fcab5c0a5057e347ab3405",
+      "size": 6656
+    },
+    {
+      "path": "fixed-process.json",
+      "sha256": "fe277fe8080be252d58d279e4346ef84746ad7c2d0bea53ca862750edd40ff00",
+      "size": 1062
+    },
+    {
+      "path": "fixed.log",
+      "sha256": "a2ee20673bf960a6239a655f6bee9f6fe743c0d71268c8fc0c04f518e4c28e67",
+      "size": 970
+    },
+    {
+      "path": "format.log",
+      "sha256": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+      "size": 26
+    },
+    {
+      "path": "input-snapshot.json",
+      "sha256": "40677c11748847527e80ddd9ba8427b75e90d60a6dbce3bf572f8eddbd99c9d3",
+      "size": 33875
+    },
+    {
+      "path": "mypy.log",
+      "sha256": "e1933d29513c905ba6bf6828838a39f7d132a341e1fb63954bb71e0b3341fcff",
+      "size": 45
+    },
+    {
+      "path": "ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "size": 19
+    },
+    {
+      "path": "run-checks.py.txt",
+      "sha256": "df0e6a3f8fc566b17a9d95d38faff3460624425b24c2cde4c33d681cdfc8e116",
+      "size": 2432
+    },
+    {
+      "path": "static-processes.json",
+      "sha256": "150a09251beb7c91e8e0e6d76480b74fa12762c986d8bb38f42bf1ced2390228",
+      "size": 1537
+    },
+    {
+      "path": "test-process-capture-deadline-initial.py.txt",
+      "sha256": "879aaaa162c826d2ce7ac0442b5b8b3dc2d5969d1abba6e6815a2d8600f7f74e",
+      "size": 5221
+    }
+  ],
+  "superseded_by": "final/summary.json (stronger pending-cancel and clock-resolution regressions; earlier results retained)"
+}
