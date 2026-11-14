@@ -37,8 +37,11 @@ in Linux3.14; all56 Windows skips passed on Linux and all6 Linux skips passed on
 Windows. No platform row is waived. Whole-row report:
 ../../releases/0.3.0a115/b6f05f0/windows-311/report.json.
 Windows3.14 source completed11:22:16 UTC:2426pass56skip/exit0,2083 source
-hashes unchanged. Original wheel pytest PID13884 started11:22:40 UTC; its
-result and the sdist/whole-row gates remain pending. Component evidence:
+hashes unchanged. Wheel completed12:05:08 UTC:2426pass56skip, zero failure/error,
+canonical exit0; log hash and sanitized JUnit counts checked locally. Sdist began
+12:05:24 UTC in the same queue (actual PID6320); its result and whole-row strict
+identity verification/archival remain pending. This interim observation does not
+add a completed matrix row. Source component evidence:
 evidence/m9-a115-preparation/windows314-source-observation/summary.json.
 Linux3.12 whole row completed11:03 UTC:26 checks pass, each source/wheel/sdist
 2476pass6skip, canonical exit0. All182 transfer hashes,2083 Git inputs, archive

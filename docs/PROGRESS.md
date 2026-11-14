@@ -27,16 +27,23 @@ Evidence: releases/0.3.0a115/b6f05f0/windows-311/report.json and
 acceptance/evidence/m9-a115-preparation/windows311-complete/summary.json.
 The original queue started Windows3.14 at10:38:37 UTC, actual row PID22928.
 Source completed11:22:16 UTC:2426pass56skip/exit0,2083 source hashes unchanged.
-Wheel pytest actual PID13884 started11:22:40 UTC; sdist and whole-row identity
-verification remain pending. Component evidence:
+Wheel pytest completed12:05:08 UTC:2426pass56skip, zero failure/error and
+canonical exit0. Its log hash and sanitized JUnit counts were checked locally;
+whole-row archival and six-label identity verification remain pending. The
+original queue started sdist pytest at12:05:24 UTC, actual PID6320 (launcher3464,
+row22928). Read-only native-handle observer session80907 tracks that original
+process; do not start a duplicate. Source component evidence:
 acceptance/evidence/m9-a115-preparation/windows314-source-observation/summary.json.
 
 The original Linux queue completed successfully at11:03:13 UTC; no restart.
 All182 transferred Linux3.12 file hashes and strict case/receipt/source binding
 verified. Matrix-after-linux312.json records four complete rows and5 remaining
 OS/Python combinations: Windows3.12/3.14 and macOS3.11/3.12/3.14. The original
-candidate-bootstrap.json stays unchanged. Windows3.14 wheel PID13884 remains
-active in original queue82363/row22928. Do not restart it.
+candidate-bootstrap.json stays unchanged. Windows3.14 sdist PID6320 remains
+active in original queue82363/row22928. Do not restart it. The wheel completion
+is an interim local observation; archive the whole row only after its real
+terminal result and strict verification. No additional evidence bundle or test
+was created for this progress-only update.
 
 After both Linux benchmarks passed, the dedicated Linux VM shut down normally
 and its readonly NBD helper stopped at11:10 UTC. No Python work/container remained;

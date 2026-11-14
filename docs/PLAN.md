@@ -10,8 +10,10 @@ Current M9 execution: all three Linux rows3.11/3.12/3.14 completed, each26
 passing checks, each source/wheel/sdist2476pass6skip. Source/archive/case identity
 verification passed; Linux3.11/3.12 outcomes match reviewed Linux3.14. Each row's
 105 separate Docker observations include expected negatives, not real models.
-Windows3.11 completed26 checks, each suite2426pass56skip. Windows3.14 continues
-in its original queue. Five OS/Python rows remain incomplete, including macOS.
+Windows3.11 completed26 checks, each suite2426pass56skip. Windows3.14 source and
+wheel each completed2426pass56skip/exit0; wheel finished12:05:08 UTC and the
+original queue started sdist12:05:24 UTC. Its full row is not yet accepted.
+Five OS/Python rows remain incomplete, including macOS.
 After that queue, run the prepared Windows3.12 canonical wheel-only component,
 then its reviewed create-only composite finalizer. Both NOT RUN; no repeat of
 source/sdist/build or change to old unknown evidence. Formal Release stays BLOCKED.
