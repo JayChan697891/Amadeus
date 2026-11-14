@@ -14,9 +14,11 @@ they are separately pinned by transfer-summary.json, not105 successful execution
 or semantic verification of all observations by the original72-artifact report.
 Known protocol fixtures and cursor labels are not real-client acceptance.
 
-Windows3.11 source completed09:00:36 UTC:2426pass56skip/exit0; wheel actually
-started09:01:08 UTC and remains running. Its source evidence is preserved under
-m9-a115-preparation/windows311-source-observation. All6 Linux skips pass in this
+Windows3.11 source completed09:00:36 UTC and wheel completed09:49:37 UTC,
+each2426pass56skip/exit0; original logs, terminal receipts and XML counts agree.
+Sdist started09:49:57 UTC, actual pytest PID24052, and remains running. Source
+and wheel evidence is preserved under m9-a115-preparation/windows311-source-observation
+and windows311-wheel-observation. All6 Linux skips pass in this
 Windows source run; all56 Windows skips pass in the Linux source run. This does
 not replace any required complete platform/Python row.
 
@@ -25,8 +27,10 @@ PID25497, source pytest09:09:04 UTC. Source completed09:27:57 UTC with
 2476pass6skip/exit0;2083 frozen files still match, and canonical log/receipt/XML
 counts agree. Saved source evidence: m9-a115-preparation/linux311-source-observation.
 Its original sanitized XML still awaits final narrow identity derivation; no
-whole-row acceptance is inferred. Linux3.11 wheel started09:28:21 UTC, PID11447;
-Linux3.12 remains queued. The Windows queue
+whole-row acceptance is inferred. Linux3.11 wheel completed09:47:02 UTC,
+2476pass6skip/exit0, with matching original log, receipt and XML. Wheel evidence:
+m9-a115-preparation/linux311-wheel-observation. Sdist actually started09:47:18 UTC,
+PID29712; Linux3.12 remains queued. The Windows queue
 still owns windows-311, followed by windows-314 on verified success. Do not
 restart either queue. Matrix-after-linux314.json verifies the completed Linux
 row while explicitly retaining8 incomplete OS/Python combinations. Original

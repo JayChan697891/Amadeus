@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-14T09:51:04.644484+00:00",
+  "run": "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Completed Linux3.11 wheel pytest component only; sdist and whole row pending",
+  "finished_at": "2026-11-14T09:47:02.236057+00:00",
+  "exit_code": 0,
+  "skipped": 6,
+  "failed": 0,
+  "errors": 0,
+  "passed": 2476,
+  "sanitized_unique": 2481,
+  "files": [
+    {
+      "path": "wheel-junit.xml",
+      "size": 376320,
+      "sha256": "9a0ca679e9f0879f0ba43325a55d7aa8c1c060f02b04faa8e89918aec8eca908"
+    },
+    {
+      "path": "logs/wheel_pytest.log",
+      "size": 15614,
+      "sha256": "fab36b9b1f67d3ba274550281ab3b8c132b2ded7d0ac07ae761e27ebf65829e0"
+    },
+    {
+      "path": "logs/wheel_pytest.process.json",
+      "size": 1716,
+      "sha256": "de68a31c1d9a1050c51db67150df1b9a941548054d239d2df9dfc0dfa04db529"
+    }
+  ],
+  "source_snapshot_reference": "../linux314-source-observation/source-snapshot.json",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "identity_derivation": "PENDING until complete row; original sanitized XML preserved",
+  "raw_xml_uploaded": false,
+  "formal_release": "BLOCKED"
+}

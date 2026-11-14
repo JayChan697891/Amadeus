@@ -21,12 +21,15 @@ include expected failures/non-started cases. They are not105 successful executio
 not all semantically covered by the original72-artifact report verifier, and not
 real models. No containers remained at the row boundary.
 
-Windows3.11 source also completed2426pass56skip/exit0; wheel is running. Its56
+Windows3.11 source and wheel each completed2426pass56skip/exit0; wheel finished
+09:49:37 UTC and sdist started09:49:57 UTC. Its56
 skipped cases pass in Linux source, and Linux's6 skipped cases pass in this Windows
 source. This does not waive complete rows or macOS. Linux3.11 source subsequently
 completed09:27:57 UTC:2476pass6skip/exit0,2083 frozen files unchanged; log, receipt
-and XML agree. Its wheel now runs and whole-row identity validation remains
-pending. Source evidence: evidence/m9-a115-preparation/linux311-source-observation/summary.json.
+and XML agree. Its wheel completed09:47:02 UTC with2476pass6skip/exit0, with
+matching original log, receipt and XML. Sdist started09:47:18 UTC; whole-row
+identity validation remains pending. Source/wheel evidence is in the linux311
+and windows311 component directories under evidence/m9-a115-preparation/.
 The strict matrix snapshot retains8 incomplete
 OS/Python combinations. Summary: evidence/m9-a115-preparation/linux314-complete/summary.json.
 
@@ -56,7 +59,7 @@ not whole-requirement or formal Release acceptance.
 | Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
 | New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
 | New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Sdist completed08:08:36 UTC,2426pass56skip/exit0, canonical receipt and label recovery verified. Composite manifest verified; matrix remains incomplete |
-| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.14 complete and artifact verified; source/wheel/sdist each2476pass6skip. Windows3.11 source2426pass56skip, wheel running. Linux3.11 source2476pass6skip, wheel running; Windows3.14/Linux3.12 queued. No actual client acceptance inferred |
+| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.14 complete and artifact verified; source/wheel/sdist each2476pass6skip. Windows3.11 source/wheel each2426pass56skip. Linux3.11 source/wheel each2476pass6skip. Both sdist suites running; Windows3.14/Linux3.12 queued. No actual client acceptance inferred |
 | Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
 | Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
 | First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |

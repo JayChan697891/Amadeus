@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-14T09:52:45.046064+00:00",
+  "run": "D:\\agentsync-debug\\m115-r3\\windows-311\\reports\\release-20261114T081224Z-4f25be342fb7",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Completed Windows3.11 wheel pytest component only; sdist and whole row pending",
+  "finished_at": "2026-11-14T09:49:37.505231+00:00",
+  "exit_code": 0,
+  "skipped": 56,
+  "failed": 0,
+  "errors": 0,
+  "passed": 2426,
+  "sanitized_unique": 2481,
+  "files": [
+    {
+      "path": "wheel-junit.xml",
+      "size": 391519,
+      "sha256": "fa364f780d684f72deec681801b7c7dc025c6ad18d7369b7e7f9e5bce33fc433"
+    },
+    {
+      "path": "logs/wheel_pytest.log",
+      "size": 20181,
+      "sha256": "47846c1e52c04d52d3a4febd58d6d9d286abd64c961e813b47c3e07a60c9380b"
+    },
+    {
+      "path": "logs/wheel_pytest.process.json",
+      "size": 1838,
+      "sha256": "8f69d21b006b2a6110e8d4107379022e700a3552767c3d4c6e73cce93c745486"
+    }
+  ],
+  "source_snapshot_reference": "../linux314-source-observation/source-snapshot.json",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "identity_derivation": "PENDING until complete row; original sanitized XML preserved",
+  "raw_xml_uploaded": false,
+  "formal_release": "BLOCKED"
+}
