@@ -1,5 +1,11 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Remaining canonical evidence: the old Windows3.12 wheel native observation lacks
+a saved handle-creation binding, so it remains unverified. After the current
+Windows queue, supplement only that wheel component with new canonical receipts
+against the same archive; do not repeat source/sdist/build or loosen verification.
+The prepared driver is NOT RUN. This is an existing M9 gap, not a new M5 stage.
+
 Current M9 execution: resumed Windows3.12 sdist completed2426pass56skip, exit0;
 the explicit composite and exact candidate manifest passed strict Windows/Linux
 verification while retaining wheel canonical unverified and matrix incomplete.

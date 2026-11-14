@@ -9,6 +9,12 @@ canonical unverified, local_matrix incomplete and formal Release BLOCKED.
 Windows3.11 and Linux3.14 rows started08:12 UTC; later rows are queued, not run.
 See evidence/m9-a115-preparation/composite-resume/summary.json for current pins.
 
+The historical wheel observer did not persist a native-handle creation-time
+binding after its separate CIM check. Existing observations are retained but
+cannot be promoted to strict acceptance. After the current Windows queue, only
+one new wheel component is prepared to obtain canonical receipts; it is NOT RUN.
+See evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
+
 M9 evidence tooling now supports explicit composite installation sources.50
 synthetic policy cases and Ruff/format pass; independent review identified and
 the revision closed the environment-creation/installation binding gap. These

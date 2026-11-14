@@ -1,5 +1,22 @@
 # Amadeus current progress
 
+## Remaining Windows 3.12 wheel gate: a new canonical component is required
+
+Read-only review found the old independent observer checked CIM identity before
+opening its process handle, but did not compare/persist the handle creation time.
+The saved exit0/log/XML support the observed result; they cannot retrospectively
+close that binding gap. No PID reuse is asserted and no weaker evidence type is
+introduced. The old canonical receipt remains started/unknown.
+
+After the existing Windows3.11/3.14 queue actually finishes successfully, run only
+the prepared new wheel component from the exact frozen b6 archive in a new
+environment. Do not repeat source, sdist or build, and do not modify old evidence.
+The driver selects the original fixed collector's unique wheel AST branch and
+saves genuine new receipts. It is reviewed and NOT RUN, refuses a live Windows
+row or an incomplete queue, and never automatically retries. Identity recovery
+and final composite validation remain separate. See
+acceptance/evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
+
 ## M9: resumed sdist passed; remaining local matrix actually started
 
 The original sdist session73133 finished naturally at2026-11-14 08:08:36 UTC,

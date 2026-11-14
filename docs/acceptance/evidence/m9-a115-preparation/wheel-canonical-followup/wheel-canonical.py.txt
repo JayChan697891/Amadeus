@@ -1,0 +1,126 @@
+"""After the current Windows queue, execute only the missing canonical wheel component.
+
+The old wheel observation/unknown receipt remain untouched. Execute the exact
+frozen collector's wheel branch, not a reimplementation or a fake build pass.
+No source suite, sdist suite, source build or model invocation is dispatched.
+"""
+import ast
+import csv
+from datetime import datetime, timezone
+import hashlib
+import importlib.machinery
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tomllib
+
+ROOT = Path('D:/agentsync-debug/m115-r3')
+SOURCE = ROOT / 's'
+ORIGINAL = ROOT / 'windows-312/release-20261114T035240Z-6756b7e7fa0d'
+BASE = Path('D:/agentsync-debug/m115-wheel-canonical-r1')
+COMMIT = 'b6f05f0473591dc568be25591047fdea963ef86c'
+MANIFEST = '88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11'
+COLLECTOR = 'd942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+VERIFIER = '6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c'
+WHEEL = '56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a'
+
+
+def read(path):
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def save(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+
+assert os.name == 'nt' and sys.version_info[:2] == (3, 12)
+assert not BASE.exists()
+queue = read(ROOT / 'windows-queue/result.json')
+assert queue['complete'] is True and all(row['exit_code'] == 0 and row['local_checks_passed'] for row in queue['rows'])
+assert [row['row'] for row in queue['rows']] == ['windows-311', 'windows-314']
+active = subprocess.check_output(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', "Get-CimInstance Win32_Process | Where-Object {$_.Name -eq 'python.exe' -and $_.CommandLine -like '*m115-candidate-row.py*'} | Select-Object ProcessId | ConvertTo-Json -Compress"], text=True, timeout=30)
+assert not active.strip(), 'Existing Windows row must finish; never interrupt or duplicate it'
+for key in tuple(os.environ):
+    if key.upper().startswith(('OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'CODEX_', 'AGENTSYNC_', 'GIT_', 'PYTEST_', 'PYTHON', 'PIP_', 'GOOGLE_', 'GEMINI_', 'DEEPSEEK_')) or key.upper().endswith(('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        os.environ.pop(key, None)
+os.environ.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT='0', PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTHONUNBUFFERED='1', PIP_NO_INDEX='1', PIP_CONFIG_FILE=os.devnull, PIP_DISABLE_PIP_VERSION_CHECK='1')
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE, text=True).strip() == COMMIT
+assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=SOURCE) == b''
+snapshot = read(ORIGINAL / 'source-snapshot.json')
+assert all((SOURCE / r['path']).stat().st_size == r['size'] and sha(SOURCE / r['path']) == r['sha256'] for r in snapshot)
+assert sha(SOURCE / 'tools/release_acceptance.py') == COLLECTOR
+assert sha(ROOT / 'candidate-bootstrap.json') == MANIFEST
+build = read(ORIGINAL / 'logs/build.process.json')
+assert build['phase'] == 'finished' and build['result']['status'] == 'pass' and build['result']['exit_code'] == 0
+assert sha(ORIGINAL / build['result']['log']) == build['result']['log_sha256']
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(SOURCE))
+import tools
+verifier_path = ROOT / 'composite/windows-312/verification-tools/acceptance_evidence.py.txt'
+assert sha(verifier_path) == VERIFIER
+loader = importlib.machinery.SourceFileLoader('tools.acceptance_evidence', str(verifier_path))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+module = importlib.util.module_from_spec(spec)
+sys.modules[loader.name] = module
+loader.exec_module(module)
+tools.acceptance_evidence = module
+from tools import release_acceptance as collector
+from tools.release_manifest import verify_manifest
+verified = verify_manifest(ROOT / 'candidate-bootstrap.json', ROOT, manifest_sha256=MANIFEST, source_repo=SOURCE)
+artifact = next(row for row in verified['checked_artifacts'] if row['kind'] == 'wheel')
+assert artifact['sha256'] == WHEEL
+
+# Select exactly the original wheel-only statement; do not execute _collect.
+tree = ast.parse((SOURCE / 'tools/release_acceptance.py').read_text(encoding='utf-8'))
+function = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == '_collect')
+selector = ast.dump(ast.parse('package_install and run_checks', mode='eval').body)
+blocks = [node for node in function.body if isinstance(node, ast.If) and ast.dump(node.test) == selector]
+assert len(blocks) == 1
+block = blocks[0]
+block_sha = hashlib.sha256(ast.dump(block).encode()).hexdigest()
+compiled = compile(ast.fix_missing_locations(ast.Module(body=[block], type_ignores=[])), str(SOURCE / 'tools/release_acceptance.py'), 'exec')
+
+BASE.mkdir()
+identity = subprocess.check_output(['whoami', '/user', '/fo', 'csv', '/nh'], text=True)
+sid = next(csv.reader(identity.splitlines()))[1]
+assert sid.startswith('S-1-') and all(c in 'S-0123456789' for c in sid)
+acl = subprocess.run(['icacls', str(BASE), '/inheritance:r', '/grant:r', '*'+sid+':(OI)(CI)F', '*S-1-5-18:(OI)(CI)F'], capture_output=True)
+assert acl.returncode == 0
+for name in ('home', 'scratch', 'run', 'run/logs', 'run/artifacts'):
+    (BASE / name).mkdir(parents=True, exist_ok=True)
+scratch = BASE / 'scratch'
+run = BASE / 'run'
+os.environ.update(HOME=str(BASE / 'home'), USERPROFILE=str(BASE / 'home'), CODEX_HOME=str(BASE / 'home'), TMP=str(scratch), TEMP=str(scratch), TMPDIR=str(scratch))
+target = run / 'artifacts' / artifact['filename']
+with target.open('xb') as stream:
+    stream.write((ROOT / artifact['path']).read_bytes())
+assert target.stat().st_size == artifact['size'] and sha(target) == WHEEL
+project = tomllib.loads((SOURCE / 'pyproject.toml').read_text(encoding='utf-8'))
+save(BASE / 'attempt.json', {'pid': os.getpid(), 'started_at': datetime.now(timezone.utc).isoformat(), 'source_commit': COMMIT, 'wheel_sha256': WHEEL, 'candidate_manifest_sha256': MANIFEST, 'collector_sha256': COLLECTOR, 'wheel_branch_ast_sha256': block_sha, 'driver_sha256': sha(Path(__file__)), 'python': sys.version, 'original_build_receipt_sha256': sha(ORIGINAL / 'logs/build.process.json'), 'scope': 'New canonical wheel component only; old observation/unknown receipt are not changed', 'source_sdist_build': 'NOT RUN', 'real_models': 'NOT RUN', 'automatic_retry': False, 'formal_release': 'BLOCKED'})
+try:
+    offline = collector._prepare_offline_packages(project, Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse'), scratch, run)
+    assert read(run / 'offline-wheelhouse.json') == read(ORIGINAL / 'offline-wheelhouse.json')
+    namespace = dict(vars(collector))
+    namespace.update(repo=SOURCE, run=run, scratch=scratch, project=project, checks=[], package_install=True, run_checks=True, build_passed=True, offline_packages=offline, offline_wheelhouse=offline.wheelhouse, license_inventory=True, pytest_timeout=3600)
+    exec(compiled, namespace)
+    checks = namespace['checks']
+    assert all(row['id'].startswith('wheel_') for row in checks)
+    save(BASE / 'checks.json', checks)
+    unchanged = all((SOURCE / r['path']).stat().st_size == r['size'] and sha(SOURCE / r['path']) == r['sha256'] for r in snapshot)
+    passed = all(row['status'] == 'pass' for row in checks) and unchanged and sha(target) == WHEEL
+    result = {'finished_at': datetime.now(timezone.utc).isoformat(), 'exit_code': 0 if passed else 1, 'source_commit': COMMIT, 'source_unchanged': unchanged, 'wheel_sha256': WHEEL, 'checks': [{'id': c['id'], 'status': c['status']} for c in checks], 'identity_recovery': 'PENDING; original sanitized fixture collision may remain', 'scope': 'New wheel component execution only; original unknown receipt remains unchanged', 'formal_release': 'BLOCKED'}
+    save(BASE / 'result.json', result)
+    print(json.dumps(result), flush=True)
+except BaseException as exc:
+    save(BASE / 'exception.json', {'at': datetime.now(timezone.utc).isoformat(), 'error_type': type(exc).__name__, 'automatic_retry': False})
+    raise
+raise SystemExit(result['exit_code'])
