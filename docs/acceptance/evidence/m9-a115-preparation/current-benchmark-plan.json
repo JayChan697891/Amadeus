@@ -1,0 +1,58 @@
+{
+  "requirement": "M8-02",
+  "status": "NOT RUN",
+  "scope": "Repeat the existing declared installed-runtime diagnostic for current b6; not exhaustive stress, a production SLO, or formal release",
+  "reason": "Existing 4-thread and 2-process/loopback performance observations bind to runtime09425da. Current suite unit cases validate the benchmark and small rounds, not this declared load on b6.",
+  "candidate_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "package_version": "0.3.0a115",
+  "wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+  "tool_path": "tools/benchmark_coordination.py",
+  "tool_sha256": "3baaf2443e63a22f03114f9573804c99dd394903306a813961a0195f9878c222",
+  "tool_bytes_unchanged_from": "2af7ccc45892a0387833e31f945897c47d50fe71",
+  "prior_profile": "docs/acceptance/evidence/m8-bounded-load/summary.json",
+  "workloads": [
+    {
+      "name": "threads",
+      "workers": 4,
+      "rounds": 20,
+      "expected_claims": 80,
+      "p95_budget_ms": 1000,
+      "processes": false,
+      "transport_mix": false
+    },
+    {
+      "name": "process-http",
+      "workers": 2,
+      "rounds": 20,
+      "expected_claims": 40,
+      "p95_budget_ms": 1000,
+      "processes": true,
+      "transport_mix": true
+    }
+  ],
+  "platforms": [
+    {
+      "system": "Linux",
+      "python": "3.14.7",
+      "runtime_root": "/root/amadeus-m115-benchmark-r1",
+      "gate": "Existing Linux matrix queue must complete successfully; no live local collector"
+    },
+    {
+      "system": "Windows",
+      "python": "3.12.16",
+      "runtime_root": "D:/agentsync-debug/m115-benchmark-r1",
+      "gate": "Existing Windows matrix and canonical wheel-only followup must finish; no live local collector"
+    }
+  ],
+  "execution_requirements": [
+    "Fresh isolated installed exact wheel using existing offline dependencies; no source fallback",
+    "Check installed product origin and archive member hashes before and after",
+    "One workload at a time; each uses only its fresh disposable scratch project and owned loopback endpoint",
+    "Save genuine commands, exit codes, logs and JSON; check exact audit identities/outcomes and one persisted winner per round",
+    "Keep fixed1000ms declared diagnostic threshold; retain any failure, no automatic retry or relaxed threshold",
+    "Confirm scratch and owned worker/server cleanup; never access user data or model accounts"
+  ],
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-14T10:26:10.424300+00:00",
+  "run": "/root/amadeus-m115-r3/linux-312/reports/release-20261114T100607Z-11e07f99f3ef",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Completed Linux3.12 source pytest component only; package suites and whole row pending",
+  "finished_at": "2026-11-14T10:25:02.318975+00:00",
+  "exit_code": 0,
+  "skipped": 6,
+  "failed": 0,
+  "errors": 0,
+  "passed": 2476,
+  "source_files_verified": 2083,
+  "private_capture_sha256": "e7ca33c67f84957b939fb4ebe6489024f17ac4c7a0fd8a538c8123d59bfb19bf",
+  "raw_file_mode": "0600",
+  "raw_directory_mode": "0700",
+  "sanitized_unique": 2481,
+  "files": [
+    {
+      "path": "junit.xml",
+      "size": 376320,
+      "sha256": "b1b8c68a37ed9c4168c98a86914a384f962df09eec9ab1d46f86af0dffcf32bd"
+    },
+    {
+      "path": "logs/pytest.log",
+      "size": 13644,
+      "sha256": "b018fcb63502dc483b267678e4b6dcdfe42ffcbb9d457b2866da7e5d2f160dda"
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "size": 1434,
+      "sha256": "76c64dd4817a17098b389395e46d80b356d289ecb02df1c03ecfd2e87b08a35c"
+    }
+  ],
+  "source_snapshot_reference": "../linux314-source-observation/source-snapshot.json",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "identity_derivation": "PENDING until complete row; original sanitized XML preserved",
+  "raw_xml_uploaded": false,
+  "formal_release": "BLOCKED"
+}

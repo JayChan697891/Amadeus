@@ -22,12 +22,22 @@ running since09:49:57 UTC, actual pytest PID24052. Its completed component evide
 remains under m9-a115-preparation/windows311-source-observation and
 windows311-wheel-observation. Whole-row identity validation remains pending.
 
-The original Linux queue automatically started linux-312 at10:06:07 UTC,
-row PID15604; source pytest PID15656 started10:06:08 UTC. Windows3.14 remains
-queued after the current Windows row. Do not restart either queue.
+The original Linux queue started linux-312 at10:06:07 UTC. Its source suite
+completed at10:25:02 UTC:2476pass6skip, canonical exit0,2083 frozen files unchanged.
+Sanitized component evidence: m9-a115-preparation/linux312-source-observation.
+Wheel pytest PID1255 is active; sdist and whole-row identity validation remain
+pending. Windows3.14 remains queued. Do not restart either original queue.
 Matrix-after-linux311.json now verifies two complete Linux rows and retains7
 incomplete OS/Python combinations. Original candidate-bootstrap.json is unchanged.
 The Windows3.12 canonical wheel gap and all other Release gates remain BLOCKED.
+
+The original M8-02 bounded load also needs current-b6 evidence: the existing
+4-thread/20-round and2-process/mixed-loopback/20-round results bind to09425da.
+The benchmark tool is byte-identical to the prior2af7ccc tool; reuse it and the
+same1000ms diagnostic budget, with fresh offline installs after each host's
+matrix finishes (Windows also after canonical wheel followup). This is NOT RUN,
+not a new M5 stage or a broader stress/SLO claim. See
+m9-a115-preparation/current-benchmark-plan.json; preserve the historical passes.
 
 ## Remaining Windows 3.12 wheel gate: a new canonical component is required
 

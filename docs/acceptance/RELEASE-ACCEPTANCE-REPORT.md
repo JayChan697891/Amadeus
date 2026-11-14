@@ -31,7 +31,12 @@ Complete report: ../../releases/0.3.0a115/b6f05f0/linux-311/report.json.
 Summary: evidence/m9-a115-preparation/linux311-complete/summary.json.
 
 Windows3.11 source/wheel each completed2426pass56skip/exit0; sdist remains running
-since09:49:57 UTC. Linux3.12 actually started10:06:07 UTC in the original queue.
+since09:49:57 UTC. Linux3.12 source completed10:25:02 UTC:2476pass6skip,
+exit0 and2083 source hashes unchanged. Wheel is running; sdist/whole-row gates
+remain pending. See evidence/m9-a115-preparation/linux312-source-observation.
+The current-b6 M8-02 bounded installed benchmark is NOT RUN; historical09425da
+results are retained but do not establish current-version performance. The same
+profiles and1000ms diagnostic budget will run after each host's matrix/followup.
 The new strict matrix snapshot retains7 incomplete OS/Python combinations.
 Cross-platform skip observations do not waive any complete row or macOS gate.
 
