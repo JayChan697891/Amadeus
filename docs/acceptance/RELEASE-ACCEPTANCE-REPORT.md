@@ -12,9 +12,12 @@ See evidence/m9-a115-preparation/composite-resume/summary.json for current pins.
 Linux3.14 source subsequently finished08:31:14 UTC:2476pass6skip, zero failures
 or errors, and2083 frozen input files match. All56 Windows3.12 sdist skipped
 cases have passing observations in this Linux source run. This is a completed
-source component, not the whole Linux row: wheel is running and sdist pending.
-Identity derivation remains pending until the original row terminates. Saved
-evidence: evidence/m9-a115-preparation/linux314-source-observation/summary.json.
+source component, not the whole Linux row. Wheel subsequently completed
+08:50:08 UTC:2476pass6skip/exit0, with matching log, terminal receipt and XML.
+Sdist started08:50:23 UTC and remains running. Identity derivation remains pending
+until the original row terminates. Saved evidence: the source and wheel summaries
+under evidence/m9-a115-preparation/linux314-source-observation/ and
+linux314-wheel-observation/. No full-row or formal acceptance is inferred.
 
 The historical wheel observer did not persist a native-handle creation-time
 binding after its separate CIM check. Existing observations are retained but

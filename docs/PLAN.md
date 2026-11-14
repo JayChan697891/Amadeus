@@ -10,8 +10,10 @@ Current M9 execution: resumed Windows3.12 sdist completed2426pass56skip, exit0;
 the explicit composite and exact candidate manifest passed strict Windows/Linux
 verification while retaining wheel canonical unverified and matrix incomplete.
 Remaining Windows3.11 and Linux3.14 rows actually started08:12 UTC, followed
-sequentially by Windows3.14 and Linux3.11/3.12 only on verified success. Observe
-the original queues rather than restart them. Recovery and exact pins are in
+sequentially by Windows3.14 and Linux3.11/3.12 only on verified success. Linux3.14
+source and wheel now each completed2476pass6skip/exit0; sdist is running, and
+whole-row identity validation is pending. Observe the original queues rather
+than restart them. Recovery and exact pins are in
 docs/acceptance/evidence/m9-a115-preparation/composite-resume/summary.json.
 
 Current M9 correction: bind separately executed installations explicitly to their
