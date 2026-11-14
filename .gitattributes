@@ -87,3 +87,6 @@ releases/0.3.0a115/b6f05f0/windows-312/** -text -whitespace
 releases/0.3.0a115/b6f05f0/composite/** -text -whitespace
 releases/0.3.0a115/b6f05f0/candidate-bootstrap.json -text -whitespace
 releases/0.3.0a115/b6f05f0/composite-audit.json -text -whitespace
+
+releases/0.3.0a115/b6f05f0/linux-314/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-linux314.json -text -whitespace

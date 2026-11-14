@@ -1,0 +1,46 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "build",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/offline-build/bin/python",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/local-rebuild"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "started_at": "2026-11-14T08:31:24.890088+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "build",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/offline-build/bin/python",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/local-rebuild"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "exit_code": 0,
+    "started_at": "2026-11-14T08:31:24.890088+00:00",
+    "finished_at": "2026-11-14T08:31:27.520274+00:00",
+    "log": "logs/build.log",
+    "log_sha256": "143a7075c6875052e1839bb23feeda740e2c81295ee354a7d2a60405aef1f83c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

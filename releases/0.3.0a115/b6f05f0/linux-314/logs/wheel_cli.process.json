@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_cli",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/wheel-1sewlkyj/bin/python",
+      "-I",
+      "-m",
+      "agentsync",
+      "--help"
+    ],
+    "cwd": "/root/amadeus-m115-r3/linux-314/reports/release-20261114T081233Z-e3e4e5a67ff6",
+    "started_at": "2026-11-14T08:31:39.049726+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_cli",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/wheel-1sewlkyj/bin/python",
+      "-I",
+      "-m",
+      "agentsync",
+      "--help"
+    ],
+    "cwd": "/root/amadeus-m115-r3/linux-314/reports/release-20261114T081233Z-e3e4e5a67ff6",
+    "exit_code": 0,
+    "started_at": "2026-11-14T08:31:39.049726+00:00",
+    "finished_at": "2026-11-14T08:31:39.375990+00:00",
+    "log": "logs/wheel_cli.log",
+    "log_sha256": "473bb71197f23921dd89c78ed2021ca5b98856dc40cc4484ef35b50afd1bf89e",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_venv",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/jobs-env/bin/python",
+      "-m",
+      "venv",
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/wheel-1sewlkyj"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "started_at": "2026-11-14T08:31:27.906012+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_venv",
+    "status": "pass",
+    "command": [
+      "/root/jobs-env/bin/python",
+      "-m",
+      "venv",
+      "/root/amadeus-m115-r3/t/.scratch-s4n3cifr/wheel-1sewlkyj"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "exit_code": 0,
+    "started_at": "2026-11-14T08:31:27.906012+00:00",
+    "finished_at": "2026-11-14T08:31:30.572892+00:00",
+    "log": "logs/wheel_venv.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

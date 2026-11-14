@@ -1,17 +1,31 @@
 # Amadeus current progress
 
-Latest observed matrix progress: Linux3.14 source naturally completed at
-2026-11-14 08:31:14 UTC,2476pass6skip/exit0;2083 frozen files still match.
-All56 cases skipped in the Windows3.12 sdist report have passing observations
-in this Linux source run. Canonical logs/JUnit and snapshot are saved in
-acceptance/evidence/m9-a115-preparation/linux314-source-observation/summary.json.
-The original sanitized XML still has the known fixture-label collision, with
-private raw capture confirmed0600 inside0700; final identity derivation awaits
-the row's termination. Linux wheel subsequently completed at08:50:08 UTC,
-2476pass6skip/exit0; its log hash, original terminal receipt and XML counts agree.
-See acceptance/evidence/m9-a115-preparation/linux314-wheel-observation/summary.json.
-Sdist actually started08:50:23 UTC in the same row. Windows3.11 source remains
-running. Neither whole row nor formal Release is marked passed.
+Latest completed row: Linux3.14 finished2026-11-14 09:09 UTC. All26 real
+checks passed; source/wheel/sdist each2476pass6skip, with2482 unique identities
+and matching case sets after only six proven label changes per XML. Original
+reports/receipts/XML remain unchanged.2083 Git inputs and exact candidate archive
+hashes were verified again after transfer. No Docker containers remained at the
+row boundary. Independent read-only review accepted this limited local row.
+
+Saved complete report: releases/0.3.0a115/b6f05f0/linux-314/report.json.
+Summary: acceptance/evidence/m9-a115-preparation/linux314-complete/summary.json.
+The105 Docker observation files include expected negative/non-started cases;
+they are separately pinned by transfer-summary.json, not105 successful executions
+or semantic verification of all observations by the original72-artifact report.
+Known protocol fixtures and cursor labels are not real-client acceptance.
+
+Windows3.11 source completed09:00:36 UTC:2426pass56skip/exit0; wheel actually
+started09:01:08 UTC and remains running. Its source evidence is preserved under
+m9-a115-preparation/windows311-source-observation. All6 Linux skips pass in this
+Windows source run; all56 Windows skips pass in the Linux source run. This does
+not replace any required complete platform/Python row.
+
+The original Linux queue automatically started linux-311 at09:09:02 UTC,
+PID25497, source pytest09:09:04 UTC; linux-312 remains queued. The Windows queue
+still owns windows-311, followed by windows-314 on verified success. Do not
+restart either queue. Matrix-after-linux314.json verifies the completed Linux
+row while explicitly retaining8 incomplete OS/Python combinations. Original
+candidate-bootstrap.json is unchanged. Formal Release remains BLOCKED.
 
 ## Remaining Windows 3.12 wheel gate: a new canonical component is required
 

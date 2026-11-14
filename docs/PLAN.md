@@ -6,15 +6,15 @@ Windows queue, supplement only that wheel component with new canonical receipts
 against the same archive; do not repeat source/sdist/build or loosen verification.
 The prepared driver is NOT RUN. This is an existing M9 gap, not a new M5 stage.
 
-Current M9 execution: resumed Windows3.12 sdist completed2426pass56skip, exit0;
-the explicit composite and exact candidate manifest passed strict Windows/Linux
-verification while retaining wheel canonical unverified and matrix incomplete.
-Remaining Windows3.11 and Linux3.14 rows actually started08:12 UTC, followed
-sequentially by Windows3.14 and Linux3.11/3.12 only on verified success. Linux3.14
-source and wheel now each completed2476pass6skip/exit0; sdist is running, and
-whole-row identity validation is pending. Observe the original queues rather
-than restart them. Recovery and exact pins are in
-docs/acceptance/evidence/m9-a115-preparation/composite-resume/summary.json.
+Current M9 execution: Linux3.14 completed its full source/wheel/sdist row,
+all26 checks passed and each suite2476pass6skip; strict artifact, source and
+case-identity verification and limited independent read-only review passed.
+The105 separately pinned Docker observations include expected negative cases,
+not real models. Windows3.11 source passed2426/56skip; wheel now runs. The original
+Linux queue advanced to3.11, followed by3.12; Windows3.14 remains queued.
+Do not repeat completed source/package suites. Eight required OS/Python rows
+remain incomplete, including unavailable macOS. Keep formal Release BLOCKED.
+Evidence and recovery: docs/acceptance/evidence/m9-a115-preparation/linux314-complete/summary.json.
 
 Current M9 correction: bind separately executed installations explicitly to their
 original directories and unchanged receipts. The same frozen b6 source/wheel are

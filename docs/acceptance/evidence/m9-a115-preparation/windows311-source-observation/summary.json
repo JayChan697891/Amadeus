@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-14T09:01:54.338110+00:00",
+  "run": "D:\\agentsync-debug\\m115-r3\\windows-311\\reports\\release-20261114T081224Z-4f25be342fb7",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Completed Windows3.11 source pytest component only; whole row and identity derivation pending",
+  "finished_at": "2026-11-14T09:00:36.761222+00:00",
+  "exit_code": 0,
+  "skipped": 56,
+  "failed": 0,
+  "errors": 0,
+  "passed": 2426,
+  "sanitized_unique": 2481,
+  "files": [
+    {
+      "path": "junit.xml",
+      "size": 391471,
+      "sha256": "d91cb690ebd72661e9737235e30ec91d05612155bd8238fcd36ca88c037661f7"
+    },
+    {
+      "path": "logs/pytest.log",
+      "size": 17864,
+      "sha256": "748a0dbc0ec56dd318faf51b2621718d888691f3855deccda1ba5d989c4f3a6b"
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "size": 1552,
+      "sha256": "019e7dca742f01e8247697a3fd6e5ae10d5901369ff113ebb0cbfd1b3853439a"
+    }
+  ],
+  "source_snapshot_reference": "../linux314-source-observation/source-snapshot.json",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "identity_derivation": "PENDING until complete row; original sanitized XML preserved",
+  "raw_xml_uploaded": false,
+  "formal_release": "BLOCKED"
+}
