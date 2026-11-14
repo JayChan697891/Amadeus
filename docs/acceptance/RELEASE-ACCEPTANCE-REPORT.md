@@ -531,7 +531,7 @@ actual receipts; it is not a pytest or full current-SHA matrix execution.
 Independent development review accepted this narrow result.
 [Exact plans, receipts, limitations and hashes](evidence/m6-linux-live/summary.json).
 
-PASS: this bounded real Codexâ†’Core reviewâ†’owner stagingâ†’Dockerâ†’distinct Core reviewer
+PASS: this bounded real Codex→Core review→owner staging→Docker→distinct Core reviewer
 path. NOT RUN: second client (no Claude/Cursor subscription), independent model
 reviewer, unattended application, current full matrix. UNVERIFIED: active-generation
 timeout and server/descendant cancellation. Full M5/M6/M7/Release remain BLOCKED.
@@ -1170,7 +1170,7 @@ Raw evidence, diagnostics, reproduction drivers and manifests are in the164KB
 archive referenced by `evidence/alpha21-full-source-summary.json`. No Actions,
 paid calls, client upgrades, account edits or retry of the closed Codex attempt.
 
-## Alpha21 planning Unicode output repair â€” selected local validation
+## Alpha21 planning Unicode output repair — selected local validation
 
 Frozen `cb71f0e232253561a6da4ae5f346b312f94ce91b` (0.3.0a21/schema12)
 fixes valid Unicode project IDs failing with UnicodeEncodeError on ASCII stdout.
@@ -1191,7 +1191,7 @@ results are recorded above. Real clients and autonomous relay remain **NOT RUN**
 No VM or provider was started for the selected repair checks. All42 formal requirements remain
 not_run; M5 and Release remain **BLOCKED**. No Actions, paid calls or account edits.
 
-## Alpha20 offline reported-usage command â€” selected local validation
+## Alpha20 offline reported-usage command — selected local validation
 
 Frozen `b2e855947a30d4ee57b0d947ec9420816c84eeb0` (0.3.0a20/schema12) adds
 `agentsync usage --project-id ID` with1MiB UTF-8 stdin limit and strict existing
@@ -1215,7 +1215,7 @@ Alpha20 Linux/macOS, full suites, real clients and autonomous relay **NOT RUN**.
 Prior platform evidence stays bound to its earlier SHA. All42 formal requirements
 remain not_run; M5 and Release remain **BLOCKED**. No Actions or paid calls.
 
-## Alpha19 Cursor contextual launch entry point â€” selected local validation
+## Alpha19 Cursor contextual launch entry point — selected local validation
 
 Frozen product `cd2e8d75555e954b41c421f1dfeb3308032ba440` (0.3.0a19/schema12)
 adds the explicit Cursor contextual-factory argument; shared engine/context,
@@ -1249,7 +1249,7 @@ Astra independently inspected the frozen delta and saved source/package/archive
 bindings and found no concrete blocker or false evidence claim in this scope;
 that review executed no tests or clients and does not constitute Work acceptance.
 
-## Authorized actual Codex factory test â€” preflight BLOCKED
+## Authorized actual Codex factory test — preflight BLOCKED
 
 On2026-10-28, the new single-use readonly subscription test stopped before model
 execution: the native executable selected by the PATH/npm installation reported
@@ -1263,7 +1263,7 @@ specifically identified compatible CLI and verified route/safety conditions are
 required before a separately authorized bounded attempt. Evidence:
 `evidence/codex-factory-preflight-20261028.json`. Release remains BLOCKED.
 
-## Alpha18 opt-in Claude launch plumbing â€” selected validation
+## Alpha18 opt-in Claude launch plumbing — selected validation
 
 Frozen `c1a53ccf62263681da17d529b9c9abe362aea4a7` adds `ClaudeProcessFactory` and
 Claude contextual-factory argument using the existing launch contract. Shared
@@ -1285,7 +1285,7 @@ are unverified. Every actual model run needs fresh authorization; factory
 attachment grants none. All42 formal statuses remain `not_run`; M5/Release
 BLOCKED. Evidence: `evidence/alpha18-local-summary.json`.
 
-## Alpha17 pinned Codex launch plumbing â€” scoped local checkpoint
+## Alpha17 pinned Codex launch plumbing — scoped local checkpoint
 
 Product `33b5ec26318d10783352c9c39e2364af0e8a1e53`; fixture-only successor/package
 freeze `d42a07c386f7183b44a3718c2c285fd73ec82861` has identical runtime bytes.
@@ -1374,7 +1374,7 @@ Evidence: `evidence/core-startup-local-summary.json`; raw logs/JUnits in
 
 Frozen product `1d6b52605ff930787a992e8a7800caf01a8a0089`, development0.3.0a15,
 schema12/dependencies unchanged. Four fresh offline Windows environments (Python
-3.14/3.11 Ã— wheel/sdist) each **782 passed,3 skipped,0 failures/errors** across
+3.14/3.11 × wheel/sdist) each **782 passed,3 skipped,0 failures/errors** across
 matching785 case IDs. Skips are POSIXfork and2symlink-privilege cases, not passes.
 Two fresh offline Linux wheel/sdist environments each **122 passed,2 skipped,
 0 failures/errors** across124 selected IDs. Their Windows-junction skips are
@@ -1389,7 +1389,7 @@ selected suites, not the full repository, OS matrix or historical8-process repai
 Astra reviewed critical source and saved results, approving this scoped development
 checkpoint only; this is not independent Work human or M5/Release acceptance.
 
-The identical32workerÃ—8round/1000ms diagnostic now passed with sourcep95=107.837ms
+The identical32worker×8round/1000ms diagnostic now passed with sourcep95=107.837ms
 and fresh installed Python3.11 p95=110.680ms, each with256 exact audit receipts
 (8success/248denied,0 defects). Admission wait remains included. Historical
 2303.126ms baseline failure stays preserved. This measured local improvement
@@ -1430,7 +1430,7 @@ imports; sources stayed unchanged. A first root review incorrectly assumed zero
 Linux skips; it was corrected from raw XML without rerunning or promoting skips.
 Ruff/format/mypy55modules passed.
 
-Identical32workerÃ—8round timing includes all admission waiting and uses the same
+Identical32worker×8round timing includes all admission waiting and uses the same
 1000ms p95 threshold. Observed p95=107.837ms,256 claim attempts,8 success/248 denial
 audits exactly matched,0 audit defects, all checks passed. Earlier strict baseline
 p95=2303.126ms and its failure remain preserved. This is an observed one-host
@@ -1472,7 +1472,7 @@ Only aggregate counts leave the owned fixture. Core and audit semantics are unch
 Root independent Windows Python3.14 diagnostic/existing audit-security/collector
 scope11pass; Python3.11 diagnostic7pass; Ruff/format/mypy54 pass. Controlled missing
 denial and equal-total identity/outcome corruption tests fail the diagnostic as
-expected. Actual32workersÃ—8rounds observed256 expected audit events,8success and
+expected. Actual32workers×8rounds observed256 expected audit events,8success and
 248denied, with0missing/duplicate/unexpected/mismatch. All functional checks passed;
 p95=2303.126ms still FAILED the unchanged1000ms budget, exit1. This one workload
 does not prove generalized audit durability. Evidence:
@@ -1494,7 +1494,7 @@ This review is not Release or Work human acceptance.
 The original benchmark does not count denial audit rows. Source shows denial
 logging uses another transaction with1000ms busy timeout and suppresses SQLite
 errors; the performance impact and potential retention loss were not established
-by that benchmark. A separate owned32workerÃ—8round run added only a final read-only
+by that benchmark. A separate owned32worker×8round run added only a final read-only
 audit query, after timed claims and before private-child cleanup. Observed8
 success/ok and248denied/version_conflict events exactly match expected counts.
 This run p95 was2285.607ms and still FAILED the unchanged1000ms budget. One complete
@@ -1697,7 +1697,7 @@ partial, with all42 formal execution statuses still `not_run`. Current Linux/mac
 MCP/HTTP/scheduler/adapter process recovery, performance stress and real autonomous
 relay remain NOT RUN/unverified; old Linux failures are not cleared. Release BLOCKED.
 
-## Final development alpha13 package supplement â€” 2026-10-27 America/Tijuana
+## Final development alpha13 package supplement — 2026-10-27 America/Tijuana
 
 Frozen product/package source `77426fa4a02125417f10b6582ad87dccf50683f5`, version
 `0.3.0a13`. Fresh offline Windows Python3.14 wheel and sdist environments each
@@ -1724,7 +1724,7 @@ suite or current Linux/macOS matrix, Python3.11 sdist, real clients or autonomou
 relay is claimed by these scoped results. All42 formal requirements remain
 `not_run`; formal release remains **BLOCKED**. No Release/tag/main change occurred.
 
-## Coarse-clock capture freshness repair â€” 2026-10-27 America/Tijuana
+## Coarse-clock capture freshness repair — 2026-10-27 America/Tijuana
 
 Actual isolated Python3.11.15 alpha12 wheel tests executed **301 passed /10 failed**,
 not NOT RUN: fresh captures could share the run's public loop-clock timestamp and
@@ -1746,7 +1746,7 @@ Astra reviewed the actual diff without a blocking finding (source-only review).
 Fixed installed-package tests remain pending at this checkpoint; no claim of
 full Python3.11 support, actual clients, relay or formal release is made. BLOCKED.
 
-## Development alpha12 installation checkpoint â€” 2026-10-27 America/Tijuana
+## Development alpha12 installation checkpoint — 2026-10-27 America/Tijuana
 
 Product/package source commit: `9ebb13e2799cb2d58e36ab429845b0eede9a3c0d`,
 version `0.3.0a12`, unchanged schema12/dependencies. This is a development alpha,
@@ -1770,7 +1770,7 @@ installation/component results. Linux/current full platform matrix and actual
 clients/relay were not executed here. All42 formal requirements remain `not_run`;
 M5 blockers and formal release remain **BLOCKED**.
 
-## Caller-reported usage component â€” 2026-10-27 America/Tijuana
+## Caller-reported usage component — 2026-10-27 America/Tijuana
 
 Added a bounded project-local UsageLedger for exact typed adapter results. It
 retains scalar identities/status/timing/counters only, separates Mock from protocol
@@ -1788,7 +1788,7 @@ format, mypy52modules and diff passed. Evidence with JUnit/commands/tested hashe
 selectors. All42 formal requirements remain `not_run`; current real clients,
 autonomous relay, full platform matrix and formal release remain unverified/BLOCKED.
 
-## Isolated automatic Mock workflow â€” 2026-10-26 America/Tijuana
+## Isolated automatic Mock workflow — 2026-10-26 America/Tijuana
 
 `demo --workflow` composes the existing planner, Core and MockRunManager in a fresh
 temporary child of an explicit scratch parent. Two fixed workers execute a diamond
@@ -1818,7 +1818,7 @@ autonomous real-client relay remain unimplemented/unverified. All42 formal
 requirements remain `not_run`; M5 blockers and earlier Linux failures persist.
 Formal release remains **BLOCKED**.
 
-## Capability-aware planning component â€” 2026-10-26 America/Tijuana
+## Capability-aware planning component — 2026-10-26 America/Tijuana
 
 Existing read-only task/dispatch planners now optionally match explicit complete
 task requirements against caller/self-reported agent capabilities. Input tokens,
@@ -1835,7 +1835,7 @@ tested-file hashes). M7-02 has eight component selectors. All42 formal requireme
 remain `not_run`; real autonomous relay, current Linux/new package validation and
 formal release remain NOT RUN/BLOCKED. Existing Linux failures are unresolved.
 
-## Cursor protocol component â€” 2026-10-26 America/Tijuana
+## Cursor protocol component — 2026-10-26 America/Tijuana
 
 Added a bounded standalone terminal-JSON parser and typed CursorAdapter using the
 existing shared host lifecycle. Explicit supported schema plus observed exit0 is
@@ -1853,7 +1853,7 @@ M6-05 now maps eight component selectors. All42 formal requirements remain
 installation or full platform matrix was run here; earlier Linux failures remain.
 Formal release remains **BLOCKED**.
 
-## Local heterogeneous run manager â€” 2026-10-26 America/Tijuana
+## Local heterogeneous run manager — 2026-10-26 America/Tijuana
 
 Implemented scoped registration/routing, duplicate-request dispatch ownership,
 opaque handles, bounded non-evicting history, identity checks and nonblocking
@@ -1878,7 +1878,7 @@ autonomous relay, Linux/current package checks and Python 3.11 execution were
 **NOT RUN** here. Previous Linux failures remain unresolved. All 42 formal
 requirements remain `not_run`; formal release remains **BLOCKED**.
 
-## Never-started capture cancellation repair â€” 2026-10-26 America/Tijuana
+## Never-started capture cancellation repair — 2026-10-26 America/Tijuana
 
 Final local test-infrastructure checkpoint: **1041pass /5skip /0fail/error**
 from the root's actual source unit/concurrency/selected Core suite; Ruff, format,
@@ -2073,7 +2073,7 @@ and D:/agentsync-debug/CLAUDE-PROTOCOL-CHECKPOINT-20261025.json.
 
 ## Prior explicit invocation and limited actual-client checkpoint: 2026-10-25 America/Tijuana
 
-Formal release **BLOCKED**; M5 five-item scope and B1â€“B6/D1â€“D5 remain unchanged.
+Formal release **BLOCKED**; M5 five-item scope and B1–B6/D1–D5 remain unchanged.
 
 Complete existing Windows `tests/` additionally executed against product commit
 `248d0be9685fd3cb474b633c177f29947f6f3f21`: **1441pass /30skip /0fail/error**
@@ -2097,7 +2097,7 @@ or proof that credentials cannot be read. Default adapter startup stays unsuppor
 | Fresh offline wheel / isolated sdist components |499pass each /0skip/fail/error|
 | Local Linux invocation/process/protocol/Mock components |421pass /0skip/fail/error|
 | Ruff / format / mypy / diff |pass;225 formatted files;47 typed source files|
-| One separately authorized installed-wheel actual CodexAdapter run |starting â†’ running â†’ succeeded; exit0; exact synthetic reply;4 authentic events|
+| One separately authorized installed-wheel actual CodexAdapter run |starting → running → succeeded; exit0; exact synthetic reply;4 authentic events|
 
 Root verified302 frozen files,44 runtime modules, actual XML, artifact hashes,
 installed bytes and command journals. The live run used that same installed wheel,
@@ -2121,7 +2121,7 @@ rejection are retained in D-drive evidence, with their eventual passing checks.
 ## Prior host-factory lifecycle checkpoint: 2026-10-25 America/Tijuana
 
 Formal release **BLOCKED**. M5 remains exactly the five original requirements;
-its B1â€“B6/D1â€“D5 and unique final exit conditions are unchanged.
+its B1–B6/D1–D5 and unique final exit conditions are unchanged.
 
 The six-method CodexAdapter prototype now composes typed host-factory process
 capture and JSONL observation. No built-in live launcher or Core endpoint exists;
@@ -2210,7 +2210,7 @@ CLI smoke being relabelled as adapter acceptance. Real CodexAdapter integration,
 real cancellation/timeout, Claude, Cursor, automatic relay, independent verified
 completion, approval consumption/safe apply and full M9 remain NOT RUN/UNVERIFIED.
 M5-01/03 have historical limited VERIFIED evidence; current whole M5 is not VERIFIED.
-B1â€“B6 and D1â€“D5 remain exactly in the unique M5 checklist.
+B1–B6 and D1–D5 remain exactly in the unique M5 checklist.
 
 The user separately authorized one subscription-only read-only model task. Actual
 CLI0.164.0-alpha.11.1 used ChatGPT login and no API-key environment; no credit

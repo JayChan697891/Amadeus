@@ -46,8 +46,8 @@
     },
     {
       "path": "baseline-final.log",
-      "sha256": "6b3b1988ba32232cd75e459c18ec9be6dc1468402fd92b0eb067f4738a767b68",
-      "size": 8418
+      "sha256": "675654091c2940ce164f4cf87b3fd24e01746d6859263589f4a57711787b9232",
+      "size": 8577
     },
     {
       "path": "fixed-final-junit.xml",
@@ -61,8 +61,8 @@
     },
     {
       "path": "fixed-final.log",
-      "sha256": "042bf08aa7508c9202e481ebe1e0c8927f1a46dfbffa4e6d34abc974b4956377",
-      "size": 994
+      "sha256": "772678b392ec80750bcae651a59916c39c1d4b23404d36d587700c118b5c458e",
+      "size": 1010
     },
     {
       "path": "input-snapshot.json",
@@ -73,6 +73,20 @@
       "path": "run-checks.py.txt",
       "sha256": "54abd7e7d1840aa5b46f8202796e33e2fcb01f4f94eb714d6efccde7bef34e61",
       "size": 2450
+    }
+  ],
+  "artifact_storage_corrections": [
+    {
+      "path": "baseline-final.log",
+      "previous_sha256": "6b3b1988ba32232cd75e459c18ec9be6dc1468402fd92b0eb067f4738a767b68",
+      "original_sha256": "675654091c2940ce164f4cf87b3fd24e01746d6859263589f4a57711787b9232",
+      "reason": "Restore original UTF8 log bytes and line endings; no execution or result changed"
+    },
+    {
+      "path": "fixed-final.log",
+      "previous_sha256": "042bf08aa7508c9202e481ebe1e0c8927f1a46dfbffa4e6d34abc974b4956377",
+      "original_sha256": "772678b392ec80750bcae651a59916c39c1d4b23404d36d587700c118b5c458e",
+      "reason": "Restore original UTF8 log bytes and line endings; no execution or result changed"
     }
   ]
 }

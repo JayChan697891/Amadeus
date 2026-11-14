@@ -175,7 +175,7 @@ This development checkpoint changes no schema/dependencies. Build/install valida
 is recorded separately; real-client execution, automatic durable recovery and
 formal release acceptance remain unverified or blocked.
 
-## 0.3.0a13 â€” development compatibility repair
+## 0.3.0a13 — development compatibility repair
 
 Replace timestamp-based capture freshness with a private process-local creation
 fence and explicit event-loop association. Fresh captures can share a timestamp
@@ -184,7 +184,7 @@ captures remain rejected without taking ownership or stopping them. Public
 timestamps, markers and cancellation limits remain unchanged. This development
 alpha grants no authentication, real-client verification or release acceptance.
 
-## 0.3.0a12 â€” development checkpoint
+## 0.3.0a12 — development checkpoint
 
 - Add a bounded standalone Cursor JSON parser and typed host-factory adapter.
 - Add heterogeneous RunManager routing with bounded history and shared dispatch receipts.
@@ -211,7 +211,7 @@ Codex public records and keep Claude session/result fields private. No credentia
 SDK/client launch, Core authorization or automatic apply was added. These local
 checkpoints are not a release or M5/real-client acceptance; see the acceptance report.
 
-## 0.3.0a11 â€” M5B3B2B candidate execution intent guard
+## 0.3.0a11 — M5B3B2B candidate execution intent guard
 
 Add owner-only prepare/get/abandon of a single non-executing candidate intent.
 Fence ledger recovery while a prepared intent exists; require explicit terminal
@@ -220,7 +220,7 @@ and add schema12 tables only. No execution capability, token, worker, Docker,
 renewal, task gate or apply. Frozen validation/Work review remain required;
 formal Release BLOCKED.
 
-## 0.3.0a10 â€” M5B3B2A one-shot owner reservation
+## 0.3.0a10 — M5B3B2A one-shot owner reservation
 
 Add owner-only candidate reservation, explicit terminal interruption and strict
 claim/proof/recovery relations. Schema11 preserves original queued/cancelled
@@ -228,7 +228,7 @@ records and historical receipts. Reservation never starts a worker or execution;
 no token, renewal, task gate, approval consumption or apply. Formal Release stays
 BLOCKED; frozen local validation and independent Work acceptance are required.
 
-## 0.3.0a9 â€” M5B3B1 durable candidate verification queue
+## 0.3.0a9 — M5B3B1 durable candidate verification queue
 
 Add a separate owner-only candidate queue with immutable checked input bindings,
 historical idempotent receipts and version-fenced cancellation. Add schema10
@@ -236,27 +236,27 @@ tables without changing old snapshot verification semantics. No candidate
 worker, lease, execution, task verification, approval consumption or apply.
 Frozen local validation and independent Work acceptance remain required.
 
-## 0.3.0a8 â€” M5B3B0 transaction-bound metadata capture
+## 0.3.0a8 — M5B3B0 transaction-bound metadata capture
 
 Extract a private owner-authenticated capture seam that reads the caller-owned
 SQLite transaction without managing its lifetime. Preserve public capture and
 existing export behavior. No candidate queue, schema change or execution gate.
 Final validation and independent Work review remain required.
 
-## 0.3.0a7 â€” M5B3A2 existing candidate input export
+## 0.3.0a7 — M5B3A2 existing candidate input export
 
 - Owner-only checked export of actual managed merge-candidate object content.
 - Open existing storage without reconstruction; strict receipts/intents and pre/post Git identity checks.
 - Reject bare and worktree Git redirects before Git, and verify applicable parent graph.
 - Preserve bounded source/object rules; no jobs, execution, task completion, schema or apply changes.
 
-## 0.3.0a6 â€” M5B3A1 candidate metadata binding
+## 0.3.0a6 — M5B3A1 candidate metadata binding
 
 - Owner-only read-only capture of project-consistent candidate/worktree/snapshot/task records.
 - Frozen metadata and canonical receipt fingerprints; strict stored JSON validation.
 - No filesystem/Git validation, code execution, task gate, schema change or source apply.
 
-## 0.3.0a5 â€” M5B2C explicit cleanup receipt
+## 0.3.0a5 — M5B2C explicit cleanup receipt
 
 - Owner-only internal one-shot reconciliation for expired, acknowledged full-ID executions.
 - Additive schema9 intent/receipt and fencing before any Docker side effect.
@@ -264,7 +264,7 @@ Final validation and independent Work review remain required.
 - Cleanup observations never restore passed results or allow job reuse.
 - No automatic recovery/retry, task acceptance, safe apply or real client relay; release blocked.
 
-## 0.3.0a1 â€” M5A under development
+## 0.3.0a1 — M5A under development
 
 - Default read-only membership and explicit project-owner role grants.
 - Separate owner control plane and bounded, resource-pinned expiring approvals.
@@ -273,7 +273,7 @@ Final validation and independent Work review remain required.
 - No approved apply or arbitrary execution endpoint; final release remains blocked.
 
 
-## 0.2.0a3 â€” M4B development checkpoint
+## 0.2.0a3 — M4B development checkpoint
 
 - Independent managed Git object store and per-task worktrees; source checkout read-only.
 - Real third-tree merge conflict detection, pinned commits and NUL-safe path reports.
@@ -282,14 +282,14 @@ Final validation and independent Work review remain required.
   interrupted side-effect replay bindings. Formal release remains blocked.
 
 
-## 0.2.0a2 â€” M4-01/02 under verification
+## 0.2.0a2 — M4-01/02 under verification
 
 - Project-confined resource metadata and SHA-256 file version checks.
 - Cooperative exclusive file/directory leases with versioned renewal/release and replay checks.
 - Global physical-path conflicts prevent duplicate project registrations bypassing a lease.
 - Schema v4 root identity and lock history; worktrees/Git conflict reports remain the next checkpoint.
 
-## 0.2.0a1 â€” M3 under verification
+## 0.2.0a1 — M3 under verification
 
 - Project-scoped context revisions, source/summary metadata and literal substring search.
 - Structured, version-pinned handoffs with explicit recipient decisions and sender withdrawal.
@@ -297,7 +297,7 @@ Final validation and independent Work review remain required.
 - SQLite schema v3 preserves M0-M2 data and review history. All transports use the same Core.
 - This checkpoint covers M3; M4 file/worktree conflict protection remains planned.
 
-## 0.1.0a2 â€” unreleased
+## 0.1.0a2 — unreleased
 
 - Added complete inference-free two-native-session collaboration and host restart probes.
 - Added a safe native Codex MCP installer: no-overwrite checks, dry run, isolated Python
@@ -305,7 +305,7 @@ Final validation and independent Work review remain required.
 - Data-path inspection can avoid creating directories; existing Core behavior is unchanged.
 - Desktop UI acceptance remains pending; a native host probe does not close it.
 
-## 0.1.0a1 â€” unreleased
+## 0.1.0a1 — unreleased
 
 M0-M2 Alpha implementation under verification: local project/agent registration, transactional
 task coordination, leases, versions, idempotency, separate review, persistence, MCP stdio,

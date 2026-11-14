@@ -53,8 +53,8 @@
     },
     {
       "path": "adapters.log",
-      "sha256": "2c2085ec206aba9c81ec74b2eb88c2c2f99cc64e23b6be54fcaabf9074779ae1",
-      "size": 1133
+      "sha256": "13783696edf50594b9720a94ee26f7f68904f0d48e9948233d91979f28f023d0",
+      "size": 1151
     },
     {
       "path": "baseline-junit.xml",
@@ -68,8 +68,8 @@
     },
     {
       "path": "baseline.log",
-      "sha256": "9aff382c889b581d5c2462766e63c702bb97ed9cc17763159645b0ee8858fb1b",
-      "size": 6458
+      "sha256": "f7b4a139c287c8c111e309cee96901156c4cffe73a3049a618f8d550e5656d58",
+      "size": 6579
     },
     {
       "path": "fixed-junit.xml",
@@ -83,8 +83,8 @@
     },
     {
       "path": "fixed.log",
-      "sha256": "a2ee20673bf960a6239a655f6bee9f6fe743c0d71268c8fc0c04f518e4c28e67",
-      "size": 970
+      "sha256": "09937c7ea6ec9b3c56119b6313f061b2bb49c212bdfe632a241e6e03a0ee207e",
+      "size": 986
     },
     {
       "path": "format.log",
@@ -122,5 +122,25 @@
       "size": 5221
     }
   ],
-  "superseded_by": "final/summary.json (stronger pending-cancel and clock-resolution regressions; earlier results retained)"
+  "superseded_by": "final/summary.json (stronger pending-cancel and clock-resolution regressions; earlier results retained)",
+  "artifact_storage_corrections": [
+    {
+      "path": "adapters.log",
+      "previous_sha256": "2c2085ec206aba9c81ec74b2eb88c2c2f99cc64e23b6be54fcaabf9074779ae1",
+      "original_sha256": "13783696edf50594b9720a94ee26f7f68904f0d48e9948233d91979f28f023d0",
+      "reason": "Restore original UTF8 log bytes and line endings; no execution or result changed"
+    },
+    {
+      "path": "baseline.log",
+      "previous_sha256": "9aff382c889b581d5c2462766e63c702bb97ed9cc17763159645b0ee8858fb1b",
+      "original_sha256": "f7b4a139c287c8c111e309cee96901156c4cffe73a3049a618f8d550e5656d58",
+      "reason": "Restore original UTF8 log bytes and line endings; no execution or result changed"
+    },
+    {
+      "path": "fixed.log",
+      "previous_sha256": "a2ee20673bf960a6239a655f6bee9f6fe743c0d71268c8fc0c04f518e4c28e67",
+      "original_sha256": "09937c7ea6ec9b3c56119b6313f061b2bb49c212bdfe632a241e6e03a0ee207e",
+      "reason": "Restore original UTF8 log bytes and line endings; no execution or result changed"
+    }
+  ]
 }
