@@ -10,8 +10,9 @@ Current M9 execution: Linux3.14 completed its full source/wheel/sdist row,
 all26 checks passed and each suite2476pass6skip; strict artifact, source and
 case-identity verification and limited independent read-only review passed.
 The105 separately pinned Docker observations include expected negative cases,
-not real models. Windows3.11 source passed2426/56skip; wheel now runs. The original
-Linux queue advanced to3.11, followed by3.12; Windows3.14 remains queued.
+not real models. Windows 3.11 source passed 2426/56 skip; wheel now runs.
+Linux 3.11 source has now passed 2476/6 skip; its wheel runs, followed by sdist
+and Linux 3.12 on verified success. Windows 3.14 remains queued.
 Do not repeat completed source/package suites. Eight required OS/Python rows
 remain incomplete, including unavailable macOS. Keep formal Release BLOCKED.
 Evidence and recovery: docs/acceptance/evidence/m9-a115-preparation/linux314-complete/summary.json.

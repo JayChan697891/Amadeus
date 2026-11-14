@@ -21,7 +21,12 @@ Windows source run; all56 Windows skips pass in the Linux source run. This does
 not replace any required complete platform/Python row.
 
 The original Linux queue automatically started linux-311 at09:09:02 UTC,
-PID25497, source pytest09:09:04 UTC; linux-312 remains queued. The Windows queue
+PID25497, source pytest09:09:04 UTC. Source completed09:27:57 UTC with
+2476pass6skip/exit0;2083 frozen files still match, and canonical log/receipt/XML
+counts agree. Saved source evidence: m9-a115-preparation/linux311-source-observation.
+Its original sanitized XML still awaits final narrow identity derivation; no
+whole-row acceptance is inferred. Linux3.11 wheel started09:28:21 UTC, PID11447;
+Linux3.12 remains queued. The Windows queue
 still owns windows-311, followed by windows-314 on verified success. Do not
 restart either queue. Matrix-after-linux314.json verifies the completed Linux
 row while explicitly retaining8 incomplete OS/Python combinations. Original
