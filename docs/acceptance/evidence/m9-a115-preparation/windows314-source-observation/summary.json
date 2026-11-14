@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-14T11:24:43.347041+00:00",
+  "run": "D:\\agentsync-debug\\m115-r3\\windows-314\\reports\\release-20261114T103837Z-ca8eb86bd41a",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Completed Windows3.14 source pytest component only; package suites and whole-row identity gate pending",
+  "finished_at": "2026-11-14T11:22:16.478182+00:00",
+  "exit_code": 0,
+  "passed": 2426,
+  "skipped": 56,
+  "failed": 0,
+  "errors": 0,
+  "source_files_verified": 2083,
+  "private_capture_sha256": "7fd5e8ed1f00bc11b8aa2b20c4629fe78ade7f16007eb7f0c77c78aba753e33a",
+  "sanitized_unique": 2481,
+  "files": [
+    {
+      "path": "junit.xml",
+      "size": 391461,
+      "sha256": "88fe2d03c479b729cee2eec5284831fc26559ba4fa299c243b882ea246e78f24"
+    },
+    {
+      "path": "logs/pytest.log",
+      "size": 17863,
+      "sha256": "b08e79ec7746e43287092e0a7123983ce2f9bc5ffc0f202130de3affbb0d612c"
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "size": 1478,
+      "sha256": "c3a930abaa6c897d15bf36b444f0c256dd341490092d94af0bf7e015ea1984f1"
+    }
+  ],
+  "source_snapshot_reference": "../linux314-source-observation/source-snapshot.json",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "identity_derivation": "PENDING until whole row; original sanitized XML preserved",
+  "raw_xml_uploaded": false,
+  "next": "Original Windows3.14 wheel pytest actual PID13884 started11:22:40 UTC; sdist pending",
+  "formal_release": "BLOCKED"
+}

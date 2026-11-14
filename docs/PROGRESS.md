@@ -26,12 +26,16 @@ skips passed on Windows. This observation does not waive any platform row.
 Evidence: releases/0.3.0a115/b6f05f0/windows-311/report.json and
 acceptance/evidence/m9-a115-preparation/windows311-complete/summary.json.
 The original queue started Windows3.14 at10:38:37 UTC, actual row PID22928.
+Source completed11:22:16 UTC:2426pass56skip/exit0,2083 source hashes unchanged.
+Wheel pytest actual PID13884 started11:22:40 UTC; sdist and whole-row identity
+verification remain pending. Component evidence:
+acceptance/evidence/m9-a115-preparation/windows314-source-observation/summary.json.
 
 The original Linux queue completed successfully at11:03:13 UTC; no restart.
 All182 transferred Linux3.12 file hashes and strict case/receipt/source binding
 verified. Matrix-after-linux312.json records four complete rows and5 remaining
 OS/Python combinations: Windows3.12/3.14 and macOS3.11/3.12/3.14. The original
-candidate-bootstrap.json stays unchanged. Windows3.14 source PID23732 remains
+candidate-bootstrap.json stays unchanged. Windows3.14 wheel PID13884 remains
 active in original queue82363/row22928. Do not restart it.
 
 After both Linux benchmarks passed, the dedicated Linux VM shut down normally

@@ -36,7 +36,10 @@ sdist suite2426pass56skip/exit0. Strict verification covered78 transferred files
 in Linux3.14; all56 Windows skips passed on Linux and all6 Linux skips passed on
 Windows. No platform row is waived. Whole-row report:
 ../../releases/0.3.0a115/b6f05f0/windows-311/report.json.
-The original queue started Windows3.14 at10:38:37 UTC; its result is pending.
+Windows3.14 source completed11:22:16 UTC:2426pass56skip/exit0,2083 source
+hashes unchanged. Original wheel pytest PID13884 started11:22:40 UTC; its
+result and the sdist/whole-row gates remain pending. Component evidence:
+evidence/m9-a115-preparation/windows314-source-observation/summary.json.
 Linux3.12 whole row completed11:03 UTC:26 checks pass, each source/wheel/sdist
 2476pass6skip, canonical exit0. All182 transfer hashes,2083 Git inputs, archive
 pins and2482 unique case identities per suite verified; case statuses match
