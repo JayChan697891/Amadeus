@@ -1,0 +1,149 @@
+"""Derive explicit package-only evidence after terminal execution; never invent source execution."""
+import argparse
+from copy import deepcopy
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+import sys
+import xml.etree.ElementTree as ET
+
+BASE = Path('D:/agentsync-debug/m115-r2')
+RESUME = Path(__file__).resolve().parent
+SOURCE = BASE/'s'
+COMMIT = '4a27a00a7ef5e055c99b0724374506a867ae62e8'
+TARGET = BASE/'package-continuation'
+MANIFEST = BASE/'candidate-bootstrap.json'
+sys.dont_write_bytecode = True
+sys.path.insert(0,str(SOURCE))
+from tools.acceptance_evidence import verify_report_evidence
+from tools.release_acceptance import scenario_results
+from tools.release_manifest import build_manifest, verify_manifest
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def save(path, value):
+    with path.open('x',encoding='utf-8') as stream:
+        json.dump(value,stream,indent=2,ensure_ascii=False)
+        stream.write('\n')
+
+def cases(path):
+    result={}
+    for case in ET.parse(path).getroot().iter('testcase'):
+        key=(case.get('classname'),case.get('name'))
+        assert key not in result
+        states=[s for s in ('failure','error','skipped') if case.find(s) is not None]
+        assert len(states)<=1
+        result[key]=states[0] if states else 'pass'
+    assert len(result)==2461 and not ({'failure','error'} & set(result.values()))
+    return result
+
+parser=argparse.ArgumentParser()
+parser.add_argument('action',choices=('finalize','stage-linux'))
+args=parser.parse_args()
+
+if args.action=='finalize':
+    terminal=json.loads((RESUME/'result.json').read_text(encoding='utf-8'))
+    assert terminal['phase']=='finished' and terminal['source_clean'] is True
+    assert terminal['commit_sha']==COMMIT and not terminal['unsuccessful_remaining_checks']
+    original_path=Path(terminal['report']).resolve(strict=True)
+    assert original_path.is_relative_to(RESUME/'reports')
+    original=json.loads(original_path.read_text(encoding='utf-8'))
+    assert original['commit_sha']==COMMIT and original['source_changed_during_execution'] is False
+    source_row=next(c for c in original['checks'] if c['id']=='pytest')
+    assert source_row['status']=='not_run'
+    assert all(c['status']=='pass' for c in original['checks'] if c['id']!='pytest')
+    audit=verify_report_evidence(original_path,original,source_repo=SOURCE)
+    # The repeated-redaction defect affects only the derived source XML.
+    prior=original_path.parent/'prior-source-observation/pytest-observed.junit.xml'
+    baseline=cases(prior)
+    assert cases(original_path.parent/'wheel-junit.xml')==baseline
+    assert cases(original_path.parent/'sdist-junit.xml')==baseline
+    assert digest(prior)=='83c240d5791dc5b1ac37f086ecd85e7906caf573c91b97ba5170e10363227862'
+    assert not TARGET.exists() and not MANIFEST.exists()
+    TARGET.mkdir()
+    for pin in original['artifacts']:
+        rel=PurePosixPath(pin['path'])
+        assert not rel.is_absolute() and '..' not in rel.parts and '\\' not in pin['path']
+        source=original_path.parent.joinpath(*rel.parts)
+        data=source.read_bytes()
+        assert len(data)==pin['size'] and hashlib.sha256(data).hexdigest()==pin['sha256']
+        destination=TARGET.joinpath(*rel.parts)
+        destination.parent.mkdir(parents=True,exist_ok=True)
+        with destination.open('xb') as stream:stream.write(data)
+    original_copy=TARGET/'original-report.json'
+    with original_copy.open('xb') as stream:stream.write(original_path.read_bytes())
+    projected=deepcopy(original)
+    for row in projected['checks']:
+        if row['id']=='pytest':
+            row.pop('junit',None)
+            row.pop('junit_credential_redactions',None)
+    for requirement in projected['requirements']:
+        for component in requirement['component_evidence']:
+            component['observations']=[o for o in component['observations'] if o['junit']!='junit.xml']
+    requirements=json.loads((TARGET/'requirements.json').read_text(encoding='utf-8'))
+    projected['scenarios']=scenario_results(requirements,projected['requirements'])
+    projected['derivation']={'scope':'package_only_projection',
+        'original_report':'original-report.json','original_report_sha256':digest(original_copy),
+        'reason':'Exclude duplicated source-redaction observations from a run that did not execute source pytest. Source remains NOT RUN. All package observations are unchanged.',
+        'at':datetime.now(timezone.utc).isoformat()}
+    projected['artifacts'].append({'path':'original-report.json','size':original_copy.stat().st_size,'sha256':digest(original_copy)})
+    assert projected['release_gate']['local_checks_passed'] is False
+    assert projected['release_gate']['formal_acceptance'] is False
+    report=TARGET/'package-only-report.json'
+    save(report,projected)
+    projected_audit=verify_report_evidence(report,projected,source_repo=SOURCE)
+    assert set(projected_audit['junit_case_set_sha256'])=={'wheel_pytest','sdist_pytest'}
+    assert len(set(projected_audit['junit_case_set_sha256'].values()))==1
+    manifest=build_manifest(BASE,report.relative_to(BASE).as_posix(),[],COMMIT,source_repo=SOURCE)
+    assert manifest['local_matrix']=='incomplete'
+    save(MANIFEST,manifest)
+    verified=verify_manifest(MANIFEST,BASE,manifest_sha256=digest(MANIFEST),source_repo=SOURCE)
+    result={'at':datetime.now(timezone.utc).isoformat(),'original_report_sha256':digest(original_path),
+        'package_report_sha256':digest(report),'manifest_sha256':digest(MANIFEST),
+        'original_audit':audit,'package_audit':projected_audit,'manifest_verification':verified,
+        'prior_source_and_two_package_case_sets_match':True,'source_canonical_receipt':'NOT RUN',
+        'complete_windows_312_matrix':'incomplete','formal_release':'BLOCKED'}
+    save(BASE/'package-continuation-audit.json',result)
+    print(json.dumps({'manifest':str(MANIFEST),'local_matrix':'incomplete','formal_release':'BLOCKED'}),flush=True)
+    raise SystemExit(0)
+
+verified=verify_manifest(MANIFEST,BASE,manifest_sha256=digest(MANIFEST),source_repo=SOURCE)
+assert verified['frozen']['commit_sha']==COMMIT
+report=TARGET/'package-only-report.json'
+data=json.loads(report.read_text(encoding='utf-8'))
+files={MANIFEST.relative_to(BASE).as_posix():MANIFEST,report.relative_to(BASE).as_posix():report}
+for pin in data['artifacts']:
+    path=TARGET/Path(pin['path'])
+    assert path.resolve().is_relative_to(TARGET.resolve())
+    assert path.stat().st_size==pin['size'] and digest(path)==pin['sha256']
+    files[path.relative_to(BASE).as_posix()]=path
+pins={name:{'size':path.stat().st_size,'sha256':digest(path)} for name,path in files.items()}
+import paramiko
+client=paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=10)
+guest='/root/amadeus-m115-r2'
+try:
+    with client.open_sftp() as sftp:
+        for name in files:
+            try:sftp.lstat(guest+'/'+name)
+            except FileNotFoundError:continue
+            raise RuntimeError('Destination already exists; inspect instead of overwriting')
+        for name,path in files.items():
+            parent=guest
+            for part in PurePosixPath(name).parent.parts:
+                if part=='.':continue
+                parent+='/'+part
+                try:sftp.stat(parent)
+                except FileNotFoundError:sftp.mkdir(parent,0o700)
+            with sftp.open(guest+'/'+name,'wx') as stream:stream.write(path.read_bytes())
+            with sftp.open(guest+'/'+name,'rb') as stream:assert hashlib.sha256(stream.read()).hexdigest()==pins[name]['sha256']
+    result={'exit_code':0,'at':datetime.now(timezone.utc).isoformat(),'guest':guest,
+        'files':pins,'tests_started':False,'manifest_sha256':digest(MANIFEST)}
+    save(BASE/'linux-candidate-staging.json',result)
+    print(json.dumps({'transferred_files':len(pins),'tests_started':False}),flush=True)
+finally:
+    client.close()

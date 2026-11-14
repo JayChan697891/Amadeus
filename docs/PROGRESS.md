@@ -38,6 +38,7 @@ the actual prior 2461-case source XML now changes zero bytes and zero identities
 Independent read-only Astra review found no weakened filtering. Evidence:
 acceptance/evidence/m115-source-checks/redaction-stability/summary.json.
 These are tool-repair results, not full acceptance of this later workspace.
+The repair and evidence are uploaded as 3550fab; PR #35 remains draft/open.
 
 Keep the ongoing 4a27a00 package run unchanged. After it ends, preserve its original
 report and derived XML. A separately identified package-only projection may retain
@@ -45,6 +46,21 @@ source NOT RUN and exclude the derived source JUnit/component claims; actual
 package process evidence must remain byte-identical. The existing manifest permits
 an incomplete matrix for artifact binding, but this does not complete Windows 3.12
 or formal Release. Current tool changes do not inherit the frozen candidate's runs.
+The reviewed helper and recovery entry are archived in
+acceptance/evidence/m9-a115-preparation/resume-state.json and
+resume-finalize-packages.py.txt. Finalization/staging have NOT RUN; invoke only
+after the original package session becomes terminal with successful remaining
+checks. Do not recreate a waiting controller or replay terminated tasks.
+
+On resume the local VM was off. Its existing disk chain was inspected and its old
+boot logs preserved before the hidden VM restarted (owned PID 6936). SSH initially
+refused/was not yet ready, then verified the clean 4a27a00 source and zero Docker
+containers. The dedicated minor-runtime disk is again exported read-only by NBD
+(owned PID 14088), mounted ro/nosuid/nodev/norecovery, with Python 3.11.18 and
+3.12.16 readable alongside 3.14.7. The first mount precondition stopped before
+mounting; inspection confirmed the already-established read-only connection and
+correct device identity before continuing. No disk was formatted and no Linux
+tests have started. Revalidate process identities on future recovery.
 
 The original 42-task implementation inventory stands. Continue the unrun package
 and platform validation, preserve known failures and scoped prior results, and

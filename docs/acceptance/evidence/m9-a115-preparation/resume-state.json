@@ -1,0 +1,56 @@
+{
+  "at": "2026-11-14T00:02:54.867452+00:00",
+  "goal": "active; owner explicitly resumed",
+  "package_session": 49009,
+  "package_attempt": {
+    "phase": "started",
+    "pid": 3584,
+    "started_at": "2026-11-13T23:45:39.564242+00:00",
+    "commit_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+    "scope": "Unrun build/static/package checks; prior source observation kept separate",
+    "source_tests_reexecuted": false,
+    "formal_release": "BLOCKED",
+    "automatic_retry": false,
+    "helper_sha256": "f96d51edd416ea702d4650be71ca48088a5668b08615e9ce2f08e92432a8f401"
+  },
+  "status": "RUNNING: full wheel suite; no terminal result yet",
+  "frozen_source": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "current_tool_repair": "3550fab87dff98753ac0e0239e9c07f3d2500005",
+  "finalizer": {
+    "file": "resume-finalize-packages.py.txt",
+    "sha256": "aa8627263829ae0ddfe84f47ab4a22a51440f1691df99b0f3c248c8299c36e77",
+    "executed": false,
+    "independent_readonly_review": "No blocking issue found; invoke only after result.json is present and current process/session is terminal",
+    "actions": [
+      "finalize",
+      "stage-linux"
+    ]
+  },
+  "next_steps": [
+    "Observe original session49009; do not restart package runner",
+    "After successful remaining checks, run finalize-packages.py finalize with Windows Python3.12",
+    "Inspect derived report and manifest; full Windows312 stays incomplete",
+    "Run finalize-packages.py stage-linux using D:/agentsync-debug/venv/Scripts/python.exe",
+    "Only after staging succeeds, start existing Windows and Linux candidate queues against D:/agentsync-debug/m115-r2; at most one collector per host"
+  ],
+  "linux_recovery": {
+    "vm_pid": 6936,
+    "nbd_pid": 14088,
+    "disk_mode": "read-only; mount ro,nosuid,nodev,norecovery",
+    "versions": [
+      "3.14.7",
+      "3.11.18",
+      "3.12.16"
+    ],
+    "source_clean": true,
+    "docker_containers": 0,
+    "tests_started": false,
+    "earlier_errors": [
+      "No VM was running: connection refused",
+      "Initial boot SSH banner not ready",
+      "First mount guard stopped before mount; continued from existing read-only NBD connection after inspecting actual device identity"
+    ]
+  },
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}
