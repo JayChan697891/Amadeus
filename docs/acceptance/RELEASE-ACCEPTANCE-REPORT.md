@@ -38,7 +38,7 @@ Windows. No platform row is waived. Whole-row report:
 ../../releases/0.3.0a115/b6f05f0/windows-311/report.json.
 The original queue started Windows3.14 at10:38:37 UTC; its result is pending.
 Linux3.12 source completed10:25:02 UTC:2476pass6skip,
-exit0 and2083 source hashes unchanged. Wheel is running; sdist/whole-row gates
+exit0 and2083 source hashes unchanged. Wheel also completed10:44:06 UTC,2476pass6skip/exit0; sdist/whole-row gates
 remain pending. See evidence/m9-a115-preparation/linux312-source-observation.
 The current-b6 M8-02 bounded installed benchmark is NOT RUN; historical09425da
 results are retained but do not establish current-version performance. The same
@@ -51,6 +51,19 @@ binding after its separate CIM check. Existing observations are retained but
 cannot be promoted to strict acceptance. After the current Windows queue, only
 one new wheel component is prepared to obtain canonical receipts; it is NOT RUN.
 See evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
+
+A bounded independent read-only license check found no concrete member/terms
+omission or false pass claim in the current package/NOTICE scope. Both archive
+hashes and sdist documents matched;42 Windows third-party license originals
+corresponded to NOTICE. Linux35 installed license-file hashes, two newline-only
+differences and three Python-conditional dependency-edge differences were
+checked. An initial default-decoding discrepancy was eliminated by explicit
+UTF-8 comparison; no product text changed. The wheel contains project MIT but
+not third-party NOTICE; neither archive bundles dependency binaries.
+Final delivery-scope classification, including pywin32 component terms and
+cryptography alternative-license selection, remains pending, as does separate
+release authorization. M9-02 is not passed. Evidence:
+evidence/m9-a115-preparation/b6-license-platform-delta.json.
 
 M9 evidence tooling now supports explicit composite installation sources.50
 synthetic policy cases and Ruff/format pass; independent review identified and

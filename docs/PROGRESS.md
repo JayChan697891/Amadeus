@@ -30,11 +30,22 @@ The original queue started Windows3.14 at10:38:37 UTC, actual row PID22928.
 The original Linux queue started linux-312 at10:06:07 UTC. Its source suite
 completed at10:25:02 UTC:2476pass6skip, canonical exit0,2083 frozen files unchanged.
 Sanitized component evidence: m9-a115-preparation/linux312-source-observation.
-Wheel pytest PID1255 is active; sdist and whole-row identity validation remain
-pending. Windows3.14 is now running. Do not restart either original queue.
+Wheel also completed at10:44:06 UTC:2476pass6skip, exit0. Sdist pytest PID19320
+is active; whole-row identity validation and complete archiving remain pending. Windows3.14 is now running. Do not restart either original queue.
 Matrix-after-windows311.json verifies three complete rows and retains6
 incomplete OS/Python combinations. Original candidate-bootstrap.json is unchanged.
 The Windows3.12 canonical wheel gap and all other Release gates remain BLOCKED.
+
+Bounded M9-02 license evidence received independent read-only technical review.
+Exact candidate archives and sdist documents match;42 Windows third-party license
+originals correspond to NOTICE, and35 installed Linux files were hash-checked.
+Two platform file differences are CRLF/LF only; three dependency-edge differences
+match actual Python-version markers. An initial reviewer decoding discrepancy
+was diagnostic-only and was excluded after explicit UTF-8 comparison; no license
+text or attribution changed. No concrete omission was found in this scope.
+This is not final legal classification or release approval; pywin32 component/
+cryptography license-choice classification and all existing release gates remain
+pending. See m9-a115-preparation/b6-license-platform-delta.json.
 
 The original M8-02 bounded load also needs current-b6 evidence: the existing
 4-thread/20-round and2-process/mixed-loopback/20-round results bind to09425da.
