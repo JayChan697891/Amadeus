@@ -1,0 +1,46 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "benchmark_origin_after",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,zipfile\nimport agentsync\nwheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert Path(agentsync.__file__).resolve().is_relative_to(root)\nassert d.version=='0.3.0a115'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==wheel.as_uri()\nassert direct['archive_info']['hashes']['sha256']==sys.argv[2]\nmembers=[]\nwith zipfile.ZipFile(wheel) as z:\n for name in z.namelist():\n  if name.startswith('agentsync/') and not name.endswith('/'):\n   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected\n   members.append({'path':name,'sha256':expected})\nassert members\nprint(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))\n",
+      "/root/amadeus-m115-r3/composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a"
+    ],
+    "cwd": "/root/amadeus-m115-benchmark-r1",
+    "started_at": "2026-11-14T11:04:35.928857+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "benchmark_origin_after",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,zipfile\nimport agentsync\nwheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert Path(agentsync.__file__).resolve().is_relative_to(root)\nassert d.version=='0.3.0a115'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==wheel.as_uri()\nassert direct['archive_info']['hashes']['sha256']==sys.argv[2]\nmembers=[]\nwith zipfile.ZipFile(wheel) as z:\n for name in z.namelist():\n  if name.startswith('agentsync/') and not name.endswith('/'):\n   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected\n   members.append({'path':name,'sha256':expected})\nassert members\nprint(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))\n",
+      "/root/amadeus-m115-r3/composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a"
+    ],
+    "cwd": "/root/amadeus-m115-benchmark-r1",
+    "exit_code": 0,
+    "started_at": "2026-11-14T11:04:35.928857+00:00",
+    "finished_at": "2026-11-14T11:04:36.055180+00:00",
+    "log": "logs/benchmark_origin_after.log",
+    "log_sha256": "5f4dc6f2b338038ac0b877ffb3180a63957650d3e5dd84dee6a3ed12fc5c6826",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

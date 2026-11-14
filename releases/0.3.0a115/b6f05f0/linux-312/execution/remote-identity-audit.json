@@ -1,0 +1,39 @@
+{
+  "manifest_members": 72,
+  "process_logs": 26,
+  "source_snapshot_entries": 2083,
+  "git_source_audit": {
+    "tree_sha": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+    "git_source_paths": 2083,
+    "unique_git_blobs": 1829
+  },
+  "installed_artifact_sha256": {
+    "wheel": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "sdist": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+  },
+  "installed_license_inventories": {
+    "wheel": {
+      "sha256": "e56aab684d5b1d09392f9d361137fd6c631b0e327f4919aadb62e83bce8741d8",
+      "review_item_count": 0,
+      "review": "pending"
+    },
+    "sdist": {
+      "sha256": "e56aab684d5b1d09392f9d361137fd6c631b0e327f4919aadb62e83bce8741d8",
+      "review_item_count": 0,
+      "review": "pending"
+    }
+  },
+  "offline_resolution": {
+    "state": "manifest_and_commands_checked",
+    "manifest_sha256": "ca323c0e93d932945e371466e814f11abe692b45f74e1adc500471a259bce8a7",
+    "recorded_wheels": 57,
+    "staged_wheel_bytes_verified": false
+  },
+  "junit_case_set_sha256": {
+    "pytest": "00e5bd14c50cc31552a65b077e0c4235dafe9a6b243684499c1137d477df20f9",
+    "wheel_pytest": "00e5bd14c50cc31552a65b077e0c4235dafe9a6b243684499c1137d477df20f9",
+    "sdist_pytest": "00e5bd14c50cc31552a65b077e0c4235dafe9a6b243684499c1137d477df20f9"
+  },
+  "junit_case_sets_match": true,
+  "producer_authenticated": false
+}

@@ -6,24 +6,25 @@ Windows queue, supplement only that wheel component with new canonical receipts
 against the same archive; do not repeat source/sdist/build or loosen verification.
 The prepared driver is NOT RUN. This is an existing M9 gap, not a new M5 stage.
 
-Current M9 execution: Linux3.14 and3.11 completed their full source/wheel/sdist
-rows, each with26 passing checks and each suite2476pass6skip. Strict source,
-archive and case-identity verification passed; Linux3.11 case outcomes match the
-previously reviewed Linux3.14 row. Each row's105 separate Docker observation
-files include expected negative cases, not real models. Windows3.11 completed
-all26 checks at10:38 UTC; each source/wheel/sdist suite2426pass56skip, with exact
-archive/source/2482-case identities verified. Windows3.14 now runs in the original
-queue. Linux3.12 source and wheel each completed2476pass6skip (10:25/10:44 UTC);
-sdist runs and whole-row validation remains pending. Windows3.12 canonical wheel-only followup
-waits for the Windows queue. Six OS/Python rows remain incomplete, including
-unavailable macOS. No completed source/package suite is repeated; Release stays
-BLOCKED. Evidence: docs/acceptance/evidence/m9-a115-preparation/windows311-complete/summary.json.
+Current M9 execution: all three Linux rows3.11/3.12/3.14 completed, each26
+passing checks, each source/wheel/sdist2476pass6skip. Source/archive/case identity
+verification passed; Linux3.11/3.12 outcomes match reviewed Linux3.14. Each row's
+105 separate Docker observations include expected negatives, not real models.
+Windows3.11 completed26 checks, each suite2426pass56skip. Windows3.14 continues
+in its original queue. Five OS/Python rows remain incomplete, including macOS.
+After that queue, run the prepared Windows3.12 canonical wheel-only component,
+then its reviewed create-only composite finalizer. Both NOT RUN; no repeat of
+source/sdist/build or change to old unknown evidence. Formal Release stays BLOCKED.
+Evidence: docs/acceptance/evidence/m9-a115-preparation/linux312-complete/summary.json.
 
-Existing M8-02 bounded-load observations bind to older09425da. Repeat the same
-4-thread/20-round and2-process/mixed-loopback/20-round profiles on fresh b6
-installed environments after each host's matrix (and Windows canonical wheel)
-finishes; fixed1000ms diagnostic budget. NOT RUN; reuse unchanged tool and
-preserve old evidence. No new M5 phase or production performance claim.
+Current-b6 Linux M8-02 bounded diagnostics passed using fresh exact-wheel install:
+4 threads/20 rounds and2 processes/mixed-loopback/20 rounds, p95=27.53/62.23ms
+against unchanged1000ms budget, exact120 audit entries and cleanup verified.
+Windows equivalent remains NOT RUN until its matrix/canonical wheel finish.
+These observations are bounded diagnostics, not exhaustive stress or production
+SLO; the physical Windows host was also running its source suite. Linux runtime
+has now shut down normally with disks/evidence preserved; no further Linux test
+is queued. Windows remains active. No new M5 phase or release gate waiver.
 
 Current M9 correction: bind separately executed installations explicitly to their
 original directories and unchanged receipts. The same frozen b6 source/wheel are

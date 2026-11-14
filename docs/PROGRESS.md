@@ -1,17 +1,17 @@
 # Amadeus current progress
 
-Completed local rows: Linux3.14 at09:09 UTC and Linux3.11 at10:06 UTC on
-2026-11-14. Each row passed all26 real checks; source/wheel/sdist each2476pass6skip.
+Completed Linux local rows on2026-11-14 UTC:3.14 at09:09,3.11 at10:06 and
+3.12 at11:03. Each row passed all26 real checks; source/wheel/sdist each2476pass6skip.
 Each suite has2482 unique identities after only six proven label changes per
 XML; all original reports, receipts and sanitized XML remain unchanged.
-Exact candidate archive pins,2083 Git inputs and all case identity/status pairs
-match between the two Linux rows. No Docker containers remained at either boundary.
+Exact candidate archives,2083 Git inputs and all case identity/status pairs
+match across the three Linux rows. No containers remained at any row boundary.
 
 The earlier independent read-only review accepted the Linux3.14 local row.
-Linux3.11 received direct strict artifact and delta inspection in this task,
-without repeating the full independent review or claiming formal Release approval.
-Reports: releases/0.3.0a115/b6f05f0/linux-314/ and linux-311/report.json.
-Latest summary: acceptance/evidence/m9-a115-preparation/linux311-complete/summary.json.
+Linux3.11/3.12 received strict artifact and delta inspection without repeating
+full independent review or claiming formal Release approval. Complete reports:
+releases/0.3.0a115/b6f05f0/linux-{314,311,312}/report.json.
+Latest summary: acceptance/evidence/m9-a115-preparation/linux312-complete/summary.json.
 Each row retains105 separate Docker observation files, pinned by transfer-summary;
 these include expected negative and non-started cases. They are not105 successful
 executions or real-client acceptance, nor all semantically covered by the original
@@ -27,13 +27,18 @@ Evidence: releases/0.3.0a115/b6f05f0/windows-311/report.json and
 acceptance/evidence/m9-a115-preparation/windows311-complete/summary.json.
 The original queue started Windows3.14 at10:38:37 UTC, actual row PID22928.
 
-The original Linux queue started linux-312 at10:06:07 UTC. Its source suite
-completed at10:25:02 UTC:2476pass6skip, canonical exit0,2083 frozen files unchanged.
-Sanitized component evidence: m9-a115-preparation/linux312-source-observation.
-Wheel also completed at10:44:06 UTC:2476pass6skip, exit0. Sdist pytest PID19320
-is active; whole-row identity validation and complete archiving remain pending. Windows3.14 is now running. Do not restart either original queue.
-Matrix-after-windows311.json verifies three complete rows and retains6
-incomplete OS/Python combinations. Original candidate-bootstrap.json is unchanged.
+The original Linux queue completed successfully at11:03:13 UTC; no restart.
+All182 transferred Linux3.12 file hashes and strict case/receipt/source binding
+verified. Matrix-after-linux312.json records four complete rows and5 remaining
+OS/Python combinations: Windows3.12/3.14 and macOS3.11/3.12/3.14. The original
+candidate-bootstrap.json stays unchanged. Windows3.14 source PID23732 remains
+active in original queue82363/row22928. Do not restart it.
+
+After both Linux benchmarks passed, the dedicated Linux VM shut down normally
+and its readonly NBD helper stopped at11:10 UTC. No Python work/container remained;
+benchmark scratch was empty. Disks and all evidence remain preserved on D:.
+Windows processes remain active. Do not poll old Linux handles or start another
+Linux matrix. VM restart, if needed later, uses the existing LOCAL-DEBUG workflow.
 The Windows3.12 canonical wheel gap and all other Release gates remain BLOCKED.
 
 Bounded M9-02 license evidence received independent read-only technical review.
@@ -47,13 +52,16 @@ This is not final legal classification or release approval; pywin32 component/
 cryptography license-choice classification and all existing release gates remain
 pending. See m9-a115-preparation/b6-license-platform-delta.json.
 
-The original M8-02 bounded load also needs current-b6 evidence: the existing
-4-thread/20-round and2-process/mixed-loopback/20-round results bind to09425da.
-The benchmark tool is byte-identical to the prior2af7ccc tool; reuse it and the
-same1000ms diagnostic budget, with fresh offline installs after each host's
-matrix finishes (Windows also after canonical wheel followup). This is NOT RUN,
-not a new M5 stage or a broader stress/SLO claim. See
-m9-a115-preparation/current-benchmark-plan.json; preserve the historical passes.
+Current-b6 Linux M8-02 bounded installed diagnostics passed at11:04 UTC:
+4 threads x20 rounds (80 claims), p95=27.53ms;2 spawned workers x20 mixed
+Core/loopback-HTTP rounds (40 claims), p95=62.23ms. Both retain the original1000ms
+budget;120 audit entries have no missing/duplicate/unexpected/mismatched records,
+one winner per round, expected conflicts and verified cleanup. Exact installed
+origin/member bytes before/after and2083 source hashes match. Real driver exit0.
+This is not exhaustive stress or a production SLO; Windows3.14 source work was
+active on the physical host. Windows equivalent remains NOT RUN until its queue
+and canonical wheel finish. Reused benchmark tool and original profiles unchanged.
+Evidence: m9-a115-preparation/current-benchmark-linux/summary.json.
 
 ## Remaining Windows 3.12 wheel gate: a new canonical component is required
 
@@ -71,6 +79,11 @@ saves genuine new receipts. It is reviewed and NOT RUN, refuses a live Windows
 row or an incomplete queue, and never automatically retries. Identity recovery
 and final composite validation remain separate. See
 acceptance/evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
+The subsequent immutable composite finalizer is also prepared and independently
+read-only reviewed, NOT RUN. It accepts only real completed canonical receipts,
+keeps old unknown/bootstrap evidence, and restores only six proven wheel labels.
+Use finalizer-preparation.json in the same folder after actual wheel success;
+require real exit0 and strict final audit, never overwrite failed partial output.
 
 ## M9: resumed sdist passed; remaining local matrix actually started
 

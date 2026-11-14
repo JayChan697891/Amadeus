@@ -1,6 +1,6 @@
 {
   "requirement": "M8-02",
-  "status": "NOT RUN",
+  "status": "PARTIAL: Linux PASS; Windows NOT RUN",
   "scope": "Repeat the existing declared installed-runtime diagnostic for current b6; not exhaustive stress, a production SLO, or formal release",
   "reason": "Existing 4-thread and 2-process/loopback performance observations bind to runtime09425da. Current suite unit cases validate the benchmark and small rounds, not this declared load on b6.",
   "candidate_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
@@ -71,5 +71,10 @@
       "-B",
       "/root/amadeus-m115-r3/m115-benchmark-current.py"
     ]
+  },
+  "execution_observations": {
+    "linux": "current-benchmark-linux/summary.json",
+    "windows": "NOT RUN; awaits existing Windows queue and canonical wheel followup",
+    "formal_release": "BLOCKED"
   }
 }

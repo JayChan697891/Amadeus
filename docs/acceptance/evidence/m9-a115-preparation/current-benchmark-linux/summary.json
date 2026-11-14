@@ -1,0 +1,52 @@
+{
+  "at": "2026-11-14T11:06:38.149500+00:00",
+  "candidate_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "status": "PASS",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "observations": [
+    {
+      "mode": "threads",
+      "workers": 4,
+      "rounds": 20,
+      "claims": 80,
+      "p95_ms": 27.5341490014398,
+      "budget_ms": 1000,
+      "audit": {
+        "expected": 80,
+        "observed": 80,
+        "success": 20,
+        "denied": 60,
+        "missing": 0,
+        "duplicate": 0,
+        "unexpected": 0,
+        "mismatch": 0
+      }
+    },
+    {
+      "mode": "process-http",
+      "workers": 2,
+      "rounds": 20,
+      "claims": 40,
+      "p95_ms": 62.23338800009515,
+      "budget_ms": 1000,
+      "audit": {
+        "expected": 40,
+        "observed": 40,
+        "success": 20,
+        "denied": 20,
+        "missing": 0,
+        "duplicate": 0,
+        "unexpected": 0,
+        "mismatch": 0
+      }
+    }
+  ],
+  "genuine_driver_exit_code": 0,
+  "source_files_verified": 2083,
+  "installed_origin_and_member_bytes_unchanged": true,
+  "scratch_empty_after": true,
+  "scope": "Two declared bounded local installed-runtime diagnostics only, not exhaustive stress or production SLO",
+  "concurrent_physical_host_workload": "Existing Windows3.14 source collector was active; Linux VM collector queue had completed",
+  "windows_same_profile": "NOT RUN until Windows queue and canonical wheel component finish",
+  "formal_release": "BLOCKED"
+}

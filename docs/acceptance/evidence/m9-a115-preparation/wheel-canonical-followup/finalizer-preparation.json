@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-14T11:01:33.236650+00:00",
+  "status": "NOT RUN",
+  "purpose": "After the new canonical wheel actually succeeds, bind its unchanged receipts into a new Windows3.12 composite; no tests or original receipts are rewritten",
+  "driver_sha256": "88afefbb6df6a3e95e302851ac96fd012aef2fcaa568cb6ce80fe327ff6347ac",
+  "command": [
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "D:/agentsync-debug/m115-finalize-canonical-wheel.py"
+  ],
+  "preconditions": [
+    "Original Windows311/314 queue completed successfully",
+    "Prepared canonical wheel-only run completed with real successful receipts",
+    "Fixed b6 source, original bootstrap report/manifest, exact wheel and external verifier hashes unchanged",
+    "New target and replay directories must not exist"
+  ],
+  "target": "D:/agentsync-debug/m115-r3/canonical-composite/windows-312",
+  "raw_xml_uploaded": false,
+  "review": {
+    "reviewer": "Existing astra_resume_review agent, bounded read-only review",
+    "mode": "Actual final script inspected; no execution or fabricated runtime evidence",
+    "blocking_issue_found": false,
+    "scope": "Receipt/source/archive/origin binding, preservation of unknown history, six-label recovery, restricted raw XML, create-only output",
+    "requirement": "Use normal Python3.12 without -O; require actual exit0 and successful strict final audit; never overwrite partial failure output or automatically retry"
+  },
+  "matrix_and_manifest_final_aggregation": "Pending after real composite verification",
+  "formal_release": "BLOCKED"
+}

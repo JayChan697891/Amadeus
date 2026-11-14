@@ -1,0 +1,191 @@
+"""After real canonical wheel completion, derive a new immutable composite.
+
+No tests are dispatched. Existing reports, receipts, manifests and raw XML stay
+unchanged. Only the proven six fixture labels change in the new wheel XML.
+"""
+import ast
+import copy
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import platform
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+BASE = Path('D:/agentsync-debug/m115-r3')
+REPO = Path('F:/syuc/amadeus-m6-single')
+SOURCE = BASE/'s'
+OLD = BASE/'composite/windows-312'
+CANONICAL = Path('D:/agentsync-debug/m115-wheel-canonical-r1')
+RUN = CANONICAL/'run'
+TARGET = BASE/'canonical-composite/windows-312'
+REPLAY = BASE/'canonical-wheel-finalization'
+COMMIT = 'b6f05f0473591dc568be25591047fdea963ef86c'
+OLD_SHA = 'bebc801a579eeab5868b86e565771fd74f6551674f6afba9ae664a1e4f423471'
+COLLECTOR_SHA = 'd942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+VERIFIER_SHA = '6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c'
+WHEEL_SHA = '56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a'
+MANIFEST_SHA = '88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11'
+
+
+def read(path):
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write(name, data):
+    path = TARGET.joinpath(*_member_parts(name))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('xb') as stream:
+        stream.write(data)
+    return {'path': name, 'size': len(data), 'sha256': sha(path)}
+
+
+def save(name, data):
+    return write(name, (json.dumps(data, indent=2, allow_nan=False)+'\n').encode())
+
+
+assert sys.platform == 'win32' and sys.version_info[:2] == (3, 12)
+assert not TARGET.exists() and not REPLAY.exists(), 'Do not overwrite an earlier derivation'
+assert sha(OLD/'report.json') == OLD_SHA
+assert sha(BASE/'candidate-bootstrap.json') == MANIFEST_SHA
+assert sha(REPO/'tools/release_acceptance.py') == sha(SOURCE/'tools/release_acceptance.py') == COLLECTOR_SHA
+assert sha(REPO/'tools/acceptance_evidence.py') == VERIFIER_SHA
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE, text=True).strip() == COMMIT
+assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=SOURCE) == b''
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(REPO))
+from tools import release_acceptance as collector
+from tools.acceptance_evidence import _junit, _member_parts, verify_report_evidence
+
+old = read(OLD/'report.json')
+for member in old['external_verifier']['files']:
+    name = Path(member['path']).name.removesuffix('.txt')
+    assert sha(REPO/'tools'/name) == member['sha256']
+old_audit = verify_report_evidence(OLD/'report.json', old, source_repo=SOURCE)
+assert old_audit['junit_case_sets_match'] is None
+assert old['commit_sha'] == COMMIT and old['python'] == sys.version and old['platform'] == platform.platform()
+assert next(c for c in old['checks'] if c['id'] == 'wheel_pytest')['status'] == 'unverified'
+assert read(OLD/'logs/wheel_pytest.process.json')['phase'] == 'started'
+queue = read(BASE/'windows-queue/result.json')
+assert queue['complete'] is True and all(r['exit_code'] == 0 and r['local_checks_passed'] is True for r in queue['rows'])
+assert [r['row'] for r in queue['rows']] == ['windows-311', 'windows-314']
+terminal = read(CANONICAL/'result.json')
+attempt = read(CANONICAL/'attempt.json')
+assert terminal['exit_code'] == 0 and terminal['source_unchanged'] is True
+assert terminal['source_commit'] == attempt['source_commit'] == COMMIT
+assert terminal['wheel_sha256'] == attempt['wheel_sha256'] == WHEEL_SHA
+assert attempt['python'] == sys.version and attempt['collector_sha256'] == COLLECTOR_SHA
+assert attempt['driver_sha256'] == '461bf21c85d21b490514d4298653089ddc1502ce086f07f6fdc2a548fdb7e948'
+assert read(RUN/'offline-wheelhouse.json') == read(OLD/'offline-wheelhouse.json')
+checks = read(CANONICAL/'checks.json')
+assert {c['id'] for c in checks} == {c['id'] for c in old['checks'] if c['id'].startswith('wheel_')}
+assert len({c['id'] for c in checks}) == len(checks)
+assert all(c['status'] == 'pass' and c['exit_code'] == 0 for c in checks)
+for check in checks:
+    assert check['log'] == 'logs/'+check['id']+'.log'
+    process = read(RUN/'logs'/(check['id']+'.process.json'))
+    assert process['phase'] == 'finished' and process['outcome'] == 'exited'
+    assert process['result']['status'] == 'pass' and process['result']['exit_code'] == 0
+    assert sha(RUN/check['log']) == check['log_sha256'] == process['result']['log_sha256']
+snapshot = read(OLD/'source-snapshot.json')
+assert all((SOURCE/f['path']).stat().st_size == f['size'] and sha(SOURCE/f['path']) == f['sha256'] for f in snapshot)
+wheel = next(d['artifact'] for d in old['distribution_installations'] if d['kind'] == 'wheel')
+assert sha(RUN/wheel['path']) == sha(OLD/wheel['path']) == WHEEL_SHA
+
+# Reuse the original reviewed label-only recovery rules; never replay tests.
+fixture = BASE/'identity-label-fixture.py.txt'
+assert sha(fixture) == '41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df'
+name = 'test_redaction_is_stable_when_evidence_is_processed_again'
+old_tree = ast.parse((SOURCE/'tests/unit/test_release_acceptance.py').read_text(encoding='utf-8'))
+new_tree = ast.parse(fixture.read_text(encoding='utf-8'))
+old_test = next(n for n in old_tree.body if isinstance(n, ast.FunctionDef) and n.name == name)
+new_test = next(n for n in new_tree.body if isinstance(n, ast.FunctionDef) and n.name == name)
+assert sum(k.arg == 'ids' for k in new_test.decorator_list[0].keywords) == 1
+labels = ast.literal_eval(next(k.value for k in new_test.decorator_list[0].keywords if k.arg == 'ids'))
+values = ast.literal_eval(old_test.decorator_list[0].args[1])
+new_test.decorator_list[0].keywords = [k for k in new_test.decorator_list[0].keywords if k.arg != 'ids']
+assert ast.dump(old_tree) == ast.dump(new_tree)
+aliases = {name+'['+value+']': name+'['+label+']' for value, label in zip(values, labels, strict=True)}
+assert len(aliases) == len(set(aliases.values())) == 6
+raw = CANONICAL/'scratch/wheel-junit.xml'
+assert raw.is_file() and not raw.is_symlink() and raw.stat().st_size <= 16*1024*1024
+receipt = read(RUN/'logs/wheel_pytest.process.json')
+assert receipt['phase'] == 'finished' and receipt['outcome'] == 'exited' and receipt['result']['exit_code'] == 0
+assert sha(RUN/receipt['result']['log']) == receipt['result']['log_sha256']
+REPLAY.mkdir()
+replay = REPLAY/'redacted-replay.xml'
+collector.persist_junit(raw, replay)
+assert replay.read_bytes() == (RUN/'wheel-junit.xml').read_bytes()
+tree = ET.fromstring(replay.read_bytes())
+raw_cases = list(ET.parse(raw).getroot().iter('testcase'))
+saved_cases = list(tree.iter('testcase'))
+assert len(raw_cases) == len(saved_cases)
+unique, mapping = set(), []
+for ordinal, (original, saved) in enumerate(zip(raw_cases, saved_cases, strict=True)):
+    identity = (original.get('classname'), original.get('name'))
+    assert identity not in unique
+    unique.add(identity)
+    if identity[1] in aliases:
+        mapping.append({'ordinal': ordinal, 'classname': saved.get('classname'), 'original_saved_name': saved.get('name'), 'recovered_name': aliases[identity[1]], 'raw_identity_sha256': hashlib.sha256(json.dumps(identity, separators=(',', ':')).encode()).hexdigest()})
+        saved.set('name', aliases[identity[1]])
+assert len(mapping) == len(set(m['recovered_name'] for m in mapping)) == 6
+derived = ET.tostring(tree, encoding='utf-8', xml_declaration=True)
+counts, cases_sha = _junit(derived)
+assert counts == next(c['junit'] for c in checks if c['id'] == 'wheel_pytest')
+assert counts['tests'] == len(unique) == 2482 and counts['failures'] == counts['errors'] == 0
+assert cases_sha == old_audit['junit_case_set_sha256']['pytest'] == old_audit['junit_case_set_sha256']['sdist_pytest']
+
+TARGET.mkdir(parents=True)
+replaced = {'wheel-license-inventory.json', 'composite/wheel.json', 'composite-derivation.py.txt'}
+for member in old['artifacts']:
+    name = member['path']
+    b = (OLD/name).read_bytes()
+    assert len(b) == member['size'] and hashlib.sha256(b).hexdigest() == member['sha256']
+    target_name = 'historical-bootstrap/'+name if name in replaced or name.startswith('logs/wheel_') else name
+    write(target_name, b)
+historical = write('historical-bootstrap/report.json', (OLD/'report.json').read_bytes())
+for c in checks:
+    for relative in (c['log'], str(Path(c['log']).with_suffix('.process.json')).replace('\\', '/')):
+        write(relative, (RUN/relative).read_bytes())
+write('wheel-license-inventory.json', (RUN/'wheel-license-inventory.json').read_bytes())
+write('identity-original/canonical-wheel-junit.xml', (RUN/'wheel-junit.xml').read_bytes())
+write('wheel-junit.xml', derived)
+write('composite-derivation.py.txt', Path(__file__).read_bytes())
+for filename in ('attempt.json', 'result.json', 'checks.json'):
+    write('execution-records/canonical-wheel-'+filename, (CANONICAL/filename).read_bytes())
+proof = save('identity-canonical-wheel-proof.json', {'at': datetime.now(timezone.utc).isoformat(), 'source_commit': COMMIT, 'raw_sha256': sha(raw), 'original_sha256': sha(RUN/'wheel-junit.xml'), 'derived_sha256': hashlib.sha256(derived).hexdigest(), 'receipt_sha256': sha(RUN/'logs/wheel_pytest.process.json'), 'collector_sha256': COLLECTOR_SHA, 'fixture_sha256': sha(fixture), 'raw_unique_cases': len(unique), 'counts': counts, 'case_set_sha256': cases_sha, 'mapping': mapping, 'scope': 'Only six proven label changes; no test execution; raw XML stays in its restricted original directory'})
+report = copy.deepcopy(old)
+report['generated_at'] = datetime.now(timezone.utc).isoformat()
+report['checks'] = [c for c in report['checks'] if not c['id'].startswith('wheel_')]+copy.deepcopy(checks)
+by_id = {c['id']: c for c in report['checks']}
+assert len(by_id) == len(report['checks']) == 26
+assert all(c['status'] == 'pass' for c in report['checks'])
+for suffix in ('install', 'origin_sdk', 'console_smoke', 'license_inventory'):
+    by_id['wheel_'+suffix]['artifact'] = copy.deepcopy(wheel)
+inventory = read(TARGET/'wheel-license-inventory.json')
+by_id['wheel_license_inventory']['inventory'] = {'path': 'wheel-license-inventory.json', 'size': (TARGET/'wheel-license-inventory.json').stat().st_size, 'sha256': sha(TARGET/'wheel-license-inventory.json'), 'scope': 'installed_runtime_dependency_metadata', 'review_item_count': len(inventory['review_items']), 'license_review': 'pending', 'publication_authorized': False, 'installed_origin_check': 'wheel_origin_sdk'}
+component = {field: report[field] for field in ('version', 'commit_sha', 'tree_sha', 'source_snapshot_sha256', 'platform', 'python')}
+component.update(evidence_directory=str(RUN), artifact=wheel, process_receipts={c['id']: {'path': str(Path(c['log']).with_suffix('.process.json')).replace('\\', '/'), 'size': (TARGET/Path(c['log']).with_suffix('.process.json')).stat().st_size, 'sha256': sha(TARGET/Path(c['log']).with_suffix('.process.json'))} for c in checks})
+report['composite_execution']['sources']['wheel'] = save('composite/wheel.json', component)
+report['identity_recovery']['wheel'] = proof
+report['identity_recovery']['historical_bootstrap_report'] = historical
+requirements = read(TARGET/'requirements.json')
+report['requirements'] = collector.requirement_results(requirements, TARGET)
+report['scenarios'] = collector.scenario_results(requirements, report['requirements'])
+report['release_gate'] = collector.release_gate(report['checks'], TARGET)
+report['limitations'] = [item for item in report['limitations'] if item != 'Wheel independently observed exit0 is not a canonical pass.']
+report['limitations'].append('New canonical wheel component completed separately; old unknown receipt and independent observation remain historical and unchanged. This does not make the interrupted original collector complete.')
+report['artifacts'] = [{'path': p.relative_to(TARGET).as_posix(), 'size': p.stat().st_size, 'sha256': sha(p)} for p in sorted(TARGET.rglob('*')) if p.is_file()]
+save('report.json', report)
+audit = verify_report_evidence(TARGET/'report.json', report, source_repo=SOURCE)
+assert audit['junit_case_sets_match'] is True
+assert sha(OLD/'report.json') == OLD_SHA
+assert sha(BASE/'candidate-bootstrap.json') == MANIFEST_SHA
+save('composite-audit.json', {'at': datetime.now(timezone.utc).isoformat(), 'report_sha256': sha(TARGET/'report.json'), 'audit': audit, 'old_bootstrap_report_unchanged': True, 'original_candidate_manifest_unchanged': True, 'formal_release': 'BLOCKED'})
+print(json.dumps({'report': str(TARGET/'report.json'), 'checks_passed': 26, 'junit_case_sets_match': True, 'scope': 'Windows3.12 local composite component only', 'formal_release': 'BLOCKED'}))

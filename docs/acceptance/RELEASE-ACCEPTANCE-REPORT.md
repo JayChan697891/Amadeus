@@ -6,8 +6,8 @@ Resumed sdist actually completed2426pass56skip, exit0 at08:08:36 UTC. Its canoni
 receipt and narrow identity recovery are verified. Explicit composite report and
 candidate manifest passed strict verification on Windows and Linux, with wheel
 canonical unverified, local_matrix incomplete and formal Release BLOCKED.
-The later Linux3.14 and3.11 rows are now complete, while remaining rows are running or
-queued as detailed below. The original candidate pins remain in
+The later Linux3.14,3.11 and3.12 rows are complete; remaining Windows rows
+are running or pending as detailed below. The original candidate pins remain in
 evidence/m9-a115-preparation/composite-resume/summary.json.
 
 Linux3.14 completed09:09 UTC: all26 real checks passed; source/wheel/sdist each
@@ -37,13 +37,23 @@ in Linux3.14; all56 Windows skips passed on Linux and all6 Linux skips passed on
 Windows. No platform row is waived. Whole-row report:
 ../../releases/0.3.0a115/b6f05f0/windows-311/report.json.
 The original queue started Windows3.14 at10:38:37 UTC; its result is pending.
-Linux3.12 source completed10:25:02 UTC:2476pass6skip,
-exit0 and2083 source hashes unchanged. Wheel also completed10:44:06 UTC,2476pass6skip/exit0; sdist/whole-row gates
-remain pending. See evidence/m9-a115-preparation/linux312-source-observation.
-The current-b6 M8-02 bounded installed benchmark is NOT RUN; historical09425da
-results are retained but do not establish current-version performance. The same
-profiles and1000ms diagnostic budget will run after each host's matrix/followup.
-The new strict matrix-after-windows311.json retains6 incomplete OS/Python combinations.
+Linux3.12 whole row completed11:03 UTC:26 checks pass, each source/wheel/sdist
+2476pass6skip, canonical exit0. All182 transfer hashes,2083 Git inputs, archive
+pins and2482 unique case identities per suite verified; case statuses match
+reviewed Linux3.14. The same105 separately pinned Docker-observation limitations
+apply; no containers remained. Full evidence:
+../../releases/0.3.0a115/b6f05f0/linux-312/report.json.
+
+Current-b6 Linux M8-02 installed benchmarks completed11:04 UTC, real driver exit0.
+The unchanged4-thread/20-round profile yielded80 claims/p95=27.53ms; the unchanged
+2-process/20-round mixed Core/loopback-HTTP profile yielded40 claims/p95=62.23ms.
+Both pass the declared1000ms diagnostic budget. Exact120 audit entries, one winner
+per round, expected conflicts, install/source hashes and cleanup verified. These
+are bounded diagnostics, not exhaustive stress/production SLO; the physical host
+had concurrent Windows3.14 source work. Windows equivalent remains NOT RUN.
+Evidence: evidence/m9-a115-preparation/current-benchmark-linux/summary.json.
+The completed Linux runtime was gracefully shut down; disks/evidence retained.
+The new strict matrix-after-linux312.json retains5 incomplete OS/Python combinations.
 Cross-platform skip observations do not waive any complete row or macOS gate.
 
 The historical wheel observer did not persist a native-handle creation-time
@@ -51,6 +61,8 @@ binding after its separate CIM check. Existing observations are retained but
 cannot be promoted to strict acceptance. After the current Windows queue, only
 one new wheel component is prepared to obtain canonical receipts; it is NOT RUN.
 See evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
+Its subsequent create-only composite finalizer has bounded independent read-only
+review and is also NOT RUN; real wheel success and final strict audit are required.
 
 A bounded independent read-only license check found no concrete member/terms
 omission or false pass claim in the current package/NOTICE scope. Both archive
@@ -85,7 +97,7 @@ not whole-requirement or formal Release acceptance.
 | Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
 | New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
 | New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Sdist completed08:08:36 UTC,2426pass56skip/exit0, canonical receipt and label recovery verified. Composite manifest verified; matrix remains incomplete |
-| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.14 and3.11 complete and artifact verified; each source/wheel/sdist2476pass6skip. Windows3.11 full row complete: each source/wheel/sdist2426pass56skip. Linux3.12 and Windows3.14 running. No actual client acceptance inferred |
+| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.11/3.12/3.14 complete and artifact verified; each source/wheel/sdist2476pass6skip. Windows3.11 full row complete: each source/wheel/sdist2426pass56skip. Windows3.14 running. No actual client acceptance inferred |
 | Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
 | Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
 | First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |

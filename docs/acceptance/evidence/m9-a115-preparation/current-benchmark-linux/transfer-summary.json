@@ -1,0 +1,118 @@
+{
+  "at": "2026-11-14T11:05:38.724757+00:00",
+  "remote": "/root/amadeus-m115-benchmark-r1",
+  "files": [
+    {
+      "path": "result.json",
+      "size": 19423,
+      "sha256": "c395f7ca11c359efe755f462c6a081671ef0ed2e24c03d07a0c0a83a67b759aa"
+    },
+    {
+      "path": "attempt.json",
+      "size": 711,
+      "sha256": "3986a3acf9819e4b53e17b195caf3d737c8a50a595a73aba9ee48519e6416f8f"
+    },
+    {
+      "path": "threads.json",
+      "size": 3694,
+      "sha256": "c835786fcdfe0df458371fe5605eac8fe39b174d8168a068562166a922cb1d79"
+    },
+    {
+      "path": "process-http.json",
+      "size": 5186,
+      "sha256": "9a3571c9f741ee8f25d725df75e6257683d4c126d7a549e8e1f2b8f98e29be0f"
+    },
+    {
+      "path": "logs/benchmark_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/benchmark_venv.process.json",
+      "size": 1218,
+      "sha256": "3d5dbdd3488998b3e0cc3ca8393008b9aa3ae29a75c3533fc6d5fb6bcf2a1be5"
+    },
+    {
+      "path": "logs/benchmark_install.log",
+      "size": 4980,
+      "sha256": "8a2c2ad54a8f0d198b5a4ffc1336db6719c1a1a334e29cae234d92ca2fe00495"
+    },
+    {
+      "path": "logs/benchmark_install.process.json",
+      "size": 1621,
+      "sha256": "15110c36b977cefaeea5a53e64649bb7c0f33b653f4ca0617a5cc4be21e2af28"
+    },
+    {
+      "path": "logs/benchmark_dependencies.log",
+      "size": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "path": "logs/benchmark_dependencies.process.json",
+      "size": 1222,
+      "sha256": "f09bbf31e6124b5930c7bbd79d287acf3ed893d870c8fb26f3ff41c66cde23f2"
+    },
+    {
+      "path": "logs/benchmark_origin_before.log",
+      "size": 13072,
+      "sha256": "5f4dc6f2b338038ac0b877ffb3180a63957650d3e5dd84dee6a3ed12fc5c6826"
+    },
+    {
+      "path": "logs/benchmark_origin_before.process.json",
+      "size": 3603,
+      "sha256": "7ce98b1c3bf85d25ce22baa1646b85090393027d05d84e60297179fc8f3a9d5b"
+    },
+    {
+      "path": "logs/threads.log",
+      "size": 2612,
+      "sha256": "1a9e77412f0c390176c830c36344accb5c9b1118eda5cccc375582dbaa2f1851"
+    },
+    {
+      "path": "logs/threads.process.json",
+      "size": 1575,
+      "sha256": "4b9f0ee2b4952a20c3751c9d6f24d216bcb9b633718bdc4ff3a0683a8f7a62d0"
+    },
+    {
+      "path": "logs/process-http.log",
+      "size": 3753,
+      "sha256": "67a7ee745fe5245f99bdbbae21aee697a5dd83ed5af6efd1b7e04ebe1fd74cce"
+    },
+    {
+      "path": "logs/process-http.process.json",
+      "size": 1682,
+      "sha256": "185e2447a504ebc5de24d3818ed5a33aeba1b55a9b214c18b8dad46d96b1849f"
+    },
+    {
+      "path": "logs/benchmark_origin_after.log",
+      "size": 13072,
+      "sha256": "5f4dc6f2b338038ac0b877ffb3180a63957650d3e5dd84dee6a3ed12fc5c6826"
+    },
+    {
+      "path": "logs/benchmark_origin_after.process.json",
+      "size": 3600,
+      "sha256": "db23df6a0357a7df12c52543638e39eb9c56b64cc294ac1dba41c76e6de875c8"
+    },
+    {
+      "path": "execution/linux-benchmark-driver-attempt.json",
+      "size": 426,
+      "sha256": "e10c5594f1f8516ca183870bec840033dce644d8ad838232c14d57219c5876cb"
+    },
+    {
+      "path": "execution/linux-benchmark-driver-terminal.json",
+      "size": 410,
+      "sha256": "38a34ca0a670d5dda19fc6558f028da87507f70112e828a6255f0e5b29351499"
+    },
+    {
+      "path": "execution/linux-benchmark-driver.stdout.log",
+      "size": 76,
+      "sha256": "2555fe1ff58182f2433acaf3b6f9f87816f62bda33b6899f53117a3a309bb352"
+    },
+    {
+      "path": "execution/linux-benchmark-driver.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Exact genuine Linux current-b6 installed benchmark observations; not exhaustive stress or production SLO",
+  "formal_release": "BLOCKED"
+}

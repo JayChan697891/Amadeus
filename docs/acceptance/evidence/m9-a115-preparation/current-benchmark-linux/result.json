@@ -1,0 +1,575 @@
+{
+  "finished_at": "2026-11-14T11:04:36.379956+00:00",
+  "status": "pass",
+  "candidate_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "checks": [
+    {
+      "id": "benchmark_venv",
+      "status": "pass",
+      "command": [
+        "/root/jobs-env/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "/root/amadeus-m115-benchmark-r1/installed"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:25.892726+00:00",
+      "finished_at": "2026-11-14T11:04:28.727543+00:00",
+      "log": "logs/benchmark_venv.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "benchmark_install",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-cache-dir",
+        "--find-links",
+        "/root/intent-wheelhouse",
+        "/root/amadeus-m115-r3/composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:28.730085+00:00",
+      "finished_at": "2026-11-14T11:04:31.800005+00:00",
+      "log": "logs/benchmark_install.log",
+      "log_sha256": "8a2c2ad54a8f0d198b5a4ffc1336db6719c1a1a334e29cae234d92ca2fe00495",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "benchmark_dependencies",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:31.802480+00:00",
+      "finished_at": "2026-11-14T11:04:32.083327+00:00",
+      "log": "logs/benchmark_dependencies.log",
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "benchmark_origin_before",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,zipfile\nimport agentsync\nwheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert Path(agentsync.__file__).resolve().is_relative_to(root)\nassert d.version=='0.3.0a115'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==wheel.as_uri()\nassert direct['archive_info']['hashes']['sha256']==sys.argv[2]\nmembers=[]\nwith zipfile.ZipFile(wheel) as z:\n for name in z.namelist():\n  if name.startswith('agentsync/') and not name.endswith('/'):\n   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected\n   members.append({'path':name,'sha256':expected})\nassert members\nprint(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))\n",
+        "/root/amadeus-m115-r3/composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+        "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:32.086223+00:00",
+      "finished_at": "2026-11-14T11:04:32.211723+00:00",
+      "log": "logs/benchmark_origin_before.log",
+      "log_sha256": "5f4dc6f2b338038ac0b877ffb3180a63957650d3e5dd84dee6a3ed12fc5c6826",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "threads",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "/root/amadeus-m115-r3/s/tools/benchmark_coordination.py",
+        "--scratch-parent",
+        "/root/amadeus-m115-benchmark-r1/scratch",
+        "--workers",
+        "4",
+        "--rounds",
+        "20",
+        "--p95-budget-ms",
+        "1000"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:32.216171+00:00",
+      "finished_at": "2026-11-14T11:04:33.503660+00:00",
+      "log": "logs/threads.log",
+      "log_sha256": "1a9e77412f0c390176c830c36344accb5c9b1118eda5cccc375582dbaa2f1851",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "process-http",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "/root/amadeus-m115-r3/s/tools/benchmark_coordination.py",
+        "--scratch-parent",
+        "/root/amadeus-m115-benchmark-r1/scratch",
+        "--workers",
+        "2",
+        "--rounds",
+        "20",
+        "--p95-budget-ms",
+        "1000",
+        "--processes",
+        "--transport-mix"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:33.508228+00:00",
+      "finished_at": "2026-11-14T11:04:35.925243+00:00",
+      "log": "logs/process-http.log",
+      "log_sha256": "67a7ee745fe5245f99bdbbae21aee697a5dd83ed5af6efd1b7e04ebe1fd74cce",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "benchmark_origin_after",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m115-benchmark-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,zipfile\nimport agentsync\nwheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert Path(agentsync.__file__).resolve().is_relative_to(root)\nassert d.version=='0.3.0a115'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==wheel.as_uri()\nassert direct['archive_info']['hashes']['sha256']==sys.argv[2]\nmembers=[]\nwith zipfile.ZipFile(wheel) as z:\n for name in z.namelist():\n  if name.startswith('agentsync/') and not name.endswith('/'):\n   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected\n   members.append({'path':name,'sha256':expected})\nassert members\nprint(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))\n",
+        "/root/amadeus-m115-r3/composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+        "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a"
+      ],
+      "cwd": "/root/amadeus-m115-benchmark-r1",
+      "exit_code": 0,
+      "started_at": "2026-11-14T11:04:35.928857+00:00",
+      "finished_at": "2026-11-14T11:04:36.055180+00:00",
+      "log": "logs/benchmark_origin_after.log",
+      "log_sha256": "5f4dc6f2b338038ac0b877ffb3180a63957650d3e5dd84dee6a3ed12fc5c6826",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "observations": [
+    {
+      "mode": "threads",
+      "diagnostic": {
+        "package_version": "0.3.0a115",
+        "scope": "local_core_claim_contention",
+        "diagnostic_only": true,
+        "formal_acceptance": false,
+        "real_client_verified": false,
+        "workload": {
+          "workers": 4,
+          "rounds": 20,
+          "claims": 80,
+          "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+          "throughput_denominator": "sum_of_round_claim_spans"
+        },
+        "claim_latency_ms": {
+          "p50": 15.405194999402738,
+          "p95": 27.5341490014398,
+          "p99": 31.254595000064
+        },
+        "timed_workload_seconds": 0.5706262280018564,
+        "throughput_claim_attempts_per_second": 140.1968505375812,
+        "declared_p95_budget_ms": 1000.0,
+        "p95_budget_passed": true,
+        "round_observations": [
+          {
+            "round": 1,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 2,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 3,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 4,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 5,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 6,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 7,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 8,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 9,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 10,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 11,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 12,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 13,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 14,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 15,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 16,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 17,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 18,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 19,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          },
+          {
+            "round": 20,
+            "winners": 1,
+            "expected_version_conflicts": 3,
+            "unexpected_errors": 0
+          }
+        ],
+        "unexpected_errors": {},
+        "claim_audit": {
+          "expected": 80,
+          "observed": 80,
+          "success": 20,
+          "denied": 60,
+          "missing": 0,
+          "duplicate": 0,
+          "unexpected": 0,
+          "mismatch": 0
+        },
+        "functional_checks": {
+          "persisted_winners": true,
+          "cancelled_status_versions": true,
+          "persisted_task_count": true,
+          "sqlite_integrity": true,
+          "foreign_keys": true,
+          "claim_audit_complete": true,
+          "rounds_completed": true,
+          "claims_measured": true,
+          "single_winner_each_round": true,
+          "expected_conflicts": true,
+          "valid_timing": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "mode": "process-http",
+      "diagnostic": {
+        "package_version": "0.3.0a115",
+        "scope": "local_core_claim_contention",
+        "diagnostic_only": true,
+        "formal_acceptance": false,
+        "real_client_verified": false,
+        "workload": {
+          "workers": 2,
+          "rounds": 20,
+          "claims": 40,
+          "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+          "throughput_denominator": "sum_of_parent_round_spans_including_process_dispatch",
+          "worker_mode": "spawned_processes",
+          "requested_transports": [
+            "core",
+            "loopback_http"
+          ]
+        },
+        "claim_latency_ms": {
+          "p50": 13.734874000874697,
+          "p95": 62.23338800009515,
+          "p99": 93.59988500000327
+        },
+        "timed_workload_seconds": 1.1241024390001257,
+        "throughput_claim_attempts_per_second": 35.5839455660104,
+        "declared_p95_budget_ms": 1000.0,
+        "p95_budget_passed": true,
+        "round_observations": [
+          {
+            "round": 1,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 2,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 3,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 4,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 5,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 6,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 7,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "loopback_http",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 8,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 9,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 10,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 11,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 12,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 13,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 14,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 15,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 16,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 17,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 18,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 19,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          },
+          {
+            "round": 20,
+            "winners": 1,
+            "expected_version_conflicts": 1,
+            "unexpected_errors": 0,
+            "winner_transport": "core",
+            "http_observed_claims": 1
+          }
+        ],
+        "unexpected_errors": {},
+        "claim_audit": {
+          "expected": 40,
+          "observed": 40,
+          "success": 20,
+          "denied": 20,
+          "missing": 0,
+          "duplicate": 0,
+          "unexpected": 0,
+          "mismatch": 0
+        },
+        "functional_checks": {
+          "persisted_winners": true,
+          "cancelled_status_versions": true,
+          "persisted_task_count": true,
+          "sqlite_integrity": true,
+          "foreign_keys": true,
+          "claim_audit_complete": true,
+          "rounds_completed": true,
+          "claims_measured": true,
+          "single_winner_each_round": true,
+          "expected_conflicts": true,
+          "valid_timing": true
+        },
+        "passed": true
+      }
+    }
+  ],
+  "source_files_verified": 2083,
+  "scratch_empty_after": true,
+  "scope": "Bounded installed-runtime diagnostic only; not exhaustive stress or production SLO",
+  "formal_acceptance": false,
+  "real_client_verified": false,
+  "formal_release": "BLOCKED"
+}

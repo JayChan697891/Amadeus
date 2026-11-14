@@ -1,0 +1,82 @@
+{
+  "at": "2026-11-14T11:06:38.123372+00:00",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Complete Linux/Python3.12 local component row; not full matrix or Release acceptance",
+  "report": "releases/0.3.0a115/b6f05f0/linux-312/report.json",
+  "report_sha256": "e240d72c06ac7c5dd58956536e82f9c6eb5d011dbd9af76520b216cec6645dd2",
+  "transfer_summary_sha256": "59b341c30ddd7f0c2362a1f6079b93cc2ee8195eb4c32f71bea0c0dfe706fbf8",
+  "actual_checks_passed": 26,
+  "suites": {
+    "pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    "wheel_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    "sdist_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    }
+  },
+  "source_files_verified": 2083,
+  "installed_archive_sha256": {
+    "wheel": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "sdist": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+  },
+  "unique_case_ids_per_suite": 2482,
+  "originals_preserved": true,
+  "derived_label_changes_per_suite": 6,
+  "report_manifest_artifacts": 72,
+  "transferred_files_verified": 182,
+  "docker_observation_files": 105,
+  "docker_scope": "105 separately transfer-manifest-pinned observations including expected failure/non-started cases; not105 successful executions and not all semantically validated by original72-artifact report verifier; no real clients",
+  "verifier_outcomes_per_suite": {
+    "pytest": {
+      "records": 14,
+      "outcomes": {
+        "passed": 5,
+        "failed": 9
+      },
+      "all_cleanup_confirmed": true
+    },
+    "wheel_pytest": {
+      "records": 14,
+      "outcomes": {
+        "passed": 5,
+        "failed": 9
+      },
+      "all_cleanup_confirmed": true
+    },
+    "sdist_pytest": {
+      "records": 14,
+      "outcomes": {
+        "passed": 5,
+        "failed": 9
+      },
+      "all_cleanup_confirmed": true
+    }
+  },
+  "delta_review": {
+    "mode": "Direct strict artifact/case-delta inspection, no repeated full independent Release review",
+    "reference": "linux-314/report.json",
+    "all2482_case_identity_status_pairs_equal_each_suite": true
+  },
+  "row_terminal": "2026-11-14T11:03:11.899657+00:00",
+  "containers_after": [],
+  "raw_xml_uploaded": false,
+  "helper_reference": "../linux314-complete/harvest.py.txt",
+  "helper_sha256": "0f2a533babb011129ca3fd9ab4a505607fbfa1b072c590c60439d90169090b2e",
+  "next": "Linux matrix complete; current Linux bounded benchmark passed. Windows3.14 running; Windows3.12 canonical wheel and Windows benchmark pending",
+  "matrix_snapshot": "releases/0.3.0a115/b6f05f0/matrix-after-linux312.json",
+  "remaining_os_python_combinations": 5,
+  "local_matrix": "incomplete",
+  "formal_release": "BLOCKED"
+}

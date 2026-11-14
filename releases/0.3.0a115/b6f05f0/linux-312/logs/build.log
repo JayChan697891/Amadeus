@@ -1,0 +1,1611 @@
+* Getting build dependencies for sdist...
+running egg_info
+writing src/agentsync_local.egg-info/PKG-INFO
+writing dependency_links to src/agentsync_local.egg-info/dependency_links.txt
+writing entry points to src/agentsync_local.egg-info/entry_points.txt
+writing requirements to src/agentsync_local.egg-info/requires.txt
+writing top-level names to src/agentsync_local.egg-info/top_level.txt
+reading manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+* Building sdist...
+running sdist
+running egg_info
+writing src/agentsync_local.egg-info/PKG-INFO
+writing dependency_links to src/agentsync_local.egg-info/dependency_links.txt
+writing entry points to src/agentsync_local.egg-info/entry_points.txt
+writing requirements to src/agentsync_local.egg-info/requires.txt
+writing top-level names to src/agentsync_local.egg-info/top_level.txt
+reading manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+running check
+creating agentsync_local-0.3.0a115
+creating agentsync_local-0.3.0a115/.github/workflows
+creating agentsync_local-0.3.0a115/docs
+creating agentsync_local-0.3.0a115/docs/acceptance
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/linux-01
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/new-01
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/new-02
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/redaction-stability
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/regression-01
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair/trace-repair-01
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair/trace-repair-02
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-integration
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-single-stop
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-heartbeat-regression
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+creating agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+creating agentsync_local-0.3.0a115/examples
+creating agentsync_local-0.3.0a115/examples/mcp_clients
+creating agentsync_local-0.3.0a115/src/agentsync
+creating agentsync_local-0.3.0a115/src/agentsync/adapters
+creating agentsync_local-0.3.0a115/src/agentsync/core
+creating agentsync_local-0.3.0a115/src/agentsync/integrations
+creating agentsync_local-0.3.0a115/src/agentsync/providers
+creating agentsync_local-0.3.0a115/src/agentsync/resources
+creating agentsync_local-0.3.0a115/src/agentsync/sdk
+creating agentsync_local-0.3.0a115/src/agentsync/storage
+creating agentsync_local-0.3.0a115/src/agentsync/verification
+creating agentsync_local-0.3.0a115/src/agentsync/workspaces
+creating agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+creating agentsync_local-0.3.0a115/tests
+creating agentsync_local-0.3.0a115/tests/concurrency
+creating agentsync_local-0.3.0a115/tests/integration
+creating agentsync_local-0.3.0a115/tests/manual
+creating agentsync_local-0.3.0a115/tests/recovery
+creating agentsync_local-0.3.0a115/tests/security
+creating agentsync_local-0.3.0a115/tests/unit
+creating agentsync_local-0.3.0a115/tools
+copying files to agentsync_local-0.3.0a115...
+copying .env.example -> agentsync_local-0.3.0a115
+copying .gitattributes -> agentsync_local-0.3.0a115
+copying .gitignore -> agentsync_local-0.3.0a115
+copying AGENTS.md -> agentsync_local-0.3.0a115
+copying CHANGELOG.md -> agentsync_local-0.3.0a115
+copying CONTRIBUTING.md -> agentsync_local-0.3.0a115
+copying LICENSE -> agentsync_local-0.3.0a115
+copying MANIFEST.in -> agentsync_local-0.3.0a115
+copying README.md -> agentsync_local-0.3.0a115
+copying README.zh-CN.md -> agentsync_local-0.3.0a115
+copying SECURITY.md -> agentsync_local-0.3.0a115
+copying WORKFLOW.md -> agentsync_local-0.3.0a115
+copying pyproject.toml -> agentsync_local-0.3.0a115
+copying requirements-dev-lock.txt -> agentsync_local-0.3.0a115
+copying requirements-lock.txt -> agentsync_local-0.3.0a115
+copying .github/workflows/ci.yml -> agentsync_local-0.3.0a115/.github/workflows
+copying .github/workflows/verifier-docker.yml -> agentsync_local-0.3.0a115/.github/workflows
+copying docs/ARCHITECTURE.md -> agentsync_local-0.3.0a115/docs
+copying docs/CLOUD-CONTINUATION.md -> agentsync_local-0.3.0a115/docs
+copying docs/CODEX-CLOUD.md -> agentsync_local-0.3.0a115/docs
+copying docs/COMPATIBILITY.md -> agentsync_local-0.3.0a115/docs
+copying docs/CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/DECISIONS.md -> agentsync_local-0.3.0a115/docs
+copying docs/DELIVERY.zh-CN.md -> agentsync_local-0.3.0a115/docs
+copying docs/ERRORS.md -> agentsync_local-0.3.0a115/docs
+copying docs/FILE-TREE.md -> agentsync_local-0.3.0a115/docs
+copying docs/HANDOFF-CLAUDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/LOCAL-DEBUG.md -> agentsync_local-0.3.0a115/docs
+copying docs/M2-CONTINUATION.zh-CN.md -> agentsync_local-0.3.0a115/docs
+copying docs/M3-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M3-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M4A-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M4A-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M4B-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M4B-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5-FINAL-ACCEPTANCE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5-M6-EXECUTION-ADJUSTMENT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5A-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5A-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5A-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B1-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B1-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B1-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2A-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2A-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2A-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2B-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2B-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2B-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2C-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2C-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B2C-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A-DESIGN.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A1-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A1-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A1-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A2-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A2-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3A2-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B0-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B0-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B1-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B1-DESIGN.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B1-GUIDE.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B1-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B2A-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B2A-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M5B3B2B-CONTRACT.md -> agentsync_local-0.3.0a115/docs
+copying docs/M6-ADAPTERS.md -> agentsync_local-0.3.0a115/docs
+copying docs/PLAN.md -> agentsync_local-0.3.0a115/docs
+copying docs/PROGRESS.md -> agentsync_local-0.3.0a115/docs
+copying docs/RUFF-CI-REPAIR.md -> agentsync_local-0.3.0a115/docs
+copying docs/SOURCES.md -> agentsync_local-0.3.0a115/docs
+copying docs/SPECIFICATION.md -> agentsync_local-0.3.0a115/docs
+copying docs/TEST-REPORT.md -> agentsync_local-0.3.0a115/docs
+copying docs/THIRD-PARTY-LICENSES.md -> agentsync_local-0.3.0a115/docs
+copying docs/THIRD-PARTY-NOTICES.txt -> agentsync_local-0.3.0a115/docs
+copying docs/claude-host-probe.json -> agentsync_local-0.3.0a115/docs
+copying docs/codex-cloud-config.json -> agentsync_local-0.3.0a115/docs
+copying docs/codex-cloud-verification.json -> agentsync_local-0.3.0a115/docs
+copying docs/codex-collaboration-probe.json -> agentsync_local-0.3.0a115/docs
+copying docs/codex-host-probe.json -> agentsync_local-0.3.0a115/docs
+copying docs/codex-registration-probe.json -> agentsync_local-0.3.0a115/docs
+copying docs/dependency-inventory.json -> agentsync_local-0.3.0a115/docs
+copying docs/desktop-connection-confirmation.json -> agentsync_local-0.3.0a115/docs
+copying docs/pytest-m2-followup-python312.xml -> agentsync_local-0.3.0a115/docs
+copying docs/pytest-m2-followup.xml -> agentsync_local-0.3.0a115/docs
+copying docs/pytest-python312.xml -> agentsync_local-0.3.0a115/docs
+copying docs/pytest-results.xml -> agentsync_local-0.3.0a115/docs
+copying docs/acceptance/CANCELLATION-REPAIR-20261105.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/CLIENT-MATRIX.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a10.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a4.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a5.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a6.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a7.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a8.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/COVERAGE-REVIEW-0.3.0a9.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/DESIGN.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/INSTALLATION-REPORT.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/PACKAGE-INSTALLATION.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/requirements.json -> agentsync_local-0.3.0a115/docs/acceptance
+copying docs/acceptance/evidence/README.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/a109-linux-minors.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/a109-linux-packages.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/a109-linux-source.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/a109-windows-local.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/a109-windows-minors.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha14-linux-components.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha14-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha15-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha16-docker-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha16-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha17-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha18-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha19-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha20-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha21-full-source-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha21-installed-full-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha21-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha21-windows-full-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha22-lifecycle-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha22-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha23-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha24-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha25-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha26-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha27-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha28-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/alpha29-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/b4-flow-feasibility.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/cancellation-pr31-09c2f05.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/cancellation-pr32-67454ca.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/cancellation-pr33-cc72e2c.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/cancellation-stack-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/claude-adapter-linux-20261026.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/claude-adapter-local-20261026.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/claude-protocol-local-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/codex-adapter-integrated-smoke-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/codex-adapter-local-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/codex-before-capture-binding-71934cb8.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/codex-factory-preflight-20261028.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/codex-invocation-local-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/codex-readonly-cli-smoke-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/core-startup-local-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/docker-targeted-6b16f20-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/full-linux-50bcbf5-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/full-windows-248d0be-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/linux-driver-failure-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/linux-fresh-packages-20261026.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/local-only-20261020-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/local-only-20261020.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m4a-ci-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m4b-ci-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m4b-independent-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m4b-receipt-binding-green-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m4b-receipt-binding-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5a-ci-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b1-first-docker-failure.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b1-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b2a-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b2b-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b2b-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b2c-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b2c-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3a1-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3a1-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3a2-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3a2-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3b0-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3b0-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3b1-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3b1-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3b2a-local-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m5b3b2a-work-receipt.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m6-local-freeze-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m6-local-prototype-20261025.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m6-single-codex-preview.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/rat14-ci-inspection.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/unstarted-capture-local-20261026.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence
+copying docs/acceptance/evidence/m115-source-checks/run-source.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks
+copying docs/acceptance/evidence/m115-source-checks/source-bindings.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks
+copying docs/acceptance/evidence/m115-source-checks/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/adapters-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/adapters-process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/baseline-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/baseline-process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/fixed-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/fixed-process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/input-snapshot.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/run-checks.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/static-processes.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/test-process-capture-deadline-initial.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/baseline-final-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/baseline-final-process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/fixed-final-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/fixed-final-process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/input-git-bindings.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/input-snapshot.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/run-checks.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/deadline-repair/final/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/deadline-repair/final
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/observe-current-test.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/original-collector-source-attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/pytest-evidence.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/pytest-observed.junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/pytest-terminal-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/source-snapshot.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/full-windows-312/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/full-windows-312
+copying docs/acceptance/evidence/m115-source-checks/linux-01/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/linux-01
+copying docs/acceptance/evidence/m115-source-checks/linux-01/observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/linux-01
+copying docs/acceptance/evidence/m115-source-checks/new-01/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/new-01
+copying docs/acceptance/evidence/m115-source-checks/new-02/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/new-02
+copying docs/acceptance/evidence/m115-source-checks/redaction-stability/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/redaction-stability
+copying docs/acceptance/evidence/m115-source-checks/redaction-stability/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/redaction-stability
+copying docs/acceptance/evidence/m115-source-checks/regression-01/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/regression-01
+copying docs/acceptance/evidence/m115-source-checks/traceability-repair/source-bindings.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair
+copying docs/acceptance/evidence/m115-source-checks/traceability-repair/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair
+copying docs/acceptance/evidence/m115-source-checks/traceability-repair/trace-repair-01/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair/trace-repair-01
+copying docs/acceptance/evidence/m115-source-checks/traceability-repair/trace-repair-02/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m115-source-checks/traceability-repair/trace-repair-02
+copying docs/acceptance/evidence/m4-owner-delivery/driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/linux-actual-verified-task-completion.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/linux-docker-cleanup-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/linux-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/observe-docker-cleanup.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/prepare-owner-delivery-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/windows-console.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/windows-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-delivery/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-delivery
+copying docs/acceptance/evidence/m4-owner-integration/original-affected.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-integration
+copying docs/acceptance/evidence/m4-owner-integration/original-fixture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-integration
+copying docs/acceptance/evidence/m4-owner-integration/repaired-module.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-integration
+copying docs/acceptance/evidence/m4-owner-integration/source-manifest.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-integration
+copying docs/acceptance/evidence/m4-owner-integration/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m4-owner-integration
+copying docs/acceptance/evidence/m6-cursor-node-bundle/actual-package-preview.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/claude-local-readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/claude-version-help.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/cursor-version-help.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/linux-build-binding.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/traceability.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/windows-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-cursor-node-bundle/windows-source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-cursor-node-bundle
+copying docs/acceptance/evidence/m6-full-regression/linux-full-driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/linux-full-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/linux-full-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/linux-full.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/linux-repair-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/linux-repair.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/repair-driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/repair-source-identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/source-identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/windows-full-driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/windows-full-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/windows-full-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/windows-full.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/windows-repair-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-full-regression/windows-repair.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-full-regression
+copying docs/acceptance/evidence/m6-linux-live/attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/completion.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/credential_home.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/execution.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/fetch-safe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/final-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/job.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/observe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/proposal-review.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/stage-preview.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/staged.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-live/verification-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-live
+copying docs/acceptance/evidence/m6-linux-readonly/boundary-probe.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/boundary-probe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/codex-package.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/linux-test.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/native-probe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/native-source-probe.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/official-asset.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/overlay-growth.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/package-build.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/runtime-files.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/source-probe-prepare.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/windows-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-linux-readonly/windows-test.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-linux-readonly
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-cancellation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-reopened-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/cancel-live-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/default-profile.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diag-package-linux-binding.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diag-package-linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diag-package-linux.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diag-package-manifest.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diag-package-windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diag-package-windows.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-actual-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-actual-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-actual-structure.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-final.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-owner.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-package-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/diagnostic-red.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/effective-surface.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/exact-profile.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/isolated-auth-status.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/linux-runtime.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-and-diagnostics-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-reopened.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-independent-review.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-reopened-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-repaired-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/live-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/mxc-final.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/next-capture-fixture.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/next-diagnostic-plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/next-diagnostic-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/next-pilot-harness.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/next-private-capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/package-installed-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/package-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/package-runtime-manifest.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/package-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/pilot-harness.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/pilot-plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/pilot-readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/single-task-strict.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/single-task-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/single-task-surface.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/single-task.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-installed-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-linux-build-binding.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-next-plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-replay.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/startup-warning-windows.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/strict-config-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-classification.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-inspect_once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-reopened-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-run-authorized.ps1.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-native-mxc/timeout-live-summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-native-mxc
+copying docs/acceptance/evidence/m6-proposal-artifact/completion.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/execution.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/export_reviewed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/identity-after.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/identity-before.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/manifest.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/original-postcheck.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/package_identity.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/postcheck_original.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/proposal.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/reopen_guest.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/reopened.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/run-guest.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-artifact/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-artifact
+copying docs/acceptance/evidence/m6-proposal-capture/initial-results.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-inspect_once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-reopened-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/live-run-authorized.ps1.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/runtime-manifest.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/windows-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-capture/windows-source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-capture
+copying docs/acceptance/evidence/m6-proposal-pipeline/cleanup-check.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/cleanup-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/initial-failure.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/initial-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/run.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/test-files.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/verified.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/windows-traceability.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-pipeline/wrong-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-pipeline
+copying docs/acceptance/evidence/m6-proposal-review/build.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/historical-capture-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/linux-config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/linux-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/resume-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/runtime-files.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/windows-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/windows-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-review/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-review
+copying docs/acceptance/evidence/m6-proposal-staging/build.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/development-results.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/final-package-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/final-package-traceability.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/linux-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/linux-staging.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/runtime-files.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/source-initial.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/traceability.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-proposal-staging/windows-staging.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-proposal-staging
+copying docs/acceptance/evidence/m6-single-stop/green.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-single-stop
+copying docs/acceptance/evidence/m6-single-stop/red-product.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-single-stop
+copying docs/acceptance/evidence/m6-single-stop/regression.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-single-stop
+copying docs/acceptance/evidence/m6-single-stop/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-single-stop
+copying docs/acceptance/evidence/m6-task-proposal/initial-results.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m6-task-proposal/runtime-manifest.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m6-task-proposal/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m6-task-proposal/traceability.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m6-task-proposal/windows-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m6-task-proposal/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m6-task-proposal/windows-source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m6-task-proposal
+copying docs/acceptance/evidence/m7-continuous-live/attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/auth-route-producer.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/auth-route-receiver.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/completion-accepted.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/completion-decision.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/completion-request.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/control.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/credential_home.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/dispatch-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/execution-accepted.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/execution-decision.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/execution-request.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/execution.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/final-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/generated-source.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/host-acceptance.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/observations.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/observe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/preflight-stopped-auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/preflight-stopped-controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/preflight-stopped-controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/preflight-stopped-preflight-diagnosis.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/preflight-stopped-readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/preflight-stopped-run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/producer-capture.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/readiness-tests.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/receiver-accepted.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/receiver-capture.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/receiver-decision.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/receiver-request.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/review.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/staging-accepted.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/staging-decision.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/staging-request.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-continuous-live/test-readiness.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-continuous-live
+copying docs/acceptance/evidence/m7-dependent-review/driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/linux-docker-cleanup-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/linux-docker-cursor-review.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/linux-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/observe-docker-cleanup.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/prepare-dependent-review-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/windows-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-dependent-review/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-dependent-review
+copying docs/acceptance/evidence/m7-durable-workflow/check-source-prechecks.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/linux-actual-verified-task-completion.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/linux-docker-cleanup-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/linux-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/observe-docker-cleanup.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/prepare-durable-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-generation-strengthened-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-generation-strengthened.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-prechecks-identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-pytest-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-source-members-final.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-source-members-generation-strengthened.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-source-members.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-supplement-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-supplement.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/source-trace-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/windows-console.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/windows-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-durable-workflow/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-durable-workflow
+copying docs/acceptance/evidence/m7-full-regression/driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/linux-sdist_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/observe-docker-cleanup.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-full-regression/windows-sdist_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-full-regression
+copying docs/acceptance/evidence/m7-heartbeat-regression/m7-proposal-heartbeat.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-heartbeat-regression
+copying docs/acceptance/evidence/m7-heartbeat-regression/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-heartbeat-regression
+copying docs/acceptance/evidence/m7-host-handoff/build-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/source-budget-first.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff
+copying docs/acceptance/evidence/m7-host-handoff-live/attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/coordinator-preparation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/coordinator-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/credential-home.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/credential_home.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/dispatch-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/fetch-safe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/final-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/host-acceptance.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/host-review-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/observe-resume.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/observe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/resume-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/review-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/review.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-host-handoff-live/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-host-handoff-live
+copying docs/acceptance/evidence/m7-model-review-live/attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/credential-home.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/credential_home.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/dispatch-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/fetch-safe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/final-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/host-acceptance.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/host-review-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/observe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/prepare-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/review-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/review.md -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-model-review-live/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-model-review-live
+copying docs/acceptance/evidence/m7-pinned-admission/build-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/source.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-pinned-admission/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-pinned-admission
+copying docs/acceptance/evidence/m7-proposal-context/build-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/m7-pinned-proposal-first.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/m7-pinned-proposal-focused.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-context/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-context
+copying docs/acceptance/evidence/m7-proposal-queue/build-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/installed-driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/m7-proposal-current-review.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/m7-proposal-queue-focused.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-proposal-queue/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-proposal-queue
+copying docs/acceptance/evidence/m7-provider-offline/driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/linux-provider_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/windows-provider_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-provider-offline/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-provider-offline
+copying docs/acceptance/evidence/m7-queue-live/attempt.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/capture-metadata.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/completion.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/credential_home.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/execution.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/final-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/job.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/observe.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/pre-completion-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/preflight-helper-hashes.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/proposal-review.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/readiness.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/stage-preview.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/staged.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-live/verification-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-live
+copying docs/acceptance/evidence/m7-queue-preflight/auth-cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/controller-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/controller-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/credential_home.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/diagnose-plan.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/execute-entry.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/inspect-liveness.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/liveness-diagnosis.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/pilot.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/plan-diagnosis.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/preflight-final.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/private_capture.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/run-once.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-queue-preflight/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-queue-preflight
+copying docs/acceptance/evidence/m7-real-codex-relay/auth-route.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/cleanup.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/independent-review.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/ownership-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/plan.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/relay.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/reopened-check.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-real-codex-relay/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-real-codex-relay
+copying docs/acceptance/evidence/m7-sdist-install/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/prepare.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-sdist-install/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-sdist-install
+copying docs/acceptance/evidence/m7-verified-handoff/build-wheel.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/docker-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-build-wheel.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-docker-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-observe-docker.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/final-test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/first-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/observe-docker.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/regression-17e0ab4.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m7-verified-handoff/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m7-verified-handoff
+copying docs/acceptance/evidence/m8-bounded-load/linux-process-http.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/linux-threads.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/run-bounded-coordination.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/windows-process-http.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-bounded-load/windows-threads.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-bounded-load
+copying docs/acceptance/evidence/m8-process-recovery/config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-process-recovery/docker-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-process-recovery/linux-installed.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-process-recovery/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-process-recovery/observe-docker.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-process-recovery/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-process-recovery/test-installed.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-process-recovery
+copying docs/acceptance/evidence/m8-receipt-usage/build-receipt-usage-package.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/check-source-prechecks.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/linux-docker-cleanup-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/linux-docker-cursor-review.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/linux-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/observe-docker-cleanup.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/root-trace.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/run-linux.sh.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/source-final-after.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/source-final-before.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/source-final-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/source-final-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/source-prechecks-identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/static-final-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/windows-pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m8-receipt-usage/windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m8-receipt-usage
+copying docs/acceptance/evidence/m9-a114-preparation/bootstrap-config.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/linux-source-staging.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/m9-bootstrap.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/m9-candidate-queue.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/m9-candidate-row.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/m9-finalize-bootstrap.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/m9-stage-linux-source.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/preflight.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/remaining-runtime-preflight.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a114-preparation/windows-314-corrected-dependency-preflight.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a114-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/bootstrap.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/continue-matrix.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/finalize.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/linux-queue.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/r2.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/r3-bootstrap.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/r3-preparation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/resume-continue-after-packages.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/resume-finalize-packages.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/resume-packages.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/resume-state.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-a115-preparation/windows-license-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-a115-preparation
+copying docs/acceptance/evidence/m9-sdist-regression/original-driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-inspect-install-first.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-inspect-install.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-docker-cleanup-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-installation-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-sdist-license-inventory.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-linux-sdist_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-windows-installation-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-windows-sdist-license-inventory.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/original-windows-sdist_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-collection-sanitized.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-driver-repaired.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-driver.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-identity.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-inspect-install.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-installation-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-result-repaired.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-sdist-license-inventory.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-sdist_collect.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-linux-sdist_delta_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-reconcile.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-reconciliation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-run-windows.py.txt -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-installation-observation.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-origin.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-result-repaired.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-sdist-license-inventory.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-sdist_collect.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/repair-windows-sdist_delta_pytest.process.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/source-junit.xml -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/source-pytest-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/source-static-result.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying docs/acceptance/evidence/m9-sdist-regression/summary.json -> agentsync_local-0.3.0a115/docs/acceptance/evidence/m9-sdist-regression
+copying examples/m3_handoff.py -> agentsync_local-0.3.0a115/examples
+copying examples/two_mock_agents.py -> agentsync_local-0.3.0a115/examples
+copying examples/mcp_clients/README.md -> agentsync_local-0.3.0a115/examples/mcp_clients
+copying examples/mcp_clients/claude-desktop.json -> agentsync_local-0.3.0a115/examples/mcp_clients
+copying examples/mcp_clients/codex.toml -> agentsync_local-0.3.0a115/examples/mcp_clients
+copying examples/mcp_clients/install_codex.py -> agentsync_local-0.3.0a115/examples/mcp_clients
+copying src/agentsync/__init__.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/__main__.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/cli.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/config.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/continuation.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/controlled_relay.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/dispatch_planning.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/durable_mock_workflow.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/errors.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/mock_run_manager.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/mock_workflow.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/mock_workflow_cli.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/model_usage.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/model_usage_checkpoint.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/models.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/planning_cli.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/proposal_handoff.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/proposals.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/provider_usage.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/py.typed -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/relay_queue.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/relay_status_cli.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/relay_usage.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/relay_wave_journal.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/retry_planning.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/scheduling.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/usage.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/usage_cli.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/usage_storage.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/verified_proposal_flow.py -> agentsync_local-0.3.0a115/src/agentsync
+copying src/agentsync/adapters/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/_host_process.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/approved_launch.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/base.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/claude.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/claude_events.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/claude_invocation.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/claude_process.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/codex.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/codex_events.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/codex_invocation.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/codex_process.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/cursor.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/cursor_events.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/cursor_invocation.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/cursor_process.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/host_receipts.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/launch_context.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/manager.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/mock.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/adapters/process_capture.py -> agentsync_local-0.3.0a115/src/agentsync/adapters
+copying src/agentsync/core/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/core/collaboration.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/core/permissions.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/core/resources.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/core/service.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/core/usage.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/core/workspaces.py -> agentsync_local-0.3.0a115/src/agentsync/core
+copying src/agentsync/integrations/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/integrations
+copying src/agentsync/integrations/http.py -> agentsync_local-0.3.0a115/src/agentsync/integrations
+copying src/agentsync/integrations/mcp.py -> agentsync_local-0.3.0a115/src/agentsync/integrations
+copying src/agentsync/providers/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/providers
+copying src/agentsync/providers/_transport.py -> agentsync_local-0.3.0a115/src/agentsync/providers
+copying src/agentsync/providers/advice.py -> agentsync_local-0.3.0a115/src/agentsync/providers
+copying src/agentsync/providers/base.py -> agentsync_local-0.3.0a115/src/agentsync/providers
+copying src/agentsync/providers/http.py -> agentsync_local-0.3.0a115/src/agentsync/providers
+copying src/agentsync/providers/retry.py -> agentsync_local-0.3.0a115/src/agentsync/providers
+copying src/agentsync/resources/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/resources
+copying src/agentsync/resources/paths.py -> agentsync_local-0.3.0a115/src/agentsync/resources
+copying src/agentsync/sdk/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/sdk
+copying src/agentsync/sdk/client.py -> agentsync_local-0.3.0a115/src/agentsync/sdk
+copying src/agentsync/storage/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/storage
+copying src/agentsync/storage/admission.py -> agentsync_local-0.3.0a115/src/agentsync/storage
+copying src/agentsync/storage/database.py -> agentsync_local-0.3.0a115/src/agentsync/storage
+copying src/agentsync/verification/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/binding.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_claims.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_delivery.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_execution_state.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_executor.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_integration.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_intents.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/candidate_jobs.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/docker.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/executor.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/jobs.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/owner_flow.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/proposal_staging.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/reconciliation.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/snapshot.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/verification/task_completion.py -> agentsync_local-0.3.0a115/src/agentsync/verification
+copying src/agentsync/workspaces/__init__.py -> agentsync_local-0.3.0a115/src/agentsync/workspaces
+copying src/agentsync/workspaces/git.py -> agentsync_local-0.3.0a115/src/agentsync/workspaces
+copying src/agentsync/workspaces/integration.py -> agentsync_local-0.3.0a115/src/agentsync/workspaces
+copying src/agentsync/workspaces/proposal.py -> agentsync_local-0.3.0a115/src/agentsync/workspaces
+copying src/agentsync_local.egg-info/PKG-INFO -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+copying src/agentsync_local.egg-info/SOURCES.txt -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+copying src/agentsync_local.egg-info/dependency_links.txt -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+copying src/agentsync_local.egg-info/entry_points.txt -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+copying src/agentsync_local.egg-info/requires.txt -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+copying src/agentsync_local.egg-info/top_level.txt -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+copying tests/conftest.py -> agentsync_local-0.3.0a115/tests
+copying tests/concurrency/test_claims.py -> agentsync_local-0.3.0a115/tests/concurrency
+copying tests/concurrency/test_file_lock_races.py -> agentsync_local-0.3.0a115/tests/concurrency
+copying tests/concurrency/test_m3_races.py -> agentsync_local-0.3.0a115/tests/concurrency
+copying tests/concurrency/test_m5_approval_races.py -> agentsync_local-0.3.0a115/tests/concurrency
+copying tests/integration/test_acceptance.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_adapter_manager_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_binding_transaction.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_binding_git_records.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_claim_migration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_claims.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_execution.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_export.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_export_security.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_integration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_intent_migration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_intent_security.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_intents.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_jobs.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_candidate_queue_security.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_capability_planning_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_claude_adapter_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_codex_adapter_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_codex_invocation_process.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_codex_proposal_capture.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_codex_proposal_relay_queue.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_codex_proposal_review.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_controlled_relay_pipeline.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_cursor_adapter_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_dispatch_planning_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_docker_verifier.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_durable_mock_workflow.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_execution_reconciliation.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_handoff_recovery.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_host_report.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_live_http.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m3_migration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m3_transports.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m4_migration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m4_transports.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m4b_migration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m4b_transports.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m4b_workspaces.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m5_governance.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m5_migration.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_m5_transports.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_mcp_install.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_mock_adapter_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_mock_run_manager_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_mock_workflow.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_owner_execution.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_project_provider_usage.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_proposal_docker_pipeline.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_proposal_handoff.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_proposal_staging.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_provider_loopback_transport.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_relay_owner_status.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_relay_usage.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_relay_wave_journal.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_scheduling_core_boundary.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_task_proposals.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_transports.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_unfinished_continuation.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_verified_proposal_flow.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/test_verified_task_completion.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/integration/verified_flow_process_fixture.py -> agentsync_local-0.3.0a115/tests/integration
+copying tests/manual/probe_claude_host.py -> agentsync_local-0.3.0a115/tests/manual
+copying tests/manual/probe_codex_collaboration.py -> agentsync_local-0.3.0a115/tests/manual
+copying tests/manual/probe_codex_host.py -> agentsync_local-0.3.0a115/tests/manual
+copying tests/manual/probe_registered_codex.py -> agentsync_local-0.3.0a115/tests/manual
+copying tests/recovery/test_process_recovery.py -> agentsync_local-0.3.0a115/tests/recovery
+copying tests/security/test_core_security.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_file_locks.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_http_boundary.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_m3_security.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_m5_audit_transactions.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_m5_owner_cli_inputs.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_m5_permissions.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/security/test_resource_paths.py -> agentsync_local-0.3.0a115/tests/security
+copying tests/unit/test_acceptance_traceability.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_adapter_run_manager.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_adapters.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_candidate_binding.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_candidate_intent_relations.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_candidate_queue_migration.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_capture_creation_fence.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_claude_adapter.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_claude_events.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_claude_invocation.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_claude_process.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_codex_adapter.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_codex_events.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_codex_invocation.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_codex_process.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_context.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_coordination_benchmark.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_core.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_core_admission.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_core_startup_diagnostic.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_cursor_adapter.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_cursor_events.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_cursor_invocation.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_cursor_node_bundle.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_data_path.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_dispatch_planning.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_http_providers.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_inspect_claude_events.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_inspect_codex_events.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_inspect_local_attempts.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_mock_run_manager.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_owned_process_cleanup.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_planning_cli.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_process_capture.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_process_capture_deadline.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_process_capture_start_cancel.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_proposals.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_provider_usage_and_budget.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_pytest_case_journal.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_relay_execution_budget.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_release_acceptance.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_release_review_evidence.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_retry_planning.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_scheduling.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_unstarted_capture_adapter.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_usage.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_usage_checkpoint_storage.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_usage_cli.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_verification_docker.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_verification_executor.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_verification_jobs.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_verification_reconciliation.py -> agentsync_local-0.3.0a115/tests/unit
+copying tests/unit/test_verification_snapshot.py -> agentsync_local-0.3.0a115/tests/unit
+copying tools/_capture_inspection.py -> agentsync_local-0.3.0a115/tools
+copying tools/acceptance_evidence.py -> agentsync_local-0.3.0a115/tools
+copying tools/acceptance_git_source.py -> agentsync_local-0.3.0a115/tools
+copying tools/acceptance_matrix.py -> agentsync_local-0.3.0a115/tools
+copying tools/benchmark_coordination.py -> agentsync_local-0.3.0a115/tools
+copying tools/diagnose_core_startup.py -> agentsync_local-0.3.0a115/tools
+copying tools/inspect_claude_events.py -> agentsync_local-0.3.0a115/tools
+copying tools/inspect_codex_events.py -> agentsync_local-0.3.0a115/tools
+copying tools/inspect_cursor_events.py -> agentsync_local-0.3.0a115/tools
+copying tools/inspect_local_attempts.py -> agentsync_local-0.3.0a115/tools
+copying tools/license_inventory.py -> agentsync_local-0.3.0a115/tools
+copying tools/local-debug-requirements.txt -> agentsync_local-0.3.0a115/tools
+copying tools/local_vm_exec.py -> agentsync_local-0.3.0a115/tools
+copying tools/prepare_local_vm.py -> agentsync_local-0.3.0a115/tools
+copying tools/pytest_case_journal.py -> agentsync_local-0.3.0a115/tools
+copying tools/release_acceptance.py -> agentsync_local-0.3.0a115/tools
+copying tools/release_execution_receipt.py -> agentsync_local-0.3.0a115/tools
+copying tools/release_manifest.py -> agentsync_local-0.3.0a115/tools
+copying tools/release_review.py -> agentsync_local-0.3.0a115/tools
+copying tools/run_proposal_candidate_pilot.py -> agentsync_local-0.3.0a115/tools
+copying tools/start_local_vm.ps1 -> agentsync_local-0.3.0a115/tools
+copying src/agentsync_local.egg-info/SOURCES.txt -> agentsync_local-0.3.0a115/src/agentsync_local.egg-info
+Writing agentsync_local-0.3.0a115/setup.cfg
+Creating tar archive
+removing 'agentsync_local-0.3.0a115' (and everything under it)
+* Building wheel from sdist
+* Getting build dependencies for wheel...
+running egg_info
+writing src/agentsync_local.egg-info/PKG-INFO
+writing dependency_links to src/agentsync_local.egg-info/dependency_links.txt
+writing entry points to src/agentsync_local.egg-info/entry_points.txt
+writing requirements to src/agentsync_local.egg-info/requires.txt
+writing top-level names to src/agentsync_local.egg-info/top_level.txt
+reading manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+no previously-included directories found matching 'docs/acceptance/evidence/cancellation-readable'
+no previously-included directories found matching 'docs/acceptance/evidence/full-linux-readable'
+no previously-included directories found matching 'docs/acceptance/evidence/alpha29-readable'
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/agentsync
+copying src/agentsync/relay_queue.py -> build/lib/agentsync
+copying src/agentsync/usage_cli.py -> build/lib/agentsync
+copying src/agentsync/__init__.py -> build/lib/agentsync
+copying src/agentsync/errors.py -> build/lib/agentsync
+copying src/agentsync/cli.py -> build/lib/agentsync
+copying src/agentsync/scheduling.py -> build/lib/agentsync
+copying src/agentsync/verified_proposal_flow.py -> build/lib/agentsync
+copying src/agentsync/relay_wave_journal.py -> build/lib/agentsync
+copying src/agentsync/model_usage.py -> build/lib/agentsync
+copying src/agentsync/mock_run_manager.py -> build/lib/agentsync
+copying src/agentsync/relay_usage.py -> build/lib/agentsync
+copying src/agentsync/controlled_relay.py -> build/lib/agentsync
+copying src/agentsync/provider_usage.py -> build/lib/agentsync
+copying src/agentsync/config.py -> build/lib/agentsync
+copying src/agentsync/retry_planning.py -> build/lib/agentsync
+copying src/agentsync/usage.py -> build/lib/agentsync
+copying src/agentsync/dispatch_planning.py -> build/lib/agentsync
+copying src/agentsync/mock_workflow.py -> build/lib/agentsync
+copying src/agentsync/mock_workflow_cli.py -> build/lib/agentsync
+copying src/agentsync/durable_mock_workflow.py -> build/lib/agentsync
+copying src/agentsync/proposals.py -> build/lib/agentsync
+copying src/agentsync/planning_cli.py -> build/lib/agentsync
+copying src/agentsync/usage_storage.py -> build/lib/agentsync
+copying src/agentsync/models.py -> build/lib/agentsync
+copying src/agentsync/relay_status_cli.py -> build/lib/agentsync
+copying src/agentsync/model_usage_checkpoint.py -> build/lib/agentsync
+copying src/agentsync/__main__.py -> build/lib/agentsync
+copying src/agentsync/continuation.py -> build/lib/agentsync
+copying src/agentsync/proposal_handoff.py -> build/lib/agentsync
+creating build/lib/agentsync/resources
+copying src/agentsync/resources/__init__.py -> build/lib/agentsync/resources
+copying src/agentsync/resources/paths.py -> build/lib/agentsync/resources
+creating build/lib/agentsync/integrations
+copying src/agentsync/integrations/__init__.py -> build/lib/agentsync/integrations
+copying src/agentsync/integrations/http.py -> build/lib/agentsync/integrations
+copying src/agentsync/integrations/mcp.py -> build/lib/agentsync/integrations
+creating build/lib/agentsync/core
+copying src/agentsync/core/__init__.py -> build/lib/agentsync/core
+copying src/agentsync/core/resources.py -> build/lib/agentsync/core
+copying src/agentsync/core/usage.py -> build/lib/agentsync/core
+copying src/agentsync/core/permissions.py -> build/lib/agentsync/core
+copying src/agentsync/core/collaboration.py -> build/lib/agentsync/core
+copying src/agentsync/core/workspaces.py -> build/lib/agentsync/core
+copying src/agentsync/core/service.py -> build/lib/agentsync/core
+creating build/lib/agentsync/providers
+copying src/agentsync/providers/__init__.py -> build/lib/agentsync/providers
+copying src/agentsync/providers/base.py -> build/lib/agentsync/providers
+copying src/agentsync/providers/retry.py -> build/lib/agentsync/providers
+copying src/agentsync/providers/http.py -> build/lib/agentsync/providers
+copying src/agentsync/providers/_transport.py -> build/lib/agentsync/providers
+copying src/agentsync/providers/advice.py -> build/lib/agentsync/providers
+creating build/lib/agentsync/storage
+copying src/agentsync/storage/__init__.py -> build/lib/agentsync/storage
+copying src/agentsync/storage/database.py -> build/lib/agentsync/storage
+copying src/agentsync/storage/admission.py -> build/lib/agentsync/storage
+creating build/lib/agentsync/sdk
+copying src/agentsync/sdk/__init__.py -> build/lib/agentsync/sdk
+copying src/agentsync/sdk/client.py -> build/lib/agentsync/sdk
+creating build/lib/agentsync/adapters
+copying src/agentsync/adapters/__init__.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/base.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/cursor_invocation.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/claude_invocation.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/claude_events.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/mock.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/process_capture.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/codex_invocation.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/cursor_events.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/host_receipts.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/codex_events.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/manager.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/claude.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/codex.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/_host_process.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/claude_process.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/cursor_process.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/approved_launch.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/cursor.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/codex_process.py -> build/lib/agentsync/adapters
+copying src/agentsync/adapters/launch_context.py -> build/lib/agentsync/adapters
+creating build/lib/agentsync/verification
+copying src/agentsync/verification/proposal_staging.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_integration.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/docker.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/__init__.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_delivery.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_jobs.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_executor.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/binding.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_intents.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_execution_state.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/owner_flow.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/reconciliation.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate_claims.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/jobs.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/executor.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/snapshot.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/candidate.py -> build/lib/agentsync/verification
+copying src/agentsync/verification/task_completion.py -> build/lib/agentsync/verification
+creating build/lib/agentsync/workspaces
+copying src/agentsync/workspaces/__init__.py -> build/lib/agentsync/workspaces
+copying src/agentsync/workspaces/git.py -> build/lib/agentsync/workspaces
+copying src/agentsync/workspaces/proposal.py -> build/lib/agentsync/workspaces
+copying src/agentsync/workspaces/integration.py -> build/lib/agentsync/workspaces
+running egg_info
+writing src/agentsync_local.egg-info/PKG-INFO
+writing dependency_links to src/agentsync_local.egg-info/dependency_links.txt
+writing entry points to src/agentsync_local.egg-info/entry_points.txt
+writing requirements to src/agentsync_local.egg-info/requires.txt
+writing top-level names to src/agentsync_local.egg-info/top_level.txt
+reading manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+no previously-included directories found matching 'docs/acceptance/evidence/cancellation-readable'
+no previously-included directories found matching 'docs/acceptance/evidence/full-linux-readable'
+no previously-included directories found matching 'docs/acceptance/evidence/alpha29-readable'
+warning: no previously-included files matching '*.pyc' found anywhere in distribution
+adding license file 'LICENSE'
+writing manifest file 'src/agentsync_local.egg-info/SOURCES.txt'
+copying src/agentsync/py.typed -> build/lib/agentsync
+warning: build_py: byte-compiling is disabled, skipping.
+
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/agentsync
+copying build/lib/agentsync/relay_queue.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/usage_cli.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/errors.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/cli.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/scheduling.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/resources
+copying build/lib/agentsync/resources/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/resources
+copying build/lib/agentsync/resources/paths.py -> build/bdist.linux-x86_64/wheel/./agentsync/resources
+copying build/lib/agentsync/verified_proposal_flow.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/relay_wave_journal.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/integrations
+copying build/lib/agentsync/integrations/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/integrations
+copying build/lib/agentsync/integrations/http.py -> build/bdist.linux-x86_64/wheel/./agentsync/integrations
+copying build/lib/agentsync/integrations/mcp.py -> build/bdist.linux-x86_64/wheel/./agentsync/integrations
+copying build/lib/agentsync/model_usage.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/mock_run_manager.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/relay_usage.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/core
+copying build/lib/agentsync/core/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/core/resources.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/core/usage.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/core/permissions.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/core/collaboration.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/core/workspaces.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/core/service.py -> build/bdist.linux-x86_64/wheel/./agentsync/core
+copying build/lib/agentsync/controlled_relay.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/provider_usage.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/config.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/retry_planning.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/usage.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/dispatch_planning.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/providers
+copying build/lib/agentsync/providers/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/providers
+copying build/lib/agentsync/providers/base.py -> build/bdist.linux-x86_64/wheel/./agentsync/providers
+copying build/lib/agentsync/providers/retry.py -> build/bdist.linux-x86_64/wheel/./agentsync/providers
+copying build/lib/agentsync/providers/http.py -> build/bdist.linux-x86_64/wheel/./agentsync/providers
+copying build/lib/agentsync/providers/_transport.py -> build/bdist.linux-x86_64/wheel/./agentsync/providers
+copying build/lib/agentsync/providers/advice.py -> build/bdist.linux-x86_64/wheel/./agentsync/providers
+copying build/lib/agentsync/mock_workflow.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/storage
+copying build/lib/agentsync/storage/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/storage
+copying build/lib/agentsync/storage/database.py -> build/bdist.linux-x86_64/wheel/./agentsync/storage
+copying build/lib/agentsync/storage/admission.py -> build/bdist.linux-x86_64/wheel/./agentsync/storage
+copying build/lib/agentsync/mock_workflow_cli.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/sdk
+copying build/lib/agentsync/sdk/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/sdk
+copying build/lib/agentsync/sdk/client.py -> build/bdist.linux-x86_64/wheel/./agentsync/sdk
+copying build/lib/agentsync/durable_mock_workflow.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/proposals.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/adapters
+copying build/lib/agentsync/adapters/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/base.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/cursor_invocation.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/claude_invocation.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/claude_events.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/mock.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/process_capture.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/codex_invocation.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/cursor_events.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/host_receipts.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/codex_events.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/manager.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/claude.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/codex.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/_host_process.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/claude_process.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/cursor_process.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/approved_launch.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/cursor.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/codex_process.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/adapters/launch_context.py -> build/bdist.linux-x86_64/wheel/./agentsync/adapters
+copying build/lib/agentsync/planning_cli.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/py.typed -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/verification
+copying build/lib/agentsync/verification/proposal_staging.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_integration.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/docker.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_delivery.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_jobs.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_executor.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/binding.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_intents.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_execution_state.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/owner_flow.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/reconciliation.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate_claims.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/jobs.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/executor.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/snapshot.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/candidate.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/verification/task_completion.py -> build/bdist.linux-x86_64/wheel/./agentsync/verification
+copying build/lib/agentsync/usage_storage.py -> build/bdist.linux-x86_64/wheel/./agentsync
+creating build/bdist.linux-x86_64/wheel/agentsync/workspaces
+copying build/lib/agentsync/workspaces/__init__.py -> build/bdist.linux-x86_64/wheel/./agentsync/workspaces
+copying build/lib/agentsync/workspaces/git.py -> build/bdist.linux-x86_64/wheel/./agentsync/workspaces
+copying build/lib/agentsync/workspaces/proposal.py -> build/bdist.linux-x86_64/wheel/./agentsync/workspaces
+copying build/lib/agentsync/workspaces/integration.py -> build/bdist.linux-x86_64/wheel/./agentsync/workspaces
+copying build/lib/agentsync/models.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/relay_status_cli.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/model_usage_checkpoint.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/__main__.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/continuation.py -> build/bdist.linux-x86_64/wheel/./agentsync
+copying build/lib/agentsync/proposal_handoff.py -> build/bdist.linux-x86_64/wheel/./agentsync
+warning: install_lib: byte-compiling is disabled, skipping.
+
+running install_egg_info
+Copying src/agentsync_local.egg-info to build/bdist.linux-x86_64/wheel/./agentsync_local-0.3.0a115-py3.12.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/agentsync_local-0.3.0a115.dist-info/WHEEL
+creating '/root/amadeus-m115-r3/t/.scratch-1az_feng/local-rebuild/.tmp-e40huo8x/agentsync_local-0.3.0a115-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'agentsync/__init__.py'
+adding 'agentsync/__main__.py'
+adding 'agentsync/cli.py'
+adding 'agentsync/config.py'
+adding 'agentsync/continuation.py'
+adding 'agentsync/controlled_relay.py'
+adding 'agentsync/dispatch_planning.py'
+adding 'agentsync/durable_mock_workflow.py'
+adding 'agentsync/errors.py'
+adding 'agentsync/mock_run_manager.py'
+adding 'agentsync/mock_workflow.py'
+adding 'agentsync/mock_workflow_cli.py'
+adding 'agentsync/model_usage.py'
+adding 'agentsync/model_usage_checkpoint.py'
+adding 'agentsync/models.py'
+adding 'agentsync/planning_cli.py'
+adding 'agentsync/proposal_handoff.py'
+adding 'agentsync/proposals.py'
+adding 'agentsync/provider_usage.py'
+adding 'agentsync/py.typed'
+adding 'agentsync/relay_queue.py'
+adding 'agentsync/relay_status_cli.py'
+adding 'agentsync/relay_usage.py'
+adding 'agentsync/relay_wave_journal.py'
+adding 'agentsync/retry_planning.py'
+adding 'agentsync/scheduling.py'
+adding 'agentsync/usage.py'
+adding 'agentsync/usage_cli.py'
+adding 'agentsync/usage_storage.py'
+adding 'agentsync/verified_proposal_flow.py'
+adding 'agentsync/adapters/__init__.py'
+adding 'agentsync/adapters/_host_process.py'
+adding 'agentsync/adapters/approved_launch.py'
+adding 'agentsync/adapters/base.py'
+adding 'agentsync/adapters/claude.py'
+adding 'agentsync/adapters/claude_events.py'
+adding 'agentsync/adapters/claude_invocation.py'
+adding 'agentsync/adapters/claude_process.py'
+adding 'agentsync/adapters/codex.py'
+adding 'agentsync/adapters/codex_events.py'
+adding 'agentsync/adapters/codex_invocation.py'
+adding 'agentsync/adapters/codex_process.py'
+adding 'agentsync/adapters/cursor.py'
+adding 'agentsync/adapters/cursor_events.py'
+adding 'agentsync/adapters/cursor_invocation.py'
+adding 'agentsync/adapters/cursor_process.py'
+adding 'agentsync/adapters/host_receipts.py'
+adding 'agentsync/adapters/launch_context.py'
+adding 'agentsync/adapters/manager.py'
+adding 'agentsync/adapters/mock.py'
+adding 'agentsync/adapters/process_capture.py'
+adding 'agentsync/core/__init__.py'
+adding 'agentsync/core/collaboration.py'
+adding 'agentsync/core/permissions.py'
+adding 'agentsync/core/resources.py'
+adding 'agentsync/core/service.py'
+adding 'agentsync/core/usage.py'
+adding 'agentsync/core/workspaces.py'
+adding 'agentsync/integrations/__init__.py'
+adding 'agentsync/integrations/http.py'
+adding 'agentsync/integrations/mcp.py'
+adding 'agentsync/providers/__init__.py'
+adding 'agentsync/providers/_transport.py'
+adding 'agentsync/providers/advice.py'
+adding 'agentsync/providers/base.py'
+adding 'agentsync/providers/http.py'
+adding 'agentsync/providers/retry.py'
+adding 'agentsync/resources/__init__.py'
+adding 'agentsync/resources/paths.py'
+adding 'agentsync/sdk/__init__.py'
+adding 'agentsync/sdk/client.py'
+adding 'agentsync/storage/__init__.py'
+adding 'agentsync/storage/admission.py'
+adding 'agentsync/storage/database.py'
+adding 'agentsync/verification/__init__.py'
+adding 'agentsync/verification/binding.py'
+adding 'agentsync/verification/candidate.py'
+adding 'agentsync/verification/candidate_claims.py'
+adding 'agentsync/verification/candidate_delivery.py'
+adding 'agentsync/verification/candidate_execution_state.py'
+adding 'agentsync/verification/candidate_executor.py'
+adding 'agentsync/verification/candidate_integration.py'
+adding 'agentsync/verification/candidate_intents.py'
+adding 'agentsync/verification/candidate_jobs.py'
+adding 'agentsync/verification/docker.py'
+adding 'agentsync/verification/executor.py'
+adding 'agentsync/verification/jobs.py'
+adding 'agentsync/verification/owner_flow.py'
+adding 'agentsync/verification/proposal_staging.py'
+adding 'agentsync/verification/reconciliation.py'
+adding 'agentsync/verification/snapshot.py'
+adding 'agentsync/verification/task_completion.py'
+adding 'agentsync/workspaces/__init__.py'
+adding 'agentsync/workspaces/git.py'
+adding 'agentsync/workspaces/integration.py'
+adding 'agentsync/workspaces/proposal.py'
+adding 'agentsync_local-0.3.0a115.dist-info/licenses/LICENSE'
+adding 'agentsync_local-0.3.0a115.dist-info/METADATA'
+adding 'agentsync_local-0.3.0a115.dist-info/WHEEL'
+adding 'agentsync_local-0.3.0a115.dist-info/entry_points.txt'
+adding 'agentsync_local-0.3.0a115.dist-info/top_level.txt'
+adding 'agentsync_local-0.3.0a115.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+Successfully built agentsync_local-0.3.0a115.tar.gz and agentsync_local-0.3.0a115-py3-none-any.whl

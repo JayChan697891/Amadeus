@@ -1,0 +1,39 @@
+{
+  "phase": "finished",
+  "pid": 15604,
+  "python": "3.12.16 (main, Nov 12 2026, 03:19:15) [GCC 15.2.0]",
+  "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "candidate_manifest_sha256": "88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11",
+  "started_at": "2026-11-14T10:06:07.373543+00:00",
+  "real_models": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "external_verifier_sha256": "6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c",
+  "external_verifier_commit": "6e5d21520b8caee525dccd314eb0a1d45d3626f1",
+  "row_driver_sha256": "22267fa65b965878ca962528b58a28cedcb57de06a0c1efeff20eede4126bd5f",
+  "identity_helper_sha256": "51884d125d5eea30173af17b731ba943f6615bc3200fce13938295f39ec578a5",
+  "finished_at": "2026-11-14T11:03:11.899657+00:00",
+  "report": "/root/amadeus-m115-r3/linux-312/identity-derived/report.json",
+  "source_clean": true,
+  "unsuccessful_checks": [],
+  "docker_containers_after": [],
+  "local_checks_passed": true,
+  "identity_capture": {
+    "junit.xml": {
+      "status": "captured",
+      "size": 376407,
+      "sha256": "e7ca33c67f84957b939fb4ebe6489024f17ac4c7a0fd8a538c8123d59bfb19bf"
+    },
+    "wheel-junit.xml": {
+      "status": "captured",
+      "size": 376406,
+      "sha256": "5d96baae16700669b6c192ddf60c875aef94d048e9731254b2fa85ed5ac360c2"
+    },
+    "sdist-junit.xml": {
+      "status": "captured",
+      "size": 376406,
+      "sha256": "ef8897f594c9a56b49feae058ca396859829c9c1e1e8230e4ce00b5b410903cd"
+    }
+  },
+  "original_report": "/root/amadeus-m115-r3/linux-312/reports/release-20261114T100607Z-11e07f99f3ef/report.json",
+  "identity_verified": true
+}
