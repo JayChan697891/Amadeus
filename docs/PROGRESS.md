@@ -1,5 +1,15 @@
 # Amadeus current progress
 
+Latest observed matrix progress: Linux3.14 source naturally completed at
+2026-11-14 08:31:14 UTC,2476pass6skip/exit0;2083 frozen files still match.
+All56 cases skipped in the Windows3.12 sdist report have passing observations
+in this Linux source run. Canonical logs/JUnit and snapshot are saved in
+acceptance/evidence/m9-a115-preparation/linux314-source-observation/summary.json.
+The original sanitized XML still has the known fixture-label collision, with
+private raw capture confirmed0600 inside0700; final identity derivation awaits
+the row's termination. Linux wheel is now running; Windows3.11 source remains
+running. Neither whole row nor formal Release is marked passed.
+
 ## Remaining Windows 3.12 wheel gate: a new canonical component is required
 
 Read-only review found the old independent observer checked CIM identity before

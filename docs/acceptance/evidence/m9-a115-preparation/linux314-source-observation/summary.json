@@ -1,0 +1,40 @@
+{
+  "run": "/root/amadeus-m115-r3/linux-314/reports/release-20261114T081233Z-e3e4e5a67ff6",
+  "files": [
+    {
+      "path": "junit.xml",
+      "size": 376319,
+      "sha256": "acd768bdbcf3864937014f60be3dfcf05005a8b6144f23e9a5d5122d04a8ddf9"
+    },
+    {
+      "path": "logs/pytest.log",
+      "size": 13643,
+      "sha256": "6d8ec1ac9198b46785943134d6cf5819700762668caf3e14fb2c89521a2d11e1"
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "size": 1380,
+      "sha256": "3765bcb6446ff2d5dcc6dbfdd7d5bad4a4e0584b958d3b380dcf8f544b45f663"
+    },
+    {
+      "path": "source-snapshot.json",
+      "size": 391801,
+      "sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4"
+    }
+  ],
+  "frozen_source_files_verified": 2083,
+  "raw_directory_mode": "0o700",
+  "raw_file_mode": "0o600",
+  "source_finished_at": "2026-11-14T08:31:14.355452+00:00",
+  "at": "2026-11-14T08:36:32.358876+00:00",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Completed Linux3.14 source component only; wheel/sdist/full row pending",
+  "passed": 2476,
+  "skipped": 6,
+  "failed": 0,
+  "errors": 0,
+  "sanitized_unique": 2481,
+  "windows_312_skips_observed_passing_here": 56,
+  "identity_derivation": "PENDING until original row terminal; private raw XML already captured and not uploaded",
+  "formal_release": "BLOCKED"
+}
