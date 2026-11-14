@@ -27,11 +27,11 @@
     ]
   },
   "next_steps": [
-    "Observe original session49009; do not restart package runner",
-    "After successful remaining checks, run finalize-packages.py finalize with Windows Python3.12",
-    "Inspect derived report and manifest; full Windows312 stays incomplete",
-    "Run finalize-packages.py stage-linux using D:/agentsync-debug/venv/Scripts/python.exe",
-    "Only after staging succeeds, start existing Windows and Linux candidate queues against D:/agentsync-debug/m115-r2; at most one collector per host"
+    "Observe original sessions49009 and8990; never start duplicates",
+    "Controller owns finalization and staging only after held original package process exits0 and remaining checks pass",
+    "Controller then launches existing Windows/Linux queues, at most one collector per host",
+    "Inspect real step receipts/reports; stop on failed/unknown steps, never infer a completed Windows312 source collector",
+    "Keep current tool-repair3550fab distinct from frozen4a27a00 package and matrix evidence"
   ],
   "linux_recovery": {
     "vm_pid": 6936,
@@ -52,5 +52,33 @@
     ]
   },
   "automatic_retry": false,
-  "formal_release": "BLOCKED"
+  "formal_release": "BLOCKED",
+  "updated_at": "2026-11-14T00:22:02.997810+00:00",
+  "continuation_session": 8990,
+  "continuation_attempt": {
+    "pid": 22376,
+    "started_at": "2026-11-14T00:20:43.852559+00:00",
+    "observed_identity": {
+      "ProcessId": 3584,
+      "CreationDate": "2026-11-13T15:45:34.627412-08:00",
+      "CommandLine": "\"C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe\" -I -B D:\\agentsync-debug\\m115-resume-20261113\\run-packages.py"
+    },
+    "observed_creation_epoch_ms": 1794613534627,
+    "helper_pins": {
+      "D:\\agentsync-debug\\m115-resume-20261113\\finalize-packages.py": "aa8627263829ae0ddfe84f47ab4a22a51440f1691df99b0f3c248c8299c36e77",
+      "D:\\agentsync-debug\\m115-r2-tools\\linux-queue.py": "0f6275993f25d2f108de633a9bfcf8df13388f8ad56b13e93ad876efc3fe0803",
+      "D:\\agentsync-debug\\m9-candidate-queue.py": "a1c55bb54e51d56a68f02e8473a2a979d51edd2bc96a6fd732210e37ba6c442a",
+      "D:\\agentsync-debug\\m9-candidate-row.py": "ed10f8d8e6b500d8e5e6d5f223a9bf019d7752d8d6dd3c092bc8e309d8cd8680"
+    },
+    "automatic_retry": false,
+    "maximum_concurrent_collectors": 2,
+    "scope": "No model calls; existing local M9 rows only"
+  },
+  "controller": {
+    "file": "resume-continue-after-packages.py.txt",
+    "sha256": "e0f7cd7b42fff810061a5a834abd6b4e8c5003cbc5e9157db843d912a99d9c98",
+    "status": "RUNNING: waiting on held original package process",
+    "new_matrix_rows_started": false,
+    "review": "Independent review identified IO-error cleanup risk; root added unconditional observation of all started handles. Syntax parsed; future finalization/staging/host rows NOT RUN."
+  }
 }

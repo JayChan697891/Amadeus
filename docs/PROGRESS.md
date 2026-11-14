@@ -48,9 +48,17 @@ an incomplete matrix for artifact binding, but this does not complete Windows 3.
 or formal Release. Current tool changes do not inherit the frozen candidate's runs.
 The reviewed helper and recovery entry are archived in
 acceptance/evidence/m9-a115-preparation/resume-state.json and
-resume-finalize-packages.py.txt. Finalization/staging have NOT RUN; invoke only
-after the original package session becomes terminal with successful remaining
-checks. Do not recreate a waiting controller or replay terminated tasks.
+resume-finalize-packages.py.txt. Finalization/staging have NOT RUN. A single
+continuation controller was actually launched at 2026-11-14 00:20:43 UTC, session
+8990, owned PID 22376. It holds the original package process handle and exact
+creation identity. Only natural exit 0 plus successful terminal check records
+allow the pinned finalizer and Linux staging, then at most one existing matrix
+collector per host. An independent review found an IO-error cleanup risk; the
+controller now waits for already-started child handles in an unconditional cleanup
+path instead of abandoning them. There is no automatic retry or Release promotion.
+Observe sessions 49009 and 8990; do not manually finalize/stage or create another
+controller while this one owns continuation. Its archived source and actual
+attempt are included in resume-state.json. No later matrix row has started yet.
 
 On resume the local VM was off. Its existing disk chain was inspected and its old
 boot logs preserved before the hidden VM restarted (owned PID 6936). SSH initially
