@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-11-14T04:57:59.967237+00:00",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Read-only Windows installed license bytes and metadata comparison; not legal or release approval",
+  "inventory_sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+  "prior_inventory_sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+  "third_party_distributions_identical": 31,
+  "dependency_edges_unchanged": true,
+  "installed_license_files_hash_verified": 43,
+  "pywin32_extra_notice_hashes_unchanged": 9,
+  "license_review": "pending",
+  "formal_release": "BLOCKED"
+}

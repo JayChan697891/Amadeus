@@ -14,7 +14,7 @@ not whole-requirement or formal Release acceptance.
 | Corrected source static checks | PASS: Ruff/format; full-source mypy on identical product bytes |
 | Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
 | New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
-| New b6f05f0 wheel/sdist full suites | Wheel RUNNING since04:35:22 UTC; sdist NOT RUN. Both still need full results and separately proven identity recovery |
+| New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Only previously unrun sdist RUNNING since07:26:19 UTC in session73133; full composite identity/receipt validation pending |
 | Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | NOT RUN yet; must consume exact successful bootstrap artifacts and preserve host-specific Docker evidence |
 | Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
 | Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
@@ -34,6 +34,7 @@ pass and Ruff/format pass. Product/assertion AST is unchanged. The original full
 execution remains bound to b6; no new HEAD or complete package acceptance is inferred.
 
 Evidence:
+- [Explicit resumed sdist run and preserved pause observation](evidence/m9-a115-preparation/sdist-resume.json).
 - [Case identity repair, original evidence and separate proof](evidence/m115-source-checks/case-identity/summary.json).
 - [Final targeted repair and original failures](evidence/m115-source-checks/deadline-repair/final/summary.json).
 - [Original failed complete package collection](../../releases/0.3.0a115/4a27a00/windows-312-packages/report.json).

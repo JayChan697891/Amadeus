@@ -1,0 +1,25 @@
+{
+  "scope": "Independent safe-pause observation; not a completed canonical collector receipt",
+  "exit_code": 0,
+  "exited_at": "2026-11-14T05:18:24.992924+00:00",
+  "observed_at": "2026-11-14T05:18:25.004504+00:00",
+  "pytest_pid": 14416,
+  "collector": "Suspended to prevent sdist dispatch; original receipt stays started/unknown",
+  "artifacts": {
+    "wheel-junit-sanitized.xml": "3abc285b6d0e078387b0608d7ae2fd5127c983053f062514be13daa32853c37a",
+    "wheel-log-sanitized.txt": "cdbbe8ab0fb4f0c92911cea97158a3dfe0684023ad6717f7fe55a07c6d249648"
+  },
+  "formal_release": "BLOCKED",
+  "raw_junit_sha256": "88fb708d2ed5bff5c6b24f8383f4b1f974b1659c91b604b12f4a028169748ed2",
+  "raw_junit_path_local_only": "D:\\agentsync-debug\\t115u\\.scratch-u_ak32ml\\wheel-junit.xml",
+  "junit": {
+    "records": 2482,
+    "raw_unique": 2482,
+    "sanitized_unique": 2481,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 56,
+    "passed": 2426
+  },
+  "log_redactions": 0
+}

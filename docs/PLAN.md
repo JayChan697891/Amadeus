@@ -1,5 +1,16 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Current resumption after checkpoint20261114T045950Z: preserve completed b6 source
+and independently observed wheel results; canonical wheel receipt remains unknown.
+Only the unrun sdist suite now runs in session73133 against the original archive.
+Then reconcile explicit composite evidence and unchanged strict gates before
+remaining platform rows. Keep the original42-task scope and real-client/Release
+requirements; update GitHub at observed checkpoints. Do not restart old sessions
+or invoke a full-collector finalizer whose preconditions are no longer true.
+
+The earlier running-state entries below are historical; current PROGRESS and
+m9-a115-preparation/sdist-resume.json define the actual continuation.
+
 Current active continuation supersedes the historical running-process references
 below. The second owner pause ended explicitly; old sessions49009/8990 are
 terminal. Frozen4a27a00 sdist finished2404pass56skip1fail in the process deadline

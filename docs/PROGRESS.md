@@ -1,5 +1,38 @@
 # Amadeus current progress
 
+## Resumed after safe pause: only remaining sdist suite is running
+
+The owner explicitly resumed the original goal and requires current progress
+to be synchronized to GitHub. Checkpoint amadeus-safe-pause-20261114T045950Z
+remains immutable historical evidence. The worktree was clean at612e5aa; all
+old collector/observer/test processes and the local VM were stopped.
+
+Frozen b6 source completed2426pass56skip with a real terminal receipt. The wheel
+also naturally exited0 at2026-11-14 05:18:24 UTC,2426pass56skip, observed through
+its retained native process handle. Its canonical receipt remains started/unknown
+because the collector was suspended to prevent new work and stopped after wheel
+completion. Preserve that distinction: wheel execution was observed, but strict
+canonical wheel acceptance remains unverified. Do not call it NOT RUN or forge
+a finished receipt. Original and pause evidence are archived under the b6 release
+and case-identity/pause-wheel directories. Sanitized identity collision remains
+explicit; prior source recovery and six-label regression keep their own scope.
+
+Only the previously unrun sdist installation suite started at07:26:04 UTC,
+session73133, driver PID10516, pytest PID11944 since07:26:19 UTC. It calls the
+unchanged frozen sdist_checks against the exact original407ab422...061f56 archive
+in D:/agentsync-debug/m115-sdist-r1. All2083 source files, original build receipt
+and log, archive, collector and offline dependency inventory were checked first.
+No source, wheel or source-build rerun; no actual models. Result RUNNING, not passed.
+See m9-a115-preparation/sdist-resume.json for actual pins and recovery entry.
+
+The old full-collector derivation helper cannot run: its successful-complete-run
+precondition is false. Reconcile subsequent component results in explicitly
+composite evidence, keeping independent wheel observation separate and existing
+strict checks unchanged. Later Windows/Linux rows, macOS, missing clients and
+final Release gates remain incomplete. No new M5 phase, main merge or Actions.
+
+## Historical execution entries (superseded by the current entry above)
+
 ## Active again: repair premature process timeout before the next full candidate
 
 The owner explicitly resumed the original full Goal after the second safe pause.

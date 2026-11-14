@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115u\\.scratch-u_ak32ml\\wheel-88ccsd1f\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115u/.scratch-u_ak32ml/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d\\artifacts\\agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d",
+    "started_at": "2026-11-14T04:35:19.631447+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115u\\.scratch-u_ak32ml\\wheel-88ccsd1f\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115u/.scratch-u_ak32ml/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d\\artifacts\\agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d",
+    "exit_code": 0,
+    "started_at": "2026-11-14T04:35:19.631447+00:00",
+    "finished_at": "2026-11-14T04:35:20.311731+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "3da443b8ef8cda14f62f8e99ae368e2a32de97f3dbd96179f7df7ba81a326de9",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
