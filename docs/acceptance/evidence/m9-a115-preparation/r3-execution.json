@@ -39,11 +39,11 @@
   "source_run": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d",
   "continuation_controller_started": false,
   "next_steps": [
-    "Observe original session75435 and wheel PID14416, creation2026-11-14T04:35:22.178229Z; no duplicate launch",
-    "After each package suite finishes, run D:/agentsync-debug/m115-case-identity/recover_identity.py wheel or sdist BEFORE collector scratch cleanup; each action is single-use and requires terminal success",
-    "Original finalizer must reject original duplicate XML. After all suites finish, review separate derived identity evidence with unchanged strict validators; preserve original report, artifacts and b6 provenance",
-    "Stage exact b6 packages and later per-host queues only after complete reviewed derived evidence and strict verification. No new HEAD acceptance inferred",
-    "Any actual failure or unknown: preserve evidence; no blind retry"
+    "Observe original collector session75435 and identity-only observer session31525; neither may be restarted based on stale logs",
+    "Observer captures wheel/sdist XML locally and invokes the pinned recovery helper once each; do not duplicate those invocations",
+    "If helper races cleanup, preserve private raw and its capture hash; inspect failure and recover only saved evidence with a separate corrected entry, without test retries",
+    "After complete original collector outcome and all three independently reviewed identity proofs, validate separate derived evidence with unchanged strict validators; original ambiguous XML/report remain immutable",
+    "Only then stage exact b6 packages and existing per-host queues, maximum2 collectors; no new HEAD or formal Release acceptance inferred"
   ],
   "linux_source_staging": {
     "exit_code": 0,
@@ -173,5 +173,14 @@
     "persisted_unique_cases": 2481,
     "source_snapshot_files_unchanged": 2083
   },
-  "identity_recovery": "docs/acceptance/evidence/m115-source-checks/case-identity/summary.json"
+  "identity_recovery": "docs/acceptance/evidence/m115-source-checks/case-identity/summary.json",
+  "identity_observer": {
+    "session_id": 31525,
+    "pid": 20160,
+    "creation_utc": "2026-11-14T04:45:08.882126Z",
+    "role": "Preserve raw package XML locally with read/write/delete-sharing handles; derive identities only after terminal success. Never launches tests.",
+    "helper_sha256": "6a4d10f309bf2d402231047f5633aba24351ae47690bb717a7aa468f6349bcde",
+    "independent_review": "Source proof accepted as supplemental evidence; package observer fail-closed safety reviewed, no completed package capture yet.",
+    "known_limit": "Helper selects its raw path once. Cleanup after selection can fail derivation despite captured private raw. Keep helper pin unchanged while active. If it fails, inspect saved private capture and derive separately; never rerun tests for this evidence-only race."
+  }
 }

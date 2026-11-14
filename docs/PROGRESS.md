@@ -44,8 +44,11 @@ AST comparison proves no assertions or product logic changed. Raw evidence is
 restricted locally; separate safe mapping/recovered XML proves source identities
 without rewriting originals. See m115-source-checks/case-identity/summary.json.
 The same collector started wheel pytest at04:35:22 UTC (PID14416); wheel RUNNING,
-sdist NOT RUN. Capture each raw package XML before scratch cleanup, then recover
-only proven identities and validate separate derived evidence with unchanged
+sdist NOT RUN. Identity-only observer session31525 (PID20160, started04:45:09 UTC)
+now preserves each raw package XML before cleanup; it does not dispatch tests.
+Do not manually duplicate its helper calls. A known cleanup-path race can fail
+derivation after successful private capture; inspect that failure and process
+only saved evidence, never rerun tests for it. Then validate derived evidence with unchanged
 strict gates. Do not run the original finalizer against duplicate XML or claim
 a new HEAD was fully executed. Its separate clean snapshot
 is D:/agentsync-debug/m115-r3/s, report under windows-312/release-20261114T035240Z-6756b7e7fa0d.

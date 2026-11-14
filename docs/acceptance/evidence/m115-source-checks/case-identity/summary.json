@@ -74,7 +74,32 @@
     "tested-fixture.py.txt": {
       "sha256": "41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df",
       "size": 86119
+    },
+    "recover-identity-packages.py.txt": {
+      "sha256": "6a4d10f309bf2d402231047f5633aba24351ae47690bb717a7aa468f6349bcde",
+      "size": 6073
+    },
+    "observe-packages.py.txt": {
+      "sha256": "3bb81853eb9aefca804f840805aca6e27ade36ca9c4376f8b4151556090e15c6",
+      "size": 6221
+    },
+    "observer-attempt.json": {
+      "sha256": "9c9755c6b70cf9e7cd8388b9ab6f262c4f7a0c7a2a0a9ea4150fe95aa02c2c12",
+      "size": 765
+    },
+    "observer-preflight-failure.json": {
+      "sha256": "fd420987d491301462db683ebe72fb6dbbb0e9ecbc803c147e9218627562790b",
+      "size": 350
     }
   },
-  "remaining": "Wheel RUNNING, sdist NOT RUN. Capture each raw XML locally before collector cleanup; recover only proven six identities in separate derived evidence, then run unchanged strict validators. Do not run original finalizer on ambiguous XML or relabel old execution as new HEAD. Release BLOCKED."
+  "remaining": "Wheel RUNNING, sdist NOT RUN. Observe sessions75435/31525. No manual duplicate helper invocation while observer is active. Original identity gate remains blocked. Only after every suite has proved derived identity and unchanged strict validation may exact b6 packages proceed; do not relabel as new HEAD acceptance.",
+  "observer": {
+    "session_id": 31525,
+    "pid": 20160,
+    "creation_utc": "2026-11-14T04:45:08.882126Z",
+    "role": "Preserve raw package XML locally with read/write/delete-sharing handles; derive identities only after terminal success. Never launches tests.",
+    "helper_sha256": "6a4d10f309bf2d402231047f5633aba24351ae47690bb717a7aa468f6349bcde",
+    "independent_review": "Source proof accepted as supplemental evidence; package observer fail-closed safety reviewed, no completed package capture yet.",
+    "known_limit": "Helper selects its raw path once. Cleanup after selection can fail derivation despite captured private raw. Keep helper pin unchanged while active. If it fails, inspect saved private capture and derive separately; never rerun tests for this evidence-only race."
+  }
 }

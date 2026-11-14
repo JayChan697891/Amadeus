@@ -1,0 +1,7 @@
+{
+  "recorded_at": "2026-11-14T04:45:08.859996+00:00",
+  "exit_code": 1,
+  "error": "ValueError: Invalid isoformat string: /Date(1794628360575)/",
+  "scope": "Observer identity preflight before opening collector handle or starting observation; no tests dispatched or stopped",
+  "repair": "Explicit UTC ISO timestamp in PowerShell projection"
+}
