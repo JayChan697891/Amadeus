@@ -1,0 +1,169 @@
+"""Validate preserved identity proofs, then derive a separately labelled b6 report.
+
+This never executes tests, changes original reports, or weakens repository validators.
+Run once only after the original collector and all identity recoveries have finished.
+"""
+import ast
+import copy
+from datetime import datetime, timezone
+import hashlib
+import io
+import json
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+BASE = Path('D:/agentsync-debug/m115-r3')
+PROOFS = Path(__file__).resolve().parent
+RUN = BASE / 'windows-312/release-20261114T035240Z-6756b7e7fa0d'
+SOURCE = BASE / 's'
+TARGET = BASE / 'identity-derived/windows-312'
+COMMIT = 'b6f05f0473591dc568be25591047fdea963ef86c'
+NAME = 'test_redaction_is_stable_when_evidence_is_processed_again'
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(SOURCE))
+from tools import release_acceptance as collector
+from tools.acceptance_evidence import _Evidence, _junit, verify_report_evidence
+from tools.release_manifest import build_manifest, verify_manifest
+
+def read(path):
+    return json.loads(path.read_text(encoding='utf-8'))
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def pin(path, root):
+    return {'path': path.relative_to(root).as_posix(), 'sha256': digest(path), 'size': path.stat().st_size}
+
+def save(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+terminal = read(BASE / 'bootstrap-result.json')
+assert terminal['phase'] == 'finished' and terminal['exit_code'] == 0 and terminal['commit_sha'] == COMMIT
+report = read(RUN / 'report.json')
+assert report['commit_sha'] == COMMIT and report['tree_sha'] == '8a65e7d29ef72b877cca319beb45c243a0df05e1'
+assert report['working_tree_status'] == '' and report['source_changed_during_execution'] is False
+assert report['requirements_manifest_error'] is None
+assert all(row['status'] == 'pass' for row in report['checks'])
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE, text=True).strip() == COMMIT
+assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=SOURCE) == b''
+original_evidence = _Evidence(RUN, report['artifacts'])
+for member in original_evidence.members:
+    original_evidence.check(member)
+converter_hash = digest(SOURCE / 'tools/release_acceptance.py')
+assert converter_hash == 'd942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+old_tree = ast.parse((SOURCE / 'tests/unit/test_release_acceptance.py').read_text(encoding='utf-8'))
+fixture = PROOFS / 'tests/unit/test_release_acceptance.py'
+assert digest(fixture) == '41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df'
+new_tree = ast.parse(fixture.read_text(encoding='utf-8'))
+old = next(n for n in old_tree.body if isinstance(n, ast.FunctionDef) and n.name == NAME)
+new = next(n for n in new_tree.body if isinstance(n, ast.FunctionDef) and n.name == NAME)
+assert sum(k.arg == 'ids' for k in new.decorator_list[0].keywords) == 1
+labels = ast.literal_eval(next(k.value for k in new.decorator_list[0].keywords if k.arg == 'ids'))
+values = ast.literal_eval(old.decorator_list[0].args[1])
+new.decorator_list[0].keywords = [k for k in new.decorator_list[0].keywords if k.arg != 'ids']
+assert ast.dump(new_tree) == ast.dump(old_tree)
+aliases = {NAME + '[' + value + ']': NAME + '[' + label + ']'
+           for value, label in zip(values, labels, strict=True)}
+assert len(aliases) == len(set(aliases.values())) == 6
+validated = []
+baseline_outcomes = None
+for suite, check, filename in (('source', 'pytest', 'junit.xml'), ('wheel', 'wheel_pytest', 'wheel-junit.xml'), ('sdist', 'sdist_pytest', 'sdist-junit.xml')):
+    proof = read(PROOFS / suite / 'proof.json')
+    raw = PROOFS / 'private' / (suite + '-junit.xml')
+    original = RUN / filename
+    recovered = PROOFS / suite / 'recovered-junit.xml'
+    receipt = RUN / 'logs' / (check + '.process.json')
+    assert proof['source_commit'] == COMMIT and proof['suite'] == suite
+    assert digest(raw) == proof['raw_sha256'] and digest(original) == proof['original_persisted_sha256']
+    assert digest(recovered) == proof['recovered_sha256'] and digest(receipt) == proof['receipt_sha256']
+    assert proof['converter_sha256'] == converter_hash and proof['label_fixture_sha256'] == digest(fixture)
+    attempt = read(receipt)
+    assert attempt['phase'] == 'finished' and attempt['result']['exit_code'] == 0
+    assert attempt['result']['finished_at'] == proof['finished_at']
+    assert digest(RUN / attempt['result']['log']) == attempt['result']['log_sha256']
+    replay = io.BytesIO()
+    collector.persist_junit(raw, replay)
+    assert replay.getvalue() == original.read_bytes()
+    expected = ET.parse(original)
+    old_cases = list(expected.getroot().iter('testcase'))
+    raw_cases = list(ET.parse(raw).getroot().iter('testcase'))
+    assert len(old_cases) == len(raw_cases)
+    raw_ids, mapped = set(), []
+    for ordinal, (a, b) in enumerate(zip(raw_cases, old_cases, strict=True)):
+        key = (a.get('classname'), a.get('name'))
+        assert key not in raw_ids
+        raw_ids.add(key)
+        if key[1] in aliases:
+            raw_hash = hashlib.sha256(json.dumps(key, separators=(',', ':')).encode()).hexdigest()
+            mapped.append((ordinal, b.get('classname'), b.get('name'), aliases[key[1]], raw_hash))
+            b.set('name', aliases[key[1]])
+    assert len(mapped) == len(set(row[3] for row in mapped)) == 6
+    assert mapped == [(m['ordinal'], m['classname'], m['original_saved_name'], m['recovered_name'], m['raw_identity_sha256']) for m in proof['mapping']]
+    assert ET.tostring(expected.getroot()) == ET.tostring(ET.parse(recovered).getroot())
+    counts, case_hash = _junit(recovered.read_bytes())
+    assert counts == next(row['junit'] for row in report['checks'] if row['id'] == check)
+    assert counts['tests'] == len(raw_ids) == proof['raw_unique_cases'] == proof['recovered_unique_cases']
+    assert counts['failures'] == counts['errors'] == 0
+    outcomes = {}
+    for case in ET.parse(recovered).getroot().iter('testcase'):
+        outcomes[(case.get('classname'), case.get('name'))] = 'skipped' if case.find('skipped') is not None else 'pass'
+    if baseline_outcomes is None:
+        baseline_outcomes = outcomes
+    else:
+        assert outcomes == baseline_outcomes
+    validated.append({'suite': suite, 'filename': filename, 'proof': proof, 'junit_counts': counts, 'case_hash': case_hash})
+
+# All proof checks happen before allocating the one-shot derived report directory.
+TARGET.mkdir(parents=True, exist_ok=False)
+for name in original_evidence.members:
+    target = TARGET / name
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes((RUN / name).read_bytes())
+original_dir = TARGET / 'identity-original'
+original_dir.mkdir()
+(original_dir / 'report.json').write_bytes((RUN / 'report.json').read_bytes())
+derived = copy.deepcopy(report)
+additional = [pin(original_dir / 'report.json', TARGET)]
+for source, name in ((Path(__file__), 'identity-derivation.py.txt'), (fixture, 'identity-label-fixture.py.txt')):
+    artifact = TARGET / name
+    artifact.write_bytes(source.read_bytes())
+    additional.append(pin(artifact, TARGET))
+for item in validated:
+    name, suite = item['filename'], item['suite']
+    (original_dir / name).write_bytes((RUN / name).read_bytes())
+    additional.append(pin(original_dir / name, TARGET))
+    (TARGET / name).write_bytes((PROOFS / suite / 'recovered-junit.xml').read_bytes())
+    proof_path = TARGET / ('identity-' + suite + '-proof.json')
+    proof_path.write_bytes((PROOFS / suite / 'proof.json').read_bytes())
+    additional.append(pin(proof_path, TARGET))
+    rows = [entry for entry in derived['artifacts'] if entry['path'] == name]
+    assert len(rows) == 1
+    rows[0].update(pin(TARGET / name, TARGET))
+derived['artifacts'].extend(additional)
+derived['identity_recovery'] = {
+    'scope': 'Derived names for six fixed fixture cases per original suite; not a new execution',
+    'original_report': pin(original_dir / 'report.json', TARGET),
+    'original_run_relative_to_evidence_root': RUN.relative_to(BASE).as_posix(),
+    'original_report_archive_layout': 'identity-original/report.json is a byte-exact snapshot, not a standalone report directory; retain the complete original run at the recorded root-relative path',
+    'derivation_script': pin(TARGET / 'identity-derivation.py.txt', TARGET),
+    'label_fixture': pin(TARGET / 'identity-label-fixture.py.txt', TARGET),
+    'helper_sha256': digest(Path(__file__)),
+    'created_at': datetime.now(timezone.utc).isoformat(),
+    'process_records_and_results_unchanged': True,
+    'source_and_package_identity_unchanged': True,
+    'original_identity_gate': 'BLOCKED by duplicate sanitized names; original XML retained unchanged',
+    'formal_release': 'BLOCKED',
+}
+assert {k: v for k, v in derived.items() if k not in ('artifacts', 'identity_recovery')} == {k: v for k, v in report.items() if k != 'artifacts'}
+save(TARGET / 'report.json', derived)
+audit = verify_report_evidence(TARGET / 'report.json', derived, source_repo=SOURCE)
+assert audit['junit_case_sets_match'] is True
+manifest = build_manifest(BASE, (TARGET / 'report.json').relative_to(BASE).as_posix(), [], COMMIT, source_repo=SOURCE)
+save(BASE / 'candidate-bootstrap.json', manifest)
+verified = verify_manifest(BASE / 'candidate-bootstrap.json', BASE, manifest_sha256=digest(BASE / 'candidate-bootstrap.json'), source_repo=SOURCE)
+save(BASE / 'identity-derived-audit.json', {'created_at': datetime.now(timezone.utc).isoformat(), 'original_report_sha256': digest(RUN / 'report.json'), 'derived_report_sha256': digest(TARGET / 'report.json'), 'manifest_sha256': digest(BASE / 'candidate-bootstrap.json'), 'strict_audit': audit, 'manifest_verification': verified, 'formal_release': 'BLOCKED'})
+print(json.dumps({'derived_report': str(TARGET / 'report.json'), 'manifest_sha256': digest(BASE / 'candidate-bootstrap.json'), 'formal_release': 'BLOCKED'}, indent=2))

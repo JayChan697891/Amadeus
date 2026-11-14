@@ -182,5 +182,12 @@
     "helper_sha256": "6a4d10f309bf2d402231047f5633aba24351ae47690bb717a7aa468f6349bcde",
     "independent_review": "Source proof accepted as supplemental evidence; package observer fail-closed safety reviewed, no completed package capture yet.",
     "known_limit": "Helper selects its raw path once. Cleanup after selection can fail derivation despite captured private raw. Keep helper pin unchanged while active. If it fails, inspect saved private capture and derive separately; never rerun tests for this evidence-only race."
+  },
+  "prepared_identity_continuation": {
+    "derive_report": "D:/agentsync-debug/m115-case-identity/derive_report.py",
+    "stage_linux": "D:/agentsync-debug/m115-case-identity/stage_derived.py",
+    "execution": "NOT RUN; requires successful original collector and all three independently verified identity proofs",
+    "review": "Derived-report logic independently reviewed; script and safe fixture will be pinned inside derived artifacts. Strict validators unchanged. Stager reuses original declared-artifact-only transfer after strict manifest validation.",
+    "archive": "Keep full original run separately. identity-original/report.json is only a byte snapshot with original relative references, not a standalone report tree."
   }
 }
