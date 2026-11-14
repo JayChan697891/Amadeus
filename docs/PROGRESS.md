@@ -1,5 +1,36 @@
 # Amadeus current progress
 
+## M9: resumed sdist passed; remaining local matrix actually started
+
+The original sdist session73133 finished naturally at2026-11-14 08:08:36 UTC,
+exit0:2426pass56skip, zero failure/error. Source2083 files and original archive
+remain unchanged. Its canonical receipt is complete;2482 raw identities were
+recovered from the2481-unique sanitized XML using only six proven fixture labels.
+Original XML, receipts and failure history remain unchanged.
+
+Explicit composite evidence passed strict source/receipt/archive verification,
+and its candidate manifest was verified on Windows and Linux. Manifest SHA
+88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11.
+Wheel remains canonical unverified, with its independent actual exit0 observation
+separate. local_matrix=incomplete and formal Release BLOCKED. The first composite
+preflight caught Windows pathname-vs-BytesIO XML newline serialization; it wrote
+no composite report. Replaying through the original pathname API then matched
+every byte. No product tests were repeated or equality rules loosened.
+
+Actual remaining queues started08:12 UTC, one per host: Windows session82363,
+queue PID14600, row windows-311 actual PID6404; Linux queue PID3818, row linux-314
+PID3819. Next rows are Windows3.14 and Linux3.11/3.12 only after the prior row's
+complete real checks and strict identity derivation. Failure/unknown stops the
+queue without retry. Original frozen b6 collector/tests remain unchanged; the
+external verifier is explicitly pinned to6e5d215 and recorded in each attempt.
+Raw XML is captured only to restricted local directories and never uploaded.
+
+Evidence and recovery entry:
+acceptance/evidence/m9-a115-preparation/composite-resume/summary.json.
+Exact packages/report/manifest: releases/0.3.0a115/b6f05f0/composite/windows-312
+and candidate-bootstrap.json. Both current rows are RUNNING, not passed. No
+macOS/client/license/Release gate is waived, no Actions or paid models invoked.
+
 ## M9: bind resumed installation evidence to its original execution
 
 The owner revoked the pending pause checkpoint20261114T073806Z and explicitly

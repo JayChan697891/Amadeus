@@ -1,0 +1,236 @@
+"""Derive explicit same-candidate evidence from separate observed executions.
+
+Never execute tests, overwrite original receipts, or claim the interrupted
+collector completed. Requires the resumed sdist and its identity proof first.
+"""
+import ast
+import copy
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import platform
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+BASE = Path('D:/agentsync-debug/m115-r3')
+SOURCE = BASE / 's'
+ORIGINAL = BASE / 'windows-312/release-20261114T035240Z-6756b7e7fa0d'
+RESUMED = Path('D:/agentsync-debug/m115-sdist-r1')
+PROOFS = Path('D:/agentsync-debug/m115-case-identity')
+REPO = Path('F:/syuc/amadeus-m6-single')
+TARGET = BASE / 'composite/windows-312'
+COMMIT = 'b6f05f0473591dc568be25591047fdea963ef86c'
+TREE = '8a65e7d29ef72b877cca319beb45c243a0df05e1'
+VERIFIER_COMMIT = '6e5d21520b8caee525dccd314eb0a1d45d3626f1'
+NAME = 'test_redaction_is_stable_when_evidence_is_processed_again'
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(REPO))
+from tools import release_acceptance as collector
+from tools.acceptance_evidence import _junit, verify_report_evidence
+from tools.release_manifest import build_manifest, verify_manifest
+
+
+def read(path):
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def pin(path, root=TARGET):
+    return {'path': path.relative_to(root).as_posix(), 'sha256': sha(path), 'size': path.stat().st_size}
+
+
+def save(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+
+def copy_new(source, relative):
+    target = TARGET / relative
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open('xb') as stream:
+        stream.write(source.read_bytes())
+    return target
+
+
+assert sys.version_info[:2] == (3, 12)
+assert not TARGET.exists() and not (BASE / 'candidate-bootstrap.json').exists()
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=REPO, text=True).strip() == VERIFIER_COMMIT
+assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=REPO) == b''
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE, text=True).strip() == COMMIT
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], cwd=SOURCE, text=True).strip() == TREE
+assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=SOURCE) == b''
+snapshot = read(ORIGINAL / 'source-snapshot.json')
+assert all((SOURCE / row['path']).stat().st_size == row['size'] and sha(SOURCE / row['path']) == row['sha256'] for row in snapshot)
+terminal = read(RESUMED / 'result.json')
+attempt = read(RESUMED / 'attempt.json')
+assert terminal['exit_code'] == 0 and terminal['source_unchanged'] is True
+assert terminal['source_commit'] == attempt['source_commit'] == COMMIT
+assert attempt['source_tree'] == TREE and attempt['python'] == sys.version
+assert attempt['source_snapshot_sha256'] == sha(ORIGINAL / 'source-snapshot.json')
+assert attempt['collector_sha256'] == sha(SOURCE / 'tools/release_acceptance.py') == sha(REPO / 'tools/release_acceptance.py')
+assert read(ORIGINAL / 'logs/wheel_pytest.process.json')['phase'] == 'started'
+sdist_checks = read(RESUMED / 'checks.json')
+assert all(row['status'] == 'pass' for row in sdist_checks)
+assert read(RESUMED / 'run/offline-wheelhouse.json') == read(ORIGINAL / 'offline-wheelhouse.json')
+archives = {}
+for kind, filename, expected in (
+    ('wheel', 'agentsync_local-0.3.0a115-py3-none-any.whl', '56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a'),
+    ('sdist', 'agentsync_local-0.3.0a115.tar.gz', '407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56'),
+):
+    path = ORIGINAL / 'artifacts' / filename
+    assert sha(path) == expected
+    archives[kind] = {'kind': kind, 'path': 'artifacts/' + filename, 'sha256': expected, 'size': path.stat().st_size}
+assert sha(RESUMED / 'run' / archives['sdist']['path']) == archives['sdist']['sha256']
+
+# Re-prove the narrow label transformation against the complete original bytes.
+old_tree = ast.parse((SOURCE / 'tests/unit/test_release_acceptance.py').read_text(encoding='utf-8'))
+fixture = PROOFS / 'tests/unit/test_release_acceptance.py'
+assert sha(fixture) == '41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df'
+new_tree = ast.parse(fixture.read_text(encoding='utf-8'))
+old = next(n for n in old_tree.body if isinstance(n, ast.FunctionDef) and n.name == NAME)
+new = next(n for n in new_tree.body if isinstance(n, ast.FunctionDef) and n.name == NAME)
+assert sum(k.arg == 'ids' for k in new.decorator_list[0].keywords) == 1
+labels = ast.literal_eval(next(k.value for k in new.decorator_list[0].keywords if k.arg == 'ids'))
+values = ast.literal_eval(old.decorator_list[0].args[1])
+new.decorator_list[0].keywords = [k for k in new.decorator_list[0].keywords if k.arg != 'ids']
+assert ast.dump(old_tree) == ast.dump(new_tree)
+aliases = {NAME + '[' + value + ']': NAME + '[' + label + ']' for value, label in zip(values, labels, strict=True)}
+assert len(aliases) == len(set(aliases.values())) == 6
+replay_root=BASE/'composite-path-replay'
+replay_root.mkdir(exist_ok=False)
+identities = {}
+for suite, root, filename, check_id in (
+    ('source', ORIGINAL, 'junit.xml', 'pytest'),
+    ('sdist', RESUMED / 'run', 'sdist-junit.xml', 'sdist_pytest'),
+):
+    proof = read(PROOFS / suite / 'proof.json')
+    raw = PROOFS / 'private' / (suite + '-junit.xml')
+    saved = root / filename
+    recovered = PROOFS / suite / 'recovered-junit.xml'
+    receipt_path = root / 'logs' / (check_id + '.process.json')
+    receipt = read(receipt_path)
+    assert receipt['phase'] == 'finished' and receipt['result']['exit_code'] == 0
+    assert proof['source_commit'] == COMMIT and proof['suite'] == suite
+    assert sha(raw) == proof['raw_sha256'] and sha(saved) == proof['original_persisted_sha256']
+    assert sha(recovered) == proof['recovered_sha256'] and sha(receipt_path) == proof['receipt_sha256']
+    assert proof['converter_sha256'] == attempt['collector_sha256'] and proof['label_fixture_sha256'] == sha(fixture)
+    assert sha(root / receipt['result']['log']) == receipt['result']['log_sha256']
+    replay = replay_root/(suite+'-replay.xml')
+    collector.persist_junit(raw, replay)
+    assert replay.read_bytes() == saved.read_bytes()
+    expected = ET.fromstring(saved.read_bytes())
+    raw_cases = list(ET.parse(raw).getroot().iter('testcase'))
+    saved_cases = list(expected.iter('testcase'))
+    assert len(raw_cases) == len(saved_cases)
+    unique, mapping = set(), []
+    for ordinal, (a, b) in enumerate(zip(raw_cases, saved_cases, strict=True)):
+        key = (a.get('classname'), a.get('name'))
+        assert key not in unique
+        unique.add(key)
+        if key[1] in aliases:
+            mapping.append((ordinal, b.get('classname'), b.get('name'), aliases[key[1]], hashlib.sha256(json.dumps(key, separators=(',', ':')).encode()).hexdigest()))
+            b.set('name', aliases[key[1]])
+    assert len(mapping) == 6
+    assert mapping == [(m['ordinal'], m['classname'], m['original_saved_name'], m['recovered_name'], m['raw_identity_sha256']) for m in proof['mapping']]
+    assert ET.tostring(expected) == ET.tostring(ET.parse(recovered).getroot())
+    counts, case_hash = _junit(recovered.read_bytes())
+    assert counts['tests'] == len(unique) == proof['raw_unique_cases'] == proof['recovered_unique_cases']
+    assert counts['failures'] == counts['errors'] == 0
+    identities[suite] = (counts, case_hash)
+assert identities['source'] == identities['sdist']
+
+TARGET.mkdir(parents=True, exist_ok=False)
+for name in ('offline-wheelhouse.json', 'source-snapshot.json', 'working-tree.patch', 'wheel-license-inventory.json'):
+    copy_new(ORIGINAL / name, name)
+for root in (ORIGINAL, RESUMED / 'run'):
+    for path in sorted((root / 'logs').iterdir()):
+        assert path.is_file() and (path.name.endswith('.log') or path.name.endswith('.process.json'))
+        copy_new(path, 'logs/' + path.name)
+for artifact in archives.values():
+    copy_new(ORIGINAL / artifact['path'], artifact['path'])
+copy_new(RESUMED / 'run/sdist-license-inventory.json', 'sdist-license-inventory.json')
+copy_new(SOURCE / 'docs/acceptance/requirements.json', 'requirements.json')
+copy_new(fixture, 'identity-label-fixture.py.txt')
+for suite, root, filename in (('source', ORIGINAL, 'junit.xml'), ('sdist', RESUMED / 'run', 'sdist-junit.xml')):
+    copy_new(root / filename, 'identity-original/' + filename)
+    copy_new(PROOFS / suite / 'recovered-junit.xml', filename)
+    copy_new(PROOFS / suite / 'proof.json', 'identity-' + suite + '-proof.json')
+copy_new(Path(__file__), 'composite-derivation.py.txt')
+pause = REPO / 'docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel'
+for name in ('wheel-boundary-result.json', 'wheel-junit-sanitized.xml', 'wheel-log-sanitized.txt', 'original-wheel-process-receipt.json', 'collector-stopped.json', 'package-session-terminal.json'):
+    copy_new(pause / name, 'independent-wheel/' + name)
+for path, name in ((BASE / 'bootstrap-attempt.json', 'original-bootstrap-attempt.json'), (BASE / 'bootstrap-result.json', 'original-bootstrap-result.json'), (RESUMED / 'attempt.json', 'sdist-attempt.json'), (RESUMED / 'result.json', 'sdist-result.json')):
+    copy_new(path, 'execution-records/' + name)
+
+checks = []
+for path in sorted((ORIGINAL / 'logs').glob('*.process.json')):
+    receipt = read(path)
+    if receipt['check_id'] == 'wheel_pytest':
+        continue
+    assert receipt['phase'] == 'finished' and receipt['result']['status'] == 'pass'
+    checks.append(copy.deepcopy(receipt['result']))
+checks.extend(copy.deepcopy(sdist_checks))
+checks.append({'id': 'wheel_pytest', 'status': 'unverified', 'reason': 'Independent native-handle observation saw exit0/2426pass/56skip; original canonical receipt remains started/unknown. See independent-wheel artifacts; no canonical pass claimed.'})
+by_id = {row['id']: row for row in checks}
+assert len(by_id) == len(checks)
+by_id['pytest']['junit'] = identities['source'][0]
+assert by_id['sdist_pytest']['junit'] == identities['sdist'][0]
+for kind in ('wheel', 'sdist'):
+    for suffix in ('install', 'origin_sdk', 'console_smoke', 'license_inventory'):
+        by_id[kind + '_' + suffix]['artifact'] = archives[kind].copy()
+    inventory = TARGET / (kind + '-license-inventory.json')
+    data = read(inventory)
+    by_id[kind + '_license_inventory']['inventory'] = pin(inventory) | {
+        'scope': 'installed_runtime_dependency_metadata', 'review_item_count': len(data['review_items']),
+        'license_review': 'pending', 'publication_authorized': False, 'installed_origin_check': kind + '_origin_sdk',
+    }
+
+requirements = read(TARGET / 'requirements.json')
+report = {
+    'schema_version': 1, 'generated_at': datetime.now(timezone.utc).isoformat(),
+    'version': '0.3.0a115', 'commit_sha': COMMIT, 'tree_sha': TREE,
+    'working_tree_status': '', 'working_tree_patch_sha256': sha(TARGET / 'working-tree.patch'),
+    'original_working_tree_patch_sha256': sha(TARGET / 'working-tree.patch'), 'working_tree_patch_redactions': 0,
+    'source_snapshot_sha256': sha(TARGET / 'source-snapshot.json'), 'source_changed_during_execution': False,
+    'platform': platform.platform(), 'python': sys.version, 'executable': sys.executable,
+    'repo': str(SOURCE), 'evidence_directory': str(ORIGINAL), 'checks': checks,
+    'distribution_installations': [{'kind': kind, 'status': by_id[kind + '_install']['status'], 'artifact': archives[kind], 'evidence_log': by_id[kind + '_install']['log']} for kind in ('wheel', 'sdist')],
+    'requirements_manifest_error': None, 'requirements_register_sha256': sha(TARGET / 'requirements.json'),
+    'requirements': collector.requirement_results(requirements, TARGET),
+    'release_gate': collector.release_gate(checks, TARGET),
+    'package_resolution': {'mode': 'offline_wheelhouse', 'wheelhouse_manifest': 'offline-wheelhouse.json'},
+    'coverage': {'actual_clients': 'unverified', 'real_autonomous_dual_agent_relay': 'unverified', 'cross_platform_matrix': 'not_run', 'paid_provider_calls': 'restricted'},
+    'composite_execution': {'schema_version': 1, 'scope': 'separate_runs_same_frozen_source', 'single_collector_completed': False, 'sources': {}},
+    'identity_recovery': {'source': pin(TARGET / 'identity-source-proof.json'), 'sdist': pin(TARGET / 'identity-sdist-proof.json'), 'original_gate': 'Duplicate sanitized labels; originals retained', 'scope': 'Only six proven label changes; no new execution'},
+    'limitations': ['Explicit composite built from separate executions; the original collector did not finish.', 'Wheel independently observed exit0 is not a canonical pass.', 'Same host/runtime metadata observed again during derivation; hashes are integrity records, not producer authentication.', 'Frozen b6 tests do not execute the newer external verifier; its 50 policy tests have separate evidence.', 'Formal Release remains BLOCKED.'],
+}
+report['scenarios'] = collector.scenario_results(requirements, report['requirements'])
+for kind, directory in (('wheel', ORIGINAL), ('sdist', RESUMED / 'run')):
+    component = {field: report[field] for field in ('version', 'commit_sha', 'tree_sha', 'source_snapshot_sha256', 'platform', 'python')}
+    component.update(evidence_directory=str(directory), artifact=archives[kind], process_receipts={row['id']: pin(TARGET / Path(row['log']).with_suffix('.process.json')) for row in checks if row['id'].startswith(kind + '_') and 'log' in row})
+    path = TARGET / 'composite' / (kind + '.json')
+    save(path, component)
+    report['composite_execution']['sources'][kind] = pin(path)
+verifier_files = []
+for path in sorted((REPO / 'tools').glob('*.py')):
+    original = subprocess.check_output(['git', 'show', VERIFIER_COMMIT + ':tools/' + path.name], cwd=REPO)
+    assert path.read_bytes() == original
+    verifier_files.append(pin(copy_new(path, 'verification-tools/' + path.name + '.txt')))
+report['external_verifier'] = {'commit_sha': VERIFIER_COMMIT, 'files': verifier_files, 'scope': 'Validation tooling only; frozen candidate and process evidence unchanged'}
+report['artifacts'] = [pin(path) for path in sorted(TARGET.rglob('*')) if path.is_file()]
+save(TARGET / 'report.json', report)
+audit = verify_report_evidence(TARGET / 'report.json', report, source_repo=SOURCE)
+assert audit['junit_case_sets_match'] is None
+manifest = build_manifest(BASE, (TARGET / 'report.json').relative_to(BASE).as_posix(), [], COMMIT, source_repo=SOURCE)
+assert manifest['local_matrix'] == 'incomplete' and manifest['formal_release_acceptance'] == 'blocked'
+save(BASE / 'candidate-bootstrap.json', manifest)
+verified = verify_manifest(BASE / 'candidate-bootstrap.json', BASE, manifest_sha256=sha(BASE / 'candidate-bootstrap.json'), source_repo=SOURCE)
+save(BASE / 'composite-audit.json', {'at': datetime.now(timezone.utc).isoformat(), 'report_sha256': sha(TARGET / 'report.json'), 'manifest_sha256': sha(BASE / 'candidate-bootstrap.json'), 'audit': audit, 'manifest_verification': verified, 'formal_release': 'BLOCKED'})
+print(json.dumps({'report': str(TARGET / 'report.json'), 'manifest_sha256': sha(BASE / 'candidate-bootstrap.json'), 'local_matrix': manifest['local_matrix'], 'formal_release': 'BLOCKED'}, indent=2))

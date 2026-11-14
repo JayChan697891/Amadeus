@@ -1,0 +1,105 @@
+"""Stage only a strictly verified explicit composite report and the exact original candidate archives."""
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+import sys
+BASE = Path('D:/agentsync-debug/m115-r3')
+SOURCE = BASE/'s'
+manifest = BASE/'candidate-bootstrap.json'
+sys.dont_write_bytecode = True
+sys.path.insert(0, 'F:/syuc/amadeus-m6-single')
+from tools.release_manifest import verify_manifest
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def save_new(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+candidate = json.loads(manifest.read_text(encoding='utf-8'))
+assert candidate['frozen']['commit_sha'] == 'b6f05f0473591dc568be25591047fdea963ef86c'
+assert candidate['build_report']['path'] == 'composite/windows-312/report.json'
+RUN = BASE/'composite/windows-312'
+report = json.loads((RUN/'report.json').read_text(encoding='utf-8'))
+assert report['composite_execution']['single_collector_completed'] is False
+assert report['external_verifier']['commit_sha'] == '6e5d21520b8caee525dccd314eb0a1d45d3626f1'
+verified = verify_manifest(manifest, BASE, manifest_sha256=digest(manifest), source_repo=SOURCE)
+# Transfer only the collector's declared durable artifacts, original report and manifest.
+# Runtime scratch directories, account homes, keys and the VM disk are never traversed.
+files = {manifest.relative_to(BASE).as_posix():manifest,
+         (RUN/'report.json').relative_to(BASE).as_posix():RUN/'report.json'}
+for pin in report['artifacts']:
+    parts = PurePosixPath(pin['path'])
+    assert not parts.is_absolute() and '..' not in parts.parts and '\\' not in pin['path']
+    path = RUN.joinpath(*parts.parts)
+    assert path.resolve().is_relative_to(RUN.resolve()) and not path.is_symlink()
+    assert path.stat().st_size==pin['size'] and digest(path)==pin['sha256']
+    files[path.relative_to(BASE).as_posix()] = path
+for name in ('m115-candidate-row.py','m115-candidate-queue.py','m115-derive-row.py','identity-label-fixture.py.txt'):
+    assert (BASE/name).is_file()
+    files[name]=BASE/name
+pins = {name:{'size':path.stat().st_size, 'sha256':digest(path)} for name,path in files.items()}
+
+import paramiko
+root = BASE.parent
+guest = '/root/amadeus-m115-r3'
+client = paramiko.SSHClient()
+client.load_host_keys(str(root/'vm/known_hosts'))
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename=str(root/'vm/debug_ed25519'), look_for_keys=False,
+               allow_agent=False, timeout=10)
+try:
+    with client.open_sftp() as sftp:
+        # Fail before writing if a previous staging attempt left any destination.
+        for name in files:
+            try:
+                sftp.lstat(guest+'/'+name)
+            except FileNotFoundError:
+                continue
+            raise RuntimeError('Existing destination requires inspection; staging is not retried')
+        directories = sorted({str(PurePosixPath(name).parent) for name in files if '/' in name})
+        for directory in directories:
+            current = guest
+            for part in PurePosixPath(directory).parts:
+                current += '/'+part
+                try:
+                    sftp.stat(current)
+                except FileNotFoundError:
+                    sftp.mkdir(current, 0o700)
+        for name, path in files.items():
+            with sftp.open(guest+'/'+name, 'wx') as stream:
+                stream.write(path.read_bytes())
+    script = '''import hashlib,json,pathlib,sys
+base=pathlib.Path(%r);pins=%r
+for name,pin in pins.items():
+ p=base/name
+ assert p.stat().st_size==pin['size'] and hashlib.sha256(p.read_bytes()).hexdigest()==pin['sha256']
+sys.dont_write_bytecode=True;sys.path.insert(0,str(base/'s'))
+import importlib.util,importlib.machinery,tools
+verifier=base/'composite/windows-312/verification-tools/acceptance_evidence.py.txt'
+assert hashlib.sha256(verifier.read_bytes()).hexdigest()=='6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c'
+loader=importlib.machinery.SourceFileLoader('tools.acceptance_evidence',str(verifier))
+spec=importlib.util.spec_from_loader(loader.name,loader);module=importlib.util.module_from_spec(spec)
+sys.modules[loader.name]=module;loader.exec_module(module);tools.acceptance_evidence=module
+from tools.release_manifest import verify_manifest
+result=verify_manifest(base/'candidate-bootstrap.json',base,manifest_sha256=%r,source_repo=base/'s')
+print(json.dumps({'files_verified':len(pins),'manifest_verification':result}),flush=True)
+''' % (guest, pins, digest(manifest))
+    channel = client.get_transport().open_session(timeout=10)
+    channel.settimeout(180)
+    channel.exec_command('/root/jobs-env/bin/python -I -B -')
+    channel.sendall(script.encode())
+    channel.shutdown_write()
+    stdout = channel.makefile('rb').read(32768)
+    stderr = channel.makefile_stderr('rb').read(32768)
+    code = channel.recv_exit_status()
+finally:
+    client.close()
+result = {'exit_code':code, 'output':stdout.decode(), 'error':stderr.decode(),
+          'guest':guest, 'transferred_files':pins, 'tests_started':False}
+save_new(BASE/'linux-candidate-staging.json',result)
+print(json.dumps({key:value for key,value in result.items() if key!='transferred_files'},indent=2))
+raise SystemExit(code)

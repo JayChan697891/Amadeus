@@ -1,0 +1,24 @@
+{
+  "phase": "started",
+  "pid": 3764,
+  "command": [
+    "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+    "-B",
+    "D:\\agentsync-debug\\m115-r3\\s\\tools\\release_acceptance.py",
+    "--output",
+    "D:\\agentsync-debug\\m115-r3\\windows-312",
+    "--scratch-root",
+    "D:\\agentsync-debug\\t115u",
+    "--run",
+    "--package-install",
+    "--sdist-install",
+    "--offline-wheelhouse",
+    "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-wheelhouse",
+    "--license-inventory",
+    "--pytest-timeout",
+    "3600"
+  ],
+  "started_at": "2026-11-14T03:52:40.567085+00:00",
+  "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "collector_pid": 3320
+}

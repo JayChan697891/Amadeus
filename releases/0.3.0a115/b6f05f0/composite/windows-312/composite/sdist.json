@@ -1,0 +1,62 @@
+{
+  "version": "0.3.0a115",
+  "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "tree_sha": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "evidence_directory": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+  "artifact": {
+    "kind": "sdist",
+    "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+    "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+    "size": 2926414
+  },
+  "process_receipts": {
+    "sdist_venv": {
+      "path": "logs/sdist_venv.process.json",
+      "sha256": "9bcd1b04cb7d30726ced73a13fbf7b0f51e8cbc037a42c84fedafc3975309108",
+      "size": 1292
+    },
+    "sdist_offline_dependencies": {
+      "path": "logs/sdist_offline_dependencies.process.json",
+      "sha256": "8d7f62318232cc45fb7778d01e0edcbbbfa6ffecdddedae304b40aa780b1a34c",
+      "size": 2268
+    },
+    "sdist_install": {
+      "path": "logs/sdist_install.process.json",
+      "sha256": "8164d076f03ba79d934a5912c0d5a41edad10301dcbc7b8daefb0e5f58626cce",
+      "size": 1897
+    },
+    "sdist_pip_check": {
+      "path": "logs/sdist_pip_check.process.json",
+      "sha256": "90d839c4ed0a07d53a264e30352b95a91073f69602337e50ca7f15c0c93f6036",
+      "size": 1215
+    },
+    "sdist_cli": {
+      "path": "logs/sdist_cli.process.json",
+      "sha256": "075eac7cda09793a54213ed22ca96b0f94dd32c620e49b256fe4906af785d3ba",
+      "size": 1211
+    },
+    "sdist_origin_sdk": {
+      "path": "logs/sdist_origin_sdk.process.json",
+      "sha256": "b71dae2fbb933167919c4a5a905b43db753ec661dfb66652c5aeda814f6e9558",
+      "size": 3774
+    },
+    "sdist_console_smoke": {
+      "path": "logs/sdist_console_smoke.process.json",
+      "sha256": "037998c683e74de492a018a81b61a00627fec5282cba68dc664a09a3fe8733d8",
+      "size": 4701
+    },
+    "sdist_license_inventory": {
+      "path": "logs/sdist_license_inventory.process.json",
+      "sha256": "b81d93e5eb7948bb42e37f5c700c3b83b834e08a090d86fc401f59ec945aedf2",
+      "size": 1397
+    },
+    "sdist_pytest": {
+      "path": "logs/sdist_pytest.process.json",
+      "sha256": "aa89815cfb47f02a82ecbd69786b17f977a8a21c192d892d45b2ef3f9e877c04",
+      "size": 1594
+    }
+  }
+}

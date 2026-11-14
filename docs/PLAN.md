@@ -1,5 +1,13 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Current M9 execution: resumed Windows3.12 sdist completed2426pass56skip, exit0;
+the explicit composite and exact candidate manifest passed strict Windows/Linux
+verification while retaining wheel canonical unverified and matrix incomplete.
+Remaining Windows3.11 and Linux3.14 rows actually started08:12 UTC, followed
+sequentially by Windows3.14 and Linux3.11/3.12 only on verified success. Observe
+the original queues rather than restart them. Recovery and exact pins are in
+docs/acceptance/evidence/m9-a115-preparation/composite-resume/summary.json.
+
 Current M9 correction: bind separately executed installations explicitly to their
 original directories and unchanged receipts. The same frozen b6 source/wheel are
 not rerun; the existing resumed sdist remains active. New verifier policy coverage

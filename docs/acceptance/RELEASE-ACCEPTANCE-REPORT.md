@@ -1,13 +1,20 @@
 # Release Acceptance Report
 
-## Current candidate: b6f05f0 timeout repair; resumed sdist running
+## Current candidate: b6f05f0; remaining local matrix running
+
+Resumed sdist actually completed2426pass56skip, exit0 at08:08:36 UTC. Its canonical
+receipt and narrow identity recovery are verified. Explicit composite report and
+candidate manifest passed strict verification on Windows and Linux, with wheel
+canonical unverified, local_matrix incomplete and formal Release BLOCKED.
+Windows3.11 and Linux3.14 rows started08:12 UTC; later rows are queued, not run.
+See evidence/m9-a115-preparation/composite-resume/summary.json for current pins.
 
 M9 evidence tooling now supports explicit composite installation sources.50
 synthetic policy cases and Ruff/format pass; independent review identified and
 the revision closed the environment-creation/installation binding gap. These
 checks concern verifier policy, not new b6 whole-suite or real-client acceptance.
-The existing sdist session73133 continues. A verified composite and remaining
-platform rows are still pending; formal Release remains BLOCKED.
+The existing sdist session73133 has now completed. Its verified composite permits
+the remaining platform rows to proceed; formal Release remains BLOCKED.
 
 Frozen product b6f05f0473591dc568be25591047fdea963ef86c (0.3.0a115) contains
 all original 42-task code inventory plus the process deadline and evidence
@@ -21,8 +28,8 @@ not whole-requirement or formal Release acceptance.
 | Corrected source static checks | PASS: Ruff/format; full-source mypy on identical product bytes |
 | Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
 | New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
-| New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Only previously unrun sdist RUNNING since07:26:19 UTC in session73133; full composite identity/receipt validation pending |
-| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | NOT RUN yet; must consume exact successful bootstrap artifacts and preserve host-specific Docker evidence |
+| New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Sdist completed08:08:36 UTC,2426pass56skip/exit0, canonical receipt and label recovery verified. Composite manifest verified; matrix remains incomplete |
+| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Windows3.11 and Linux3.14 RUNNING since08:12 UTC against the exact candidate; Windows3.14 and Linux3.11/3.12 queued/NOT RUN. No actual client acceptance inferred |
 | Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
 | Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
 | First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |
@@ -54,11 +61,12 @@ are byte-identical between the45-case and97-case runs. These are scoped input
 bindings, not a claim that the complete new candidate has passed.
 
 The original resumed sessions49009/8990 are terminal and must not be restarted.
-The current source is D:/agentsync-debug/m115-r3/s; original session75435 owns
-its complete Windows3.12 collector. Linux has the matching clean source and
-queue driver staged, with3.11/3.12 runtimes mounted read-only; no Linux row or
-additional continuation controller has started. Inspect actual terminal evidence
-before finalization, package transfer or the remaining per-host queues.
+The frozen source is D:/agentsync-debug/m115-r3/s. Original session75435 was
+owner-stopped during the earlier pause; it did not complete. Resumed session73133
+completed the sdist component. Current Windows session82363 and Linux queue3818
+own the remaining rows. Linux's2083 source files match the frozen snapshot and
+its3.11/3.12 runtime volume is mounted read-only. Inspect actual terminal evidence
+before accepting any further row; do not restart consumed sessions.
 
 Formal Release remains **BLOCKED**. The failed4a27a00 result, skipped cases,
 canonical source-receipt gap and malformed historical derived XML remain visible.

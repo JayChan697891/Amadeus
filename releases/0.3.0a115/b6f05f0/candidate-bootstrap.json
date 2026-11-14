@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "scope": "local_release_artifact_manifest",
+  "distribution": "agentsync-local",
+  "frozen": {
+    "version": "0.3.0a115",
+    "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+    "tree_sha": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+    "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4"
+  },
+  "build_report": {
+    "path": "composite/windows-312/report.json",
+    "sha256": "bebc801a579eeab5868b86e565771fd74f6551674f6afba9ae664a1e4f423471",
+    "system": "Windows"
+  },
+  "artifacts": [
+    {
+      "kind": "wheel",
+      "filename": "agentsync_local-0.3.0a115-py3-none-any.whl",
+      "path": "composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "size": 320001
+    },
+    {
+      "kind": "sdist",
+      "filename": "agentsync_local-0.3.0a115.tar.gz",
+      "path": "composite/windows-312/artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414
+    }
+  ],
+  "matrix_sha256": "4f9161851f2064e5196438c04c5429fd13158ef0fed8e8077d589434e05a5ec1",
+  "local_matrix": "incomplete",
+  "producer_authenticated": false,
+  "formal_release_acceptance": "blocked",
+  "publication_authorized": false
+}

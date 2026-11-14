@@ -1,0 +1,70 @@
+"""Run the remaining rows sequentially on one host, stopping on any uncertainty."""
+import argparse
+from datetime import UTC, datetime
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--base', type=Path, required=True)
+parser.add_argument('--manifest-sha256', required=True)
+parser.add_argument('--commit', required=True)
+args = parser.parse_args()
+base = args.base.resolve(strict=True)
+system = 'windows' if os.name=='nt' else 'linux'
+if system=='windows':
+    root = Path('D:/agentsync-debug')
+    driver = base/'m115-candidate-row.py'
+    runtimes = [
+        ('windows-311', root/'continuation-cc30ed21/windows-py311-venv/Scripts/python.exe', root/'continuation-cc30ed21/windows-py311-wheelhouse'),
+        ('windows-314', root/'venv/Scripts/python.exe', root/'evidence/windows-final-aac28a0/windows-wheelhouse'),
+    ]
+else:
+    driver = base/'m115-candidate-row.py'
+    runtimes = [
+        ('linux-314', Path('/root/jobs-env/bin/python'), Path('/root/intent-wheelhouse')),
+        ('linux-311', Path('/root/amadeus-minor-volume/work/venv-3.11/bin/python'), Path('/root/amadeus-minor-volume/work/wheelhouse')),
+        ('linux-312', Path('/root/amadeus-minor-volume/work/venv-3.12/bin/python'), Path('/root/amadeus-minor-volume/work/wheelhouse')),
+    ]
+for name, python, wheels in runtimes:
+    assert python.is_file() and wheels.is_dir() and not (base/name).exists()
+queue = base/(system+'-queue')
+queue.mkdir()
+
+def write(name, data):
+    with (queue/name).open('x', encoding='utf-8') as stream:
+        json.dump(data, stream, indent=2)
+
+write('attempt.json', {'pid':os.getpid(), 'started_at':datetime.now(UTC).isoformat(),
+                      'rows':[r[0] for r in runtimes], 'commit':args.commit,
+                      'manifest_sha256':args.manifest_sha256, 'retry':False})
+summary = []
+for name, python, wheels in runtimes:
+    command = [str(python), '-I', '-B', str(driver), '--base', str(base), '--row', name,
+               '--commit', args.commit, '--manifest-sha256', args.manifest_sha256,
+               '--wheelhouse', str(wheels)]
+    started = {'row':name, 'command':command, 'started_at':datetime.now(UTC).isoformat()}
+    write(name+'-request.json', started)
+    with (queue/(name+'.log')).open('xb') as log:
+        child = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, cwd=base)
+        write(name+'-process.json', started|{'pid':child.pid})
+        print(json.dumps({'row':name, 'pid':child.pid, 'phase':'started'}), flush=True)
+        code = child.wait()
+    terminal = {'row':name, 'exit_code':code, 'finished_at':datetime.now(UTC).isoformat()}
+    result_path = base/name/'result.json'
+    if result_path.is_file():
+        result = json.loads(result_path.read_text(encoding='utf-8'))
+        terminal['local_checks_passed'] = result.get('local_checks_passed') is True
+        terminal['report'] = result.get('report')
+    else:
+        terminal['local_checks_passed'] = False
+        terminal['result'] = 'missing; inspect original attempt, never retry automatically'
+    write(name+'-terminal.json', terminal)
+    summary.append(terminal)
+    print(json.dumps(terminal), flush=True)
+    if code!=0 or not terminal['local_checks_passed']:
+        write('result.json', {'rows':summary, 'complete':False, 'automatic_retry':False})
+        raise SystemExit(code or 1)
+write('result.json', {'rows':summary, 'complete':True, 'formal_release':'BLOCKED'})

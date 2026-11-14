@@ -1,0 +1,135 @@
+"""Execute one complete existing collector row against the bootstrap candidate."""
+import argparse
+from datetime import UTC, datetime
+import hashlib
+import csv
+import importlib.util
+import importlib.machinery
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+parser=argparse.ArgumentParser()
+parser.add_argument('--base',type=Path,required=True)
+parser.add_argument('--row',choices=('windows-311','windows-314','linux-311','linux-312','linux-314'),required=True)
+parser.add_argument('--commit',required=True)
+parser.add_argument('--manifest-sha256',required=True)
+parser.add_argument('--wheelhouse',type=Path,required=True)
+args=parser.parse_args()
+base=args.base.resolve(strict=True);source=base/'s';row=base/args.row
+assert len(args.commit)==40 and all(c in '0123456789abcdef' for c in args.commit)
+assert len(args.manifest_sha256)==64 and all(c in '0123456789abcdef' for c in args.manifest_sha256)
+assert args.row.startswith('windows')==(os.name=='nt')
+assert ''.join(map(str,sys.version_info[:2]))==args.row.rsplit('-',1)[1]
+assert row.parent==base and not row.exists()
+manifest=base/'candidate-bootstrap.json'
+assert hashlib.sha256(manifest.read_bytes()).hexdigest()==args.manifest_sha256
+for key in tuple(os.environ):
+    if key.upper().startswith(('OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AGENTSYNC_','CODEX_','GIT_','PYTEST_','PIP_','GOOGLE_','GEMINI_','DEEPSEEK_')) or key.upper() in ('PYTHONPATH','PYTHONHOME') or key.upper().endswith(('API_KEY','ACCESS_TOKEN','REFRESH_TOKEN')):
+        os.environ.pop(key,None)
+row.mkdir();(row/'home').mkdir()
+os.environ.update(HOME=str(row/'home'),USERPROFILE=str(row/'home'),CODEX_HOME=str(row/'home'),
+                  GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,GIT_TERMINAL_PROMPT='0',
+                  PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1',PYTHONUNBUFFERED='1',
+                  PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,PIP_DISABLE_PIP_VERSION_CHECK='1')
+def git(*arguments):return subprocess.check_output(['git','-C',str(source),*arguments],timeout=30).decode().strip()
+assert git('rev-parse','HEAD')==args.commit and not git('status','--porcelain')
+sys.dont_write_bytecode=True;sys.path.insert(0,str(source))
+# Explicit external verifier: fixed reviewed bytes, not arbitrary report code.
+import tools
+verifier_path=base/'composite/windows-312/verification-tools/acceptance_evidence.py.txt'
+verifier_sha='6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c'
+assert hashlib.sha256(verifier_path.read_bytes()).hexdigest()==verifier_sha
+loader=importlib.machinery.SourceFileLoader('tools.acceptance_evidence',str(verifier_path))
+spec=importlib.util.spec_from_loader(loader.name,loader)
+module=importlib.util.module_from_spec(spec);sys.modules[loader.name]=module;loader.exec_module(module);tools.acceptance_evidence=module
+from tools import release_acceptance as collector
+from tools.release_manifest import verify_manifest
+helper=base/'m115-derive-row.py'
+assert hashlib.sha256(helper.read_bytes()).hexdigest()=='8e9831f5c43b1f42e3339018facf2b041007a8432dca197447cce76c518f8145'
+spec=importlib.util.spec_from_file_location('m115_derive_row',helper)
+deriver=importlib.util.module_from_spec(spec);spec.loader.exec_module(deriver)
+assert hashlib.sha256((base/'identity-label-fixture.py.txt').read_bytes()).hexdigest()=='41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df'
+verified=verify_manifest(manifest,base,manifest_sha256=args.manifest_sha256,source_repo=source)
+assert verified['frozen']['commit_sha']==args.commit
+docker_image='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'
+def docker(*arguments):return subprocess.check_output(['docker',*arguments],timeout=30).decode().strip()
+if os.name!='nt':
+    assert not docker('ps','-aq')
+    assert json.loads(docker('image','inspect',docker_image))[0]['Id']==docker_image
+    os.environ.update(AGENTSYNC_DOCKER_TEST_IMAGE=docker_image,AGENTSYNC_REQUIRE_DOCKER_TESTS='1')
+    original=collector.execute
+    evidence_variables=('AGENTSYNC_VERIFIER_EVIDENCE_DIR','AGENTSYNC_OWNER_EXECUTOR_EVIDENCE_DIR',
+                        'AGENTSYNC_RECONCILIATION_EVIDENCE_DIR','AGENTSYNC_CANDIDATE_EXECUTOR_EVIDENCE_DIR',
+                        'AGENTSYNC_TASK_COMPLETION_EVIDENCE_DIR','AGENTSYNC_VERIFIED_REVIEW_EVIDENCE_DIR',
+                        'AGENTSYNC_PROPOSAL_PIPELINE_EVIDENCE_DIR')
+    def execute(check_id,*positional,**keywords):
+        if check_id not in collector.PYTEST_CHECKS:return original(check_id,*positional,**keywords)
+        for key in evidence_variables:
+            target=row/'observations'/check_id/key.lower()
+            target.mkdir(parents=True)
+            os.environ[key]=str(target)
+        try:return original(check_id,*positional,**keywords)
+        finally:
+            for key in evidence_variables:os.environ.pop(key,None)
+    collector.execute=execute
+# Capture only the original three XML files before the collector cleans scratch.
+private=row/'private-junit';private.mkdir(mode=0o700)
+if os.name=='nt':
+    identity=subprocess.check_output(['whoami','/user','/fo','csv','/nh'],text=True)
+    sid=next(csv.reader(identity.splitlines()))[1]
+    assert sid.startswith('S-1-') and all(c in 'S-0123456789' for c in sid)
+    acl=subprocess.run(['icacls',str(private),'/inheritance:r','/grant:r','*'+sid+':(OI)(CI)F','*S-1-5-18:(OI)(CI)F'],capture_output=True)
+    assert acl.returncode==0
+else:
+    os.chmod(private,0o700)
+    assert private.stat().st_mode & 0o077 == 0
+captures={}
+original_persist=collector.persist_junit
+allowed={'junit.xml','wheel-junit.xml','sdist-junit.xml'}
+def persist(raw,destination):
+    if not isinstance(destination,(str,Path)) or Path(destination).name not in allowed:
+        return original_persist(raw,destination)
+    name=Path(destination).name
+    try:
+        assert name not in captures
+        with Path(raw).open('rb') as stream:data=stream.read(16*1024*1024+1)
+        assert len(data)<=16*1024*1024
+        with (private/name).open('xb') as stream:stream.write(data)
+        if os.name!='nt':os.chmod(private/name,0o600)
+        captures[name]={'status':'captured','size':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+    except Exception as exc:
+        captures[name]={'status':'failed','error_type':type(exc).__name__}
+    with (row/('capture-'+name+'.json')).open('x',encoding='utf-8') as stream:json.dump(captures[name],stream,indent=2)
+    return original_persist(raw,destination)
+collector.persist_junit=persist
+state={'phase':'started','pid':os.getpid(),'python':sys.version,'commit_sha':args.commit,
+       'candidate_manifest_sha256':args.manifest_sha256,'started_at':datetime.now(UTC).isoformat(),
+       'real_models':'NOT RUN','formal_release':'BLOCKED', 'external_verifier_sha256':verifier_sha, 'external_verifier_commit':'6e5d21520b8caee525dccd314eb0a1d45d3626f1', 'row_driver_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'identity_helper_sha256':hashlib.sha256(helper.read_bytes()).hexdigest()}
+with (row/'attempt.json').open('x',encoding='utf-8') as stream:json.dump(state,stream,indent=2)
+print(json.dumps(state),flush=True)
+scratch=Path('D:/agentsync-debug/t115matrix') if os.name=='nt' else base/'t'
+run=collector.collect(source,row/'reports',run_checks=True,package_install=True,sdist_install=True,
+                      scratch_root=scratch,pytest_timeout=3600,offline_wheelhouse=args.wheelhouse.resolve(strict=True),
+                      license_inventory=True,candidate=(manifest,base,args.manifest_sha256))
+report=json.loads((run/'report.json').read_text(encoding='utf-8'))
+state.update(phase='finished',finished_at=datetime.now(UTC).isoformat(),report=str(run/'report.json'),
+             source_clean=not git('status','--porcelain'),
+             unsuccessful_checks=[{'id':c['id'],'status':c['status']} for c in report['checks'] if c['status']!='pass'])
+if os.name!='nt':state['docker_containers_after']=docker('ps','-aq').splitlines()
+state['local_checks_passed']=not state['unsuccessful_checks'] and state['source_clean'] and not state.get('docker_containers_after')
+state['identity_capture']=captures
+if state['local_checks_passed']:
+    try:
+        assert set(captures)==allowed and all(c['status']=='captured' for c in captures.values())
+        derived,audit=deriver.derive(source,run,row,captures)
+        state['original_report']=state['report'];state['report']=str(derived)
+        state['identity_verified']=audit['junit_case_sets_match'] is True
+    except Exception as exc:
+        state['identity_verified']=False;state['identity_error_type']=type(exc).__name__
+        state['local_checks_passed']=False
+(row/'result.json').write_text(json.dumps(state,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(state),flush=True)
+raise SystemExit(0 if state['local_checks_passed'] else 1)

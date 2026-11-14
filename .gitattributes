@@ -84,3 +84,6 @@ releases/0.3.0a115/4a27a00/windows-312-packages/** -text -whitespace
 docs/acceptance/evidence/m115-source-checks/deadline-repair/** -text -whitespace
 
 releases/0.3.0a115/b6f05f0/windows-312/** -text -whitespace
+releases/0.3.0a115/b6f05f0/composite/** -text -whitespace
+releases/0.3.0a115/b6f05f0/candidate-bootstrap.json -text -whitespace
+releases/0.3.0a115/b6f05f0/composite-audit.json -text -whitespace

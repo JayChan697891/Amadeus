@@ -1,0 +1,83 @@
+{
+  "at": "2026-11-14T08:10:40.564897+00:00",
+  "report_sha256": "bebc801a579eeab5868b86e565771fd74f6551674f6afba9ae664a1e4f423471",
+  "manifest_sha256": "88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11",
+  "audit": {
+    "manifest_members": 98,
+    "process_logs": 25,
+    "source_snapshot_entries": 2083,
+    "git_source_audit": {
+      "tree_sha": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+      "git_source_paths": 2083,
+      "unique_git_blobs": 1829
+    },
+    "installed_artifact_sha256": {
+      "wheel": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "sdist": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+    },
+    "installed_license_inventories": {
+      "wheel": {
+        "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+        "review_item_count": 0,
+        "review": "pending"
+      },
+      "sdist": {
+        "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+        "review_item_count": 0,
+        "review": "pending"
+      }
+    },
+    "offline_resolution": {
+      "state": "manifest_and_commands_checked",
+      "manifest_sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+      "recorded_wheels": 60,
+      "staged_wheel_bytes_verified": false
+    },
+    "junit_case_set_sha256": {
+      "pytest": "00e5bd14c50cc31552a65b077e0c4235dafe9a6b243684499c1137d477df20f9",
+      "sdist_pytest": "00e5bd14c50cc31552a65b077e0c4235dafe9a6b243684499c1137d477df20f9"
+    },
+    "junit_case_sets_match": null,
+    "producer_authenticated": false
+  },
+  "manifest_verification": {
+    "schema_version": 1,
+    "scope": "local_release_artifact_manifest_verification",
+    "manifest_sha256": "88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11",
+    "frozen": {
+      "version": "0.3.0a115",
+      "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+      "tree_sha": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+      "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4"
+    },
+    "matrix_sha256": "4f9161851f2064e5196438c04c5429fd13158ef0fed8e8077d589434e05a5ec1",
+    "local_matrix": "incomplete",
+    "build_report": {
+      "path": "composite/windows-312/report.json",
+      "sha256": "bebc801a579eeab5868b86e565771fd74f6551674f6afba9ae664a1e4f423471",
+      "system": "Windows"
+    },
+    "checked_artifacts": [
+      {
+        "kind": "sdist",
+        "filename": "agentsync_local-0.3.0a115.tar.gz",
+        "path": "composite/windows-312/artifacts/agentsync_local-0.3.0a115.tar.gz",
+        "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+        "size": 2926414
+      },
+      {
+        "kind": "wheel",
+        "filename": "agentsync_local-0.3.0a115-py3-none-any.whl",
+        "path": "composite/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+        "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+        "size": 320001
+      }
+    ],
+    "artifact_bytes_verified": true,
+    "build_report_bytes_verified": true,
+    "producer_authenticated": false,
+    "formal_release_acceptance": "blocked",
+    "publication_authorized": false
+  },
+  "formal_release": "BLOCKED"
+}
