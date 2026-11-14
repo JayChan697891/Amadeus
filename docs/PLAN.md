@@ -7,7 +7,9 @@ assertion. Its failure is preserved, and no later platform queue started.
 The original42-task code inventory still stands. Repair actual premature timeout
 handling without weakening the assertion, then freeze corrected source and run
 the existing canonical package/matrix workflow. Targeted142 source checks and
-static checks pass; complete current package/platform/Release acceptance does
+static checks pass. Frozenb6f05f0 canonical Windows3.12 collector now runs in
+original session75435; Linux source is staged but no later rows have started.
+Complete current package/platform/Release acceptance does
 not follow from those checks. See the latest PROGRESS entry and deadline-repair
 evidence. No new M5 phase or relaxation of the original release gates.
 
@@ -55,16 +57,16 @@ acceptance tests. The release requirements register retains its independent gate
 
 | Original scope | Product implementation | Code-first remaining work |
 | --- | --- | --- |
-| M0-01â€“05 | Packaging, dependency locks, architecture, workflow and local tooling | Present; hosted Actions remain prohibited |
-| M1-01â€“05 | Core projects/sessions/tasks, transactional leases and SQLite migrations | Present; new abandoned-handoff recovery authored |
-| M2-01â€“05 | Shared Core through MCP stdio, HTTP and Python SDK; client examples | Present; actual-client evidence stays separate |
-| M3-01â€“04 | Versioned context/search, structured handoff and owner recovery | Present; new recovery regression source NOT RUN |
-| M4-01â€“05 | Paths/locks, snapshots/worktrees, conflicts and approved target integration | Present at a114; no original-checkout overwrite required |
-| M5-01â€“05 | Permissions, approvals, audit, independent verification and security regressions | Present; retain the single frozen M5 exit checklist |
-| M6-01â€“05 | Common lifecycle, Mock and Codex/Claude/Cursor factories, capture and manager | Present; unsupported capabilities explicit, real clients not inferred |
-| M7-01â€“04 | DAG/capacity scheduling, queue, providers/advice, durable Mock budgets/retries and confirmed-failure continuation | Present; new continuation regression source NOT RUN |
-| M8-01â€“02 | Usage, durable recovery and benchmark tools; new project provider accounting | Present; new provider accounting regression source NOT RUN |
-| M9-01â€“02 | Existing collectors, matrix/manifest/review, package/license tooling and examples | Present; current-code execution and publication remain gated |
+| M0-01Ã¢â‚¬â€œ05 | Packaging, dependency locks, architecture, workflow and local tooling | Present; hosted Actions remain prohibited |
+| M1-01Ã¢â‚¬â€œ05 | Core projects/sessions/tasks, transactional leases and SQLite migrations | Present; new abandoned-handoff recovery authored |
+| M2-01Ã¢â‚¬â€œ05 | Shared Core through MCP stdio, HTTP and Python SDK; client examples | Present; actual-client evidence stays separate |
+| M3-01Ã¢â‚¬â€œ04 | Versioned context/search, structured handoff and owner recovery | Present; new recovery regression source NOT RUN |
+| M4-01Ã¢â‚¬â€œ05 | Paths/locks, snapshots/worktrees, conflicts and approved target integration | Present at a114; no original-checkout overwrite required |
+| M5-01Ã¢â‚¬â€œ05 | Permissions, approvals, audit, independent verification and security regressions | Present; retain the single frozen M5 exit checklist |
+| M6-01Ã¢â‚¬â€œ05 | Common lifecycle, Mock and Codex/Claude/Cursor factories, capture and manager | Present; unsupported capabilities explicit, real clients not inferred |
+| M7-01Ã¢â‚¬â€œ04 | DAG/capacity scheduling, queue, providers/advice, durable Mock budgets/retries and confirmed-failure continuation | Present; new continuation regression source NOT RUN |
+| M8-01Ã¢â‚¬â€œ02 | Usage, durable recovery and benchmark tools; new project provider accounting | Present; new provider accounting regression source NOT RUN |
+| M9-01Ã¢â‚¬â€œ02 | Existing collectors, matrix/manifest/review, package/license tooling and examples | Present; current-code execution and publication remain gated |
 
 Frozen ddd4b42 (0.3.0a114) implements original M4-05 owner-approved integration into an
 ordinary target repository's new branch and independent new worktree. The exact
@@ -492,7 +494,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
+expiryÃ¢â€ â€™pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
@@ -551,7 +553,7 @@ paid provider calls. See M4A-CONTRACT.md and acceptance/DESIGN.md.
 | M8 | M8-01 usage/source/unknown costs; M8-02 recovery/stress/performance | Do not invent third-party subscription usage or bills |
 | M9 | M9-01 platform compatibility; M9-02 docs/license/build/release | Separately approved public push/release only |
 
-The [M5â€“M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) keeps M5 on its
+The [M5Ã¢â‚¬â€œM6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) keeps M5 on its
 single exit checklist while the isolated M6 branch proceeds. Codex launch
 preview, lifecycle capture and Core review binding are available on the pilot
 branch. The next M6 acceptance step requires the verified execution conditions
