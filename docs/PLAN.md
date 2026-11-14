@@ -6,17 +6,16 @@ Windows queue, supplement only that wheel component with new canonical receipts
 against the same archive; do not repeat source/sdist/build or loosen verification.
 The prepared driver is NOT RUN. This is an existing M9 gap, not a new M5 stage.
 
-Current M9 execution: Linux3.14 completed its full source/wheel/sdist row,
-all26 checks passed and each suite2476pass6skip; strict artifact, source and
-case-identity verification and limited independent read-only review passed.
-The105 separately pinned Docker observations include expected negative cases,
-not real models. Windows 3.11 source and wheel each passed 2426/56 skip.
-Linux 3.11 source and wheel each passed 2476/6 skip. Both sdist suites now run;
-whole-row identity verification remains pending. Linux 3.12 and Windows 3.14
-remain queued until their preceding rows pass.
-Do not repeat completed source/package suites. Eight required OS/Python rows
-remain incomplete, including unavailable macOS. Keep formal Release BLOCKED.
-Evidence and recovery: docs/acceptance/evidence/m9-a115-preparation/linux314-complete/summary.json.
+Current M9 execution: Linux3.14 and3.11 completed their full source/wheel/sdist
+rows, each with26 passing checks and each suite2476pass6skip. Strict source,
+archive and case-identity verification passed; Linux3.11 case outcomes match the
+previously reviewed Linux3.14 row. Each row's105 separate Docker observation
+files include expected negative cases, not real models. Windows3.11 source/wheel
+each passed2426/56skip; sdist runs. The original Linux queue advanced to3.12.
+Windows3.14 remains queued, and Windows3.12 canonical wheel-only followup waits
+for the current Windows queue. Seven OS/Python rows remain incomplete, including
+unavailable macOS. No completed source/package suite is repeated; Release stays
+BLOCKED. Evidence: docs/acceptance/evidence/m9-a115-preparation/linux311-complete/summary.json.
 
 Current M9 correction: bind separately executed installations explicitly to their
 original directories and unchanged receipts. The same frozen b6 source/wheel are

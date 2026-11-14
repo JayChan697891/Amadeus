@@ -1,40 +1,33 @@
 # Amadeus current progress
 
-Latest completed row: Linux3.14 finished2026-11-14 09:09 UTC. All26 real
-checks passed; source/wheel/sdist each2476pass6skip, with2482 unique identities
-and matching case sets after only six proven label changes per XML. Original
-reports/receipts/XML remain unchanged.2083 Git inputs and exact candidate archive
-hashes were verified again after transfer. No Docker containers remained at the
-row boundary. Independent read-only review accepted this limited local row.
+Completed local rows: Linux3.14 at09:09 UTC and Linux3.11 at10:06 UTC on
+2026-11-14. Each row passed all26 real checks; source/wheel/sdist each2476pass6skip.
+Each suite has2482 unique identities after only six proven label changes per
+XML; all original reports, receipts and sanitized XML remain unchanged.
+Exact candidate archive pins,2083 Git inputs and all case identity/status pairs
+match between the two Linux rows. No Docker containers remained at either boundary.
 
-Saved complete report: releases/0.3.0a115/b6f05f0/linux-314/report.json.
-Summary: acceptance/evidence/m9-a115-preparation/linux314-complete/summary.json.
-The105 Docker observation files include expected negative/non-started cases;
-they are separately pinned by transfer-summary.json, not105 successful executions
-or semantic verification of all observations by the original72-artifact report.
-Known protocol fixtures and cursor labels are not real-client acceptance.
+The earlier independent read-only review accepted the Linux3.14 local row.
+Linux3.11 received direct strict artifact and delta inspection in this task,
+without repeating the full independent review or claiming formal Release approval.
+Reports: releases/0.3.0a115/b6f05f0/linux-314/ and linux-311/report.json.
+Latest summary: acceptance/evidence/m9-a115-preparation/linux311-complete/summary.json.
+Each row retains105 separate Docker observation files, pinned by transfer-summary;
+these include expected negative and non-started cases. They are not105 successful
+executions or real-client acceptance, nor all semantically covered by the original
+72-artifact report verifier. Known protocol fixtures remain distinct from real models.
 
-Windows3.11 source completed09:00:36 UTC and wheel completed09:49:37 UTC,
-each2426pass56skip/exit0; original logs, terminal receipts and XML counts agree.
-Sdist started09:49:57 UTC, actual pytest PID24052, and remains running. Source
-and wheel evidence is preserved under m9-a115-preparation/windows311-source-observation
-and windows311-wheel-observation. All6 Linux skips pass in this
-Windows source run; all56 Windows skips pass in the Linux source run. This does
-not replace any required complete platform/Python row.
+Windows3.11 source and wheel each completed2426pass56skip/exit0; sdist remains
+running since09:49:57 UTC, actual pytest PID24052. Its completed component evidence
+remains under m9-a115-preparation/windows311-source-observation and
+windows311-wheel-observation. Whole-row identity validation remains pending.
 
-The original Linux queue automatically started linux-311 at09:09:02 UTC,
-PID25497, source pytest09:09:04 UTC. Source completed09:27:57 UTC with
-2476pass6skip/exit0;2083 frozen files still match, and canonical log/receipt/XML
-counts agree. Saved source evidence: m9-a115-preparation/linux311-source-observation.
-Its original sanitized XML still awaits final narrow identity derivation; no
-whole-row acceptance is inferred. Linux3.11 wheel completed09:47:02 UTC,
-2476pass6skip/exit0, with matching original log, receipt and XML. Wheel evidence:
-m9-a115-preparation/linux311-wheel-observation. Sdist actually started09:47:18 UTC,
-PID29712; Linux3.12 remains queued. The Windows queue
-still owns windows-311, followed by windows-314 on verified success. Do not
-restart either queue. Matrix-after-linux314.json verifies the completed Linux
-row while explicitly retaining8 incomplete OS/Python combinations. Original
-candidate-bootstrap.json is unchanged. Formal Release remains BLOCKED.
+The original Linux queue automatically started linux-312 at10:06:07 UTC,
+row PID15604; source pytest PID15656 started10:06:08 UTC. Windows3.14 remains
+queued after the current Windows row. Do not restart either queue.
+Matrix-after-linux311.json now verifies two complete Linux rows and retains7
+incomplete OS/Python combinations. Original candidate-bootstrap.json is unchanged.
+The Windows3.12 canonical wheel gap and all other Release gates remain BLOCKED.
 
 ## Remaining Windows 3.12 wheel gate: a new canonical component is required
 

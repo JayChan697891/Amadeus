@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/wheel-caj7167k/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m115-r3/t/.scratch-gpst8v5m/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259",
+    "started_at": "2026-11-14T09:28:19.203283+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/wheel-caj7167k/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m115-r3/t/.scratch-gpst8v5m/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259",
+    "exit_code": 0,
+    "started_at": "2026-11-14T09:28:19.203283+00:00",
+    "finished_at": "2026-11-14T09:28:19.836267+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "664ccac7eb9fd0949738d7fda3a33cfe3a8c759135e616f993cdd41502f44818",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
