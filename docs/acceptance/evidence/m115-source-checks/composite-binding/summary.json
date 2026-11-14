@@ -1,0 +1,118 @@
+{
+  "at": "2026-11-14T07:51:07.120227+00:00",
+  "scope": "Explicit multi-run installation provenance; no frozen candidate source changes",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "first_policy_run": {
+    "passed": 44,
+    "failed": 0,
+    "review_gap": "venv creation target not yet tied to installation interpreter"
+  },
+  "final_policy_run": {
+    "passed": 50,
+    "failed": 0,
+    "ruff": "pass",
+    "format": "pass",
+    "scope": "Synthetic integrity policy fixtures, not actual clients or a Linux execution"
+  },
+  "review_fix": "Bind venv creation target to installed interpreter; cover wrong environment and console cwd",
+  "preserved": "Ordinary report single-directory checks; unchanged terminal receipts; wheel canonical unverified; Release BLOCKED",
+  "sdist_session": 73133,
+  "sdist_state_at_recording": "RUNNING",
+  "tested_files": {
+    "tools/acceptance_evidence.py": "6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c",
+    "tests/unit/test_composite_acceptance_evidence.py": "09cac9bb9b89ec1a14b4151a9d724aaa35fa9d892d4a47e4c246d534e8e4f3b6"
+  },
+  "artifacts": [
+    {
+      "path": "r1/inputs.json",
+      "sha256": "adca72b1ff46e66eaab4154dfdb516e131c3cde5d577e13dc876ecd06951bf4a",
+      "size": 2915
+    },
+    {
+      "path": "r1/results.json",
+      "sha256": "ce77483c8b4d1a85f374f12bcbac579943e8a23aab9ca6cca774cb324e75bfb3",
+      "size": 2908
+    },
+    {
+      "path": "r1/junit.xml",
+      "sha256": "852fdc7040089b33cd05c68a96190c352ddaeb42cafd6ec6001388ee4cbd166b",
+      "size": 7444
+    },
+    {
+      "path": "r1/logs/format.log",
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
+      "size": 27
+    },
+    {
+      "path": "r1/logs/format.process.json",
+      "sha256": "81ac0106f0a7e45dfa6f5bbb43d3733caf039c17d3a91107c3a9572000122238",
+      "size": 1492
+    },
+    {
+      "path": "r1/logs/policy_pytest.log",
+      "sha256": "81bd87f6a7717a7fef6f1404ba87fb34e90bdf4deac88a8b8f269348718dda76",
+      "size": 754
+    },
+    {
+      "path": "r1/logs/policy_pytest.process.json",
+      "sha256": "03b4b661a840d48beebd64d8e38a6efb5050740fff896fa0dde16735f545687b",
+      "size": 2111
+    },
+    {
+      "path": "r1/logs/ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "size": 20
+    },
+    {
+      "path": "r1/logs/ruff.process.json",
+      "sha256": "da94549d7844a7d83c6562cff40aba2051ed7d7a08cb79d2991d5fe28a95631b",
+      "size": 1450
+    },
+    {
+      "path": "r2/inputs.json",
+      "sha256": "135c1acff6b1bbf12703603bfa13d861e06544df6d8b370912dc390111a0816e",
+      "size": 3475
+    },
+    {
+      "path": "r2/results.json",
+      "sha256": "e62887ae6bbecf02c537c7f426b5e385afe2585d3af0be342fdab2b78fce1d3e",
+      "size": 2908
+    },
+    {
+      "path": "r2/junit.xml",
+      "sha256": "2e8fb8ec6bdbc7b93825f9c7fb7a09f2a62be8132137cdcc908550d7b1851191",
+      "size": 8532
+    },
+    {
+      "path": "r2/logs/format.log",
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
+      "size": 27
+    },
+    {
+      "path": "r2/logs/format.process.json",
+      "sha256": "649c685a733bce3cd0df541f7754e300c0964b4b4a5031af00764361998da72d",
+      "size": 1492
+    },
+    {
+      "path": "r2/logs/policy_pytest.log",
+      "sha256": "58ce10882087c93885f463e74357076b6de66332f008173c1ebf0baa808b7783",
+      "size": 754
+    },
+    {
+      "path": "r2/logs/policy_pytest.process.json",
+      "sha256": "6618d6b653c0336ac35eed5f32a0317f158ceb0d6f819adcd8d37b99dd974080",
+      "size": 2111
+    },
+    {
+      "path": "r2/logs/ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "size": 20
+    },
+    {
+      "path": "r2/logs/ruff.process.json",
+      "sha256": "805f23e94b79577a3975a0a224a26ff15cf495b127ca67f7f19bbd37ae64a390",
+      "size": 1450
+    }
+  ],
+  "formal_release": "BLOCKED"
+}

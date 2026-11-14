@@ -1,5 +1,13 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Current M9 correction: bind separately executed installations explicitly to their
+original directories and unchanged receipts. The same frozen b6 source/wheel are
+not rerun; the existing resumed sdist remains active. New verifier policy coverage
+is50pass, with normal-report behavior and all release requirements preserved.
+No new M5 phase. Complete the original sdist, prove identity recovery, validate
+the composite/manifest, then proceed to the remaining existing platform rows.
+Pin the external verifier separately; do not change the frozen candidate tree.
+
 Current resumption after checkpoint20261114T045950Z: preserve completed b6 source
 and independently observed wheel results; canonical wheel receipt remains unknown.
 Only the unrun sdist suite now runs in session73133 against the original archive.

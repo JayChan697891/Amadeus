@@ -1,6 +1,13 @@
 # Release Acceptance Report
 
-## Current candidate: b6f05f0 timeout repair; full matrix running
+## Current candidate: b6f05f0 timeout repair; resumed sdist running
+
+M9 evidence tooling now supports explicit composite installation sources.50
+synthetic policy cases and Ruff/format pass; independent review identified and
+the revision closed the environment-creation/installation binding gap. These
+checks concern verifier policy, not new b6 whole-suite or real-client acceptance.
+The existing sdist session73133 continues. A verified composite and remaining
+platform rows are still pending; formal Release remains BLOCKED.
 
 Frozen product b6f05f0473591dc568be25591047fdea963ef86c (0.3.0a115) contains
 all original 42-task code inventory plus the process deadline and evidence

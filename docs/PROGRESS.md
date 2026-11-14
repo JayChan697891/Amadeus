@@ -1,5 +1,28 @@
 # Amadeus current progress
 
+## M9: bind resumed installation evidence to its original execution
+
+The owner revoked the pending pause checkpoint20261114T073806Z and explicitly
+continued the original active Goal. That checkpoint is historical and incomplete;
+the existing sdist session73133 was never stopped or restarted. It remains RUNNING.
+
+Source/wheel and resumed sdist have different actual execution directories. The
+former verifier correctly rejected a single-directory composite. An explicit
+composite declaration now binds each installation to unchanged terminal process
+receipts, original cwd, frozen commit/tree/snapshot/version/runtime, exact archive,
+and the installed interpreter. Environment creation must target that interpreter;
+console probes retain their recorded disposable cwd. Ordinary report rules and
+all Release gates remain unchanged. Unknown wheel execution receipts cannot pass.
+
+50 synthetic policy cases pass on Windows (both Windows and POSIX path semantics),
+with Ruff/format passing. This is verifier-unit coverage, not a Linux execution or
+real-client run. See acceptance/evidence/m115-source-checks/composite-binding/summary.json.
+No product source or frozen b6 snapshot was changed. The new verifier must be
+explicitly pinned as an external validation tool for subsequent b6 candidate rows.
+Next: read the original sdist terminal result, recover only proven fixture labels,
+then validate a clearly labelled composite report and candidate manifest. Preserve
+wheel's independent exit0 separately from its canonical started/unknown receipt.
+
 ## Resumed after safe pause: only remaining sdist suite is running
 
 The owner explicitly resumed the original goal and requires current progress
