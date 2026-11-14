@@ -62,6 +62,14 @@ mounting; inspection confirmed the already-established read-only connection and
 correct device identity before continuing. No disk was formatted and no Linux
 tests have started. Revalidate process identities on future recovery.
 
+While the same wheel suite runs, read-only license inspection verified 43 actual
+installed license files plus nine pywin32 component license/notice members.
+The 31 third-party distributions and complete offline wheelhouse match the prior
+a114 Windows inventory; project license/notice files in the new wheel and sdist
+match frozen 4a27a00 Git bytes. This retains the prior limited technical scope,
+not formal license approval. Archive hashes and observations are in
+acceptance/evidence/m9-a115-preparation/windows-license-observation.json.
+
 The original 42-task implementation inventory stands. Continue the unrun package
 and platform validation, preserve known failures and scoped prior results, and
 keep real-client/macOS/final independent release gates explicit. No Actions,
