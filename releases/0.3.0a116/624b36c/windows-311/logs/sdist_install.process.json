@@ -1,0 +1,62 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-hzvcxxct\\sdist-zo2b3awm\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m116/tmp/.scratch-hzvcxxct/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306\\artifacts\\agentsync_local-0.3.0a116.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306",
+    "started_at": "2026-11-15T09:26:23.840770+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-hzvcxxct\\sdist-zo2b3awm\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m116/tmp/.scratch-hzvcxxct/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306\\artifacts\\agentsync_local-0.3.0a116.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306",
+    "exit_code": 0,
+    "started_at": "2026-11-15T09:26:23.840770+00:00",
+    "finished_at": "2026-11-15T09:26:27.962504+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "ed2f895e09e3e10d249518ed9028e420b3e02cc5b60785b40a826ff415ca4208",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,351 @@
+{
+  "at": "2026-11-15T10:18:36.996352+00:00",
+  "source": "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306",
+  "row": "windows-311",
+  "files": [
+    {
+      "path": "report.json",
+      "size": 341811,
+      "sha256": "a5b0047f492b9dadd92439f45fac0b9d9d485c3c30a3ef0d7fb03eede96a4505"
+    },
+    {
+      "path": "artifacts/agentsync_local-0.3.0a116-py3-none-any.whl",
+      "size": 320003,
+      "sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690"
+    },
+    {
+      "path": "artifacts/agentsync_local-0.3.0a116.tar.gz",
+      "size": 3669635,
+      "sha256": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0"
+    },
+    {
+      "path": "junit.xml",
+      "size": 399541,
+      "sha256": "4b1d4d83fd44671122cf6400016297d62ee017d6163a112f603f46f043bfed17"
+    },
+    {
+      "path": "logs/build.log",
+      "size": 211461,
+      "sha256": "577a140873ee4fe1f12f38c00af2fa2f9987c6cbaa3c2d2480d59ba9601daecb"
+    },
+    {
+      "path": "logs/build.process.json",
+      "size": 1413,
+      "sha256": "30b49d955e092fffbf968b02d434fcd26dda1cee67e5bbdd7a24a8f86f9bf717"
+    },
+    {
+      "path": "logs/format.log",
+      "size": 29,
+      "sha256": "96beb46882cf0ae91ed615e69559cf524e64997efe2ec68356cd7a75f13c6c65"
+    },
+    {
+      "path": "logs/format.process.json",
+      "size": 1242,
+      "sha256": "39e47dac0066ffe92c543f092dcfa0ff64a41af756c10330908da5f07c5c95dc"
+    },
+    {
+      "path": "logs/mypy.log",
+      "size": 46,
+      "sha256": "d2ecf161b250ccb8ffbf6c356c68aa4bfeeaff2d019d85df716f1db13415f171"
+    },
+    {
+      "path": "logs/mypy.process.json",
+      "size": 1148,
+      "sha256": "ff42fb3e161896f871e504f83016d855ee3ec6734e80a8805d75e2a4665a4fad"
+    },
+    {
+      "path": "logs/offline_build_tools.log",
+      "size": 1259,
+      "sha256": "531b7a4e5aa2caf69d79dcc48907393ecc9daf11b0958790553c8bbc378e3ebc"
+    },
+    {
+      "path": "logs/offline_build_tools.process.json",
+      "size": 1935,
+      "sha256": "d8e70f0b7ce2f6787243701b7b5461481fe5f342de9e67e1242fc796bae33d31"
+    },
+    {
+      "path": "logs/offline_build_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/offline_build_venv.process.json",
+      "size": 1338,
+      "sha256": "ff13cede2af20c009e94435e31316ce3ec9af84205b6dae3fafdf6a4b5612b2a"
+    },
+    {
+      "path": "logs/pip_check.log",
+      "size": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "logs/pip_check.process.json",
+      "size": 1191,
+      "sha256": "7c5db7c24b7a8e03a50ff599e485066761bd392cc569db1a8fc72cdeccae2fa3"
+    },
+    {
+      "path": "logs/pytest.log",
+      "size": 18027,
+      "sha256": "0dcbf07e24bf5658985fe2150d236388ae23302044657f59009cedc6336d0e3d"
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "size": 1542,
+      "sha256": "ad523c71d8ad8bc3e5dd26d2c1d1854cfff63f8b44a86d223bee7bf344507df2"
+    },
+    {
+      "path": "logs/ruff.log",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "logs/ruff.process.json",
+      "size": 1200,
+      "sha256": "bab28c4e5cb6571c1702e3107cb5f5a6b5d49e5cd6fd8f19faec064f549d9740"
+    },
+    {
+      "path": "logs/sdist_cli.log",
+      "size": 1509,
+      "sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471"
+    },
+    {
+      "path": "logs/sdist_cli.process.json",
+      "size": 1351,
+      "sha256": "7aded8e9cb0f2be2214066f53981a36f6545fc6b2d2e45e9f0e05b733f29bd6e"
+    },
+    {
+      "path": "logs/sdist_console_smoke.log",
+      "size": 59,
+      "sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b"
+    },
+    {
+      "path": "logs/sdist_console_smoke.process.json",
+      "size": 4839,
+      "sha256": "3b7415fa92c39cbd65b6486467ca46f55bf0a284d6f36c839cbeff188b540e61"
+    },
+    {
+      "path": "logs/sdist_install.log",
+      "size": 1104,
+      "sha256": "ed2f895e09e3e10d249518ed9028e420b3e02cc5b60785b40a826ff415ca4208"
+    },
+    {
+      "path": "logs/sdist_install.process.json",
+      "size": 2173,
+      "sha256": "58d6a09a95f0eda63ff445bfcfb061dfb3ffc01e96098d574d75d90582b5e8ef"
+    },
+    {
+      "path": "logs/sdist_license_inventory.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/sdist_license_inventory.process.json",
+      "size": 1531,
+      "sha256": "b6e02e13c59a2bb31e8d844e3af86cea2ec4e5e99a9ec03777e36b7982607d62"
+    },
+    {
+      "path": "logs/sdist_offline_dependencies.log",
+      "size": 8903,
+      "sha256": "8d81082693c927bfea71fee461c760bad0fce8c8d82d5eb09275023d9f995594"
+    },
+    {
+      "path": "logs/sdist_offline_dependencies.process.json",
+      "size": 2450,
+      "sha256": "af2fc0b41240d98ed0e7cde9dcd38c9924e330acb1cce4d4a452c0ec219a79ea"
+    },
+    {
+      "path": "logs/sdist_origin_sdk.log",
+      "size": 151,
+      "sha256": "422a5016db12e2a084b756e7eb3e5ae7a235a2e36d03169eb51b8fcd7a18c9dc"
+    },
+    {
+      "path": "logs/sdist_origin_sdk.process.json",
+      "size": 4052,
+      "sha256": "0424d2c7aa497113c21bc4aad0b80d429b8707678bb887906b9a9a04f9cec092"
+    },
+    {
+      "path": "logs/sdist_pip_check.log",
+      "size": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "logs/sdist_pip_check.process.json",
+      "size": 1355,
+      "sha256": "5092adb7fd29c4638e4440fe22f5eeae51293255b6e52c3fe5e40d3eedd888f2"
+    },
+    {
+      "path": "logs/sdist_pytest.log",
+      "size": 20344,
+      "sha256": "6b9be7849921c645bcc76e65499fccea8974c7aca10f35d11f7690a8fb624a16"
+    },
+    {
+      "path": "logs/sdist_pytest.process.json",
+      "size": 1820,
+      "sha256": "2c4bd32d3aeddde93cde22d2acd1f69e654c16eee221a839d5b883cadff7b4a6"
+    },
+    {
+      "path": "logs/sdist_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/sdist_venv.process.json",
+      "size": 1432,
+      "sha256": "cfbb8a38edf7a94c9d59cb2b21cdbbd8a6406e7eb6dd44d210613de5aa64e752"
+    },
+    {
+      "path": "logs/wheel_cli.log",
+      "size": 1509,
+      "sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471"
+    },
+    {
+      "path": "logs/wheel_cli.process.json",
+      "size": 1351,
+      "sha256": "c83632924365a79318fe54b027288dd6849aa697b983c45f3f44ce8a1c9555dc"
+    },
+    {
+      "path": "logs/wheel_console_smoke.log",
+      "size": 59,
+      "sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b"
+    },
+    {
+      "path": "logs/wheel_console_smoke.process.json",
+      "size": 4839,
+      "sha256": "42b6341739c47e790784b5cdc34f8dce9311e17bd17e28c448369c07ffeeb956"
+    },
+    {
+      "path": "logs/wheel_install.log",
+      "size": 407,
+      "sha256": "e7414eb508ca615e1bd5ea7a74803768281e8191460ed359d398cdb06f0d09a5"
+    },
+    {
+      "path": "logs/wheel_install.process.json",
+      "size": 2133,
+      "sha256": "b4d8bbb6e106d324623691b6c6225b4b9b4a6408afa989ebb67dcb84d1498ee4"
+    },
+    {
+      "path": "logs/wheel_license_inventory.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/wheel_license_inventory.process.json",
+      "size": 1531,
+      "sha256": "437259610eb3aefcfeb564475adfd2417caef66d43e2086008381cf309cb5422"
+    },
+    {
+      "path": "logs/wheel_offline_dependencies.log",
+      "size": 8461,
+      "sha256": "3208a8475a89bce04e0b54208003a0fdea7b0e70a133229b99d1dc9dd2b2a7a3"
+    },
+    {
+      "path": "logs/wheel_offline_dependencies.process.json",
+      "size": 2348,
+      "sha256": "0f82f1ce95dbbfb5ae32903b2d7a90721b27df44a22dc04503d498b47b5a7753"
+    },
+    {
+      "path": "logs/wheel_origin_sdk.log",
+      "size": 139,
+      "sha256": "cd3e4a7440e2f13e5c3a169e541748b9fb82c59177a289ffa2cb081a3ba2c291"
+    },
+    {
+      "path": "logs/wheel_origin_sdk.process.json",
+      "size": 4042,
+      "sha256": "d81b7338f26ce07db5ac857b5888df033b3deaaa39eec9b444937a0317345a87"
+    },
+    {
+      "path": "logs/wheel_pip_check.log",
+      "size": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "logs/wheel_pip_check.process.json",
+      "size": 1355,
+      "sha256": "d12f850e6cd7d0703773c62f05f3dda7847d5e0e2a53d2914085a3e5042de19d"
+    },
+    {
+      "path": "logs/wheel_pytest.log",
+      "size": 20344,
+      "sha256": "0fd5c9d33013ef9d744053160653b7959996f03f301add6b4df0063a484ebac5"
+    },
+    {
+      "path": "logs/wheel_pytest.process.json",
+      "size": 1820,
+      "sha256": "45f7d97b6b51afabb113841cc7d4f22171a1cdd8163646d5bd5dd49235abca6e"
+    },
+    {
+      "path": "logs/wheel_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/wheel_venv.process.json",
+      "size": 1316,
+      "sha256": "db9116bd3af5f5e1cc449652ec825af415d6f71c0a9a66b27cfdbc6ef90f0595"
+    },
+    {
+      "path": "offline-wheelhouse.json",
+      "size": 10131,
+      "sha256": "4a2c5b245a9b98b19df4884864f6e5bbd55473c6aa3518236c965b4cd2769386"
+    },
+    {
+      "path": "requirements.json",
+      "size": 90090,
+      "sha256": "708cde7499735a5e2ba44373c0d0ceb116aa0b47d42c36ed91121931b193379a"
+    },
+    {
+      "path": "sdist-junit.xml",
+      "size": 399586,
+      "sha256": "e246cc1a1b3f70c1906a44e431357d1de04e5b0283be22a102d41b4c7d97a8e8"
+    },
+    {
+      "path": "sdist-license-inventory.json",
+      "size": 23086,
+      "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399"
+    },
+    {
+      "path": "source-snapshot.json",
+      "size": 621555,
+      "sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82"
+    },
+    {
+      "path": "wheel-junit.xml",
+      "size": 399587,
+      "sha256": "a7bd2b0c6d6f3ef4badb7de1606060df75d70c91dff03cafe3b6cb9b2c44e157"
+    },
+    {
+      "path": "wheel-license-inventory.json",
+      "size": 23086,
+      "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399"
+    },
+    {
+      "path": "working-tree.patch",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "execution/result.json",
+      "size": 820,
+      "sha256": "e5330bacd9a7874f91b1bd56bf45b989ab62509f2f89abd169f614e5fb89a6da"
+    },
+    {
+      "path": "execution/attempt.json",
+      "size": 531,
+      "sha256": "faac0956564c3efe922247002c7f1eb761e6ef494cadf113c5125854d73eb34e"
+    },
+    {
+      "path": "execution/queue-terminal.json",
+      "size": 165,
+      "sha256": "014d7a090fb743c8c0ce90c0d9824fd7d1f60e236ca48dff3bdabf0c5247db9c"
+    },
+    {
+      "path": "transfer-audit.json",
+      "size": 1393,
+      "sha256": "9cd4e97a94ebcf1466c27579445dd18211c01061c3b229d1329743e8d4a6a29e"
+    }
+  ],
+  "copied_bytes": 6647694,
+  "scope": "Exact completed local Windows row copy and strict evidence verification; not formal release",
+  "raw_xml_uploaded": false,
+  "formal_release": "BLOCKED"
+}

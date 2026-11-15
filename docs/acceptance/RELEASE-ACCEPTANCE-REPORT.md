@@ -1,5 +1,33 @@
 # Release Acceptance Report
 
+## Delivery adjustment and latest evidence — 2026-11-15
+
+The original release requirements and accepted M5 frozen open scope are unchanged.
+P0/P1/P2 and nodes A/B/C now control delivery order (see ../PLAN.md); A/B do not
+waive formal release gates. New development0.3.0a117 at
+`fc27f15f47fa92ed5edcd764a573c1d84a68c107` adds `demo --durable`. Root observed
+10 passing installed-wheel cases,97 exact Git/source/wheel/installed runtime
+members and a successful actual console run. Ruff/format/mypy/pip checks pass.
+The initial missing-setuptools build failure is retained alongside the corrected
+offline build. Independent read-only Astra review found no blocking defect.
+See evidence/durable-demo-a117/summary.json and the preview wheel under
+../../releases/0.3.0a117/demo-fc27f15/. This is an offline simulated coordination
+demonstration subset, not full node A/B, real-model recovery or independent code
+verification. Full117 regression, sdist and other platforms remain NOT RUN.
+
+Separately, the unchanged624b36c/0.3.0a116 Windows3.11 row completed at10:16:20Z,
+exit0 with26 passing checks. All three source/wheel/sdist suites have2477pass56skip
+and2533 unique identities/outcomes equal Windows3.12. Strict report/candidate
+verification,3122 unchanged source paths and69 original transferred files passed;
+both license inventories equal Windows3.12 and remain pending/publication false.
+This is a reference-delta review, not repeated full independent acceptance.
+Evidence: ../../releases/0.3.0a116/624b36c/windows-311/lead-review.json;
+matrix-after-windows311.json now records4/9 complete,5 combinations missing.
+Windows3.14 and Linux3.12 continue in the original queues. Mac remains unavailable;
+benchmarks and prepared same-protocol recovery are NOT RUN. Formal Release BLOCKED.
+
+The earlier3/9 entry below is preserved as a historical checkpoint.
+
 ## Current candidate:0.3.0a116 at624b36c; three complete local rows
 
 Windows3.12 finished2026-11-15T07:29:12Z, native session85611 exit0. All26 checks

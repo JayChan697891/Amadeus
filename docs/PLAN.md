@@ -28,7 +28,7 @@ SHA. Product changes receive affected regression; documentation receives diff re
 | --- | --- | --- |
 | A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | First ship the offline durable-workflow subset in one working session. It is useful product UX, but a simulated peer assertion is not independent execution verification and cannot close all of A. Finish the verified-artifact path using existing components. |
 | B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | Reuse the historical same-vendor live flow; engineering integration is roughly half a day to two days if no new defect appears. Current-candidate real-client execution needs fresh authorization. No calendar promise for unavailable clients. |
-| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Current frozen matrix has three complete rows; remaining local queues continue, macOS is unavailable. A/B cannot change this conclusion. |
+| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Current frozen matrix has four complete rows; remaining local queues continue, macOS is unavailable. A/B cannot change this conclusion. |
 
 Already usable: SDK/CLI/MCP/HTTP share a persistent SQLite Core; durable Mock
 workflows, structured handoff, separate reviewer identities, exact candidate
@@ -48,6 +48,16 @@ and recovery drivers still wait for both queues, then use their planned installe
 environments. Do not contend for Docker with the active Linux collector.
 
 ## Preserved frozen-candidate execution and historical plan
+
+Latest observed checkpoint: Windows3.11 finished2026-11-15T10:16:20Z, all26 checks
+pass; source/wheel/sdist each2477pass56skip,2533 cases exactly matching Windows3.12.
+All69 original transferred files and3122 unchanged frozen source paths verified.
+Both license inventories equal Windows3.12, still pending/publication false.
+Matrix4/9; Windows3.14 automatically started in the original queue, Linux3.12 wheel
+is running. See ../releases/0.3.0a116/624b36c/windows-311/lead-review.json.
+Development0.3.0a117 atfc27f15 now provides the offline durable CLI subset, with
+10 focused installed-wheel checks and a real console run. It does not close full
+node A/B; evidence/limits are in acceptance/evidence/durable-demo-a117/summary.json.
 
 Current execution: candidate0.3.0a116 at624b36c has three complete verified
 rows: Windows3.12 and Linux3.14/3.11,26 native checks each. Source/wheel/sdist

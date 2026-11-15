@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-11-15T10:19:33.788467+00:00",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "scope": "offline durable CLI demonstration subset of node A",
+  "status": "SCOPED PASS",
+  "formal_release": "BLOCKED",
+  "full_node_a": "NOT VERIFIED",
+  "node_b_real_clients": "NOT RUN",
+  "platform": "Windows",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "wheel": {
+    "path": "releases/0.3.0a117/demo-fc27f15/agentsync_local-0.3.0a117-py3-none-any.whl",
+    "sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+    "size": 323099
+  },
+  "runtime_git_source_wheel_installed_members": 97,
+  "test_input_sha256": {
+    "pyproject.toml": "a1ae7091a4b5eadf2be0e3f7db4f811991548ff4776504426f4963f4c17cddad",
+    "tests/conftest.py": "1a974db60ab904e10456203464d64ecfa51688954062a1b3bd2885e73aa4ff78",
+    "tests/integration/test_durable_demo.py": "5f13ca21ffa5ac745805ef79e09df9f72e03b34814f1823563e99393d7b8338d",
+    "tests/integration/test_mock_workflow.py": "067b1be0faf50a89926c3f58b1ad1e81fbcc84da30952ac50600d8cfc1ad3d84",
+    "tests/integration/test_durable_mock_workflow.py": "09530494ac1d38f90c9862f30807b8a191b09dcf5c6829c4dc9f8040549ab9e4"
+  },
+  "installed_pytest": {
+    "passed": 10,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit": "installed-focused.xml",
+    "selection": [
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty"
+    ]
+  },
+  "checks": {
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy": "PASS (2 changed source files)",
+    "pip_check": "PASS",
+    "installed_console": "PASS"
+  },
+  "build_attempts": [
+    {
+      "status": "FAILED",
+      "reason": "The reused tool environment lacked setuptools; no package built",
+      "log": "build.log"
+    },
+    {
+      "status": "PASS",
+      "reason": "Fresh dedicated offline build environment; active test environments unchanged",
+      "log": "build-r2.log"
+    }
+  ],
+  "demonstrated": [
+    "same saved run/task across start, status and resume in fresh processes",
+    "one saved retry then accepted structured handoff",
+    "distinct simulated reviewer, no code-verification claim",
+    "existing directories refused; credential absence checked in stdout/stderr/argv and stored files"
+  ],
+  "independent_review": "Native Astra read-only code review plus root actual file inspection and installed execution; no blocking defect found. Not formal Work/Release acceptance.",
+  "not_run_or_not_proven": [
+    "full regression or full release matrix on this SHA",
+    "sdist installation on this SHA",
+    "Linux/macOS demonstration on this SHA",
+    "real model/adapter calls",
+    "abrupt real-model crash recovery",
+    "independent candidate execution from this demo",
+    "whole node A, node B or formal Release"
+  ],
+  "preserved_frozen_candidate": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "private_state_uploaded": false,
+  "artifacts": [
+    {
+      "path": "build.log",
+      "size": 1715,
+      "sha256": "146c91641f7241bb11c8b445b7aa299c586b772bad93904b61712ccb214cddae"
+    },
+    {
+      "path": "builder-install.log",
+      "size": 1030,
+      "sha256": "c5990846cfe6e2e3fdaed8dc2b801742ee130266077aeef426c2b40858605352"
+    },
+    {
+      "path": "build-r2.log",
+      "size": 24540,
+      "sha256": "0a838b544b41ba252321f5c264507fc319955985eabc8019c03c4fc04157a3f9"
+    },
+    {
+      "path": "install.log",
+      "size": 7476,
+      "sha256": "0df0dd0ef6b622d1ee83d129166e21fbe1e5552f3df888abbff337e5183422cb"
+    },
+    {
+      "path": "pip-check.log",
+      "size": 31,
+      "sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf"
+    },
+    {
+      "path": "installed-focused.xml",
+      "size": 1873,
+      "sha256": "7c2baecf5e75bff1197e56d1d82f9cb231a9167ccc6f42b011d271d797056a24"
+    },
+    {
+      "path": "installed-focused.log",
+      "size": 820,
+      "sha256": "d4c169a5c139fab873781d50b9a54cc190673b5864ab8ab013430d3305fadd78"
+    },
+    {
+      "path": "ruff.log",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "format.log",
+      "size": 27,
+      "sha256": "55b5a2cb0bdd55641f1b6dad60805a4c29520e41d507781e75aa8ec8d6ed9a10"
+    },
+    {
+      "path": "mypy.log",
+      "size": 44,
+      "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+    },
+    {
+      "path": "origin.json",
+      "size": 10875,
+      "sha256": "4b7b05385952b1680a6e3580388b5ec298bd13d869e294a1378398f392a1e51d"
+    },
+    {
+      "path": "demo-output.json",
+      "size": 651,
+      "sha256": "98fc7b4b9589615cd7a3faeee621bce11f0aecb31e674579c76a0c20df1be9f6"
+    },
+    {
+      "path": "demo-stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

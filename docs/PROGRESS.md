@@ -1,5 +1,15 @@
 # Amadeus current progress
 
+Latest execution update: Windows3.11 finished2026-11-15T10:16:20Z, original row
+exit0/all26 checks pass. Source/wheel/sdist each2477pass56skip,2533 unique cases
+with exact outcomes matching Windows3.12. All69 original transfer files match;
+3122 frozen source paths rehashed unchanged. Both license inventories equal
+Windows3.12 and remain pending/publication false. Matrix4/9, Release BLOCKED.
+Windows3.14 started automatically at10:16:20Z in original session97559, launcher
+PID14216; Linux3.12 wheel continues in original session43548. No duplicate run.
+Evidence: releases/0.3.0a116/624b36c/windows-311/lead-review.json and
+matrix-after-windows311.json. Partial observations below describe earlier times.
+
 Delivery-order checkpoint, 2026-11-15: the owner requested a usable core before
 exhausting every release expansion. The active Goal and original M0–M9 remain
 unchanged; PLAN.md now separates P0/P1/P2 and delivery nodes A/B/C. At the strategy

@@ -104,3 +104,6 @@ releases/0.3.0a115/b6f05f0/matrix-after-windows314.json -text -whitespace
 
 docs/acceptance/evidence/m9-a116-preparation/** -text -whitespace
 releases/0.3.0a116/** -text -whitespace
+
+# Keep original local demonstration output and the failed build traceback intact.
+docs/acceptance/evidence/durable-demo-a117/** -text -whitespace
