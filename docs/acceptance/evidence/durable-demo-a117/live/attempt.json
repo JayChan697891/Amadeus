@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-11-15T12:05:13.900896+00:00",
+  "single_flow_attempt_consumed": true,
+  "max_model_calls": 2,
+  "retry_allowed": false
+}

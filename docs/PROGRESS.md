@@ -1,7 +1,7 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15T11:05Z. Scoped engineering demonstration is ready;
-real-current-client acceptance and formal Release remain BLOCKED/NOT RUN.
+Current checkpoint — 2026-11-15T12:10Z. Scoped engineering demonstration and
+current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
 Version117 runtime `fc27f15` / pilot `5b433f4`: durable CLI ran on Windows/Linux; actual Linux
@@ -34,22 +34,29 @@ received independent static review, then actual run exited0 at11:04:55Z; native
 worker/listener absence and scratch cleanup were confirmed. All 96 installed a116
 members remained unchanged. See acceptance/evidence/m9-a116-preparation/transport-recovery/current-summary.json.
 
-Current a117 real-client follow-up is prepared, not executed. The historical
-continuous two-Codex flow was adapted only for current runtime/path identities.
-All97 members match Git/wheel/installation; unchanged approval/capture semantics
-received a bounded independent prepare-only review. One actual no-model prepare
-exited0 at11:19:22Z, producing plan12cca814...661f08. No external auth was read,
-copied or mounted; the private Core state stays local. Fresh subscription/auth-copy
-authorization is still required, and no past live grant is reused. See
-acceptance/evidence/durable-demo-a117/live-preparation/lead-review.json.
+Current a117 live flow completed once after fresh explicit owner authorization.
+Runtime fc27f15/wheel300c72e1 had two actual Codex identities and four exact host
+decisions: source staging, Docker execution, Core completion and receiver launch.
+Controller exited0 at12:09:12Z; temporary auth was removed, RAM home unmounted and
+original auth unchanged. Docker passed8/8 cases and19 isolation checks. The producer
+is verified; the357-byte second-model review was accepted as a document only and
+remains unverified. A new process reopened the resolved flow at12:10:37Z with zero
+new authority/model calls and unchanged tasks/attempts/history. All97 runtime files
+remained pinned. Independent native Astra review accepted this limited scope.
+Private local protocol replay confirmed both outputs match the retained source/
+review and contain zero tool events. Producer stderr119bytes remains private and
+unclassified; no claim that every startup warning was explained. The one two-call
+authorization is consumed; no retry or additional live call is permitted by it.
+Evidence: acceptance/evidence/durable-demo-a117/live/summary.json. Earlier
+live-preparation records remain unchanged as the original no-model checkpoint.
 
 Resume entry: preserve and observe original Windows session97559; harvest/archive
 windows-314 only after terminal success, using existing create-only drivers.
 Then run the existing Linux benchmark, normally stop the owned VM, and run the
 Windows benchmark. Both benchmarks remain NOT RUN; no duplicate collectors.
-No new models, credentials, paid APIs, Actions, main changes or formal publication.
-Current a117 real-client cooperation needs fresh authorization; macOS and real
-Claude/Cursor still lack an available authorized environment. No full a117 regression
+No additional model/auth action, paid API, Actions, main change or publication.
+Future live calls require fresh authorization; macOS and real Claude/Cursor still
+lack an available authorized environment. No full a117 regression
 or sdist acceptance is inferred from the focused checks and two console runs.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated

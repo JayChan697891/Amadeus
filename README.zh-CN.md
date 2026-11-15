@@ -75,9 +75,11 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 主程序退出后，这个短演示不提供凭据找回。实际项目需自行保管所有者凭据，
 使用上面的 `workflow` 操作管理生命周期。
 
-已有[两个真实 Codex 的连续流程证据](docs/acceptance/evidence/m7-continuous-live/summary.json)
-绑定历史版本0.3.0a109/`09425da`，包含明确审批和独立 Docker 验证。它与本模拟
-演示分开，不能替代当前版本、跨厂商或无人审批的验收；剩余要求见[总计划](docs/PLAN.md)。
+当前版本0.3.0a117/`fc27f15`已有[两个真实 Codex 的连续流程证据](docs/acceptance/evidence/durable-demo-a117/live/summary.json)：
+四个明确审批点、独立 Docker 验证、固定上下文交接，以及新进程重开时不重复调用。
+第二个模型的评审只作为文档接收，仍标记未验证。它与本模拟演示分开，不能替代
+真实崩溃恢复、跨厂商、无人审批或正式发布验收。[历史a109证据](docs/acceptance/evidence/m7-continuous-live/summary.json)
+继续保留；剩余要求见[总计划](docs/PLAN.md)。
 
 已有 Linux 验证工具另提供固定的 `--demo` 入口。当前仓库、已安装的 Amadeus、
 Git 和项目测试环境中预置的可信镜像齐备后，可以执行：

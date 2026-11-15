@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-11-15T12:08:44.067645+00:00",
+  "stage": "receiver",
+  "decision_sha256": "5219045dbef4a0c46842278937f1ce82db52da727e7f2edb12c6c16292483d84",
+  "request_sha256": "8c2fbd250f1d26ad90f7fc9d847d299a036bc785a763ff2c11eecde8784af0b1",
+  "expires_at": 1794744566.9247558
+}

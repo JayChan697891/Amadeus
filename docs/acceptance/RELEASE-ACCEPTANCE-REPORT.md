@@ -1,10 +1,22 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15T11:05Z
+## Current scoped outcome — 2026-11-15T12:10Z
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
-Node A has a runnable engineering demonstration; real-current-Agent cooperation
-is not claimed. Runtime117/fc27f15 with pilot5b433f4 actually passed the fixed Linux
+Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
+reviewed against native attempts, four exact host gates, candidate/context pins,
+Docker8/8+19 isolation checks and cleanup records. Producer verified; second-model
+review accepted as a document only, still unverified. Both native parents ended0,
+no second attempts; a new-process reopen added zero model calls or authority and
+left task/attempt/history unchanged. Temporary auth was removed, RAM home unmounted
+and original auth unchanged.97 runtime members stayed pinned. One fresh two-call
+authorization was consumed; no retry. Private protocol replay found zero tool
+events and exact source/review matches;119bytes producer stderr remains private
+and unclassified. See evidence/durable-demo-a117/live/summary.json. This does not
+prove actual live crash recovery, cross-vendor, unattended policy, original-workspace
+application, independent billing or complete M6/M7/B/Release.
+
+Separately, runtime117/fc27f15 with pilot5b433f4 actually passed the fixed Linux
 Docker run:8 cases,19 isolation checks, verified producer, exact proof/context
 handoff and Core reopen.97 installed files unchanged, cleanup confirmed. Actors
 are deterministic; text review is unverified; no model call or real crash occurred.
@@ -17,7 +29,7 @@ each2526pass7skip;174 original files and3122 frozen source paths verified. Selec
 case/Docker delta agrees with the independently reviewed Linux3.14 reference.
 See ../../releases/0.3.0a116/624b36c/linux-312/lead-review.json and
 ../../releases/0.3.0a116/624b36c/matrix-after-linux312.json. Original Windows3.14
-source has passed; wheel/sdist are incomplete. macOS remains NOT RUN.
+source and wheel have each passed2477/56; sdist is running. macOS remains NOT RUN.
 
 Four exact116-wheel recovery observations now pass: MCP and HTTP on Linux and
 Windows. Windows HTTP's first attempt failed at closure observation; its original

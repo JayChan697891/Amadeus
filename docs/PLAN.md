@@ -26,8 +26,8 @@ SHA. Product changes receive affected regression; documentation receives diff re
 
 | Delivery node | Deliverable and exit condition | Current boundary / effort estimate |
 | --- | --- | --- |
-| A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | The local engineering demo is now runnable: Windows/Linux durable CLI and Linux isolated verification plus proof handoff/reopen. Deterministic identities remain explicit; current-version real Agent cooperation is still NOT RUN. This is scoped demo availability, not full A/B acceptance. |
-| B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | Reuse the historical same-vendor live flow; engineering integration is roughly half a day to two days if no new defect appears. Current-candidate real-client execution needs fresh authorization. No calendar promise for unavailable clients. |
+| A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | The local engineering demo is now runnable: Windows/Linux durable CLI and Linux isolated verification plus proof handoff/reopen. The separate current117 two-Codex controlled path also passed with four exact host gates and zero-launch reopen. Limited demonstrations are available now; no full B/Release claim. |
+| B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | Current117 same-vendor generation, Docker verification, pinned context handoff, document review and zero-launch reopen passed. Actual live crash recovery, cross-vendor access and unattended policy remain unproven; no calendar promise for unavailable clients. |
 | C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Current frozen matrix has five complete rows; the original Windows3.14 queue continues, macOS is unavailable. A/B cannot change this conclusion. |
 
 Already usable: SDK/CLI/MCP/HTTP share a persistent SQLite Core; durable Mock
@@ -49,7 +49,17 @@ correctness fixtures used separate exact-wheel installs and are now complete;
 they did not wait for or alter the benchmark. The unchanged benchmark still waits
 for both original queues, then runs Linux, normal VM shutdown, and Windows.
 
-## Current delivery checkpoint — 2026-11-15T11:05Z
+## Current delivery checkpoint — 2026-11-15T12:10Z
+
+The current117 real two-Codex flow now has limited actual acceptance after fresh
+owner authorization: two native calls, four exact host approvals,8 Docker cases,
+19 isolation checks, verified producer and unverified model review document. A new
+process reopened the completed flow without another launch or history mutation.
+Temporary auth was removed, RAM storage unmounted and original auth unchanged;
+97 runtime members still match the pinned package. Independent review accepted
+this scope. See [current live evidence](acceptance/evidence/durable-demo-a117/live/summary.json).
+The single two-call grant is consumed. No live crash, cross-vendor, unattended
+policy, original-workspace application or full B/Release claim follows.
 
 The117 fixed Linux demo actually passed8 Docker cases and19 isolation checks;
 proof-bound dependent handoff was accepted and persisted across reopening Core.
@@ -61,7 +71,7 @@ The durable CLI already ran on Windows/Linux; its simulation remains unverified.
 The original116 Linux3.12 row completed all26 checks: three suites each2526pass,
 7skip,2533 matching case identities. Its174 original files were retained, source
 identity verified, and105 selected Docker outcome projections matched Linux3.14.
-Matrix5/9. Original Windows3.14 source passed2477/56; wheel/sdist remain incomplete.
+Matrix5/9. Original Windows3.14 source and wheel each passed2477/56; sdist is running.
 
 RAT-M8-02 HTTP/MCP same-protocol forced-exit/restart fixtures passed on both local
 platforms against the same116 wheel. Windows first HTTP closure observation failed;
@@ -71,8 +81,8 @@ heuristic with native worker/listener identity proof. See
 This closes those four correctness gaps, not performance, all M8 or Release.
 
 Next: observe original Windows session97559 to natural completion and archive its
-row; then run the unchanged ordered benchmarks. Real117 client cooperation needs
-fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
+row; then run the unchanged ordered benchmarks. Additional live calls need fresh
+authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
 No new M5 stage, new release gate or repeated full acceptance was introduced.
 
 ## Preserved frozen-candidate execution and historical plan

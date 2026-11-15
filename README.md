@@ -22,7 +22,7 @@ fails closed. The internal `OwnerVerifiedTaskCompletion.complete_once` requires 
 authority, an independent reviewer and a passed execution bound to the exact current
 candidate/task versions. Completion, durable proof and audit commit together.
 Ordinary text reviews remain unverified, and historical receipts stay immutable.
-The trusted host flow now has a [continuous real Codex producer/reviewer example](docs/acceptance/evidence/m7-continuous-live/summary.json),
+The trusted host flow now has a [current real Codex producer/reviewer example](docs/acceptance/evidence/durable-demo-a117/live/summary.json),
 including exact approval gates, independent Docker verification and automatic context/task handoff.
 The model review is accepted as a document only; it does not become test evidence.
 Original-workspace source application and uncertain execution retries remain disabled.
@@ -108,12 +108,14 @@ Owner credentials stay in memory/stdin and are not printed or saved; this short
 demo does not provide a credential-recovery service after its parent exits.
 Use the owner-managed workflow API below for your own credential lifecycle.
 
-For real-model evidence, the preserved
-[two-Codex flow](docs/acceptance/evidence/m7-continuous-live/summary.json) records
-historical version0.3.0a109 at `09425da`, exact approvals and independent Docker
-verification. It is separate from this offline demo and does not establish the
-current release, cross-vendor support or unattended approval. See
-[delivery nodes A/B/C](docs/PLAN.md) for the remaining requirements.
+The [current two-Codex flow](docs/acceptance/evidence/durable-demo-a117/live/summary.json)
+records version0.3.0a117 at `fc27f15`: two real client sessions, four explicit host
+decisions, independent Docker verification, pinned handoff and a fresh-process
+reopen without another model call. Model review is accepted as a document only,
+still unverified. This is separate from the offline demo and does not establish
+live crash recovery, cross-vendor support, unattended approval or formal release.
+The [earlier a109 evidence](docs/acceptance/evidence/m7-continuous-live/summary.json)
+is preserved. See [delivery nodes A/B/C](docs/PLAN.md) for remaining requirements.
 
 For a developer demonstration of actual isolated verification, the existing
 Linux pilot also accepts a fixed `--demo` mode. Run from this checkout with Amadeus

@@ -1,0 +1,22 @@
+{
+  "scope": "Private local protocol reparse; no raw data leaves guest",
+  "rows": {
+    "producer": {
+      "protocol_state": "succeeded",
+      "tool_item_event_count": 0,
+      "one_message_matches_reviewed_artifact": true,
+      "raw_hashes_match": true,
+      "stderr_bytes": 119,
+      "stderr_category": "unclassified_private_stderr"
+    },
+    "receiver": {
+      "protocol_state": "succeeded",
+      "tool_item_event_count": 0,
+      "one_message_matches_reviewed_artifact": true,
+      "raw_hashes_match": true,
+      "stderr_bytes": 0,
+      "stderr_category": "empty"
+    }
+  },
+  "additional_model_calls": 0
+}

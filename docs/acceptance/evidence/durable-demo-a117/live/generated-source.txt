@@ -1,0 +1,7 @@
+import json
+import sys
+
+for line in sys.stdin:
+    values = json.loads(line)
+    sys.stdout.write(json.dumps(sum(values)) + "\n")
+    sys.stdout.flush()
