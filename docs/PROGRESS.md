@@ -9,8 +9,11 @@ Collection-only preflight found2533 cases, all2533 unique after sanitization;
 Ruff and format checks passed. Full Windows3.12 collection started at2026-11-15T05:12:00Z,
 native session85611/driver PID2804. Source pytest finished at05:56:39Z, exit0:
 2477pass56skip,2533 unique identities, zero failures/errors. The long-ref regression
-and previously failing delivery case both passed. Wheel pytest is now running;
-sdist remains pending. No a115
+and previously failing delivery case both passed. Wheel pytest finished at
+2026-11-15T06:42:44Z, exit0:2477pass56skip, with all2533 identities and outcomes
+equal to source. Its96 installed product files still match the exact wheel after
+testing; noneditable direct_url archive binding was independently checked. The
+sdist suite is now running. No a115
 pass or failed/unknown receipt is relabeled. Local work stays on D:, source/evidence
 on F:, GitHub storage only. macOS is NOT RUN (owner has no environment).
 3122 source paths matched their Git objects before execution. Frozen tree is
@@ -23,7 +26,12 @@ bytes and append missing members. Observation:
 acceptance/evidence/m9-a116-preparation/windows312-source.json.
 Ruff, format, mypy, offline build, dependency checks and fresh wheel startup/origin
 checks also completed exit0 in the live canonical directory. Full row remains
-incomplete until both installed suites and final strict verification finish.
+incomplete until sdist and final strict verification finish. All25 completed
+command checks have exit0; sdist_pytest is the sole active command check.
+Wheel XML, log and native receipt were appended to the same final row directory;
+all four previously archived source members remain byte-for-byte unchanged. See
+acceptance/evidence/m9-a116-preparation/windows312-wheel.json. The full row is
+still incomplete pending sdist and the existing final source/artifact verification.
 Recovery: observe D:/agentsync-debug/m116/windows-312/result.json and the existing
 session; do not restart on observer timeout. See evidence in
 acceptance/evidence/m9-a116-preparation/windows312-launch/summary.json.
@@ -53,6 +61,15 @@ original-report binding or existing Docker evidence environment wrapper. Extra
 Docker observations remain separate evidence; no actual Linux execution or
 Release approval follows. Transfer/execution remain NOT RUN; see
 acceptance/evidence/m9-a116-preparation/remaining-linux/preparation.json.
+Actual archive delta inspection is recorded in
+acceptance/evidence/m9-a116-preparation/archive-delta.json. The normalized wheel
+has the same102 members as b6; only __init__ version, METADATA version and RECORD
+change. All96 product members match the frozen source. All31 external installed
+distribution records, dependency/build declarations and project license bytes
+match b6. The sdist has1292 files versus1144 previously, with only repository
+top-level groups and no binary/distribution or link members observed. This is a
+content/metadata observation, not an installed-suite pass or new legal approval;
+new Linux inventory and final candidate stability verification remain pending.
 Git remote confirmed source evidence ee1001a uploaded. The GitHub connector
 subsequently recovered: PR35 is open/draft/unmerged, head ee1001a, no comments.
 Its description now reflects a116 source success and pending installed suites;

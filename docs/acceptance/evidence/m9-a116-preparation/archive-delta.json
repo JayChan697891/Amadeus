@@ -1,0 +1,89 @@
+{
+  "scope": "actual_archive_and_installed_metadata_delta_only",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "wheel_artifacts": [
+    {
+      "path": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d\\artifacts\\agentsync_local-0.3.0a115-py3-none-any.whl",
+      "bytes": 320001,
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a"
+    },
+    {
+      "path": "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4\\artifacts\\agentsync_local-0.3.0a116-py3-none-any.whl",
+      "bytes": 320003,
+      "sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690"
+    }
+  ],
+  "sdist_artifacts": [
+    {
+      "path": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d\\artifacts\\agentsync_local-0.3.0a115.tar.gz",
+      "bytes": 2926414,
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+    },
+    {
+      "path": "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4\\artifacts\\agentsync_local-0.3.0a116.tar.gz",
+      "bytes": 3669635,
+      "sha256": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0"
+    }
+  ],
+  "normalized_wheel_member_count": 102,
+  "changed_wheel_members": [
+    "<dist-info>/METADATA",
+    "<dist-info>/RECORD",
+    "agentsync/__init__.py"
+  ],
+  "product_members_match_frozen_source": 96,
+  "wheel_additions": [],
+  "wheel_removals": [],
+  "external_installed_distribution_records_identical": 31,
+  "installed_inventory_pins": [
+    {
+      "path": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d\\wheel-license-inventory.json",
+      "bytes": 23086,
+      "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b"
+    },
+    {
+      "path": "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4\\wheel-license-inventory.json",
+      "bytes": 23086,
+      "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399"
+    }
+  ],
+  "packaging_and_dependency_declarations_identical_except_version": true,
+  "project_license_bytes_identical": true,
+  "sdist_file_counts": [
+    1144,
+    1292
+  ],
+  "sdist_top_level_members": [
+    ".env.example",
+    ".gitattributes",
+    ".github",
+    ".gitignore",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "MANIFEST.in",
+    "PKG-INFO",
+    "README.md",
+    "README.zh-CN.md",
+    "SECURITY.md",
+    "WORKFLOW.md",
+    "docs",
+    "examples",
+    "pyproject.toml",
+    "requirements-dev-lock.txt",
+    "requirements-lock.txt",
+    "setup.cfg",
+    "src",
+    "tests",
+    "tools"
+  ],
+  "symlink_or_binary_distribution_members_observed": false,
+  "limits": [
+    "Archive content and metadata comparison only; not an installed-suite pass.",
+    "Existing b6 license scope decision remains separate; raw license review labels are not changed.",
+    "New Linux installed metadata and final candidate stability checks remain NOT RUN."
+  ],
+  "legal_approval": false,
+  "formal_release_approval": false
+}

@@ -12,9 +12,12 @@ completed at05:56:39Z, exit0:2477pass56skip,2533 unique cases, zero failures/err
 Both the long-path regression and the earlier failed delivery case passed. All3122
 source hashes remain unchanged. Source evidence is archived in the final row
 directory; see evidence/m9-a116-preparation/windows312-source.json. The fresh wheel
-suite is running and sdist is pending; this source result is not a complete row
-or formal acceptance. Native installed-suite receipts and final strict verification
-are still required.
+suite completed at06:42:44Z, exit0:2477pass56skip. All2533 identities and outcomes
+match source. All96 installed product files still match the exact wheel after
+testing, with noneditable archive binding verified; see
+evidence/m9-a116-preparation/windows312-wheel.json. Sdist is now running; these
+two completed components do not establish a complete row or formal acceptance.
+Sdist and final strict source/artifact verification are still required.
 Do not transplant a115 observations. macOS remains NOT RUN after
 the owner's confirmation. Formal Release remains BLOCKED.
 
