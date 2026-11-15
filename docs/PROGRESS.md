@@ -57,6 +57,18 @@ then run Linux diagnostic and shut down the owned VM before Windows diagnostic.
 The script enforces its own host queue; cross-host ordering is the lead's duty.
 See docs/acceptance/evidence/m9-a116-preparation/benchmark/preparation.json.
 
+Existing RAT-M8-02 has two REQUIRED same-protocol recovery gaps: current HTTP
+termination-to-SDK and MCP concurrency cases do not prove forced exit followed
+by a new same-protocol server and exact replay. The fixed two-case driver is now
+written and independently statically reviewed, NOT RUN. A dev-only httpx import
+was corrected to the existing runtime httpx2; no dependencies/product code changed.
+Ruff/format and restricted AST-delta checks pass, not runtime acceptance. Run after
+the current queues using the exact benchmark-installed Python; its performance
+pass is not a prerequisite for these independent correctness fixtures. See
+docs/acceptance/evidence/m9-a116-preparation/transport-recovery/preparation.json.
+This supplements the existing M8 requirement, without expanding M5 or changing
+candidate identity or gates. Frozen source and all existing runs stay unchanged.
+
 Archive delta review: the wheel has the same102 normalized members as b6; only
 version metadata, __init__ version and RECORD change. All96 product members match
 source;31 external installed distribution records and project license bytes match
