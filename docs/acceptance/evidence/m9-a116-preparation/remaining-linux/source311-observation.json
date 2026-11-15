@@ -1,0 +1,18 @@
+{
+  "observed_at": "2026-11-15T09:10:03.697403+00:00",
+  "scope": "Linux311 source component only; whole row incomplete",
+  "report_directory": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+  "counts": {
+    "passed": 2526,
+    "skipped": 7,
+    "failed": 0,
+    "error": 0
+  },
+  "unique_cases": 2533,
+  "identities_outcomes_equal_linux314": true,
+  "native_exit_code": 0,
+  "finished_at": "2026-11-15T09:08:40.705237+00:00",
+  "junit_sha256": "3df722250b7763f346e582a7b30bb81448fec2cd983d13ef848635474936cd63",
+  "receipt_sha256": "e26c0638dec4d04bdb80de5f0b533f164d46d1126f4cdf42638d4d62a6c0b25f",
+  "formal_release": "BLOCKED"
+}

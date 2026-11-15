@@ -52,7 +52,11 @@ Evidence: releases/0.3.0a116/624b36c/linux-314/{report,lead-review,transfer-summ
 matrix-after-linux314.json records2/9 complete,7 missing combinations.
 
 The original Linux queue/session43548 automatically started3.11 at08:49:49Z,
-worker PID25527;3.12 remains queued/NOT RUN. The owned VM uses its existing disks
+worker PID25527;3.12 remains queued/NOT RUN. Linux3.11 source finished09:08:40Z,
+exit0:2526pass7skip. Root parsed its native receipt and actual XML; all2533
+unique identities/outcomes match Linux3.14. The original queue is now running
+wheel; no whole-row pass is inferred. See remaining-linux/source311-observation.json.
+The owned VM uses its existing disks
 and read-only minor-runtime volume; source/candidate/launch evidence remains in
 docs/acceptance/evidence/m9-a116-preparation/remaining-linux/launch.json.
 Observe the existing queues; do not restart on observer timeout. Windows and
@@ -79,6 +83,9 @@ pass is not a prerequisite for these independent correctness fixtures. See
 docs/acceptance/evidence/m9-a116-preparation/transport-recovery/preparation.json.
 This supplements the existing M8 requirement, without expanding M5 or changing
 candidate identity or gates. Frozen source and all existing runs stay unchanged.
+Both reviewed follow-up drivers were staged byte-identically into the existing
+Linux environment at08:57:55Z, NOT RUN. Original source hashes and execution
+order remain unchanged; see remaining-linux/followup-staging.json.
 
 Archive delta review: the wheel has the same102 normalized members as b6; only
 version metadata, __init__ version and RECORD change. All96 product members match

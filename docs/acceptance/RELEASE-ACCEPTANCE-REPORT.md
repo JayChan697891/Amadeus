@@ -35,7 +35,11 @@ not reverified after cleanup. See ../../releases/0.3.0a116/624b36c/linux-314/
 lead-review.json and original report.json; the current matrix is saved at
 ../../releases/0.3.0a116/624b36c/matrix-after-linux314.json.
 The same Linux queue/session43548 automatically started3.11 at08:49:49Z;
-3.12 remains queued/NOT RUN. No full-queue exit or new benchmark pass is claimed.
+3.12 remains queued/NOT RUN. Linux3.11 source finished09:08:40Z, exit0,
+2526pass7skip; all2533 actual identities/outcomes equal Linux3.14. Wheel is
+running; source alone does not add a complete matrix row. Evidence:
+evidence/m9-a116-preparation/remaining-linux/source311-observation.json.
+No full-queue exit or new benchmark pass is claimed.
 Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.
 Formal Release stays BLOCKED. Do not transplant historical a115 observations.

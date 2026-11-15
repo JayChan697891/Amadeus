@@ -11,8 +11,9 @@ These are not105 successes or real models. Matrix2/9 complete; Release BLOCKED.
 
 Observe the original Windows session97559:3.11 installed wheel RUNNING,
 3.14 queued/NOT RUN. The original Linux session43548 automatically started3.11
-at08:49:49Z after3.14 completed;3.12 queued/NOT RUN. Do not start duplicates or
-retry failed/unknown rows. Preserve original a115 failures and unknown evidence.
+at08:49:49Z after3.14 completed. Its source finished09:08:40Z:2526pass7skip,
+matching Linux3.14; wheel is RUNNING and3.12 queued/NOT RUN. Do not start duplicates
+or retry failed/unknown rows. Preserve original a115 failures and unknown evidence.
 macOS remains unavailable/NOT RUN. No M5 expansion, paid call, Actions or main merge.
 See PROGRESS.md and ../releases/0.3.0a116/624b36c/linux-314/lead-review.json.
 
