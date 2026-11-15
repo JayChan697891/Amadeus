@@ -153,9 +153,16 @@ Docker was empty after the run. [Linux result](acceptance/evidence/durable-demo-
 · [Start record](acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json)
 · [Windows result and repair](acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json)
 
-The fresh cancellation R2 plan was prepared without a model call and passed
-independent review. Live R2 remains NOT RUN and requires fresh explicit
-authorization for one call. [R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+Cancellation R2 passed for the owned local Codex parent after one newly
+authorized call. Native session 2878 exited 0 at 15:09:16Z. The driver observed
+`turn.started` with the parent still running and no terminal event, then requested
+and propagated cancellation. The parent ended with exit -9, and the second leg
+was never dispatched. A new Core instance in the same controller process saw
+the same attempts and incomplete, running, unverified state. A subsequent native
+process read the same persisted state with no dispatch or task/audit/receipt change.
+Cleanup passed and the single-call authorization was consumed. This is not live
+host-crash recovery. [R2 result](acceptance/evidence/durable-demo-a117/cancel-r2-live/summary.json)
+· [R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
 
 The full a117 release matrix and actual live crash recovery remain incomplete.
 Cross-vendor accounts and macOS remain unavailable/NOT RUN.

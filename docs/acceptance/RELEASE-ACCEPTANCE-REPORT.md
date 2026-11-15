@@ -143,11 +143,32 @@ Linux 3.14 and formal Release remains BLOCKED.
 [Completed evidence](evidence/durable-demo-a117/full-linux314/current-summary.json)
 · [Start record](evidence/durable-demo-a117/full-linux314/started-summary.json)
 
-Preparation of the fresh cancellation R2 fixture exited 0 at 15:05:22Z and its
-plan passed independent review. The private home was empty. The preparation
-used no credentials and made no model call. Live R2 remains NOT RUN and requires
-fresh explicit authorization for one call.
-[R2 preparation](evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+Cancellation R2 used one fresh, explicit single-call authorization and provided
+passing CodexAdapter evidence for the owned local parent (`owned_parent_only`).
+Native session 2878 closed with exit 0 at 15:09:16Z. Root and independent
+review checked the actual evidence. The driver observed `turn.started`, verified
+the parent was still running and no terminal event had arrived, then requested
+and propagated cancellation. The first leg was `terminal_recorded` with status
+`unknown`, error `local_cancel_requested`, exit -9 and `parent_ended=true`. The
+second leg was `not_dispatched`. A new Core instance in the same controller
+process saw identical attempts, an incomplete outcome and a running, unverified
+task. The 97 installed runtime members, source repository and worktree stayed
+unchanged. Temporary credential cleanup and tmpfs unmount passed. The original
+credential stayed unchanged and no related processes remained. Raw stdout (335
+bytes) and unclassified stderr (238 bytes) remained local. The authorization is
+consumed and there was no retry. Server cancellation, descendant cleanup,
+billing and real host-crash recovery remain unverified. Delivery node B and
+formal Release retain their existing scope, and the full a117 matrix remains
+incomplete.
+[R2 result](evidence/durable-demo-a117/cancel-r2-live/summary.json)
+· [R2 preparation](evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+
+A subsequent new native process (PID21300, exit0 at15:12:49Z) read the persisted
+cancelled state with zero authorization/model calls. Tasks, audit and five receipt
+files remained unchanged, as did97 installed members and the source/worktree.
+Independent review accepted this read-only persistence observation; no host crash
+was injected and no task execution was resumed. The owned VM shut down normally,
+with its absence observed at15:14:35Z and disks/workspaces preserved.
 
 ## Earlier delivery checkpoint — 2026-11-15
 

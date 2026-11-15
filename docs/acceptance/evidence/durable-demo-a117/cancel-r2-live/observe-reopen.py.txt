@@ -1,0 +1,68 @@
+"""Read the completed cancellation from a new host process; never launch an Agent."""
+
+import hashlib
+import json
+import os
+import sys
+from dataclasses import asdict
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path('/root/amadeus-cancel-a117-r2-20261115')
+sys.path.insert(0, str(BASE))
+import pilot
+
+assert sys.flags.isolated and sys.dont_write_bytecode and not sys.flags.optimize
+assert pilot.assert_runtime_origin() == {'runtime_members_matched': 97}
+state = pilot.load('state.json')  # Synthetic fixture tokens stay in this process.
+expected = pilot.load('result.json')
+assert expected['status'] == 'PASS'
+assert not os.path.lexists(BASE / 'private-home' / 'auth.json')
+assert not any((BASE / 'private-home').iterdir())
+authority_calls = 0
+
+
+async def deny(_review):
+    global authority_calls
+    authority_calls += 1
+    return None
+
+
+def receipt_hashes():
+    return {
+        path.relative_to(BASE / 'receipts').as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted((BASE / 'receipts').rglob('*')) if path.is_file()
+    }
+
+
+core = pilot.Core(BASE / 'core')
+actor = pilot.actor_for(state, deny)
+relay = pilot.ControlledRelay(core, BASE, BASE / 'receipts')
+owner = state['owner']
+before_tasks = core.execute('list_tasks', pilot.auth(state))
+before_audit = core.execute_owner('list_audit', {**owner, 'limit': 100, 'offset': 0})
+assert before_audit['has_more'] is False
+before_receipts = receipt_hashes()
+attempts = [asdict(item) for item in relay.inspect_attempts(actor, state['task']['id'], admin_token=owner['admin_token'])]
+observed = asdict(relay.observe(actor, state['task']['id']))
+after_tasks = core.execute('list_tasks', pilot.auth(state))
+after_audit = core.execute_owner('list_audit', {**owner, 'limit': 100, 'offset': 0})
+assert before_tasks == after_tasks and before_audit == after_audit
+assert before_receipts == receipt_hashes() and before_receipts
+assert attempts == expected['attempts'] and observed == expected['reopened_outcome']
+assert authority_calls == 0
+task = next(task for task in after_tasks['tasks'] if task['id'] == state['task']['id'])
+assert task['status'] == 'running' and task['task_verification'] == 'unverified'
+assert pilot.fixture_intact(state, BASE / 'source')
+assert pilot.fixture_intact(state, Path(state['tree']['path']))
+assert pilot.assert_runtime_origin() == {'runtime_members_matched': 97}
+print(json.dumps({
+    'observed_at': datetime.now(UTC).isoformat(), 'pid': os.getpid(),
+    'scope': 'New-process read-only reopen of the cancelled real-client fixture; no crash injection or retry',
+    'status': 'PASS', 'outcome': observed, 'attempts_match_completed_capture': True,
+    'tasks_audit_and_receipt_bytes_unchanged': True, 'receipt_files': len(before_receipts),
+    'task_status': task['status'], 'task_verification': task['task_verification'],
+    'authorization_calls': authority_calls, 'model_calls': 0, 'external_auth_access': False,
+    'runtime_members_unchanged': 97, 'source_and_worktree_unchanged': True,
+    'formal_release': 'BLOCKED',
+}))

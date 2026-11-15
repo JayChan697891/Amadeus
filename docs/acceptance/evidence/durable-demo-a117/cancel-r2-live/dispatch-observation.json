@@ -1,0 +1,73 @@
+{
+  "actors": {
+    "worker": {
+      "task_id": "2545c1bc-b16f-4ca9-9b7a-3693eebe1745",
+      "captured_start_invoked": true,
+      "exact_authorizations": 1,
+      "attempts": [
+        {
+          "leg": "first",
+          "state": "terminal_recorded",
+          "client": "codex",
+          "status": "unknown",
+          "exit_code": -9,
+          "timed_out": false,
+          "parent_ended": true,
+          "run_sha256": "477e3343ac0e1094cfd73b2e46fea44b5deed5dbb1bdecd8d358ac7a89964cbd",
+          "session_sha256": "d4a372595391259488d122b3346097dd9d3b39bd3fce6fb84fae5cc58dcdceee",
+          "error_code": "local_cancel_requested",
+          "admission": {
+            "state": "both_reservations_recorded",
+            "plan_sha256": "dd41631c2e2bab21f6f272b9402af9f922ef73556910a3969fc0ac8adbc63fd9",
+            "execution_verified": false
+          },
+          "adapter_elapsed_ms": 10941,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": "66d821c32194e4dbb9595bd0e38c7c7fe74deced3f7e7129a8c25107f4f2dafb",
+          "declared_client_version": "0.167.0-alpha.3.2",
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        },
+        {
+          "leg": "second",
+          "state": "not_dispatched",
+          "client": null,
+          "status": null,
+          "exit_code": null,
+          "timed_out": null,
+          "parent_ended": null,
+          "run_sha256": null,
+          "session_sha256": null,
+          "error_code": null,
+          "admission": null,
+          "adapter_elapsed_ms": null,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": null,
+          "declared_client_version": null,
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        }
+      ]
+    }
+  }
+}

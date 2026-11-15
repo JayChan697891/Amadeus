@@ -175,12 +175,31 @@ fixture process list were empty at cleanup. No model call or package rebuild.
 [Linux result](acceptance/evidence/durable-demo-a117/full-linux314/current-summary.json)
 · [Start record](acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json)
 
-Preparation of the fresh cancellation R2 fixture finished at 15:05:22Z with
-exit 0 and an independently reviewed plan. The private home was empty. No
-credential copy, mount, readiness action or model call occurred. Live R2 remains
-NOT RUN and requires fresh explicit authorization for one call. Earlier focused
-and failed results remain on record.
-[R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+Cancellation R2 ran once under a fresh single-call authorization. Native session
+2878 closed with exit 0 at 15:09:16Z. Root and independent review accepted
+`owned_parent_only` PASS. The driver observed `turn.started` with the parent still
+running and no terminal event, then requested and propagated cancellation. The
+first leg recorded `terminal_recorded` with status `unknown`, error
+`local_cancel_requested`, exit -9 and `parent_ended=true`. The second leg stayed
+`not_dispatched`. A new Core instance in the same process saw the same attempts,
+an incomplete outcome and a running, unverified task. All 97 installed members,
+the source repository and the worktree stayed unchanged. The temporary credential
+was removed, tmpfs was unmounted, the original credential stayed unchanged and
+no related processes remained. Raw stdout (335 bytes) and unclassified stderr
+(238 bytes) remained local. The authorization is consumed and there was no retry.
+Server cancellation, descendant cleanup, billing and live host-crash recovery
+remain unverified.
+[R2 result](acceptance/evidence/durable-demo-a117/cancel-r2-live/summary.json)
+· [R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+
+A subsequent native read-only observer (PID21300) exited0 at15:12:49Z. It read
+the same persisted cancellation from a new process: tasks, audit and five receipt
+files were unchanged, with zero authorization/model calls and97 unchanged members.
+This confirms a read after process restart, not resumed execution or a host crash.
+The dedicated VM was normally powered off and observed absent at15:14:35Z; no
+test/model process or container remained, and disks/workspaces were preserved.
+Resume ordinary local work from this branch. Do not restart closed sessions79159
+or2878, or reuse the consumed real-client grant. Original release gaps remain.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.

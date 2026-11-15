@@ -1,0 +1,9 @@
+{
+  "requested": true,
+  "propagated": true,
+  "turn_started_observed": true,
+  "terminal_event_observed": false,
+  "parent_ended_before_cancel": false,
+  "turn_started_observed_at": 1661.271609911,
+  "cancel_called_at": 1661.271613811
+}

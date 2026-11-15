@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-11-15T15:12:47.716396+00:00",
+  "command": "/usr/bin/env -i PATH=/usr/bin:/bin HOME=/root/amadeus-cancel-a117-r2-20261115/private-home PYTHONDONTWRITEBYTECODE=1 GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 /root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B -",
+  "stdin_script_sha256": "2ebf8d4fe855e477642b74415ae0bca7e03d9c3e5dbe4fe2b85481f35c6da1a6",
+  "operation": "Read-only public Core observations from a new native process; no model call or external authentication",
+  "finished_at": "2026-11-15T15:12:49.534923+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "8443bc62676ff30594ba69eb926f3f4b9e8778f6f73a4f26bd3303dcbf3d6edb",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
