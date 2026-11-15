@@ -1,0 +1,22 @@
+{
+  "scope": "local_source_bundle_preparation_only",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+  "bundle_path": "D:\\agentsync-debug\\m116\\source-update.bundle",
+  "bundle_sha256": "bc08623398bd70874688635d427ebfba3a72b508b66721af126b9b2a61be22c9",
+  "bundle_size": 4568706,
+  "bundle_uploaded_to_git": false,
+  "reason": "Committed source is already stored in Git; this local transfer bundle is not duplicated there.",
+  "prerequisite_commits": [
+    "546cc52bfcb67df3938856b5bf8b3a222b06c502",
+    "b6f05f0473591dc568be25591047fdea963ef86c"
+  ],
+  "local_git_bundle_verify": "PASS",
+  "guest_prerequisites": "NOT VERIFIED: VM remains shut down",
+  "previous_guest_source": "/root/amadeus-m115-r3/s",
+  "planned_new_guest_source": "/root/amadeus-m116/s",
+  "guest_transfer": "NOT RUN",
+  "linux_tests": "NOT RUN",
+  "next": "After Windows3.12 original artifacts/manifest verify, start the existing local VM, verify both prerequisite commits before importing this bundle into a fresh checkout, verify every source hash, then use the same candidate archives. Preserve the old checkout and evidence.",
+  "formal_release": "BLOCKED"
+}

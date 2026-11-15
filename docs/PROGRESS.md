@@ -25,6 +25,13 @@ It refuses missing/failed/unverified bootstrap evidence, checks the exact archiv
 and frozen source, stops on failure/unknown, and checks STOP_AFTER_CURRENT before
 starting each next row. Syntax parsed only; see
 acceptance/evidence/m9-a116-preparation/remaining-windows/preparation.json.
+The local Linux source-transfer bundle is prepared at
+D:/agentsync-debug/m116/source-update.bundle (4568706 bytes, sha256
+bc08623398bd70874688635d427ebfba3a72b508b66721af126b9b2a61be22c9).
+Local Git verified it; guest prerequisites546cc52 and b6f05f0 still need checking.
+VM/guest transfer/Linux tests are NOT RUN for a116. The bundle stays on D: because
+the same source is already in Git. See
+acceptance/evidence/m9-a116-preparation/linux-source-transfer/preparation.json.
 Git remote confirmed624b36c uploaded. Current PR feedback could not be refreshed:
 connector transport failed and a read-only unauthenticated API fallback returned404.
 Do not infer repository disappearance or claim comments reviewed from that result.
