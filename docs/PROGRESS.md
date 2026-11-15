@@ -26,6 +26,12 @@ an observer timeout. Failure/unknown stops the queue; STOP_AFTER_CURRENT is chec
 between rows. Driver D:/agentsync-debug/m116-remaining-windows.py remains
 sha256 d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643.
 Launch evidence: docs/acceptance/evidence/m9-a116-preparation/remaining-windows/launch.json.
+Windows3.11 source subsequently completed2026-11-15T08:36:36Z, exit0:
+2477pass56skip,2533 unique cases, zero failures/errors. Root compared actual
+JUnit identities/outcomes with Windows3.12 (identical), checked the native receipt
+and rehashed all3122 source files unchanged. Builds/installations are continuing;
+the row remains incomplete. See remaining-windows/source311-observation.json.
+Original source XML/logs remain in the canonical D: row until complete transfer.
 
 Linux VM resumed with existing disks, old logs preserved and the minor-runtime
 volume mounted read-only. Both bundle prerequisites, all three interpreters and

@@ -1,0 +1,24 @@
+{
+  "scope": "completed_windows311_source_component_only",
+  "observed_at": "2026-11-15T08:36:54.399414+00:00",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "native_finished_at": "2026-11-15T08:36:36.966096+00:00",
+  "native_exit_code": 0,
+  "counts": {
+    "pass": 2477,
+    "skip": 56,
+    "failure": 0,
+    "error": 0
+  },
+  "unique_cases": 2533,
+  "identities_and_outcomes_equal_windows312": true,
+  "source_files_unchanged": 3122,
+  "completed_commands": 6,
+  "active_commands": [
+    "build"
+  ],
+  "source_junit_sha256": "4b1d4d83fd44671122cf6400016297d62ee017d6163a112f603f46f043bfed17",
+  "original_directory": "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306",
+  "full_row": "INCOMPLETE: installations and final verification pending",
+  "formal_release": "BLOCKED"
+}
