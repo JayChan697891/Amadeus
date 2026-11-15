@@ -1,0 +1,19 @@
+{
+  "scope": "completed_linux314_wheel_component_only",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "native_finished_at": "2026-11-15T08:30:42.045714+00:00",
+  "native_exit_code": 0,
+  "cases": 2533,
+  "passed": 2526,
+  "skipped": 7,
+  "failures": 0,
+  "errors": 0,
+  "unique_case_identities": 2533,
+  "same_identities_and_outcomes_as_source": true,
+  "wheel_junit_sha256": "7ab8548cd255477787e3ec2ec014b18f7040e512a3bc405c6f832bf94473f096",
+  "original_directory": "/root/amadeus-m116/linux-314/reports/release-20261115T075231Z-6a8b05dddcca",
+  "validation": "Lead read original completed process receipt and directly parsed both original source/wheel XML files via pinned local SSH.",
+  "full_row": "RUNNING: sdist; final strict verification still pending",
+  "formal_release": "BLOCKED",
+  "archive_policy": "Original XML/logs remain in canonical guest directory until the single complete row bundle is transferred."
+}

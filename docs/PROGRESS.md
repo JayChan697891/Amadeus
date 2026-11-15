@@ -42,10 +42,12 @@ Linux3.14 source completed2026-11-15T08:11:36Z, exit0:2526pass7skip,
 2533 unique cases, zero failures/errors. Root parsed the saved XML/native receipt,
 compared identities with Windows3.12 and rehashed all3122 source files unchanged.
 There are no shared skips or non-platform outcome differences between these two
-source suites; this is not complete platform/Release acceptance. Wheel suite is
-running; sdist and final row verification remain pending. The compact observation
-is in remaining-linux/source314-observation.json; original public XML/logs remain
-in the guest's canonical row until its single complete bundle is transferred.
+source suites; this is not complete platform/Release acceptance. Wheel then
+completed08:30:42Z, exit0:2526pass7skip, with identical2533 identities/outcomes to
+source. Root inspected the native receipt and both XMLs. Sdist is running and
+final row verification remains pending. Compact observations are in
+remaining-linux/{source314,wheel314}-observation.json; original public XML/logs
+remain in the canonical guest row until its single complete bundle is transferred.
 The owner has no macOS environment: all three Mac rows are NOT RUN. No real model
 calls, paid services, GitHub Actions, main merge or release-gate waiver.
 Formal Release remains BLOCKED; old a115 evidence is preserved separately.

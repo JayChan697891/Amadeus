@@ -23,8 +23,10 @@ Linux transfer and strict candidate/source verification passed; its queue starte
 pass follows from startup. Linux3.14 source later completed08:11:36Z, exit0:
 2526pass7skip,2533 unique cases, zero failures/errors. Actual XML/receipt and3122
 unchanged source hashes were checked; identities match Windows3.12, with no
-shared skips/non-platform outcome differences. Wheel is running; the Linux row
-remains incomplete until both installations and final verification finish.
+shared skips/non-platform outcome differences. Wheel completed08:30:42Z, exit0,
+2526pass7skip, with all identities/outcomes equal to source; root inspected both
+XMLs and its native receipt. Sdist is running; the Linux row remains incomplete
+until that installation's suite and final strict verification finish.
 Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.
 Formal Release stays BLOCKED. Do not transplant historical a115 observations.
