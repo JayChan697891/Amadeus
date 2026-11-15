@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-15T11:13:32.136472+00:00",
+  "scope": "Read-only preparation metadata; no CLI/model execution or authentication read",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "installed_version": "0.3.0a117",
+  "cli_sha256": "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0",
+  "cli_size": 320604648,
+  "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "containers": [],
+  "planned_guest_root_exists": false
+}

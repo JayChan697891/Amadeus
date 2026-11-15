@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-15T11:19:20.574523+00:00",
+  "scope": "One no-model preparation; no subscription auth read/copy/mount",
+  "command": "umask 077\n/root/amadeus-demo-a117/installed/bin/python -I -B /root/amadeus-continuous-a117-20261115/pilot.py prepare",
+  "helper_sha256": {
+    "pilot.py": "a8c99fee5b4eee9dce539252f7ecdd131f93e3e79e1602d682f243871a7200a4",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "credential_home.py": "8861e9c9b78ffbfd36d4c64d988e84a255ef57708df28d4050b232caf6e814ff",
+    "observe.py": "9f047e82de1562f323cb003f1d93a206504263fe237ada649404f0e725177261",
+    "runtime.json": "66c0aa24182d1153595b37e4ec4e46ca27d1e8995d83c3c441332bf436a90591"
+  },
+  "automatic_retry": false
+}

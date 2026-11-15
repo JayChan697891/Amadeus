@@ -1,0 +1,99 @@
+{
+  "observed_at": "2026-11-15T11:20:30.896917+00:00",
+  "status": "PREPARED; REAL EXECUTION NOT RUN",
+  "scope": "Reuse historical two-Codex VerifiedProposalFlow for current a117; no new release gate",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "plan_sha256": "12cca81437ec38cf2a904698f8473e8c4fd745015f0ebe6b618f336bcc661f08",
+  "model_calls": 0,
+  "maximum_future_model_calls": 2,
+  "external_auth_read_or_copied": false,
+  "credential_mount_created": false,
+  "guest_auth_home_empty": true,
+  "candidate_application": false,
+  "private_core_state_uploaded": false,
+  "runtime_members_git_wheel_installed": 97,
+  "python_modules": 96,
+  "checks": {
+    "six_helpers_compile": "pass without import/execution",
+    "helper_AST_delta": "pilot runtime; run-once require_mount/main; other definitions unchanged",
+    "independent_Astra_review": "no prepare-only blocker; not authorization for live run",
+    "actual_prepare_exit": 0
+  },
+  "authorization_required": "New explicit bounded subscription-only two-call test and one temporary auth copy/cleanup; prior grants consumed",
+  "remaining_host_gates": [
+    "staging",
+    "execution",
+    "completion",
+    "receiver"
+  ],
+  "real_client_acceptance": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "runtime.json",
+      "size": 10562,
+      "sha256": "66c0aa24182d1153595b37e4ec4e46ca27d1e8995d83c3c441332bf436a90591"
+    },
+    {
+      "path": "plan.json",
+      "size": 4945,
+      "sha256": "65e0d16496425353340ecda451b3420900de7a3608e284b65f3bb7ce729fba83"
+    },
+    {
+      "path": "prepare-attempt.json",
+      "size": 778,
+      "sha256": "a84b7d4fdf27be105303b4b42a8ad380f8412e8b7e28a36ddc6a5cb28fac2f5b"
+    },
+    {
+      "path": "prepare-result.json",
+      "size": 165,
+      "sha256": "0acca9a1ea792e5e39b254183d07f47477f2eaedf6ccc8057ec468197aa386c4"
+    },
+    {
+      "path": "prepare.stdout.json",
+      "size": 120,
+      "sha256": "4a33d8cdb5ffdba9e634da7755bc516c85c72cdcda36658aefbc6a7be7312fab"
+    },
+    {
+      "path": "prepare.stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pilot.py.txt",
+      "size": 23262,
+      "sha256": "a8c99fee5b4eee9dce539252f7ecdd131f93e3e79e1602d682f243871a7200a4"
+    },
+    {
+      "path": "run-once.py.txt",
+      "size": 8612,
+      "sha256": "ad4cea71b9f67721f59e11a2990c937f94a80a6a155007a517e12e09f3a23227"
+    },
+    {
+      "path": "control.py.txt",
+      "size": 4851,
+      "sha256": "6c79eafe0aff32a6ff9406cef7ef4b93240e4b4a26ff238c907cb5eb24eff3cc"
+    },
+    {
+      "path": "credential_home.py.txt",
+      "size": 4587,
+      "sha256": "8861e9c9b78ffbfd36d4c64d988e84a255ef57708df28d4050b232caf6e814ff"
+    },
+    {
+      "path": "observe.py.txt",
+      "size": 10362,
+      "sha256": "9f047e82de1562f323cb003f1d93a206504263fe237ada649404f0e725177261"
+    },
+    {
+      "path": "private_capture.py.txt",
+      "size": 3377,
+      "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7"
+    },
+    {
+      "path": "host-observation.json",
+      "size": 537,
+      "sha256": "f2b5d82ea74e88d929ddf2d15ba401d380aef92c2c531df06dcc44c56f9e6dad"
+    }
+  ]
+}

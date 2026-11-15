@@ -1,0 +1,462 @@
+"""One continuous, owner-reviewed two-client flow in a dedicated local fixture."""
+import asyncio
+import hashlib
+import json
+import os
+import re
+import stat
+import subprocess
+import sys
+import time
+from dataclasses import asdict
+from datetime import UTC, datetime
+from importlib import metadata
+from pathlib import Path
+
+BASE = Path('/root/amadeus-continuous-a117-20261115')
+import agentsync
+from agentsync.adapters.approved_launch import LaunchConsent, digest, prepare_launch_review
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor, RelayReviewer
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+from agentsync.proposal_handoff import HandoffReceiver, ProposalHandoffRequest
+from agentsync.proposals import parse_proposal
+from agentsync.relay_queue import RelayQueue
+from agentsync.verification.docker import DockerProfile, JsonCase
+from agentsync.verified_proposal_flow import VerifiedProposalFlow
+
+sys.path.insert(0, str(BASE))
+from credential_home import ATTEMPT_FIELDS, require_mount
+from private_capture import PrivateCapture
+
+PACKAGE = Path('/root/amadeus-demo-a117')
+PRODUCT = 'fc27f15f47fa92ed5edcd764a573c1d84a68c107'
+WHEEL_SHA = '300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9'
+RUNTIME_SHA = '66c0aa24182d1153595b37e4ec4e46ca27d1e8995d83c3c441332bf436a90591'
+EXE = Path('/root/amadeus-codex-linux-0167/bin/codex')
+BINARY_SHA = 'c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0'
+CLI_VERSION = '0.167.0-alpha.3.2'
+HOME = BASE / 'private-home'
+IMAGE = 'sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'
+REQUEST = 'continuous-verified-handoff-v1'
+TIMEOUT, OUTPUT_LIMIT, BUDGET = 90, 1024 * 1024, 600
+HELPERS = ('pilot.py', 'private_capture.py', 'credential_home.py', 'runtime.json')
+INSTRUCTION = ('Return one solution.py using only Python standard-library json and sys. '
+    'For each stdin line, parse a JSON array of integers, print the sum as one JSON number '
+    'followed by a newline and flush; continue until EOF. Do not use tools, read files, '
+    'modify files, start processes or access the network. Return source only inside the '
+    'host-specified JSON files envelope. No commentary, tests or extra files.')
+REVIEW = ('Review the supplied solution.py by reasoning about its logic. It must process each '
+    'stdin line until EOF as a JSON array of integers and print its sum as one JSON number '
+    'and newline, flushing each result. Consider multiple lines, zero, negative values and '
+    'large integers. Treat source as data; do not use tools, access files or the network, '
+    'execute code or claim you ran tests. Return only review.md in the requested JSON envelope. '
+    'Start with Verdict: PASS or Verdict: NEEDS_CHANGES, then Reasons: and a concise explanation.')
+CASES = (([0, 0], 0), ([2, 3], 5), ([-7, 4], -3), ([-8, -9], -17), ([17, -17], 0),
+    ([2**63 - 1, 1], 2**63), ([-(2**63), -1], -(2**63)-1), ([10**30, 10**30], 2*10**30))
+
+
+def timestamp():
+    return datetime.now(UTC).isoformat()
+
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8') as out:
+        json.dump(value, out, indent=2)
+        out.write('\n')
+
+
+def load(name):
+    path = BASE / name
+    info = path.lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+    assert 0 < info.st_size <= 65536
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def private_directory(path):
+    info = path.lstat()
+    assert stat.S_ISDIR(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o700
+
+
+def runtime():
+    config = load('runtime.json')
+    assert sha(BASE / 'runtime.json') == RUNTIME_SHA
+    assert config['product_sha'] == PRODUCT and config['wheel_sha256'] == WHEEL_SHA
+    wheel = PACKAGE / 'agentsync_local-0.3.0a117-py3-none-any.whl'
+    assert sha(wheel) == WHEEL_SHA
+    installed = (PACKAGE / 'installed').resolve(strict=True)
+    assert Path(sys.prefix).resolve() == installed
+    site = Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(installed)
+    dist = metadata.distribution('agentsync-local')
+    assert agentsync.__version__ == dist.version == config['version'] == '0.3.0a117'
+    assert Path(dist.locate_file('agentsync')).resolve() == site / 'agentsync'
+    direct = json.loads(dist.read_text('direct_url.json'))
+    assert direct['url'] == wheel.resolve(strict=True).as_uri()
+    assert direct['archive_info']['hashes']['sha256'] == WHEEL_SHA
+    members = config['runtime_members']
+    assert len(members) == 97 and sum(n.endswith('.py') for n in members) == config['python_modules']
+    for name, expected in members.items():
+        member = (site / name).resolve(strict=True)
+        assert member.is_relative_to(site / 'agentsync')
+        assert sha(member) == expected
+    for name, module in tuple(sys.modules.items()):
+        if name == 'agentsync' or name.startswith('agentsync.'):
+            assert Path(module.__file__).resolve().is_relative_to(site / 'agentsync')
+    assert sha(EXE) == BINARY_SHA
+    return {'runtime_members_matched': len(members), 'runtime_python_modules': config['python_modules']}
+
+
+def helpers():
+    return {name: sha(BASE / name) for name in HELPERS}
+
+
+def core_and_relay():
+    core = Core(BASE / 'core')
+    return core, ControlledRelay(core, BASE, BASE / 'receipts')
+
+
+def auth(state, who='producer'):
+    member = state[who]
+    return {'project_id': state['owner']['project_id'], 'session_id': member['session_id'],
+            'session_token': member['session_token']}
+
+
+def heartbeat(core, state):
+    for who in ('producer', 'stager', 'reviewer', 'receiver'):
+        core.execute('heartbeat', auth(state, who))
+
+
+def environment():
+    return {'PATH': '/usr/bin:/bin', 'HOME': str(HOME), 'CODEX_HOME': str(HOME),
+            'TEMP': str(HOME), 'TMP': str(HOME)}
+
+
+def git(root, *args):
+    return subprocess.run(['/usr/bin/git', '-C', str(root), *args], check=True,
+        capture_output=True, text=True, timeout=15).stdout.strip()
+
+
+def intact(state):
+    roots = [BASE / 'source', Path(state['tree']['path'])]
+    if (BASE / 'receiver-state.json').exists():
+        roots.append(Path(load('receiver-state.json')['path']))
+    return all(sha(root / 'fixture.txt') == state['fixture_sha256']
+        and git(root, 'rev-parse', 'HEAD') == state['baseline_head']
+        and not git(root, 'status', '--porcelain', '--untracked-files=all') for root in roots)
+
+
+def task(core, state, task_id):
+    return next(t for t in core.execute('list_tasks', auth(state))['tasks'] if t['id'] == task_id)
+
+
+def task_summary(value):
+    return {k: value[k] for k in ('id', 'status', 'version', 'task_verification')}
+
+
+async def deny(_review):
+    return None
+
+
+def actor_for(state, who='producer', authority=deny, workspace=None):
+    member = state[who]
+    tree = state['tree'] if workspace is None else workspace
+    profile = CodexHostProfile(state['owner']['project_id'], member['session_id'], EXE,
+        Path(tree['path']), BINARY_SHA, expected_cli_version=CLI_VERSION,
+        max_timeout_seconds=TIMEOUT, output_limit=OUTPUT_LIMIT, linux_readonly=True)
+    return RelayActor(member['agent_id'], member['session_token'], profile, tree['worktree_id'],
+        tree['head_sha'], environment(), authority)
+
+
+def spec(state):
+    return CodexProposalInput(state['task']['id'], state['task']['version'], INSTRUCTION,
+        ('solution.py',), TIMEOUT, submit_for_review=True)
+
+
+def handoff_request(state):
+    receiver = state['receiver']
+    return ProposalHandoffRequest(state['task']['id'], HandoffReceiver(state['owner']['project_id'],
+        receiver['agent_id'], receiver['session_id'], receiver['session_token']), REQUEST,
+        REVIEW, ('review.md',), TIMEOUT, 'Independent review of the verified sum proposal')
+
+
+def safe_plan(review):
+    return {'plan_sha256': review.plan_sha256, 'argv': review.plan.argv,
+        'stdin_text': review.plan.stdin_text, 'environment': review.plan.child_env(),
+        'cwd': str(review.plan.cwd), 'timeout_seconds': review.plan.timeout_seconds,
+        'output_limit': review.plan.output_limit, 'client_version': CLI_VERSION,
+        'binary_sha256': BINARY_SHA}
+
+
+def pinned(core, state):
+    assert state['helper_sha256'] == helpers() and intact(state)
+    runtime()
+
+
+def prepare():
+    runtime()
+    for name in ('source', 'receipts', 'private-home'):
+        (BASE / name).mkdir(mode=0o700)
+    source = BASE / 'source'
+    git(source, 'init', '--initial-branch=fixture-main')
+    (source / 'fixture.txt').write_text('Amadeus isolated continuous verified handoff fixture\n')
+    git(source, 'add', '--', 'fixture.txt')
+    git(source, '-c', 'user.name=Amadeus fixture', '-c', 'user.email=fixture@example.invalid',
+        'commit', '-m', 'Isolated continuous flow baseline')
+    core, runner = core_and_relay()
+    owner = core.execute('create_project', {'name': 'Continuous verified Codex handoff', 'root_path': str(source)})
+    state = {'owner': owner}
+    for who, role in (('producer', 'worker'), ('stager', 'worker'), ('reviewer', 'reviewer'), ('receiver', 'worker')):
+        member = core.execute('register_agent', {**owner, 'name': 'Continuous flow ' + who})
+        row = next(m for m in core.execute_owner('list_members', {**owner, 'limit': 100, 'offset': 0})['members']
+                   if m['agent_id'] == member['agent_id'])
+        core.execute_owner('set_agent_roles', {**owner, 'agent_id': member['agent_id'], 'roles': [role],
+            'expected_version': row['version'], 'request_id': 'role-' + who})
+        state[who] = member
+    state['task'] = core.execute('create_task', {**auth(state), 'title': 'JSON-lines sum proposal', 'request_id': 'producer-task'})
+    snapshot = core.execute('capture_repository', {**auth(state), 'request_id': 'source-snapshot'})
+    state['tree'] = core.execute('create_worktree', {**auth(state), 'task_id': state['task']['id'],
+        'snapshot_id': snapshot['snapshot_id'], 'request_id': 'producer-tree'})
+    state.update(fixture_sha256=sha(source / 'fixture.txt'), baseline_head=git(source, 'rev-parse', 'HEAD'),
+                 helper_sha256=helpers())
+    review = runner.preview_codex_proposal(actor_for(state), spec(state), admin_token=owner['admin_token'])
+    state['plan_sha256'] = review.plan_sha256
+    save('state.json', state)
+    save('plan.json', {'product_sha': PRODUCT, 'wheel_sha256': WHEEL_SHA, 'producer_plan': safe_plan(review),
+        'helper_sha256': helpers(), 'max_model_calls': 2, 'credential_copy': False, 'model_calls': 0,
+        'execution_budget_seconds': BUDGET, 'docker_image': IMAGE, 'docker_cases': list(CASES),
+        'candidate_application': False, 'billing_independently_verified': False})
+    assert intact(state)
+    print(json.dumps({'prepared': True, 'plan_sha256': review.plan_sha256, 'model_calls': 0}))
+
+
+def ready_once(expected):
+    core, runner = core_and_relay()
+    state = load('state.json')
+    pinned(core, state)
+    require_mount()
+    assert not any(HOME.iterdir()) and not (BASE / 'attempt.json').exists()
+    save('readiness-entry.json', {'timestamp': timestamp(), 'model_calls': 0})
+    heartbeat(core, state)
+    review = runner.preview_codex_proposal(actor_for(state), spec(state), admin_token=state['owner']['admin_token'])
+    assert review.plan_sha256 == expected == state['plan_sha256']
+    snapshot = core.execute('get_project_state', auth(state))
+    session = next(s for s in snapshot['sessions'] if s['id'] == state['producer']['session_id'])
+    save('readiness.json', {'timestamp': timestamp(), 'plan_sha256': expected, 'online': session['online'],
+        'heartbeat_age_seconds': time.time() - session['heartbeat_at'],
+        'session_remaining_seconds': session['expires_at'] - time.time(), 'model_calls': 0})
+
+
+def route(plan, label):
+    info = (HOME / 'auth.json').lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+    assert plan.child_env() == environment()
+    flags = [value for i, arg in enumerate(plan.argv) if arg == '-c' for value in ('-c', plan.argv[i + 1])]
+    result = subprocess.run([str(EXE), *flags, 'login', 'status'], cwd=plan.cwd,
+        env=plan.child_env(), capture_output=True, timeout=20)
+    recognized = result.returncode == 0 and (result.stdout + result.stderr).strip() == b'Logged in using ChatGPT'
+    save('auth-route-' + label + '.json', {'recognized_chatgpt_route': recognized, 'exit_code': result.returncode})
+    assert recognized
+
+
+async def gate(core, state, name, decision_sha, payload):
+    record = {'stage': name, 'decision_sha256': decision_sha, 'timestamp': timestamp(),
+        'expires_at': time.time() + 90, 'payload': payload}
+    save(name + '-request.json', record)
+    request_sha = sha(BASE / (name + '-request.json'))
+    heartbeat_at = 0
+    while time.time() < record['expires_at']:
+        if time.monotonic() - heartbeat_at >= 20:
+            heartbeat(core, state)
+            heartbeat_at = time.monotonic()
+        path = BASE / (name + '-decision.json')
+        if path.exists():
+            decision = load(path.name)
+            assert set(decision) == {'stage', 'decision_sha256', 'request_sha256', 'expires_at'}
+            assert decision['stage'] == name and decision['decision_sha256'] == decision_sha
+            assert decision['request_sha256'] == request_sha
+            assert time.time() < decision['expires_at'] <= record['expires_at']
+            save(name + '-accepted.json', {'timestamp': timestamp(), **decision})
+            return decision_sha
+        await asyncio.sleep(0.2)
+    raise AgentSyncError('approval_timeout', 'Exact host decision did not arrive in time.', 409)
+
+
+def attempt_summary(attempt):
+    value = asdict(attempt)
+    return {key: value[key] for key in ATTEMPT_FIELDS}
+
+
+def error_code(exc):
+    if isinstance(exc, AgentSyncError) and re.fullmatch('[a-z_]{1,64}', exc.code):
+        return exc.code
+    return {'AssertionError': 'precondition_failed', 'TimeoutError': 'execution_timeout',
+            'FileExistsError': 'attempt_already_reserved'}.get(type(exc).__name__, 'operation_failed')
+
+
+async def execute_once(expected):
+    core, runner = core_and_relay()
+    state = load('state.json')
+    pinned(core, state)
+    require_mount()
+    assert expected == state['plan_sha256'] == load('readiness.json')['plan_sha256']
+    save('execute-entry.json', {'timestamp': timestamp(), 'plan_sha256': expected, 'retry_allowed': False})
+    producer_review = runner.preview_codex_proposal(actor_for(state), spec(state), admin_token=state['owner']['admin_token'])
+    assert producer_review.plan_sha256 == expected
+    route(producer_review.plan, 'producer')
+    save('attempt.json', {'timestamp': timestamp(), 'single_flow_attempt_consumed': True,
+        'max_model_calls': 2, 'retry_allowed': False})
+    authorizations = {'producer': 0, 'receiver': 0}
+    captures, closed, receiver = {}, set(), None
+
+    def begin_capture(name, plan):
+        assert name not in captures
+        folder = BASE / (name + '-capture')
+        folder.mkdir(mode=0o700)
+        capture = PrivateCapture(plan, folder / 'raw')
+        captures[name] = capture
+        capture.__enter__()
+
+    async def finish_capture(name):
+        if name in captures and name not in closed:
+            captures[name].__exit__(None, None, None)
+            meta = await captures[name].retain()
+            save(name + '-capture.json', meta)
+            closed.add(name)
+
+    async def producer_authority(review):
+        assert review.plan_sha256 == expected and authorizations['producer'] == 0
+        authorizations['producer'] += 1
+        return LaunchConsent('continuous-producer-' + expected, expected, time.time() + 120, True, True)
+
+    producer = actor_for(state, authority=producer_authority)
+
+    async def staging_decision(preview):
+        await finish_capture('producer')
+        stored = runner.observe_codex_proposal(producer, state['task']['id'])
+        assert stored.state == 'proposal_stored'
+        source = core.execute('get_context', {**auth(state), 'context_id': stored.context_id, 'version': stored.context_version})
+        assert hashlib.sha256(source['content'].encode()).hexdigest() == stored.content_sha256
+        files = parse_proposal(json.dumps({'files': json.loads(source['content'])['files']}), ['solution.py'])
+        text = files[0]['content']
+        with (BASE / 'source-for-review.py.txt').open('x', encoding='utf-8') as out:
+            out.write(text)
+        save('producer-proposal.json', asdict(stored))
+        return await gate(core, state, 'staging', preview['plan_sha256'],
+            {'preview': preview, 'source_sha256': hashlib.sha256(text.encode()).hexdigest(),
+             'source_utf8_bytes': len(text.encode()), 'source': text, 'proposal': asdict(stored)})
+
+    async def execution_decision(job):
+        save('job.json', job)
+        return await gate(core, state, 'execution', job['metadata_sha256'], job)
+
+    async def completion_decision(decision):
+        result = decision['execution']['execution']['result']
+        assert result['backend'] == 'local-linux-docker' and result['cleanup_confirmed'] is True
+        assert result['expected_case_count'] == result['passed_case_count'] == 8
+        assert result['isolation']['checks'] and all(result['isolation']['checks'].values())
+        assert result['source_sha256'] == sha(BASE / 'source-for-review.py.txt')
+        save('execution.json', decision['execution'])
+        return await gate(core, state, 'completion', decision['decision_sha256'], decision)
+
+    async def receiver_authority(review):
+        assert receiver is not None and authorizations['receiver'] == 0
+        recomputed = prepare_launch_review(receiver.profile, review.task, environment=receiver.environment)
+        assert recomputed.plan_sha256 == review.plan_sha256
+        contract, _ = json.JSONDecoder().raw_decode(review.task.instruction.split('Host contract: ', 1)[1])
+        stored = load('producer-proposal.json')
+        assert contract['allowed_paths'] == ['review.md'] and contract['submit_for_review'] is True
+        assert contract['input_context'] == {'producer_task_id': state['task']['id'],
+            'context_id': stored['context_id'], 'context_version': stored['context_version'],
+            'content_sha256': stored['content_sha256']}
+        assert task(core, state, state['task']['id'])['task_verification'] == 'verified'
+        assert review.plan.timeout_seconds == TIMEOUT and review.plan.output_limit == OUTPUT_LIMIT
+        await gate(core, state, 'receiver', review.plan_sha256, safe_plan(review))
+        route(review.plan, 'receiver')
+        begin_capture('receiver', review.plan)
+        authorizations['receiver'] += 1
+        return LaunchConsent('continuous-receiver-' + review.plan_sha256, review.plan_sha256,
+            time.time() + 120, True, True)
+
+    def build_receiver(who, workspace):
+        nonlocal receiver
+        assert who == handoff_request(state).receiver and receiver is None
+        heartbeat(core, state)
+        record = {'task_id': workspace.task_id, 'task_version': workspace.task_version,
+            'worktree_id': workspace.worktree_id, 'head_sha': workspace.head_sha, 'path': str(workspace.path)}
+        save('receiver-state.json', record)
+        receiver = actor_for(state, 'receiver', receiver_authority, record)
+        return receiver
+
+    outcome, failure = None, None
+    begin_capture('producer', producer_review.plan)
+    try:
+        outcome = await VerifiedProposalFlow(core, BASE, BASE / 'receipts').run_once(
+            producer, spec(state), handoff_request(state), admin_token=state['owner']['admin_token'],
+            stager=RelayReviewer(state['owner']['project_id'], state['stager']['session_id'], state['stager']['session_token']),
+            reviewer=RelayReviewer(state['owner']['project_id'], state['reviewer']['session_id'], state['reviewer']['session_token']),
+            profile=DockerProfile(IMAGE, tuple(JsonCase(i, o) for i, o in CASES)),
+            approve_staging=staging_decision, approve_execution=execution_decision,
+            approve_completion=completion_decision, build_receiver=build_receiver, budget=BUDGET)
+    except Exception as exc:
+        failure = error_code(exc)
+    finally:
+        for name in ('producer', 'receiver'):
+            await finish_capture(name)
+        observed = {}
+        for name in ('producer', 'receiver'):
+            task_id = state['task']['id'] if name == 'producer' else (
+                load('receiver-state.json')['task_id'] if (BASE / 'receiver-state.json').exists() else None)
+            observed[name] = {'captured_start_invoked': name in captures and captures[name].entered,
+                'exact_authorizations': authorizations[name], 'task_id': task_id,
+                'attempts': [] if task_id is None else [attempt_summary(a) for a in runner.owner_inspect_attempts(
+                    state['owner']['project_id'], task_id, admin_token=state['owner']['admin_token'])]}
+        save('dispatch-observation.json', {'timestamp': timestamp(), 'error_code': failure,
+            'actors': observed, 'outcome': None if outcome is None else asdict(outcome)})
+    pinned(core, state)
+    assert failure is None and outcome is not None and outcome.state == 'handoff'
+    assert outcome.handoff.state == 'resolved' and authorizations == {'producer': 1, 'receiver': 1}
+    assert receiver is not None
+    reviewed = runner.observe_codex_proposal_review(receiver, outcome.handoff.task_id)
+    assert reviewed.state == 'submitted_for_review'
+    assert task(core, state, state['task']['id'])['task_verification'] == 'verified'
+    assert RelayQueue(runner).owner_observe_pending(state['owner']['project_id'], admin_token=state['owner']['admin_token']) is None
+    save('result.json', {'timestamp': timestamp(), 'product_sha': PRODUCT, 'outcome': asdict(outcome),
+        'producer_task': task_summary(task(core, state, state['task']['id'])),
+        'receiver_task': task_summary(task(core, state, outcome.handoff.task_id)),
+        'review': asdict(reviewed), 'source_and_worktrees_unchanged': True, 'queue_pending': False,
+        'real_model_calls': 2, 'verification': 'unverified', **runtime()})
+    print(json.dumps({'continuous_flow': 'resolved', 'real_model_calls': 2, 'verification': 'unverified'}))
+
+
+def main():
+    os.umask(0o077)
+    assert Path(__file__).resolve() == BASE / 'pilot.py'
+    private_directory(BASE)
+    args = sys.argv[1:]
+    if args == ['prepare']:
+        prepare()
+    elif len(args) == 2 and re.fullmatch('[0-9a-f]{64}', args[1]):
+        if args[0] == 'ready-once':
+            ready_once(args[1])
+        elif args[0] == 'execute-once':
+            asyncio.run(execute_once(args[1]))
+        else:
+            raise ValueError
+    else:
+        raise ValueError
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as exc:
+        print(json.dumps({'error_code': error_code(exc), 'retry_allowed': False}))
+        raise SystemExit(1) from None

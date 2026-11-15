@@ -32,6 +32,15 @@ received independent static review, then actual run exited0 at11:04:55Z; native
 worker/listener absence and scratch cleanup were confirmed. All 96 installed a116
 members remained unchanged. See acceptance/evidence/m9-a116-preparation/transport-recovery/current-summary.json.
 
+Current a117 real-client follow-up is prepared, not executed. The historical
+continuous two-Codex flow was adapted only for current runtime/path identities.
+All97 members match Git/wheel/installation; unchanged approval/capture semantics
+received a bounded independent prepare-only review. One actual no-model prepare
+exited0 at11:19:22Z, producing plan12cca814...661f08. No external auth was read,
+copied or mounted; the private Core state stays local. Fresh subscription/auth-copy
+authorization is still required, and no past live grant is reused. See
+acceptance/evidence/durable-demo-a117/live-preparation/lead-review.json.
+
 Resume entry: preserve and observe original Windows session97559; harvest/archive
 windows-314 only after terminal success, using existing create-only drivers.
 Then run the existing Linux benchmark, normally stop the owned VM, and run the
