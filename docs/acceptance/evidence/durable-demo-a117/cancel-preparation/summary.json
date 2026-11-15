@@ -1,0 +1,101 @@
+{
+  "recorded_at": "2026-11-15T13:25:39.524178+00:00",
+  "status": "PREPARED_NOT_RUN",
+  "source_head": "a0c3ba7fbc2f5c3f153032bd231b23fe312a088c",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "plan_sha256": "c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41",
+  "native_prepare_exit_code": 0,
+  "runtime_members_matched": 97,
+  "model_calls": 0,
+  "external_credentials_read": false,
+  "temporary_auth_copy": "NOT RUN",
+  "credential_home_mount": "NOT RUN",
+  "live_cancellation": "NOT RUN",
+  "fresh_authorization_required": true,
+  "maximum_model_calls_after_grant": 1,
+  "retry_allowed": false,
+  "scope": "owned_parent_only",
+  "static_review": {
+    "reviewer": "native Astra",
+    "five_execution_files_reviewed": true,
+    "blocking_findings": [],
+    "independent_execution": false
+  },
+  "pass_requirements": [
+    "Observed turn.started with no terminal event and the owned parent running before cancellation",
+    "Cancellation propagated; positive owned-parent terminal receipt",
+    "No terminal event in final untruncated capture",
+    "Core reopen preserves incomplete/running/unverified and unknown/local_cancel_requested; no second dispatch",
+    "Source/worktree/runtime unchanged"
+  ],
+  "missed_window": "NOT VERIFIED; no retry",
+  "unknown_parent_or_admission": "UNKNOWN; no retry or automatic cleanup without stopped proof",
+  "unverified": [
+    "server cancellation",
+    "descendant process cleanup",
+    "independent billing",
+    "real model host crash recovery",
+    "full B",
+    "formal release"
+  ],
+  "formal_release": "BLOCKED",
+  "resume": {
+    "guest_root": "/root/amadeus-cancel-a117-20261115",
+    "controller": "D:/agentsync-debug/strategy-demo/cancel-a117-preparation/run-once.py",
+    "instruction": "Only after new explicit owner grant: verify current helper/plan hashes, mount dedicated empty tmpfs, then invoke controller with exact plan SHA and --subscription-only. Never reuse consumed two-call authorization."
+  },
+  "excluded": [
+    "Core database and synthetic local tokens",
+    "external credentials",
+    "raw model capture",
+    "VM disks, seed and SSH credentials"
+  ],
+  "artifacts": {
+    "pilot.py.txt": {
+      "sha256": "0750f56b490ce2a3dcb4981ecf33444eda9f1ed34bb2ad58967a248d99d64b37",
+      "bytes": 18578
+    },
+    "run-once.py.txt": {
+      "sha256": "b16755b4f77bbcc677f866c0bfe3d900235261b463ccd25bd6134620377cb91a",
+      "bytes": 8625
+    },
+    "credential_home.py.txt": {
+      "sha256": "38b34a5deb4bf49ea910052e85a9820c7aff957ea8ae52a077433138a4ec4bb5",
+      "bytes": 4565
+    },
+    "private_capture.py.txt": {
+      "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+      "bytes": 3377
+    },
+    "runtime-members.json": {
+      "sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a",
+      "bytes": 10243
+    },
+    "prepare-host.py.txt": {
+      "sha256": "c42698cbe175d2977114da491963068f08c74c95051628e49849af8cb9095118",
+      "bytes": 4679
+    },
+    "plan.json": {
+      "sha256": "c11a16288cc0eff00ae72f91c2856f10e9d751b819934b818e4aae63aad01d98",
+      "bytes": 3306
+    },
+    "prepare-attempt.json": {
+      "sha256": "6bffdd45d66b94798feecdd6ded8bb2ef30c5176b45ed31efb10c3c0f17491a9",
+      "bytes": 815
+    },
+    "prepare-result.json": {
+      "sha256": "f796f0b33258acc3dce46e9a6fe74b7b899791ddf52e007cba5c7aa0027127af",
+      "bytes": 277
+    },
+    "prepare.log": {
+      "sha256": "d56d28824ca23dcfb73275e809b8ba05cced1bc15f22816e29d85831e765b8ef",
+      "bytes": 123
+    },
+    "vm-start.json": {
+      "sha256": "0e5f68a284c4f7cf722afaff67f9a720e644355016ca0f467ec08c2d11c0c094",
+      "bytes": 747
+    }
+  }
+}

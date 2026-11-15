@@ -97,11 +97,11 @@ and Linux3.14 source-archive installs each passed the same10 focused cases as th
 uses the same archive without rebuilding it.
 This is focused demonstration validation, not a full a117 release matrix.
 
-After installing this development version, run the following with a new absolute
-directory (choose another name for each run):
+After the Windows installation above, run the following from the repository
+directory (choose another new directory name for each run):
 
 ```powershell
-amadeus --data-dir D:\agentsync-debug\amadeus-demo-01 demo --durable
+& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-demo-01" demo --durable
 ```
 
 On Linux, an equivalent disposable location is `/tmp/amadeus-demo-01`.

@@ -97,6 +97,19 @@ acceptance/evidence/durable-demo-a117/continuation-exit/summary.json.
 This is native process/protocol-fixture recovery, not real model in-flight recovery.
 The owned Linux VM subsequently shut down normally; its disks and evidence remain.
 
+Next live cancellation fixture was prepared at2026-11-15T13:24:39Z against the
+unchanged installed a117 source package. Plan SHA
+c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41;
+fixed text only, one launch at most, local owned-parent cancellation only. Root
+and independent Astra inspected the scripts; preparation checked97 runtime
+members and the fixed CLI bytes, made zero model calls and read no external auth.
+Actual cancellation, auth copy and RAM-home mount are NOT RUN; new explicit
+single-call authorization is required. A missed cancellation window is NOT VERIFIED,
+never retried. Server cancellation, descendant cleanup and billing remain unverified.
+See acceptance/evidence/durable-demo-a117/cancel-preparation/summary.json.
+README durable examples now use the unactivated venv from their Windows install
+instructions and a fresh ignored local-data path; no product change or test rerun.
+
 Resume entry: both original queues and ordered benchmarks are complete; do not
 restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
 P0/P1 from the current a117 demonstration and the remaining evidence gaps below,

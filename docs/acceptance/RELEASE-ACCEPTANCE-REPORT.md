@@ -79,6 +79,13 @@ timing, and the unchanged tool retains aggregate timings, not every raw sample.
 No exhaustive stress, production SLO or full M8/Release conclusion follows.
 No a116 result is attributed to117.
 
+Preparation only,2026-11-15T13:24Z: the exact a117 single-call cancellation plan
+c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41 was created after
+independent static review, with97 runtime members and CLI bytes checked. Zero
+model calls, no external auth read/copy and no RAM-home mount. Actual cancellation
+is NOT RUN until a fresh grant; nothing here promotes recovery or Release status.
+See evidence/durable-demo-a117/cancel-preparation/summary.json.
+
 ## Earlier delivery checkpoint — 2026-11-15
 
 

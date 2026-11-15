@@ -106,6 +106,17 @@ remain recorded. No product code or requirement/release gate was changed; see
 acceptance/evidence/durable-demo-a117/continuation-exit/summary.json. These are
 deterministic protocol processes, not a real model failing during execution.
 
+Next single-call cancellation preparation pins the unchanged installed a117
+source package and exact plan c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41.
+Independent static review and actual preparation completed with zero model calls,
+no external credentials and97 matching runtime members. Live execution is NOT RUN
+pending fresh authorization; only local owned-parent cancellation can be proved.
+A completed-before-cancel attempt is NOT VERIFIED and cannot be retried under
+that grant. See acceptance/evidence/durable-demo-a117/cancel-preparation/summary.json.
+This fills an existing recovery evidence gap, not a new phase or release gate.
+The Windows durable-demo snippets now follow the existing no-activation install
+path and no longer assume a D drive. Documentation diff review only.
+
 Next: continue the existing P0/P1 demonstration route; retain full a117 regression,
 full release matrix and actual live crash recovery as unexecuted gaps. Further real calls require
 fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.

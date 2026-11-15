@@ -66,10 +66,10 @@ Windows3.12 的源码安装、源码包安装，以及 Linux3.14 源码包安装
 [安装证据与保留的准备失败](docs/acceptance/evidence/durable-demo-a117/sdist/summary.json)
 仅覆盖该演示的定向验证，不代表完整 a117 发布矩阵通过。
 
-安装当前开发版本后，选一个尚不存在的绝对路径运行：
+完成上面的 Windows 安装后，在项目目录运行；每次使用一个尚不存在的新目录：
 
 ```powershell
-amadeus --data-dir D:\agentsync-debug\amadeus-demo-01 demo --durable
+& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-demo-01" demo --durable
 ```
 
 Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务、保存一次
