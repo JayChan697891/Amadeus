@@ -19,8 +19,10 @@ conditional dependency edges match Linux3.11. Raw license status remains pending
 publication false. See ../releases/0.3.0a116/624b36c/linux-312/lead-review.json.
 
 Matrix 5/9: original Linux session43548 ended0. Windows session97559 remains
-active with collector23476;3.14 source passed2477/56 at11:00:45Z and wheel started
-at11:01:14Z. This partial source observation is not a completed sixth row.
+active with collector23476. Windows3.14 source and wheel each passed2477/56;
+wheel exited0 at11:44:45Z, log hash a8d087c3f247562d1b1d6c634c6646ddf9f9291e938743adbd83df9fa8ed18c5
+and all2533 case identity/outcome pairs match source. Sdist started at11:45:02Z
+in the same queue. These component observations are not a completed sixth row.
 
 Four a116 protocol-recovery scenarios now passed: Linux MCP/HTTP, Windows MCP,
 and corrected Windows HTTP. They verify committed claim, same-protocol restart,
