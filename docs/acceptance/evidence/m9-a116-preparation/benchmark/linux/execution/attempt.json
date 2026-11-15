@@ -1,0 +1,9 @@
+{
+  "started_at": "2026-11-15T12:29:58.191976+00:00",
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m116/benchmark-current.py",
+  "driver_sha256": "b5b3d523a22078077aa4b036ccfefb37ff958c3f7206f18a09378346b64175eb",
+  "windows_queue_complete": true,
+  "windows_queue_result_sha256": "35814d6a4f7519ec80a184f47221e93a09ab188d5d0414a45b7813fcc19a7032",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

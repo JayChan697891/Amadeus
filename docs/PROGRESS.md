@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15T12:10Z. Scoped engineering demonstration and
+Current checkpoint — 2026-11-15T12:34Z. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
@@ -18,11 +18,23 @@ Both 31-package license inventories match each other; the three Python-minor
 conditional dependency edges match Linux3.11. Raw license status remains pending,
 publication false. See ../releases/0.3.0a116/624b36c/linux-312/lead-review.json.
 
-Matrix 5/9: original Linux session43548 ended0. Windows session97559 remains
-active with collector23476. Windows3.14 source and wheel each passed2477/56;
-wheel exited0 at11:44:45Z, log hash a8d087c3f247562d1b1d6c634c6646ddf9f9291e938743adbd83df9fa8ed18c5
-and all2533 case identity/outcome pairs match source. Sdist started at11:45:02Z
-in the same queue. These component observations are not a completed sixth row.
+Matrix 6/9: original Windows session97559 ended0 at12:29:23Z, after Linux43548
+had ended0. Windows3.14 completed26 checks; source/wheel/sdist each2477pass56skip,
+2533 unique identities/outcomes equal Windows3.12.69 original files/6,659,997bytes
+were copied exactly;3122 frozen source paths verified. Its32 distribution records
+match Windows3.12; only three Python-conditional typing-extensions dependency
+edges are absent. Both inventories remain pending/publication false. No collectors
+remain. macOS3.11/3.12/3.14 are the three missing rows. See
+../releases/0.3.0a116/624b36c/windows-314/lead-review.json and matrix-after-windows314.json.
+
+The unchanged a116 bounded benchmark ran after both queues finished: Linux first,
+then normal owned-VM shutdown and Windows. Each platform passed7 native checks,
+including4threads x20 claims and2processes/mixed HTTP x20 claims, with the original
+1000ms p95 budget. Linux p95:25.98/42.00ms; Windows:16.27/25.12ms. All declared
+functional/audit checks passed;96 installed members matched before/after,3122
+source files stayed unchanged, scratch empty. This is a small diagnostic, not a
+production SLO or exhaustive stress test. Linux VM and read-only NBD helper exited;
+disks/evidence are preserved. See acceptance/evidence/m9-a116-preparation/benchmark/.
 
 Four a116 protocol-recovery scenarios now passed: Linux MCP/HTTP, Windows MCP,
 and corrected Windows HTTP. They verify committed claim, same-protocol restart,
@@ -50,10 +62,10 @@ authorization is consumed; no retry or additional live call is permitted by it.
 Evidence: acceptance/evidence/durable-demo-a117/live/summary.json. Earlier
 live-preparation records remain unchanged as the original no-model checkpoint.
 
-Resume entry: preserve and observe original Windows session97559; harvest/archive
-windows-314 only after terminal success, using existing create-only drivers.
-Then run the existing Linux benchmark, normally stop the owned VM, and run the
-Windows benchmark. Both benchmarks remain NOT RUN; no duplicate collectors.
+Resume entry: both original queues and ordered benchmarks are complete; do not
+restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
+P0/P1 from the current a117 demonstration and the remaining evidence gaps below,
+using affected regression only. Keep a116 full-matrix evidence separate from a117.
 No additional model/auth action, paid API, Actions, main change or publication.
 Future live calls require fresh authorization; macOS and real Claude/Cursor still
 lack an available authorized environment. No full a117 regression

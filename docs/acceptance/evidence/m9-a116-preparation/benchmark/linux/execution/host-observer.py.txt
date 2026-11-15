@@ -1,0 +1,58 @@
+"""Observe one existing, reviewed benchmark; never retry a disconnected run."""
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import time
+
+import paramiko
+
+base = Path('D:/agentsync-debug/m116')
+queue = json.loads((base/'remaining-windows-queue/result.json').read_bytes())
+assert queue['complete'] is True
+assert all(r['exit_code'] == 0 and r['strict_evidence_verified'] is True for r in queue['rows'])
+out = base/'benchmark-execution/linux'
+out.mkdir(parents=True, exist_ok=False)
+command = '/root/jobs-env/bin/python -I -B /root/amadeus-m116/benchmark-current.py'
+expected = 'b5b3d523a22078077aa4b036ccfefb37ff958c3f7206f18a09378346b64175eb'
+c = paramiko.SSHClient()
+c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.set_missing_host_key_policy(paramiko.RejectPolicy())
+c.connect('127.0.0.1', port=22222, username='root',
+          key_filename='D:/agentsync-debug/vm/debug_ed25519',
+          look_for_keys=False, allow_agent=False, timeout=10)
+try:
+    with c.open_sftp() as s:
+        with s.open('/root/amadeus-m116/benchmark-current.py', 'rb') as f:
+            assert hashlib.sha256(f.read()).hexdigest() == expected
+    attempt = dict(started_at=datetime.now(timezone.utc).isoformat(), command=command,
+                   driver_sha256=expected, windows_queue_complete=True,
+                   windows_queue_result_sha256=hashlib.sha256((base/'remaining-windows-queue/result.json').read_bytes()).hexdigest(),
+                   automatic_retry=False, formal_release='BLOCKED')
+    with (out/'attempt.json').open('x', encoding='utf-8') as f:
+        json.dump(attempt, f, indent=2)
+    channel = c.get_transport().open_session(timeout=10)
+    channel.set_combine_stderr(True)
+    channel.exec_command(command)
+    total = 0
+    with (out/'command.log').open('xb') as f:
+        while True:
+            while channel.recv_ready():
+                data = channel.recv(65536)
+                total += len(data)
+                assert total <= 1024*1024
+                f.write(data)
+                f.flush()
+            if channel.exit_status_ready() and not channel.recv_ready():
+                break
+            time.sleep(0.2)
+    code = channel.recv_exit_status()
+    terminal = dict(finished_at=datetime.now(timezone.utc).isoformat(), exit_code=code,
+                    log_sha256=hashlib.sha256((out/'command.log').read_bytes()).hexdigest(),
+                    automatic_retry=False, formal_release='BLOCKED')
+    with (out/'terminal.json').open('x', encoding='utf-8') as f:
+        json.dump(terminal, f, indent=2)
+    print(json.dumps(terminal), flush=True)
+    raise SystemExit(code)
+finally:
+    c.close()

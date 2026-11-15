@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-11-15T12:36:17.358614+00:00",
+  "native_session": 36090,
+  "exit_code": 0,
+  "command": [
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "D:/agentsync-debug/m116/benchmark-current.py"
+  ],
+  "result_sha256": "fd4a9696726a1cb4be5bf852577b60ecad5a6563ec8bfb2368f4e918302f5104",
+  "linux_vm_and_readonly_nbd_exited_before_start": true,
+  "ordering_evidence": "../../linux/execution/shutdown-result.json",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

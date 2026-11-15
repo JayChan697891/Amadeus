@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-15T12:33:26.6246591Z",
+  "linux_vm_gracefully_exited": true,
+  "readonly_nbd_helper_stopped": true,
+  "original_vm_pid": 6440,
+  "original_nbd_pid": 22436,
+  "nbd_creation_utc": "2026-11-15T07:49:40.966623Z",
+  "files_and_disks": "Preserved",
+  "scope": "Owned idle local test runtime cleanup after both queues and Linux benchmark completed",
+  "formal_release": "BLOCKED"
+}

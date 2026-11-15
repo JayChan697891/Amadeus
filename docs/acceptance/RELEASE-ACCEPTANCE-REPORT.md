@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15T12:10Z
+## Current scoped outcome — 2026-11-15T12:34Z
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
 Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
@@ -24,12 +24,15 @@ See evidence/durable-demo-a117/verified-linux/lead-review.json. Windows/Linux
 durable console observations and focused Windows10+pilotCLI5 checks are separate;
 full117 regression/sdist remains NOT RUN.
 
-Frozen116/624b36c matrix is5/9. Linux3.12 completed26 checks and source/wheel/sdist
-each2526pass7skip;174 original files and3122 frozen source paths verified. Selected
-case/Docker delta agrees with the independently reviewed Linux3.14 reference.
-See ../../releases/0.3.0a116/624b36c/linux-312/lead-review.json and
-../../releases/0.3.0a116/624b36c/matrix-after-linux312.json. Original Windows3.14
-source and wheel have each passed2477/56; sdist is running. macOS remains NOT RUN.
+Frozen116/624b36c matrix is6/9. All six Windows/Linux3.11/3.12/3.14 rows completed26
+checks each. Every source/wheel/sdist suite has2533 unique matching cases; Windows
+each2477pass56skip, Linux2526pass7skip. Windows3.14 finished12:29:23Z;69 original
+files/6,659,997bytes and3122 frozen source paths verified. Its three suites match
+Windows3.12 outcomes;32 distribution records match, with only three Python-conditional
+dependency edges removed. Raw license reviews remain pending/publication false.
+See ../../releases/0.3.0a116/624b36c/windows-314/lead-review.json and
+../../releases/0.3.0a116/624b36c/matrix-after-windows314.json. Mac's three rows remain
+NOT RUN. Both original queues ended0 and were not repeated.
 
 Four exact116-wheel recovery observations now pass: MCP and HTTP on Linux and
 Windows. Windows HTTP's first attempt failed at closure observation; its original
@@ -38,8 +41,19 @@ ended and native listener absent before restart; it passed without repeating MCP
 or changing product code. See evidence/m9-a116-preparation/transport-recovery/current-summary.json.
 These scoped deterministic cases are not real-client recovery, performance, full
 M8 or Release acceptance. The JUnit supplements are labelled report-derived
-actual scenario observations, not pytest runs. Ordered benchmarks remain NOT RUN
-until the original Windows queue finishes. No historical test is attributed to117.
+actual scenario observations, not pytest runs.
+
+The unchanged bounded benchmark subsequently passed7 native checks per platform:
+4threads x20 claims and2processes/mixed HTTP x20 claims. Linux p95 25.98/42.00ms;
+Windows16.27/25.12ms, against the fixed1000ms budget. Exact claim audit, single-winner,
+SQLite and other declared functional checks passed.96 installed members matched
+before/after and3122 frozen source paths were unchanged. Both queues ended before
+Linux ran; the owned VM shut down normally before Windows ran. Original disks and
+logs remain. See evidence/m9-a116-preparation/benchmark/{linux,windows}/lead-review.json.
+These are small diagnostic workloads; setup/verification/cleanup are outside claim
+timing, and the unchanged tool retains aggregate timings, not every raw sample.
+No exhaustive stress, production SLO or full M8/Release conclusion follows.
+No a116 result is attributed to117.
 
 ## Earlier delivery checkpoint — 2026-11-15
 

@@ -1,0 +1,51 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-sowd__q0\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m116\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b",
+    "started_at": "2026-11-15T11:01:14.432744+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-sowd__q0\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m116\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b",
+    "exit_code": 0,
+    "started_at": "2026-11-15T11:01:14.432744+00:00",
+    "finished_at": "2026-11-15T11:44:45.642552+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "a8d087c3f247562d1b1d6c634c6646ddf9f9291e938743adbd83df9fa8ed18c5",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

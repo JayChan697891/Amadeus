@@ -28,7 +28,7 @@ SHA. Product changes receive affected regression; documentation receives diff re
 | --- | --- | --- |
 | A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | The local engineering demo is now runnable: Windows/Linux durable CLI and Linux isolated verification plus proof handoff/reopen. The separate current117 two-Codex controlled path also passed with four exact host gates and zero-launch reopen. Limited demonstrations are available now; no full B/Release claim. |
 | B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | Current117 same-vendor generation, Docker verification, pinned context handoff, document review and zero-launch reopen passed. Actual live crash recovery, cross-vendor access and unattended policy remain unproven; no calendar promise for unavailable clients. |
-| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Current frozen matrix has five complete rows; the original Windows3.14 queue continues, macOS is unavailable. A/B cannot change this conclusion. |
+| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Frozen a116 matrix has six complete rows; macOS is unavailable. Both original queues and bounded Windows/Linux benchmarks finished. A/B cannot change this conclusion. |
 
 Already usable: SDK/CLI/MCP/HTTP share a persistent SQLite Core; durable Mock
 workflows, structured handoff, separate reviewer identities, exact candidate
@@ -42,14 +42,13 @@ recovery run or an unattended approval policy. Those missing proofs remain visib
 
 Parallel work is confined to the F-drive development checkout and separate D-drive
 demo scratch. Leave `D:/agentsync-debug/m116/s`, original package bytes and native
-Windows session97559/Linux session43548 untouched. Observe and harvest their
-natural completion; do not duplicate or stop collectors. The Linux queue completed
-naturally before the real Docker demo. Independent M8
-correctness fixtures used separate exact-wheel installs and are now complete;
-they did not wait for or alter the benchmark. The unchanged benchmark still waits
-for both original queues, then runs Linux, normal VM shutdown, and Windows.
+Windows session97559/Linux session43548 untouched. Both finished naturally and
+their results were harvested; do not restart these completed collectors. The Linux
+queue completed before the real Docker demo. Independent M8 correctness fixtures
+used separate exact-wheel installs. The unchanged bounded benchmarks subsequently
+passed in order: both queues complete, Linux, normal owned-VM shutdown, Windows.
 
-## Current delivery checkpoint — 2026-11-15T12:10Z
+## Current delivery checkpoint — 2026-11-15T12:34Z
 
 The current117 real two-Codex flow now has limited actual acceptance after fresh
 owner authorization: two native calls, four exact host approvals,8 Docker cases,
@@ -71,7 +70,9 @@ The durable CLI already ran on Windows/Linux; its simulation remains unverified.
 The original116 Linux3.12 row completed all26 checks: three suites each2526pass,
 7skip,2533 matching case identities. Its174 original files were retained, source
 identity verified, and105 selected Docker outcome projections matched Linux3.14.
-Matrix5/9. Original Windows3.14 source and wheel each passed2477/56; sdist is running.
+Windows3.14 then completed all26 checks at12:29:23Z: three suites each2477pass56skip,
+2533 identities/outcomes matching Windows3.12.69 original files and3122 frozen
+source paths verified. Matrix6/9; only macOS rows remain unavailable.
 
 RAT-M8-02 HTTP/MCP same-protocol forced-exit/restart fixtures passed on both local
 platforms against the same116 wheel. Windows first HTTP closure observation failed;
@@ -80,9 +81,15 @@ heuristic with native worker/listener identity proof. See
 [the four scoped observations](acceptance/evidence/m9-a116-preparation/transport-recovery/current-summary.json).
 This closes those four correctness gaps, not performance, all M8 or Release.
 
-Next: observe original Windows session97559 to natural completion and archive its
-row; then run the unchanged ordered benchmarks. Additional live calls need fresh
-authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
+The original bounded benchmark also passed on both platforms after the queues:
+Linux p95 25.98/42.00ms, Windows16.27/25.12ms for threads/process-HTTP respectively,
+against the unchanged1000ms budget.96 installed files and3122 source paths remained
+unchanged. Native receipts, actual reports and ordering/VM shutdown evidence are
+under acceptance/evidence/m9-a116-preparation/benchmark/. No production SLO claim.
+
+Next: continue the existing P0/P1 demonstration route; retain full a117 regression/
+sdist and actual live crash recovery as unexecuted gaps. Further real calls require
+fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
 No new M5 stage, new release gate or repeated full acceptance was introduced.
 
 ## Preserved frozen-candidate execution and historical plan

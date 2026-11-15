@@ -1,0 +1,117 @@
+{
+  "observed_at": "2026-11-15T12:32:15.917542+00:00",
+  "scope": "Bounded installed-runtime contention diagnostic; not production SLO or exhaustive stress",
+  "system": "linux",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "runtime_members_unchanged": 96,
+  "source_files_verified": 3122,
+  "checks": 7,
+  "metrics": [
+    {
+      "mode": "threads",
+      "claims": 80,
+      "p95_ms": 25.983628998801578,
+      "p95_budget_ms": 1000
+    },
+    {
+      "mode": "process-http",
+      "claims": 40,
+      "p95_ms": 41.99913199772709,
+      "p95_budget_ms": 1000
+    }
+  ],
+  "files": [
+    {
+      "path": "result.json",
+      "size": 19577,
+      "sha256": "b734d0bed025b31e3fb7ea62c586fb8360b7b2cba2c62b6d1afea4506122d7ad"
+    },
+    {
+      "path": "attempt.json",
+      "size": 711,
+      "sha256": "8209aadbbd2d0e5c173a164923b572c56c367df3ca3b6620d9aa4b5412640305"
+    },
+    {
+      "path": "threads.json",
+      "size": 3700,
+      "sha256": "9ad1ebf046ad5fd510f07efbd27b877a67eceb515544c2e3fe54141e744ba954"
+    },
+    {
+      "path": "process-http.json",
+      "size": 5241,
+      "sha256": "b36fc7768449193732cc8b5ea153cc8e075f500bda6bfbd0afe4b5d30abd97f1"
+    },
+    {
+      "path": "logs/benchmark_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/benchmark_venv.process.json",
+      "size": 1218,
+      "sha256": "53df6fe2ba288c366524093fa5d1ab764cb533310b54e14f3a1baf5fabfea345"
+    },
+    {
+      "path": "logs/benchmark_install.log",
+      "size": 5013,
+      "sha256": "e3709da781e71332d113c570a2eb82cc5beb97632d8241184ad7d7010fbf4e88"
+    },
+    {
+      "path": "logs/benchmark_install.process.json",
+      "size": 1687,
+      "sha256": "57e1f11c36ba9eacfcc49f58724e96e9a835f31ef78875debb603360d89c3896"
+    },
+    {
+      "path": "logs/benchmark_dependencies.log",
+      "size": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "path": "logs/benchmark_dependencies.process.json",
+      "size": 1222,
+      "sha256": "9fc9db2c458f8916e2f92f7aec64df815c039fb118e488094cc2ec5a9f13c6fc"
+    },
+    {
+      "path": "logs/benchmark_origin_before.log",
+      "size": 13105,
+      "sha256": "857f3cdb7f688d53a50c317193a0ba5eae67e4760b3d3a09d3ac509c7097877c"
+    },
+    {
+      "path": "logs/benchmark_origin_before.process.json",
+      "size": 3669,
+      "sha256": "f1b378fd6d8aa489bfac6cb1660a422e15a0e4460d96ba6a3c3a0a7861d3dfe6"
+    },
+    {
+      "path": "logs/threads.log",
+      "size": 2618,
+      "sha256": "4fd60fab3f02734caa58ea6092a0aec0732896157827aa5022a835bd15bcf571"
+    },
+    {
+      "path": "logs/threads.process.json",
+      "size": 1569,
+      "sha256": "2e20da3448e95320c93c55e65c84a6c57968679141f599a0862c0ee8238133d2"
+    },
+    {
+      "path": "logs/process-http.log",
+      "size": 3808,
+      "sha256": "7181984ce75794e43af136fb1f7c9b0047d026631715b6cf14721cf6e72a0071"
+    },
+    {
+      "path": "logs/process-http.process.json",
+      "size": 1676,
+      "sha256": "75c197108c45eb28bb97722a4c58712082f45e181d8b6b4a019f71fcf73e18da"
+    },
+    {
+      "path": "logs/benchmark_origin_after.log",
+      "size": 13105,
+      "sha256": "857f3cdb7f688d53a50c317193a0ba5eae67e4760b3d3a09d3ac509c7097877c"
+    },
+    {
+      "path": "logs/benchmark_origin_after.process.json",
+      "size": 3666,
+      "sha256": "c0c5f355be9c13717aea70fb15cdae8a7ad47c240d3aa9e4fcae1c8058424d91"
+    }
+  ],
+  "timing_limit": "Claim latency excludes setup, verification and cleanup; raw per-claim timings were not retained by the unchanged tool",
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,170 @@
+{
+  "package_version": "0.3.0a116",
+  "scope": "local_core_claim_contention",
+  "diagnostic_only": true,
+  "formal_acceptance": false,
+  "real_client_verified": false,
+  "workload": {
+    "workers": 4,
+    "rounds": 20,
+    "claims": 80,
+    "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+    "throughput_denominator": "sum_of_round_claim_spans"
+  },
+  "claim_latency_ms": {
+    "p50": 11.019899997336324,
+    "p95": 16.27310000185389,
+    "p99": 22.195699995791074
+  },
+  "timed_workload_seconds": 0.3264795999857597,
+  "throughput_claim_attempts_per_second": 245.0382811161537,
+  "declared_p95_budget_ms": 1000.0,
+  "p95_budget_passed": true,
+  "round_observations": [
+    {
+      "round": 1,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 2,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 3,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 4,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 5,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 6,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 7,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 8,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 9,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 10,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 11,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 12,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 13,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 14,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 15,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 16,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 17,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 18,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 19,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    },
+    {
+      "round": 20,
+      "winners": 1,
+      "expected_version_conflicts": 3,
+      "unexpected_errors": 0
+    }
+  ],
+  "unexpected_errors": {},
+  "claim_audit": {
+    "expected": 80,
+    "observed": 80,
+    "success": 20,
+    "denied": 60,
+    "missing": 0,
+    "duplicate": 0,
+    "unexpected": 0,
+    "mismatch": 0
+  },
+  "functional_checks": {
+    "persisted_winners": true,
+    "cancelled_status_versions": true,
+    "persisted_task_count": true,
+    "sqlite_integrity": true,
+    "foreign_keys": true,
+    "claim_audit_complete": true,
+    "rounds_completed": true,
+    "claims_measured": true,
+    "single_winner_each_round": true,
+    "expected_conflicts": true,
+    "valid_timing": true
+  },
+  "passed": true
+}
