@@ -1,0 +1,513 @@
+{
+  "schema_version": 1,
+  "scope": "complete_windows312_local_row_transfer",
+  "observed_at": "2026-11-15T07:46:35.156902+00:00",
+  "frozen": {
+    "version": "0.3.0a116",
+    "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+    "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+    "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82"
+  },
+  "native_session": 85611,
+  "native_exit_code": 0,
+  "native_finished_at": "2026-11-15T07:29:12.929862+00:00",
+  "successful_native_checks": 26,
+  "junit": {
+    "junit.xml": {
+      "passed": 2477,
+      "skipped": 56,
+      "failed": 0,
+      "error": 0
+    },
+    "wheel-junit.xml": {
+      "passed": 2477,
+      "skipped": 56,
+      "failed": 0,
+      "error": 0
+    },
+    "sdist-junit.xml": {
+      "passed": 2477,
+      "skipped": 56,
+      "failed": 0,
+      "error": 0
+    }
+  },
+  "identities_and_outcomes_equal": true,
+  "artifact_audit": {
+    "manifest_members": 63,
+    "process_logs": 26,
+    "source_snapshot_entries": 3122,
+    "git_source_audit": {
+      "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+      "git_source_paths": 3122,
+      "unique_git_blobs": 2617
+    },
+    "installed_artifact_sha256": {
+      "wheel": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+      "sdist": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0"
+    },
+    "installed_license_inventories": {
+      "wheel": {
+        "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+        "review_item_count": 0,
+        "review": "pending"
+      },
+      "sdist": {
+        "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+        "review_item_count": 0,
+        "review": "pending"
+      }
+    },
+    "offline_resolution": {
+      "state": "manifest_and_commands_checked",
+      "manifest_sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+      "recorded_wheels": 60,
+      "staged_wheel_bytes_verified": false
+    },
+    "junit_case_set_sha256": {
+      "pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+      "wheel_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+      "sdist_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0"
+    },
+    "junit_case_sets_match": true,
+    "producer_authenticated": false
+  },
+  "manifest_verification": {
+    "schema_version": 1,
+    "scope": "local_release_artifact_manifest_verification",
+    "manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+    "frozen": {
+      "version": "0.3.0a116",
+      "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+      "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+      "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82"
+    },
+    "matrix_sha256": "5d850dd9bff0e6410eda1bc1222bf6f953743c0348a3e56fda0080dae8dbb167",
+    "local_matrix": "incomplete",
+    "build_report": {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/report.json",
+      "sha256": "0d06383631ffc38d06f6f9e49966226aac67ecfbf36e5b163cc144c8b3f966a3",
+      "system": "Windows"
+    },
+    "checked_artifacts": [
+      {
+        "kind": "sdist",
+        "filename": "agentsync_local-0.3.0a116.tar.gz",
+        "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116.tar.gz",
+        "sha256": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0",
+        "size": 3669635
+      },
+      {
+        "kind": "wheel",
+        "filename": "agentsync_local-0.3.0a116-py3-none-any.whl",
+        "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl",
+        "sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+        "size": 320003
+      }
+    ],
+    "artifact_bytes_verified": true,
+    "build_report_bytes_verified": true,
+    "producer_authenticated": false,
+    "formal_release_acceptance": "blocked",
+    "publication_authorized": false
+  },
+  "files": [
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl",
+      "sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+      "size": 320003
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116.tar.gz",
+      "sha256": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0",
+      "size": 3669635
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/junit.xml",
+      "sha256": "9045a971763ae894b8b8dbf194f00c6132b3f6e4fb67480edb36e68b3809b06c",
+      "size": 399534
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/build.log",
+      "sha256": "b9d1b38cd77099d52abeb69b7ba03b01b82e5599ad7d18e1694471660e3ed2bc",
+      "size": 211601
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/build.process.json",
+      "sha256": "598ea9d190ade9aa777b3abd07e102055e3cb97440fde6a08a23f776ba9d4105",
+      "size": 1479
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/format.log",
+      "sha256": "96beb46882cf0ae91ed615e69559cf524e64997efe2ec68356cd7a75f13c6c65",
+      "size": 29
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/format.process.json",
+      "sha256": "076b3478d7256abd94e356c2cbfd81d84a24f50e74dd173cbeedcd7ea67ae9b2",
+      "size": 1242
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/mypy.log",
+      "sha256": "d2ecf161b250ccb8ffbf6c356c68aa4bfeeaff2d019d85df716f1db13415f171",
+      "size": 46
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/mypy.process.json",
+      "sha256": "d312d41f55365450d224a417029030adb7f29211dca99e028023e4af063c761f",
+      "size": 1148
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/offline_build_tools.log",
+      "sha256": "45aaca0aa7b8e606351435be960a680eb4154a67518f7b3cb532829cbad43747",
+      "size": 1083
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/offline_build_tools.process.json",
+      "sha256": "90a04b421daf5751a07e7f154bfbbe9521b410afa695b18b7409740e4d2f991a",
+      "size": 1935
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/offline_build_venv.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/offline_build_venv.process.json",
+      "sha256": "886ce517208f6046cd1f683044f69286f41d40d65aba6bc944a1f96d8e32981c",
+      "size": 1338
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/pip_check.log",
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "size": 32
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/pip_check.process.json",
+      "sha256": "96db7b14ab8736d03125b7a129161b8e7093d369f9e8c9cc34d1cf6b6ce6e732",
+      "size": 1191
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/pytest.log",
+      "sha256": "88e372691e645cd4ba38d2fd2b86f329820f20e4dc91a1864f5a44db0e200392",
+      "size": 18027
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/pytest.process.json",
+      "sha256": "186b96c689cbd586acc1d240dbd3b21257d44d5dfe42637e9b789043c3d6200f",
+      "size": 1542
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "size": 20
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/ruff.process.json",
+      "sha256": "ef1594fe31746c6806b6596fe27907c328adcb2ec5fdcec426a7e55fd9220889",
+      "size": 1200
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_cli.log",
+      "sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471",
+      "size": 1509
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_cli.process.json",
+      "sha256": "1fa9ca458f191c83231368f5cc4ae774bbd95674cd48004ba9c4683052669f4b",
+      "size": 1351
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_console_smoke.log",
+      "sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+      "size": 59
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_console_smoke.process.json",
+      "sha256": "8a9938f4b52c89bb748f76fcd83fae860f5cf684dc534a39b51ef93ac1d9877d",
+      "size": 4839
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_install.log",
+      "sha256": "82767ebed11f0bb9702426f9fc612884154aec679a9fb9b19a45a4d43fb91375",
+      "size": 1024
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_install.process.json",
+      "sha256": "48a3be1d705a74658a90720d570b6356c3bfa68340e10cfee67bfc7e22e816a3",
+      "size": 2173
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_license_inventory.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_license_inventory.process.json",
+      "sha256": "1a28e7c8d69dce4ef91b6d9caf071461c753dd805da9300097d0b4610e008100",
+      "size": 1531
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_offline_dependencies.log",
+      "sha256": "413ae55f11a52b8bc8e179b9a5ac11e42a0697e5329438890f7a7eee734f5589",
+      "size": 8727
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_offline_dependencies.process.json",
+      "sha256": "14ac8d42f57512af912957be486c924feffa6aa7850083ddf82d32c7af0cf923",
+      "size": 2450
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_origin_sdk.log",
+      "sha256": "3d4f346bca9314335db0d0ca22ee3eae3f15b7e21fcd7a8780e4e11d47720d23",
+      "size": 151
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_origin_sdk.process.json",
+      "sha256": "12744fe9512f9c86c40a709d2ad1765f5d3d326755874a662398b461c2c32861",
+      "size": 4052
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_pip_check.log",
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "size": 32
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_pip_check.process.json",
+      "sha256": "f69fbdc470e815152e3b8c4c2247db5f6275322806d3dd528a3a2f80e6e2dfc9",
+      "size": 1355
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_pytest.log",
+      "sha256": "2505ba13f76dedac412b2573f24ef3efecc6e9f3bc5f8d1b70ff6f04054f156f",
+      "size": 20344
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_pytest.process.json",
+      "sha256": "3388447aab6fddf14d83fa8327cc6332703cbe9f097fef71e3a4dc58f127bf92",
+      "size": 1820
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_venv.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/sdist_venv.process.json",
+      "sha256": "20eef3ebe54a074809448e5d1b85f73c5e68ec0b8e7505bca7858ccc9b91b518",
+      "size": 1432
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_cli.log",
+      "sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471",
+      "size": 1509
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_cli.process.json",
+      "sha256": "05dca6a130b6e42a6746ef0f9a905d376b02e7cff54ffe9c72339744acfd1a0c",
+      "size": 1351
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_console_smoke.log",
+      "sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+      "size": 59
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_console_smoke.process.json",
+      "sha256": "64b5284dba32b9221e2a76452821acc8d8bc93228aabb6f9fde034dbcabf59a0",
+      "size": 4839
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_install.log",
+      "sha256": "49a540e5177528fa393490605678aa2a08c7d286bf0f2114de88f23a0ce09cc2",
+      "size": 327
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_install.process.json",
+      "sha256": "3bde6ffdffa2dbfac0e5cfea93d6e3e63ee8fec4e33a4c0e6a061655d58a1fee",
+      "size": 2133
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_license_inventory.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_license_inventory.process.json",
+      "sha256": "2ad62b7a8fa6312442d7e71822f3ce9c7cb320f665889ba57d9ee2788a042729",
+      "size": 1531
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_offline_dependencies.log",
+      "sha256": "8cfdf907bddffdd5a14d213fb70a725e0aeb679b9bfb81f0fb86efb73a34be39",
+      "size": 8464
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_offline_dependencies.process.json",
+      "sha256": "d6c797b28c054bbd8f0d541584b12dbd5915c4bee0dd818a24e63fcc4b6df6df",
+      "size": 2348
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_origin_sdk.log",
+      "sha256": "120368d3b18dba3fce80d388b4c8a3d5766280e5986046238219ca54673feb2e",
+      "size": 139
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_origin_sdk.process.json",
+      "sha256": "abc07135a2ae213573eac53e668f12b0187cc22e2e379c529e470d91ff0f0299",
+      "size": 4042
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_pip_check.log",
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "size": 32
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_pip_check.process.json",
+      "sha256": "c844ead7e87bd316d7a5a9e60886fbfa32c8004ac6488a030d5d9f414a21cf5c",
+      "size": 1355
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_pytest.log",
+      "sha256": "055975685c590ab9706ea52f0591d1e6a83820d4422bc70939de779f56552118",
+      "size": 20344
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_pytest.process.json",
+      "sha256": "cc0595eda0a3e5cdb1a8606745d0195e942a342235749a9133757b4525f8f174",
+      "size": 1820
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_venv.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/logs/wheel_venv.process.json",
+      "sha256": "348cb4ac5ccafca70c01fb4277c84b4f39be265a7d48877fd0f93ee60a3b48de",
+      "size": 1316
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/offline-wheelhouse.json",
+      "sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+      "size": 10131
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/requirements.json",
+      "sha256": "708cde7499735a5e2ba44373c0d0ceb116aa0b47d42c36ed91121931b193379a",
+      "size": 90090
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/sdist-junit.xml",
+      "sha256": "9fd35a3b63709d07dcdf67e65b0935b22f0dd78d4edfc7b62a5b940b0301f762",
+      "size": 399586
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/sdist-license-inventory.json",
+      "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+      "size": 23086
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/source-snapshot.json",
+      "sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82",
+      "size": 621555
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/wheel-junit.xml",
+      "sha256": "0fca9e56256c3efe3f164113a65342cfd14566e5236ce2fba174927acf459de8",
+      "size": 399585
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/wheel-license-inventory.json",
+      "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+      "size": 23086
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/working-tree.patch",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/report.json",
+      "sha256": "0d06383631ffc38d06f6f9e49966226aac67ecfbf36e5b163cc144c8b3f966a3",
+      "size": 341522
+    },
+    {
+      "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/Release-Acceptance-Report.md",
+      "sha256": "f97527d937c2ca5be9f8fc39773ce8a06b6d00bae964c2e907fa026c74b98813",
+      "size": 84187
+    },
+    {
+      "path": "windows-312/attempt.json",
+      "sha256": "bf07e857ed6595b0f48c682de3d6610397ca6175a0f575d097d5ff18fa976883",
+      "size": 736
+    },
+    {
+      "path": "windows-312/result.json",
+      "sha256": "9d0e125b6b55626ebde7fedcf275d052dd2a2fad14478b315faf5edbdedb978d",
+      "size": 1152
+    },
+    {
+      "path": "candidate-bootstrap.json",
+      "sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+      "size": 1490
+    },
+    {
+      "path": "candidate-verification.json",
+      "sha256": "bd5b40bb92a42573d152910bf68eb5e22691d60cbfdefda5072f7dda374c6908",
+      "size": 1637
+    },
+    {
+      "path": "matrix-after-windows312.json",
+      "sha256": "d16d86b1c55e251c81f2739c1ed82bd2305a7c037dc431c132c73ce10142e29c",
+      "size": 4282
+    }
+  ],
+  "file_count": 70,
+  "prior_committed_members_preserved": 7,
+  "scratch_cleanup_observed": true,
+  "raw_junit_uploaded": false,
+  "independent_review": {
+    "agent": "astra_license_exit_review",
+    "scope": "bounded_read_only_row_and_queue_prerequisites",
+    "concrete_blocker_found": false,
+    "whole_product_acceptance": false
+  },
+  "local_matrix": "incomplete",
+  "missing_os_python_combinations": [
+    {
+      "system": "Linux",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "Linux",
+      "python_minor": "3.12"
+    },
+    {
+      "system": "Linux",
+      "python_minor": "3.14"
+    },
+    {
+      "system": "Windows",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "Windows",
+      "python_minor": "3.14"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.12"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.14"
+    }
+  ],
+  "formal_release": "BLOCKED",
+  "real_model_calls": "NOT RUN"
+}

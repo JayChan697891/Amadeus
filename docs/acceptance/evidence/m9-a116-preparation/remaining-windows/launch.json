@@ -1,0 +1,45 @@
+{
+  "scope": "actual_local_windows_queue_launch",
+  "native_session": 97559,
+  "queue": {
+    "started_at": "2026-11-15T07:47:06.935202+00:00",
+    "pid": 15484,
+    "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+    "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+    "rows": [
+      "windows-311",
+      "windows-314"
+    ],
+    "automatic_retry": false
+  },
+  "child_process": {
+    "pid": 26792,
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m116-remaining-windows.py",
+      "--row",
+      "windows-311"
+    ],
+    "started_at": "2026-11-15T07:47:06.945969+00:00"
+  },
+  "first_row": {
+    "phase": "started",
+    "row": "windows-311",
+    "pid": 16204,
+    "started_at": "2026-11-15T07:47:08.372043+00:00",
+    "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+    "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+    "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+    "driver_sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
+    "automatic_retry": false,
+    "formal_release": "BLOCKED",
+    "real_models": "NOT RUN"
+  },
+  "windows_311": "RUNNING",
+  "windows_314": "QUEUED_NOT_RUN",
+  "formal_release": "BLOCKED",
+  "duplicate_host_collector_check": "No project Python or QEMU processes before launch; unrelated desktop usage collector preserved.",
+  "observer_timeout": "Does not authorize restart; inspect original process and receipts."
+}

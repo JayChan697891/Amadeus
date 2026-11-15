@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_console_smoke",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-nzihuh7a\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-console-probe",
+    "started_at": "2026-11-15T05:57:07.602317+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_console_smoke",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-nzihuh7a\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-15T05:57:07.602317+00:00",
+    "finished_at": "2026-11-15T05:57:08.294963+00:00",
+    "log": "logs/wheel_console_smoke.log",
+    "log_sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

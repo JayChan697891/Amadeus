@@ -1,82 +1,49 @@
 # Amadeus current progress
 
-Current continuation: corrected candidate0.3.0a116 is frozen at624b36c039a90feb9340559ac773f9df08ba86ad from the preserved
-015ad52 repair. Relative to frozen b6f05f0, runtime code is unchanged except the
-version; the changes are the Windows Git test helper/regression, six explicit
-redaction-case labels and the already-reviewed composite verifier/tests. The
-candidate uses a new clean frozen source identity with existing gates.
-Collection-only preflight found2533 cases, all2533 unique after sanitization;
-Ruff and format checks passed. Full Windows3.12 collection started at2026-11-15T05:12:00Z,
-native session85611/driver PID2804. Source pytest finished at05:56:39Z, exit0:
-2477pass56skip,2533 unique identities, zero failures/errors. The long-ref regression
-and previously failing delivery case both passed. Wheel pytest finished at
-2026-11-15T06:42:44Z, exit0:2477pass56skip, with all2533 identities and outcomes
-equal to source. Its96 installed product files still match the exact wheel after
-testing; noneditable direct_url archive binding was independently checked. The
-sdist suite is now running. No a115
-pass or failed/unknown receipt is relabeled. Local work stays on D:, source/evidence
-on F:, GitHub storage only. macOS is NOT RUN (owner has no environment).
-3122 source paths matched their Git objects before execution. Frozen tree is
-bbf15d9550443fe7af03c4a36c17859b0f7a21d9; source snapshot SHA256 is
-39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82.
-All3122 hashes still match after source execution. Source JUnit, log, native
-receipt and snapshot are archived once in releases/0.3.0a116/624b36c/windows-312/
-reports/release-20261115T051200Z-ca70d702c8f4. Final transfer must preserve these
-bytes and append missing members. Observation:
-acceptance/evidence/m9-a116-preparation/windows312-source.json.
-Ruff, format, mypy, offline build, dependency checks and fresh wheel startup/origin
-checks also completed exit0 in the live canonical directory. Full row remains
-incomplete until sdist and final strict verification finish. All25 completed
-command checks have exit0; sdist_pytest is the sole active command check.
-Wheel XML, log and native receipt were appended to the same final row directory;
-all four previously archived source members remain byte-for-byte unchanged. See
-acceptance/evidence/m9-a116-preparation/windows312-wheel.json. The full row is
-still incomplete pending sdist and the existing final source/artifact verification.
-Recovery: observe D:/agentsync-debug/m116/windows-312/result.json and the existing
-session; do not restart on observer timeout. See evidence in
-acceptance/evidence/m9-a116-preparation/windows312-launch/summary.json.
-Other rows depend on its original build/manifest, with no duplicate
-collectors on the same host. Formal Release stays BLOCKED.
-The remaining Windows3.11/3.14 sequential driver is prepared, NOT RUN:
-D:/agentsync-debug/m116-remaining-windows.py (sha256
-d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643).
-It refuses missing/failed/unverified bootstrap evidence, checks the exact archives
-and frozen source, stops on failure/unknown, and checks STOP_AFTER_CURRENT before
-starting each next row. Independent native read-only static review found no
-concrete blocker for that queue entry; it is not a universal host lock, and pause
-is between complete rows. No execution or Release approval follows. See
-acceptance/evidence/m9-a116-preparation/remaining-windows/preparation.json.
-The local Linux source-transfer bundle is prepared at
-D:/agentsync-debug/m116/source-update.bundle (4568706 bytes, sha256
-bc08623398bd70874688635d427ebfba3a72b508b66721af126b9b2a61be22c9).
-Local Git verified it; guest prerequisites546cc52 and b6f05f0 still need checking.
-VM/guest transfer/Linux tests are NOT RUN for a116. The bundle stays on D: because
-the same source is already in Git. See
-acceptance/evidence/m9-a116-preparation/linux-source-transfer/preparation.json.
-The Linux3.14/3.11/3.12 sequential driver is prepared at
-D:/agentsync-debug/m116/collect-linux.py, sha256
-765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d.
-Independent static delta review found no concrete blocker in the relocated
-original-report binding or existing Docker evidence environment wrapper. Extra
-Docker observations remain separate evidence; no actual Linux execution or
-Release approval follows. Transfer/execution remain NOT RUN; see
-acceptance/evidence/m9-a116-preparation/remaining-linux/preparation.json.
-Actual archive delta inspection is recorded in
-acceptance/evidence/m9-a116-preparation/archive-delta.json. The normalized wheel
-has the same102 members as b6; only __init__ version, METADATA version and RECORD
-change. All96 product members match the frozen source. All31 external installed
-distribution records, dependency/build declarations and project license bytes
-match b6. The sdist has1292 files versus1144 previously, with only repository
-top-level groups and no binary/distribution or link members observed. This is a
-content/metadata observation, not an installed-suite pass or new legal approval;
-new Linux inventory and final candidate stability verification remain pending.
-Git remote confirmed source evidence ee1001a uploaded. The GitHub connector
-subsequently recovered: PR35 is open/draft/unmerged, head ee1001a, no comments.
-Its description now reflects a116 source success and pending installed suites;
-read-back matched the update. Issues7/11 remain open, last updated2026-11-07,
-with17/15 comments respectively; no new scope change was observed.
-Earlier connector failure/API404 was a transient access observation, not evidence
-of repository disappearance. No Actions or merge was requested.
+Corrected candidate0.3.0a116 is frozen at624b36c039a90feb9340559ac773f9df08ba86ad,
+tree bbf15d9550443fe7af03c4a36c17859b0f7a21d9. Runtime changes relative to b6 are
+version only; the candidate includes the Windows Git test-helper repair/regression,
+six explicit sanitized case labels and the already-reviewed verifier/tests.
+
+Windows3.12 finished2026-11-15T07:29:12Z, native session85611 exit0. All26 native
+checks pass; source, installed wheel and installed sdist each2477pass56skip,
+2533 unique cases with identical identities/outcomes and zero failures/errors.
+Strict source/artifact/report verification passed against3122 frozen Git paths.
+All70 transferred files match originals, including the seven previously committed
+source/wheel evidence files. The original collector cleaned its scratch directory.
+Evidence: releases/0.3.0a116/624b36c/windows-312/transfer-summary.json;
+original manifest SHA25623365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95.
+Independent bounded read-only review found no row/queue-prerequisite blocker;
+this is not whole-product or formal Release approval. Raw license inventories
+remain pending/publication false. Offline staged-wheel bytes are not claimed
+verified after scratch cleanup. Matrix is1/9 complete,8 combinations missing.
+
+The reviewed remaining Windows queue ACTUALLY started2026-11-15T07:47:06Z:
+native session97559, parent PID15484, Python3.11 child handle PID26792 and worker
+PID16204. Windows3.11 is RUNNING;3.14 is queued/NOT RUN. Observe the existing
+session and D:/agentsync-debug/m116/remaining-windows-queue; do not restart it on
+an observer timeout. Failure/unknown stops the queue; STOP_AFTER_CURRENT is checked
+between rows. Driver D:/agentsync-debug/m116-remaining-windows.py remains
+sha256 d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643.
+Launch evidence: docs/acceptance/evidence/m9-a116-preparation/remaining-windows/launch.json.
+
+Linux source-transfer bundle and reviewed three-row driver are prepared; VM resume,
+fresh guest source transfer and execution remain NOT RUN at this checkpoint.
+Use the exact original candidate manifest/packages after checking guest prerequisites.
+See docs/acceptance/evidence/m9-a116-preparation/{remaining-linux,linux-source-transfer}/.
+The owner has no macOS environment: all three Mac rows are NOT RUN. No real model
+calls, paid services, GitHub Actions, main merge or release-gate waiver.
+Formal Release remains BLOCKED; old a115 evidence is preserved separately.
+
+Archive delta review: the wheel has the same102 normalized members as b6; only
+version metadata, __init__ version and RECORD change. All96 product members match
+source;31 external installed distribution records and project license bytes match
+b6. This does not turn raw pending inventories into legal/publication approval.
+See docs/acceptance/evidence/m9-a116-preparation/archive-delta.json.
+
+GitHub PR35 was last verified open/draft/unmerged at4219281. This checkpoint's
+connector read failed with a transport error, so no fresh PR/comment state is
+claimed. Issues7/11 were last verified open with no new scope changes.
 
 The existing M9-02 bounded technical delivery-scope decision is now recorded in
 acceptance/evidence/m9-a115-preparation/b6-license-platform-delta.json under

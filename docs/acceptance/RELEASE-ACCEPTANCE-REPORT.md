@@ -1,25 +1,26 @@
 # Release Acceptance Report
 
-## Current correction:0.3.0a116 at624b36c; full collection running
+## Current candidate:0.3.0a116 at624b36c; one complete local row
 
-The working source includes the bounded Windows test-helper repair and prior
-reviewed evidence-verifier changes, with only the version changed in runtime
-code. Collection-only preflight found2533 cases with2533 distinct sanitized
-identities; Ruff/format passed. These checks execute no test bodies and do not
-certify a full suite. All3122 frozen source paths match committed Git objects.
-One Windows3.12 collector started2026-11-15T05:12:00Z (session85611). Source pytest
-completed at05:56:39Z, exit0:2477pass56skip,2533 unique cases, zero failures/errors.
-Both the long-path regression and the earlier failed delivery case passed. All3122
-source hashes remain unchanged. Source evidence is archived in the final row
-directory; see evidence/m9-a116-preparation/windows312-source.json. The fresh wheel
-suite completed at06:42:44Z, exit0:2477pass56skip. All2533 identities and outcomes
-match source. All96 installed product files still match the exact wheel after
-testing, with noneditable archive binding verified; see
-evidence/m9-a116-preparation/windows312-wheel.json. Sdist is now running; these
-two completed components do not establish a complete row or formal acceptance.
-Sdist and final strict source/artifact verification are still required.
-Do not transplant a115 observations. macOS remains NOT RUN after
-the owner's confirmation. Formal Release remains BLOCKED.
+Windows3.12 finished2026-11-15T07:29:12Z, native session85611 exit0. All26 checks
+pass; source, installed wheel and installed sdist each2477pass56skip,2533 unique
+case identities, matching identities/outcomes and zero failures/errors. Strict
+verification covered all63 report manifest members,26 native logs,3122 Git source
+paths and exact original candidate archives. All70 transferred files match their
+D: originals; seven earlier source/wheel files were preserved byte-for-byte.
+Original scratch cleanup was observed. No raw private JUnit was uploaded.
+See ../../releases/0.3.0a116/624b36c/windows-312/transfer-summary.json and the
+original report/manifest beside it. The original manifest SHA256 is
+23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95.
+
+Bounded independent read-only inspection found no row/continuation-prerequisite
+blocker. It is not whole-product/Release acceptance. The raw license reviews are
+still pending/publication false; staged offline wheel bytes are not asserted
+verified after cleanup. The local matrix is1/9 complete,8 combinations missing.
+Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
+Linux transfer/three rows NOT RUN at this checkpoint. Owner has no Mac environment;
+all three macOS rows NOT RUN. Existing real-client and release gates still apply.
+Formal Release stays BLOCKED. Do not transplant historical a115 observations.
 
 ## Preserved a115 candidate:b6f05f0; five complete historical rows
 

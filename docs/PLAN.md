@@ -1,23 +1,25 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
-Current execution: corrected candidate0.3.0a116 is frozen at624b36c after its completed
-collection-only preflight (2533 distinct sanitized case IDs; Ruff/format pass),
-Windows3.12 source and both fresh installations are in the existing local pipeline,
-started2026-11-15T05:12:00Z (session85611); source completed2477pass56skip, exit0 at
-05:56:39Z,2533 unique cases and3122 source hashes unchanged. The fresh wheel suite
-also completed2477pass56skip, exit0 at06:42:44Z; all identities/outcomes match source,
-and96 installed product files still match the exact wheel after testing. Sdist is
-running; the full row remains incomplete. Source/wheel evidence is archived once in the final row
-directory; append remaining members after completion without rewriting it.
-Observe that existing run before another row. The original a115 matrix and
-failed wheel trial remain historical evidence. Subsequent platform rows must use
-the new candidate's exact source and archives; no test-only identity exception,
-new M5 subphase, or Release waiver. macOS remains unavailable/NOT RUN.
+Current execution: candidate0.3.0a116 at624b36c now has one complete verified
+Windows3.12 row:26 checks pass; source/wheel/sdist each2477pass56skip,2533 unique
+matching cases.70 copied evidence files and3122 frozen source paths verified.
+Native session85611 ended exit0 at2026-11-15T07:29:12Z. Matrix1/9 complete.
+
+The reviewed sequential Windows3.11/3.14 queue started07:47:06Z in session97559.
+Observe it rather than launching another host collector;3.11 RUNNING,3.14 NOT RUN.
+Next independent work is resume the existing local Linux VM, stage the exact
+frozen source/original manifest and archives, and run its reviewed sequential
+3.14/3.11/3.12 queue. Guest transfer/execution remain NOT RUN at this checkpoint.
+macOS remains unavailable/NOT RUN. Preserve a115 failures/unknowns unchanged.
+Formal Release remains BLOCKED; no M5 expansion, paid call, Actions or main merge.
+See PROGRESS.md and ../releases/0.3.0a116/624b36c/windows-312/transfer-summary.json.
 
 M9-02's current-archive technical license classification is recorded using the
 existing evidence; no extra audit stage, package rebuild or external legal
 sign-off is required by this finding. Public Release still needs separate
 authorization and all existing gates. Dependency bundling would be a new scope.
+
+Historical a115 checkpoints below (superseded by the a116 entry above):
 
 Latest continuation: the owner resumed after the safe pause. Windows3.14's
 original complete row is archived and verified, without rerunning it. Current
