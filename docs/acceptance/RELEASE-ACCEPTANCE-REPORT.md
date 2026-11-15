@@ -128,6 +128,13 @@ regression plus bounded maintenance repair, not a complete current release matri
 row. Original logs/JUnit (6 credential redactions), native receipts and case diff
 remain in evidence/durable-demo-a117/full-windows312/current-summary.json.
 
+Current Linux3.14 full installed-sdist/Docker validation is RUNNING from14:45:02Z,
+native session79159, guest controller2960. Five prechecks passed; final pytest,
+JUnit and Docker observation review are pending. Frozen test inputs33ffbc3 and
+runtimefc27f15 use the original archive without new model/auth calls. This is
+not a complete matrix row or a Release decision. See
+evidence/durable-demo-a117/full-linux314/started-summary.json.
+
 ## Earlier delivery checkpoint — 2026-11-15
 
 

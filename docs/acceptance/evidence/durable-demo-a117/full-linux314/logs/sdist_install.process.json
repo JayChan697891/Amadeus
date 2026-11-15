@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m117l/e/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m117l/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--",
+      "/root/amadeus-m117l/agentsync_local-0.3.0a117.tar.gz"
+    ],
+    "cwd": "/root/amadeus-m117l/run",
+    "started_at": "2026-11-15T14:45:13.640553+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m117l/e/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m117l/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--",
+      "/root/amadeus-m117l/agentsync_local-0.3.0a117.tar.gz"
+    ],
+    "cwd": "/root/amadeus-m117l/run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T14:45:13.640553+00:00",
+    "finished_at": "2026-11-15T14:45:15.547583+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "1f44a61dd46e5cc02f0b921bb189fd5a64e17b6f2dfcc109ed916a94df448a52",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -143,9 +143,12 @@ that explicit item was added; the full affected92-case file and Ruff/format pass
 Independent review accepted this test-maintenance repair without another full run.
 Original full failure is preserved, all2533 prior cases remain and12 additions
 passed. No package/runtime change, requirement-status promotion or release claim.
-Session45808 is closed; do not restart it. Current Linux full installed-sdist with
-actual Docker is the next available local validation; no new candidate build is
-needed. See acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json.
+Session45808 is closed; do not restart it. Current Linux3.14 full installed-sdist
+with actual Docker started at14:45:02Z in native session79159. Five prechecks pass,
+pytest is RUNNING; no final pass is claimed. Observe the existing run, without a
+duplicate or new candidate build. Frozen tests33ffbc3/runtimefc27f15, no models.
+See acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json and
+acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json.
 
 Next: continue the existing P0/P1 demonstration route; retain full a117 acceptance,
 full release matrix and actual live crash recovery as unfinished gaps. Further real calls require

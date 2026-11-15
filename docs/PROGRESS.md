@@ -165,8 +165,13 @@ No additional model/auth action, paid API, Actions, main change or publication.
 Future live calls require fresh authorization; macOS and real Claude/Cursor still
 lack an available authorized environment. Full a117 regression/matrix and macOS
 installation remain incomplete. Windows full installed-sdist evidence and its
-targeted repair now exist; current Linux full installed-sdist/Docker validation is
-the next available local step. Preserve all prior focused and failed results.
+targeted repair now exist. The current Linux3.14 full installed-sdist/Docker run
+started at14:45:02Z: native session79159, host observer408, guest controller2960.
+Five installation/origin checks passed; pytest is RUNNING, with no final result
+yet. Test inputs33ffbc3/runtimefc27f15 and the original archive remain frozen.
+Observe this existing run before any next validation; do not launch a duplicate.
+See acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json.
+Preserve all prior focused and failed results; no new model/auth action is used.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.

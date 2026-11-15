@@ -1,0 +1,92 @@
+{
+  "schema": "amadeus.scoped-installed-regression.v1",
+  "observed_at": "2026-11-15T14:46:28.935494+00:00",
+  "status": "RUNNING",
+  "scope": "One Linux 3.14.7 full installed-sdist regression with actual local Docker; not a full release matrix row",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "native_session": 79159,
+  "host_observer_pid": 408,
+  "guest_controller_pid": 2960,
+  "guest_boot_id": "86f98cbb-008d-4408-8886-2801a58f096e",
+  "host_workspace": "D:\\agentsync-debug\\m117l",
+  "guest_workspace": "/root/amadeus-m117l",
+  "five_prechecks": "pass",
+  "full_pytest": "RUNNING; final JUnit/exit not yet observed",
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "resume": "Observe the existing native session79159 and guest controller2960; do not start a second run. After terminal exit, inspect sanitized JUnit/logs and actual Docker observations, input/package hashes and empty containers.",
+  "artifacts": {
+    "attempt.json": {
+      "sha256": "636d7e1662e956bb09c995e7c558ae403a5602115812aeec98973cf155022c6f",
+      "bytes": 964
+    },
+    "offline-wheelhouse.json": {
+      "sha256": "02aaed6f33aed9b734627ea3494d981d6cb35e456c6b62aedb9eaad26a2cba51",
+      "bytes": 8619
+    },
+    "logs/sdist_install.log": {
+      "sha256": "1f44a61dd46e5cc02f0b921bb189fd5a64e17b6f2dfcc109ed916a94df448a52",
+      "bytes": 934
+    },
+    "logs/sdist_install.process.json": {
+      "sha256": "f4a0862487ea39ebfa02363c93d68aa883da0cc2f0bb991e8722eaecffa7cf9e",
+      "bytes": 1677
+    },
+    "logs/sdist_offline_dependencies.log": {
+      "sha256": "e496a40d447fb88cfc2b4459230bfdd3def241eb1b592d1f40c7a3d1fc0a6e44",
+      "bytes": 7109
+    },
+    "logs/sdist_offline_dependencies.process.json": {
+      "sha256": "9593100f4ff9c7a7806d100f985816bb9edd82f2580be8126d25f6e340c936ef",
+      "bytes": 2166
+    },
+    "logs/sdist_origin_before.log": {
+      "sha256": "0620f2c3b37c15a99e046838baf97bd2122232cda7f17af6c5875966608fea1a",
+      "bytes": 281
+    },
+    "logs/sdist_origin_before.process.json": {
+      "sha256": "6fbac7081d440f756bc4e0d543cc6be1102a6e8c66c33f6ff62203eedac51e66",
+      "bytes": 4457
+    },
+    "logs/sdist_pip_check.log": {
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "bytes": 30
+    },
+    "logs/sdist_pip_check.process.json": {
+      "sha256": "4a022d44251527bca2e150cd834b893e8fd08d740dced5c3e47d923a3d95598f",
+      "bytes": 1145
+    },
+    "logs/sdist_pytest.process.json": {
+      "sha256": "4a1f7f55c3fa7c31eb0a46fa31ddba38c14545d0c84cdb6309da234734069551",
+      "bytes": 747
+    },
+    "logs/sdist_venv.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "logs/sdist_venv.process.json": {
+      "sha256": "209d690eaaa6672e9d1276777f5a2ae15ec982834a2f9ec41541c71c301cfefc",
+      "bytes": 1150
+    },
+    "run-sdist.py.txt": {
+      "sha256": "d5aae8549bade5ab986c6c83cdf02cd65a229e333ecd17c1993967452aadea93",
+      "bytes": 13635
+    },
+    "frozen-inputs.json": {
+      "sha256": "635ba0600cedda71c47e2af65ee9c3f7dd96d711a2d71439e0614381ae6b6f91",
+      "bytes": 646150
+    },
+    "guest-preflight.json": {
+      "sha256": "0c9be76c05ae5845de24e85d796ba3ebd383939d43cc55c0cf064317f803b4d1",
+      "bytes": 1015
+    },
+    "execution-start.json": {
+      "sha256": "3ddaa7c07a343f13b9d394a315ca6d76cee2851474af3b7eaf9f0899bbd1f9f3",
+      "bytes": 238
+    }
+  }
+}
