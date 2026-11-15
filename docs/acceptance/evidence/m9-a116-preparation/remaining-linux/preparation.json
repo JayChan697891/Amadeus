@@ -1,0 +1,47 @@
+{
+  "scope": "prepared_linux_orchestration_not_execution",
+  "frozen_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "status": "NOT RUN",
+  "syntax_check": "parsed_not_executed",
+  "driver_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+  "host_driver_path": "D:\\agentsync-debug\\m116\\collect-linux.py",
+  "planned_guest_driver_path": "/root/amadeus-m116/collect-linux.py",
+  "rows": [
+    "linux-314",
+    "linux-311",
+    "linux-312"
+  ],
+  "basis": "Bounded Linux adaptation of the separately reviewed Windows queue; no modifications to frozen product or collector files.",
+  "prerequisites": [
+    "Verified original Windows3.12 complete row and exact candidate manifest/report/archive bytes.",
+    "Existing local guest source imported and all frozen Git/source hashes verified.",
+    "Existing pinned Docker image and no prior containers; no image pull or host execution fallback."
+  ],
+  "docker_image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "docker_evidence": "Original collector execute arguments/results retained; seven existing evidence directory variables separated by source/wheel/sdist. Observations may include expected failures or non-started cases.",
+  "automatic_retry": false,
+  "concurrency": "one collector at a time through this guest queue",
+  "pause_marker": "/root/amadeus-m116/STOP_AFTER_CURRENT; stops before the next complete row",
+  "guest_transfer": "NOT RUN",
+  "real_models": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "run.py.txt",
+      "sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+      "size": 9799
+    }
+  ],
+  "independent_static_review": {
+    "reviewer": "native agent /root/astra_license_exit_review",
+    "reviewed_script_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+    "outcome": "No concrete blocking error in the Linux adaptation, relative original-report binding, evidence environment wrapper, or sequential queue boundaries.",
+    "scope": "Static delta inspection only; no Linux, Docker, tests or model calls executed.",
+    "limits": [
+      "Extra Docker observations are separate evidence, not automatically fully validated by the main report.",
+      "Queue entry provides sequential rows; STOP_AFTER_CURRENT takes effect between complete rows."
+    ],
+    "execution": "NOT RUN",
+    "formal_release_approval": false
+  }
+}

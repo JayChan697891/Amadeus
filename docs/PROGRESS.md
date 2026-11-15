@@ -34,7 +34,9 @@ D:/agentsync-debug/m116-remaining-windows.py (sha256
 d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643).
 It refuses missing/failed/unverified bootstrap evidence, checks the exact archives
 and frozen source, stops on failure/unknown, and checks STOP_AFTER_CURRENT before
-starting each next row. Syntax parsed only; see
+starting each next row. Independent native read-only static review found no
+concrete blocker for that queue entry; it is not a universal host lock, and pause
+is between complete rows. No execution or Release approval follows. See
 acceptance/evidence/m9-a116-preparation/remaining-windows/preparation.json.
 The local Linux source-transfer bundle is prepared at
 D:/agentsync-debug/m116/source-update.bundle (4568706 bytes, sha256
@@ -43,6 +45,14 @@ Local Git verified it; guest prerequisites546cc52 and b6f05f0 still need checkin
 VM/guest transfer/Linux tests are NOT RUN for a116. The bundle stays on D: because
 the same source is already in Git. See
 acceptance/evidence/m9-a116-preparation/linux-source-transfer/preparation.json.
+The Linux3.14/3.11/3.12 sequential driver is prepared at
+D:/agentsync-debug/m116/collect-linux.py, sha256
+765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d.
+Independent static delta review found no concrete blocker in the relocated
+original-report binding or existing Docker evidence environment wrapper. Extra
+Docker observations remain separate evidence; no actual Linux execution or
+Release approval follows. Transfer/execution remain NOT RUN; see
+acceptance/evidence/m9-a116-preparation/remaining-linux/preparation.json.
 Git remote confirmed source evidence ee1001a uploaded. The GitHub connector
 subsequently recovered: PR35 is open/draft/unmerged, head ee1001a, no comments.
 Its description now reflects a116 source success and pending installed suites;

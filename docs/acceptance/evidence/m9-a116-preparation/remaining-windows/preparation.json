@@ -23,5 +23,17 @@
       "sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
       "size": 8173
     }
-  ]
+  ],
+  "independent_static_review": {
+    "reviewer": "native agent /root/astra_license_exit_review",
+    "reviewed_script_sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
+    "outcome": "No concrete execution or evidence-integrity blocker found in the sequential queue entry.",
+    "scope": "Static inspection of script and frozen collector/matrix/manifest interfaces only; no scripts, tests, Git or process checks executed.",
+    "execution": "NOT RUN",
+    "limits": [
+      "Run through the queue entry without --row; no universal host process lock is claimed.",
+      "STOP_AFTER_CURRENT acts between complete rows, not as immediate interruption of a current suite."
+    ],
+    "formal_release_approval": false
+  }
 }
