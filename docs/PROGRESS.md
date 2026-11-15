@@ -27,10 +27,17 @@ between rows. Driver D:/agentsync-debug/m116-remaining-windows.py remains
 sha256 d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643.
 Launch evidence: docs/acceptance/evidence/m9-a116-preparation/remaining-windows/launch.json.
 
-Linux source-transfer bundle and reviewed three-row driver are prepared; VM resume,
-fresh guest source transfer and execution remain NOT RUN at this checkpoint.
-Use the exact original candidate manifest/packages after checking guest prerequisites.
-See docs/acceptance/evidence/m9-a116-preparation/{remaining-linux,linux-source-transfer}/.
+Linux VM resumed with existing disks, old logs preserved and the minor-runtime
+volume mounted read-only. Both bundle prerequisites, all three interpreters and
+the pinned Docker image were checked; there were no existing containers. Fresh
+source /root/amadeus-m116/s is clean at624b36c;72 transferred members and original
+manifest/report/source binding verified inside Linux. The reviewed Linux queue
+ACTUALLY started2026-11-15T07:52:30Z, native SSH session43548, guest parent PID3815
+and first worker PID3847. Linux3.14 RUNNING;3.11/3.12 queued/NOT RUN. Observe the
+existing session or /root/amadeus-m116/linux-queue; no duplicate/retry on observer
+timeout. Windows and the dedicated one-vCPU Linux guest run on the same physical
+host; no benchmark/performance claim follows. Launch/preflight/source evidence:
+docs/acceptance/evidence/m9-a116-preparation/remaining-linux/launch.json.
 The owner has no macOS environment: all three Mac rows are NOT RUN. No real model
 calls, paid services, GitHub Actions, main merge or release-gate waiver.
 Formal Release remains BLOCKED; old a115 evidence is preserved separately.
@@ -41,9 +48,11 @@ source;31 external installed distribution records and project license bytes matc
 b6. This does not turn raw pending inventories into legal/publication approval.
 See docs/acceptance/evidence/m9-a116-preparation/archive-delta.json.
 
-GitHub PR35 was last verified open/draft/unmerged at4219281. This checkpoint's
-connector read failed with a transport error, so no fresh PR/comment state is
-claimed. Issues7/11 were last verified open with no new scope changes.
+Complete Windows3.12 evidence is uploaded at395de1698cc7c69c3c9267330af785bd7cefff24;
+all70 archived Git blobs match their pins. The connector recovered and confirmed
+PR35 open/draft/unmerged at that head. This turn's earlier comment read failed;
+no fresh comment state is claimed yet. Issues7/11 were last verified open with
+no new scope changes.
 
 The existing M9-02 bounded technical delivery-scope decision is now recorded in
 acceptance/evidence/m9-a115-preparation/b6-license-platform-delta.json under

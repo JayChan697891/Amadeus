@@ -18,7 +18,9 @@ blocker. It is not whole-product/Release acceptance. The raw license reviews are
 still pending/publication false; staged offline wheel bytes are not asserted
 verified after cleanup. The local matrix is1/9 complete,8 combinations missing.
 Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
-Linux transfer/three rows NOT RUN at this checkpoint. Owner has no Mac environment;
+Linux transfer and strict candidate/source verification passed; its queue started
+07:52:30Z/session43548. Linux3.14 RUNNING,3.11/3.12 queued/NOT RUN; no Linux row
+pass follows from startup. Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.
 Formal Release stays BLOCKED. Do not transplant historical a115 observations.
 

@@ -7,9 +7,10 @@ Native session85611 ended exit0 at2026-11-15T07:29:12Z. Matrix1/9 complete.
 
 The reviewed sequential Windows3.11/3.14 queue started07:47:06Z in session97559.
 Observe it rather than launching another host collector;3.11 RUNNING,3.14 NOT RUN.
-Next independent work is resume the existing local Linux VM, stage the exact
-frozen source/original manifest and archives, and run its reviewed sequential
-3.14/3.11/3.12 queue. Guest transfer/execution remain NOT RUN at this checkpoint.
+Linux VM/source transfer and strict original candidate verification completed;
+the reviewed sequential3.14/3.11/3.12 queue started07:52:30Z in session43548.
+Linux3.14 RUNNING;3.11/3.12 queued/NOT RUN. Observe both existing queues, archive
+only complete rows and stop on failure/unknown. Do not restart on observer timeout.
 macOS remains unavailable/NOT RUN. Preserve a115 failures/unknowns unchanged.
 Formal Release remains BLOCKED; no M5 expansion, paid call, Actions or main merge.
 See PROGRESS.md and ../releases/0.3.0a116/624b36c/windows-312/transfer-summary.json.

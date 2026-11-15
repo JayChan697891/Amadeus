@@ -1,0 +1,200 @@
+{
+  "scope": "actual_local_linux_queue_launch",
+  "native_session": 43548,
+  "ssh_transport_timeout_seconds": 32400,
+  "runtime": {
+    "observed_at": "2026-11-15T07:50:18.755433+00:00",
+    "boot_id": "65e8ae33-6fbc-4703-9c68-fb2bf3d7e125",
+    "runtimes": {
+      "3.14": {
+        "version": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+        "prefix": "/root/jobs-env",
+        "minor": "3.14"
+      },
+      "3.11": {
+        "version": "3.11.18 (main, Nov 12 2026, 03:23:31) [GCC 15.2.0]",
+        "prefix": "/root/amadeus-minor-volume/work/venv-3.11",
+        "minor": "3.11"
+      },
+      "3.12": {
+        "version": "3.12.16 (main, Nov 12 2026, 03:19:15) [GCC 15.2.0]",
+        "prefix": "/root/amadeus-minor-volume/work/venv-3.12",
+        "minor": "3.12"
+      }
+    },
+    "docker_image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "containers": [],
+    "bundle_prerequisites_present": [
+      "546cc52bfcb67df3938856b5bf8b3a222b06c502",
+      "b6f05f0473591dc568be25591047fdea963ef86c"
+    ],
+    "old_source_clean": true,
+    "runtime_mount": "/dev/nbd0 /root/amadeus-minor-volume ext4 ro,nosuid,nodev,relatime,norecovery 0 0",
+    "root_free_bytes": 10556653568,
+    "a116_guest_source": "NOT YET TRANSFERRED"
+  },
+  "source_and_candidate_staging": {
+    "scope": "linux_exact_source_and_candidate_staging",
+    "finished_at": "2026-11-15T07:52:05.278888+00:00",
+    "transfer_members": 72,
+    "transfer_sha256": "06cade3511122272667f5afe61076c0a58787eee8cb1df60ab8d197fbdbb5857",
+    "driver_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+    "old_source_preserved": true,
+    "new_source_clean": true,
+    "candidate_verification": {
+      "schema_version": 1,
+      "scope": "local_release_artifact_manifest_verification",
+      "manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+      "frozen": {
+        "version": "0.3.0a116",
+        "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+        "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+        "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82"
+      },
+      "matrix_sha256": "5d850dd9bff0e6410eda1bc1222bf6f953743c0348a3e56fda0080dae8dbb167",
+      "local_matrix": "incomplete",
+      "build_report": {
+        "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/report.json",
+        "sha256": "0d06383631ffc38d06f6f9e49966226aac67ecfbf36e5b163cc144c8b3f966a3",
+        "system": "Windows"
+      },
+      "checked_artifacts": [
+        {
+          "kind": "sdist",
+          "filename": "agentsync_local-0.3.0a116.tar.gz",
+          "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116.tar.gz",
+          "sha256": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0",
+          "size": 3669635
+        },
+        {
+          "kind": "wheel",
+          "filename": "agentsync_local-0.3.0a116-py3-none-any.whl",
+          "path": "windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl",
+          "sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+          "size": 320003
+        }
+      ],
+      "artifact_bytes_verified": true,
+      "build_report_bytes_verified": true,
+      "producer_authenticated": false,
+      "formal_release_acceptance": "blocked",
+      "publication_authorized": false
+    },
+    "original_windows_report_audit": {
+      "manifest_members": 63,
+      "process_logs": 26,
+      "source_snapshot_entries": 3122,
+      "git_source_audit": {
+        "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+        "git_source_paths": 3122,
+        "unique_git_blobs": 2617
+      },
+      "installed_artifact_sha256": {
+        "wheel": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+        "sdist": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0"
+      },
+      "installed_license_inventories": {
+        "wheel": {
+          "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+          "review_item_count": 0,
+          "review": "pending"
+        },
+        "sdist": {
+          "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+          "review_item_count": 0,
+          "review": "pending"
+        }
+      },
+      "offline_resolution": {
+        "state": "manifest_and_commands_checked",
+        "manifest_sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+        "recorded_wheels": 60,
+        "staged_wheel_bytes_verified": false
+      },
+      "junit_case_set_sha256": {
+        "pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+        "wheel_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+        "sdist_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0"
+      },
+      "junit_case_sets_match": true,
+      "producer_authenticated": false
+    },
+    "linux_tests": "NOT RUN",
+    "formal_release": "BLOCKED"
+  },
+  "first_observation": {
+    "observed_at": "2026-11-15T07:53:34.731216+00:00",
+    "queue_attempt": {
+      "started_at": "2026-11-15T07:52:30.099111+00:00",
+      "pid": 3815,
+      "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+      "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+      "rows": [
+        "linux-314",
+        "linux-311",
+        "linux-312"
+      ],
+      "automatic_retry": false
+    },
+    "queue_result": null,
+    "rows": [
+      {
+        "row": "linux-314",
+        "phase": "started",
+        "attempt": {
+          "phase": "started",
+          "row": "linux-314",
+          "pid": 3847,
+          "started_at": "2026-11-15T07:52:31.255425+00:00",
+          "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+          "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+          "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+          "driver_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+          "automatic_retry": false,
+          "formal_release": "BLOCKED",
+          "real_models": "NOT RUN"
+        },
+        "worker_pid_exists": true,
+        "checks": [
+          {
+            "id": "pytest",
+            "phase": "started",
+            "outcome": "unknown",
+            "exit_code": null
+          }
+        ]
+      },
+      {
+        "row": "linux-311",
+        "phase": "NOT RUN",
+        "checks": []
+      },
+      {
+        "row": "linux-312",
+        "phase": "NOT RUN",
+        "checks": []
+      }
+    ]
+  },
+  "host_processes": [
+    {
+      "ProcessId": 6440,
+      "Name": "qemu-system-x86_64.exe",
+      "CreationDate": "2026-11-14T23:49:40.818882-08:00",
+      "CommandLine": "\"D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe\" -machine q35 -accel whpx,kernel-irqchip=off -cpu qemu64,svm=off -smp 1 -m 3072 -drive file=D:\\agentsync-debug\\vm\\guest.qcow2,format=qcow2,if=virtio -drive file=D:\\agentsync-debug\\vm\\seed.iso,format=raw,media=cdrom,readonly=on -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:22222-:22 -device virtio-rng-pci -display none -serial file:D:\\agentsync-debug\\vm\\serial.log -qmp tcp:127.0.0.1:22223,server=on,wait=off"
+    },
+    {
+      "ProcessId": 22436,
+      "Name": "qemu-nbd.exe",
+      "CreationDate": "2026-11-14T23:49:40.966623-08:00",
+      "CommandLine": "\"D:\\agentsync-debug\\tools\\qemu\\qemu-nbd.exe\" --read-only --persistent --format=qcow2 --bind=127.0.0.1 --port=22224 D:\\agentsync-debug\\continuation-cc30ed21\\linux-minor-runtime\\workspace.qcow2"
+    }
+  ],
+  "original_driver_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+  "windows_host_queue_also_running": true,
+  "linux_314": "RUNNING",
+  "linux_311": "QUEUED_NOT_RUN",
+  "linux_312": "QUEUED_NOT_RUN",
+  "formal_release": "BLOCKED",
+  "observing_rule": "Observe existing process and native receipts; no retry on unknown/failure. STOP_AFTER_CURRENT is checked between complete rows."
+}
