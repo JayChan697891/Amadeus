@@ -19,8 +19,8 @@ the immutable0.3.0a116 matrix continues independently and is not relabelled.
 | P1 | Installation/CLI guidance, actionable errors and the existing bounded performance checks. | Reuse the installed package and current local environments; affected checks only for changed code. No new orchestration layer or GUI is needed for the demonstration. |
 | P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
 
-The critical path is now the usable demonstration, then evidence-backed recovery
-and real collaboration, alongside completion of already-running release checks.
+The critical path is the usable demonstration, then evidence-backed recovery
+and real collaboration, alongside the remaining current-candidate release checks.
 Do not rebuild working Core capabilities or repeat full acceptance of an unchanged
 SHA. Product changes receive affected regression; documentation receives diff review.
 
@@ -48,7 +48,7 @@ queue completed before the real Docker demo. Independent M8 correctness fixtures
 used separate exact-wheel installs. The unchanged bounded benchmarks subsequently
 passed in order: both queues complete, Linux, normal owned-VM shutdown, Windows.
 
-## Current delivery checkpoint — 2026-11-15, Windows regression and targeted repair
+## Current delivery checkpoint — 2026-11-15, Windows/Linux installed-sdist regressions
 
 The current117 real two-Codex flow now has limited actual acceptance after fresh
 owner authorization: two native calls, four exact host approvals,8 Docker cases,
@@ -143,16 +143,22 @@ that explicit item was added; the full affected92-case file and Ruff/format pass
 Independent review accepted this test-maintenance repair without another full run.
 Original full failure is preserved, all2533 prior cases remain and12 additions
 passed. No package/runtime change, requirement-status promotion or release claim.
-Session45808 is closed; do not restart it. Current Linux3.14 full installed-sdist
-with actual Docker started at14:45:02Z in native session79159. Five prechecks pass,
-pytest is RUNNING; no final pass is claimed. Observe the existing run, without a
-duplicate or new candidate build. Frozen tests33ffbc3/runtimefc27f15, no models.
-See acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json and
-acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json.
+Session45808 is closed; do not restart it. The Linux 3.14 full installed-sdist
+run with actual Docker ended at 15:03:35Z with native exit 0. All seven native
+checks passed. Pytest reported 2,538 passed and 7 skipped across 2,545 cases. All
+12 added cases passed and the original 2,533 outcomes matched the a116 Linux row.
+The 35 Docker observations include expected rejection outcomes. All 2,382 frozen
+inputs from 33ffbc3 and 97 installed members from fc27f15 stayed unchanged, and
+Docker was empty after the run. [Linux result](acceptance/evidence/durable-demo-a117/full-linux314/current-summary.json)
+· [Start record](acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json)
+· [Windows result and repair](acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json)
 
-Next: continue the existing P0/P1 demonstration route; retain full a117 acceptance,
-full release matrix and actual live crash recovery as unfinished gaps. Further real calls require
-fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
+The fresh cancellation R2 plan was prepared without a model call and passed
+independent review. Live R2 remains NOT RUN and requires fresh explicit
+authorization for one call. [R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+
+The full a117 release matrix and actual live crash recovery remain incomplete.
+Cross-vendor accounts and macOS remain unavailable/NOT RUN.
 No new M5 stage, new release gate or repeated full acceptance was introduced.
 
 ## Preserved frozen-candidate execution and historical plan

@@ -98,6 +98,9 @@ uses the same archive without rebuilding it.
 This is focused demonstration validation, not a full a117 release matrix.
 The later [Windows full regression and targeted traceability repair](docs/acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json)
 preserve the original failed run and its separate92-case correction check.
+The [full Linux 3.14 installed-sdist regression](docs/acceptance/evidence/durable-demo-a117/full-linux314/current-summary.json)
+completed with 2,538 passed and 7 skipped using the pinned local Docker image.
+The a117 release matrix remains incomplete and formal Release remains blocked.
 
 After the Windows installation above, run the following from the repository
 directory (choose another new directory name for each run):

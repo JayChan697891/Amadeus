@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15, Windows regression and targeted repair. Scoped engineering demonstration and
+Current checkpoint — 2026-11-15, Windows/Linux installed-sdist regressions. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
@@ -162,16 +162,25 @@ restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
 P0/P1 from the current a117 demonstration and the remaining evidence gaps below,
 using affected regression only. Keep a116 full-matrix evidence separate from a117.
 No additional model/auth action, paid API, Actions, main change or publication.
-Future live calls require fresh authorization; macOS and real Claude/Cursor still
-lack an available authorized environment. Full a117 regression/matrix and macOS
-installation remain incomplete. Windows full installed-sdist evidence and its
-targeted repair now exist. The current Linux3.14 full installed-sdist/Docker run
-started at14:45:02Z: native session79159, host observer408, guest controller2960.
-Five installation/origin checks passed; pytest is RUNNING, with no final result
-yet. Test inputs33ffbc3/runtimefc27f15 and the original archive remain frozen.
-Observe this existing run before any next validation; do not launch a duplicate.
-See acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json.
-Preserve all prior focused and failed results; no new model/auth action is used.
+Future live calls require fresh authorization. macOS and real Claude/Cursor still
+lack an available authorized environment, and the full a117 release matrix remains
+incomplete. The Linux 3.14 full installed-sdist run with actual Docker ended at
+15:03:35Z. Native session 79159 exited 0 and all seven native checks passed.
+Pytest ran 2,545 unique cases in 1,096.12 seconds with 2,538 passed, 7 skipped and
+120 warnings. All 12 additions passed, and all 2,533 a116 cases kept their outcomes.
+The selected fields matched across 35 observations in seven Docker fixture
+groups, including expected rejection outcomes. The 2,382 frozen inputs from
+33ffbc3 and 97 installed members from fc27f15 stayed unchanged. Docker and the
+fixture process list were empty at cleanup. No model call or package rebuild.
+[Linux result](acceptance/evidence/durable-demo-a117/full-linux314/current-summary.json)
+· [Start record](acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json)
+
+Preparation of the fresh cancellation R2 fixture finished at 15:05:22Z with
+exit 0 and an independently reviewed plan. The private home was empty. No
+credential copy, mount, readiness action or model call occurred. Live R2 remains
+NOT RUN and requires fresh explicit authorization for one call. Earlier focused
+and failed results remain on record.
+[R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.

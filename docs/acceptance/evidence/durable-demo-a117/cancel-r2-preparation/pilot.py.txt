@@ -1,0 +1,363 @@
+"""One reviewed fixed-text Codex cancellation fixture; local owned parent only."""
+import asyncio
+import hashlib
+import json
+import os
+import re
+import stat
+import subprocess
+import sys
+import time
+from dataclasses import asdict
+from datetime import UTC, datetime
+from importlib import metadata
+from pathlib import Path
+
+import agentsync
+from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.controlled_relay import ControlledRelay, RelayActor, SingleCodexInput
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+
+BASE = Path('/root/amadeus-cancel-a117-r2-20261115')
+sys.path.insert(0, str(BASE))
+from credential_home import require_mount, validate_attempts
+from private_capture import PrivateCapture
+
+PACKAGE = Path('/root/amadeus-demo-a117-sdist-r1')
+PRODUCT = 'fc27f15f47fa92ed5edcd764a573c1d84a68c107'
+SDIST_SHA = 'b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'
+RUNTIME_SHA = 'f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a'
+EXE = Path('/root/amadeus-codex-linux-0167/bin/codex')
+BINARY_SHA = 'c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0'
+CLI_VERSION = '0.167.0-alpha.3.2'
+HOME = BASE / 'private-home'
+HELPERS = ('pilot.py', 'private_capture.py', 'credential_home.py', 'runtime-members.json')
+REPLY = 'AMADEUS_CANCEL_CHECK_OK'
+INSTRUCTION = 'Reply with exactly AMADEUS_CANCEL_CHECK_OK. Do not use any tools, access files, start tasks or perform other actions.'
+
+def timestamp():
+    return datetime.now(UTC).isoformat()
+
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8') as out:
+        json.dump(value, out, indent=2)
+        out.write('\n')
+
+
+def load(name):
+    path = BASE / name
+    info = path.lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+    assert 0 < info.st_size <= 65536
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def private_directory(path):
+    info = path.lstat()
+    assert stat.S_ISDIR(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o700
+
+
+def assert_runtime_origin():
+    members = load('runtime-members.json')
+    assert sha(BASE / 'runtime-members.json') == RUNTIME_SHA
+    archive = PACKAGE / 'agentsync_local-0.3.0a117.tar.gz'
+    assert sha(archive) == SDIST_SHA
+    installed = (PACKAGE / 'installed').resolve(strict=True)
+    assert Path(sys.prefix).resolve() == installed
+    site = Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(installed)
+    dist = metadata.distribution('agentsync-local')
+    assert agentsync.__version__ == dist.version == '0.3.0a117'
+    assert Path(dist.locate_file('agentsync')).resolve() == site / 'agentsync'
+    direct = json.loads(dist.read_text('direct_url.json'))
+    assert direct['url'] == archive.resolve(strict=True).as_uri()
+    assert direct['archive_info']['hashes']['sha256'] == SDIST_SHA
+    assert len(members) == 97 and sum(n.endswith('.py') for n in members) == 96
+    for name, expected in members.items():
+        member = (site / name).resolve(strict=True)
+        assert member.is_relative_to(site / 'agentsync')
+        assert sha(member) == expected
+    for name, module in tuple(sys.modules.items()):
+        if name == 'agentsync' or name.startswith('agentsync.'):
+            assert Path(module.__file__).resolve().is_relative_to(site / 'agentsync')
+    assert sha(EXE) == BINARY_SHA
+    return {'runtime_members_matched': len(members)}
+
+
+def helpers():
+    return {name: sha(BASE / name) for name in HELPERS}
+
+
+def auth(state):
+    member = state['member']
+    return {key: member[key] for key in ('session_id', 'session_token')} | {'project_id': state['owner']['project_id']}
+
+
+def environment():
+    return {'PATH': '/usr/bin:/bin', 'HOME': str(HOME), 'CODEX_HOME': str(HOME),
+            'TEMP': str(HOME), 'TMP': str(HOME)}
+
+
+def git(root, *args):
+    return subprocess.run(['/usr/bin/git', '-C', str(root), *args], check=True,
+        capture_output=True, text=True, timeout=15).stdout.strip()
+
+
+def fixture_intact(state, root):
+    expected = state['worktree_fixture_sha256'] if root == Path(state['tree']['path']) else state['fixture_sha256']
+    return (sha(root / 'fixture.txt') == expected
+        and git(root, 'rev-parse', 'HEAD') == state['fixture_head']
+        and not git(root, 'status', '--porcelain', '--untracked-files=all'))
+
+
+def actor_for(state, authority):
+    member = state['member']
+    tree = state['tree']
+    profile = CodexHostProfile(state['owner']['project_id'], member['session_id'], EXE, Path(tree['path']), state['binary_sha256'], expected_cli_version=CLI_VERSION, max_timeout_seconds=90, linux_readonly=True)
+    return RelayActor(member['agent_id'], member['session_token'], profile, tree['worktree_id'], tree['head_sha'], state['environment'], authority)
+
+
+def spec_for(state):
+    return SingleCodexInput(state['task']['id'], state['task']['version'], INSTRUCTION, REPLY, 90)
+
+
+async def deny(_review):
+    return None
+
+
+def prepare():
+    assert_runtime_origin()
+    if (BASE / 'state.json').exists() or (BASE / 'source').exists():
+        raise RuntimeError('Preserve existing pilot; preparation is not repeatable.')
+    for name in ('source', 'receipts', 'private-home'):
+        (BASE / name).mkdir(parents=True, exist_ok=False)
+    source = BASE / 'source'
+    git(source, 'init', '--initial-branch=fixture-main')
+    (source / 'fixture.txt').write_text('Amadeus isolated read-only fixture\n', encoding='utf-8')
+    git(source, 'add', 'fixture.txt')
+    git(source, '-c', 'user.name=Amadeus fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'Isolated baseline')
+    core = Core(BASE / 'core')
+    owner = core.execute('create_project', {'name': 'Single Codex fixed-text pilot', 'root_path': str(source)})
+    member = core.execute('register_agent', {**owner, 'name': 'Isolated Codex worker'})
+    listed = core.execute_owner('list_members', {**owner, 'limit': 100, 'offset': 0})['members']
+    current = next(m for m in listed if m['agent_id'] == member['agent_id'])
+    core.execute_owner('set_agent_roles', {**owner, 'agent_id': member['agent_id'], 'roles': ['worker'], 'expected_version': current['version'], 'request_id': 'pilot-worker-role'})
+    def call(op, **payload):
+        return core.execute(op, {'project_id': owner['project_id'], 'session_id': member['session_id'], 'session_token': member['session_token'], **payload})
+    task = call('create_task', title='Real caller cancellation validation', request_id='pilot-task')
+    snapshot = call('capture_repository', request_id='pilot-snapshot')
+    tree = call('create_worktree', snapshot_id=snapshot['snapshot_id'], task_id=task['id'], request_id='pilot-worktree')
+    state = {'owner': owner, 'member': member, 'task': task, 'tree': tree, 'binary_sha256': sha(EXE), 'environment': environment(), 'helper_sha256': helpers(), 'fixture_sha256': sha(source / 'fixture.txt'), 'fixture_head': git(source, 'rev-parse', 'HEAD')}
+    state['worktree_fixture_sha256'] = sha(Path(tree['path']) / 'fixture.txt')
+    actor = actor_for(state, deny)
+    review = ControlledRelay(core, BASE, BASE / 'receipts').preview_codex(actor, spec_for(state), admin_token=owner['admin_token'])
+    state['plan_sha256'] = review.plan_sha256
+    save('state.json', state)  # Synthetic local Core tokens; never upload this file.
+    save('plan.json', {'timestamp': timestamp(), 'product_sha': PRODUCT, 'sdist_sha256': SDIST_SHA,
+        'producer_plan': {'plan_sha256': review.plan_sha256, 'argv': review.plan.argv,
+            'stdin_text': review.plan.stdin_text, 'cwd': str(review.plan.cwd), 'environment': review.plan.child_env(),
+            'timeout_seconds': review.plan.timeout_seconds, 'output_limit': review.plan.output_limit,
+            'binary_sha256': BINARY_SHA},
+        'helper_sha256': state['helper_sha256'], 'model_calls': 0, 'max_model_calls': 1,
+        'credential_copy': False, 'scope': 'owned_parent_only', 'formal_release': 'BLOCKED'})
+    print(json.dumps({'prepared': True, 'plan_sha256': review.plan_sha256, 'model_requests': 0}))
+
+
+
+def ready_once(expected):
+    core = Core(BASE / 'core')
+    state = load('state.json')
+    require_mount()
+    assert not any(HOME.iterdir()) and not (BASE / 'attempt.json').exists()
+    assert_runtime_origin()
+    assert state['helper_sha256'] == helpers()
+    assert state['plan_sha256'] == expected == load('plan.json')['producer_plan']['plan_sha256']
+    save('readiness-entry.json', {'timestamp': timestamp(), 'model_calls': 0})
+    core.execute('heartbeat', auth(state))
+    deny_actor = actor_for(state, deny)
+    review = ControlledRelay(core, BASE, BASE / 'receipts').preview_codex(
+        deny_actor, spec_for(state), admin_token=state['owner']['admin_token'])
+    assert review.plan_sha256 == expected
+    session = next(s for s in core.execute('get_project_state', auth(state))['sessions']
+                   if s['id'] == state['member']['session_id'])
+    save('readiness.json', {'timestamp': timestamp(), 'plan_sha256': expected, 'online': session['online'],
+        'heartbeat_age_seconds': time.time() - session['heartbeat_at'],
+        'session_remaining_seconds': session['expires_at'] - time.time(), 'model_calls': 0})
+
+
+def turn_flags(process):
+    started = terminal = False
+    # The existing private capture is observed locally; neither event payload nor stream is projected.
+    for line in bytes(process._stdout).splitlines():
+        try:
+            event = json.loads(line)
+        except (ValueError, UnicodeError):
+            continue
+        if isinstance(event, dict):
+            started |= event.get('type') == 'turn.started'
+            terminal |= event.get('type') in ('turn.completed', 'turn.failed', 'error')
+    return started, terminal
+
+
+async def execute_once(expected):
+    require_mount()
+    assert_runtime_origin()
+    state = load('state.json')
+    plan = load('plan.json')
+    readiness = load('readiness.json')
+    assert readiness['online'] is True and readiness['session_remaining_seconds'] > 120
+    assert state['plan_sha256'] == plan['producer_plan']['plan_sha256'] == readiness['plan_sha256'] == expected
+    assert state['helper_sha256'] == plan['helper_sha256'] == helpers()
+    assert not (BASE / 'attempt.json').exists()
+    save('execute-entry.json', {'timestamp': timestamp(), 'plan_sha256': expected, 'retry_allowed': False})
+    authorizations = 0
+
+    async def approve(review):
+        nonlocal authorizations
+        if review.plan_sha256 != expected or authorizations:
+            return None
+        authorizations += 1
+        return LaunchConsent('a117-cancel-' + expected, expected, time.time() + 120, True, True)
+
+    owner = state['owner']
+    task_id = state['task']['id']
+    source = BASE / 'source'
+    actor = actor_for(state, approve)
+    relay = ControlledRelay(Core(BASE / 'core'), BASE, BASE / 'receipts')
+    review = relay.preview_codex(actor, spec_for(state), admin_token=owner['admin_token'])
+    assert review.plan_sha256 == expected and review.plan.child_env() == environment()
+    assert fixture_intact(state, source) and fixture_intact(state, review.plan.cwd)
+    info = (HOME / 'auth.json').lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+    flags = [value for i, arg in enumerate(review.plan.argv) if arg == '-c'
+             for value in ('-c', review.plan.argv[i + 1])]
+    route = subprocess.run([str(EXE), *flags, 'login', 'status'], cwd=review.plan.cwd,
+        env=review.plan.child_env(), capture_output=True, timeout=20)
+    recognized = route.returncode == 0 and (route.stdout + route.stderr).strip() == b'Logged in using ChatGPT'
+    save('auth-route.json', {'recognized_chatgpt_route': recognized, 'exit_code': route.returncode,
+        'model_calls': 0})
+    assert recognized
+    save('attempt.json', {'timestamp': timestamp(), 'plan_sha256': expected, 'max_model_calls': 1,
+        'single_flow_attempt_consumed': True, 'retry_allowed': False})
+    capture = PrivateCapture(review.plan, BASE / 'private-capture')
+    cancellation = {'requested': False, 'propagated': False, 'turn_started_observed': False,
+        'terminal_event_observed': False, 'parent_ended_before_cancel': None}
+    outcome = error_code = None
+    try:
+        with capture:
+            execution = asyncio.create_task(relay.run_codex_once(actor, spec_for(state), admin_token=owner['admin_token']))
+            loop = asyncio.get_running_loop()
+            deadline = loop.time() + 60
+            try:
+                while not execution.done() and loop.time() < deadline:
+                    process = capture.process
+                    if process is not None:
+                        snapshot = await process.snapshot()
+                        started, terminal = turn_flags(process)
+                        cancellation.update(turn_started_observed=started, terminal_event_observed=terminal)
+                        if terminal or snapshot.parent_ended:
+                            break
+                        if started and snapshot.state == 'running' and not snapshot.stdout_truncated:
+                            cancellation['parent_ended_before_cancel'] = False
+                            cancellation['turn_started_observed_at'] = loop.time()
+                            cancellation['requested'] = execution.cancel()
+                            cancellation['cancel_called_at'] = loop.time()
+                            break
+                    await asyncio.sleep(0.05)
+                try:
+                    outcome = asdict(await execution)
+                except asyncio.CancelledError:
+                    cancellation['propagated'] = True
+            finally:
+                if not execution.done():
+                    execution.cancel()
+                    await asyncio.gather(execution, return_exceptions=True)
+    except AgentSyncError as error:
+        error_code = error.code
+    finally:
+        save('cancellation-request.json', cancellation)
+        save('capture.json', await capture.retain())
+        attempts = [asdict(a) for a in relay.inspect_attempts(actor, task_id, admin_token=owner['admin_token'])]
+        first, second = validate_attempts(attempts)
+        save('dispatch-observation.json', {'actors': {'worker': {'task_id': task_id,
+            'captured_start_invoked': capture.entered, 'exact_authorizations': authorizations,
+            'attempts': attempts}}})
+
+    final = None if capture.process is None else await capture.process.snapshot()
+    final_terminal = None if capture.process is None else turn_flags(capture.process)[1]
+    cancellation['terminal_event_in_final_capture'] = final_terminal
+    save('cancellation.json', cancellation)
+    reopened_core = Core(BASE / 'core')
+    reopened = ControlledRelay(reopened_core, BASE, BASE / 'receipts')
+    reread = [asdict(a) for a in reopened.inspect_attempts(actor, task_id, admin_token=owner['admin_token'])]
+    reopened_outcome = asdict(reopened.observe(actor, task_id))
+    task = next(row for row in reopened_core.execute('list_tasks', auth(state))['tasks'] if row['id'] == task_id)
+    unchanged = fixture_intact(state, source) and fixture_intact(state, review.plan.cwd)
+    assert_runtime_origin()
+    assert state['helper_sha256'] == helpers()
+    stopped = (final is not None and final.parent_ended and first['state'] == 'terminal_recorded'
+        and first['parent_ended'] is True and type(first['exit_code']) is int
+        and first['exit_code'] == final.exit_code)
+    bounded = authorizations == int(capture.entered) == 1 and second['state'] == 'not_dispatched'
+    if stopped and bounded:
+        status = 'NOT VERIFIED'
+        if (cancellation['requested'] and cancellation['propagated']
+            and cancellation['turn_started_observed'] and cancellation['parent_ended_before_cancel'] is False
+            and not cancellation['terminal_event_observed'] and final_terminal is False
+            and not final.stdout_truncated
+            and first['status'] == 'unknown' and first['error_code'] == 'local_cancel_requested'
+            and first['timed_out'] is False and unchanged and attempts == reread
+            and reopened_outcome['state'] == 'incomplete' and task['status'] == 'running'
+            and task['task_verification'] == 'unverified'):
+            status = 'PASS'
+    elif not capture.entered and authorizations == 0 and all(a['state'] == 'not_dispatched' for a in attempts):
+        status = 'NOT VERIFIED'
+    else:
+        status = 'UNKNOWN'
+    save('result.json', {'timestamp': timestamp(), 'product_sha': PRODUCT, 'sdist_sha256': SDIST_SHA,
+        'status': status, 'outcome': outcome, 'operation_error_code': error_code,
+        'attempts': attempts, 'reopened_attempts_match': attempts == reread, 'reopened_outcome': reopened_outcome,
+        'task_status': task['status'], 'task_verification': task['task_verification'],
+        'source_and_worktree_unchanged': unchanged, 'runtime_members_matched': 97,
+        'authorized_launches': authorizations, 'owned_capture_invoked': capture.entered,
+        'scope': 'owned_parent_only', 'server_cancellation': 'UNVERIFIED',
+        'descendant_cleanup': 'UNVERIFIED', 'billing': 'UNVERIFIED', 'formal_release': 'BLOCKED',
+        'retry_allowed': False})
+    print(json.dumps({'status': status, 'scope': 'owned_parent_only', 'retry_allowed': False}))
+    return 0 if status == 'PASS' else 1
+
+
+def main():
+    os.umask(0o077)
+    assert sys.flags.isolated and sys.dont_write_bytecode and not sys.flags.optimize
+    assert Path(__file__).resolve() == BASE / 'pilot.py'
+    private_directory(BASE)
+    args = sys.argv[1:]
+    if args == ['prepare']:
+        prepare()
+        return 0
+    if len(args) == 2 and re.fullmatch('[0-9a-f]{64}', args[1]):
+        if args[0] == 'ready-once':
+            ready_once(args[1])
+            return 0
+        if args[0] == 'execute-once':
+            return asyncio.run(execute_once(args[1]))
+    raise ValueError('Choose prepare, ready-once PLAN_SHA or execute-once PLAN_SHA.')
+
+
+if __name__ == '__main__':
+    try:
+        code = main()
+    except Exception as error:
+        status = 'UNKNOWN' if (BASE / 'attempt.json').exists() else 'BLOCKED'
+        print(json.dumps({'status': status, 'error_type': type(error).__name__, 'retry_allowed': False}))
+        code = 1
+    raise SystemExit(code)

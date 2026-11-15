@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15, Windows regression and targeted repair
+## Current scoped outcome — 2026-11-15, installed-sdist regressions
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
 Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
@@ -21,9 +21,9 @@ Docker run:8 cases,19 isolation checks, verified producer, exact proof/context
 handoff and Core reopen.97 installed files unchanged, cleanup confirmed. Actors
 are deterministic; text review is unverified; no model call or real crash occurred.
 See evidence/durable-demo-a117/verified-linux/lead-review.json. Windows/Linux
-durable console observations and focused Windows10+pilotCLI5 checks are separate;
-full117 regression remains NOT RUN. The subsequent Windows3.12 editable-source
-and installed-sdist checks each passed the same10 focused cases as the wheel.
+durable console observations and focused Windows10+pilotCLI5 checks are separate.
+The subsequent Windows3.12 editable-source and installed-sdist checks each
+passed the same10 focused cases as the wheel.
 97 runtime members were unchanged;1317 source-archive payload files match frozen
 Git and8 generated metadata files are identified. Archive SHA256
 b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672.
@@ -33,8 +33,8 @@ Corrected preparation used the exact same archive, Python3.12 and unchanged
 pyproject dependency pins. The same archive then passed Linux3.14's7 native
 checks and10 focused cases, matching Windows identities/outcomes with97 unchanged
 runtime members. See evidence/durable-demo-a117/sdist/linux/summary.json.
-Full a117 acceptance/matrix and macOS installation remain incomplete. The current
-Windows installed-sdist full run and targeted repair below have bounded results.
+The a117 acceptance matrix and macOS installation remain incomplete. The Linux
+installed-sdist result and the Windows failure and targeted repair are recorded below.
 
 The added OwnerContinuation native-exit tests run against that same installed117
 runtime: root Windows3.12 and Linux3.14 each passed the full affected20-case file,
@@ -128,12 +128,26 @@ regression plus bounded maintenance repair, not a complete current release matri
 row. Original logs/JUnit (6 credential redactions), native receipts and case diff
 remain in evidence/durable-demo-a117/full-windows312/current-summary.json.
 
-Current Linux3.14 full installed-sdist/Docker validation is RUNNING from14:45:02Z,
-native session79159, guest controller2960. Five prechecks passed; final pytest,
-JUnit and Docker observation review are pending. Frozen test inputs33ffbc3 and
-runtimefc27f15 use the original archive without new model/auth calls. This is
-not a complete matrix row or a Release decision. See
-evidence/durable-demo-a117/full-linux314/started-summary.json.
+The Linux 3.14 full installed-sdist run with actual Docker ended at 15:03:35Z.
+Native session 79159 exited 0 and all seven native checks passed. JUnit reports
+2,545 unique cases with 2,538 passed, 7 skipped, 0 failures and 0 errors. Pytest
+reported 120 warnings over 1,096.12 seconds. All 2,533 a116 case identities and
+outcomes were preserved, and all 12 additions passed. The selected fields in 35
+observations across seven Docker fixture groups matched a116, including expected
+rejections. The 53 harvested files total 635,517 bytes and match their recorded
+SHA-256 hashes. All 2,382 frozen inputs from 33ffbc3 and 97 installed members
+from fc27f15 remained unchanged. The original source archive was reused. Docker
+reported zero containers and the fixture had no remaining processes. No model
+call or credential action occurred. The result covers this installed archive on
+Linux 3.14 and formal Release remains BLOCKED.
+[Completed evidence](evidence/durable-demo-a117/full-linux314/current-summary.json)
+· [Start record](evidence/durable-demo-a117/full-linux314/started-summary.json)
+
+Preparation of the fresh cancellation R2 fixture exited 0 at 15:05:22Z and its
+plan passed independent review. The private home was empty. The preparation
+used no credentials and made no model call. Live R2 remains NOT RUN and requires
+fresh explicit authorization for one call.
+[R2 preparation](evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
 
 ## Earlier delivery checkpoint — 2026-11-15
 

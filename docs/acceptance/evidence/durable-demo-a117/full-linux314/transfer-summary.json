@@ -1,0 +1,284 @@
+{
+  "files": [
+    {
+      "path": "attempt.json",
+      "bytes": 964,
+      "sha256": "636d7e1662e956bb09c995e7c558ae403a5602115812aeec98973cf155022c6f"
+    },
+    {
+      "path": "logs/sdist_install.log",
+      "bytes": 934,
+      "sha256": "1f44a61dd46e5cc02f0b921bb189fd5a64e17b6f2dfcc109ed916a94df448a52"
+    },
+    {
+      "path": "logs/sdist_install.process.json",
+      "bytes": 1677,
+      "sha256": "f4a0862487ea39ebfa02363c93d68aa883da0cc2f0bb991e8722eaecffa7cf9e"
+    },
+    {
+      "path": "logs/sdist_offline_dependencies.log",
+      "bytes": 7109,
+      "sha256": "e496a40d447fb88cfc2b4459230bfdd3def241eb1b592d1f40c7a3d1fc0a6e44"
+    },
+    {
+      "path": "logs/sdist_offline_dependencies.process.json",
+      "bytes": 2166,
+      "sha256": "9593100f4ff9c7a7806d100f985816bb9edd82f2580be8126d25f6e340c936ef"
+    },
+    {
+      "path": "logs/sdist_origin_after.log",
+      "bytes": 281,
+      "sha256": "0620f2c3b37c15a99e046838baf97bd2122232cda7f17af6c5875966608fea1a"
+    },
+    {
+      "path": "logs/sdist_origin_after.process.json",
+      "bytes": 4454,
+      "sha256": "624aa80238e471c796c0716b961eaee41505690824f25e1f0fcf3185303c7948"
+    },
+    {
+      "path": "logs/sdist_origin_before.log",
+      "bytes": 281,
+      "sha256": "0620f2c3b37c15a99e046838baf97bd2122232cda7f17af6c5875966608fea1a"
+    },
+    {
+      "path": "logs/sdist_origin_before.process.json",
+      "bytes": 4457,
+      "sha256": "6fbac7081d440f756bc4e0d543cc6be1102a6e8c66c33f6ff62203eedac51e66"
+    },
+    {
+      "path": "logs/sdist_pip_check.log",
+      "bytes": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "path": "logs/sdist_pip_check.process.json",
+      "bytes": 1145,
+      "sha256": "4a022d44251527bca2e150cd834b893e8fd08d740dced5c3e47d923a3d95598f"
+    },
+    {
+      "path": "logs/sdist_pytest.log",
+      "bytes": 15724,
+      "sha256": "81ad3eff1d350d7f8294365b2094dca1eca2fa10207c99d41ee3f49b4160b43a"
+    },
+    {
+      "path": "logs/sdist_pytest.process.json",
+      "bytes": 1588,
+      "sha256": "2f9d5b32ae7d58e964a817bfbe4e870aa56547626a3611cca89c083b818fb49e"
+    },
+    {
+      "path": "logs/sdist_venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/sdist_venv.process.json",
+      "bytes": 1150,
+      "sha256": "209d690eaaa6672e9d1276777f5a2ae15ec982834a2f9ec41541c71c301cfefc"
+    },
+    {
+      "path": "observations/candidate_executor/actual-candidate-created-crash-cleanup.json",
+      "bytes": 10747,
+      "sha256": "6216f80033a2f7256b90e0cb810e0f2ef61034be049e6dd93a04d4e080a3b85c"
+    },
+    {
+      "path": "observations/candidate_executor/actual-candidate-execution.json",
+      "bytes": 14314,
+      "sha256": "2b898fd06180eaa6bc9d1225bde2acbc8c919e6ee2183ab6cb3fae611140402d"
+    },
+    {
+      "path": "observations/candidate_executor/actual-candidate-running-cancel.json",
+      "bytes": 15593,
+      "sha256": "a9d7047b1bcca73bbd0980dbdeb6552ff338a8190ce03e704869f5f5fda1697b"
+    },
+    {
+      "path": "observations/candidate_executor/actual-candidate-timeout.json",
+      "bytes": 13887,
+      "sha256": "6bb26df5d6ece950620becf499867a6a9cd43b7d5e586065ec5eecdd35ebae41"
+    },
+    {
+      "path": "observations/candidate_executor/actual-candidate-wrong-result.json",
+      "bytes": 14369,
+      "sha256": "d0a32bf00c37041f7d6d0c646041c794e718cad91ff37115c35c99e8f928af0f"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/expired-lease-after-real-pass.json",
+      "bytes": 4462,
+      "sha256": "87cac4f6d1a7102038d5007dc66a43d42a0aa6220fa7d1d9c8bce9852a3a6ba0"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/fixed-snapshot.json",
+      "bytes": 4382,
+      "sha256": "e491ac4211aa525537422635f85a66e6ede251c5dafe8c76f7030ef39ba4cc92"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/owner-cancel-before-start.json",
+      "bytes": 4195,
+      "sha256": "77967180fae6bb9ad94527eeb8a887b952ac5724c4617f7f8d13fe7da2a96d76"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/test_actual_owner_rejects_candidate_self_report[early-exit].json",
+      "bytes": 4428,
+      "sha256": "b0a054372bff24feaf62baeb3be061d7fd393111858a8b502ccc8259477708f3"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/test_actual_owner_rejects_candidate_self_report[forged-junit].json",
+      "bytes": 4428,
+      "sha256": "999818bc348bdbd4d0b6932da49a4442e5a967cb7f722bfe8bd87739c6369afe"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/test_actual_owner_rejects_candidate_self_report[wrong-result].json",
+      "bytes": 4420,
+      "sha256": "7bdcc4417a75a150d593599efeda9b7f27826c2233ac19b092570987882dff5b"
+    },
+    {
+      "path": "observations/owner_executor/aab8b18919bc1ed7/wall-time.json",
+      "bytes": 4171,
+      "sha256": "6654e6504bc240b6d6d02179e7063596cd31d475ef7bbd045126cc79bc9dd0c2"
+    },
+    {
+      "path": "observations/proposal_pipeline/verified.json",
+      "bytes": 4340,
+      "sha256": "94596ea00cc3b2d2d0a021c59b2b2aaf8efc8573ea873d3625306cba5d08ef1a"
+    },
+    {
+      "path": "observations/proposal_pipeline/wrong-result.json",
+      "bytes": 4375,
+      "sha256": "a790cf4bf26fe0c67366221e9febfb7063110b687af8b971669f8c6247cb3777"
+    },
+    {
+      "path": "observations/reconciliation/aab8b18919bc1ed7/hard-exit-created.json",
+      "bytes": 3679,
+      "sha256": "1f79c0677922e6c07e37d753105076570856f60b8f19d806996eb2b2494f80c4"
+    },
+    {
+      "path": "observations/reconciliation/aab8b18919bc1ed7/hard-exit-running.json",
+      "bytes": 3677,
+      "sha256": "6637f8e8e92d44c54ada18d7594cc86416ebaed4a795982717d15a66093488ad"
+    },
+    {
+      "path": "observations/reconciliation/aab8b18919bc1ed7/initial-absence.json",
+      "bytes": 3716,
+      "sha256": "422b9e6b68b40b61d97a1a25ed5000f6ebbf91ba705beeef435ef84e0d78a789"
+    },
+    {
+      "path": "observations/reconciliation/aab8b18919bc1ed7/lost-create-ack.json",
+      "bytes": 2629,
+      "sha256": "a362fdeb6993d9dc9cd27663469fa0ddde47372310d773a76b2698480c44dccd"
+    },
+    {
+      "path": "observations/reconciliation/aab8b18919bc1ed7/protected-renamed-object.json",
+      "bytes": 3719,
+      "sha256": "d89d7e697adcfaeffd99375fc9212a5eacd6750d3e6d32bb0f877666c43c7919"
+    },
+    {
+      "path": "observations/task_completion/actual-verified-task-completion.json",
+      "bytes": 16831,
+      "sha256": "3e6d9f808f21ed53ac3bd474d49fd226ffa01049c37557900517da0c3ad71173"
+    },
+    {
+      "path": "observations/verified_review/docker-cursor-review.json",
+      "bytes": 2991,
+      "sha256": "0a476b9444c63375599c354b6cb2e40fd28aae023d0d7cf4522910be9dac13db"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_checks_all_external_cases.json",
+      "bytes": 2672,
+      "sha256": "2f9919968618bdaa33c1e2542b46fbc54ca2f6acc3e6199b5714b416efb1718d"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_enforces_memory_bound.json",
+      "bytes": 2708,
+      "sha256": "6d7a3bd844f7249d414dabaa80d25a5fc7366648d8a01ecd509476516f2d8890"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_enforces_output_bounds[stderr].json",
+      "bytes": 2485,
+      "sha256": "88b5ddbe8baeaba0c57ecc41cf013adeea70d8aa99d315f0fb3b5b3db7314e9c"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_enforces_output_bounds[stdout].json",
+      "bytes": 2484,
+      "sha256": "a125e8a0b5daccfaf0ddc3e295a0873d8fb68a66c1b00e1a23b92e93960bc0ce"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_enforces_pid_bound.json",
+      "bytes": 2672,
+      "sha256": "3430f6ec7becb39f766c932e0ccc6edc9e09f9a44cf873aff680408e7628e51f"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_enforces_scratch_bound.json",
+      "bytes": 2671,
+      "sha256": "f4f449858569511da68ab4291f0e11da0bdcbb603f6b2a608c7f9c503bfcee4b"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_enforces_wall_time.json",
+      "bytes": 2473,
+      "sha256": "eeff2b96fc210898a0c4200d44640b43172fcb7673fb50f70daec905774dab9b"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_isolation_controls.json",
+      "bytes": 2673,
+      "sha256": "3bc3a9ee87e93aa54f10a70217aeb1cb822ddcd08ed310cf058da1e98f3bc251"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_kernel_cgroup_limits.json",
+      "bytes": 2673,
+      "sha256": "e4b5b9b14757f3309a254074b5fc29a6c04a06eaa3118d51409f90a3b38d05b6"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json",
+      "bytes": 2706,
+      "sha256": "969a4fa5744c6b1248f9208949535971b46e90f3e1d4bc4f8b6d24d1da7273b3"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json",
+      "bytes": 2711,
+      "sha256": "963c1eb1112a460757d357ce52fa0c07bce38c727d9514e4a1f06363c2091986"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json",
+      "bytes": 2713,
+      "sha256": "7cb294cd5e1416cbd94fe6d50ba0e9f7c40cfe66deccfeb98ed06e0978d310db"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json",
+      "bytes": 2713,
+      "sha256": "c9a1576b30472e17b16b7520f3eaf254d624b42968615a35292f11aca52d0edc"
+    },
+    {
+      "path": "observations/verifier/aab8b18919bc1ed7/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json",
+      "bytes": 2706,
+      "sha256": "c49d6a99df085eb1d3ffe95431468eb39bc8123ab3e5a9f406f64fa51a3370dc"
+    },
+    {
+      "path": "offline-wheelhouse.json",
+      "bytes": 8619,
+      "sha256": "02aaed6f33aed9b734627ea3494d981d6cb35e456c6b62aedb9eaad26a2cba51"
+    },
+    {
+      "path": "result.json",
+      "bytes": 15890,
+      "sha256": "bbabdfd7a8948ba01ac1a077a6c4072a6fa657232b6c781f926fe0248d8af89e"
+    },
+    {
+      "path": "sdist-junit.xml",
+      "bytes": 386635,
+      "sha256": "ade19ad9d35df226ed1d7a62608027ae3470543248db808a034e1abd48dbce77"
+    }
+  ],
+  "frozen_inputs_rechecked": 2382,
+  "active_fixture_processes": [],
+  "docker_containers": [],
+  "boot_id": "86f98cbb-008d-4408-8886-2801a58f096e",
+  "observed_at": "2026-11-15T15:03:40.313652+00:00",
+  "observer": {
+    "started_at": "2026-11-15T14:45:03.093525+00:00",
+    "observer_pid": 408,
+    "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m117l/run-sdist.py",
+    "automatic_retry": false,
+    "model_calls": 0,
+    "status": "completed",
+    "exit_code": 0,
+    "finished_at": "2026-11-15T15:03:35.545201+00:00"
+  }
+}

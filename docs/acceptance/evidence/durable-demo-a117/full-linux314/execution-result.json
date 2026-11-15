@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-11-15T14:45:03.093525+00:00",
+  "observer_pid": 408,
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m117l/run-sdist.py",
+  "automatic_retry": false,
+  "model_calls": 0,
+  "status": "completed",
+  "exit_code": 0,
+  "finished_at": "2026-11-15T15:03:35.545201+00:00"
+}
