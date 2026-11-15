@@ -33,7 +33,8 @@ Corrected preparation used the exact same archive, Python3.12 and unchanged
 pyproject dependency pins. The same archive then passed Linux3.14's7 native
 checks and10 focused cases, matching Windows identities/outcomes with97 unchanged
 runtime members. See evidence/durable-demo-a117/sdist/linux/summary.json.
-Full a117 regression/matrix and macOS installation remain NOT RUN.
+Full a117 acceptance/matrix and macOS installation remain incomplete. The current
+Windows installed-sdist full-suite execution below has no final result yet.
 
 The added OwnerContinuation native-exit tests run against that same installed117
 runtime: root Windows3.12 and Linux3.14 each passed the full affected20-case file,
@@ -111,6 +112,14 @@ Independent Astra accepted the repaired pilot/helper; root separately checked th
 final fault-injection tests. No product changes, new live plan or retry. The VM
 shut down normally after cleanup. Live acceptance stays NOT VERIFIED and formal
 Release stays BLOCKED. See evidence/durable-demo-a117/cancel-repair/summary.json.
+
+At13:51:15Z the single current Windows3.12 installed-sdist regression began in a
+fresh D-drive environment (native session45808). Five offline preparation/install/
+origin checks passed;97 runtime members matchfc27f15 and2355 frozen test inputs
+match4dcd716. Full pytest remains RUNNING; no final JUnit or pass claim. The existing
+source archive was reused. This does not repeat the completed a116 matrix or
+establish other current platform/install/static gates. See
+evidence/durable-demo-a117/full-windows312/started-summary.json.
 
 ## Earlier delivery checkpoint — 2026-11-15
 

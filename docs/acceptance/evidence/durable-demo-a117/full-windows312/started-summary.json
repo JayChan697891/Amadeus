@@ -1,0 +1,107 @@
+{
+  "observed_at": "2026-11-15T13:53:27.2629567Z",
+  "status": "RUNNING",
+  "native_session_id": 45808,
+  "controller_pid": 24324,
+  "pytest_pid": 6852,
+  "test_source_commit": "4dcd7161d956135b12ee1ca8556c445a9bc52e5d",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "scope": "One full Windows3.12 suite against a fresh offline install of the existing sdist. Not a complete current release matrix.",
+  "input_files_verified": 2355,
+  "runtime_members_verified_before": 97,
+  "prechecks_passed": 5,
+  "full_pytest": "RUNNING",
+  "full_pytest_final_exit": null,
+  "junit": "NOT YET AVAILABLE",
+  "source_archive_regenerated": false,
+  "pip_internal_wheel_build": "Normal source-package installation; not a newly published candidate archive",
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "private_debug_root": "D:\\agentsync-debug\\m117w",
+  "resume": "Poll existing native session45808. If observation is unavailable, inspect the exact saved worker/controller identity and process sidecars; never start the driver again just because a poll timed out. At terminal state inspect result.json, sanitized JUnit, all cases and final97/2355 identity checks.",
+  "source_export_roots": [
+    "src",
+    "tests",
+    "tools",
+    "docs",
+    "examples",
+    ".github",
+    "AGENTS.md",
+    "WORKFLOW.md",
+    "LICENSE",
+    "README.md",
+    "README.zh-CN.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".env.example",
+    ".gitignore",
+    ".gitattributes",
+    "requirements-lock.txt",
+    "requirements-dev-lock.txt",
+    "pyproject.toml",
+    "MANIFEST.in"
+  ],
+  "artifact_locations": "Original sdist is already stored at releases/0.3.0a117/demo-fc27f15; frozen source can be reproduced with git archive of the listed roots at test_source_commit. Raw temporary data remains private on D:.",
+  "artifacts": {
+    "run-sdist.py.txt": {
+      "sha256": "bbdbabefcd87441d9b9e11b3625dbfe42dc478ca45b501b5b4d9b841f1828f12",
+      "bytes": 10324
+    },
+    "frozen-inputs.json": {
+      "sha256": "bf402028d53cc42df6cfc31e3e3b2247e8014eff72d2ee84bbdfa93cdfff63e8",
+      "bytes": 638344
+    },
+    "execution-start.json": {
+      "sha256": "391b5006f8926e3588b66ce744790998d9eec7f18111929ececd458cfff1a256",
+      "bytes": 779
+    },
+    "run/attempt.json": {
+      "sha256": "7b861e34b6f519b00b780624a1e23fd4c7a4c6a5f16f3d9da87e018669d890c0",
+      "bytes": 792
+    },
+    "run/logs/sdist_venv.process.json": {
+      "sha256": "6757011e24507419bfbb2ffdc767aa6121e1f752402bbd4489790b0e6c7b7b30",
+      "bytes": 1298
+    },
+    "run/logs/sdist_venv.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "run/logs/sdist_offline_dependencies.process.json": {
+      "sha256": "cde5f62b92e85e4c1c5d92c16d3fdf7d0fc889f9a48fb3c3654a9373638400fa",
+      "bytes": 2230
+    },
+    "run/logs/sdist_offline_dependencies.log": {
+      "sha256": "24fe7d85361f78a620d8bcfb4d36ebbdd5b87defede522c308f64b48f6d59506",
+      "bytes": 7663
+    },
+    "run/logs/sdist_install.process.json": {
+      "sha256": "f1b0e35532b818cf89ccab90d02d905fd0a8c6b45d9f717286cd04768c1fd9b8",
+      "bytes": 1757
+    },
+    "run/logs/sdist_install.log": {
+      "sha256": "379f68f30593b0ae647d6409533487e5dd8aa1b7de5bad2af1087840424ed40a",
+      "bytes": 980
+    },
+    "run/logs/sdist_pip_check.process.json": {
+      "sha256": "ae792f1dfb9bda8f0e91d89fbf0d9aef1fa9d36371071d78c0bc64148f8c051a",
+      "bytes": 1197
+    },
+    "run/logs/sdist_pip_check.log": {
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "bytes": 32
+    },
+    "run/logs/sdist_origin_before.process.json": {
+      "sha256": "a7f0d8038c48b13e5152323986d101b9a802883f95a6106636b9f1fedad7e910",
+      "bytes": 4551
+    },
+    "run/logs/sdist_origin_before.log": {
+      "sha256": "b87447a52e964bed31a8d36d0ed95992d8f98a690143dd22a0d53fb709aa4df6",
+      "bytes": 300
+    }
+  }
+}

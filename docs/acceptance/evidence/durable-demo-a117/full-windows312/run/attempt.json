@@ -1,0 +1,16 @@
+{
+  "scope": "Windows 3.12, one full suite against the installed a117 preview sdist",
+  "test_source_commit": "4dcd7161d956135b12ee1ca8556c445a9bc52e5d",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "fixture_snapshot_sha256": "6b4e36b85e121250f579b2e2676f5f8373d467a24f36266b4d0c540808aea503",
+  "driver_sha256": "bbdbabefcd87441d9b9e11b3625dbfe42dc478ca45b501b5b4d9b841f1828f12",
+  "controller_pid": 24324,
+  "controller_python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "started_at": "2026-11-15T13:51:15.033952+00:00",
+  "status": "unknown",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": []
+}

@@ -135,8 +135,17 @@ Independent review accepted the repaired driver/helper; fault-injection tests do
 not promote live acceptance. No new live plan was prepared; the consumed path is
 preserved. See acceptance/evidence/durable-demo-a117/cancel-repair/summary.json.
 
-Next: continue the existing P0/P1 demonstration route; retain full a117 regression,
-full release matrix and actual live crash recovery as unexecuted gaps. Further real calls require
+The next existing acceptance gap is now executing: one full Windows3.12 regression
+against the unchanged a117 sdist, in a new D:/agentsync-debug/m117w environment.
+Native session45808 is RUNNING after5 passed install/dependency/origin checks.
+Frozen tests/tools are4dcd716, product runtime remainsfc27f15;2355 input files and97
+installed members were verified before pytest. No new candidate archive, parallel
+matrix queue or real client call. This is not a passed suite or full Release row;
+inspect its final JUnit and identity checks before updating any conclusion. See
+acceptance/evidence/durable-demo-a117/full-windows312/started-summary.json.
+
+Next: continue the existing P0/P1 demonstration route; retain full a117 acceptance,
+full release matrix and actual live crash recovery as unfinished gaps. Further real calls require
 fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
 No new M5 stage, new release gate or repeated full acceptance was introduced.
 

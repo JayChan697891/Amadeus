@@ -142,14 +142,27 @@ retain the consumed path and must not be deployed there or used to retry it.
 The owned VM shut down normally at13:36:03Z; original disk/workspaces remain.
 See acceptance/evidence/durable-demo-a117/cancel-repair/summary.json.
 
-Resume entry: both original queues and ordered benchmarks are complete; do not
+Current authorized local validation: native session45808 started at13:51:15Z;
+Windows3.12 full installed-sdist pytest is RUNNING, not passed. New private root
+D:/agentsync-debug/m117w holds2355 frozen input files from4dcd716 and the unchanged
+b78a748b source archive/runtimefc27f15. A fresh offline install passed5 preparation,
+dependency and origin checks; all97 installed members match. No source archive
+regenerated, real client/auth action or extra matrix queue. Pytest uses the whole
+checked-in suite and default platform behavior, without selection or early exit.
+The equivalent a116 suite took about45 minutes; the existing7200s ceiling applies.
+Poll the existing session/actual process identity, never restart on an observation
+timeout. Inspect its eventual full JUnit and final input/runtime hashes before
+acceptance. See acceptance/evidence/durable-demo-a117/full-windows312/started-summary.json.
+
+Resume entry: both original a116 queues and ordered benchmarks are complete; do not
 restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
 P0/P1 from the current a117 demonstration and the remaining evidence gaps below,
 using affected regression only. Keep a116 full-matrix evidence separate from a117.
 No additional model/auth action, paid API, Actions, main change or publication.
 Future live calls require fresh authorization; macOS and real Claude/Cursor still
 lack an available authorized environment. Full a117 regression/matrix and macOS
-installation remain NOT RUN; Windows/Linux sdist results are focused only.
+installation remain uncompleted; one Windows installed-sdist full suite is now
+running. Prior Windows/Linux sdist results remain focused only until a final result.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.
