@@ -43,9 +43,13 @@ Local Git verified it; guest prerequisites546cc52 and b6f05f0 still need checkin
 VM/guest transfer/Linux tests are NOT RUN for a116. The bundle stays on D: because
 the same source is already in Git. See
 acceptance/evidence/m9-a116-preparation/linux-source-transfer/preparation.json.
-Git remote confirmed624b36c uploaded. Current PR feedback could not be refreshed:
-connector transport failed and a read-only unauthenticated API fallback returned404.
-Do not infer repository disappearance or claim comments reviewed from that result.
+Git remote confirmed source evidence ee1001a uploaded. The GitHub connector
+subsequently recovered: PR35 is open/draft/unmerged, head ee1001a, no comments.
+Its description now reflects a116 source success and pending installed suites;
+read-back matched the update. Issues7/11 remain open, last updated2026-11-07,
+with17/15 comments respectively; no new scope change was observed.
+Earlier connector failure/API404 was a transient access observation, not evidence
+of repository disappearance. No Actions or merge was requested.
 
 The existing M9-02 bounded technical delivery-scope decision is now recorded in
 acceptance/evidence/m9-a115-preparation/b6-license-platform-delta.json under
