@@ -1,0 +1,50 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "editable_origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,agentsync\ndata=json.loads(Path(sys.argv[1]).read_bytes());expected=Path(sys.argv[2]).resolve()\nassert Path(agentsync.__file__).resolve()==expected/'agentsync/__init__.py'\nactual={n:hashlib.sha256((expected/n).read_bytes()).hexdigest() for n in data}\nassert actual==data\nd=md.distribution('agentsync-local');assert d.version=='0.3.0a117'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==Path(sys.argv[3]).as_uri()\nif sys.argv[4]=='editable': assert direct['dir_info']['editable'] is True\nelse: assert direct['archive_info']['hashes']['sha256']==sys.argv[4]\nprint(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'version':d.version},sort_keys=True))\n",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\runtime-members.json",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source\\src",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+      "editable"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "started_at": "2026-11-15T12:43:16.130309+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "editable_origin_before",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,agentsync\ndata=json.loads(Path(sys.argv[1]).read_bytes());expected=Path(sys.argv[2]).resolve()\nassert Path(agentsync.__file__).resolve()==expected/'agentsync/__init__.py'\nactual={n:hashlib.sha256((expected/n).read_bytes()).hexdigest() for n in data}\nassert actual==data\nd=md.distribution('agentsync-local');assert d.version=='0.3.0a117'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==Path(sys.argv[3]).as_uri()\nif sys.argv[4]=='editable': assert direct['dir_info']['editable'] is True\nelse: assert direct['archive_info']['hashes']['sha256']==sys.argv[4]\nprint(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'version':d.version},sort_keys=True))\n",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\runtime-members.json",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source\\src",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+      "editable"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:43:16.130309+00:00",
+    "finished_at": "2026-11-15T12:43:16.233866+00:00",
+    "log": "logs/editable_origin_before.log",
+    "log_sha256": "34e327fe345f7d65109ac17da0548e5554c1e5be2e0e0712a6166c5601f630e9",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

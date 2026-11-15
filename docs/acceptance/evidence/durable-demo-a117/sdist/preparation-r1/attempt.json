@@ -1,0 +1,31 @@
+{
+  "started_at": "2026-11-15T12:40:52.406128+00:00",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "export_sha256": "4e3dd64df96928525c4775f2e0fd116c61a058c2e7c4a7ae01ae13106b0cba82",
+  "export_paths": [
+    "src",
+    "tests",
+    "tools",
+    "docs",
+    "examples",
+    ".github",
+    "AGENTS.md",
+    "WORKFLOW.md",
+    "LICENSE",
+    "README.md",
+    "README.zh-CN.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".env.example",
+    ".gitignore",
+    ".gitattributes",
+    "requirements-lock.txt",
+    "requirements-dev-lock.txt",
+    "pyproject.toml",
+    "MANIFEST.in"
+  ],
+  "driver_sha256": "a1b85f4f3678f78d30a6f693925f7dbc8be817922f2abcc2c7400ce9b7570988",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

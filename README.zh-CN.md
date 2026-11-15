@@ -6,7 +6,8 @@
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
 当前为 **0.3.0a117 开发源码，正式发布仍处于阻断状态**。冻结的 0.3.0a116
-继续完成原本地验证队列，其证据不覆盖新增开发代码；交付顺序见[总计划](docs/PLAN.md)。
+已完成现有 Windows/Linux 六组本地矩阵，macOS 尚未实测；这些证据不覆盖新增开发代码。
+交付顺序见[总计划](docs/PLAN.md)。
 
 新增可恢复的持久 Mock 工作流入口：
 `amadeus --data-dir 绝对路径 workflow start|resume|status|cancel`，或 SDK 的
@@ -44,8 +45,7 @@ Cursor 的终态响应不能证明未调用工具，仍须满足原有宿主隔�
 
 ```powershell
 py -m venv .venv
-& .\.venv\Scripts\python.exe -m pip install -r requirements-dev-lock.txt
-& .\.venv\Scripts\python.exe -m pip install -e . --no-deps
+& .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 & .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\demo" demo
 & .\.venv\Scripts\python.exe -m pytest
 ```
@@ -53,10 +53,16 @@ py -m venv .venv
 不需要激活虚拟环境或修改执行策略。演示会注册两个模拟 Agent，让 A 认领任务，
 验证 B 的重复认领被拒绝，再由 A 提交结果、B 留下验收记录，重新打开数据库检查持久化。
 重复演示时使用新的专用数据目录。
-仅安装运行依赖时，改用 requirements-lock.txt。两份锁文件都是 Windows 实测的精确版本快照，
-不声称已经完成所有平台的统一解析验证。
+仅安装运行依赖时，使用 `pip install -e .`；当前依赖以 `pyproject.toml` 声明为准。
+两份 `requirements*-lock.txt` 保留旧 Windows 环境快照，并非当前跨平台锁文件。
+离线安装需事先准备与所选 Python 版本兼容的依赖包。
 
 ## 体验持久化协作
+
+[预览目录](releases/0.3.0a117/demo-fc27f15/)提供同一冻结运行时的 wheel 和源码包。
+Windows3.12 的源码安装、源码包安装各通过10项现有定向用例，与先前 wheel 的用例结果一致。
+[安装证据与保留的准备失败](docs/acceptance/evidence/durable-demo-a117/sdist/summary.json)
+仅覆盖该演示的定向验证，不代表完整 a117 发布矩阵通过。
 
 安装当前开发版本后，选一个尚不存在的绝对路径运行：
 

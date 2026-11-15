@@ -1,0 +1,33 @@
+{
+  "started_at": "2026-11-15T12:42:25.900106+00:00",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "export_sha256": "4e3dd64df96928525c4775f2e0fd116c61a058c2e7c4a7ae01ae13106b0cba82",
+  "prior_attempt": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\attempt.json",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "export_paths": [
+    "src",
+    "tests",
+    "tools",
+    "docs",
+    "examples",
+    ".github",
+    "AGENTS.md",
+    "WORKFLOW.md",
+    "LICENSE",
+    "README.md",
+    "README.zh-CN.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".env.example",
+    ".gitignore",
+    ".gitattributes",
+    "requirements-lock.txt",
+    "requirements-dev-lock.txt",
+    "pyproject.toml",
+    "MANIFEST.in"
+  ],
+  "driver_sha256": "68fa52fff506b1ded68b3cf2350fa3ae33f7b1ea42ad8c426d284665a5aba559",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,14 @@
+Looking in links: file:///D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse
+Obtaining file:///D:/agentsync-debug/strategy-demo/a117-sdist-r1/source
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building editable for agentsync-local (pyproject.toml): started
+  Building editable for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a117-0.editable-py3-none-any.whl size=14069 sha256=86f5f727de69b95e69a5ab452e2480979c87435808eeb6ba53de65905e5aee53
+  Stored in directory: D:\agentsync-debug\strategy-demo\a117-sdist-r3\tmp\pip-ephem-wheel-cache-5nkqw_el\wheels\af\ee\d7\abaefcc9961a8896ef85321f1dff9b68c68c6da2a54e5973a2
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a117

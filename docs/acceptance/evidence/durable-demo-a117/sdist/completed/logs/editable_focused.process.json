@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "editable_focused",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\private-junit\\editable.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "started_at": "2026-11-15T12:43:16.235840+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "editable_focused",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\private-junit\\editable.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:43:16.235840+00:00",
+    "finished_at": "2026-11-15T12:43:40.849724+00:00",
+    "log": "logs/editable_focused.log",
+    "log_sha256": "054597ebc7057940c1a40075eb4fdd1b89a86e540fe422a99aceed0efe909ee1",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

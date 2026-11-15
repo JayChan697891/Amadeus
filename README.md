@@ -9,7 +9,8 @@ Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
 Status: **0.3.0a117 development source. Formal Release BLOCKED.** The unchanged
-0.3.0a116 candidate is still completing its local release matrix; its evidence
+0.3.0a116 candidate completed all six available Windows/Linux matrix rows; macOS
+remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
 Permissions,
 approvals, audit, isolated verification components and offline planning have
@@ -73,8 +74,7 @@ From this repository directory, with Python 3.11+ installed:
 
 ```powershell
 py -m venv .venv
-& .\.venv\Scripts\python.exe -m pip install -r requirements-dev-lock.txt
-& .\.venv\Scripts\python.exe -m pip install -e . --no-deps
+& .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 & .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\demo" demo
 & .\.venv\Scripts\python.exe -m pytest
 ```
@@ -82,10 +82,18 @@ py -m venv .venv
 No activation or PowerShell execution-policy changes are needed. Demo uses two simulated agents,
 rejects the second claim, submits a result, records separate review and checks persistence.
 Use a dedicated empty data directory for repeatable demo runs.
-For runtime-only installation use requirements-lock.txt instead of the development snapshot.
-Both files are exact Windows-tested snapshots, not universal cross-platform resolver locks.
+For runtime-only installation use `pip install -e .`. The package dependencies are
+declared in `pyproject.toml`. The two `requirements*-lock.txt` files preserve an
+older Windows environment snapshot; they are not the current cross-platform lock.
+For offline installation, prepare wheels compatible with the selected Python version.
 
 ## Try persisted collaboration
+
+The [preview directory](releases/0.3.0a117/demo-fc27f15/) contains a wheel and source
+archive for the same frozen runtime. Windows3.12 editable-source and source-archive
+installs each passed the same10 focused cases as the earlier wheel check; see
+[package evidence and retained setup failures](docs/acceptance/evidence/durable-demo-a117/sdist/summary.json).
+This is focused demonstration validation, not a full a117 release matrix.
 
 After installing this development version, run the following with a new absolute
 directory (choose another name for each run):

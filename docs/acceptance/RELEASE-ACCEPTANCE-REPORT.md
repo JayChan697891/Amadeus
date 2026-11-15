@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15T12:34Z
+## Current scoped outcome — 2026-11-15T12:44Z
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
 Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
@@ -22,7 +22,15 @@ handoff and Core reopen.97 installed files unchanged, cleanup confirmed. Actors
 are deterministic; text review is unverified; no model call or real crash occurred.
 See evidence/durable-demo-a117/verified-linux/lead-review.json. Windows/Linux
 durable console observations and focused Windows10+pilotCLI5 checks are separate;
-full117 regression/sdist remains NOT RUN.
+full117 regression remains NOT RUN. The subsequent Windows3.12 editable-source
+and installed-sdist checks each passed the same10 focused cases as the wheel.
+97 runtime members were unchanged;1317 source-archive payload files match frozen
+Git and8 generated metadata files are identified. Archive SHA256
+b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672.
+The first two preparations failed before any tests (wrong Python minor, then
+historical snapshot mismatch); both remain in evidence/durable-demo-a117/sdist/.
+Corrected preparation used the exact same archive, Python3.12 and unchanged
+pyproject dependency pins. Full/other-platform sdist validation remains NOT RUN.
 
 Frozen116/624b36c matrix is6/9. All six Windows/Linux3.11/3.12/3.14 rows completed26
 checks each. Every source/wheel/sdist suite has2533 unique matching cases; Windows

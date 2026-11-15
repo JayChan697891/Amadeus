@@ -48,7 +48,7 @@ queue completed before the real Docker demo. Independent M8 correctness fixtures
 used separate exact-wheel installs. The unchanged bounded benchmarks subsequently
 passed in order: both queues complete, Linux, normal owned-VM shutdown, Windows.
 
-## Current delivery checkpoint — 2026-11-15T12:34Z
+## Current delivery checkpoint — 2026-11-15T12:44Z
 
 The current117 real two-Codex flow now has limited actual acceptance after fresh
 owner authorization: two native calls, four exact host approvals,8 Docker cases,
@@ -87,8 +87,15 @@ against the unchanged1000ms budget.96 installed files and3122 source paths remai
 unchanged. Native receipts, actual reports and ordering/VM shutdown evidence are
 under acceptance/evidence/m9-a116-preparation/benchmark/. No production SLO claim.
 
-Next: continue the existing P0/P1 demonstration route; retain full a117 regression/
-sdist and actual live crash recovery as unexecuted gaps. Further real calls require
+The117 preview also includes a frozen source archive. Its Windows3.12 editable
+source and installed-sdist environments each passed10 existing focused cases;
+97 runtime files stayed identical to the earlier wheel and1317 packaged tracked
+files match frozen Git. Two environment-preparation failures remain documented;
+the source package was not rebuilt. Current install guidance uses unchanged
+pyproject dependencies. See acceptance/evidence/durable-demo-a117/sdist/summary.json.
+
+Next: continue the existing P0/P1 demonstration route; retain full a117 regression,
+other-platform sdist and actual live crash recovery as unexecuted gaps. Further real calls require
 fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
 No new M5 stage, new release gate or repeated full acceptance was introduced.
 

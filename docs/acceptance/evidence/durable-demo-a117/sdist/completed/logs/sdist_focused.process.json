@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_focused",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\sdist-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\private-junit\\sdist.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "started_at": "2026-11-15T12:43:53.478466+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_focused",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\sdist-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\private-junit\\sdist.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:43:53.478466+00:00",
+    "finished_at": "2026-11-15T12:44:16.688368+00:00",
+    "log": "logs/sdist_focused.log",
+    "log_sha256": "9b1fb4c6d69949269b24da8a80d7c86bd022419875c2d8b719f9be6bb2cc5c41",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

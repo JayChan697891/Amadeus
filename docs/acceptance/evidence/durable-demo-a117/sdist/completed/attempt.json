@@ -1,0 +1,37 @@
+{
+  "started_at": "2026-11-15T12:43:03.285834+00:00",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "export_sha256": "4e3dd64df96928525c4775f2e0fd116c61a058c2e7c4a7ae01ae13106b0cba82",
+  "prior_attempts": [
+    "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\attempt.json",
+    "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r2\\attempt.json"
+  ],
+  "dependency_inputs": "Unchanged pyproject application pins and existing focused test tools, same project dependency selection as the accepted collector; historical October lock is not the current package resolver contract",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "export_paths": [
+    "src",
+    "tests",
+    "tools",
+    "docs",
+    "examples",
+    ".github",
+    "AGENTS.md",
+    "WORKFLOW.md",
+    "LICENSE",
+    "README.md",
+    "README.zh-CN.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".env.example",
+    ".gitignore",
+    ".gitattributes",
+    "requirements-lock.txt",
+    "requirements-dev-lock.txt",
+    "pyproject.toml",
+    "MANIFEST.in"
+  ],
+  "driver_sha256": "4c16e90b3e2e595d20c474ee7c49fa305facd170876a1a5370bd831fed74881e",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

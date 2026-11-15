@@ -1,0 +1,304 @@
+{
+  "observed_at": "2026-11-15T12:46:32.385536+00:00",
+  "scope": "Windows3.12 current a117 editable-source and installed-sdist focused regression",
+  "status": "SCOPED PASS",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "sdist": {
+    "repository_path": "releases/0.3.0a117/demo-fc27f15/agentsync_local-0.3.0a117.tar.gz",
+    "sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+    "size": 3716168,
+    "tracked_payload_files_equal_frozen_git": 1317,
+    "generated_metadata_files": [
+      "PKG-INFO",
+      "setup.cfg",
+      "src/agentsync_local.egg-info/PKG-INFO",
+      "src/agentsync_local.egg-info/SOURCES.txt",
+      "src/agentsync_local.egg-info/dependency_links.txt",
+      "src/agentsync_local.egg-info/entry_points.txt",
+      "src/agentsync_local.egg-info/requires.txt",
+      "src/agentsync_local.egg-info/top_level.txt"
+    ]
+  },
+  "python": "3.12.16",
+  "native_session": 67633,
+  "native_exit_code": 0,
+  "original_build_succeeded": true,
+  "preserved_preparation_failures": [
+    {
+      "attempt": "preparation-r1",
+      "reason": "Python3.14 interpreter incompatible with the Python3.12 offline cffi wheel",
+      "tests": "NOT RUN"
+    },
+    {
+      "attempt": "preparation-r2",
+      "reason": "Historical October snapshot pins httpcore2==2.14.0; authorized offline wheelhouse provides2.15.1",
+      "tests": "NOT RUN"
+    }
+  ],
+  "correction": "Pinned Python3.12 and unchanged canonical pyproject dependency inputs, matching the accepted release collector strategy; no product pins or tests changed",
+  "runtime_members_git_wheel_sdist_source_and_installed": 97,
+  "focused_tests": {
+    "editable_source": 10,
+    "installed_sdist": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "identities_and_outcomes_equal_prior_wheel": true
+  },
+  "new_model_calls": 0,
+  "full_a117_regression": "NOT RUN",
+  "other_platform_sdist": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "preparation-r1/attempt.json",
+      "size": 800,
+      "sha256": "882598a43edc57bdaac5e0e1389ecee6636dd07723d7cb0554db3f780eb465cb"
+    },
+    {
+      "path": "preparation-r1/exception.json",
+      "size": 2868,
+      "sha256": "a138520d1d1a42a2be51f907cbb6f6baea0b275b8e1a1184549d956922870a42"
+    },
+    {
+      "path": "preparation-r1/logs/build_sdist.log",
+      "size": 192750,
+      "sha256": "c5d618d5e368f8f06a92c8a2c52ae48a523fd1bf6b359271e1e8c837dc937d33"
+    },
+    {
+      "path": "preparation-r1/logs/build_sdist.process.json",
+      "size": 1541,
+      "sha256": "bd6a3f9d83135bb4e65baae2e1786bfe1f0a0f3e5af1664957f7692487312a61"
+    },
+    {
+      "path": "preparation-r1/logs/editable_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preparation-r1/logs/editable_venv.process.json",
+      "size": 1353,
+      "sha256": "aacd82371be9323d722bb5ab713a9a7321e21cfe41f1c6a59e9bb937a5ffeb82"
+    },
+    {
+      "path": "preparation-r1/logs/editable_dependencies.log",
+      "size": 1706,
+      "sha256": "522cf941b13ced32e6cc76ac1e640a1a417368a88c192e6a2ac967c66549c04d"
+    },
+    {
+      "path": "preparation-r1/logs/editable_dependencies.process.json",
+      "size": 2097,
+      "sha256": "fdd7685b0eca7188ef77a0eb08398fa24457f4b10747ba5fa9b111873617c880"
+    },
+    {
+      "path": "preparation-r2/attempt.json",
+      "size": 969,
+      "sha256": "84068bda71c24528f583b91f6b1fbb60a0b694e99e1db45370e0fc0ecd0ba2f7"
+    },
+    {
+      "path": "preparation-r2/exception.json",
+      "size": 2062,
+      "sha256": "a8177aa526f1d23560c84c99e484fbbfa6e4cbe88f4a8913d4acd95125068e8b"
+    },
+    {
+      "path": "preparation-r2/logs/editable_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preparation-r2/logs/editable_venv.process.json",
+      "size": 1427,
+      "sha256": "1720202134c6370cc62c4dad70b4969f7962c4659ec9cbdf737a2b2d36dea369"
+    },
+    {
+      "path": "preparation-r2/logs/editable_dependencies.log",
+      "size": 2765,
+      "sha256": "13ea4972fefc496cefe54f887fd238c99f26a83d216545bfcb340c156c3eb98e"
+    },
+    {
+      "path": "preparation-r2/logs/editable_dependencies.process.json",
+      "size": 2097,
+      "sha256": "0181de324ddb7a1f868f9cc1b46ef9c65be5aed590934597d93953910eaa12c0"
+    },
+    {
+      "path": "completed/attempt.json",
+      "size": 1281,
+      "sha256": "acbad34627c6af6b020aeabe687c8cc1aed4ccfbf4bae6ad9f0036e9684f2bde"
+    },
+    {
+      "path": "completed/result.json",
+      "size": 17919,
+      "sha256": "3b224dff571dcea761111bb758196ff5a7db366d86374f8ed6fd52d086118910"
+    },
+    {
+      "path": "completed/logs/editable_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "completed/logs/editable_venv.process.json",
+      "size": 1427,
+      "sha256": "10fbd658365d9651a6f9d6ea6049540292725c61b2479433b663ea9b6f6c2e87"
+    },
+    {
+      "path": "completed/logs/editable_dependencies.log",
+      "size": 7252,
+      "sha256": "c091b83278c761dff37763e930844946653f54bc88adfa7aab0ccc88b886f272"
+    },
+    {
+      "path": "completed/logs/editable_dependencies.process.json",
+      "size": 2087,
+      "sha256": "d3b41162e2da7e9762c2483a7a8d0903c6df96579169e7568965b96de87b7bdc"
+    },
+    {
+      "path": "completed/logs/editable_install.log",
+      "size": 1160,
+      "sha256": "d123e881f0bfe0de2679acac6b9c8c4f39eb8731643d7ce424c63c3e35f37939"
+    },
+    {
+      "path": "completed/logs/editable_install.process.json",
+      "size": 1620,
+      "sha256": "c21766a266565f53d3cee8408686e6a96bc199ef664cc81fd8a410f7053b6d03"
+    },
+    {
+      "path": "completed/logs/editable_pip_check.log",
+      "size": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "completed/logs/editable_pip_check.process.json",
+      "size": 1326,
+      "sha256": "100aed7bb747f81bf4d5550393cdf4482b71a6542e1c5ef294c461383b210cf9"
+    },
+    {
+      "path": "completed/logs/editable_origin_before.log",
+      "size": 10207,
+      "sha256": "34e327fe345f7d65109ac17da0548e5554c1e5be2e0e0712a6166c5601f630e9"
+    },
+    {
+      "path": "completed/logs/editable_origin_before.process.json",
+      "size": 3350,
+      "sha256": "c8361cd963afc4ce9674d7d5ffb5495f676fc2044bb2a961e3a0cc7745beed04"
+    },
+    {
+      "path": "completed/logs/editable_focused.log",
+      "size": 855,
+      "sha256": "054597ebc7057940c1a40075eb4fdd1b89a86e540fe422a99aceed0efe909ee1"
+    },
+    {
+      "path": "completed/logs/editable_focused.process.json",
+      "size": 2540,
+      "sha256": "0680ec2138c8702008273a2f0b2ee0ee28d38ad620ee9a302e5ef864660def1c"
+    },
+    {
+      "path": "completed/logs/editable_origin_after.log",
+      "size": 10207,
+      "sha256": "34e327fe345f7d65109ac17da0548e5554c1e5be2e0e0712a6166c5601f630e9"
+    },
+    {
+      "path": "completed/logs/editable_origin_after.process.json",
+      "size": 3347,
+      "sha256": "3a64f59560fa26d5606cd64c5d13d490a539c575a82498c6f5a047fd0a747f56"
+    },
+    {
+      "path": "completed/logs/sdist_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "completed/logs/sdist_venv.process.json",
+      "size": 1412,
+      "sha256": "869e34fcc043ca58a98eb831145f5e046b7af7d92a009a602e7228089f8af5b1"
+    },
+    {
+      "path": "completed/logs/sdist_dependencies.log",
+      "size": 7252,
+      "sha256": "c091b83278c761dff37763e930844946653f54bc88adfa7aab0ccc88b886f272"
+    },
+    {
+      "path": "completed/logs/sdist_dependencies.process.json",
+      "size": 2072,
+      "sha256": "d6a0914a679832713061c93dc01b4523dc7965c693723695d1ac6ded40c4a54b"
+    },
+    {
+      "path": "completed/logs/sdist_install.log",
+      "size": 1004,
+      "sha256": "016f1d44d6e3f0f2a49087fbb8bd145205c14bdadbaa8022788199ee2f1f54bb"
+    },
+    {
+      "path": "completed/logs/sdist_install.process.json",
+      "size": 1645,
+      "sha256": "bc8b8339a1fab0301b31d4470084a3bc3d3f4b6b0fab6b831821028ba69c40f5"
+    },
+    {
+      "path": "completed/logs/sdist_pip_check.log",
+      "size": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "completed/logs/sdist_pip_check.process.json",
+      "size": 1311,
+      "sha256": "bb88ddc48b2ac636e75fc90be992725ebbe5380caebb77f12ea82c943ad263cb"
+    },
+    {
+      "path": "completed/logs/sdist_origin_before.log",
+      "size": 10415,
+      "sha256": "a9cbc53ab9438523cd819a2cb5298ea7d7dcde6ded60ac5d49db66cb84d27019"
+    },
+    {
+      "path": "completed/logs/sdist_origin_before.process.json",
+      "size": 3547,
+      "sha256": "313eed724ababe39d50c48138623b44bd4bac737b3c8eb1eee00091c3447eb04"
+    },
+    {
+      "path": "completed/logs/sdist_focused.log",
+      "size": 852,
+      "sha256": "9b1fb4c6d69949269b24da8a80d7c86bd022419875c2d8b719f9be6bb2cc5c41"
+    },
+    {
+      "path": "completed/logs/sdist_focused.process.json",
+      "size": 2513,
+      "sha256": "8812e1e33965d6d0b35656ba75bc0a6ec22a0f71ae9d4ace0cfb230e7c516806"
+    },
+    {
+      "path": "completed/logs/sdist_origin_after.log",
+      "size": 10415,
+      "sha256": "a9cbc53ab9438523cd819a2cb5298ea7d7dcde6ded60ac5d49db66cb84d27019"
+    },
+    {
+      "path": "completed/logs/sdist_origin_after.process.json",
+      "size": 3544,
+      "sha256": "534725fe4882ba715c677df3f3a5ece6e90eba6b1133724b17220fdc306445b5"
+    },
+    {
+      "path": "completed/editable-focused.xml",
+      "size": 1875,
+      "sha256": "a0f84735147c124d1e1a11b111b1de62f6cd9ebb6de6d97af8083ec87e2f343c"
+    },
+    {
+      "path": "completed/sdist-focused.xml",
+      "size": 1875,
+      "sha256": "ccb767da449a56bdac976ffd9079e935e2fa36d63a7fa8e083c87b46dcffc17a"
+    },
+    {
+      "path": "drivers/check-a117-sdist.py.txt",
+      "size": 6948,
+      "sha256": "a1b85f4f3678f78d30a6f693925f7dbc8be817922f2abcc2c7400ce9b7570988"
+    },
+    {
+      "path": "drivers/check-a117-sdist-r2.py.txt",
+      "size": 6869,
+      "sha256": "68fa52fff506b1ded68b3cf2350fa3ae33f7b1ea42ad8c426d284665a5aba559"
+    },
+    {
+      "path": "drivers/check-a117-sdist-r3.py.txt",
+      "size": 7342,
+      "sha256": "4c16e90b3e2e595d20c474ee7c49fa305facd170876a1a5370bd831fed74881e"
+    },
+    {
+      "path": "runtime-members.json",
+      "size": 10243,
+      "sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+    }
+  ]
+}

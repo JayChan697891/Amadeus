@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "editable_venv",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "venv",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-env"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "started_at": "2026-11-15T12:43:03.457939+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "editable_venv",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "venv",
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\editable-env"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:43:03.457939+00:00",
+    "finished_at": "2026-11-15T12:43:05.770851+00:00",
+    "log": "logs/editable_venv.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

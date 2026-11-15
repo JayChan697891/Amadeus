@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15T12:34Z. Scoped engineering demonstration and
+Current checkpoint — 2026-11-15T12:44Z. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
@@ -62,14 +62,26 @@ authorization is consumed; no retry or additional live call is permitted by it.
 Evidence: acceptance/evidence/durable-demo-a117/live/summary.json. Earlier
 live-preparation records remain unchanged as the original no-model checkpoint.
 
+The current a117/fc27f15 source archive now installs offline on Windows3.12.
+Editable-source and sdist installs each passed the same10 focused cases as the
+earlier wheel, with97 unchanged runtime members.1317 packaged tracked files match
+frozen Git; only8 generated packaging metadata files are additional. Archive
+SHA256 b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672.
+Two preparation failures are retained: wrong Python minor for the offline cffi
+wheel, then an outdated optional environment snapshot pin. Neither ran tests.
+The corrected driver pins Python3.12 and uses unchanged canonical pyproject
+dependencies, as the release collector already does; product pins/tests were not
+changed. Source package built only once. README quick starts now use that package
+dependency declaration. See acceptance/evidence/durable-demo-a117/sdist/summary.json.
+
 Resume entry: both original queues and ordered benchmarks are complete; do not
 restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
 P0/P1 from the current a117 demonstration and the remaining evidence gaps below,
 using affected regression only. Keep a116 full-matrix evidence separate from a117.
 No additional model/auth action, paid API, Actions, main change or publication.
 Future live calls require fresh authorization; macOS and real Claude/Cursor still
-lack an available authorized environment. No full a117 regression
-or sdist acceptance is inferred from the focused checks and two console runs.
+lack an available authorized environment. Full a117 regression and other-platform
+sdist installation remain NOT RUN; the new Windows sdist result is focused only.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.

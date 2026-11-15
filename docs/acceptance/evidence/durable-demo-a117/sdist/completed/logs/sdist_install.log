@@ -1,0 +1,12 @@
+Looking in links: file:///D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse
+Processing D:\agentsync-debug\strategy-demo\a117-sdist-r1\dist\agentsync_local-0.3.0a117.tar.gz
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building wheel for agentsync-local (pyproject.toml): started
+  Building wheel for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a117-py3-none-any.whl size=323099 sha256=90c9ef66f0e7e5187ea448b63d50465e349d7fed439d405986e434351e5cb5e6
+  Stored in directory: D:\agentsync-debug\strategy-demo\a117-sdist-r3\tmp\pip-ephem-wheel-cache-9ajppznz\wheels\99\f0\fb\98893e198ad26210336e6554f7a0347e008694a9ac47c7176a
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a117

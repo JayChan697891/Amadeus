@@ -1,0 +1,98 @@
+"""Build the frozen demo sdist and reuse its focused tests offline."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tarfile
+import zipfile
+
+repo = Path('F:/syuc/amadeus-m6-single')
+assert sys.version_info[:2] == (3, 12), 'Use the pinned Python 3.12 interpreter before creating any environment'
+original = Path('D:/agentsync-debug/strategy-demo/a117-sdist-r1')
+base = Path('D:/agentsync-debug/strategy-demo/a117-sdist-r2')
+assert not base.exists()
+base.mkdir()
+for name in ('logs', 'tmp', 'home', 'private-junit'):
+    (base/name).mkdir()
+source = original/'source'
+commit = 'fc27f15f47fa92ed5edcd764a573c1d84a68c107'
+wheel = repo/'releases/0.3.0a117/demo-fc27f15/agentsync_local-0.3.0a117-py3-none-any.whl'
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+assert sha(wheel) == '300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9'
+paths = ['src', 'tests', 'tools', 'docs', 'examples', '.github', 'AGENTS.md', 'WORKFLOW.md',
+         'LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CONTRIBUTING.md',
+         'SECURITY.md', '.env.example', '.gitignore', '.gitattributes',
+         'requirements-lock.txt', 'requirements-dev-lock.txt', 'pyproject.toml', 'MANIFEST.in']
+assert sha(original/'frozen-inputs.tar') == '4e3dd64df96928525c4775f2e0fd116c61a058c2e7c4a7ae01ae13106b0cba82'
+with zipfile.ZipFile(wheel) as z:
+    members = {n:hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if n.startswith('agentsync/') and not n.endswith('/')}
+assert len(members) == 97
+assert all(sha(source/'src'/n) == h for n,h in members.items())
+for name in tuple(os.environ):
+    if name.upper().startswith(('OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'CODEX_', 'AGENTSYNC_', 'GIT_', 'PYTEST_', 'PYTHON', 'PIP_')) or name.upper().endswith(('API_KEY','ACCESS_TOKEN','REFRESH_TOKEN')):
+        os.environ.pop(name, None)
+os.environ.update(HOME=str(base/'home'), USERPROFILE=str(base/'home'), GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT='0', PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1')
+sys.path.insert(0, str(source))
+from tools.release_acceptance import execute, persist_junit, junit_counts
+wheelhouse = Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse')
+checks = []
+def run(name, command, cwd=source):
+    result = execute(name, [str(x) for x in command], cwd, base, base/'tmp', offline_wheelhouse=wheelhouse)
+    checks.append(result)
+    assert result['status'] == 'pass' and result['exit_code'] == 0, name
+    return result
+def save(name, data):
+    with (base/name).open('x', encoding='utf-8') as f:
+        json.dump(data, f, indent=2); f.write('\n')
+save('attempt.json', {'started_at':datetime.now(timezone.utc).isoformat(), 'product_sha':commit,
+                     'export_sha256':sha(original/'frozen-inputs.tar'), 'prior_attempt':str(original/'attempt.json'), 'python':sys.version, 'export_paths':paths,
+                     'driver_sha256':sha(Path(__file__)), 'automatic_retry':False, 'formal_release':'BLOCKED'})
+selection = json.loads((repo/'docs/acceptance/evidence/durable-demo-a117/summary.json').read_bytes())['installed_pytest']['selection']
+probe = '''from pathlib import Path
+import hashlib,importlib.metadata as md,json,sys,agentsync
+data=json.loads(Path(sys.argv[1]).read_bytes());expected=Path(sys.argv[2]).resolve()
+assert Path(agentsync.__file__).resolve()==expected/'agentsync/__init__.py'
+actual={n:hashlib.sha256((expected/n).read_bytes()).hexdigest() for n in data}
+assert actual==data
+d=md.distribution('agentsync-local');assert d.version=='0.3.0a117'
+direct=json.loads(d.read_text('direct_url.json'))
+assert direct['url']==Path(sys.argv[3]).as_uri()
+if sys.argv[4]=='editable': assert direct['dir_info']['editable'] is True
+else: assert direct['archive_info']['hashes']['sha256']==sys.argv[4]
+print(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'version':d.version},sort_keys=True))
+'''
+save('runtime-members.json', members)
+try:
+    archive = original/'dist/agentsync_local-0.3.0a117.tar.gz'
+    assert sha(archive) == 'b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'
+    with tarfile.open(archive) as t:
+        packaged = {m.name.split('/src/',1)[1]:hashlib.sha256(t.extractfile(m).read()).hexdigest() for m in t.getmembers() if m.isfile() and '/src/agentsync/' in m.name}
+        assert packaged == members
+    for mode in ('editable', 'sdist'):
+        env = base/(mode+'-env'); python = env/'Scripts/python.exe'
+        run(mode+'_venv', [sys.executable, '-I', '-B', '-m', 'venv', env])
+        run(mode+'_dependencies', [python, '-I', '-B', '-m', 'pip', 'install', '--no-index', '--only-binary=:all:', '--find-links', wheelhouse, '-r', source/'requirements-lock.txt', 'setuptools==82.0.1', 'wheel==0.46.3', 'pytest==9.1.1', 'pytest-asyncio==1.4.0', 'httpx==0.28.1'])
+        target = source if mode == 'editable' else archive
+        extra = ['-e'] if mode == 'editable' else []
+        run(mode+'_install', [python, '-I', '-B', '-m', 'pip', 'install', '--no-index', '--no-build-isolation', '--no-deps', *extra, target])
+        run(mode+'_pip_check', [python, '-I', '-B', '-m', 'pip', 'check'])
+        origin = source/'src' if mode == 'editable' else env/'Lib/site-packages'
+        origin_args = [python, '-I', '-B', '-c', probe, base/'runtime-members.json', origin, target, 'editable' if mode == 'editable' else sha(archive)]
+        run(mode+'_origin_before', origin_args)
+        private_xml = base/'private-junit'/(mode+'.xml')
+        run(mode+'_focused', [python, '-I', '-B', '-m', 'pytest', *selection, '--junitxml', private_xml, '--basetemp', base/(mode+'-pytest')])
+        persist_junit(private_xml, base/(mode+'-focused.xml'))
+        assert junit_counts(base/(mode+'-focused.xml')) == {'tests':10,'failures':0,'errors':0,'skipped':0}
+        run(mode+'_origin_after', origin_args)
+        assert (base/('logs/'+mode+'_origin_before.log')).read_bytes() == (base/('logs/'+mode+'_origin_after.log')).read_bytes()
+    assert all(sha(source/'src'/n) == h for n,h in members.items())
+    save('result.json', {'finished_at':datetime.now(timezone.utc).isoformat(), 'status':'pass', 'product_sha':commit, 'sdist_sha256':sha(archive), 'sdist_size':archive.stat().st_size,'checks':checks,'selection':selection,'runtime_members':97,'focused_tests_per_environment':10,'scope':'Windows3.12 frozen source/editable and installed sdist focused regression only','full_regression':'NOT RUN','formal_release':'BLOCKED'})
+    print(json.dumps({'status':'pass','result':str(base/'result.json')}),flush=True)
+except BaseException as exc:
+    save('exception.json', {'at':datetime.now(timezone.utc).isoformat(),'error_type':type(exc).__name__,'checks':checks,'automatic_retry':False})
+    raise
+
