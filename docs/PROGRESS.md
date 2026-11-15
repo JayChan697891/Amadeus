@@ -16,7 +16,8 @@ original manifest SHA25623365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32
 Independent bounded read-only review found no row/queue-prerequisite blocker;
 this is not whole-product or formal Release approval. Raw license inventories
 remain pending/publication false. Offline staged-wheel bytes are not claimed
-verified after scratch cleanup. Matrix is1/9 complete,8 combinations missing.
+verified after scratch cleanup. Matrix is now2/9 complete,7 combinations missing
+after the Linux row below.
 
 The reviewed remaining Windows queue ACTUALLY started2026-11-15T07:47:06Z:
 native session97559, parent PID15484, Python3.11 child handle PID26792 and worker
@@ -33,27 +34,29 @@ and rehashed all3122 source files unchanged. Builds/installations are continuing
 the row remains incomplete. See remaining-windows/source311-observation.json.
 Original source XML/logs remain in the canonical D: row until complete transfer.
 
-Linux VM resumed with existing disks, old logs preserved and the minor-runtime
-volume mounted read-only. Both bundle prerequisites, all three interpreters and
-the pinned Docker image were checked; there were no existing containers. Fresh
-source /root/amadeus-m116/s is clean at624b36c;72 transferred members and original
-manifest/report/source binding verified inside Linux. The reviewed Linux queue
-ACTUALLY started2026-11-15T07:52:30Z, native SSH session43548, guest parent PID3815
-and first worker PID3847. Linux3.14 RUNNING;3.11/3.12 queued/NOT RUN. Observe the
-existing session or /root/amadeus-m116/linux-queue; no duplicate/retry on observer
-timeout. Windows and the dedicated one-vCPU Linux guest run on the same physical
-host; no benchmark/performance claim follows. Launch/preflight/source evidence:
+Linux3.14 completed2026-11-15T08:49:47Z, original row exit0 and26 checks pass.
+Source, installed wheel and installed sdist each2526pass7skip,2533 unique cases,
+zero failures/errors; all identities and outcomes match across the three suites.
+The case set equals Windows3.12: all56 Windows skips pass on Linux, all7 Linux
+skips pass on Windows, with no shared skip or other outcome difference.
+Strict original candidate/report/artifact/Git verification passed; root rehashed
+all3122 frozen source files unchanged and copied174 files byte-identically from
+the completed harvested bundle. Original source/wheel observations are preserved.
+The seven Docker groups contain105 observations (35 per suite), including expected
+failures and unverified/unresolved cleanup/recovery cases. Independent bounded
+review checked native receipts, installation provenance and fixture semantics;
+no local row blocker was found. They are not105 successful runs or real clients.
+Both original license inventories are identical and remain pending/publication
+false; staged offline wheel bytes are not asserted reverified after cleanup.
+Evidence: releases/0.3.0a116/624b36c/linux-314/{report,lead-review,transfer-summary}.json;
+matrix-after-linux314.json records2/9 complete,7 missing combinations.
+
+The original Linux queue/session43548 automatically started3.11 at08:49:49Z,
+worker PID25527;3.12 remains queued/NOT RUN. The owned VM uses its existing disks
+and read-only minor-runtime volume; source/candidate/launch evidence remains in
 docs/acceptance/evidence/m9-a116-preparation/remaining-linux/launch.json.
-Linux3.14 source completed2026-11-15T08:11:36Z, exit0:2526pass7skip,
-2533 unique cases, zero failures/errors. Root parsed the saved XML/native receipt,
-compared identities with Windows3.12 and rehashed all3122 source files unchanged.
-There are no shared skips or non-platform outcome differences between these two
-source suites; this is not complete platform/Release acceptance. Wheel then
-completed08:30:42Z, exit0:2526pass7skip, with identical2533 identities/outcomes to
-source. Root inspected the native receipt and both XMLs. Sdist is running and
-final row verification remains pending. Compact observations are in
-remaining-linux/{source314,wheel314}-observation.json; original public XML/logs
-remain in the canonical guest row until its single complete bundle is transferred.
+Observe the existing queues; do not restart on observer timeout. Windows and
+Linux share the physical host, so these runs do not imply benchmark/SLO results.
 The owner has no macOS environment: all three Mac rows are NOT RUN. No real model
 calls, paid services, GitHub Actions, main merge or release-gate waiver.
 Formal Release remains BLOCKED; old a115 evidence is preserved separately.

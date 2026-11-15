@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "scope": "completed_linux314_local_row_with_bounded_independent_review",
+  "observed_at": "2026-11-15T08:53:36.421640+00:00",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "version": "0.3.0a116",
+  "native_row_finished_at": "2026-11-15T08:49:47.983669+00:00",
+  "native_row_exit_code": 0,
+  "successful_native_checks": 26,
+  "junit_each": {
+    "unique_cases": 2533,
+    "passed": 2526,
+    "skipped": 7,
+    "failed": 0,
+    "errors": 0
+  },
+  "source_wheel_sdist_identities_and_outcomes_equal": true,
+  "windows312_case_identities_equal": true,
+  "windows312_shared_skips": 0,
+  "windows312_nonplatform_outcome_differences": 0,
+  "source_files_rehashed_unchanged": 3122,
+  "files_copied_byte_identically": 174,
+  "copied_bytes": 7150028,
+  "transfer_summary_sha256": "94f44145b6a44ba233bdb69366634f5e01d560406aa27a4daa301fbc815fc167",
+  "report_sha256": "31a13197865128da9c2bd6c4513e8eedacda4e52560ec47dcb97364e3baec099",
+  "docker_observations": 105,
+  "docker_scope": "35 observations in each of three suites; positive, expected-negative and not-started fixtures, not 105 successful runs or real clients",
+  "independent_review": {
+    "agent": "astra_license_exit_review",
+    "concrete_blocker_found": false,
+    "scope": "Original native receipts, three JUnit sets, candidate provenance and seven Docker fixture groups against frozen assertions",
+    "expected_negative_semantics_preserved": true,
+    "whole_product_acceptance": false,
+    "tests_rerun": false
+  },
+  "remaining_queue": {
+    "linux311": "RUNNING from 2026-11-15T08:49:49.594454+00:00",
+    "linux312": "NOT RUN; queued",
+    "native_ssh_session": 43548
+  },
+  "matrix_complete_rows": 2,
+  "matrix_missing_rows": 7,
+  "limitations": [
+    "Raw license inventories remain pending and publication unauthorized.",
+    "Staged offline dependency wheel bytes were not reverified after collector scratch cleanup.",
+    "Independent HTTP/MCP forced-exit and same-protocol replay fixtures remain NOT RUN.",
+    "No macOS environment; no new real model calls or cross-client acceptance.",
+    "No full-queue exit claimed; original Windows and Linux queues are still running."
+  ],
+  "formal_release": "BLOCKED"
+}

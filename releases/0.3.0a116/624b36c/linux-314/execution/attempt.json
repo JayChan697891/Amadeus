@@ -1,0 +1,13 @@
+{
+  "phase": "started",
+  "row": "linux-314",
+  "pid": 3847,
+  "started_at": "2026-11-15T07:52:31.255425+00:00",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "driver_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_models": "NOT RUN"
+}

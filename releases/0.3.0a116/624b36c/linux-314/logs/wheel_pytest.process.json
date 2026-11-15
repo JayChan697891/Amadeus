@@ -1,0 +1,51 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/wheel-r6m4fusr/bin/python",
+      "-I",
+      "-m",
+      "pytest",
+      "/root/amadeus-m116/s/tests",
+      "--junitxml",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/wheel-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/wheel-pytest"
+    ],
+    "cwd": "/root/amadeus-m116/linux-314/reports/release-20261115T075231Z-6a8b05dddcca",
+    "started_at": "2026-11-15T08:12:03.915255+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/wheel-r6m4fusr/bin/python",
+      "-I",
+      "-m",
+      "pytest",
+      "/root/amadeus-m116/s/tests",
+      "--junitxml",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/wheel-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/wheel-pytest"
+    ],
+    "cwd": "/root/amadeus-m116/linux-314/reports/release-20261115T075231Z-6a8b05dddcca",
+    "exit_code": 0,
+    "started_at": "2026-11-15T08:12:03.915255+00:00",
+    "finished_at": "2026-11-15T08:30:42.045714+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "df564eee59546088b2398338a695c2ec38b6db6348b223d40230938939612e2e",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

@@ -1,0 +1,9 @@
+Looking in links: file:///root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels, file:///root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels
+Processing /root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels/build-1.6.1-py3-none-any.whl
+Processing /root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels/setuptools-82.0.1-py3-none-any.whl
+Processing /root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels/wheel-0.46.3-py3-none-any.whl
+Processing /root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels/packaging-26.3-py3-none-any.whl (from build==1.6.1)
+Processing /root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-wheels/pyproject_hooks-1.3.3-py3-none-any.whl (from build==1.6.1)
+Installing collected packages: setuptools, pyproject_hooks, packaging, wheel, build
+
+Successfully installed build-1.6.1 packaging-26.3 pyproject_hooks-1.3.3 setuptools-82.0.1 wheel-0.46.3

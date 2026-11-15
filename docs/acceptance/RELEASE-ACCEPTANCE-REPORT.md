@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current candidate:0.3.0a116 at624b36c; one complete local row
+## Current candidate:0.3.0a116 at624b36c; two complete local rows
 
 Windows3.12 finished2026-11-15T07:29:12Z, native session85611 exit0. All26 checks
 pass; source, installed wheel and installed sdist each2477pass56skip,2533 unique
@@ -16,20 +16,26 @@ original report/manifest beside it. The original manifest SHA256 is
 Bounded independent read-only inspection found no row/continuation-prerequisite
 blocker. It is not whole-product/Release acceptance. The raw license reviews are
 still pending/publication false; staged offline wheel bytes are not asserted
-verified after cleanup. The local matrix is1/9 complete,8 combinations missing.
+verified after cleanup. The local matrix is now2/9 complete,7 combinations missing.
 Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
 Windows3.11 source later completed08:36:36Z, exit0:2477pass56skip; its2533
 unique identities/outcomes match Windows3.12, and all3122 source files remain
 unchanged. Its installation suites/final verification are still pending.
-Linux transfer and strict candidate/source verification passed; its queue started
-07:52:30Z/session43548. Linux3.14 RUNNING,3.11/3.12 queued/NOT RUN; no Linux row
-pass follows from startup. Linux3.14 source later completed08:11:36Z, exit0:
-2526pass7skip,2533 unique cases, zero failures/errors. Actual XML/receipt and3122
-unchanged source hashes were checked; identities match Windows3.12, with no
-shared skips/non-platform outcome differences. Wheel completed08:30:42Z, exit0,
-2526pass7skip, with all identities/outcomes equal to source; root inspected both
-XMLs and its native receipt. Sdist is running; the Linux row remains incomplete
-until that installation's suite and final strict verification finish.
+Linux3.14 finished2026-11-15T08:49:47Z, original row exit0,26 native checks pass.
+Source/wheel/sdist each2526pass7skip,2533 unique cases, zero failures/errors;
+all identities/outcomes match. The same case set occurs on Windows3.12, with
+all platform skips passing on the other platform and no non-platform difference.
+Root checked strict report/source/candidate provenance,3122 unchanged source
+hashes and174 byte-identical copied files. Bounded independent inspection found
+no blocker in receipts, separate fresh installs or the105 Docker observations
+against seven frozen fixture groups. Expected failures and unverified/unresolved
+cases remain such; these are not105 successes or real-client runs. Both license
+inventories remain pending/publication false; offline staged wheel bytes were
+not reverified after cleanup. See ../../releases/0.3.0a116/624b36c/linux-314/
+lead-review.json and original report.json; the current matrix is saved at
+../../releases/0.3.0a116/624b36c/matrix-after-linux314.json.
+The same Linux queue/session43548 automatically started3.11 at08:49:49Z;
+3.12 remains queued/NOT RUN. No full-queue exit or new benchmark pass is claimed.
 Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.
 Formal Release stays BLOCKED. Do not transplant historical a115 observations.

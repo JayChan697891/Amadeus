@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "scope": "saved_local_report_observations",
+  "frozen": {
+    "version": "0.3.0a116",
+    "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+    "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+    "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82"
+  },
+  "observations": [
+    {
+      "system": "Windows",
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "report_sha256": "0d06383631ffc38d06f6f9e49966226aac67ecfbf36e5b163cc144c8b3f966a3",
+      "checks": {
+        "pytest": "pass",
+        "ruff": "pass",
+        "format": "pass",
+        "mypy": "pass",
+        "offline_build_venv": "pass",
+        "offline_build_tools": "pass",
+        "build": "pass",
+        "pip_check": "pass",
+        "wheel_venv": "pass",
+        "wheel_offline_dependencies": "pass",
+        "wheel_install": "pass",
+        "wheel_pip_check": "pass",
+        "wheel_cli": "pass",
+        "wheel_origin_sdk": "pass",
+        "wheel_console_smoke": "pass",
+        "wheel_license_inventory": "pass",
+        "wheel_pytest": "pass",
+        "sdist_venv": "pass",
+        "sdist_offline_dependencies": "pass",
+        "sdist_install": "pass",
+        "sdist_pip_check": "pass",
+        "sdist_cli": "pass",
+        "sdist_origin_sdk": "pass",
+        "sdist_console_smoke": "pass",
+        "sdist_license_inventory": "pass",
+        "sdist_pytest": "pass"
+      },
+      "junit": {
+        "pytest": {
+          "tests": 2533,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 56
+        },
+        "wheel_pytest": {
+          "tests": 2533,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 56
+        },
+        "sdist_pytest": {
+          "tests": 2533,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 56
+        }
+      },
+      "artifact_audit": {
+        "manifest_members": 63,
+        "process_logs": 26,
+        "source_snapshot_entries": 3122,
+        "installed_artifact_sha256": {
+          "wheel": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+          "sdist": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0"
+        },
+        "installed_license_inventories": {
+          "wheel": {
+            "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+            "review_item_count": 0,
+            "review": "pending"
+          },
+          "sdist": {
+            "sha256": "867343aec6dd5cd7e221af455e3206326d0e5ec869aecd896ed37004c7d12399",
+            "review_item_count": 0,
+            "review": "pending"
+          }
+        },
+        "offline_resolution": {
+          "state": "manifest_and_commands_checked",
+          "manifest_sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+          "recorded_wheels": 60,
+          "staged_wheel_bytes_verified": false
+        },
+        "junit_case_set_sha256": {
+          "pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+          "wheel_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+          "sdist_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0"
+        },
+        "junit_case_sets_match": true,
+        "producer_authenticated": false
+      }
+    },
+    {
+      "system": "Linux",
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+      "report_sha256": "31a13197865128da9c2bd6c4513e8eedacda4e52560ec47dcb97364e3baec099",
+      "checks": {
+        "pytest": "pass",
+        "ruff": "pass",
+        "format": "pass",
+        "mypy": "pass",
+        "offline_build_venv": "pass",
+        "offline_build_tools": "pass",
+        "build": "pass",
+        "pip_check": "pass",
+        "wheel_venv": "pass",
+        "wheel_offline_dependencies": "pass",
+        "wheel_install": "pass",
+        "wheel_pip_check": "pass",
+        "wheel_cli": "pass",
+        "wheel_origin_sdk": "pass",
+        "wheel_console_smoke": "pass",
+        "wheel_license_inventory": "pass",
+        "wheel_pytest": "pass",
+        "sdist_venv": "pass",
+        "sdist_offline_dependencies": "pass",
+        "sdist_install": "pass",
+        "sdist_pip_check": "pass",
+        "sdist_cli": "pass",
+        "sdist_origin_sdk": "pass",
+        "sdist_console_smoke": "pass",
+        "sdist_license_inventory": "pass",
+        "sdist_pytest": "pass"
+      },
+      "junit": {
+        "pytest": {
+          "tests": 2533,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 7
+        },
+        "wheel_pytest": {
+          "tests": 2533,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 7
+        },
+        "sdist_pytest": {
+          "tests": 2533,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 7
+        }
+      },
+      "artifact_audit": {
+        "manifest_members": 63,
+        "process_logs": 26,
+        "source_snapshot_entries": 3122,
+        "installed_artifact_sha256": {
+          "wheel": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+          "sdist": "9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0"
+        },
+        "installed_license_inventories": {
+          "wheel": {
+            "sha256": "542a8ab65cdb3996ac3dbe3cfb688fa7c7a16a0d12843ba0ce6dfa3285443845",
+            "review_item_count": 0,
+            "review": "pending"
+          },
+          "sdist": {
+            "sha256": "542a8ab65cdb3996ac3dbe3cfb688fa7c7a16a0d12843ba0ce6dfa3285443845",
+            "review_item_count": 0,
+            "review": "pending"
+          }
+        },
+        "offline_resolution": {
+          "state": "manifest_and_commands_checked",
+          "manifest_sha256": "02aaed6f33aed9b734627ea3494d981d6cb35e456c6b62aedb9eaad26a2cba51",
+          "recorded_wheels": 52,
+          "staged_wheel_bytes_verified": false
+        },
+        "junit_case_set_sha256": {
+          "pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+          "wheel_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0",
+          "sdist_pytest": "7c4e2252abc6419af9c393ef641fc6a75c835ae35a34bdb90ba9708a1a4c94f0"
+        },
+        "junit_case_sets_match": true,
+        "producer_authenticated": false
+      }
+    }
+  ],
+  "systems_without_full_reported_checks": [
+    "macOS"
+  ],
+  "missing_os_python_combinations": [
+    {
+      "system": "Linux",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "Linux",
+      "python_minor": "3.12"
+    },
+    {
+      "system": "Windows",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "Windows",
+      "python_minor": "3.14"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.12"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.14"
+    }
+  ],
+  "local_matrix": "incomplete",
+  "artifact_bytes_verified": true,
+  "git_source_audit": {
+    "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+    "git_source_paths": 3122,
+    "unique_git_blobs": 2617
+  },
+  "formal_release_acceptance": "blocked"
+}

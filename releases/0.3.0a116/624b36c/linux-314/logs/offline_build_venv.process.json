@@ -1,0 +1,40 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "offline_build_venv",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/jobs-env/bin/python",
+      "-m",
+      "venv",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-build"
+    ],
+    "cwd": "/root/amadeus-m116/s",
+    "started_at": "2026-11-15T08:11:43.040037+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "offline_build_venv",
+    "status": "pass",
+    "command": [
+      "/root/jobs-env/bin/python",
+      "-m",
+      "venv",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/offline-build"
+    ],
+    "cwd": "/root/amadeus-m116/s",
+    "exit_code": 0,
+    "started_at": "2026-11-15T08:11:43.040037+00:00",
+    "finished_at": "2026-11-15T08:11:45.753039+00:00",
+    "log": "logs/offline_build_venv.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
