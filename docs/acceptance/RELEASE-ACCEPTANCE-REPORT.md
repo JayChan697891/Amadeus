@@ -20,7 +20,9 @@ verified after cleanup. The local matrix is now2/9 complete,7 combinations missi
 Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
 Windows3.11 source later completed08:36:36Z, exit0:2477pass56skip; its2533
 unique identities/outcomes match Windows3.12, and all3122 source files remain
-unchanged. Its installation suites/final verification are still pending.
+unchanged. Wheel finished09:26:10Z, exit0,2477pass56skip with identical2533
+identities/outcomes to source and Windows3.12 wheel. Sdist/final verification
+remain pending; see evidence/m9-a116-preparation/remaining-windows/wheel311-observation.json.
 Linux3.14 finished2026-11-15T08:49:47Z, original row exit0,26 native checks pass.
 Source/wheel/sdist each2526pass7skip,2533 unique cases, zero failures/errors;
 all identities/outcomes match. The same case set occurs on Windows3.12, with
@@ -36,9 +38,10 @@ lead-review.json and original report.json; the current matrix is saved at
 ../../releases/0.3.0a116/624b36c/matrix-after-linux314.json.
 The same Linux queue/session43548 automatically started3.11 at08:49:49Z;
 3.12 remains queued/NOT RUN. Linux3.11 source finished09:08:40Z, exit0,
-2526pass7skip; all2533 actual identities/outcomes equal Linux3.14. Wheel is
-running; source alone does not add a complete matrix row. Evidence:
-evidence/m9-a116-preparation/remaining-linux/source311-observation.json.
+2526pass7skip; all2533 actual identities/outcomes equal Linux3.14. Wheel
+finished09:28:52Z, exit0, with identical counts/identities/outcomes; sdist is
+running. Source plus wheel do not add a complete matrix row. Evidence:
+evidence/m9-a116-preparation/remaining-linux/{source311,wheel311}-observation.json.
 No full-queue exit or new benchmark pass is claimed.
 Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.

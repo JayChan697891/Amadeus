@@ -30,8 +30,10 @@ Launch evidence: docs/acceptance/evidence/m9-a116-preparation/remaining-windows/
 Windows3.11 source subsequently completed2026-11-15T08:36:36Z, exit0:
 2477pass56skip,2533 unique cases, zero failures/errors. Root compared actual
 JUnit identities/outcomes with Windows3.12 (identical), checked the native receipt
-and rehashed all3122 source files unchanged. Builds/installations are continuing;
-the row remains incomplete. See remaining-windows/source311-observation.json.
+and rehashed all3122 source files unchanged. Wheel completed09:26:10Z, exit0,
+2477pass56skip; all2533 identities/outcomes match source and Windows3.12 wheel.
+Sdist is RUNNING; the row remains incomplete. See remaining-windows/
+source311-observation.json and wheel311-observation.json.
 Original source XML/logs remain in the canonical D: row until complete transfer.
 
 Linux3.14 completed2026-11-15T08:49:47Z, original row exit0 and26 checks pass.
@@ -54,8 +56,10 @@ matrix-after-linux314.json records2/9 complete,7 missing combinations.
 The original Linux queue/session43548 automatically started3.11 at08:49:49Z,
 worker PID25527;3.12 remains queued/NOT RUN. Linux3.11 source finished09:08:40Z,
 exit0:2526pass7skip. Root parsed its native receipt and actual XML; all2533
-unique identities/outcomes match Linux3.14. The original queue is now running
-wheel; no whole-row pass is inferred. See remaining-linux/source311-observation.json.
+unique identities/outcomes match Linux3.14. Wheel completed09:28:52Z, exit0,
+2526pass7skip; all2533 identities/outcomes match source and Linux3.14 wheel.
+The original queue now runs sdist; no whole-row pass is inferred. See
+remaining-linux/source311-observation.json and wheel311-observation.json.
 The owned VM uses its existing disks
 and read-only minor-runtime volume; source/candidate/launch evidence remains in
 docs/acceptance/evidence/m9-a116-preparation/remaining-linux/launch.json.
@@ -85,7 +89,11 @@ This supplements the existing M8 requirement, without expanding M5 or changing
 candidate identity or gates. Frozen source and all existing runs stay unchanged.
 Both reviewed follow-up drivers were staged byte-identically into the existing
 Linux environment at08:57:55Z, NOT RUN. Original source hashes and execution
-order remain unchanged; see remaining-linux/followup-staging.json.
+order remain unchanged; see remaining-linux/followup-staging.json. A finite
+Windows3.12 launcher probe confirmed that terminating its owned launcher also
+terminated the actual worker promptly; all handles/processes were closed. This
+resolves only the launcher boundary concern, not product HTTP/MCP recovery.
+Driver bytes remain unchanged; see remaining-windows/launcher-exit-observation.json.
 
 Archive delta review: the wheel has the same102 normalized members as b6; only
 version metadata, __init__ version and RECORD change. All96 product members match

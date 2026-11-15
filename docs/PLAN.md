@@ -9,10 +9,11 @@ Linux finished2026-11-15T08:49:47Z;174 original evidence files copied exactly,
 row blocker, including105 separate positive/negative Docker observations.
 These are not105 successes or real models. Matrix2/9 complete; Release BLOCKED.
 
-Observe the original Windows session97559:3.11 installed wheel RUNNING,
+Observe the original Windows session97559:3.11 installed sdist RUNNING,
 3.14 queued/NOT RUN. The original Linux session43548 automatically started3.11
 at08:49:49Z after3.14 completed. Its source finished09:08:40Z:2526pass7skip,
-matching Linux3.14; wheel is RUNNING and3.12 queued/NOT RUN. Do not start duplicates
+matching Linux3.14. Wheel also finished09:28:52Z with identical results;
+sdist is RUNNING and3.12 queued/NOT RUN. Do not start duplicates
 or retry failed/unknown rows. Preserve original a115 failures and unknown evidence.
 macOS remains unavailable/NOT RUN. No M5 expansion, paid call, Actions or main merge.
 See PROGRESS.md and ../releases/0.3.0a116/624b36c/linux-314/lead-review.json.
