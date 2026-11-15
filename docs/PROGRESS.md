@@ -62,11 +62,16 @@ version metadata, __init__ version and RECORD change. All96 product members matc
 source;31 external installed distribution records and project license bytes match
 b6. This does not turn raw pending inventories into legal/publication approval.
 See docs/acceptance/evidence/m9-a116-preparation/archive-delta.json.
+Linux3.14's generated wheel inventory now has a bounded comparison: all30 external
+distribution records equal b6, with only the project's version/member path changed.
+Astra and lead independently compared the actual JSON/hashes; no installed license
+file re-read or final row stability claim follows. Raw review/publication fields
+remain pending/false. See remaining-linux/license-delta.json alongside that evidence.
 
 Complete Windows3.12 evidence is uploaded at395de1698cc7c69c3c9267330af785bd7cefff24;
-all70 archived Git blobs match their pins. The connector recovered and confirmed
-PR35 open/draft/unmerged at that head. This turn's earlier comment read failed;
-no fresh comment state is claimed yet. Issues7/11 were last verified open with
+all70 archived Git blobs match their pins. A later connector read confirmed
+PR35 open/draft/unmerged at1ed71a7b1b0fad60d201e26fd55a2f68aebb320c.
+Comment reads still fail intermittently; no fresh comment state is claimed. Issues7/11 were last verified open with
 no new scope changes.
 
 The existing M9-02 bounded technical delivery-scope decision is now recorded in
