@@ -1,0 +1,34 @@
+{
+  "observed_at": "2026-11-15T10:39:01.049929+00:00",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "scope": "one actual Linux installed durable Mock console run; no Docker or model",
+  "console_exit_code": 0,
+  "runtime_members_equal_windows_git_bound_origin": 97,
+  "full_linux_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "origin.json",
+      "size": 10671,
+      "sha256": "b59f6cd42694eeccb8404acb76ff4a9f87ff0ce905ac08ed51675eb0f0409b2a"
+    },
+    {
+      "path": "durable-output.json",
+      "size": 608,
+      "sha256": "695306dbc5657869493567c4c87fa586fb9d940d239f5afb7d68ef466b879f39"
+    },
+    {
+      "path": "durable-stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "install.log",
+      "size": 4794,
+      "sha256": "cb5722db206d0380d702a158b23b031129bb9b1bafc022e0eb96e62f1c252a29"
+    }
+  ]
+}

@@ -1,5 +1,23 @@
 # Amadeus current progress
 
+Demonstration continuation: the same117 wheel also completed one actual Linux
+installed `demo --durable` run; all97 installed members equal the Windows/Git-bound
+origin. This is still a Mock console observation, not a full Linux test suite.
+See acceptance/evidence/durable-demo-a117/linux/summary.json.
+The existing isolated proposal pilot now has a fixed `--demo` path at
+`5b433f4f3864554ac1af399a73db743c56c1e9f7`, script SHA256
+3c0c4add8bd9509302aea028f25ffbaccdfd16ee215e6fbd67dd4446c389fec0.
+It reuses Docker verification before dependent context/handoff/reopen; actors are
+deterministic, downstream text review stays unverified. Five Windows CLI checks
+and Ruff/format pass; independent read-only review found no blocking defect.
+Actual Docker demo is NOT RUN pending the original Linux queue's natural finish.
+The separate `/root/amadeus-demo-a117/installed` environment and exact script are
+prepared; no credentials were copied. Resume with the create-only driver
+D:/agentsync-debug/strategy-demo/run-linux-verified-a117.sh after queue result
+confirms complete success. It does not depend on the Windows benchmark or stop it.
+Do not repeat a failed/unknown demo without first inspecting its saved outcome.
+Preparation evidence: acceptance/evidence/durable-demo-a117/verified-pilot-preparation/summary.json.
+
 Latest execution update: Windows3.11 finished2026-11-15T10:16:20Z, original row
 exit0/all26 checks pass. Source/wheel/sdist each2477pass56skip,2533 unique cases
 with exact outcomes matching Windows3.12. All69 original transfer files match;
