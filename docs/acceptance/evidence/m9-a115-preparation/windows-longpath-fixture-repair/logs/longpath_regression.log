@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 61 items
+
+F:\syuc\amadeus-m6-single\tests\integration\test_m4b_workspaces.py ..... [  8%]
+............................                                             [ 54%]
+F:\syuc\amadeus-m6-single\tests\integration\test_verified_task_completion.py . [ 55%]
+..........................s                                              [100%]
+
+- generated xml file: D:\agentsync-debug\m115-longpath-repair-r1\private-junit.xml -
+=========================== short test summary info ===========================
+SKIPPED [1] F:\syuc\amadeus-m6-single\tests\integration\test_candidate_execution.py:608: Requires separately controlled local Linux Docker and preloaded immutable image
+================== 60 passed, 1 skipped in 350.41s (0:05:50) ==================

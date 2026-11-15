@@ -1,0 +1,163 @@
+{
+  "at": "2026-11-15T04:45:09.281681+00:00",
+  "scope": "Failed new canonical Windows312 wheel component; no success finalizer or dependent benchmark executed",
+  "frozen_product": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+  "actual_exit_code": 1,
+  "junit": {
+    "tests": 2482,
+    "passed": 2425,
+    "skipped": 56,
+    "failures": 1,
+    "errors": 0,
+    "unique_sanitized_identities": 2481
+  },
+  "failed_case": "tests.integration.test_verified_task_completion::test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan",
+  "root_cause": {
+    "classification": "Windows test Git helper lacks product-equivalent long-path setting",
+    "original_ref_path_length": 262,
+    "existing_ref_file_observed": true,
+    "default_read": {
+      "exit_code": 128,
+      "stderr_suffix": "Filename too long"
+    },
+    "command_scoped_core_longpaths_true_read": {
+      "exit_code": 0,
+      "sha": "4d889655520a42762151d5fee561b962ed7b36e0"
+    },
+    "diagnostic_writes": false,
+    "product_already_uses_core_longpaths_true": true
+  },
+  "test_repair": "Working-branch helper change and real Windows long-ref regression; test source differs from frozen b6; targeted validation pending",
+  "originals_preserved": true,
+  "raw_xml_uploaded": false,
+  "files": [
+    {
+      "path": "attempt.json",
+      "size": 996,
+      "sha256": "5c889d42a3da8d2c5b47fbc438e7962675847eaaffa438ce9cc44cea32f672ae"
+    },
+    {
+      "path": "result.json",
+      "size": 1087,
+      "sha256": "c076e48bb3928fa3608c65cfbacf4dc26e2027217f0cd9a7176571fd733643db"
+    },
+    {
+      "path": "checks.json",
+      "size": 11578,
+      "sha256": "7e83cc228bef8872cf9fe5dd91da6b60ebcf525dd602d0958b7f5b744f72b633"
+    },
+    {
+      "path": "logs/wheel_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/wheel_venv.process.json",
+      "size": 1330,
+      "sha256": "9a6129bf303627b280d31605aa93c27a93b7942bb2832077b5664abe906778f2"
+    },
+    {
+      "path": "logs/wheel_offline_dependencies.log",
+      "size": 8734,
+      "sha256": "4e0b35d86909f3092b80a0fcb2893f4a10f323345bd6165b7c33f0bbdf615664"
+    },
+    {
+      "path": "logs/wheel_offline_dependencies.process.json",
+      "size": 2292,
+      "sha256": "f75ffd3327d5c384c4ce9b46fb68fa9a71afc003eea2ace854d9f1bd6bcb02da"
+    },
+    {
+      "path": "logs/wheel_install.log",
+      "size": 337,
+      "sha256": "9811e14f6b584c66ba6d1201052ba6ccac442bcf8b0322539994ed4ea550c06c"
+    },
+    {
+      "path": "logs/wheel_install.process.json",
+      "size": 2003,
+      "sha256": "9746b14a881769d9551b4cec4faac5a4b90806c20b19887c8511cca277b482c0"
+    },
+    {
+      "path": "logs/wheel_pip_check.log",
+      "size": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "logs/wheel_pip_check.process.json",
+      "size": 1289,
+      "sha256": "94ac000940de2d6f06617e86d4af6f695341dc3f48573c177c4493c9680c7b80"
+    },
+    {
+      "path": "logs/wheel_cli.log",
+      "size": 1509,
+      "sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471"
+    },
+    {
+      "path": "logs/wheel_cli.process.json",
+      "size": 1285,
+      "sha256": "b0ad877646c3f5a80b4f4332aeb51a6383ef2c80d03873e2f897efcfc7f1a0d9"
+    },
+    {
+      "path": "logs/wheel_origin_sdk.log",
+      "size": 144,
+      "sha256": "0661e7b99dd07071a5d94be0ed85ec4ce7c036471fb0cc99b3fc44ce389508f2"
+    },
+    {
+      "path": "logs/wheel_origin_sdk.process.json",
+      "size": 3916,
+      "sha256": "4662b5a1136cd60dfce21f2ef82a1a5b516f8346feaff17e176f477899aa5105"
+    },
+    {
+      "path": "logs/wheel_console_smoke.log",
+      "size": 59,
+      "sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b"
+    },
+    {
+      "path": "logs/wheel_console_smoke.process.json",
+      "size": 4863,
+      "sha256": "33a9d9a2715fd1d17d0dad23b12787a5eefae49d9da38b65b72d7844790eff71"
+    },
+    {
+      "path": "logs/wheel_license_inventory.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/wheel_license_inventory.process.json",
+      "size": 1471,
+      "sha256": "439e63aaba17572aae4014b553aa4961552858845b5a884185cf4cf71f31eecc"
+    },
+    {
+      "path": "logs/wheel_pytest.log",
+      "size": 30992,
+      "sha256": "2470ca55423f1a1dd0e7bf731b2fd45350d2c0e79f69e8fbc2b3fec2dc4455e4"
+    },
+    {
+      "path": "logs/wheel_pytest.process.json",
+      "size": 1776,
+      "sha256": "c60665f74c3b644684815bee9a3875e9e651e96b013e70b96a94e5d0acbd16fe"
+    },
+    {
+      "path": "wheel-junit.xml",
+      "size": 400690,
+      "sha256": "8b00aa13dd28a020e422910d2b08cce11a69616fd04ab10e8af144fd24ec7215"
+    },
+    {
+      "path": "wheel-license-inventory.json",
+      "size": 23086,
+      "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b"
+    },
+    {
+      "path": "offline-wheelhouse.json",
+      "size": 10131,
+      "sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1"
+    }
+  ],
+  "source_snapshot_reference": "releases/0.3.0a115/b6f05f0/composite/windows-312/source-snapshot.json",
+  "success_finalizer": "NOT RUN",
+  "windows_benchmark": "NOT RUN",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "later_repair_evidence": "../windows-longpath-fixture-repair/summary.json",
+  "repair_limit": "60 passed/1 Linux-only skipped under corrected working-branch test sources; does not replace this failed frozen-b6 full run"
+}

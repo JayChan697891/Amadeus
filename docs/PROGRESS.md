@@ -23,16 +23,36 @@ See acceptance/evidence/m9-a115-preparation/windows314-complete/summary.json and
 releases/0.3.0a115/b6f05f0/windows-314/report.json. Matrix-after-windows314.json
 records five complete rows and four gaps:Windows3.12 and macOS3.11/3.12/3.14.
 
-The prepared Windows3.12 canonical wheel-only driver started once at
-2026-11-15T03:51:32Z (2026-11-14 19:51 America/Tijuana), session66619, driver
-PID4848, D:/agentsync-debug/m115-wheel-canonical-r1. Wheel pytest began03:51:45Z.
-It uses the original fixed b6 collector and exact wheel, with no source/sdist/
-build/model rerun. Result is pending; keep this original session, never retry
-on observation timeout. Finalizer and Windows benchmark remain NOT RUN until
-its real successful terminal result. Formal Release remains BLOCKED.
+The new Windows3.12 canonical wheel-only run actually FAILED at
+2026-11-15T04:35:09Z, session66619 exit1:2425pass56skip1fail. Eight installation/
+startup checks passed; source and archive remained unchanged. The failed
+delivery test had already confirmed exact owner-approved publication; its test
+Git reader then failed on a262-character loose-ref path. Read-only comparison
+of that same preserved repository returned128/Filename too long by default and
+the correct commit/exit0 with command-scoped core.longpaths=true. The product
+already sets this option; the test helper did not. Original failed receipts,
+sanitized logs/XML are archived under windows312-wheel-canonical-failure.
+
+The working-branch repair changes only that helper and adds a real Windows long
+ref regression. Two affected integration modules against the unchanged installed
+b6 wheel passed60 cases, with1 Linux-Docker-only skip, at04:49:49Z. The new long
+ref case and original failed delivery case both passed;96 installed product
+members still match the exact wheel after execution. Ruff/format passed for the
+changed fixture. Evidence: windows-longpath-fixture-repair/summary.json under
+acceptance/evidence/m9-a115-preparation. This corrected test-source identity is
+separate and does not replace the failed b6 full-suite result.
+
+Independent read-only review confirmed that the existing composite/matrix gates
+bind the full frozen source, including tests. A formal candidate incorporating
+the repaired tests needs a new frozen identity; do not relabel old rows or invent
+a test-only identity exception. No replacement candidate/matrix has started.
+The next step is to adopt the corrected candidate under these existing gates,
+preserving b6 evidence. The old success finalizer and dependent Windows benchmark
+remain NOT RUN. The owner confirmed no macOS environment on2026-11-14
+America/Tijuana; its three rows remain NOT RUN. Formal Release remains BLOCKED.
 
 The running-process references below describe earlier checkpoints, not live
-queues. In particular sessions82363/80907 and all old Windows314 test PIDs exited.
+queues. Sessions82363/80907/66619 and repair session37346 have all exited.
 
 Completed Linux local rows on2026-11-14 UTC:3.14 at09:09,3.11 at10:06 and
 3.12 at11:03. Each row passed all26 real checks; source/wheel/sdist each2476pass6skip.

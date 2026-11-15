@@ -1,0 +1,252 @@
+[
+  {
+    "id": "wheel_venv",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-m",
+      "venv",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r3\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:32.688661+00:00",
+    "finished_at": "2026-11-15T03:51:35.037166+00:00",
+    "log": "logs/wheel_venv.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  {
+    "id": "wheel_offline_dependencies",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m115-wheel-canonical-r1/scratch/offline-wheels",
+      "--no-cache-dir",
+      "--only-binary=:all:",
+      "mcp==2.3.0",
+      "fastapi==0.147.0",
+      "uvicorn==0.54.0",
+      "pydantic==2.14.1",
+      "httpx==0.28.1",
+      "pytest==9.1.1",
+      "pytest-asyncio==1.4.0",
+      "ruff==0.17.1",
+      "mypy==2.4.0",
+      "build==1.6.1",
+      "pip-licenses==5.5.5"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:35.038519+00:00",
+    "finished_at": "2026-11-15T03:51:42.652484+00:00",
+    "log": "logs/wheel_offline_dependencies.log",
+    "log_sha256": "4e0b35d86909f3092b80a0fcb2893f4a10f323345bd6165b7c33f0bbdf615664",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m115-wheel-canonical-r1/scratch/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run\\artifacts\\agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:42.653862+00:00",
+    "finished_at": "2026-11-15T03:51:43.429922+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "9811e14f6b584c66ba6d1201052ba6ccac442bcf8b0322539994ed4ea550c06c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "size": 320001,
+      "kind": "wheel"
+    }
+  },
+  {
+    "id": "wheel_pip_check",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:43.431577+00:00",
+    "finished_at": "2026-11-15T03:51:43.788661+00:00",
+    "log": "logs/wheel_pip_check.log",
+    "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  {
+    "id": "wheel_cli",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "agentsync",
+      "--help"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:43.790270+00:00",
+    "finished_at": "2026-11-15T03:51:44.112512+00:00",
+    "log": "logs/wheel_cli.log",
+    "log_sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  {
+    "id": "wheel_origin_sdk",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; assert pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-wheel-canonical-r1\\\\scratch\\\\wheel-yu9zi1ra').resolve()); assert not pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-r3\\\\s')); assert importlib.metadata.version('agentsync-local') == '0.3.0a115'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///D:/agentsync-debug/m115-wheel-canonical-r1/run/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a'; assert not direct.get('dir_info', {}).get('editable', False); print('installed origin:', agentsync.__file__); tmp = tempfile.TemporaryDirectory(); root = pathlib.Path(tmp.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(tmp.name) / 'data'); result = client.call('create_project', name='isolated wheel smoke', root_path=str(root)); assert result['ok'], result; print('SDK smoke: pass'); tmp.cleanup()"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:44.116333+00:00",
+    "finished_at": "2026-11-15T03:51:44.438121+00:00",
+    "log": "logs/wheel_origin_sdk.log",
+    "log_sha256": "0661e7b99dd07071a5d94be0ed85ec4ce7c036471fb0cc99b3fc44ce389508f2",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "size": 320001,
+      "kind": "wheel"
+    }
+  },
+  {
+    "id": "wheel_console_smoke",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:44.440121+00:00",
+    "finished_at": "2026-11-15T03:51:45.255543+00:00",
+    "log": "logs/wheel_console_smoke.log",
+    "log_sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "size": 320001,
+      "kind": "wheel"
+    }
+  },
+  {
+    "id": "wheel_license_inventory",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "D:\\agentsync-debug\\m115-r3\\s\\tools\\license_inventory.py",
+      "--distribution",
+      "agentsync-local"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:45.257543+00:00",
+    "finished_at": "2026-11-15T03:51:45.636916+00:00",
+    "log": "logs/wheel_license_inventory.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "size": 320001,
+      "kind": "wheel"
+    },
+    "inventory": {
+      "path": "wheel-license-inventory.json",
+      "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+      "size": 23086,
+      "scope": "installed_runtime_dependency_metadata",
+      "review_item_count": 0,
+      "license_review": "pending",
+      "publication_authorized": false,
+      "installed_origin_check": "wheel_origin_sdk"
+    }
+  },
+  {
+    "id": "wheel_pytest",
+    "status": "fail",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m115-r3\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 1,
+    "started_at": "2026-11-15T03:51:45.645947+00:00",
+    "finished_at": "2026-11-15T04:35:09.340617+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "2470ca55423f1a1dd0e7bf731b2fd45350d2c0e79f69e8fbc2b3fec2dc4455e4",
+    "credential_redactions": 1,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600,
+    "junit_credential_redactions": 14,
+    "junit": {
+      "tests": 2482,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 56
+    }
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "pid": 4848,
+  "started_at": "2026-11-15T03:51:32.529440+00:00",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+  "candidate_manifest_sha256": "88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11",
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "wheel_branch_ast_sha256": "c9957a841065a6517d08fc2194a94f454b03e0e60e5207ebe20d0a8d92b579a8",
+  "driver_sha256": "461bf21c85d21b490514d4298653089ddc1502ce086f07f6fdc2a548fdb7e948",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "original_build_receipt_sha256": "b9dae251775a89e04a97c2940706f733e1bc17e269f3268962d5df85ac74aa81",
+  "scope": "New canonical wheel component only; old observation/unknown receipt are not changed",
+  "source_sdist_build": "NOT RUN",
+  "real_models": "NOT RUN",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

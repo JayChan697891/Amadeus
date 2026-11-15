@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m115-wheel-canonical-r1/scratch/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run\\artifacts\\agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "started_at": "2026-11-15T03:51:42.653862+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m115-wheel-canonical-r1/scratch/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run\\artifacts\\agentsync_local-0.3.0a115-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:42.653862+00:00",
+    "finished_at": "2026-11-15T03:51:43.429922+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "9811e14f6b584c66ba6d1201052ba6ccac442bcf8b0322539994ed4ea550c06c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

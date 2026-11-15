@@ -1,0 +1,89 @@
+{
+  "at": "2026-11-15T04:53:36.888988+00:00",
+  "scope": "Corrected Git fixture and task-completion integration modules; not a replacement frozen-b6 full suite",
+  "result": {
+    "tests": 61,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "passed": 60,
+  "actual_exit_code": 0,
+  "required_cases": {
+    "test_fixture_git_reads_long_windows_reference": {
+      "passed": true,
+      "seconds": "0.156"
+    },
+    "test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan": {
+      "passed": true,
+      "seconds": "18.038"
+    }
+  },
+  "skipped": [
+    {
+      "name": "test_actual_linux_docker_to_independent_verified_completion",
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    }
+  ],
+  "product_members_rechecked_after_suite": 96,
+  "unchanged_product_wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+  "test_source_base": "670daae8cd106ef7682cd8e9b3339d39224082b5",
+  "test_source_files": [
+    {
+      "path": "tests/integration/test_m4b_workspaces.py",
+      "sha256": "04415fc3b9cc5ef493c29c51cc785e5760676b776d98c48a996c1c6632488f18"
+    },
+    {
+      "path": "tests/integration/test_verified_task_completion.py",
+      "sha256": "94f8c545295df6480a0ef4aaf9e642dfc7650bedcb3ea397b928363bdaf703f5"
+    }
+  ],
+  "files": [
+    {
+      "path": "attempt.json",
+      "size": 1304,
+      "sha256": "5f5549232856a4fe7a96a5732e0beb7a8f2ad5a7bb1fe58c6c4ff4190502c2f2"
+    },
+    {
+      "path": "result.json",
+      "size": 1388,
+      "sha256": "48100258bff82b8ff29b9d1db9d10a3e3deeae7411ec98eaa85d56afafab9ad2"
+    },
+    {
+      "path": "junit.xml",
+      "size": 10168,
+      "sha256": "89952d955351a370760cfc4f7c453e0d61f1bee0bfbc01580bbd7bc3e363f0f2"
+    },
+    {
+      "path": "installed-members.json",
+      "size": 14502,
+      "sha256": "65d7b5497d867f49cc8879a87b789b6b642336558b177249d5ea3a21bfa37abc"
+    },
+    {
+      "path": "logs/longpath_regression.log",
+      "size": 1155,
+      "sha256": "8fa5415556e1527dbfa58148b594242ad9490b3815ede0f16f6a2db776c00e9d"
+    },
+    {
+      "path": "logs/longpath_regression.process.json",
+      "size": 1985,
+      "sha256": "cc7d2c72f423ec76f741c4487b0e561322179515bd9dd4787759957a96338db1"
+    },
+    {
+      "path": "test-source-change.patch",
+      "size": 1699,
+      "sha256": "9ae3d939422de31dd51a3c0301b1439af7c5fd18bce6c52a7966ca06e04cea99"
+    }
+  ],
+  "static_checks": {
+    "scope": "Changed fixture file only",
+    "ruff_check": "passed, observed exec output",
+    "ruff_format_check": "passed, observed exec output",
+    "separate_process_receipt_claimed": false
+  },
+  "original_failure": "../windows312-wheel-canonical-failure/summary.json",
+  "original_failure_unchanged": true,
+  "raw_xml_uploaded": false,
+  "formal_release": "BLOCKED",
+  "next": "Preserve b6 evidence; corrected-test formal candidate requires a new frozen source identity under existing gates. No new candidate or replacement matrix has been started."
+}

@@ -11,10 +11,24 @@ evidence/m9-a115-preparation/windows314-complete/summary.json.
 Matrix-after-windows314.json records five complete rows and four missing
 OS/Python combinations. The original queue is terminal, not live.
 
-After explicit owner resume, the new Windows3.12 canonical wheel-only component
-started2026-11-15T03:51:32Z; its result is pending. The original source/sdist/build
-are not rerun, and old unknown receipts remain unchanged. Composite finalization
-and Windows benchmark are NOT RUN. No real-client or formal Release pass follows.
+The resumed Windows3.12 canonical wheel-only component FAILED at
+2026-11-15T04:35:09Z:2425pass56skip1fail/exit1, with8 successful prior checks.
+Product delivery assertions passed; the test Git reader failed on an existing
+262-character ref path. Same-repository read-only comparison proved default
+Git exit128/Filename too long versus exit0/correct commit with core.longpaths=true,
+which production already sets. Original failure is retained in
+evidence/m9-a115-preparation/windows312-wheel-canonical-failure/summary.json.
+
+The minimal test-helper fix and genuine long-ref regression subsequently passed
+60 integration cases/1 Linux-Docker-only skip, including the failed delivery case.
+All96 installed product members match the exact b6 wheel after execution. These
+are separate corrected-test observations, not a new b6 full-suite pass; see
+evidence/m9-a115-preparation/windows-longpath-fixture-repair/summary.json.
+Existing gates bind tests within the frozen source, so a corrected formal
+candidate needs a new identity; none has started. Old source/sdist/build and
+unknown receipts remain unchanged. Success finalization and Windows benchmark
+are NOT RUN. The owner confirmed no macOS environment; its three rows are NOT RUN.
+No real-client or formal Release pass follows.
 The earlier running references below are historical checkpoint observations.
 
 Resumed sdist actually completed2426pass56skip, exit0 at08:08:36 UTC. Its canonical
@@ -74,13 +88,14 @@ are bounded diagnostics, not exhaustive stress/production SLO; the physical host
 had concurrent Windows3.14 source work. Windows equivalent remains NOT RUN.
 Evidence: evidence/m9-a115-preparation/current-benchmark-linux/summary.json.
 The completed Linux runtime was gracefully shut down; disks/evidence retained.
-The new strict matrix-after-linux312.json retains5 incomplete OS/Python combinations.
+The earlier matrix-after-linux312.json retains5 incomplete combinations; the
+later Windows314 snapshot has4 gaps and predates the failed canonical-wheel trial.
 Cross-platform skip observations do not waive any complete row or macOS gate.
 
 The historical wheel observer did not persist a native-handle creation-time
 binding after its separate CIM check. Existing observations are retained but
-cannot be promoted to strict acceptance. After the current Windows queue, only
-one new wheel component is prepared to obtain canonical receipts; it is NOT RUN.
+cannot be promoted to strict acceptance. The later canonical wheel component
+ran and failed as documented above; its failure is not an observer timeout.
 See evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
 Its subsequent create-only composite finalizer has bounded independent read-only
 review and is also NOT RUN; real wheel success and final strict audit are required.
@@ -123,8 +138,8 @@ not whole-requirement or formal Release acceptance.
 | Corrected source static checks | PASS: Ruff/format; full-source mypy on identical product bytes |
 | Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
 | New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
-| New b6f05f0 wheel/sdist full suites | Wheel independent observation: exit0 at05:18:24 UTC,2426pass56skip; original collector receipt stays started/unknown and strict acceptance unverified. Sdist completed08:08:36 UTC,2426pass56skip/exit0, canonical receipt and label recovery verified. Composite manifest verified; matrix remains incomplete |
-| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | Linux3.11/3.12/3.14 complete and artifact verified; each source/wheel/sdist2476pass6skip. Windows3.11 full row complete: each source/wheel/sdist2426pass56skip. Windows3.14 running. No actual client acceptance inferred |
+| New b6f05f0 Windows3.12 wheel/sdist suites | Old wheel independent observation exit0/2426pass56skip remains separate from its started/unknown canonical receipt. The new canonical trial FAILED2425pass56skip1fail; a corrected-fixture targeted60pass1skip is separate evidence. Sdist completed08:08:36 UTC/2426pass56skip/exit0 with verified canonical receipt and label recovery. No full Windows3.12 pass |
+| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | All five rows complete and artifact verified. Linux source/wheel/sdist each2476pass6skip; Windows each2426pass56skip. No actual client acceptance inferred |
 | Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
 | Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
 | First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |

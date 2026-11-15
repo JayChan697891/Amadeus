@@ -7,13 +7,18 @@ authorization and all existing gates. Dependency bundling would be a new scope.
 
 Latest continuation: the owner resumed after the safe pause. Windows3.14's
 original complete row is archived and verified, without rerunning it. Current
-matrix-after-windows314.json has five complete rows/four missing combinations:
-Windows3.12 and macOS3.11/3.12/3.14. The reviewed Windows3.12 wheel-only driver
-is now RUNNING in session66619 against the fixed b6 package; source/sdist/build
-are not repeated. After its real successful result, use the reviewed create-only
-finalizer, then the existing Windows benchmark. Neither has run yet. Preserve
-all other release gates and original unknown/failed evidence. Earlier running
-queue descriptions below are historical and must not trigger duplicate work.
+matrix-after-windows314.json records five complete rows/four missing combinations.
+The later Windows3.12 wheel-only trial FAILED2425pass56skip1fail, exit1; preserve
+that result separately rather than promoting the earlier incomplete snapshot.
+Diagnosis proved a Windows long-path omission in the test Git helper; production
+already sets the option. The minimal helper fix plus a real long-ref regression
+passed60 affected integration cases/1 Linux-only skip against unchanged b6 product.
+These changed-test results cannot replace a frozen-b6 suite. Adopt a corrected
+frozen candidate before further formal collection, preserving all old evidence
+and existing source identity gates; no new candidate/matrix has started yet.
+The old success finalizer and Windows benchmark remain NOT RUN. The owner has
+confirmed no macOS environment; all three macOS rows remain NOT RUN. Earlier
+running queue descriptions below are historical and must not trigger duplicates.
 
 Remaining canonical evidence: the old Windows3.12 wheel native observation lacks
 a saved handle-creation binding, so it remains unverified. After the current
