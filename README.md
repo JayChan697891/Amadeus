@@ -8,7 +8,10 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a115 development source. Formal Release BLOCKED.** Permissions,
+Status: **0.3.0a117 development source. Formal Release BLOCKED.** The unchanged
+0.3.0a116 candidate is still completing its local release matrix; its evidence
+does not certify new development changes. See [delivery priorities](docs/PLAN.md).
+Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 The internal owner-only `OwnerCandidateExecutor` connects a pinned candidate and
@@ -81,6 +84,36 @@ rejects the second claim, submits a result, records separate review and checks p
 Use a dedicated empty data directory for repeatable demo runs.
 For runtime-only installation use requirements-lock.txt instead of the development snapshot.
 Both files are exact Windows-tested snapshots, not universal cross-platform resolver locks.
+
+## Try persisted collaboration
+
+After installing this development version, run the following with a new absolute
+directory (choose another name for each run):
+
+```powershell
+amadeus --data-dir D:\agentsync-debug\amadeus-demo-01 demo --durable
+```
+
+On Linux, an equivalent disposable location is `/tmp/amadeus-demo-01`.
+This fixed, offline demonstration uses three simulated identities. It creates a
+task, saves one retry, reopens the workflow in fresh processes, resumes it, hands
+it to a second worker and records a distinct peer review. The report identifies
+the same persisted task and accepted handoff. Existing directories are refused;
+the new database remains available for local inspection and is not uploaded.
+
+No model or API is called. Worker results and peer review are explicitly
+`simulation_only/unverified`: this demonstrates coordination and saved-state
+continuation, not code correctness or recovery of an interrupted real model.
+Owner credentials stay in memory/stdin and are not printed or saved; this short
+demo does not provide a credential-recovery service after its parent exits.
+Use the owner-managed workflow API below for your own credential lifecycle.
+
+For real-model evidence, the preserved
+[two-Codex flow](docs/acceptance/evidence/m7-continuous-live/summary.json) records
+historical version0.3.0a109 at `09425da`, exact approvals and independent Docker
+verification. It is separate from this offline demo and does not establish the
+current release, cross-vendor support or unattended approval. See
+[delivery nodes A/B/C](docs/PLAN.md) for the remaining requirements.
 
 ## Interfaces
 

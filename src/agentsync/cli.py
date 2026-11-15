@@ -190,10 +190,16 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         "demo", help="Run two mock agents against an explicit local database"
     )
     demo.add_argument("--data-dir", dest="demo_data_dir")
-    demo.add_argument(
+    demo_mode = demo.add_mutually_exclusive_group()
+    demo_mode.add_argument(
         "--workflow",
         action="store_true",
         help="Run a disposable fixed Mock workflow in the existing scratch parent",
+    )
+    demo_mode.add_argument(
+        "--durable",
+        action="store_true",
+        help="Run a recoverable Mock handoff in a new local data directory",
     )
     mock_workflow = commands.add_parser(
         "mock-workflow", help="Run a disposable Mock task graph from bounded stdin JSON"
@@ -294,7 +300,16 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     elif args.command == "demo":
         if not data_dir:
             parser.error("demo requires --data-dir PATH to avoid modifying default user state")
-        if args.workflow:
+        if args.durable:
+            from agentsync.durable_demo import DurableDemoError, run_durable_demo
+
+            try:
+                result = run_durable_demo(Path(data_dir))
+            except FileExistsError:
+                parser.error("demo --durable requires a new --data-dir")
+            except DurableDemoError as error:
+                parser.exit(1, f"{prog}: {error}\n")
+        elif args.workflow:
             from agentsync.mock_workflow import run_mock_workflow_demo
 
             result = asyncio.run(run_mock_workflow_demo(Path(data_dir)))

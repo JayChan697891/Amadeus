@@ -1,4 +1,53 @@
-# Amadeus current direction: finish M7/M8 and remaining release gates
+# Amadeus delivery order: usable core first, original release gates retained
+
+## Execution adjustment — 2026-11-15
+
+This is a delivery-order overlay, not a replacement for the original M0–M9 plan,
+42 requirements, active Goal or historical acceptance below. No new M5 subphase
+or additional release gate is created. PR #35 remains a draft on the existing
+feature branch; Issues #7/#11 remain the controlling acceptance work.
+The five-item M5 technical exit already recorded in
+[the unique final checklist](M5-FINAL-ACCEPTANCE.md) stays accepted for its frozen
+open scope. Do not reopen it for demonstration packaging or equate it with external
+Work approval or a formal Release. New demo development is version0.3.0a117;
+the immutable0.3.0a116 matrix continues independently and is not relabelled.
+
+| Priority | Next product work | Dependency / completion boundary |
+| --- | --- | --- |
+| P0 | Make the existing durable local workflow easy to demonstrate: task creation, one bounded retry, a fresh process reading saved state, structured handoff and distinct peer review. | A thin CLI entry over the existing Core; dedicated empty data directory, observable persisted identity and no credentials in output. Mock execution and textual review must remain explicitly unverified. |
+| P0 | Reuse the real proposal flow, exact owner approvals and independent Docker verification; close the prepared HTTP/MCP same-protocol recovery gap. | Preserve exact source/artifact identities. No host fallback for candidate execution, uncertain-result retry or automatic approval. Real model runs retain their separate authorization boundary. |
+| P1 | Installation/CLI guidance, actionable errors and the existing bounded performance checks. | Reuse the installed package and current local environments; affected checks only for changed code. No new orchestration layer or GUI is needed for the demonstration. |
+| P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
+
+The critical path is now the usable demonstration, then evidence-backed recovery
+and real collaboration, alongside completion of already-running release checks.
+Do not rebuild working Core capabilities or repeat full acceptance of an unchanged
+SHA. Product changes receive affected regression; documentation receives diff review.
+
+| Delivery node | Deliverable and exit condition | Current boundary / effort estimate |
+| --- | --- | --- |
+| A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | First ship the offline durable-workflow subset in one working session. It is useful product UX, but a simulated peer assertion is not independent execution verification and cannot close all of A. Finish the verified-artifact path using existing components. |
+| B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | Reuse the historical same-vendor live flow; engineering integration is roughly half a day to two days if no new defect appears. Current-candidate real-client execution needs fresh authorization. No calendar promise for unavailable clients. |
+| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Current frozen matrix has three complete rows; remaining local queues continue, macOS is unavailable. A/B cannot change this conclusion. |
+
+Already usable: SDK/CLI/MCP/HTTP share a persistent SQLite Core; durable Mock
+workflows, structured handoff, separate reviewer identities, exact candidate
+approvals and isolated Docker verification are implemented. Historical live evidence
+at `09425dafd00a6c73bac29a0a2f8329e22659e630` records two real Codex identities,
+one continuous proposal flow, four explicit host gates and eight Docker cases.
+The producer is verified; the second model's review document remains unverified.
+See [the preserved live summary](acceptance/evidence/m7-continuous-live/summary.json).
+This is not current `624b36c`, cross-vendor collaboration, an actual host-crash
+recovery run or an unattended approval policy. Those missing proofs remain visible.
+
+Parallel work is confined to the F-drive development checkout and separate D-drive
+demo scratch. Leave `D:/agentsync-debug/m116/s`, original package bytes and native
+Windows session97559/Linux session43548 untouched. Observe and harvest their
+natural completion; do not duplicate or stop collectors. Existing M8 benchmark
+and recovery drivers still wait for both queues, then use their planned installed
+environments. Do not contend for Docker with the active Linux collector.
+
+## Preserved frozen-candidate execution and historical plan
 
 Current execution: candidate0.3.0a116 at624b36c has three complete verified
 rows: Windows3.12 and Linux3.14/3.11,26 native checks each. Source/wheel/sdist

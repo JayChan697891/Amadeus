@@ -1,5 +1,37 @@
 # Amadeus current progress
 
+Delivery-order checkpoint, 2026-11-15: the owner requested a usable core before
+exhausting every release expansion. The active Goal and original M0–M9 remain
+unchanged; PLAN.md now separates P0/P1/P2 and delivery nodes A/B/C. At the strategy
+boundary the clean feature branch/PR35 head was
+`c8c9c95f9e1474fc4c7611c115d6501fb9c90665`; PR35 was open/draft/unmerged, base
+`feat/implementation-first-20261107`. Fresh Issues7/11 bodies/comments were read;
+their latest comments retain scoped acceptance and BLOCKED release. After an
+initial connector transport error, a fresh `is:issue is:open` repository search
+confirmed both Issues7/11 still open. No scope change was found in the retrieved text.
+
+Windows session97559 and Linux session43548 remain live with their original
+candidate, source and queue drivers. At10:09 UTC Linux3.12 source had exited0 and
+its wheel suite was running; this partial observation is not another complete row.
+The completed archive remains3/9. Windows3.11 sdist still runs. No queue was stopped
+or repeated. Existing M8 follow-up drivers remain NOT RUN.
+
+The0.3.0a117 `demo --durable` entry now reuses existing Mock workflow and Core
+operations in a new dedicated directory. A real installed-console run showed
+retry/reopen/handoff and distinct simulated review; all97 runtime members match
+source, wheel and installation. Lead-run Windows3.12 focused regression passed
+10 cases, including new mode, old CLI behavior and existing process-exit recovery;
+Ruff/format/mypy/pip checks passed. Independent read-only Astra review found no
+blocking defect. An initial build failed because the reused tool environment lacked
+setuptools; its log is retained. A separate offline builder resolved the dependency
+and produced the preview wheel without altering active test environments.
+See acceptance/evidence/durable-demo-a117/summary.json for exact binding/results.
+This completes the offline demonstration subset, not full node A/B or Release.
+The demo's fresh-process continuation is a normal-exit scenario; crash regression
+is a separate deterministic fixture. Neither is real-model crash acceptance.
+Resume with the existing native queues and prepared recovery work; never restart
+a collector merely because a chat resumed. No new provider call was made.
+
 Corrected candidate0.3.0a116 is frozen at624b36c039a90feb9340559ac773f9df08ba86ad,
 tree bbf15d9550443fe7af03c4a36c17859b0f7a21d9. Runtime changes relative to b6 are
 version only; the candidate includes the Windows Git test-helper repair/regression,

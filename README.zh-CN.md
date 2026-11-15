@@ -5,7 +5,8 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a115 开发源码，正式发布仍处于阻断状态**。
+当前为 **0.3.0a117 开发源码，正式发布仍处于阻断状态**。冻结的 0.3.0a116
+继续完成原本地验证队列，其证据不覆盖新增开发代码；交付顺序见[总计划](docs/PLAN.md)。
 
 新增可恢复的持久 Mock 工作流入口：
 `amadeus --data-dir 绝对路径 workflow start|resume|status|cancel`，或 SDK 的
@@ -54,6 +55,29 @@ py -m venv .venv
 重复演示时使用新的专用数据目录。
 仅安装运行依赖时，改用 requirements-lock.txt。两份锁文件都是 Windows 实测的精确版本快照，
 不声称已经完成所有平台的统一解析验证。
+
+## 体验持久化协作
+
+安装当前开发版本后，选一个尚不存在的绝对路径运行：
+
+```powershell
+amadeus --data-dir D:\agentsync-debug\amadeus-demo-01 demo --durable
+```
+
+Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务、保存一次
+重试计划、在新进程中读取并继续、向第二个工作者结构化交接，再由第三个身份
+留下评审。结果会展示同一持久任务及已接受的交接。已有目录会被拒绝，不覆盖
+任何数据；每次体验请换新目录。数据库留在本地，不上传。
+
+三个身份均为模拟 Agent，没有模型或 API 调用。输出明确保留
+`simulation_only/unverified`：证明协作和状态接续，不证明代码正确，也不证明
+真实模型异常退出后的恢复。所有者凭据只在内存和标准输入传递，不打印或保存；
+主程序退出后，这个短演示不提供凭据找回。实际项目需自行保管所有者凭据，
+使用上面的 `workflow` 操作管理生命周期。
+
+已有[两个真实 Codex 的连续流程证据](docs/acceptance/evidence/m7-continuous-live/summary.json)
+绑定历史版本0.3.0a109/`09425da`，包含明确审批和独立 Docker 验证。它与本模拟
+演示分开，不能替代当前版本、跨厂商或无人审批的验收；剩余要求见[总计划](docs/PLAN.md)。
 
 ## 接入
 
