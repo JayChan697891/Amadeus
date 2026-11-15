@@ -20,7 +20,12 @@ verified after cleanup. The local matrix is1/9 complete,8 combinations missing.
 Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
 Linux transfer and strict candidate/source verification passed; its queue started
 07:52:30Z/session43548. Linux3.14 RUNNING,3.11/3.12 queued/NOT RUN; no Linux row
-pass follows from startup. Owner has no Mac environment;
+pass follows from startup. Linux3.14 source later completed08:11:36Z, exit0:
+2526pass7skip,2533 unique cases, zero failures/errors. Actual XML/receipt and3122
+unchanged source hashes were checked; identities match Windows3.12, with no
+shared skips/non-platform outcome differences. Wheel is running; the Linux row
+remains incomplete until both installations and final verification finish.
+Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.
 Formal Release stays BLOCKED. Do not transplant historical a115 observations.
 
