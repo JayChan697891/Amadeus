@@ -7,12 +7,23 @@ redaction-case labels and the already-reviewed composite verifier/tests. The
 candidate uses a new clean frozen source identity with existing gates.
 Collection-only preflight found2533 cases, all2533 unique after sanitization;
 Ruff and format checks passed. Full Windows3.12 collection started at2026-11-15T05:12:00Z,
-native session85611/driver PID2804; source pytest is running, wheel/sdist pending. No a115
+native session85611/driver PID2804. Source pytest finished at05:56:39Z, exit0:
+2477pass56skip,2533 unique identities, zero failures/errors. The long-ref regression
+and previously failing delivery case both passed. Wheel pytest is now running;
+sdist remains pending. No a115
 pass or failed/unknown receipt is relabeled. Local work stays on D:, source/evidence
 on F:, GitHub storage only. macOS is NOT RUN (owner has no environment).
 3122 source paths matched their Git objects before execution. Frozen tree is
 bbf15d9550443fe7af03c4a36c17859b0f7a21d9; source snapshot SHA256 is
 39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82.
+All3122 hashes still match after source execution. Source JUnit, log, native
+receipt and snapshot are archived once in releases/0.3.0a116/624b36c/windows-312/
+reports/release-20261115T051200Z-ca70d702c8f4. Final transfer must preserve these
+bytes and append missing members. Observation:
+acceptance/evidence/m9-a116-preparation/windows312-source.json.
+Ruff, format, mypy, offline build, dependency checks and fresh wheel startup/origin
+checks also completed exit0 in the live canonical directory. Full row remains
+incomplete until both installed suites and final strict verification finish.
 Recovery: observe D:/agentsync-debug/m116/windows-312/result.json and the existing
 session; do not restart on observer timeout. See evidence in
 acceptance/evidence/m9-a116-preparation/windows312-launch/summary.json.

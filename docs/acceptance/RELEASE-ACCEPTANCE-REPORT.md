@@ -7,9 +7,14 @@ reviewed evidence-verifier changes, with only the version changed in runtime
 code. Collection-only preflight found2533 cases with2533 distinct sanitized
 identities; Ruff/format passed. These checks execute no test bodies and do not
 certify a full suite. All3122 frozen source paths match committed Git objects.
-One Windows3.12 collector started2026-11-15T05:12:00Z (session85611); source pytest
-is running and the two fresh installations are pending. Native receipts and final
-result are required before a pass. See evidence/m9-a116-preparation/windows312-launch.
+One Windows3.12 collector started2026-11-15T05:12:00Z (session85611). Source pytest
+completed at05:56:39Z, exit0:2477pass56skip,2533 unique cases, zero failures/errors.
+Both the long-path regression and the earlier failed delivery case passed. All3122
+source hashes remain unchanged. Source evidence is archived in the final row
+directory; see evidence/m9-a116-preparation/windows312-source.json. The fresh wheel
+suite is running and sdist is pending; this source result is not a complete row
+or formal acceptance. Native installed-suite receipts and final strict verification
+are still required.
 Do not transplant a115 observations. macOS remains NOT RUN after
 the owner's confirmation. Formal Release remains BLOCKED.
 

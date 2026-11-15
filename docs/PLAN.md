@@ -3,7 +3,10 @@
 Current execution: corrected candidate0.3.0a116 is frozen at624b36c after its completed
 collection-only preflight (2533 distinct sanitized case IDs; Ruff/format pass),
 Windows3.12 source and both fresh installations are in the existing local pipeline,
-started2026-11-15T05:12:00Z (session85611); source is running, installations pending.
+started2026-11-15T05:12:00Z (session85611); source completed2477pass56skip, exit0 at
+05:56:39Z,2533 unique cases and3122 source hashes unchanged. The fresh wheel suite
+is running; sdist is pending. Source evidence is archived once in the final row
+directory; append remaining members after completion without rewriting it.
 Observe that existing run before another row. The original a115 matrix and
 failed wheel trial remain historical evidence. Subsequent platform rows must use
 the new candidate's exact source and archives; no test-only identity exception,

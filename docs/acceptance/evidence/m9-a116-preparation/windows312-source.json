@@ -1,0 +1,45 @@
+{
+  "scope": "completed_source_component_only_full_row_pending",
+  "version": "0.3.0a116",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "finished_at": "2026-11-15T05:56:39.760893+00:00",
+  "native_exit_code": 0,
+  "junit": {
+    "tests": 2533,
+    "passed": 2477,
+    "skipped": 56,
+    "failures": 0,
+    "errors": 0,
+    "unique_identities": 2533
+  },
+  "source_paths_verified_unchanged_after_source_suite": 3122,
+  "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82",
+  "canonical_report_directory": "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4",
+  "archived_members_directory": "releases/0.3.0a116/624b36c/windows-312/reports/release-20261115T051200Z-ca70d702c8f4",
+  "full_row": "RUNNING: installed wheel suite",
+  "sdist_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "source-snapshot.json",
+      "sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82",
+      "size": 621555
+    },
+    {
+      "path": "junit.xml",
+      "sha256": "9045a971763ae894b8b8dbf194f00c6132b3f6e4fb67480edb36e68b3809b06c",
+      "size": 399534
+    },
+    {
+      "path": "logs/pytest.log",
+      "sha256": "88e372691e645cd4ba38d2fd2b86f329820f20e4dc91a1864f5a44db0e200392",
+      "size": 18027
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "sha256": "186b96c689cbd586acc1d240dbd3b21257d44d5dfe42637e9b789043c3d6200f",
+      "size": 1542
+    }
+  ],
+  "copy_policy": "Final row transfer must verify existing files byte-for-byte, preserve them, and append only missing canonical members; no duplicate source evidence directory."
+}
