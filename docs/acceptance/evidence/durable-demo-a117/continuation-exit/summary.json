@@ -1,0 +1,213 @@
+{
+  "observed_at": "2026-11-15T13:11:07.231842+00:00",
+  "status": "SCOPED PASS",
+  "scope": "Native coordinator process exit and deterministic protocol continuation; no real client/model invocation",
+  "runtime_product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "test_path": "tests/integration/test_unfinished_continuation.py",
+  "test_sha256": "4fc76f32042bd498237167b5b1b75f2fcd73af7dcef7e6d457dea78c658cf0cc",
+  "mapped_original_requirements": [
+    "M7-02",
+    "M8-02"
+  ],
+  "product_code_changed": false,
+  "platforms": [
+    {
+      "system": "Windows",
+      "python_minor": "3.12",
+      "native_session": 44641,
+      "exit_code": 0,
+      "passed": 20
+    },
+    {
+      "system": "Linux",
+      "python_minor": "3.14",
+      "native_session": 18842,
+      "exit_code": 0,
+      "passed": 20
+    }
+  ],
+  "same_20_unique_case_identities": true,
+  "runtime_members_unchanged": 97,
+  "new_cases": [
+    "prepared: os._exit(73) after committed worktree; new host reuses task/worktree and launches one receiver; replay launches zero",
+    "dispatch-intent: os._exit(73) before queue admission; new host/replay stay unknown with zero approvals or launches"
+  ],
+  "preserved_invariants": [
+    "original failed source attempt/receipts unchanged",
+    "only one added continuation task",
+    "dependency transferred once",
+    "source repositories unchanged",
+    "unverified publication remains unverified",
+    "credentials supplied via stdin and absent from child argv/output"
+  ],
+  "initial_failure": {
+    "reason": "Test expected only three total tasks, but the existing fixture also creates a baseline task; fixed to initial task set plus exactly one continuation",
+    "junit": {
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_sha256": "NOT RECORDED for the initial failed test revision",
+    "log_redactions": 6,
+    "junit_redactions": 6,
+    "original_private_outputs_remain_on_D": true
+  },
+  "review": "Independent Astra static review found no blocking coverage/cleanup/gate issue; root ran both full-file regressions and compared actual receipts/XML/runtime bytes",
+  "full_release_matrix": "NOT RUN for this test revision",
+  "actual_model_inflight_failure": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "windows/attempt.json",
+      "size": 405,
+      "sha256": "1d88e3c6a81b5e396d8f267132c651a9866c999a37c8aaa02ab5e9e128e5b224"
+    },
+    {
+      "path": "windows/result.json",
+      "size": 4556,
+      "sha256": "6a8398e87350b1a0af5e6643136c02b5167fb775f40f688eb6290621c142f7fa"
+    },
+    {
+      "path": "windows/junit.xml",
+      "size": 3338,
+      "sha256": "40b9f7d5d6a596582d5daedf681d963f78a5d13ce400187ddb4ae4107e852d38"
+    },
+    {
+      "path": "windows/logs/origin_before.log",
+      "size": 10470,
+      "sha256": "ede69603918bef9a51171f1bb53724826b56ad345a5327bae85c14a4d3675dcd"
+    },
+    {
+      "path": "windows/logs/origin_before.process.json",
+      "size": 3027,
+      "sha256": "31b96a1d343dd3c971aacb20eca4435e79e24bc6cbbce2c2fd1e683521b4e46c"
+    },
+    {
+      "path": "windows/logs/affected_pytest.log",
+      "size": 684,
+      "sha256": "17f6b4b8b8d15f1e8080048773d8d471cd128b9a910c696f5eb16ddadbfeb9f8"
+    },
+    {
+      "path": "windows/logs/affected_pytest.process.json",
+      "size": 1893,
+      "sha256": "c8fb5e3e88c0c27a5ca34b0f68733ea2908b45da2c10bdec5ed1ad22c269aa90"
+    },
+    {
+      "path": "windows/logs/origin_after.log",
+      "size": 10470,
+      "sha256": "ede69603918bef9a51171f1bb53724826b56ad345a5327bae85c14a4d3675dcd"
+    },
+    {
+      "path": "windows/logs/origin_after.process.json",
+      "size": 3024,
+      "sha256": "38aef6dc27c60a87f225c44940fba01fbc3f4cfdd9024822b1cfa96502c886fd"
+    },
+    {
+      "path": "linux/attempt.json",
+      "size": 381,
+      "sha256": "b1e44fa53b20a819bf347ffc23158a1d30c3aa73e4c613ad3efa6c116d0b094b"
+    },
+    {
+      "path": "linux/result.json",
+      "size": 4311,
+      "sha256": "335705d1cbada0a76ce88440d709b181f4862108e87c02c43b9e745d0124c3be"
+    },
+    {
+      "path": "linux/junit.xml",
+      "size": 3337,
+      "sha256": "a2cfce5cc22760509cd3f466aa900847fa0fb552a44af1d7a8a6cea8f2b09122"
+    },
+    {
+      "path": "linux/logs/origin_before.log",
+      "size": 10421,
+      "sha256": "27cdd2d207b0249a1216bc36fc017deb283b9ee69b5508132c7f2acc4bbe0485"
+    },
+    {
+      "path": "linux/logs/origin_before.process.json",
+      "size": 2915,
+      "sha256": "649163c983f57283dd08d5e2147c83fc5222403dcd275f75a876f7e2bc006842"
+    },
+    {
+      "path": "linux/logs/affected_pytest.log",
+      "size": 659,
+      "sha256": "4e0a0ac2564062a084c7447b527c00f581c619d1cd08c4688558330e973cc6ee"
+    },
+    {
+      "path": "linux/logs/affected_pytest.process.json",
+      "size": 1793,
+      "sha256": "19ffc2740b2e674afaf4e7dd38f07e343a8e1209e5e5ac9536fb48d917db3d66"
+    },
+    {
+      "path": "linux/logs/origin_after.log",
+      "size": 10421,
+      "sha256": "27cdd2d207b0249a1216bc36fc017deb283b9ee69b5508132c7f2acc4bbe0485"
+    },
+    {
+      "path": "linux/logs/origin_after.process.json",
+      "size": 2912,
+      "sha256": "5614f47bf2a7021fa7dfd9f80b4304697f19bbecf3a32e648a7b1e2a9c433aff"
+    },
+    {
+      "path": "linux/execution/attempt.json",
+      "size": 320,
+      "sha256": "5b3b8f32e6917d950b1a22feb4d0ab10511c94e982acc33c7c95a1e0dd193d05"
+    },
+    {
+      "path": "linux/execution/terminal.json",
+      "size": 190,
+      "sha256": "294e49c7d0d0341628fdc51e8f3ad0fcaa9bc5d37e2a5ebc4d77724147d00891"
+    },
+    {
+      "path": "linux/execution/command.log",
+      "size": 103,
+      "sha256": "b3d0f8010003e87f75cd993c88f343720f63c82b27ddf0fa41b83258fbd71f8f"
+    },
+    {
+      "path": "linux/linux-staging.json",
+      "size": 220,
+      "sha256": "79ebcb4f6a7927d1262066f08962aa7a1cf8ee2ab397ba460cf03f949aeb6acd"
+    },
+    {
+      "path": "linux/linux-post-run.json",
+      "size": 188,
+      "sha256": "9f6e0e941cd3f941670fb281b89435492d38247e285d12448b57422db8af0549"
+    },
+    {
+      "path": "drivers/run-windows-file.py.txt",
+      "size": 3783,
+      "sha256": "7850e911810bc6229a88e7da3d379a47272fe212786c6669aa8f6aed4b7d1231"
+    },
+    {
+      "path": "drivers/run-linux-file.py.txt",
+      "size": 3797,
+      "sha256": "813dacbdfcbfc509e6936b15e36a29d3f45ea8dcc63a43aee2dc28650f9b39aa"
+    },
+    {
+      "path": "initial-failed/pytest.log",
+      "size": 13430,
+      "sha256": "9c2664c022c224cf205f4be2cd68c55ae8d0e072ded561f98051348d158f5d82"
+    },
+    {
+      "path": "initial-failed/junit.xml",
+      "size": 12910,
+      "sha256": "1184a86090ca092846a72164047a588efd85521fd740d5f41fd829b2045f4fbc"
+    },
+    {
+      "path": "style/ruff.log",
+      "size": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "style/format.log",
+      "size": 25,
+      "sha256": "fd2299c9f1c6dc869070883e281051bfe93aacf66c1a3b0069f45b4aa410ca50"
+    },
+    {
+      "path": "style/result.json",
+      "size": 1053,
+      "sha256": "9689f8f820f0949f4c9df944ed37a64b0b8d11e312cd4d2bb6068896f1983922"
+    }
+  ],
+  "ruff_and_format": "PASS"
+}

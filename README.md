@@ -90,9 +90,11 @@ For offline installation, prepare wheels compatible with the selected Python ver
 ## Try persisted collaboration
 
 The [preview directory](releases/0.3.0a117/demo-fc27f15/) contains a wheel and source
-archive for the same frozen runtime. Windows3.12 editable-source and source-archive
-installs each passed the same10 focused cases as the earlier wheel check; see
+archive for the same frozen runtime. Windows3.12 editable-source/source-archive
+and Linux3.14 source-archive installs each passed the same10 focused cases as the earlier wheel check; see
 [package evidence and retained setup failures](docs/acceptance/evidence/durable-demo-a117/sdist/summary.json).
+[Linux installation evidence](docs/acceptance/evidence/durable-demo-a117/sdist/linux/summary.json)
+uses the same archive without rebuilding it.
 This is focused demonstration validation, not a full a117 release matrix.
 
 After installing this development version, run the following with a new absolute

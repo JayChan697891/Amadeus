@@ -1,0 +1,56 @@
+"""Lead-run affected regression against the fixed installed a117 sdist runtime."""
+from datetime import datetime, timezone
+import hashlib, json, os
+from pathlib import Path
+import sys
+assert sys.version_info[:2] == (3, 12)
+repo=Path('F:/syuc/amadeus-m6-single')
+test=repo/'tests/integration/test_unfinished_continuation.py'
+expected='4fc76f32042bd498237167b5b1b75f2fcd73af7dcef7e6d457dea78c658cf0cc'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+assert sha(test)==expected
+base=Path('D:/agentsync-debug/strategy-demo/continuation-process-exit/windows-file')
+base.mkdir()
+for name in ('logs','tmp','home','private-junit'):
+    (base/name).mkdir()
+for key in tuple(os.environ):
+    if key.upper().startswith(('OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','CODEX_','AGENTSYNC_','PYTEST_','PYTHON','GIT_')):
+        os.environ.pop(key,None)
+os.environ.update(HOME=str(base/'home'),USERPROFILE=str(base/'home'),GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,GIT_TERMINAL_PROMPT='0',PYTHONDONTWRITEBYTECODE='1')
+frozen=Path('D:/agentsync-debug/strategy-demo/a117-sdist-r1/source')
+assert sha(frozen/'tools/release_acceptance.py')=='d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+sys.path.insert(0,str(frozen))
+from tools.release_acceptance import execute,persist_junit,junit_counts
+checks=[]
+def save(name,value):
+    with (base/name).open('x',encoding='utf-8') as f:json.dump(value,f,indent=2);f.write('\n')
+def run(name,args):
+    result=execute(name,args,repo,base,base/'tmp')
+    checks.append(result)
+    assert result['status']=='pass' and result['exit_code']==0,name
+probe="""from pathlib import Path
+import hashlib,importlib.metadata as md,json,sys,agentsync
+root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')
+assert d.version=='0.3.0a117' and Path(agentsync.__file__).resolve().is_relative_to(root)
+expected=json.loads(Path(sys.argv[1]).read_bytes());actual={}
+for name,digest in expected.items():
+ p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)
+ actual[name]=hashlib.sha256(p.read_bytes()).hexdigest();assert actual[name]==digest
+direct=json.loads(d.read_text('direct_url.json'));assert direct['archive_info']['hashes']['sha256']=='b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'
+print(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'python':sys.version},sort_keys=True))
+"""
+origin=[sys.executable,'-I','-B','-c',probe,str(repo/'docs/acceptance/evidence/durable-demo-a117/sdist/runtime-members.json')]
+save('attempt.json',{'started_at':datetime.now(timezone.utc).isoformat(),'test_sha256':expected,'driver_sha256':sha(Path(__file__)),'runtime_product_sha':'fc27f15f47fa92ed5edcd764a573c1d84a68c107','python':sys.version,'model_calls':0})
+try:
+    run('origin_before',origin)
+    run('affected_pytest',[sys.executable,'-I','-B','-m','pytest',str(test),'--junitxml',str(base/'private-junit/file.xml'),'--basetemp',str(base/'pytest')])
+    persist_junit(base/'private-junit/file.xml',base/'junit.xml')
+    assert junit_counts(base/'junit.xml')=={'tests':20,'failures':0,'errors':0,'skipped':0}
+    run('origin_after',origin)
+    assert (base/'logs/origin_before.log').read_bytes()==(base/'logs/origin_after.log').read_bytes()
+    assert sha(test)==expected
+    save('result.json',{'finished_at':datetime.now(timezone.utc).isoformat(),'status':'pass','checks':checks,'junit':junit_counts(base/'junit.xml'),'runtime_members_unchanged':97,'test_sha256':expected,'real_clients':'NOT RUN','formal_release':'BLOCKED'})
+    print(json.dumps({'status':'pass','tests':20,'result':str(base/'result.json')}),flush=True)
+except BaseException as e:
+    save('exception.json',{'at':datetime.now(timezone.utc).isoformat(),'error_type':type(e).__name__,'checks':checks});raise
+

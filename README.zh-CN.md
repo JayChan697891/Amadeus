@@ -60,7 +60,9 @@ py -m venv .venv
 ## 体验持久化协作
 
 [预览目录](releases/0.3.0a117/demo-fc27f15/)提供同一冻结运行时的 wheel 和源码包。
-Windows3.12 的源码安装、源码包安装各通过10项现有定向用例，与先前 wheel 的用例结果一致。
+Windows3.12 的源码安装、源码包安装，以及 Linux3.14 源码包安装，各通过10项现有定向用例，
+与先前 wheel 的用例结果一致。[Linux 实测](docs/acceptance/evidence/durable-demo-a117/sdist/linux/summary.json)
+使用同一份源码包，未重新构建。
 [安装证据与保留的准备失败](docs/acceptance/evidence/durable-demo-a117/sdist/summary.json)
 仅覆盖该演示的定向验证，不代表完整 a117 发布矩阵通过。
 

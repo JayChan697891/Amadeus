@@ -1,0 +1,12 @@
+Looking in links: file:///root/intent-wheelhouse
+Processing /root/amadeus-demo-a117-sdist-r1/agentsync_local-0.3.0a117.tar.gz
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building wheel for agentsync-local (pyproject.toml): started
+  Building wheel for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a117-py3-none-any.whl size=322966 sha256=ec0f43659365d0cd43470adb113ef799a4169a53547f1a8db9175e52a2bf1c99
+  Stored in directory: /root/amadeus-demo-a117-sdist-r1/tmp/pip-ephem-wheel-cache-ybyeh94w/wheels/72/39/93/729491bfce311144cab925485f4d206e9d5b59474b85331738
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a117

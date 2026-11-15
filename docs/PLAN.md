@@ -48,7 +48,7 @@ queue completed before the real Docker demo. Independent M8 correctness fixtures
 used separate exact-wheel installs. The unchanged bounded benchmarks subsequently
 passed in order: both queues complete, Linux, normal owned-VM shutdown, Windows.
 
-## Current delivery checkpoint — 2026-11-15T12:44Z
+## Current delivery checkpoint — 2026-11-15T13:08Z
 
 The current117 real two-Codex flow now has limited actual acceptance after fresh
 owner authorization: two native calls, four exact host approvals,8 Docker cases,
@@ -94,8 +94,20 @@ files match frozen Git. Two environment-preparation failures remain documented;
 the source package was not rebuilt. Current install guidance uses unchanged
 pyproject dependencies. See acceptance/evidence/durable-demo-a117/sdist/summary.json.
 
+The same source archive subsequently passed Linux3.14's7 native install/origin
+checks and10 focused cases, with97 unchanged runtime members and no rebuild.
+Original M7-02/M8-02 now also has native OwnerContinuation process-exit coverage:
+prepared state resumes once with the same task/worktree; dispatch-intent-only state
+remains unknown and launches nothing. Replay starts nothing; dependencies move
+once and the failed producer receipts remain unchanged. Both Windows3.12 and
+Linux3.14 passed the affected20-case file, including18 retained cases. Independent
+read-only review found no blocker. The initial fixture-count assertion failures
+remain recorded. No product code or requirement/release gate was changed; see
+acceptance/evidence/durable-demo-a117/continuation-exit/summary.json. These are
+deterministic protocol processes, not a real model failing during execution.
+
 Next: continue the existing P0/P1 demonstration route; retain full a117 regression,
-other-platform sdist and actual live crash recovery as unexecuted gaps. Further real calls require
+full release matrix and actual live crash recovery as unexecuted gaps. Further real calls require
 fresh authorization; cross-vendor accounts and macOS remain unavailable/NOT RUN.
 No new M5 stage, new release gate or repeated full acceptance was introduced.
 

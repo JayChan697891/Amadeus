@@ -1,0 +1,52 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "affected_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\sdist-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_unfinished_continuation.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\continuation-process-exit\\windows-file\\private-junit\\file.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\continuation-process-exit\\windows-file\\pytest"
+    ],
+    "cwd": "F:\\syuc\\amadeus-m6-single",
+    "started_at": "2026-11-15T13:02:51.841037+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "affected_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r3\\sdist-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_unfinished_continuation.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\continuation-process-exit\\windows-file\\private-junit\\file.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\continuation-process-exit\\windows-file\\pytest"
+    ],
+    "cwd": "F:\\syuc\\amadeus-m6-single",
+    "exit_code": 0,
+    "started_at": "2026-11-15T13:02:51.841037+00:00",
+    "finished_at": "2026-11-15T13:04:04.981347+00:00",
+    "log": "logs/affected_pytest.log",
+    "log_sha256": "17f6b4b8b8d15f1e8080048773d8d471cd128b9a910c696f5eb16ddadbfeb9f8",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

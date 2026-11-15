@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "origin_after",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,agentsync\nroot=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert d.version=='0.3.0a117' and Path(agentsync.__file__).resolve().is_relative_to(root)\nexpected=json.loads(Path(sys.argv[1]).read_bytes());actual={}\nfor name,digest in expected.items():\n p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n actual[name]=hashlib.sha256(p.read_bytes()).hexdigest();assert actual[name]==digest\ndirect=json.loads(d.read_text('direct_url.json'));assert direct['archive_info']['hashes']['sha256']=='b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'\nprint(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'python':sys.version},sort_keys=True))\n",
+      "/root/amadeus-demo-a117-sdist-r1/runtime-members.json"
+    ],
+    "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+    "started_at": "2026-11-15T13:04:54.238048+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "origin_after",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,agentsync\nroot=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert d.version=='0.3.0a117' and Path(agentsync.__file__).resolve().is_relative_to(root)\nexpected=json.loads(Path(sys.argv[1]).read_bytes());actual={}\nfor name,digest in expected.items():\n p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n actual[name]=hashlib.sha256(p.read_bytes()).hexdigest();assert actual[name]==digest\ndirect=json.loads(d.read_text('direct_url.json'));assert direct['archive_info']['hashes']['sha256']=='b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'\nprint(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'python':sys.version},sort_keys=True))\n",
+      "/root/amadeus-demo-a117-sdist-r1/runtime-members.json"
+    ],
+    "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+    "exit_code": 0,
+    "started_at": "2026-11-15T13:04:54.238048+00:00",
+    "finished_at": "2026-11-15T13:04:54.312309+00:00",
+    "log": "logs/origin_after.log",
+    "log_sha256": "27cdd2d207b0249a1216bc36fc017deb283b9ee69b5508132c7f2acc4bbe0485",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

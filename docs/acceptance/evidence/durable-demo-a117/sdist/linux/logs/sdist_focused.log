@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-9.1.1, pluggy-1.7.0
+rootdir: /root/amadeus-demo-a117-sdist-r1/unpacked/agentsync_local-0.3.0a117
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 10 items
+
+tests/integration/test_durable_demo.py .....                             [ 50%]
+tests/integration/test_mock_workflow.py .                                [ 60%]
+tests/integration/test_durable_mock_workflow.py ....                     [100%]
+
+- generated xml file: /root/amadeus-demo-a117-sdist-r1/private-junit/focused.xml -
+============================= 10 passed in 24.40s ==============================

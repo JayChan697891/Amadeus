@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15T12:44Z
+## Current scoped outcome — 2026-11-15T13:08Z
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
 Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
@@ -30,7 +30,23 @@ b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672.
 The first two preparations failed before any tests (wrong Python minor, then
 historical snapshot mismatch); both remain in evidence/durable-demo-a117/sdist/.
 Corrected preparation used the exact same archive, Python3.12 and unchanged
-pyproject dependency pins. Full/other-platform sdist validation remains NOT RUN.
+pyproject dependency pins. The same archive then passed Linux3.14's7 native
+checks and10 focused cases, matching Windows identities/outcomes with97 unchanged
+runtime members. See evidence/durable-demo-a117/sdist/linux/summary.json.
+Full a117 regression/matrix and macOS installation remain NOT RUN.
+
+The added OwnerContinuation native-exit tests run against that same installed117
+runtime: root Windows3.12 and Linux3.14 each passed the full affected20-case file,
+with equal case identities and97 unchanged runtime members. os._exit(73) after
+worktree commit allows one resumed deterministic receiver; exiting after dispatch
+intent keeps recovery/replay unknown with no launch. Original receipts/workspaces
+and single dependency transfer are checked.18 existing cases remain. Independent
+static review found no blocking issue. The initial two failures were a test's
+incorrect fixture task-count assumption; sanitized originals are preserved, with
+the missing initial-test SHA disclosed. See evidence/durable-demo-a117/continuation-exit/summary.json.
+Test SHA4fc76f32042bd498237167b5b1b75f2fcd73af7dcef7e6d457dea78c658cf0cc;
+mapped only to original M7-02/M8-02. No product changes, new milestone, real model
+failure/continuation or full requirement acceptance are inferred.
 
 Frozen116/624b36c matrix is6/9. All six Windows/Linux3.11/3.12/3.14 rows completed26
 checks each. Every source/wheel/sdist suite has2533 unique matching cases; Windows

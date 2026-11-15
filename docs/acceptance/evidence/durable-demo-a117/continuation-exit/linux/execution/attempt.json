@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-11-15T13:04:26.183639+00:00",
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-continuation-native-exit-r1/run.py",
+  "driver_sha256": "813dacbdfcbfc509e6936b15e36a29d3f45ea8dcc63a43aee2dc28650f9b39aa",
+  "automatic_retry": false,
+  "model_calls": 0
+}

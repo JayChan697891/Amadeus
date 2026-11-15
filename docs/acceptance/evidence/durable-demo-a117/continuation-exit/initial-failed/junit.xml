@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="13.479" timestamp="2026-11-15T04:59:26.312099-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_unfinished_continuation" name="test_host_exit_preserves_continuation_recovery[prepared]" time="6.875"><failure message="AssertionError: assert {'8136eb07-3550-4b4e-ac21-c4adac81aad6', 'a5017270-fbc2-49b0-ad86-9909bd6ef4f1', '76405735-5433-4841-9252-1c770fc1e8d1', '4e3d846c-2b01-46dd-8b55-fd498ca5e8dd'} == {'a5017270-fbc2-49b0-ad86-9909bd6ef4f1', '76405735-5433-4841-9252-1c770fc1e8d1', '8136eb07-3550-4b4e-ac21-c4adac81aad6'}&#10;  &#10;  Extra items in the left set:&#10;  '4e3d846c-2b01-46dd-8b55-fd498ca5e8dd'&#10;  &#10;  Full diff:&#10;    {&#10;  +     '4e3d846c-2b01-46dd-8b55-fd498ca5e8dd',&#10;        '76405735-5433-4841-9252-1c770fc1e8d1',&#10;        '8136eb07-3550-4b4e-ac21-c4adac81aad6',&#10;        'a5017270-fbc2-49b0-ad86-9909bd6ef4f1',&#10;    }">unfinished = (&lt;agentsync.continuation.OwnerContinuation object at 0x0000022C7C1163F0&gt;, ContinuationRequest(source=ContinuationPin(s...], [LaunchReview(client='codex', plan_sha256='64d7ebf7fa3c8c30fa4c8bf2057767e0005e7ab1af176d96c20329757aeaf6d8')], ...)
+pilot = (&lt;agentsync.core.service.Core object at 0x0000022C7BA8F830&gt;, {'project_id': '66654691-300d-4f4c-bdc1-44fbab39dff2', 'a..., 'task_id': '76405735-5433-4841-9252-1c770fc1e8d1', 'base_sha': 'b8bc1cca66b00bc6a970964ca457bdf54fb270d1', ...}, ...)
+checkpoint = 'prepared'
+
+    @pytest.mark.parametrize("checkpoint", ["prepared", "dispatch-intent"])
+    async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, checkpoint):
+        flow, request, _, child, calls, _, _, key = unfinished
+        core, owner, _, _, source_task, tree, source, receipts, profile = pilot
+        plan = flow.preview(request, admin_token=[REDACTED]])
+        fixture = {
+            "data_dir": str(core.data_dir),
+            "scratch": str(source.parent),
+            "receipts": str(receipts),
+            "admin_token": [REDACTED]],
+            "plan_sha256": plan["plan_sha256"],
+            "request": asdict(request),
+            "executable": str(profile.executable),
+            "binary_sha256": profile.expected_binary_sha256,
+            "cli_version": profile.expected_cli_version,
+            "source_worktree": tree["path"],
+            "import_origin": str(Path(agentsync.__file__).resolve()),
+        }
+        driver = (
+            "import asyncio,json,runpy,sys; from pathlib import Path; "
+            "path=Path(sys.argv[1]); sys.path[:0]=[str(path.parent),str(path.parent.parent)]; "
+            "start=runpy.run_path(str(path))['_continuation_host']; "
+            "asyncio.run(start(sys.argv[2],json.load(sys.stdin)))"
+        )
+    
+        def host(phase, expected_exit):
+            process = subprocess.run(
+                [sys.executable, "-I", "-B", "-c", driver, str(Path(__file__).resolve()), phase],
+                cwd=source.parent,
+                input=json.dumps(fixture),
+                capture_output=True,
+                encoding="utf-8",
+                timeout=30,
+                check=False,
+            )
+            for secret in (owner["admin_token"], request.receiver.session_token):
+                assert secret not in process.stdout + process.stderr
+            assert process.returncode == expected_exit, process.stderr
+            return json.loads(process.stdout)
+    
+        def source_observations():
+            return (
+                flow._relay.owner_inspect_attempts(
+                    owner["project_id"], source_task["id"], admin_token=[REDACTED]]
+                ),
+                {file.name: file.read_bytes() for file in receipts.glob("relay-" + key + "*.json")},
+            )
+    
+        original = source_observations()
+        before = [source_fingerprint(path) for path in (source, Path(tree["path"]))]
+        exited = host(checkpoint, 73)
+        task_id, worktree_id, head_sha = exited["worktree"]
+        auth = request.receiver.authentication()
+        saved_tree = core.execute(
+            "inspect_owned_worktree", {**auth, "task_id": task_id, "worktree_id": worktree_id}
+        )
+        assert saved_tree["head_sha"] == head_sha
+        recovered = host("resume", 0)
+        replayed = host("resume", 0)
+        assert len({os.getpid(), exited["pid"], recovered["pid"], replayed["pid"]}) == 4
+        assert recovered["outcome"] == replayed["outcome"]
+        assert recovered["outcome"]["task_id"] == task_id
+        assert recovered["outcome"]["source_task_id"] == source_task["id"]
+        assert replayed["builds"] == [] and replayed["approvals"] == replayed["launches"] == 0
+    
+        pending_intent = checkpoint == "dispatch-intent"
+        if pending_intent:
+            assert recovered["outcome"]["state"] == "unknown"
+            assert recovered["outcome"]["wave"] is None and recovered["outcome"]["publication"] is None
+            assert recovered["builds"] == [] and recovered["approvals"] == recovered["launches"] == 0
+        else:
+            assert recovered["outcome"]["state"] == "resolved"
+            assert recovered["outcome"]["task_status"] == "review"
+            assert recovered["outcome"]["publication"]["verification"] == "unverified"
+            assert recovered["builds"] == [exited["worktree"]]
+            assert recovered["approvals"] == recovered["launches"] == 1
+    
+        tasks = {row["id"]: row for row in core.execute("list_tasks", auth)["tasks"]}
+&gt;       assert set(tasks) == {source_task["id"], child["id"], task_id}
+E       AssertionError: assert {'8136eb07-3550-4b4e-ac21-c4adac81aad6', 'a5017270-fbc2-49b0-ad86-9909bd6ef4f1', '76405735-5433-4841-9252-1c770fc1e8d1', '4e3d846c-2b01-46dd-8b55-fd498ca5e8dd'} == {'a5017270-fbc2-49b0-ad86-9909bd6ef4f1', '76405735-5433-4841-9252-1c770fc1e8d1', '8136eb07-3550-4b4e-ac21-c4adac81aad6'}
+E         
+E         Extra items in the left set:
+E         '4e3d846c-2b01-46dd-8b55-fd498ca5e8dd'
+E         
+E         Full diff:
+E           {
+E         +     '4e3d846c-2b01-46dd-8b55-fd498ca5e8dd',
+E               '76405735-5433-4841-9252-1c770fc1e8d1',
+E               '8136eb07-3550-4b4e-ac21-c4adac81aad6',
+E               'a5017270-fbc2-49b0-ad86-9909bd6ef4f1',
+E           }
+
+tests\integration\test_unfinished_continuation.py:733: AssertionError</failure></testcase><testcase classname="tests.integration.test_unfinished_continuation" name="test_host_exit_preserves_continuation_recovery[dispatch-intent]" time="5.506"><failure message="AssertionError: assert {'bc863ede-c886-4918-a506-6782940cc762', '0d8b946a-fecd-4303-877f-17a90de44763', '7f470ecd-827c-43b5-931f-329a1f5c2bb8', 'bb65684a-92ad-4561-96fb-874e791ee9c7'} == {'0d8b946a-fecd-4303-877f-17a90de44763', '7f470ecd-827c-43b5-931f-329a1f5c2bb8', 'bb65684a-92ad-4561-96fb-874e791ee9c7'}&#10;  &#10;  Extra items in the left set:&#10;  'bc863ede-c886-4918-a506-6782940cc762'&#10;  &#10;  Full diff:&#10;    {&#10;        '0d8b946a-fecd-4303-877f-17a90de44763',&#10;        '7f470ecd-827c-43b5-931f-329a1f5c2bb8',&#10;        'bb65684a-92ad-4561-96fb-874e791ee9c7',&#10;  +     'bc863ede-c886-4918-a506-6782940cc762',&#10;    }">unfinished = (&lt;agentsync.continuation.OwnerContinuation object at 0x0000022C7C117D10&gt;, ContinuationRequest(source=ContinuationPin(s...], [LaunchReview(client='codex', plan_sha256='d63994c639e69cde63c94783a41ba4a3aa0f4a40524701a6141e8ba6c9608bce')], ...)
+pilot = (&lt;agentsync.core.service.Core object at 0x0000022C7BA8C260&gt;, {'project_id': '95fb6fa5-c83c-4106-97c1-a037137b787f', 'a..., 'task_id': '0d8b946a-fecd-4303-877f-17a90de44763', 'base_sha': 'df20909b236cfbb002f61b0299a83654553f2e91', ...}, ...)
+checkpoint = 'dispatch-intent'
+
+    @pytest.mark.parametrize("checkpoint", ["prepared", "dispatch-intent"])
+    async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, checkpoint):
+        flow, request, _, child, calls, _, _, key = unfinished
+        core, owner, _, _, source_task, tree, source, receipts, profile = pilot
+        plan = flow.preview(request, admin_token=[REDACTED]])
+        fixture = {
+            "data_dir": str(core.data_dir),
+            "scratch": str(source.parent),
+            "receipts": str(receipts),
+            "admin_token": [REDACTED]],
+            "plan_sha256": plan["plan_sha256"],
+            "request": asdict(request),
+            "executable": str(profile.executable),
+            "binary_sha256": profile.expected_binary_sha256,
+            "cli_version": profile.expected_cli_version,
+            "source_worktree": tree["path"],
+            "import_origin": str(Path(agentsync.__file__).resolve()),
+        }
+        driver = (
+            "import asyncio,json,runpy,sys; from pathlib import Path; "
+            "path=Path(sys.argv[1]); sys.path[:0]=[str(path.parent),str(path.parent.parent)]; "
+            "start=runpy.run_path(str(path))['_continuation_host']; "
+            "asyncio.run(start(sys.argv[2],json.load(sys.stdin)))"
+        )
+    
+        def host(phase, expected_exit):
+            process = subprocess.run(
+                [sys.executable, "-I", "-B", "-c", driver, str(Path(__file__).resolve()), phase],
+                cwd=source.parent,
+                input=json.dumps(fixture),
+                capture_output=True,
+                encoding="utf-8",
+                timeout=30,
+                check=False,
+            )
+            for secret in (owner["admin_token"], request.receiver.session_token):
+                assert secret not in process.stdout + process.stderr
+            assert process.returncode == expected_exit, process.stderr
+            return json.loads(process.stdout)
+    
+        def source_observations():
+            return (
+                flow._relay.owner_inspect_attempts(
+                    owner["project_id"], source_task["id"], admin_token=[REDACTED]]
+                ),
+                {file.name: file.read_bytes() for file in receipts.glob("relay-" + key + "*.json")},
+            )
+    
+        original = source_observations()
+        before = [source_fingerprint(path) for path in (source, Path(tree["path"]))]
+        exited = host(checkpoint, 73)
+        task_id, worktree_id, head_sha = exited["worktree"]
+        auth = request.receiver.authentication()
+        saved_tree = core.execute(
+            "inspect_owned_worktree", {**auth, "task_id": task_id, "worktree_id": worktree_id}
+        )
+        assert saved_tree["head_sha"] == head_sha
+        recovered = host("resume", 0)
+        replayed = host("resume", 0)
+        assert len({os.getpid(), exited["pid"], recovered["pid"], replayed["pid"]}) == 4
+        assert recovered["outcome"] == replayed["outcome"]
+        assert recovered["outcome"]["task_id"] == task_id
+        assert recovered["outcome"]["source_task_id"] == source_task["id"]
+        assert replayed["builds"] == [] and replayed["approvals"] == replayed["launches"] == 0
+    
+        pending_intent = checkpoint == "dispatch-intent"
+        if pending_intent:
+            assert recovered["outcome"]["state"] == "unknown"
+            assert recovered["outcome"]["wave"] is None and recovered["outcome"]["publication"] is None
+            assert recovered["builds"] == [] and recovered["approvals"] == recovered["launches"] == 0
+        else:
+            assert recovered["outcome"]["state"] == "resolved"
+            assert recovered["outcome"]["task_status"] == "review"
+            assert recovered["outcome"]["publication"]["verification"] == "unverified"
+            assert recovered["builds"] == [exited["worktree"]]
+            assert recovered["approvals"] == recovered["launches"] == 1
+    
+        tasks = {row["id"]: row for row in core.execute("list_tasks", auth)["tasks"]}
+&gt;       assert set(tasks) == {source_task["id"], child["id"], task_id}
+E       AssertionError: assert {'bc863ede-c886-4918-a506-6782940cc762', '0d8b946a-fecd-4303-877f-17a90de44763', '7f470ecd-827c-43b5-931f-329a1f5c2bb8', 'bb65684a-92ad-4561-96fb-874e791ee9c7'} == {'0d8b946a-fecd-4303-877f-17a90de44763', '7f470ecd-827c-43b5-931f-329a1f5c2bb8', 'bb65684a-92ad-4561-96fb-874e791ee9c7'}
+E         
+E         Extra items in the left set:
+E         'bc863ede-c886-4918-a506-6782940cc762'
+E         
+E         Full diff:
+E           {
+E               '0d8b946a-fecd-4303-877f-17a90de44763',
+E               '7f470ecd-827c-43b5-931f-329a1f5c2bb8',
+E               'bb65684a-92ad-4561-96fb-874e791ee9c7',
+E         +     'bc863ede-c886-4918-a506-6782940cc762',
+E           }
+
+tests\integration\test_unfinished_continuation.py:733: AssertionError</failure></testcase></testsuite></testsuites>

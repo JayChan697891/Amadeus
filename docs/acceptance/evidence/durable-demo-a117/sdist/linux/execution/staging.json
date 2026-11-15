@@ -1,0 +1,21 @@
+{
+  "guest": "/root/amadeus-demo-a117-sdist-r1",
+  "files": [
+    {
+      "file": "agentsync_local-0.3.0a117.tar.gz",
+      "size": 3716168,
+      "sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672"
+    },
+    {
+      "file": "runtime-members.json",
+      "size": 10243,
+      "sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+    },
+    {
+      "file": "run.py",
+      "size": 5783,
+      "sha256": "89c27121aa9b28f5fe23a193c2621955a9456287132db5d45948bb4f7abbd9d4"
+    }
+  ],
+  "model_calls": 0
+}

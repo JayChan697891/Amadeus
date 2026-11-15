@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15T12:44Z. Scoped engineering demonstration and
+Current checkpoint — 2026-11-15T13:08Z. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
@@ -74,14 +74,37 @@ dependencies, as the release collector already does; product pins/tests were not
 changed. Source package built only once. README quick starts now use that package
 dependency declaration. See acceptance/evidence/durable-demo-a117/sdist/summary.json.
 
+The same archive also installed offline on Linux3.14.7:7 native checks and10
+focused tests passed, with the same case identities/outcomes as Windows and97
+unchanged runtime members. No rebuild, model call or credential copy. See
+acceptance/evidence/durable-demo-a117/sdist/linux/summary.json.
+
+Original M7-02/M8-02 recovery coverage now includes actual OwnerContinuation host
+exit at two persisted boundaries. The prepared worktree survives os._exit(73);
+a new host reuses the task/worktree, launches one deterministic receiver, and a
+further host replays without launching. An exited host with only dispatch intent
+remains unknown with zero approvals/launches. Both preserve source receipts,
+source repositories and exactly-once dependency transfer. The existing18 tests
+remain; the affected file now has20 cases. Root ran all20 on Windows3.12 and
+Linux3.14 against the unchanged installed a117 sdist; case sets match and97 runtime
+files stayed unchanged. Test SHA4fc76f32042bd498237167b5b1b75f2fcd73af7dcef7e6d457dea78c658cf0cc.
+Independent Astra review found no blocking issue. The first new-test run failed
+because it omitted an existing fixture baseline task from its expected set; both
+failures are retained with credential redaction, not removed. Its exact initial
+test-file SHA was not recorded. Only the test and its two existing requirement
+mappings changed; no product code or release gate changed. See
+acceptance/evidence/durable-demo-a117/continuation-exit/summary.json.
+This is native process/protocol-fixture recovery, not real model in-flight recovery.
+The owned Linux VM subsequently shut down normally; its disks and evidence remain.
+
 Resume entry: both original queues and ordered benchmarks are complete; do not
 restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
 P0/P1 from the current a117 demonstration and the remaining evidence gaps below,
 using affected regression only. Keep a116 full-matrix evidence separate from a117.
 No additional model/auth action, paid API, Actions, main change or publication.
 Future live calls require fresh authorization; macOS and real Claude/Cursor still
-lack an available authorized environment. Full a117 regression and other-platform
-sdist installation remain NOT RUN; the new Windows sdist result is focused only.
+lack an available authorized environment. Full a117 regression/matrix and macOS
+installation remain NOT RUN; Windows/Linux sdist results are focused only.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.

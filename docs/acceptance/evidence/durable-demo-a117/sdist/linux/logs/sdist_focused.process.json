@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_focused",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty",
+      "--junitxml",
+      "/root/amadeus-demo-a117-sdist-r1/private-junit/focused.xml",
+      "--basetemp",
+      "/root/amadeus-demo-a117-sdist-r1/pytest"
+    ],
+    "cwd": "/root/amadeus-demo-a117-sdist-r1/unpacked/agentsync_local-0.3.0a117",
+    "started_at": "2026-11-15T12:57:41.108127+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_focused",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty",
+      "--junitxml",
+      "/root/amadeus-demo-a117-sdist-r1/private-junit/focused.xml",
+      "--basetemp",
+      "/root/amadeus-demo-a117-sdist-r1/pytest"
+    ],
+    "cwd": "/root/amadeus-demo-a117-sdist-r1/unpacked/agentsync_local-0.3.0a117",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:57:41.108127+00:00",
+    "finished_at": "2026-11-15T12:58:06.015648+00:00",
+    "log": "logs/sdist_focused.log",
+    "log_sha256": "3b210311317315abfe04a023a3db0a273bf2559aa3f9f0b57d45f4d45e92a95b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

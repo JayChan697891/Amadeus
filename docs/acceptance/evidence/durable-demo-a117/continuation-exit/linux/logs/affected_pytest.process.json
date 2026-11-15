@@ -1,0 +1,52 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "affected_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-continuation-native-exit-r1/fixture/tests/integration/test_unfinished_continuation.py",
+      "--junitxml",
+      "/root/amadeus-continuation-native-exit-r1/run/private-junit/file.xml",
+      "--basetemp",
+      "/root/amadeus-continuation-native-exit-r1/run/pytest"
+    ],
+    "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+    "started_at": "2026-11-15T13:04:25.014762+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "affected_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-continuation-native-exit-r1/fixture/tests/integration/test_unfinished_continuation.py",
+      "--junitxml",
+      "/root/amadeus-continuation-native-exit-r1/run/private-junit/file.xml",
+      "--basetemp",
+      "/root/amadeus-continuation-native-exit-r1/run/pytest"
+    ],
+    "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+    "exit_code": 0,
+    "started_at": "2026-11-15T13:04:25.014762+00:00",
+    "finished_at": "2026-11-15T13:04:54.230884+00:00",
+    "log": "logs/affected_pytest.log",
+    "log_sha256": "4e0a0ac2564062a084c7447b527c00f581c619d1cd08c4688558330e973cc6ee",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

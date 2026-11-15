@@ -1,0 +1,83 @@
+"""One offline Linux install/check of the already frozen a117 source archive."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import sys
+import tarfile
+
+assert sys.platform == 'linux' and sys.version_info[:2] == (3, 14)
+base = Path('/root/amadeus-demo-a117-sdist-r1')
+archive = base/'agentsync_local-0.3.0a117.tar.gz'
+members_path = base/'runtime-members.json'
+sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+assert sha(archive) == 'b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'
+assert sha(members_path) == 'f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a'
+assert not (base/'attempt.json').exists()
+for name in ('unpacked', 'logs', 'tmp', 'home', 'private-junit'):
+    (base/name).mkdir(mode=0o700)
+with tarfile.open(archive) as t:
+    assert all(m.isfile() or m.isdir() for m in t.getmembers())
+    t.extractall(base/'unpacked', filter='data')
+source = base/'unpacked/agentsync_local-0.3.0a117'
+assert sha(source/'tools/release_acceptance.py') == 'd942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+members = json.loads(members_path.read_bytes())
+assert len(members) == 97 and all(sha(source/'src'/n) == h for n,h in members.items())
+for name in tuple(os.environ):
+    if name.upper().startswith(('OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'CODEX_', 'AGENTSYNC_', 'GIT_', 'PYTEST_', 'PYTHON', 'PIP_')) or name.upper().endswith(('API_KEY','ACCESS_TOKEN','REFRESH_TOKEN')):
+        os.environ.pop(name,None)
+os.environ.update(HOME=str(base/'home'), GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
+                  GIT_TERMINAL_PROMPT='0', PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1')
+sys.path.insert(0,str(source))
+from tools.release_acceptance import execute, persist_junit, junit_counts
+checks = []
+def save(name, value):
+    with (base/name).open('x',encoding='utf-8') as f:
+        json.dump(value,f,indent=2);f.write('\n')
+def run(name, command):
+    r = execute(name,[str(x) for x in command],source,base,base/'tmp',offline_wheelhouse=Path('/root/intent-wheelhouse'))
+    checks.append(r)
+    assert r['status'] == 'pass' and r['exit_code'] == 0, name
+save('attempt.json', {'started_at':datetime.now(timezone.utc).isoformat(),'python':sys.version,
+                     'product_sha':'fc27f15f47fa92ed5edcd764a573c1d84a68c107',
+                     'archive_sha256':sha(archive),'driver_sha256':sha(Path(__file__)),
+                     'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
+                     'automatic_retry':False,'model_calls':0,'formal_release':'BLOCKED'})
+probe = '''from pathlib import Path
+import hashlib,importlib.metadata as md,json,sys,agentsync
+root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')
+assert d.version=='0.3.0a117' and Path(agentsync.__file__).resolve().is_relative_to(root)
+expected=json.loads(Path(sys.argv[1]).read_bytes());actual={}
+for name,sha in expected.items():
+ p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)
+ actual[name]=hashlib.sha256(p.read_bytes()).hexdigest();assert actual[name]==sha
+direct=json.loads(d.read_text('direct_url.json'))
+assert direct['url']==Path(sys.argv[2]).as_uri()
+assert direct['archive_info']['hashes']['sha256']==sys.argv[3]
+print(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'version':d.version,'python':sys.version},sort_keys=True))
+'''
+selection = ['tests/integration/test_durable_demo.py',
+             'tests/integration/test_mock_workflow.py::test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved',
+             'tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews',
+             'tests/integration/test_durable_mock_workflow.py::test_host_exit_recovery_preserves_retry_reservation_and_uncertainty']
+try:
+    env=base/'installed';python=env/'bin/python'
+    run('sdist_venv',[sys.executable,'-I','-B','-m','venv',env])
+    run('sdist_dependencies',[python,'-I','-B','-m','pip','install','--no-index','--only-binary=:all:','--find-links','/root/intent-wheelhouse','setuptools==82.0.1','wheel==0.46.3','mcp==2.3.0','fastapi==0.147.0','uvicorn==0.54.0','pydantic==2.14.1','pytest==9.1.1','pytest-asyncio==1.4.0','httpx==0.28.1'])
+    run('sdist_install',[python,'-I','-B','-m','pip','install','--no-index','--no-build-isolation','--no-deps',archive])
+    run('sdist_pip_check',[python,'-I','-B','-m','pip','check'])
+    origin=[python,'-I','-B','-c',probe,members_path,archive,sha(archive)]
+    run('sdist_origin_before',origin)
+    run('sdist_focused',[python,'-I','-B','-m','pytest',*selection,'--junitxml',base/'private-junit/focused.xml','--basetemp',base/'pytest'])
+    persist_junit(base/'private-junit/focused.xml',base/'focused.xml')
+    assert junit_counts(base/'focused.xml') == {'tests':10,'failures':0,'errors':0,'skipped':0}
+    run('sdist_origin_after',origin)
+    assert (base/'logs/sdist_origin_before.log').read_bytes() == (base/'logs/sdist_origin_after.log').read_bytes()
+    assert sha(archive) == 'b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'
+    save('result.json',{'finished_at':datetime.now(timezone.utc).isoformat(),'status':'pass','product_sha':'fc27f15f47fa92ed5edcd764a573c1d84a68c107','python':sys.version,'checks':checks,'selection':selection,'runtime_members_unchanged':97,'focused_tests':10,'full_regression':'NOT RUN','real_clients':'NOT RUN','formal_release':'BLOCKED'})
+    print(json.dumps({'status':'pass','result':str(base/'result.json')}),flush=True)
+except BaseException as e:
+    save('exception.json',{'at':datetime.now(timezone.utc).isoformat(),'error_type':type(e).__name__,'checks':checks,'automatic_retry':False})
+    raise
+

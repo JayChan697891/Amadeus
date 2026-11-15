@@ -2,10 +2,13 @@
 
 import asyncio
 import json
+import os
+import subprocess
 import sys
 import time
-from dataclasses import replace
+from dataclasses import asdict, replace
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 from conftest import owner_grant
@@ -15,10 +18,18 @@ from test_m4b_workspaces import source_fingerprint
 from test_task_proposals import world as world
 from verified_flow_process_fixture import emit_proposal, receiver_profile
 
+import agentsync
 from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.codex_invocation import CodexHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.continuation import ContinuationRequest, OwnerContinuation
-from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor, RelayInput
+from agentsync.controlled_relay import (
+    CodexProposalInput,
+    ContinuationPin,
+    ControlledRelay,
+    RelayActor,
+    RelayInput,
+)
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.proposal_handoff import HandoffReceiver
@@ -523,6 +534,220 @@ async def test_preparation_checkpoint_resumes_without_second_source_attempt(
         build_receiver=build,
     )
     assert result["state"] == "resolved" and len(calls) == 2
+
+
+async def _continuation_host(phase, fixture):
+    """Child-only driver that uses the same installed package and durable fixture."""
+    assert Path(agentsync.__file__).resolve() == Path(fixture["import_origin"])
+    request = fixture["request"]
+    request["receiver"] = HandoffReceiver(**request["receiver"])
+    request["source"] = ContinuationPin(**request["source"])
+    for key in ("allowed_paths", "required_capabilities"):
+        request[key] = tuple(request[key])
+    request = ContinuationRequest(**request)
+    core = Core(fixture["data_dir"])
+    flow = OwnerContinuation(core, Path(fixture["scratch"]), Path(fixture["receipts"]))
+    execute = core.execute
+    original_start = CapturedProcess.start
+    worktree = None
+    builds, approvals, captures = [], [], []
+
+    def exit_at_checkpoint():
+        assert worktree is not None and not captures and not approvals
+        print(json.dumps({"pid": os.getpid(), "worktree": worktree}), flush=True)
+        os._exit(73)
+
+    def observe_worktree(operation, payload):
+        nonlocal worktree
+        value = execute(operation, payload)
+        if operation == "create_worktree":
+            worktree = [payload["task_id"], value["worktree_id"], value["head_sha"]]
+            if phase == "prepared":
+                exit_at_checkpoint()
+        return value
+
+    async def exit_after_intent(*_args, **_kwargs):
+        exit_at_checkpoint()
+
+    async def approve(plan):
+        assert phase == "resume"
+        approvals.append(plan.plan_sha256)
+        return LaunchConsent(
+            "continuation-host-fixture-" + plan.plan_sha256,
+            plan.plan_sha256,
+            time.time() + 30,
+            True,
+            True,
+        )
+
+    def build(receiver, workspace):
+        assert phase != "prepared" and receiver == request.receiver
+        builds.append([workspace.task_id, workspace.worktree_id, workspace.head_sha])
+        profile = CodexHostProfile(
+            receiver.project_id,
+            receiver.session_id,
+            Path(fixture["executable"]),
+            workspace.path,
+            fixture["binary_sha256"],
+            expected_cli_version=fixture["cli_version"],
+        )
+        return RelayActor(
+            receiver.agent_id,
+            receiver.session_token,
+            profile,
+            workspace.worktree_id,
+            workspace.head_sha,
+            {},
+            approve,
+        )
+
+    async def capture(_cls, argv, *, cwd, stdin_text, timeout_seconds, output_limit, env):
+        assert phase == "resume" and str(cwd) != fixture["source_worktree"] and env == {}
+        contract, _ = json.JSONDecoder().raw_decode(stdin_text.split("Host contract: ", 1)[1])
+        assert contract["mode"] == "proposal_continuation"
+        assert contract["continuation"]["content_sha256"] == request.source.content_sha256
+        assert "UNFINISHED_CONTEXT_SENTINEL" in stdin_text
+        process = await emit_proposal(
+            original_start,
+            "answer.py",
+            "def total(values):\n    return sum(values)\n",
+            cwd=cwd,
+            timeout_seconds=timeout_seconds,
+            output_limit=output_limit,
+            env=env,
+        )
+        captures.append(process)
+        return process
+
+    args = dict(
+        admin_token=fixture["admin_token"],
+        expected_plan_sha256=fixture["plan_sha256"],
+        build_receiver=build,
+    )
+    with (
+        patch.object(core, "execute", observe_worktree),
+        patch.object(CapturedProcess, "start", classmethod(capture)),
+    ):
+        if phase == "dispatch-intent":
+            with patch.object(flow._queue, "run_ready_once", exit_after_intent):
+                await flow.run_once(request, **args)
+            raise AssertionError("The durable dispatch checkpoint was not reached")
+        try:
+            outcome = await flow.run_once(request, **args)
+        finally:
+            for process in captures:
+                await process.cancel()
+                assert (await process.snapshot()).parent_ended is True
+    assert phase == "resume", "The prepared checkpoint was not reached"
+    print(
+        json.dumps(
+            {
+                "pid": os.getpid(),
+                "outcome": outcome,
+                "builds": builds,
+                "approvals": len(approvals),
+                "launches": len(captures),
+            }
+        )
+    )
+
+
+@pytest.mark.parametrize("checkpoint", ["prepared", "dispatch-intent"])
+async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, checkpoint):
+    flow, request, _, child, calls, _, _, key = unfinished
+    core, owner, _, _, source_task, tree, source, receipts, profile = pilot
+    plan = flow.preview(request, admin_token=owner["admin_token"])
+    fixture = {
+        "data_dir": str(core.data_dir),
+        "scratch": str(source.parent),
+        "receipts": str(receipts),
+        "admin_token": owner["admin_token"],
+        "plan_sha256": plan["plan_sha256"],
+        "request": asdict(request),
+        "executable": str(profile.executable),
+        "binary_sha256": profile.expected_binary_sha256,
+        "cli_version": profile.expected_cli_version,
+        "source_worktree": tree["path"],
+        "import_origin": str(Path(agentsync.__file__).resolve()),
+    }
+    driver = (
+        "import asyncio,json,runpy,sys; from pathlib import Path; "
+        "path=Path(sys.argv[1]); sys.path[:0]=[str(path.parent),str(path.parent.parent)]; "
+        "start=runpy.run_path(str(path))['_continuation_host']; "
+        "asyncio.run(start(sys.argv[2],json.load(sys.stdin)))"
+    )
+
+    def host(phase, expected_exit):
+        process = subprocess.run(
+            [sys.executable, "-I", "-B", "-c", driver, str(Path(__file__).resolve()), phase],
+            cwd=source.parent,
+            input=json.dumps(fixture),
+            capture_output=True,
+            encoding="utf-8",
+            timeout=30,
+            check=False,
+        )
+        for secret in (owner["admin_token"], request.receiver.session_token):
+            assert secret not in process.stdout + process.stderr
+        assert process.returncode == expected_exit, process.stderr
+        return json.loads(process.stdout)
+
+    def source_observations():
+        return (
+            flow._relay.owner_inspect_attempts(
+                owner["project_id"], source_task["id"], admin_token=owner["admin_token"]
+            ),
+            {file.name: file.read_bytes() for file in receipts.glob("relay-" + key + "*.json")},
+        )
+
+    original = source_observations()
+    before = [source_fingerprint(path) for path in (source, Path(tree["path"]))]
+    auth = request.receiver.authentication()
+    initial_tasks = {row["id"] for row in core.execute("list_tasks", auth)["tasks"]}
+    exited = host(checkpoint, 73)
+    task_id, worktree_id, head_sha = exited["worktree"]
+    saved_tree = core.execute(
+        "inspect_owned_worktree", {**auth, "task_id": task_id, "worktree_id": worktree_id}
+    )
+    assert saved_tree["head_sha"] == head_sha
+    pending_intent = checkpoint == "dispatch-intent"
+    saved = flow.status(
+        owner["project_id"], request.source.launch_sha256, admin_token=owner["admin_token"]
+    )
+    assert saved["task_id"] == task_id
+    assert saved["state"] == ("unknown" if pending_intent else "prepared")
+    recovered = host("resume", 0)
+    replayed = host("resume", 0)
+    assert all(run["pid"] != os.getpid() for run in (exited, recovered, replayed))
+    assert recovered["outcome"] == replayed["outcome"]
+    assert recovered["outcome"]["task_id"] == task_id
+    assert recovered["outcome"]["source_task_id"] == source_task["id"]
+    assert replayed["builds"] == [] and replayed["approvals"] == replayed["launches"] == 0
+
+    if pending_intent:
+        assert recovered["outcome"]["state"] == "unknown"
+        assert recovered["outcome"]["wave"] is None and recovered["outcome"]["publication"] is None
+        assert recovered["builds"] == [] and recovered["approvals"] == recovered["launches"] == 0
+    else:
+        assert recovered["outcome"]["state"] == "resolved"
+        assert recovered["outcome"]["task_status"] == "review"
+        assert recovered["outcome"]["publication"]["verification"] == "unverified"
+        assert recovered["builds"] == [exited["worktree"]]
+        assert recovered["approvals"] == recovered["launches"] == 1
+
+    tasks = {row["id"]: row for row in core.execute("list_tasks", auth)["tasks"]}
+    assert task_id not in initial_tasks and set(tasks) == initial_tasks | {task_id}
+    assert tasks[source_task["id"]]["status"] == "failed"
+    assert tasks[child["id"]]["dependencies"] == [task_id]
+    assert tasks[child["id"]]["version"] == child["version"] + 1
+    assert (
+        core.execute(
+            "inspect_owned_worktree", {**auth, "task_id": task_id, "worktree_id": worktree_id}
+        )
+        == saved_tree
+    )
+    assert source_observations() == original and len(calls) == 1
+    assert [source_fingerprint(path) for path in (source, Path(tree["path"]))] == before
 
 
 async def test_old_failed_receipt_cannot_cancel_reclaimed_same_session(unfinished, pilot):
