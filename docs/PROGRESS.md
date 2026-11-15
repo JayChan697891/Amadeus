@@ -18,6 +18,13 @@ session; do not restart on observer timeout. See evidence in
 acceptance/evidence/m9-a116-preparation/windows312-launch/summary.json.
 Other rows depend on its original build/manifest, with no duplicate
 collectors on the same host. Formal Release stays BLOCKED.
+The remaining Windows3.11/3.14 sequential driver is prepared, NOT RUN:
+D:/agentsync-debug/m116-remaining-windows.py (sha256
+d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643).
+It refuses missing/failed/unverified bootstrap evidence, checks the exact archives
+and frozen source, stops on failure/unknown, and checks STOP_AFTER_CURRENT before
+starting each next row. Syntax parsed only; see
+acceptance/evidence/m9-a116-preparation/remaining-windows/preparation.json.
 Git remote confirmed624b36c uploaded. Current PR feedback could not be refreshed:
 connector transport failed and a read-only unauthenticated API fallback returned404.
 Do not infer repository disappearance or claim comments reviewed from that result.
