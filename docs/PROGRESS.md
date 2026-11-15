@@ -1,5 +1,16 @@
 # Amadeus current progress
 
+The existing M9-02 bounded technical delivery-scope decision is now recorded in
+acceptance/evidence/m9-a115-preparation/b6-license-platform-delta.json under
+scoped_delivery_decision. Independent Astra review and lead inspection of the
+original criterion/retained texts support classification of pywin32 as composite
+external dependencies and selecting BSD-3-Clause for cryptography's own code,
+while retaining its upstream OR declaration and both texts. NOTICE placement is
+accepted for these exact project-only archives; no dependency bundle is covered.
+Original collector inventory/receipt labels remain pending/publication false.
+No external legal sign-off requirement is invented. This is a technical decision,
+not legal approval, public Release authorization or whole M9-02 completion.
+
 Owner explicitly resumed after safe checkpoint20261114T122550Z. The original
 Windows queue had already completed naturally, exit0 at2026-11-14T12:49:08Z;
 do not restart any old queue/observer session. Original Goal is active again.
@@ -82,9 +93,10 @@ Two platform file differences are CRLF/LF only; three dependency-edge difference
 match actual Python-version markers. An initial reviewer decoding discrepancy
 was diagnostic-only and was excluded after explicit UTF-8 comparison; no license
 text or attribution changed. No concrete omission was found in this scope.
-This is not final legal classification or release approval; pywin32 component/
-cryptography license-choice classification and all existing release gates remain
-pending. See m9-a115-preparation/b6-license-platform-delta.json.
+The later scoped_delivery_decision closes the technical component/alternative
+classification for these exact archives. Public release and all existing
+platform/client gates remain pending. Historical review/inventory labels are
+preserved; see m9-a115-preparation/b6-license-platform-delta.json.
 
 Current-b6 Linux M8-02 bounded installed diagnostics passed at11:04 UTC:
 4 threads x20 rounds (80 claims), p95=27.53ms;2 spawned workers x20 mixed

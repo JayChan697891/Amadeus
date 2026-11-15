@@ -368,5 +368,63 @@
     "decision": "Bounded technical evidence accepted; no new test stage or frozen-package change required; M9-02 and formal Release remain pending/blocked",
     "legal_approval": false,
     "formal_release_approval": false
+  },
+  "scoped_delivery_decision": {
+    "at": "2026-11-15T04:10:24.170538+00:00",
+    "status": "completed_scoped_technical_classification",
+    "prior_review_sha256": "da240757c201de079bf0b0f9235224706bfad173caf25db712eead6ba271f96d",
+    "frozen_product": "b6f05f0473591dc568be25591047fdea963ef86c",
+    "version": "0.3.0a115",
+    "wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "sdist_sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+    "review": "Native GPT-6 Astra High independent read-only review at repository HEAD712d5a719d6b8c106c08818fe05e45e654223ba6; lead checked original requirement, retained declarations and collector boundary. No repeat file audit or test run.",
+    "criterion": "M9-02 requires license checking and separately authorized publication; it does not require external legal sign-off for this bounded technical classification.",
+    "delivery_scope": "Unmodified current project wheel/sdist; no third-party dependency wheels, binaries or site-packages bundled. Externally installed dependencies keep their own terms.",
+    "pywin32": {
+      "classification": "Composite-license external Windows dependency; upstream PSF metadata is not a uniform component license",
+      "components": {
+        "adodbapi": "LGPL-2.1",
+        "Mark Hammond and Greg Stein components": "Retained redistribution and non-endorsement terms",
+        "Scintilla": "Retained copyright and permission terms",
+        "Python and IDLE components": "Historical Python license stack",
+        "MAPIStubLibrary": "MIT plus retained NOTICE"
+      },
+      "future_bundled_installer_compliance": "NOT ASSESSED; outside these archives"
+    },
+    "cryptography": {
+      "upstream_expression": "Apache-2.0 OR BSD-3-Clause",
+      "project_selected_alternative_for_cryptography_own_code": "BSD-3-Clause",
+      "upstream_declaration_and_both_texts_retained": true,
+      "not_relicensing_upstream": true,
+      "native_components_of_future_redistributed_dependency_wheel": "Outside this review"
+    },
+    "notice_placement": {
+      "decision": "Accepted for the evidenced current archive scope",
+      "sdist": "License documents retained and previously byte-verified",
+      "wheel": "Project MIT retained; third-party NOTICE not included; no bundled third-party dependency binaries",
+      "new_package_build_required_by_this_finding": false
+    },
+    "sources": [
+      "docs/SPECIFICATION.md: M9-02",
+      "docs/PLAN.md: original42 M9 contract",
+      "docs/THIRD-PARTY-LICENSES.md: distribution scope and component caveats",
+      "docs/THIRD-PARTY-NOTICES.txt: cryptography LICENSE and LICENSE.BSD; retained pywin32 component texts",
+      "docs/acceptance/evidence/m9-sdist-regression/repair-windows-sdist-license-inventory.json: component file mapping",
+      "independent_technical_review and platform comparisons in this document"
+    ],
+    "historical_pending_labels": "Original inventory/process receipts and earlier review entries remain unchanged. Their pending/publication_authorized=false values do not become collector-issued approval.",
+    "scope_change_requires_reassessment": [
+      "Dependency bundle or embedded runtime",
+      "Modified third-party components",
+      "Different frozen artifacts or dependency closure"
+    ],
+    "legal_approval": false,
+    "publication_authorized": false,
+    "formal_release_approval": false,
+    "m9_02_whole_requirement": "NOT COMPLETE",
+    "remaining": [
+      "Separate public Release authorization",
+      "Unchanged platform, actual-client and autonomous relay gates; no coverage waiver"
+    ]
   }
 }

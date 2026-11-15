@@ -93,9 +93,15 @@ differences and three Python-conditional dependency-edge differences were
 checked. An initial default-decoding discrepancy was eliminated by explicit
 UTF-8 comparison; no product text changed. The wheel contains project MIT but
 not third-party NOTICE; neither archive bundles dependency binaries.
-Final delivery-scope classification, including pywin32 component terms and
-cryptography alternative-license selection, remains pending, as does separate
-release authorization. M9-02 is not passed. Evidence:
+The later scoped_delivery_decision completes the technical classification for
+these exact archives: pywin32 is an external composite-license dependency;
+BSD-3-Clause is selected for cryptography's own code while retaining upstream
+OR metadata and both texts; the observed NOTICE placement is accepted for this
+project-only distribution scope. This uses existing evidence and independent
+Astra review, without another file audit or frozen-package change. Raw collector
+pending/publication-false labels stay unchanged. It is not legal approval or a
+decision about future dependency bundles. Public Release authorization and all
+platform/real-client gates remain pending; whole M9-02 is not passed. Evidence:
 evidence/m9-a115-preparation/b6-license-platform-delta.json.
 
 M9 evidence tooling now supports explicit composite installation sources.50
@@ -124,7 +130,7 @@ not whole-requirement or formal Release acceptance.
 | First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |
 | Real Codex and same-vendor relay | Prior limited live results retain their historical frozen versions and scope; not a new b6f05f0 real-client acceptance run |
 | Real Claude/Cursor and cross-vendor acceptance | BLOCKED: accounts unavailable; protocol fixtures cannot replace actual-client evidence |
-| macOS, final license classification, independent Release decision | NOT RUN / BLOCKED; no gate waived |
+| macOS and independent Release decision | NOT RUN / BLOCKED; scoped technical license classification completed separately; no gate waived |
 
 The timeout repair checks the actual monotonic deadline before terminating its
 owned process when an event-loop timer arrives early. It preserves real measured

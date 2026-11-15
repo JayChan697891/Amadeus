@@ -1,5 +1,10 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+M9-02's current-archive technical license classification is recorded using the
+existing evidence; no extra audit stage, package rebuild or external legal
+sign-off is required by this finding. Public Release still needs separate
+authorization and all existing gates. Dependency bundling would be a new scope.
+
 Latest continuation: the owner resumed after the safe pause. Windows3.14's
 original complete row is archived and verified, without rerunning it. Current
 matrix-after-windows314.json has five complete rows/four missing combinations:
