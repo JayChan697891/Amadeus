@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "offline_build_tools",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115matrix\\.scratch-5qttiog3\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115matrix/.scratch-5qttiog3/offline-wheels",
+      "--no-cache-dir",
+      "--only-binary=:all:",
+      "build==1.6.1",
+      "setuptools==82.0.1",
+      "wheel==0.46.3"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r3\\windows-314\\reports\\release-20261114T103837Z-ca8eb86bd41a",
+    "started_at": "2026-11-14T11:22:19.898346+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "offline_build_tools",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115matrix\\.scratch-5qttiog3\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115matrix/.scratch-5qttiog3/offline-wheels",
+      "--no-cache-dir",
+      "--only-binary=:all:",
+      "build==1.6.1",
+      "setuptools==82.0.1",
+      "wheel==0.46.3"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r3\\windows-314\\reports\\release-20261114T103837Z-ca8eb86bd41a",
+    "exit_code": 0,
+    "started_at": "2026-11-14T11:22:19.898346+00:00",
+    "finished_at": "2026-11-14T11:22:21.253033+00:00",
+    "log": "logs/offline_build_tools.log",
+    "log_sha256": "28b5fa83c239ecd4704e19d3764b98c72453af24d310307ca015bb9ca4cb27bf",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

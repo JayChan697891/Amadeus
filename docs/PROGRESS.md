@@ -1,5 +1,28 @@
 # Amadeus current progress
 
+Owner explicitly resumed after safe checkpoint20261114T122550Z. The original
+Windows queue had already completed naturally, exit0 at2026-11-14T12:49:08Z;
+do not restart any old queue/observer session. Original Goal is active again.
+Windows3.14 complete evidence is now archived:26 checks pass, source/wheel/sdist
+each2426pass56skip,2482 unique identities. All78 transferred file hashes,2083
+source inputs and exact candidate package/source binding verified. Every case
+identity/status matches Windows3.11. Originals and prior failure/unknown records
+remain unchanged; only the existing proven six-label derivation is used.
+See acceptance/evidence/m9-a115-preparation/windows314-complete/summary.json and
+releases/0.3.0a115/b6f05f0/windows-314/report.json. Matrix-after-windows314.json
+records five complete rows and four gaps:Windows3.12 and macOS3.11/3.12/3.14.
+
+The prepared Windows3.12 canonical wheel-only driver started once at
+2026-11-15T03:51:32Z (2026-11-14 19:51 America/Tijuana), session66619, driver
+PID4848, D:/agentsync-debug/m115-wheel-canonical-r1. Wheel pytest began03:51:45Z.
+It uses the original fixed b6 collector and exact wheel, with no source/sdist/
+build/model rerun. Result is pending; keep this original session, never retry
+on observation timeout. Finalizer and Windows benchmark remain NOT RUN until
+its real successful terminal result. Formal Release remains BLOCKED.
+
+The running-process references below describe earlier checkpoints, not live
+queues. In particular sessions82363/80907 and all old Windows314 test PIDs exited.
+
 Completed Linux local rows on2026-11-14 UTC:3.14 at09:09,3.11 at10:06 and
 3.12 at11:03. Each row passed all26 real checks; source/wheel/sdist each2476pass6skip.
 Each suite has2482 unique identities after only six proven label changes per

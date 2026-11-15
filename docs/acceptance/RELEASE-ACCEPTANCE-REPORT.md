@@ -2,6 +2,21 @@
 
 ## Current candidate: b6f05f0; remaining local matrix running
 
+Latest resumed observation: Windows3.14 completed its original queue at
+2026-11-14T12:49:08Z, exit0. All26 checks pass; each source/wheel/sdist suite
+2426pass56skip,2482 unique identities. The78 transferred files,2083 source inputs
+and exact packages verified; case IDs/statuses match Windows3.11. Evidence:
+../../releases/0.3.0a115/b6f05f0/windows-314/report.json and
+evidence/m9-a115-preparation/windows314-complete/summary.json.
+Matrix-after-windows314.json records five complete rows and four missing
+OS/Python combinations. The original queue is terminal, not live.
+
+After explicit owner resume, the new Windows3.12 canonical wheel-only component
+started2026-11-15T03:51:32Z; its result is pending. The original source/sdist/build
+are not rerun, and old unknown receipts remain unchanged. Composite finalization
+and Windows benchmark are NOT RUN. No real-client or formal Release pass follows.
+The earlier running references below are historical checkpoint observations.
+
 Resumed sdist actually completed2426pass56skip, exit0 at08:08:36 UTC. Its canonical
 receipt and narrow identity recovery are verified. Explicit composite report and
 candidate manifest passed strict verification on Windows and Linux, with wheel

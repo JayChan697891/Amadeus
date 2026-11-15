@@ -1,5 +1,15 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Latest continuation: the owner resumed after the safe pause. Windows3.14's
+original complete row is archived and verified, without rerunning it. Current
+matrix-after-windows314.json has five complete rows/four missing combinations:
+Windows3.12 and macOS3.11/3.12/3.14. The reviewed Windows3.12 wheel-only driver
+is now RUNNING in session66619 against the fixed b6 package; source/sdist/build
+are not repeated. After its real successful result, use the reviewed create-only
+finalizer, then the existing Windows benchmark. Neither has run yet. Preserve
+all other release gates and original unknown/failed evidence. Earlier running
+queue descriptions below are historical and must not trigger duplicate work.
+
 Remaining canonical evidence: the old Windows3.12 wheel native observation lacks
 a saved handle-creation binding, so it remains unverified. After the current
 Windows queue, supplement only that wheel component with new canonical receipts

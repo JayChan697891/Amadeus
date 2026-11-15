@@ -1,0 +1,63 @@
+{
+  "at": "2026-11-15T03:52:50.426262+00:00",
+  "scope": "Complete Windows/Python3.14 local component row; not full matrix or Release acceptance",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "report": "releases/0.3.0a115/b6f05f0/windows-314/report.json",
+  "report_sha256": "3ce1e1d5c7f2b40cc0c118a63cd6f2dd06e1ec0ff449e7cf02976bf5fa470401",
+  "actual_checks_passed": 26,
+  "source_files_verified": 2083,
+  "transferred_files_verified": 78,
+  "transfer_summary_sha256": "c5b626a627503fa6ff140e9bee253b7f11c2107583380c9f327a3f704ebd0ab6",
+  "row_terminal": "2026-11-14T12:49:07.797598+00:00",
+  "queue_terminal": "2026-11-14T12:49:08.948826+00:00",
+  "row_exit_code": 0,
+  "delta_review": {
+    "mode": "Strict artifact and direct case/status delta inspection; no new full independent Release review",
+    "reference": "windows-311/report.json",
+    "per_suite": {
+      "junit.xml": {
+        "unique_cases": 2482,
+        "same_ids_and_statuses_as_windows311": true,
+        "passed": 2426,
+        "skipped": 56
+      },
+      "wheel-junit.xml": {
+        "unique_cases": 2482,
+        "same_ids_and_statuses_as_windows311": true,
+        "passed": 2426,
+        "skipped": 56
+      },
+      "sdist-junit.xml": {
+        "unique_cases": 2482,
+        "same_ids_and_statuses_as_windows311": true,
+        "passed": 2426,
+        "skipped": 56
+      }
+    }
+  },
+  "originals_preserved": true,
+  "derived_label_changes_per_suite": 6,
+  "raw_xml_uploaded": false,
+  "matrix_snapshot": "releases/0.3.0a115/b6f05f0/matrix-after-windows314.json",
+  "remaining_os_python_combinations": [
+    {
+      "system": "Windows",
+      "python_minor": "3.12"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.11"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.12"
+    },
+    {
+      "system": "macOS",
+      "python_minor": "3.14"
+    }
+  ],
+  "local_matrix": "incomplete",
+  "formal_release": "BLOCKED",
+  "next": "New Windows312 canonical wheel component started separately after explicit owner resume; never restart the completed queue"
+}
