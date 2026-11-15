@@ -1,0 +1,40 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_origin_sdk",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-7tyexdww/sdist-r8_9t7dr/bin/python",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; origin = pathlib.Path(agentsync.__file__).resolve(); assert origin.is_relative_to(pathlib.Path('/root/amadeus-m116/tmp/.scratch-7tyexdww/sdist-r8_9t7dr').resolve()); assert not origin.is_relative_to(pathlib.Path('/root/amadeus-m116/s').resolve()); assert importlib.metadata.version('agentsync-local') == '0.3.0a116'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f/artifacts/agentsync_local-0.3.0a116.tar.gz'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0'; assert not direct.get('dir_info', {}).get('editable', False); print('installed sdist origin:', origin); temporary = tempfile.TemporaryDirectory(); root = pathlib.Path(temporary.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(temporary.name) / 'data'); result = client.call('create_project', name='isolated sdist smoke', root_path=str(root)); assert result['ok'], result; print('sdist SDK smoke: pass'); temporary.cleanup()"
+    ],
+    "cwd": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+    "started_at": "2026-11-15T09:29:07.681701+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_origin_sdk",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-7tyexdww/sdist-r8_9t7dr/bin/python",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; origin = pathlib.Path(agentsync.__file__).resolve(); assert origin.is_relative_to(pathlib.Path('/root/amadeus-m116/tmp/.scratch-7tyexdww/sdist-r8_9t7dr').resolve()); assert not origin.is_relative_to(pathlib.Path('/root/amadeus-m116/s').resolve()); assert importlib.metadata.version('agentsync-local') == '0.3.0a116'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f/artifacts/agentsync_local-0.3.0a116.tar.gz'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '9d16373558762884024b6dfafc05797561d0e0f398006e20dc947f1403be2ba0'; assert not direct.get('dir_info', {}).get('editable', False); print('installed sdist origin:', origin); temporary = tempfile.TemporaryDirectory(); root = pathlib.Path(temporary.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(temporary.name) / 'data'); result = client.call('create_project', name='isolated sdist smoke', root_path=str(root)); assert result['ok'], result; print('sdist SDK smoke: pass'); temporary.cleanup()"
+    ],
+    "cwd": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+    "exit_code": 0,
+    "started_at": "2026-11-15T09:29:07.681701+00:00",
+    "finished_at": "2026-11-15T09:29:08.007809+00:00",
+    "log": "logs/sdist_origin_sdk.log",
+    "log_sha256": "9a51dbaa1e748400527d438214f3d9c2726ce52672282aaf4b885097718b195e",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

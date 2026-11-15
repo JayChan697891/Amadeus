@@ -1,22 +1,20 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
-Current execution: candidate0.3.0a116 at624b36c now has two complete verified
-rows: Windows3.12 and Linux3.14,26 native checks each. Source/wheel/sdist each
+Current execution: candidate0.3.0a116 at624b36c has three complete verified
+rows: Windows3.12 and Linux3.14/3.11,26 native checks each. Source/wheel/sdist
 have2533 unique matching cases: Windows2477pass56skip; Linux2526pass7skip.
-All platform skips are covered by the other row; no shared skips or failures.
-Linux finished2026-11-15T08:49:47Z;174 original evidence files copied exactly,
-3122 source files rehashed unchanged. Bounded independent review found no local
-row blocker, including105 separate positive/negative Docker observations.
-These are not105 successes or real models. Matrix2/9 complete; Release BLOCKED.
+Linux3.11 finished2026-11-15T09:47:56Z. Its174 original files were copied exactly;
+3122 frozen source files rehashed unchanged. Case outcomes and105 selected Docker
+status/constraint/cleanup projections match the independently reviewed Linux3.14
+row, including expected negatives. This is a reference delta, not another full
+independent review,105 successes or real clients. Matrix3/9; Release BLOCKED.
 
-Observe the original Windows session97559:3.11 installed sdist RUNNING,
-3.14 queued/NOT RUN. The original Linux session43548 automatically started3.11
-at08:49:49Z after3.14 completed. Its source finished09:08:40Z:2526pass7skip,
-matching Linux3.14. Wheel also finished09:28:52Z with identical results;
-sdist is RUNNING and3.12 queued/NOT RUN. Do not start duplicates
-or retry failed/unknown rows. Preserve original a115 failures and unknown evidence.
-macOS remains unavailable/NOT RUN. No M5 expansion, paid call, Actions or main merge.
-See PROGRESS.md and ../releases/0.3.0a116/624b36c/linux-314/lead-review.json.
+Observe original Windows session97559:3.11 sdist RUNNING,3.14 queued/NOT RUN.
+Original Linux session43548 started3.12 at09:47:57Z after3.11 completed; source
+is RUNNING. No duplicate collectors or retry of failed/unknown rows. Preserve
+original a115 failures and unknown evidence. macOS remains unavailable/NOT RUN.
+No M5 expansion, paid call, Actions or main merge. See PROGRESS.md and
+../releases/0.3.0a116/624b36c/linux-311/lead-review.json.
 
 Existing M8 bounded diagnostic is prepared for the exact a116 source/wheel,
 NOT RUN. Workload and1000ms budget are unchanged; bounded independent static delta

@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_cli",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-7tyexdww/sdist-r8_9t7dr/bin/python",
+      "-I",
+      "-m",
+      "agentsync",
+      "--help"
+    ],
+    "cwd": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+    "started_at": "2026-11-15T09:29:07.407022+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_cli",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-7tyexdww/sdist-r8_9t7dr/bin/python",
+      "-I",
+      "-m",
+      "agentsync",
+      "--help"
+    ],
+    "cwd": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+    "exit_code": 0,
+    "started_at": "2026-11-15T09:29:07.407022+00:00",
+    "finished_at": "2026-11-15T09:29:07.679134+00:00",
+    "log": "logs/sdist_cli.log",
+    "log_sha256": "959410867066622555244032f2936ed36747de9ae4a912473176d0b0e57f44ef",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

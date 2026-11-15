@@ -1,0 +1,4 @@
+Looking in links: file:///root/amadeus-m116/tmp/.scratch-7tyexdww/offline-wheels, file:///root/amadeus-m116/tmp/.scratch-7tyexdww/offline-wheels
+Processing ./artifacts/agentsync_local-0.3.0a116-py3-none-any.whl
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a116

@@ -16,8 +16,8 @@ original manifest SHA25623365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32
 Independent bounded read-only review found no row/queue-prerequisite blocker;
 this is not whole-product or formal Release approval. Raw license inventories
 remain pending/publication false. Offline staged-wheel bytes are not claimed
-verified after scratch cleanup. Matrix is now2/9 complete,7 combinations missing
-after the Linux row below.
+verified after scratch cleanup. Matrix is now3/9 complete,6 combinations missing
+after the Linux rows below.
 
 The reviewed remaining Windows queue ACTUALLY started2026-11-15T07:47:06Z:
 native session97559, parent PID15484, Python3.11 child handle PID26792 and worker
@@ -51,15 +51,26 @@ no local row blocker was found. They are not105 successful runs or real clients.
 Both original license inventories are identical and remain pending/publication
 false; staged offline wheel bytes are not asserted reverified after cleanup.
 Evidence: releases/0.3.0a116/624b36c/linux-314/{report,lead-review,transfer-summary}.json;
-matrix-after-linux314.json records2/9 complete,7 missing combinations.
+Earlier matrix-after-linux314.json records2/9 complete,7 missing combinations.
 
-The original Linux queue/session43548 automatically started3.11 at08:49:49Z,
-worker PID25527;3.12 remains queued/NOT RUN. Linux3.11 source finished09:08:40Z,
-exit0:2526pass7skip. Root parsed its native receipt and actual XML; all2533
-unique identities/outcomes match Linux3.14. Wheel completed09:28:52Z, exit0,
-2526pass7skip; all2533 identities/outcomes match source and Linux3.14 wheel.
-The original queue now runs sdist; no whole-row pass is inferred. See
-remaining-linux/source311-observation.json and wheel311-observation.json.
+Linux3.11 completed2026-11-15T09:47:56Z, original row exit0 and26 native checks
+pass. Each source/wheel/sdist suite2526pass7skip,2533 unique cases, no failures
+or errors; all identities/outcomes equal the reviewed Linux3.14 suites. Strict
+candidate/report/Git verification passed;3122 source files rehashed unchanged
+and174 original files copied byte-identically. The105 Docker observations match
+selected status, phase, constraints and cleanup projections, including field
+presence. This reference delta is not another full independent review and does
+not treat negative or unresolved fixtures as successful executions.
+All31 installed distribution records match Linux3.14; only three dependency edges
+(httpx2, referencing and starlette to typing-extensions) are added. Both installed
+inventories are identical, pending/publication false. Offline staged-wheel bytes
+are not asserted reverified after cleanup. Evidence: releases/0.3.0a116/624b36c/
+linux-311/{report,lead-review,delta-review,transfer-summary}.json. The new
+matrix-after-linux311.json records3/9 complete,6 missing combinations; prior
+matrix snapshots and partial source/wheel observations remain unchanged.
+
+The same Linux queue/session43548 started3.12 at09:47:57Z, worker PID15612;
+its source suite is RUNNING. Windows3.11 sdist remains RUNNING;3.14 is queued.
 The owned VM uses its existing disks
 and read-only minor-runtime volume; source/candidate/launch evidence remains in
 docs/acceptance/evidence/m9-a116-preparation/remaining-linux/launch.json.

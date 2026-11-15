@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current candidate:0.3.0a116 at624b36c; two complete local rows
+## Current candidate:0.3.0a116 at624b36c; three complete local rows
 
 Windows3.12 finished2026-11-15T07:29:12Z, native session85611 exit0. All26 checks
 pass; source, installed wheel and installed sdist each2477pass56skip,2533 unique
@@ -16,7 +16,7 @@ original report/manifest beside it. The original manifest SHA256 is
 Bounded independent read-only inspection found no row/continuation-prerequisite
 blocker. It is not whole-product/Release acceptance. The raw license reviews are
 still pending/publication false; staged offline wheel bytes are not asserted
-verified after cleanup. The local matrix is now2/9 complete,7 combinations missing.
+verified after cleanup. The local matrix is now3/9 complete,6 combinations missing.
 Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
 Windows3.11 source later completed08:36:36Z, exit0:2477pass56skip; its2533
 unique identities/outcomes match Windows3.12, and all3122 source files remain
@@ -34,15 +34,21 @@ against seven frozen fixture groups. Expected failures and unverified/unresolved
 cases remain such; these are not105 successes or real-client runs. Both license
 inventories remain pending/publication false; offline staged wheel bytes were
 not reverified after cleanup. See ../../releases/0.3.0a116/624b36c/linux-314/
-lead-review.json and original report.json; the current matrix is saved at
+lead-review.json and original report.json; the earlier matrix snapshot is saved at
 ../../releases/0.3.0a116/624b36c/matrix-after-linux314.json.
-The same Linux queue/session43548 automatically started3.11 at08:49:49Z;
-3.12 remains queued/NOT RUN. Linux3.11 source finished09:08:40Z, exit0,
-2526pass7skip; all2533 actual identities/outcomes equal Linux3.14. Wheel
-finished09:28:52Z, exit0, with identical counts/identities/outcomes; sdist is
-running. Source plus wheel do not add a complete matrix row. Evidence:
-evidence/m9-a116-preparation/remaining-linux/{source311,wheel311}-observation.json.
-No full-queue exit or new benchmark pass is claimed.
+Linux3.11 finished09:47:56Z, original row exit0 and26 checks pass. Each suite
+2526pass7skip,2533 unique cases, identical identities/outcomes to Linux3.14.
+Strict candidate/report/Git verification and174 byte-identical original file
+copies passed. The105 separate Docker observations match selected status,
+phase, constraint and cleanup projections, including field presence. This is
+reference-delta inspection, not a repeated full independent acceptance; expected
+negative and unverified/unresolved states remain unchanged. All31 distribution
+license records match Linux3.14; only three dependency edges to typing-extensions
+are added. Inventories remain pending/publication false. See
+../../releases/0.3.0a116/624b36c/linux-311/lead-review.json and original report.json;
+../../releases/0.3.0a116/624b36c/matrix-after-linux311.json is the current matrix.
+The original Linux queue started3.12 at09:47:57Z; its source suite is RUNNING.
+No full-queue exit, new benchmark pass or product transport-recovery pass is claimed.
 Owner has no Mac environment;
 all three macOS rows NOT RUN. Existing real-client and release gates still apply.
 Formal Release stays BLOCKED. Do not transplant historical a115 observations.

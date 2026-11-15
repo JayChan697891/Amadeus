@@ -1,0 +1,38 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "mypy",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+      "-m",
+      "mypy"
+    ],
+    "cwd": "/root/amadeus-m116/s",
+    "started_at": "2026-11-15T09:08:41.706918+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "mypy",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+      "-m",
+      "mypy"
+    ],
+    "cwd": "/root/amadeus-m116/s",
+    "exit_code": 0,
+    "started_at": "2026-11-15T09:08:41.706918+00:00",
+    "finished_at": "2026-11-15T09:08:47.512632+00:00",
+    "log": "logs/mypy.log",
+    "log_sha256": "787fb5f4281ca29d54908fb6f304c60aaf529c36739cf0420d75b382addef0b7",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
