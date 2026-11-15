@@ -79,6 +79,21 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 绑定历史版本0.3.0a109/`09425da`，包含明确审批和独立 Docker 验证。它与本模拟
 演示分开，不能替代当前版本、跨厂商或无人审批的验收；剩余要求见[总计划](docs/PLAN.md)。
 
+已有 Linux 验证工具另提供固定的 `--demo` 入口。当前仓库、已安装的 Amadeus、
+Git 和项目测试环境中预置的可信镜像齐备后，可以执行：
+
+```sh
+python -I -B tools/run_proposal_candidate_pilot.py --demo \
+  --root /root/amadeus-proposal-pilot-demo-01 \
+  --image-id sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258
+```
+
+每次使用新目录。工具在 Docker 中验证固定的 `add.py`，随后将依赖任务及固定
+版本的验证上下文交给另一 Core 身份，并重开 Core 核对和继续。它不下载镜像，
+不在宿主执行候选代码，不修改原基线。身份由确定性程序驱动，不调用模型；
+后续文字评审仍未验证，同一进程重开 Core 也不是崩溃恢复测试。此入口属于仓库
+工具，不包含在 wheel 中；实际运行状态以[进度记录](docs/PROGRESS.md)为准。
+
 ## 接入
 
 推荐使用 `amadeus` 命令。已有集成仍可使用 Python 发行包 `agentsync-local`、

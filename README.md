@@ -115,6 +115,25 @@ verification. It is separate from this offline demo and does not establish the
 current release, cross-vendor support or unattended approval. See
 [delivery nodes A/B/C](docs/PLAN.md) for the remaining requirements.
 
+For a developer demonstration of actual isolated verification, the existing
+Linux pilot also accepts a fixed `--demo` mode. Run from this checkout with Amadeus
+installed, Git available and the project's trusted test image already present:
+
+```sh
+python -I -B tools/run_proposal_candidate_pilot.py --demo \
+  --root /root/amadeus-proposal-pilot-demo-01 \
+  --image-id sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258
+```
+
+Use a new directory each time. This Linux-only fixture verifies a fixed,
+owner-authored `add.py` in Docker, then hands a dependent task and pinned proof
+context to another Core identity and reopens Core before continuing. It does not
+pull an image or execute candidate code on the host. The original baseline stays
+unchanged. Its actors are deterministic, the downstream text review stays
+unverified, and reopening Core in one process is not a crash demonstration.
+The pilot is a repository tool, not bundled in the wheel. Validation status is
+recorded in [progress](docs/PROGRESS.md); code availability alone is not acceptance.
+
 ## Interfaces
 
 `amadeus` is the preferred console command. Existing integrations can continue to use
