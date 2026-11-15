@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15T13:40Z. Scoped engineering demonstration and
+Current checkpoint — 2026-11-15, Windows regression and targeted repair. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
@@ -142,17 +142,20 @@ retain the consumed path and must not be deployed there or used to retry it.
 The owned VM shut down normally at13:36:03Z; original disk/workspaces remain.
 See acceptance/evidence/durable-demo-a117/cancel-repair/summary.json.
 
-Current authorized local validation: native session45808 started at13:51:15Z;
-Windows3.12 full installed-sdist pytest is RUNNING, not passed. New private root
-D:/agentsync-debug/m117w holds2355 frozen input files from4dcd716 and the unchanged
-b78a748b source archive/runtimefc27f15. A fresh offline install passed5 preparation,
-dependency and origin checks; all97 installed members match. No source archive
-regenerated, real client/auth action or extra matrix queue. Pytest uses the whole
-checked-in suite and default platform behavior, without selection or early exit.
-The equivalent a116 suite took about45 minutes; the existing7200s ceiling applies.
-Poll the existing session/actual process identity, never restart on an observation
-timeout. Inspect its eventual full JUnit and final input/runtime hashes before
-acceptance. See acceptance/evidence/durable-demo-a117/full-windows312/started-summary.json.
+The first full current Windows3.12 installed-sdist regression ended at14:34:24Z;
+native session45808 exited1 and is closed.2545 unique cases:2488 passed,1 failed,
+56 skipped,0 errors. Runtimefc27f15/archiveb78a748b and2355 frozen inputs from4dcd716
+remained unchanged;97 installed members matched before/after. All2533 historical
+case identities remain,12 new cases pass, and platform skips match the old row.
+The sole failure was a traceability guard's expected M7-02 set missing the already
+mapped native-host-exit selector. A one-line test-only correction adds that explicit
+item while retaining equality,partial/not_run assertions and all release gates.
+The entire affected traceability file then passed92 cases; Ruff/format passed.
+Root checked the actual patch/log/JUnit, and independent Astra accepted the bounded
+repair. The original full run stays FAILED; it was not rewritten or rerun. This is
+full installed-package regression plus a targeted test-maintenance correction,
+not a full current release matrix row or formal Release. No source archive rebuild
+or model/auth action. See acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json.
 
 Resume entry: both original a116 queues and ordered benchmarks are complete; do not
 restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
@@ -161,8 +164,9 @@ using affected regression only. Keep a116 full-matrix evidence separate from a11
 No additional model/auth action, paid API, Actions, main change or publication.
 Future live calls require fresh authorization; macOS and real Claude/Cursor still
 lack an available authorized environment. Full a117 regression/matrix and macOS
-installation remain uncompleted; one Windows installed-sdist full suite is now
-running. Prior Windows/Linux sdist results remain focused only until a final result.
+installation remain incomplete. Windows full installed-sdist evidence and its
+targeted repair now exist; current Linux full installed-sdist/Docker validation is
+the next available local step. Preserve all prior focused and failed results.
 
 Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.

@@ -96,6 +96,8 @@ and Linux3.14 source-archive installs each passed the same10 focused cases as th
 [Linux installation evidence](docs/acceptance/evidence/durable-demo-a117/sdist/linux/summary.json)
 uses the same archive without rebuilding it.
 This is focused demonstration validation, not a full a117 release matrix.
+The later [Windows full regression and targeted traceability repair](docs/acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json)
+preserve the original failed run and its separate92-case correction check.
 
 After the Windows installation above, run the following from the repository
 directory (choose another new directory name for each run):

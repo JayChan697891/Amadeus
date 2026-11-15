@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15T13:40Z
+## Current scoped outcome — 2026-11-15, Windows regression and targeted repair
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
 Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
@@ -34,7 +34,7 @@ pyproject dependency pins. The same archive then passed Linux3.14's7 native
 checks and10 focused cases, matching Windows identities/outcomes with97 unchanged
 runtime members. See evidence/durable-demo-a117/sdist/linux/summary.json.
 Full a117 acceptance/matrix and macOS installation remain incomplete. The current
-Windows installed-sdist full-suite execution below has no final result yet.
+Windows installed-sdist full run and targeted repair below have bounded results.
 
 The added OwnerContinuation native-exit tests run against that same installed117
 runtime: root Windows3.12 and Linux3.14 each passed the full affected20-case file,
@@ -113,13 +113,20 @@ final fault-injection tests. No product changes, new live plan or retry. The VM
 shut down normally after cleanup. Live acceptance stays NOT VERIFIED and formal
 Release stays BLOCKED. See evidence/durable-demo-a117/cancel-repair/summary.json.
 
-At13:51:15Z the single current Windows3.12 installed-sdist regression began in a
-fresh D-drive environment (native session45808). Five offline preparation/install/
-origin checks passed;97 runtime members matchfc27f15 and2355 frozen test inputs
-match4dcd716. Full pytest remains RUNNING; no final JUnit or pass claim. The existing
-source archive was reused. This does not repeat the completed a116 matrix or
-establish other current platform/install/static gates. See
-evidence/durable-demo-a117/full-windows312/started-summary.json.
+The current Windows3.12 full installed-sdist run ended at14:34:24Z: native
+session45808/pytest exit1,2545 unique cases (2488 passed,1 failed,56 skipped,0 errors).
+Six other native checks passed.2355 frozen inputs from4dcd716 and97 installed
+runtimefc27f15 members remained unchanged. The original2533 case identities remain;
+12 new cases passed and56 platform skips match the old row. The only changed old
+outcome was the traceability guard missing an already mapped M7-02 recovery case.
+The fix adds that explicit expected selector, without relaxing equality,partial,
+not_run or release assertions. Its entire92-case file passed; root checked the
+actual patch/log/JUnit and Ruff/format passed. Independent Astra accepted targeted
+validation for this one-line test-only change. The original full result remains
+FAILED, not overwritten or described as a full rerun PASS. This is a full installed
+regression plus bounded maintenance repair, not a complete current release matrix
+row. Original logs/JUnit (6 credential redactions), native receipts and case diff
+remain in evidence/durable-demo-a117/full-windows312/current-summary.json.
 
 ## Earlier delivery checkpoint — 2026-11-15
 

@@ -48,7 +48,7 @@ queue completed before the real Docker demo. Independent M8 correctness fixtures
 used separate exact-wheel installs. The unchanged bounded benchmarks subsequently
 passed in order: both queues complete, Linux, normal owned-VM shutdown, Windows.
 
-## Current delivery checkpoint — 2026-11-15T13:40Z
+## Current delivery checkpoint — 2026-11-15, Windows regression and targeted repair
 
 The current117 real two-Codex flow now has limited actual acceptance after fresh
 owner authorization: two native calls, four exact host approvals,8 Docker cases,
@@ -135,14 +135,17 @@ Independent review accepted the repaired driver/helper; fault-injection tests do
 not promote live acceptance. No new live plan was prepared; the consumed path is
 preserved. See acceptance/evidence/durable-demo-a117/cancel-repair/summary.json.
 
-The next existing acceptance gap is now executing: one full Windows3.12 regression
-against the unchanged a117 sdist, in a new D:/agentsync-debug/m117w environment.
-Native session45808 is RUNNING after5 passed install/dependency/origin checks.
-Frozen tests/tools are4dcd716, product runtime remainsfc27f15;2355 input files and97
-installed members were verified before pytest. No new candidate archive, parallel
-matrix queue or real client call. This is not a passed suite or full Release row;
-inspect its final JUnit and identity checks before updating any conclusion. See
-acceptance/evidence/durable-demo-a117/full-windows312/started-summary.json.
+One full Windows3.12 installed-sdist regression ended at14:34:24Z with2488 passed,
+1 failed,56 skipped across2545 unique cases. All2355 inputs from4dcd716 and97
+installedfc27f15 runtime members stayed unchanged. One expected-selector set in a
+traceability test had not followed the already added M7-02 recovery mapping. Only
+that explicit item was added; the full affected92-case file and Ruff/format pass.
+Independent review accepted this test-maintenance repair without another full run.
+Original full failure is preserved, all2533 prior cases remain and12 additions
+passed. No package/runtime change, requirement-status promotion or release claim.
+Session45808 is closed; do not restart it. Current Linux full installed-sdist with
+actual Docker is the next available local validation; no new candidate build is
+needed. See acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json.
 
 Next: continue the existing P0/P1 demonstration route; retain full a117 acceptance,
 full release matrix and actual live crash recovery as unfinished gaps. Further real calls require

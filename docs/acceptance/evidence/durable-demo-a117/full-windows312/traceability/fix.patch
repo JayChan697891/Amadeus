@@ -1,0 +1,12 @@
+diff --git a/tests/unit/test_acceptance_traceability.py b/tests/unit/test_acceptance_traceability.py
+index 81f2dc4..6aa9d3c 100644
+--- a/tests/unit/test_acceptance_traceability.py
++++ b/tests/unit/test_acceptance_traceability.py
+@@ -272,6 +272,7 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
+             "tests/integration/test_unfinished_continuation.py::test_continuation_keeps_known_tool_event_rejection",
+             "tests/integration/test_unfinished_continuation.py::test_changed_graph_rejects_previously_approved_plan",
+             "tests/integration/test_unfinished_continuation.py::test_preparation_checkpoint_resumes_without_second_source_attempt",
++            "tests/integration/test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery",
+             "tests/integration/test_unfinished_continuation.py::test_old_failed_receipt_cannot_cancel_reclaimed_same_session",
+             verified_flow,
+         },

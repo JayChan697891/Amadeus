@@ -65,6 +65,8 @@ Windows3.12 的源码安装、源码包安装，以及 Linux3.14 源码包安装
 使用同一份源码包，未重新构建。
 [安装证据与保留的准备失败](docs/acceptance/evidence/durable-demo-a117/sdist/summary.json)
 仅覆盖该演示的定向验证，不代表完整 a117 发布矩阵通过。
+后续[Windows 完整回归与追溯修复](docs/acceptance/evidence/durable-demo-a117/full-windows312/current-summary.json)
+保留了原始失败，以及修复后单独执行的92项检查，未改写为全套重跑通过。
 
 完成上面的 Windows 安装后，在项目目录运行；每次使用一个尚不存在的新目录：
 

@@ -1,0 +1,10 @@
+{
+  "os_version": "10.0.26200",
+  "os_build": "26200",
+  "os_caption": "Microsoft Windows 11 家庭版 中文版",
+  "observed_at": "2026-11-15T13:56:45.6126335Z",
+  "logical_processors": 24,
+  "total_memory_bytes": 25466974208,
+  "architecture": "64 位",
+  "scope": "Local Windows execution environment; no account or device identifiers"
+}
