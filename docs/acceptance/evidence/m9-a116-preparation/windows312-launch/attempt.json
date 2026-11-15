@@ -1,0 +1,19 @@
+{
+  "phase": "started",
+  "pid": 2804,
+  "started_at": "2026-11-15T05:12:00.678883+00:00",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+  "version": "0.3.0a116",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "source_audit": {
+    "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+    "git_source_paths": 3122,
+    "unique_git_blobs": 2617
+  },
+  "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82",
+  "driver_sha256": "a1af179deea1e2f6980b2b9e96453a10592321b6654c8a7d0234d139795e422a",
+  "formal_release": "BLOCKED",
+  "real_model_calls": "NOT RUN",
+  "automatic_retry": false
+}

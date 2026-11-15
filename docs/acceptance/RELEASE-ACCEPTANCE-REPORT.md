@@ -1,13 +1,16 @@
 # Release Acceptance Report
 
-## Current correction:0.3.0a116; full collection pending
+## Current correction:0.3.0a116 at624b36c; full collection running
 
 The working source includes the bounded Windows test-helper repair and prior
 reviewed evidence-verifier changes, with only the version changed in runtime
 code. Collection-only preflight found2533 cases with2533 distinct sanitized
 identities; Ruff/format passed. These checks execute no test bodies and do not
-certify a full suite. Freeze this corrected source before new package/matrix
-collection; do not transplant a115 observations. macOS remains NOT RUN after
+certify a full suite. All3122 frozen source paths match committed Git objects.
+One Windows3.12 collector started2026-11-15T05:12:00Z (session85611); source pytest
+is running and the two fresh installations are pending. Native receipts and final
+result are required before a pass. See evidence/m9-a116-preparation/windows312-launch.
+Do not transplant a115 observations. macOS remains NOT RUN after
 the owner's confirmation. Formal Release remains BLOCKED.
 
 ## Preserved a115 candidate:b6f05f0; five complete historical rows

@@ -1,17 +1,26 @@
 # Amadeus current progress
 
-Current continuation: prepare corrected candidate0.3.0a116 from the preserved
+Current continuation: corrected candidate0.3.0a116 is frozen at624b36c039a90feb9340559ac773f9df08ba86ad from the preserved
 015ad52 repair. Relative to frozen b6f05f0, runtime code is unchanged except the
 version; the changes are the Windows Git test helper/regression, six explicit
 redaction-case labels and the already-reviewed composite verifier/tests. The
-candidate will use a new clean frozen source identity with existing gates.
+candidate uses a new clean frozen source identity with existing gates.
 Collection-only preflight found2533 cases, all2533 unique after sanitization;
-Ruff and format checks passed. Full source/wheel/sdist runs are pending; no a115
+Ruff and format checks passed. Full Windows3.12 collection started at2026-11-15T05:12:00Z,
+native session85611/driver PID2804; source pytest is running, wheel/sdist pending. No a115
 pass or failed/unknown receipt is relabeled. Local work stays on D:, source/evidence
 on F:, GitHub storage only. macOS is NOT RUN (owner has no environment).
-Next: freeze the candidate, then run one Windows3.12
-collector. Other rows depend on its original build/manifest, with no duplicate
+3122 source paths matched their Git objects before execution. Frozen tree is
+bbf15d9550443fe7af03c4a36c17859b0f7a21d9; source snapshot SHA256 is
+39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82.
+Recovery: observe D:/agentsync-debug/m116/windows-312/result.json and the existing
+session; do not restart on observer timeout. See evidence in
+acceptance/evidence/m9-a116-preparation/windows312-launch/summary.json.
+Other rows depend on its original build/manifest, with no duplicate
 collectors on the same host. Formal Release stays BLOCKED.
+Git remote confirmed624b36c uploaded. Current PR feedback could not be refreshed:
+connector transport failed and a read-only unauthenticated API fallback returned404.
+Do not infer repository disappearance or claim comments reviewed from that result.
 
 The existing M9-02 bounded technical delivery-scope decision is now recorded in
 acceptance/evidence/m9-a115-preparation/b6-license-platform-delta.json under

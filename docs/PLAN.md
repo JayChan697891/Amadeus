@@ -1,9 +1,10 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
-Current next execution: freeze corrected candidate0.3.0a116 after its completed
+Current execution: corrected candidate0.3.0a116 is frozen at624b36c after its completed
 collection-only preflight (2533 distinct sanitized case IDs; Ruff/format pass),
-then collect Windows3.12 source and both fresh
-installations using the existing local pipeline. The original a115 matrix and
+Windows3.12 source and both fresh installations are in the existing local pipeline,
+started2026-11-15T05:12:00Z (session85611); source is running, installations pending.
+Observe that existing run before another row. The original a115 matrix and
 failed wheel trial remain historical evidence. Subsequent platform rows must use
 the new candidate's exact source and archives; no test-only identity exception,
 new M5 subphase, or Release waiver. macOS remains unavailable/NOT RUN.
