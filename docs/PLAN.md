@@ -48,7 +48,7 @@ queue completed before the real Docker demo. Independent M8 correctness fixtures
 used separate exact-wheel installs. The unchanged bounded benchmarks subsequently
 passed in order: both queues complete, Linux, normal owned-VM shutdown, Windows.
 
-## Current delivery checkpoint — 2026-11-15T13:08Z
+## Current delivery checkpoint — 2026-11-15T13:40Z
 
 The current117 real two-Codex flow now has limited actual acceptance after fresh
 owner authorization: two native calls, four exact host approvals,8 Docker cases,
@@ -109,13 +109,31 @@ deterministic protocol processes, not a real model failing during execution.
 Next single-call cancellation preparation pins the unchanged installed a117
 source package and exact plan c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41.
 Independent static review and actual preparation completed with zero model calls,
-no external credentials and97 matching runtime members. Live execution is NOT RUN
-pending fresh authorization; only local owned-parent cancellation can be proved.
+no external credentials and97 matching runtime members. Live execution was NOT RUN
+at this preparation checkpoint; only local owned-parent cancellation could be proved.
 A completed-before-cancel attempt is NOT VERIFIED and cannot be retried under
 that grant. See acceptance/evidence/durable-demo-a117/cancel-preparation/summary.json.
 This fills an existing recovery evidence gap, not a new phase or release gate.
 The Windows durable-demo snippets now follow the existing no-activation install
 path and no longer assume a D drive. Documentation diff review only.
+
+After a new single-call grant, that live driver exited1 at13:29:19Z: its field
+allowlist omitted three existing immutable observation fields and its finally
+assertion prevented capture/dispatch/result recording. Automatic cleanup failed
+closed. Independent postmortem found a persisted local cancellation and ended
+owned parent (exit-9), no second dispatch and unchanged runtime/repositories;
+the dedicated auth was safely removed and tmpfs unmounted at13:32:21Z. Original
+auth remained unchanged. No retry. Cancellation remains NOT VERIFIED because
+the live-window/capture evidence was lost; the grant is consumed. The validation
+driver was subsequently repaired offline without product changes or live retry.
+See acceptance/evidence/durable-demo-a117/cancel-live/summary.json.
+
+The repaired schema and diagnostic ordering passed root's4 offline test methods
+plus8 subtests at13:40:57Z, with97 installed runtime members unchanged. The initial
+new fixture's slots/inherited-field failure and exact test revision are retained.
+Independent review accepted the repaired driver/helper; fault-injection tests do
+not promote live acceptance. No new live plan was prepared; the consumed path is
+preserved. See acceptance/evidence/durable-demo-a117/cancel-repair/summary.json.
 
 Next: continue the existing P0/P1 demonstration route; retain full a117 regression,
 full release matrix and actual live crash recovery as unexecuted gaps. Further real calls require

@@ -1,0 +1,36 @@
+import json,os,runpy,stat
+from dataclasses import asdict
+from datetime import UTC,datetime
+from pathlib import Path
+os.umask(0o077)
+base=Path('/root/amadeus-cancel-a117-20261115')
+p=runpy.run_path(str(base/'pilot.py'),run_name='inspection_only')
+p['assert_runtime_origin']()
+state=p['load']('state.json')
+assert state['helper_sha256']==p['helpers']()
+actor=p['actor_for'](state,p['deny'])
+core=p['Core'](base/'core');relay=p['ControlledRelay'](core,base,base/'receipts')
+attempts=[asdict(a) for a in relay.inspect_attempts(actor,state['task']['id'],admin_token=state['owner']['admin_token'])]
+expected=set(p['ATTEMPT_FIELDS'])|{'billing_verified','cost_usd','verification'}
+assert len(attempts)==2 and all(set(a)==expected for a in attempts)
+assert all(a['billing_verified'] is False and a['cost_usd'] is None and a['verification']=='unverified' for a in attempts)
+first,second=attempts
+assert first['leg']=='first' and first['state']=='terminal_recorded' and first['parent_ended'] is True and type(first['exit_code']) is int
+assert second['leg']=='second' and second['state']=='not_dispatched'
+assert all(v is None for k,v in second.items() if k in p['ATTEMPT_FIELDS'] and k not in {'leg','state'})
+active=[]
+for proc in Path('/proc').iterdir():
+ if not proc.name.isdigit() or int(proc.name)==os.getpid():continue
+ try:name=(proc/'comm').read_text().strip()
+ except FileNotFoundError:continue
+ if name.startswith(('python','codex','pytest')):active.append({'pid':int(proc.name),'name':name})
+assert not active,active
+outcome=asdict(relay.observe(actor,state['task']['id']))
+task=next(t for t in core.execute('list_tasks',p['auth'](state))['tasks'] if t['id']==state['task']['id'])
+unchanged=p['fixture_intact'](state,base/'source') and p['fixture_intact'](state,Path(state['tree']['path']))
+assert unchanged
+p['require_mount']()
+info=(base/'private-home/auth.json').lstat();assert stat.S_ISREG(info.st_mode) and stat.S_IMODE(info.st_mode)==0o600 and info.st_uid==0
+record={'at':datetime.now(UTC).isoformat(),'scope':'Read-only postmortem after failed driver; no retry','product_sha':p['PRODUCT'],'runtime_members_matched':97,'helpers_unchanged':True,'original_expected_fields':sorted(p['ATTEMPT_FIELDS']),'observed_extra_fields':['billing_verified','cost_usd','verification'],'attempts':attempts,'reopened_outcome':outcome,'task_status':task['status'],'task_verification':task['task_verification'],'source_and_worktree_unchanged':unchanged,'active_python_or_codex':active,'temporary_auth_present':True,'model_calls_added':0,'cancellation_window_observation':'NOT RETAINED','raw_capture':'NOT RETAINED','live_acceptance':'NOT VERIFIED','retry_allowed':False,'formal_release':'BLOCKED'}
+with (base/'postmortem-observation.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2);f.write('\n')
+print(json.dumps(record))

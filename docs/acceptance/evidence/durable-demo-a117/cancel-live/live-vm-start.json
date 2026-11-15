@@ -1,0 +1,7 @@
+{
+  "command_line": "\"D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe\" -machine q35 -accel whpx,kernel-irqchip=off -cpu qemu64,svm=off -smp 1 -m 3072 -drive file=D:\\agentsync-debug\\vm\\guest.qcow2,format=qcow2,if=virtio -drive file=D:\\agentsync-debug\\vm\\seed.iso,format=raw,media=cdrom,readonly=on -nic user,model=virtio-net-pci,hostfwd=tcp:127.0.0.1:22222-:22 -device virtio-rng-pci -display none -serial file:D:\\agentsync-debug\\vm\\serial.log -qmp tcp:127.0.0.1:22223,server=on,wait=off",
+  "pid": 24064,
+  "executable": "D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe",
+  "purpose": "One newly authorized fixed-text subscription cancellation verification only",
+  "creation_utc": "2026-11-15T13:28:39.3941130Z"
+}

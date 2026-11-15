@@ -1,6 +1,6 @@
 # Release Acceptance Report
 
-## Current scoped outcome — 2026-11-15T13:08Z
+## Current scoped outcome — 2026-11-15T13:40Z
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
 Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
@@ -83,8 +83,34 @@ Preparation only,2026-11-15T13:24Z: the exact a117 single-call cancellation plan
 c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41 was created after
 independent static review, with97 runtime members and CLI bytes checked. Zero
 model calls, no external auth read/copy and no RAM-home mount. Actual cancellation
-is NOT RUN until a fresh grant; nothing here promotes recovery or Release status.
+was NOT RUN at preparation; nothing here promotes recovery or Release status.
 See evidence/durable-demo-a117/cancel-preparation/summary.json.
+
+The newly authorized single live cancellation attempt then failed in the evidence
+driver at13:29:19Z (exit1). The exact observation-field assertion omitted three
+existing immutable fields and ran before dispatch/capture/result persistence;
+original live-window/raw-capture evidence was not retained. The earlier static
+review missed this mismatch. Automatic cleanup failed closed. Read-only postmortem
+confirmed a terminal owned-parent receipt (exit-9, unknown/local_cancel_requested),
+no second dispatch, incomplete/running/unverified task state,97 matching runtime
+members, unchanged repositories and no active Codex/Python processes in the guest.
+After independent review and a fresh positive-stop check, only the authorized
+temporary auth was removed and its tmpfs unmounted at13:32:21Z. Original auth was
+unchanged; no retry or additional call. Postmortem cleanup PASS does not repair
+missing execution evidence: live cancellation remains NOT VERIFIED. Original
+failed scripts/receipts are preserved, and the single grant is consumed. Offline
+driver repair is separate. See evidence/durable-demo-a117/cancel-live/summary.json.
+
+The repaired evidence driver passed4 root-run offline methods and8 subtests at
+13:40:57Z (JUnit counts12 including subtests, not12 independent methods), with97
+unchanged installed runtime members. Both injected observation and schema failures
+leave cancellation/capture diagnostics before propagating; strict full-schema and
+owned-stop gates remain. The first new test fixture failed from omitted slots=True;
+its exact source/log/JUnit are preserved, then only that fixture was corrected.
+Independent Astra accepted the repaired pilot/helper; root separately checked the
+final fault-injection tests. No product changes, new live plan or retry. The VM
+shut down normally after cleanup. Live acceptance stays NOT VERIFIED and formal
+Release stays BLOCKED. See evidence/durable-demo-a117/cancel-repair/summary.json.
 
 ## Earlier delivery checkpoint — 2026-11-15
 

@@ -1,0 +1,68 @@
+"""No-launch cleanup after positively observing the failed pilot's owned stop."""
+import hashlib
+import json
+import os
+import runpy
+import stat
+import subprocess
+from dataclasses import asdict
+from datetime import UTC, datetime
+from pathlib import Path
+
+os.umask(0o077)
+base = Path('/root/amadeus-cancel-a117-20261115')
+home = base / 'private-home'
+for path in (base, home):
+    info = path.lstat()
+    assert stat.S_ISDIR(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o700
+assert hashlib.sha256((base / 'pilot.py').read_bytes()).hexdigest() == '0750f56b490ce2a3dcb4981ecf33444eda9f1ed34bb2ad58967a248d99d64b37'
+p = runpy.run_path(str(base / 'pilot.py'), run_name='cleanup_inspection_only')
+p['assert_runtime_origin']()
+state = p['load']('state.json')
+assert state['helper_sha256'] == p['helpers']()
+assert state['plan_sha256'] == 'c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41'
+actor = p['actor_for'](state, p['deny'])
+core = p['Core'](base / 'core')
+relay = p['ControlledRelay'](core, base, base / 'receipts')
+attempts = [asdict(a) for a in relay.inspect_attempts(actor, state['task']['id'], admin_token=state['owner']['admin_token'])]
+expected = set(p['ATTEMPT_FIELDS']) | {'billing_verified', 'cost_usd', 'verification'}
+assert len(attempts) == 2 and all(set(a) == expected for a in attempts)
+assert all(a['billing_verified'] is False and a['cost_usd'] is None and a['verification'] == 'unverified' for a in attempts)
+first, second = attempts
+assert first['leg'] == 'first' and first['state'] == 'terminal_recorded' and first['parent_ended'] is True
+assert type(first['exit_code']) is int and first['exit_code'] == -9
+assert first['status'] == 'unknown' and first['error_code'] == 'local_cancel_requested'
+assert second['leg'] == 'second' and second['state'] == 'not_dispatched'
+assert all(v is None for k, v in second.items() if k in p['ATTEMPT_FIELDS'] and k not in {'leg', 'state'})
+assert p['fixture_intact'](state, base / 'source') and p['fixture_intact'](state, Path(state['tree']['path']))
+active = []
+for proc in Path('/proc').iterdir():
+    if not proc.name.isdigit() or int(proc.name) == os.getpid():
+        continue
+    try:
+        name = (proc / 'comm').read_text().strip()
+    except FileNotFoundError:
+        continue
+    if name.startswith(('python', 'codex', 'pytest')):
+        active.append({'pid': int(proc.name), 'name': name})
+assert not active, active
+p['require_mount']()
+auth = home / 'auth.json'
+info = auth.lstat()
+assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+with (base / 'postmortem-cleanup-entry.json').open('x', encoding='utf-8') as f:
+    json.dump({'at': datetime.now(UTC).isoformat(), 'attempts': attempts, 'active_python_or_codex': active,
+               'runtime_members_matched': 97, 'model_calls_added': 0, 'retry_allowed': False}, f, indent=2)
+    f.write(chr(10))
+auth.unlink()
+assert not os.path.lexists(auth)
+subprocess.run(['/bin/umount', str(home)], check=True, capture_output=True, timeout=10)
+assert not any(len(r.split()) > 1 and r.split()[1] == str(home) for r in Path('/proc/mounts').read_text().splitlines())
+assert not any(home.iterdir())
+record = {'at': datetime.now(UTC).isoformat(), 'temporary_auth_absent': True, 'home_unmounted': True,
+          'private_home_empty': True, 'model_calls_added': 0, 'original_auth_accessed': False,
+          'original_failed_driver_preserved': True, 'live_acceptance': 'NOT VERIFIED', 'retry_allowed': False}
+with (base / 'postmortem-cleanup-result.json').open('x', encoding='utf-8') as f:
+    json.dump(record, f, indent=2)
+    f.write(chr(10))
+print(json.dumps(record))

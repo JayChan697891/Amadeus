@@ -1,0 +1,98 @@
+....                                                             [100%]
+================================== FAILURES ===================================
+_ ReceiptValidation.test_capture_and_cancel_request_are_saved_before_attempt_diagnostics (failure='schema') _
+
+self = <test_cancel_receipts.ReceiptValidation testMethod=test_capture_and_cancel_request_are_saved_before_attempt_diagnostics>
+
+    def test_capture_and_cancel_request_are_saved_before_attempt_diagnostics(self):
+        source = (ROOT / "pilot.py").read_text(encoding="utf-8")
+        execute = next(
+            node for node in ast.parse(source).body
+            if isinstance(node, ast.AsyncFunctionDef) and node.name == "execute_once"
+        )
+        guarded = next(node for node in execute.body if isinstance(node, ast.Try) and node.finalbody)
+        isolated = ast.parse("async def save_observations():\n    pass\n")
+        isolated.body[0].body = guarded.finalbody
+        code = compile(isolated, str(ROOT / "pilot.py"), "exec")
+    
+        @dataclass(frozen=True)
+        class ExtendedAttempt(RelayAttemptObservation):
+            unexpected: str = "unknown field"
+    
+        for failure in ("inspect", "schema"):
+            with self.subTest(failure=failure):
+                events, saved = [], {}
+                cancellation = {"requested": True, "propagated": True}
+                capture_metadata = {"saved": True, "stdout_bytes": 10}
+                inspect_error = RuntimeError("injected attempt observation failure")
+    
+                def save(name, value):
+                    events.append(name)
+                    saved[name] = value
+    
+                async def retain():
+                    events.append("capture_retain")
+                    return capture_metadata
+    
+                def inspect_attempts(*_args, **_kwargs):
+                    events.append("inspect_attempts")
+                    if failure == "inspect":
+                        raise inspect_error
+                    return [
+                        RelayAttemptObservation("first", "not_dispatched"),
+                        ExtendedAttempt("second", "not_dispatched"),
+                    ]
+    
+                namespace = {
+                    "asdict": asdict,
+                    "validate_attempts": home.validate_attempts,
+                    "save": save,
+                    "cancellation": cancellation,
+                    "capture": SimpleNamespace(retain=retain, entered=True),
+                    "relay": SimpleNamespace(inspect_attempts=inspect_attempts),
+                    "actor": object(),
+                    "task_id": "fixture",
+                    "owner": {"admin_token": "fixture"},
+                    "authorizations": 1,
+                }
+                exec(code, namespace)
+                error_type = RuntimeError if failure == "inspect" else AssertionError
+                with self.assertRaises(error_type) as raised:
+>                   asyncio.run(namespace["save_observations"]())
+
+test_cancel_receipts.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\base_events.py:691: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pilot.py:288: in save_observations
+    attempts = [asdict(a) for a in relay.inspect_attempts(actor, task_id, admin_token=owner['admin_token'])]
+                ^^^^^^^^^
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\dataclasses.py:1329: in asdict
+    return _asdict_inner(obj, dict_factory)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _asdict_inner(obj, dict_factory):
+        if type(obj) in _ATOMIC_TYPES:
+            return obj
+        elif _is_dataclass_instance(obj):
+            # fast path for the common case
+            if dict_factory is dict:
+                return {
+>                   f.name: _asdict_inner(getattr(obj, f.name), dict)
+                                          ^^^^^^^^^^^^^^^^^^^^
+                    for f in fields(obj)
+                }
+E               AttributeError: 'ExtendedAttempt' object has no attribute 'billing_verified'
+
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\dataclasses.py:1339: AttributeError
+=========================== short test summary info ===========================
+SUBFAILED(failure='schema') F:\syuc\amadeus-m6-single::ReceiptValidation::test_capture_and_cancel_request_are_saved_before_attempt_diagnostics
+1 failed, 4 passed, 7 subtests passed in 0.87s

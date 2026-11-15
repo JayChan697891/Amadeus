@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Current checkpoint — 2026-11-15T13:08Z. Scoped engineering demonstration and
+Current checkpoint — 2026-11-15T13:40Z. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
@@ -103,12 +103,44 @@ c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41;
 fixed text only, one launch at most, local owned-parent cancellation only. Root
 and independent Astra inspected the scripts; preparation checked97 runtime
 members and the fixed CLI bytes, made zero model calls and read no external auth.
-Actual cancellation, auth copy and RAM-home mount are NOT RUN; new explicit
-single-call authorization is required. A missed cancellation window is NOT VERIFIED,
+At that preparation checkpoint, cancellation, auth copy and RAM-home mount were
+NOT RUN pending new explicit authorization. A missed cancellation window is NOT VERIFIED,
 never retried. Server cancellation, descendant cleanup and billing remain unverified.
 See acceptance/evidence/durable-demo-a117/cancel-preparation/summary.json.
 README durable examples now use the unactivated venv from their Windows install
 instructions and a fresh ignored local-data path; no product change or test rerun.
+
+The subsequent newly authorized single attempt ended at13:29:19Z with controller
+exit1; no retry. The validation driver omitted three existing immutable observation
+fields (billing_verified, cost_usd, verification), so its finally assertion failed
+before saving dispatch/capture/cancellation/result records. Automatic cleanup also
+failed closed. The earlier static review missed this schema difference. This is a
+driver failure and live cancellation is NOT VERIFIED, not a product acceptance.
+Read-only postmortem used the same installed runtime and exact helpers: first
+terminal_recorded/unknown/local_cancel_requested, owned parent ended with exit-9;
+second not_dispatched. New Core reads keep incomplete/running/unverified,97 runtime
+members and both repositories unchanged, with no active Codex/Python in the guest.
+After independent review and rechecking those positive stop conditions, dedicated
+tmpfs auth was deleted and unmounted at13:32:21Z; directory empty. Original auth was
+unchanged at controller exit and was not accessed by postmortem cleanup. No new
+model calls or process kills. Missing live-window/capture evidence cannot be
+recreated, so safety cleanup does not upgrade the failed run. Original driver and
+failure records remain. This grant is consumed. See
+acceptance/evidence/durable-demo-a117/cancel-live/summary.json.
+
+Offline driver repair is complete: strict27-field validation includes the three
+immutable scope values; execution and cleanup share it. Cancellation request and
+private capture are saved before attempt diagnostics. Root's final installed-a117
+check ended0 at13:40:57Z:4 methods plus8 subtests,97 runtime members unchanged.
+Actual finalizer fault injection confirms both observation-read and schema failures
+still propagate after saving those diagnostics. The first fault-injection run
+failed because its new test subclass omitted slots=True; exact failed source,
+log and JUnit remain alongside the corrected result. Product code did not change.
+Independent Astra reviewed unchanged repaired pilot/helper; root reviewed and ran
+the final test revision. No new live plan, auth action or model call. Repair files
+retain the consumed path and must not be deployed there or used to retry it.
+The owned VM shut down normally at13:36:03Z; original disk/workspaces remain.
+See acceptance/evidence/durable-demo-a117/cancel-repair/summary.json.
 
 Resume entry: both original queues and ordered benchmarks are complete; do not
 restart sessions97559/43548 or repeat those unchanged-candidate checks. Continue
