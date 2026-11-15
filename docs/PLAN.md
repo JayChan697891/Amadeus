@@ -15,6 +15,13 @@ macOS remains unavailable/NOT RUN. Preserve a115 failures/unknowns unchanged.
 Formal Release remains BLOCKED; no M5 expansion, paid call, Actions or main merge.
 See PROGRESS.md and ../releases/0.3.0a116/624b36c/windows-312/transfer-summary.json.
 
+Existing M8 bounded diagnostic is prepared for the exact a116 source/wheel,
+NOT RUN. Workload and1000ms budget are unchanged; bounded independent static delta
+review found no blocker. Wait for both native queues to complete successfully,
+then run Linux diagnostic and shut down the owned VM before Windows diagnostic.
+The script enforces its own host queue; cross-host ordering is the lead's duty.
+See docs/acceptance/evidence/m9-a116-preparation/benchmark/preparation.json.
+
 M9-02's current-archive technical license classification is recorded using the
 existing evidence; no extra audit stage, package rebuild or external legal
 sign-off is required by this finding. Public Release still needs separate

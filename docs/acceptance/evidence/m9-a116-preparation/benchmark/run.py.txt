@@ -1,0 +1,175 @@
+"""One-shot current-candidate diagnostic after the existing host queue finishes."""
+import csv
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+COMMIT = '624b36c039a90feb9340559ac773f9df08ba86ad'
+WHEEL_SHA = '7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690'
+TOOL_SHA = '3baaf2443e63a22f03114f9573804c99dd394903306a813961a0195f9878c222'
+COLLECTOR_SHA = 'd942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd'
+MANIFEST_SHA = '23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95'
+WINDOWS = os.name == 'nt'
+ROOT = Path('D:/agentsync-debug/m116' if WINDOWS else '/root/amadeus-m116')
+BASE = Path('D:/agentsync-debug/m116-benchmark-r1' if WINDOWS else '/root/amadeus-m116-benchmark-r1')
+SOURCE = ROOT / 's'
+TOOL = SOURCE / 'tools/benchmark_coordination.py'
+WHEELS = Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse' if WINDOWS else '/root/intent-wheelhouse')
+
+
+def read(path):
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def save(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2, allow_nan=False)
+        stream.write('\n')
+
+
+def no_collector():
+    if WINDOWS:
+        command = "Get-CimInstance Win32_Process | Where-Object {$_.Name -eq 'python.exe' -and ($_.CommandLine -like '*m116-remaining-windows.py*' -or $_.CommandLine -like '*m116-collect-windows312.py*')} | Select-Object ProcessId | ConvertTo-Json -Compress"
+        assert not subprocess.check_output(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', command], text=True, timeout=30).strip(), 'Existing collector must finish'
+    else:
+        for p in Path('/proc').glob('[0-9]*/cmdline'):
+            try:
+                args = p.read_bytes().split(b'\0')
+            except (FileNotFoundError, ProcessLookupError):
+                continue
+            assert not any(arg.endswith(b'/collect-linux.py') for arg in args), 'Existing collector must finish'
+
+
+assert sys.version_info[:2] == ((3, 12) if WINDOWS else (3, 14))
+assert not BASE.exists(), 'Do not overwrite or automatically retry an earlier attempt'
+assert not (ROOT/'STOP_AFTER_CURRENT').exists(), 'Pause requested; no benchmark.'
+queue = read(ROOT / ('remaining-windows-queue' if WINDOWS else 'linux-queue') / 'result.json')
+expected_rows = ['windows-311', 'windows-314'] if WINDOWS else ['linux-314', 'linux-311', 'linux-312']
+assert queue['complete'] is True and [r['row'] for r in queue['rows']] == expected_rows
+assert all(r['exit_code'] == 0 and r['local_checks_passed'] is True for r in queue['rows'])
+assert all(r['strict_evidence_verified'] is True for r in queue['rows'])
+bootstrap = read(ROOT/'windows-312/result.json')
+assert bootstrap['phase'] == 'finished' and bootstrap['local_checks_passed'] is True
+assert bootstrap['strict_evidence_verified'] is True and bootstrap['commit_sha'] == COMMIT
+assert bootstrap['candidate_manifest_sha256'] == MANIFEST_SHA
+no_collector()
+assert sha(ROOT / 'candidate-bootstrap.json') == MANIFEST_SHA
+manifest = read(ROOT / 'candidate-bootstrap.json')
+assert manifest['frozen']['commit_sha'] == COMMIT
+artifact = next(a for a in manifest['artifacts'] if a['kind'] == 'wheel')
+wheel = (ROOT / artifact['path']).resolve(strict=True)
+assert wheel.is_relative_to(ROOT.resolve()) and sha(wheel) == artifact['sha256'] == WHEEL_SHA
+assert wheel.stat().st_size == artifact['size']
+assert sha(TOOL) == TOOL_SHA and sha(SOURCE / 'tools/release_acceptance.py') == COLLECTOR_SHA
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE, text=True).strip() == COMMIT
+assert subprocess.check_output(['git', 'status', '--porcelain'], cwd=SOURCE) == b''
+sys.path.insert(0, str(SOURCE))
+from tools.release_manifest import verify_manifest
+from tools.acceptance_matrix import summarize
+verified = verify_manifest(ROOT/'candidate-bootstrap.json', ROOT,
+                           manifest_sha256=MANIFEST_SHA, source_repo=SOURCE)
+original_report = ROOT/verified['build_report']['path']
+row_reports = []
+for row_name in expected_rows:
+    row_result = read(ROOT/row_name/'result.json')
+    assert row_result['commit_sha'] == COMMIT and row_result['candidate_manifest_sha256'] == MANIFEST_SHA
+    row_report = Path(row_result['report']).resolve(strict=True)
+    assert row_report.is_relative_to((ROOT/row_name/'reports').resolve(strict=True))
+    row_reports.append(row_report)
+local_matrix = summarize([original_report, *row_reports], COMMIT, verify_artifacts=True,
+                         require_license_inventory=True, python_minors=('3.11','3.12','3.14'),
+                         source_repo=SOURCE)
+assert len(local_matrix['observations']) == (3 if WINDOWS else 4)
+assert not any(row['system'] == ('Windows' if WINDOWS else 'Linux')
+               for row in local_matrix['missing_os_python_combinations'])
+snapshot_path = original_report.parent/'source-snapshot.json'
+assert sha(snapshot_path) == manifest['frozen']['source_snapshot_sha256']
+snapshot = read(snapshot_path)
+
+
+def source_unchanged():
+    return all((SOURCE / f['path']).stat().st_size == f['size'] and sha(SOURCE / f['path']) == f['sha256'] for f in snapshot)
+
+
+assert source_unchanged()
+BASE.mkdir(mode=0o700)
+if WINDOWS:
+    sid = next(csv.reader(subprocess.check_output(['whoami', '/user', '/fo', 'csv', '/nh'], text=True).splitlines()))[1]
+    assert sid.startswith('S-1-') and all(c in 'S-0123456789' for c in sid)
+    subprocess.run(['icacls', str(BASE), '/inheritance:r', '/grant:r', '*'+sid+':(OI)(CI)F', '*S-1-5-18:(OI)(CI)F'], check=True, capture_output=True)
+for name in ('home', 'tmp', 'scratch', 'logs'):
+    (BASE / name).mkdir()
+for name in tuple(os.environ):
+    if name.upper().startswith(('OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'CODEX_', 'AGENTSYNC_', 'GIT_', 'PYTEST_', 'PYTHON', 'PIP_', 'GOOGLE_', 'GEMINI_', 'DEEPSEEK_')) or name.upper().endswith(('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        os.environ.pop(name, None)
+os.environ.update(HOME=str(BASE/'home'), USERPROFILE=str(BASE/'home'), CODEX_HOME=str(BASE/'home'), GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT='0', PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX='1', PIP_DISABLE_PIP_VERSION_CHECK='1')
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(SOURCE))
+from tools.release_acceptance import execute
+
+save(BASE/'attempt.json', {'started_at': datetime.now(timezone.utc).isoformat(), 'pid': os.getpid(), 'python': sys.version, 'candidate_commit': COMMIT, 'wheel_sha256': WHEEL_SHA, 'benchmark_tool_sha256': TOOL_SHA, 'collector_sha256': COLLECTOR_SHA, 'driver_sha256': sha(Path(__file__)), 'queue_result_sha256': sha(ROOT/('remaining-windows-queue' if WINDOWS else 'linux-queue')/'result.json'), 'automatic_retry': False, 'formal_release': 'BLOCKED'})
+checks = []
+
+
+def run(name, command):
+    result = execute(name, command, BASE, BASE, BASE/'tmp', offline_wheelhouse=WHEELS)
+    checks.append(result)
+    assert result['status'] == 'pass' and result['exit_code'] == 0, name
+    return result
+
+
+try:
+    venv = BASE/'installed'
+    run('benchmark_venv', [sys.executable, '-I', '-B', '-m', 'venv', str(venv)])
+    python = str(venv/('Scripts/python.exe' if WINDOWS else 'bin/python'))
+    run('benchmark_install', [python, '-I', '-B', '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--find-links', str(WHEELS), str(wheel)])
+    run('benchmark_dependencies', [python, '-I', '-B', '-m', 'pip', 'check'])
+    probe = '''from pathlib import Path
+import hashlib,importlib.metadata as md,json,sys,zipfile
+import agentsync
+wheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')
+assert Path(agentsync.__file__).resolve().is_relative_to(root)
+assert d.version=='0.3.0a116'
+direct=json.loads(d.read_text('direct_url.json'))
+assert direct['url']==wheel.as_uri()
+assert direct['archive_info']['hashes']['sha256']==sys.argv[2]
+members=[]
+with zipfile.ZipFile(wheel) as z:
+ for name in z.namelist():
+  if name.startswith('agentsync/') and not name.endswith('/'):
+   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)
+   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected
+   members.append({'path':name,'sha256':expected})
+assert members
+print(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))
+'''
+    run('benchmark_origin_before', [python, '-I', '-B', '-c', probe, str(wheel), WHEEL_SHA])
+    observations = []
+    for name, workers, extra in [('threads', 4, []), ('process-http', 2, ['--processes', '--transport-mix'])]:
+        no_collector()
+        assert not any((BASE/'scratch').iterdir())
+        result = run(name, [python, '-I', '-B', str(TOOL), '--scratch-parent', str(BASE/'scratch'), '--workers', str(workers), '--rounds', '20', '--p95-budget-ms', '1000', *extra])
+        diagnostic = json.loads((BASE/result['log']).read_text(encoding='utf-8'))
+        save(BASE/(name+'.json'), diagnostic)
+        assert diagnostic['package_version'] == '0.3.0a116'
+        assert diagnostic['passed'] is True and diagnostic['p95_budget_passed'] is True
+        assert diagnostic['declared_p95_budget_ms'] == 1000 and all(diagnostic['functional_checks'].values())
+        assert diagnostic['workload']['claims'] == workers*20 and len(diagnostic['round_observations']) == 20
+        assert not diagnostic['unexpected_errors'] and not any((BASE/'scratch').iterdir())
+        observations.append({'mode': name, 'diagnostic': diagnostic})
+    run('benchmark_origin_after', [python, '-I', '-B', '-c', probe, str(wheel), WHEEL_SHA])
+    assert (BASE/'logs/benchmark_origin_before.log').read_bytes() == (BASE/'logs/benchmark_origin_after.log').read_bytes()
+    assert source_unchanged() and sha(wheel) == WHEEL_SHA and sha(TOOL) == TOOL_SHA
+    save(BASE/'result.json', {'finished_at': datetime.now(timezone.utc).isoformat(), 'status': 'pass', 'candidate_commit': COMMIT, 'python': sys.version, 'checks': checks, 'observations': observations, 'source_files_verified': len(snapshot), 'scratch_empty_after': True, 'scope': 'Bounded installed-runtime diagnostic only; not exhaustive stress or production SLO', 'formal_acceptance': False, 'real_client_verified': False, 'formal_release': 'BLOCKED'})
+    print(json.dumps({'status': 'pass', 'result': str(BASE/'result.json')}), flush=True)
+except BaseException as exc:
+    save(BASE/'exception.json', {'at': datetime.now(timezone.utc).isoformat(), 'error_type': type(exc).__name__, 'checks': checks, 'automatic_retry': False, 'formal_release': 'BLOCKED'})
+    raise

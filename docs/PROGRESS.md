@@ -42,6 +42,13 @@ The owner has no macOS environment: all three Mac rows are NOT RUN. No real mode
 calls, paid services, GitHub Actions, main merge or release-gate waiver.
 Formal Release remains BLOCKED; old a115 evidence is preserved separately.
 
+Existing M8 bounded diagnostic is prepared for the exact a116 source/wheel,
+NOT RUN. Workload and1000ms budget are unchanged; bounded independent static delta
+review found no blocker. Wait for both native queues to complete successfully,
+then run Linux diagnostic and shut down the owned VM before Windows diagnostic.
+The script enforces its own host queue; cross-host ordering is the lead's duty.
+See docs/acceptance/evidence/m9-a116-preparation/benchmark/preparation.json.
+
 Archive delta review: the wheel has the same102 normalized members as b6; only
 version metadata, __init__ version and RECORD change. All96 product members match
 source;31 external installed distribution records and project license bytes match
