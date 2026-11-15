@@ -1,0 +1,40 @@
+{
+  "observed_at": "2026-11-15T11:05:45.020917+00:00",
+  "status": "SCOPED PASS",
+  "scope": "One actual HTTP same-protocol forced-exit/restart and exact replay; no models or performance claim",
+  "source_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "installed_members_unchanged": 96,
+  "independent_static_review_driver_sha256": "2464792f702747565240baa5d1e4fa579748ea201b766cdc530fbf9a7c5d0ff9",
+  "original_failure": "../windows-r1/summary.json",
+  "no_repeated_mcp": true,
+  "native_worker_and_listener_absence_confirmed": true,
+  "private_scratch_retained": false,
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "summary.json",
+      "size": 3852,
+      "sha256": "34da96f704df484f115a27640b897044584c82e0d2a834da158bc737e99dbe41"
+    },
+    {
+      "path": "attempt.json",
+      "size": 465,
+      "sha256": "290604de453052fdea5aeadfb8a340a8f1ce9a21d304de8939ab3d1ffe573d10"
+    },
+    {
+      "path": "result.json",
+      "size": 136,
+      "sha256": "826aedb524741d40642e4782063da16790e7536dead8a6dc386f0a9c5cc7d90b"
+    },
+    {
+      "path": "recovery.log",
+      "size": 114,
+      "sha256": "812ab1b3ead778246942c5983748db3fb22d061dc17b83f950309deec0cf7022"
+    },
+    {
+      "path": "run.py.txt",
+      "size": 22664,
+      "sha256": "2464792f702747565240baa5d1e4fa579748ea201b766cdc530fbf9a7c5d0ff9"
+    }
+  ]
+}

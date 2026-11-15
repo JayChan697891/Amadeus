@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="same_protocol_recovery_windows-r1" tests="2" failures="1" errors="0" skipped="0">
+  <properties>
+    <property name="kind" value="report-derived actual execution observations; not pytest" />
+    <property name="source_summary_sha256" value="610f92c12da0948c4e71a315612256aa48ca012ade7ff3cab21e504e0f9fcd38" />
+  </properties>
+  <testcase classname="same_protocol_recovery_windows-r1" name="mcp_stdio" />
+  <testcase classname="same_protocol_recovery_windows-r1" name="http_loopback">
+    <failure message="{'type': 'TimeoutError'}" type="RecordedExecutionFailure">{'type': 'TimeoutError'}</failure>
+  </testcase>
+</testsuite>

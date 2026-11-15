@@ -1,32 +1,48 @@
 # Amadeus current progress
 
-Demonstration continuation: the same117 wheel also completed one actual Linux
-installed `demo --durable` run; all97 installed members equal the Windows/Git-bound
-origin. This is still a Mock console observation, not a full Linux test suite.
-See acceptance/evidence/durable-demo-a117/linux/summary.json.
-The existing isolated proposal pilot now has a fixed `--demo` path at
-`5b433f4f3864554ac1af399a73db743c56c1e9f7`, script SHA256
-3c0c4add8bd9509302aea028f25ffbaccdfd16ee215e6fbd67dd4446c389fec0.
-It reuses Docker verification before dependent context/handoff/reopen; actors are
-deterministic, downstream text review stays unverified. Five Windows CLI checks
-and Ruff/format pass; independent read-only review found no blocking defect.
-Actual Docker demo is NOT RUN pending the original Linux queue's natural finish.
-The separate `/root/amadeus-demo-a117/installed` environment and exact script are
-prepared; no credentials were copied. Resume with the create-only driver
-D:/agentsync-debug/strategy-demo/run-linux-verified-a117.sh after queue result
-confirms complete success. It does not depend on the Windows benchmark or stop it.
-Do not repeat a failed/unknown demo without first inspecting its saved outcome.
-Preparation evidence: acceptance/evidence/durable-demo-a117/verified-pilot-preparation/summary.json.
+Current checkpoint — 2026-11-15T11:05Z. Scoped engineering demonstration is ready;
+real-current-client acceptance and formal Release remain BLOCKED/NOT RUN.
+The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
 
-Latest execution update: Windows3.11 finished2026-11-15T10:16:20Z, original row
-exit0/all26 checks pass. Source/wheel/sdist each2477pass56skip,2533 unique cases
-with exact outcomes matching Windows3.12. All69 original transfer files match;
-3122 frozen source paths rehashed unchanged. Both license inventories equal
-Windows3.12 and remain pending/publication false. Matrix4/9, Release BLOCKED.
-Windows3.14 started automatically at10:16:20Z in original session97559, launcher
-PID14216; Linux3.12 wheel continues in original session43548. No duplicate run.
-Evidence: releases/0.3.0a116/624b36c/windows-311/lead-review.json and
-matrix-after-windows311.json. Partial observations below describe earlier times.
+Version117 runtime `fc27f15` / pilot `5b433f4`: durable CLI ran on Windows/Linux; actual Linux
+Docker demo passed 8 cases and 19 isolation checks. The producer task is verified;
+a proof-pinned dependent handoff was accepted and survived reopening Core. All 97
+installed members remained unchanged; no containers remained. Deterministic
+identities, same-process Core reopen and unverified downstream text review remain
+explicit limits. See acceptance/evidence/durable-demo-a117/verified-linux/lead-review.json.
+
+Frozen116 candidate `624b36c`: Linux3.12 completed at10:45:15Z,26 checks, each of three
+suites: 2526 passed / 7 skipped.174 original files/7,149,492bytes retained;3122 source paths
+verified. Case outcomes and105 selected Docker projections match Linux3.14.
+Both 31-package license inventories match each other; the three Python-minor
+conditional dependency edges match Linux3.11. Raw license status remains pending,
+publication false. See ../releases/0.3.0a116/624b36c/linux-312/lead-review.json.
+
+Matrix 5/9: original Linux session43548 ended0. Windows session97559 remains
+active with collector23476;3.14 source passed2477/56 at11:00:45Z and wheel started
+at11:01:14Z. This partial source observation is not a completed sixth row.
+
+Four a116 protocol-recovery scenarios now passed: Linux MCP/HTTP, Windows MCP,
+and corrected Windows HTTP. They verify committed claim, same-protocol restart,
+exact create/claim replay, no duplicate task, competing-owner denial and continued
+original ownership. Original Windows HTTP failed with TimeoutError before restart;
+its log/result remains under windows-r1. Only HTTP was rerun, after native creation-
+identity/listener observation replaced the socket heuristic. The corrected driver
+received independent static review, then actual run exited0 at11:04:55Z; native
+worker/listener absence and scratch cleanup were confirmed. All 96 installed a116
+members remained unchanged. See acceptance/evidence/m9-a116-preparation/transport-recovery/current-summary.json.
+
+Resume entry: preserve and observe original Windows session97559; harvest/archive
+windows-314 only after terminal success, using existing create-only drivers.
+Then run the existing Linux benchmark, normally stop the owned VM, and run the
+Windows benchmark. Both benchmarks remain NOT RUN; no duplicate collectors.
+No new models, credentials, paid APIs, Actions, main changes or formal publication.
+Current a117 real-client cooperation needs fresh authorization; macOS and real
+Claude/Cursor still lack an available authorized environment. No full a117 regression
+or sdist acceptance is inferred from the focused checks and two console runs.
+
+Historical strategy checkpoint follows; its running/NOT RUN entries are dated
+observations superseded by the current checkpoint above.
 
 Delivery-order checkpoint, 2026-11-15: the owner requested a usable core before
 exhausting every release expansion. The active Goal and original M0–M9 remain

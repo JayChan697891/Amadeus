@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-rjtv3b0y/wheel-61dyavvb/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m116/tmp/.scratch-rjtv3b0y/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac",
+    "started_at": "2026-11-15T10:07:28.998518+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-rjtv3b0y/wheel-61dyavvb/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m116/tmp/.scratch-rjtv3b0y/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac",
+    "exit_code": 0,
+    "started_at": "2026-11-15T10:07:28.998518+00:00",
+    "finished_at": "2026-11-15T10:07:29.679797+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "de9529a7290199914c1b010a73fa0e594c6c86b832b6209db4d14b8316050974",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,64 @@
+set -eu
+umask 077
+/root/amadeus-demo-a117/installed/bin/python -I -B - <<'PY'
+import hashlib, json, subprocess, sys, time, zipfile
+from datetime import datetime, timezone
+from pathlib import Path
+from importlib import metadata
+base=Path('/root/amadeus-demo-a117')
+root=Path('/root/amadeus-proposal-pilot-demo-a117-20261115')
+tool=base/'run_proposal_candidate_pilot.py'
+wheel=base/'agentsync_local-0.3.0a117-py3-none-any.whl'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+queue_path=Path('/root/amadeus-m116/linux-queue/result.json')
+queue=json.loads(queue_path.read_text())
+assert queue['complete'] is True
+assert [r['row'] for r in queue['rows']]==['linux-314','linux-311','linux-312']
+assert all(r['exit_code']==0 and r['local_checks_passed'] and r['strict_evidence_verified'] for r in queue['rows'])
+assert not root.exists() and not (base/'verified-run.json').exists()
+assert sha(tool)=='3c0c4add8bd9509302aea028f25ffbaccdfd16ee215e6fbd67dd4446c389fec0'
+assert sha(wheel)=='300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9'
+assert subprocess.check_output(['/usr/bin/docker','ps','-aq'],timeout=15).strip()==b''
+dist=metadata.distribution('agentsync-local')
+assert dist.version=='0.3.0a117'
+def check_members():
+ members={}
+ with zipfile.ZipFile(wheel) as z:
+  for name in z.namelist():
+   if name.startswith('agentsync/') and not name.endswith('/'):
+    p=Path(dist.locate_file(name)).resolve()
+    assert p.is_relative_to(Path(sys.prefix).resolve())
+    assert p.read_bytes()==z.read(name)
+    members[name]=sha(p)
+ assert len(members)==97
+ return members
+before=check_members()
+command=[sys.executable,'-I','-B',str(tool),'--demo','--root',str(root),'--image-id','sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258']
+started=datetime.now(timezone.utc).isoformat()
+child=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+with (base/'verified-attempt.json').open('x') as f:
+ json.dump({'started_at':started,'pid':child.pid,'command':command,'tool_commit':'5b433f4f3864554ac1af399a73db743c56c1e9f7','tool_sha256':sha(tool),'wheel_sha256':sha(wheel),'queue_result_sha256':sha(queue_path),'automatic_retry':False},f,indent=2)
+outcome='exited'
+try:
+ stdout,stderr=child.communicate(timeout=120)
+except subprocess.TimeoutExpired:
+ outcome='timeout'
+ child.kill()
+ stdout,stderr=child.communicate(timeout=15)
+for name,data in [('verified-stdout.json',stdout),('verified-stderr.log',stderr)]:
+ with (base/name).open('xb') as f:f.write(data)
+after=check_members()
+containers=subprocess.check_output(['/usr/bin/docker','ps','-aq'],timeout=15).decode().splitlines()
+result={'started_at':started,'finished_at':datetime.now(timezone.utc).isoformat(),'pid':child.pid,'outcome':outcome,'exit_code':child.returncode,'installed_members_unchanged':before==after,'installed_members':len(after),'containers_after':containers,'automatic_retry':False,'formal_release':'BLOCKED','real_models':'NOT RUN'}
+with (base/'verified-run.json').open('x') as f:json.dump(result,f,indent=2)
+print(json.dumps(result))
+assert outcome=='exited' and child.returncode==0 and before==after and not containers
+observed=json.loads(stdout)
+assert observed['model_calls']==0 and observed['execution_assessment']=='passed'
+assert observed['fixture_task_verification']=='verified' and observed['baseline_unchanged'] is True
+assert observed['handoff_demo']['status']=='completed'
+assert observed['handoff_demo']['reopen_kind']=='new_core_same_process'
+assert observed['handoff_demo']['actor_kind']=='deterministic_core_fixture'
+assert observed['handoff_demo']['downstream_review']=='owner_mediated_text/unverified'
+print(json.dumps(observed))
+PY

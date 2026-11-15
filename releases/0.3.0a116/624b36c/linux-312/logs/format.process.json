@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "format",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.12/bin/python",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "."
+    ],
+    "cwd": "/root/amadeus-m116/s",
+    "started_at": "2026-11-15T10:07:05.031191+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "format",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.12/bin/python",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "."
+    ],
+    "cwd": "/root/amadeus-m116/s",
+    "exit_code": 0,
+    "started_at": "2026-11-15T10:07:05.031191+00:00",
+    "finished_at": "2026-11-15T10:07:05.256123+00:00",
+    "log": "logs/format.log",
+    "log_sha256": "36cf8af8d105b4a260074246b932f4daff21638d0552a8d54fc9d92076312dfd",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

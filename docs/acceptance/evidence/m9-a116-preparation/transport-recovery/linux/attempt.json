@@ -1,0 +1,9 @@
+{
+  "started_at": "2026-11-15T10:46:30.045964+00:00",
+  "source_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "wheel_sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+  "driver_sha256": "ed02898ff6761497989ca389eb712a58092a1e7c1be1254a8836fb7e9341bf2a",
+  "queue_result_sha256": "d33af2e7ab207c23a155b0d8dbb7ae6c8f70d1c42dd8980a9173b93a289ccec2",
+  "automatic_retry": false,
+  "scope": "Linux correctness only; benchmark remains separate"
+}

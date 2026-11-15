@@ -1,0 +1,26 @@
+usage: agentsync [-h] [--data-dir DATA_DIR]
+                 {mcp,plan,plan-retry,usage,model-usage,owner,relay-status,relay-reconcile,serve,demo,mock-workflow,workflow}
+                 ...
+
+positional arguments:
+  {mcp,plan,plan-retry,usage,model-usage,owner,relay-status,relay-reconcile,serve,demo,mock-workflow,workflow}
+    mcp                 Run official MCP stdio server
+    plan                Print offline dispatch advice from bounded stdin JSON
+    plan-retry          Print offline retry advice from bounded stdin JSON
+    usage               Summarize a bounded stdin usage checkpoint offline
+    model-usage         Summarize a bounded stdin model meter snapshot
+    owner               Owner operation; read credentials and payload JSON
+                        from stdin
+    relay-status        Inspect a local relay journal with project owner
+                        credentials on stdin
+    relay-reconcile     Reconcile one saved local wave using owner and session
+                        credentials
+    serve               Run authenticated loopback HTTP server
+    demo                Run two mock agents against an explicit local database
+    mock-workflow       Run a disposable Mock task graph from bounded stdin
+                        JSON
+    workflow            Operate an owner-only durable Mock workflow
+
+options:
+  -h, --help            show this help message and exit
+  --data-dir DATA_DIR   Absolute local state directory

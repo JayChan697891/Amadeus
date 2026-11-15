@@ -1,0 +1,62 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-rjtv3b0y/sdist-22dk0q2q/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m116/tmp/.scratch-rjtv3b0y/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac/artifacts/agentsync_local-0.3.0a116.tar.gz"
+    ],
+    "cwd": "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac",
+    "started_at": "2026-11-15T10:26:20.914389+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-rjtv3b0y/sdist-22dk0q2q/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m116/tmp/.scratch-rjtv3b0y/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac/artifacts/agentsync_local-0.3.0a116.tar.gz"
+    ],
+    "cwd": "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac",
+    "exit_code": 0,
+    "started_at": "2026-11-15T10:26:20.914389+00:00",
+    "finished_at": "2026-11-15T10:26:22.911711+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "05e5a80e8401ecdf0e97dc130624e1038d35e44997feb54df48ac6bc6caf9b14",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "started_at": "2026-11-15T10:46:00.553978+00:00",
+  "pid": 5031,
+  "command": [
+    "/root/amadeus-demo-a117/installed/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-demo-a117/run_proposal_candidate_pilot.py",
+    "--demo",
+    "--root",
+    "/root/amadeus-proposal-pilot-demo-a117-20261115",
+    "--image-id",
+    "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+  ],
+  "tool_commit": "5b433f4f3864554ac1af399a73db743c56c1e9f7",
+  "tool_sha256": "3c0c4add8bd9509302aea028f25ffbaccdfd16ee215e6fbd67dd4446c389fec0",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "queue_result_sha256": "d33af2e7ab207c23a155b0d8dbb7ae6c8f70d1c42dd8980a9173b93a289ccec2",
+  "automatic_retry": false
+}

@@ -132,7 +132,8 @@ pull an image or execute candidate code on the host. The original baseline stays
 unchanged. Its actors are deterministic, the downstream text review stays
 unverified, and reopening Core in one process is not a crash demonstration.
 The pilot is a repository tool, not bundled in the wheel. Validation status is
-recorded in [progress](docs/PROGRESS.md); code availability alone is not acceptance.
+recorded in [progress](docs/PROGRESS.md). The [observed Linux demo](docs/acceptance/evidence/durable-demo-a117/verified-linux/lead-review.json)
+passed 8 fixed cases and 19 isolation checks; it is not real-model or formal-release acceptance.
 
 ## Interfaces
 

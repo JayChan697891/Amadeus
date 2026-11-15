@@ -1,0 +1,36 @@
+{
+  "observed_at": "2026-11-15T10:58:54.597155+00:00",
+  "scope": "scripted local crash/restart and replay; not real clients or performance",
+  "status": "pass",
+  "source_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "junit_kind": "report-derived actual scenarios; not pytest",
+  "original_failures_preserved": true,
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "attempt.json",
+      "size": 476,
+      "sha256": "ba54e22ad0608d1bf27c0842fe827b9c6ae70418039581978a95d19a14ef3d36"
+    },
+    {
+      "path": "result.json",
+      "size": 1348,
+      "sha256": "321fade71769800dde8441b8a10fc4d6b117c4a7db187ef8fe7f4c7344772b75"
+    },
+    {
+      "path": "install.log",
+      "size": 4857,
+      "sha256": "7c541a2e5beaf5d2ed30f0c12da52acca7aac2f195753222ae341f96a957f366"
+    },
+    {
+      "path": "dependencies.log",
+      "size": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "path": "recovery.log",
+      "size": 96,
+      "sha256": "29c1ccae31a028035c817e46a86470f3aade37a0205f251dc9063e9e62d8c9fb"
+    }
+  ]
+}

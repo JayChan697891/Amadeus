@@ -92,7 +92,8 @@ python -I -B tools/run_proposal_candidate_pilot.py --demo \
 版本的验证上下文交给另一 Core 身份，并重开 Core 核对和继续。它不下载镜像，
 不在宿主执行候选代码，不修改原基线。身份由确定性程序驱动，不调用模型；
 后续文字评审仍未验证，同一进程重开 Core 也不是崩溃恢复测试。此入口属于仓库
-工具，不包含在 wheel 中；实际运行状态以[进度记录](docs/PROGRESS.md)为准。
+工具，不包含在 wheel 中。[本次 Linux 实测](docs/acceptance/evidence/durable-demo-a117/verified-linux/lead-review.json)
+通过8项固定用例和19项隔离检查，不能替代真实模型或正式发布验收。
 
 ## 接入
 

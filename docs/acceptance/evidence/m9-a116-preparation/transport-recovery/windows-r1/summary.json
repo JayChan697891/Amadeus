@@ -1,0 +1,108 @@
+{
+  "status": "fail",
+  "scope": "Two scripted local same-protocol fixtures for RAT-M8-02",
+  "formal_acceptance": false,
+  "real_client_verified": false,
+  "automatic_retry": false,
+  "started_at": "2026-11-15T10:50:03.294957+00:00",
+  "platform": "win32",
+  "python": "3.12.16",
+  "source_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+  "wheel_sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+  "driver_sha256": "bf776aa60bb7a1c87284120530a731cd9980a1adc154cd276b63aa5bb28639f7",
+  "cases": [
+    {
+      "protocol": "mcp_stdio",
+      "status": "pass",
+      "assertions": [
+        "two_explicit_worker_grants",
+        "one_committed_claim_before_kill",
+        "same_task_id_version_and_owner_after_restart",
+        "exact_create_replay",
+        "exact_claim_replay",
+        "no_duplicate_or_mutated_task_after_replay",
+        "authenticated_competing_claim_denied_without_task_change",
+        "one_task_continued_by_original_owner"
+      ],
+      "original_process": {
+        "pid": 23740,
+        "handshake": {
+          "negotiated": "2025-11-25",
+          "sdk_latest": "2026-07-28"
+        },
+        "termination": "forced_at_commit",
+        "was_alive": true,
+        "exit_code": 1,
+        "old_endpoint_closed": "stdio_eof",
+        "cleanup_verified": true
+      },
+      "restarted_process": {
+        "pid": 11576,
+        "handshake": {
+          "negotiated": "2025-11-25",
+          "sdk_latest": "2026-07-28"
+        },
+        "termination": "fixture_cleanup",
+        "was_alive": true,
+        "exit_code": 1,
+        "cleanup_verified": true
+      },
+      "committed_task": {
+        "count": 1,
+        "status": "claimed",
+        "version": 2,
+        "owner": "A"
+      },
+      "continued_task": {
+        "count": 1,
+        "status": "running",
+        "version": 3,
+        "owner": "A"
+      }
+    },
+    {
+      "protocol": "http_loopback",
+      "status": "fail",
+      "assertions": [
+        "two_explicit_worker_grants",
+        "one_committed_claim_before_kill"
+      ],
+      "original_process": {
+        "loopback_port": 61810,
+        "pid": 7896,
+        "termination": "forced_at_commit",
+        "was_alive": true,
+        "exit_code": 1,
+        "cleanup_failure": {
+          "type": "TimeoutError"
+        }
+      },
+      "restarted_process": {},
+      "committed_task": {
+        "count": 1,
+        "status": "claimed",
+        "version": 2,
+        "owner": "A"
+      },
+      "failure": {
+        "type": "TimeoutError"
+      }
+    }
+  ],
+  "origin_before": {
+    "version": "0.3.0a116",
+    "import_origin": "Lib/site-packages/agentsync/__init__.py",
+    "wheel_direct_url_verified": true,
+    "members_verified": 96,
+    "member_hashes_sha256": "3afe395b46e40900f5490791f373c8b76eba13b39d9793a85f5c420ddd929f2f"
+  },
+  "origin_after": {
+    "version": "0.3.0a116",
+    "import_origin": "Lib/site-packages/agentsync/__init__.py",
+    "wheel_direct_url_verified": true,
+    "members_verified": 96,
+    "member_hashes_sha256": "3afe395b46e40900f5490791f373c8b76eba13b39d9793a85f5c420ddd929f2f"
+  },
+  "finished_at": "2026-11-15T10:50:06.234821+00:00"
+}

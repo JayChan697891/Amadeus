@@ -1,0 +1,100 @@
+{
+  "schema": "amadeus.owner-proposal-pilot.v1",
+  "started_at": "2026-11-15T10:46:02.657050+00:00",
+  "owner_reviewed_origin": {
+    "kind": "owner_authored_demo",
+    "proposal_file_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772"
+  },
+  "automated_import": false,
+  "model_calls": 0,
+  "original_producer_task_changed": false,
+  "reviewer_kind": "distinct Core identity, host-mediated; not a second model",
+  "proposal_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+  "driver_sha256": "6f5720b7a9c85f97cdddd42cd1225262655ee8b588e6f5136fadf6026af31fc9",
+  "solution_sha256": "2a2c8b0d42f53e42302c814d9a1cb670fb9c8a28f1af054087e7bdd0bf8aedc7",
+  "target_project_id": "70211eeb-ba10-436e-9e6c-aa3b05f4ef2d",
+  "target_task_id": "44549c49-7330-49e2-a9ff-3151b60954cc",
+  "target_worktree_id": "a4f73050-ad4b-54bd-8371-a008cd2ca948",
+  "target_head": "b0e78e142244096d976431fc636f7c545bf14cf9",
+  "candidate_id": "797af74e-f9fd-5670-b0fd-dc75373a23cd",
+  "candidate_sha": "73ea6f8aedaf76a5222b4678c9d11c41944a191e",
+  "candidate_provenance_sha256": "f74564b187c91806fd1e7e7b666bd3c6044cc5a64e4805a3e8bd02f70329f9f0",
+  "manifest": [
+    [
+      "add.py",
+      "4693ad3cf8b0903b98497fb89b8b524fbf1b93f4",
+      32
+    ],
+    [
+      "fixture.txt",
+      "cc0ce556a1c31a47dc9a560fe9486567dd520ed6",
+      45
+    ],
+    [
+      "solution.py",
+      "f92ce41ff3463ec7bc6e80af82ab8c3a93152097",
+      166
+    ]
+  ],
+  "profile_sha256": "fdc54df4cec722eb4d8f7f18d2df2056e4e87c8b7f42b35183a2beaf7121fbfb",
+  "cases": [
+    {
+      "input": [
+        0,
+        0
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        2,
+        3
+      ],
+      "expected": 5
+    },
+    {
+      "input": [
+        -7,
+        4
+      ],
+      "expected": -3
+    },
+    {
+      "input": [
+        -8,
+        -9
+      ],
+      "expected": -17
+    },
+    {
+      "input": [
+        17,
+        -17
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        9223372036854775807,
+        1
+      ],
+      "expected": 9223372036854775808
+    },
+    {
+      "input": [
+        -9223372036854775808,
+        -1
+      ],
+      "expected": -9223372036854775809
+    },
+    {
+      "input": [
+        1000000000000000000000000000000,
+        1000000000000000000000000000000
+      ],
+      "expected": 2000000000000000000000000000000
+    }
+  ],
+  "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "formal_release": "BLOCKED"
+}

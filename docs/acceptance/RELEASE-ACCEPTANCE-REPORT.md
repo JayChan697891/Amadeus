@@ -1,6 +1,36 @@
 # Release Acceptance Report
 
-## Delivery adjustment and latest evidence — 2026-11-15
+## Current scoped outcome — 2026-11-15T11:05Z
+
+**Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
+Node A has a runnable engineering demonstration; real-current-Agent cooperation
+is not claimed. Runtime117/fc27f15 with pilot5b433f4 actually passed the fixed Linux
+Docker run:8 cases,19 isolation checks, verified producer, exact proof/context
+handoff and Core reopen.97 installed files unchanged, cleanup confirmed. Actors
+are deterministic; text review is unverified; no model call or real crash occurred.
+See evidence/durable-demo-a117/verified-linux/lead-review.json. Windows/Linux
+durable console observations and focused Windows10+pilotCLI5 checks are separate;
+full117 regression/sdist remains NOT RUN.
+
+Frozen116/624b36c matrix is5/9. Linux3.12 completed26 checks and source/wheel/sdist
+each2526pass7skip;174 original files and3122 frozen source paths verified. Selected
+case/Docker delta agrees with the independently reviewed Linux3.14 reference.
+See ../../releases/0.3.0a116/624b36c/linux-312/lead-review.json and
+../../releases/0.3.0a116/624b36c/matrix-after-linux312.json. Original Windows3.14
+source has passed; wheel/sdist are incomplete. macOS remains NOT RUN.
+
+Four exact116-wheel recovery observations now pass: MCP and HTTP on Linux and
+Windows. Windows HTTP's first attempt failed at closure observation; its original
+failure is retained. The corrected HTTP-only run requires original worker identity
+ended and native listener absent before restart; it passed without repeating MCP
+or changing product code. See evidence/m9-a116-preparation/transport-recovery/current-summary.json.
+These scoped deterministic cases are not real-client recovery, performance, full
+M8 or Release acceptance. The JUnit supplements are labelled report-derived
+actual scenario observations, not pytest runs. Ordered benchmarks remain NOT RUN
+until the original Windows queue finishes. No historical test is attributed to117.
+
+## Earlier delivery checkpoint — 2026-11-15
+
 
 The original release requirements and accepted M5 frozen open scope are unchanged.
 P0/P1/P2 and nodes A/B/C now control delivery order (see ../PLAN.md); A/B do not

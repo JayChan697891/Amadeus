@@ -1,0 +1,60 @@
+{
+  "finished_at": "2026-11-15T10:46:39.210754+00:00",
+  "status": "pass",
+  "checks": [
+    {
+      "id": "venv",
+      "exit_code": 0,
+      "command": [
+        "/root/jobs-env/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "/root/amadeus-m116-recovery-r1/installed"
+      ]
+    },
+    {
+      "id": "install",
+      "exit_code": 0,
+      "command": [
+        "/root/amadeus-m116-recovery-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-cache-dir",
+        "--find-links",
+        "/root/intent-wheelhouse",
+        "/root/amadeus-m116/windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl"
+      ]
+    },
+    {
+      "id": "dependencies",
+      "exit_code": 0,
+      "command": [
+        "/root/amadeus-m116-recovery-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "check"
+      ]
+    },
+    {
+      "id": "recovery",
+      "exit_code": 0,
+      "command": [
+        "/root/amadeus-m116-recovery-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "/root/amadeus-m116/transport-recovery-linux-priority.py"
+      ]
+    }
+  ],
+  "formal_release": "BLOCKED",
+  "real_models": "NOT RUN",
+  "automatic_retry": false
+}

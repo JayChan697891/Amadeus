@@ -1,0 +1,20 @@
+{
+  "phase": "finished",
+  "row": "linux-312",
+  "pid": 15612,
+  "started_at": "2026-11-15T09:47:57.754414+00:00",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+  "python": "3.12.16 (main, Nov 12 2026, 03:19:15) [GCC 15.2.0]",
+  "driver_sha256": "765f252f1855054c3e6d0b6458c421902b4c8c7eb598b6e19208709e78a5e27d",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_models": "NOT RUN",
+  "report": "/root/amadeus-m116/linux-312/reports/release-20261115T094757Z-e9813cf8fbac/report.json",
+  "source_clean": true,
+  "unsuccessful_checks": [],
+  "docker_containers_after": [],
+  "local_checks_passed": true,
+  "strict_evidence_verified": true,
+  "finished_at": "2026-11-15T10:45:15.229103+00:00"
+}
