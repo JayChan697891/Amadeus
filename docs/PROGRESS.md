@@ -1,5 +1,18 @@
 # Amadeus current progress
 
+Current continuation: prepare corrected candidate0.3.0a116 from the preserved
+015ad52 repair. Relative to frozen b6f05f0, runtime code is unchanged except the
+version; the changes are the Windows Git test helper/regression, six explicit
+redaction-case labels and the already-reviewed composite verifier/tests. The
+candidate will use a new clean frozen source identity with existing gates.
+Collection-only preflight found2533 cases, all2533 unique after sanitization;
+Ruff and format checks passed. Full source/wheel/sdist runs are pending; no a115
+pass or failed/unknown receipt is relabeled. Local work stays on D:, source/evidence
+on F:, GitHub storage only. macOS is NOT RUN (owner has no environment).
+Next: freeze the candidate, then run one Windows3.12
+collector. Other rows depend on its original build/manifest, with no duplicate
+collectors on the same host. Formal Release stays BLOCKED.
+
 The existing M9-02 bounded technical delivery-scope decision is now recorded in
 acceptance/evidence/m9-a115-preparation/b6-license-platform-delta.json under
 scoped_delivery_decision. Independent Astra review and lead inspection of the

@@ -1,0 +1,70 @@
+"""Bounded collection preflight; no test bodies or real clients are executed."""
+import contextlib
+import hashlib
+import io
+import json
+import os
+from pathlib import Path
+import sys
+
+repo = Path('F:/syuc/amadeus-m6-single')
+run = Path('D:/agentsync-debug/m116-preflight-r1')
+for name in list(os.environ):
+    upper = name.upper()
+    if upper.startswith(('OPENAI_', 'ANTHROPIC_', 'CODEX_', 'AGENTSYNC_', 'CLAUDE_',
+                         'CURSOR_', 'GIT_', 'PIP_', 'PYTEST_', 'GOOGLE_', 'GEMINI_',
+                         'DEEPSEEK_')) or upper in ('PYTHONPATH', 'PYTHONHOME') or upper.endswith(
+                             ('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        os.environ.pop(name, None)
+os.environ.update(HOME=str(run/'home'), USERPROFILE=str(run/'home'),
+                  CODEX_HOME=str(run/'home'), PYTHONDONTWRITEBYTECODE='1',
+                  GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
+                  GIT_TERMINAL_PROMPT='0', PIP_NO_INDEX='1',
+                  RUFF_CACHE_DIR=str(run/'scratch/ruff'))
+sys.path[:0] = [str(repo/'src'), str(repo)]
+from tools import release_acceptance as collector
+
+if sys.argv[1:] == ['probe']:
+    import pytest
+
+    class Identities:
+        def pytest_collection_finish(self, session):
+            self.identities = [item.nodeid for item in session.items]
+
+    plugin = Identities()
+    captured = io.StringIO()
+    with contextlib.redirect_stdout(captured), contextlib.redirect_stderr(captured):
+        code = pytest.main(['--collect-only', '-q', '-p', 'no:cacheprovider',
+                            str(repo/'tests')], plugins=[plugin])
+    identities = getattr(plugin, 'identities', [])
+    clean = [collector.redact_credentials(name)[0] for name in identities]
+    result = {'scope': 'collection_only_not_test_execution', 'exit_code': int(code),
+              'collected': len(identities), 'unique_original': len(set(identities)),
+              'unique_sanitized': len(set(clean)),
+              'sanitized_ids_sha256': hashlib.sha256(
+                  json.dumps(sorted(clean), ensure_ascii=True).encode()).hexdigest()}
+    with (run/'collection.json').open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(result, stream, indent=2)
+    print(json.dumps(result))
+    passed = code == 0 and len(identities) > 2482 and len(set(clean)) == len(identities)
+    if not passed:
+        print(collector.redact_credentials(captured.getvalue())[0])
+    raise SystemExit(0 if passed else 1)
+
+run.mkdir()
+for child in ('logs', 'scratch', 'home'):
+    (run/child).mkdir()
+checks = []
+for name, command in (
+    ('ruff', [sys.executable, '-I', '-m', 'ruff', 'check', '.']),
+    ('ruff_format', [sys.executable, '-I', '-m', 'ruff', 'format', '--check', '.']),
+    ('collection', [sys.executable, '-I', '-B', str(Path(__file__).resolve()), 'probe']),
+):
+    result = collector.execute(name, command, repo, run, run/'scratch')
+    checks.append(result)
+    print(json.dumps({'id': name, 'status': result['status']}), flush=True)
+    if result['status'] != 'pass':
+        break
+with (run/'result.json').open('x', encoding='utf-8', newline='\n') as stream:
+    json.dump({'checks': checks, 'test_execution': 'NOT RUN'}, stream, indent=2)
+raise SystemExit(0 if len(checks) == 3 and all(c['status'] == 'pass' for c in checks) else 1)

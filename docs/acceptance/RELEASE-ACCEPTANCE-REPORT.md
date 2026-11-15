@@ -1,6 +1,16 @@
 # Release Acceptance Report
 
-## Current candidate: b6f05f0; remaining local matrix running
+## Current correction:0.3.0a116; full collection pending
+
+The working source includes the bounded Windows test-helper repair and prior
+reviewed evidence-verifier changes, with only the version changed in runtime
+code. Collection-only preflight found2533 cases with2533 distinct sanitized
+identities; Ruff/format passed. These checks execute no test bodies and do not
+certify a full suite. Freeze this corrected source before new package/matrix
+collection; do not transplant a115 observations. macOS remains NOT RUN after
+the owner's confirmation. Formal Release remains BLOCKED.
+
+## Preserved a115 candidate:b6f05f0; five complete historical rows
 
 Latest resumed observation: Windows3.14 completed its original queue at
 2026-11-14T12:49:08Z, exit0. All26 checks pass; each source/wheel/sdist suite

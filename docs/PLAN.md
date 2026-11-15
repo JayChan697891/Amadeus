@@ -1,5 +1,13 @@
 # Amadeus current direction: finish M7/M8 and remaining release gates
 
+Current next execution: freeze corrected candidate0.3.0a116 after its completed
+collection-only preflight (2533 distinct sanitized case IDs; Ruff/format pass),
+then collect Windows3.12 source and both fresh
+installations using the existing local pipeline. The original a115 matrix and
+failed wheel trial remain historical evidence. Subsequent platform rows must use
+the new candidate's exact source and archives; no test-only identity exception,
+new M5 subphase, or Release waiver. macOS remains unavailable/NOT RUN.
+
 M9-02's current-archive technical license classification is recorded using the
 existing evidence; no extra audit stage, package rebuild or external legal
 sign-off is required by this finding. Public Release still needs separate

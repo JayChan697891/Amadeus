@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0a116 - corrected acceptance candidate, validation pending
+
+- Give the Windows test Git helper the same command-scoped long-path support
+  already used by managed Git, with a real long-reference regression.
+- Include the reviewed composite-evidence verifier and explicit stable labels
+  for six redaction fixtures. Existing a115 results keep their original source
+  identity; the corrected candidate requires its own full local collection.
+- Preserve the failed a115 Windows3.12 wheel run and separate60pass/1skip repair
+  evidence. No runtime behavior change beyond the candidate version; formal
+  Release remains blocked, including unavailable macOS and real-client evidence.
+
 ## 0.3.0a115 - implementation complete, validation pending
 
 - Check the actual monotonic deadline before stopping a captured process when
