@@ -12,12 +12,14 @@ Retrieved 2026-10-19; package introspection and actual execution determine verif
 Probe results are in codex-host-probe.json and claude-host-probe.json. Neither result is a
 test of manipulating a desktop GUI or an assertion of control over pre-existing conversations.
 
-Reproducible, optional manual probes (Windows npm-installed CLIs expected):
+Historical invocation records (2026-10-19; not current reproduction commands):
 
 ```powershell
 & .\.venv\Scripts\python.exe tests\manual\probe_codex_host.py
 & .\.venv\Scripts\python.exe tests\manual\probe_claude_host.py
 ```
 
-These create local test state under work/. Codex starts only an ephemeral connection and direct
-MCP calls, never `turn/start`. Claude uses isolated settings, health checks and no model prompt.
+Those historical probes used work/. Current a118 probes use a new D-drive fixture,
+an installed package, isolated empty client settings and explicit native binaries.
+See [the current commands and actual evidence](acceptance/CLIENT-MATRIX.md).
+No inference is requested; desktop GUI and model-control acceptance remain separate.

@@ -1,5 +1,30 @@
 # Amadeus current progress
 
+M2-05 current-package native supplement — 2026-11-16 UTC. Codex0.162.0 native
+568e47 exited0 at10:34:23Z:34 discovered tools, two independent deterministic
+identities, task v1→v5, duplicate claim rejection, pinned context v1 and new-host
+reopen. Text acceptance remains unverified. Actual status observations include
+starting→connected; the probe only waits for that public state, bounded10 seconds.
+Initial attempt cd517e remains BLOCKED/local_mcp_unavailable; it did not save the
+concrete state, so its cause is unknown. Its executed source was reconstructed
+afterward and independently hash-matched to the original receipt, not represented
+as a pre-run sealed copy. Original failure and private fixture are retained.
+
+Claude2.1.295 native cfd229 exited0 at10:33:40Z;4 public CLI commands and the actual
+isolated configuration confirm MCP health connected to a118. No Claude tool calls,
+model inference, credentials or desktop UI operation. Both runs kept97 installed
+members unchanged. Codex parents exited0 with5+2 marked MCP children ended; later
+fixture-specific process observation found none. Static validation was9pass then
+14pass with five extra state checks, not23 distinct tests. Root read actual outputs;
+independent Astra accepted these limited scopes. Evidence:
+acceptance/evidence/recovery-preview-a118/clients/summary.json. No package rebuild.
+
+Recovery entry: completed native probes must not be rerun merely to relabel their
+evidence. Original Goal/42 requirements remain active; identify the next original
+locally feasible gap. Cross-vendor model execution and macOS still lack environments;
+formal Release, original-workspace application and external acceptance stay gated.
+All current probe/test jobs and the owned VM have ended; no automation was launched.
+
 Linux affected-install supplement — 2026-11-16 UTC. Native45407 ended0 at10:20:31Z;
 16 checks pass, wheel12pass/sdist12pass with zero failures/errors/skips. The exact
 Windows-built a118 packages were installed without rebuilding; all12 case identities
@@ -13,11 +38,9 @@ Docker or full-suite reruns. At10:23:11Z the owned VM was confirmed absent after
 checking no workers/containers and normal poweroff; its disk is retained.
 Formal Release stays BLOCKED.
 
-Next: repair the existing M2-05 native MCP compatibility probe for current viewer
-defaults and isolated a118 installation. Use only public no-inference methods;
-no turn/start, shared config changes or credentials. The preparation is in progress,
-not a client compatibility pass. Claude/Cursor execution and macOS remain NOT RUN
-for unavailable environments. Original Goal and M0–M9 requirements are retained.
+The subsequent M2-05 work is recorded above; its no-inference scope is separate
+from the unavailable Claude/Cursor model-control and macOS execution environments.
+Original Goal and M0–M9 requirements are retained.
 
 Current candidate checkpoint — 2026-11-16 UTC. a118 source/test7f0ba0a packages
 the CLI repair3b43647; immutable a117 packages remain unchanged. Native session62523

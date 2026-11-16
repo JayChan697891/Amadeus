@@ -1,0 +1,12 @@
+{
+  "status": "blocked",
+  "amadeus_version": "0.3.0a118",
+  "inference_turns": 0,
+  "desktop_ui_tested": false,
+  "global_configuration_modified": false,
+  "codex_binary_sha256": "dce685d569526ef4712fa82d20ff20e1309baad5fcd34215e1126698f611242f",
+  "probe_sha256": "72a0c6c8b4532ebb1d9a02ed97aab146fc0ce93f15f249237560b1e4c767ac64",
+  "blocked_method": "mcpServerStatus/list",
+  "reason": "local_mcp_unavailable",
+  "rpc_code": null
+}

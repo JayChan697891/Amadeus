@@ -12,9 +12,12 @@ and [actual scoped evidence](acceptance/evidence/recovery-preview-a118/summary.j
 The same original packages now also passed16 native Linux3.14 installation checks,
 with the same12 cases passing in each fresh environment. See the
 [Linux supplement](acceptance/evidence/recovery-preview-a118/linux/summary.json).
-Next is original M2-05 current-package native MCP compatibility, using isolated
-zero-inference probes where public client methods permit. This is not another
-full suite or an additional M5 phase. Formal Release stays BLOCKED.
+Original M2-05 now also has current-package native MCP evidence: Codex0.162.0
+discovers34 tools and executes the deterministic two-identity/text-review/context/
+reopen flow; Claude2.1.295 health-connects. Zero inference and no credentials.
+See [actual results and retained first failure](acceptance/evidence/recovery-preview-a118/clients/summary.json).
+These are backend compatibility results, not desktop UI or model-driven relay.
+No full-suite repeat or additional M5 phase. Formal Release stays BLOCKED.
 
 P1 correction, 2026-11-16: workflow status/resume/cancel now reject a missing
 database before initializing Core, so a mistyped recovery directory stays untouched.

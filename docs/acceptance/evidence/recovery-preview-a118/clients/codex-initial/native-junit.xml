@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="codex-initial" tests="1" failures="1" errors="0" skipped="0"><testcase classname="native_mcp_probe" name="codex-initial"><failure type="BLOCKED" message="Observed local_mcp_unavailable; concrete runtime state not retained in initial probe." /><system-out>Derived from actual native run receipt/result; not a pytest execution or model inference.</system-out></testcase></testsuite>

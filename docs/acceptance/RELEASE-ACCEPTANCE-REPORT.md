@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+Current a118 has actual native MCP compatibility evidence: Codex0.162.0 discovers
+34 tools and exercises two deterministic identities, task/context sharing, distinct
+text review and host reopen; Claude2.1.295 health-connects using an isolated config.
+No model inference/credential copy;97 installed members remain unchanged. Original
+generic connection failure is preserved with unknown precise cause.14 static cases
+pass after the bounded starting-state repair. Root and separate Astra inspected
+actual reports and local private health output/config. Text review stays unverified;
+not all34 tools or structured handoff API were invoked. No current desktop UI,
+Claude tool flow or model-control acceptance is implied. Formal Release BLOCKED.
+[Native results, original failure and exact source](evidence/recovery-preview-a118/clients/summary.json).
+
 The same original a118 packages also passed the affected Linux3.14 installation
 supplement:16 native checks, wheel12pass/sdist12pass, zero failure/error/skip and
 the same12 identities/outcomes as Windows.2899 frozen source paths and97 members

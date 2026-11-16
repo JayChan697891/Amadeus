@@ -7,9 +7,9 @@ No paid inference calls are authorized by this acceptance checkpoint.
 
 | Client / interface | Existing evidence | Verified scope | Missing release evidence / status |
 |---|---|---|---|
-| Codex public app-server MCP | `../codex-host-probe.json`; `../M2-CONTINUATION.zh-CN.md` | Historical real installed host connected, discovered 11 original tools, called create_project/register_agent/create_task/list_tasks; zero inference turns | Current 33-tool client compatibility, complete task/handoff/review workflow and model-driven relay **NOT VERIFIED**. Desktop connected status was separately user-reported, not automated UI evidence. |
-| Claude Code CLI MCP | `../claude-host-probe.json`; `../M2-CONTINUATION.zh-CN.md` | Historical real installed CLI health check connected using isolated configuration; zero model prompts | Tool calls explicitly not tested; full current tool workflow and model-driven relay **NOT VERIFIED**. |
-| Cursor MCP / CLI | No real client execution evidence recorded | None | **NOT EXECUTED**; installation, supported interfaces and current OS support require verification. |
+| Codex public app-server MCP | [a118 actual native probes](evidence/recovery-preview-a118/clients/summary.json); historical `../codex-host-probe.json` retained | Installed0.162.0 discovers34 tools; two deterministic identities create/claim/submit/text-review task v1→v5, share pinned context v1, reject duplicate claim, and reopen task/context through a new host. Zero inference; current package members unchanged | **SCOPED PASS**. Only recorded operations invoked; not all34 tools or structured handoff API. Text review stays unverified. Desktop UI and model-driven relay are not established by this probe. Original connection failure remains recorded with unknown concrete cause. |
+| Claude Code CLI MCP | [a118 actual health check](evidence/recovery-preview-a118/clients/claude/result.json); historical `../claude-host-probe.json` retained | Installed2.1.295 public MCP CLI connects to the a118 installed server in a new isolated configuration;4 native commands exit0; zero model prompts/credentials | **SCOPED PASS** for health connection only. Tool calls, desktop UI, control adapter and model-driven relay remain **NOT RUN**. |
+| Cursor MCP / CLI | Local inventory found desktop3.27.22; no standalone agent CLI on PATH or confirmed zero-inference MCP health interface | No execution claim | **NOT EXECUTED**. Desktop presence is not MCP/control-adapter compatibility. |
 | Codex control adapter | [Continuous installed09425da flow](evidence/m7-continuous-live/summary.json); historical runs retain their own SHA scope | Two real pinned0.167 CLI identities in one continuous flow: immutable proposal, exact host decisions,8/8 local Docker/19isolation checks, independent Core verified producer, automatic dependent task/context handoff, full model review and separate host document acceptance; normal reopen with no new launch | **SCOPED PASS** for same-vendor gated collaboration, not whole-client/Release acceptance. Four explicit host decisions were involved; review text stays unverified. Cross-vendor behavior, unattended application and active-generation timeout remain unverified; unsupported cancellation/resume capabilities stay declared rather than inferred. Billing is owner-confirmed only. |
 | Claude Code control adapter | `evidence/claude-adapter-local-20261026.json`; known-Python-helper/Core tests; current fixture-tested opt-in process factory | Six-method protocol prototype plus pinned plan/capture wiring; default startup unsupported, Core tasks unchanged, actual client unverified | **ACTUAL CLAUDE NOT RUN**: owner has no subscription. Permissions, billing, server cancellation, tree cleanup and autonomous relay unverified. |
 | Cursor control adapter | Terminal JSON parser, host-factory CursorAdapter, pinned process/native Node-bundle planning and known local Python/Core fixtures; [bundle evidence](evidence/m6-cursor-node-bundle/summary.json) | Bounded protocol and opt-in host preparation; default startup unsupported; local fixtures do not establish a real client run | **ACTUAL CURSOR NOT RUN / NOT VERIFIED**: owner has no subscription. Supported real CLI execution and OS/permission/cancellation/relay evidence remain required. |
@@ -18,6 +18,20 @@ No paid inference calls are authorized by this acceptance checkpoint.
 | Mock adapter | Implemented MockAdapter and instance-local MockRunManager; unit and Core-boundary integration tests | In-memory simulation and public planning compatibility only; no real client execution or Core task mutation | Simulation-only, real client capability **UNVERIFIED**; never substitute for any row above. |
 
 ## Required real-client procedure
+
+Current a118 probe commands, from the repository with an installed a118 environment:
+
+```powershell
+& D:\agentsync-debug\m118p\w\Scripts\python.exe -I -B tests\manual\probe_codex_collaboration.py
+& D:\agentsync-debug\m118p\w\Scripts\python.exe -I -B tests\manual\probe_claude_host.py --claude-binary "$env:APPDATA\npm\node_modules\@anthropic-ai\claude-code\bin\claude.exe"
+```
+
+Each creates a new D-drive fixture and retains its own result. Raw stderr, home/config
+and databases stay local; only sanitized public evidence is archived. These probes
+do not invoke inference or edit shared configuration. That boundary is supported by
+code and actual fixture inspection, not a full hash inventory of shared files.
+The older shared `probe_registered_codex.py` retains historical11-tool assumptions;
+it was not run or updated by this checkpoint. Do not use it as current acceptance.
 
 For each claimed client and OS, use a dedicated temporary project and database,
 record package version, commit SHA, OS, Python and client versions, supported public
