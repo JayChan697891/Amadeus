@@ -19,6 +19,12 @@ See [actual results and retained first failure](acceptance/evidence/recovery-pre
 These are backend compatibility results, not desktop UI or model-driven relay.
 No full-suite repeat or additional M5 phase. Formal Release stays BLOCKED.
 
+After this supplement, read-only review of the original requirements found no
+new actionable local product gap. Do not manufacture another verification phase.
+The next concrete dependencies are real Claude/Cursor account access (M6-04/05),
+macOS hardware (M9-01), external Work acceptance and release authorization. These
+remain separate from earlier accepted local scopes; no complete a118 matrix claim.
+
 P1 correction, 2026-11-16: workflow status/resume/cancel now reject a missing
 database before initializing Core, so a mistyped recovery directory stays untouched.
 Six real CLI reproductions failed before the fix; seven targeted Windows3.12

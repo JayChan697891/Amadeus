@@ -20,10 +20,18 @@ independent Astra accepted these limited scopes. Evidence:
 acceptance/evidence/recovery-preview-a118/clients/summary.json. No package rebuild.
 
 Recovery entry: completed native probes must not be rerun merely to relabel their
-evidence. Original Goal/42 requirements remain active; identify the next original
-locally feasible gap. Cross-vendor model execution and macOS still lack environments;
-formal Release, original-workspace application and external acceptance stay gated.
-All current probe/test jobs and the owned VM have ended; no automation was launched.
+evidence. The subsequent read-only original-plan audit found no further currently
+actionable local product gap. M5's frozen open scope has no remaining REQUIRED/
+BLOCKER; earlier dependency/license technical inspection already exists, and the
+probe changes do not justify repeating the product matrix. This is not acceptance
+of all42 requirements or a complete a118 release matrix.
+Remaining external conditions: usable accounts/authorization for real Claude and
+Cursor control adapters (M6-04/05), a macOS host (M9-01), external Work review and
+explicit final-release authorization. First resume action is to read PR35 feedback
+and act on a concrete newly available condition; preserve NOT RUN when unchanged.
+Original Goal remains active and all historical plans/evidence are retained.
+Formal Release and original-workspace application stay gated. All current probe/
+test jobs and the owned VM have ended; no continuation automation was launched.
 
 Linux affected-install supplement — 2026-11-16 UTC. Native45407 ended0 at10:20:31Z;
 16 checks pass, wheel12pass/sdist12pass with zero failures/errors/skips. The exact
