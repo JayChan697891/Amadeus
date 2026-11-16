@@ -1,0 +1,90 @@
+"""Install reviewed new helper files and check the existing fixture without model access."""
+import hashlib
+import json
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+REMOTE = '/root/amadeus-interrupted-a117-20261115'
+PYTHON = '/root/amadeus-demo-a117-sdist-r1/installed/bin/python'
+FILES = {
+    'live.py': '6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48',
+    'cleanup.py': 'ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a',
+    'interrupt_parent.py': '6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343',
+}
+for name, expected in FILES.items():
+    assert hashlib.sha256((BASE / name).read_bytes()).hexdigest() == expected
+entry = BASE / 'staging-entry.json'
+with entry.open('x', encoding='utf-8') as stream:
+    json.dump({'started_at': datetime.now(UTC).isoformat(), 'files': FILES,
+               'model_calls': 0, 'external_model_auth_access': False}, stream, indent=2)
+
+client = paramiko.SSHClient()
+client.load_host_keys(r'D:\agentsync-debug\vm\known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename=r'D:\agentsync-debug\vm\debug_ed25519',
+               look_for_keys=False, allow_agent=False, timeout=15)
+try:
+    sftp = client.open_sftp()
+    for name, expected in FILES.items():
+        with sftp.open(REMOTE + '/' + name, 'wx') as stream:
+            stream.write((BASE / name).read_bytes())
+        sftp.chmod(REMOTE + '/' + name, 0o600)
+        with sftp.open(REMOTE + '/' + name, 'rb') as stream:
+            assert hashlib.sha256(stream.read()).hexdigest() == expected
+    probe = '''import json,os,sys,time
+from datetime import UTC,datetime
+from pathlib import Path
+root=Path('/root/amadeus-interrupted-a117-20261115')
+sys.path.insert(0,str(root))
+import live,cleanup,prepare,private_capture,interrupt_parent
+os.umask(0o077)
+live.prep=prepare
+live.cleanup=cleanup
+with cleanup.stage_lock():
+ assert not any((root/name).exists() for name in ('live-authorization.json','producer-entry.json','receiver-entry.json','closing.json'))
+ assert not cleanup.mounts() and not any(prepare.PRIVATE_HOME.iterdir())
+ for name,expected in live.PREPARED.items():
+  assert live.sha(root/name)==expected
+ core,state=live.core_state()
+ live.heartbeat(core,state,'producer','receiver')
+ assert prepare.producer_plan(core,state)==prepare.load('plan.json')['producer_plan']
+ snapshot=core.execute('get_project_state',prepare.auth(state,'producer'))
+ sessions={row['id']:row for row in snapshot['sessions']}
+ for who in ('producer','receiver'):
+  row=sessions[state[who]['session_id']]
+  assert row['online'] is True and row['expires_at']>time.time()+120
+ relay=live.ControlledRelay(core,root,root/'receipts')
+ attempts,exact=live.public_attempts(relay,state,state['task']['id'])
+ assert exact and all(value['state']=='not_dispatched' for value in cleanup.validate_attempts(attempts))
+ prepare.runtime()
+ record={'observed_at':datetime.now(UTC).isoformat(),'producer_plan_sha256':live.PRODUCER_PLAN,'model_calls':0,'external_model_auth_access':False,'private_home_empty':True,'live_authorization':'NOT GRANTED','live_execution':'NOT RUN','runtime_members':97,'source_attempts':'not_dispatched','new_helpers':{name:live.sha(root/name) for name in ('live.py','cleanup.py','interrupt_parent.py')}}
+ cleanup.save('controller-readiness.json',record)
+ print(json.dumps(record))
+'''
+    command = PYTHON + ' -I -B -'
+    stdin, stdout, stderr = client.exec_command(command, timeout=40)
+    stdin.write(probe)
+    stdin.flush()
+    stdin.channel.shutdown_write()
+    output, errors = stdout.read(), stderr.read()
+    code = stdout.channel.recv_exit_status()
+    record = {'finished_at': datetime.now(UTC).isoformat(), 'command': command,
+              'probe': probe, 'exit_code': code,
+              'stdout': output.decode(), 'stderr': errors.decode()}
+    with (BASE / 'staging-result.json').open('x', encoding='utf-8') as stream:
+        json.dump(record, stream, indent=2)
+    print(json.dumps({'exit_code': code, 'result': str(BASE / 'staging-result.json')}))
+    if code == 0:
+        with sftp.open(REMOTE + '/controller-readiness.json', 'rb') as stream:
+            data = stream.read()
+        with (BASE / 'controller-readiness.json').open('xb') as stream:
+            stream.write(data)
+        print(output.decode())
+    else:
+        print(errors.decode())
+finally:
+    client.close()

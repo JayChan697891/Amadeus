@@ -1,5 +1,46 @@
 # Amadeus current progress
 
+Current recovery checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Goal active; PR35 remains open/draft at the resumed ccfe615 branch with no new
+comments. A remains usable now; P0 still prioritizes the existing live-recovery
+gap, P1 usability/current-package checks, P2 unavailable extra clients/platforms.
+No new product stage, version or M5 acceptance cycle was introduced.
+
+The interrupted-client controller is now implemented: producer capture/interruption,
+fresh-process continuation preview, exact receiver decision within the same callback,
+zero-launch replay and terminal-gated cleanup. Its native lifecycle lock prevents
+cleanup racing another stage; cleanup rereads current producer/receiver receipts.
+Root Linux checks passed14 cleanup cases and8 live-helper cases, with no skips.
+The latter use real run_once request binding and synthetic cached status, not live
+models. Real flock is exercised with an inert Python child; credential text and
+unmount are fixtures. First12pass/2fixture-fail and transfer-before-test failure
+are retained. An import-only Ruff correction received the same8 affected cases;
+do not count that repeat as additional coverage. Ruff/format now pass.
+
+Independent Astra review found the fixed-plan hash typo and overlong approval
+window; both were corrected and the final live/cleanup hashes reviewed. Approval
+now has at most30seconds within the same90second adapter budget as route/model.
+The three new helpers were exclusively staged without replacing preparation;
+native readiness exited0 at06:47:15Z, checked97 runtime files and unchanged
+producer plan, empty auth home and no dispatched attempts. This remains zero-model
+preparation. Readiness is point-in-time, not an execution grant.
+
+Evidence and concrete next action:
+`acceptance/evidence/durable-demo-a117/interrupted-controller/current-summary.json`
+and `execution-plan.md`. Exact live hash6268f18d and cleanup hash ee2f5a86;
+runtime a117/fc27f15 remains unchanged. Next obtain a fresh explicit at-most-two-
+subscription-call grant with the exact temporary-auth and owned-parent-interruption
+scope, then recheck the fixture and follow the reviewed four-stage plan. Old grants
+remain consumed; no model call, login-copy, mounting or live stage has occurred.
+Unknown results stop without retry. Receiver proposals remain review/unverified.
+Whole-host crash, cross-vendor clients, full B and formal Release stay unverified/
+BLOCKED; macOS and real Claude/Cursor lack available environments.
+
+All22 current offline tests have ended; the earlier full queues remain finished.
+Local VM PID21524/boot ad4636c1-6f52-452a-80f6-4a4585dc729a holds the preserved
+fixture. Its runtime state is recorded separately when the checkpoint closes;
+do not infer an active model/test job from the VM being powered on.
+
 Resume checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Goal active; branch feat/m6-single-codex-pilot, resumed HEAD342fee9 and clean tree;
 live PR35 open/draft, no comments, Issues7/11 open. The existing delivery-order

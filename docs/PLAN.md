@@ -26,7 +26,8 @@ SHA. Product changes receive affected regression; documentation receives diff re
 
 ### Resumed priority check — 2026-11-15 America/Tijuana
 
-Live PR35 is open/draft at342fee9 with no review comments; Issues7/11 remain open.
+Live PR35 is open/draft at the resumed ccfe615 checkpoint with no review comments;
+Issues7/11 remain open.
 The feature checkout was clean on resume. No old test collector was running;
 the owned Linux VM remained available. All original evidence and packages stay
 immutable. The existing A demonstrations can be used now. The first usability
@@ -60,11 +61,18 @@ No fresh live run is authorized or started by this planning decision. Zero-model
 prepare/ready commands now actually passed for a dedicated same-goal add.py fixture;
 the checkpoint is explicitly host-known, not model-authored. The owned-parent
 interruption observer has9 passing inert-handle tests and independent static review.
-Neither is live recovery acceptance. The next bounded work is the remaining
-controller integration: capture/receipt persistence, exact receiver-plan inspection,
-new-process continuation/replay and two-actor terminal-gated auth cleanup. It must
-be complete and reviewed before requesting a fresh at-most-two-call grant. The
-preparation's readiness is point-in-time; do not reuse it as future authorization.
+Neither is live recovery acceptance. The complete experimental controller is now
+implemented and independently reviewed: capture/receipt persistence, exact receiver
+decision, fresh-process continuation/replay and terminal-gated cleanup under one
+native lock.14 cleanup and8 live-helper checks passed locally; original failures
+are retained, synthetic cached status and mocked unmount are explicitly identified.
+Actual zero-model staging/readiness also passed; the original plan remains pinned.
+The next critical path is a fresh explicit at-most-two-call subscription grant and
+the [concrete execution plan](acceptance/evidence/durable-demo-a117/interrupted-controller/execution-plan.md).
+With that grant and a valid local environment, this limited experiment fits one
+bounded work session; it is not an ETA for full B or unavailable cross-vendor work.
+Readiness remains point-in-time, never future authorization. No existing full
+suite or accepted M5 scope needs repetition for these isolated harness changes.
 
 | Delivery node | Deliverable and exit condition | Current boundary / effort estimate |
 | --- | --- | --- |

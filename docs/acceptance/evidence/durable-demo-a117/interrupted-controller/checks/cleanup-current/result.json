@@ -1,0 +1,20 @@
+{
+  "started_at": "2026-11-16T06:44:16.010709+00:00",
+  "guest_root": "/root/amadeus-interrupted-controller-checks-20261116T064415958384Z",
+  "input_sha256": {
+    "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+    "test_cleanup.py": "8bf55ba27ad1bb02057ecb938f72e13ad860ebe2565c9dc194895abf220a900f"
+  },
+  "command": "/root/amadeus-m117l/e/bin/python -I -B -c 'import os,sys,pytest; sys.path.insert(0,'\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064415958384Z'\"'\"'); os.environ.pop(\"PYTEST_ADDOPTS\",None); os.environ.pop(\"PYTEST_PLUGINS\",None); os.environ[\"PYTEST_DISABLE_PLUGIN_AUTOLOAD\"]=\"1\"; raise SystemExit(pytest.main(['\"'\"'-q'\"'\"', '\"'\"'-p'\"'\"', '\"'\"'no:cacheprovider'\"'\"', '\"'\"'-o'\"'\"', '\"'\"'addopts='\"'\"', '\"'\"'--basetemp=/root/amadeus-interrupted-controller-checks-20261116T064415958384Z/scratch'\"'\"', '\"'\"'--junitxml=/root/amadeus-interrupted-controller-checks-20261116T064415958384Z/junit.xml'\"'\"', '\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064415958384Z/test_cleanup.py'\"'\"']))'",
+  "model_calls": 0,
+  "real_model_auth_accessed": false,
+  "boot_id": "ad4636c1-6f52-452a-80f6-4a4585dc729a",
+  "finished_at": "2026-11-16T06:44:16.906314+00:00",
+  "native_exit_code": 0,
+  "artifact_sha256": {
+    "stdout.log": "e80676a1768fca05d6d6ec6a557b56328e1de7224753cf44ca822fa77f581d09",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "junit.xml": "fc9fbd12c987ea7fa5f73794efc38d0b2713ad192f07ef545743aa0abddbdaac"
+  },
+  "test_inputs_unchanged": true
+}

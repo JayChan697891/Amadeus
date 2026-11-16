@@ -1,0 +1,8 @@
+{
+  "native_host_exit_code": 1,
+  "stage": "input_transfer",
+  "model_calls": 0,
+  "reason": "Paramiko xb opened exclusive file without write flag; stopped before tests",
+  "real_model_auth_accessed": false,
+  "status": "NOT RUN"
+}

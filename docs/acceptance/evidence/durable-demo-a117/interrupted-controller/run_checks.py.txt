@@ -1,0 +1,121 @@
+"""Run only frozen synthetic controller tests on the existing local Linux VM."""
+
+import hashlib
+import json
+import shlex
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+import paramiko
+
+
+def stamp():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+base = Path(__file__).resolve().parent
+source = base.parent
+names = sys.argv[1:]
+assert names and all(Path(name).name == name and name.endswith('.py') for name in names)
+run_id = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+output = base / run_id
+output.mkdir()
+guest = '/root/amadeus-interrupted-controller-checks-' + run_id
+client = paramiko.SSHClient()
+client.load_host_keys(r'D:\agentsync-debug\vm\known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename=r'D:\agentsync-debug\vm\debug_ed25519',
+               look_for_keys=False, allow_agent=False, timeout=15)
+try:
+    sftp = client.open_sftp()
+    sftp.mkdir(guest, mode=0o700)
+    inputs = {}
+    for name in names:
+        data = (source / name).read_bytes()
+        inputs[name] = digest(data)
+        with sftp.open(guest + '/' + name, 'wxb') as stream:
+            stream.write(data)
+        sftp.chmod(guest + '/' + name, 0o600)
+        with sftp.open(guest + '/' + name, 'rb') as stream:
+            assert digest(stream.read()) == inputs[name]
+        (output / (name + '.txt')).write_bytes(data)
+    tests = [name for name in names if name.startswith('test_')]
+    assert tests
+    origin_program = '''import hashlib,json,sys,agentsync
+from pathlib import Path
+from importlib import metadata
+reference=Path('/root/amadeus-interrupted-a117-20261115/runtime-members.json')
+data=reference.read_bytes()
+assert hashlib.sha256(data).hexdigest()=='f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a'
+members=json.loads(data)
+site=Path(agentsync.__file__).resolve().parent.parent
+assert len(members)==97 and agentsync.__version__=='0.3.0a117'
+assert all(hashlib.sha256((site/name).read_bytes()).hexdigest()==expected for name,expected in members.items())
+assert site.is_relative_to(Path(sys.prefix).resolve())
+print(json.dumps({'python':sys.version,'prefix':sys.prefix,'module':agentsync.__file__,'runtime_members':len(members),'reference_sha256':hashlib.sha256(data).hexdigest(),'version':metadata.version('agentsync-local'),'members_match':True}))
+'''
+
+    def origin(label):
+        check = '/root/amadeus-m117l/e/bin/python -I -B -c ' + shlex.quote(origin_program)
+        _, out, err = client.exec_command(check, timeout=20)
+        data, errors = out.read(), err.read()
+        code = out.channel.recv_exit_status()
+        (output / (label + '.json')).write_bytes(data)
+        assert code == 0 and not errors, 'Installed runtime identity check failed'
+        return json.loads(data)
+
+    before = origin('runtime-before')
+    # Insert the test fixture directory explicitly under isolated Python. No real
+    # model or auth operation is selected: only synthetic pytest functions run.
+    program = (
+        'import os,sys,pytest; '
+        f'sys.path.insert(0,{guest!r}); '
+        'os.environ.pop("PYTEST_ADDOPTS",None); '
+        'os.environ.pop("PYTEST_PLUGINS",None); '
+        'os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"]="1"; '
+        'raise SystemExit(pytest.main(' + repr([
+            '-q', '-p', 'no:cacheprovider', '-p', 'pytest_asyncio.plugin', '-o', 'addopts=',
+            '--basetemp=' + guest + '/scratch',
+            '--junitxml=' + guest + '/junit.xml',
+            *[guest + '/' + name for name in tests],
+        ]) + '))'
+    )
+    command = '/root/amadeus-m117l/e/bin/python -I -B -c ' + shlex.quote(program)
+    meta = {'started_at': stamp(), 'guest_root': guest, 'input_sha256': inputs,
+            'command': command, 'model_calls': 0, 'real_model_auth_accessed': False}
+    with sftp.open('/proc/sys/kernel/random/boot_id', 'r') as stream:
+        meta['boot_id'] = stream.read().decode().strip()
+    (output / 'start.json').write_text(json.dumps(meta, indent=2) + '\n')
+    _, stdout, stderr = client.exec_command(command, timeout=60)
+    out, err = stdout.read(), stderr.read()
+    code = stdout.channel.recv_exit_status()
+    (output / 'stdout.log').write_bytes(out)
+    (output / 'stderr.log').write_bytes(err)
+    artifacts = {'stdout.log': digest(out), 'stderr.log': digest(err)}
+    try:
+        with sftp.open(guest + '/junit.xml', 'rb') as stream:
+            xml = stream.read()
+        (output / 'junit.xml').write_bytes(xml)
+        artifacts['junit.xml'] = digest(xml)
+    except FileNotFoundError:
+        pass
+    for name, expected in inputs.items():
+        with sftp.open(guest + '/' + name, 'rb') as stream:
+            assert digest(stream.read()) == expected
+        assert digest((source / name).read_bytes()) == expected
+    result = {**meta, 'finished_at': stamp(), 'native_exit_code': code,
+              'artifact_sha256': artifacts, 'test_inputs_unchanged': True,
+              'runtime_before': before, 'runtime_after': origin('runtime-after')}
+    (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+    print(json.dumps({'result': str(output / 'result.json'), 'exit_code': code}))
+    print(out.decode(errors='replace')[-12000:])
+    if err:
+        print(err.decode(errors='replace')[-3000:])
+finally:
+    client.close()

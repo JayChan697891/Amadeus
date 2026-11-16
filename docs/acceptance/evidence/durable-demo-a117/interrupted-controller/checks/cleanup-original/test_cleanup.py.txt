@@ -1,0 +1,309 @@
+"""Synthetic records and dedicated temporary files; never real model credentials."""
+
+import copy
+import json
+import os
+import subprocess
+import sys
+from dataclasses import asdict
+from types import SimpleNamespace
+
+import pytest
+from agentsync.controlled_relay import RelayAttemptObservation
+
+import cleanup
+
+
+def actor_fixture():
+    first = asdict(
+        RelayAttemptObservation(
+            "first",
+            "terminal_recorded",
+            client="codex",
+            status="unknown",
+            exit_code=-9,
+            parent_ended=True,
+        )
+    )
+    first.update(
+        agent_sha256="agent",
+        session_sha256="session",
+        admission={
+            "state": "both_reservations_recorded",
+            "plan_sha256": "plan",
+            "execution_verified": False,
+        },
+    )
+    attempts = [first, asdict(RelayAttemptObservation("second", "not_dispatched"))]
+    expected = dict(
+        task_id="task",
+        project_id="project",
+        agent_sha256="agent",
+        session_sha256="session",
+        authorization_sha256="authority",
+        entry_sha256="entry",
+        launch_plan_sha256="plan",
+    )
+    actor = {
+        **expected,
+        "captured_start_invoked": True,
+        "exact_authorizations": 1,
+        "attempts": copy.deepcopy(attempts),
+    }
+    return actor, attempts, expected
+
+
+def test_confirmed_parent_end_allows_cleanup_despite_unknown_business_result():
+    actor, current, expected = actor_fixture()
+    cleanup.validate_actor(actor, current, **expected)
+
+
+@pytest.mark.parametrize(
+    "problem",
+    ("stale_observation", "parent_unknown", "boolean_exit", "wrong_plan", "second_dispatched"),
+)
+def test_unknown_or_mismatched_current_attempt_blocks_cleanup(problem):
+    actor, current, expected = actor_fixture()
+    if problem == "stale_observation":
+        current[0]["state"] = "outcome_unknown"
+    else:
+        if problem == "parent_unknown":
+            current[0]["parent_ended"] = None
+        elif problem == "boolean_exit":
+            current[0]["exit_code"] = True
+        elif problem == "wrong_plan":
+            current[0]["admission"]["plan_sha256"] = "different"
+        else:
+            current[1]["state"] = "outcome_unknown"
+        actor["attempts"] = copy.deepcopy(current)
+    with pytest.raises(AssertionError):
+        cleanup.validate_actor(actor, current, **expected)
+
+
+def test_no_receiver_task_requires_explicit_zero_launch_observation():
+    actor, _, expected = actor_fixture()
+    expected.update(task_id=None, launch_plan_sha256=None)
+    actor.update(**expected, captured_start_invoked=False, exact_authorizations=0, attempts=[])
+    cleanup.validate_actor(actor, [], **expected)
+    actor["captured_start_invoked"] = True
+    with pytest.raises(AssertionError):
+        cleanup.validate_actor(actor, [], **expected)
+
+
+native = pytest.mark.skipif(
+    sys.platform != "linux" or getattr(os, "geteuid", lambda: -1)() != 0,
+    reason="Dedicated Linux root fixture validates real flock and ownership",
+)
+
+
+@pytest.fixture
+def private_fixture(tmp_path, monkeypatch):
+    base = tmp_path / "fixture"
+    base.mkdir(mode=0o700)
+    home = base / "private-home"
+    home.mkdir(mode=0o700)
+    monkeypatch.setattr(cleanup, "BASE", base)
+    monkeypatch.setattr(cleanup, "PRIVATE_HOME", home)
+    return base, home
+
+
+@pytest.fixture
+def receipt_fixture(private_fixture, monkeypatch):
+    """Exercise cleanup orchestration with explicit synthetic current receipts."""
+    base, home = private_fixture
+    state = {
+        "owner": {"project_id": "project", "admin_token": "fixture-owner"},
+        "producer": {"agent_id": "producer", "session_id": "producer-session"},
+        "receiver": {"agent_id": "receiver", "session_id": "receiver-session"},
+        "task": {"id": "source"},
+    }
+    cleanup.save("state.json", state)
+    attempts = {
+        name: [
+            RelayAttemptObservation("first", "not_dispatched"),
+            RelayAttemptObservation("second", "not_dispatched"),
+        ]
+        for name in ("source", "continued")
+    }
+    inspections = []
+
+    class CurrentRelay:
+        def __init__(self, *args):
+            pass
+
+        def owner_inspect_attempts(self, project, task, *, admin_token):
+            assert project == "project" and admin_token == "fixture-owner"
+            inspections.append(task)
+            return attempts[task]
+
+        def _task_receipt_key(self, project, task):
+            assert (project, task) == ("project", "source")
+            return "source-receipt"
+
+        def _read_receipt(self, key, stage, *, durable):
+            assert (key, stage, durable) == ("source-receipt", "first-dispatched", True)
+            return {"launch_request_sha256": "source-launch"}
+
+    class Continuation:
+        def __init__(self, *args):
+            pass
+
+        def status(self, project, launch, *, admin_token):
+            assert (project, launch, admin_token) == ("project", "source-launch", "fixture-owner")
+            return {"task_id": "continued", "state": "dispatch_intent"}
+
+    monkeypatch.setattr(cleanup, "Core", lambda path: None)
+    monkeypatch.setattr(cleanup, "ControlledRelay", CurrentRelay)
+    monkeypatch.setattr(cleanup, "OwnerContinuation", Continuation)
+    return SimpleNamespace(
+        base=base, home=home, state=state, attempts=attempts, inspections=inspections
+    )
+
+
+@native
+@pytest.mark.parametrize("name", ("continuation-private.json", "continuation-plan.json"))
+def test_no_producer_entry_rejects_existing_continuation_records(receipt_fixture, name):
+    fixture = receipt_fixture
+    assert cleanup.require_stopped("authority") == {
+        "producer": "not_dispatched",
+        "receiver": "not_created",
+    }
+    cleanup.save(name, {"synthetic": True})
+    with pytest.raises(AssertionError):
+        cleanup.require_stopped("authority")
+    assert fixture.inspections == ["source", "source"]
+
+
+@native
+@pytest.mark.parametrize("update_stage_record", (False, True))
+def test_current_receiver_unknown_blocks_despite_old_zero_launch_aggregate(
+    receipt_fixture, update_stage_record
+):
+    fixture = receipt_fixture
+    cleanup.save("plan.json", {"producer_plan": {"plan_sha256": "source-plan"}})
+    cleanup.save("receiver-request.json", {"payload": {"plan_sha256": "continued-plan"}})
+    # Deliberately obsolete aggregate must never replace the current receiver proof.
+    cleanup.save("dispatch-observation.json", {"receiver": {"state": "not_dispatched"}})
+    for who, task in (("producer", "source"), ("receiver", "continued")):
+        entry = {
+            "authorization_sha256": "authority",
+            "project_id": "project",
+            "task_id": task,
+            "plan_sha256": f"{task}-plan",
+            "launch_request_sha256": f"{task}-launch",
+        }
+        cleanup.save(f"{who}-entry.json", entry)
+        actor, current, _ = actor_fixture()
+        agent_sha = cleanup.digest(fixture.state[who]["agent_id"])
+        session_sha = cleanup.digest(fixture.state[who]["session_id"])
+        current[0].update(agent_sha256=agent_sha, session_sha256=session_sha)
+        current[0]["admission"]["plan_sha256"] = f"{task}-plan"
+        actor.update(
+            task_id=task,
+            agent_sha256=agent_sha,
+            session_sha256=session_sha,
+            entry_sha256=cleanup.sha(fixture.base / f"{who}-entry.json"),
+            launch_plan_sha256=f"{task}-plan",
+            attempts=current,
+        )
+        cleanup.save(f"{who}-dispatch-observation.json", {"actors": {who: actor}})
+        fixture.attempts[task] = [RelayAttemptObservation(**item) for item in current]
+    assert cleanup.require_stopped("authority") == {
+        "producer": "terminal_recorded",
+        "receiver": "terminal_recorded",
+    }
+    unknown = asdict(fixture.attempts["continued"][0])
+    unknown.update(state="outcome_unknown", parent_ended=None, exit_code=None)
+    fixture.attempts["continued"][0] = RelayAttemptObservation(**unknown)
+    if update_stage_record:
+        record = cleanup.load("receiver-dispatch-observation.json")
+        record["actors"]["receiver"]["attempts"][0] = unknown
+        # Rewrite only this synthetic fixture to distinguish stale-vs-unknown proof.
+        (fixture.base / "receiver-dispatch-observation.json").write_text(json.dumps(record))
+    with pytest.raises(AssertionError):
+        cleanup.require_stopped("authority")
+    assert fixture.inspections == ["source", "continued", "source", "continued"]
+
+
+@native
+def test_live_stage_and_cleanup_are_exclusive_across_native_processes(private_fixture):
+    base, _ = private_fixture
+    program = """import importlib.util,sys
+from pathlib import Path
+s=importlib.util.spec_from_file_location('fixture_cleanup',sys.argv[1]);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+m.BASE=Path(sys.argv[2])
+try:
+ with m.stage_lock(allow_closing=True):pass
+except BlockingIOError:raise SystemExit(23)
+raise SystemExit(0)
+"""
+    with cleanup.stage_lock():
+        child = subprocess.run(
+            [sys.executable, "-I", "-B", "-c", program, cleanup.__file__, str(base)],
+            capture_output=True,
+            timeout=10,
+            check=False,
+        )
+        assert child.returncode == 23, child.stderr.decode()
+    with cleanup.stage_lock(allow_closing=True):
+        cleanup.save("closing.json", {"further_launches_allowed": False})
+    with pytest.raises(RuntimeError, match="closed"):
+        with cleanup.stage_lock():
+            pytest.fail("Closed fixture must never admit a later live stage")
+
+
+@native
+def test_cleanup_failure_closes_launches_but_preserves_auth(private_fixture, monkeypatch):
+    base, home = private_fixture
+    auth = home / "auth.json"
+    auth.write_text("synthetic fixture credential", encoding="utf-8")
+    auth.chmod(0o600)
+    monkeypatch.setattr(cleanup, "validate_authorization", lambda **kwargs: ({}, "authority"))
+
+    def not_stopped(_authority):
+        raise AssertionError("Current receiver receipt is unknown")
+
+    monkeypatch.setattr(cleanup, "require_stopped", not_stopped)
+    monkeypatch.setattr(
+        cleanup.subprocess, "run", lambda *args, **kwargs: pytest.fail("No unmount before proof")
+    )
+    with pytest.raises(AssertionError):
+        cleanup.cleanup_home()
+    assert auth.read_text() == "synthetic fixture credential"
+    assert cleanup.load("closing.json")["further_launches_allowed"] is False
+    assert not (base / "auth-cleanup.json").exists()
+    with pytest.raises(RuntimeError):
+        with cleanup.stage_lock():
+            pytest.fail("Failed cleanup must still prevent a new live stage")
+
+
+@native
+def test_cleanup_only_unlinks_exact_fixture_auth_after_current_proof(private_fixture, monkeypatch):
+    base, home = private_fixture
+    auth = home / "auth.json"
+    auth.write_text("synthetic fixture credential", encoding="utf-8")
+    auth.chmod(0o600)
+    sentinel = base / "unrelated.txt"
+    sentinel.write_text("preserved")
+    trace = []
+    monkeypatch.setattr(cleanup, "validate_authorization", lambda **kwargs: ({}, "authority"))
+
+    def stopped(_authority):
+        assert auth.exists()
+        trace.append("current_proof")
+        return {"producer": "terminal_recorded", "receiver": "not_created"}
+
+    monkeypatch.setattr(cleanup, "require_stopped", stopped)
+    monkeypatch.setattr(cleanup, "require_mount", lambda: trace.append("mount_checked"))
+    monkeypatch.setattr(cleanup, "mounts", lambda: [])
+
+    def unmount(command, **kwargs):
+        assert command == ["/bin/umount", str(home)] and not auth.exists()
+        trace.append("ordinary_unmount")
+
+    monkeypatch.setattr(cleanup.subprocess, "run", unmount)
+    cleanup.cleanup_home()
+    assert trace == ["current_proof", "mount_checked", "ordinary_unmount"]
+    assert sentinel.read_text() == "preserved"
+    assert cleanup.load("auth-cleanup.json")["temporary_auth_absent"] is True
+    assert list(home.iterdir()) == []

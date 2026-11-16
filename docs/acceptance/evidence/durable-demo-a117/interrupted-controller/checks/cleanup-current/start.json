@@ -1,0 +1,12 @@
+{
+  "started_at": "2026-11-16T06:44:16.010709+00:00",
+  "guest_root": "/root/amadeus-interrupted-controller-checks-20261116T064415958384Z",
+  "input_sha256": {
+    "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+    "test_cleanup.py": "8bf55ba27ad1bb02057ecb938f72e13ad860ebe2565c9dc194895abf220a900f"
+  },
+  "command": "/root/amadeus-m117l/e/bin/python -I -B -c 'import os,sys,pytest; sys.path.insert(0,'\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064415958384Z'\"'\"'); os.environ.pop(\"PYTEST_ADDOPTS\",None); os.environ.pop(\"PYTEST_PLUGINS\",None); os.environ[\"PYTEST_DISABLE_PLUGIN_AUTOLOAD\"]=\"1\"; raise SystemExit(pytest.main(['\"'\"'-q'\"'\"', '\"'\"'-p'\"'\"', '\"'\"'no:cacheprovider'\"'\"', '\"'\"'-o'\"'\"', '\"'\"'addopts='\"'\"', '\"'\"'--basetemp=/root/amadeus-interrupted-controller-checks-20261116T064415958384Z/scratch'\"'\"', '\"'\"'--junitxml=/root/amadeus-interrupted-controller-checks-20261116T064415958384Z/junit.xml'\"'\"', '\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064415958384Z/test_cleanup.py'\"'\"']))'",
+  "model_calls": 0,
+  "real_model_auth_accessed": false,
+  "boot_id": "ad4636c1-6f52-452a-80f6-4a4585dc729a"
+}

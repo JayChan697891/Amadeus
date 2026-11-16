@@ -10,8 +10,15 @@ JUnit, terminal receipts and53 original transferred files. See
 The later demo image-ID guard has separate10-case CLI regression and a real Linux
 rejection before project creation; it is not part of that frozen full suite.
 Zero-model interrupted-client preparation and9 inert-handle observer tests are
-preparation only, not live interruption/continuation evidence. No full controller,
-fresh live authorization, cross-vendor or host-crash acceptance follows.
+preparation only, not live interruption/continuation evidence. The complete
+experimental controller is now implemented, independently reviewed and supplemented
+by14 cleanup plus8 live-helper checks (all pass, zero skips). Original fixture/
+transfer failures remain preserved. Actual flock uses an inert process; replay
+uses real request binding with synthetic cached status; auth/unmount are fixtures.
+The unchanged97 runtime members were checked; native zero-model readiness passed.
+See [the controller scope and original results](evidence/durable-demo-a117/interrupted-controller/current-summary.json).
+Complete live execution, actual auth lifecycle, cross-vendor and host-crash checks
+remain NOT RUN; a new explicit at-most-two-call grant has not been given.
 **Formal Release remains BLOCKED; no gates or historical M5 conclusions changed.**
 
 ## Current scoped outcome — 2026-11-15, installed-sdist regressions
