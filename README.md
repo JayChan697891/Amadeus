@@ -133,8 +133,10 @@ The [earlier a109 evidence](docs/acceptance/evidence/m7-continuous-live/summary.
 is preserved. See [delivery nodes A/B/C](docs/PLAN.md) for remaining requirements.
 
 For a developer demonstration of actual isolated verification, the existing
-Linux pilot also accepts a fixed `--demo` mode. Run from this checkout with Amadeus
-installed, Git available and the project's trusted test image already present:
+Linux pilot also accepts a fixed `--demo` mode. Use the existing root user inside
+the project's [dedicated local Linux test VM](docs/LOCAL-DEBUG.md): this fixture
+requires a fresh `/root/amadeus-proposal-pilot-*` directory. Run from this checkout
+with Amadeus installed, Git available and the trusted test image already present:
 
 ```sh
 python -I -B tools/run_proposal_candidate_pilot.py --demo \
@@ -202,7 +204,8 @@ arguments. Use a dedicated empty project; one durable run is bound to that proje
 Keep the owner credential yourself: the driver stores no recoverable credentials.
 
 `start` also takes `request_id` and `config`; `resume`/`cancel` take `request_id`
-and the latest `expected_version` returned by `status`. A minimal config is:
+and `expected_version`. Set `expected_version` to the latest `data.version` in
+the `status` response. A minimal config is:
 
 ```json
 {

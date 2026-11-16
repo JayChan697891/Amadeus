@@ -15,6 +15,14 @@ the original native handle ends and its logs/JUnit are independently checked.
 Later CLI image-ID and experimental-controller changes retain separate evidence.
 No VM, model call, external model auth or GitHub Actions is involved.
 
+Two concrete onboarding corrections were made while this frozen suite runs:
+English workflow guidance now maps status.data.version to the resume/cancel input
+expected_version, matching the existing implementation. Both READMEs identify the
+dedicated local Linux VM/root-user prerequisite for the fixed /root Docker pilot.
+Root checked the actual CLI/pilot/SDK code and the diff; no behavior or gate changed,
+so no additional execution or duplicate tests were required. These documentation
+changes do not modify the running33ffbc3 snapshot or expand any acceptance claim.
+
 Current recovery checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Goal active; PR35 remains open/draft at the resumed ccfe615 branch with no new
 comments. A remains usable now; P0 still prioritizes the existing live-recovery

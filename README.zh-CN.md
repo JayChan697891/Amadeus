@@ -93,8 +93,9 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 真实崩溃恢复、跨厂商、无人审批或正式发布验收。[历史a109证据](docs/acceptance/evidence/m7-continuous-live/summary.json)
 继续保留；剩余要求见[总计划](docs/PLAN.md)。
 
-已有 Linux 验证工具另提供固定的 `--demo` 入口。当前仓库、已安装的 Amadeus、
-Git 和项目测试环境中预置的可信镜像齐备后，可以执行：
+已有 Linux 验证工具另提供固定的 `--demo` 入口。请在项目[专用本地 Linux 测试虚拟机](docs/LOCAL-DEBUG.md)
+中使用其现有 root 用户；此工具要求新建 `/root/amadeus-proposal-pilot-*` 目录。
+当前仓库、已安装的 Amadeus、Git 和预置的可信测试镜像齐备后，可以执行：
 
 ```sh
 python -I -B tools/run_proposal_candidate_pilot.py --demo \
