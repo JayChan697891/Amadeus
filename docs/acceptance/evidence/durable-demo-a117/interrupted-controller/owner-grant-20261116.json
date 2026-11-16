@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-11-16T08:22:28.840309+00:00",
+  "source": "Owner answer to question call_443a666c91f548f4bcbcdde9daa2c8a9",
+  "owner_response": "允许本次，后面每次都允许，无需询问",
+  "current_experiment": "Reviewed producer owned-parent interruption then one controlled same-vendor continuation",
+  "max_model_calls": 2,
+  "existing_subscription_only": true,
+  "owner_confirmed_zero_credits_and_auto_recharge_off": true,
+  "api_key_allowed": false,
+  "retry_after_failure_unknown_or_missed_window": false,
+  "temporary_auth_destination": "/root/amadeus-interrupted-a117-20261115/private-home/auth.json",
+  "credential_copy_status": "NOT RUN",
+  "live_execution": "NOT RUN",
+  "future_scope": "Same bounded subscription-only validation may proceed without repeated questions; fixed plans, per-experiment caps, no-extra-fee condition, no retries, temporary credential restrictions and safety gates remain mandatory. Broader operations are not granted.",
+  "formal_release": "BLOCKED"
+}

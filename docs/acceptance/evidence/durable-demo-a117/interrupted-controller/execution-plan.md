@@ -1,8 +1,10 @@
 # Reviewed interrupted-client continuation experiment
 
-Status: IMPLEMENTED / OFFLINE CHECKS PASSED / LIVE NOT RUN / AUTHORIZATION NOT GRANTED.
+Status: IMPLEMENTED / OFFLINE CHECKS PASSED / LIVE NOT RUN / OWNER AUTHORIZED.
+Owner grant recorded in owner-grant-20261116.json; runtime readiness must still be
+rechecked before the bounded execution. Prior consumed grants remain historical.
 This is the next evidence item for existing P0/M7-02/M8-02, not a new product phase.
-The original M0–M9 requirements and formal Release BLOCKED status remain unchanged.
+The original M0â€“M9 requirements and formal Release BLOCKED status remain unchanged.
 
 The unchanged a117 runtime is `fc27f15f47fa92ed5edcd764a573c1d84a68c107`;
 the package has not been rebuilt.
