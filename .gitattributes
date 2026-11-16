@@ -107,3 +107,4 @@ releases/0.3.0a116/** -text -whitespace
 
 # Keep original local demonstration output and the failed build traceback intact.
 docs/acceptance/evidence/durable-demo-a117/** -text -whitespace
+docs/acceptance/evidence/recovery-preview-a118/** -text -whitespace
