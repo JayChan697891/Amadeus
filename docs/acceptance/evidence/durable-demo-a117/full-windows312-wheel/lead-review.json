@@ -1,0 +1,19 @@
+{
+  "full_candidate_matrix_row": false,
+  "reviewer": "Native GPT-6 Astra independent actual files/logs/JUnit/receipt/hash comparison plus root verification",
+  "original_sdist_failure_preserved": true,
+  "frozen_inputs": 2382,
+  "remaining_findings": [],
+  "scope": "Windows3.12 installed-wheel supplement only",
+  "case_identities_match": true,
+  "cases": 2545,
+  "skipped": 56,
+  "native_checks": 7,
+  "failed": 0,
+  "formal_release": "BLOCKED",
+  "only_old_windows_outcome_change": "Documented traceability expectation failure to passed",
+  "errors": 0,
+  "runtime_members": 97,
+  "passed": 2489,
+  "status": "SCOPED PASS"
+}

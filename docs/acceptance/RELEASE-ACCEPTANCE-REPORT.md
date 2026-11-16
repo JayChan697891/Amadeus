@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+Current Windows wheel supplement — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Native session35434 ended0 at07:43:05Z.7 checks passed; the frozen a117 wheel on
+Windows3.12 produced2489passed/56skipped/0failed/error in2536.07 seconds. All2545
+unique identities match the old Windows sdist and same-input Linux wheel. Only
+the documented traceability expectation changed from failure to passed; original
+sdist failure evidence remains unchanged.97 runtime members and2382 frozen inputs
+match before/after. Root and independent Astra inspected actual receipts/logs/XML
+and hashes;6 JUnit redactions are recorded. See
+[the actual wheel result](evidence/durable-demo-a117/full-windows312-wheel/current-summary.json).
+This is not a complete candidate matrix row, Windows Docker, real-client result
+or formal Release. Later CLI/controller checks remain separate. Release BLOCKED.
+
 Current incremental supplement — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 The unchanged a117 wheel passed Linux3.14's7 native checks and full frozen33ffbc3
 suite:2538passed/7skipped/0failed/error,2545 unique identities matching the accepted

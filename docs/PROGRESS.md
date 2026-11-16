@@ -1,19 +1,29 @@
 # Amadeus current progress
 
-Active independent validation — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Completed independent validation — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 While the fresh live-model grant remains pending, the first a117 Windows3.12 full
-installed-wheel supplement is running in `D:/agentsync-debug/m117ww`.
-Native session35434/controller8872 began at07:00:35Z; do not restart it. Its Windows
-venv launcher is PID6404; exact creation times and executable identities are in
+installed-wheel supplement completed in `D:/agentsync-debug/m117ww`.
+Native session35434/controller8872 ended0 at07:43:05Z; do not restart it. Its Windows
+venv launcher was PID6404; exact creation times and executable identities are in
 `acceptance/evidence/durable-demo-a117/full-windows312-wheel/execution-start.json`.
-Five native setup/install/dependency/origin checks completed before full pytest.
+All7 native checks passed;2545 unique cases:2489pass/56skip/0failure/error,
+2536.07 seconds. JUnit received6 credential redactions. Root inspected actual
+receipts/logs/JUnit and exact artifact hashes; independent Astra accepted this
+limited scope. All case identities equal the old Windows sdist and same-input
+Linux wheel. The only Windows outcome change is the already-fixed traceability
+expectation failure→passed in this new wheel run. The old full sdist remains failed;
+its original XML is unchanged. All56 skip identities stay the same.
 The unchanged wheel300c72e1/runtimefc27f15 and2382 frozen33ffbc3 inputs are reused
 read-only; caches, install and scratch are new. Driver9a86ad90 received root diff
 inspection and independent Astra review. This is the missing Windows wheel scope,
-not a rerun of completed sdist/Linux/a116 suites. Results are RUNNING/unknown until
-the original native handle ends and its logs/JUnit are independently checked.
+not a rerun of completed sdist/Linux/a116 suites.97 runtime members and2382 inputs
+matched before/after;21 new original/comparison files totaling477401bytes were
+retained, along with original preparation/driver records. Related native workers
+are absent. See full-windows312-wheel/current-summary.json and lead-review.json.
 Later CLI image-ID and experimental-controller changes retain separate evidence.
-No VM, model call, external model auth or GitHub Actions is involved.
+No VM, model call, external model auth or GitHub Actions was involved. This is not
+a complete candidate matrix row or Release. Next independent work prepares the
+missing current Linux source suite with the same frozen inputs; it is not yet run.
 
 Two concrete onboarding corrections were made while this frozen suite runs:
 English workflow guidance now maps status.data.version to the resume/cancel input

@@ -1,0 +1,121 @@
+"""Inspect native Windows wheel receipts and compare actual case identities/outcomes."""
+import hashlib
+import json
+import xml.etree.ElementTree as ET
+from collections import Counter
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path('D:/agentsync-debug/m117ww')
+RUN = BASE / 'run'
+FROZEN = Path('D:/agentsync-debug/m117l')
+REPO = Path('F:/syuc/amadeus-m6-single')
+PRIOR = REPO / 'docs/acceptance/evidence/durable-demo-a117/full-windows312/run/sdist-junit.xml'
+LINUX = REPO / 'docs/acceptance/evidence/durable-demo-a117/full-linux314-wheel/wheel-junit.xml'
+CHECKS = ('wheel_venv', 'wheel_offline_dependencies', 'wheel_install', 'wheel_pip_check',
+          'wheel_origin_before', 'wheel_pytest', 'wheel_origin_after')
+WHEEL = '300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9'
+DRIVER = '9a86ad90e2d8475bac4c931afeb34339b2ec84137e138b4cbea1b3a2f6de7192'
+
+def load(path):
+    return json.loads(path.read_bytes())
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def cases(path):
+    result = {}
+    for item in ET.parse(path).iter('testcase'):
+        key = (item.get('classname'), item.get('name'))
+        if not all(key) or key in result:
+            raise ValueError('Missing or duplicated JUnit identity')
+        result[key] = next((kind for kind in ('failure', 'error', 'skipped')
+                            if item.find(kind) is not None), 'passed')
+    return result
+
+def main():
+    problems = []
+    def require(condition, detail):
+        if not condition:
+            problems.append(detail)
+
+    result = load(RUN / 'result.json')
+    terminal = load(BASE / 'execution-result.json')
+    require(terminal['native_session_id'] == 35434 and terminal['native_exit_code'] == 0,
+            'Original native session did not finish successfully')
+    expected = {
+        'status': 'pass', 'version': '0.3.0a117', 'automatic_retry': False,
+        'formal_release': 'BLOCKED', 'controller_pid': 8872,
+        'test_source_commit': '33ffbc329cc369643cbaa06077da29fb63f8c189',
+        'product_runtime_commit': 'fc27f15f47fa92ed5edcd764a573c1d84a68c107',
+        'driver_sha256': DRIVER, 'wheel_sha256': WHEEL,
+        'fixture_snapshot_sha256': 'ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50',
+        'input_before': {'frozen_files': 2382, 'expected_runtime_members': 97},
+        'input_after': {'frozen_files': 2382, 'expected_runtime_members': 97},
+    }
+    for key, value in expected.items():
+        require(result.get(key) == value, 'result.' + key)
+    require(sha(BASE / 'run-wheel.py') == DRIVER, 'Driver bytes changed')
+    require(sha(BASE / 'agentsync_local-0.3.0a117-py3-none-any.whl') == WHEEL, 'Wheel bytes changed')
+    require(tuple(item['id'] for item in result['checks']) == CHECKS, 'Check list/order differs')
+    for check in result['checks']:
+        name = check['id']
+        log = RUN / 'logs' / (name + '.log')
+        receipt = load(log.with_suffix('.process.json'))
+        require(receipt.get('phase') == 'finished' and receipt.get('outcome') == 'exited'
+                and receipt.get('check_id') == name and receipt.get('result') == check,
+                name + ': native receipt mismatch')
+        require(check.get('status') == 'pass' and check.get('exit_code') == 0
+                and check.get('provenance') == 'local_process' and not check.get('log_truncated')
+                and check.get('log_sha256') == sha(log), name + ': result/log mismatch')
+    origin = RUN / 'logs/wheel_origin_before.log'
+    require(origin.read_bytes() == (RUN / 'logs/wheel_origin_after.log').read_bytes(),
+            'Before/after origin bytes differ')
+    value = load(origin)
+    require(value['version'] == '0.3.0a117' and value['runtime_members'] == 97
+            and value['wheel_sha256'] == WHEEL and value['python'].startswith('3.12.16 '),
+            'Unexpected installed runtime origin')
+    members = load(FROZEN / 'runtime-members.json')
+    site = BASE / 'e/Lib/site-packages'
+    actual = {p.relative_to(site).as_posix(): sha(p) for p in (site / 'agentsync').rglob('*')
+              if p.is_file() and '__pycache__' not in p.parts}
+    require(actual == members and len(actual) == 97, 'Current installed member bytes differ')
+    xml = RUN / 'wheel-junit.xml'
+    current, prior, linux = cases(xml), cases(PRIOR), cases(LINUX)
+    require(sha(PRIOR) == 'd86b30f2ff5598087efdf3abc1a5e0e775e5a676f68e0ef3232867a988a2f802',
+            'Original Windows failed-suite XML identity differs')
+    require(sha(LINUX) == '84951b82251d7c343aca4022becaf2d54302a8c5bf54bf4a9c7071645b04ea31',
+            'Same-input Linux wheel XML identity differs')
+    counts = Counter(current.values())
+    require(set(current) == set(prior) == set(linux), 'Full case identities differ')
+    require(len(current) == 2545 and counts == {'passed': 2489, 'skipped': 56},
+            'Unexpected Windows full outcome counts')
+    changes = [(key, prior[key], current[key]) for key in sorted(prior.keys() & current.keys())
+                if prior[key] != current[key]]
+    expected_change = (('tests.unit.test_acceptance_traceability',
+                        'test_planning_foundations_remain_partial_without_real_relay_or_execution_claims'),
+                       'failure', 'passed')
+    require(changes == [expected_change], 'Outcome differences exceed the documented traceability repair')
+    require(result['junit']['sha256'] == sha(xml) and result['junit']['cases'] == len(current)
+            and all(result['junit'][key] == counts[key] for key in ('failure', 'error', 'skipped')),
+            'JUnit differs from reported results')
+    report = {
+        'observed_at': datetime.now(UTC).isoformat(), 'scope': 'Installed Windows3.12 wheel only',
+        'result_sha256': sha(RUN / 'result.json'), 'junit_sha256': sha(xml),
+        'current_counts': counts, 'unique_cases': len(current),
+        'original_failed_sdist_counts': Counter(prior.values()),
+        'linux_same_input_counts': Counter(linux.values()), 'outcome_changes': changes,
+        'case_identities_equal': set(current) == set(prior) == set(linux),
+        'installed_runtime_members': len(actual), 'native_checks': len(result['checks']),
+        'problems': problems, 'formal_release': 'BLOCKED',
+        'original_full_sdist_failure_preserved': True,
+        'not_claimed': ['Full candidate/platform matrix row', 'Real clients', 'Docker on Windows',
+                        'Later image-ID tests within this frozen suite'],
+    }
+    with (BASE / 'case-diff.json').open('x', encoding='utf-8') as stream:
+        json.dump(report, stream, indent=2)
+    print(json.dumps({'counts': counts, 'problems': problems}))
+    return int(bool(problems))
+
+if __name__ == '__main__':
+    raise SystemExit(main())

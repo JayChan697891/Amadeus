@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-11-16T07:43:18.494702+00:00",
+  "scope": "Installed Windows3.12 wheel only",
+  "result_sha256": "1c5825007783e18d912c7766f5148edb06d9d606f2e97bd1d2b22a9025f90240",
+  "junit_sha256": "8d78eb22f525d34326298b44cc81a40260f4483076c09ef5ea34db6eab17f5a4",
+  "current_counts": {
+    "passed": 2489,
+    "skipped": 56
+  },
+  "unique_cases": 2545,
+  "original_failed_sdist_counts": {
+    "passed": 2488,
+    "skipped": 56,
+    "failure": 1
+  },
+  "linux_same_input_counts": {
+    "passed": 2538,
+    "skipped": 7
+  },
+  "outcome_changes": [
+    [
+      [
+        "tests.unit.test_acceptance_traceability",
+        "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims"
+      ],
+      "failure",
+      "passed"
+    ]
+  ],
+  "case_identities_equal": true,
+  "installed_runtime_members": 97,
+  "native_checks": 7,
+  "problems": [],
+  "formal_release": "BLOCKED",
+  "original_full_sdist_failure_preserved": true,
+  "not_claimed": [
+    "Full candidate/platform matrix row",
+    "Real clients",
+    "Docker on Windows",
+    "Later image-ID tests within this frozen suite"
+  ]
+}

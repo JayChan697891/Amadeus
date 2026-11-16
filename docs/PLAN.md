@@ -16,7 +16,7 @@ the immutable0.3.0a116 matrix continues independently and is not relabelled.
 | --- | --- | --- |
 | P0 | Use the delivered durable CLI and controlled two-Codex demonstration; close the remaining actual in-flight recovery evidence gap. | The runnable A paths and same-protocol recovery already exist. Preserve exact source/artifact identities, unknown-result stop gates and explicit approvals. A new live attempt needs a fresh reviewed plan and authorization; consumed grants cannot be reused. |
 | P0 | Keep independent verification, pinned context and owner decisions visible in the demonstration. | Reuse the existing Core/Docker implementation and actual evidence. Do not add another orchestration layer or repeat accepted unchanged flows. Textual peer review remains unverified. |
-| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | Early image-ID validation and the frozen Linux wheel supplement are complete. Keep later tool regression separate from that frozen suite; existing bounded benchmarks are complete. |
+| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | Early image-ID validation and the frozen Linux/Windows wheel supplements are complete. Keep later tool regression separate; current source suites remain. Existing bounded benchmarks are complete. |
 | P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
 
 The critical path is the usable demonstration, then evidence-backed recovery
@@ -45,6 +45,16 @@ this frozen input. Do not rerun the completed sdist suite or a116 matrix. The
 later CLI fix separately passed10 checks and a native Linux negative-path command.
 The wheel supplement is not a complete release matrix row; see
 [its actual terminal evidence](acceptance/evidence/durable-demo-a117/full-linux314-wheel/current-summary.json).
+
+The first Windows3.12 wheel supplement also completed once:7 native checks pass,
+2489passed/56skipped,2545 matching identities,2536.07 seconds.97 installed members
+and2382 frozen inputs stayed unchanged. Independent review accepted that limited
+scope. The old full Windows sdist failure is preserved; its sole traceability
+expectation now passes in this separate wheel run. Two concrete onboarding docs
+were corrected against existing code (status.data.version and the fixed Linux VM
+pilot prerequisite), without more tests. The next independent validation is the
+missing Linux source suite, using the same inputs and existing collector; no
+sdist/wheel rerun, new product phase, package rebuild or gate relaxation is needed.
 
 Remaining evidence: actual model in-flight crash/recovery, real Claude/Cursor
 compatibility (no subscriptions), and current-candidate full release coverage;
