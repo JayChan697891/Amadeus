@@ -91,6 +91,11 @@ For offline installation, prepare wheels compatible with the selected Python ver
 
 ## Try persisted collaboration
 
+The newer [a118 development preview](releases/0.3.0a118/preview-7f0ba0a/) includes
+the recovery-directory fix. Fresh Windows3.12 wheel and sdist installations each
+passed12 focused cases. Its full/platform/client acceptance remains incomplete;
+the a117 evidence below stays tied to that older frozen runtime.
+
 The [preview directory](releases/0.3.0a117/demo-fc27f15/) contains a wheel and source
 archive for the same frozen runtime. Windows3.12 editable-source/source-archive
 and Linux3.14 source-archive installs each passed the same10 focused cases as the earlier wheel check; see

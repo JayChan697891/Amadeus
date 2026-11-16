@@ -1,0 +1,20 @@
+{
+  "started_at": "2026-11-16T09:59:15.813914+00:00",
+  "controller_pid": 26492,
+  "version": "0.3.0a118",
+  "product_source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+  "test_source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+  "workflow_repair_commit": "3b43647bb4332c646d82b0ecc4055f0e40fb462c",
+  "driver_sha256": "2a078a8af0a525a23f53dbf48c13d0ffd7fb6556a81b0e60376fae2c0a823a9d",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+  "scope": "Windows 3.12 development preview, wheel and sdist affected-install checks",
+  "full_regression": "NOT RUN",
+  "platform_matrix": "NOT RUN",
+  "vm": "NOT RUN",
+  "docker": "NOT RUN",
+  "model_calls": 0,
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false
+}

@@ -88,7 +88,11 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 主程序退出后，这个短演示不提供凭据找回。实际项目需自行保管所有者凭据，
 使用上面的 `workflow` 操作管理生命周期。
 
-当前版本0.3.0a117/`fc27f15`已有[两个真实 Codex 的连续流程证据](docs/acceptance/evidence/durable-demo-a117/live/summary.json)：
+较新的 [a118 开发预览](releases/0.3.0a118/preview-7f0ba0a/) 已包含恢复路径修复，
+Windows3.12 的 wheel 和源码包全新安装各通过12项定向检查；完整平台及客户端验收
+尚未完成。下面的 a117 证据仍只属于原冻结运行时。
+
+版本0.3.0a117/`fc27f15`已有[两个真实 Codex 的连续流程证据](docs/acceptance/evidence/durable-demo-a117/live/summary.json)：
 四个明确审批点、独立 Docker 验证、固定上下文交接，以及新进程重开时不重复调用。
 第二个模型的评审只作为文档接收，仍标记未验证。它与本模拟演示分开，不能替代
 真实崩溃恢复、跨厂商、无人审批或正式发布验收。[历史a109证据](docs/acceptance/evidence/m7-continuous-live/summary.json)

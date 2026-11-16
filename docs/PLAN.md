@@ -2,6 +2,16 @@
 
 ## Execution adjustment — 2026-11-15
 
+Current preview, 2026-11-16: a118/7f0ba0a now packages the recovery-path correction.
+The offline Windows3.12 build and two fresh installs passed19 native checks;
+wheel and sdist each passed12 focused cases, with97 runtime members bound to
+Git/archive/install. Only cli.py and the version file differ from a117. The older
+packages/full suites remain unchanged; no a118 full-suite, platform or live-client
+acceptance is inferred. See [candidate files](../releases/0.3.0a118/preview-7f0ba0a/)
+and [actual scoped evidence](acceptance/evidence/recovery-preview-a118/summary.json).
+Next affected-platform work is the same candidate's Linux installation check,
+not another full suite or an additional M5 phase. Formal Release stays BLOCKED.
+
 P1 correction, 2026-11-16: workflow status/resume/cancel now reject a missing
 database before initializing Core, so a mistyped recovery directory stays untouched.
 Six real CLI reproductions failed before the fix; seven targeted Windows3.12

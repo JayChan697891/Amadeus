@@ -1,5 +1,21 @@
 # Amadeus current progress
 
+Current candidate checkpoint — 2026-11-16 UTC. a118 source/test7f0ba0a packages
+the CLI repair3b43647; immutable a117 packages remain unchanged. Native session62523
+ended0 at10:00:22Z in D:/agentsync-debug/m118p:19 offline build/install checks pass,
+wheel12pass and sdist12pass, same identities/zero skipped or failed. Root inspected
+actual receipts/logs/XML, matched all2899 frozen inputs and97 Git/runtime members;
+independent Astra accepted only this limited scope. The sdist contains2018 tracked
+files plus8 generated metadata files. Source differences from117 are cli.py and
+the version file. No model, VM or Docker operation was used for this package check.
+Files: releases/0.3.0a118/preview-7f0ba0a/. Evidence:
+acceptance/evidence/recovery-preview-a118/summary.json. The 48 original evidence
+files total1061411 bytes; two packages total5253574 bytes. Full a118 regression,
+matrix, Linux/macOS and real-client acceptance remain NOT RUN; Release BLOCKED.
+Next: reuse the exact uploaded packages for focused Linux installation checks
+in the existing D-drive VM, without rebuilding or rerunning a117 full suites.
+All current native test/model jobs have ended; original Goal remains active.
+
 P1 recovery-path fix complete — 2026-11-16 UTC. The current development CLI no
 longer creates an empty database for status/resume/cancel when --data-dir is wrong.
 Six missing/empty-directory cases reproduced the old behavior; all six and the
@@ -28,11 +44,9 @@ The owned VM was normally shut down. PID20100 was subsequently reused by an
 unrelated node.exe; creation-time/executable/disk checks confirmed the original
 VM identity absent, and the unrelated process was left untouched.
 
-Recovery entry: current development branch includes CLI repair3b43647; the
-published a117 packages remain frozen runtimefc27f15. The next P1 work is to
-integrate that repair into a reviewed candidate package and run only affected
-installation checks before any larger candidate matrix. Do not relabel old full
-suites as covering the later CLI change. A is usable now; cross-vendor and macOS
+Recovery entry: the candidate integration described above is now complete for
+the focused Windows scope; a117 packages remain frozen runtimefc27f15. Do not
+relabel their full suites as covering the later CLI change. A is usable now; cross-vendor and macOS
 execution remain NOT RUN for unavailable environments. Original Goal active,
 formal Release BLOCKED. No test or model job remains running for this checkpoint.
 

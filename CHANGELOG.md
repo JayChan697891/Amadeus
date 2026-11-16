@@ -1,12 +1,13 @@
 # Changelog
 
-## 0.3.0a118 - recovery-path preview, package validation pending
+## 0.3.0a118 - recovery-path preview, full acceptance pending
 
 - Refuse workflow status/resume/cancel on a missing database without creating
   an empty data directory. Preserve start and existing database behavior.
 - Package the focused CLI repair separately from the immutable a117 preview.
-  Targeted source checks passed; this candidate still requires its own install
-  checks and does not inherit a117 full-suite or formal Release acceptance.
+  Windows3.12 offline build/install passed19 native checks; wheel and sdist each
+  passed12 focused cases. Full/platform/client acceptance remains incomplete;
+  this candidate does not inherit a117 full-suite or formal Release acceptance.
 
 ## 0.3.0a116 - corrected acceptance candidate, validation pending
 
