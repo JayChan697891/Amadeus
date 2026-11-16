@@ -9,7 +9,11 @@
 已完成现有 Windows/Linux 六组本地矩阵，macOS 尚未实测；这些证据不覆盖新增开发代码。
 交付顺序见[总计划](docs/PLAN.md)。
 
-[a119 开发预览](releases/0.3.0a119/preview-4be5134/)已包含所有者命令的错目录保护，
+新的 [a120 Windows 开发预览](releases/0.3.0a120/preview-859775b/)补齐了工作流启动的错目录保护，
+并让所有者及工作流命令在数据库损坏时返回明确错误。wheel 和源码包的新安装各通过21项
+Windows3.12定向用例；a120 的 Linux/macOS 与完整验收尚未执行。
+
+此前的 [a119 开发预览](releases/0.3.0a119/preview-4be5134/)已包含所有者命令的错目录保护，
 以及续接任务在同一核心内完成独立验收的接线。同一 wheel 和源码包在 Windows 新安装中
 各通过15项用例，在 Linux 中各通过16项，后者包括真实 Docker 验证。模型端使用本地协议
 夹具，这些安装用例不代表真实模型闭环或完整正式发布通过。
@@ -123,10 +127,10 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 不会新建空数据库。用 `--data-dir` 或 `AGENTSYNC_DATA_DIR` 指向已创建的项目。
 较旧的冻结 a118 包保持原行为与原测试范围；a119 的实际安装结果见上方预览目录。
 
-当前开发源码还修复了 `workflow start` 的同类问题：项目数据库缺失时直接返回
+当前开发源码与 a120 还修复了 `workflow start` 的同类问题：项目数据库缺失时直接返回
 `not_found`，不会新建目录或空数据库。四种 workflow 操作都要求先通过 SDK 创建项目。
 冻结的 a119 安装包尚不包含这项后续修复，请明确选择已有项目。
-当前源码还让 `owner` 和 `workflow` 在数据库无法打开时返回 JSON `storage_error`，
+它们还让 `owner` 和 `workflow` 在数据库无法打开时返回 JSON `storage_error`，
 不再仅输出 Python 异常；损坏文件保持原样，不会自动修复或替换数据库。
 
 较新的 [a118 开发预览](releases/0.3.0a118/preview-7f0ba0a/) 已包含 workflow 恢复路径修复，

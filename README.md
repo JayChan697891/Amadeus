@@ -13,7 +13,12 @@ Status: **0.3.0a120 development source. Formal Release BLOCKED.** The unchanged
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
 
-The [a119 development preview](releases/0.3.0a119/preview-4be5134/) includes the
+The [a120 Windows development preview](releases/0.3.0a120/preview-859775b/)
+adds missing-project protection for `workflow start` and structured database errors
+for `owner`/`workflow`. Fresh wheel and source-package installs each passed21
+focused Windows3.12 cases. Linux/macOS and full a120 acceptance are NOT RUN.
+
+The earlier [a119 development preview](releases/0.3.0a119/preview-4be5134/) includes the
 owner CLI directory fix and same-task continuation verification bridge. The same
 wheel/source packages passed15 focused cases per Windows install and16 per Linux
 install, including real Docker verification with local protocol fixtures. These
@@ -259,11 +264,11 @@ database is missing, without creating empty state. Use `--data-dir` or
 `AGENTSYNC_DATA_DIR` to select the project you created. The older frozen a118
 packages retain their original behavior and version-bound checks.
 
-Current development source also rejects `workflow start` when the project database
+Current development source and a120 also reject `workflow start` when the project database
 is missing, without creating an empty directory or database. All four workflow
 operations require a project created through the SDK. The frozen a119 packages
 precede this final `start` correction; select your existing project explicitly.
-Current source also returns a JSON `storage_error` when `owner` or `workflow`
+They also return a JSON `storage_error` when `owner` or `workflow`
 cannot open the database, instead of a Python traceback. A corrupt file is left
 untouched; this error does not repair or replace the database.
 

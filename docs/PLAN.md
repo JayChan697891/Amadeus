@@ -2,6 +2,20 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 installable CLI improvements — 2026-11-16: a120/859775b combines the existing
+workflow-start directory guard with e1c2fd9's structured storage errors for both
+owner entry points. Real corrupt-file reproductions failed before repair; the
+final16 Windows source cases pass, with earlier failures retained. Fresh offline
+Windows3.12 wheel/sdist installs each pass21 focused cases;19 native build/install
+checks pass.3362 frozen inputs,97 members per install and old a118/a119 packages
+were checked unchanged. Root inspected original outputs; a separate read-only
+review confirmed package/installation bindings. This is one usable P1 delivery,
+not a new M5 stage. [Packages](../releases/0.3.0a120/preview-859775b/) and
+[scope/evidence](acceptance/evidence/core-preview-a120/summary.json).
+Next reuse these exact archives for local Linux compatibility; no repeat Windows
+suite or consumed live fixture. a120 Linux/macOS/full matrix/real clients NOT RUN.
+A/B historical scopes remain version-bound; C remains BLOCKED.
+
 P1 entry-point audit, 2026-11-16: source6192b87 now requires an existing database
 for `workflow start`, matching status/resume/cancel. A mistyped or empty project
 directory returns `not_found` without creating state. Two reproductions failed

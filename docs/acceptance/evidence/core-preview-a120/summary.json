@@ -1,0 +1,60 @@
+{
+  "version": "0.3.0a120",
+  "source_and_tests": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "directory_guard_commit": "6192b874f214097c0bf33f4f63b6e139566c252a",
+  "storage_error_commit": "e1c2fd94f3de6b59324807f6b10e224886830f91",
+  "formal_release": "BLOCKED",
+  "status": "bounded Windows development-preview installation passed",
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a120-py3-none-any.whl",
+      "size": 327247,
+      "sha256": "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a120.tar.gz",
+      "size": 5446893,
+      "sha256": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
+    }
+  },
+  "windows": {
+    "native_session": 68874,
+    "native_start_chunk": "90588a",
+    "native_exit_chunk": "f90ce3",
+    "exit_code": 0,
+    "checks": 19,
+    "wheel_passed": 21,
+    "sdist_passed": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "same_case_identities": true,
+    "finished_at": "2026-11-16T23:41:44.963988+00:00"
+  },
+  "binding": {
+    "frozen_inputs": 3362,
+    "sdist_tracked_files": 2275,
+    "installed_members_per_environment": 97,
+    "all_frozen_inputs_unchanged": true,
+    "a118_a119_packages_unchanged": true,
+    "runtime_delta_from_a119": [
+      "agentsync/__init__.py",
+      "agentsync/cli.py"
+    ]
+  },
+  "source_regressions": "storage-errors/summary.json",
+  "windows_originals": "windows/file-inventory.json",
+  "review": "Root inspected actual logs, JUnit, 19 native receipts and all 3362 frozen source inputs. Native Sol independently checked both 97-member installations, artifact metadata/direct_url, exact JUnit identities and unchanged old packages (read-only chunk919a96). External Work acceptance remains separate.",
+  "not_run": [
+    "Linux installation for a120",
+    "macOS",
+    "a120 full suite and complete platform matrix",
+    "a120 real-client validation"
+  ],
+  "limitations": [
+    "No model inference, auth copy, VM, Docker or GitHub Actions in this preview run.",
+    "Windows simulated workflow is not a real-client test.",
+    "a119 live evidence retains its original version and scope; no full M6/M7 or Release approval."
+  ],
+  "next": "Use these installable CLI fixes; verify the same archives on existing local Linux before treating basic package compatibility as established. No duplicate Windows or a119 live runs."
+}

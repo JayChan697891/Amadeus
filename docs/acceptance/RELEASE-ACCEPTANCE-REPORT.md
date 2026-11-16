@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+Latest P1 result — a120/859775b, 2026-11-16: **bounded Windows installation PASS;
+formal Release BLOCKED**. The CLI now returns structured errors for missing or
+corrupt project databases. Corrupt files stay unchanged. Two pre-fix failing tests
+and an initial formatting failure are retained;16 final source cases pass. The
+intermediate10pass remains a separate earlier result.
+The same frozen source built wheel and sdist offline; each fresh Windows3.12
+installation passed21 affected cases, with19 native checks overall. Actual native
+receipts, logs, JUnit,3362 frozen inputs and97 members per install were inspected;
+an additional read-only review confirmed archive/origin bindings and unchanged
+a118/a119 packages. This does not repair damaged data or extend real-model claims.
+Linux/macOS, full a120 suite/matrix and a120 real clients are NOT RUN. Earlier live
+evidence remains bound to a119. [Artifacts](../../releases/0.3.0a120/preview-859775b/)
+and [exact results/limitations](evidence/core-preview-a120/summary.json).
+
 Later P1 source correction — 2026-11-16,6192b87: `workflow start` now refuses a
 missing project database without creating state. The original installed a119
 reproduction and2 failing source cases are preserved;9 affected Windows source

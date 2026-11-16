@@ -1,5 +1,26 @@
 # Amadeus current progress
 
+Resumed P1 delivery — 2026-11-16 UTC, a120/859775b. The paused6192b87 repair,
+five document edits and13 original records were preserved and uploaded at1dfce47.
+Both workflow status and owner list_members then reproduced an uncaught SQLite
+open error in a dedicated D-drive project. e1c2fd9 adds a shared sqlite3.Error
+boundary; structured storage_error/exit1 replaces the traceback without changing
+the corrupt file. Original two failing tests, intermediate10pass and a formatting
+failure remain distinct; final native2f77ca passed16 source cases, Ruff/format pass.
+
+Frozen a120 native68874/f90ce3 exited0 at23:41:44Z:19 offline build/install checks,
+fresh wheel21pass and sdist21pass, identical identities and no failure/error/skip.
+Root inspected actual native receipts/logs/JUnit and3362 frozen inputs. A separate
+read-only review matched97 members in each install to the original package and
+source, plus unchanged a118/a119 packages. Model/VM/Docker calls:0. Both previews
+and exact evidence are at releases/0.3.0a120/preview-859775b/ and
+acceptance/evidence/core-preview-a120/summary.json. No full/current-platform or
+real-client acceptance is inferred; formal Release remains BLOCKED.
+Recovery entry: continue basic compatibility using these same a120 archives on
+the authorized local Linux environment. Do not regenerate packages or repeat
+Windows checks; Linux/macOS/full a120 matrix and real-client testing are NOT RUN.
+The preserved pause checkpoint is historical; the owner explicitly resumed.
+
 P1 workflow-start correction — 2026-11-16 UTC, source/test6192b87.
 The installed a119 reproduction created an empty database before returning
 unauthorized. The source fix requires the existing project before opening Core,

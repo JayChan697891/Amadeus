@@ -1,0 +1,10 @@
+Looking in links: file:///D:/agentsync-debug/m120p/t/offline-wheels, file:///D:/agentsync-debug/m120p/t/offline-wheels
+Processing D:\agentsync-debug\m120p\t\offline-wheels\build-1.6.1-py3-none-any.whl
+Processing D:\agentsync-debug\m120p\t\offline-wheels\setuptools-82.0.1-py3-none-any.whl
+Processing D:\agentsync-debug\m120p\t\offline-wheels\wheel-0.46.3-py3-none-any.whl
+Processing D:\agentsync-debug\m120p\t\offline-wheels\packaging-26.3-py3-none-any.whl (from build==1.6.1)
+Processing D:\agentsync-debug\m120p\t\offline-wheels\pyproject_hooks-1.3.3-py3-none-any.whl (from build==1.6.1)
+Processing D:\agentsync-debug\m120p\t\offline-wheels\colorama-0.4.6-py2.py3-none-any.whl (from build==1.6.1)
+Installing collected packages: setuptools, pyproject_hooks, packaging, colorama, wheel, build
+
+Successfully installed build-1.6.1 colorama-0.4.6 packaging-26.3 pyproject_hooks-1.3.3 setuptools-82.0.1 wheel-0.46.3
