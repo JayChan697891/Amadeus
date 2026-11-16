@@ -249,7 +249,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
                 )
             )
             return 1
-        if args.operation != "start" and not (Path(data_dir) / "agentsync.db").is_file():
+        if not (Path(data_dir) / "agentsync.db").is_file():
             response = {
                 "ok": False,
                 "error": {

@@ -96,7 +96,7 @@ def cli(data, operation, payload):
     return response
 
 
-@pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+@pytest.mark.parametrize("operation", ["start", "status", "resume", "cancel"])
 @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
 def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
     directory = tmp_path / "wrong-project"
@@ -106,7 +106,9 @@ def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exis
         "project_id": "11111111-1111-4111-8111-111111111111",
         "admin_token": "fixture-token-not-a-credential",
     }
-    if operation != "status":
+    if operation == "start":
+        payload.update(request_id="test-start", config=config())
+    elif operation in {"resume", "cancel"}:
         payload.update(request_id="test-change", expected_version=1)
 
     response = cli(directory, operation, payload)
