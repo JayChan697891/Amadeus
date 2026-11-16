@@ -9,8 +9,12 @@ probe confirmed the new venv imports the intended copy, version117 and a true
 editable direct_url. Smoke/full suite were NOT RUN; no product failure is claimed.
 Nine original run files and actual diagnostic are retained under
 `acceptance/evidence/durable-demo-a117/full-linux314-source/`. Preserve this run.
-Next prepare a new ls2 fixture requiring strictly unchanged source with no metadata
-exception, keeping all import/runtime checks. No old full suites are rerun.
+The corrected driver1e51c565 uses new `/root/amadeus-m117ls2` and requires all
+source files unchanged, with no metadata exception. Independent delta review
+passed. Session1116/observer6184 started08:05:21Z; all6 setup/smoke checks passed,
+and the first full source suite is now RUNNING. Do not restart it. Host recovery:
+`D:/agentsync-debug/m117ls2`; old failed directory remains intact. No completed
+full suites are repeated. Runtime and frozen test identities remain unchanged.
 Fresh real-model recovery permission is still pending; Release remains BLOCKED.
 
 Completed independent validation — 2026-11-15 America/Tijuana (2026-11-16 UTC).
