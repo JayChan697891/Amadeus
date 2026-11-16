@@ -1,6 +1,6 @@
 # Amadeus current progress
 
-Source validation preparation failure retained — 2026-11-16 America/Tijuana/UTC.
+Source validation preparation failure retained â€” 2026-11-16 America/Tijuana/UTC.
 First Linux3.14 source attempt7826 exited1 at08:01:34Z: all3 native installation
 checks passed, then the driver incorrectly required six generated egg-info files.
 Those files came from an earlier Windows sdist build, not this Linux editable
@@ -16,8 +16,14 @@ and the first full source suite is now RUNNING. Do not restart it. Host recovery
 `D:/agentsync-debug/m117ls2`; old failed directory remains intact. No completed
 full suites are repeated. Runtime and frozen test identities remain unchanged.
 Fresh real-model recovery permission is still pending; Release remains BLOCKED.
+The next Windows3.12 source driver is prepared and independently reviewed,
+SHA0b87ce50, at `D:/agentsync-debug/m117ws/run-source.py`. It remains NOT RUN;
+start only after this Linux run and safe VM shutdown. See full-windows312-source/
+preparation.json for the exact entry. Do not rerun completed package suites.
+The runtime-only installation example now also uses the documented Windows venv;
+pytest requires dev dependencies. Only a bilingual documentation diff was needed.
 
-Completed independent validation — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Completed independent validation â€” 2026-11-15 America/Tijuana (2026-11-16 UTC).
 While the fresh live-model grant remains pending, the first a117 Windows3.12 full
 installed-wheel supplement completed in `D:/agentsync-debug/m117ww`.
 Native session35434/controller8872 ended0 at07:43:05Z; do not restart it. Its Windows
@@ -28,7 +34,7 @@ All7 native checks passed;2545 unique cases:2489pass/56skip/0failure/error,
 receipts/logs/JUnit and exact artifact hashes; independent Astra accepted this
 limited scope. All case identities equal the old Windows sdist and same-input
 Linux wheel. The only Windows outcome change is the already-fixed traceability
-expectation failure→passed in this new wheel run. The old full sdist remains failed;
+expectation failureâ†’passed in this new wheel run. The old full sdist remains failed;
 its original XML is unchanged. All56 skip identities stay the same.
 The unchanged wheel300c72e1/runtimefc27f15 and2382 frozen33ffbc3 inputs are reused
 read-only; caches, install and scratch are new. Driver9a86ad90 received root diff
@@ -50,7 +56,7 @@ Root checked the actual CLI/pilot/SDK code and the diff; no behavior or gate cha
 so no additional execution or duplicate tests were required. These documentation
 changes do not modify the running33ffbc3 snapshot or expand any acceptance claim.
 
-Current recovery checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Current recovery checkpoint â€” 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Goal active; PR35 remains open/draft at the resumed ccfe615 branch with no new
 comments. A remains usable now; P0 still prioritizes the existing live-recovery
 gap, P1 usability/current-package checks, P2 unavailable extra clients/platforms.
@@ -95,7 +101,7 @@ and executable were then matched before poweroff. See interrupted-controller/shu
 Fresh permission is pending; no model stage has started. On resumption, start the
 same preserved local VM and recheck current sessions/plan before any authorized call.
 
-Resume checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Resume checkpoint â€” 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Goal active; branch feat/m6-single-codex-pilot, resumed HEAD342fee9 and clean tree;
 live PR35 open/draft, no comments, Issues7/11 open. The existing delivery-order
 overlay in PLAN is refreshed rather than creating another stage. A is usable now.
@@ -140,9 +146,9 @@ host observed it absent at06:18:06Z. Disks/private fixture state remain on D dri
 No real model calls or external model-auth copies occurred. Previous sdist suites,
 a116 queues and M5 accepted scope stay intact. Full B/Release remain BLOCKED.
 
-Current checkpoint — 2026-11-15, Windows/Linux installed-sdist regressions. Scoped engineering demonstration and
+Current checkpoint â€” 2026-11-15, Windows/Linux installed-sdist regressions. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
-The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.
+The original Goal, M0â€“M9, M5 frozen acceptance and old failures remain preserved.
 
 Version117 runtime `fc27f15` / pilot `5b433f4`: durable CLI ran on Windows/Linux; actual Linux
 Docker demo passed 8 cases and 19 isolation checks. The producer task is verified;
@@ -313,7 +319,7 @@ groups, including expected rejection outcomes. The 2,382 frozen inputs from
 33ffbc3 and 97 installed members from fc27f15 stayed unchanged. Docker and the
 fixture process list were empty at cleanup. No model call or package rebuild.
 [Linux result](acceptance/evidence/durable-demo-a117/full-linux314/current-summary.json)
-· [Start record](acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json)
+Â· [Start record](acceptance/evidence/durable-demo-a117/full-linux314/started-summary.json)
 
 Cancellation R2 ran once under a fresh single-call authorization. Native session
 2878 closed with exit 0 at 15:09:16Z. Root and independent review accepted
@@ -330,7 +336,7 @@ no related processes remained. Raw stdout (335 bytes) and unclassified stderr
 Server cancellation, descendant cleanup, billing and live host-crash recovery
 remain unverified.
 [R2 result](acceptance/evidence/durable-demo-a117/cancel-r2-live/summary.json)
-· [R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+Â· [R2 preparation](acceptance/evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
 
 A subsequent native read-only observer (PID21300) exited0 at15:12:49Z. It read
 the same persisted cancellation from a new process: tasks, audit and five receipt
@@ -345,7 +351,7 @@ Historical strategy checkpoint follows; its running/NOT RUN entries are dated
 observations superseded by the current checkpoint above.
 
 Delivery-order checkpoint, 2026-11-15: the owner requested a usable core before
-exhausting every release expansion. The active Goal and original M0–M9 remain
+exhausting every release expansion. The active Goal and original M0â€“M9 remain
 unchanged; PLAN.md now separates P0/P1/P2 and delivery nodes A/B/C. At the strategy
 boundary the clean feature branch/PR35 head was
 `c8c9c95f9e1474fc4c7611c115d6501fb9c90665`; PR35 was open/draft/unmerged, base
@@ -2249,7 +2255,7 @@ Windows reports are under `windows-py311-full/`, `windows-py312-full/`,
 `windows/` and `fixed-windows/`. Linux minor-version evidence is under
 `linux-minor-runtime/`. The owned guest stopped normally after verification,
 with both disks preserved. Resume from the
-[M5–M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
+[M5â€“M6 execution adjustment](M5-M6-EXECUTION-ADJUSTMENT.md) and the isolated
 `feat/m6-single-codex-pilot` branch. Reuse this baseline and rerun affected
 checks only for changes in code or tests.
 
@@ -2550,11 +2556,11 @@ Actual8processes completed in~0.356s; parent file preserved. No production edits
 Linux diagnostic NOT RUN, historical8process timeout stillOPEN; BEGIN not split.
 See acceptance/evidence/core-startup-local-summary.json. No gate promotion.
 
-Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 ×wheel/sdist)
+Development0.3.0a15 product1d6b526 frozen.4freshWindows(Python3.14/3.11 Ã—wheel/sdist)
 environments each782pass3platformskips;2freshLinux wheel/sdist each122pass2Windows-
 junctionskips withreal fork/MCPprocessclaim pass. Root verified55modulebytes each,
 785matchingWindows/124Linux IDs,313Gitinputs andartifact/directarchivehashes.
-IndependentAstra source+result review approves scopeddevelopment only. Same32×8
+IndependentAstra source+result review approves scopeddevelopment only. Same32Ã—8
 budget nowpassed:sourcep95~107.837ms/installed3.11~110.680ms vs2303.126baselineFAIL;
 256audits complete. All42formalnot_run/ReleaseBLOCKED; oldLinux8process issueopen.
 OwnedVM gracefully stopped aftersync; disk/logs/evidence preserved,3GiB RAM released.
@@ -2564,7 +2570,7 @@ M8 bounded process-local Core admission implemented; existing SQL/auth/replay/le
 audit/close body byte-identical, owner/migration paths unchanged. Astra source
 review no blocker. Independent Windows3.14 broad432pass3skip; Python3.11 scoped
 37pass1forkskip; Linux122pass2Windows-junctionskips withreal inherited-Corefork
-andtwo-MCPprocessclaim passed. Same32×8/1000ms workload p95 observed107.837ms
+andtwo-MCPprocessclaim passed. Same32Ã—8/1000ms workload p95 observed107.837ms
 versus2303.126ms baseline, exact256audits; queue wait remains inside timing.
 Evidence D:core-admission-root-e9ou5xav, core-admission-perf-qqof4ky8,
 core-admission-linux-isvv1r9f. No generalSLO/fullmatrix/Release claim.
@@ -2578,7 +2584,7 @@ Formal42not_run/releaseBLOCKED.
 M8 benchmark now validates exact audit actor/request/outcome coverage after timing.
 Missing/duplicate/unexpected/mismatched receipts fail; only aggregatecounts exported.
 Root Windows3.14 scoped11pass, Python3.11 tool7pass, static54module checks pass.
-Actual32×8 strict run matched256events(8success/248denied), audit errors0; p95
+Actual32Ã—8 strict run matched256events(8success/248denied), audit errors0; p95
 2303.126ms still FAILED1000ms. Core/M5 semantics unchanged; current source
 diagnostic extends the earlier2982539 packaged checkpoint.
 D:m8-audit-strict-root-cfi2btv7. All42formalnot_run/releaseBLOCKED.
@@ -2606,7 +2612,7 @@ preparation observed; completeflags/auth/realturn NOT RUN.
 Evidence D:m6-claude-plan-root-zwkx1ith; formal42not_run/release BLOCKED.
 
 M8 isolated local contention diagnostic implemented. Root Windows3.14 focused
-11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker ×8round
+11pass; Python3.11 tool4pass; Ruff/format/mypy53 pass. Actual1/8/16/32worker Ã—8round
 workloads measured456 claim attempts: all functional checks passed, no unexpected
 errors. p95ms3.400/133.483/660.562/2395.555 under declared1000ms threshold:32worker
 budget FAILED(exit1), retained without weakening. Source startup/barrier/cleanup
@@ -3051,7 +3057,7 @@ or task acceptance. Prior M5B1/PR16 and M5B2A/PR17 received independent Work rev
 Root independently inspected source and incrementally executed7actual local Linux
 owner cases: fixed snapshot despite dirty checkout,3false candidate reports,
 timeout, cancel-after-create/no-start and real backend pass followed by lease
-expiry→pending/unverified. These development runs used unfrozen overlays, not a
+expiryâ†’pending/unverified. These development runs used unfrozen overlays, not a
 final-SHA certification. Final source/wheel/sdist collection follows code freeze.
 Strategy/ledger/migration developer subset259pass, Docker policy139pass.
 GitHub storage only; debugging on D:. Full M5 and formal release remain BLOCKED.
