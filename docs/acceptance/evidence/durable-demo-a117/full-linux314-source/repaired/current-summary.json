@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "scope": "One full Linux 3.14.7 a117 editable-source suite with the pinned local Docker image",
+  "native_session_id": 1116,
+  "native_exit_code": 0,
+  "finished_at": "2026-11-16T08:24:21.899959+00:00",
+  "version": "0.3.0a117",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "fixture_snapshot_sha256": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+  "driver_sha256": "1e51c56517ca7c958bf155fb24bd1a6fa6696297c3a125fdf3dac782428f7aab",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "native_checks_passed": 8,
+  "full_suite": {
+    "junit": "run/junit.xml",
+    "sha256": "e038a4cdd7c65b1d6e9c541289bdf4dcb8cb51f8c92fe0ca1e986975d219fbef",
+    "unique_cases": 2545,
+    "passed": 2538,
+    "skipped": 7,
+    "failed": 0,
+    "errors": 0,
+    "warnings": 120,
+    "seconds": 1117.76,
+    "same_case_identities_and_outcomes_as_a117_linux_sdist": true
+  },
+  "durable_smoke": {
+    "junit": "run/durable-smoke.xml",
+    "sha256": "569fd9703f664ef0229367813c64c924212420ad3142a51097ff5ae65f5450d8",
+    "passed": 1,
+    "skipped": 0,
+    "failed": 0,
+    "errors": 0,
+    "seconds": 4.54,
+    "also_present_in_full_suite": true
+  },
+  "source": {
+    "original_frozen_files_unchanged": 2382,
+    "copy_files_unchanged": 2382,
+    "runtime_members_matched": 97,
+    "editable_origin": "/root/amadeus-m117ls2/s/src/agentsync/__init__.py",
+    "editable_direct_url": "file:///root/amadeus-m117ls2/s"
+  },
+  "docker": {
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "observations": 35,
+    "groups": {
+      "candidate_executor": 5,
+      "owner_executor": 7,
+      "proposal_pipeline": 2,
+      "reconciliation": 5,
+      "task_completion": 1,
+      "verified_review": 1,
+      "verifier": 14
+    },
+    "selected_fields_match_a117_linux_sdist": true,
+    "containers_remaining": []
+  },
+  "transfer": {
+    "run_files": 56,
+    "run_bytes": 638029,
+    "run_result_sha256": "f4c6f86e8c2c9dc1568723c022e82901763ad470e23e2c7d8c65d4660e774f4e",
+    "file_inventory": "transfer-summary.json"
+  },
+  "evidence_sha256": {
+    "execution-result.json": "47e8f454b3395474909bc24a4dd9b72f8b8995cbed6296240eb1b0ce1a597465",
+    "case-diff.json": "89741addc7029dc4439f41b73b8368d677fb21710673eec61f7f84e253f4d50f",
+    "docker-diff.json": "2838ba7c42d66b48e1242bc9287af52422a890e2d77dd0f11df1f74fe0e2bf00",
+    "check-result.py.txt": "ed3125b476ae256b1e8b2e848b783f3cda35c08947fcc3d3a729f5984cc1dc63",
+    "transfer-summary.json": "fc82f24c0ea76ec61cbd01bb9bd0e6af0c992f2e33a1bde10e5063a109f477d7"
+  },
+  "original_failed_attempt": "../current-summary.json",
+  "model_calls": 0,
+  "independent_review": "ACCEPTED for this limited source scope; see lead-review.json",
+  "formal_release": "BLOCKED"
+}

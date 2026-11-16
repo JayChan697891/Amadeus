@@ -1,5 +1,15 @@
 # Release Acceptance Report
 
+Latest Linux editable-source supplement completed:2545 unique cases,2538pass/
+7skip/zero failure,error;8 native checks and35 actual Docker observations across7
+groups. Runtimefc27f15/test33ffbc3,1117.76s,120 warnings; original/copy2382 and97
+runtime members unchanged. Root inspected the actual files and independent Astra
+accepted this limited scope. Evidence: evidence/durable-demo-a117/full-linux314-source/repaired/current-summary.json. Original setup failure remains fail; its
+smoke/full suites were NOT RUN. No full matrix/Release promotion.
+A fresh authorized live preflight then stopped on expired sessions before any
+model or external auth access. This is not live crash recovery failure/success;
+actual experiment remains NOT RUN until fresh isolated preparation. Release BLOCKED.
+
 Current Windows wheel supplement — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Native session35434 ended0 at07:43:05Z.7 checks passed; the frozen a117 wheel on
 Windows3.12 produced2489passed/56skipped/0failed/error in2536.07 seconds. All2545

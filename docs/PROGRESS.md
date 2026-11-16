@@ -1,5 +1,19 @@
 # Amadeus current progress
 
+Completed source validation; fresh live-session preparation — 2026-11-16 UTC.
+Linux source session1116 exited0 at08:24:21Z: all8 native checks,2538pass/7skip,
+2545 unique identities,1117.76 seconds.56 original files/638029 bytes,97 runtime
+members and2382 original/copy inputs were checked.35 Docker observations in7
+groups match the listed sdist semantic projections. Independent Astra accepted
+this limited source scope; old setup failure stays unchanged. See full-linux314-source/repaired/current-summary.json. Do not repeat this completed suite.
+The new owner grant is saved, but fresh preflight stopped at08:25:55Z because the
+old fixture sessions expired. No model call, mount or auth copy occurred. Core
+correctly rejects expired sessions; there is no public refresh for them. Preserve
+that original fixture. Prepare a new dedicated fixture through normal Core
+registration, then pin/review its new plan and helper hashes before using the
+same bounded subscription-only authorization. No clock or database edits. Windows
+source remains prepared/NOT RUN and follows P0; the local VM remains available.
+
 Owner authorization received — 2026-11-16.
 The owner granted this reviewed at-most-two-call subscription interruption /
 continuation experiment, including the exact temporary auth copy, and permits

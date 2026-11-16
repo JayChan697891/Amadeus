@@ -1,0 +1,79 @@
+{
+  "a117_editable_source_counts": {
+    "passed": 2538,
+    "skipped": 7
+  },
+  "a117_editable_source_junit_sha256": "e038a4cdd7c65b1d6e9c541289bdf4dcb8cb51f8c92fe0ca1e986975d219fbef",
+  "a117_sdist_counts": {
+    "passed": 2538,
+    "skipped": 7
+  },
+  "a117_sdist_junit_sha256": "ade19ad9d35df226ed1d7a62608027ae3470543248db808a034e1abd48dbce77",
+  "added": [],
+  "durable_smoke_junit": {
+    "cases": 1,
+    "credential_redactions": 0,
+    "error": 0,
+    "failure": 0,
+    "path": "durable-smoke.xml",
+    "sha256": "569fd9703f664ef0229367813c64c924212420ad3142a51097ff5ae65f5450d8",
+    "skipped": 0
+  },
+  "native_checks": {
+    "pytest": {
+      "exit_code": 0,
+      "log_sha256": "860cb344b6d01462439c8b72a850ca63c4092be89af9eb200e031e3bdacf5195",
+      "outcome": "exited",
+      "receipt_sha256": "9d46b4c2718a74ab5e76fc42cba9bbd4f8445e1c6c53992a705e99d35fbefad9"
+    },
+    "source_durable_smoke": {
+      "exit_code": 0,
+      "log_sha256": "a517907e22538fe48dc9c1562d4f40812dd0efb841034402d0df83cd8cf740fd",
+      "outcome": "exited",
+      "receipt_sha256": "e3cdde359224b4821f666cb03484d1042b0bc9e1cd8c5fdfdcf73ecbbe1c21b4"
+    },
+    "source_editable_install": {
+      "exit_code": 0,
+      "log_sha256": "1889156a1c61ff7f4a71e44c0dcfc11981163147e6f2aeb19f3781ad765c2526",
+      "outcome": "exited",
+      "receipt_sha256": "44271c2c2669ff9008fb00534053fb06333b8523a8618af17cd44a6898ec9913"
+    },
+    "source_offline_dependencies": {
+      "exit_code": 0,
+      "log_sha256": "c95a814d245f58e6d4273849b64763b77097a0316724cca05f0ed1244538a52c",
+      "outcome": "exited",
+      "receipt_sha256": "99f7014e7b5027117201c99df81f1a3b2dd83195b35c30d224d59d21a01fa1e2"
+    },
+    "source_origin_after": {
+      "exit_code": 0,
+      "log_sha256": "18ec08ecf8b18500355fe23d33e25d8b39777d179dee1b046765b2c6b6289d77",
+      "outcome": "exited",
+      "receipt_sha256": "9628ffd0297a52ca14c1f5200d1c27ecf61d4a8b8df2ab9fb4eb8c2df0280289"
+    },
+    "source_origin_before": {
+      "exit_code": 0,
+      "log_sha256": "18ec08ecf8b18500355fe23d33e25d8b39777d179dee1b046765b2c6b6289d77",
+      "outcome": "exited",
+      "receipt_sha256": "c622952f5a49b6030eb23da65a33800707e472be5f0ae2dd09aeca48a3cf100e"
+    },
+    "source_pip_check": {
+      "exit_code": 0,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "outcome": "exited",
+      "receipt_sha256": "1f4c02e5265abb732d367d8e67346d5e982c3ee56aab71082146b1134c537fa0"
+    },
+    "source_venv": {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "exited",
+      "receipt_sha256": "d90feb6b60d739cfbf2ea5c5fc6117a9ae8328115454c0223da82df855d45852"
+    }
+  },
+  "original_sdist_comparison_script_sha256": "3ae00c534ab578b069b3c73b601c1fa27011e686f9e4767d29b5ff7f257af8a5",
+  "original_wheel_comparison_script_sha256": "07badc59a50db8cd7f19935f7bef3550bc875f7727ac5e8acecf83abb869dd48",
+  "outcome_changes": [],
+  "problems": [],
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "removed": [],
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189"
+}

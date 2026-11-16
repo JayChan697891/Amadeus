@@ -56,6 +56,16 @@ pilot prerequisite), without more tests. The next independent validation is the
 missing Linux source suite, using the same inputs and existing collector; no
 sdist/wheel rerun, new product phase, package rebuild or gate relaxation is needed.
 
+The first Linux editable-source supplement completed after correcting a setup
+assumption:2538pass/7skip,8 native checks,35 Docker observations,2382 unchanged
+original/copy files and97 runtime members. No completed suite is repeated. The
+Windows source driver is prepared/NOT RUN. The owner has now granted bounded
+subscription experiments without repeated permission questions, retaining all
+fees/call-limit/cleanup/unknown-result restrictions. The original live fixture
+expired before any model or auth access; replace it through normal fresh local
+registration and pin a new exact plan, preserving the old failure. P0 runs before
+the remaining Windows source check; this does not reopen M5 or relax Release.
+
 Remaining evidence: actual model in-flight crash/recovery, real Claude/Cursor
 compatibility (no subscriptions), and current-candidate full release coverage;
 macOS has no available host. These stay unverified/NOT RUN. The scoped live local

@@ -1,0 +1,6 @@
+{
+  "observed_at": "2026-11-16T08:25:55.995163+00:00",
+  "exit_code": 1,
+  "result": null,
+  "stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 23, in <module>\n  File \"/root/amadeus-interrupted-a117-20261115/live.py\", line 165, in heartbeat\n    core.execute(\"heartbeat\", prep.auth(state, who))\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/root/amadeus-demo-a117-sdist-r1/installed/lib/python3.14/site-packages/agentsync/core/service.py\", line 50, in execute\n    return self._execute_validated(operation, p)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/root/amadeus-demo-a117-sdist-r1/installed/lib/python3.14/site-packages/agentsync/core/service.py\", line 60, in _execute_validated\n    session = self._authenticate(db, p, now)\n  File \"/root/amadeus-demo-a117-sdist-r1/installed/lib/python3.14/site-packages/agentsync/core/service.py\", line 180, in _authenticate\n    raise AgentSyncError(\"session_expired\", \"Session has expired.\", 401)\nagentsync.errors.AgentSyncError: Session has expired.\n"
+}

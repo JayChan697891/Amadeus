@@ -1,0 +1,14 @@
+Looking in links: file:///root/amadeus-m117ls2/t/offline-wheels, file:///root/amadeus-m117ls2/t/offline-wheels
+Obtaining file:///root/amadeus-m117ls2/s
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building editable for agentsync-local (pyproject.toml): started
+  Building editable for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a117-0.editable-py3-none-any.whl size=14745 sha256=f6b3db0f6af2f01074f01a9be578738701d520e8a377261389cd00a22694ece8
+  Stored in directory: /root/amadeus-m117ls2/t/pip-ephem-wheel-cache-sanilux1/wheels/26/5d/7d/a4bc0420cbafe2b478f427432b790ee47fa77a07d04ea4e062
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a117
