@@ -82,9 +82,11 @@ py -m venv .venv
 No activation or PowerShell execution-policy changes are needed. Demo uses two simulated agents,
 rejects the second claim, submits a result, records separate review and checks persistence.
 Use a dedicated empty data directory for repeatable demo runs.
-For runtime-only installation use `pip install -e .`. The package dependencies are
-declared in `pyproject.toml`. The two `requirements*-lock.txt` files preserve an
-older Windows environment snapshot; they are not the current cross-platform lock.
+For runtime-only installation use `& .\.venv\Scripts\python.exe -m pip install -e .`.
+The demo works with runtime dependencies; the pytest step requires `.[dev]`.
+The package dependencies are declared in `pyproject.toml`. The two
+`requirements*-lock.txt` files preserve an older Windows environment snapshot;
+they are not the current cross-platform lock.
 For offline installation, prepare wheels compatible with the selected Python version.
 
 ## Try persisted collaboration
