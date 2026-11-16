@@ -1,5 +1,14 @@
 # Release Acceptance Report
 
+Later P1 source correction — 2026-11-16,6192b87: `workflow start` now refuses a
+missing project database without creating state. The original installed a119
+reproduction and2 failing source cases are preserved;9 affected Windows source
+cases then passed, with clean Ruff/format checks. Root reviewed actual evidence.
+This correction is not in the frozen a119 packages. Linux, fresh-package and
+full-suite validation of this later change are NOT RUN; no real-client result is
+inferred from the deterministic workflow regression. Formal Release BLOCKED.
+[Exact source hashes and original outputs](evidence/core-preview-a119/workflow-start-existing/summary.json).
+
 Current bounded B result — 2026-11-16: **PASS for the explicit same-vendor path;
 formal Release remains BLOCKED**. Unchanged a119/4be5134 with controller4aa4f8
 completed two actual Codex calls: controlled parent interruption, then a distinct

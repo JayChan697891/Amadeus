@@ -2,6 +2,16 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 entry-point audit, 2026-11-16: source6192b87 now requires an existing database
+for `workflow start`, matching status/resume/cancel. A mistyped or empty project
+directory returns `not_found` without creating state. Two reproductions failed
+before the fix;9 affected Windows source cases pass afterward, including valid
+start/handoff/review. Ruff and formatting pass. The frozen a119 packages and their
+evidence are unchanged; this later source correction is not in those packages.
+See [original results and reproduction](acceptance/evidence/core-preview-a119/workflow-start-existing/summary.json).
+Continue the existing P1 usability review, without a new phase or duplicate
+acceptance run. A/B scoped conclusions below remain intact; C remains BLOCKED.
+
 P0/B's bounded same-vendor path now has an actual result: two real Codex calls,
 one original receiver task completed/verified after2 Docker cases/19 isolation
 checks, zero-effect replay and actual dependent claim. The owner approved the new

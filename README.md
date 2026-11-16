@@ -18,6 +18,12 @@ owner CLI directory fix and same-task continuation verification bridge. The same
 wheel/source packages passed15 focused cases per Windows install and16 per Linux
 install, including real Docker verification with local protocol fixtures. These
 are scoped installation results, not real-model or full-release acceptance.
+Separately, the unchanged a119 wheel completed a
+[real Codex interruption-to-verification flow](docs/acceptance/evidence/core-preview-a119/live-continuation/README.md):
+two subscription calls, one Docker execution, and the same receiver task completed
+verified after2 cases/19 isolation checks. This used a host-known checkpoint and
+explicit approvals; whole-host crash, cross-vendor and unattended operation remain
+unverified. The distinct host reviewer was not a third model call.
 Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
@@ -253,6 +259,11 @@ database is missing, without creating empty state. Use `--data-dir` or
 `AGENTSYNC_DATA_DIR` to select the project you created. The older frozen a118
 packages retain their original behavior and version-bound checks.
 
+Current development source also rejects `workflow start` when the project database
+is missing, without creating an empty directory or database. All four workflow
+operations require a project created through the SDK. The frozen a119 packages
+precede this final `start` correction; select your existing project explicitly.
+
 `start` also takes `request_id` and `config`; `resume`/`cancel` take `request_id`
 and `expected_version`. Set `expected_version` to the latest `data.version` in
 the `status` response. A minimal config is:
@@ -407,8 +418,11 @@ verification and different reviewer's completion. See the
 [host integration contract](docs/M6-ADAPTERS.md#controlled-proposal-submission-and-staging-bridge).
 Staging/execution/completion remain separate decisions. The verifier's supported
 candidate format is root `solution.py` using its JSON-lines interface; arbitrary
-model output is not silently adapted. This bridge is not a new real-model result
-or a formal Release approval.
+model output is not silently adapted. The
+[a119 live result](docs/acceptance/evidence/core-preview-a119/live-continuation/README.md)
+now exercises this same-task bridge with two real Codex calls and one approved
+Docker execution. The original R2 fixture remains unchanged, and formal Release
+is still blocked. Reuse the recorded result; do not restart its consumed fixture.
 
 `agentsync.retry_planning.plan_retry(RetryPolicy(...), ...)` calculates deterministic
 capped exponential backoff from a caller-reported failure. A numeric Retry-After

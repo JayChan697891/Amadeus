@@ -1,5 +1,17 @@
 # Amadeus current progress
 
+P1 workflow-start correction — 2026-11-16 UTC, source/test6192b87.
+The installed a119 reproduction created an empty database before returning
+unauthorized. The source fix requires the existing project before opening Core,
+returning not_found with no new state. Red:2 failed/6 deselected; green:9 passed
+(8 missing/empty-directory cases plus normal start/handoff/review), no skips or
+errors. Ruff and format pass. Root inspected the actual diff, logs, XML and source
+origin. Evidence: acceptance/evidence/core-preview-a119/workflow-start-existing/summary.json.
+This is Windows source validation with local simulated agents; no model, VM,
+Linux rerun, new package or Release acceptance. Frozen a119 remains unchanged.
+Recovery entry: continue the existing P1 SDK/CLI usability audit; reuse the
+completed real continuation evidence below, never restart its consumed fixture.
+
 P0/B bounded live path completed — 2026-11-16 UTC, unchanged a119/4be5134,
 controller4aa4f8 and reviewed plan58efea3. Two actual Codex calls: an owned producer
 parent interrupted after turn.started, then a different identity continued the

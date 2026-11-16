@@ -12,7 +12,12 @@
 [a119 开发预览](releases/0.3.0a119/preview-4be5134/)已包含所有者命令的错目录保护，
 以及续接任务在同一核心内完成独立验收的接线。同一 wheel 和源码包在 Windows 新安装中
 各通过15项用例，在 Linux 中各通过16项，后者包括真实 Docker 验证。模型端使用本地协议
-夹具，不代表真实模型闭环或完整正式发布通过。
+夹具，这些安装用例不代表真实模型闭环或完整正式发布通过。
+
+同一 a119 包随后完成了[真实 Codex 中断续接与同任务验证](docs/acceptance/evidence/core-preview-a119/live-continuation/README.md)：
+两次订阅调用、一次 Docker 执行，2项用例和19项隔离检查通过，原接收任务完成验证。
+检查点由宿主提供，各操作经过明确审批；独立验收使用不同宿主身份，没有第三次模型调用。
+整机崩溃、跨厂商和无人审批运行仍未验证，正式发布门槛不变。
 
 新增可恢复的持久 Mock 工作流入口：
 `amadeus --data-dir 绝对路径 workflow start|resume|status|cancel`，或 SDK 的
@@ -118,6 +123,10 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 不会新建空数据库。用 `--data-dir` 或 `AGENTSYNC_DATA_DIR` 指向已创建的项目。
 较旧的冻结 a118 包保持原行为与原测试范围；a119 的实际安装结果见上方预览目录。
 
+当前开发源码还修复了 `workflow start` 的同类问题：项目数据库缺失时直接返回
+`not_found`，不会新建目录或空数据库。四种 workflow 操作都要求先通过 SDK 创建项目。
+冻结的 a119 安装包尚不包含这项后续修复，请明确选择已有项目。
+
 较新的 [a118 开发预览](releases/0.3.0a118/preview-7f0ba0a/) 已包含 workflow 恢复路径修复，
 同一 wheel 和源码包在 Windows3.12/Linux3.14 的四个新安装环境中各通过12项定向检查；完整平台及客户端验收
 尚未完成。下面的 a117 证据仍只属于原冻结运行时。
@@ -134,6 +143,10 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 随后在新测试项目中的[独立 Docker 执行](docs/acceptance/evidence/durable-demo-a117/interrupted-output-verification/summary.json)
 对这份精确产物通过了8项用例和19项隔离检查，导入产物没有改变原任务。
 这些结果只覆盖受控客户端进程中断，不代表整机崩溃或模型自产检查点的恢复。
+
+后续 a119 的[同任务实测](docs/acceptance/evidence/core-preview-a119/live-continuation/README.md)
+已把真实续接输出接入原接收任务的独立验证与完成，重放没有新增调用或执行，后续依赖
+实际认领成功。原 R2 及其未验证任务保持不变；不要重启已经消耗授权的实验现场。
 
 已有 Linux 验证工具另提供固定的 `--demo` 入口。请在项目[专用本地 Linux 测试虚拟机](docs/LOCAL-DEBUG.md)
 中使用其现有 root 用户；此工具要求新建 `/root/amadeus-proposal-pilot-*` 目录。

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "agentsync",
+    "--data-dir",
+    "D:\\agentsync-debug\\p1-onboarding-20261116\\wrong-project",
+    "workflow",
+    "start"
+  ],
+  "cwd": "D:\\agentsync-debug\\p1-onboarding-20261116",
+  "package": "0.3.0a119",
+  "module_origin": "D:\\agentsync-debug\\m119p\\w\\Lib\\site-packages\\agentsync\\__init__.py",
+  "path_exists_before": false,
+  "synthetic_input": true
+}
