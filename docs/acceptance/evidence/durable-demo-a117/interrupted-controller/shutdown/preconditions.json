@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-16T06:56:06.219555+00:00",
+  "boot_id": "ad4636c1-6f52-452a-80f6-4a4585dc729a",
+  "workers": [],
+  "containers": 0,
+  "private_home_empty": true,
+  "auth_home_mounted": false,
+  "live_authorization": "NOT GRANTED",
+  "model_execution": "NOT RUN",
+  "normal_poweroff_preconditions": true
+}

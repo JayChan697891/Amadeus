@@ -37,9 +37,13 @@ Whole-host crash, cross-vendor clients, full B and formal Release stay unverifie
 BLOCKED; macOS and real Claude/Cursor lack available environments.
 
 All22 current offline tests have ended; the earlier full queues remain finished.
-Local VM PID21524/boot ad4636c1-6f52-452a-80f6-4a4585dc729a holds the preserved
-fixture. Its runtime state is recorded separately when the checkpoint closes;
-do not infer an active model/test job from the VM being powered on.
+After confirming no Python/Codex workers, no containers and an empty/unmounted
+auth home, owned VM21524/boot ad4636c1-6f52-452a-80f6-4a4585dc729a was normally
+powered off. Host confirmed PID absent at06:56:14Z; disks/fixture remain on D drive.
+The first host comparison rejected ISO formatting; exact typed UTC creation ticks
+and executable were then matched before poweroff. See interrupted-controller/shutdown/.
+Fresh permission is pending; no model stage has started. On resumption, start the
+same preserved local VM and recheck current sessions/plan before any authorized call.
 
 Resume checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Goal active; branch feat/m6-single-codex-pilot, resumed HEAD342fee9 and clean tree;
