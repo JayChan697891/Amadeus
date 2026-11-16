@@ -2,6 +2,23 @@
 
 ## Execution adjustment — 2026-11-15
 
+Resumed product-path audit, 2026-11-16: A is demonstrable now; two concrete gaps
+were found after the earlier requirement-only review. P1 now has a runnable
+SDK-bootstrap/three-process CLI example and an owner-command wrong-directory fix.
+The example completed against the unchanged a118 install, preserving its explicit
+simulation/unverified status; the later source fix passed27 affected Windows cases
+after four reproductions failed. See [scoped evidence](acceptance/evidence/recovery-preview-a118/owner-onboarding/summary.json).
+P0 next connects the already-submitted continuation proposal to the existing
+staging, independent verification and completion APIs in the same Core/task.
+First use zero-model deterministic cases, including rejection and replay; then
+prepare a reviewed live plan with candidate-execution approval stated explicitly.
+The old interruption grant excluded candidate execution. Do not modify R2 or
+reuse its separate-Core verification as original-task completion. This is one
+existing B path, not a new M5 phase. A remains available now; an offline bridge
+fits a bounded implementation/review session, while a live B closure depends on
+that result and its exact approved plan. C remains BLOCKED. P1 documentation can
+run alongside P0 on separate files; no earlier test queue is restarted.
+
 Current preview, 2026-11-16: a118/7f0ba0a now packages the recovery-path correction.
 The offline Windows3.12 build and two fresh installs passed19 native checks;
 wheel and sdist each passed12 focused cases, with97 runtime members bound to
@@ -19,11 +36,11 @@ See [actual results and retained first failure](acceptance/evidence/recovery-pre
 These are backend compatibility results, not desktop UI or model-driven relay.
 No full-suite repeat or additional M5 phase. Formal Release stays BLOCKED.
 
-After this supplement, read-only review of the original requirements found no
-new actionable local product gap. Do not manufacture another verification phase.
-The next concrete dependencies are real Claude/Cursor account access (M6-04/05),
-macOS hardware (M9-01), external Work acceptance and release authorization. These
-remain separate from earlier accepted local scopes; no complete a118 matrix claim.
+The earlier original-requirements review found no new local gap; the subsequent
+user-path audit above supersedes that conclusion with specific implementation work.
+Real Claude/Cursor access (M6-04/05), macOS hardware (M9-01), external Work acceptance
+and release authorization remain external dependencies. Do not repeat accepted
+scopes or claim a complete a118 matrix.
 
 P1 correction, 2026-11-16: workflow status/resume/cancel now reject a missing
 database before initializing Core, so a mistyped recovery directory stays untouched.

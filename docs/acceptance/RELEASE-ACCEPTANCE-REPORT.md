@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+Later source-only owner CLI fix: four missing-database reproductions failed, then
+27 affected Windows source cases passed with no failures/errors/skips. Actual
+logs/JUnit and tested file hashes are retained. The new SDK bootstrap example
+separately ran against the unchanged a118 install: start/status/resume in three
+CLI processes, one persisted run, explicit simulation_only/unverified output;
+reusing its directory was refused without changing saved state. No model, Docker,
+credential upload or current-package inclusion of the later source fix is claimed.
+Independent review was static and root inspected actual outputs. This improves
+onboarding; it does not close original-task continuation verification or Release.
+[Scoped results and reproduction recipe](evidence/recovery-preview-a118/owner-onboarding/summary.json).
+
 Current a118 has actual native MCP compatibility evidence: Codex0.162.0 discovers
 34 tools and exercises two deterministic identities, task/context sharing, distinct
 text review and host reopen; Claude2.1.295 health-connects using an isolated config.

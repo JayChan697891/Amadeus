@@ -9,7 +9,9 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from agentsync.sdk import AgentSyncClient
+from agentsync.config import resolve_data_dir
+from agentsync.errors import AgentSyncError
+from agentsync.sdk import AgentSyncClient, error_envelope
 
 
 def run_demo(data_dir: str | Path) -> dict[str, Any]:
@@ -303,7 +305,18 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
                 )
             )
             return 1
-        response = AgentSyncClient(data_dir).owner_call(args.operation, **payload)
+        try:
+            directory = resolve_data_dir(data_dir, create=False)
+            if not (directory / "agentsync.db").is_file():
+                raise AgentSyncError(
+                    "not_found",
+                    "No project database found. Point --data-dir or AGENTSYNC_DATA_DIR to the saved project directory.",
+                    404,
+                )
+        except AgentSyncError as error:
+            response = error_envelope(error)
+        else:
+            response = AgentSyncClient(directory).owner_call(args.operation, **payload)
         print(json.dumps(response, ensure_ascii=False))
         return 0 if response["ok"] else 1
     elif args.command == "demo":

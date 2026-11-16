@@ -1,5 +1,29 @@
 # Amadeus current progress
 
+P1 product-path correction — 2026-11-16 UTC. Owner CLI now rejects a selected
+missing database before Core initialization, preserving explicit/environment path
+selection and existing authorization. Four real CLI reproductions failed before
+the repair;27 affected source cases passed in43.95s with zero skip/failure/error.
+Root inspected the actual files/logs/JUnit and unchanged tested file hashes;
+Astra's independent static review found no material blocker. No full-suite repeat.
+The runnable examples/persisted_workflow.py also completed against the original
+a118 install: three separate CLI processes reopened one run, waiting/v6 to
+completed/v14, simulation_only=true and verification=unverified. An existing
+directory was refused with exit2 and its saved database stayed unchanged.
+Credentials remain parent-memory/stdin only; private state is not uploaded.
+Evidence: acceptance/evidence/recovery-preview-a118/owner-onboarding/summary.json.
+This source fix is not inside the frozen a118 packages. No new package/version.
+
+Recovery entry: finish the same-Core continuation-to-verification bridge in the
+existing controlled relay, reusing staging/verifier/completion APIs. Astra found
+the normal-proposal-only observation path cannot stage a continuation proposal;
+do not widen modes without binding continuation provenance and its review marker.
+Sol is implementing a bounded zero-model fix and affected tests; Astra reviews it.
+No live model, auth copy, VM start or test-queue restart is part of this step.
+The original interrupted R2 task remains review/unverified and immutable.
+The previous assertion that only external work remained was superseded by this
+concrete user-path audit. Goal active; formal Release BLOCKED; PR35 stays draft.
+
 M2-05 current-package native supplement — 2026-11-16 UTC. Codex0.162.0 native
 568e47 exited0 at10:34:23Z:34 discovered tools, two independent deterministic
 identities, task v1→v5, duplicate claim rejection, pinned context v1 and new-host
@@ -19,9 +43,9 @@ fixture-specific process observation found none. Static validation was9pass then
 independent Astra accepted these limited scopes. Evidence:
 acceptance/evidence/recovery-preview-a118/clients/summary.json. No package rebuild.
 
-Recovery entry: completed native probes must not be rerun merely to relabel their
-evidence. The subsequent read-only original-plan audit found no further currently
-actionable local product gap. M5's frozen open scope has no remaining REQUIRED/
+Historical recovery entry, superseded by the product-path audit above: completed
+native probes must not be rerun merely to relabel their evidence. The earlier
+original-plan audit found no local gap. M5's frozen open scope has no remaining REQUIRED/
 BLOCKER; earlier dependency/license technical inspection already exists, and the
 probe changes do not justify repeating the product matrix. This is not acceptance
 of all42 requirements or a complete a118 release matrix.

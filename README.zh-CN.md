@@ -5,7 +5,7 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a117 开发源码，正式发布仍处于阻断状态**。冻结的 0.3.0a116
+当前为 **0.3.0a118 开发源码，正式发布仍处于阻断状态**。冻结的 0.3.0a116
 已完成现有 Windows/Linux 六组本地矩阵，macOS 尚未实测；这些证据不覆盖新增开发代码。
 交付顺序见[总计划](docs/PLAN.md)。
 
@@ -88,8 +88,33 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 主程序退出后，这个短演示不提供凭据找回。实际项目需自行保管所有者凭据，
 使用上面的 `workflow` 操作管理生命周期。
 
-较新的 [a118 开发预览](releases/0.3.0a118/preview-7f0ba0a/) 已包含恢复路径修复，
-Windows3.12 的 wheel 和源码包全新安装各通过12项定向检查；完整平台及客户端验收
+## 创建并继续自己的项目
+
+通过 SDK 的普通 `call("create_project", ...)` 创建专用项目；
+`owner create_project` 不是有效操作。成功返回的 `data` 包含 `project_id`
+和一次性 `admin_token`。宿主程序应私下保管这组凭据，不打印、不放进命令参数，
+也不提交到仓库。`demo --durable` 有意不返回演示的所有者凭据。
+
+[可运行示例](examples/persisted_workflow.py)给出了完整输入：先用 SDK 创建项目，
+再通过三个独立 CLI 进程执行 `start → status → resume`，共用同一数据库。
+完成安装后，在仓库目录运行；每次选择一个不存在的新目录：
+
+```powershell
+& .\.venv\Scripts\python.exe -I -B examples\persisted_workflow.py "$PWD\local-data\my-workflow-01"
+```
+
+输出的 `run_id` 保持一致，状态从 `waiting` 变为 `completed`，同时明确保留
+`simulation_only: true` 和 `verification: unverified`。这里没有模型调用。
+示例只在父进程内存中保存所有者凭据，通过标准输入传给子进程；它不负责在宿主
+退出后保存或找回凭据。用于长期项目时，请在宿主退出前存入自己的私有凭据存储。
+已有目录会在打开 SDK 前被拒绝。
+
+当前开发源码还修复了 `owner` 命令的错目录行为：数据库缺失时返回明确错误，
+不会新建空数据库。用 `--data-dir` 或 `AGENTSYNC_DATA_DIR` 指向已创建的项目。
+这项后续修复尚未进入冻结 a118 预览包，不能借用旧包的测试结论。
+
+较新的 [a118 开发预览](releases/0.3.0a118/preview-7f0ba0a/) 已包含 workflow 恢复路径修复，
+同一 wheel 和源码包在 Windows3.12/Linux3.14 的四个新安装环境中各通过12项定向检查；完整平台及客户端验收
 尚未完成。下面的 a117 证据仍只属于原冻结运行时。
 
 版本0.3.0a117/`fc27f15`已有[两个真实 Codex 的连续流程证据](docs/acceptance/evidence/durable-demo-a117/live/summary.json)：

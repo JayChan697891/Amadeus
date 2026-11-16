@@ -1,0 +1,14 @@
+{
+  "started_at": "2026-11-16T13:00:36.337654+00:00",
+  "finished_at": "2026-11-16T13:00:36.626209+00:00",
+  "command": [
+    "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "F:\\syuc\\amadeus-m6-single\\examples\\persisted_workflow.py",
+    "D:\\agentsync-debug\\owner-onboarding-20261116\\new-project"
+  ],
+  "exit_code": 2,
+  "expected_rejection": true,
+  "existing_files_unchanged": 1
+}

@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a117 development source. Formal Release BLOCKED.** The unchanged
+Status: **0.3.0a118 development source. Formal Release BLOCKED.** The unchanged
 0.3.0a116 candidate completed all six available Windows/Linux matrix rows; macOS
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
@@ -219,6 +219,33 @@ equivalent is `amadeus --data-dir ABSOLUTE_PATH workflow start|resume|status|can
 Provide `project_id` and `admin_token` through bounded stdin JSON, never command
 arguments. Use a dedicated empty project; one durable run is bound to that project.
 Keep the owner credential yourself: the driver stores no recoverable credentials.
+
+To create your own project, use the SDK's regular `call("create_project", ...)`;
+`owner create_project` is not an operation. The returned `data` contains the
+`project_id` and one-time `admin_token`. Keep that mapping in your host's private
+credential store; do not print it, put it in command arguments or commit it.
+The short `demo --durable` intentionally does not return its owner credential.
+
+The runnable [project bootstrap example](examples/persisted_workflow.py) shows the
+complete input: SDK project creation, then three separate CLI processes for
+`start`, `status` and `resume`, all using the same database. After installation,
+from this repository run:
+
+```powershell
+& .\.venv\Scripts\python.exe -I -B examples\persisted_workflow.py "$PWD\local-data\my-workflow-01"
+```
+
+Choose a new directory each time. Output shows the same `run_id`, first `waiting`
+and then `completed`, with `simulation_only: true` and `verification: unverified`.
+The example keeps its owner mapping only in parent-process memory and passes it
+to children through stdin. It does not save credentials for a later host restart;
+your integrating host must retain them privately before exiting. The example
+runs no model and refuses existing state before opening the SDK.
+
+Current development source also rejects `owner` commands when their selected
+database is missing, without creating empty state. Use `--data-dir` or
+`AGENTSYNC_DATA_DIR` to select the project you created. This later fix is not in
+the frozen a118 preview packages; their original checks remain version-bound.
 
 `start` also takes `request_id` and `config`; `resume`/`cancel` take `request_id`
 and `expected_version`. Set `expected_version` to the latest `data.version` in
