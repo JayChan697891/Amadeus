@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "agentsync",
+    "--data-dir",
+    "D:\\agentsync-debug\\p1-workflow-storage-20261116\\repro",
+    "owner",
+    "list_members"
+  ],
+  "cwd": "D:\\agentsync-debug\\p1-workflow-storage-20261116",
+  "module_origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py",
+  "database_sha256": "8cdbac5a07cf021a0c46cb82be94701992005ec0797161791d80ad2f1685923c",
+  "stdin": {
+    "project_id": "11111111-1111-4111-8111-111111111111",
+    "admin_token": "fixture-token-not-a-credential"
+  }
+}

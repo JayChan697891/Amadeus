@@ -8,7 +8,7 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a119 development source. Formal Release BLOCKED.** The unchanged
+Status: **0.3.0a120 development source. Formal Release BLOCKED.** The unchanged
 0.3.0a116 candidate completed all six available Windows/Linux matrix rows; macOS
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
@@ -263,6 +263,9 @@ Current development source also rejects `workflow start` when the project databa
 is missing, without creating an empty directory or database. All four workflow
 operations require a project created through the SDK. The frozen a119 packages
 precede this final `start` correction; select your existing project explicitly.
+Current source also returns a JSON `storage_error` when `owner` or `workflow`
+cannot open the database, instead of a Python traceback. A corrupt file is left
+untouched; this error does not repair or replace the database.
 
 `start` also takes `request_id` and `config`; `resume`/`cancel` take `request_id`
 and `expected_version`. Set `expected_version` to the latest `data.version` in

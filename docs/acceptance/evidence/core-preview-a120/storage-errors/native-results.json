@@ -1,0 +1,56 @@
+{
+  "scope": "Workflow CLI database-open failure. Source checkout; no installed package change.",
+  "baseline_commit": "6192b874f214097c0bf33f4f63b6e139566c252a",
+  "source": {
+    "src/agentsync/cli.py": {
+      "before_sha256": "a7e2c0540ce9fefdd661ba8a32b79e5600ef4b9f6295fa7966c25282a3041870",
+      "after_sha256": "623e406f5dddff168edba75820fa504d0a3cb8acb1e1c4200e685356e8e37e60"
+    },
+    "tests/integration/test_durable_mock_workflow.py": {
+      "before_sha256": "5d01bf37c3032baca4e3d04d94f2f84a5bdfb766ae94f1057fd87135d87fbff4",
+      "after_sha256": "37c734f460dd0f10f07f555a59c014825c7a4269086ee672b75d42d491999603"
+    }
+  },
+  "evidence": {
+    "repro-start.json": "72b2e08e7f49a5d06ae8a9f5fbf80b0f978861307b544f90140ef87ff26b72e0",
+    "repro-result.json": "da6a36c64eff7670bc7a86db7f5868b52cc00f22bced23c3f1d1e2802e3bc925",
+    "repro-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "repro-stderr.log": "a77a7fdf8f58c745391298ddf560fbb7c58f105c6a05876ecf923680bc2be9d6",
+    "source-origin.log": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3",
+    "green-origin.log": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3",
+    "red.exit": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+    "red.log": "3d7647c38269718aa8faae0605aa5948705c8e7d3cf7b848a6ffb94619b0a1bb",
+    "red.xml": "ea696f86cb51b049afe64cf416be6687adb820c4ab8c65bc8d29a5a49912441a",
+    "green.exit": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "green.log": "0e41e002eca07b3375dff3ebcf2a020a62725bd8b07e9096489dea97d3ed37a2",
+    "green.xml": "7560578ab993d2ccdeca12a3ba556bcf2dceda0505c02243890d8c6263e62607",
+    "ruff-check.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "ruff-format.log": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
+  },
+  "native": {
+    "direct_reproduction": {
+      "chunk": "104893",
+      "exit_code": 1
+    },
+    "red": {
+      "chunk": "3654a7",
+      "exit_code": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "green": {
+      "chunk": "ec5d42",
+      "exit_code": 0,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ruff": {
+      "chunk": "06d537",
+      "exit_code": 0
+    }
+  }
+}

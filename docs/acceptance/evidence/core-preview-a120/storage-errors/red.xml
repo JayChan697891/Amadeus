@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.020" timestamp="2026-11-16T15:32:51.363950-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_durable_mock_workflow" name="test_durable_cli_status_reports_corrupt_database" time="0.355"><failure message="assert 'Traceback (m... a database\n' == ''&#10;  &#10;  + Traceback (most recent call last):&#10;  +   File &quot;&lt;frozen runpy&gt;&quot;, line 198, in _run_module_as_main&#10;  +   File &quot;&lt;frozen runpy&gt;&quot;, line 88, in _run_code&#10;  +   File &quot;F:\syuc\amadeus-m6-single\src\agentsync\__main__.py&quot;, line 4, in &lt;module&gt;&#10;  +     raise SystemExit(main())&#10;  +                      ^^^^^^...&#10;  &#10;  ...Full output truncated (13 lines hidden), use '-vv' to show">tests\integration\test_durable_mock_workflow.py:146: in test_durable_cli_status_reports_corrupt_database
+    assert process.stderr == ""
+E   assert 'Traceback (m... a database\n' == ''
+E     
+E     + Traceback (most recent call last):
+E     +   File "&lt;frozen runpy&gt;", line 198, in _run_module_as_main
+E     +   File "&lt;frozen runpy&gt;", line 88, in _run_code
+E     +   File "F:\syuc\amadeus-m6-single\src\agentsync\__main__.py", line 4, in &lt;module&gt;
+E     +     raise SystemExit(main())
+E     +                      ^^^^^^...
+E     
+E     ...Full output truncated (13 lines hidden), use '-vv' to show</failure></testcase></testsuite></testsuites>

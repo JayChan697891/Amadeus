@@ -1,0 +1,118 @@
+{
+  "scope": "Final source checkout verification of both existing owner CLI commands. The installed package was unchanged.",
+  "baseline_commit": "1dfce472a433b83cb3307b39602cca6c162b2fa2",
+  "source": {
+    "src/agentsync/cli.py": {
+      "before_sha256": "a7e2c0540ce9fefdd661ba8a32b79e5600ef4b9f6295fa7966c25282a3041870",
+      "after_sha256": "2f05704f43039906759229be96b9ca576f888801dc582c8ee5b41bd193265b95"
+    },
+    "tests/integration/test_durable_mock_workflow.py": {
+      "before_sha256": "5d01bf37c3032baca4e3d04d94f2f84a5bdfb766ae94f1057fd87135d87fbff4",
+      "after_sha256": "37c734f460dd0f10f07f555a59c014825c7a4269086ee672b75d42d491999603"
+    },
+    "tests/security/test_m5_owner_cli_inputs.py": {
+      "before_sha256": "113996812fb4fb64e03cb1745492d2ba548baf74b80c008eaa01edae0e428164",
+      "after_sha256": "1262b454d20a2c8ca000a8f69561c99c545c31f251fb4ce01e841582561b41a6"
+    }
+  },
+  "evidence": {
+    "native-results.json": "02876e6b36c5fbf5ea2cc3906ec15759941f02ba9399c556e2b9fb290cb554fc",
+    "owner-repro-start.json": "25ed25e79f4481096ff548e06802b8ee6e5d9ba21438945a30c9d40913b836c8",
+    "owner-repro-result.json": "da6a36c64eff7670bc7a86db7f5868b52cc00f22bced23c3f1d1e2802e3bc925",
+    "owner-repro-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "owner-repro-stderr.log": "2832829814840b6e492bfc0e7f9bafeba4c5de2cbe11e33463c1c511e662b6ad",
+    "owner-red-origin.log": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3",
+    "owner-red.exit": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+    "owner-red.log": "4f5d3327ec1517584835d3f6834d0add8662857045cecf3492941808ca1111ea",
+    "owner-red.xml": "a940e1ff355a605a7de40a188c0fee74778f94e2a3f1cbf73a896e69b8e152d5",
+    "combined-origin.log": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3",
+    "combined.exit": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "combined.log": "476e407916d256c642c3a9aeca1dbb89cd2eb94c053661573e52f50e8c311259",
+    "combined.xml": "a130be2d7ad3c09d5572338189a48884aa0ecfcc60c731b61a259419a8bdbfa7",
+    "combined-ruff-format.log": "1feb0867fcd4bd4c206a498ec560df22d1b9f4565b8d4771f6c638d56b1c6cf8",
+    "final-ruff-check.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "final-ruff-format.log": "81e0708af79a682467b0ecbd3453a0a33cfcbbe2812201b4d4f405f78ded2976"
+  },
+  "native": {
+    "workflow_pre_fix_reproduction": {
+      "chunk": "104893",
+      "exit_code": 1
+    },
+    "workflow_pre_fix_red": {
+      "chunk": "3654a7",
+      "exit_code": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "workflow_only_intermediate": {
+      "chunk": "ec5d42",
+      "exit_code": 0,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "owner_pre_fix_reproduction": {
+      "chunk": "4aba3d",
+      "exit_code": 1
+    },
+    "owner_pre_fix_red": {
+      "chunk": "cada41",
+      "exit_code": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "first_combined_format": {
+      "chunk": "23aac4",
+      "exit_code": 1,
+      "detail": "Formatter requested one signature be placed on a single line."
+    },
+    "final_combined_green": {
+      "chunk": "2f77ca",
+      "exit_code": 0,
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "final_ruff_check_and_format": {
+      "chunk": "19d0be",
+      "exit_code": 0
+    }
+  },
+  "command": [
+    "D:/agentsync-debug/m119p/w/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/p1-workflow-storage-20261116/combined-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/p1-workflow-storage-20261116/combined.xml",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_status_reports_corrupt_database",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+    "tests/security/test_m5_owner_cli_inputs.py::test_owner_reports_corrupt_database",
+    "tests/security/test_m5_owner_cli_inputs.py::test_owner_missing_database_does_not_create_state",
+    "tests/security/test_m5_owner_cli_inputs.py::test_owner_existing_database_supports_explicit_write_and_env_read"
+  ],
+  "cwd": "F:/syuc/amadeus-m6-single",
+  "environment_delta": {
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src",
+    "removed": [
+      "PYTEST_ADDOPTS",
+      "PYTEST_PLUGINS",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD",
+      "AGENTSYNC_DATA_DIR"
+    ]
+  }
+}
