@@ -1,0 +1,103 @@
+{
+  "observed_at": "2026-11-16T09:18:25.036025+00:00",
+  "scope": "Workflow status/resume/cancel reject a missing database before creating Core",
+  "status": "SCOPED PASS",
+  "base_commit": "974151caa0ef3dcd290ed529d2f9f46c96563f71",
+  "files": {
+    "src/agentsync/cli.py": "851870dd80d67411f4be5f5c025515f77a8d449e79335309880f23bdcb758eda",
+    "tests/integration/test_durable_mock_workflow.py": "8b104692d78e290bf715077ed8b5e2332e1ce04513017360baeb509a7cdb714b"
+  },
+  "red": {
+    "failed": 6,
+    "exit_code": 1,
+    "seconds": 2.91,
+    "scope": "Missing/empty directory for all three recovery operations created files",
+    "test_snapshot": "The failing assertion is preserved in log/XML; its whole-file digest was not recorded"
+  },
+  "development_green": {
+    "passed": 7,
+    "exit_code": 0,
+    "seconds": 4.12,
+    "xml_sha256": "b504a77cd6da759f21cb5f1374a68c73ef3b5de1ea28777f22515dfeb7b83cf6",
+    "retained_locally": "D:\\agentsync-debug\\workflow-existing-20261116\\green.xml",
+    "test_file_before_format_sha256": "eacd1bd6989b2280a38b5d432fbd3d5fd0f3d48d6d7fdbee54231b94c2a68598"
+  },
+  "root_final": {
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "seconds": 4.01,
+    "native_chunk": "052a8f",
+    "native_terminal_observed": true,
+    "python": "D:/agentsync-debug/m117w/e/Scripts/python.exe",
+    "python_version": "3.12.16",
+    "working_directory": "F:\\syuc\\amadeus-m6-single",
+    "environment": {
+      "PYTHONPATH": "F:\\syuc\\amadeus-m6-single\\src",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TEMP": "D:\\agentsync-debug\\workflow-existing-20261116",
+      "TMP": "D:\\agentsync-debug\\workflow-existing-20261116"
+    },
+    "arguments": [
+      "-s",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\agentsync-debug\\workflow-existing-20261116\\root-tmp",
+      "--junitxml=D:\\agentsync-debug\\workflow-existing-20261116\\root.xml",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews"
+    ],
+    "checks": "Six real CLI no-write cases plus valid database start/status/resume/cancel in subprocesses"
+  },
+  "static": {
+    "ruff_check": "pass",
+    "ruff_format_check": "pass",
+    "git_diff_check": "pass",
+    "original_format_check": "One long test-call line required formatting; fixed before root final tests",
+    "scope": "Only cli.py and the affected integration test file"
+  },
+  "review": "Root inspected actual diff, imported source paths, failed/passed XML and logs; then executed final formatted tests independently",
+  "model_calls": 0,
+  "new_package_built": false,
+  "frozen_full_source_run": "Session44775 tests runtimefc27f15/test33ffbc3 and does not cover this later CLI change",
+  "limitations": [
+    "Windows3.12 targeted scope only",
+    "No all-operation read-only Core or concurrent path deletion guarantee",
+    "Original frozen package evidence is unchanged"
+  ],
+  "formal_release": "BLOCKED",
+  "copied_files": [
+    {
+      "path": "red.log",
+      "bytes": 7831,
+      "sha256": "00c30130de099df2ef7451bab2b21dc9388d57623750c9bcf4284c69342e110e"
+    },
+    {
+      "path": "red.xml",
+      "bytes": 7826,
+      "sha256": "530b8bc39babd3273560ad3293419c6164b8eda203a758514b9c6bab71e0fcf5"
+    },
+    {
+      "path": "root.log",
+      "bytes": 100,
+      "sha256": "a9e59c424a2d06901bb35aefc654eeaa866e3e10573b9d237c2c21f773570251"
+    },
+    {
+      "path": "root.xml",
+      "bytes": 1298,
+      "sha256": "944e62906f1876d71de326010111d1d7f4da9a0fe7cb41b1f516bca2c8589279"
+    },
+    {
+      "path": "import.log",
+      "bytes": 168,
+      "sha256": "5701ab077f693d61374c207814cd715c390da086f4c4c17242f8bc2b34726f78"
+    }
+  ]
+}

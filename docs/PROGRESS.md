@@ -1,5 +1,20 @@
 # Amadeus current progress
 
+P1 recovery-path fix complete — 2026-11-16 UTC. The current development CLI no
+longer creates an empty database for status/resume/cancel when --data-dir is wrong.
+Six missing/empty-directory cases reproduced the old behavior; all six and the
+valid database's four-command flow passed (7 tests,4.01s) after the minimal fix.
+Root inspected the actual failed/passed XML and ran the final formatted cases;
+Ruff/check-format passed. Start initialization and existing database behavior stay
+unchanged. Evidence: acceptance/evidence/durable-demo-a117/workflow-existing-database/summary.json.
+No new package or full-suite pass is claimed for this later CLI source change.
+The separate frozen Windows source session44775 continues; do not restart it.
+After harvesting that terminal result, the next P0 check can use the existing
+proposal pilot to independently execute R2's pinned output in a fresh Docker
+fixture with no model/auth access. Original R2 task/receipts remain unchanged;
+cross-Core provenance is owner-reviewed, not authenticated by the import tool.
+That new candidate check is prepared conceptually, not yet launched or passed.
+
 P0 limited real interruption/continuation passed — 2026-11-16 UTC.
 The fresh R2 fixture completed two actual subscription calls: after turn.started
 and before a terminal event, the owned producer parent ended-9/process_failed;

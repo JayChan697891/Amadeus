@@ -94,6 +94,11 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 真实崩溃恢复、跨厂商、无人审批或正式发布验收。[历史a109证据](docs/acceptance/evidence/m7-continuous-live/summary.json)
 继续保留；剩余要求见[总计划](docs/PLAN.md)。
 
+同一冻结运行时还完成了独立的[真实客户端中断续接](docs/acceptance/evidence/durable-demo-a117/interrupted-live-r2/summary.json)：
+第一个 Codex 父进程在执行中被中断，第二个身份读取固定的、由宿主提供的检查点继续。
+唯一依赖任务转交给接收者，重新打开后没有重复调用。接收的源码仍未验证；
+这一结果只覆盖受控客户端进程中断，不代表整机崩溃或模型自产检查点的恢复。
+
 已有 Linux 验证工具另提供固定的 `--demo` 入口。请在项目[专用本地 Linux 测试虚拟机](docs/LOCAL-DEBUG.md)
 中使用其现有 root 用户；此工具要求新建 `/root/amadeus-proposal-pilot-*` 目录。
 当前仓库、已安装的 Amadeus、Git 和预置的可信测试镜像齐备后，可以执行：

@@ -91,7 +91,33 @@ def cli(data, operation, payload):
     )
     assert process.returncode in {0, 1}, process.stderr
     assert payload["admin_token"] not in process.stdout + process.stderr
-    return json.loads(process.stdout)
+    response = json.loads(process.stdout)
+    assert process.returncode == (0 if response["ok"] else 1), process.stderr
+    return response
+
+
+@pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+@pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+    directory = tmp_path / "wrong-project"
+    if directory_exists:
+        directory.mkdir()
+    payload = {
+        "project_id": "11111111-1111-4111-8111-111111111111",
+        "admin_token": "fixture-token-not-a-credential",
+    }
+    if operation != "status":
+        payload.update(request_id="test-change", expected_version=1)
+
+    response = cli(directory, operation, payload)
+
+    if directory_exists:
+        assert list(directory.iterdir()) == []
+    else:
+        assert not directory.exists()
+    assert response["ok"] is False
+    assert response["error"]["code"] == "not_found"
+    assert "--data-dir" in response["error"]["message"]
 
 
 def ordinary_worker(client, owner):
@@ -134,7 +160,13 @@ def test_durable_cli_decomposes_hands_off_and_independently_reviews(dedicated):
     assert all(len(row["evidence_sha256"]) == 64 for row in result["attempts"])
     assert cli(data, "status", auth)["data"] == result
     assert start(client, auth, settings) == result
-    assert action(client, auth, "resume", result["version"], "terminal-resume")["data"] == result
+    for operation in ("resume", "cancel"):
+        response = cli(
+            data,
+            operation,
+            auth | {"expected_version": result["version"], "request_id": f"terminal-{operation}"},
+        )
+        assert response["data"] == result
     with database.connect(client.core.db_path) as db:
         handoff = db.execute(
             "SELECT id,sender_agent_id,recipient_agent_id FROM handoffs"

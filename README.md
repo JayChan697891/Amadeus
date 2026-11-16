@@ -134,6 +134,13 @@ live crash recovery, cross-vendor support, unattended approval or formal release
 The [earlier a109 evidence](docs/acceptance/evidence/m7-continuous-live/summary.json)
 is preserved. See [delivery nodes A/B/C](docs/PLAN.md) for remaining requirements.
 
+A separate [interrupted-client continuation](docs/acceptance/evidence/durable-demo-a117/interrupted-live-r2/summary.json)
+also ran on this frozen runtime: one real Codex parent was interrupted during its
+turn, and a second identity continued from a pinned, host-authored checkpoint.
+One dependent task moved to the receiver; reopening launched nothing again.
+The received source remains unverified. This proves that controlled client-process
+scenario, not whole-computer crash recovery or model-authored checkpoint recovery.
+
 For a developer demonstration of actual isolated verification, the existing
 Linux pilot also accepts a fixed `--demo` mode. Use the existing root user inside
 the project's [dedicated local Linux test VM](docs/LOCAL-DEBUG.md): this fixture

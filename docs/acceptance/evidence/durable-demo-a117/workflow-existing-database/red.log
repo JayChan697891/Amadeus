@@ -1,0 +1,154 @@
+FFFFFF                                                                   [100%]
+================================== FAILURES ===================================
+________ test_durable_cli_requires_saved_database[missing-dir-status] _________
+
+tmp_path = WindowsPath('D:/agentsync-debug/workflow-existing-20261116/red-tmp/test_durable_cli_requires_save0')
+operation = 'status', directory_exists = False
+
+    @pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+    @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+    def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+        directory = tmp_path / "wrong-project"
+        if directory_exists:
+            directory.mkdir()
+        payload = {
+            "project_id": "11111111-1111-4111-8111-111111111111",
+            "admin_token": "fixture-token-not-a-credential",
+        }
+        if operation != "status":
+            payload.update(request_id="test-change", expected_version=1)
+    
+        response = cli(directory, operation, payload)
+    
+>       assert list(directory.iterdir()) == [] if directory_exists else not directory.exists()
+E       assert False
+
+tests\integration\test_durable_mock_workflow.py:114: AssertionError
+________ test_durable_cli_requires_saved_database[missing-dir-resume] _________
+
+tmp_path = WindowsPath('D:/agentsync-debug/workflow-existing-20261116/red-tmp/test_durable_cli_requires_save1')
+operation = 'resume', directory_exists = False
+
+    @pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+    @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+    def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+        directory = tmp_path / "wrong-project"
+        if directory_exists:
+            directory.mkdir()
+        payload = {
+            "project_id": "11111111-1111-4111-8111-111111111111",
+            "admin_token": "fixture-token-not-a-credential",
+        }
+        if operation != "status":
+            payload.update(request_id="test-change", expected_version=1)
+    
+        response = cli(directory, operation, payload)
+    
+>       assert list(directory.iterdir()) == [] if directory_exists else not directory.exists()
+E       assert False
+
+tests\integration\test_durable_mock_workflow.py:114: AssertionError
+________ test_durable_cli_requires_saved_database[missing-dir-cancel] _________
+
+tmp_path = WindowsPath('D:/agentsync-debug/workflow-existing-20261116/red-tmp/test_durable_cli_requires_save2')
+operation = 'cancel', directory_exists = False
+
+    @pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+    @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+    def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+        directory = tmp_path / "wrong-project"
+        if directory_exists:
+            directory.mkdir()
+        payload = {
+            "project_id": "11111111-1111-4111-8111-111111111111",
+            "admin_token": "fixture-token-not-a-credential",
+        }
+        if operation != "status":
+            payload.update(request_id="test-change", expected_version=1)
+    
+        response = cli(directory, operation, payload)
+    
+>       assert list(directory.iterdir()) == [] if directory_exists else not directory.exists()
+E       assert False
+
+tests\integration\test_durable_mock_workflow.py:114: AssertionError
+_________ test_durable_cli_requires_saved_database[empty-dir-status] __________
+
+tmp_path = WindowsPath('D:/agentsync-debug/workflow-existing-20261116/red-tmp/test_durable_cli_requires_save3')
+operation = 'status', directory_exists = True
+
+    @pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+    @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+    def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+        directory = tmp_path / "wrong-project"
+        if directory_exists:
+            directory.mkdir()
+        payload = {
+            "project_id": "11111111-1111-4111-8111-111111111111",
+            "admin_token": "fixture-token-not-a-credential",
+        }
+        if operation != "status":
+            payload.update(request_id="test-change", expected_version=1)
+    
+        response = cli(directory, operation, payload)
+    
+>       assert list(directory.iterdir()) == [] if directory_exists else not directory.exists()
+E       assert False
+
+tests\integration\test_durable_mock_workflow.py:114: AssertionError
+_________ test_durable_cli_requires_saved_database[empty-dir-resume] __________
+
+tmp_path = WindowsPath('D:/agentsync-debug/workflow-existing-20261116/red-tmp/test_durable_cli_requires_save4')
+operation = 'resume', directory_exists = True
+
+    @pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+    @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+    def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+        directory = tmp_path / "wrong-project"
+        if directory_exists:
+            directory.mkdir()
+        payload = {
+            "project_id": "11111111-1111-4111-8111-111111111111",
+            "admin_token": "fixture-token-not-a-credential",
+        }
+        if operation != "status":
+            payload.update(request_id="test-change", expected_version=1)
+    
+        response = cli(directory, operation, payload)
+    
+>       assert list(directory.iterdir()) == [] if directory_exists else not directory.exists()
+E       assert False
+
+tests\integration\test_durable_mock_workflow.py:114: AssertionError
+_________ test_durable_cli_requires_saved_database[empty-dir-cancel] __________
+
+tmp_path = WindowsPath('D:/agentsync-debug/workflow-existing-20261116/red-tmp/test_durable_cli_requires_save5')
+operation = 'cancel', directory_exists = True
+
+    @pytest.mark.parametrize("operation", ["status", "resume", "cancel"])
+    @pytest.mark.parametrize("directory_exists", [False, True], ids=["missing-dir", "empty-dir"])
+    def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exists):
+        directory = tmp_path / "wrong-project"
+        if directory_exists:
+            directory.mkdir()
+        payload = {
+            "project_id": "11111111-1111-4111-8111-111111111111",
+            "admin_token": "fixture-token-not-a-credential",
+        }
+        if operation != "status":
+            payload.update(request_id="test-change", expected_version=1)
+    
+        response = cli(directory, operation, payload)
+    
+>       assert list(directory.iterdir()) == [] if directory_exists else not directory.exists()
+E       assert False
+
+tests\integration\test_durable_mock_workflow.py:114: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database[missing-dir-status]
+FAILED tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database[missing-dir-resume]
+FAILED tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database[missing-dir-cancel]
+FAILED tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database[empty-dir-status]
+FAILED tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database[empty-dir-resume]
+FAILED tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database[empty-dir-cancel]
+6 failed in 2.91s

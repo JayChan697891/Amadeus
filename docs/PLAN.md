@@ -2,6 +2,14 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 correction, 2026-11-16: workflow status/resume/cancel now reject a missing
+database before initializing Core, so a mistyped recovery directory stays untouched.
+Six real CLI reproductions failed before the fix; seven targeted Windows3.12
+checks passed on the final formatted source, including the valid existing-database
+start/status/resume/cancel path. This is a later source-only fix, not part of the
+frozen a117 package/full-suite claims. No new phase or package was created.
+See [the focused evidence](acceptance/evidence/durable-demo-a117/workflow-existing-database/summary.json).
+
 Current delta, 2026-11-16: the controlled same-vendor in-flight interruption /
 continuation gap now has actual evidence. A producer parent was interrupted after
 turn.started, a second Codex consumed the pinned host-known checkpoint and

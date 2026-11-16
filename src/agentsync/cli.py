@@ -247,9 +247,18 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
                 )
             )
             return 1
-        response = AgentSyncClient(data_dir).owner_call(
-            f"{args.operation}_mock_workflow", **payload
-        )
+        if args.operation != "start" and not (Path(data_dir) / "agentsync.db").is_file():
+            response = {
+                "ok": False,
+                "error": {
+                    "code": "not_found",
+                    "message": "No project database found in --data-dir. Use the saved project directory.",
+                },
+            }
+        else:
+            response = AgentSyncClient(data_dir).owner_call(
+                f"{args.operation}_mock_workflow", **payload
+            )
         print(json.dumps(response, ensure_ascii=True, allow_nan=False))
         return 0 if response["ok"] else 1
     if args.command in {"relay-status", "relay-reconcile"}:

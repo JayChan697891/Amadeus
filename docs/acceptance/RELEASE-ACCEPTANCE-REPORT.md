@@ -1,5 +1,13 @@
 # Release Acceptance Report
 
+Later development-source CLI correction: seven targeted Windows3.12 tests pass
+for refusing missing databases on workflow status/resume/cancel while preserving
+the valid existing-database path. Six original failure reproductions are retained;
+the final source has root execution plus focused Ruff/format checks. This does
+not alter frozen runtimefc27f15 package evidence or the running source suite.
+[Exact change and results](evidence/durable-demo-a117/workflow-existing-database/summary.json).
+Formal Release remains BLOCKED.
+
 Actual R2 interrupted-parent continuation completed and independently reviewed:
 one Codex parent ended-9 after turn.started, another real Codex received the pinned
 host-known checkpoint and submitted a32-byte source proposal as review/unverified.
