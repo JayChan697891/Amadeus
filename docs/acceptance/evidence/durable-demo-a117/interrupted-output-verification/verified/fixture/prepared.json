@@ -1,0 +1,122 @@
+{
+  "schema": "amadeus.owner-proposal-pilot.v1",
+  "started_at": "2026-11-16T09:40:15.943422+00:00",
+  "owner_reviewed_origin": {
+    "kind": "owner_imported_r2_continuation_proposal",
+    "original_project_id": "d437bc04-f871-4f3d-acc3-411560c9e097",
+    "original_task_id": "e80700f9-5638-47eb-a871-72023b71c173",
+    "original_task_version": 5,
+    "original_task_status": "review",
+    "original_task_verification": "unverified",
+    "context_id": "42d08e9d-89b3-4104-98ba-476f9405ca6d",
+    "context_version": 1,
+    "publication_task_version": 4,
+    "publication_sha256": "2fcef0450c46a17faad3d506627ffe7e159fe2ceb7945769649b43158cce3b15",
+    "launch_request_sha256": "fda984037b533776232c91ce6dd132119b6013ba2025141027cae33b5f6dc74d",
+    "launch_plan_sha256": "85cb3cf98614b74f7bda1d8004f188fb27c2baf02f8254f03e5bad3cd65d7086",
+    "terminal_run_sha256": "17fe1eb74dd3e681d3f38253d58e1fba0511b159e5e84ab6474261b31291f0db",
+    "receipt_sha256": {
+      "launch-fda984037b533776232c91ce6dd132119b6013ba2025141027cae33b5f6dc74d.json": "ffbee3baaf558dc96706b34499bb455344da0f45e8db4837a57fe67679569c34",
+      "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-first-observed.json": "1b87f0e282a24818d6b3b5730c5d6c49a41492eaadcc84554ec036860038f5be",
+      "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-proposal-stored.json": "d3d43e7369857130749e8e864be2d2d4a86fdc0b1fce01a4635df298522aa7a9"
+    },
+    "raw_stdout_sha256": "08dae7c62944a8cdd1ff3761ca5e205c7e3ba8eb23a166907c2829ed96b95c01",
+    "raw_stdout_bytes": 664,
+    "proposal_json_sha256": "20e2fa257bad58a968bfa708f3952f5cd2326925c39f8ecfa970a64815512653",
+    "proposal_json_bytes": 76,
+    "proposal_file_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+    "proposal_file_bytes": 32
+  },
+  "automated_import": false,
+  "model_calls": 0,
+  "original_producer_task_changed": false,
+  "reviewer_kind": "distinct Core identity, host-mediated; not a second model",
+  "proposal_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+  "driver_sha256": "6f5720b7a9c85f97cdddd42cd1225262655ee8b588e6f5136fadf6026af31fc9",
+  "solution_sha256": "2a2c8b0d42f53e42302c814d9a1cb670fb9c8a28f1af054087e7bdd0bf8aedc7",
+  "target_project_id": "73b63e76-be7f-43d3-8941-2c6d147449f6",
+  "target_task_id": "0bf931ef-2c8d-476a-b32b-1a3f528c0705",
+  "target_worktree_id": "64fd9527-2c65-5603-8940-fa34aa36f82d",
+  "target_head": "d966d355c85763b1cc6488252b0c77f74d9f1466",
+  "candidate_id": "f3eb8da9-b2b2-542c-b49d-0356b535c690",
+  "candidate_sha": "852096d2550b21bd29ff1bf83d9f5b126109bfd6",
+  "candidate_provenance_sha256": "66c0787340a215b2848321c36bbaeb32f92935d4b6435b7030c137bfac4ea69c",
+  "manifest": [
+    [
+      "add.py",
+      "4693ad3cf8b0903b98497fb89b8b524fbf1b93f4",
+      32
+    ],
+    [
+      "fixture.txt",
+      "cc0ce556a1c31a47dc9a560fe9486567dd520ed6",
+      45
+    ],
+    [
+      "solution.py",
+      "f92ce41ff3463ec7bc6e80af82ab8c3a93152097",
+      166
+    ]
+  ],
+  "profile_sha256": "fdc54df4cec722eb4d8f7f18d2df2056e4e87c8b7f42b35183a2beaf7121fbfb",
+  "cases": [
+    {
+      "input": [
+        0,
+        0
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        2,
+        3
+      ],
+      "expected": 5
+    },
+    {
+      "input": [
+        -7,
+        4
+      ],
+      "expected": -3
+    },
+    {
+      "input": [
+        -8,
+        -9
+      ],
+      "expected": -17
+    },
+    {
+      "input": [
+        17,
+        -17
+      ],
+      "expected": 0
+    },
+    {
+      "input": [
+        9223372036854775807,
+        1
+      ],
+      "expected": 9223372036854775808
+    },
+    {
+      "input": [
+        -9223372036854775808,
+        -1
+      ],
+      "expected": -9223372036854775809
+    },
+    {
+      "input": [
+        1000000000000000000000000000000,
+        1000000000000000000000000000000
+      ],
+      "expected": 2000000000000000000000000000000
+    }
+  ],
+  "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,173 @@
+"""Audit the native Windows a117 editable-source suite against the same-input wheel."""
+
+import hashlib
+import json
+import xml.etree.ElementTree as ET
+from collections import Counter
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m117ws")
+RUN = BASE / "run"
+SOURCE = BASE / "s"
+FROZEN = Path("D:/agentsync-debug/m117l")
+WHEEL_XML = Path("D:/agentsync-debug/m117ww/run/wheel-junit.xml")
+WHEEL_JUNIT = "8d78eb22f525d34326298b44cc81a40260f4483076c09ef5ea34db6eab17f5a4"
+DRIVER = "0b87ce5080087d91ce1d018f45685472b752b8cbdc3fd85b70d82cec1662770c"
+INPUTS = "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50"
+MEMBERS = "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+PRODUCT = "fc27f15f47fa92ed5edcd764a573c1d84a68c107"
+FIXTURES = "33ffbc329cc369643cbaa06077da29fb63f8c189"
+CHECKS = (
+    "source_venv", "source_offline_dependencies", "source_editable_install", "source_pip_check",
+    "source_origin_before", "source_durable_smoke", "pytest", "source_origin_after",
+)
+SMOKE = ("tests.integration.test_durable_demo", "test_durable_demo_reopens_retry_and_records_handoff")
+EXPECTED_COUNTS = {"passed": 2489, "skipped": 56}
+
+
+def load(path):
+    return json.loads(path.read_bytes())
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def cases(path):
+    result = {}
+    for item in ET.parse(path).iter("testcase"):
+        key = (item.get("classname"), item.get("name"))
+        if not all(key) or key in result:
+            raise ValueError(f"Missing or duplicated JUnit identity: {path.name}")
+        result[key] = next(
+            (kind for kind in ("failure", "error", "skipped") if item.find(kind) is not None),
+            "passed",
+        )
+    return result
+
+
+def main():
+    terminal_path = BASE / "execution-result.json"
+    if not terminal_path.is_file():
+        raise SystemExit("Wait for the native execution-result.json before auditing.")
+    terminal = load(terminal_path)
+    result_path = RUN / "result.json"
+    result = load(result_path)
+    result_sha = sha(result_path)
+    problems = []
+
+    def require(condition, detail):
+        if not condition:
+            problems.append(detail)
+
+    require(
+        terminal.get("native_session_id") == 44775 and terminal.get("native_exit_code") == 0
+        and terminal.get("native_session_closed") is True and terminal.get("controller_pid") == 23376
+        and terminal.get("result_sha256") == result_sha,
+        "Native terminal session, controller, or result digest mismatch",
+    )
+    expected = {
+        "status": "pass", "version": "0.3.0a117", "automatic_retry": False,
+        "formal_release": "BLOCKED", "controller_pid": 23376, "model_calls": 0,
+        "editable_source": str(SOURCE), "test_source_commit": FIXTURES, "product_runtime_commit": PRODUCT,
+        "driver_sha256": DRIVER, "fixture_snapshot_sha256": INPUTS,
+        "input_before": {"frozen_files": 2382, "expected_runtime_members": 97},
+        "input_after": {"frozen_files": 2382, "expected_runtime_members": 97},
+        "copy_before": {"source_files": 2382},
+        "copy_after_install": {"source_files": 2382},
+        "copy_after": {"source_files": 2382},
+    }
+    for key, value in expected.items():
+        require(result.get(key) == value, f"result.{key}")
+    require(sha(BASE / "run-source.py") == DRIVER, "Reviewed source driver digest mismatch")
+    require(result.get("controller_python", "").startswith("3.12.16 "), "Controller Python version mismatch")
+
+    checks = result["checks"]
+    require(tuple(check["id"] for check in checks) == CHECKS, "Native check list or order differs")
+    native = {}
+    for check in checks:
+        name = check["id"]
+        if name not in CHECKS:
+            continue
+        log = RUN / "logs" / f"{name}.log"
+        receipt_path = log.with_suffix(".process.json")
+        receipt, log_sha = load(receipt_path), sha(log)
+        require(
+            receipt.get("phase") == "finished" and receipt.get("outcome") == "exited"
+            and receipt.get("check_id") == name and receipt.get("result") == check
+            and check.get("status") == "pass" and check.get("exit_code") == 0
+            and check.get("provenance") == "local_process" and check.get("log_truncated") is False
+            and check.get("log") == log.relative_to(RUN).as_posix() and check.get("log_sha256") == log_sha,
+            f"{name}: native receipt or log mismatch",
+        )
+        native[name] = {"log_sha256": log_sha, "receipt_sha256": sha(receipt_path)}
+
+    before, after = (RUN / "logs" / f"source_origin_{when}.log" for when in ("before", "after"))
+    origin = load(before)
+    require(
+        before.read_bytes() == after.read_bytes() and origin.get("version") == "0.3.0a117"
+        and origin.get("python", "").startswith("3.12.16 ") and origin.get("runtime_members") == 97
+        and origin.get("origin") == str(SOURCE / "src/agentsync/__init__.py")
+        and origin.get("direct_url") == {"dir_info": {"editable": True}, "url": SOURCE.as_uri()},
+        "Before/after editable source runtime origin mismatch",
+    )
+    members_path = FROZEN / "runtime-members.json"
+    src = SOURCE / "src"
+    actual = {
+        path.relative_to(src).as_posix(): sha(path)
+        for path in (src / "agentsync").rglob("*") if path.is_file()
+    }
+    require(
+        sha(members_path) == MEMBERS and actual == load(members_path) and len(actual) == 97,
+        "Current editable runtime member bytes differ",
+    )
+
+    smoke_xml = RUN / "durable-smoke.xml"
+    smoke_record = result["durable_smoke_junit"]
+    require(
+        cases(smoke_xml) == {SMOKE: "passed"} and smoke_record.get("path") == smoke_xml.name
+        and smoke_record.get("sha256") == sha(smoke_xml) and smoke_record.get("cases") == 1
+        and all(smoke_record.get(kind) == 0 for kind in ("failure", "error", "skipped")),
+        "Single durable editable-source smoke evidence differs",
+    )
+    xml = RUN / "junit.xml"
+    current, wheel = cases(xml), cases(WHEEL_XML)
+    xml_sha, wheel_sha = sha(xml), sha(WHEEL_XML)
+    current_counts, wheel_counts = Counter(current.values()), Counter(wheel.values())
+    added, removed = sorted(current.keys() - wheel.keys()), sorted(wheel.keys() - current.keys())
+    changed = [(key, wheel[key], current[key]) for key in sorted(current.keys() & wheel.keys())
+               if wheel[key] != current[key]]
+    require(wheel_sha == WHEEL_JUNIT and wheel_counts == EXPECTED_COUNTS, "Wheel baseline identity or outcomes differ")
+    require(
+        len(current) == 2545 and current_counts == EXPECTED_COUNTS and not (added or removed or changed),
+        "Editable source case identities or outcomes differ from the same-input Windows wheel",
+    )
+    require(current.get(SMOKE) == "passed", "Durable smoke case is missing from the full suite")
+    junit = result["junit"]
+    require(
+        junit.get("path") == xml.name and junit.get("sha256") == xml_sha and junit.get("cases") == len(current)
+        and all(junit.get(kind) == current_counts[kind] for kind in ("failure", "error", "skipped")),
+        "Full JUnit bytes or results differ from the run record",
+    )
+    report = {
+        "observed_at": datetime.now(UTC).isoformat(),
+        "scope": "Windows 3.12 a117 editable-source full suite with platform skips",
+        "test_source_commit": FIXTURES, "product_runtime_commit": PRODUCT, "driver_sha256": DRIVER,
+        "result_sha256": result_sha, "source_junit_sha256": xml_sha, "wheel_junit_sha256": wheel_sha,
+        "source_counts": current_counts, "wheel_counts": wheel_counts, "unique_cases": len(current),
+        "added": added, "removed": removed, "outcome_changes": changed, "native_checks": native,
+        "runtime_members": len(actual), "editable_source_files": result.get("copy_after", {}).get("source_files"),
+        "durable_smoke_junit": smoke_record, "smoke_additional_coverage": False,
+        "model_calls": result.get("model_calls"), "formal_release": "BLOCKED", "problems": problems,
+    }
+    with (BASE / "case-diff.json").open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(report, stream, indent=2)
+        stream.write("\n")
+    print(json.dumps({"counts": current_counts, "problems": problems}))
+    return int(bool(problems))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

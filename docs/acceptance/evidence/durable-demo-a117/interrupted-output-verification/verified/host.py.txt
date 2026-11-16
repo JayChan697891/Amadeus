@@ -1,0 +1,73 @@
+"""Stage or observe one local-VM candidate verification; never calls a model."""
+import hashlib
+import json
+import shlex
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+GUEST = "/root/amadeus-r2-proposal-verification-r2-20261116"
+VM = Path("D:/agentsync-debug/vm")
+FILES = {
+    "run-once.py": "93800813c1bb56c9c443fef9440aa656645c9af2147b10eb30c66a55a99528a9",
+    "run_proposal_candidate_pilot.py": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157",
+}
+PROBE = """
+import json, os, subprocess
+from pathlib import Path
+workers=[]
+for p in Path('/proc').iterdir():
+    if not p.name.isdecimal() or int(p.name)==os.getpid(): continue
+    try:
+        executable=(p/'exe').resolve(strict=True).name
+        if executable.startswith(('python','codex')): workers.append({'pid':int(p.name),'executable':executable})
+    except (FileNotFoundError, PermissionError): pass
+containers=subprocess.check_output(['/usr/bin/docker','ps','-aq'],timeout=15).decode().split()
+assert not workers and not containers
+print(json.dumps({'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'workers':workers,'containers':containers}))
+"""
+mode = sys.argv[1]
+assert mode in ("stage", "execute")
+result = {"started_at": datetime.now(UTC).isoformat(), "mode": mode, "status": "unknown", "exit_code": None, "model_calls": 0, "auth_copies": 0, "automatic_retry": False}
+client = paramiko.SSHClient()
+client.load_host_keys(str(VM / "known_hosts"))
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+try:
+    client.connect("127.0.0.1", port=22222, username="root", key_filename=str(VM / "debug_ed25519"), look_for_keys=False, allow_agent=False, timeout=15, banner_timeout=15, auth_timeout=15)
+    command = ["/usr/bin/python3", "-I", "-B", "-c", PROBE] if mode == "stage" else ["/root/amadeus-demo-a117-sdist-r1/installed/bin/python", "-I", "-B", GUEST + "/run-once.py"]
+    result["command"] = command
+    with (BASE / f"{mode}-start.json").open("x", encoding="utf-8") as f:
+        json.dump(result, f, indent=2)
+    _, stdout, stderr = client.exec_command(shlex.join(command), timeout=250)
+    out, err = stdout.read(65537), stderr.read(65537)
+    assert len(out) <= 65536 and len(err) <= 65536
+    for label, data in (("stdout", out), ("stderr", err)):
+        with (BASE / f"{mode}-{label}.log").open("xb") as f:
+            f.write(data)
+    code = stdout.channel.recv_exit_status()
+    result.update(status="terminal" if code >= 0 else "unknown", exit_code=code)
+    if mode == "stage" and code == 0:
+        result["probe"] = json.loads(out)
+        with client.open_sftp() as sftp:
+            sftp.mkdir(GUEST, mode=0o700)
+            for name, expected in FILES.items():
+                data = (BASE / name).read_bytes()
+                assert hashlib.sha256(data).hexdigest() == expected
+                with sftp.open(GUEST + "/" + name, "wx") as f:
+                    f.write(data)
+                sftp.chmod(GUEST + "/" + name, 0o600)
+                with sftp.open(GUEST + "/" + name, "rb") as f:
+                    assert f.read() == data
+        result["staged_files"] = FILES
+except Exception as error:
+    result.update(status="unknown", error_type=type(error).__name__)
+finally:
+    client.close()
+    result["finished_at"] = datetime.now(UTC).isoformat()
+    with (BASE / f"{mode}-result.json").open("x", encoding="utf-8") as f:
+        json.dump(result, f, indent=2)
+print(json.dumps({key: result[key] for key in ("mode", "status", "exit_code")}))
+raise SystemExit(0 if result["status"] == "terminal" and result["exit_code"] == 0 else 1)

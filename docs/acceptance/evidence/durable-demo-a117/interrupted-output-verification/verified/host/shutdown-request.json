@@ -1,0 +1,12 @@
+{
+  "requested_at": "2026-11-16T09:42:46.340851+00:00",
+  "command": [
+    "/sbin/poweroff"
+  ],
+  "normal_shutdown": true,
+  "force_kill": false,
+  "pid": 20100,
+  "termination_confirmed": false,
+  "request_acknowledged": true,
+  "exit_code": 0
+}

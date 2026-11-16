@@ -18,10 +18,19 @@ nothing. One dependent was retargeted exactly once. Temporary auth and owned VM
 were safely closed; independent review accepted only this bounded scenario.
 See [actual R2 result](acceptance/evidence/durable-demo-a117/interrupted-live-r2/summary.json).
 A remains demonstrable now. B has stronger real same-vendor evidence; whole-host
-crash, cross-vendor access, unattended policy and independently executed resumed
-code remain unverified. Do not relabel this as complete B or formal Release.
-Next P1 is the already running Windows3.12 source supplement; the Linux3.14
-source supplement finished. No new M5 phase, version or repeated full suite.
+crash, cross-vendor access, unattended policy and verified completion of the
+original resumed task remain unverified. Do not relabel this as complete B or formal Release.
+The Windows3.12 source supplement also finished once:2489pass/56skip,8 native
+checks,2545 unique identities matching the wheel,2382 original/copy files and97
+runtime members unchanged. Independent review accepted this frozen scope; the
+later CLI fix has separate targeted evidence. Neither source suite is repeated.
+The exact R2 output subsequently passed8 Docker cases and19 isolation checks in
+a new independent fixture, with zero model/auth access and the original R2 tree
+unchanged. The original task stays review/unverified; cross-Core origin is an
+owner-reviewed assertion. The first wrapper's mistyped hash stopped before any
+candidate execution and remains recorded. See
+[the new output verification](acceptance/evidence/durable-demo-a117/interrupted-output-verification/summary.json).
+No new M5 phase, product version, package or formal-release gate was created.
 The delivery-order tables below retain their original scope and history.
 
 This is a delivery-order overlay, not a replacement for the original M0–M9 plan,
@@ -36,9 +45,9 @@ the immutable0.3.0a116 matrix continues independently and is not relabelled.
 
 | Priority | Next product work | Dependency / completion boundary |
 | --- | --- | --- |
-| P0 | Use the delivered durable CLI and controlled two-Codex demonstration; close the remaining actual in-flight recovery evidence gap. | The runnable A paths and same-protocol recovery already exist. Preserve exact source/artifact identities, unknown-result stop gates and explicit approvals. A new live attempt needs a fresh reviewed plan and authorization; consumed grants cannot be reused. |
+| P0 | Use the delivered durable CLI and controlled two-Codex demonstration, including the completed bounded in-flight continuation and separately verified output. | A is usable now. Retain original task status and distinguish imported verification from original-Core acceptance. Further live experiments use the recorded bounded standing grant and a reviewed exact plan; no arbitrary retries or broader scope. |
 | P0 | Keep independent verification, pinned context and owner decisions visible in the demonstration. | Reuse the existing Core/Docker implementation and actual evidence. Do not add another orchestration layer or repeat accepted unchanged flows. Textual peer review remains unverified. |
-| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | Early image-ID validation and the frozen Linux/Windows wheel supplements are complete. Keep later tool regression separate; current source suites remain. Existing bounded benchmarks are complete. |
+| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | Linux3.14 and Windows3.12 frozen source/wheel supplements are complete. The wrong-path CLI repair has seven targeted Windows checks; package integration remains separate. Existing bounded benchmarks are complete. |
 | P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
 
 The critical path is the usable demonstration, then evidence-backed recovery

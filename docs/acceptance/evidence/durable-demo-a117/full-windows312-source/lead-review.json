@@ -1,0 +1,23 @@
+{
+  "status": "SCOPED PASS",
+  "reviewer": "Native GPT-6 Astra independent actual evidence review plus root verification",
+  "scope": "Windows3.12 editable-source full suite at runtimefc27f15/test33ffbc3 only",
+  "native_checks": 8,
+  "native_session_closed": true,
+  "native_exit_code": 0,
+  "unique_cases": 2545,
+  "passed": 2489,
+  "skipped": 56,
+  "failed": 0,
+  "errors": 0,
+  "case_identities_and_outcomes_equal_to_same_input_wheel": true,
+  "durable_smoke_included_in_full_suite": true,
+  "editable_origin_verified_before_after": true,
+  "frozen_source_files_unchanged": 2382,
+  "source_copy_files_unchanged": 2382,
+  "runtime_members_unchanged": 97,
+  "remaining_findings": [],
+  "later_cli_fix_3b43647_covered": false,
+  "full_candidate_matrix_row": false,
+  "formal_release": "BLOCKED"
+}

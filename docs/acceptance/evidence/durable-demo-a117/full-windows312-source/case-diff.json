@@ -1,0 +1,71 @@
+{
+  "observed_at": "2026-11-16T09:32:53.741611+00:00",
+  "scope": "Windows 3.12 a117 editable-source full suite with platform skips",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "driver_sha256": "0b87ce5080087d91ce1d018f45685472b752b8cbdc3fd85b70d82cec1662770c",
+  "result_sha256": "82f53ecbb626f34a08a3bfbedefce631e9043ebb975146fc1f35047ed980042c",
+  "source_junit_sha256": "bd3c8940252d3f2ec5cc18fe6096de00225381c5796aaffd5426fdc0fd1f42a4",
+  "wheel_junit_sha256": "8d78eb22f525d34326298b44cc81a40260f4483076c09ef5ea34db6eab17f5a4",
+  "source_counts": {
+    "passed": 2489,
+    "skipped": 56
+  },
+  "wheel_counts": {
+    "passed": 2489,
+    "skipped": 56
+  },
+  "unique_cases": 2545,
+  "added": [],
+  "removed": [],
+  "outcome_changes": [],
+  "native_checks": {
+    "source_venv": {
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "39399dc8bc3e635d4b919b3e5cf66363c338ad0f93a0af41095daaf1cc608f7f"
+    },
+    "source_offline_dependencies": {
+      "log_sha256": "1b1df756fda463408789a4f39776ca3036d7d87c208201eed6f7787a025e6c38",
+      "receipt_sha256": "5c1d1535a7915ae6df3ac28be94036e623ce2665b35f987197cbf5fbd8907d38"
+    },
+    "source_editable_install": {
+      "log_sha256": "e849620c953e6a57ee4b47c6b5c373676ea603ec255465fbc486952bb14fb7a0",
+      "receipt_sha256": "0518500e70617ccfa8764277976b391034c7c1a270618705685b5e02c30919d8"
+    },
+    "source_pip_check": {
+      "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "receipt_sha256": "07f3bde3339678a075d36eb59bfbf93e81788e074c92d2b61a19f1bf1168b348"
+    },
+    "source_origin_before": {
+      "log_sha256": "cb5e506649a6c98a4c11fcf4c60deb8c98e015b43c05fd699e652168c5241957",
+      "receipt_sha256": "e368097160133aea774cd40c54f388842fb255ce10ea311d0b366097abb4ee14"
+    },
+    "source_durable_smoke": {
+      "log_sha256": "a3d82275dd158ab9c741e8198251873c3124bb01aa7281eb91e680bda5e44e16",
+      "receipt_sha256": "9add5db147f91c0126129901658ac461a4bce9a28b3260fe0017dd718817e5d6"
+    },
+    "pytest": {
+      "log_sha256": "fc5388c7122644edce975762bfa498c4b5a1b0a70febb52dd615139f991c5523",
+      "receipt_sha256": "fd7a42287654fd9d665acf986d65bc1dc4123b686c72ac7a7e6af6da42d97385"
+    },
+    "source_origin_after": {
+      "log_sha256": "cb5e506649a6c98a4c11fcf4c60deb8c98e015b43c05fd699e652168c5241957",
+      "receipt_sha256": "8a2eb4f0f1c5d8e16aa0c4d5093d2e83686937829e3fad1065138248b12ac45f"
+    }
+  },
+  "runtime_members": 97,
+  "editable_source_files": 2382,
+  "durable_smoke_junit": {
+    "path": "durable-smoke.xml",
+    "sha256": "e0a24e402eb089066ed92a235004b2d6b531c20d75bb56f64e20098c56965e49",
+    "credential_redactions": 0,
+    "cases": 1,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "smoke_additional_coverage": false,
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "problems": []
+}

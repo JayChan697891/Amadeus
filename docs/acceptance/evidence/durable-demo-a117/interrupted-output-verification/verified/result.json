@@ -1,0 +1,25 @@
+{
+  "started_at": "2026-11-16T09:40:13.089011+00:00",
+  "pid": 2958,
+  "automatic_retry": false,
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "formal_release": "BLOCKED",
+  "status": "passed",
+  "child_exit_code": 0,
+  "child_pid": 2971,
+  "containers_after": 0,
+  "pilot_receipt_sha256": {
+    "prepared": "892eb37391cb6eebe31aa00c1bef2ff8f68544e2bdae6bf548e35da509dca5ae",
+    "execution": "62661a85a638973a2898873f2204708e526dc61d5d83c1bbe4f0a3c528800626",
+    "completion": "b44ac3ef359b3dfe1ab30a7d81ad1564275dc8c8ab42e62ae922355e25496cc6",
+    "summary": "d7e09aa1231fa9b46ab02923497239dcadec4d9720d334e61676823e314775fd"
+  },
+  "cases_passed": 8,
+  "isolation_checks_passed": 19,
+  "runtime_members": 97,
+  "original_tree_before_sha256": "a32fdd757647ad991d0af4c53a6152473458effd415a3eb39e9f27d9370f2336",
+  "original_tree_after_sha256": "a32fdd757647ad991d0af4c53a6152473458effd415a3eb39e9f27d9370f2336",
+  "original_tree_unchanged": true,
+  "finished_at": "2026-11-16T09:40:19.657846+00:00"
+}

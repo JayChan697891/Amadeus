@@ -1,0 +1,14 @@
+{
+  "original_attempt": "preflight_failed; candidate NOT RUN",
+  "reason": "One omitted hexadecimal character in capture metadata pin; actual host/guest/original bytes match",
+  "changed_guest_lines": [
+    "BASE path to fresh experiment directory",
+    "63-character capture hash replaced by observed 64-character original digest"
+  ],
+  "driver_sha256": "93800813c1bb56c9c443fef9440aa656645c9af2147b10eb30c66a55a99528a9",
+  "tool_sha256": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157",
+  "all_hexadecimal_pins_length": 64,
+  "original_preserved": true,
+  "candidate_retry": false,
+  "new_execution": "NOT RUN"
+}

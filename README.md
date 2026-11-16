@@ -138,8 +138,11 @@ A separate [interrupted-client continuation](docs/acceptance/evidence/durable-de
 also ran on this frozen runtime: one real Codex parent was interrupted during its
 turn, and a second identity continued from a pinned, host-authored checkpoint.
 One dependent task moved to the receiver; reopening launched nothing again.
-The received source remains unverified. This proves that controlled client-process
-scenario, not whole-computer crash recovery or model-authored checkpoint recovery.
+The original received task remains unverified. A later
+[independent Docker run](docs/acceptance/evidence/durable-demo-a117/interrupted-output-verification/summary.json)
+verified its exact output in a new test project (eight cases and nineteen isolation
+checks); importing that output did not change the original task. This proves the
+controlled client-process scenario, not whole-computer or model-authored checkpoint recovery.
 
 For a developer demonstration of actual isolated verification, the existing
 Linux pilot also accepts a fixed `--demo` mode. Use the existing root user inside

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="amadeus-imported-r2-proposal" tests="1" failures="0" errors="0" skipped="0" time="1.0172663849999708"><testcase classname="native_docker_observation" name="exact_r2_output_in_new_fixture" time="1.0172663849999708"><system-out>Report derived from one actual native Docker execution: 8/8 cases and 19/19 isolation checks. Not a pytest execution.</system-out></testcase></testsuite>

@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-11-16T09:42:09.096423+00:00",
+  "exit_code": 0,
+  "observations": {
+    "original_tree_sha256": "a32fdd757647ad991d0af4c53a6152473458effd415a3eb39e9f27d9370f2336",
+    "original_tree_unchanged": true,
+    "original_task_status": "review",
+    "original_task_verification": "unverified",
+    "runtime_members": 97,
+    "proposal_json_sha256": "20e2fa257bad58a968bfa708f3952f5cd2326925c39f8ecfa970a64815512653",
+    "workers": [],
+    "containers": [],
+    "boot_id": "6546e8ba-d5f8-4c09-827d-59e36514050e"
+  },
+  "all_transferred_files_verified": 11
+}

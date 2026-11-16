@@ -1,0 +1,50 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "source_origin_after",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m117ws\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib\nimport importlib.metadata\nimport json\nimport sys\nfrom pathlib import Path\n\nimport agentsync\n\ninstall, checkout, manifest = map(Path, sys.argv[1:4])\nversion = sys.argv[4]\nassert sys.version_info[:3] == (3, 12, 16)\nassert Path(sys.prefix).resolve() == install.resolve()\ncheckout = checkout.resolve(strict=True)\nsource = checkout / \"src\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == source / \"agentsync\" / \"__init__.py\"\nassert agentsync.__version__ == version\ndist = importlib.metadata.distribution(\"agentsync-local\")\nassert dist.version == version\nassert Path(dist.locate_file(\"\")).resolve().is_relative_to(install.resolve())\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == checkout.as_uri()\nassert direct[\"dir_info\"][\"editable\"] is True and \"archive_info\" not in direct\nexpected = json.loads(manifest.read_bytes())\nassert len(expected) == 97\nactual = {\n    file.relative_to(source).as_posix(): hashlib.sha256(file.read_bytes()).hexdigest()\n    for file in (source / \"agentsync\").rglob(\"*\")\n    if file.is_file() and \"__pycache__\" not in file.parts\n}\nassert actual == expected\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+      "D:\\agentsync-debug\\m117ws\\e",
+      "D:\\agentsync-debug\\m117ws\\s",
+      "D:\\agentsync-debug\\m117l\\runtime-members.json",
+      "0.3.0a117"
+    ],
+    "cwd": "D:\\agentsync-debug\\m117ws\\run",
+    "started_at": "2026-11-16T09:32:34.207450+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "source_origin_after",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m117ws\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib\nimport importlib.metadata\nimport json\nimport sys\nfrom pathlib import Path\n\nimport agentsync\n\ninstall, checkout, manifest = map(Path, sys.argv[1:4])\nversion = sys.argv[4]\nassert sys.version_info[:3] == (3, 12, 16)\nassert Path(sys.prefix).resolve() == install.resolve()\ncheckout = checkout.resolve(strict=True)\nsource = checkout / \"src\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == source / \"agentsync\" / \"__init__.py\"\nassert agentsync.__version__ == version\ndist = importlib.metadata.distribution(\"agentsync-local\")\nassert dist.version == version\nassert Path(dist.locate_file(\"\")).resolve().is_relative_to(install.resolve())\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == checkout.as_uri()\nassert direct[\"dir_info\"][\"editable\"] is True and \"archive_info\" not in direct\nexpected = json.loads(manifest.read_bytes())\nassert len(expected) == 97\nactual = {\n    file.relative_to(source).as_posix(): hashlib.sha256(file.read_bytes()).hexdigest()\n    for file in (source / \"agentsync\").rglob(\"*\")\n    if file.is_file() and \"__pycache__\" not in file.parts\n}\nassert actual == expected\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+      "D:\\agentsync-debug\\m117ws\\e",
+      "D:\\agentsync-debug\\m117ws\\s",
+      "D:\\agentsync-debug\\m117l\\runtime-members.json",
+      "0.3.0a117"
+    ],
+    "cwd": "D:\\agentsync-debug\\m117ws\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T09:32:34.207450+00:00",
+    "finished_at": "2026-11-16T09:32:34.324117+00:00",
+    "log": "logs/source_origin_after.log",
+    "log_sha256": "cb5e506649a6c98a4c11fcf4c60deb8c98e015b43c05fd699e652168c5241957",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -8,6 +8,23 @@ not alter frozen runtimefc27f15 package evidence or the running source suite.
 [Exact change and results](evidence/durable-demo-a117/workflow-existing-database/summary.json).
 Formal Release remains BLOCKED.
 
+The frozen Windows3.12 editable-source supplement completed once: native44775
+exit0,2489pass/56skip/zero failure,error,2545 matching identities,8 native checks.
+Root and independent Astra accepted only runtimefc27f15/test33ffbc3;97 runtime
+members and2382 original/copy files stayed unchanged. The separate durable smoke
+is included in the full suite and is not counted twice. Evidence:
+[actual source result](evidence/durable-demo-a117/full-windows312-source/current-summary.json).
+
+R2's exact continuation output later passed8 actual Docker cases and19 isolation
+checks in a separate new Core fixture. Source/JSON/context/receipt pins and the
+verified new-task proof were inspected; the original R2 tree stayed unchanged,
+its task still review/unverified. This adds independent execution of the fixed
+output, not authenticated cross-Core transfer or original-task acceptance. The
+first preflight's63-digit hash typo remains failed/candidate NOT RUN; the corrected
+fresh experiment ran once, with zero models/auth copies. VM shutdown was confirmed
+by identity despite PID reuse. See
+[actual imported-output result](evidence/durable-demo-a117/interrupted-output-verification/summary.json).
+
 Actual R2 interrupted-parent continuation completed and independently reviewed:
 one Codex parent ended-9 after turn.started, another real Codex received the pinned
 host-known checkpoint and submitted a32-byte source proposal as review/unverified.
@@ -17,8 +34,9 @@ parents ended, temporary auth was deleted/unmounted and the original stayed unch
 Actual guest authorization bytes are retained separately from host CRLF copies.
 [Bounded result and limitations](evidence/durable-demo-a117/interrupted-live-r2/summary.json).
 This does not prove whole-host crash, model-authored recovery, cross-vendor support,
-unattended approval or independent execution of resumed source. Formal Release
-remains BLOCKED. Windows source session44775 is running, not accepted yet.
+unattended approval or independent execution within the original R2 task. Its
+output's later separate-fixture execution is recorded above. Formal Release
+remains BLOCKED; the Windows source supplement is now complete as recorded above.
 
 Latest Linux editable-source supplement completed:2545 unique cases,2538pass/
 7skip/zero failure,error;8 native checks and35 actual Docker observations across7

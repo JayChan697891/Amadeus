@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-11-16T09:34:26.4123844Z",
+  "pid": 20100,
+  "created_utc": "2026-11-16T09:34:26.0562210Z",
+  "executable": "D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe",
+  "disk": "D:\\agentsync-debug\\vm\\guest.qcow2",
+  "windows_source_session_closed": true,
+  "windows_source_session_id": 44775
+}

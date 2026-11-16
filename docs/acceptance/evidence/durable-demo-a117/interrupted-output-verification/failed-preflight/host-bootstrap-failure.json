@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-16T09:36:06.6404523Z",
+  "native_chunk": "ff9d2e",
+  "exit_code": 1,
+  "python": "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+  "error": "ModuleNotFoundError: No module named paramiko",
+  "stage_started": false,
+  "guest_command_run": false,
+  "candidate_executed": false,
+  "correction": "Use existing D:\\agentsync-debug\\venv helper environment"
+}

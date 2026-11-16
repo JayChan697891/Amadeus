@@ -8,12 +8,33 @@ Root inspected the actual failed/passed XML and ran the final formatted cases;
 Ruff/check-format passed. Start initialization and existing database behavior stay
 unchanged. Evidence: acceptance/evidence/durable-demo-a117/workflow-existing-database/summary.json.
 No new package or full-suite pass is claimed for this later CLI source change.
-The separate frozen Windows source session44775 continues; do not restart it.
-After harvesting that terminal result, the next P0 check can use the existing
-proposal pilot to independently execute R2's pinned output in a fresh Docker
-fixture with no model/auth access. Original R2 task/receipts remain unchanged;
-cross-Core provenance is owner-reviewed, not authenticated by the import tool.
-That new candidate check is prepared conceptually, not yet launched or passed.
+The frozen Windows source session44775 has now ended0 at09:32:36Z:2489pass,
+56skip,2545 unique cases,8 native checks,2656.47s. Root and independent Astra
+verified all receipts, logs, XML, editable origin, unchanged2382 original/copy
+files and97 runtime members.24 original result/checker files(482475 bytes) were
+archived under full-windows312-source/. Do not restart the completed suite.
+
+P0 output verification also completed at09:40:19Z. The exact76-byte proposal
+JSON/32-byte source from R2 was bound to original raw/context/receipts, imported
+into a fresh fixture, and passed8 Docker cases/19 isolation checks. The new
+fixture task is verified; original R2 stays review/unverified, its full tree digest
+and97 installed members unchanged. Root inspected the actual source+owner-driver
+composition and native output, then independently checked no workers/containers.
+Independent Astra accepted only this scope. No models, auth copy or original
+workspace application occurred. The first wrapper failed preflight on a missing
+hex digit; no candidate ran. Its original failure and corrected two-line delta
+are preserved. Evidence: interrupted-output-verification/summary.json.
+The owned VM was normally shut down. PID20100 was subsequently reused by an
+unrelated node.exe; creation-time/executable/disk checks confirmed the original
+VM identity absent, and the unrelated process was left untouched.
+
+Recovery entry: current development branch includes CLI repair3b43647; the
+published a117 packages remain frozen runtimefc27f15. The next P1 work is to
+integrate that repair into a reviewed candidate package and run only affected
+installation checks before any larger candidate matrix. Do not relabel old full
+suites as covering the later CLI change. A is usable now; cross-vendor and macOS
+execution remain NOT RUN for unavailable environments. Original Goal active,
+formal Release BLOCKED. No test or model job remains running for this checkpoint.
 
 P0 limited real interruption/continuation passed — 2026-11-16 UTC.
 The fresh R2 fixture completed two actual subscription calls: after turn.started
@@ -40,13 +61,10 @@ members and original fixture unchanged, no guest Python/Codex or containers.
 Owned VM26448 was normally powered off and observed absent08:47:15Z, disk preserved.
 The initial immediate check saw shutdown pending; it was not forcibly terminated.
 
-Next P1 Windows source validation is now RUNNING: native session44775/controller
-23376 (venv launcher23224), started08:47:52Z in D:/agentsync-debug/m117ws. Six
-installation/origin/durable-smoke checks passed before the first full source suite.
-Driver0b87ce50, runtimefc27f15/test33ffbc3; original inputs remain frozen. Keep this
-single native session and read its terminal result; do not start another run.
-No current Windows source pass is claimed. All completed source/package suites
-are preserved and are not repeated. Original Goal active; formal Release BLOCKED.
+Windows source validation subsequently completed as recorded above. Its native
+session44775/controller23376 (launcher23224) is closed; D:/agentsync-debug/m117ws
+retains the complete original run. Driver0b87ce50, runtimefc27f15/test33ffbc3 stay
+frozen. All completed source/package suites are preserved and are not repeated.
 
 Completed source validation; fresh live-session preparation — 2026-11-16 UTC.
 Linux source session1116 exited0 at08:24:21Z: all8 native checks,2538pass/7skip,

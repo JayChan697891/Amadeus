@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-11-16T09:44:43.9951090Z",
+  "pid": 20100,
+  "owned_vm_identity_absent": true,
+  "owned_disk_vm_processes": 0,
+  "pid_reused": true,
+  "current_pid_executable": "C:\\Program Files\\nodejs\\node.exe",
+  "current_pid_created_utc": "2026-11-16T09:43:07.5811360Z",
+  "disk_preserved": true,
+  "normal_shutdown": true,
+  "initial_check": "PID existed, so closure was not claimed; identity comparison confirmed reuse by a later unrelated process",
+  "unrelated_process_untouched": true
+}

@@ -1,0 +1,263 @@
+{
+  "observed_at": "2026-11-16T09:45:26.707945+00:00",
+  "status": "SCOPED PASS",
+  "scope": "Exact R2 continuation output independently executed in a new owner-mediated Docker fixture",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "tool_commit": "3b43647bb4332c646d82b0ecc4055f0e40fb462c",
+  "tool_path": "tools/run_proposal_candidate_pilot.py",
+  "tool_sha256": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157",
+  "driver_sha256": "93800813c1bb56c9c443fef9440aa656645c9af2147b10eb30c66a55a99528a9",
+  "native_execution_chunk": "d0aa98",
+  "native_exit_code": 0,
+  "started_at": "2026-11-16T09:40:13.089011+00:00",
+  "finished_at": "2026-11-16T09:40:19.657846+00:00",
+  "proposal_json_sha256": "20e2fa257bad58a968bfa708f3952f5cd2326925c39f8ecfa970a64815512653",
+  "source_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+  "source_bytes": 32,
+  "source_plus_owner_protocol_driver_sha256": "2a2c8b0d42f53e42302c814d9a1cb670fb9c8a28f1af054087e7bdd0bf8aedc7",
+  "solution_composition": "Original 32-byte source + one newline + exact owner DRIVER bytes",
+  "archive_helper_correction": "Initial local assertion omitted the tool-added newline; corrected against tool line222 before archive creation, no execution rerun",
+  "docker_cases_passed": 8,
+  "isolation_checks_passed": 19,
+  "candidate_exit_code": 0,
+  "fixture_task_verification": "verified",
+  "original_task_verification": "unverified",
+  "original_task_status": "review",
+  "original_tree_sha256": "a32fdd757647ad991d0af4c53a6152473458effd415a3eb39e9f27d9370f2336",
+  "original_tree_unchanged": true,
+  "runtime_members_unchanged": 97,
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "containers_remaining": 0,
+  "first_attempt": {
+    "status": "PREFLIGHT FAILED",
+    "candidate_execution": "NOT RUN",
+    "reason": "One missing hexadecimal character in capture metadata pin",
+    "historical_evidence_bytes_changed": false
+  },
+  "review": "Root read original records, verified all transferred bytes and exact source plus owner driver; independent Astra accepted this limited scope",
+  "limits": [
+    "Owner-reviewed cross-Core import, not authenticated cross-Core transfer",
+    "Original R2 task remains review/unverified",
+    "Source equals the old fixed demonstration, but this is a new actual run tied to R2 provenance",
+    "No model-authored checkpoint or whole-host crash proof",
+    "No cross-vendor or unattended-policy claim",
+    "Not full node B or formal Release"
+  ],
+  "formal_release": "BLOCKED",
+  "junit_kind": "One report-derived actual command observation, not pytest",
+  "junit_sha256": "65d31831761584bd1a5cd9b7dba17df7621b3cd9de8d961e4ad34d60254bb665",
+  "copied_files": [
+    {
+      "path": "verified/start.json",
+      "bytes": 178,
+      "sha256": "4b68c366a5d0f0397dd05e794d3570923a7ddf77f3e2b89b3cf1d05744c03c13"
+    },
+    {
+      "path": "verified/result.json",
+      "bytes": 1008,
+      "sha256": "a6b06c3b9080ec51e441a5f85bab4c9a348d7fe6753b4250172133af91b4b6d6"
+    },
+    {
+      "path": "verified/proposal.json",
+      "bytes": 76,
+      "sha256": "20e2fa257bad58a968bfa708f3952f5cd2326925c39f8ecfa970a64815512653"
+    },
+    {
+      "path": "verified/origin.json",
+      "bytes": 1655,
+      "sha256": "a823068c3d9211ee6eaca0fcc29b6a181ee99f521d19a71e618d44a4aaebeafc"
+    },
+    {
+      "path": "verified/command.json",
+      "bytes": 739,
+      "sha256": "a6028dc6e137ea64866f8b024a2986bba5a66ff688e8927c42a08428e73687ab"
+    },
+    {
+      "path": "verified/pilot-stdout.log",
+      "bytes": 133,
+      "sha256": "38c9fcb83a75d16232a3d300d03ce01501e8da1afd0c9f9c5da2a9cf605c4296"
+    },
+    {
+      "path": "verified/pilot-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verified/fixture/prepared.json",
+      "bytes": 4076,
+      "sha256": "892eb37391cb6eebe31aa00c1bef2ff8f68544e2bdae6bf548e35da509dca5ae"
+    },
+    {
+      "path": "verified/fixture/execution.json",
+      "bytes": 3692,
+      "sha256": "62661a85a638973a2898873f2204708e526dc61d5d83c1bbe4f0a3c528800626"
+    },
+    {
+      "path": "verified/fixture/completion.json",
+      "bytes": 1884,
+      "sha256": "b44ac3ef359b3dfe1ab30a7d81ad1564275dc8c8ab42e62ae922355e25496cc6"
+    },
+    {
+      "path": "verified/fixture/summary.json",
+      "bytes": 4238,
+      "sha256": "d7e09aa1231fa9b46ab02923497239dcadec4d9720d334e61676823e314775fd"
+    },
+    {
+      "path": "verified/host/preparation.json",
+      "bytes": 649,
+      "sha256": "dc16a80d31d2024efc60b89f243918f96f15cd16c6c7e7e2dc271e54e85d13ec"
+    },
+    {
+      "path": "verified/host/stage-start.json",
+      "bytes": 959,
+      "sha256": "010f18de0e3d2611e03346a1fb4b73dc4780dd7f0dfbf62b7eb286be092018b6"
+    },
+    {
+      "path": "verified/host/stage-result.json",
+      "bytes": 1351,
+      "sha256": "1fc047e67fe37ad7811826d086fabb2b930a53cf3d0868cebd8dd1c54c0c4400"
+    },
+    {
+      "path": "verified/host/stage-stdout.log",
+      "bytes": 85,
+      "sha256": "8121d253c78e2c8176bb77a8a2628a97eb9f5780111232ad148cf6b020031e91"
+    },
+    {
+      "path": "verified/host/stage-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verified/host/execute-start.json",
+      "bytes": 371,
+      "sha256": "d4e8b5a0952cb46f4501408478e995e4181da03aa9f6e559766e4b6768cbe1ab"
+    },
+    {
+      "path": "verified/host/execute-result.json",
+      "bytes": 423,
+      "sha256": "71983abd7b627fe4d4a15840994063a6aaa31f5709bc4bed7e639fcf5c8f5756"
+    },
+    {
+      "path": "verified/host/execute-stdout.log",
+      "bytes": 43,
+      "sha256": "c779ead6d31e9b5ee0f32048d084eacee074c0852eb37b56efdc6c054c500ee2"
+    },
+    {
+      "path": "verified/host/execute-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "verified/host/transfer.json",
+      "bytes": 1729,
+      "sha256": "c2491af928e752dab30a8ec7847b0ede99ca3e0f83d2c46d33cd1958752ced29"
+    },
+    {
+      "path": "verified/host/lead-postcheck.json",
+      "bytes": 590,
+      "sha256": "40aec8472259377bca4bb57aba90cb63f80c0071ab38069d9540a45266567ac9"
+    },
+    {
+      "path": "verified/host/shutdown-host-identity.json",
+      "bytes": 279,
+      "sha256": "7a4842e40f59a125114f63003a4f1519e257a8e246a0ab6812641367358ddf3e"
+    },
+    {
+      "path": "verified/host/shutdown-request.json",
+      "bytes": 258,
+      "sha256": "616c68d914818707eef003aab15183a2d63c98bb1eb57d0799e9dca33713900d"
+    },
+    {
+      "path": "verified/host/shutdown-observed.json",
+      "bytes": 519,
+      "sha256": "c84d2b3e604917fe19ed709ce0400826c34d24ceeeace84a64d0d5fc811c3e1c"
+    },
+    {
+      "path": "verified/run-once.py.txt",
+      "bytes": 13897,
+      "sha256": "93800813c1bb56c9c443fef9440aa656645c9af2147b10eb30c66a55a99528a9"
+    },
+    {
+      "path": "verified/host.py.txt",
+      "bytes": 3658,
+      "sha256": "318b92b6f413f4c77dcdc5af7c97089de2dbba2ff06811f09251ee1c07b74886"
+    },
+    {
+      "path": "failed-preflight/host-bootstrap-failure.json",
+      "bytes": 399,
+      "sha256": "572f8fb5a4b57fa635d7eb23db6543db562e5d1e03217072b4c41814eb77ba6d"
+    },
+    {
+      "path": "failed-preflight/stage-start.json",
+      "bytes": 959,
+      "sha256": "927d4236da101831c10ed78bdc87fa9607d942fda362fb07ee3ab93f87b1ce45"
+    },
+    {
+      "path": "failed-preflight/stage-result.json",
+      "bytes": 1351,
+      "sha256": "bff049b6f002a2393d0891938f32666125b64581ceadb31994758f079347051d"
+    },
+    {
+      "path": "failed-preflight/stage-stdout.log",
+      "bytes": 85,
+      "sha256": "8121d253c78e2c8176bb77a8a2628a97eb9f5780111232ad148cf6b020031e91"
+    },
+    {
+      "path": "failed-preflight/stage-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-preflight/execute-start.json",
+      "bytes": 368,
+      "sha256": "aed1b1977e6ca982c806a2d896889f700746a7e4813a786c37f9c9adb1c4525f"
+    },
+    {
+      "path": "failed-preflight/execute-result.json",
+      "bytes": 420,
+      "sha256": "5bd6dc8c96ba2eedf9a9a2de2cefba4098373086e1b1f8d497cf79a2093322af"
+    },
+    {
+      "path": "failed-preflight/execute-stdout.log",
+      "bytes": 56,
+      "sha256": "e5127cf02493fa7e3aef8147db4f7e03d3919aa4fc80c006e929732f6b43cb0b"
+    },
+    {
+      "path": "failed-preflight/execute-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-preflight/guest-start.json",
+      "bytes": 178,
+      "sha256": "71bd5483dead3e96f40024c8a63eeb0cb70c1705d89adce6e8cea74f52a66405"
+    },
+    {
+      "path": "failed-preflight/guest-result.json",
+      "bytes": 598,
+      "sha256": "d100b0234036e14c0291a58f1129502cbc0e08193f13a3300a7b52bc234b39a8"
+    },
+    {
+      "path": "failed-preflight/binding-diagnostic.json",
+      "bytes": 326,
+      "sha256": "998a10cfbe6ca4b8fa747f6c84f5f70c3f881b569ddf6844fc3e28bd102504b4"
+    },
+    {
+      "path": "failed-preflight/original-digest-comparison.json",
+      "bytes": 1688,
+      "sha256": "30295e23392eb5a47a1b89b63d964114fe291ba18e71c6488ebfae8f174e115b"
+    },
+    {
+      "path": "failed-preflight/vm-start.json",
+      "bytes": 331,
+      "sha256": "b147953dde8bc47f5a3d0604fb0d7c5eaed1480b7f9d1ba38021c641aa432314"
+    },
+    {
+      "path": "failed-preflight/run-once.py.txt",
+      "bytes": 13893,
+      "sha256": "e07a734b9beab792741dae1488c46c05f7e6df25d550808e974b641226065731"
+    }
+  ]
+}

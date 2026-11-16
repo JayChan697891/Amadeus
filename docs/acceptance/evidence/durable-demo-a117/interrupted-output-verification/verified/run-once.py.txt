@@ -1,0 +1,259 @@
+"""Verify the exact saved R2 add.py via the existing local Docker pilot once."""
+
+import hashlib
+import json
+import os
+import sqlite3
+import stat
+import subprocess
+import sys
+from contextlib import closing
+from datetime import UTC, datetime
+from importlib import metadata
+from pathlib import Path
+
+import agentsync
+from agentsync.adapters.approved_launch import digest
+from agentsync.proposals import parse_proposal
+
+BASE = Path("/root/amadeus-r2-proposal-verification-r2-20261116")
+R2 = Path("/root/amadeus-interrupted-a117-r2-20261116")
+FIXTURE = Path("/root/amadeus-proposal-pilot-r2-output-20261116")
+INSTALL = Path("/root/amadeus-demo-a117-sdist-r1/installed")
+PYTHON = INSTALL / "bin/python"
+TOOL = BASE / "run_proposal_candidate_pilot.py"
+TOOL_SHA = "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157"
+IMAGE = "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+MEMBERS_SHA = "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+RAW_SHA = "08dae7c62944a8cdd1ff3761ca5e205c7e3ba8eb23a166907c2829ed96b95c01"
+SOURCE_SHA = "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772"
+PUBLICATION = "2fcef0450c46a17faad3d506627ffe7e159fe2ceb7945769649b43158cce3b15"
+PROJECT = "d437bc04-f871-4f3d-acc3-411560c9e097"
+TASK = "e80700f9-5638-47eb-a871-72023b71c173"
+CONTEXT = "42d08e9d-89b3-4104-98ba-476f9405ca6d"
+LAUNCH = "fda984037b533776232c91ce6dd132119b6013ba2025141027cae33b5f6dc74d"
+WAVE = "078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2"
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def file_sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def timestamp():
+    return datetime.now(UTC).isoformat()
+
+
+def save(name, value):
+    with (BASE / name).open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def read(path, expected):
+    assert path.resolve(strict=True) == path and stat.S_ISREG(path.lstat().st_mode)
+    data = path.read_bytes()
+    assert sha(data) == expected
+    return data
+
+
+def original_fingerprint():
+    # Track paths, file bytes and metadata without following links or publishing an inventory.
+    assert R2.is_dir() and R2.resolve(strict=True) == R2
+    tree = hashlib.sha256()
+    for path in sorted((R2, *R2.rglob("*"))):
+        info = path.lstat()
+        mode = info.st_mode
+        if stat.S_ISREG(mode):
+            value = file_sha(path)
+        elif stat.S_ISLNK(mode):
+            value = os.readlink(path)
+        else:
+            assert stat.S_ISDIR(mode)
+            value = None
+        tree.update(json.dumps([str(path.relative_to(R2)), mode, info.st_uid, info.st_gid, value]).encode() + b"\n")
+    return tree.hexdigest()
+
+
+def runtime():
+    assert Path(sys.executable) == PYTHON and Path(sys.prefix).resolve() == INSTALL.resolve()
+    assert agentsync.__version__ == metadata.version("agentsync-local") == "0.3.0a117"
+    site = Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(INSTALL)
+    members = json.loads(read(R2 / "runtime-members.json", MEMBERS_SHA))
+    actual = {
+        path.relative_to(site).as_posix(): file_sha(path)
+        for path in (site / "agentsync").rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts
+    }
+    assert len(actual) == 97 and actual == members
+    return len(actual)
+
+
+def proposal():
+    capture = json.loads(read(R2 / "receiver-capture.json", "52038b603598f35f5dcf90f1cca059e681046473d1b6e8f90006cb24a72999ee"))
+    raw = read(R2 / "receiver-capture/raw/stdout.bin", RAW_SHA)
+    assert len(raw) == capture["stdout_bytes"] == 664 and capture["stdout_sha256"] == RAW_SHA
+    assert capture["saved"] is True and capture["stdout_truncated"] is capture["stderr_truncated"] is False
+    items = [row.get("item", {}) for row in map(json.loads, raw.splitlines()) if row["type"] == "item.completed"]
+    message, = [row["text"] for row in items if row["type"] == "agent_message"]
+    files = parse_proposal(message, ["add.py"])
+    content = files[0]["content"].encode("utf-8")
+    assert len(content) == 32 and sha(content) == SOURCE_SHA
+
+    receipts = R2 / "receipts"
+    launch_name = f"launch-{LAUNCH}.json"
+    terminal_name = f"relay-{WAVE}-first-observed.json"
+    publication_name = f"relay-{WAVE}-proposal-stored.json"
+    hashes = {
+        launch_name: "ffbee3baaf558dc96706b34499bb455344da0f45e8db4837a57fe67679569c34",
+        terminal_name: "1b87f0e282a24818d6b3b5730c5d6c49a41492eaadcc84554ec036860038f5be",
+        publication_name: "d3d43e7369857130749e8e864be2d2d4a86fdc0b1fce01a4635df298522aa7a9",
+    }
+    launch, terminal, published = [json.loads(read(receipts / name, pin)) for name, pin in hashes.items()]
+    assert launch["request_sha256"] == terminal["launch_request_sha256"] == published["launch_request_sha256"] == LAUNCH
+    assert terminal["status"] == "continuation_proposal_received" and terminal["exit_code"] == 0
+    assert terminal["parent_ended"] is True and terminal["timed_out"] is False
+    assert terminal["proposal_sha256"] == digest(files)
+    assert (published["context_id"], published["context_version"], published["content_sha256"], published["task_version"]) == (CONTEXT, 1, PUBLICATION, 4)
+
+    db = R2 / "core/agentsync.db"
+    assert db.is_file() and db.resolve(strict=True) == db
+    for sidecar in (db.with_name(db.name + "-wal"), db.with_name(db.name + "-journal")):
+        assert not os.path.lexists(sidecar) or (
+            stat.S_ISREG(sidecar.lstat().st_mode) and sidecar.stat().st_size == 0
+        )
+    # The old fixture is closed. Immutable read-only access avoids migrations and WAL writes.
+    with closing(sqlite3.connect(db.as_uri() + "?mode=ro&immutable=1", uri=True)) as conn:
+        row = conn.execute(
+            "SELECT kind,source,content,author_agent_id,author_session_id FROM context_revisions "
+            "WHERE project_id=? AND context_id=? AND version=1", (PROJECT, CONTEXT),
+        ).fetchone()
+        task = conn.execute("SELECT status,version FROM tasks WHERE project_id=? AND id=?", (PROJECT, TASK)).fetchone()
+        verified = conn.execute(
+            "SELECT 1 FROM task_verifications WHERE project_id=? AND task_id=?", (PROJECT, TASK),
+        ).fetchone()
+    assert row[:2] == ("note", "amadeus:task-proposal") and sha(row[2].encode()) == PUBLICATION
+    assert digest(row[3]) == published["agent_sha256"] and digest(row[4]) == published["session_sha256"]
+    stored = json.loads(row[2])
+    assert (stored["project_id"], stored["task_id"], stored["task_version"]) == (PROJECT, TASK, 4)
+    assert stored["files"] == files and stored["execution_provenance"] == "unverified"
+    assert task == ("review", 5) and verified is None
+
+    exact_json = message.encode("utf-8")
+    return exact_json, {
+        "kind": "owner_imported_r2_continuation_proposal", "original_project_id": PROJECT,
+        "original_task_id": TASK, "original_task_version": 5, "original_task_status": "review",
+        "original_task_verification": "unverified", "context_id": CONTEXT, "context_version": 1,
+        "publication_task_version": 4, "publication_sha256": PUBLICATION, "launch_request_sha256": LAUNCH,
+        "launch_plan_sha256": launch["plan_sha256"], "terminal_run_sha256": terminal["run_sha256"],
+        "receipt_sha256": hashes, "raw_stdout_sha256": RAW_SHA, "raw_stdout_bytes": len(raw),
+        "proposal_json_sha256": sha(exact_json), "proposal_json_bytes": len(exact_json),
+        "proposal_file_sha256": SOURCE_SHA, "proposal_file_bytes": len(content),
+    }
+
+
+def main():
+    if sys.platform != "linux" or os.geteuid() != 0 or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__:
+        raise SystemExit("Use the pinned Linux interpreter with -I -B.")
+    assert Path(__file__).resolve().parent == BASE and BASE.resolve(strict=True) == BASE
+    os.umask(0o077)
+    started = {"started_at": timestamp(), "pid": os.getpid(), "automatic_retry": False,
+               "model_calls": 0, "external_auth_copies": 0, "formal_release": "BLOCKED"}
+    save("start.json", started)
+    result = {**started, "status": "preflight_failed", "child_exit_code": None}
+    phase, before = "preflight", None
+    try:
+        assert not os.path.lexists(FIXTURE)
+        assert (R2 / "closing.json").is_file()
+        cleanup = json.loads(read(R2 / "auth-cleanup.json", "2fa2ae9c0acaab3d4f18d681fba6b895692d0098f5f1d03c61d7787f785ed2c7"))
+        assert cleanup["further_launches_allowed"] is False and cleanup["temporary_auth_absent"] is True
+        private_home = R2 / "private-home"
+        assert private_home.resolve(strict=True) == private_home and not any(private_home.iterdir())
+        mounts = {line.split()[4] for line in Path("/proc/self/mountinfo").read_text().splitlines()}
+        assert not any(path == str(R2) or path.startswith(str(R2) + "/") for path in mounts)
+        before = original_fingerprint()
+        assert runtime() == 97
+        read(TOOL, TOOL_SHA)
+        phase = "proposal_binding"
+        exact_json, origin = proposal()
+        with (BASE / "proposal.json").open("xb") as stream:
+            stream.write(exact_json)
+        save("origin.json", origin)
+
+        phase = "docker_preflight"
+        home = BASE / "home"
+        home.mkdir(mode=0o700)
+        env = {"PATH": "/usr/bin:/bin", "HOME": str(home), "LC_ALL": "C", "TMPDIR": str(home),
+               "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null", "GIT_TERMINAL_PROMPT": "0"}
+        docker = ["/usr/bin/docker", "--host", "unix:///var/run/docker.sock", "--config", str(home)]
+        def containers():
+            return subprocess.check_output([*docker, "ps", "-aq"], env=env, stderr=subprocess.DEVNULL, timeout=15).split()
+        assert not containers()
+        observed_image = subprocess.check_output(
+            [*docker, "image", "inspect", "--format", "{{.Id}}", IMAGE], env=env, stderr=subprocess.DEVNULL, timeout=15,
+        ).decode().strip()
+        assert observed_image == IMAGE and original_fingerprint() == before
+
+        command = [
+            str(PYTHON), "-I", "-B", str(TOOL), "--root", str(FIXTURE), "--proposal", str(BASE / "proposal.json"),
+            "--proposal-sha256", origin["proposal_json_sha256"], "--origin", str(BASE / "origin.json"), "--image-id", IMAGE,
+        ]
+        save("command.json", {"argv": command, "tool_sha256": TOOL_SHA, "runtime_members": 97})
+        phase = "pilot"
+        with (BASE / "pilot-stdout.log").open("xb") as out, (BASE / "pilot-stderr.log").open("xb") as err:
+            result["status"] = "unknown"
+            child = subprocess.Popen(command, env=env, cwd=BASE, stdin=subprocess.DEVNULL, stdout=out, stderr=err)
+            result["child_pid"] = child.pid
+            # A timeout leaves the pilot alone and its container state unconfirmed.
+            result["child_exit_code"] = child.wait(timeout=120)
+
+        phase = "pilot_receipts"
+        result["status"] = "failed"
+        result["containers_after"] = len(containers())
+        assert result["child_exit_code"] == 0 and result["containers_after"] == 0
+        records = {name: (FIXTURE / f"{name}.json").read_bytes()
+                   for name in ("prepared", "execution", "completion", "summary")}
+        result["pilot_receipt_sha256"] = {name: sha(raw) for name, raw in records.items()}
+        prepared, execution, completion, summary = map(json.loads, records.values())
+        observation = execution["execution"]["result"]
+        checks = observation["isolation"]["checks"]
+        assert execution["execution_assessment"] == "passed" and observation["cleanup_confirmed"] is True
+        assert observation["provenance"] == "docker_black_box" and observation["image_sha256"] == IMAGE
+        assert all(observation[f"{name}_case_count"] == 8 for name in ("expected", "checked", "completed", "passed"))
+        assert len(checks) == 19 and all(value is True for value in checks.values())
+        assert summary["owner_reviewed_origin"] == prepared["owner_reviewed_origin"] == origin
+        assert summary["proposal_sha256"] == SOURCE_SHA and summary["baseline_unchanged"] is True
+        assert completion["task_id"] == summary["target_task_id"] != TASK and summary["target_project_id"] != PROJECT
+        assert completion["status"] == "completed" and completion["task_verification"] == "verified"
+        proof = completion["verification"]
+        assert proof["execution_id"] == execution["execution_id"]
+        assert proof["candidate_sha"] == summary["candidate_sha"]
+        assert proof["image_id"] == IMAGE and proof["profile_sha256"] == summary["profile_sha256"]
+        assert proof["source_sha256"] == observation["source_sha256"] == summary["solution_sha256"]
+        assert summary["model_calls"] == 0 and runtime() == 97
+        result.update(status="passed", cases_passed=8, isolation_checks_passed=19, runtime_members=97)
+    except (Exception, KeyboardInterrupt) as exc:
+        result.update(error_type=type(exc).__name__, failed_phase=phase)
+    finally:
+        if before is not None:
+            result["original_tree_before_sha256"] = before
+            try:
+                result["original_tree_after_sha256"] = original_fingerprint()
+                result["original_tree_unchanged"] = result["original_tree_after_sha256"] == before
+            except Exception as exc:
+                result["original_tree_observation_error"] = type(exc).__name__
+            if result["status"] == "passed" and result.get("original_tree_unchanged") is not True:
+                result["status"] = "failed"
+        result["finished_at"] = timestamp()
+        save("result.json", result)
+    print(json.dumps({"status": result["status"], "child_exit_code": result["child_exit_code"]}))
+    return 0 if result["status"] == "passed" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

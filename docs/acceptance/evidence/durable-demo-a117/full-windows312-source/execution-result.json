@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-11-16T09:32:53.5360730Z",
+  "native_session_id": 44775,
+  "native_exit_code": 0,
+  "native_session_closed": true,
+  "native_chunk": "a72dd2",
+  "controller_pid": 23376,
+  "result_sha256": "82f53ecbb626f34a08a3bfbedefce631e9043ebb975146fc1f35047ed980042c"
+}

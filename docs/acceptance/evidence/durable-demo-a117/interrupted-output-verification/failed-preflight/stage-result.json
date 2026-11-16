@@ -1,0 +1,26 @@
+{
+  "started_at": "2026-11-16T09:36:06.968980+00:00",
+  "mode": "stage",
+  "status": "terminal",
+  "exit_code": 0,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "automatic_retry": false,
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "-c",
+    "\nimport json, os, subprocess\nfrom pathlib import Path\nworkers=[]\nfor p in Path('/proc').iterdir():\n    if not p.name.isdecimal() or int(p.name)==os.getpid(): continue\n    try:\n        executable=(p/'exe').resolve(strict=True).name\n        if executable.startswith(('python','codex')): workers.append({'pid':int(p.name),'executable':executable})\n    except (FileNotFoundError, PermissionError): pass\ncontainers=subprocess.check_output(['/usr/bin/docker','ps','-aq'],timeout=15).decode().split()\nassert not workers and not containers\nprint(json.dumps({'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'workers':workers,'containers':containers}))\n"
+  ],
+  "probe": {
+    "boot_id": "6546e8ba-d5f8-4c09-827d-59e36514050e",
+    "workers": [],
+    "containers": []
+  },
+  "staged_files": {
+    "run-once.py": "e07a734b9beab792741dae1488c46c05f7e6df25d550808e974b641226065731",
+    "run_proposal_candidate_pilot.py": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157"
+  },
+  "finished_at": "2026-11-16T09:36:07.209756+00:00"
+}

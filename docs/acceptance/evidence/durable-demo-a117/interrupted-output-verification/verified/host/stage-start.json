@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-11-16T09:40:06.349641+00:00",
+  "mode": "stage",
+  "status": "unknown",
+  "exit_code": null,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "automatic_retry": false,
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "-c",
+    "\nimport json, os, subprocess\nfrom pathlib import Path\nworkers=[]\nfor p in Path('/proc').iterdir():\n    if not p.name.isdecimal() or int(p.name)==os.getpid(): continue\n    try:\n        executable=(p/'exe').resolve(strict=True).name\n        if executable.startswith(('python','codex')): workers.append({'pid':int(p.name),'executable':executable})\n    except (FileNotFoundError, PermissionError): pass\ncontainers=subprocess.check_output(['/usr/bin/docker','ps','-aq'],timeout=15).decode().split()\nassert not workers and not containers\nprint(json.dumps({'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'workers':workers,'containers':containers}))\n"
+  ]
+}
