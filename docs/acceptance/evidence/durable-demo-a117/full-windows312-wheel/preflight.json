@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-11-16T06:59:53.397550+00:00",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "test_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "source_files": 2382,
+  "source_identity_matched": true,
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "reused_immutable_inputs": "D:\\agentsync-debug\\m117l",
+  "new_test_root": "D:\\agentsync-debug\\m117ww",
+  "input_sha256": {
+    "frozen-inputs.tar": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+    "frozen-inputs.json": "635ba0600cedda71c47e2af65ee9c3f7dd96d711a2d71439e0614381ae6b6f91",
+    "runtime-members.json": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+  },
+  "model_calls": 0,
+  "credentials_copied": false,
+  "tests": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

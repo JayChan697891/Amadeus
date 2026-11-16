@@ -1,0 +1,15 @@
+{
+  "formal_release": "BLOCKED",
+  "observed_at": "2026-11-16T07:02:03.7827034Z",
+  "launcher_executable": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+  "controller_executable": "C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe",
+  "state": "RUNNING at observation",
+  "automatic_retry": false,
+  "initial_observer_note": "Single PID expectation rejected: normal Windows venv launcher plus actual interpreter; bound to controller PID and verified both identities.",
+  "controller_pid": 8872,
+  "controller_created_utc": "2026-11-16T07:00:35.6629210Z",
+  "launcher_created_utc": "2026-11-16T07:00:35.6552310Z",
+  "native_session_id": 35434,
+  "launcher_pid": 6404,
+  "driver_sha256": "9a86ad90e2d8475bac4c931afeb34339b2ec84137e138b4cbea1b3a2f6de7192"
+}

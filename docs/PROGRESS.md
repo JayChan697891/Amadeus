@@ -1,5 +1,20 @@
 # Amadeus current progress
 
+Active independent validation — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+While the fresh live-model grant remains pending, the first a117 Windows3.12 full
+installed-wheel supplement is running in `D:/agentsync-debug/m117ww`.
+Native session35434/controller8872 began at07:00:35Z; do not restart it. Its Windows
+venv launcher is PID6404; exact creation times and executable identities are in
+`acceptance/evidence/durable-demo-a117/full-windows312-wheel/execution-start.json`.
+Five native setup/install/dependency/origin checks completed before full pytest.
+The unchanged wheel300c72e1/runtimefc27f15 and2382 frozen33ffbc3 inputs are reused
+read-only; caches, install and scratch are new. Driver9a86ad90 received root diff
+inspection and independent Astra review. This is the missing Windows wheel scope,
+not a rerun of completed sdist/Linux/a116 suites. Results are RUNNING/unknown until
+the original native handle ends and its logs/JUnit are independently checked.
+Later CLI image-ID and experimental-controller changes retain separate evidence.
+No VM, model call, external model auth or GitHub Actions is involved.
+
 Current recovery checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
 Goal active; PR35 remains open/draft at the resumed ccfe615 branch with no new
 comments. A remains usable now; P0 still prioritizes the existing live-recovery
