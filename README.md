@@ -13,10 +13,11 @@ Status: **0.3.0a120 development source. Formal Release BLOCKED.** The unchanged
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
 
-The [a120 Windows development preview](releases/0.3.0a120/preview-859775b/)
+The [a120 development preview](releases/0.3.0a120/preview-859775b/)
 adds missing-project protection for `workflow start` and structured database errors
 for `owner`/`workflow`. Fresh wheel and source-package installs each passed21
-focused Windows3.12 cases. Linux/macOS and full a120 acceptance are NOT RUN.
+focused cases on Windows3.12 and Linux3.14 using the same archives. macOS,
+full a120 acceptance and a120 real-client validation are NOT RUN.
 
 The earlier [a119 development preview](releases/0.3.0a119/preview-4be5134/) includes the
 owner CLI directory fix and same-task continuation verification bridge. The same

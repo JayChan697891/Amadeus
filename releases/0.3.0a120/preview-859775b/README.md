@@ -1,4 +1,4 @@
-# Amadeus a120 Windows development preview
+# Amadeus a120 development preview
 
 Source: `859775bf3f1a1492153ba550d36f4ad2b146c58f`. This branch-stored preview is
 not a formal Release. The original a118/a119 packages remain unchanged.
@@ -23,11 +23,13 @@ For an owner-controlled project and separate CLI processes, follow
 
 The wheel and source archive have hashes in [SHA256SUMS](SHA256SUMS).
 Actual local Windows3.12 validation passed19 native build/install checks and
-21 focused tests in each fresh installation, with matching test identities and
-97 runtime members bound to source/archive/install. These include malformed input,
+21 focused tests in each fresh installation. The same original archives also
+passed16 Linux3.14 install checks and21 tests per fresh installation. All four
+environments have matching test identities and97 runtime members bound to
+source/archive/install. These include malformed input,
 missing/corrupt databases and normal owner/workflow operations. Original failures
 and final results are retained in [the evidence](../../../docs/acceptance/evidence/core-preview-a120/summary.json).
 
-Linux/macOS, the complete a120 suite/platform matrix and a120 real clients are
+macOS, the complete a120 suite/platform matrix and a120 real clients are
 NOT RUN. Historical a119 live results keep their original scope. Full M6/M7 and
 formal Release remain BLOCKED. No Actions, paid API, main merge or public release.

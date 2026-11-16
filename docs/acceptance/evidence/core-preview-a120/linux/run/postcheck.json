@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-11-16T23:50:44.606361+00:00",
+  "boot_id": "877890b5-28cd-421d-8be0-c67537860d1b",
+  "active_project_workers": [],
+  "running_containers": [],
+  "installed_members_verified": {
+    "wheel": 97,
+    "sdist": 97
+  },
+  "credential_copies": 0,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED"
+}

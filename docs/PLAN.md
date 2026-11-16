@@ -12,8 +12,11 @@ were checked unchanged. Root inspected original outputs; a separate read-only
 review confirmed package/installation bindings. This is one usable P1 delivery,
 not a new M5 stage. [Packages](../releases/0.3.0a120/preview-859775b/) and
 [scope/evidence](acceptance/evidence/core-preview-a120/summary.json).
-Next reuse these exact archives for local Linux compatibility; no repeat Windows
-suite or consumed live fixture. a120 Linux/macOS/full matrix/real clients NOT RUN.
+The same original archives now also passed16 local Linux3.14 install checks;
+each fresh install passed the same21 cases. Inputs/members unchanged, no remaining
+workers/containers, VM normally stopped with disk retained. No new build or Windows
+rerun. Next review remaining P0 recovery gaps against M8-02 and existing evidence;
+do not invent a new stage or repeat passed tests. macOS/full a120 matrix/real clients NOT RUN.
 A/B historical scopes remain version-bound; C remains BLOCKED.
 
 P1 entry-point audit, 2026-11-16: source6192b87 now requires an existing database

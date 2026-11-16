@@ -16,9 +16,17 @@ source, plus unchanged a118/a119 packages. Model/VM/Docker calls:0. Both preview
 and exact evidence are at releases/0.3.0a120/preview-859775b/ and
 acceptance/evidence/core-preview-a120/summary.json. No full/current-platform or
 real-client acceptance is inferred; formal Release remains BLOCKED.
-Recovery entry: continue basic compatibility using these same a120 archives on
-the authorized local Linux environment. Do not regenerate packages or repeat
-Windows checks; Linux/macOS/full a120 matrix and real-client testing are NOT RUN.
+Linux supplement: native72381/70e3e0 exited0 at23:49:58Z; the exact original Windows
+archives each passed21 identical cases in fresh Linux3.14 installs,16 native checks
+pass.3362 inputs and97 members per install unchanged;39 originals received and
+verified. Root observed no remaining workers/containers, then normal VM shutdown
+at23:52:41Z with disk retained. An initial shutdown guard stopped before QMP because
+ISO text was compared with a parsed DateTime; the retained diagnosis established
+identical UTC ticks/PID/executable/disk/port before one normal shutdown request.
+No product failure, candidate/model call or test repeat was introduced.
+Recovery entry: review remaining P0 recovery gaps against original M8-02 and the
+current evidence; reuse these packages and prior live outcomes. macOS/full a120
+matrix and real-client testing are NOT RUN. Do not restart consumed fixtures.
 The preserved pause checkpoint is historical; the owner explicitly resumed.
 
 P1 workflow-start correction — 2026-11-16 UTC, source/test6192b87.

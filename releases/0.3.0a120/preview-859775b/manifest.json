@@ -14,5 +14,5 @@
       "sha256": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
     }
   },
-  "validation": "Windows 3.12: 19 native checks; 21 selected cases per fresh wheel/sdist install. Linux/macOS/full suite/real clients NOT RUN for a120."
+  "validation": "Windows3.12:19 native checks; Linux3.14:16 native checks; each of four fresh wheel/sdist installs passed the same21 selected cases. macOS/full suite/a120 real clients NOT RUN."
 }

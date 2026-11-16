@@ -4,7 +4,7 @@
   "directory_guard_commit": "6192b874f214097c0bf33f4f63b6e139566c252a",
   "storage_error_commit": "e1c2fd94f3de6b59324807f6b10e224886830f91",
   "formal_release": "BLOCKED",
-  "status": "bounded Windows development-preview installation passed",
+  "status": "bounded Windows and Linux development-preview installations passed",
   "artifacts": {
     "wheel": {
       "filename": "agentsync_local-0.3.0a120-py3-none-any.whl",
@@ -40,13 +40,13 @@
     "runtime_delta_from_a119": [
       "agentsync/__init__.py",
       "agentsync/cli.py"
-    ]
+    ],
+    "installed_environments": 4
   },
   "source_regressions": "storage-errors/summary.json",
   "windows_originals": "windows/file-inventory.json",
-  "review": "Root inspected actual logs, JUnit, 19 native receipts and all 3362 frozen source inputs. Native Sol independently checked both 97-member installations, artifact metadata/direct_url, exact JUnit identities and unchanged old packages (read-only chunk919a96). External Work acceptance remains separate.",
+  "review": "Root inspected actual logs, JUnit, 19 native receipts and all 3362 frozen source inputs. Native Sol independently checked both 97-member installations, artifact metadata/direct_url, exact JUnit identities and unchanged old packages (read-only chunk919a96). External Work acceptance remains separate. Linux: Root checked all16 actual receipts/log hashes, original JUnit against Windows identities, installed members in the guest, and39 transferred originals; observed normal VM shutdown. No test rerun or package rebuild.",
   "not_run": [
-    "Linux installation for a120",
     "macOS",
     "a120 full suite and complete platform matrix",
     "a120 real-client validation"
@@ -56,5 +56,32 @@
     "Windows simulated workflow is not a real-client test.",
     "a119 live evidence retains its original version and scope; no full M6/M7 or Release approval."
   ],
-  "next": "Use these installable CLI fixes; verify the same archives on existing local Linux before treating basic package compatibility as established. No duplicate Windows or a119 live runs."
+  "next": "Return to P0 recovery-gap review against existing M8-02 and frozen evidence. Reuse current installation results and consumed a119 live evidence; do not repeat passed suites or infer cross-vendor, whole-host or formal Release acceptance.",
+  "linux": {
+    "native_session": 72381,
+    "native_start_chunk": "a658cb",
+    "native_exit_chunk": "70e3e0",
+    "exit_code": 0,
+    "python": "3.14.7",
+    "checks": 16,
+    "wheel_passed": 21,
+    "sdist_passed": 21,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "same_windows_case_identities": true,
+    "finished_at": "2026-11-16T23:49:58.713180+00:00",
+    "same_original_windows_archives": true,
+    "original_records": 39,
+    "postcheck": "linux/run/postcheck.json",
+    "shutdown_confirmed_at": "2026-11-16T23:52:41.4677186Z",
+    "vm_normally_stopped": true
+  },
+  "linux_originals": "linux/file-inventory.json",
+  "retained_collection_failure": {
+    "native_chunk": "46b5b1",
+    "scope": "post-test shutdown guard, not a product/test failure",
+    "result": "Stopped before QMP due to ISO-string versus DateTime comparison. Exact UTC ticks plus PID/executable/disk/port identity rechecked; one normal shutdown then accepted and observed.",
+    "evidence": "linux/host/shutdown-guard-initial.json"
+  }
 }
