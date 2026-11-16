@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0a118 - recovery-path preview, package validation pending
+
+- Refuse workflow status/resume/cancel on a missing database without creating
+  an empty data directory. Preserve start and existing database behavior.
+- Package the focused CLI repair separately from the immutable a117 preview.
+  Targeted source checks passed; this candidate still requires its own install
+  checks and does not inherit a117 full-suite or formal Release acceptance.
+
 ## 0.3.0a116 - corrected acceptance candidate, validation pending
 
 - Give the Windows test Git helper the same command-scoped long-path support
