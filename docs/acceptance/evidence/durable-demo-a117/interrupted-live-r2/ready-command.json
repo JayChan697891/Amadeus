@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-11-16T08:31:15.513770+00:00",
+  "action": "ready b78f84c53cbdef2eb055719b53f4a7d163bded339ada208745136c2f05d4b00d",
+  "exit_code": 0,
+  "stdout": "{\"ready\": true, \"producer_plan_sha256\": \"b78f84c53cbdef2eb055719b53f4a7d163bded339ada208745136c2f05d4b00d\", \"model_calls\": 0}\n",
+  "stderr": "",
+  "model_calls": 0,
+  "auth_access": false
+}

@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+Actual R2 interrupted-parent continuation completed and independently reviewed:
+one Codex parent ended-9 after turn.started, another real Codex received the pinned
+host-known checkpoint and submitted a32-byte source proposal as review/unverified.
+Fresh-process replay used zero callbacks/model calls; the original failure receipts,
+three-task graph and single dependency retarget stayed unchanged. Both local CLI
+parents ended, temporary auth was deleted/unmounted and the original stayed unchanged.
+Actual guest authorization bytes are retained separately from host CRLF copies.
+[Bounded result and limitations](evidence/durable-demo-a117/interrupted-live-r2/summary.json).
+This does not prove whole-host crash, model-authored recovery, cross-vendor support,
+unattended approval or independent execution of resumed source. Formal Release
+remains BLOCKED. Windows source session44775 is running, not accepted yet.
+
 Latest Linux editable-source supplement completed:2545 unique cases,2538pass/
 7skip/zero failure,error;8 native checks and35 actual Docker observations across7
 groups. Runtimefc27f15/test33ffbc3,1117.76s,120 warnings; original/copy2382 and97

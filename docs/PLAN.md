@@ -2,6 +2,20 @@
 
 ## Execution adjustment — 2026-11-15
 
+Current delta, 2026-11-16: the controlled same-vendor in-flight interruption /
+continuation gap now has actual evidence. A producer parent was interrupted after
+turn.started, a second Codex consumed the pinned host-known checkpoint and
+submitted a new review/unverified proposal, and fresh-process replay launched
+nothing. One dependent was retargeted exactly once. Temporary auth and owned VM
+were safely closed; independent review accepted only this bounded scenario.
+See [actual R2 result](acceptance/evidence/durable-demo-a117/interrupted-live-r2/summary.json).
+A remains demonstrable now. B has stronger real same-vendor evidence; whole-host
+crash, cross-vendor access, unattended policy and independently executed resumed
+code remain unverified. Do not relabel this as complete B or formal Release.
+Next P1 is the already running Windows3.12 source supplement; the Linux3.14
+source supplement finished. No new M5 phase, version or repeated full suite.
+The delivery-order tables below retain their original scope and history.
+
 This is a delivery-order overlay, not a replacement for the original M0–M9 plan,
 42 requirements, active Goal or historical acceptance below. No new M5 subphase
 or additional release gate is created. PR #35 remains a draft on the existing

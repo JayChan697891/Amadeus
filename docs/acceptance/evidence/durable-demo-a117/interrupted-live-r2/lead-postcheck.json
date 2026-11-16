@@ -1,0 +1,31 @@
+{
+  "private_home_empty": true,
+  "home_unmounted": true,
+  "auth_absent": true,
+  "active_python_codex": [],
+  "runtime_members": 97,
+  "original_fixture_unchanged": true,
+  "source_receipts_unchanged": true,
+  "task_graph_matches": true,
+  "replay_model_calls": 0,
+  "replay_callbacks": 0,
+  "receipt_files": [
+    "consent-3ced5d47f512881a38e65d4e60285c7c0155b58c4afb852724f7af7bc79cd19a.json",
+    "consent-8afa9348545a523a6f6dcd3adc55322ed0ed123c4573e9a754dffd684c197d67.json",
+    "continuation-799cde78bb30ce5d1e570388c92ed5936aafa1b502dd6fa2afb56aa8c296d661-dispatch.json",
+    "launch-6b553d3aadd0a9cab1bbf1f9ea5a0195edd63bcdd51a6533b0090b55f8c5af3b.json",
+    "launch-fda984037b533776232c91ce6dd132119b6013ba2025141027cae33b5f6dc74d.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-first-dispatched.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-first-observed.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-incomplete.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-proposal-publish-intent.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-proposal-review-intent.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-proposal-review-submitted.json",
+    "relay-078c01012291a55e4c63008bb5e2b414e97288b9da3f13dd87e778986645afb2-proposal-stored.json",
+    "relay-d1be98b83265735510f52f8c7509fc8b473b908a014881204a3f0e5960cf97bf-first-dispatched.json",
+    "relay-d1be98b83265735510f52f8c7509fc8b473b908a014881204a3f0e5960cf97bf-first-stopped.json",
+    "relay-d1be98b83265735510f52f8c7509fc8b473b908a014881204a3f0e5960cf97bf-incomplete.json"
+  ],
+  "original_auth_unchanged": true,
+  "observed_at": "2026-11-16T08:41:53.734027+00:00"
+}

@@ -1,5 +1,38 @@
 # Amadeus current progress
 
+P0 limited real interruption/continuation passed — 2026-11-16 UTC.
+The fresh R2 fixture completed two actual subscription calls: after turn.started
+and before a terminal event, the owned producer parent ended-9/process_failed;
+OwnerContinuation used the explicitly host-known partial checkpoint and a distinct
+Codex identity to create exactly one receiver task and retarget the sole dependent.
+The receiver ended0, its32-byte proposal matches stored Core context, and remains
+review/unverified. New-process replay made0 callbacks/0 model calls with unchanged
+tasks and receipts. Source task v4→v5/failed; dependent v1→v2. Root inspected actual
+protocol bytes privately and all public files; independent Astra accepted only
+this scope. Raw error items/unclassified stderr are retained locally, not denied.
+
+The guest authorization original has SHAdae5b9e…37cac; its Windows CRLF copy is
+semantically equal but not the executed bytes. Actual guest authorization/decision
+bytes are archived with that distinction.80 public artifacts/146539 bytes plus
+inventory, review and summary are saved under interrupted-live-r2/. Original
+expired preparation and every earlier failure remain intact. This is not a whole-
+host crash, model-authored checkpoint, cross-vendor flow, unattended approval,
+independent candidate execution, complete node B or Release. See its summary.json.
+
+Both calls are consumed; no additional call or retry occurred. Temporary auth was
+removed and tmpfs unmounted; original login hash unchanged, home empty,97 runtime
+members and original fixture unchanged, no guest Python/Codex or containers.
+Owned VM26448 was normally powered off and observed absent08:47:15Z, disk preserved.
+The initial immediate check saw shutdown pending; it was not forcibly terminated.
+
+Next P1 Windows source validation is now RUNNING: native session44775/controller
+23376 (venv launcher23224), started08:47:52Z in D:/agentsync-debug/m117ws. Six
+installation/origin/durable-smoke checks passed before the first full source suite.
+Driver0b87ce50, runtimefc27f15/test33ffbc3; original inputs remain frozen. Keep this
+single native session and read its terminal result; do not start another run.
+No current Windows source pass is claimed. All completed source/package suites
+are preserved and are not repeated. Original Goal active; formal Release BLOCKED.
+
 Completed source validation; fresh live-session preparation — 2026-11-16 UTC.
 Linux source session1116 exited0 at08:24:21Z: all8 native checks,2538pass/7skip,
 2545 unique identities,1117.76 seconds.56 original files/638029 bytes,97 runtime

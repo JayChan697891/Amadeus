@@ -1,0 +1,13 @@
+{
+  "reviewed_at": "2026-11-16T08:51:48.052238+00:00",
+  "root_direct_inspection": true,
+  "independent_reviewer": "Native Astra: actual receipts/identities/task graph/approval timing and raw-capture summaries reviewed; limited scope accepted",
+  "archive_files_checked": 80,
+  "archive_bytes_checked": 146539,
+  "known_user_auth_tokens_absent": true,
+  "actual_guest_authorization_sha256": "dae5b9e10f603cafe1201d6fc8e840be013e7d85b50017feca30792d68537cac",
+  "guest_authorization_bytes_match_execution": true,
+  "host_crlf_copy_preserved_locally": true,
+  "raw_protocol_review": "Root checked raw hashes and parsed them only in private guest; independent reviewer saw summaries, not raw streams. Error items and unclassified stderr remain explicitly disclosed.",
+  "formal_release": "BLOCKED"
+}

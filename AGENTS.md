@@ -1,5 +1,17 @@
 # Current continuation entry (2026-11-11)
 
+Owner update, 2026-11-16: bounded subscription-only live validations of the same
+kind are authorized without repeatedly asking. Each experiment still needs an
+exact reviewed plan, at most two calls, no paid API/extra fees, isolated temporary
+login copy and confirmed cleanup, unchanged original credentials, and no retry
+following a failed/unknown model outcome or missed interruption window. Expired
+unused fixtures may be replaced through normal registration in a fresh isolated
+project; preserve the original and rebind its plan. This does not authorize
+workspace application, main merge, public release, altered gates or broader use.
+See docs/acceptance/evidence/durable-demo-a117/interrupted-controller/owner-grant-20261116.json.
+Historical single-use grants below remain consumed; this newer standing grant
+applies only within these bounds.
+
 The owner authorized continuous implementation, local tests, fixes and retests.
 After each checkpoint, take the next authorized item in WORKFLOW.md without
 waiting for another prompt. Record unrun validation as NOT RUN. Existing safety
