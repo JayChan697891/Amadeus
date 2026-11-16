@@ -2,13 +2,16 @@
 
 ## Execution adjustment — 2026-11-15
 
-The next P0/B live path is now concretely prepared at controller4aa4f8, reusing
-the unchanged a119 product:11 gate checks, one deterministic real-Core walkthrough,
-actual Linux preparation and exact file binding have passed. Two earlier failures
-remain documented. [The bounded plan](acceptance/LIVE-CONTINUATION-PLAN.md) awaits
-the new candidate-execution scope; no real run started. No additional M5 stage,
-package version or Release gate change. Node A stays available now; B closure
-can use one bounded local session after scope approval and fresh readiness.
+P0/B's bounded same-vendor path now has an actual result: two real Codex calls,
+one original receiver task completed/verified after2 Docker cases/19 isolation
+checks, zero-effect replay and actual dependent claim. The owner approved the new
+candidate scope; controller4aa4f8 used unchanged a119/4be5134. Root/Astra accepted
+only this host-known-checkpoint, explicit-lead-approval path. Whole-host crash,
+cross-vendor and unattended approval policy remain unverified; C stays BLOCKED.
+See [the plan and outcome](acceptance/LIVE-CONTINUATION-PLAN.md) and
+[actual evidence](acceptance/evidence/core-preview-a119/live-continuation/summary.json).
+Use this frozen evidence once; next prioritize P1 review of existing SDK/CLI demo
+and recovery access, without another M5 stage, package or repeated a119 acceptance.
 
 P1 installable core preview delivered, 2026-11-16: a119/4be5134 packages both
 the owner-path fix and continuation verification bridge. Windows3.12 fresh wheel/

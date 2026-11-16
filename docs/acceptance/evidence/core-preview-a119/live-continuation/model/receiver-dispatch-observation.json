@@ -1,0 +1,112 @@
+{
+  "timestamp": "2026-11-16T14:40:57.929347+00:00",
+  "actors": {
+    "receiver": {
+      "entry_sha256": "6214210da2ea2d16d16680b83c9365dfe375e5ffa801c163c8d43daa3cca1ec1",
+      "authorization_sha256": "31c724c900bd6e34f80af81576c3633876d0d894ee8dbaa8d09b8167e5cb41c0",
+      "project_id": "86d0852c-e0f7-4c74-b754-6aa67728e93b",
+      "agent_sha256": "2e385e3e3f6681898ca380a6dbe302d67600114eaf130ee25a64aef69cded49b",
+      "session_sha256": "cc966d4d30a993451f5d969a7d275dd3b282718bee8e3629b894aad918fd6abe",
+      "task_id": "682bd522-afd0-483b-938a-282f008b701a",
+      "captured_start_invoked": true,
+      "exact_authorizations": 1,
+      "attempts": [
+        {
+          "leg": "first",
+          "state": "terminal_recorded",
+          "client": "codex",
+          "status": "continuation_proposal_received",
+          "exit_code": 0,
+          "timed_out": false,
+          "parent_ended": true,
+          "run_sha256": "08129a73f822a68dd22c520a3b273c96a4f2989088cfd7cd2d483ee0fbfbc203",
+          "session_sha256": "cc966d4d30a993451f5d969a7d275dd3b282718bee8e3629b894aad918fd6abe",
+          "error_code": null,
+          "admission": {
+            "state": "both_reservations_recorded",
+            "plan_sha256": "75c60d4695e4dda3cc577c58a8290064210bc20b00bfc5acb41826a352522b3d",
+            "execution_verified": false
+          },
+          "adapter_elapsed_ms": 58045,
+          "reported_input_tokens": 8630,
+          "reported_output_tokens": 57,
+          "agent_sha256": "2e385e3e3f6681898ca380a6dbe302d67600114eaf130ee25a64aef69cded49b",
+          "declared_client_version": "0.167.0-alpha.3.2",
+          "protocol_session_sha256": "1b718ba6066c1428ac3e20dc606b47ce5f3fc6cbeb83691969d3f8c0f10c7de8",
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        },
+        {
+          "leg": "second",
+          "state": "not_dispatched",
+          "client": null,
+          "status": null,
+          "exit_code": null,
+          "timed_out": null,
+          "parent_ended": null,
+          "run_sha256": null,
+          "session_sha256": null,
+          "error_code": null,
+          "admission": null,
+          "adapter_elapsed_ms": null,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": null,
+          "declared_client_version": null,
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        }
+      ],
+      "launch_plan_sha256": "75c60d4695e4dda3cc577c58a8290064210bc20b00bfc5acb41826a352522b3d",
+      "launch_request_sha256": "be28ef969ce424701e62b97450956c40143e6b6b07ea2da7d9bd6e11803175bd"
+    }
+  },
+  "outcome": {
+    "state": "resolved",
+    "task_id": "682bd522-afd0-483b-938a-282f008b701a",
+    "task_status": "review",
+    "task_version": 5,
+    "source_task_id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+    "publication": {
+      "context_id": "c7d92ae5-747e-4dc5-b750-8aae2687c315",
+      "context_version": 1,
+      "content_sha256": "57e0b0dcd1bf7d6eaa0856633eea9998a57fbc98fdf48906009bc13289eb1d0e",
+      "publication_task_version": 4,
+      "publication_session_id": "03356113-5d86-4bff-ac5a-83f3f99f8930",
+      "publication_request_id": "relay:79b9e48971bc2c155de5b6584736bcba76473d4707708481116c679e048df097:proposal:publish",
+      "verification": "unverified"
+    },
+    "wave": {
+      "state": "resolved",
+      "tasks": [
+        {
+          "task_id": "682bd522-afd0-483b-938a-282f008b701a",
+          "state": "ready_for_review",
+          "failure_code": null
+        }
+      ],
+      "verification": "unverified"
+    },
+    "verification": "unverified"
+  },
+  "error_code": null,
+  "attempt_schema_exact": true,
+  "diagnostic_errors": []
+}

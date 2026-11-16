@@ -1,0 +1,35 @@
+{
+  "tasks": {
+    "c7a48621-912d-4c47-bf5a-98aa91f00b65": {
+      "id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+      "status": "failed",
+      "version": 5,
+      "dependencies": [],
+      "task_verification": "unverified"
+    },
+    "0c55d4af-f516-40f8-b0ae-c0b044e255fc": {
+      "id": "0c55d4af-f516-40f8-b0ae-c0b044e255fc",
+      "status": "pending",
+      "version": 2,
+      "dependencies": [
+        "682bd522-afd0-483b-938a-282f008b701a"
+      ],
+      "task_verification": "unverified"
+    },
+    "682bd522-afd0-483b-938a-282f008b701a": {
+      "id": "682bd522-afd0-483b-938a-282f008b701a",
+      "status": "completed",
+      "version": 6,
+      "dependencies": [],
+      "task_verification": "verified"
+    }
+  },
+  "source_receipt_sha256": {
+    "relay-bf8e3333a511bb09f0fb87c1c0b829e532566bd71ba599818a5dfe34c8c2b650-first-dispatched.json": "14b46bdf5917981ff5c031b245ef3a543109983b059cf584ac14a8d3f2814919",
+    "relay-bf8e3333a511bb09f0fb87c1c0b829e532566bd71ba599818a5dfe34c8c2b650-first-stopped.json": "883a5a381c99b3721a6fb9e6209b03be92e5526154d765b1b1af4d5ba5aa204a",
+    "relay-bf8e3333a511bb09f0fb87c1c0b829e532566bd71ba599818a5dfe34c8c2b650-incomplete.json": "861daa78d0ac652828aa6ad87231cd2f63636f672b005db333891fecad13c425",
+    "launch-78c8b7c738a2244a2319acafd4fe9a1f164f98e826c483f4f2d5d38041dc9bf3.json": "f3fb4bd6abda5a653de6814f2b2e937ddb362a57ba7555eb4e454b9aed366c2c",
+    "consent-02d1ea11166f583a847e763ae0ace1a514d4d31aed72d555e308212ad0d25ebe.json": "f3fb4bd6abda5a653de6814f2b2e937ddb362a57ba7555eb4e454b9aed366c2c"
+  },
+  "model_calls": 0
+}

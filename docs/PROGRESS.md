@@ -1,6 +1,31 @@
 # Amadeus current progress
 
-P0 live continuation preparation ready — 2026-11-16 UTC, controller4aa4f8.
+P0/B bounded live path completed — 2026-11-16 UTC, unchanged a119/4be5134,
+controller4aa4f8 and reviewed plan58efea3. Two actual Codex calls: an owned producer
+parent interrupted after turn.started, then a different identity continued the
+host-known checkpoint. Its unchanged149-byte solution.py passed one real Docker
+execution (2 cases/19 isolation checks). The same receiver682bd522… completed
+verified v6 through a distinct host reviewer; source stayed failed/unverified v5.
+Fresh-process completion replay produced no extra execution/model call; SQL count
+remains1. The dependent was actually claimed v3, not falsely completed.
+
+Root and Astra inspected actual plans/results/proofs. Auth was cleared before
+candidate execution; original login unchanged, no workers/containers,97 runtime
+members and115 old-R2 files unchanged. The VM normally stopped at14:49:43Z with
+its disk retained. No retry of model/candidate effects. The earlier SSH-not-ready
+and missing-input renderer failures occurred before auth/model launch and remain
+distinguished from the successful live path. See
+acceptance/evidence/core-preview-a119/live-continuation/summary.json.
+This is same-vendor, host-known checkpoint, explicit lead approval; whole-host
+crash, cross-vendor and unattended approval policy are not verified. Full M6/M7,
+external Work acceptance and formal Release remain pending/BLOCKED.
+
+Recovery entry: consume this evidence once for its frozen scope; do not restart
+the fixture. Continue P1 review of the existing SDK/CLI demonstration and recovery
+entry points, reusing this result. Do not rerun a119 or add an M5 substage merely
+to increase evidence counts. Missing client accounts/macOS remain external limits.
+
+Historical preparation checkpoint — 2026-11-16 UTC, controller4aa4f8.
 The same-task driver is implemented and independently reviewed:11 final gate
 checks and one real-Core deterministic walkthrough pass, with two earlier failures
 preserved. Linux actual prepare/ready checks97 a119 members; all9 final helper
@@ -8,9 +33,8 @@ bindings match. No model/auth/candidate execution occurred. Original R2 is uncha
 the owned VM normally stopped at14:25:39Z, disk retained. Product/package4be5134
 is unchanged. See acceptance/LIVE-CONTINUATION-PLAN.md and
 acceptance/evidence/core-preview-a119/live-continuation-preparation/summary.json.
-Recovery: settle the newly explicit candidate-execution scope, then recheck session
-validity and follow the reviewed plan. Standing subscription permission remains;
-do not request it again. Live acceptance NOT RUN; formal Release BLOCKED.
+At that checkpoint the new candidate scope was pending and live acceptance NOT RUN;
+the subsequent bounded result is recorded above. Formal Release remains BLOCKED.
 
 a119 installable preview complete — 2026-11-16 UTC. Source/test4be5134 freezes
 the two version fields after owner fix6677799 and continuation bridge207e978.

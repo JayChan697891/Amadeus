@@ -1,14 +1,20 @@
 # Same-task real continuation verification plan
 
-Status: PREPARED / LIVE NOT RUN. This prepares an existing P0/B demonstration path;
-it does not add an M5 phase or change the formal Release BLOCKED decision.
+Status: bounded live path completed, 2026-11-16. The owner subsequently approved
+the candidate-execution scope and this exact experiment ran once. See
+[actual live evidence](evidence/core-preview-a119/live-continuation/summary.json).
+Two Codex calls, one Docker execution and same-task completed/verified v6 were
+observed; source failure remains, replay creates nothing, and the dependent was
+actually claimed. Temporary login and containers were removed; the VM stopped
+normally at14:49:43Z. Do not rerun this consumed experiment. Formal Release BLOCKED.
 
 Controller freeze: `4aa4f812fbb742caeb9a2a2d9cd53d06d9863a48`.
 [Actual preparation evidence](evidence/core-preview-a119/live-continuation-preparation/summary.json):
 11 gate checks and one real-Core deterministic walkthrough passed; the original
 two walkthrough failures are retained. Real Linux prepare/ready and all9 final
 file bindings passed. Independent Astra review accepted this preparation scope.
-No model, copied login or candidate execution; the owned VM stopped normally at
+During that preparation there was no model, copied login or candidate execution;
+the owned VM stopped normally at
 `2026-11-16T14:25:39.6808136Z`. The driver API mismatch found during the walkthrough
 was repaired before this freeze. These checks do not constitute live acceptance.
 
@@ -78,7 +84,11 @@ results stop; they are never repaired by repeating a possibly executed effect.
 Raw model output remains bounded to1MiB per call in the private local fixture and
 is not uploaded. Public evidence excludes all credentials and private Core state.
 
-## Actual preparation and recovery entry
+## Preparation checkpoint before the subsequent live execution
+
+The following describes the saved preparation checkpoint. Its authorization and
+NOT RUN statements are historical; the outcome above and linked live records
+describe the later authorized execution. Preparation files remain unchanged.
 
 The existing local VM was started normally after preserving its previous runtime
 logs. At `2026-11-16T14:13:24Z`, the preflight observed a119 at the expected wheel
@@ -128,11 +138,11 @@ This actual claim is necessary for the demonstration's claimable-dependent claim
 
 The standing model permission is already recorded; do not ask for it repeatedly.
 The earlier interrupted experiment explicitly excluded candidate execution. The
-new candidate-execution scope must therefore be explicit before this combined
-experiment: this new fixture, this receiver's original bounded `solution.py`,
-the fixed image/cases, at most one Docker execution, and independently approved
-staging/execution/completion decisions. Preparation and ordinary local tests may
-continue without that new execution scope. No new permission is assumed here.
+owner explicitly approved the new scope in the reply to
+`call_6f5a8956dc51439788e0aedb0b79ead9`: this fixture, the receiver's original bounded
+`solution.py`, fixed image/cases, at most one Docker execution, and independently
+approved staging/execution/completion decisions. That single execution is now
+consumed. The standing model permission does not authorize further candidate runs.
 
 Success requires the source to remain failed, the same receiver ID to become
 completed/verified, bound original bytes and independent execution proof, a

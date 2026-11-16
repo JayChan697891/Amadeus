@@ -1,0 +1,15 @@
+{
+  "origin": "host_known_partial_source",
+  "model_authorship": false,
+  "publication": {
+    "context_id": "04ddcca1-6bcb-4181-bb75-06361ad060cd",
+    "context_version": 1,
+    "content_sha256": "cf33d7099a7b57b5dd315fec93b8854fbc4921fb223f71bf6eb16c0dbeea3b0b",
+    "task_id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+    "task_version": 3,
+    "worktree_id": "d14bf761-df23-5c6b-bbb9-574b6449cd79",
+    "base_head": "44536f6acc6bcf9e5a47d1dd1ba57b59cbc2d174",
+    "verification": "unverified",
+    "execution_provenance": "unverified"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "original_auth_unchanged": true,
+  "cleanup": {
+    "temporary_auth_absent": true,
+    "home_unmounted": true,
+    "private_home_empty": true,
+    "current_attempts": {
+      "producer": "terminal_recorded",
+      "receiver": "terminal_recorded"
+    },
+    "further_launches_allowed": false
+  },
+  "replay": {
+    "identity": {
+      "pid": 3239,
+      "boot_id": "ac59580e-d6f5-4877-974e-b754ba7fbceb",
+      "started_ticks": 31192
+    },
+    "plan_sha256": "6fedbece3fa70fa4b5a00d1b289022a66f0048a5a7acbb2f669d53e67e71a30e",
+    "outcome": {
+      "state": "resolved",
+      "task_id": "682bd522-afd0-483b-938a-282f008b701a",
+      "task_status": "review",
+      "task_version": 5,
+      "source_task_id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+      "publication": {
+        "context_id": "c7d92ae5-747e-4dc5-b750-8aae2687c315",
+        "context_version": 1,
+        "content_sha256": "57e0b0dcd1bf7d6eaa0856633eea9998a57fbc98fdf48906009bc13289eb1d0e",
+        "publication_task_version": 4,
+        "publication_session_id": "03356113-5d86-4bff-ac5a-83f3f99f8930",
+        "publication_request_id": "relay:79b9e48971bc2c155de5b6584736bcba76473d4707708481116c679e048df097:proposal:publish",
+        "verification": "unverified"
+      },
+      "wave": {
+        "state": "resolved",
+        "tasks": [
+          {
+            "task_id": "682bd522-afd0-483b-938a-282f008b701a",
+            "state": "ready_for_review",
+            "failure_code": null
+          }
+        ],
+        "verification": "unverified"
+      },
+      "verification": "unverified"
+    },
+    "tasks_and_receipts_unchanged": true,
+    "receiver_callbacks": 0,
+    "model_calls": 0
+  }
+}

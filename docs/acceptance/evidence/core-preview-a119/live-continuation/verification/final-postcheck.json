@@ -1,0 +1,42 @@
+{
+  "at": "2026-11-16T14:47:35.983323+00:00",
+  "project_id": "86d0852c-e0f7-4c74-b754-6aa67728e93b",
+  "tasks": {
+    "c7a48621-912d-4c47-bf5a-98aa91f00b65": {
+      "id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+      "status": "failed",
+      "version": 5,
+      "dependencies": [],
+      "task_verification": "unverified"
+    },
+    "0c55d4af-f516-40f8-b0ae-c0b044e255fc": {
+      "id": "0c55d4af-f516-40f8-b0ae-c0b044e255fc",
+      "status": "claimed",
+      "version": 3,
+      "dependencies": [
+        "682bd522-afd0-483b-938a-282f008b701a"
+      ],
+      "task_verification": "unverified"
+    },
+    "682bd522-afd0-483b-938a-282f008b701a": {
+      "id": "682bd522-afd0-483b-938a-282f008b701a",
+      "status": "completed",
+      "version": 6,
+      "dependencies": [],
+      "task_verification": "verified"
+    }
+  },
+  "dependent_claim": {
+    "task_id": "0c55d4af-f516-40f8-b0ae-c0b044e255fc",
+    "status": "claimed",
+    "version": 3
+  },
+  "candidate_execution_count": 1,
+  "further_model_calls": 0,
+  "runtime_members_unchanged": 97,
+  "historical_r2_files_unchanged": 115,
+  "containers": [],
+  "workers": [],
+  "temporary_auth_absent": true,
+  "formal_release": "BLOCKED"
+}

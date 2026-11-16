@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-11-16T14:38:36.304928+00:00",
+  "actors": {
+    "producer": {
+      "entry_sha256": "d4926f76d82846d6191af6ec9c9de503b5c6160823f5c1f389ef14930c66a942",
+      "authorization_sha256": "31c724c900bd6e34f80af81576c3633876d0d894ee8dbaa8d09b8167e5cb41c0",
+      "project_id": "86d0852c-e0f7-4c74-b754-6aa67728e93b",
+      "agent_sha256": "7e4c2e88449ef41e01337f9595d9ecc6fff55d1d9ff980e5a3f81c6908a1f6aa",
+      "session_sha256": "1f60e3bfcf693966bb6e61e4809a90a2627770bfa67cde66d4e8ff84bb5223f7",
+      "task_id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+      "captured_start_invoked": true,
+      "exact_authorizations": 1,
+      "attempts": [
+        {
+          "leg": "first",
+          "state": "terminal_recorded",
+          "client": "codex",
+          "status": "failed",
+          "exit_code": -9,
+          "timed_out": false,
+          "parent_ended": true,
+          "run_sha256": "3fe761d3eb5166dd0f15a7f9da457f6e9c19b0e3b3d1804108e45530699097ea",
+          "session_sha256": "1f60e3bfcf693966bb6e61e4809a90a2627770bfa67cde66d4e8ff84bb5223f7",
+          "error_code": "process_failed",
+          "admission": {
+            "state": "both_reservations_recorded",
+            "plan_sha256": "9c23b8378bc2cca90f227136bef4d4cffa9f2804053ae3a157eb3d82fe8010b4",
+            "execution_verified": false
+          },
+          "adapter_elapsed_ms": 12566,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": "7e4c2e88449ef41e01337f9595d9ecc6fff55d1d9ff980e5a3f81c6908a1f6aa",
+          "declared_client_version": "0.167.0-alpha.3.2",
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        },
+        {
+          "leg": "second",
+          "state": "not_dispatched",
+          "client": null,
+          "status": null,
+          "exit_code": null,
+          "timed_out": null,
+          "parent_ended": null,
+          "run_sha256": null,
+          "session_sha256": null,
+          "error_code": null,
+          "admission": null,
+          "adapter_elapsed_ms": null,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": null,
+          "declared_client_version": null,
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        }
+      ],
+      "launch_plan_sha256": "9c23b8378bc2cca90f227136bef4d4cffa9f2804053ae3a157eb3d82fe8010b4",
+      "launch_request_sha256": "78c8b7c738a2244a2319acafd4fe9a1f164f98e826c483f4f2d5d38041dc9bf3"
+    }
+  },
+  "outcome": {
+    "state": "incomplete",
+    "tasks": [
+      {
+        "task_id": "c7a48621-912d-4c47-bf5a-98aa91f00b65",
+        "state": "incomplete",
+        "failure_code": "relay_boundary"
+      }
+    ],
+    "verification": "unverified"
+  },
+  "error_code": null,
+  "attempt_schema_exact": true,
+  "diagnostic_errors": []
+}

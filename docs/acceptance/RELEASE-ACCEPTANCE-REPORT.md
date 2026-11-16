@@ -1,5 +1,30 @@
 # Release Acceptance Report
 
+Current bounded B result — 2026-11-16: **PASS for the explicit same-vendor path;
+formal Release remains BLOCKED**. Unchanged a119/4be5134 with controller4aa4f8
+completed two actual Codex calls: controlled parent interruption, then a distinct
+receiver continuing the pinned host-known checkpoint. Its original149-byte source
+passed one actual Docker execution (2/2 cases,19/19 isolation). The same receiver
+task completed/verified v6 via a distinct host reviewer; source remains failed/
+unverified v5. Fresh-process completion replay created nothing; one execution is
+in the database, and the dependent was actually claimed v3. This is not a third
+model's review or completion of the dependent.
+
+Owner approval, raw-output/publication/staging/source/proof bindings, temporary
+login cleanup and original-login integrity were inspected. No workers/containers
+remained;97 installed members and115 old-R2 files stayed unchanged. VM normal
+shutdown observed14:49:43Z, disk retained. Root and native Astra accepted the
+scoped evidence; external Work acceptance remains separate. The pre-auth SSH and
+renderer failures are retained and not described as failed model attempts.
+
+**NOT RUN / unverified:** whole-host crash, cross-vendor collaboration, unattended
+owner approval policy, complete current-version matrix and macOS. No full M6/M7,
+formal Release or billing audit is inferred. Existing subscription/no-extra-fee
+conditions rely on the owner's standing confirmation and the forced ChatGPT route.
+[Actual live records and boundaries](evidence/core-preview-a119/live-continuation/summary.json).
+
+The following earlier evidence retains its original version and scope.
+
 Installable a119/4be5134 now includes the owner CLI correction and continuation
 bridge. Windows:19 native build/install checks, two fresh installs each15pass.
 Linux:16 native install checks, the exact original packages each16pass, comprising
