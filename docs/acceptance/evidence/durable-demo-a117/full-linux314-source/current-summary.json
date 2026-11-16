@@ -1,0 +1,16 @@
+{
+  "status": "FAIL",
+  "scope": "First Linux editable-source harness attempt; product tests NOT RUN",
+  "native_session_id": 7826,
+  "native_exit_code": 1,
+  "finished_at": "2026-11-16T08:01:34.584786+00:00",
+  "native_checks_passed": 3,
+  "smoke": "NOT RUN",
+  "full_suite": "NOT RUN",
+  "cause": "Driver incorrectly required six source egg-info files. In the fixed Linux PEP660 environment editable installation leaves source unchanged. Earlier Windows six files were generated during sdist build, not guaranteed editable outputs.",
+  "actual_diagnostic": "metadata-diagnostic.json",
+  "source_and_frozen_files_unchanged": 2382,
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "next": "New ls2 fixture with strict immutable source; retain all origin/direct_url/runtime gates. Preserve this original attempt unchanged."
+}

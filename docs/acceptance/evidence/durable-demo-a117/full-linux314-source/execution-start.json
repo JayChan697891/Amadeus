@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-11-16T08:01:17.544866+00:00",
+  "observer_pid": 8644,
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m117ls/run-source.py",
+  "automatic_retry": false,
+  "model_calls": 0,
+  "status": "running"
+}

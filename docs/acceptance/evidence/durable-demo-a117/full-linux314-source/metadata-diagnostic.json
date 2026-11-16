@@ -1,0 +1,26 @@
+{
+  "exit_code": 0,
+  "stdout": {
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "prefix": "/root/amadeus-m117ls/e",
+    "origin": "/root/amadeus-m117ls/s/src/agentsync/__init__.py",
+    "version": "0.3.0a117",
+    "dist_location": "/root/amadeus-m117ls/e/lib/python3.14/site-packages",
+    "direct_url": {
+      "dir_info": {
+        "editable": true
+      },
+      "url": "file:///root/amadeus-m117ls/s"
+    },
+    "source_metadata": [],
+    "build_system": {
+      "requires": [
+        "setuptools==82.0.1",
+        "wheel==0.46.3"
+      ],
+      "build-backend": "setuptools.build_meta"
+    }
+  },
+  "stderr_bytes": 0,
+  "scope": "Read-only isolated installed-origin inspection after first driver failed; no test execution"
+}

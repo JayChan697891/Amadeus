@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "source_editable_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m117ls/e/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m117ls/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "-e",
+      "/root/amadeus-m117ls/s"
+    ],
+    "cwd": "/root/amadeus-m117ls/run",
+    "started_at": "2026-11-16T08:01:29.694598+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "source_editable_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m117ls/e/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m117ls/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "-e",
+      "/root/amadeus-m117ls/s"
+    ],
+    "cwd": "/root/amadeus-m117ls/run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T08:01:29.694598+00:00",
+    "finished_at": "2026-11-16T08:01:31.041179+00:00",
+    "log": "logs/source_editable_install.log",
+    "log_sha256": "11790433e28a09c4a3f0adc68277c5db0574c49857dbcf0c0a6ec965347757be",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
