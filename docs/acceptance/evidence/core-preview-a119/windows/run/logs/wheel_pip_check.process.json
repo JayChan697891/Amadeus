@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_pip_check",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m119p\\run",
+    "started_at": "2026-11-16T13:42:57.088412+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_pip_check",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m119p\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T13:42:57.088412+00:00",
+    "finished_at": "2026-11-16T13:42:57.425408+00:00",
+    "log": "logs/wheel_pip_check.log",
+    "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

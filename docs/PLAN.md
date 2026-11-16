@@ -2,6 +2,18 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 installable core preview delivered, 2026-11-16: a119/4be5134 packages both
+the owner-path fix and continuation verification bridge. Windows3.12 fresh wheel/
+sdist each passed15 focused cases (19 native checks); the identical packages on
+Linux3.14 each passed those15 plus the real Docker bridge (16 native checks).
+Each actual Docker run passed2 cases/19 isolation checks.97 runtime members and
+3090 frozen inputs stayed bound/unchanged; historical packages remain intact.
+See [preview files](../releases/0.3.0a119/preview-4be5134/) and
+[actual installation evidence](acceptance/evidence/core-preview-a119/summary.json).
+No full-suite or platform-matrix repetition; real-model completion remains the
+next P0 evidence item below. A is usable now, B's offline bridge is installable,
+C stays BLOCKED. This is a delivery artifact, not another product stage.
+
 P0 same-task verification bridge complete for the offline scope, 2026-11-16:
 source/test207e978 reuses existing owner staging, verification jobs and independent
 completion for a Codex continuation receiver in the same Core. The normal proposal

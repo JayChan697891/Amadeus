@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+Installable a119/4be5134 now includes the owner CLI correction and continuation
+bridge. Windows:19 native build/install checks, two fresh installs each15pass.
+Linux:16 native install checks, the exact original packages each16pass, comprising
+the same15 Windows cases plus real Docker continuation verification. Each Docker
+run passed2 JSON cases/19 isolation checks and completed the same receiver with
+independent proof; source remains failed.3090 input files and97 runtime members
+in each install were checked unchanged; old packages are intact. Root inspected
+actual outputs and proof bindings, and observed container/process/VM cleanup.
+Models remain local protocol fixtures. No full a119 suite, complete platform
+matrix, macOS or real-model acceptance is inferred. Formal Release BLOCKED.
+[Packages](../../releases/0.3.0a119/preview-4be5134/) and
+[scoped evidence](evidence/core-preview-a119/summary.json).
+
 P0 source207e978 now connects a continuation receiver to independent completion
 inside the same Core. Original Windows report:53pass/2fail; only its two
 isolated-child import failures subsequently passed in a fresh source environment.

@@ -1,0 +1,308 @@
+"""Verify the frozen a119 wheel and sdist in two fresh offline Linux environments."""
+
+import hashlib
+import json
+import os
+import stat
+import sys
+import tomllib
+import xml.etree.ElementTree as ET
+import zipfile
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("/root/amadeus-m119l")
+PYTHON = Path("/root/jobs-env/bin/python")
+WHEELHOUSE = Path("/root/intent-wheelhouse")
+SOURCE, RUN, SCRATCH, HOME = (BASE / name for name in ("s", "run", "t", "home"))
+COMMIT = "4be51345d5b8846da58d79df5b8567619e9acfed"
+REPAIR = "3b43647bb4332c646d82b0ecc4055f0e40fb462c"
+OWNER_REPAIR = "667779906b810664460b36a76bf11950d279be35"
+CONTINUATION_BRIDGE = "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1"
+VERSION = "0.3.0a119"
+IMAGE = "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+ZIP = BASE / "source.zip"
+MANIFEST = BASE / "source-manifest.json"
+MEMBERS = BASE / "runtime-members.json"
+WHEEL = BASE / f"agentsync_local-{VERSION}-py3-none-any.whl"
+SDIST = BASE / f"agentsync_local-{VERSION}.tar.gz"
+INPUTS = {
+    ZIP: (15938359, "b2692874a931de9ca0dffa0abd2bfe3bff2713d972b3f8495ceddce1df55f628"),
+    MANIFEST: (580776, "a2985b3cabd623bb1a867d39ddc17de13c81cf8e131db4f91545f32defad25d9"),
+    MEMBERS: (10144, "545b490670bdbb0f73a74fb13dca77cf9b875c38f350d5a1b2f0f4fdb3b829a7"),
+    WHEEL: (326638, "cbcf38bfe80a61510cbc95fb2a7112173222a7b6bb03404a324e52e23d237c31"),
+    SDIST: (5180063, "249f726f5c484c101337546aa137151418829eca1bb0b1a5f21f89c97e1e014e"),
+}
+OWNER_TEST = "tests/security/test_m5_owner_cli_inputs.py"
+CONTINUATION_TEST = "tests/integration/test_unfinished_continuation.py"
+STAGING_TEST = "tests/integration/test_codex_proposal_review.py"
+SELECTION = (
+    OWNER_TEST,
+    CONTINUATION_TEST + "::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-synthetic]",
+    CONTINUATION_TEST + "::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]",
+    CONTINUATION_TEST + "::test_continued_proposal_without_solution_is_review_only",
+    CONTINUATION_TEST + "::test_host_exit_preserves_continuation_recovery[prepared]",
+    CONTINUATION_TEST + "::test_host_exit_preserves_continuation_recovery[dispatch-intent]",
+    STAGING_TEST + "::test_controlled_proposal_review_and_native_staging[success]",
+)
+FOCUSED_CASES = 16
+
+ORIGIN = r"""
+import hashlib, importlib.metadata as md, json, sys, sysconfig
+from pathlib import Path
+import agentsync, agentsync.cli
+from agentsync.sdk import AgentSyncClient
+
+env, archive, members = map(Path, sys.argv[1:4])
+digest, version = sys.argv[4:]
+assert Path(sys.prefix).resolve() == env.resolve() and sys.version_info[:3] == (3, 14, 7)
+site = Path(sysconfig.get_path("purelib")).resolve()
+assert site.is_relative_to(env.resolve())
+assert Path(agentsync.__file__).resolve() == site / "agentsync/__init__.py"
+assert Path(agentsync.cli.__file__).resolve() == site / "agentsync/cli.py"
+assert AgentSyncClient.__module__ == "agentsync.sdk"
+dist = md.distribution("agentsync-local")
+assert dist.version == agentsync.__version__ == version
+direct = json.loads(dist.read_text("direct_url.json"))
+assert direct["url"] == archive.resolve().as_uri() and "dir_info" not in direct
+assert direct["archive_info"]["hashes"]["sha256"] == digest
+actual = {
+    path.relative_to(site).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+    for path in (site / "agentsync").rglob("*") if path.is_file() and "__pycache__" not in path.parts
+}
+assert actual == json.loads(members.read_bytes()) and len(actual) == 97
+print(json.dumps({"origin": str(Path(agentsync.__file__).resolve()), "version": version,
+                  "python": sys.version, "direct_url": direct, "runtime_members": len(actual)}))
+"""
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def verify_inputs():
+    for path, expected in INPUTS.items():
+        assert path.resolve(strict=True) == path and stat.S_ISREG(path.lstat().st_mode), path.name
+        assert (path.stat().st_size, sha(path)) == expected, path.name
+
+
+def verify_source(manifest):
+    names = set()
+    for path in SOURCE.rglob("*"):
+        assert path.resolve(strict=True) == path
+        info = path.lstat()
+        if stat.S_ISDIR(info.st_mode):
+            continue
+        assert stat.S_ISREG(info.st_mode)
+        name = path.relative_to(SOURCE).as_posix()
+        assert manifest[name] == {"sha256": sha(path), "bytes": info.st_size}, name
+        names.add(name)
+    assert names == manifest.keys() and len(names) == 3090
+
+
+def unpack(manifest):
+    with zipfile.ZipFile(ZIP) as archive:
+        files = [member for member in archive.infolist() if not member.is_dir()]
+        assert len(files) == 3090 and {member.filename for member in files} == manifest.keys()
+        SOURCE.mkdir()
+        for member in files:
+            path = SOURCE / member.filename
+            assert path.resolve().is_relative_to(SOURCE) and not stat.S_ISLNK(member.external_attr >> 16)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("xb") as stream:
+                stream.write(archive.read(member))
+    verify_source(manifest)
+
+
+def isolate_environment():
+    for key in tuple(os.environ):
+        if key.upper().startswith((
+            "OPENAI_", "ANTHROPIC_", "CLAUDE_", "CURSOR_", "CODEX_", "GEMINI_", "GOOGLE_",
+            "DEEPSEEK_", "GITHUB_", "AGENTSYNC_", "GIT_", "PYTHON", "PYTEST_", "PIP_", "UV_", "DOCKER_",
+        )) or key.upper().endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(key)
+    os.environ.update(
+        HOME=str(HOME), XDG_CONFIG_HOME=str(HOME), XDG_DATA_HOME=str(HOME),
+        XDG_CACHE_HOME=str(HOME), TMP=str(SCRATCH), TEMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+        PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1", PIP_DISABLE_PIP_VERSION_CHECK="1",
+        PIP_NO_CACHE_DIR="1", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0",
+    )
+
+
+def main():
+    if (
+        sys.platform != "linux" or sys.version_info[:3] != (3, 14, 7)
+        or Path(sys.executable) != PYTHON or Path(sys.prefix) != PYTHON.parent.parent
+        or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__
+    ):
+        raise SystemExit("Use the pinned Linux 3.14.7 interpreter with -I -B.")
+    assert BASE.resolve(strict=True) == BASE and Path(__file__).resolve().parent == BASE
+    assert {p.name for p in BASE.iterdir()} == {Path(__file__).name, *(p.name for p in INPUTS)}
+    RUN.mkdir()
+    (RUN / "logs").mkdir()
+    SCRATCH.mkdir()
+    HOME.mkdir()
+    isolate_environment()
+    checks, junit, docker_proofs = [], {}, {}
+    manifest = None
+    start = {
+        "started_at": datetime.now(UTC).isoformat(), "controller_pid": os.getpid(), "version": VERSION,
+        "boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+        "product_source_commit": COMMIT, "test_source_commit": COMMIT, "workflow_repair_commit": REPAIR,
+        "owner_repair_commit": OWNER_REPAIR, "continuation_bridge_commit": CONTINUATION_BRIDGE,
+        "driver_sha256": sha(Path(__file__)), "python": sys.version, "python_executable": sys.executable,
+        "scope": "Linux 3.14 development preview, affected-install checks including local Docker bridge",
+        "full_regression": "NOT RUN", "platform_matrix": "NOT RUN", "docker_image": IMAGE,
+        "model_calls": 0, "real_clients": "NOT RUN", "formal_release": "BLOCKED", "automatic_retry": False,
+    }
+    save(RUN / "start.json", start)
+    result = {**start, "status": "fail", "phase": "verify_inputs"}
+    try:
+        verify_inputs()
+        manifest = json.loads(MANIFEST.read_bytes())
+        members = json.loads(MEMBERS.read_bytes())
+        assert len(members) == 97 and members == {
+            name.removeprefix("src/"): row["sha256"]
+            for name, row in manifest.items() if name.startswith("src/agentsync/")
+        }
+        unpack(manifest)
+        archives = {"wheel": WHEEL, "sdist": SDIST}
+        artifacts = {
+            kind: {"filename": path.name, "size": INPUTS[path][0], "sha256": INPUTS[path][1]}
+            for kind, path in archives.items()
+        }
+        result.update(
+            frozen_source_sha256=INPUTS[ZIP][1], frozen_source_files=len(manifest), artifacts=artifacts,
+            source_manifest_sha256=INPUTS[MANIFEST][1], runtime_member_manifest_sha256=INPUTS[MEMBERS][1],
+            runtime_members=len(members), collector_sha256=manifest["tools/release_acceptance.py"]["sha256"],
+            test_file_sha256={name: manifest[name]["sha256"] for name in (OWNER_TEST, CONTINUATION_TEST, STAGING_TEST)},
+        )
+
+        result["phase"] = "offline_inputs"
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+
+        project = tomllib.loads((SOURCE / "pyproject.toml").read_text(encoding="utf-8"))
+        assert project["project"]["version"] == VERSION
+        packages = collector._prepare_offline_packages(project, WHEELHOUSE, SCRATCH, RUN)
+        result.update(offline_wheelhouse_sha256=sha(RUN / "offline-wheelhouse.json"),
+                      backend=packages.backend, application=packages.application)
+
+        def require(outcome):
+            assert outcome["status"] == "pass" and outcome["exit_code"] == 0 and not outcome["log_truncated"]
+
+        def execute(name, command):
+            result["phase"] = name
+            outcome = collector.execute(
+                name, list(map(str, command)), RUN, RUN, SCRATCH, offline_wheelhouse=packages.wheelhouse,
+            )
+            checks.append(outcome)
+            return outcome
+
+        previous_cases = None
+        for kind, path in archives.items():
+            environment = BASE / ("w" if kind == "wheel" else "d")
+            python = str(environment / "bin/python")
+            require(execute(kind + "_venv", [str(PYTHON), "-I", "-B", "-m", "venv", environment]))
+            backend = packages.backend if kind == "sdist" else ()
+            require(execute(kind + "_offline_dependencies", collector._offline_install(
+                python, packages.wheelhouse, "--only-binary=:all:", *backend, *packages.application,
+            )))
+            install_flags = ["--no-build-isolation"] if kind == "sdist" else []
+            require(execute(kind + "_install", collector._offline_install(
+                python, packages.wheelhouse, "--no-deps", *install_flags, "--", str(path),
+            )))
+            require(execute(kind + "_pip_check", [python, "-I", "-B", "-m", "pip", "check"]))
+
+            artifact = artifacts[kind]
+            origin = [python, "-I", "-B", "-c", ORIGIN, environment, path, MEMBERS, artifact["sha256"], VERSION]
+            require(execute(kind + "_origin_before", origin))
+            result["phase"] = kind + "_console_smoke"
+            console = collector._installed_console_smoke(kind, python, RUN, SCRATCH, artifact)
+            console.pop("artifact")  # Keep the native receipt's result shape.
+            checks.append(console)
+            require(console)
+
+            raw = SCRATCH / f"{kind}-focused.xml"
+            output = RUN / raw.name
+            evidence_dir = RUN / (kind + "-docker")
+            pytest_environment = {
+                "AGENTSYNC_DOCKER_TEST_IMAGE": IMAGE,
+                "AGENTSYNC_REQUIRE_DOCKER_TESTS": "1",
+                "AGENTSYNC_PROPOSAL_PIPELINE_EVIDENCE_DIR": str(evidence_dir),
+            }
+            os.environ.update(pytest_environment)
+            try:
+                tested = execute(kind + "_pytest", [
+                    python, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
+                    *(SOURCE / selector for selector in SELECTION), "--basetemp", SCRATCH / (kind + "-p"),
+                    "--junitxml", raw,
+                ])
+            finally:
+                for name in pytest_environment:
+                    os.environ.pop(name)
+            if raw.is_file():
+                redacted = collector.persist_junit(raw, output)
+                junit[kind] = {"path": output.name, "sha256": sha(output), "credential_redactions": redacted,
+                               **collector.junit_counts(output)}
+            require(execute(kind + "_origin_after", origin))
+            before, after = (RUN / "logs" / f"{kind}_origin_{part}.log" for part in ("before", "after"))
+            assert before.read_bytes() == after.read_bytes()
+            result["phase"] = kind + "_focused_evidence"
+            require(tested)
+            assert {k: junit[kind][k] for k in ("tests", "failures", "errors", "skipped")} == {
+                "tests": FOCUSED_CASES, "failures": 0, "errors": 0, "skipped": 0,
+            }
+            cases = {(row.get("classname"), row.get("name")) for row in ET.parse(output).iter("testcase")}
+            assert len(cases) == FOCUSED_CASES and all(all(case) for case in cases)
+            assert previous_cases is None or previous_cases == cases
+            previous_cases = cases
+
+            result["phase"] = kind + "_docker_proof"
+            proof_path = evidence_dir / "continuation-verified.json"
+            proof = json.loads(proof_path.read_bytes())
+            execution = proof["execution"]["execution"]["result"]
+            completion = proof["completion"]
+            assert proof["model_calls"] == 0 and proof["same_core"] is True
+            assert proof["source_task_status"] == "failed" and proof["publication_verification"] == "unverified"
+            assert proof["receiver_task_id"] == completion["task_id"]
+            assert completion["status"] == "completed" and completion["task_verification"] == "verified"
+            assert execution["backend"] == "local-linux-docker" and execution["image_sha256"] == IMAGE
+            assert execution["status"] == "passed" and execution["passed_case_count"] == 2
+            assert execution["cleanup_confirmed"] is True
+            isolation = execution["isolation"]["checks"]
+            assert len(isolation) == 19 and all(value is True for value in isolation.values())
+            docker_proofs[kind] = {"path": proof_path.relative_to(RUN).as_posix(), "sha256": sha(proof_path)}
+        result["status"] = "pass"
+    except (Exception, KeyboardInterrupt) as exc:
+        result["error_type"] = type(exc).__name__
+    finally:
+        try:
+            verify_inputs()
+            result["input_hashes_unchanged"] = True
+            if manifest is not None and SOURCE.is_dir():
+                verify_source(manifest)
+                result["source_copy_unchanged"] = True
+        except Exception as exc:
+            result["status"] = "fail"
+            result["postcheck_error_type"] = type(exc).__name__
+        result.update(
+            finished_at=datetime.now(UTC).isoformat(), checks=checks, junit=junit, focused_selection=SELECTION,
+            docker_proofs=docker_proofs,
+            native_receipt_sha256={p.name: sha(p) for p in sorted((RUN / "logs").glob("*.process.json"))},
+        )
+        save(RUN / "result.json", result)
+    print(f"{result['status']}: {RUN / 'result.json'}", flush=True)
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

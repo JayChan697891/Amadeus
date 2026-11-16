@@ -1,0 +1,20 @@
+{
+  "version": "0.3.0a119",
+  "source_and_tests": "4be51345d5b8846da58d79df5b8567619e9acfed",
+  "owner_repair": "667779906b810664460b36a76bf11950d279be35",
+  "continuation_bridge": "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1",
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a119-py3-none-any.whl",
+      "size": 326638,
+      "sha256": "cbcf38bfe80a61510cbc95fb2a7112173222a7b6bb03404a324e52e23d237c31"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a119.tar.gz",
+      "size": 5180063,
+      "sha256": "249f726f5c484c101337546aa137151418829eca1bb0b1a5f21f89c97e1e014e"
+    }
+  },
+  "formal_release": "BLOCKED",
+  "status": "branch-stored development preview; not a published Release"
+}

@@ -1,5 +1,31 @@
 # Amadeus current progress
 
+a119 installable preview complete — 2026-11-16 UTC. Source/test4be5134 freezes
+the two version fields after owner fix6677799 and continuation bridge207e978.
+Windows native34955/dafe65 exited0:19 build/install checks, wheel15pass and
+sdist15pass, identical case identities and zero failure/error/skip. Original
+a117/a118 packages remain unchanged. Linux native15165/ebd4bf exited0:16 checks,
+the same original packages each16pass (Windows15 plus actual Docker bridge).
+Each installation's real Docker run passed2 JSON cases/19 isolation checks,
+completed the same receiver verified, left the source failed and cleaned up.
+The model side is a local protocol fixture; no inference/auth copies.
+
+Root read actual drivers/receipts/logs/JUnit, matched case identities, package
+hashes and execution proofs, and rehashed3090 frozen inputs plus97 members in
+each of four installs. The source package has2123 tracked files plus8 generated
+metadata files. Product runtime differs from a118 only in __init__, cli,
+continuation and controlled_relay. No full-suite, macOS or real-client claim.
+Evidence: acceptance/evidence/core-preview-a119/summary.json.
+Artifacts: releases/0.3.0a119/preview-4be5134/.
+No workers/containers remained; the owned VM normally stopped at13:49:33Z with
+its disk retained. No new test/model job or automatic continuation was launched.
+
+Next recovery entry remains the concrete P0 live plan below: fixed solution.py
+contract from the start, exact staging/execution/completion decisions, then a
+bounded real subscription experiment within its approved scope. The new same-task
+real-model result is NOT RUN. Formal Release BLOCKED; original Goal, M0–M9 and
+M5 frozen acceptance remain intact. PR35 stays draft for external Work review.
+
 P0 same-Core continuation verification delivered — 2026-11-16 UTC.
 Frozen source/test207e978 adds explicit Codex continuation observation/preview/
 staging entries, reusing existing independent execution and completion. Original

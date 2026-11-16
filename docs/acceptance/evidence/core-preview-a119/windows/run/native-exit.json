@@ -1,0 +1,21 @@
+{
+  "schema": "amadeus.local-driver-observation.v1",
+  "command": [
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "D:/agentsync-debug/m119p/run-preview.py"
+  ],
+  "cwd": "D:/agentsync-debug",
+  "native_session_id": 34955,
+  "native_start_chunk_id": "85bcd7",
+  "native_exit_chunk_id": "dafe65",
+  "native_exit_code": 0,
+  "native_output": "pass: D:\\agentsync-debug\\m119p\\run\\result.json\r\n",
+  "terminal_observed_at": "2026-11-16T13:45:21.309Z",
+  "driver_start": "start.json",
+  "driver_result": "result.json",
+  "controller_pid": 27088,
+  "started_at": "2026-11-16T13:42:24.469596+00:00",
+  "finished_at": "2026-11-16T13:44:49.420104+00:00"
+}

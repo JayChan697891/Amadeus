@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m119p/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--",
+      "D:\\agentsync-debug\\m119p\\dist\\agentsync_local-0.3.0a119-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m119p\\run",
+    "started_at": "2026-11-16T13:42:56.355680+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m119p/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--",
+      "D:\\agentsync-debug\\m119p\\dist\\agentsync_local-0.3.0a119-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m119p\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T13:42:56.355680+00:00",
+    "finished_at": "2026-11-16T13:42:57.086763+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "e8b504d3ba94f5ddd0475a6dee72689fc45da81271318fba85055345e0e14697",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

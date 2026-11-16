@@ -8,10 +8,16 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a118 development source. Formal Release BLOCKED.** The unchanged
+Status: **0.3.0a119 development source. Formal Release BLOCKED.** The unchanged
 0.3.0a116 candidate completed all six available Windows/Linux matrix rows; macOS
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
+
+The [a119 development preview](releases/0.3.0a119/preview-4be5134/) includes the
+owner CLI directory fix and same-task continuation verification bridge. The same
+wheel/source packages passed15 focused cases per Windows install and16 per Linux
+install, including real Docker verification with local protocol fixtures. These
+are scoped installation results, not real-model or full-release acceptance.
 Permissions,
 approvals, audit, isolated verification components and offline planning have
 limited local evidence; see the [current report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
@@ -242,10 +248,10 @@ to children through stdin. It does not save credentials for a later host restart
 your integrating host must retain them privately before exiting. The example
 runs no model and refuses existing state before opening the SDK.
 
-Current development source also rejects `owner` commands when their selected
+Current development source and the a119 preview reject `owner` commands when their selected
 database is missing, without creating empty state. Use `--data-dir` or
-`AGENTSYNC_DATA_DIR` to select the project you created. This later fix is not in
-the frozen a118 preview packages; their original checks remain version-bound.
+`AGENTSYNC_DATA_DIR` to select the project you created. The older frozen a118
+packages retain their original behavior and version-bound checks.
 
 `start` also takes `request_id` and `config`; `resume`/`cancel` take `request_id`
 and `expected_version`. Set `expected_version` to the latest `data.version` in
