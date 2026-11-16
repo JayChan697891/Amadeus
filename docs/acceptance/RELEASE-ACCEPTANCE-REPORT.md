@@ -1,11 +1,21 @@
 # Release Acceptance Report
 
+The same original a118 packages also passed the affected Linux3.14 installation
+supplement:16 native checks, wheel12pass/sdist12pass, zero failure/error/skip and
+the same12 identities/outcomes as Windows.2899 frozen source paths and97 members
+in each installed environment stayed unchanged. Root checked actual files and
+separate Astra review accepted only this scope. No package rebuild or model call.
+[Actual Linux evidence](evidence/recovery-preview-a118/linux/summary.json).
+Full a118 suites, complete platform matrix, macOS, Docker and real clients remain
+NOT RUN for this candidate. Formal Release remains BLOCKED.
+
 a118/7f0ba0a now has its own Windows3.12 offline build/install evidence:19 native
 checks, wheel12pass/sdist12pass with identical cases,97 Git/package/installed
 runtime members.2899 source files remained unchanged; sdist2018 tracked+8 generated
 metadata files. Root and independent Astra reviewed actual outputs. Original a117
 artifacts and their broader tests retain their original scope. Full a118 suites,
-Linux/macOS, Docker and real clients are NOT RUN. Formal Release remains BLOCKED.
+macOS, Docker and real clients are NOT RUN. The subsequent Linux supplement is
+recorded above. Formal Release remains BLOCKED.
 [Preview evidence and artifact identities](evidence/recovery-preview-a118/summary.json).
 
 Later development-source CLI correction: seven targeted Windows3.12 tests pass

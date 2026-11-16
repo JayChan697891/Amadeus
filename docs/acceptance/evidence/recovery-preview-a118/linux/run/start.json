@@ -1,0 +1,20 @@
+{
+  "started_at": "2026-11-16T10:19:44.528043+00:00",
+  "controller_pid": 2924,
+  "version": "0.3.0a118",
+  "boot_id": "76f36a7a-ac47-44fd-883e-fc02232c60b5",
+  "product_source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+  "test_source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+  "workflow_repair_commit": "3b43647bb4332c646d82b0ecc4055f0e40fb462c",
+  "driver_sha256": "dc39e973274bf9f7ddc0e44e4cfb1081b896841a3e409db4a0eb184f8afa4c37",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "python_executable": "/root/jobs-env/bin/python",
+  "scope": "Linux 3.14 development preview, wheel and sdist affected-install checks only",
+  "full_regression": "NOT RUN",
+  "platform_matrix": "NOT RUN",
+  "docker": "NOT RUN",
+  "model_calls": 0,
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false
+}

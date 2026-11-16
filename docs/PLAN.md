@@ -9,8 +9,12 @@ Git/archive/install. Only cli.py and the version file differ from a117. The olde
 packages/full suites remain unchanged; no a118 full-suite, platform or live-client
 acceptance is inferred. See [candidate files](../releases/0.3.0a118/preview-7f0ba0a/)
 and [actual scoped evidence](acceptance/evidence/recovery-preview-a118/summary.json).
-Next affected-platform work is the same candidate's Linux installation check,
-not another full suite or an additional M5 phase. Formal Release stays BLOCKED.
+The same original packages now also passed16 native Linux3.14 installation checks,
+with the same12 cases passing in each fresh environment. See the
+[Linux supplement](acceptance/evidence/recovery-preview-a118/linux/summary.json).
+Next is original M2-05 current-package native MCP compatibility, using isolated
+zero-inference probes where public client methods permit. This is not another
+full suite or an additional M5 phase. Formal Release stays BLOCKED.
 
 P1 correction, 2026-11-16: workflow status/resume/cancel now reject a missing
 database before initializing Core, so a mistyped recovery directory stays untouched.

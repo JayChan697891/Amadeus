@@ -1,0 +1,46 @@
+{
+  "observed_at": "2026-11-16T10:16:23.590128+00:00",
+  "preflight": {
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "executable": "/root/jobs-env/bin/python",
+    "prefix": "/root/jobs-env",
+    "workers": [],
+    "free_bytes": 6619686912,
+    "boot_id": "76f36a7a-ac47-44fd-883e-fc02232c60b5"
+  },
+  "files": [
+    {
+      "path": "run-preview.py",
+      "bytes": 12832,
+      "sha256": "dc39e973274bf9f7ddc0e44e4cfb1081b896841a3e409db4a0eb184f8afa4c37"
+    },
+    {
+      "path": "source.zip",
+      "bytes": 15525522,
+      "sha256": "3ca13736e6c101daf412df8a6a5850088017032e46f39ddd687e32a435ad0d8f"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 543265,
+      "sha256": "6cf3d535c832ced8377fb2ef32807109f1f541037d61f441232acd0b9f1a5f49"
+    },
+    {
+      "path": "runtime-members.json",
+      "bytes": 10144,
+      "sha256": "f96b477564c0be1207de7d11433977bf96c24b6d0bf45438a07c3087713bf5bd"
+    },
+    {
+      "path": "agentsync_local-0.3.0a118-py3-none-any.whl",
+      "bytes": 324475,
+      "sha256": "1563c0e64f883aabd70f43b27de7cba75c91ce004552c1ec0fddc47cec4ce268"
+    },
+    {
+      "path": "agentsync_local-0.3.0a118.tar.gz",
+      "bytes": 4929099,
+      "sha256": "e08665f67702751bd2179321bdced2bc6fc714b887746f806024e2faec57a631"
+    }
+  ],
+  "model_calls": 0,
+  "auth_copies": 0,
+  "candidate_packages_rebuilt": false
+}

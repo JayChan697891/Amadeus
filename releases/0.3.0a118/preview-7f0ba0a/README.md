@@ -10,6 +10,11 @@ installations each passed the same 12 focused cases; all 97 runtime members matc
 the frozen source. See the [actual evidence](../../../docs/acceptance/evidence/recovery-preview-a118/summary.json)
 and `SHA256SUMS` here. These are branch-stored preview files, not a published Release.
 
+The same original files also passed16 native Linux3.14 installation checks;
+wheel and sdist each passed the identical12 focused cases, with97 installed
+members and2899 source inputs unchanged. See the
+[Linux supplement](../../../docs/acceptance/evidence/recovery-preview-a118/linux/summary.json).
+
 From a new folder containing the downloaded wheel:
 
 ```powershell
@@ -22,6 +27,6 @@ The installation needs the declared dependencies or a prepared offline wheelhous
 Use a new demo directory each time. The durable demo uses simulated identities and
 reports `simulation_only/unverified`; it does not call a model.
 
-Full a118 regression, Linux/macOS installation, Docker and real-client acceptance
+Full a118 regression, macOS installation, Docker and real-client acceptance
 are **NOT RUN**. Earlier a117 results retain their original version and scope.
 Formal Release remains **BLOCKED**.

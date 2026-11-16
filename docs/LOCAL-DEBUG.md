@@ -29,8 +29,13 @@ These observations describe this machine, not universal Windows compatibility.
 The dedicated guest also contains the official Codex0.167.0-alpha.3.2 musl package
 at `/root/amadeus-codex-linux-0167`. Archive SHA256:
 `e5d9533df7e949cb145b8dc3f40c2f86bba5408cdf07301f9188f273df3409a1`.
-Only no-model version/configuration/tool/boundary probes have run there; no cached
-account credentials were copied. See `acceptance/evidence/m6-linux-readonly/summary.json`.
+Initial setup used no-model version/configuration/tool/boundary probes; see
+`acceptance/evidence/m6-linux-readonly/summary.json`. Later separately authorized
+subscription experiments used isolated temporary login copies and recorded their
+cleanup. Current bounded interruption/continuation evidence is under
+`acceptance/evidence/durable-demo-a117/interrupted-live-r2/`; those consumed runs
+are not reusable authorization. The standing authorization and limits are recorded
+in AGENTS.md. Ordinary package checks need no model login or model call.
 
 ## Recreate and operate
 

@@ -1,0 +1,12 @@
+{
+  "scope": "a118 Linux 3.14 installed wheel and sdist affected checks",
+  "decision": "SCOPED ACCEPT",
+  "root_review": "Checked all native receipts and log hashes, parsed both JUnit files, compared 12 unique identities/outcomes with Windows, verified original artifact hashes, and independently read 2899 source files plus 97 members in each guest install. All 48 archived original files, including later normal shutdown evidence, match their local bytes.",
+  "independent_reviewer": "astra_priority_review",
+  "independent_review": "Read all 37 guest artifacts (102652 bytes), verified 16 native checks and zero failures, checked original package/source/collector/test pins, exact installed origins and before/after member records. No blocking issue within this limited scope. No tests rerun.",
+  "native_session": 45407,
+  "native_exit_code": 0,
+  "native_terminal_chunk": "1c73f8",
+  "formal_release": "BLOCKED",
+  "not_covered": ["full a118 suite", "complete platform matrix", "macOS", "Docker execution", "real clients"]
+}

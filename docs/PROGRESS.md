@@ -1,5 +1,24 @@
 # Amadeus current progress
 
+Linux affected-install supplement — 2026-11-16 UTC. Native45407 ended0 at10:20:31Z;
+16 checks pass, wheel12pass/sdist12pass with zero failures/errors/skips. The exact
+Windows-built a118 packages were installed without rebuilding; all12 case identities
+and outcomes match Windows. Root checked actual receipts/logs/XML and collected
+37 guest files/102652 bytes, then independently read2899 source paths and97 members
+in each install unchanged. Astra accepted this limited scope.48 original public
+files/130827 bytes, including normal VM shutdown receipts, are archived under
+recovery-preview-a118/linux/; original
+Windows evidence and historical suites remain unchanged. No models/auth copies,
+Docker or full-suite reruns. At10:23:11Z the owned VM was confirmed absent after
+checking no workers/containers and normal poweroff; its disk is retained.
+Formal Release stays BLOCKED.
+
+Next: repair the existing M2-05 native MCP compatibility probe for current viewer
+defaults and isolated a118 installation. Use only public no-inference methods;
+no turn/start, shared config changes or credentials. The preparation is in progress,
+not a client compatibility pass. Claude/Cursor execution and macOS remain NOT RUN
+for unavailable environments. Original Goal and M0–M9 requirements are retained.
+
 Current candidate checkpoint — 2026-11-16 UTC. a118 source/test7f0ba0a packages
 the CLI repair3b43647; immutable a117 packages remain unchanged. Native session62523
 ended0 at10:00:22Z in D:/agentsync-debug/m118p:19 offline build/install checks pass,
@@ -12,8 +31,8 @@ Files: releases/0.3.0a118/preview-7f0ba0a/. Evidence:
 acceptance/evidence/recovery-preview-a118/summary.json. The 48 original evidence
 files total1061411 bytes; two packages total5253574 bytes. Full a118 regression,
 matrix, Linux/macOS and real-client acceptance remain NOT RUN; Release BLOCKED.
-Next: reuse the exact uploaded packages for focused Linux installation checks
-in the existing D-drive VM, without rebuilding or rerunning a117 full suites.
+That next Linux check subsequently completed as recorded above, without rebuilding
+or rerunning a117 full suites.
 All current native test/model jobs have ended; original Goal remains active.
 
 P1 recovery-path fix complete — 2026-11-16 UTC. The current development CLI no

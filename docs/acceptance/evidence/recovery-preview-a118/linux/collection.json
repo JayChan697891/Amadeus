@@ -1,0 +1,160 @@
+{
+  "files": {
+    "run/start.json": {
+      "bytes": 861,
+      "sha256": "b64d0efcfe7b89bb578d0b4505762072104453c807869c60c15d17c9c56acabe"
+    },
+    "run/offline-wheelhouse.json": {
+      "bytes": 8619,
+      "sha256": "02aaed6f33aed9b734627ea3494d981d6cb35e456c6b62aedb9eaad26a2cba51"
+    },
+    "run/sdist-focused.xml": {
+      "bytes": 2105,
+      "sha256": "4d42a06fcbf11f10b4c575bdeaf15f3c076f9f9ab87ba9f264f5e68dafca6423"
+    },
+    "run/result.json": {
+      "bytes": 27826,
+      "sha256": "c54260b73f916bbcfccd37056b210ce8e867a143f335636f151020845bb26f85"
+    },
+    "run/wheel-focused.xml": {
+      "bytes": 2105,
+      "sha256": "5c8ac8c94967f8ea5abbe0ed314ff1e79ee851eeb76fb80e0a46842f9be428ab"
+    },
+    "run/logs/wheel_console_smoke.log": {
+      "bytes": 57,
+      "sha256": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f"
+    },
+    "run/logs/sdist_offline_dependencies.log": {
+      "bytes": 7109,
+      "sha256": "d4d6f6a659341cb04566436747c912ae2064050203a9c0ff2497243e3f7ccab6"
+    },
+    "run/logs/wheel_origin_before.log": {
+      "bytes": 484,
+      "sha256": "37b37d76f6013f3116e65fdcc1ad099ee513a52b8416ed5c8d49fec72e59abae"
+    },
+    "run/logs/sdist_origin_before.process.json": {
+      "bytes": 4489,
+      "sha256": "f1ff0eb09d99ce58b1f51eabe2c5ed15dce7e58562c7238d4aaf712537b4e4c1"
+    },
+    "run/logs/sdist_console_smoke.log": {
+      "bytes": 57,
+      "sha256": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f"
+    },
+    "run/logs/wheel_pip_check.log": {
+      "bytes": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    "run/logs/sdist_pip_check.process.json": {
+      "bytes": 1145,
+      "sha256": "c0180cc7863635a9537261f89ceae0525bb813e65283138431552e25b5a8a2a8"
+    },
+    "run/logs/sdist_venv.process.json": {
+      "bytes": 1150,
+      "sha256": "af8a6483d8d359c3655ba034fb69cf540e8425aa462202bba0032e786b54c339"
+    },
+    "run/logs/sdist_venv.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run/logs/sdist_console_smoke.process.json": {
+      "bytes": 4615,
+      "sha256": "fb45d85edba189304062e60df92e4ddaad34f9c4d13b174e9ffc1bd768fd0ed2"
+    },
+    "run/logs/wheel_offline_dependencies.process.json": {
+      "bytes": 2064,
+      "sha256": "fb3c56f78e6ed81898e5f86a63c9227b30093c54803fb42958cfb0197e347c30"
+    },
+    "run/logs/wheel_pytest.log": {
+      "bytes": 99,
+      "sha256": "21ff5a7ec07167ebb0a57682338038c58879b099184afd1c8e02f7a4d85e35dc"
+    },
+    "run/logs/wheel_pytest.process.json": {
+      "bytes": 2138,
+      "sha256": "301e928f3e250e8b536fe91e4021907043e50bd45939174be449fc140384faaa"
+    },
+    "run/logs/sdist_origin_before.log": {
+      "bytes": 474,
+      "sha256": "b26be2d53f3c19873940c543bc73a4b5d3a33edfa39ec7e434957bfc8d4d68fd"
+    },
+    "run/logs/sdist_pip_check.log": {
+      "bytes": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    "run/logs/sdist_origin_after.process.json": {
+      "bytes": 4486,
+      "sha256": "0736aabd7d3d6e480f127d14049c8168d4e96e1693cfb7e55e0bb55546b2426c"
+    },
+    "run/logs/sdist_offline_dependencies.process.json": {
+      "bytes": 2166,
+      "sha256": "0f3bd8dea4d1e8eef8f38b19c0359b7bdd85c8b7f9ee50634c6f3830fc293007"
+    },
+    "run/logs/wheel_venv.process.json": {
+      "bytes": 1150,
+      "sha256": "c5065ba3303296d8420b3b459086b308c3c81b3272a30cd17ca8122aa39b1e00"
+    },
+    "run/logs/sdist_origin_after.log": {
+      "bytes": 474,
+      "sha256": "b26be2d53f3c19873940c543bc73a4b5d3a33edfa39ec7e434957bfc8d4d68fd"
+    },
+    "run/logs/wheel_pip_check.process.json": {
+      "bytes": 1145,
+      "sha256": "5a18a008534c899888d0b0c600c09865ead1d15851b7714e54ae7268410ad81a"
+    },
+    "run/logs/wheel_origin_after.log": {
+      "bytes": 484,
+      "sha256": "37b37d76f6013f3116e65fdcc1ad099ee513a52b8416ed5c8d49fec72e59abae"
+    },
+    "run/logs/sdist_install.process.json": {
+      "bytes": 1677,
+      "sha256": "7189f218989e3dc1b1fec9588650e5ab32fa47c6dab1fcc7a664654ee937878b"
+    },
+    "run/logs/wheel_install.log": {
+      "bytes": 277,
+      "sha256": "c3617a38dbe1d8c922bb07f8d443d65cd34c41c316d2788c0683008d6d587dfb"
+    },
+    "run/logs/wheel_install.process.json": {
+      "bytes": 1637,
+      "sha256": "18fdb5c93db328df3c2749fd3059e54111e62139d8510b06bee058be08e43c9e"
+    },
+    "run/logs/sdist_pytest.log": {
+      "bytes": 99,
+      "sha256": "c0f825933de218d6e362c2d31dd053c26c715da8530d9d0114ab822c9df27928"
+    },
+    "run/logs/wheel_venv.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run/logs/wheel_console_smoke.process.json": {
+      "bytes": 4615,
+      "sha256": "c7f28173e2c0be05de6dbc25ebb2e508f0ec1e3b94ff80a8de982b3be17cab17"
+    },
+    "run/logs/wheel_origin_after.process.json": {
+      "bytes": 4506,
+      "sha256": "0764e6d60e4c51a8429d6bee631be48de44403aa50181c1905a10eede79c9d58"
+    },
+    "run/logs/wheel_offline_dependencies.log": {
+      "bytes": 6898,
+      "sha256": "3bfb526797a41965d9ab9706e6e398a7d5e10c51e9a7552188c996cf53fb8a9a"
+    },
+    "run/logs/sdist_install.log": {
+      "bytes": 934,
+      "sha256": "14f3979977098b5a2e3ccd4bae19a4e2e8fc1c0cd0c68d1d934fd5f44fee6441"
+    },
+    "run/logs/sdist_pytest.process.json": {
+      "bytes": 2138,
+      "sha256": "56170e256f73a212477e8fa4b75b3b2bb625d8e670e59ff2144da04dfdf57eba"
+    },
+    "run/logs/wheel_origin_before.process.json": {
+      "bytes": 4509,
+      "sha256": "5f805851e59c3b28188cac74e709fb876ca5d2cb28d7e5faa14cb86692b820fa"
+    }
+  },
+  "source_files": 2899,
+  "runtime_members_each": 97,
+  "workers": [],
+  "boot_id": "76f36a7a-ac47-44fd-883e-fc02232c60b5",
+  "observed_at": "2026-11-16T10:21:24.126889+00:00",
+  "native_session": 45407,
+  "native_exit_code": 0,
+  "native_terminal_chunk": "1c73f8"
+}
