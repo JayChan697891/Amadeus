@@ -1,0 +1,54 @@
+............................FF.........................                  [100%]
+================================== FAILURES ===================================
+__________ test_host_exit_preserves_continuation_recovery[prepared] ___________
+tests\integration\test_unfinished_continuation.py:1061: in test_host_exit_preserves_continuation_recovery
+    exited = host(checkpoint, 73)
+             ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_unfinished_continuation.py:1046: in host
+    assert process.returncode == expected_exit, process.stderr
+E   AssertionError: Traceback (most recent call last):
+E       File "<string>", line 1, in <module>
+E       File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\runners.py", line 195, in run
+E         return runner.run(main)
+E                ^^^^^^^^^^^^^^^^
+E       File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\runners.py", line 118, in run
+E         return self._loop.run_until_complete(task)
+E                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\base_events.py", line 691, in run_until_complete
+E         return future.result()
+E                ^^^^^^^^^^^^^^^
+E       File "F:\syuc\amadeus-m6-single\tests\integration\test_unfinished_continuation.py", line 895, in _continuation_host
+E         assert Path(agentsync.__file__).resolve() == Path(fixture["import_origin"])
+E                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E     AssertionError
+E     
+E   assert 1 == 73
+E    +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe', '-I', '-B', '-c', "import asyncio,json,ru...["import_origin"])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n').returncode
+_______ test_host_exit_preserves_continuation_recovery[dispatch-intent] _______
+tests\integration\test_unfinished_continuation.py:1061: in test_host_exit_preserves_continuation_recovery
+    exited = host(checkpoint, 73)
+             ^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_unfinished_continuation.py:1046: in host
+    assert process.returncode == expected_exit, process.stderr
+E   AssertionError: Traceback (most recent call last):
+E       File "<string>", line 1, in <module>
+E       File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\runners.py", line 195, in run
+E         return runner.run(main)
+E                ^^^^^^^^^^^^^^^^
+E       File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\runners.py", line 118, in run
+E         return self._loop.run_until_complete(task)
+E                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\base_events.py", line 691, in run_until_complete
+E         return future.result()
+E                ^^^^^^^^^^^^^^^
+E       File "F:\syuc\amadeus-m6-single\tests\integration\test_unfinished_continuation.py", line 895, in _continuation_host
+E         assert Path(agentsync.__file__).resolve() == Path(fixture["import_origin"])
+E                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E     AssertionError
+E     
+E   assert 1 == 73
+E    +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe', '-I', '-B', '-c', "import asyncio,json,ru...["import_origin"])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n').returncode
+=========================== short test summary info ===========================
+FAILED tests/integration/test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[prepared]
+FAILED tests/integration/test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[dispatch-intent]
+2 failed, 53 passed, 1 deselected in 171.94s (0:02:51)

@@ -1,5 +1,40 @@
 # Amadeus current progress
 
+P0 same-Core continuation verification delivered — 2026-11-16 UTC.
+Frozen source/test207e978 adds explicit Codex continuation observation/preview/
+staging entries, reusing existing independent execution and completion. Original
+request/project, failed source, checkpoint, receiver/worktree, terminal, queue and
+review marker/version are checked again before effects. Independent Astra found
+no blocking issue; root inspected actual source, outputs and exact file hashes.
+
+Windows native58049:53pass/2fail,1 Docker case deselected,171.94s. Eleven new cases
+are within those53. The failures stopped at an isolated child's source-origin
+assertion: it imported the old a118 install. A first fresh source environment then
+failed collection on unloaded pywin32.pth (exit4, zero target cases executed).
+Both failures remain. Correcting only the new environment gave native10011/1322e0
+exit0,2pass15.78s for exactly those two original cases. All55 Windows target cases
+therefore have pass evidence at the same product SHA across two runs, not one
+rewritten all-green report.233 frozen paths and97 old installed members stayed equal.
+
+Linux native05e4f2 exit0:1pass7.78s, real Docker2/2 JSON cases and19/19 isolation
+checks. Receiver81c21e83… stays the same task through completed/verified v6; source
+stays failed, publication stays unverified, dependency claim succeeds afterward,
+and replay preserves one execution. Model output is an owned Python fixture;
+zero inference/auth copies.233 Git input files and97 installed members were unchanged.
+Root and Astra checked execution/proof bindings; no container or fixture process
+remained. The owned VM normally stopped at13:26:58Z, disk retained. Ruff/format,
+two-module mypy and diff checks passed. No package rebuild or full-suite repeat.
+Evidence: acceptance/evidence/recovery-preview-a118/continuation-verification/summary.json.
+
+Recovery entry: prepare the exact fresh real-model continuation experiment using
+solution.py from task definition, plus explicit staging, Docker-execution and
+independent-completion decisions. The standing subscription grant is retained;
+its earlier interrupted-run scope excluded candidate execution. This future
+combined experiment has NOT RUN. Old R2/add.py and its separate-Core result remain
+immutable. No automatic model job has been started. A remains demonstrable,
+B has the offline same-task bridge, C/formal Release BLOCKED. Goal active and the
+original M0–M9/M5 records remain intact; PR35 stays draft for external Work review.
+
 P1 product-path correction — 2026-11-16 UTC. Owner CLI now rejects a selected
 missing database before Core initialization, preserving explicit/environment path
 selection and existing authorization. Four real CLI reproductions failed before
@@ -14,7 +49,7 @@ Credentials remain parent-memory/stdin only; private state is not uploaded.
 Evidence: acceptance/evidence/recovery-preview-a118/owner-onboarding/summary.json.
 This source fix is not inside the frozen a118 packages. No new package/version.
 
-Recovery entry: finish the same-Core continuation-to-verification bridge in the
+Historical recovery entry, now fulfilled in the offline scope above: finish the same-Core continuation-to-verification bridge in the
 existing controlled relay, reusing staging/verifier/completion APIs. Astra found
 the normal-proposal-only observation path cannot stage a continuation proposal;
 do not widen modes without binding continuation provenance and its review marker.

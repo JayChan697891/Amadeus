@@ -2,15 +2,33 @@
 
 ## Execution adjustment — 2026-11-15
 
+P0 same-task verification bridge complete for the offline scope, 2026-11-16:
+source/test207e978 reuses existing owner staging, verification jobs and independent
+completion for a Codex continuation receiver in the same Core. The normal proposal
+mode stays restricted. Windows has pass evidence for55 target cases across two
+runs: the original53pass/2fail remains preserved, and only the two child-import
+failures were rerun successfully in a fresh source environment. A first environment
+setup failed collection on pywintypes and is also retained. Linux3.14 executed
+the same frozen bridge with real Docker: one test,2 JSON cases and19 isolation
+checks pass. The source task remains failed; the same receiver completes verified,
+its dependency becomes claimable, and completion replay creates no new execution.
+The model side is a local protocol fixture, not inference. See
+[actual results and boundaries](acceptance/evidence/recovery-preview-a118/continuation-verification/summary.json).
+The next P0 evidence is a fresh real-model experiment whose original task specifies
+the supported solution.py JSON-lines contract, with separately explicit staging,
+execution and completion decisions. No such experiment is started by this record;
+the earlier interrupted-run grant excluded candidate execution. Existing R2 is
+unchanged. No new M5 phase, package or release gate; formal Release stays BLOCKED.
+
 Resumed product-path audit, 2026-11-16: A is demonstrable now; two concrete gaps
 were found after the earlier requirement-only review. P1 now has a runnable
 SDK-bootstrap/three-process CLI example and an owner-command wrong-directory fix.
 The example completed against the unchanged a118 install, preserving its explicit
 simulation/unverified status; the later source fix passed27 affected Windows cases
 after four reproductions failed. See [scoped evidence](acceptance/evidence/recovery-preview-a118/owner-onboarding/summary.json).
-P0 next connects the already-submitted continuation proposal to the existing
+The P0 bridge subsequently connected the continuation proposal to the existing
 staging, independent verification and completion APIs in the same Core/task.
-First use zero-model deterministic cases, including rejection and replay; then
+Zero-model rejection/replay and actual Docker checks are recorded above; next
 prepare a reviewed live plan with candidate-execution approval stated explicitly.
 The old interruption grant excluded candidate execution. Do not modify R2 or
 reuse its separate-Core verification as original-task completion. This is one
@@ -86,7 +104,7 @@ the immutable0.3.0a116 matrix continues independently and is not relabelled.
 | Priority | Next product work | Dependency / completion boundary |
 | --- | --- | --- |
 | P0 | Use the delivered durable CLI and controlled two-Codex demonstration, including the completed bounded in-flight continuation and separately verified output. | A is usable now. Retain original task status and distinguish imported verification from original-Core acceptance. Further live experiments use the recorded bounded standing grant and a reviewed exact plan; no arbitrary retries or broader scope. |
-| P0 | Keep independent verification, pinned context and owner decisions visible in the demonstration. | Reuse the existing Core/Docker implementation and actual evidence. Do not add another orchestration layer or repeat accepted unchanged flows. Textual peer review remains unverified. |
+| P0 | Demonstrate the continued receiver reaching independent completion in the same Core. | Bridge207e978 has55 Windows case passes across two runs and1 real-Docker Linux test; model side is synthetic. Next prepare one exact real-model scenario with the supported candidate protocol and all explicit owner gates. Do not alter R2 or add another orchestration layer. |
 | P1 | Remove concrete installation/demo friction and fill missing current-package checks. | Linux3.14 and Windows3.12 frozen source/wheel supplements are complete. The wrong-path CLI repair has seven targeted Windows checks; package integration remains separate. Existing bounded benchmarks are complete. |
 | P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
 

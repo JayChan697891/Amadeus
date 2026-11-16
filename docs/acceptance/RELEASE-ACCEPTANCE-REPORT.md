@@ -1,5 +1,22 @@
 # Release Acceptance Report
 
+P0 source207e978 now connects a continuation receiver to independent completion
+inside the same Core. Original Windows report:53pass/2fail; only its two
+isolated-child import failures subsequently passed in a fresh source environment.
+The intervening pywin32 collection failure also remains recorded. Thus55 target
+Windows cases have passing evidence across two runs, without rewriting the failed
+report or rerunning the53 passes. Linux's same-source test passed with real Docker:
+2 JSON cases,19 isolation checks, same receiver completed/verified, source failed,
+dependency restored and exact completion replay with one execution.233 frozen
+inputs and97 old installed members remained equal. Root and independent Astra
+inspected original evidence; VM/container/fixture cleanup was observed.
+
+The model side is a known local protocol fixture with zero inference/auth copies.
+No new real-model interruption-to-verified-completion run is claimed. The bridge
+is not in the frozen a118 packages; old R2/add.py remains review/unverified.
+Formal Release BLOCKED and external Work review pending.
+[Exact results, retained failures and reproduction](evidence/recovery-preview-a118/continuation-verification/summary.json).
+
 Later source-only owner CLI fix: four missing-database reproductions failed, then
 27 affected Windows source cases passed with no failures/errors/skips. Actual
 logs/JUnit and tested file hashes are retained. The new SDK bootstrap example

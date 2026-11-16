@@ -1,0 +1,26 @@
+{
+  "command": [
+    "D:\\agentsync-debug\\continuation-verified-20261116\\source-env\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\p",
+    "--junitxml=D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\host-exit.xml",
+    "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\tests\\integration\\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[prepared]",
+    "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\tests\\integration\\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[dispatch-intent]"
+  ],
+  "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit",
+  "started_at": "2026-11-16T13:28:37.426500+00:00",
+  "timeout_seconds": 120,
+  "provenance": "local_process",
+  "status": "exited",
+  "exit_code": 4,
+  "finished_at": "2026-11-16T13:28:39.086061+00:00",
+  "log_sha256": "0d95e2d3ab9a9bcc4d3d28da6efcd2012a5924c7bbf79170197bdbf946146aec"
+}

@@ -1,0 +1,5 @@
+{"command": ["/root/amadeus-m118l/w/bin/python", "-V"], "exit_code": 0, "stdout": "Python 3.14.7\n", "stderr": ""}
+{"command": ["docker", "info", "--format", "{{json .SecurityOptions}}"], "exit_code": 0, "stdout": "[\"name=seccomp,profile=builtin\",\"name=cgroupns\"]\n", "stderr": ""}
+{"command": ["docker", "image", "inspect", "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258", "--format", "{{json .Id}}"], "exit_code": 0, "stdout": "\"sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258\"\n", "stderr": ""}
+{"command": ["docker", "ps", "--format", "{{.ID}} {{.Names}}"], "exit_code": 0, "stdout": "", "stderr": ""}
+{"new_fixture_absent": true}

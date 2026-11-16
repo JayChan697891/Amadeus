@@ -1,0 +1,140 @@
+{
+  "started_at": "2026-11-16T13:28:36.099693+00:00",
+  "commit": "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1",
+  "source_zip_sha256": "f36c58054e6e7cd6e4483e03af8d6158cb05ac3bfc5bef19deb5d3e6ee715a6a",
+  "manifest_sha256": "2c83d1aede91ecf11fbf4302c4c27157b67bc597e432d023b5f6ac569d799b46",
+  "old_runtime_manifest_sha256": "f96b477564c0be1207de7d11433977bf96c24b6d0bf45438a07c3087713bf5bd",
+  "old_installed_members_before": 97,
+  "explicit_environment": {
+    "HOME": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\home",
+    "USERPROFILE": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\home",
+    "LOCALAPPDATA": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\home",
+    "TMP": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\tmp",
+    "TEMP": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GIT_CONFIG_GLOBAL": "nul",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_TERMINAL_PROMPT": "0"
+  },
+  "pythonpath_inherited": false,
+  "scope": "Only the two existing Windows host-exit cases using the frozen source",
+  "no_model_calls": true,
+  "docker": "NOT RUN",
+  "automatic_retry": false,
+  "status": "failed",
+  "phase": "pytest",
+  "pytest_exit_code": 4,
+  "frozen_paths_before": 233,
+  "source_pth_sha256": "15a915c4feb6df370b6fcd619f4cba7115c1076ac9e681f2adf2d43baa70186b",
+  "origins": {
+    "origin_parent": {
+      "origin": "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src\\agentsync\\__init__.py",
+      "pytest_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\pytest\\__init__.py",
+      "prefix": "D:\\agentsync-debug\\continuation-verified-20261116\\source-env",
+      "python": "3.12.16",
+      "isolated": false
+    },
+    "origin_child_isolated": {
+      "origin": "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src\\agentsync\\__init__.py",
+      "pytest_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\pytest\\__init__.py",
+      "prefix": "D:\\agentsync-debug\\continuation-verified-20261116\\source-env",
+      "python": "3.12.16",
+      "isolated": true
+    }
+  },
+  "error_type": "AssertionError",
+  "finished_at": "2026-11-16T13:28:39.087061+00:00",
+  "checks": [
+    {
+      "id": "venv",
+      "command": [
+        "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "--without-pip",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit",
+      "started_at": "2026-11-16T13:28:36.342601+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:28:36.417449+00:00",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "origin_parent",
+      "command": [
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env\\Scripts\\python.exe",
+        "-s",
+        "-B",
+        "-c",
+        "from pathlib import Path; import sys, json, agentsync, agentsync.continuation, agentsync.controlled_relay, pytest;s,w,v=map(lambda x:Path(x).resolve(),sys.argv[1:4]); assert 'PYTHONPATH' not in __import__('os').environ; assert Path(sys.prefix).resolve()==v; assert all(Path(m.__file__).resolve().parent==s/'agentsync' for m in (agentsync,agentsync.continuation,agentsync.controlled_relay)); assert Path(pytest.__file__).resolve().is_relative_to(w); print(json.dumps(dict(origin=agentsync.__file__, pytest_origin=pytest.__file__, prefix=sys.prefix, python=sys.version.split()[0], isolated=bool(sys.flags.isolated))))",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src",
+        "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit",
+      "started_at": "2026-11-16T13:28:36.418449+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:28:36.937192+00:00",
+      "log_sha256": "3df022bff57af65607fd51a4c29d1ae743494d78fd91f0e335751e76938f0973"
+    },
+    {
+      "id": "origin_child_isolated",
+      "command": [
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "from pathlib import Path; import sys, json, agentsync, agentsync.continuation, agentsync.controlled_relay, pytest;s,w,v=map(lambda x:Path(x).resolve(),sys.argv[1:4]); assert 'PYTHONPATH' not in __import__('os').environ; assert Path(sys.prefix).resolve()==v; assert all(Path(m.__file__).resolve().parent==s/'agentsync' for m in (agentsync,agentsync.continuation,agentsync.controlled_relay)); assert Path(pytest.__file__).resolve().is_relative_to(w); print(json.dumps(dict(origin=agentsync.__file__, pytest_origin=pytest.__file__, prefix=sys.prefix, python=sys.version.split()[0], isolated=bool(sys.flags.isolated))))",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src",
+        "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit",
+      "started_at": "2026-11-16T13:28:36.938197+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:28:37.425505+00:00",
+      "log_sha256": "ee808b9ca5d85117e8954d56500c3a41b35b19c270102aa5f7e22766a09ca2bc"
+    },
+    {
+      "id": "host-exit",
+      "command": [
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "--basetemp",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\p",
+        "--junitxml=D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit\\host-exit.xml",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\tests\\integration\\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[prepared]",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\tests\\integration\\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[dispatch-intent]"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit",
+      "started_at": "2026-11-16T13:28:37.426500+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 4,
+      "finished_at": "2026-11-16T13:28:39.086061+00:00",
+      "log_sha256": "0d95e2d3ab9a9bcc4d3d28da6efcd2012a5924c7bbf79170197bdbf946146aec"
+    }
+  ],
+  "old_installed_members_after": 97,
+  "frozen_paths_after": 233
+}

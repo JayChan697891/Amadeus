@@ -1,0 +1,150 @@
+{
+  "started_at": "2026-11-16T13:29:50.469507+00:00",
+  "commit": "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1",
+  "source_zip_sha256": "f36c58054e6e7cd6e4483e03af8d6158cb05ac3bfc5bef19deb5d3e6ee715a6a",
+  "manifest_sha256": "2c83d1aede91ecf11fbf4302c4c27157b67bc597e432d023b5f6ac569d799b46",
+  "old_runtime_manifest_sha256": "f96b477564c0be1207de7d11433977bf96c24b6d0bf45438a07c3087713bf5bd",
+  "old_installed_members_before": 97,
+  "explicit_environment": {
+    "HOME": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\home",
+    "USERPROFILE": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\home",
+    "LOCALAPPDATA": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\home",
+    "TMP": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\tmp",
+    "TEMP": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "GIT_CONFIG_GLOBAL": "nul",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_TERMINAL_PROMPT": "0"
+  },
+  "pythonpath_inherited": false,
+  "scope": "Only the two existing Windows host-exit cases using the frozen source",
+  "no_model_calls": true,
+  "docker": "NOT RUN",
+  "automatic_retry": false,
+  "status": "passed",
+  "phase": "pytest",
+  "pytest_exit_code": 0,
+  "frozen_paths_before": 233,
+  "source_pth_sha256": "dbced07766519a8474a86468a11509f7dfe0817ede6f8b8e833a9f09c26e3908",
+  "origins": {
+    "origin_parent": {
+      "origin": "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src\\agentsync\\__init__.py",
+      "pytest_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\pytest\\__init__.py",
+      "mcp_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\mcp\\__init__.py",
+      "pywintypes_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\pywin32_system32\\pywintypes312.dll",
+      "prefix": "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2",
+      "python": "3.12.16",
+      "isolated": false
+    },
+    "origin_child_isolated": {
+      "origin": "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src\\agentsync\\__init__.py",
+      "pytest_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\pytest\\__init__.py",
+      "mcp_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\mcp\\__init__.py",
+      "pywintypes_origin": "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages\\pywin32_system32\\pywintypes312.dll",
+      "prefix": "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2",
+      "python": "3.12.16",
+      "isolated": true
+    }
+  },
+  "junit": {
+    "sha256": "76300c63921a5de01e531b3bad4da5cd8707db3527a5af7c8f58e511b6f3c794",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "finished_at": "2026-11-16T13:30:08.969991+00:00",
+  "checks": [
+    {
+      "id": "venv",
+      "command": [
+        "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "--without-pip",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2",
+      "started_at": "2026-11-16T13:29:50.549612+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:29:50.621202+00:00",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "origin_parent",
+      "command": [
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2\\Scripts\\python.exe",
+        "-s",
+        "-B",
+        "-c",
+        "from pathlib import Path; import sys, json, agentsync, agentsync.continuation, agentsync.controlled_relay, pytest, mcp, pywintypes;s,w,v=map(lambda x:Path(x).resolve(),sys.argv[1:4]); assert 'PYTHONPATH' not in __import__('os').environ; assert Path(sys.prefix).resolve()==v; assert all(Path(m.__file__).resolve().parent==s/'agentsync' for m in (agentsync,agentsync.continuation,agentsync.controlled_relay)); assert all(Path(m.__file__).resolve().is_relative_to(w) for m in (pytest,mcp,pywintypes)); assert sys.dont_write_bytecode; print(json.dumps(dict(origin=agentsync.__file__, pytest_origin=pytest.__file__, mcp_origin=mcp.__file__, pywintypes_origin=pywintypes.__file__, prefix=sys.prefix, python=sys.version.split()[0], isolated=bool(sys.flags.isolated))))",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src",
+        "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2",
+      "started_at": "2026-11-16T13:29:50.622204+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:29:51.599590+00:00",
+      "log_sha256": "98d55a33cbd28fae1cdbdce5b676b7f47ea1ddb9b5e9d508a85b089ae8ea8eba"
+    },
+    {
+      "id": "origin_child_isolated",
+      "command": [
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "from pathlib import Path; import sys, json, agentsync, agentsync.continuation, agentsync.controlled_relay, pytest, mcp, pywintypes;s,w,v=map(lambda x:Path(x).resolve(),sys.argv[1:4]); assert 'PYTHONPATH' not in __import__('os').environ; assert Path(sys.prefix).resolve()==v; assert all(Path(m.__file__).resolve().parent==s/'agentsync' for m in (agentsync,agentsync.continuation,agentsync.controlled_relay)); assert all(Path(m.__file__).resolve().is_relative_to(w) for m in (pytest,mcp,pywintypes)); assert sys.dont_write_bytecode; print(json.dumps(dict(origin=agentsync.__file__, pytest_origin=pytest.__file__, mcp_origin=mcp.__file__, pywintypes_origin=pywintypes.__file__, prefix=sys.prefix, python=sys.version.split()[0], isolated=bool(sys.flags.isolated))))",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src",
+        "D:\\agentsync-debug\\m118p\\w\\Lib\\site-packages",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2",
+      "started_at": "2026-11-16T13:29:51.601016+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:29:52.566848+00:00",
+      "log_sha256": "6274c30085cecff174b55330a68614810e78547d3433fa85d2e40f9bf49f6bb6"
+    },
+    {
+      "id": "host-exit",
+      "command": [
+        "D:\\agentsync-debug\\continuation-verified-20261116\\source-env-r2\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "--basetemp",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\p",
+        "--junitxml=D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2\\host-exit.xml",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\tests\\integration\\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[prepared]",
+        "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\tests\\integration\\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery[dispatch-intent]"
+      ],
+      "cwd": "D:\\agentsync-debug\\continuation-verified-20261116\\isolated-host-exit-r2",
+      "started_at": "2026-11-16T13:29:52.568315+00:00",
+      "timeout_seconds": 120,
+      "provenance": "local_process",
+      "status": "exited",
+      "exit_code": 0,
+      "finished_at": "2026-11-16T13:30:08.967985+00:00",
+      "log_sha256": "cfa3ae48c072e337603ba07f2617f7aec09b5b09a7af343c472d53893367fede"
+    }
+  ],
+  "old_installed_members_after": 97,
+  "frozen_paths_after": 233
+}
