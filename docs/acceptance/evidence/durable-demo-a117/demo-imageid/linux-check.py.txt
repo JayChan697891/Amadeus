@@ -1,0 +1,57 @@
+"""One actual Linux CLI rejection; no Docker, model, credentials or user project."""
+import hashlib
+import json
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+base = Path('D:/agentsync-debug/demo-imageid')
+source = Path('F:/syuc/amadeus-m6-single/tools/run_proposal_candidate_pilot.py')
+digest = hashlib.sha256(source.read_bytes()).hexdigest()
+assert digest == '59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157'
+client = paramiko.SSHClient()
+client.load_host_keys(r'D:\agentsync-debug\vm\known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename=r'D:\agentsync-debug\vm\debug_ed25519',
+               look_for_keys=False, allow_agent=False, timeout=15)
+try:
+    directory = '/root/amadeus-demo-imageid-20261115'
+    sftp = client.open_sftp()
+    sftp.mkdir(directory, mode=0o700)
+    with sftp.open(directory + '/pilot.py', 'wx') as stream:
+        stream.write(source.read_bytes())
+    sftp.chmod(directory + '/pilot.py', 0o600)
+    probe = '''import hashlib,json,subprocess
+from pathlib import Path
+root=Path('/root/amadeus-proposal-pilot-invalid-id-20261115')
+script=Path('/root/amadeus-demo-imageid-20261115/pilot.py')
+assert not root.exists()
+assert hashlib.sha256(script.read_bytes()).hexdigest()=='59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157'
+command=['/root/amadeus-m117l/e/bin/python','-I','-B',str(script),'--demo','--root',str(root),'--image-id','python:3.14']
+result=subprocess.run(command,capture_output=True,text=True,timeout=30,cwd=script.parent,
+ env={'PATH':'/usr/bin:/bin','HOME':str(script.parent),'PYTHONDONTWRITEBYTECODE':'1'})
+record={'command':command,'exit_code':result.returncode,'stdout':result.stdout,'stderr':result.stderr,
+ 'project_directory_absent':not root.exists(),'model_calls':0,'docker_called':False}
+assert result.returncode==2 and not result.stdout and not root.exists()
+assert '--image-id must be a full local Docker image ID' in result.stderr
+print(json.dumps(record))
+'''
+    stdin, stdout, stderr = client.exec_command('/root/jobs-env/bin/python -I -B -', timeout=45)
+    stdin.write(probe)
+    stdin.flush()
+    stdin.channel.shutdown_write()
+    output, errors = stdout.read(), stderr.read()
+    exit_code = stdout.channel.recv_exit_status()
+    record = {'observed_at': datetime.now(UTC).isoformat(), 'probe_exit_code': exit_code,
+              'tool_sha256': digest, 'stdout': output.decode(), 'stderr': errors.decode()}
+    if exit_code == 0:
+        record['observation'] = json.loads(record.pop('stdout'))
+    with (base / 'run' / 'linux-cli.json').open('x', encoding='utf-8') as stream:
+        json.dump(record, stream, indent=2)
+        stream.write('\n')
+    print(json.dumps(record))
+    raise SystemExit(exit_code)
+finally:
+    client.close()

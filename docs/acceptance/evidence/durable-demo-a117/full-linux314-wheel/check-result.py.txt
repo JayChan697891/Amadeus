@@ -1,0 +1,261 @@
+"""Compare the harvested Linux a117 wheel with the completed a117 sdist suite."""
+
+from collections import Counter
+import hashlib
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+BASE = Path("D:/agentsync-debug/m117lw")
+RUN = BASE / "harvest"
+REFERENCE = Path("D:/agentsync-debug/m117l/harvest")
+CHECKS = (
+    "wheel_venv", "wheel_offline_dependencies", "wheel_install", "wheel_pip_check",
+    "wheel_origin_before", "wheel_pytest", "wheel_origin_after",
+)
+PRODUCT = "fc27f15f47fa92ed5edcd764a573c1d84a68c107"
+FIXTURES = "33ffbc329cc369643cbaa06077da29fb63f8c189"
+WHEEL = "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9"
+DRIVER = "5314c9364eb75ee17fde90273e8e133049172b87ba4dc88d37fbf5de4b8a7c77"
+BOOT = "66d9162a-d314-499b-a949-ce2b94935497"
+COMMAND = "/root/jobs-env/bin/python -I -B /root/amadeus-m117lw/run-wheel.py"
+INPUTS = "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50"
+IMAGE = "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+REFERENCE_RESULT = "bbabdfd7a8948ba01ac1a077a6c4072a6fa657232b6c781f926fe0248d8af89e"
+REFERENCE_JUNIT = "ade19ad9d35df226ed1d7a62608027ae3470543248db808a034e1abd48dbce77"
+ORIGINAL_COMPARISON_SHA256 = "3ae00c534ab578b069b3c73b601c1fa27011e686f9e4767d29b5ff7f257af8a5"
+GROUP_COUNTS = {
+    "verifier": 14, "owner_executor": 7, "candidate_executor": 5, "reconciliation": 5,
+    "proposal_pipeline": 2, "task_completion": 1, "verified_review": 1,
+}
+FIELDS = set("""
+schema provenance backend platform profile_id profile_kind verifier_version
+verifier_source_sha256 image_id image_sha256 status phase assessment execution_assessment
+task_verification current_state execution_connected lease_expired clock_regressed
+permanently_fenced cancel_requested create_intent create_reply_complete start_intent
+cleanup_attempted execution_started reason_code error_code errors kind receipt_kind
+cleanup_confirmed constraints_verified isolation absence_observed daemon_consistent
+identity_matched outcome remove_acknowledged protocol oom_killed parent_ended
+real_docker real_clients revision version claim_version execution_revision
+completed_version left_task_version right_task_version review_version
+initial_receiver_authorities total_receiver_launches_including_reopen
+model_calls final_status container_absent source_and_producer_unchanged
+""".split())
+
+
+def load(path):
+    return json.loads(path.read_bytes())
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def write(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2, sort_keys=True)
+        stream.write("\n")
+
+
+def audit_native(result):
+    problems = []
+    expected = {
+        "status": "pass", "version": "0.3.0a117", "test_source_commit": FIXTURES,
+        "product_runtime_commit": PRODUCT, "wheel_sha256": WHEEL, "fixture_snapshot_sha256": INPUTS,
+        "driver_sha256": DRIVER, "required_docker_image_id": IMAGE, "boot_id": BOOT,
+        "model_calls": 0, "automatic_retry": False, "formal_release": "BLOCKED",
+        "docker_before": {"image_id": IMAGE, "containers": []},
+        "docker_after": {"containers": []},
+        "input_before": {"frozen_files": 2382, "expected_runtime_members": 97},
+        "input_after": {"frozen_files": 2382, "expected_runtime_members": 97},
+    }
+    problems.extend(f"result.{key}" for key, value in expected.items() if result.get(key) != value)
+    transfer = load(BASE / "transfer-summary.json")
+    observer = transfer["observer"]
+    if (
+        transfer.get("run_status") != "pass" or transfer.get("boot_id") != BOOT
+        or transfer.get("frozen_inputs_rechecked") != 2382
+        or transfer.get("active_fixture_processes") != []
+        or transfer.get("docker_containers") != []
+        or observer.get("status") != "completed" or observer.get("exit_code") != 0
+        or observer.get("command") != COMMAND or observer.get("automatic_retry") is not False
+        or observer.get("model_calls") != 0
+        or not any(
+            entry["path"] == "result.json" and entry["sha256"] == sha(RUN / "result.json")
+            for entry in transfer["files"]
+        )
+    ):
+        problems.append("terminal transfer or observer binding mismatch")
+    if (
+        sha(BASE / "run-wheel.py") != DRIVER
+        or sha(BASE / "agentsync_local-0.3.0a117-py3-none-any.whl") != WHEEL
+    ):
+        problems.append("reviewed wheel driver or archive digest mismatch")
+    checks = result.get("checks", [])
+    if tuple(item["id"] for item in checks) != CHECKS:
+        problems.append("unexpected native check list or order")
+    current = {item["id"]: item for item in checks}
+    evidence = {}
+    for name in CHECKS:
+        log = RUN / "logs" / f"{name}.log"
+        receipt_path = log.with_suffix(".process.json")
+        if name not in current or not receipt_path.is_file() or not log.is_file():
+            problems.append(f"{name}: missing check, receipt, or log")
+            continue
+        check, receipt = current[name], load(receipt_path)
+        log_sha = sha(log)
+        if (
+            receipt.get("phase") != "finished" or receipt.get("outcome") != "exited"
+            or receipt.get("check_id") != name or receipt.get("result") != check
+            or check.get("exit_code") != 0 or check.get("status") != "pass"
+            or check.get("log") != log.relative_to(RUN).as_posix() or check.get("log_sha256") != log_sha
+        ):
+            problems.append(f"{name}: receipt, native exit, or log mismatch")
+        evidence[name] = {
+            "exit_code": check.get("exit_code"), "outcome": receipt.get("outcome"),
+            "log_sha256": log_sha, "receipt_sha256": sha(receipt_path),
+        }
+    before, after = (RUN / "logs" / f"wheel_origin_{when}.log" for when in ("before", "after"))
+    if before.is_file() and after.is_file():
+        origin = load(before)
+        if (
+            before.read_bytes() != after.read_bytes() or origin.get("runtime_members") != 97
+            or origin.get("wheel_sha256") != WHEEL or origin.get("version") != "0.3.0a117"
+            or not origin.get("python", "").startswith("3.14.7 ")
+            or not origin.get("origin", "").startswith("/root/amadeus-m117lw/e/")
+        ):
+            problems.append("installed runtime origin mismatch")
+    return evidence, problems
+
+
+def cases(path):
+    result = {}
+    for item in ET.parse(path).iter("testcase"):
+        key = (item.get("classname"), item.get("name"))
+        if not all(key) or key in result:
+            raise ValueError(f"Missing or duplicate JUnit case identity: {path.name}")
+        result[key] = next(
+            (kind for kind in ("failure", "error", "skipped") if item.find(kind) is not None),
+            "passed",
+        )
+    return result
+
+
+def case_diff(result):
+    native, problems = audit_native(result)
+    old_xml, new_xml = REFERENCE / "sdist-junit.xml", RUN / "wheel-junit.xml"
+    old, new = cases(old_xml), cases(new_xml)
+    old_sha, new_sha = sha(old_xml), sha(new_xml)
+    old_counts, new_counts = Counter(old.values()), Counter(new.values())
+    removed = sorted(old.keys() - new.keys())
+    added = sorted(new.keys() - old.keys())
+    changed = [(key, old[key], new[key]) for key in sorted(old.keys() & new.keys()) if old[key] != new[key]]
+    expected_counts = {"passed": 2538, "skipped": 7}
+    if old_sha != REFERENCE_JUNIT or old_counts != expected_counts:
+        problems.append("unexpected a117 sdist JUnit hash or baseline counts")
+    if removed or added or changed or new_counts != expected_counts:
+        problems.append("wheel case identities or outcomes differ from the a117 sdist suite")
+    junit = result.get("junit", {})
+    if (
+        junit.get("path") != "wheel-junit.xml" or junit.get("sha256") != new_sha
+        or junit.get("cases") != len(new)
+        or any(junit.get(kind) != new_counts[kind] for kind in ("failure", "error", "skipped"))
+    ):
+        problems.append("JUnit bytes or outcomes disagree with the wheel run result")
+    return {
+        "test_source_commit": FIXTURES, "product_runtime_commit": PRODUCT,
+        "a117_sdist_counts": old_counts, "a117_wheel_counts": new_counts,
+        "a117_sdist_junit_sha256": old_sha, "a117_wheel_junit_sha256": new_sha,
+        "added": [(key, new[key]) for key in added], "removed": removed, "outcome_changes": changed,
+        "native_checks": native, "problems": problems,
+        "original_sdist_comparison_script_sha256": ORIGINAL_COMPARISON_SHA256,
+    }
+
+
+def projection(value, prefix=""):
+    fields = {}
+    if isinstance(value, dict):
+        for key, item in value.items():
+            path = f"{prefix}/{key}"
+            if key in FIELDS or key.endswith(("_case_count", "_exit_code")):
+                fields[path] = item
+            elif key.endswith("_json") and isinstance(item, str):
+                fields.update(projection(json.loads(item), path))
+            else:
+                fields.update(projection(item, path))
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            fields.update(projection(item, f"{prefix}/{index}"))
+    return fields
+
+
+def observations(run_root, evidence_root):
+    projected, hashes = {}, {}
+    for path in sorted(evidence_root.rglob("*.json")):
+        group = path.relative_to(evidence_root).parts[0]
+        group = group.removeprefix("agentsync_").removesuffix("_evidence_dir")
+        key = f"{group}/{path.name}"
+        fields = projection(load(path))
+        if key in projected or not fields:
+            raise ValueError(f"Duplicate or empty fixture observation: {key}")
+        projected[key] = fields
+        hashes[path.relative_to(run_root).as_posix()] = sha(path)
+    return projected, hashes
+
+
+def docker_diff(result):
+    old, old_hashes = observations(REFERENCE, REFERENCE / "observations")
+    new, new_hashes = observations(RUN, RUN / "observations")
+    problems = []
+    reference_result = REFERENCE / "result.json"
+    if (
+        sha(reference_result) != REFERENCE_RESULT
+        or load(reference_result).get("fixture_observations_sha256") != old_hashes
+    ):
+        problems.append("a117 sdist observation hashes disagree with the pinned run result")
+    if new_hashes != result.get("fixture_observations_sha256"):
+        problems.append("a117 wheel observation hashes disagree with the current run result")
+    old_counts, new_counts = (Counter(key.split("/", 1)[0] for key in items) for items in (old, new))
+    missing, extra = sorted(old.keys() - new.keys()), sorted(new.keys() - old.keys())
+    if old_counts != GROUP_COUNTS or new_counts != GROUP_COUNTS or missing or extra:
+        problems.append("observation keys or group counts differ")
+    differences = []
+    for key in sorted(old.keys() & new.keys()):
+        for field in sorted(old[key].keys() | new[key].keys()):
+            if field not in old[key] or field not in new[key] or old[key][field] != new[key][field]:
+                differences.append({
+                    "fixture": key, "field": field,
+                    "a117_sdist": old[key].get(field), "a117_wheel": new[key].get(field),
+                    "a117_sdist_field_present": field in old[key], "a117_wheel_field_present": field in new[key],
+                })
+    return {
+        "a117_sdist_groups": old_counts, "a117_wheel_groups": new_counts, "missing": missing, "extra": extra,
+        "projection_fields": sorted(FIELDS), "projection_suffixes": ["_case_count", "_exit_code"],
+        "selected_semantics_equal": not (missing or extra or differences),
+        "differences": differences, "problems": problems,
+    }
+
+
+def compare(audit, result):
+    try:
+        return audit(result)
+    except (OSError, ValueError, KeyError, ET.ParseError) as exc:
+        return {"problems": [f"{audit.__name__}: {type(exc).__name__}: {exc}"]}
+
+
+def main():
+    case_path, docker_path = BASE / "case-diff.json", BASE / "docker-diff.json"
+    if case_path.exists() or docker_path.exists():
+        raise SystemExit("Comparison outputs already exist; preserve them.")
+    result = load(RUN / "result.json")
+    case_report, docker_report = compare(case_diff, result), compare(docker_diff, result)
+    write(case_path, case_report)
+    write(docker_path, docker_report)
+    return int(bool(
+        case_report["problems"] or docker_report["problems"] or not docker_report.get("selected_semantics_equal")
+    ))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

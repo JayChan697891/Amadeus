@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+Current incremental supplement — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+The unchanged a117 wheel passed Linux3.14's7 native checks and full frozen33ffbc3
+suite:2538passed/7skipped/0failed/error,2545 unique identities matching the accepted
+same-input sdist.35 Docker observations retain equal selected outcome projections;
+97 installed members and2382 inputs stayed unchanged. Root inspected actual logs,
+JUnit, terminal receipts and53 original transferred files. See
+[the wheel supplement](evidence/durable-demo-a117/full-linux314-wheel/current-summary.json).
+The later demo image-ID guard has separate10-case CLI regression and a real Linux
+rejection before project creation; it is not part of that frozen full suite.
+Zero-model interrupted-client preparation and9 inert-handle observer tests are
+preparation only, not live interruption/continuation evidence. No full controller,
+fresh live authorization, cross-vendor or host-crash acceptance follows.
+**Formal Release remains BLOCKED; no gates or historical M5 conclusions changed.**
+
 ## Current scoped outcome — 2026-11-15, installed-sdist regressions
 
 **Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.

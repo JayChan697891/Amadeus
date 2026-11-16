@@ -1,0 +1,158 @@
+"""Offline checks with the real capture layout and an inert owned handle."""
+
+import asyncio
+
+import pytest
+from interrupt_parent import interrupt_owned_parent
+
+from agentsync.adapters.approved_launch import LaunchReview
+from agentsync.adapters.base import AdapterTask
+from agentsync.adapters.codex_invocation import CodexInvocation
+from agentsync.adapters.process_capture import CapturedProcess, _Protocol
+
+THREAD = b'{"type":"thread.started","thread_id":"offline"}\n'
+TURN = b'{"type":"turn.started"}\n'
+PLAN_SHA = "a" * 64
+
+
+class FakeOwnedHandle(asyncio.SubprocessTransport):
+    def __init__(self, capture, trace):
+        self.protocol = _Protocol(capture)
+        self.trace = trace
+        self.return_code = None
+        self.race_at_kill = False
+
+    def get_protocol(self):
+        return self.protocol
+
+    def get_pid(self):
+        return 123
+
+    def get_returncode(self):
+        return self.return_code
+
+    def is_closing(self):
+        return False
+
+    def kill(self):
+        self.trace.append("kill")
+        if self.race_at_kill:
+            raise ProcessLookupError
+
+
+@pytest.fixture
+def observation(tmp_path):
+    async def build(stdout):
+        capture = CapturedProcess()
+        capture._stdout.extend(stdout)
+        trace = []
+        handle = FakeOwnedHandle(capture, trace)
+        capture._transport = handle
+        capture._spawn_task = asyncio.create_task(asyncio.sleep(0))
+        await capture._spawn_task
+        timeout = 90.0
+        capture._deadline = capture._started + timeout
+        task = AdapterTask("project", "session", "task", "request", "fixture", timeout)
+        plan = CodexInvocation(
+            "project",
+            "session",
+            "task",
+            "request",
+            ("unused",),
+            tmp_path,
+            "fixture",
+            (),
+            timeout,
+            capture._limit,
+            "0.167.0-alpha.3.2",
+            "b" * 64,
+        )
+        review = LaunchReview("codex", PLAN_SHA, plan, task)
+
+        def save(record):
+            trace.append(record)
+
+        async def observe(*, save_boundary=save, deadline=None):
+            return await interrupt_owned_parent(
+                capture,
+                review,
+                deadline=asyncio.get_running_loop().time() + 1 if deadline is None else deadline,
+                save_boundary=save_boundary,
+            )
+
+        return capture, handle, trace, observe
+
+    return build
+
+
+@pytest.mark.asyncio
+async def test_waits_for_complete_start_then_saves_before_one_kill(observation):
+    capture, _, trace, observe = await observation(THREAD + TURN[:-1])
+    pending = asyncio.create_task(observe())
+    await asyncio.sleep(0)
+    assert trace == []
+    capture._stdout.extend(b"\n")
+    assert await pending == "kill_call_returned"
+    record, action = trace
+    assert action == "kill"
+    assert record["capture_id"] == capture._id
+    assert record["parent_pid"] == 123 and record["plan_sha256"] == PLAN_SHA
+    assert record["parent_alive"] is True and record["turn_started_observed"] is True
+    assert record["terminal_event_observed"] is False
+    assert "offline" not in str(record)
+    assert await observe() == "already_observed" and trace.count("kill") == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("case", ("terminal", "stdout", "stderr"))
+async def test_terminal_and_truncated_captures_do_not_kill(observation, case):
+    capture, _, trace, observe = await observation(THREAD + TURN)
+    if case == "terminal":
+        capture._stdout.extend(b'{"type":"turn.completed"}\n')
+        expected = "terminal_observed"
+    else:
+        capture._truncated.add(1 if case == "stdout" else 2)
+        expected = "truncated"
+    assert await observe() == expected and trace == []
+
+
+@pytest.mark.asyncio
+async def test_observer_save_failure_does_not_kill_or_retry(observation):
+    _, _, trace, observe = await observation(THREAD + TURN)
+
+    def failed_save(_record):
+        raise OSError("unavailable")
+
+    assert await observe(save_boundary=failed_save) == "observation_not_saved"
+    assert await observe() == "already_observed" and trace == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("race", ("after_save", "at_kill"))
+async def test_exit_race_stays_unknown_without_another_kill(observation, race):
+    _, handle, trace, observe = await observation(THREAD + TURN)
+
+    def save(record):
+        trace.append(record)
+        if race == "after_save":
+            handle.return_code = 0
+        else:
+            handle.race_at_kill = True
+
+    assert await observe(save_boundary=save) == "unknown"
+    assert await observe() == "already_observed"
+    assert trace.count("kill") == (1 if race == "at_kill" else 0)
+
+
+@pytest.mark.asyncio
+async def test_expired_deadline_does_not_kill_or_retry(observation):
+    _, _, trace, observe = await observation(THREAD + TURN)
+    assert await observe(deadline=asyncio.get_running_loop().time()) == "missed_window"
+    assert await observe() == "already_observed" and trace == []
+
+
+@pytest.mark.asyncio
+async def test_unverified_layout_does_not_kill(observation):
+    capture, _, trace, observe = await observation(THREAD + TURN)
+    capture.unexpected_field = True
+    assert await observe() == "unknown" and trace == []

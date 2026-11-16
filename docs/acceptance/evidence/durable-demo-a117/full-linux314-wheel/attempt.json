@@ -1,0 +1,19 @@
+{
+  "scope": "Linux 3.14, one full installed a117 preview wheel suite with actual local Docker",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "fixture_snapshot_sha256": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+  "driver_sha256": "5314c9364eb75ee17fde90273e8e133049172b87ba4dc88d37fbf5de4b8a7c77",
+  "controller_pid": 2948,
+  "controller_python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "boot_id": "66d9162a-d314-499b-a949-ce2b94935497",
+  "required_docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "model_calls": 0,
+  "started_at": "2026-11-16T05:56:25.467944+00:00",
+  "status": "unknown",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": []
+}

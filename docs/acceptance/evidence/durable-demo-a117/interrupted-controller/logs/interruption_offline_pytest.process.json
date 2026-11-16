@@ -1,0 +1,56 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "interruption_offline_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\test_interrupt_parent.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\pytest",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller",
+    "started_at": "2026-11-16T06:16:15.836043+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "interruption_offline_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\test_interrupt_parent.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\pytest",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller",
+    "exit_code": 0,
+    "started_at": "2026-11-16T06:16:15.836043+00:00",
+    "finished_at": "2026-11-16T06:16:16.407093+00:00",
+    "log": "logs/interruption_offline_pytest.log",
+    "log_sha256": "af641e5a5df72a3c5344b98cbce63edf6c4df90ed078c1f1715b45b8baec481b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

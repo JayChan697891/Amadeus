@@ -1,0 +1,32 @@
+{
+  "finished_at": "2026-11-16T06:09:27.004261+00:00",
+  "prepare": {
+    "prepared": true,
+    "producer_plan_sha256": "b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928",
+    "model_calls": 0
+  },
+  "ready": {
+    "ready": true,
+    "producer_plan_sha256": "b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928",
+    "model_calls": 0
+  },
+  "public_transfer": {
+    "artifacts": {
+      "plan.json": {
+        "sha256": "8e99f23dc0327f5159f6bc30b120715bccc0897a3e444d7e3599a752dbe7fa11",
+        "bytes": 5701
+      },
+      "readiness.json": {
+        "sha256": "1f81987b9489028975acbeda3bbc17e3381dbc80a7be00f62e882ae6d0044a7e",
+        "bytes": 412
+      }
+    },
+    "fixture_tokens_checked": 3,
+    "private_home_empty": true,
+    "live_execution_started": false
+  },
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "live_execution": "NOT IMPLEMENTED / NOT RUN",
+  "formal_release": "BLOCKED"
+}

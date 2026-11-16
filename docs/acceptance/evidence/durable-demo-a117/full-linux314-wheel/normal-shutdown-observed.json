@@ -1,0 +1,7 @@
+{
+  "observed_at": "2026-11-16T06:18:06.5375240Z",
+  "vm_pid": 22172,
+  "process_absent": true,
+  "force_kill": false,
+  "disks_preserved": true
+}

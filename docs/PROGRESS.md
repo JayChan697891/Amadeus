@@ -10,17 +10,40 @@ the original5 tests remain. Actual logs/JUnit and exact tested hashes are at
 acceptance/evidence/durable-demo-a117/demo-imageid/result.json. These CLI tests
 do not execute Docker or models; valid execution logic and runtime remain unchanged.
 
-Linux3.14 installed-wheel regression is RUNNING, not passed: native session24678,
-host observer PID25064, owned VM PID22172/boot66d9162a-d314-499b-a949-ce2b94935497.
-Recovery: observe that same session or guest `/root/amadeus-m117lw/run/result.json`;
-never restart on an observation timeout. Host driver/results are under
-`D:/agentsync-debug/m117lw`. It uses runtimefc27f15, wheel300c72e1 and unchanged
-33ffbc3 frozen tests (2382 files), independently of the editable checkout.
-No prior collector was active before launch. No real model calls or auth copies.
-Previous sdist suites, a116 queues, failures and M5 accepted scope remain intact.
-Next: inspect the terminal wheel result and preserve its logs/JUnit; prepare the
-existing confirmed-client-failure continuation path separately from host-crash
-unknown fencing. All prior live grants are consumed. Full B/Release stay BLOCKED.
+Linux3.14 installed-wheel regression completed: native session24678 closed with
+exit0 at2026-11-16T06:15:01Z. All7 native checks passed;2545 unique cases gave
+2538pass/7skip/0failure/error,120 retained warnings,1100.99 seconds. Case identities
+and outcomes equal the accepted same-input sdist;35 actual Docker observations
+in7 groups have equal selected outcome projections. Root checked actual terminal,
+logs/JUnit, origin and all53 transferred original files (638771bytes).97 runtime
+members and2382 frozen33ffbc3 inputs remain unchanged. Later6fdf9e5 CLI changes
+are separate:10 unit checks plus an actual Linux invalid-ID exit2, no project
+directory created. No repeat of the valid Docker demo was needed.
+Evidence: acceptance/evidence/durable-demo-a117/full-linux314-wheel/current-summary.json.
+The historical execution-start record remains running-at-start; execution-result
+is its terminal receipt. This is not a complete current-candidate matrix row.
+
+Next P0 preparation is at acceptance/evidence/durable-demo-a117/interrupted-preparation/.
+Actual zero-model prepare and ready commands exited0 with exact producer plan
+b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928. Its two agents,
+producer/dependent tasks and unchanged source/worktree are local fixtures. The
+host-known partial add.py is not model-generated progress. Runtime97/CLI bytes
+were pinned; CLI version is expected, not executed. No model auth was accessed.
+The isolated interruption observer under interrupted-controller/ passed9 inert-
+handle tests and independent static review. kill_call_returned does not prove
+termination. Real interruption, the complete live-test controller, its second
+launch/replay and two-actor auth cleanup remain NOT IMPLEMENTED/NOT RUN;
+authorization NOT GRANTED. Existing product continuation APIs remain unchanged.
+
+Resume by implementing those remaining controller paths in
+`D:/agentsync-debug/strategy-demo/interrupted-a117-controller`; keep the executed
+preparation and old failures immutable. Readiness is point-in-time and must not
+authorize a future launch. Keep unknown fencing distinct from confirmed failure.
+All current test/preparation commands ended. The owned VM22172 was normally powered off after
+checking no Python/Codex workers, no containers and an empty preparation auth home;
+host observed it absent at06:18:06Z. Disks/private fixture state remain on D drive.
+No real model calls or external model-auth copies occurred. Previous sdist suites,
+a116 queues and M5 accepted scope stay intact. Full B/Release remain BLOCKED.
 
 Current checkpoint — 2026-11-15, Windows/Linux installed-sdist regressions. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.

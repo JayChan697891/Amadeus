@@ -1,0 +1,12 @@
+{
+  "requested_at": "2026-11-16T06:18:01.813473+00:00",
+  "vm_pid": 22172,
+  "boot_id": "66d9162a-d314-499b-a949-ce2b94935497",
+  "preflight": {
+    "active_python_codex": [],
+    "containers": [],
+    "preparation_private_home_empty": true
+  },
+  "operation": "normal guest poweroff",
+  "force_kill": false
+}

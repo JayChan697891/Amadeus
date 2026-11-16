@@ -1,0 +1,325 @@
+"""Prepare and recheck one local fixture, without invoking a client or accessing auth."""
+
+import argparse
+import hashlib
+import json
+import os
+import stat
+import subprocess
+import sys
+import time
+from datetime import UTC, datetime
+from importlib import metadata
+from pathlib import Path
+
+import agentsync
+from agentsync.adapters.approved_launch import prepare_launch_review
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor
+from agentsync.core.service import Core
+from agentsync.relay_queue import CodexProposalQueueItem, RelayQueue
+
+BASE = Path("/root/amadeus-interrupted-a117-20261115")
+PACKAGE = Path("/root/amadeus-demo-a117-sdist-r1")
+PRIVATE_HOME = BASE / "private-home"
+EXE = Path("/root/amadeus-codex-linux-0167/bin/codex")
+PRODUCT = "fc27f15f47fa92ed5edcd764a573c1d84a68c107"
+SDIST_SHA = "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672"
+MEMBERS_SHA = "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+CAPTURE_SHA = "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7"
+BINARY_SHA = "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0"
+CLI_VERSION = "0.167.0-alpha.3.2"
+TIMEOUT = 90
+OUTPUT_LIMIT = 1024 * 1024
+WAVE_REQUEST = "interrupted-add-producer-wave"
+CHECKPOINT_REQUEST = "host-known-add-progress"
+PATHS = ("add.py",)
+GOAL = "Implement add(a, b) in add.py so that it returns a + b for two integers."
+BOUNDARY = "Do not use tools, read or modify files, or run code."
+INSTRUCTION = GOAL + " " + BOUNDARY
+CONTINUATION = GOAL + " Finish the pinned unfinished function. " + BOUNDARY
+PARTIAL = "def add(a, b):\n    # Host-known partial checkpoint.\n    raise NotImplementedError\n"
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def require_private_directory(path):
+    info = path.lstat()
+    assert stat.S_ISDIR(info.st_mode) and info.st_uid == 0
+    assert stat.S_IMODE(info.st_mode) == 0o700
+
+
+def save(name, value):
+    with (BASE / name).open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def load(name):
+    path = BASE / name
+    info = path.lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0
+    assert stat.S_IMODE(info.st_mode) == 0o600 and 0 < info.st_size <= 65536
+    return json.loads(path.read_bytes())
+
+
+def runtime():
+    archive = PACKAGE / "agentsync_local-0.3.0a117.tar.gz"
+    installed = (PACKAGE / "installed").resolve(strict=True)
+    assert Path(sys.prefix).resolve() == installed
+    assert sha(archive) == SDIST_SHA and sha(EXE) == BINARY_SHA
+    assert sha(BASE / "runtime-members.json") == MEMBERS_SHA
+    assert sha(BASE / "private_capture.py") == CAPTURE_SHA
+    dist = metadata.distribution("agentsync-local")
+    site = Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(installed)
+    assert Path(dist.locate_file("agentsync")).resolve() == site / "agentsync"
+    assert agentsync.__version__ == dist.version == "0.3.0a117"
+    direct = json.loads(dist.read_text("direct_url.json"))
+    assert direct["url"] == archive.resolve(strict=True).as_uri() and "dir_info" not in direct
+    assert direct["archive_info"]["hashes"]["sha256"] == SDIST_SHA
+    members = load("runtime-members.json")
+    assert len(members) == 97 and sum(name.endswith(".py") for name in members) == 96
+    for name, digest in members.items():
+        member = (site / name).resolve(strict=True)
+        assert member.is_relative_to(site / "agentsync") and sha(member) == digest
+    for name, module in tuple(sys.modules.items()):
+        if name == "agentsync" or name.startswith("agentsync."):
+            assert Path(module.__file__).resolve().is_relative_to(site / "agentsync")
+    return {
+        "prepare.py": sha(BASE / "prepare.py"),
+        "private_capture.py": CAPTURE_SHA,
+        "runtime-members.json": MEMBERS_SHA,
+    }
+
+
+def auth(state, who):
+    member = state[who]
+    return {
+        "project_id": state["owner"]["project_id"],
+        "session_id": member["session_id"],
+        "session_token": member["session_token"],
+    }
+
+
+def git(root, *args):
+    return subprocess.run(
+        ["/usr/bin/git", "-C", str(root), *args],
+        env={
+            "PATH": "/usr/bin:/bin", "HOME": str(PRIVATE_HOME),
+            "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull, "GIT_TERMINAL_PROMPT": "0",
+        },
+        check=True, capture_output=True, text=True, timeout=15,
+    ).stdout.strip()
+
+
+async def deny(_review):
+    return None
+
+
+def producer_plan(core, state):
+    producer, tree, task = state["producer"], state["tree"], state["task"]
+    profile = CodexHostProfile(
+        state["owner"]["project_id"], producer["session_id"], EXE, Path(tree["path"]), BINARY_SHA,
+        expected_cli_version=CLI_VERSION, max_timeout_seconds=TIMEOUT,
+        output_limit=OUTPUT_LIMIT, linux_readonly=True,
+    )
+    environment = {
+        "PATH": "/usr/bin:/bin", "HOME": str(PRIVATE_HOME), "CODEX_HOME": str(PRIVATE_HOME),
+        "TEMP": str(PRIVATE_HOME), "TMP": str(PRIVATE_HOME),
+    }
+    actor = RelayActor(
+        producer["agent_id"], producer["session_token"], profile,
+        tree["worktree_id"], tree["head_sha"], environment, deny,
+    )
+    spec = CodexProposalInput(
+        task["id"], task["version"], INSTRUCTION, PATHS, TIMEOUT, submit_for_review=True,
+    )
+    item = CodexProposalQueueItem(actor, spec, ("code",))
+    admin_token = state["owner"]["admin_token"]
+    relay = ControlledRelay(core, BASE, BASE / "receipts")
+    queue = RelayQueue(relay)
+    selected = queue.preview((item,), admin_token=admin_token, parallel_limit=1)
+    assert selected.state == "selected" and len(selected.tasks) == 1
+    assert selected.selection_sha256 is not None
+    candidate = selected.tasks[0]
+    assert (candidate.task_id, candidate.expected_version, candidate.agent_id) == (
+        task["id"], task["version"], producer["agent_id"],
+    )
+    # The ordinary proposal preview omits this wave binding.
+    wave_key = queue._key(actor, WAVE_REQUEST)
+    adapter_task = relay._single_codex_task(actor, spec, admin_token, wave_key=wave_key)
+    review = prepare_launch_review(profile, adapter_task, environment=environment)
+    plan = review.plan
+    assert plan.child_env() == environment and plan.output_limit == OUTPUT_LIMIT
+    return {
+        "selection_sha256": selected.selection_sha256,
+        "request_id": WAVE_REQUEST,
+        "wave_sha256": wave_key,
+        "plan_sha256": review.plan_sha256,
+        "argv": list(plan.argv),
+        "stdin_text": plan.stdin_text,
+        "cwd": str(plan.cwd),
+        "environment": plan.child_env(),
+        "timeout_seconds": plan.timeout_seconds,
+        "output_limit": plan.output_limit,
+        "client_version": CLI_VERSION,
+        "binary_sha256": BINARY_SHA,
+    }
+
+
+def require_fixtures(state):
+    for directory in (BASE / "source", Path(state["tree"]["path"])):
+        assert git(directory, "rev-parse", "HEAD") == state["baseline_head"]
+        assert sha(directory / "fixture.txt") == state["fixture_sha256"]
+        assert not git(directory, "status", "--porcelain", "--untracked-files=all")
+
+
+def prepare():
+    hashes = runtime()
+    if {path.name for path in BASE.iterdir()} != set(hashes):
+        raise SystemExit("Use a fresh fixture containing only the three reviewed inputs.")
+    for name in ("source", "receipts", "private-home"):
+        (BASE / name).mkdir(mode=0o700)
+    source = BASE / "source"
+    git(source, "init", "--initial-branch=fixture-main")
+    (source / "fixture.txt").write_text("Isolated add(a, b) continuation fixture.\n", encoding="utf-8")
+    git(source, "add", "--", "fixture.txt")
+    git(
+        source, "-c", "user.name=Amadeus fixture", "-c", "user.email=fixture@example.invalid",
+        "commit", "-m", "Isolated continuation baseline",
+    )
+
+    core = Core(BASE / "core")
+    owner = core.execute("create_project", {"name": "Interrupted add proposal", "root_path": str(source)})
+    state = {"owner": owner}
+    for who in ("producer", "receiver"):
+        member = core.execute(
+            "register_agent", {**owner, "name": "Interrupted add " + who, "capabilities": ["code"]},
+        )
+        rows = core.execute_owner("list_members", {**owner, "limit": 100, "offset": 0})["members"]
+        row = next(row for row in rows if row["agent_id"] == member["agent_id"])
+        core.execute_owner(
+            "set_agent_roles",
+            {**owner, "agent_id": member["agent_id"], "roles": ["worker"],
+             "expected_version": row["version"], "request_id": "role-" + who},
+        )
+        state[who] = member
+    producer = auth(state, "producer")
+    task = core.execute("create_task", {**producer, "title": GOAL, "request_id": "producer-add"})
+    dependent = core.execute(
+        "create_task",
+        {**producer, "title": "Follow up on the add proposal", "dependencies": [task["id"]],
+         "request_id": "dependent-add"},
+    )
+    snapshot = core.execute("capture_repository", {**producer, "request_id": "snapshot-add"})
+    tree = core.execute(
+        "create_worktree",
+        {**producer, "snapshot_id": snapshot["snapshot_id"], "task_id": task["id"],
+         "request_id": "worktree-add"},
+    )
+    state.update(
+        task=task, dependent=dependent, tree=tree, helper_sha256=hashes,
+        baseline_head=git(source, "rev-parse", "HEAD"), fixture_sha256=sha(source / "fixture.txt"),
+    )
+    require_fixtures(state)
+    plan = producer_plan(core, state)
+    state["plan_sha256"] = plan["plan_sha256"]
+    save("state.json", state)  # Private synthetic owner and session credentials.
+    members = load("runtime-members.json")
+    save(
+        "plan.json",
+        {
+            "recorded_at": datetime.now(UTC).isoformat(),
+            "runtime_commit": PRODUCT, "sdist_sha256": SDIST_SHA, "runtime_members": 97,
+            "helper_sha256": hashes, "producer_plan": plan,
+            "private_interface_sha256": {
+                name: members[name]
+                for name in (
+                    "agentsync/relay_queue.py", "agentsync/controlled_relay.py",
+                    "agentsync/continuation.py", "agentsync/adapters/approved_launch.py",
+                    "agentsync/adapters/process_capture.py",
+                )
+            },
+            "host_checkpoint": {
+                "origin": "host_known_partial_source", "model_authorship": False,
+                "request_id": CHECKPOINT_REQUEST,
+                "files": [{"path": PATHS[0], "content": PARTIAL}],
+            },
+            "continuation_instruction": CONTINUATION,
+            "source_task_id": task["id"], "dependent_task_id": dependent["id"],
+            "dependent_initial_version": dependent["version"],
+            "producer_agent_id": state["producer"]["agent_id"],
+            "receiver_agent_id": state["receiver"]["agent_id"],
+            "model_calls": 0, "external_auth_copies": 0,
+            "receiver_plan_sha256": None, "live_authorization": "NOT GRANTED",
+            "proposed_model_call_limit": 2, "automatic_retry": False,
+            "status": "PREPARATION ONLY", "formal_release": "BLOCKED",
+            "live_execution": "NOT IMPLEMENTED / NOT RUN",
+        },
+    )
+    print(json.dumps({"prepared": True, "producer_plan_sha256": plan["plan_sha256"], "model_calls": 0}))
+
+
+def ready(expected):
+    hashes = runtime()
+    state, recorded = load("state.json"), load("plan.json")
+    if (BASE / "readiness.json").exists():
+        raise SystemExit("The prior readiness record already exists.")
+    assert not any((BASE / name).exists() for name in ("producer-entry.json", "receiver-entry.json"))
+    require_private_directory(PRIVATE_HOME)
+    assert not any(PRIVATE_HOME.iterdir())
+    assert state["helper_sha256"] == recorded["helper_sha256"] == hashes
+    assert state["plan_sha256"] == recorded["producer_plan"]["plan_sha256"] == expected
+    core = Core(BASE / "core")
+    for who in ("producer", "receiver"):
+        core.execute("heartbeat", auth(state, who))
+    require_fixtures(state)
+    assert producer_plan(core, state) == recorded["producer_plan"]
+    snapshot = core.execute("get_project_state", auth(state, "producer"))
+    sessions = {row["id"]: row for row in snapshot["sessions"]}
+    tasks = {row["id"]: row for row in snapshot["tasks"]}
+    assert tasks[state["task"]["id"]]["status"] == "pending"
+    dependent = tasks[state["dependent"]["id"]]
+    assert dependent["status"] == "pending" and dependent["version"] == state["dependent"]["version"]
+    assert dependent["dependencies"] == [state["task"]["id"]]
+    for who in ("producer", "receiver"):
+        row = sessions[state[who]["session_id"]]
+        assert row["online"] is True and row["expires_at"] > time.time() + TIMEOUT + 2
+    save(
+        "readiness.json",
+        {
+            "observed_at": datetime.now(UTC).isoformat(), "producer_plan_sha256": expected,
+            "selection_sha256": recorded["producer_plan"]["selection_sha256"],
+            "producer_online": True, "receiver_online": True, "private_home_empty": True,
+            "model_calls": 0, "external_auth_copies": 0, "live_authorization": "NOT GRANTED",
+        },
+    )
+    print(json.dumps({"ready": True, "producer_plan_sha256": expected, "model_calls": 0}))
+
+
+def main():
+    if (
+        sys.platform != "linux" or os.geteuid() != 0 or not __debug__
+        or not sys.flags.isolated or not sys.dont_write_bytecode
+        or Path(__file__).resolve() != BASE / "prepare.py"
+    ):
+        raise SystemExit("Use the reviewed guest path and installed Python with -I -B.")
+    os.umask(0o077)
+    require_private_directory(BASE)
+    parser = argparse.ArgumentParser(description=__doc__)
+    action = parser.add_subparsers(dest="action", required=True)
+    action.add_parser("prepare")
+    action.add_parser("ready").add_argument("expected_producer_plan_sha256")
+    args = parser.parse_args()
+    if args.action == "prepare":
+        prepare()
+    else:
+        ready(args.expected_producer_plan_sha256)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,95 @@
+"""Copy only completed public run evidence; retain private scratch on the guest."""
+
+import hashlib
+import json
+import stat
+from datetime import UTC, datetime
+from pathlib import Path, PurePosixPath
+
+import paramiko
+
+BASE = Path(r"D:\agentsync-debug\m117lw")
+DESTINATION = BASE / "harvest"
+REMOTE = "/root/amadeus-m117lw/run"
+observer = json.loads((BASE / "execution-result.json").read_bytes())
+assert observer["status"] == "completed" and observer["exit_code"] in (0, 1)
+assert observer['command'] == '/root/jobs-env/bin/python -I -B /root/amadeus-m117lw/run-wheel.py'
+assert observer['finished_at'] and observer['automatic_retry'] is False and observer['model_calls'] == 0
+assert not DESTINATION.exists()
+client = paramiko.SSHClient()
+client.load_host_keys(r"D:\agentsync-debug\vm\known_hosts")
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect(
+    "127.0.0.1", port=22222, username="root",
+    key_filename=r"D:\agentsync-debug\vm\debug_ed25519",
+    look_for_keys=False, allow_agent=False, timeout=15,
+)
+try:
+    probe = '''import hashlib,json,os,subprocess
+from pathlib import Path
+root=Path('/root/amadeus-m117lw')
+run=root/'run'
+assert Path('/proc/sys/kernel/random/boot_id').read_text().strip()=='66d9162a-d314-499b-a949-ce2b94935497'
+result=json.loads((run/'result.json').read_bytes())
+assert result['finished_at'] and result['status'] in ('pass','fail')
+assert result['boot_id']=='66d9162a-d314-499b-a949-ce2b94935497'
+processes=[]
+for path in Path('/proc').iterdir():
+ if not path.name.isdigit() or int(path.name)==os.getpid():continue
+ try:
+  args=(path/'cmdline').read_bytes().split(b'\\0')
+  if any(b'/root/amadeus-m117lw/' in x for x in args):processes.append(int(path.name))
+ except (FileNotFoundError,PermissionError,ProcessLookupError):pass
+assert not processes,processes
+env={'PATH':'/usr/local/bin:/usr/bin:/bin','HOME':str(root/'home'),'DOCKER_CONFIG':str(root/'home'/'.docker'),'DOCKER_HOST':'unix:///var/run/docker.sock'}
+containers=subprocess.check_output(['/usr/bin/docker','ps','-aq','--no-trunc'],env=env,text=True,timeout=30).splitlines()
+assert containers==[],containers
+frozen=Path('/root/amadeus-m117l')
+manifest_bytes=(frozen/'frozen-inputs.json').read_bytes()
+assert hashlib.sha256(manifest_bytes).hexdigest()=='635ba0600cedda71c47e2af65ee9c3f7dd96d711a2d71439e0614381ae6b6f91'
+manifest=json.loads(manifest_bytes)
+assert len(manifest['files'])==2382
+for item in manifest['files']:
+ path=frozen/'s'/item['path']
+ assert not path.is_symlink() and path.stat().st_size==item['bytes'] and hashlib.sha256(path.read_bytes()).hexdigest()==item['sha256']
+records=[]
+for path in sorted(run.rglob('*')):
+ assert not path.is_symlink()
+ if path.is_file():
+  relative=path.relative_to(run).as_posix()
+  assert path.suffix in ('.json','.log','.xml') and not any(part in ('home','t','private-home') for part in path.parts)
+  records.append({'path':relative,'bytes':path.stat().st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
+assert result['status']=='fail' or len(records)>20
+print(json.dumps({'files':records,'run_status':result['status'],'frozen_inputs_rechecked':len(manifest['files']),'active_fixture_processes':processes,'docker_containers':containers,'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}))
+'''
+    stdin, stdout, stderr = client.exec_command("/root/jobs-env/bin/python -I -B -", timeout=60)
+    stdin.write(probe)
+    stdin.flush()
+    stdin.channel.shutdown_write()
+    output, errors = stdout.read(), stderr.read()
+    assert stdout.channel.recv_exit_status() == 0, errors.decode()
+    record = json.loads(output)
+    assert record['run_status'] == {0: 'pass', 1: 'fail'}[observer['exit_code']]
+    DESTINATION.mkdir()
+    sftp = client.open_sftp()
+    for entry in record["files"]:
+        relative = PurePosixPath(entry["path"])
+        assert not relative.is_absolute() and ".." not in relative.parts
+        remote = REMOTE + "/" + relative.as_posix()
+        assert stat.S_ISREG(sftp.lstat(remote).st_mode)
+        with sftp.open(remote, "rb") as stream:
+            data = stream.read()
+        assert len(data) == entry["bytes"] and hashlib.sha256(data).hexdigest() == entry["sha256"]
+        path = DESTINATION.joinpath(*relative.parts)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("xb") as stream:
+            stream.write(data)
+    record["observed_at"] = datetime.now(UTC).isoformat()
+    record["original_sdist_harvest_script_sha256"] = "f5c6abdb1bf9ba68857c243718767ae4b8b268a4a1309da8c6f24ccb5bc0211a"
+    record["observer"] = observer
+    with (BASE / "transfer-summary.json").open("x", encoding="utf-8") as stream:
+        json.dump(record, stream, indent=2)
+        stream.write("\n")
+    print(json.dumps({"files": len(record["files"]), "bytes": sum(x["bytes"] for x in record["files"]), "inputs_unchanged": record["frozen_inputs_rechecked"], "containers": record["docker_containers"]}))
+finally:
+    client.close()

@@ -1,0 +1,70 @@
+{
+  "scope": "Zero-model local preparation only",
+  "model_calls": 0,
+  "external_model_auth_copies": 0,
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "plan_sha256": "b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928",
+  "prepare_native_exit": 0,
+  "ready_native_exit": 0,
+  "host_checkpoint_is_model_authored": false,
+  "live_execution": "NOT IMPLEMENTED / NOT RUN",
+  "receiver_plan_sha256": null,
+  "full_harness_and_credential_cleanup": "NOT IMPLEMENTED",
+  "live_authorization": "NOT GRANTED",
+  "cli_version": "Expected pinned binary version only; no version command executed this run",
+  "readiness_scope": "Point-in-time only; future execution requires fresh session and exact plan checks",
+  "review_fix": "Removed conflicting plain-source instruction before freezing; existing JSON proposal contract remains authoritative",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "prepare.py.txt",
+      "bytes": 14153,
+      "sha256": "a39f828a7e73c431fea13bcdfa5da1dec032c73093a25b6c4d7d8b50a2915d13"
+    },
+    {
+      "path": "private_capture.py.txt",
+      "bytes": 3377,
+      "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7"
+    },
+    {
+      "path": "runtime-members.json",
+      "bytes": 10243,
+      "sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+    },
+    {
+      "path": "stage-and-prepare.py.txt",
+      "bytes": 4622,
+      "sha256": "d54f28ab1f8d46b3ab925b0389ba5e5cb2781932f96ee6772c3f132f2b9a1299"
+    },
+    {
+      "path": "preparation-entry.json",
+      "bytes": 441,
+      "sha256": "8e1d4bdb56ecbae5690156144b2a8fb52b698eda00cd2fd591fa38f61f0c0f43"
+    },
+    {
+      "path": "prepare-command.json",
+      "bytes": 386,
+      "sha256": "d0e686a7128ebfcb58fdb8872b16d91a8fb33ad5dfae39c2b7a79bf44cf14cef"
+    },
+    {
+      "path": "ready-command.json",
+      "bytes": 446,
+      "sha256": "f0b06f6c79d6deb553f7def0b926578561c235b30b535009988f9f57238d9098"
+    },
+    {
+      "path": "plan.json",
+      "bytes": 5701,
+      "sha256": "8e99f23dc0327f5159f6bc30b120715bccc0897a3e444d7e3599a752dbe7fa11"
+    },
+    {
+      "path": "readiness.json",
+      "bytes": 412,
+      "sha256": "1f81987b9489028975acbeda3bbc17e3381dbc80a7be00f62e882ae6d0044a7e"
+    },
+    {
+      "path": "preparation-result.json",
+      "bytes": 964,
+      "sha256": "95e597b39492f432ee194f3c139f4425c9df2972f78b378b2090b0fef2aa8341"
+    }
+  ]
+}

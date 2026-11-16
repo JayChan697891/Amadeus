@@ -16,7 +16,7 @@ the immutable0.3.0a116 matrix continues independently and is not relabelled.
 | --- | --- | --- |
 | P0 | Use the delivered durable CLI and controlled two-Codex demonstration; close the remaining actual in-flight recovery evidence gap. | The runnable A paths and same-protocol recovery already exist. Preserve exact source/artifact identities, unknown-result stop gates and explicit approvals. A new live attempt needs a fresh reviewed plan and authorization; consumed grants cannot be reused. |
 | P0 | Keep independent verification, pinned context and owner decisions visible in the demonstration. | Reuse the existing Core/Docker implementation and actual evidence. Do not add another orchestration layer or repeat accepted unchanged flows. Textual peer review remains unverified. |
-| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | First reject an invalid Docker image ID before the demo creates a project. Run the already prepared wheel suite independently of development; new tool changes receive affected regression. Existing bounded benchmarks are complete. |
+| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | Early image-ID validation and the frozen Linux wheel supplement are complete. Keep later tool regression separate from that frozen suite; existing bounded benchmarks are complete. |
 | P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
 
 The critical path is the usable demonstration, then evidence-backed recovery
@@ -35,13 +35,15 @@ CLI file passed10 local checks and Ruff/format. This is an error-handling fix,
 not another product stage or a repeated Docker acceptance. B has no fixed ETA until live recovery access and
 the required client environments exist. C still requires the original full gates.
 
-The a117 Linux wheel supplement now runs once in `/root/amadeus-m117lw`, using
-the unchanged package and frozen33ffbc3 tests. Expected duration is about20–30
-minutes from local prior measurements; timeout is2 hours. Repository edits do
-not reach this frozen input. Do not start another Docker job while it is active.
-Afterward, harvest its actual result before deciding the next missing check;
-do not rerun the completed sdist suite or a116 matrix. Small host-side CLI checks
-may run independently. The wheel supplement is not a complete release matrix row.
+The a117 Linux wheel supplement finished once in `/root/amadeus-m117lw`, using
+the unchanged package and frozen33ffbc3 tests:2538pass/7skip,7 native checks,
+35 actual Docker observations,2382 unchanged inputs and97 unchanged runtime files.
+The actual pytest took1100.99 seconds. Case identities/outcomes and selected
+Docker projections match the same-input sdist. Repository edits did not reach
+this frozen input. Do not rerun the completed sdist suite or a116 matrix. The
+later CLI fix separately passed10 checks and a native Linux negative-path command.
+The wheel supplement is not a complete release matrix row; see
+[its actual terminal evidence](acceptance/evidence/durable-demo-a117/full-linux314-wheel/current-summary.json).
 
 Remaining evidence: actual model in-flight crash/recovery, real Claude/Cursor
 compatibility (no subscriptions), and current-candidate full release coverage;
@@ -54,7 +56,15 @@ with an already pinned checkpoint may enter OwnerContinuation; a controller cras
 timeout or uncertain capture stays unknown and cannot be automatically retried.
 The next P0 preparation should reuse those paths, explicitly label host-known
 checkpoint input, and keep client-process failure separate from whole-host crash.
-No fresh live run is authorized or started by this planning decision.
+No fresh live run is authorized or started by this planning decision. Zero-model
+prepare/ready commands now actually passed for a dedicated same-goal add.py fixture;
+the checkpoint is explicitly host-known, not model-authored. The owned-parent
+interruption observer has9 passing inert-handle tests and independent static review.
+Neither is live recovery acceptance. The next bounded work is the remaining
+controller integration: capture/receipt persistence, exact receiver-plan inspection,
+new-process continuation/replay and two-actor terminal-gated auth cleanup. It must
+be complete and reviewed before requesting a fresh at-most-two-call grant. The
+preparation's readiness is point-in-time; do not reuse it as future authorization.
 
 | Delivery node | Deliverable and exit condition | Current boundary / effort estimate |
 | --- | --- | --- |
