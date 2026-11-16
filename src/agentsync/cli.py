@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import os
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Any
@@ -128,6 +129,15 @@ def run_demo(data_dir: str | Path) -> dict[str, Any]:
             "scope": "local mock workflow; no desktop host compatibility verified",
         },
     }
+
+
+def _call_owner(data_dir: str | Path, operation: str, payload: dict[str, Any]) -> dict[str, Any]:
+    try:
+        return AgentSyncClient(data_dir).owner_call(operation, **payload)
+    except sqlite3.Error:
+        return error_envelope(
+            AgentSyncError("storage_error", "The local Core database is unavailable.", 503)
+        )
 
 
 def amadeus_main() -> int:
@@ -258,9 +268,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
                 },
             }
         else:
-            response = AgentSyncClient(data_dir).owner_call(
-                f"{args.operation}_mock_workflow", **payload
-            )
+            response = _call_owner(data_dir, f"{args.operation}_mock_workflow", payload)
         print(json.dumps(response, ensure_ascii=True, allow_nan=False))
         return 0 if response["ok"] else 1
     if args.command in {"relay-status", "relay-reconcile"}:
@@ -316,7 +324,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         except AgentSyncError as error:
             response = error_envelope(error)
         else:
-            response = AgentSyncClient(directory).owner_call(args.operation, **payload)
+            response = _call_owner(directory, args.operation, payload)
         print(json.dumps(response, ensure_ascii=False))
         return 0 if response["ok"] else 1
     elif args.command == "demo":

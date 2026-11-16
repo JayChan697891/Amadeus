@@ -79,6 +79,26 @@ def test_owner_missing_database_does_not_create_state(tmp_path, source, director
     assert not process.stderr
 
 
+def test_owner_reports_corrupt_database(tmp_path):
+    database = tmp_path / "agentsync.db"
+    contents = b"not a SQLite database\n"
+    database.write_bytes(contents)
+    payload = json.dumps(
+        {"project_id": "11111111-1111-4111-8111-111111111111", "admin_token": "synthetic-secret"}
+    )
+
+    process = run_owner("list_members", payload, data_dir=tmp_path)
+
+    assert process.returncode == 1
+    assert not process.stderr
+    assert "synthetic-secret" not in process.stdout
+    response = json.loads(process.stdout)
+    assert response["ok"] is False and response["error"]["code"] == "storage_error"
+    assert str(tmp_path) not in response["error"]["message"]
+    assert database.read_bytes() == contents
+    assert list(tmp_path.iterdir()) == [database]
+
+
 def test_owner_existing_database_supports_explicit_write_and_env_read(tmp_path):
     state, wrong = tmp_path / "project", tmp_path / "unused"
     client = AgentSyncClient(state)

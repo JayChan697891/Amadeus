@@ -122,6 +122,37 @@ def test_durable_cli_requires_saved_database(tmp_path, operation, directory_exis
     assert "--data-dir" in response["error"]["message"]
 
 
+def test_durable_cli_status_reports_corrupt_database(tmp_path):
+    database = tmp_path / "agentsync.db"
+    contents = b"not a SQLite database\n"
+    database.write_bytes(contents)
+    payload = {
+        "project_id": "11111111-1111-4111-8111-111111111111",
+        "admin_token": "fixture-token-not-a-credential",
+    }
+
+    process = subprocess.run(
+        cli_command(tmp_path, "status"),
+        input=json.dumps(payload),
+        text=True,
+        capture_output=True,
+        timeout=20,
+        env=child_env(),
+        check=False,
+        cwd=tmp_path.parent,
+    )
+
+    assert process.returncode == 1
+    assert process.stderr == ""
+    assert payload["admin_token"] not in process.stdout
+    response = json.loads(process.stdout)
+    assert response["ok"] is False
+    assert response["error"]["code"] == "storage_error"
+    assert str(tmp_path) not in response["error"]["message"]
+    assert database.read_bytes() == contents
+    assert list(tmp_path.iterdir()) == [database]
+
+
 def ordinary_worker(client, owner):
     actor = client.call("register_agent", **owner, name="Ordinary worker")["data"]
     owner_grant(client.core, owner, actor)
