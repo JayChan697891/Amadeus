@@ -14,15 +14,47 @@ the immutable0.3.0a116 matrix continues independently and is not relabelled.
 
 | Priority | Next product work | Dependency / completion boundary |
 | --- | --- | --- |
-| P0 | Make the existing durable local workflow easy to demonstrate: task creation, one bounded retry, a fresh process reading saved state, structured handoff and distinct peer review. | A thin CLI entry over the existing Core; dedicated empty data directory, observable persisted identity and no credentials in output. Mock execution and textual review must remain explicitly unverified. |
-| P0 | Reuse the real proposal flow, exact owner approvals and independent Docker verification; close the prepared HTTP/MCP same-protocol recovery gap. | Preserve exact source/artifact identities. No host fallback for candidate execution, uncertain-result retry or automatic approval. Real model runs retain their separate authorization boundary. |
-| P1 | Installation/CLI guidance, actionable errors and the existing bounded performance checks. | Reuse the installed package and current local environments; affected checks only for changed code. No new orchestration layer or GUI is needed for the demonstration. |
+| P0 | Use the delivered durable CLI and controlled two-Codex demonstration; close the remaining actual in-flight recovery evidence gap. | The runnable A paths and same-protocol recovery already exist. Preserve exact source/artifact identities, unknown-result stop gates and explicit approvals. A new live attempt needs a fresh reviewed plan and authorization; consumed grants cannot be reused. |
+| P0 | Keep independent verification, pinned context and owner decisions visible in the demonstration. | Reuse the existing Core/Docker implementation and actual evidence. Do not add another orchestration layer or repeat accepted unchanged flows. Textual peer review remains unverified. |
+| P1 | Remove concrete installation/demo friction and fill missing current-package checks. | First reject an invalid Docker image ID before the demo creates a project. Run the already prepared wheel suite independently of development; new tool changes receive affected regression. Existing bounded benchmarks are complete. |
 | P2 | Additional adapters, nonblocking enhancements and unavailable platform work. | Defer execution where access is absent, not the original formal-release requirements. macOS and real Claude/Cursor remain NOT RUN until an authorized environment exists. |
 
 The critical path is the usable demonstration, then evidence-backed recovery
 and real collaboration, alongside the remaining current-candidate release checks.
 Do not rebuild working Core capabilities or repeat full acceptance of an unchanged
 SHA. Product changes receive affected regression; documentation receives diff review.
+
+### Resumed priority check — 2026-11-15 America/Tijuana
+
+Live PR35 is open/draft at342fee9 with no review comments; Issues7/11 remain open.
+The feature checkout was clean on resume. No old test collector was running;
+the owned Linux VM remained available. All original evidence and packages stay
+immutable. The existing A demonstrations can be used now. The first usability
+fix now rejects malformed image IDs before any fixture mutation; the affected
+CLI file passed10 local checks and Ruff/format. This is an error-handling fix,
+not another product stage or a repeated Docker acceptance. B has no fixed ETA until live recovery access and
+the required client environments exist. C still requires the original full gates.
+
+The a117 Linux wheel supplement now runs once in `/root/amadeus-m117lw`, using
+the unchanged package and frozen33ffbc3 tests. Expected duration is about20–30
+minutes from local prior measurements; timeout is2 hours. Repository edits do
+not reach this frozen input. Do not start another Docker job while it is active.
+Afterward, harvest its actual result before deciding the next missing check;
+do not rerun the completed sdist suite or a116 matrix. Small host-side CLI checks
+may run independently. The wheel supplement is not a complete release matrix row.
+
+Remaining evidence: actual model in-flight crash/recovery, real Claude/Cursor
+compatibility (no subscriptions), and current-candidate full release coverage;
+macOS has no available host. These stay unverified/NOT RUN. The scoped live local
+parent cancellation already passed and is not a new M5 blocker. Original-workspace
+application remains closed; no demonstration bypasses its approval requirements.
+
+Recovery work must distinguish two existing gates: an observed ended/failed client
+with an already pinned checkpoint may enter OwnerContinuation; a controller crash,
+timeout or uncertain capture stays unknown and cannot be automatically retried.
+The next P0 preparation should reuse those paths, explicitly label host-known
+checkpoint input, and keep client-process failure separate from whole-host crash.
+No fresh live run is authorized or started by this planning decision.
 
 | Delivery node | Deliverable and exit condition | Current boundary / effort estimate |
 | --- | --- | --- |

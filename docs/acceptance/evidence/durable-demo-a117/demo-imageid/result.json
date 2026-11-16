@@ -1,0 +1,47 @@
+{
+  "observed_at": "2026-11-16T05:58:52.408497+00:00",
+  "check": {
+    "id": "pilot_cli_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\unit\\test_proposal_candidate_pilot_cli.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\demo-imageid\\scratch\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\demo-imageid\\scratch\\pytest",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\demo-imageid\\scratch\\cache"
+    ],
+    "cwd": "F:\\syuc\\amadeus-m6-single",
+    "exit_code": 0,
+    "started_at": "2026-11-16T05:58:51.400544+00:00",
+    "finished_at": "2026-11-16T05:58:52.405210+00:00",
+    "log": "logs/pilot_cli_pytest.log",
+    "log_sha256": "b340f250b1fcc3028b4bbb5568d17db945434617c2b82e1118d19312203c7628",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "counts": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "input_hashes": {
+    "tools/run_proposal_candidate_pilot.py": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157",
+    "tests/unit/test_proposal_candidate_pilot_cli.py": "3e1385b6aa63c5716f109ef964736620c773eb5494c3385fb4549d158fc4023c"
+  },
+  "input_unchanged": true,
+  "junit_redactions": 0,
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_origin": "D:\\agentsync-debug\\m117w\\e\\Lib\\site-packages\\agentsync\\__init__.py",
+  "version": "0.3.0a117",
+  "scope": "CLI validation only; no Docker or model execution",
+  "formal_release": "BLOCKED"
+}

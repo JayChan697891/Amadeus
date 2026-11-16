@@ -1,5 +1,27 @@
 # Amadeus current progress
 
+Resume checkpoint — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Goal active; branch feat/m6-single-codex-pilot, resumed HEAD342fee9 and clean tree;
+live PR35 open/draft, no comments, Issues7/11 open. The existing delivery-order
+overlay in PLAN is refreshed rather than creating another stage. A is usable now.
+The demo tool now rejects malformed Docker image IDs before any physical-path
+setup, project or task creation. All10 affected CLI tests and Ruff/format passed;
+the original5 tests remain. Actual logs/JUnit and exact tested hashes are at
+acceptance/evidence/durable-demo-a117/demo-imageid/result.json. These CLI tests
+do not execute Docker or models; valid execution logic and runtime remain unchanged.
+
+Linux3.14 installed-wheel regression is RUNNING, not passed: native session24678,
+host observer PID25064, owned VM PID22172/boot66d9162a-d314-499b-a949-ce2b94935497.
+Recovery: observe that same session or guest `/root/amadeus-m117lw/run/result.json`;
+never restart on an observation timeout. Host driver/results are under
+`D:/agentsync-debug/m117lw`. It uses runtimefc27f15, wheel300c72e1 and unchanged
+33ffbc3 frozen tests (2382 files), independently of the editable checkout.
+No prior collector was active before launch. No real model calls or auth copies.
+Previous sdist suites, a116 queues, failures and M5 accepted scope remain intact.
+Next: inspect the terminal wheel result and preserve its logs/JUnit; prepare the
+existing confirmed-client-failure continuation path separately from host-crash
+unknown fencing. All prior live grants are consumed. Full B/Release stay BLOCKED.
+
 Current checkpoint — 2026-11-15, Windows/Linux installed-sdist regressions. Scoped engineering demonstration and
 current a117 two-Codex controlled flow passed; full B/formal Release remain BLOCKED.
 The original Goal, M0–M9, M5 frozen acceptance and old failures remain preserved.

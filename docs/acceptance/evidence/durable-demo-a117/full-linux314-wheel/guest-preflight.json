@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-11-16T05:52:38.226363+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "prefix": "/root/jobs-env",
+  "platform": "Linux-6.18.54-0-virt-x86_64-with-musl1",
+  "boot_id": "66d9162a-d314-499b-a949-ce2b94935497",
+  "docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "containers": [],
+  "active_python_codex": [],
+  "free_bytes": 8841197568,
+  "frozen_files_verified": 2382,
+  "model_calls": 0,
+  "model_auth_access": false
+}

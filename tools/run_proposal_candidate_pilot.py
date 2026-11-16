@@ -21,7 +21,7 @@ from agentsync.errors import AgentSyncError
 from agentsync.proposals import parse_proposal
 from agentsync.verification.candidate import OwnerCandidateExporter
 from agentsync.verification.candidate_jobs import CandidateVerificationJobs
-from agentsync.verification.docker import DockerProfile, JsonCase
+from agentsync.verification.docker import IMAGE_ID, DockerProfile, JsonCase
 from agentsync.verification.owner_flow import OwnerCandidateFlow
 from agentsync.workspaces.git import GitWorkspaceStore, physical
 
@@ -370,6 +370,10 @@ def main() -> None:
         or not root.name.startswith("amadeus-proposal-pilot-")
     ):
         raise SystemExit("Use a fresh dedicated /root/amadeus-proposal-pilot-* local VM directory")
+    if not IMAGE_ID.fullmatch(args.image_id):
+        parser.error(
+            "--image-id must be a full local Docker image ID (sha256: and 64 lowercase hex digits)"
+        )
     physical(root.parent)
     os.umask(0o077)
     if args.demo:
