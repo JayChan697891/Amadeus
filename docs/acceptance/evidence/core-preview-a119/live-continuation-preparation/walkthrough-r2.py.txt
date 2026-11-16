@@ -1,0 +1,149 @@
+"""Exercise the verification driver against the existing deterministic Core fixture."""
+
+from dataclasses import asdict, replace
+import json
+from pathlib import Path
+import runpy
+import sys
+from types import SimpleNamespace
+from unittest.mock import Mock
+
+import pytest
+
+from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.controlled_relay import ControlledRelay
+from agentsync.core.service import Core
+from agentsync.verification import candidate_executor
+
+REPO = Path("F:/syuc/amadeus-m6-single")
+sys.path[:0] = [str(REPO / "tests"), str(REPO / "tests/integration")]
+
+from test_candidate_execution import synthetic_backend
+from test_unfinished_continuation import (
+    owner_grant, pilot, run_to_continuation_review, unfinished, world,
+)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("unfinished", ["verifiable_codex"], indirect=True)
+async def test_driver_walkthrough(unfinished, pilot, monkeypatch):
+    owner_core, owner, producer, _, producer_task, tree, source, receipts, _ = pilot
+    _, request, _, dependent, calls, approvals, _, _ = unfinished
+    captured = []
+    fixture_start = CapturedProcess.start
+
+    async def observe_receiver(_cls, *args, **kwargs):
+        process = await fixture_start(*args, **kwargs)
+        captured.append(process)
+        return process
+
+    monkeypatch.setattr(CapturedProcess, "start", classmethod(observe_receiver))
+    outcome, actor = await run_to_continuation_review(unfinished, owner)
+    (receiver_process,) = captured
+    receiver_capture = await receiver_process.get_result()
+    assert len(calls) == len(approvals) == 2
+    forbid = Mock(side_effect=AssertionError("Unexpected model start or launch decision."))
+    monkeypatch.setattr(CapturedProcess, "start", forbid)
+
+    base = source.parent
+    tool = runpy.run_path(str(REPO / "tools/run_live_solution_verification.py"))
+    live_helpers = runpy.run_path(str(REPO / "docs/acceptance/evidence/durable-demo-a117/interrupted-live-r2/drivers/live.py.txt"))
+    tool["drive"].__globals__["BASE"] = base
+    implementation = live_helpers["read"].__globals__
+
+    def save(name, value):
+        with (base / name).open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(value, stream, indent=2)
+            stream.write("\n")
+
+    grant = "a" * 64
+    temp_home = base / "empty-home"
+    temp_home.mkdir()
+    stopped = {"producer": "terminal_recorded", "receiver": "terminal_recorded"}
+    relay = ControlledRelay(owner_core, base, receipts)
+    task_ids = {"producer": producer_task["id"], "receiver": outcome["task_id"]}
+    attempt_rows = {
+        name: [asdict(row) for row in relay.owner_inspect_attempts(owner["project_id"], task_id, admin_token=owner["admin_token"])]
+        for name, task_id in task_ids.items()
+    }
+
+    def current_attempts(authority):
+        assert authority == grant
+        current = ControlledRelay(Core(owner_core.data_dir), base, receipts)
+        return {
+            name: current.owner_inspect_attempts(owner["project_id"], task_id, admin_token=owner["admin_token"])[0].state
+            for name, task_id in task_ids.items()
+        }
+
+    cleanup = SimpleNamespace(
+        load=lambda name: json.loads((base / name).read_bytes()), save=save, PRIVATE_HOME=temp_home,
+        mounts=lambda: [], require_stopped=current_attempts, private_directory=lambda path: path.is_dir(),
+    )
+    state = {"owner": owner, "producer": producer, "receiver": asdict(request.receiver),
+             "task": producer_task, "dependent": dependent, "tree": tree}
+    for role, permissions in (("stager", "worker"), ("reviewer", "reviewer")):
+        state[role] = owner_core.execute("register_agent", {**owner, "name": role})
+        owner_grant(owner_core, owner, state[role], (permissions,))
+
+    prep = SimpleNamespace(
+        OUTPUT_LIMIT=2**20, PATHS=request.allowed_paths, CONTINUATION=request.instruction,
+        TIMEOUT=request.execution_seconds, runtime=lambda: None, require_fixtures=lambda _state: None,
+        auth=lambda state, who: {"project_id": owner["project_id"], **{
+            name: state[who][name] for name in ("session_id", "session_token")
+        }},
+    )
+    implementation.update(BASE=base, RECEIPTS=receipts, prep=prep, cleanup=cleanup, TITLE=request.title,
+                          private_file=lambda path: path.is_file())
+    live = SimpleNamespace(**implementation)
+    live.core_state = lambda: (Core(owner_core.data_dir), live.read("state.json"))
+    live.actor = lambda _state, _who, _workspace, deny: replace(actor, authority=deny)
+
+    save("state.json", state)
+    save("closing.json", {"authorization_sha256": grant, "further_launches_allowed": False})
+    save("auth-cleanup.json", {
+        "temporary_auth_absent": True, "home_unmounted": True, "private_home_empty": True,
+        "current_attempts": stopped, "further_launches_allowed": False,
+    })
+    save("continuation-private.json", asdict(request))
+    save("continuation-plan.json", {
+        "authorization_sha256": grant, "model_calls": 0,
+        "request_sha256": live.sha(base / "continuation-private.json"),
+        "source_receipt_sha256": live.source_receipts(relay, state, request.source.launch_sha256),
+    })
+    save("receiver-workspace.json", {"task_id": outcome["task_id"]})
+    save("continuation-result.json", {
+        "status": "resolved", "plan_sha256": "b" * 64, "authorization_sha256": grant,
+        "outcome": outcome, "tasks": live.task_graph(owner_core, state),
+        "publication_sha256": outcome["publication"]["content_sha256"],
+    })
+    save("replay.json", {"outcome": outcome, "tasks_and_receipts_unchanged": True,
+                         "receiver_callbacks": 0, "model_calls": 0})
+
+    # The existing producer fixture exits without stdout. Only this protocol
+    # boundary is supplemented. The receiver bytes come from its actual capture.
+    producer_stream = b'{"type":"thread.started","thread_id":"fixture"}\n{"type":"turn.started"}\n'
+    for who, stdout, stderr in (("producer", producer_stream, b""),
+                                ("receiver", receiver_capture.stdout, receiver_capture.stderr)):
+        raw = base / f"{who}-capture/raw"
+        raw.mkdir(parents=True)
+        meta = {"stdout_truncated": False, "stderr_truncated": False}
+        for name, data in (("stdout", stdout), ("stderr", stderr)):
+            (raw / (name + ".bin")).write_bytes(data)
+            meta.update({name + "_bytes": len(data), name + "_sha256": tool["sha"](data)})
+        save(f"{who}-capture.json", {"saved": True, **meta})
+        save(f"{who}-exit.json", {"snapshot": {"parent_ended": True, "exit_code": attempt_rows[who][0]["exit_code"], **meta}})
+        save(f"{who}-dispatch-observation.json", {"actors": {who: {"attempts": attempt_rows[who]}}})
+
+    verifier = Mock(side_effect=synthetic_backend)
+    monkeypatch.setattr(candidate_executor, "verify_python_json_lines", verifier)
+    tool["drive"](live, cleanup, grant, "preview", None)
+    for action, file in (("stage-once", "stage-plan.json"), ("execute-once", "execution-plan.json"),
+                         ("complete-once", "completion-plan.json")):
+        with pytest.raises(AssertionError):
+            tool["drive"](live, cleanup, grant, action, "0" * 64)
+        tool["drive"](live, cleanup, grant, action, live.sha(base / file))
+    tool["drive"](live, cleanup, grant, "replay", None)
+    verifier.assert_called_once()
+    forbid.assert_not_called()
+    assert len(calls) == len(approvals) == 2
+    assert live.read("verification-replay.json") == {"task_id": outcome["task_id"], "new_executions": 0, "model_calls": 0}

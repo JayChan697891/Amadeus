@@ -2,6 +2,14 @@
 
 ## Execution adjustment — 2026-11-15
 
+The next P0/B live path is now concretely prepared at controller4aa4f8, reusing
+the unchanged a119 product:11 gate checks, one deterministic real-Core walkthrough,
+actual Linux preparation and exact file binding have passed. Two earlier failures
+remain documented. [The bounded plan](acceptance/LIVE-CONTINUATION-PLAN.md) awaits
+the new candidate-execution scope; no real run started. No additional M5 stage,
+package version or Release gate change. Node A stays available now; B closure
+can use one bounded local session after scope approval and fresh readiness.
+
 P1 installable core preview delivered, 2026-11-16: a119/4be5134 packages both
 the owner-path fix and continuation verification bridge. Windows3.12 fresh wheel/
 sdist each passed15 focused cases (19 native checks); the identical packages on

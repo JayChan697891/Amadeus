@@ -1,0 +1,49 @@
+{
+  "status": "PREPARED_NOT_RUN",
+  "controller_commit": "4aa4f812fbb742caeb9a2a2d9cd53d06d9863a48",
+  "runtime_commit": "4be51345d5b8846da58d79df5b8567619e9acfed",
+  "runtime_version": "0.3.0a119",
+  "wheel_sha256": "cbcf38bfe80a61510cbc95fb2a7112173222a7b6bb03404a324e52e23d237c31",
+  "controller_files": {
+    "tools/prepare_live_solution_continuation.py": "e5f2bc6277616c21b2031ee8dfd2b412649d6ff16367e10013e5e8eca8a838ce",
+    "tools/run_live_solution_verification.py": "9034e515e276cbe5b39e91c58865e6ae5587409785342b557e38f752dda82153"
+  },
+  "windows_checks": {
+    "gates": {"passed": 11, "failed": 0, "seconds": 0.56, "native_exit": 0, "tool_chunk": "4588b8", "junit": "final2.xml"},
+    "real_core_walkthrough": {"passed": 1, "failed": 0, "seconds": 18.59, "native_exit": 0, "session": 97946, "tool_chunk": "9ffe98", "junit": "walkthrough-r3.xml"},
+    "boundaries": "Actual Core and APIs, saved JSON and reopened database. Local Python receiver protocol, supplemented producer stream, synthetic verifier, mount/permission stubs. Not real model or Docker acceptance.",
+    "prior_failures": [
+      {"junit": "redacted-walkthrough.xml", "native_exit": 1, "cause": "Test capture hook waited before returning the process, changing fixture timing; original private log/XML retained locally, public copies redact synthetic owner credentials."},
+      {"junit": "walkthrough-r2.xml", "native_exit": 1, "cause": "Driver incorrectly equated enqueue historical receipt with current job projection; fixed by saving original receipt and reading current job for execution approval."}
+    ],
+    "static_checks": "Ruff check and format on two new tools; git diff check passed after final source fix. No full-suite repetition."
+  },
+  "linux_preparation": {
+    "prepare_ready_at": "2026-11-16T14:14:14Z/2026-11-16T14:14:16Z",
+    "prepare_ready_native_exit": 0,
+    "prepare_ready_tool_chunk": "bb72cf",
+    "installed_members": 97,
+    "producer_plan_sha256": "9c23b8378bc2cca90f227136bef4d4cffa9f2804053ae3a157eb3d82fe8010b4",
+    "bound_files": 9,
+    "final_check_at": "2026-11-16T14:24:08.246044+00:00",
+    "final_check_native_exit": 0,
+    "final_check_tool_chunk": "a2b719",
+    "all_hashes_match": true,
+    "historical_r2_files_unchanged": 115,
+    "template_sha256": "ee4d525e9c88c57e1db05ea207b069f13f27dfd243312cd76a6ad3daf3a6cfb6",
+    "real_authorization_absent": true,
+    "private_home_empty_unmounted": true
+  },
+  "independent_review": {
+    "reviewer": "Astra native review agent",
+    "scope": "Exact controller hashes, nine template bindings, actual targeted checks and their stub boundaries",
+    "decision": "No remaining static blocker for preparation. Live candidate execution still needs explicit new scope; prior subscription-only grant retained."
+  },
+  "model_calls": 0,
+  "credential_copies": 0,
+  "candidate_executions": 0,
+  "real_model_and_candidate_acceptance": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "vm": {"normal_shutdown_at": "2026-11-16T14:25:39.6808136Z", "workers": [], "containers": [], "disk_retained": true},
+  "next": "Review the uploaded fixed candidate-execution scope. Preserve standing subscription permission. Recheck fresh session validity before launch; do not retry failed or unknown live effects."
+}

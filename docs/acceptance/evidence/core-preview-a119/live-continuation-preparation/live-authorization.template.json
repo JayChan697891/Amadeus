@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "producer_plan_sha256": "9c23b8378bc2cca90f227136bef4d4cffa9f2804053ae3a157eb3d82fe8010b4",
+  "files": {
+    "prepare.py": "c6b3687986495c6ad62f442218bbad622cd7d1d2016cf9cdc1c34ec203b5e602",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "545b490670bdbb0f73a74fb13dca77cf9b875c38f350d5a1b2f0f4fdb3b829a7",
+    "plan.json": "4c4fbd6e0eb04897efdfc108c9dba727f03280610625efa9ce5dd33b66ffa7d5",
+    "readiness.json": "7c6b30f5008fb856c96e997af1c0995feb53032595556237fcb9d7376aebe8d9",
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+    "live.py": "d64b6458675f9af69e9b36c204ad531d30c9816bef128ffec038d7a6fd86a7e8",
+    "cleanup.py": "b01658a1dd44cf4f75fbb1dc167ea4b6c3235c650b9acddf770ea67c87e5947f",
+    "verify.py": "9034e515e276cbe5b39e91c58865e6ae5587409785342b557e38f752dda82153"
+  },
+  "expires_at": null,
+  "max_model_calls": 2,
+  "existing_subscription_only": true,
+  "owner_confirmed_zero_credits_and_auto_recharge_off": null,
+  "api_key_allowed": false,
+  "producer_owned_parent_interruption_allowed": true,
+  "retry_allowed": false,
+  "temporary_auth_destination": "/root/amadeus-interrupted-a119-solution-20261116/private-home/auth.json"
+}

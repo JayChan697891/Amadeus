@@ -1,0 +1,57 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________________ test_driver_walkthrough[verifiable_codex] __________________
+
+unfinished = (<agentsync.continuation.OwnerContinuation object at 0x0000016831F46E10>, ContinuationRequest(source=ContinuationPin(s...'), LaunchReview(client='codex', plan_sha256='0da48198363bd14d714f8ed0ff132be05c3221b7382bcf2f033d08e368ef3892')], ...)
+pilot = (<agentsync.core.service.Core object at 0x000001683175DEE0>, {'project_id': '52fcb01e-ba5e-40d2-9d4a-2872904888d5', 'a..., 'task_id': 'e81e14c1-c9f8-4db1-9742-c31769f1e63a', 'base_sha': 'bbe04169a809bb18df68b52d21f4e406bed00d44', ...}, ...)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016831F20DD0>
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("unfinished", ["verifiable_codex"], indirect=True)
+    async def test_driver_walkthrough(unfinished, pilot, monkeypatch):
+        owner_core, owner, producer, _, producer_task, tree, source, receipts, _ = pilot
+        _, request, _, dependent, calls, approvals, _, _ = unfinished
+        captured = []
+        fixture_start = CapturedProcess.start
+    
+        async def observe_receiver(_cls, *args, **kwargs):
+            process = await fixture_start(*args, **kwargs)
+            captured.append(await process.get_result())
+            return process
+    
+        monkeypatch.setattr(CapturedProcess, "start", classmethod(observe_receiver))
+>       outcome, actor = await run_to_continuation_review(unfinished, owner)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+D:\agentsync-debug\strategy-demo\interrupted-a119-solution-20261116-offline\test_walkthrough.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+unfinished = (<agentsync.continuation.OwnerContinuation object at 0x0000016831F46E10>, ContinuationRequest(source=ContinuationPin(s...'), LaunchReview(client='codex', plan_sha256='0da48198363bd14d714f8ed0ff132be05c3221b7382bcf2f033d08e368ef3892')], ...)
+owner = {'project_id': '52fcb01e-ba5e-40d2-9d4a-2872904888d5', 'admin_token': '[REDACTED synthetic local credential]'}
+
+    async def run_to_continuation_review(unfinished, owner):
+        flow, request, build, *_ = unfinished
+        actors = []
+    
+        def capture_receiver(receiver, workspace):
+            actor = build(receiver, workspace)
+            actors.append(actor)
+            return actor
+    
+        plan = flow.preview(request, admin_token=owner["admin_token"])
+        continuation = await flow.run_once(
+            request,
+            admin_token=owner["admin_token"],
+            expected_plan_sha256=plan["plan_sha256"],
+            build_receiver=capture_receiver,
+        )
+>       assert continuation["state"] == "resolved" and continuation["task_status"] == "review"
+E       AssertionError: assert ('incomplete' == 'resolved'
+E         
+E         - resolved
+E         + incomplete)
+
+tests\integration\test_unfinished_continuation.py:283: AssertionError
+=========================== short test summary info ===========================
+FAILED ::test_driver_walkthrough[verifiable_codex] - AssertionError: assert (...
+1 failed in 4.82s

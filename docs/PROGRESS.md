@@ -1,5 +1,17 @@
 # Amadeus current progress
 
+P0 live continuation preparation ready — 2026-11-16 UTC, controller4aa4f8.
+The same-task driver is implemented and independently reviewed:11 final gate
+checks and one real-Core deterministic walkthrough pass, with two earlier failures
+preserved. Linux actual prepare/ready checks97 a119 members; all9 final helper
+bindings match. No model/auth/candidate execution occurred. Original R2 is unchanged;
+the owned VM normally stopped at14:25:39Z, disk retained. Product/package4be5134
+is unchanged. See acceptance/LIVE-CONTINUATION-PLAN.md and
+acceptance/evidence/core-preview-a119/live-continuation-preparation/summary.json.
+Recovery: settle the newly explicit candidate-execution scope, then recheck session
+validity and follow the reviewed plan. Standing subscription permission remains;
+do not request it again. Live acceptance NOT RUN; formal Release BLOCKED.
+
 a119 installable preview complete — 2026-11-16 UTC. Source/test4be5134 freezes
 the two version fields after owner fix6677799 and continuation bridge207e978.
 Windows native34955/dafe65 exited0:19 build/install checks, wheel15pass and
