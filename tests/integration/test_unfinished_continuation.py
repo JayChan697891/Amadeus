@@ -12,14 +12,17 @@ from unittest.mock import patch
 
 import pytest
 from conftest import owner_grant
+from test_candidate_execution import synthetic_backend
 from test_codex_proposal_capture import pilot as pilot
 from test_codex_proposal_relay_queue import cancel_fixture_load
 from test_m4b_workspaces import source_fingerprint
+from test_proposal_docker_pipeline import assert_local_container_absent
+from test_proposal_docker_pipeline import pipeline_image as pipeline_image
 from test_task_proposals import world as world
 from verified_flow_process_fixture import emit_proposal, receiver_profile
 
 import agentsync
-from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.approved_launch import LaunchConsent, digest
 from agentsync.adapters.codex_invocation import CodexHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.continuation import ContinuationRequest, OwnerContinuation
@@ -35,12 +38,29 @@ from agentsync.errors import AgentSyncError
 from agentsync.proposal_handoff import HandoffReceiver
 from agentsync.relay_queue import CodexProposalQueueItem, RelayQueue
 from agentsync.storage.database import connect
+from agentsync.verification import candidate_executor
+from agentsync.verification.candidate_jobs import CandidateVerificationJobs
+from agentsync.verification.docker import DockerProfile, JsonCase
+from agentsync.verification.owner_flow import OwnerCandidateFlow
+from agentsync.verification.proposal_staging import OwnerProposalStaging
+
+TOTAL_JSON_LINES = """
+import json
+import sys
+
+for line in sys.stdin:
+    print(json.dumps(total(json.loads(line))), flush=True)
+"""
 
 
 @pytest.fixture
 async def unfinished(pilot, world, monkeypatch, request):
     selected = getattr(request, "param", "codex")
+    verifiable = selected == "verifiable_codex"
+    if verifiable:
+        selected = "codex"
     client, fault = selected if isinstance(selected, tuple) else (selected, None)
+    proposal_path = "solution.py" if verifiable else "answer.py"
     core, owner, member, auth, task, tree, source, receipts, profile = pilot
     cancel_fixture_load(world)
     calls, approvals, captures, published = [], [], [], []
@@ -49,6 +69,9 @@ async def unfinished(pilot, world, monkeypatch, request):
     key = relay._task_receipt_key(owner["project_id"], task["id"])
     partial = "def total(values):\n    # UNFINISHED_CONTEXT_SENTINEL\n    return None\n"
     final = "def total(values):\n    return sum(values)\n"
+    if verifiable:
+        partial += TOTAL_JSON_LINES
+        final += TOTAL_JSON_LINES
 
     async def approve(plan):
         approvals.append(plan)
@@ -69,9 +92,9 @@ async def unfinished(pilot, world, monkeypatch, request):
                     actor,
                     task["id"],
                     expected_version=current["version"],
-                    allowed_paths=("answer.py",),
+                    allowed_paths=(proposal_path,),
                     proposal_json=json.dumps(
-                        {"files": [{"path": "answer.py", "content": partial}]}
+                        {"files": [{"path": proposal_path, "content": partial}]}
                     ),
                     request_id="unfinished-checkpoint",
                 )
@@ -83,7 +106,7 @@ async def unfinished(pilot, world, monkeypatch, request):
             assert contract["continuation"]["content_sha256"] == published[0]["content_sha256"]
             process = await emit_proposal(
                 original_start,
-                "answer.py",
+                proposal_path,
                 final,
                 cwd=cwd,
                 timeout_seconds=timeout_seconds,
@@ -118,7 +141,7 @@ async def unfinished(pilot, world, monkeypatch, request):
     item = CodexProposalQueueItem(
         actor,
         CodexProposalInput(
-            task["id"], task["version"], "Continue the implementation.", ("answer.py",), 10, True
+            task["id"], task["version"], "Continue the implementation.", (proposal_path,), 10, True
         ),
     )
     queue = RelayQueue(relay)
@@ -162,7 +185,7 @@ async def unfinished(pilot, world, monkeypatch, request):
         receiver,
         pin,
         "Finish the pinned unfinished total implementation.",
-        ("answer.py",),
+        (proposal_path,),
         required_capabilities=("code",),
         execution_seconds=10,
     )
@@ -239,6 +262,337 @@ async def test_confirmed_failure_continues_real_progress_and_transfers_graph(unf
     )
     assert owner["admin_token"] not in public and request.receiver.session_token not in public
     assert progress["content_sha256"] == request.source.content_sha256
+
+
+async def run_to_continuation_review(unfinished, owner):
+    flow, request, build, *_ = unfinished
+    actors = []
+
+    def capture_receiver(receiver, workspace):
+        actor = build(receiver, workspace)
+        actors.append(actor)
+        return actor
+
+    plan = flow.preview(request, admin_token=owner["admin_token"])
+    continuation = await flow.run_once(
+        request,
+        admin_token=owner["admin_token"],
+        expected_plan_sha256=plan["plan_sha256"],
+        build_receiver=capture_receiver,
+    )
+    assert continuation["state"] == "resolved" and continuation["task_status"] == "review"
+    (actor,) = actors
+    return continuation, actor
+
+
+@pytest.mark.parametrize("verification", ["synthetic", "docker"])
+@pytest.mark.parametrize("unfinished", ["verifiable_codex"], indirect=True)
+async def test_continued_task_completes_with_distinct_reviewer(
+    unfinished, pilot, monkeypatch, request, verification
+):
+    image = (
+        request.getfixturevalue("pipeline_image")
+        if verification == "docker"
+        else "sha256:" + "b" * 64
+    )
+    flow, continuation_request, _, dependent, calls, approvals, _, _ = unfinished
+    core, owner, _, auth, source_task, _, source, receipts, _ = pilot
+    continuation, actor = await run_to_continuation_review(unfinished, owner)
+    receiver_id = continuation["task_id"]
+    reopened = Core(core.data_dir)
+    relay = ControlledRelay(reopened, source.parent, receipts)
+    observed = relay.observe_continuation_proposal_review(
+        actor,
+        receiver_id,
+        continuation=continuation_request,
+        admin_token=owner["admin_token"],
+    )
+    assert observed.state == "submitted_for_review"
+    assert observed.review_task_version == continuation["task_version"]
+    assert observed.context_id == continuation["publication"]["context_id"]
+    assert observed.verification == "unverified"
+    assert relay.observe_codex_proposal_review(actor, receiver_id).state == "incomplete"
+
+    stager = reopened.execute("register_agent", {**owner, "name": "Staging worker"})
+    owner_grant(reopened, owner, stager, ("worker",))
+    staging = {
+        "continuation": continuation_request,
+        "admin_token": owner["admin_token"],
+        "staging_session_id": stager["session_id"],
+        "staging_session_token": stager["session_token"],
+    }
+    preview = relay.preview_continuation_proposal_staging(actor, receiver_id, **staging)
+    assert preview["plan"]["task_id"] == receiver_id
+    with pytest.raises(AgentSyncError):
+        relay.stage_continuation_proposal_once(
+            actor,
+            receiver_id,
+            **staging,
+            expected_plan_sha256="0" * 64,
+        )
+    staged = relay.stage_continuation_proposal_once(
+        actor,
+        receiver_id,
+        **staging,
+        expected_plan_sha256=preview["plan_sha256"],
+    )
+    assert staged["task_id"] == receiver_id and staged["execution_started"] is False
+    with pytest.raises(AgentSyncError) as staging_replay:
+        relay.stage_continuation_proposal_once(
+            actor,
+            receiver_id,
+            **staging,
+            expected_plan_sha256=preview["plan_sha256"],
+        )
+    assert staging_replay.value.code == "proposal_staging_exists"
+
+    executions = []
+
+    def fixture_verifier(source_bytes, **options):
+        # This deterministic substitute checks the exported bytes and the Core wiring.
+        # It does not run the candidate or use Docker.
+        expected = "def total(values):\n    return sum(values)\n" + TOTAL_JSON_LINES
+        assert source_bytes == expected.encode()
+        executions.append(options["commit_sha"])
+        return synthetic_backend(source_bytes, **options)
+
+    if verification == "synthetic":
+        monkeypatch.setattr(candidate_executor, "verify_python_json_lines", fixture_verifier)
+    policy = DockerProfile(image, (JsonCase([2, 3], 5), JsonCase([-4, 1], -3)))
+    jobs = CandidateVerificationJobs(reopened)
+    job = jobs.enqueue(
+        **owner,
+        candidate_id=staged["candidate_id"],
+        expected_candidate_sha=staged["candidate_sha"],
+        profile=policy,
+        request_id="continued-candidate",
+    )
+    candidate = OwnerCandidateFlow(reopened)
+    execution = candidate.start_once(
+        **owner,
+        job_id=job["id"],
+        expected_job_version=job["version"],
+        expected_metadata_sha256=job["metadata_sha256"],
+        profile=policy,
+    )
+    assert execution["execution_assessment"] == "passed"
+    result = execution["execution"]["result"]
+    if verification == "docker":
+        assert result["backend"] == "local-linux-docker" and result["passed_case_count"] == 2
+        assert result["cleanup_confirmed"] is True
+        assert result["isolation"]["checks"] and all(result["isolation"]["checks"].values())
+        assert_local_container_absent(result["container_id"])
+    assert [row["id"] for row in reopened.execute("list_tasks", auth)["tasks"]].count(
+        receiver_id
+    ) == 1
+    claim = {
+        **auth,
+        "task_id": dependent["id"],
+        "expected_version": dependent["version"] + 1,
+        "request_id": "claim-after-continuation",
+    }
+    with pytest.raises(AgentSyncError) as waiting:
+        reopened.execute("claim_task", claim)
+    assert waiting.value.code == "dependencies_incomplete"
+
+    reviewer = reopened.execute("register_agent", {**owner, "name": "Independent reviewer"})
+    owner_grant(reopened, owner, reviewer, ("reviewer",))
+    assert reviewer["agent_id"] not in {actor.agent_id, stager["agent_id"]}
+    completion = {
+        **owner,
+        "session_id": reviewer["session_id"],
+        "session_token": reviewer["session_token"],
+        "task_id": receiver_id,
+        "expected_version": observed.review_task_version,
+        "job_id": job["id"],
+        "execution_id": execution["execution_id"],
+        "expected_execution_revision": execution["execution"]["revision"],
+        "request_id": "complete-continued-work",
+        "profile": policy,
+    }
+    completed = candidate.complete_once(**completion)
+    assert completed["task_id"] == receiver_id and completed["task_verification"] == "verified"
+
+    fresh = Core(core.data_dir)
+    assert OwnerCandidateFlow(fresh).complete_once(**completion) == completed
+    states = {row["id"]: row for row in fresh.execute("list_tasks", auth)["tasks"]}
+    assert states[receiver_id]["status"] == "completed"
+    assert states[receiver_id]["task_verification"] == "verified"
+    assert states[source_task["id"]]["status"] == "failed"
+    assert states[source_task["id"]]["task_verification"] == "unverified"
+    assert states[dependent["id"]]["dependencies"] == [receiver_id]
+    assert fresh.execute("claim_task", claim)["status"] == "claimed"
+    assert CandidateVerificationJobs(fresh).get(**owner, job_id=job["id"])["status"] != "queued"
+    with connect(fresh.db_path) as db:
+        assert (
+            db.execute(
+                "SELECT count(*) FROM candidate_executions WHERE project_id=? AND job_id=?",
+                (owner["project_id"], job["id"]),
+            ).fetchone()[0]
+            == 1
+        )
+    assert len(executions) == (1 if verification == "synthetic" else 0)
+    assert len(calls) == len(approvals) == 2
+    reopened_continuation = flow.status(
+        owner["project_id"],
+        continuation_request.source.launch_sha256,
+        admin_token=owner["admin_token"],
+    )
+    assert reopened_continuation["task_id"] == receiver_id
+    assert reopened_continuation["publication"]["verification"] == "unverified"
+
+    evidence = os.environ.get("AGENTSYNC_PROPOSAL_PIPELINE_EVIDENCE_DIR")
+    if verification == "docker" and evidence:
+        output = Path(evidence)
+        assert output.is_absolute() and not output.is_symlink()
+        output.mkdir(parents=True, exist_ok=True)
+        with (output / "continuation-verified.json").open("x", encoding="utf-8") as stream:
+            json.dump(
+                {
+                    "model_boundary": "known local Python protocol fixture; zero model calls",
+                    "model_calls": 0,
+                    "same_core": True,
+                    "receiver_task_id": receiver_id,
+                    "source_task_status": states[source_task["id"]]["status"],
+                    "receiver_task_status": states[receiver_id]["status"],
+                    "receiver_task_verification": states[receiver_id]["task_verification"],
+                    "publication_verification": reopened_continuation["publication"][
+                        "verification"
+                    ],
+                    "candidate_sha": staged["candidate_sha"],
+                    "execution": execution,
+                    "completion": completed,
+                },
+                stream,
+                indent=2,
+            )
+
+
+@pytest.mark.parametrize("unfinished", ["verifiable_codex"], indirect=True)
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "publisher",
+        "version",
+        "marker",
+        "mode",
+        "terminal_launch",
+        "selection",
+        "unknown_wave",
+        "unknown_source",
+        "foreign_request",
+    ],
+)
+async def test_continuation_staging_rechecks_approved_binding(unfinished, pilot, fault):
+    _, continuation_request, _, _, calls, approvals, _, source_key = unfinished
+    core, owner, source_actor, _, _, _, source, receipts, _ = pilot
+    continuation, actor = await run_to_continuation_review(unfinished, owner)
+    task_id = continuation["task_id"]
+    relay = ControlledRelay(core, source.parent, receipts)
+    stager = core.execute("register_agent", {**owner, "name": "Staging worker"})
+    owner_grant(core, owner, stager, ("worker",))
+    staging = {
+        "continuation": continuation_request,
+        "admin_token": owner["admin_token"],
+        "staging_session_id": stager["session_id"],
+        "staging_session_token": stager["session_token"],
+    }
+    preview = relay.preview_continuation_proposal_staging(actor, task_id, **staging)
+    prefix = "continuation-" + digest(
+        [owner["project_id"], continuation_request.source.launch_sha256]
+    )
+
+    if fault in {"publisher", "version", "marker"}:
+        with connect(core.db_path) as db:
+            if fault == "publisher":
+                db.execute(
+                    "UPDATE context_revisions SET author_agent_id=? WHERE context_id=? AND version=1",
+                    (source_actor["agent_id"], continuation["publication"]["context_id"]),
+                )
+            elif fault == "version":
+                db.execute("UPDATE tasks SET version=version+1 WHERE id=?", (task_id,))
+            else:
+                db.execute(
+                    "UPDATE tasks SET result=? WHERE id=?",
+                    (
+                        "Controlled Codex proposal stored as inert data. Owner staging and independent verification pending.",
+                        task_id,
+                    ),
+                )
+    elif fault == "unknown_wave":
+        queue = RelayQueue(relay)
+        wave_key = queue._key(actor, prefix + "-wave")
+        with connect(queue._journal._path) as db:
+            row = db.execute(
+                "UPDATE relay_waves SET state='admitted',results_json=NULL WHERE request_key=?",
+                (wave_key,),
+            )
+            assert row.rowcount == 1
+    elif fault == "foreign_request":
+        other = core.execute(
+            "create_project", {"name": "Foreign project", "root_path": str(source)}
+        )
+        staging["continuation"] = replace(
+            continuation_request,
+            receiver=replace(continuation_request.receiver, project_id=other["project_id"]),
+        )
+    else:
+        terminal_key = relay._key(actor, task_id)
+        file, field, value = {
+            "mode": (f"relay-{terminal_key}-incomplete.json", "mode", "codex_proposal"),
+            "terminal_launch": (
+                f"relay-{terminal_key}-first-observed.json",
+                "launch_request_sha256",
+                "f" * 64,
+            ),
+            "selection": (prefix + "-dispatch.json", "selection_sha256", "f" * 64),
+            "unknown_source": (f"relay-{source_key}-first-stopped.json", "parent_ended", False),
+        }[fault]
+        receipt = receipts / file
+        record = json.loads(receipt.read_bytes())
+        record[field] = value
+        receipt.write_text(json.dumps(record), encoding="utf-8")
+
+    with pytest.raises(AgentSyncError) as rejected:
+        relay.stage_continuation_proposal_once(
+            actor,
+            task_id,
+            **staging,
+            expected_plan_sha256=preview["plan_sha256"],
+        )
+    assert rejected.value.code == "relay_boundary"
+    assert OwnerProposalStaging(core).status(**owner, task_id=task_id)["state"] == "not_started"
+    with connect(core.db_path) as db:
+        for table in ("merge_candidates", "candidate_verification_jobs", "candidate_executions"):
+            assert db.execute("SELECT count(*) FROM " + table).fetchone()[0] == 0
+    assert len(calls) == len(approvals) == 2
+
+
+async def test_continued_proposal_without_solution_is_review_only(unfinished, pilot):
+    _, continuation_request, _, _, calls, _, _, _ = unfinished
+    core, owner, _, _, _, _, source, receipts, _ = pilot
+    continuation, actor = await run_to_continuation_review(unfinished, owner)
+    task_id = continuation["task_id"]
+    relay = ControlledRelay(core, source.parent, receipts)
+    state = relay.observe_continuation_proposal_review(
+        actor,
+        task_id,
+        continuation=continuation_request,
+        admin_token=owner["admin_token"],
+    )
+    assert state.state == "submitted_for_review" and state.verification == "unverified"
+    with pytest.raises(AgentSyncError) as rejected:
+        relay.preview_continuation_proposal_staging(
+            actor,
+            task_id,
+            continuation=continuation_request,
+            admin_token=owner["admin_token"],
+            staging_session_id=actor.profile.session_id,
+            staging_session_token=actor.session_token,
+        )
+    assert rejected.value.code == "verification_input_invalid"
+    assert OwnerProposalStaging(core).status(**owner, task_id=task_id)["state"] == "not_started"
+    assert len(calls) == 2
 
 
 @pytest.mark.parametrize(

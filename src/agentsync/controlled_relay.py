@@ -19,7 +19,7 @@ from collections.abc import Callable
 from contextlib import suppress
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Literal, NoReturn, cast
+from typing import TYPE_CHECKING, Any, Literal, NoReturn, cast
 
 from agentsync.adapters._host_process import _PROTOCOL_ERROR_REASONS, _HostRun
 from agentsync.adapters.approved_launch import (
@@ -46,6 +46,9 @@ from agentsync.errors import AgentSyncError
 from agentsync.proposals import parse_proposal, proposal_paths
 from agentsync.scheduling import _task_eligible
 from agentsync.verification.proposal_staging import OwnerProposalStaging
+
+if TYPE_CHECKING:
+    from agentsync.continuation import ContinuationRequest
 
 _ActorAdapter = CodexAdapter | ClaudeAdapter | CursorAdapter
 _ContextReader = Callable[[str, int], dict[str, Any]]
@@ -2078,14 +2081,44 @@ class ControlledRelay:
         """Require complete receipts plus the current exact review-state task."""
         if type(actor) is not RelayActor or client_kind(actor.profile) != "codex":
             _reject()
+        return self._observe_submitted_proposal(actor, task_id)
+
+    def observe_continuation_proposal_review(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        continuation: ContinuationRequest,
+        admin_token: str,
+    ) -> CodexProposalReviewOutcome:
+        """Read the same saved Codex continuation's exact review-state receiver."""
+        from agentsync.continuation import ContinuationRequest
+
+        if (
+            type(actor) is not RelayActor
+            or client_kind(actor.profile) != "codex"
+            or type(continuation) is not ContinuationRequest
+        ):
+            _reject()
+        self._authorize_project_owner(actor.profile.project_id, admin_token)
+        return self._observe_submitted_proposal(actor, task_id, continuation=continuation)
+
+    def _observe_submitted_proposal(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        continuation: ContinuationRequest | None = None,
+    ) -> CodexProposalReviewOutcome:
         self._state(actor, task_id)
         project_id = actor.profile.project_id
         self._check_receipt_anchor(project_id)
         key = self._key(actor, task_id)
-        admission = self._read_receipt(key, "incomplete")
+        admission = self._read_receipt(key, "incomplete", durable=continuation is not None)
         if admission is None:
             return CodexProposalReviewOutcome("not_requested")
-        if admission.get("mode") != "codex_proposal":
+        mode = "proposal_continuation" if continuation is not None else "codex_proposal"
+        if admission.get("mode") != mode:
             return CodexProposalReviewOutcome("incomplete")
         stored = self._observe_proposal_storage(
             project_id,
@@ -2106,11 +2139,18 @@ class ControlledRelay:
         if task["status"] != "review" or not self._historical_submission_matches(
             task,
             intent["review_task_version"],
-            _PROPOSAL_REVIEW_MARKER,
+            _CONTINUATION_REVIEW_MARKER if continuation is not None else _PROPOSAL_REVIEW_MARKER,
             intent["owner_session_sha256"],
             (stored["agent_sha256"],),
         ):
             return CodexProposalReviewOutcome("incomplete")
+        if continuation is not None:
+            from agentsync.continuation import continuation_review_matches
+
+            if not continuation_review_matches(
+                self, actor, task_id, continuation, admission, stored
+            ):
+                return CodexProposalReviewOutcome("incomplete")
         return CodexProposalReviewOutcome(
             "submitted_for_review",
             stored["context_id"],
@@ -2151,13 +2191,26 @@ class ControlledRelay:
         admin_token: str,
         staging_session_id: str,
         staging_session_token: str,
+        continuation: ContinuationRequest | None = None,
     ) -> dict[str, Any]:
         needed = {actor.agent_id}
         if self._owner_worker_ids(actor.profile.project_id, needed, admin_token) != needed:
             _reject()
-        observed = self.observe_codex_proposal_review(actor, task_id)
+        observed = (
+            self.observe_continuation_proposal_review(
+                actor, task_id, continuation=continuation, admin_token=admin_token
+            )
+            if continuation is not None
+            else self.observe_codex_proposal_review(actor, task_id)
+        )
         if observed.state != "submitted_for_review":
             _reject()
+        if continuation is not None and "solution.py" not in continuation.allowed_paths:
+            raise AgentSyncError(
+                "verification_input_invalid",
+                "Continuation verification requires the proposal to include a root solution.py.",
+                409,
+            )
         return {
             "project_id": actor.profile.project_id,
             "admin_token": admin_token,
@@ -2204,6 +2257,55 @@ class ControlledRelay:
         request = self._proposal_staging_request(
             actor,
             task_id,
+            admin_token=admin_token,
+            staging_session_id=staging_session_id,
+            staging_session_token=staging_session_token,
+        )
+        return OwnerProposalStaging(self._core).stage_once(
+            **request, expected_plan_sha256=expected_plan_sha256
+        )
+
+    def preview_continuation_proposal_staging(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        continuation: ContinuationRequest,
+        admin_token: str,
+        staging_session_id: str,
+        staging_session_token: str,
+    ) -> dict[str, Any]:
+        """Preview staging for a receipt-bound Codex continuation."""
+        if continuation is None:
+            _reject()
+        request = self._proposal_staging_request(
+            actor,
+            task_id,
+            continuation=continuation,
+            admin_token=admin_token,
+            staging_session_id=staging_session_id,
+            staging_session_token=staging_session_token,
+        )
+        return OwnerProposalStaging(self._core).preview(**request)
+
+    def stage_continuation_proposal_once(
+        self,
+        actor: RelayActor,
+        task_id: str,
+        *,
+        continuation: ContinuationRequest,
+        admin_token: str,
+        staging_session_id: str,
+        staging_session_token: str,
+        expected_plan_sha256: str,
+    ) -> dict[str, Any]:
+        """Recheck the continuation and consume the exact staging plan once."""
+        if continuation is None:
+            _reject()
+        request = self._proposal_staging_request(
+            actor,
+            task_id,
+            continuation=continuation,
             admin_token=admin_token,
             staging_session_id=staging_session_id,
             staging_session_token=staging_session_token,

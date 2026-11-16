@@ -37,7 +37,7 @@ from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
 from agentsync.proposal_handoff import HandoffReceiver, HandoffWorkspace
 from agentsync.proposals import parse_proposal, proposal_paths
-from agentsync.relay_queue import ContinuationQueueItem, RelayQueue
+from agentsync.relay_queue import ContinuationQueueItem, RelayQueue, _selection_pin
 from agentsync.storage.database import connect
 
 _OPERATION = "continue_failed_task"
@@ -361,6 +361,95 @@ def continuation_source(
     if progress["snapshot_id"] != snapshot_id or progress["base_head"] != actor.expected_head:
         _reject()
     return content
+
+
+def continuation_review_matches(
+    relay: ControlledRelay,
+    actor: RelayActor,
+    task_id: str,
+    request: ContinuationRequest,
+    admission: dict[str, Any],
+    publication: dict[str, Any],
+) -> bool:
+    """Rebind the successful receiver to the approved continuation before staging."""
+    from agentsync.relay_usage import _observe_leg
+
+    project = actor.profile.project_id
+    if request.receiver.project_id != project:
+        return False
+    launch = request.source.launch_sha256
+    try:
+        pin = ContinuationPin(**admission["continuation"])
+        if asdict(pin) != asdict(request.source) | {
+            "source_task_version": request.source.source_task_version + 1
+        }:
+            return False
+        with connect(relay._core.db_path) as db:
+            db.execute("BEGIN")
+            saved = _saved(db, project, launch)
+            config = OwnerContinuation._config(request)
+            if (
+                not isinstance(saved, dict)
+                or saved.get("config_sha256") != digest(config)
+                or any(saved.get(name) != value for name, value in config.items())
+                or saved.get("source_task_id") != pin.source_task_id
+                or saved.get("source_version") != pin.source_task_version
+                or saved.get("base_head") != actor.expected_head
+                or saved.get("version") != admission.get("initial_task_version")
+                or admission.get("paths_sha256") != digest(request.allowed_paths)
+            ):
+                return False
+            tree = db.execute(
+                "SELECT snapshot_id FROM managed_worktrees WHERE project_id=? AND id=? AND task_id=? AND creator_session_id=?",
+                (project, actor.worktree_id, task_id, actor.profile.session_id),
+            ).fetchone()
+            if tree is None:
+                return False
+            spec = ContinuationInput(
+                task_id,
+                saved["version"],
+                request.instruction,
+                request.allowed_paths,
+                request.execution_seconds,
+                True,
+                continuation=pin,
+            )
+            continuation_source(relay, db, actor, spec, tree["snapshot_id"])
+            observed, _ = _observe_leg(
+                relay, db, project, task_id, relay._key(actor, task_id), "first"
+            )
+            if (
+                observed is None
+                or observed.binding != "dispatch_pinned"
+                or observed.status != "succeeded"
+                or observed.launch_request_sha256 != publication["launch_request_sha256"]
+            ):
+                return False
+        prefix = "continuation-" + digest([project, launch])
+        receipt = relay._receipt_store.read(prefix + "-dispatch.json", durable=True)
+        selection = _selection_pin(
+            (ContinuationQueueItem(actor, spec, request.required_capabilities),)
+        )
+        if receipt != {
+            "task_id": task_id,
+            "worktree_id": actor.worktree_id,
+            "plan_sha256": saved["plan_sha256"],
+            "selection_sha256": selection,
+        }:
+            return False
+        queue = RelayQueue(relay)
+        wave_key = queue._key(actor, prefix + "-wave")
+        if admission.get("wave_sha256") != wave_key:
+            return False
+        row = queue._journal.get(queue._checked_journal_key(project), wave_key)
+        if row is None or row[0] != "resolved":
+            return False
+        outcome = queue._outcome(row[1], row[2])
+        return outcome.state == "resolved" and [
+            (result.task_id, result.state) for result in outcome.tasks
+        ] == [(task_id, "ready_for_review")]
+    except (AgentSyncError, KeyError, TypeError, ValueError):
+        return False
 
 
 @dataclass(frozen=True, slots=True)

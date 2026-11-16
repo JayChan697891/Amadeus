@@ -79,6 +79,29 @@ Verified completion still requires a different reviewer via `complete_once`.
 The controller does not enqueue or execute automatically, and it never restarts a
 model or retries a staging effect to close an interrupted receipt gap.
 
+For a Codex proposal produced by `OwnerContinuation`, use the explicit
+`observe_continuation_proposal_review(actor, task_id, continuation=request,
+admin_token=...)` entry. Supply the original `ContinuationRequest` and the saved
+receiver actor/task, not the failed source task. This checks the original request,
+confirmed failed source, checkpoint, durable dispatch/wave, receiver publication
+and continuation-specific review marker. It does not launch a client or mark the
+task verified. Unknown or mismatched evidence cannot proceed to staging.
+
+Use `preview_continuation_proposal_staging` and `stage_continuation_proposal_once`
+with those same arguments plus the stager credentials shown above. Review the
+exact preview before passing `expected_plan_sha256` to staging. Then use the
+existing candidate job, execution approval and different reviewer's completion
+operations on that same receiver task. The normal Codex proposal methods retain
+their original mode restriction. A successful continuation alone still leaves
+its result unverified; staging does not execute code. Repeated staging rejects;
+after completion, read saved status or replay the exact completion request instead
+of staging/executing again.
+
+The existing verifier accepts root `solution.py` with its fixed JSON-lines
+protocol. Define that format in the original task when independent execution is
+required. A different output such as the historical R2 `add.py` is not silently
+rewritten to fit it. The new bridge does not modify or certify that old fixture.
+
 ## Owner-reviewed proposal staging
 
 `agentsync.verification.proposal_staging.OwnerProposalStaging(core)` now exposes

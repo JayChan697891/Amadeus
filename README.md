@@ -390,7 +390,19 @@ or prove that the model authored it. After a positively ended failed attempt,
 fresh launch consent and independent managed worktree. The old task remains failed,
 and the new task's output still requires normal staging and independent verification.
 Unknown attempts do not qualify. A saved dispatch intent cannot be replayed into
-another launch. Source review is complete; runtime validation is still NOT RUN.
+another launch. The bounded [real interrupted-parent continuation](docs/acceptance/evidence/durable-demo-a117/interrupted-live-r2/summary.json)
+used two Codex subscription calls and a host-known checkpoint; the original
+receiver remains `review/unverified`. It does not prove whole-host crash recovery.
+
+The development relay now offers explicit Codex continuation proposal observation and
+staging entries, binding the original request, failed source and receiver receipts.
+These connect the same receiver task to the existing owner-approved candidate
+verification and different reviewer's completion. See the
+[host integration contract](docs/M6-ADAPTERS.md#controlled-proposal-submission-and-staging-bridge).
+Staging/execution/completion remain separate decisions. The verifier's supported
+candidate format is root `solution.py` using its JSON-lines interface; arbitrary
+model output is not silently adapted. This bridge is not a new real-model result
+or a formal Release approval.
 
 `agentsync.retry_planning.plan_retry(RetryPolicy(...), ...)` calculates deterministic
 capped exponential backoff from a caller-reported failure. A numeric Retry-After
