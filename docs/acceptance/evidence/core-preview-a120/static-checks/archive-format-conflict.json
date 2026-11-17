@@ -1,0 +1,105 @@
+{
+  "scope": "Exact immutable historical files that fail the unchanged complete Ruff/format commands",
+  "files": [
+    {
+      "path": "docs/acceptance/evidence/core-preview-a119/linux/linux-run-preview.py",
+      "sha256": "0607bf904565bbbd5a9c7e4d329fdbb2101b5d2f4655bd91223a5610b0c03efd",
+      "bytes": 15416,
+      "lint_diagnostics": 0,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/core-preview-a119/windows/run-preview.py",
+      "sha256": "c60c66a08f0fbb7786b9eed7fe019c839aee2cf9364b3986fc927a9c4b49cf89",
+      "bytes": 16890,
+      "lint_diagnostics": 0,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/core-preview-a120/linux/linux-run-preview.py",
+      "sha256": "c75a2846fa470ae685783ed13c9ba68793f977d335532fb7d93ed8a67e6b8ef7",
+      "bytes": 13260,
+      "lint_diagnostics": 0,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/core-preview-a120/windows/run-preview.py",
+      "sha256": "0e30788b2257171101f52f7f95035b09fbcd30d8f6540f1c3f9d67cb0784ac5d",
+      "bytes": 16661,
+      "lint_diagnostics": 0,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/clients/claude/run.py",
+      "sha256": "a9177ab1182891cec98c96952f239f05768eb04ea522210412d38124c52efd8f",
+      "bytes": 1697,
+      "lint_diagnostics": 3,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/clients/codex-initial/run.py",
+      "sha256": "192920b3e21d42da4e98a37b3aa1ace64eb0f566c96804f6b1e7ae99026b506c",
+      "bytes": 1728,
+      "lint_diagnostics": 3,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/clients/codex/run.py",
+      "sha256": "28a7f9731bcf336ba9562bad136e28426c4daab57c0ec3d4d3915e0041d71b70",
+      "bytes": 1758,
+      "lint_diagnostics": 3,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/continuation-verification/linux/run.py",
+      "sha256": "3c006804681176898bfdddba5175a5f9a8bb994e2b0d5647a03c95f2f6464f56",
+      "bytes": 3896,
+      "lint_diagnostics": 1,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/continuation-verification/windows/run-isolated-host-exit-r2.py",
+      "sha256": "b6bd6cbf56467431f559211eb67b413679fe798456b9824b836ca72150eac0a0",
+      "bytes": 9531,
+      "lint_diagnostics": 1,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/continuation-verification/windows/run-isolated-host-exit.py",
+      "sha256": "6a5ad14bec6cba7c808343279a3f057cdc9c89da9e7da9ec210e6fe9f42c783b",
+      "bytes": 9652,
+      "lint_diagnostics": 1,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/linux/collect.py",
+      "sha256": "2bd44c7a8c7b0da65ac0d479643e65632113a6d0971e7800a80f493b9979ebc0",
+      "bytes": 3471,
+      "lint_diagnostics": 0,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/linux/run-preview.py",
+      "sha256": "dc39e973274bf9f7ddc0e44e4cfb1081b896841a3e409db4a0eb184f8afa4c37",
+      "bytes": 12832,
+      "lint_diagnostics": 0,
+      "format": "FAIL"
+    },
+    {
+      "path": "docs/acceptance/evidence/recovery-preview-a118/linux/stage.py",
+      "sha256": "ee7b64a262cfee40f31f424dd91c946ff3b666052a30c410c65f843776f4b90e",
+      "bytes": 2868,
+      "lint_diagnostics": 10,
+      "format": "FAIL"
+    }
+  ],
+  "rule_counts": {
+    "E701": 10,
+    "E702": 5,
+    "E731": 3,
+    "F401": 1,
+    "I001": 3
+  },
+  "current_action": "Preserve FAIL and originals; no fix, unsafe fix, rename, exclusion, rule change or manifest rewrite",
+  "decision_needed": "Owner must explicitly resolve the conflict before any historical evidence/check-scope change; other local work may continue."
+}

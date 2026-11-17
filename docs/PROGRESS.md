@@ -1,5 +1,26 @@
 # Amadeus current progress
 
+Current frozen static supplement d427355: native353772 exited1. Full Ruff FAIL
+(22 diagnostics/7 files), format FAIL(13 files;377 already formatted), mypy PASS
+(96 source files). All diagnostics are historical raw Python driver files under
+acceptance/evidence; no src/tests/tools/examples diagnostic was reported. This is
+not an overall pass. Root verified all3 process/log receipts,5369 input files and
+97 installed members unchanged. The13 original files remain byte-identical.
+See acceptance/evidence/core-preview-a120/static-checks/summary.json and its
+archive-format-conflict.json for the exact paths/hashes/rule counts.
+Astra independently confirmed the immutable-evidence vs complete-static-scope
+conflict. No fix/unsafe-fix, rename, exclusion, rule or old-manifest change was made.
+An explicit owner decision is needed before changing that scope or those originals.
+
+Next independent work: missing current-candidate source/sdist/platform collection
+and license inventories. Existing collector has no skip/resume interface; calling
+collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
+or relabel the focused859775b/3362-input install records as d427355/5369 records.
+The composite validator also requires exact identity and each package's one true
+record directory; preserve original receipts. Select a genuinely unexecuted check
+with accurate origin/scope, not a fabricated complete matrix row. No next run has
+started. The two complete wheel suites and M0-M9 plan remain valid in their scope.
+
 P1 native Windows recovery-entry interaction completed on unchanged a120/859775b.
 Five actual terminal commands exited0: status, history, task, exact-wave reconcile,
 status. Real getpass input was not echoed; no prompt/CLI subprocess mock. The

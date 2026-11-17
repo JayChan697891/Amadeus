@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+Current static supplement: **Ruff FAIL, format FAIL, mypy PASS; Release BLOCKED**.
+Native353772 exited1 on frozen d427355. Ruff reports22 issues in7 historical raw
+drivers; format reports13 historical files,377 already formatted. mypy checks96
+source files without errors. All failure paths are inside evidence; no active
+src/tests/tools/examples diagnostic was reported. Originals,5369 inputs and97
+installed members remain unchanged. Root checked native receipts/log hashes;
+independent Astra confirmed the immutable-archive/check-scope conflict. No fix,
+unsafe fix, filename/scope/rule or old-manifest change was made. Preserve these
+failures pending an explicit owner decision; they do not erase the prior bounded
+wheel/terminal results and those results do not cancel this static failure.
+[Original outputs and exact13 files](evidence/core-preview-a120/static-checks/summary.json).
+
 P1 interactive entry — actual Windows terminal functionality **PASS**, local
 fixture credential cleanup **BLOCKED**. Five commands on unchanged a120/859775b
 exit0 through real getpass and installed CLI. No credential echo; pending wave

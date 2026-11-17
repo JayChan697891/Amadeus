@@ -2,6 +2,16 @@
 
 ## Execution adjustment — 2026-11-15
 
+The missing full static batch on d427355 has now run: mypy96 source files PASS,
+Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected
+files are immutable raw evidence, with current source/runtime unchanged. Preserve
+the failure and original manifests; no rule/scope/filename change is authorized.
+See static-checks/summary.json and archive-format-conflict.json. This is an
+existing C delivery conflict, not a new M5 stage. Seek a narrow owner decision;
+continue other missing source/sdist/license/platform checks independently.
+The collector cannot skip/reuse individual completed checks, and mixed snapshots
+cannot be promoted to a formal row. No source/sdist collection has been started.
+
 P1 existing recovery helper now has actual Windows terminal evidence: five
 commands exited0 with hidden credential input, preserving the same pending task
 and incomplete/unverified wave. No mock prompt or CLI process; runtime/helper

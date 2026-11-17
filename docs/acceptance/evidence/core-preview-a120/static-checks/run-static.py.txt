@@ -1,0 +1,68 @@
+"""Three missing static checks on the unchanged d427355 frozen source."""
+import hashlib
+import importlib.metadata as md
+import json
+import os
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path('D:/agentsync-debug/m120static')
+SOURCE = Path('D:/agentsync-debug/m120fullw/s')
+MANIFEST = SOURCE.parent / 'run/source-manifest.json'
+INSTALL = Path('D:/agentsync-debug/m120p/w')
+assert sys.flags.isolated and sys.dont_write_bytecode and __debug__
+assert Path(sys.prefix).resolve() == INSTALL and sys.version_info[:3] == (3, 12, 16)
+assert hashlib.sha256(MANIFEST.read_bytes()).hexdigest() == '584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc'
+manifest = json.loads(MANIFEST.read_bytes())
+assert len(manifest) == 5369
+
+def digest(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+def verify_inputs():
+    paths = {p.relative_to(SOURCE).as_posix(): p for p in SOURCE.rglob('*') if p.is_file()}
+    assert paths.keys() == manifest.keys()
+    for name, path in paths.items():
+        assert path.resolve() == path and path.stat().st_size == manifest[name]['bytes']
+        assert digest(path) == manifest[name]['sha256']
+    site = INSTALL / 'Lib/site-packages'
+    actual = {p.relative_to(site).as_posix(): digest(p) for p in (site / 'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+    assert len(actual) == 97 and actual == json.loads((INSTALL.parent / 'run/runtime-members.json').read_bytes())
+
+def save(name, value):
+    with (BASE / 'run' / name).open('x', encoding='utf8') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+assert {p.name for p in BASE.iterdir()} == {'run-static.py'}
+(BASE / 'run/logs').mkdir(parents=True)
+(BASE / 't').mkdir()
+(BASE / 'home').mkdir()
+for name in tuple(os.environ):
+    if name.upper().startswith(('AGENTSYNC_', 'PYTHON', 'PYTEST_', 'RUFF_', 'MYPY_', 'CODEX_', 'OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'GEMINI_', 'GIT_')) or name.upper().endswith(('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        os.environ.pop(name)
+os.environ.update(PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', RUFF_CACHE_DIR=str(BASE / 't/ruff'), MYPY_CACHE_DIR=str(BASE / 't/mypy'), HOME=str(BASE / 'home'), USERPROFILE=str(BASE / 'home'), TMP=str(BASE / 't'), TEMP=str(BASE / 't'), PIP_NO_INDEX='1')
+sys.path.insert(0, str(SOURCE))
+from tools import release_acceptance as collector
+
+result = {'scope': 'Complete Ruff/format/mypy supplement only; not a formal candidate matrix row', 'source_commit': 'd4273550359ffe767d0195445d1fccef6651cfc7', 'runtime_commit': '859775bf3f1a1492153ba550d36f4ad2b146c58f', 'python': sys.version, 'tools': {name: md.version(name) for name in ('ruff', 'mypy')}, 'started_at': datetime.now(UTC).isoformat(), 'driver_sha256': digest(Path(__file__)), 'status': 'unknown', 'automatic_retry': False, 'formal_release': 'BLOCKED', 'checks': []}
+save('attempt.json', result)
+try:
+    verify_inputs()
+    plan = [(name, command) for name, command in collector.check_plan(sys.executable, BASE / 'run', BASE / 't') if name in ('ruff', 'format', 'mypy')]
+    assert [name for name, _ in plan] == ['ruff', 'format', 'mypy']
+    for name, command in plan:
+        result['checks'].append(collector.execute(name, command, SOURCE, BASE / 'run', BASE / 't'))
+    result['status'] = 'pass' if all(row['status'] == 'pass' and row['exit_code'] == 0 and not row['log_truncated'] for row in result['checks']) else 'fail'
+finally:
+    try:
+        verify_inputs()
+        result.update(frozen_files_unchanged=5369, runtime_members_unchanged=97)
+    except Exception as error:
+        result.update(status='fail', postcheck_error=type(error).__name__)
+    result['finished_at'] = datetime.now(UTC).isoformat()
+    save('result.json', result)
+print(json.dumps({'status': result['status'], 'checks': [{key: row[key] for key in ('id', 'status', 'exit_code')} for row in result['checks']]}))
+raise SystemExit(0 if result['status'] == 'pass' else 1)
