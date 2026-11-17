@@ -1,5 +1,15 @@
 # Release Acceptance Report
 
+Frozen a122/5232e9e has a **SCOPED PASS** for the corrected native Codex MCP handoff.
+Both Windows hosts exited normally by EOF and all seven MCP children ended. The
+handoff was accepted with pinned context v1, and the recipient reached review v8
+with zero recorded reviews and an unverified result. Root matched 18 owner audit
+events read-only and confirmed unchanged database bytes, 97 installed members and
+the absence of all 10 recorded PIDs. Root and Astra accepted the scoped result.
+The run used zero inference, model-account credential access or candidate execution. M7 and formal
+Release remain unaccepted.
+[Actual execution and scope](evidence/core-preview-a122/native-handoff/summary.json).
+
 Adapter deadline repair1700d1d has **SCOPED SOURCE PASS**: original4+1 failing
 reproductions prove premature stops in shared scheduling and launch waits. The
 two paths now guard their absolute deadlines. Actual16+73+5+3 passing observations
@@ -18,7 +28,7 @@ and outcomes. Root verified the two archive hashes, 3,992 frozen files and 97
 runtime members per install. Root and Astra accepted the scoped results. The
 failed initial Linux SSH connection is retained as NOT RUN. Both native
 validation jobs finished and the owned Linux VM shut down normally. Full a122
-regressions, macOS and real-client validation remain **NOT RUN**. Historical
+regressions, macOS and real-model control checks remain **NOT RUN**. Historical
 static FAIL and pending license review still block formal Release.
 [Windows results](evidence/core-preview-a122/windows/summary.json),
 [Linux results](evidence/core-preview-a122/linux/summary.json), and
@@ -30,8 +40,8 @@ probe36a672d exited1 (dfd1a2); the result is immutable. Earlier actual MCP calls
 observed the handoff, recipient review/v8, pinned context, four correct denials,
 metadata locks and fresh-host reads. Root subsequently matched18 audit events
 read-only and confirmed unchanged DB/runtime plus ended processes. Probe repair
-a9cbcfe has an actual local Core regression and changed-file static PASS; repaired
-native run **NOT RUN**, no retry. Zero inference, no candidate execution or
+a9cbcfe has an actual local Core regression and changed-file static PASS. The
+corrected native run on a121 remains **NOT RUN**. Zero inference, no candidate execution or
 independent candidate verification. **Formal Release remains BLOCKED**.
 [Original native failure, observed facts and bounded correction](evidence/core-preview-a121/native-handoff/summary.json).
 

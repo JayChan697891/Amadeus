@@ -7,6 +7,35 @@ those requirements passed. The machine-readable traceability register is
 execution method, expected outcome, existing selectors, missing work, and target
 evidence location. The original T01–T16 scenarios remain mapped separately.
 
+## Current frozen acceptance queue — a122
+
+Product source is fixed at `5232e9e8bd33a949f7ffdc68410cd614a297af66`.
+Use the original [a122 archives](../../releases/0.3.0a122/preview-5232e9e/manifest.json):
+wheel SHA256 `8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab`,
+sdist SHA256 `c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f`.
+The four Windows/Linux installations already passed the same 97 affected cases.
+Their completed commands are not a queue to repeat or a complete release matrix.
+Historical a116/a120 full results retain their own source bindings.
+
+This queue consolidates existing missing evidence; it adds no product requirement,
+M5 phase or release exception. Each row needs its own exact driver/fixture hashes,
+readiness review and observed exit before its status changes. Execution order is
+the table order among ready rows; an unavailable row does not block unrelated work.
+
+| Original requirements | Remaining bounded evidence | Readiness and stop conditions |
+| --- | --- | --- |
+| M2-05, M3-03/04 | **SCOPED PASS**, one actual a122 run: both actors, pinned context, old-lease/recipient/lock denials, owner audit and normal host reopen. See [exact plan and result](evidence/core-preview-a122/native-handoff/summary.json). | Five install bindings were reviewed before one new-fixture execution. Zero model calls, no account credentials or candidate execution. Root matched18 persisted audit records; both hosts ended by EOF and all10 recorded PIDs were absent. Task stays review/unverified, with no independent candidate acceptance. Do not repeat; original a121 exit1 remains BLOCKED. |
+| M6-03 | Real active-generation timeout, with event ordering proving generation was still active when the actual deadline expired. **UNVERIFIED**. | A precise reviewed one-shot subscription plan and adequate non-sensitive event timing are still required. Standing same-kind subscription permission does not authorize extra payment or ambiguous replay. A completed response before the deadline is inconclusive; missed windows, unknown results or cleanup failures stop without another call. Offline deadline tests do not satisfy this row. |
+| M7-02, M8-02 | Previously deferred composition of real collaboration and controller-exit recovery. **DEFERRED to this final queue; NOT RUN** on a122. | Reuse the existing continuation/recovery APIs and preserve prior evidence. Freeze one combined scenario with exact process boundary and independent completion. Any new candidate execution requires its own authorization; the consumed a119 one-shot approval is not reusable. Do not repeat the old live experiment merely to change its version label. |
+| M9-01/02 | Remaining complete current-candidate platform, distribution and release gates. **BLOCKED / NOT RUN** as individually recorded. | Preserve unavailable macOS and real Claude/Cursor cases, original static FAIL, pending license decision and manual credential cleanup. Do not call the all-in-one collector just to repeat completed work. No public release without separate approval. |
+
+Store only new sanitized results under `evidence/core-preview-a122/` after actual
+execution; planned paths are not existing evidence. Preserve failed attempts,
+original logs and exact commands. The current working record and next executable
+entry are in [PROGRESS](../PROGRESS.md); [CLIENT-MATRIX](CLIENT-MATRIX.md) distinguishes
+native protocol observations from real model control. This plan does not start
+jobs, extend credentials permissions or accept any of the 42 formal requirements.
+
 Historical execution scripts may be stored as `.py.txt` evidence data. Their
 original bytes and SHA-256 remain unchanged; each summary's `raw_execution_sources`
 maps the archive name to the recorded execution filename(s). To reproduce, restore

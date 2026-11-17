@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "status": "SCOPED PASS - native MCP handoff; formal Release BLOCKED",
+  "runtime_version": "0.3.0a122",
+  "runtime_source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "plan_sha256": "280fb81c6d437310d9aa1833c558839614d30275190d40a4ecf2e0c02b89642f",
+  "probe_sha256": "a98377e8a792579df49e09e63f9556bf6e17e1a8aac94a7c6bffe73b82ea6698",
+  "original_corrected_probe_sha256": "fc458d0fec4d7434e794523a3a42a7dba6f4066d157499b93efaec900b2bfe01",
+  "only_rebound_constants": [
+    "PREVIEW",
+    "VERSION",
+    "RUNTIME_COMMIT",
+    "WHEEL_SHA",
+    "MEMBERS_SHA"
+  ],
+  "helper_sha256": "59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6",
+  "native_binary_sha256": "dce685d569526ef4712fa82d20ff20e1309baad5fcd34215e1126698f611242f",
+  "native_terminal_chunk": "bf7a51",
+  "native_exit_code": 0,
+  "started_utc": "2026-11-17T06:39:30.917558+00:00",
+  "finished_utc": "2026-11-17T06:39:36.063675+00:00",
+  "execution_count": 1,
+  "observed_scope": [
+    "Two native Codex host lifetimes and two deterministic Amadeus actors; task versions1-8 and recipient new lease",
+    "Accepted structured handoff with pinned context v1/latest v2; normal host reopen preserves state",
+    "Four correct denials and two released cooperative metadata locks; fixture file unchanged",
+    "Local owner Core audit and independent read-only SQLite postcheck match18 exact requests; this is not an MCP audit-tool test"
+  ],
+  "task_status": "review",
+  "task_version": 8,
+  "verification": "unverified",
+  "review_count": 0,
+  "model_requests": 0,
+  "candidate_executions": 0,
+  "account_credentials_read_or_copied": false,
+  "root_review_chunk": "cab6d1",
+  "database_bytes_unchanged": true,
+  "installed_members_unchanged": 97,
+  "hosts_eof_exit_zero": 2,
+  "mcp_children_ended": 7,
+  "recorded_pids_absent": 10,
+  "independent_review": "Root inspected original files and persisted state; Astra accepted only the bounded native MCP scope after reviewing actual execution and postchecks.",
+  "historical_a121": "Original BLOCKED/exit1 and corrected-probe NOT RUN on a121 remain unchanged; this separately reviewed frozen a122 case used a new fixture.",
+  "junit": "NOT APPLICABLE - manual native process observations and SQLite postcheck; no pytest or invented XML.",
+  "private_evidence": "Native stderr, stdout, isolated homes/config and database remain in restricted local D-drive fixture; none uploaded. Exported result matches parsed stdout.",
+  "publication_scan": "Initial d280b8 stopped before any archive write. The text scanner matched8 pre-existing source-code variable/dictionary references, not credential values; reviewed masked diffs2bca36/49be71 and exact public-source equivalence with only5 constant bindings. All exported result/plan/postcheck data has0 matches. Source bytes and scanner rules unchanged.",
+  "limitations": [
+    "No model-driven or cross-vendor relay, independent candidate acceptance, Git merge conflict handling, desktop UI or whole-host crash is established.",
+    "Full current matrix, active-generation timeout, deferred composed recovery, historical static FAIL, license decision and owner manual credential cleanup remain unresolved."
+  ],
+  "formal_release": "BLOCKED"
+}

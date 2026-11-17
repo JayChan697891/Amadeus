@@ -1,5 +1,17 @@
 # Amadeus current progress
 
+The first check in the frozen a122/5232e9e acceptance plan completed with Windows
+Codex 0.162.0 at 06:39:36Z on 2026-11-17 (bf7a51, exit 0). The fresh native MCP fixture
+accepted a structured handoff with pinned context v1 while the latest context
+advanced to v2. The recipient continued under a fresh lease to review v8 with
+zero recorded reviews and `verification: unverified`. Root's read-only postcheck
+(cab6d1) matched all 18 audit events, confirmed both metadata locks were released,
+and preserved the database bytes. All 97 installed runtime members matched. Both
+hosts exited normally by EOF, all seven MCP children ended, and all 10 recorded
+PIDs were absent. Root and Astra accepted the scoped result. The run used zero
+model-account credential access, model calls or candidate executions.
+[a122 native handoff evidence](acceptance/evidence/core-preview-a122/native-handoff/summary.json).
+
 P1 adapter deadline repair1700d1d is complete at source scope. Shared host timer
 callbacks and LaunchContext preparation waits now check the actual absolute
 deadline before cancelling work. This fixes the same premature-timeout defect
@@ -28,7 +40,8 @@ command, upload or test. That attempt remains NOT RUN. The first actual Linux
 test run then completed. Owned VM6480 shut down normally at06:28:47Z on
 2026-11-17 (7492b5), with ports closed and the disk retained. Both validation
 sessions are closed and there are no active a122 validation jobs. Full a122
-regressions and real-client checks remain NOT RUN. Formal Release remains BLOCKED.
+regressions and real-model control-adapter checks remain NOT RUN. Formal Release
+remains BLOCKED.
 
 Native Codex structured-handoff probe36a672d ran once on the unchanged installed
 a121/4b82494 runtime. It ended2026-11-17T05:40:13Z exit1 (dfd1a2), at the final
@@ -42,8 +55,8 @@ requests, preserved database bytes and97 installed members, and found all10 exac
 PIDs absent. Audit inspection was local owner Core/SQLite, not an MCP audit tool.
 One probe line now explicitly supplies0 (a9cbcfe); a separate real local Core check
 proves the old expectation fails and the correction matches. Changed-file static
-checks pass; Root/Astra accept only this repair. Corrected native probe NOT RUN;
-no retry, model call, candidate execution, runtime or package change occurred.
+checks pass; Root/Astra accept only this repair. The corrected native probe on
+a121 remains NOT RUN. Its separate a122 run is recorded above.
 See acceptance/evidence/core-preview-a121/native-handoff/summary.json. These are
 deterministic real-host observations, not M7 or formal Release acceptance.
 
@@ -169,13 +182,12 @@ Owner chose to handle manual removal later. No deletion retry or bypass is allow
 verify absence after the owner confirms removal. Cleanup remains BLOCKED.
 Never upload private/ or the temporary database. All exported records omit tokens.
 
-Prepare the existing final frozen acceptance plan against a122/5232e9e and the
-original archives above. Consolidate the unrun active-generation timeout,
-corrected native MCP handoff and deferred composed real recovery checks. The
-a121 native handoff result remains BLOCKED. Record the exact authorization and
-stop conditions for each planned run before scheduling. Do not execute or retry
-automatically. Use the completed a120 full suites and a121/a122 focused installs
-as recorded. [Delivery plan](PLAN.md).
+The corrected native MCP handoff is complete for the scoped a122/5232e9e fixture
+above. Continue preparation of the existing final frozen acceptance plan for the
+unrun active-generation timeout and deferred composed real recovery checks using
+the original archives. Record exact authorization and stop conditions for each
+planned run before scheduling. Do not execute or retry automatically. The a121
+native handoff result remains BLOCKED. [Delivery plan](PLAN.md).
 Claude/Cursor access, macOS evidence, and new candidate-execution and
 public-release authorization remain unavailable. The formal matrix, license
 decision, preserved static FAIL and manual cleanup remain unresolved.

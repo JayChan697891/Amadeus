@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "D:/agentsync-debug/m122-final-native-preparation/probe_codex_handoff.py",
+    "--codex-binary",
+    "C:/Users/JayChan/AppData/Roaming/npm/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+    "--scratch-parent",
+    "D:/agentsync-debug/m122-final-native-preparation"
+  ],
+  "cwd": "D:\\agentsync-debug\\m122-final-native-preparation",
+  "plan_sha256": "280fb81c6d437310d9aa1833c558839614d30275190d40a4ecf2e0c02b89642f",
+  "started_utc": "2026-11-17T06:39:30.917558+00:00",
+  "status": "finished",
+  "native_run_limit": 1,
+  "model_calls_authorized": 0,
+  "acl_review_chunk": "bd4b11",
+  "independent_prelaunch_review": "Astra accepted exact plan and five-bound rebind; ordinary local test authorization; one attempt without retry",
+  "pid": 18292,
+  "exit_code": 0,
+  "finished_utc": "2026-11-17T06:39:36.063675+00:00",
+  "duration_seconds": 5.156
+}

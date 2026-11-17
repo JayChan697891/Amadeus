@@ -12,18 +12,20 @@ Formal Release remains BLOCKED.
 [Preview packages](../releases/0.3.0a122/preview-5232e9e/) and
 [checkpoint and receipts](PROGRESS.md).
 
-The a122 validation jobs are closed and the Linux VM is off. Prepare the existing
-final acceptance plan for a122/5232e9e and its original archives. Consolidate the
-unrun active-generation timeout, corrected native MCP handoff and deferred composed
-real recovery checks. Record the exact authorization and stop conditions for each
-run. Do not execute or retry automatically.
+The corrected native MCP handoff completed the first check in the frozen
+a122/5232e9e acceptance plan. Root and Astra accepted its zero-inference scope.
+The recipient reached review v8 and remained unverified. Prepare the remaining
+active-generation timeout and deferred composed real recovery checks against the
+same original archives. Record the exact
+authorization and stop conditions for each run. Do not execute or retry
+automatically. [Actual native result](acceptance/evidence/core-preview-a122/native-handoff/summary.json).
 
 The existing M2/M3 native-client handoff gap was exercised once on installed a121.
 Actual Codex MCP calls observed structured handoff, recipient continuation, pinned
 context, metadata-lock contention and normal host reopen. The final audit assertion
 failed because the probe omitted a schema default; retain that native BLOCKED
-result. A one-line probe correction and separate local Core check are complete;
-no native retry or runtime/package change. Root read-only inspection matched18
+result. A one-line probe correction and separate local Core check are complete.
+The corrected probe remains unrun on a121. Root's read-only inspection matched18
 persisted audit events and confirmed cleanup. This closes implementation of the
 bounded probe, not full client/M7/Release acceptance. See native-handoff/summary.json
 under acceptance/evidence/core-preview-a121. Keep the usable preview and select
