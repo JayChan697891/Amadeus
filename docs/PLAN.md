@@ -9,8 +9,10 @@ verified actual results, not only the development summary. The a121/4b82494
 installable correction now passes19 Windows native build/install commands and23
 cases per fresh wheel/sdist installation. Source/archive/install hashes and all
 original receipts were checked; Astra accepted the limited scope. Reuse these
-exact archives for the first Linux3.14 focused installation check (preparing,
-NOT RUN), without new M5 phases or repeating frozen a120 suites running below.
+exact archives for the first Linux3.14 focused installation check, now complete:
+16 commands pass, both installs23pass with identical Windows identities/outcomes.
+Root/Astra accept only this supplement; VM normally off. No new M5 phases or
+repeat of the completed frozen a120 suites is needed.
 
 Existing Windows3.12 a120 wheel/sdist license inventories are now collected:
 32 runtime distributions and43 recorded license files each; actual metadata and
@@ -28,8 +30,11 @@ All four installed suites are complete. Linux3.14 editable-source full suite now
 passes2580/7skip,7 commands, same2587 case identities/outcomes and36 selected Docker
 results as wheel. Both5369-file trees/97 runtime members unchanged; Root/Astra
 accept the limited source result, VM normally off. Windows3.12 editable-source
-first full suite is running as native2511 after observed source/CLI-origin proof;
-no final verdict. See PROGRESS. No M5 expansion, installed-suite or static repeat.
+first full suite is now complete: native2511 exit0,7 commands,2530pass/57skip,
+same2587 identities/outcomes as its wheel; original/copy5369 files and97 source
+members unchanged. Root/Astra accepted this bounded source result. All six
+selected a120 suites are complete, without relabelling them as a121 evidence.
+See PROGRESS. No M5 expansion, installed-suite or static repeat.
 
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected
@@ -39,7 +44,7 @@ See static-checks/summary.json and archive-format-conflict.json. This is an
 existing C delivery conflict, not a new M5 stage. Owner chose originals plus FAIL;
 continue other missing source/sdist/license/platform checks independently.
 The collector cannot skip/reuse individual completed checks, and mixed snapshots
-cannot be promoted to a formal row. Full source collection remains NOT RUN.
+cannot be promoted to a formal row. Current formal collection remains incomplete.
 
 P1 existing recovery helper now has actual Windows terminal evidence: five
 commands exited0 with hidden credential input, preserving the same pending task

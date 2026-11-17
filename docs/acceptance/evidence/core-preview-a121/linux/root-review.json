@@ -1,0 +1,42 @@
+{
+  "checks": 16,
+  "package_cases": {
+    "wheel": {
+      "unique_cases": 23,
+      "passed": 23,
+      "windows_identity_outcomes_equal": true,
+      "junit": {
+        "path": "wheel-focused.xml",
+        "sha256": "17afd57881c0b6a3bd9fa0fc47b4c735ef3d01713f18d7c5cf5e2fc215895165",
+        "credential_redactions": 0,
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "sdist": {
+      "unique_cases": 23,
+      "passed": 23,
+      "windows_identity_outcomes_equal": true,
+      "junit": {
+        "path": "sdist-focused.xml",
+        "sha256": "87d5f19a50724800df2382766b7a9f164e1c4fe1d8628d6647169403660c1b48",
+        "credential_redactions": 0,
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "original_files": 37,
+  "original_bytes": 109409,
+  "started_at": "2026-11-17T05:08:38.449047+00:00",
+  "finished_at": "2026-11-17T05:09:37.051864+00:00",
+  "source_files_rehashed": 3809,
+  "installed_runtime_members_each": 97,
+  "raw_to_public_xml_checked": true,
+  "xml_redactions": 0,
+  "formal_release": "BLOCKED"
+}

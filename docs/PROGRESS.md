@@ -14,8 +14,13 @@ rehashed3809 frozen inputs,97 runtime members per install,2617 sdist payload
 files and4 old archives; checked45 original records/1368589bytes (5cbbfc).
 Astra accepted the limited installation scope. See core-preview-a121/windows
 and releases/0.3.0a121/preview-4b82494. Do not poll closed6217 or repeat its build.
-Prepare the same original new packages' first Linux3.14 focused installation
-check while observing native2511 below; Linux preparation is not execution.
+The same original packages now also pass16 Linux3.14 native install checks and
+23 cases per fresh install, matching Windows identities/outcomes exactly.
+Native18069 ended05:09:37Z exit0 (f0734e); Root checked3809 source files,97 members
+per install and37 original records/109409bytes (20d448/5973fe). Astra accepted the
+limited supplement. No workers/containers remained; owned VM23524 normally
+stopped05:12:21Z, ports closed, disk retained (fd8181). See core-preview-a121/linux.
+All a121 focused install jobs are finished; do not poll6217/18069 or repeat them.
 No new M phase, model call, static-scope change or repeated full suite is needed.
 
 COMPLETED: Linux3.14 fresh editable-source full suite, native77917 exited0
@@ -28,17 +33,17 @@ Astra accepted this limited source result. No workers/containers remained;
 VM21328 normally stopped04:28:28Z, ports closed, disk preserved (99874f).
 See full-linux314-source/summary.json. Do not poll closed77917 or repeat this suite.
 
-RUNNING: first Windows3.12 editable-source full suite, native2511. New source
-copy/environment/run/t/home under D:/agentsync-debug/m120sourcew. Five setup/origin
-commands exited0; actual probe imports the new s/src/agentsync and CLI with correct
-editable metadata and97 hashes. Full pytest has started, no final verdict yet.
-Driver D:/agentsync-debug/m120full-source-windows.py SHA0d1c1ddc...f8f6a uses the
-existing offline Python3.12.16/wheelhouse (all60 packages independently checked).
-Root/Astra accepted preparation only. See full-windows312-source-start for exact
-inputs and process receipts. Observe existing2511/result.json, do not duplicate
-or interrupt the queue. Original runtime859775b/tests d427355 remain fixed.
-No real model, account auth copy, installed-suite repeat, static rerun or existing
-published-package rebuild occurs. Formal Release remains BLOCKED.
+COMPLETED: Windows3.12 editable-source full suite, native2511 ended05:15:09Z
+2026-11-17 exit0 (b70c07). Seven commands pass;2587 unique cases:2530pass/57skip,
+0fail/error,2727.93s. Actual source/CLI origins and editable metadata point to the
+new frozen copy. Root rehashed original/copy5369 files and97 runtime members,
+checked6 raw/public XML redactions and19 originals/478672bytes (06031f/9d06b5).
+Case identities/outcomes match the original a120 Windows wheel; Astra accepts
+this bounded source result. No matching workers remain; VM is off. See
+core-preview-a120/full-windows312-source/summary.json. Closed2511 must not be
+polled/restarted. All six selected Windows3.12/Linux3.14 a120 source/wheel/sdist
+full suites are complete. Runtime859775b/tests d427355 remain fixed; these do
+not cover a121's later two-line repair. Formal Release remains BLOCKED.
 
 Current frozen static supplement d427355: native353772 exited1. Full Ruff FAIL
 (22 diagnostics/7 files), format FAIL(13 files;377 already formatted), mypy PASS
@@ -88,11 +93,11 @@ See full-windows312-sdist/summary.json. No matching test workers remain; VM is o
 Do not poll closed71082 or repeat any of the four completed installed suites.
 Original runtime859775b, test inputs d427355 and source archive remain unchanged.
 
-Linux3.14 source is complete; Windows3.12 source is running as recorded above.
+Both selected a120 source suites are complete as recorded above.
 Do not rebuild/reinstall passed packages or invoke the all-in-one collector that
 would repeat them. Remaining complete formal platform rows are still incomplete.
 Goal remains active; this is no Release pass.
-Full source/remaining platform collection is incomplete. Existing collector has no skip/resume interface; calling
+Remaining formal platform collection is incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.
 The composite validator also requires exact identity and each package's one true
@@ -117,11 +122,13 @@ Owner chose to handle manual removal later. No deletion retry or bypass is allow
 verify absence after the owner confirms removal. Cleanup remains BLOCKED.
 Never upload private/ or the temporary database. All exported records omit tokens.
 
-Next independent work: audit remaining current-candidate release collection gaps,
-select the first unexecuted required local check, and reuse both completed full
-wheel suites. Do not add M5 phases or repeat terminal/live experiments. The
-original M0-M9 requirements, A/B bounds and formal Release BLOCKED remain intact.
-This next collection/audit has not started.
+Next resume entry: keep a121/4b82494 as the usable core preview and review the
+remaining original requirements against its targeted evidence plus the frozen
+a120 baseline. Select only an uncovered required local check; do not repeat the
+six a120 full suites or four a121 focused installs. No next check is launched.
+Current formal matrix, license decision, macOS/cross-vendor access, preserved
+static FAIL and manual cleanup remain separate gaps. No new M5 stage or broader
+live/candidate-execution authorization is implied. Goal/M0-M9/A-B bounds remain.
 
 Historical checkpoint follows; the Linux/Windows results remain valid in scope.
 

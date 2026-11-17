@@ -1,0 +1,61 @@
+import hashlib,json,sys,xml.etree.ElementTree as ET
+from pathlib import Path
+
+base=Path('D:/agentsync-debug/m120sourcew');run=base/'run'
+source=Path('D:/agentsync-debug/m120fullw/s')
+reference=Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a120/full-windows312')
+result=json.loads((run/'result.json').read_bytes());assert result['finished_at']
+def sha(p):
+    with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+manifest_path=source.parent/'run/source-manifest.json'
+assert sha(manifest_path)=='584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc'
+manifest=json.loads(manifest_path.read_bytes());assert len(manifest)==5369
+assert {p.relative_to(source).as_posix() for p in source.rglob('*') if p.is_file()}==manifest.keys()
+for name,item in manifest.items():
+    p=source/name;assert p.resolve()==p and p.stat().st_size==item['bytes'] and sha(p)==item['sha256']
+copy=base/'s'
+assert {p.relative_to(copy).as_posix() for p in copy.rglob('*') if p.is_file()}==manifest.keys()
+for name,item in manifest.items():
+    p=copy/name;assert p.resolve()==p and p.stat().st_size==item['bytes'] and sha(p)==item['sha256']
+metadata=list((base/'e/Lib/site-packages').glob('agentsync_local-*.dist-info'));assert len(metadata)==1
+editable=json.loads((metadata[0]/'direct_url.json').read_bytes())
+assert editable=={'dir_info':{'editable':True},'url':copy.as_uri()}
+site=copy/'src'
+members=json.loads(Path('D:/agentsync-debug/m120p/run/runtime-members.json').read_bytes())
+actual={p.relative_to(site).as_posix():sha(p) for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert actual==members and len(actual)==97
+sys.path.insert(0,str(source))
+from tools.release_acceptance import redact_credentials
+raw=list(ET.parse(base/'t/source-junit.xml').iter());public=list(ET.parse(run/'source-junit.xml').iter());assert len(raw)==len(public)
+redactions=0
+for a,b in zip(raw,public):
+    assert a.tag==b.tag and a.attrib.keys()==b.attrib.keys()
+    for key,value in a.attrib.items():
+        clean,count=redact_credentials(value);redactions+=count;assert clean==b.attrib[key]
+    for field in ('text','tail'):
+        value=getattr(a,field)
+        if value is None:assert getattr(b,field) is None
+        else:
+            clean,count=redact_credentials(value);redactions+=count;assert clean==getattr(b,field)
+assert redactions==result['junit']['credential_redactions'] and sha(run/'source-junit.xml')==result['junit']['sha256']
+def cases(path):
+    rows={}
+    for node in ET.parse(path).iter('testcase'):
+        key=node.attrib['classname']+'::'+node.attrib['name'];assert key not in rows
+        outcome=next((name for name in ('failure','error','skipped') if node.find(name) is not None),'passed')
+        rows[key]={'outcome':outcome}
+        if outcome!='passed':rows[key]['message']=node.find(outcome).attrib.get('message','')
+    return rows
+current=cases(run/'source-junit.xml');old=cases(reference/'wheel-junit.xml')
+counts={s:sum(row['outcome']==s for row in current.values()) for s in ('passed','skipped','failure','error')}
+checks=[]
+for check in result['checks']:
+    receipt=json.loads((run/'logs'/f"{check['id']}.process.json").read_bytes())
+    assert receipt['phase']=='finished' and receipt['outcome']=='exited' and receipt['result']==check
+    assert sha(run/check['log'])==check['log_sha256'] and not check['log_truncated']
+    checks.append({'id':check['id'],'exit_code':check['exit_code'],'status':check['status'],'log_sha256':check['log_sha256']})
+record={'source_files_rehashed':5369,'source_runtime_members_rehashed':97,'copied_source_files_rehashed':5369,'editable_direct_url':editable,'raw_to_public_xml_checked':True,'xml_redactions':redactions,'unique_cases':len(current),'counts':counts,'wheel_case_identities_equal':current.keys()==old.keys(),'removed':sorted(old.keys()-current.keys()),'added':sorted(current.keys()-old.keys()),'outcome_differences':{k:{'wheel':old[k],'source':current[k]} for k in sorted(current.keys()&old.keys()) if current[k]['outcome']!=old[k]['outcome']},'skips':{k:v for k,v in current.items() if v['outcome']=='skipped'},'checks':checks}
+with (base/'root-review.json').open('x',encoding='utf8') as f:json.dump(record,f,indent=2);f.write('\n')
+print(json.dumps({k:v for k,v in record.items() if k not in ('skips','checks')}))
+assert len(checks)==7 and all(c['exit_code']==0 and c['status']=='pass' for c in checks)
+assert current.keys()==old.keys() and not record['outcome_differences'] and counts=={'passed':2530,'skipped':57,'failure':0,'error':0}

@@ -1,0 +1,298 @@
+{
+  "source_files_rehashed": 5369,
+  "source_runtime_members_rehashed": 97,
+  "copied_source_files_rehashed": 5369,
+  "editable_direct_url": {
+    "dir_info": {
+      "editable": true
+    },
+    "url": "file:///D:/agentsync-debug/m120sourcew/s"
+  },
+  "raw_to_public_xml_checked": true,
+  "xml_redactions": 6,
+  "unique_cases": 2587,
+  "counts": {
+    "passed": 2530,
+    "skipped": 57,
+    "failure": 0,
+    "error": 0
+  },
+  "wheel_case_identities_equal": true,
+  "removed": [],
+  "added": [],
+  "outcome_differences": {},
+  "skips": {
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_executes_candidate_not_base": {
+      "outcome": "skipped",
+      "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_wrong_result_fails_and_stays_fenced": {
+      "outcome": "skipped",
+      "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_timeout_is_unresolved_and_never_retried": {
+      "outcome": "skipped",
+      "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_cancel_after_running_keeps_correct_result_unverified": {
+      "outcome": "skipped",
+      "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_crash_after_created_reopens_and_cleans_exact_id": {
+      "outcome": "skipped",
+      "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    },
+    "tests.integration.test_candidate_export_security::test_nonregular_bare_config_is_rejected_without_reading_it": {
+      "outcome": "skipped",
+      "message": "POSIX FIFO metadata fixture requires Linux"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_checks_all_external_cases": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_isolation_controls": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_wall_time": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_output_bounds[stdout]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_output_bounds[stderr]": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_memory_bound": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_scratch_bound": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_pid_bound": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_kernel_cgroup_limits": {
+      "outcome": "skipped",
+      "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_hard_exit_then_explicit_cleanup_never_restores_success[created]": {
+      "outcome": "skipped",
+      "message": "Actual reconciliation requires an explicitly configured local Linux image"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_hard_exit_then_explicit_cleanup_never_restores_success[running]": {
+      "outcome": "skipped",
+      "message": "Actual reconciliation requires an explicitly configured local Linux image"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_initial_absence_is_not_claimed_as_proven_cleanup": {
+      "outcome": "skipped",
+      "message": "Actual reconciliation requires an explicitly configured local Linux image"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_renamed_container_is_protected_from_cleanup": {
+      "outcome": "skipped",
+      "message": "Actual reconciliation requires an explicitly configured local Linux image"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_lost_create_ack_is_never_reconciled_by_name[lost_ack]": {
+      "outcome": "skipped",
+      "message": "Actual reconciliation requires an explicitly configured local Linux image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_executes_fixed_snapshot_and_persists_independent_result": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[early-exit]": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[forged-junit]": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[wrong-result]": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_enforces_wall_time[owner_case0]": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_cancel_after_create_prevents_start": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_expired_lease_cannot_accept_passing_backend": {
+      "outcome": "skipped",
+      "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+    },
+    "tests.integration.test_proposal_docker_pipeline::test_same_core_proposal_to_independent_docker_acceptance[verified]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_proposal_docker_pipeline::test_same_core_proposal_to_independent_docker_acceptance[wrong-result]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[verified]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[wrong-result]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[reopen]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[host-exit-pre-dispatch]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[host-exit-dispatch-intent]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-staging]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-execution]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-completion]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[budget-staging]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[budget-resume]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[docker-cursor]": {
+      "outcome": "skipped",
+      "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_verified_task_completion::test_actual_linux_docker_to_independent_verified_completion": {
+      "outcome": "skipped",
+      "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+    },
+    "tests.security.test_resource_paths::test_explicit_project_symlink_root_is_canonicalized": {
+      "outcome": "skipped",
+      "message": "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m120sourcew\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m120sourcew\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\selected'"
+    },
+    "tests.security.test_resource_paths::test_symlink_and_nonexistent_target_through_link_are_denied": {
+      "outcome": "skipped",
+      "message": "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m120sourcew\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m120sourcew\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'"
+    },
+    "tests.unit.test_core_admission::test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent": {
+      "outcome": "skipped",
+      "message": "Requires Linux/POSIX fork"
+    },
+    "tests.unit.test_cursor_node_bundle::test_bundle_rejects_actual_links[False]": {
+      "outcome": "skipped",
+      "message": "This host cannot create the actual symlink fixture"
+    },
+    "tests.unit.test_cursor_node_bundle::test_bundle_rejects_actual_links[True]": {
+      "outcome": "skipped",
+      "message": "This host cannot create the actual symlink fixture"
+    },
+    "tests.unit.test_inspect_claude_events::test_fifo_input_is_rejected_without_waiting_for_a_writer": {
+      "outcome": "skipped",
+      "message": "FIFO fixture requires os.mkfifo"
+    },
+    "tests.unit.test_pytest_case_journal::test_output_path_guards_preserve_existing_objects[symlink]": {
+      "outcome": "skipped",
+      "message": "Local symlink creation unavailable"
+    },
+    "tests.unit.test_pytest_case_journal::test_output_path_guards_preserve_existing_objects[parent-symlink]": {
+      "outcome": "skipped",
+      "message": "Local symlink creation unavailable"
+    },
+    "tests.unit.test_pytest_case_journal::test_existing_fifo_is_rejected_without_opening_or_replacing_it": {
+      "outcome": "skipped",
+      "message": "Local FIFO creation unavailable"
+    },
+    "tests.unit.test_verification_snapshot::test_replaced_objects_directory_link_is_rejected_before_git_runs": {
+      "outcome": "skipped",
+      "message": "Creating directory symlinks requires unavailable host privileges"
+    }
+  },
+  "checks": [
+    {
+      "id": "source_venv",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "source_offline_dependencies",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "891d59af91eb53997683982f8c3759653d1e8371c37232f9ab8ff04c8d23e512"
+    },
+    {
+      "id": "source_editable_install",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "e6639459524f34f2a8442e0d0c1d8c531d4dfe8607525b06775bccd91027fead"
+    },
+    {
+      "id": "source_pip_check",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "id": "source_origin_before",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "f03d07abdb1c86a710bf952c696d6d7d686c680fbcfe19885cf2359cc0ebf062"
+    },
+    {
+      "id": "pytest",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "938f11457fcb366bc179b4b85d941d294d97d609d1df18780814e6522326220f"
+    },
+    {
+      "id": "source_origin_after",
+      "exit_code": 0,
+      "status": "pass",
+      "log_sha256": "f03d07abdb1c86a710bf952c696d6d7d686c680fbcfe19885cf2359cc0ebf062"
+    }
+  ]
+}

@@ -27,7 +27,12 @@ independent review accepted only this bounded scope. See
 [actual installation evidence](../../../docs/acceptance/evidence/core-preview-a121/windows/summary.json)
 and [original failed reproductions](../../../docs/acceptance/evidence/core-preview-a120/cli-output-encoding/summary.json).
 
-Hashes are in [SHA256SUMS](SHA256SUMS). Linux/macOS, the full a121 matrix and
-real clients are NOT RUN at this publication. Historical static FAIL remains;
+The same original archives subsequently passed16 Linux3.14 native checks and23
+cases per fresh install, with the same case identities/outcomes as Windows.
+See the [Linux supplement](../../../docs/acceptance/evidence/core-preview-a121/linux/summary.json).
+No package was rebuilt; the original manifest preserves its initial Windows scope.
+
+Hashes are in [SHA256SUMS](SHA256SUMS). macOS, the full a121 matrix and
+real clients remain NOT RUN. Historical static FAIL remains;
 license review and formal-release authorization are pending. Follow
 [current progress](../../../docs/PROGRESS.md) for later bounded supplements.

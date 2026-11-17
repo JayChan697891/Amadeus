@@ -7,12 +7,26 @@ files pass Ruff/format. The preserved complete-static FAIL is unchanged. Source
 version now0.3.0a121. Its4b82494 Windows preview completed19 native commands;
 fresh wheel/sdist each23 cases PASS, no failures/errors/skips. Root checked3809
 inputs,97 runtime members per install,2617 sdist payload files and45 original
-records; Astra accepts this limited installation scope. First Linux installation
-is preparing/NOT RUN; no a121 full-matrix or real-client result is claimed.
+records; Astra accepts this limited installation scope. The same original
+packages now pass16 Linux3.14 commands and23 cases per fresh install, matching
+Windows. Root checked37 originals,3809 inputs and97 members per install; Astra
+accepted the supplement and the VM is normally off. No a121 full-matrix or
+real-client result is claimed.
 The original a120 archives and frozen suites below do not include this repair.
 **Formal Release remains BLOCKED**.
 [Actual failed reproductions and repair](evidence/core-preview-a120/cli-output-encoding/summary.json).
 [Windows package provenance and actual results](evidence/core-preview-a121/windows/summary.json).
+[Linux package supplement](evidence/core-preview-a121/linux/summary.json).
+
+Frozen a120 Windows3.12 editable-source full suite **PASS with57 explicit skips**:
+native2511 ended2026-11-17T05:15:09Z exit0;7 commands,2530pass/57skip/0fail/error,
+2727.93s.2587 unique identities/outcomes equal its wheel. Root verified new source
+origin/editable metadata, original/copy5369 files,97 members and6 XML redactions;
+19 originals/478672bytes retained. Astra accepts only this bounded source result.
+No matching worker remains. All six selected a120 Windows/Linux source/wheel/sdist
+suites are complete, tied to runtime859775b/tests d427355; none is relabelled as
+a121 evidence or a fabricated formal matrix row. **Formal Release BLOCKED**.
+[Actual Windows source result](evidence/core-preview-a120/full-windows312-source/summary.json).
 
 Linux3.14 a120 fresh editable-source full suite **PASS with7 skips**. Native77917
 ended2026-11-17T04:26:58Z exit0;7 commands pass,2580pass/7skip/0fail/error in1153.57s,
@@ -21,8 +35,8 @@ to the new copy; original and copied5369 files/97 runtime members remain unchang
 Root checked55 originals/651374bytes and6 XML redactions.2587 unique identities/
 outcomes and36 selected Docker observations match Linux wheel; this is no new
 model proof. Astra accepts this bounded source result. No workers/containers
-remained; owned VM normally off, disk retained. Windows source is RUNNING, not
-passed; static FAIL, full formal matrix, license review and manual credential
+remained; owned VM normally off, disk retained. Windows source later passed as
+recorded above; static FAIL, full formal matrix, license review and manual credential
 cleanup remain. **Release BLOCKED**.
 [Actual source provenance and complete result](evidence/core-preview-a120/full-linux314-source/summary.json).
 

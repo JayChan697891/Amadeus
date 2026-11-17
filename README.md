@@ -18,23 +18,27 @@ Chinese paths and recovery reasons survive round-trip decoding. Two actual
 failures and19 passing targeted source checks are recorded in the
 [repair evidence](docs/acceptance/evidence/core-preview-a120/cli-output-encoding/summary.json).
 The [a121 preview](releases/0.3.0a121/preview-4b82494/) includes this correction:
-fresh Windows3.12 wheel/source-package installs each passed23 targeted cases,
-with19 native build/install checks. Linux installation, the complete matrix and
-real clients remain unverified for a121. The archived a120 packages below are unchanged.
+fresh wheel/source-package installs each passed23 targeted cases on Windows3.12
+and Linux3.14, using the same archives. Windows19 and Linux16 native checks pass;
+the complete matrix and real clients remain unverified for a121. Archived a120
+packages below are unchanged.
 
 The [a120 development preview](releases/0.3.0a120/preview-859775b/)
 adds missing-project protection for `workflow start` and structured database errors
 for `owner`/`workflow`. Fresh wheel and source-package installs each passed21
 focused cases on Windows3.12 and Linux3.14 using the same archives. macOS and
 a120 real-client validation are NOT RUN; full formal acceptance remains incomplete.
-Complete installed wheel/source-package suites each passed2530 cases with57 skips
+Frozen a120 editable-source, wheel and source-package suites each passed2530 cases with57 skips
 on Windows3.12 and2580 with7 skips on Linux3.14, with no failures/errors. Each has
-2587 unique cases; the two package forms have identical outcomes per platform.
+2587 unique cases; all three forms have identical outcomes per platform.
 See [Windows wheel](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json),
 [Windows source package](docs/acceptance/evidence/core-preview-a120/full-windows312-sdist/summary.json),
 [Linux wheel](docs/acceptance/evidence/core-preview-a120/full-linux314/summary.json) and
 [Linux source package](docs/acceptance/evidence/core-preview-a120/full-linux314-sdist/summary.json).
-These do not complete the source/platform matrix. Historical evidence originals
+The [Windows source](docs/acceptance/evidence/core-preview-a120/full-windows312-source/summary.json)
+and [Linux source](docs/acceptance/evidence/core-preview-a120/full-linux314-source/summary.json)
+complete those six selected suites, without certifying later a121 code or the full
+formal matrix. Historical evidence originals
 retain Ruff/format FAIL, and license review is pending; see the [current gates](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 
 For an existing stopped relay, use the [recovery guide](docs/RELAY-RECOVERY.md)

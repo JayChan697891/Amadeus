@@ -17,21 +17,23 @@
 中文目录和恢复原因能够完整解码还原。两项真实失败及修复后19项定向测试结果见
 [修复证据](docs/acceptance/evidence/core-preview-a120/cli-output-encoding/summary.json)。
 [a121 开发预览](releases/0.3.0a121/preview-4b82494/)已包含修复：Windows3.12 的
-wheel 和源码包各通过23项定向安装用例，19项原生命令通过。a121 的 Linux 安装、
-完整矩阵及真实客户端仍未验证；下述旧 a120 安装包保持不变。
+wheel 和源码包各通过23项定向安装用例；同一原包在 Linux3.14 的两种安装中也各通过23项。
+Windows19项、Linux16项原生命令通过。a121 的完整矩阵及真实客户端仍未验证；旧包保持不变。
 
 新的 [a120 开发预览](releases/0.3.0a120/preview-859775b/)补齐了工作流启动的错目录保护，
 并让所有者及工作流命令在数据库损坏时返回明确错误。wheel 和源码包的新安装各通过21项
 定向用例；同一组原包在 Windows3.12/Linux3.14 的四个新安装环境中结果一致。
 a120 的 macOS 与真实客户端验证尚未执行，完整正式验收仍未完成。
-现已完成四套安装后完整回归：Windows3.12 的 wheel 和源码包各2530通过、57跳过；
+冻结 a120 现已完成六套完整回归：Windows3.12 的源码、wheel 和源码包各2530通过、57跳过；
 Linux3.14 各2580通过、7跳过，均无失败/错误。每套2587个唯一用例，同平台两种
-安装形式的用例身份和结果一致。原始记录见
+安装形式及源码的用例身份和结果一致。原始记录见
 [Windows wheel](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json)、
 [Windows 源码包](docs/acceptance/evidence/core-preview-a120/full-windows312-sdist/summary.json)、
 [Linux wheel](docs/acceptance/evidence/core-preview-a120/full-linux314/summary.json)和
 [Linux 源码包](docs/acceptance/evidence/core-preview-a120/full-linux314-sdist/summary.json)。
-这不代表完整仓库源码或平台矩阵通过；历史证据原件的 Ruff/格式检查仍保留 FAIL，
+[Windows 源码](docs/acceptance/evidence/core-preview-a120/full-windows312-source/summary.json)与
+[Linux 源码](docs/acceptance/evidence/core-preview-a120/full-linux314-source/summary.json)补齐了上述六套，
+但不覆盖后来的 a121 修复或完整正式矩阵。历史证据原件的 Ruff/格式检查仍保留 FAIL，
 许可证审查也未完成。见[当前发布门槛](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md)。
 
 此前的 [a119 开发预览](releases/0.3.0a119/preview-4be5134/)已包含所有者命令的错目录保护，

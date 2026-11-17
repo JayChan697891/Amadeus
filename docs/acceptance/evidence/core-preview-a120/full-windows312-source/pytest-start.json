@@ -1,0 +1,33 @@
+{
+  "controller_pid": 25500,
+  "argv": [
+    "D:\\agentsync-debug\\m120sourcew\\e\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "D:\\agentsync-debug\\m120sourcew\\s\\tests",
+    "--junitxml",
+    "D:\\agentsync-debug\\m120sourcew\\t\\source-junit.xml",
+    "--basetemp",
+    "D:\\agentsync-debug\\m120sourcew\\t\\p",
+    "-o",
+    "cache_dir=D:\\agentsync-debug\\m120sourcew\\t\\pytest-cache"
+  ],
+  "requested_at": "2026-11-17T04:29:36.382756+00:00",
+  "timeout_seconds": 7200,
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "pinned_inputs": {
+    "D:\\agentsync-debug\\m120fullw\\source.zip": {
+      "bytes": 159181319,
+      "sha256": "1efa1b6d1dcf5d18b0eef1826115e6c6cbf6aa63fc2c9f84c33ef89123711b6f"
+    },
+    "D:\\agentsync-debug\\m120fullw\\run\\source-manifest.json": {
+      "bytes": 1052422,
+      "sha256": "584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc"
+    },
+    "D:\\agentsync-debug\\m120p\\run\\runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4"
+    }
+  }
+}
