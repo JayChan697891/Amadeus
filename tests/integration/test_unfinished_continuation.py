@@ -35,7 +35,7 @@ from agentsync.controlled_relay import (
 )
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
-from agentsync.proposal_handoff import HandoffReceiver
+from agentsync.proposal_handoff import HandoffReceiver, HandoffWorkspace
 from agentsync.relay_queue import CodexProposalQueueItem, RelayQueue
 from agentsync.storage.database import connect
 from agentsync.verification import candidate_executor
@@ -903,7 +903,11 @@ async def _continuation_host(phase, fixture):
     flow = OwnerContinuation(core, Path(fixture["scratch"]), Path(fixture["receipts"]))
     execute = core.execute
     original_start = CapturedProcess.start
+    run_receiver = flow._relay.run_continuation_once
+    record_wave = flow._queue._journal.record
     worktree = None
+    receiver_wave = None
+    receiver_snapshot = None
     builds, approvals, captures = [], [], []
 
     def exit_at_checkpoint():
@@ -924,7 +928,7 @@ async def _continuation_host(phase, fixture):
         exit_at_checkpoint()
 
     async def approve(plan):
-        assert phase == "resume"
+        assert phase in {"resume", "review-submitted"}
         approvals.append(plan.plan_sha256)
         return LaunchConsent(
             "continuation-host-fixture-" + plan.plan_sha256,
@@ -935,6 +939,7 @@ async def _continuation_host(phase, fixture):
         )
 
     def build(receiver, workspace):
+        nonlocal receiver_wave
         assert phase != "prepared" and receiver == request.receiver
         builds.append([workspace.task_id, workspace.worktree_id, workspace.head_sha])
         profile = CodexHostProfile(
@@ -945,7 +950,7 @@ async def _continuation_host(phase, fixture):
             fixture["binary_sha256"],
             expected_cli_version=fixture["cli_version"],
         )
-        return RelayActor(
+        actor = RelayActor(
             receiver.agent_id,
             receiver.session_token,
             profile,
@@ -954,17 +959,26 @@ async def _continuation_host(phase, fixture):
             {},
             approve,
         )
+        if phase == "review-submitted":
+            prefix = "continuation-" + digest([receiver.project_id, request.source.launch_sha256])
+            receiver_wave = flow._queue._key(actor, prefix + "-wave")
+        return actor
 
     async def capture(_cls, argv, *, cwd, stdin_text, timeout_seconds, output_limit, env):
-        assert phase == "resume" and str(cwd) != fixture["source_worktree"] and env == {}
+        assert phase in {"resume", "review-submitted"}
+        assert str(cwd) != fixture["source_worktree"] and env == {}
         contract, _ = json.JSONDecoder().raw_decode(stdin_text.split("Host contract: ", 1)[1])
         assert contract["mode"] == "proposal_continuation"
         assert contract["continuation"]["content_sha256"] == request.source.content_sha256
         assert "UNFINISHED_CONTEXT_SENTINEL" in stdin_text
+        (path,) = request.allowed_paths
+        content = "def total(values):\n    return sum(values)\n"
+        if path == "solution.py":
+            content += TOTAL_JSON_LINES
         process = await emit_proposal(
             original_start,
-            "answer.py",
-            "def total(values):\n    return sum(values)\n",
+            path,
+            content,
             cwd=cwd,
             timeout_seconds=timeout_seconds,
             output_limit=output_limit,
@@ -972,6 +986,62 @@ async def _continuation_host(phase, fixture):
         )
         captures.append(process)
         return process
+
+    async def observe_receiver_end(*args, **kwargs):
+        nonlocal receiver_snapshot
+        outcome = await run_receiver(*args, **kwargs)
+        (process,) = captures
+        receiver_snapshot = await process.snapshot()
+        return outcome
+
+    def exit_before_receiver_wave_result(project_key, wave_id, **result):
+        if wave_id != receiver_wave:
+            return record_wave(project_key, wave_id, **result)
+        assert worktree is not None and receiver_snapshot is not None
+        assert project_key == digest(request.receiver.project_id)
+        task_id = worktree[0]
+        assert result == {
+            "incomplete": False,
+            "results": [{"task_id": task_id, "state": "ready_for_review"}],
+        }
+        assert receiver_snapshot.parent_ended is True and receiver_snapshot.exit_code == 0
+        assert receiver_snapshot.state == "exited" and len(approvals) == len(captures) == 1
+        attempt, _ = flow._relay.owner_inspect_attempts(
+            request.receiver.project_id, task_id, admin_token=fixture["admin_token"]
+        )
+        assert (
+            attempt.state == "terminal_recorded"
+            and attempt.status == "continuation_proposal_received"
+        )
+        assert attempt.parent_ended is True and attempt.exit_code == 0
+        saved = flow.status(
+            request.receiver.project_id,
+            request.source.launch_sha256,
+            admin_token=fixture["admin_token"],
+        )
+        assert saved["task_id"] == task_id and saved["task_status"] == "review"
+        assert (
+            saved["state"] == "incomplete" and saved["publication"]["verification"] == "unverified"
+        )
+        print(
+            json.dumps(
+                {
+                    "pid": os.getpid(),
+                    "worktree": worktree,
+                    "wave_id": wave_id,
+                    "approvals": len(approvals),
+                    "launches": len(captures),
+                    "receiver_terminal": {
+                        "state": attempt.state,
+                        "status": attempt.status,
+                        "parent_ended": attempt.parent_ended,
+                        "exit_code": attempt.exit_code,
+                    },
+                }
+            ),
+            flush=True,
+        )
+        os._exit(73)
 
     args = dict(
         admin_token=fixture["admin_token"],
@@ -987,6 +1057,13 @@ async def _continuation_host(phase, fixture):
                 await flow.run_once(request, **args)
             raise AssertionError("The durable dispatch checkpoint was not reached")
         try:
+            if phase == "review-submitted":
+                with (
+                    patch.object(flow._relay, "run_continuation_once", observe_receiver_end),
+                    patch.object(flow._queue._journal, "record", exit_before_receiver_wave_result),
+                ):
+                    await flow.run_once(request, **args)
+                raise AssertionError("The durable receiver review checkpoint was not reached")
             outcome = await flow.run_once(request, **args)
         finally:
             for process in captures:
@@ -1006,10 +1083,8 @@ async def _continuation_host(phase, fixture):
     )
 
 
-@pytest.mark.parametrize("checkpoint", ["prepared", "dispatch-intent"])
-async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, checkpoint):
-    flow, request, _, child, calls, _, _, key = unfinished
-    core, owner, _, _, source_task, tree, source, receipts, profile = pilot
+def _continuation_host_launcher(flow, request, pilot):
+    core, owner, _, _, _, tree, source, receipts, profile = pilot
     plan = flow.preview(request, admin_token=owner["admin_token"])
     fixture = {
         "data_dir": str(core.data_dir),
@@ -1045,6 +1120,15 @@ async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, chec
             assert secret not in process.stdout + process.stderr
         assert process.returncode == expected_exit, process.stderr
         return json.loads(process.stdout)
+
+    return host
+
+
+@pytest.mark.parametrize("checkpoint", ["prepared", "dispatch-intent"])
+async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, checkpoint):
+    flow, request, _, child, calls, _, _, key = unfinished
+    core, owner, _, _, source_task, tree, source, receipts, _ = pilot
+    host = _continuation_host_launcher(flow, request, pilot)
 
     def source_observations():
         return (
@@ -1102,6 +1186,134 @@ async def test_host_exit_preserves_continuation_recovery(unfinished, pilot, chec
     )
     assert source_observations() == original and len(calls) == 1
     assert [source_fingerprint(path) for path in (source, Path(tree["path"]))] == before
+
+
+@pytest.mark.parametrize("unfinished", ["verifiable_codex"], indirect=True)
+async def test_host_exit_after_receiver_review_reconciles_existing_wave(unfinished, pilot):
+    flow, request, build, child, calls, approvals, _, _ = unfinished
+    core, owner, _, _, source_task, tree, source, receipts, _ = pilot
+    host = _continuation_host_launcher(flow, request, pilot)
+    project_id = owner["project_id"]
+    admin_token = owner["admin_token"]
+    auth = request.receiver.authentication()
+
+    def tasks():
+        return {row["id"]: row for row in core.execute("list_tasks", auth)["tasks"]}
+
+    original = {path.name: path.read_bytes() for path in receipts.glob("*.json")}
+    original_workspaces = [source_fingerprint(path) for path in (source, Path(tree["path"]))]
+    initial_tasks = tasks()
+    exited = host("review-submitted", 73)
+    assert exited["pid"] != os.getpid() and exited["approvals"] == exited["launches"] == 1
+    task_id, worktree_id, head_sha = exited["worktree"]
+    saved = flow.status(project_id, request.source.launch_sha256, admin_token=admin_token)
+    assert saved["task_id"] == task_id and saved["task_status"] == "review"
+    assert saved["state"] == "incomplete" and saved["publication"]["verification"] == "unverified"
+    pending = flow._queue.owner_observe_pending(project_id, admin_token=admin_token)
+    assert pending.wave_id == exited["wave_id"] and pending.receipt_state == "admitted"
+
+    saved_tree = core.execute(
+        "inspect_owned_worktree", {**auth, "task_id": task_id, "worktree_id": worktree_id}
+    )
+    actor = build(
+        request.receiver,
+        HandoffWorkspace(
+            task_id, saved["task_version"], worktree_id, head_sha, Path(saved_tree["path"])
+        ),
+    )
+    stager = core.execute("register_agent", {**owner, "name": "Recovered receiver staging worker"})
+    owner_grant(core, owner, stager, ("worker",))
+    staging = {
+        "continuation": request,
+        "admin_token": admin_token,
+        "staging_session_id": stager["session_id"],
+        "staging_session_token": stager["session_token"],
+    }
+    with pytest.raises(AgentSyncError) as denied:
+        flow._relay.preview_continuation_proposal_staging(actor, task_id, **staging)
+    assert denied.value.code == "relay_boundary"
+
+    graph = tasks()
+    assert task_id not in initial_tasks and set(graph) == initial_tasks.keys() | {task_id}
+    assert graph[source_task["id"]]["status"] == "failed"
+    assert graph[child["id"]]["dependencies"] == [task_id]
+    assert graph[child["id"]]["version"] == child["version"] + 1
+    recorded = {path.name: path.read_bytes() for path in receipts.glob("*.json")}
+    assert all(recorded[name] == content for name, content in original.items())
+
+    before_reconcile = host("resume", 0)
+    assert before_reconcile["outcome"]["state"] == "incomplete"
+    assert before_reconcile["builds"] == []
+    assert before_reconcile["approvals"] == before_reconcile["launches"] == 0
+    # Reconciliation runs in a clean CLI process and can only consume the exact saved wave.
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-I",
+            "-B",
+            "-m",
+            "agentsync",
+            "--data-dir",
+            str(core.data_dir),
+            "relay-reconcile",
+            pending.wave_id,
+            "--scratch-root",
+            str(source.parent),
+            "--receipts",
+            str(receipts),
+        ],
+        cwd=source.parent,
+        input=json.dumps({**auth, "admin_token": admin_token}),
+        capture_output=True,
+        encoding="utf-8",
+        timeout=30,
+        check=False,
+    )
+    for secret in (admin_token, request.receiver.session_token):
+        assert secret not in process.stdout + process.stderr
+    assert process.returncode == 0, process.stderr
+    outcome = json.loads(process.stdout)["data"]
+    assert outcome["state"] == "resolved" and outcome["verification"] == "unverified"
+    assert outcome["tasks"] == [
+        {"task_id": task_id, "state": "ready_for_review", "failure_code": None}
+    ]
+    assert flow._queue.owner_observe_pending(project_id, admin_token=admin_token) is None
+
+    preview = flow._relay.preview_continuation_proposal_staging(actor, task_id, **staging)["plan"]
+    assert preview["task_id"] == task_id and preview["task_version"] == saved["task_version"]
+    assert preview["context_id"] == saved["publication"]["context_id"]
+    assert preview["content_sha256"] == saved["publication"]["content_sha256"]
+    assert [file["path"] for file in preview["files"]] == ["solution.py"]
+    replayed = host("resume", 0)
+    assert replayed["outcome"]["state"] == "resolved" and replayed["outcome"]["wave"] == outcome
+    assert replayed["outcome"]["publication"] == saved["publication"]
+    assert replayed["builds"] == [] and replayed["approvals"] == replayed["launches"] == 0
+    assert tasks() == graph and len(calls) == len(approvals) == 1
+    assert {path.name: path.read_bytes() for path in receipts.glob("*.json")} == recorded
+    assert [
+        source_fingerprint(path) for path in (source, Path(tree["path"]))
+    ] == original_workspaces
+    print(
+        json.dumps(
+            {
+                "protocol_fixture": True,
+                "checkpoint_exit_code": 73,
+                "checkpoint": exited,
+                "before_reconcile": {
+                    key: before_reconcile[key] for key in ("pid", "approvals", "launches")
+                },
+                "reconcile_exit_code": process.returncode,
+                "reconciled_wave": outcome,
+                "staging_preview_task_id": preview["task_id"],
+                "replay": {key: replayed[key] for key in ("pid", "approvals", "launches")},
+                "source_task_status": graph[source_task["id"]]["status"],
+                "dependent_task_id": child["id"],
+                "dependent_version": graph[child["id"]]["version"],
+                "receipts_unchanged": True,
+            }
+        ),
+        flush=True,
+    )
 
 
 async def test_old_failed_receipt_cannot_cancel_reclaimed_same_session(unfinished, pilot):
