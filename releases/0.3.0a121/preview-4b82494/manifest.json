@@ -1,0 +1,18 @@
+{
+  "version": "0.3.0a121",
+  "source_commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+  "status": "development preview stored on branch; formal Release BLOCKED",
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a121-py3-none-any.whl",
+      "size": 327800,
+      "sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a121.tar.gz",
+      "size": 6391200,
+      "sha256": "d47e0e0d6a365639e4b6b231f6855390ee1143d4a71b8bcb4a565d207ff213a4"
+    }
+  },
+  "validation": "Windows3.12:19 native build/install checks; wheel/sdist each23 targeted cases pass. Linux/macOS/full matrix/real clients NOT RUN at initial publication."
+}

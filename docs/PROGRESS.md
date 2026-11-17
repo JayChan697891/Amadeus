@@ -7,9 +7,15 @@ two-line repair,19 focused cases pass without skips. Changed-file Ruff/format
 pass. Root checked original logs/JUnit, exact hashes and real parent/isolated-child
 source origins (63a9be). See core-preview-a120/cli-output-encoding/summary.json.
 Existing a120 archives and the running frozen Windows source suite are unchanged;
-that suite does not cover this later repair. Source is now0.3.0a121 to keep the
-next installable preview distinct; a121 build/install validation has NOT RUN.
-Continue that bounded preview preparation while observing native2511 below.
+that suite does not cover this later repair. The new a121/4b82494 preview is now
+built and tested: native6217 ended05:02:41Z2026-11-17 exit0 (578dee),19 commands;
+fresh Windows3.12 wheel/sdist each23pass,0fail/error/skip. Root independently
+rehashed3809 frozen inputs,97 runtime members per install,2617 sdist payload
+files and4 old archives; checked45 original records/1368589bytes (5cbbfc).
+Astra accepted the limited installation scope. See core-preview-a121/windows
+and releases/0.3.0a121/preview-4b82494. Do not poll closed6217 or repeat its build.
+Prepare the same original new packages' first Linux3.14 focused installation
+check while observing native2511 below; Linux preparation is not execution.
 No new M phase, model call, static-scope change or repeated full suite is needed.
 
 COMPLETED: Linux3.14 fresh editable-source full suite, native77917 exited0

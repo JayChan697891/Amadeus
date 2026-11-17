@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "status": "PASS - Windows development preview targeted installation; formal Release BLOCKED",
+  "version": "0.3.0a121",
+  "source_commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+  "repair_commit": "b095c5e8a8ac3eed67932543468c7b4ccafe48f1",
+  "native_session": 6217,
+  "terminal_chunk": "578dee",
+  "native_exit_code": 0,
+  "started_at": "2026-11-17T05:01:25.135670+00:00",
+  "finished_at": "2026-11-17T05:02:41.651450+00:00",
+  "native_checks": 19,
+  "junit": {
+    "wheel": {
+      "path": "wheel-focused.xml",
+      "sha256": "f6194063434d0cf6abbfca71accde475783ac4763f3d2e664e7b4d572cd62d04",
+      "credential_redactions": 0,
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "sdist": {
+      "path": "sdist-focused.xml",
+      "sha256": "88e5b71365487f4818a64a8200f821142a491c7a259909f979f804d72a42a3c5",
+      "credential_redactions": 0,
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a121-py3-none-any.whl",
+      "size": 327800,
+      "sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a121.tar.gz",
+      "size": 6391200,
+      "sha256": "d47e0e0d6a365639e4b6b231f6855390ee1143d4a71b8bcb4a565d207ff213a4"
+    }
+  },
+  "source_files_rehashed": 3809,
+  "runtime_members_per_install": 97,
+  "sdist_tracked_payload_rehashed": 2617,
+  "original_records": 45,
+  "original_bytes": 1368589,
+  "root_review_chunk": "5cbbfc",
+  "independent_review": "Astra read-only incremental review accepts the bounded Windows wheel/sdist installation results and the two-line output correction.",
+  "model_calls": 0,
+  "old_archives_unchanged": true,
+  "limits": [
+    "Each install passes the same23 cases:21 existing owner/workflow checks plus2 real Unicode-output CLI regressions.",
+    "This is not a new full regression/platform matrix, real-client result or formal Release.",
+    "The separately running a120 Windows source suite remains bound to its old runtime/tests.",
+    "Historical static FAIL, license review and owner manual fixture credential cleanup remain unresolved."
+  ]
+}

@@ -17,7 +17,10 @@ The current source also fixes demo/owner JSON output on legacy Windows streams:
 Chinese paths and recovery reasons survive round-trip decoding. Two actual
 failures and19 passing targeted source checks are recorded in the
 [repair evidence](docs/acceptance/evidence/core-preview-a120/cli-output-encoding/summary.json).
-This correction is not yet in the archived a120 packages below.
+The [a121 preview](releases/0.3.0a121/preview-4b82494/) includes this correction:
+fresh Windows3.12 wheel/source-package installs each passed23 targeted cases,
+with19 native build/install checks. Linux installation, the complete matrix and
+real clients remain unverified for a121. The archived a120 packages below are unchanged.
 
 The [a120 development preview](releases/0.3.0a120/preview-859775b/)
 adds missing-project protection for `workflow start` and structured database errors
