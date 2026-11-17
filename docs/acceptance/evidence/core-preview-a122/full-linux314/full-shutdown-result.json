@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-11-17T14:16:17.595977+00:00",
+  "vm_pid": 3652,
+  "host_process_observation": "absent, native baa5ac",
+  "ports_22222_22223": "closed",
+  "normal_powerdown_acknowledged": true,
+  "disk_preserved": true
+}

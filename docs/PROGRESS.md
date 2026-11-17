@@ -1,21 +1,25 @@
 # Amadeus current progress
 
-ACTIVE after explicit owner resume: first full a122 Linux3.14 installed-wheel
-suite started once in the existing D-drive VM. Native handle74411 (80427b) and
-actual guest controller2935/pytest2952 were observed live (d69be0), boot
-6ef0cfcd-3b1d-486c-9a81-0aae13dbc93a, VM3652. Driver11a3253b reads the original
-5232e9e snapshot and existing /root/amadeus-m122l/w installation; original4 inputs,
-97 installed members and Docker image were checked before launch. This is the
-first full Linux suite, with36 existing Docker observation records required.
-No rebuild/install, focused97, Windows full-suite or model repeat occurred.
-Final outcome remains unavailable: observe the SAME native74411 and actual guest
-processes, never restart from a saved status or observation timeout. Final result:
-/root/amadeus-m122fulll/run/result.json. Host observer:
-D:/agentsync-debug/m122fulll/observe-full.py. Raw stdout/JUnit stay in guest t/;
-only sanitized final evidence may be collected. Inspect actual XML, source/install
-hashes and Docker results after terminal, then independent acceptance and normal
-VM shutdown. [Starting receipts](acceptance/evidence/core-preview-a122/full-linux314/preparation.json).
-The earlier safety-pause checkpoint remains unchanged under F:/syuc/amadeus-checkpoints/.
+ACTIVE original goal; completed checkpoint:
+
+First full frozen a122 Linux3.14 installed-wheel regression completed at
+2026-11-17T14:10:22Z, native74411 exit0 (ad13b3): **2589 PASS /7 SKIP,
+0 failures/errors**,2596 unique cases. Root and Astra inspected actual XML,
+47 sanitized originals (628067 bytes), original4 inputs,3992 source files,
+97 installed members and36 Docker observations. All2587 prior case identities
+and outcomes remain;9 additional cases pass. Windows identities match;57 Windows
+skips pass on Linux and7 Linux skips pass on Windows (64 differences, net50).
+The first observer incorrectly asserted50 differences; its failure and corrected
+comparison remain in root-review.json. No suite was repeated or altered.
+Normal VM powerdown acknowledged; PID3652 absent and SSH/QMP ports closed.
+Original disk, raw local logs and all prior evidence remain. Zero model calls,
+rebuilds or installations. **SCOPED PASS only; formal Release BLOCKED.**
+
+[Final evidence](acceptance/evidence/core-preview-a122/full-linux314/root-review.json).
+Next: inspect the existing preview/license decision and remaining distribution
+coverage before starting another run. Guest free space is only261884928 bytes;
+do not start a large suite or delete old evidence to make room. Preserve the
+original safety-pause checkpoint. No test queue remains active from this run.
 
 The first complete a122 Windows3.12 installed-wheel suite finished at08:21:24Z
 on2026-11-17. Native43609 closed with exit0 (d04f44):2539pass/57skip, zero

@@ -1,0 +1,19 @@
+{
+  "reviewer": "astra_recovery_scope",
+  "decision": "SCOPED PASS",
+  "scope": "a122 5232e9e Linux3.14 installed-wheel full regression",
+  "inspected": [
+    "actual XML: 2596 unique, 2589 pass, 7 skip, zero failure/error",
+    "47 files/628067 bytes, all hashes match; 97 installed members",
+    "2587 previous cases and outcomes preserved; 9 added passes",
+    "Windows identity set equal; 57 plus 7 differing outcomes",
+    "36 Docker observations; no final workers or containers"
+  ],
+  "observer_error": "preserved incorrect net-50 assertion; actual difference is 64",
+  "excludes": [
+    "real models",
+    "full source/sdist suites",
+    "remaining platforms"
+  ],
+  "formal_release": "BLOCKED"
+}

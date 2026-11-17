@@ -20,7 +20,8 @@ passed the same 97 targeted cases on Windows 3.12 and Linux 3.14. Windows passed
 19 native checks and Linux passed 16. Root and Astra accepted the scoped results.
 The first full a122 Windows3.12 installed-wheel regression now passes2539/57skip,
 with unchanged original inputs and all2587 previous case identities/outcomes plus
-9 passing cases. Other full a122 matrix cells and complete real-client control
+9 passing cases. Linux3.14 installed-wheel now also passes2589/7skip, with
+36 Docker observations and independent Root/Astra review. Other full a122 matrix cells and complete real-client control
 acceptance remain unrun.
 Formal Release remains BLOCKED.
 [Preview packages](../releases/0.3.0a122/preview-5232e9e/) and

@@ -17,7 +17,8 @@ a122 开发预览修复了共享适配器调度及启动前等待的提前超时
 绝对截止时间。原始 wheel 和源码包在 Windows 3.12 与 Linux 3.14 上各安装一次，
 四个环境均通过同一组 97 项定向用例。Windows 通过 19 项原生构建和安装检查，Linux
 通过 16 项安装检查。随后完成的首次 Windows wheel 完整回归为2539通过、57明确跳过、
-零失败/错误；首次 Linux wheel 完整回归正在运行，尚无最终结果。
+零失败/错误；首次 Linux wheel 完整回归为2589通过、7明确跳过、零失败/错误。
+[Linux 完整结果](docs/acceptance/evidence/core-preview-a122/full-linux314/root-review.json)。
 真实同厂商 Codex 交接、已持久化结果的控制器恢复及同任务独立验证已有限定证据，
 不代表全部客户端、生命周期控制、平台或正式 Release 通过。
 [Windows 完整结果](docs/acceptance/evidence/core-preview-a122/full-windows312/root-postcheck.json)、

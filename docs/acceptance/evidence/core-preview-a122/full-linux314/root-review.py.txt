@@ -1,0 +1,27 @@
+import collections,hashlib,json,xml.etree.ElementTree as ET
+from pathlib import Path
+base=Path('D:/agentsync-debug/m122fulll');run=base/'harvest';repo=Path('F:/syuc/amadeus-m6-single')
+t=json.loads((base/'transfer-summary.json').read_bytes());r=json.loads((run/'result.json').read_bytes())
+for f in t['files']:
+ p=run/f['path'];assert p.stat().st_size==f['bytes'] and hashlib.sha256(p.read_bytes()).hexdigest()==f['sha256']
+assert t['runtime_members_match'] and t['installed_wheel_origin_match'] and t['source_files_rehashed']==3992 and all(t['input_matches'].values())
+assert not t['workers'] and not t['containers']
+def cases(path):
+ out={}
+ for n in ET.parse(path).iter('testcase'):
+  key=n.attrib['classname']+'::'+n.attrib['name'];assert key not in out
+  out[key]=next((x for x in ('failure','error','skipped') if n.find(x) is not None),'pass')
+ return out
+current=cases(run/'wheel-junit.xml');old=cases(repo/'docs/acceptance/evidence/core-preview-a120/full-linux314/wheel-junit.xml');win=cases(repo/'docs/acceptance/evidence/core-preview-a122/full-windows312/wheel-junit.xml')
+assert len(current)==2596 and collections.Counter(current.values())=={'pass':2589,'skipped':7}
+assert old.keys()<=current.keys() and all(current[k]==v for k,v in old.items())
+assert current.keys()==win.keys()
+added={k:current[k] for k in sorted(current.keys()-old.keys())};assert len(added)==9 and set(added.values())=={'pass'}
+diffs={k:{'windows':win[k],'linux':v} for k,v in current.items() if v!=win[k]}
+assert collections.Counter((v['windows'],v['linux']) for v in diffs.values())=={('skipped','pass'):57,('pass','skipped'):7}
+for check in r['checks']:
+ receipt=json.loads((run/f"logs/{check['id']}.process.json").read_bytes());assert receipt['phase']=='finished' and receipt['outcome']=='exited' and receipt['result']==check and check['exit_code']==0
+assert sum(t['observation_groups'].values())==36
+summary={'scope':'First complete frozen a122 Linux3.14 installed-wheel suite; not formal Release','native_session':74411,'native_terminal_chunk':'ad13b3','native_exit_code':0,'harvest_chunk':'0d3a12','runtime_commit':r['product_runtime_commit'],'tests_commit':r['test_source_commit'],'started_at':r['started_at'],'finished_at':r['finished_at'],'counts':dict(collections.Counter(current.values())),'total':len(current),'same_a120_case_outcomes':len(old),'added_cases':added,'same_windows_case_identities':len(win),'platform_outcome_differences':diffs,'original_files_checked':47,'original_bytes':sum(f['bytes'] for f in t['files']),'runtime_members_rechecked':97,'source_files_rechecked':3992,'docker_observation_groups':t['observation_groups'],'docker_remaining':t['containers'],'workers_remaining':t['workers'],'formal_release':'BLOCKED','real_clients':'NOT RUN by this suite','full_platform_matrix':'NOT RUN for remaining a122 cells','junit_sha256':r['junit']['sha256'],'junit_redactions':r['junit']['credential_redactions'],'observer_error_preserved':{'native_chunk':'af7233','exit_code':1,'error':'AssertionError at cross-platform comparison','incorrect_assertion':"len(diffs)==50 and all(v=={'windows':'skipped','linux':'pass'} for v in diffs.values())",'correction':'50 is the net pass-count difference, not differing case count. Actual XML has57 Windows-only skips and7 Linux-only skips,64 differing outcomes. Same old Linux outcomes and all2596 current identities retained. No product test rerun or changed threshold.'}}
+with (base/'root-review.json').open('x',encoding='utf-8') as f:json.dump(summary,f,indent=2)
+print(json.dumps({k:summary[k] for k in ('counts','total','same_a120_case_outcomes','same_windows_case_identities','docker_observation_groups','finished_at')}))

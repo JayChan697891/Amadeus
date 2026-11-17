@@ -19,7 +19,8 @@ cancelling work. The original wheel and source archive each passed the same 97 t
 cases on Windows 3.12 and Linux 3.14. Windows passed 19 native build and installation
 checks, and Linux passed 16 installation checks. The first complete Windows wheel
 suite subsequently passed2539 cases with57 explicit skips and no failures/errors.
-The first complete Linux wheel suite is running; its final result is not available.
+The first complete Linux wheel suite passed2589 cases with7 explicit skips and
+no failures/errors; [actual results](docs/acceptance/evidence/core-preview-a122/full-linux314/root-review.json).
 Real same-vendor Codex handoff, persisted-result controller recovery and independent
 completion of the same task have scoped evidence. This does not certify all
 clients, lifecycle controls, platforms or formal Release.

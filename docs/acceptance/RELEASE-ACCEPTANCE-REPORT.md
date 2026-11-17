@@ -1,5 +1,20 @@
 # Release Acceptance Report
 
+First full frozen a122 Linux3.14 installed-wheel regression completed at
+2026-11-17T14:10:22Z, native74411 exit0 (ad13b3): **2589 PASS /7 SKIP,
+0 failures/errors**,2596 unique cases. Root and Astra inspected actual XML,
+47 sanitized originals (628067 bytes), original4 inputs,3992 source files,
+97 installed members and36 Docker observations. All2587 prior case identities
+and outcomes remain;9 additional cases pass. Windows identities match;57 Windows
+skips pass on Linux and7 Linux skips pass on Windows (64 differences, net50).
+The first observer incorrectly asserted50 differences; its failure and corrected
+comparison remain in root-review.json. No suite was repeated or altered.
+Normal VM powerdown acknowledged; PID3652 absent and SSH/QMP ports closed.
+Original disk, raw local logs and all prior evidence remain. Zero model calls,
+rebuilds or installations. **SCOPED PASS only; formal Release BLOCKED.**
+
+[Actual Linux suite and review](evidence/core-preview-a122/full-linux314/root-review.json).
+
 Original M6-03/T13 has **SCOPED PASS** for current a122 real Codex launch, recorded
 command/version/run/session bindings, result collection and independently verified
 artifact. Root/Sol/Astra compared the original clauses and actual evidence; no new
