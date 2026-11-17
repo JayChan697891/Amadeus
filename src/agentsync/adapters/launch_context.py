@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Awaitable, Callable
 from pathlib import Path
+from time import get_clock_info
 from typing import TypeVar
 
 from agentsync.adapters.base import AdapterTask
@@ -62,10 +63,28 @@ class LaunchContext:
     async def wait_before_start(self, task: AdapterTask, wait: Callable[[], Awaitable[_T]]) -> _T:
         """Bound a cooperative host wait by the same deadline as process admission."""
         self.check(task)
-        deadline = asyncio.timeout_at(self._deadline)
+        deadline = asyncio.timeout(None)
+        timer: asyncio.TimerHandle
+
+        def expire_when_due() -> None:
+            nonlocal timer
+            now = self._loop.time()
+            remaining = self._deadline - now
+            if remaining > 0:
+                # asyncio may dispatch a timer before its absolute deadline.
+                timer = self._loop.call_later(
+                    max(remaining, get_clock_info("monotonic").resolution), expire_when_due
+                )
+                return
+            deadline.reschedule(now)
+
         try:
             async with deadline:
-                value = await wait()
+                timer = self._loop.call_at(self._deadline, expire_when_due)
+                try:
+                    value = await wait()
+                finally:
+                    timer.cancel()
         except TimeoutError:
             if deadline.expired():
                 raise _LaunchBlocked(expired=True) from None

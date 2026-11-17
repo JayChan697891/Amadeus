@@ -15,6 +15,7 @@ import math
 import uuid
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field, replace
+from time import get_clock_info
 from typing import Generic, Literal, TypeVar
 
 from agentsync.adapters.base import AdapterTask, AgentAdapter, _identifier
@@ -214,14 +215,29 @@ class _HostProcessAdapter(
             self._entries[view.run_id] = entry
             self._requests[task.request_id] = view.run_id
             entry.driver = asyncio.create_task(self._drive(entry))
-            entry.deadline = loop.call_later(task.timeout_seconds, self._schedule_timeout, entry)
+            entry.deadline = loop.call_at(
+                view.started_at + task.timeout_seconds, self._schedule_timeout, entry
+            )
             return view
 
     def _schedule_timeout(self, entry: _Entry[_RunT, _ResultT]) -> None:
-        if entry.result is None:
-            entry.deadline_job = asyncio.create_task(
-                self._request_stop(entry, "adapter_timeout", True)
+        if (
+            entry.result is not None
+            or entry.stop_code is not None
+            or entry.deadline_job is not None
+        ):
+            return
+        loop = asyncio.get_running_loop()
+        remaining = entry.view.started_at + entry.task.timeout_seconds - loop.time()
+        if remaining > 0:
+            # asyncio may dispatch a timer before its absolute deadline.
+            entry.deadline = loop.call_later(
+                max(remaining, get_clock_info("monotonic").resolution),
+                self._schedule_timeout,
+                entry,
             )
+            return
+        entry.deadline_job = asyncio.create_task(self._request_stop(entry, "adapter_timeout", True))
 
     async def _drive(self, entry: _Entry[_RunT, _ResultT]) -> None:
         try:

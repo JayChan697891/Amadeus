@@ -1,0 +1,78 @@
+"""Deterministic launch-wait deadline tests without client execution."""
+
+import asyncio
+from types import SimpleNamespace
+
+import pytest
+from test_process_capture_deadline import ClockLoop
+
+from agentsync.adapters import launch_context
+from agentsync.adapters.base import AdapterTask
+from agentsync.errors import AgentSyncError
+
+
+@pytest.mark.parametrize("outcome", ["deadline", "external-cancel", "swallowed-cancel"])
+async def test_early_timer_preserves_one_launch_wait(monkeypatch, outcome):
+    loop = asyncio.get_running_loop()
+    clock = ClockLoop(loop)
+    monkeypatch.setattr(loop, "time", clock.time)
+    monkeypatch.setattr(
+        loop,
+        "call_at",
+        lambda when, callback, *args, context=None: clock.call_at(when, callback, *args),
+    )
+    monkeypatch.setattr(
+        loop,
+        "call_later",
+        lambda delay, callback, *args, context=None: clock.call_later(delay, callback, *args),
+    )
+    monkeypatch.setattr(
+        launch_context, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+    )
+    task = AdapterTask("p", "s", "t", "r")
+    deadline = clock.now + 1
+    context = launch_context._new_launch_context(task, loop, deadline, lambda: False)
+    started = cancelled = 0
+
+    async def wait():
+        nonlocal started, cancelled
+        started += 1
+        try:
+            await asyncio.Event().wait()
+        except asyncio.CancelledError:
+            cancelled += 1
+            if outcome == "swallowed-cancel":
+                return "late grant"
+            raise
+
+    job = asyncio.create_task(context.wait_before_start(task, wait))
+    try:
+        await asyncio.sleep(0)
+        assert started == 1 and len(clock.timers) == 1
+        timer = clock.timers[0]
+        assert timer.when == deadline
+        clock.fire(timer, deadline - 0.006)
+        await asyncio.sleep(0)
+        assert not job.done() and cancelled == 0
+        assert len(clock.timers) == 2 and clock.timers[-1].when >= clock.now + 0.025
+        timer = clock.timers[-1]
+
+        if outcome == "external-cancel":
+            job.cancel()
+        else:
+            clock.fire(timer, deadline)
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        assert job.done()
+        if outcome == "external-cancel":
+            with pytest.raises(asyncio.CancelledError):
+                await job
+        else:
+            with pytest.raises(AgentSyncError) as error:
+                await job
+            assert error.value.code == "launch_deadline_exceeded"
+        assert timer.cancelled and started == cancelled == 1
+    finally:
+        if not job.done():
+            job.cancel()
+        await asyncio.gather(job, return_exceptions=True)
