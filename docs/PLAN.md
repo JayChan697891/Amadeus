@@ -11,8 +11,12 @@ inventories:31 distributions/35 files each,6 native checks pass,70 file hashes
 independently checked. No rebuild/install/test rerun. Linux3.14 full installed-sdist
 now passes2580/7skip, same2587 case identities/outcomes as wheel; original records,
 comparison failure and scoped correction preserved. Astra accepted the limited
-result; local VM normally off. Windows3.12 first full installed-sdist is running
-as native71082; no verdict yet. See PROGRESS for the exact continuation entry.
+result; local VM normally off. Windows3.12 full installed-sdist also passes2530/
+57skip, identical2587 identities/outcomes to wheel,4 native commands, unchanged
+5369 inputs/97 runtime members. Root/Astra accepted only the installed-sdist scope.
+All four installed suites are complete; no active queue remains. Next prepare
+the first frozen-source full suite with explicit source-origin proof, starting
+Linux3.14; not started. See PROGRESS. No M5 expansion or repeated installed tests.
 
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected

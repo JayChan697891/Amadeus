@@ -16,11 +16,17 @@ does not certify new development changes. See [delivery priorities](docs/PLAN.md
 The [a120 development preview](releases/0.3.0a120/preview-859775b/)
 adds missing-project protection for `workflow start` and structured database errors
 for `owner`/`workflow`. Fresh wheel and source-package installs each passed21
-focused cases on Windows3.12 and Linux3.14 using the same archives. macOS,
-full a120 acceptance and a120 real-client validation are NOT RUN.
-The subsequent [full Windows3.12 installed-wheel regression](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json)
-passed2530 cases with57 explicit skips and no failures/errors. This is one complete
-test run, not the full platform/source-package acceptance matrix.
+focused cases on Windows3.12 and Linux3.14 using the same archives. macOS and
+a120 real-client validation are NOT RUN; full formal acceptance remains incomplete.
+Complete installed wheel/source-package suites each passed2530 cases with57 skips
+on Windows3.12 and2580 with7 skips on Linux3.14, with no failures/errors. Each has
+2587 unique cases; the two package forms have identical outcomes per platform.
+See [Windows wheel](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json),
+[Windows source package](docs/acceptance/evidence/core-preview-a120/full-windows312-sdist/summary.json),
+[Linux wheel](docs/acceptance/evidence/core-preview-a120/full-linux314/summary.json) and
+[Linux source package](docs/acceptance/evidence/core-preview-a120/full-linux314-sdist/summary.json).
+These do not complete the source/platform matrix. Historical evidence originals
+retain Ruff/format FAIL, and license review is pending; see the [current gates](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md).
 
 For an existing stopped relay, use the [recovery guide](docs/RELAY-RECOVERY.md)
 and interactive [helper](examples/recover_relay.py) to inspect the saved wave and

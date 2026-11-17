@@ -39,13 +39,22 @@ Existing unique group/basename convention then gives no selected semantic delta
 shut down;03:10:22Z process absent, ports closed, disk preserved (83a8f1).
 See full-linux314-sdist/summary.json. Do not poll closed session32517 or rerun it.
 
-RUNNING: first Windows3.12 installed-sdist full suite, native71082. Existing
-D:/agentsync-debug/m120p/d, same runtime859775b and d427355 frozen tests; no build,
-install or wheel repeat. Driver D:/agentsync-debug/m120full-sdist-windows.py
-SHA49aae1f124873e4a6027eb38f03ced72461b39a4790421ed8923a13749c4effe.
-New run/t/home at D:/agentsync-debug/m120sdistw; actual pytest-start receipt exists,
-no result yet. See full-windows312-sdist-start. Observe existing71082/result.json,
-never start another copy or interrupt its queue. No model/auth copy occurs.
+COMPLETED: Windows3.12 installed-sdist full suite, native71082 ended03:56:07Z
+2026-11-17 exit0 (1ab329).2587 unique cases:2530pass/57skip/0fail/error,2688.74s;
+four commands pass and all case identities/outcomes match the accepted Windows
+wheel. Root rehashed5369 source/97 runtime files and checked6 XML redactions;
+11 original records/453655bytes retained. Astra accepts this limited scope.
+See full-windows312-sdist/summary.json. No matching test workers remain; VM is off.
+Do not poll closed71082 or repeat any of the four completed installed suites.
+Original runtime859775b, test inputs d427355 and source archive remain unchanged.
+
+NEXT: first current frozen-source complete suite, starting Linux3.14. Before
+execution, check exact source import/CLI origins with isolated new output and
+explicit environment; installed-package provenance alone cannot certify source
+execution. Reuse original d427355 inputs and completed installed-suite evidence;
+do not rebuild/reinstall passed packages or invoke the all-in-one collector that
+would repeat them. No source driver, environment or full-source run has started.
+All active local queues are complete. Goal remains active; this is no Release pass.
 Full source/remaining platform collection is incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.

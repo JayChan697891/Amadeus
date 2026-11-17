@@ -16,9 +16,16 @@
 新的 [a120 开发预览](releases/0.3.0a120/preview-859775b/)补齐了工作流启动的错目录保护，
 并让所有者及工作流命令在数据库损坏时返回明确错误。wheel 和源码包的新安装各通过21项
 定向用例；同一组原包在 Windows3.12/Linux3.14 的四个新安装环境中结果一致。
-a120 的 macOS、完整验收及真实客户端验证尚未执行。
-随后完成的[Windows3.12 已安装 wheel 全量回归](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json)
-为2530通过、57项明确跳过、零失败/错误；它不是完整平台及源码包验收矩阵。
+a120 的 macOS 与真实客户端验证尚未执行，完整正式验收仍未完成。
+现已完成四套安装后完整回归：Windows3.12 的 wheel 和源码包各2530通过、57跳过；
+Linux3.14 各2580通过、7跳过，均无失败/错误。每套2587个唯一用例，同平台两种
+安装形式的用例身份和结果一致。原始记录见
+[Windows wheel](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json)、
+[Windows 源码包](docs/acceptance/evidence/core-preview-a120/full-windows312-sdist/summary.json)、
+[Linux wheel](docs/acceptance/evidence/core-preview-a120/full-linux314/summary.json)和
+[Linux 源码包](docs/acceptance/evidence/core-preview-a120/full-linux314-sdist/summary.json)。
+这不代表完整仓库源码或平台矩阵通过；历史证据原件的 Ruff/格式检查仍保留 FAIL，
+许可证审查也未完成。见[当前发布门槛](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md)。
 
 此前的 [a119 开发预览](releases/0.3.0a119/preview-4be5134/)已包含所有者命令的错目录保护，
 以及续接任务在同一核心内完成独立验收的接线。同一 wheel 和源码包在 Windows 新安装中

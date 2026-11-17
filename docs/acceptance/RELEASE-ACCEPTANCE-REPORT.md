@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+Windows3.12 a120 installed-sdist complete suite **PASS with57 explicit skips**:
+native71082 ended2026-11-17T03:56:07Z exit0;2530pass/57skip/0fail/error,2688.74s.
+All4 commands passed;2587 unique case identities/outcomes match Windows wheel,
+with no new skipped or removed cases. Root checked5369 source/97 installed hashes
+unchanged and6 raw/public XML redactions;11 originals/453655bytes preserved.
+Astra accepts the bounded installed-sdist result. No matching workers remain,
+VM is off. Four installed wheel/sdist suites on Windows3.12/Linux3.14 are now
+complete; source/full platform matrix, static FAIL, license review and manual
+fixture cleanup remain unresolved. **Formal Release BLOCKED**.
+[Actual Windows result and comparison](evidence/core-preview-a120/full-windows312-sdist/summary.json).
+
 Linux3.14 a120 installed-sdist complete suite **PASS with7 skips**: native32517
 ended2026-11-17T03:08:44Z exit0,2580pass/7skip/0fail/error,1129.89s,120 warnings.
 Four commands pass;2587 unique identities/outcomes match the a120 Linux wheel.
@@ -8,8 +19,8 @@ members unchanged.36 real Docker observations have equal selected outcomes;
 the initial full-path comparison failure and corrected unique group/basename
 comparison are both retained. No test rerun or historical result replacement.
 Astra accepts this limited installed-sdist result. Zero models; no workers or
-containers remained; VM21292 normally off, disk preserved. Current Windows full
-sdist is RUNNING, not passed. Formal matrix/source gates, static FAIL, license
+containers remained; VM21292 normally off, disk preserved. The later Windows
+sdist result is recorded above. Formal matrix/source gates, static FAIL, license
 review pending and manual fixture cleanup remain; **Release BLOCKED**.
 [Actual Linux result and comparison history](evidence/core-preview-a120/full-linux314-sdist/summary.json).
 

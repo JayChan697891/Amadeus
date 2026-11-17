@@ -1,0 +1,21 @@
+{
+  "scope": "Windows 3.12 full installed-sdist suite on the existing a120 environment",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "product_runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "version": "0.3.0a120",
+  "sdist_path": "D:\\agentsync-debug\\m120p\\dist\\agentsync_local-0.3.0a120.tar.gz",
+  "sdist_sha256": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848",
+  "runtime_members_sha256": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4",
+  "driver_sha256": "49aae1f124873e4a6027eb38f03ced72461b39a4790421ed8923a13749c4effe",
+  "source_archive_path": "D:\\agentsync-debug\\m120fullw\\source.zip",
+  "source_manifest_path": "D:\\agentsync-debug\\m120fullw\\run\\source-manifest.json",
+  "controller_pid": 23536,
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "D:\\agentsync-debug\\m120p\\d\\Scripts\\python.exe",
+  "started_at": "2026-11-17T03:11:12.641444+00:00",
+  "status": "unknown",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_platform_matrix": "NOT RUN"
+}
