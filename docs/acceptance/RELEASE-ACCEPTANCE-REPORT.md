@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+Linux3.14 a120 installed-sdist complete suite **PASS with7 skips**: native32517
+ended2026-11-17T03:08:44Z exit0,2580pass/7skip/0fail/error,1129.89s,120 warnings.
+Four commands pass;2587 unique identities/outcomes match the a120 Linux wheel.
+Root checked48 originals/633277bytes,6 XML redactions and5369 source/97 installed
+members unchanged.36 real Docker observations have equal selected outcomes;
+the initial full-path comparison failure and corrected unique group/basename
+comparison are both retained. No test rerun or historical result replacement.
+Astra accepts this limited installed-sdist result. Zero models; no workers or
+containers remained; VM21292 normally off, disk preserved. Current Windows full
+sdist is RUNNING, not passed. Formal matrix/source gates, static FAIL, license
+review pending and manual fixture cleanup remain; **Release BLOCKED**.
+[Actual Linux result and comparison history](evidence/core-preview-a120/full-linux314-sdist/summary.json).
+
 Linux3.14 installed license metadata collected from both existing a120 installs:
 6 native checks exit0 (e21094),31 distributions/35 license files each. Root checked
 all process/log receipts, rehashed70 license files and97 runtime members per env;

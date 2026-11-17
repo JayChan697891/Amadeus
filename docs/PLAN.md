@@ -8,9 +8,11 @@ hashes agree. Six native checks pass, installed97 members unchanged per env.
 No build/install/test repetition. License review remains pending and publication
 unauthorized; static FAIL and cleanup BLOCKED remain. Linux3.14 now also has both
 inventories:31 distributions/35 files each,6 native checks pass,70 file hashes
-independently checked. No rebuild/install/test rerun. Next prepare the first full
-Linux3.14 installed-sdist suite using the existing install and frozen d427355 tests.
-It is now running as native32517; exact recovery entry is in PROGRESS. No verdict yet.
+independently checked. No rebuild/install/test rerun. Linux3.14 full installed-sdist
+now passes2580/7skip, same2587 case identities/outcomes as wheel; original records,
+comparison failure and scoped correction preserved. Astra accepted the limited
+result; local VM normally off. Windows3.12 first full installed-sdist is running
+as native71082; no verdict yet. See PROGRESS for the exact continuation entry.
 
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected

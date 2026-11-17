@@ -1,0 +1,65 @@
+{
+  "unique_cases": 2587,
+  "counts": {
+    "passed": 2580,
+    "skipped": 7,
+    "failure": 0,
+    "error": 0
+  },
+  "wheel_case_identity_equal": true,
+  "removed_cases": [],
+  "added_cases": [],
+  "outcome_differences": {},
+  "skips": {
+    "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution": {
+      "outcome": "skipped",
+      "message": "Actual Linux backend belongs to the separately controlled Docker fixture"
+    },
+    "tests.integration.test_m4b_workspaces::test_fixture_git_reads_long_windows_reference": {
+      "outcome": "skipped",
+      "message": "Windows Git long-path fixture"
+    },
+    "tests.integration.test_m4b_workspaces::test_managed_git_creates_private_ref_beyond_win32_path_limit": {
+      "outcome": "skipped",
+      "message": "Git for Windows path-length regression"
+    },
+    "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict": {
+      "outcome": "skipped",
+      "message": "Windows conflict keys case-fold"
+    },
+    "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root": {
+      "outcome": "skipped",
+      "message": "Windows junction-specific ancestor boundary"
+    },
+    "tests.security.test_resource_paths::test_junction_is_denied": {
+      "outcome": "skipped",
+      "message": "Windows junction-specific boundary"
+    },
+    "tests.unit.test_codex_invocation::test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit": {
+      "outcome": "skipped",
+      "message": "The opt-in MXC plan requires native Windows"
+    }
+  },
+  "checks": [
+    {
+      "check": "sdist_pip_check",
+      "exit_code": 0,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "check": "sdist_origin_before",
+      "exit_code": 0,
+      "log_sha256": "8e19a27fdfa6c1d239eef29c1743faa4522017576045accd9f473fedb0bddb55"
+    },
+    {
+      "check": "sdist_pytest",
+      "exit_code": 0,
+      "log_sha256": "57dde9bb7d674bd2d5163dc25764cb3f27aa1bc57713a3fde0d1330cbc7ac2c3"
+    },
+    {
+      "check": "sdist_origin_after",
+      "exit_code": 0,
+      "log_sha256": "8e19a27fdfa6c1d239eef29c1743faa4522017576045accd9f473fedb0bddb55"
+    }
+  ]
+}

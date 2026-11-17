@@ -28,17 +28,25 @@ Compared with Windows, pywin32 is Windows-only; pydantic-core/rpds-py metadata
 differs and the exact records are retained. License review remains pending,
 publication unauthorized. See linux-licenses/summary.json and root-review.json.
 
-RUNNING: first complete Linux3.14 installed-sdist suite, native session32517.
-Uses existing /root/amadeus-m120l/d and frozen d427355 inputs; no build/reinstall
-or repeat of the wheel suite. Pip and origin checks exited0; pytest has started,
-but no final verdict exists. See full-linux314-sdist-start for the exact driver
-and initial attempt/command receipts. Driver223fc4ab...76fb uses a fresh guest
-/root/amadeus-m120fullsdist; host controller D:/agentsync-debug/m120sdistl-start.py,
-records D:/agentsync-debug/m120sdistl. Resume by observing the existing session
-and result.json; never start a second copy or interrupt its pending test queue.
-Owned local VM21292 remains running; prior VM
-state/logs were copied and hash-checked before startup. No model/auth copy occurs.
-Source/sdist/full platform collection also remains incomplete. Existing collector has no skip/resume interface; calling
+COMPLETED: Linux3.14 installed-sdist full suite, native32517 ended03:08:44Z
+2026-11-17, exit0 (af599b).2587 unique cases:2580pass/7skip/0fail/error,1129.89s;
+120 warnings retained. All four commands passed, case identities/outcomes match
+a120 Linux wheel. Root checked48 originals/633277bytes,6 XML redactions,5369
+source/97 installed hashes unchanged and36 Docker observations. Initial root
+comparison failed on per-run directory names; original script/output preserved.
+Existing unique group/basename convention then gives no selected semantic delta
+(76d024); no test repeated. Astra accepts this bounded result. VM21292 normally
+shut down;03:10:22Z process absent, ports closed, disk preserved (83a8f1).
+See full-linux314-sdist/summary.json. Do not poll closed session32517 or rerun it.
+
+RUNNING: first Windows3.12 installed-sdist full suite, native71082. Existing
+D:/agentsync-debug/m120p/d, same runtime859775b and d427355 frozen tests; no build,
+install or wheel repeat. Driver D:/agentsync-debug/m120full-sdist-windows.py
+SHA49aae1f124873e4a6027eb38f03ced72461b39a4790421ed8923a13749c4effe.
+New run/t/home at D:/agentsync-debug/m120sdistw; actual pytest-start receipt exists,
+no result yet. See full-windows312-sdist-start. Observe existing71082/result.json,
+never start another copy or interrupt its queue. No model/auth copy occurs.
+Full source/remaining platform collection is incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.
 The composite validator also requires exact identity and each package's one true

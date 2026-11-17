@@ -1,0 +1,224 @@
+{
+  "scope": "Selected semantic outcomes only; raw bytes/paths preserved",
+  "normalization": "Unique group plus file basename, matching existing historical check-result.py.txt observations() convention; original full-path comparison failure retained.",
+  "wheel_observations": 36,
+  "sdist_observations": 36,
+  "removed": [],
+  "added": [],
+  "differences": [],
+  "raw_paths": {
+    "candidate_executor/actual-candidate-created-crash-cleanup.json": {
+      "wheel": "observations/candidate_executor/actual-candidate-created-crash-cleanup.json",
+      "sdist": "observations/candidate_executor/actual-candidate-created-crash-cleanup.json"
+    },
+    "candidate_executor/actual-candidate-execution.json": {
+      "wheel": "observations/candidate_executor/actual-candidate-execution.json",
+      "sdist": "observations/candidate_executor/actual-candidate-execution.json"
+    },
+    "candidate_executor/actual-candidate-running-cancel.json": {
+      "wheel": "observations/candidate_executor/actual-candidate-running-cancel.json",
+      "sdist": "observations/candidate_executor/actual-candidate-running-cancel.json"
+    },
+    "candidate_executor/actual-candidate-timeout.json": {
+      "wheel": "observations/candidate_executor/actual-candidate-timeout.json",
+      "sdist": "observations/candidate_executor/actual-candidate-timeout.json"
+    },
+    "candidate_executor/actual-candidate-wrong-result.json": {
+      "wheel": "observations/candidate_executor/actual-candidate-wrong-result.json",
+      "sdist": "observations/candidate_executor/actual-candidate-wrong-result.json"
+    },
+    "owner_executor/expired-lease-after-real-pass.json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/expired-lease-after-real-pass.json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/expired-lease-after-real-pass.json"
+    },
+    "owner_executor/fixed-snapshot.json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/fixed-snapshot.json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/fixed-snapshot.json"
+    },
+    "owner_executor/owner-cancel-before-start.json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/owner-cancel-before-start.json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/owner-cancel-before-start.json"
+    },
+    "owner_executor/test_actual_owner_rejects_candidate_self_report[early-exit].json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/test_actual_owner_rejects_candidate_self_report[early-exit].json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/test_actual_owner_rejects_candidate_self_report[early-exit].json"
+    },
+    "owner_executor/test_actual_owner_rejects_candidate_self_report[forged-junit].json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/test_actual_owner_rejects_candidate_self_report[forged-junit].json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/test_actual_owner_rejects_candidate_self_report[forged-junit].json"
+    },
+    "owner_executor/test_actual_owner_rejects_candidate_self_report[wrong-result].json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/test_actual_owner_rejects_candidate_self_report[wrong-result].json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/test_actual_owner_rejects_candidate_self_report[wrong-result].json"
+    },
+    "owner_executor/wall-time.json": {
+      "wheel": "observations/owner_executor/e21ea152d1233a5f/wall-time.json",
+      "sdist": "observations/owner_executor/c0a2cac279091169/wall-time.json"
+    },
+    "proposal_pipeline/continuation-verified.json": {
+      "wheel": "observations/proposal_pipeline/continuation-verified.json",
+      "sdist": "observations/proposal_pipeline/continuation-verified.json"
+    },
+    "proposal_pipeline/verified.json": {
+      "wheel": "observations/proposal_pipeline/verified.json",
+      "sdist": "observations/proposal_pipeline/verified.json"
+    },
+    "proposal_pipeline/wrong-result.json": {
+      "wheel": "observations/proposal_pipeline/wrong-result.json",
+      "sdist": "observations/proposal_pipeline/wrong-result.json"
+    },
+    "reconciliation/hard-exit-created.json": {
+      "wheel": "observations/reconciliation/e21ea152d1233a5f/hard-exit-created.json",
+      "sdist": "observations/reconciliation/c0a2cac279091169/hard-exit-created.json"
+    },
+    "reconciliation/hard-exit-running.json": {
+      "wheel": "observations/reconciliation/e21ea152d1233a5f/hard-exit-running.json",
+      "sdist": "observations/reconciliation/c0a2cac279091169/hard-exit-running.json"
+    },
+    "reconciliation/initial-absence.json": {
+      "wheel": "observations/reconciliation/e21ea152d1233a5f/initial-absence.json",
+      "sdist": "observations/reconciliation/c0a2cac279091169/initial-absence.json"
+    },
+    "reconciliation/lost-create-ack.json": {
+      "wheel": "observations/reconciliation/e21ea152d1233a5f/lost-create-ack.json",
+      "sdist": "observations/reconciliation/c0a2cac279091169/lost-create-ack.json"
+    },
+    "reconciliation/protected-renamed-object.json": {
+      "wheel": "observations/reconciliation/e21ea152d1233a5f/protected-renamed-object.json",
+      "sdist": "observations/reconciliation/c0a2cac279091169/protected-renamed-object.json"
+    },
+    "task_completion/actual-verified-task-completion.json": {
+      "wheel": "observations/task_completion/actual-verified-task-completion.json",
+      "sdist": "observations/task_completion/actual-verified-task-completion.json"
+    },
+    "verified_review/docker-cursor-review.json": {
+      "wheel": "observations/verified_review/docker-cursor-review.json",
+      "sdist": "observations/verified_review/docker-cursor-review.json"
+    },
+    "verifier/test_actual_docker_checks_all_external_cases.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_checks_all_external_cases.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_checks_all_external_cases.json"
+    },
+    "verifier/test_actual_docker_enforces_memory_bound.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_enforces_memory_bound.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_memory_bound.json"
+    },
+    "verifier/test_actual_docker_enforces_output_bounds[stderr].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_enforces_output_bounds[stderr].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_output_bounds[stderr].json"
+    },
+    "verifier/test_actual_docker_enforces_output_bounds[stdout].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_enforces_output_bounds[stdout].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_output_bounds[stdout].json"
+    },
+    "verifier/test_actual_docker_enforces_pid_bound.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_enforces_pid_bound.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_pid_bound.json"
+    },
+    "verifier/test_actual_docker_enforces_scratch_bound.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_enforces_scratch_bound.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_scratch_bound.json"
+    },
+    "verifier/test_actual_docker_enforces_wall_time.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_enforces_wall_time.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_wall_time.json"
+    },
+    "verifier/test_actual_docker_isolation_controls.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_isolation_controls.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_isolation_controls.json"
+    },
+    "verifier/test_actual_docker_kernel_cgroup_limits.json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_kernel_cgroup_limits.json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_kernel_cgroup_limits.json"
+    },
+    "verifier/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json"
+    },
+    "verifier/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json"
+    },
+    "verifier/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json"
+    },
+    "verifier/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json"
+    },
+    "verifier/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json": {
+      "wheel": "observations/verifier/e21ea152d1233a5f/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json",
+      "sdist": "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json"
+    }
+  },
+  "projection_fields": [
+    "absence_observed",
+    "assessment",
+    "backend",
+    "cancel_requested",
+    "claim_version",
+    "cleanup_attempted",
+    "cleanup_confirmed",
+    "clock_regressed",
+    "completed_version",
+    "constraints_verified",
+    "container_absent",
+    "create_intent",
+    "create_reply_complete",
+    "current_state",
+    "daemon_consistent",
+    "error_code",
+    "errors",
+    "execution_assessment",
+    "execution_connected",
+    "execution_revision",
+    "execution_started",
+    "final_status",
+    "identity_matched",
+    "image_id",
+    "image_sha256",
+    "initial_receiver_authorities",
+    "isolation",
+    "kind",
+    "lease_expired",
+    "left_task_version",
+    "model_calls",
+    "oom_killed",
+    "outcome",
+    "parent_ended",
+    "permanently_fenced",
+    "phase",
+    "platform",
+    "profile_id",
+    "profile_kind",
+    "protocol",
+    "provenance",
+    "publication_verification",
+    "real_clients",
+    "real_docker",
+    "reason_code",
+    "receipt_kind",
+    "receiver_task_status",
+    "receiver_task_verification",
+    "remove_acknowledged",
+    "review_version",
+    "revision",
+    "right_task_version",
+    "same_core",
+    "schema",
+    "source_and_producer_unchanged",
+    "source_task_status",
+    "start_intent",
+    "status",
+    "task_verification",
+    "total_receiver_launches_including_reopen",
+    "verifier_source_sha256",
+    "verifier_version",
+    "version"
+  ],
+  "projection_suffixes": [
+    "_case_count",
+    "_exit_code"
+  ]
+}

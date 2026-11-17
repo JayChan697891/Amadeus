@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "status": "PASS - bounded Linux installed-sdist suite; formal Release BLOCKED",
+  "version": "0.3.0a120",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "platform": "Linux CPython3.14.7",
+  "native_session": 32517,
+  "terminal_chunk": "af599b",
+  "native_exit_code": 0,
+  "started_at": "2026-11-17T02:49:45.509632+00:00",
+  "finished_at": "2026-11-17T03:08:43.211110+00:00",
+  "driver_sha256": "223fc4ab75858e63c20c964c9f2913ef91aa41536811e7d6b3592efe57ea76fb",
+  "native_checks": 4,
+  "junit": {
+    "path": "sdist-junit.xml",
+    "sha256": "a6556bf1568700f41b13adca4073cd1aa6a60b8c7fe2ff2f819336841ecb9630",
+    "credential_redactions": 6,
+    "tests": 2587,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 7
+  },
+  "unique_cases": 2587,
+  "passed": 2580,
+  "skipped": 7,
+  "failures": 0,
+  "errors": 0,
+  "warnings": 120,
+  "elapsed_seconds": 1129.89,
+  "wheel_case_identities_and_outcomes_equal": true,
+  "original_records": 48,
+  "original_bytes": 633277,
+  "source_files_rehashed": 5369,
+  "installed_members_rehashed": 97,
+  "raw_to_public_xml_checked": true,
+  "xml_redactions": 6,
+  "docker_observations": 36,
+  "docker_selected_outcomes_equal_to_wheel": true,
+  "docker_comparison_scope": "Selected semantic outcomes, not byte equality or new real-client execution.",
+  "initial_root_comparison": {
+    "native_chunk": "000149",
+    "exit_code": 1,
+    "reason": "Literal full-path comparison included per-run fixture directory hashes, producing26 removed/added paths for the same unique group/basename identities. Original script and failed comparison preserved.",
+    "product_test_exit_code": 0
+  },
+  "corrected_comparison": {
+    "native_chunk": "76d024",
+    "exit_code": 0,
+    "method": "Existing group/basename identity convention, duplicate/empty rejection, all36 raw hashes verified against both original result records; unchanged semantic projection."
+  },
+  "independent_review": "Astra read-only incremental review accepted the bounded installed-sdist result and comparison repair; no Release decision.",
+  "shutdown": {
+    "utc": "2026-11-17T03:10:22.6353732Z",
+    "loopback_ports_closed": true,
+    "method": "QMP system_powerdown",
+    "pid": 21292,
+    "process_absent": true,
+    "disk_preserved": true
+  },
+  "shutdown_observation_chunk": "83a8f1",
+  "model_calls": 0,
+  "no_rebuild_reinstall_or_wheel_rerun": true,
+  "formal_release": "BLOCKED",
+  "limits": [
+    "Complete formal candidate matrix and full source/platform collection remain incomplete.",
+    "Existing Ruff/format FAIL is preserved by owner decision; license review remains pending.",
+    "Temporary Windows terminal fixture credential removal is deferred to the owner; no deletion retry or bypass.",
+    "Known protocol fixtures with real Docker do not replace real-client/cross-vendor acceptance."
+  ],
+  "next": "First Windows3.12 installed-sdist full suite is running as native71082 in D:/agentsync-debug/m120sdistw; no result yet. Observe it without restarting."
+}

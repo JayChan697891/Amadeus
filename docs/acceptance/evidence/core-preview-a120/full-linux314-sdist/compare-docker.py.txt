@@ -1,0 +1,38 @@
+import hashlib,json
+from pathlib import Path
+
+base=Path('D:/agentsync-debug/m120sdistl');run=base/'harvest'
+reference=Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a120/full-linux314')
+fields=set(json.loads((base/'docker-diff.json').read_bytes())['projection_fields'])
+def projection(value,prefix=''):
+    out={}
+    if isinstance(value,dict):
+        for key,item in value.items():
+            path=prefix+'/'+key
+            if key in fields or key.endswith(('_case_count','_exit_code')):out[path]=item
+            elif key.endswith('_json') and isinstance(item,str):out.update(projection(json.loads(item),path))
+            else:out.update(projection(item,path))
+    elif isinstance(value,list):
+        for index,item in enumerate(value):out.update(projection(item,prefix+'/'+str(index)))
+    return out
+def observations(root):
+    result=json.loads((root/'result.json').read_bytes())
+    rows={};paths={}
+    for p in sorted((root/'observations').rglob('*.json')):
+        rel=p.relative_to(root).as_posix()
+        assert hashlib.sha256(p.read_bytes()).hexdigest()==result['fixture_observations_sha256'][rel]
+        key=p.relative_to(root/'observations').parts[0]+'/'+p.name
+        assert key not in rows
+        rows[key]=projection(json.loads(p.read_bytes()));assert rows[key]
+        paths[key]=rel
+    assert len(rows)==len(result['fixture_observations_sha256'])==36
+    return rows,paths
+a,ap=observations(reference);b,bp=observations(run);differences=[]
+for name in sorted(a.keys()&b.keys()):
+    for key in sorted(a[name].keys()|b[name].keys()):
+        if key not in a[name] or key not in b[name] or a[name][key]!=b[name][key]:
+            differences.append({'fixture':name,'field':key,'wheel':a[name].get(key),'sdist':b[name].get(key),'wheel_present':key in a[name],'sdist_present':key in b[name]})
+result={'scope':'Selected semantic outcomes only; raw bytes/paths preserved','normalization':'Unique group plus file basename, matching existing historical check-result.py.txt observations() convention; original full-path comparison failure retained.','wheel_observations':len(a),'sdist_observations':len(b),'removed':sorted(a.keys()-b.keys()),'added':sorted(b.keys()-a.keys()),'differences':differences,'raw_paths':{name:{'wheel':ap.get(name),'sdist':bp.get(name)} for name in sorted(ap.keys()|bp.keys())},'projection_fields':sorted(fields),'projection_suffixes':['_case_count','_exit_code']}
+with (base/'docker-diff-normalized.json').open('x',encoding='utf8') as f:json.dump(result,f,indent=2);f.write('\n')
+print(json.dumps({k:v for k,v in result.items() if k not in ('raw_paths','projection_fields')}))
+assert a.keys()==b.keys() and not differences

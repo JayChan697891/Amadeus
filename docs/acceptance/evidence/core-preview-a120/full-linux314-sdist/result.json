@@ -1,0 +1,200 @@
+{
+  "scope": "Linux 3.14 full installed a120 sdist suite with actual local Docker",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "product_runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "version": "0.3.0a120",
+  "pinned_inputs": {
+    "/root/amadeus-m120full/source.zip": {
+      "bytes": 159181319,
+      "sha256": "1efa1b6d1dcf5d18b0eef1826115e6c6cbf6aa63fc2c9f84c33ef89123711b6f"
+    },
+    "/root/amadeus-m120full/source-manifest.json": {
+      "bytes": 1052422,
+      "sha256": "584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc"
+    },
+    "/root/amadeus-m120full/runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4"
+    },
+    "/root/amadeus-m120l/agentsync_local-0.3.0a120.tar.gz": {
+      "bytes": 5446893,
+      "sha256": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
+    }
+  },
+  "driver_sha256": "223fc4ab75858e63c20c964c9f2913ef91aa41536811e7d6b3592efe57ea76fb",
+  "controller_pid": 2968,
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "python_executable": "/root/amadeus-m120l/d/bin/python",
+  "boot_id": "724975f2-6a33-4a50-bf1f-b6e1f85d4f31",
+  "required_docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "model_calls": 0,
+  "started_at": "2026-11-17T02:49:45.509632+00:00",
+  "status": "pass",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_platform_matrix": "NOT RUN",
+  "phase": "full_suite_evidence",
+  "checks": [
+    {
+      "id": "sdist_pip_check",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m120l/d/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "/root/amadeus-m120fullsdist/run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:49:49.182509+00:00",
+      "finished_at": "2026-11-17T02:49:49.565237+00:00",
+      "log": "logs/sdist_pip_check.log",
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "sdist_origin_before",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m120l/d/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys, sysconfig\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, sdist, members = map(Path, sys.argv[1:4])\nsdist_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 14, 7)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = Path(sysconfig.get_path(\"purelib\")).resolve()\nassert site.is_relative_to(install.resolve())\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == sdist.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == sdist_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "/root/amadeus-m120l/d",
+        "/root/amadeus-m120l/agentsync_local-0.3.0a120.tar.gz",
+        "/root/amadeus-m120full/runtime-members.json",
+        "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848",
+        "0.3.0a120"
+      ],
+      "cwd": "/root/amadeus-m120fullsdist/run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:49:49.567509+00:00",
+      "finished_at": "2026-11-17T02:49:49.949545+00:00",
+      "log": "logs/sdist_origin_before.log",
+      "log_sha256": "8e19a27fdfa6c1d239eef29c1743faa4522017576045accd9f473fedb0bddb55",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "sdist_pytest",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m120l/d/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "/root/amadeus-m120full/s/tests",
+        "--junitxml",
+        "/root/amadeus-m120fullsdist/t/sdist-junit.xml",
+        "--basetemp",
+        "/root/amadeus-m120fullsdist/t/p",
+        "-o",
+        "cache_dir=/root/amadeus-m120fullsdist/t/pytest-cache"
+      ],
+      "cwd": "/root/amadeus-m120fullsdist/run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:49:49.954187+00:00",
+      "finished_at": "2026-11-17T03:08:40.894138+00:00",
+      "log": "logs/sdist_pytest.log",
+      "log_sha256": "57dde9bb7d674bd2d5163dc25764cb3f27aa1bc57713a3fde0d1330cbc7ac2c3",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process",
+      "timeout_seconds": 7200
+    },
+    {
+      "id": "sdist_origin_after",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m120l/d/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys, sysconfig\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, sdist, members = map(Path, sys.argv[1:4])\nsdist_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 14, 7)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = Path(sysconfig.get_path(\"purelib\")).resolve()\nassert site.is_relative_to(install.resolve())\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == sdist.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == sdist_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "/root/amadeus-m120l/d",
+        "/root/amadeus-m120l/agentsync_local-0.3.0a120.tar.gz",
+        "/root/amadeus-m120full/runtime-members.json",
+        "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848",
+        "0.3.0a120"
+      ],
+      "cwd": "/root/amadeus-m120fullsdist/run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T03:08:40.936013+00:00",
+      "finished_at": "2026-11-17T03:08:41.263443+00:00",
+      "log": "logs/sdist_origin_after.log",
+      "log_sha256": "8e19a27fdfa6c1d239eef29c1743faa4522017576045accd9f473fedb0bddb55",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "source_files": 5369,
+  "runtime_members": 97,
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "docker_before": {
+    "containers": [],
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+  },
+  "junit": {
+    "path": "sdist-junit.xml",
+    "sha256": "a6556bf1568700f41b13adca4073cd1aa6a60b8c7fe2ff2f819336841ecb9630",
+    "credential_redactions": 6,
+    "tests": 2587,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 7
+  },
+  "fixture_observations_sha256": {
+    "observations/candidate_executor/actual-candidate-created-crash-cleanup.json": "ab5909b398d07cd92a1b3918dfad23e0eb98d69574f539b0a499e2675597624a",
+    "observations/candidate_executor/actual-candidate-execution.json": "7907ce12de8664aa1ebeb2775d996f090ad2b578957f9aef18ef95901dd2ecb3",
+    "observations/candidate_executor/actual-candidate-running-cancel.json": "435f8706ccac6e71518ccb4f91bd14077fedb590f76fdc8954ffff0313e045e3",
+    "observations/candidate_executor/actual-candidate-timeout.json": "e95d90df9c1319b9c900d17acb21648dbe20abb5dd68b82e16e42d828db331e5",
+    "observations/candidate_executor/actual-candidate-wrong-result.json": "6c5b8c89a508308ee79cd1f5899974fc63d14454558915394f589ec0a714205f",
+    "observations/owner_executor/c0a2cac279091169/expired-lease-after-real-pass.json": "fa8d6f18999f879b0c7aabba3de69918ec7826cf0af3871529249bed877d50f2",
+    "observations/owner_executor/c0a2cac279091169/fixed-snapshot.json": "98427d530ff2c5d1ffb274e0b4301eeb32fc7512a32e1c7a911a5e5f67c474ba",
+    "observations/owner_executor/c0a2cac279091169/owner-cancel-before-start.json": "0423902549acd4be808b0c1db73466eedcc201fea86bc07bff004bc5346976e7",
+    "observations/owner_executor/c0a2cac279091169/test_actual_owner_rejects_candidate_self_report[early-exit].json": "274414c8c89022da6b91ba7f32668b6513acc236ddfbf5ea53a2a3d58bbcf7d7",
+    "observations/owner_executor/c0a2cac279091169/test_actual_owner_rejects_candidate_self_report[forged-junit].json": "3d9c74b90e86b7a3613d0ad01de8032fee82329f4ea679eabdf4687172bf14b6",
+    "observations/owner_executor/c0a2cac279091169/test_actual_owner_rejects_candidate_self_report[wrong-result].json": "b4a035907f13d6955577da62a0bc8aefa3e45aa5ce1928acfaae394503e3335f",
+    "observations/owner_executor/c0a2cac279091169/wall-time.json": "53db21d5159a3a713661aa3ab4a8a2cca122b6fdcc5fe9297519d43f549a99d9",
+    "observations/proposal_pipeline/continuation-verified.json": "7c873a5a0ae7e4a16b4d43bfda93592db6e1e510b09de1dd0fe00bda8f18616a",
+    "observations/proposal_pipeline/verified.json": "53322860971434932a250f4133500979adf87bd520c475f33c4d9d3311060644",
+    "observations/proposal_pipeline/wrong-result.json": "6e066938a64484d6f8fe1d53e67664e31a86d01dd1a19bfc883c72811336fdc8",
+    "observations/reconciliation/c0a2cac279091169/hard-exit-created.json": "7d9e6e10c26f1297f7586baa867817f4eace4f1fbc5e64e8009d4803a8ad0e75",
+    "observations/reconciliation/c0a2cac279091169/hard-exit-running.json": "5e3a544737d51aa6ff436c1716110ff7a036218ea4b53a87b8ac45b9c6907fb8",
+    "observations/reconciliation/c0a2cac279091169/initial-absence.json": "8b44589c1fd2f9e356d0666f089e30472fc996bf67129342351bc69298ecead0",
+    "observations/reconciliation/c0a2cac279091169/lost-create-ack.json": "0e748b08e02356ed918b04e5fe0319b41347d007af0be9b743a9a7e6b57e0101",
+    "observations/reconciliation/c0a2cac279091169/protected-renamed-object.json": "f7916e5000e235b3176ec26e26f47ce32830e233183b97e9ae39e02d07bac2d0",
+    "observations/task_completion/actual-verified-task-completion.json": "0c0b3de2b4f4883869470e1e40d2b00066b24845884e3961bb9d2c394c54e045",
+    "observations/verified_review/docker-cursor-review.json": "9e67ff2f1a7b3cb07b2e712e3be358d4a22d78bb89dacff3f8d6cb06e1749ab8",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_checks_all_external_cases.json": "d5176f5db9b1bf2b3207568e6caedabe251c80268e064e57f770df8a7adbf1cb",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_memory_bound.json": "5a90f0ceb0db6de15372c7b8e61c9fe446f3a2a8896b99816c0c9c5376195fd1",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_output_bounds[stderr].json": "6383f2bf1741060f2a76a364817dc0eecff2a304d37d24b9c0b27649c58b846c",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_output_bounds[stdout].json": "dd63b47c48541b94c354671e5c6e4cfb4ac3fe28ce3d74b888c113566e4dda30",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_pid_bound.json": "395fe3a35857d195ba6a2535f3bb4b913d82d06e60c2c6ff7c34a597110949cf",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_scratch_bound.json": "e2c4b102f0bff19651e47785e67ba5480b7240ae5dfad779870dd744b882e6aa",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_enforces_wall_time.json": "2abd1490e952dc1922df44e3996f659bb383a20c96b904e59426996c9998d4aa",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_isolation_controls.json": "a7d09b4b9a25f75f60708e9d1f9374e91b0c5b41422411823126789a9138dee8",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_kernel_cgroup_limits.json": "0c03143e242ccc3e5e33ffa67bcff7430dc4b27e295eaaa78fadd994afbbdf94",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int].json": "e399b2996620f14118ba89d3659e6b4a1b68648c5332556b90cc3b362511fc25",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit].json": "deb64bbbcf8b86f54698d4b6921e12fa7043c23169e8c157029b93e05db44f74",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output].json": "2a0a037a60554d5e7dca8dc4180ce4133d7d0f702964c3ca8915d5a562fc7092",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit].json": "2b2e73e92437b764e2b4154430da11953243860bb7f18af5544ffa2bc0087524",
+    "observations/verifier/c0a2cac279091169/test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result].json": "017eca625eec0f8aaa9e33722a305e8cb4b454007695a3e4c706be2d9bc92ba7"
+  },
+  "docker_after": {
+    "containers": [],
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+  },
+  "pinned_artifacts_unchanged": true,
+  "frozen_source_unchanged": true,
+  "finished_at": "2026-11-17T03:08:43.211110+00:00"
+}
