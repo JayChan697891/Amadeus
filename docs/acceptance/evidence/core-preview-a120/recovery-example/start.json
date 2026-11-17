@@ -1,0 +1,29 @@
+{
+  "source_baseline": "d952054af90cb5ec735be00a6386780f71ae31ce",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_path": "tests/integration/test_relay_owner_status.py",
+  "test_sha256": "8098d9a18bca05f8551457d9af2a34dae22a58d3e70132ab0db9ce32d7ba7883",
+  "example_path": "examples/recover_relay.py",
+  "example_sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9",
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_at": "2026-11-17T00:22:02.2804119Z",
+  "argv": [
+    "D:/agentsync-debug/m120p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/p1-relay-example-20261117/t",
+    "--junitxml",
+    "D:/agentsync-debug/p1-relay-example-20261117/junit.xml",
+    "tests/integration/test_relay_owner_status.py",
+    "-k",
+    "recover_example"
+  ],
+  "scope": "Existing Windows a120 runtime, injected prompt input, real local Core/CLI status subprocess only"
+}

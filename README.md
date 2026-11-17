@@ -19,6 +19,11 @@ for `owner`/`workflow`. Fresh wheel and source-package installs each passed21
 focused cases on Windows3.12 and Linux3.14 using the same archives. macOS,
 full a120 acceptance and a120 real-client validation are NOT RUN.
 
+For an existing stopped relay, use the [recovery guide](docs/RELAY-RECOVERY.md)
+and interactive [helper](examples/recover_relay.py) to inspect the saved wave and
+reconcile its exact ID. Tokens use hidden prompts and child stdin. This reuses
+the installed CLI; it does not launch Agents or approve candidate execution.
+
 The earlier [a119 development preview](releases/0.3.0a119/preview-4be5134/) includes the
 owner CLI directory fix and same-task continuation verification bridge. The same
 wheel/source packages passed15 focused cases per Windows install and16 per Linux

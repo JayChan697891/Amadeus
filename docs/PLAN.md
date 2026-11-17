@@ -2,6 +2,17 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 recovery entry — 2026-11-16 America/Tijuana: examples/recover_relay.py now makes
+the existing status/history/task/reconcile commands usable through hidden prompts
+without changing the installed runtime. The exact wave is user-selected; tokens
+stay in memory/stdin, unsafe input is refused and timeout does not retry. Four
+new focused checks pass, including one actual Core/CLI subprocess with injected
+prompt input. This is a checkout example, not a new API, package or M phase.
+See [usage](RELAY-RECOVERY.md) and [results](acceptance/evidence/core-preview-a120/recovery-example/summary.json).
+Next run the first full Windows3.12 installed-wheel regression for unchanged a120
+against a frozen current test checkout; no new build or repeated focused suite.
+Full a120 acceptance and the deferred combined live-client scenario remain NOT RUN.
+
 P0 recovery boundary — 2026-11-16 America/Tijuana: test-source27594dc adds one
 native coordinator exit after receiver review/terminal receipts, before its final
 wave record. Existing relay-reconcile in a fresh CLI restores the same receiver's
@@ -11,9 +22,16 @@ and packages are unchanged, with97 installed members verified. This is a local
 deterministic protocol fixture, not new real-client acceptance. Original M8-02
 requires process recovery; whole-host power loss is not a new mandatory stage.
 See [actual output and boundaries](acceptance/evidence/core-preview-a120/coordinator-review-recovery/summary.json).
-Next assess this precise coordinator-exit boundary for a bounded real-client plan;
-do not rerun earlier client-parent interruption or installed suites. Execution at
-that new real-client boundary is NOT RUN; existing approval/gate limits remain.
+Root and independent Astra reviewed that precise coordinator-exit boundary at
+d952054. Defer its combined real-client run to one final frozen acceptance plan:
+the persisted-state recovery core is unchanged, and another immediate model run
+would mainly repeat composition evidence. It remains NOT RUN, not VERIFIED.
+An eventual driver must save and validate receiver diagnostics before exit73;
+its skipped finally cannot supply the original cleanup's required observation.
+Keep the existing cleanup gates, max-two-call standing grant and no-retry rule;
+the earlier single-use candidate-execution grant is consumed. Do not rerun prior
+client-parent interruption or installed suites. Next improve direct use of the
+existing recovery commands, without a new runtime API or M5 phase.
 
 P1 installable CLI improvements — 2026-11-16: a120/859775b combines the existing
 workflow-start directory guard with e1c2fd9's structured storage errors for both

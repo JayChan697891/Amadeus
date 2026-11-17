@@ -1,5 +1,13 @@
 # Release Acceptance Report
 
+P1 checkout recovery helper:4 focused Windows checks pass on installed a120,
+including actual Core/CLI status inspection with injected prompt input; unsafe
+terminal refusal and timeout/no-retry behavior are deterministic tests. Root
+checked the actual outputs, tested file hashes and97 unchanged installed members.
+Interactive terminal echo, Linux/macOS helper execution and new real clients are
+NOT RUN. Runtime/packages are unchanged; Release BLOCKED.
+[Exact results](evidence/core-preview-a120/recovery-example/summary.json).
+
 P0 native recovery supplement — test-source27594dc against unchanged installed
 a120/859775b. One Windows case passed: coordinator exit73 after receiver review and
 terminal receipts, exact-wave reconciliation in a fresh CLI, same-task staging

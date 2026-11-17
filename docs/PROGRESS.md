@@ -1,5 +1,28 @@
 # Amadeus current progress
 
+P1 recovery entry delivered against unchanged a120/859775b: the checkout's
+examples/recover_relay.py exposes status/history/task and an explicitly selected
+wave reconciliation through the existing installed CLI. Hidden prompt input goes
+only to child stdin; no secure terminal means no CLI launch. Timeout/interrupt
+means outcome unknown, with no automatic retry. The helper does not execute
+models/candidates or turn review into verified completion.
+
+At2026-11-17T00:22Z (Nov16 America/Tijuana), native7220ac exited0:4 new checks pass,
+1 existing case deselected. One check uses a real Core/database and CLI child;
+prompt/timeout/echo-warning inputs are injected, not real terminal observations.
+Ruff/format pass. Root read the actual changes/log/XML, matched both tested files,
+checked97 installed members unchanged, and archived8 originals/2137bytes under
+acceptance/evidence/core-preview-a120/recovery-example/. The run is finished;
+no worker/VM/model job remains from this batch. Interactive terminal echo and
+Linux/macOS example checks are NOT RUN; formal Release remains BLOCKED.
+See [user recovery path](RELAY-RECOVERY.md) and the archive's summary.json.
+
+Next local acceptance item: the first full Windows3.12 installed-wheel regression
+for unchanged a120, with these current test/example inputs frozen separately.
+The focused package checks and prior a116/a117 full runs are retained, not repeated
+or relabelled. A new full run has not started. Do not reconstruct old live fixtures;
+the additional real-client coordinator window stays deferred as recorded below.
+
 P0 process-recovery supplement — test-source27594dc, original a120 runtime859775b.
 At2026-11-17T00:04Z (Nov16 America/Tijuana), native6dda68 exited0 with1 new case
 passed. Receiver protocol child had naturally exited0 and persisted terminal/review
@@ -15,9 +38,13 @@ Evidence: acceptance/evidence/core-preview-a120/coordinator-review-recovery/summ
 This is one native process test using an owned deterministic protocol child, not
 a real Codex or whole-machine test. It maps to original M7-02/M8-02 without changing
 their formal status or adding an M5 phase. Product/packages remain unchanged.
-Recovery entry: assess a bounded real-client plan for this precise coordinator
-exit, using existing recovery commands and approval limits. That live scenario
-is NOT RUN; no new model/credential/VM job has started. Release remains BLOCKED.
+Subsequent Root/Astra scope review at d952054 deferred that combined real-client
+scenario to the final frozen bounded plan. It remains NOT RUN. A future driver
+must durably save actual receiver diagnostics before exit73 because its finally
+is skipped; the existing cleanup observation/termination gates must not weaken.
+No model, credential copy or VM job was started. Current P1 work exposes the
+existing recovery commands through a small interactive example and user guide;
+the package/runtime stays unchanged. Release remains BLOCKED.
 
 Resumed P1 delivery — 2026-11-16 UTC, a120/859775b. The paused6192b87 repair,
 five document edits and13 original records were preserved and uploaded at1dfce47.

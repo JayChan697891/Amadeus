@@ -2,6 +2,10 @@
 
 # Amadeus
 
+已有协作进程停止后，可按[恢复指南](docs/RELAY-RECOVERY.md)使用
+[交互入口](examples/recover_relay.py)：查看待恢复批次，再按准确标识恢复记录。
+凭据通过隐藏输入和子进程标准输入传递；不会启动 Agent、执行候选代码或自动验收。
+
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
