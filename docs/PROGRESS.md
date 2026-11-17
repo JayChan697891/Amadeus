@@ -10,7 +10,8 @@ See acceptance/evidence/core-preview-a120/static-checks/summary.json and its
 archive-format-conflict.json for the exact paths/hashes/rule counts.
 Astra independently confirmed the immutable-evidence vs complete-static-scope
 conflict. No fix/unsafe-fix, rename, exclusion, rule or old-manifest change was made.
-An explicit owner decision is needed before changing that scope or those originals.
+Owner chose to preserve the originals and FAIL and continue independent work.
+Do not change that scope, those originals, filenames, rules or historical manifests.
 
 Windows3.12 license metadata supplement completed on existing a120 wheel/sdist
 installs: nativef87a34 exit0,6 checks. Each records32 distributions/43 license files;
@@ -19,9 +20,18 @@ members unchanged per install. No rebuild/install/test rerun. license_review sta
 pending and publication_authorized false. See acceptance/evidence/core-preview-a120/
 windows-licenses/summary.json. This does not cancel static FAIL or cleanup BLOCKED.
 
-Next independent work: first Linux3.14 license metadata collection using the
-existing a120 wheel/sdist environments and same frozen tool. Check no older queue,
-preserve VM state and use normal owned startup/shutdown. It has not started.
+Linux3.14 license metadata supplement also completed: nativee21094 exit0,6 checks,
+31 distributions/35 recorded license files per existing wheel/sdist install.
+Root rehashed70 license files and97 runtime members per env; inventories identical.
+All16 original records/69644bytes preserved, no workers or containers remained.
+Compared with Windows, pywin32 is Windows-only; pydantic-core/rpds-py metadata
+differs and the exact records are retained. License review remains pending,
+publication unauthorized. See linux-licenses/summary.json and root-review.json.
+
+Next independent work: first complete Linux3.14 installed-sdist suite on the
+existing a120 install and frozen d427355 inputs. Preparation only; not started.
+Owned local VM21292 remains available for this next authorized check; prior VM
+state/logs were copied and hash-checked before startup. No model/auth copy occurs.
 Source/sdist/full platform collection also remains incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.
@@ -44,7 +54,8 @@ D:/agentsync-debug/m120terminal/private/credentials.json before command executio
 ("blocked by policy", no further reason supplied). The file remains restricted
 to the current user and SYSTEM, no matching test workers remain, and no account
 credentials were read/copied. No alternative deletion/retry was attempted.
-Manual removal has been requested; verify absence only after the user responds.
+Owner chose to handle manual removal later. No deletion retry or bypass is allowed;
+verify absence after the owner confirms removal. Cleanup remains BLOCKED.
 Never upload private/ or the temporary database. All exported records omit tokens.
 
 Next independent work: audit remaining current-candidate release collection gaps,

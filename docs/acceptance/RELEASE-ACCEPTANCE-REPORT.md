@@ -1,5 +1,14 @@
 # Release Acceptance Report
 
+Linux3.14 installed license metadata collected from both existing a120 installs:
+6 native checks exit0 (e21094),31 distributions/35 license files each. Root checked
+all process/log receipts, rehashed70 license files and97 runtime members per env;
+inventories identical. All16 original records/69644bytes retained. Windows-only
+pywin32 and platform metadata differences for pydantic-core/rpds-py are explicitly
+recorded. **license_review pending, publication_authorized false, Release BLOCKED**.
+No build/install/test rerun or formal matrix row is inferred.
+[Original inventories and comparison](evidence/core-preview-a120/linux-licenses/summary.json).
+
 Windows3.12 installed license metadata collected from both original a120 preview
 installs:6 native checks exit0 (f87a34),32 runtime distributions and43 license files
 each, with byte-identical inventories. Root rehashed86 recorded license files and
@@ -18,7 +27,7 @@ src/tests/tools/examples diagnostic was reported. Originals,5369 inputs and97
 installed members remain unchanged. Root checked native receipts/log hashes;
 independent Astra confirmed the immutable-archive/check-scope conflict. No fix,
 unsafe fix, filename/scope/rule or old-manifest change was made. Preserve these
-failures pending an explicit owner decision; they do not erase the prior bounded
+failures per the owner's explicit choice to keep originals and FAIL; they do not erase the prior bounded
 wheel/terminal results and those results do not cancel this static failure.
 [Original outputs and exact13 files](evidence/core-preview-a120/static-checks/summary.json).
 
@@ -30,7 +39,7 @@ terminal records, state, unchanged helper and97 installed members. No real Agent
 or new candidate execution is represented by this deterministic admitted-wave
 fixture. The credential file remains restricted locally after automatic approval
 rejected deletion before execution; no bypass/retry or credential upload occurred.
-Manual cleanup is pending. Linux/macOS terminal behavior, complete current matrix
+Owner chose manual cleanup later. Linux/macOS terminal behavior, complete current matrix
 and formal Release are not supplied by this check; Release stays BLOCKED.
 [Observed outputs and scope](evidence/core-preview-a120/native-terminal/summary.json).
 

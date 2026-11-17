@@ -1,0 +1,50 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_license_origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m120l/w/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import hashlib,importlib.metadata as md,json,sys,sysconfig\nfrom pathlib import Path\nimport agentsync\ninstall,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nassert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,14,7)\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert site.is_relative_to(install)\nassert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'\ndirect=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))\nassert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected\nassert hashlib.sha256(archive.read_bytes()).hexdigest()==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert len(actual)==97 and actual==json.loads(members.read_bytes())\nprint(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))\n",
+      "/root/amadeus-m120l/w",
+      "/root/amadeus-m120l/agentsync_local-0.3.0a120-py3-none-any.whl",
+      "/root/amadeus-m120l/runtime-members.json",
+      "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+    ],
+    "cwd": "/root/amadeus-m120licenses/run",
+    "started_at": "2026-11-17T02:46:36.876484+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_license_origin_before",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m120l/w/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "import hashlib,importlib.metadata as md,json,sys,sysconfig\nfrom pathlib import Path\nimport agentsync\ninstall,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nassert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,14,7)\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert site.is_relative_to(install)\nassert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'\ndirect=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))\nassert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected\nassert hashlib.sha256(archive.read_bytes()).hexdigest()==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert len(actual)==97 and actual==json.loads(members.read_bytes())\nprint(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))\n",
+      "/root/amadeus-m120l/w",
+      "/root/amadeus-m120l/agentsync_local-0.3.0a120-py3-none-any.whl",
+      "/root/amadeus-m120l/runtime-members.json",
+      "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+    ],
+    "cwd": "/root/amadeus-m120licenses/run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T02:46:36.876484+00:00",
+    "finished_at": "2026-11-17T02:46:37.052568+00:00",
+    "log": "logs/wheel_license_origin_before.log",
+    "log_sha256": "1272a2e018b61be749f313034c45fa94fcb8486a9ce611b3e1ee7fca181674d9",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -6,15 +6,17 @@ Existing Windows3.12 a120 wheel/sdist license inventories are now collected:
 32 runtime distributions and43 recorded license files each; actual metadata and
 hashes agree. Six native checks pass, installed97 members unchanged per env.
 No build/install/test repetition. License review remains pending and publication
-unauthorized; static FAIL and cleanup BLOCKED remain. Next collect the first
-Linux3.14 inventory supplement on the existing installs; no such job has started.
+unauthorized; static FAIL and cleanup BLOCKED remain. Linux3.14 now also has both
+inventories:31 distributions/35 files each,6 native checks pass,70 file hashes
+independently checked. No rebuild/install/test rerun. Next prepare the first full
+Linux3.14 installed-sdist suite using the existing install and frozen d427355 tests.
 
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected
 files are immutable raw evidence, with current source/runtime unchanged. Preserve
 the failure and original manifests; no rule/scope/filename change is authorized.
 See static-checks/summary.json and archive-format-conflict.json. This is an
-existing C delivery conflict, not a new M5 stage. Seek a narrow owner decision;
+existing C delivery conflict, not a new M5 stage. Owner chose originals plus FAIL;
 continue other missing source/sdist/license/platform checks independently.
 The collector cannot skip/reuse individual completed checks, and mixed snapshots
 cannot be promoted to a formal row. No source/sdist collection has been started.
