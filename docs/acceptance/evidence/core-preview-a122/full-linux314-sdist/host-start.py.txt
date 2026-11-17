@@ -1,0 +1,29 @@
+import hashlib,json,sys
+from datetime import UTC,datetime
+from pathlib import Path
+import paramiko
+
+base=Path('D:/agentsync-debug/m122fullld')
+driver=Path(sys.argv[1]);pin=sys.argv[2]
+assert hashlib.sha256(driver.read_bytes()).hexdigest()==pin
+assert not (base/'execution-start.json').exists()
+c=paramiko.SSHClient();c.load_host_keys('D:/agentsync-debug/vm/known_hosts');c.set_missing_host_key_policy(paramiko.RejectPolicy())
+c.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+try:
+ with c.open_sftp() as s:
+  s.mkdir('/root/amadeus-m122fullld',mode=0o700)
+  for name,path in [('run-sdist.py',driver),('guest-preflight.json',base/'guest-preflight.json')]:
+   data=path.read_bytes()
+   with s.open('/root/amadeus-m122fullld/'+name,'wx') as f:f.write(data)
+   s.chmod('/root/amadeus-m122fullld/'+name,0o600)
+   with s.open('/root/amadeus-m122fullld/'+name,'rb') as f:assert f.read()==data
+ command='/root/amadeus-m122l/d/bin/python -I -B /root/amadeus-m122fullld/run-sdist.py 20f4b7bfb6cdf0c557e98dd3af8daa6b447d83b2face70bae9a3d140970e0732'
+ with (base/'execution-start.json').open('x',encoding='utf-8') as f:json.dump({'utc':datetime.now(UTC).isoformat(),'command':command,'driver_sha256':pin,'automatic_retry':False},f,indent=2)
+ print('Starting the first frozen a122 Linux full installed-sdist suite once.',flush=True)
+ i,o,e=c.exec_command(command,timeout=7500);i.channel.shutdown_write()
+ out,err=o.read(),e.read();code=o.channel.recv_exit_status()
+ for name,data in [('execution.stdout',out),('execution.stderr',err)]:
+  with (base/name).open('xb') as f:f.write(data)
+ with (base/'execution-result.json').open('x',encoding='utf-8') as f:json.dump({'utc':datetime.now(UTC).isoformat(),'exit_code':code,'command':command},f,indent=2)
+ print(out.decode());print(err.decode());raise SystemExit(code)
+finally:c.close()

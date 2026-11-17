@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-11-17T14:37:07.903754+00:00",
+  "status": "RUNNING",
+  "native_session": 84212,
+  "native_start_chunk": "785a94",
+  "live_observation_chunk": "39c4a9",
+  "vm_pid": 20760,
+  "controller_pid": 2935,
+  "controller_start_ticks": 5951,
+  "pytest_pid": 2949,
+  "pytest_start_ticks": 6240,
+  "preflight_chunk": "5befc6",
+  "preflight_sha256": "20f4b7bfb6cdf0c557e98dd3af8daa6b447d83b2face70bae9a3d140970e0732",
+  "preflight_initial_failure": {
+    "chunk": "ba7acd",
+    "cause": "SSH banner not ready; no guest command or test ran"
+  },
+  "formal_release": "BLOCKED",
+  "resume": "Observe native84212 and /root/amadeus-m122fullld/run/result.json; never restart from observation timeout"
+}

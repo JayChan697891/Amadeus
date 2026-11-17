@@ -1,5 +1,20 @@
 # Amadeus current progress
 
+Second independent active queue: first Linux3.14 a122 installed-sdist full suite
+started once at2026-11-17T14:36:21Z, native84212 (785a94). VM20760 boot
+966e4a14-739a-47d5-90d4-877f3be0e41b; actual controller2935/start5951 and
+pytest2949/start6240 were observed live (39c4a9). Drivered56a3f5 uses the
+existing m122l/d installation and original5232e9e snapshot/archive. Preflight
+5befc6 verified4 original inputs,97 members, archive origin, empty Docker/workers,
+the fixed image and31.1GB free. Initial SSH-banner readiness failure occurred
+before any guest command and remains recorded. No build/install/focused/model
+repeat. Final result NOT AVAILABLE. Observe native84212 and
+/root/amadeus-m122fullld/run/result.json; do not restart from observation timeout.
+After terminal, collect only sanitized originals, inspect XML and36 actual Docker
+observations, compare with the completed Linux wheel suite, then independent review
+and normal VM shutdown. This fixture is separate from the live Windows suite below.
+[Startup and recovery evidence](acceptance/evidence/core-preview-a122/full-linux314-sdist/execution-start.json).
+
 ACTIVE queue: first Windows3.12 a122 installed-sdist full regression started once
 at2026-11-17T14:25:10Z. Native44933 (8b4594); Root observed controller23208 and
 pytest13896 with their launcher parents5136/2272. Driver5dce546c reuses the
@@ -58,8 +73,8 @@ All original fixtures/disks remain, and VM7828 normally shut down. The observer'
 initial SSH readiness failure, missing lsblk assumption and incorrect >30GiB free
 space assertion remain recorded; none changes product tests or acceptance gates.
 [Capacity record](acceptance/evidence/core-preview-a122/local-capacity/review.json).
-Preserve the original safety-pause checkpoint. No Linux test queue is running;
-Windows installed-sdist execution remains separately active as recorded above.
+Preserve the original safety-pause checkpoint. The subsequent Linux and Windows
+installed-sdist queues are separately active as recorded above.
 
 The first complete a122 Windows3.12 installed-wheel suite finished at08:21:24Z
 on2026-11-17. Native43609 closed with exit0 (d04f44):2539pass/57skip, zero
