@@ -1,5 +1,17 @@
 # Amadeus current progress
 
+ACTIVE queue: first Windows3.12 a122 installed-sdist full regression started once
+at2026-11-17T14:25:10Z. Native44933 (8b4594); Root observed controller23208 and
+pytest13896 with their launcher parents5136/2272. Driver5dce546c reuses the
+original5232e9e snapshot, existing m122p/d installation and original sdist archive.
+Only origin-before, full pytest, origin-after; no build/install/focused/model
+repeat. Final result is NOT AVAILABLE. Observe the same native handle and actual
+processes, never restart because of an observation timeout. Local result entry:
+D:/agentsync-debug/m122fullwd/run/result.json. On terminal, inspect actual XML,
+all input/source/runtime hashes and comparison to the completed wheel suite;
+then independent review. Raw local logs stay on D: and are not publication inputs.
+[Original startup records](acceptance/evidence/core-preview-a122/full-windows312-sdist/execution-start.json).
+
 Linux a122 installed-license metadata is now collected from the same existing
 wheel/sdist installations:6 native checks exit0,31 distributions and35 recorded
 license files each. Root independently rehashed70 license files and97 runtime
@@ -9,9 +21,8 @@ acknowledged, PID10644 absent and SSH/QMP ports closed; disk and prior logs reta
 This is metadata collection, not license clearance: review remains pending and
 formal Release BLOCKED. No rebuild/install/test/model repeat occurred.
 [Original records and inspection](acceptance/evidence/core-preview-a122/linux-licenses/root-review.json).
-Next original queue item: prepare the first Windows a122 installed-sdist full
-regression using the existing installation and frozen5232e9e inputs. Do not repeat
-either completed full wheel suite or the97-case installation checks.
+The first Windows a122 installed-sdist full regression is now running as recorded
+above. Do not repeat either completed full wheel suite or the97-case install checks.
 
 Windows a122 installed-license metadata is now collected from the existing
 wheel/sdist environments:6 native checks exit0,32 distributions and43 license

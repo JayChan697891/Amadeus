@@ -1,0 +1,34 @@
+{
+  "observed_utc": "2026-11-17T14:26:16.6621633Z",
+  "resume": "Observe native44933 and existing D:/agentsync-debug/m122fullwd/run/result.json; never restart",
+  "native_session": 44933,
+  "workers": [
+    {
+      "ProcessId": 5136,
+      "ParentProcessId": 21660,
+      "created_utc": "2026-11-17T14:25:06.5434410Z",
+      "ExecutablePath": "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe"
+    },
+    {
+      "ProcessId": 23208,
+      "ParentProcessId": 5136,
+      "created_utc": "2026-11-17T14:25:06.5500150Z",
+      "ExecutablePath": "C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe"
+    },
+    {
+      "ProcessId": 2272,
+      "ParentProcessId": 23208,
+      "created_utc": "2026-11-17T14:25:10.6823530Z",
+      "ExecutablePath": "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe"
+    },
+    {
+      "ProcessId": 13896,
+      "ParentProcessId": 2272,
+      "created_utc": "2026-11-17T14:25:10.6875280Z",
+      "ExecutablePath": "C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe"
+    }
+  ],
+  "status": "RUNNING",
+  "native_start_chunk": "8b4594",
+  "formal_release": "BLOCKED"
+}
