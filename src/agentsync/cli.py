@@ -325,7 +325,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
             response = error_envelope(error)
         else:
             response = _call_owner(directory, args.operation, payload)
-        print(json.dumps(response, ensure_ascii=False))
+        print(json.dumps(response, ensure_ascii=True))
         return 0 if response["ok"] else 1
     elif args.command == "demo":
         if not data_dir:
@@ -345,7 +345,7 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
             result = asyncio.run(run_mock_workflow_demo(Path(data_dir)))
         else:
             result = run_demo(data_dir)
-        print(json.dumps(result, ensure_ascii=False))
+        print(json.dumps(result, ensure_ascii=True))
     elif args.command == "mcp":
         from agentsync.integrations.mcp import build_server
 

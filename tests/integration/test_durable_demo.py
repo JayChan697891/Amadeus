@@ -1,6 +1,10 @@
 """The installed CLI demonstrates one durable Mock recovery without exposing credentials."""
 
 import json
+import os
+import subprocess
+import sys
+from pathlib import Path
 
 import pytest
 
@@ -70,6 +74,37 @@ def test_durable_demo_refuses_existing_state(tmp_path, capsys):
     assert "requires a new --data-dir" in capsys.readouterr().err
     assert list(existing.iterdir()) == [sentinel]
     assert sentinel.read_bytes() == b"pre-existing state"
+
+
+def test_durable_demo_reports_unicode_directory_with_legacy_stdout(tmp_path):
+    directory = tmp_path.resolve() / "持久协作"
+    source = Path(durable_demo.__file__).resolve().parents[1]
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-s",
+            "-B",
+            "-m",
+            "agentsync",
+            "--data-dir",
+            str(directory),
+            "demo",
+            "--durable",
+        ],
+        env=os.environ | {"PYTHONIOENCODING": "cp1252", "PYTHONPATH": str(source)},
+        capture_output=True,
+        timeout=90,
+        check=False,
+    )
+
+    assert (directory / "agentsync.db").is_file()
+    assert process.returncode == 0, process.stderr.decode("ascii", errors="replace")
+    response = json.loads(process.stdout.decode("ascii"))
+    assert response["ok"] is True
+    result = response["data"]
+    assert Path(result["data_dir"]) == directory
+    assert result["task_status"] == "completed"
+    assert result["simulation_only"] is True and result["verification"] == "unverified"
 
 
 @pytest.mark.parametrize(

@@ -1,8 +1,15 @@
 """Owner recovery of abandoned handoff metadata in isolated Core databases."""
 
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
 import pytest
 from conftest import owner_grant
 
+import agentsync
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.sdk import AgentSyncClient
@@ -68,6 +75,37 @@ def abandoned(tmp_path, monkeypatch):
         "request_id": "owner-recovery",
     }
     return core, project, actors, sender, handoff, request, clock
+
+
+def test_owner_recovery_reports_unicode_reason_with_legacy_stdout(abandoned):
+    core, _, _, _, original, request, _ = abandoned
+    reason = "原会话已结束"
+    source = Path(agentsync.__file__).resolve().parents[1]
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-s",
+            "-B",
+            "-m",
+            "agentsync",
+            "--data-dir",
+            str(core.data_dir),
+            "owner",
+            "recover_handoff",
+        ],
+        input=json.dumps(request | {"reason": reason}).encode("ascii"),
+        env=os.environ | {"PYTHONIOENCODING": "cp1252", "PYTHONPATH": str(source)},
+        capture_output=True,
+        timeout=20,
+        check=False,
+    )
+
+    assert process.returncode == 0, process.stderr.decode("ascii", errors="replace")
+    response = json.loads(process.stdout.decode("ascii"))
+    assert response["ok"] is True
+    result = response["data"]
+    assert result["id"] == original["id"] and result["status"] == "recovered"
+    assert result["reason"] == reason and result["execution_restarted"] is False
 
 
 def test_owner_recovery_preserves_package_and_new_worker_can_continue(abandoned):
