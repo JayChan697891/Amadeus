@@ -1,0 +1,22 @@
+{
+  "identity": {
+    "pid": 3215,
+    "boot_id": "573141a0-a4cc-4c28-a53f-79f0d15b5a5d",
+    "started_ticks": 40358
+  },
+  "checkpoint_sha256": "f95e690473bdbf1e1ed7a9b007b1ac0a07cc3e295a141375b084b242bca57c45",
+  "wave_id": "dc173f231112dd973a75698f6e30815d71d43025e6b339de9934e66f977d8462",
+  "outcome": {
+    "state": "resolved",
+    "tasks": [
+      {
+        "task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+        "state": "ready_for_review",
+        "failure_code": null
+      }
+    ],
+    "verification": "unverified"
+  },
+  "receiver_callbacks": 0,
+  "model_calls": 0
+}

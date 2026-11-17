@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "producer_plan_sha256": "5e430549d0eaf9f27f5cccb1bdd797db8d82fbbd38537072952e005425c2745f",
+  "files": {
+    "prepare.py": "5a76e330141235414c58d451225a8a99f2248edd4f61d1613448445679e5aee8",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "plan.json": "63420a34eafed1fc9aa4a1d8119d31cdaf273a525ea692ac2e9ea80e35888f2a",
+    "readiness.json": "37c6095dc55f641eae94a2af9b263b16848592b4ede166afc61079e983998c80",
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+    "live.py": "5b0bf77d0eb4753528bfa42bbae70424e6eb22faeef6ea83b42edca335bb9f7c",
+    "cleanup.py": "8f77714ad8596f4b66ed41d25ed44af66a5d6c891310e627127b5620f5446dba",
+    "verify.py": "cbd20d12f68990cf910e9dfabb47f8cfbaf52553c53cc68362b2fb58ff828470",
+    "recovery.py": "c25b1daf52d2cb528ecd374cfde23b021e11480c6588c6aec29913a8be4b2501"
+  },
+  "expires_at": 1794900798.3770537,
+  "max_model_calls": 2,
+  "existing_subscription_only": true,
+  "owner_confirmed_zero_credits_and_auto_recharge_off": true,
+  "api_key_allowed": false,
+  "producer_owned_parent_interruption_allowed": true,
+  "retry_allowed": false,
+  "temporary_auth_destination": "/root/amadeus-m122-composed-recovery/private-home/auth.json"
+}

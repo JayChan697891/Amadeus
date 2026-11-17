@@ -1,5 +1,14 @@
 # Release Acceptance Report
 
+Frozen a122 has a **SCOPED PASS** for real same-vendor handoff and recovery of a
+persisted receiver result after actual controller exit73. The fresh controller
+reconciled the same review v5 task, context and publication with no new call;
+genuine replay changed no tasks or receipts. Two real calls were used, temporary
+login was cleaned, and Root/Astra accepted only this observed boundary. Candidate
+staging, isolated execution and independent completion remain **NOT RUN**, pending
+a new exact owner grant. This does not pass full M7/M8 or formal Release.
+[Actual receipts, cleanup and limitations](evidence/core-preview-a122/composed-recovery/summary.json).
+
 Frozen a122/5232e9e has a **SCOPED PASS** for the corrected native Codex MCP handoff.
 Both Windows hosts exited normally by EOF and all seven MCP children ended. The
 handoff was accepted with pinned context v1, and the recipient reached review v8
@@ -28,7 +37,7 @@ and outcomes. Root verified the two archive hashes, 3,992 frozen files and 97
 runtime members per install. Root and Astra accepted the scoped results. The
 failed initial Linux SSH connection is retained as NOT RUN. Both native
 validation jobs finished and the owned Linux VM shut down normally. Full a122
-regressions, macOS and real-model control checks remain **NOT RUN**. Historical
+regressions, macOS and complete real-model control acceptance remain **NOT RUN**. Historical
 static FAIL and pending license review still block formal Release.
 [Windows results](evidence/core-preview-a122/windows/summary.json),
 [Linux results](evidence/core-preview-a122/linux/summary.json), and

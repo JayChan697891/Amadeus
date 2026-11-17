@@ -1,0 +1,8 @@
+{
+  "start_utc": "2026-11-17T07:08:39.3141053Z",
+  "pid": 8280,
+  "path": "D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe",
+  "disk": "D:\\agentsync-debug\\vm\\guest.qcow2",
+  "utc": "2026-11-17T07:08:39.4446138Z",
+  "purpose": "a122 composed recovery preparation; model and auth NOT RUN"
+}

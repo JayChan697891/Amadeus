@@ -1,13 +1,34 @@
 # Amadeus current progress
 
-The existing M7-02/M8-02 composed recovery check is now prepared against the frozen
+The a122 composed real check now reaches its authorized boundary. Two real Codex
+subscription calls ran once. The first parent was interrupted after turn.started
+and recorded failed; the distinct receiver returned the149-byte addition proposal
+and naturally exited0. Controller3117 then exited73 after persisting review v5,
+before the wave's final record. Fresh controller3215 used the existing CLI to
+reconcile the same receiver/context/publication; recovery and genuine replay made
+zero new model calls. Root inspected actual database rows, receipts, capture hashes
+and97 runtime members; Astra accepted only this controller-recovery scope.
+Temporary login removed, RAM home unmounted/empty, original login unchanged, no
+workers/containers remain. Root's three observation errors are retained; no live
+step was repeated. [Actual results](acceptance/evidence/core-preview-a122/composed-recovery/summary.json).
+
+Next: obtain a new explicit owner grant for the exact recovered candidate's
+isolated staging, one Docker verification and independent same-task completion.
+The149-byte source is inert and unchanged; [stage plan](acceptance/evidence/core-preview-a122/composed-recovery/stage-plan.json)
+SHA28969e1168f5514a02776db6f5f5fee700d265f71707f5024e2dd45f1f24e2da
+binds receiverd583d431-24ae-48e6-9595-4c5b2ded440a v5, source8172bd12,
+checkpointf95e6904 and reconcile53d08022, the fixed Docker image and two cases.
+Candidate staging/execution/completion remain NOT RUN; old a119 grant consumed.
+Do not restart producer/receiver/recovery/replay. No full M7/M8 or Release pass.
+
+Preparation checkpoint ad4e84d bound the M7-02/M8-02 composed check to the frozen
 a122 runtime. The wrapper retains a completed receiver proposal and process
 diagnostics before controller exit73, then uses a fresh controller and the original
 CLI to reconcile the same wave without a new model launch. Two focused offline
 checks pass; these use a Python protocol fixture and intercepted exit, not real
 Codex or actual controller death. Root inspected the original XML and all prepared
-hashes; Astra accepted preparation scope. Exact live binding and execution remain
-NOT RUN. A new candidate execution still requires its own exact owner approval.
+hashes; Astra accepted preparation scope. Live execution was NOT RUN at that
+checkpoint; the actual result is recorded above. Candidate approval remains separate.
 The old active-generation-at-deadline wording exceeded the original M6 scope and
 is corrected in DESIGN.md; no historical result or current requirement becomes PASS.
 

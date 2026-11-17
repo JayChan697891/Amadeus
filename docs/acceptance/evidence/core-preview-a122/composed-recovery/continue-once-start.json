@@ -1,0 +1,14 @@
+{
+  "stage": "continue-once",
+  "started_at": "2026-11-17T07:14:25.871147+00:00",
+  "observer_pid": 23316,
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/live.py continue-once 059e7c6b37d598edd46269fc81ad25dd6c5db29ee36030b7ac9129f1e37f9a57",
+  "automatic_retry": false,
+  "remote_exec_requested": false,
+  "log_bytes": {
+    "stdout": 0,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "observing"
+}

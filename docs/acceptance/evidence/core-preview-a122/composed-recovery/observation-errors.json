@@ -1,0 +1,20 @@
+{
+  "all_live_stages_executed_once": true,
+  "observations": [
+    {
+      "chunk": "2cbb8b",
+      "exit_code": 1,
+      "error": "Collection expected nonexistent producer-workspace.json; file-set guard failed before copying. Removed that name; b8375b collected actual named results."
+    },
+    {
+      "chunk": "96ee33",
+      "exit_code": 1,
+      "error": "Read-only postcheck assumed snapshot.parent_pid, absent from actual schema. Original script/stdout/stderr retained. Used recorded producer boundary PID; receiver parent-ended state stays separate."
+    },
+    {
+      "chunk": "8aaae0",
+      "exit_code": 1,
+      "error": "Exact secret-value scan found the intentional local continuation-private.json authentication request. Never copied/uploaded; original source explicitly stores it as private. Final scan excludes only state.json and continuation-private.json and checks all35 public JSON files. No secret redaction or bypass."
+    }
+  ]
+}

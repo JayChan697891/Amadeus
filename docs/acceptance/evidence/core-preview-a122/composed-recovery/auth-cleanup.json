@@ -1,0 +1,10 @@
+{
+  "temporary_auth_absent": true,
+  "home_unmounted": true,
+  "private_home_empty": true,
+  "current_attempts": {
+    "producer": "terminal_recorded",
+    "receiver": "terminal_recorded"
+  },
+  "further_launches_allowed": false
+}

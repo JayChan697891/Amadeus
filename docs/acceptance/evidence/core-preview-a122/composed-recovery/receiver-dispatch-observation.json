@@ -1,0 +1,92 @@
+{
+  "timestamp": "2026-11-17T07:15:13.264500+00:00",
+  "actors": {
+    "receiver": {
+      "entry_sha256": "b3b2256a16fb6a00907eaa735a9a78ac5a2f40ff41d0adc95085be6f836efd0e",
+      "authorization_sha256": "ed25331a41f9987cf2d7ee6f2546c2f93339ff43b76cdb4f96cc727045a3eccc",
+      "project_id": "cc8f24ae-269d-43d2-b61c-3ef312f634f4",
+      "agent_sha256": "d34ee44ccad6bbb5605db7d7d482b1e904f033509b5ddbfa78c8d7f9333b6b7c",
+      "session_sha256": "e5e8fd91fc16cf4e28de651c48c9b5ec3cf47d614ebf3f5aeb8b893d47cbedd0",
+      "task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+      "captured_start_invoked": true,
+      "exact_authorizations": 1,
+      "attempts": [
+        {
+          "leg": "first",
+          "state": "terminal_recorded",
+          "client": "codex",
+          "status": "continuation_proposal_received",
+          "exit_code": 0,
+          "timed_out": false,
+          "parent_ended": true,
+          "run_sha256": "cc82c4396a57fa94bc5eb8d4e7d19ada2f95a161966b017cab7f23840da7491e",
+          "session_sha256": "e5e8fd91fc16cf4e28de651c48c9b5ec3cf47d614ebf3f5aeb8b893d47cbedd0",
+          "error_code": null,
+          "admission": {
+            "state": "both_reservations_recorded",
+            "plan_sha256": "238241e297c17914ce47982a52d29e5578ae490ab3c393de0fcbfd4435cf7a54",
+            "execution_verified": false
+          },
+          "adapter_elapsed_ms": 44808,
+          "reported_input_tokens": 8616,
+          "reported_output_tokens": 57,
+          "agent_sha256": "d34ee44ccad6bbb5605db7d7d482b1e904f033509b5ddbfa78c8d7f9333b6b7c",
+          "declared_client_version": "0.167.0-alpha.3.2",
+          "protocol_session_sha256": "a7e8ddd3f9d219b4f04f283c6e8a13129e620376b3d70b06fc36abebd931e8c2",
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        },
+        {
+          "leg": "second",
+          "state": "not_dispatched",
+          "client": null,
+          "status": null,
+          "exit_code": null,
+          "timed_out": null,
+          "parent_ended": null,
+          "run_sha256": null,
+          "session_sha256": null,
+          "error_code": null,
+          "admission": null,
+          "adapter_elapsed_ms": null,
+          "reported_input_tokens": null,
+          "reported_output_tokens": null,
+          "agent_sha256": null,
+          "declared_client_version": null,
+          "protocol_session_sha256": null,
+          "protocol_error_reason": null,
+          "stdout_bytes": null,
+          "stderr_bytes": null,
+          "stdout_sha256": null,
+          "stderr_sha256": null,
+          "stdout_truncated": null,
+          "stderr_truncated": null,
+          "billing_verified": false,
+          "cost_usd": null,
+          "verification": "unverified"
+        }
+      ],
+      "launch_plan_sha256": "238241e297c17914ce47982a52d29e5578ae490ab3c393de0fcbfd4435cf7a54",
+      "launch_request_sha256": "f8c1195f7d8bf00dad16bdf9c7701f48a1c90aa4f16f1f44bb9e05421be64685"
+    }
+  },
+  "outcome": {
+    "state": "proposal_stored",
+    "context_id": "33228c36-9ef3-41bf-a400-2fc11e551d37",
+    "context_version": 1,
+    "content_sha256": "b2b604002c02429c3320165240deb1d559d1872bf4da297b1c80f71d9b11610f",
+    "task_version": 4,
+    "verification": "unverified"
+  },
+  "error_code": null,
+  "attempt_schema_exact": true,
+  "diagnostic_errors": []
+}

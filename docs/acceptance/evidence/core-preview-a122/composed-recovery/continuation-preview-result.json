@@ -1,0 +1,16 @@
+{
+  "stage": "continuation-preview",
+  "started_at": "2026-11-17T07:14:06.464295+00:00",
+  "observer_pid": 16844,
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/live.py continuation-preview",
+  "automatic_retry": false,
+  "remote_exec_requested": true,
+  "log_bytes": {
+    "stdout": 115,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "terminal",
+  "exit_code": 0,
+  "finished_at": "2026-11-17T07:14:08.317257+00:00"
+}

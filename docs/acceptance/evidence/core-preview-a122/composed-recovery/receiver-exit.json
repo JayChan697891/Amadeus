@@ -1,0 +1,21 @@
+{
+  "snapshot": {
+    "capture_id": "8e765a2d47234a25ae7a0554c913a062",
+    "state": "exited",
+    "exit_code": 0,
+    "started_at": 364.400116952,
+    "deadline_at": 454.400116952,
+    "finished_at": 384.017014815,
+    "stdout_bytes": 798,
+    "stderr_bytes": 0,
+    "stdout_truncated": false,
+    "stderr_truncated": false,
+    "parent_ended": true,
+    "error_code": null,
+    "termination_scope": "parent_only",
+    "tree_cleanup": "unverified",
+    "sandbox": false,
+    "real_client_verified": false
+  },
+  "final_turn_state": "terminal"
+}

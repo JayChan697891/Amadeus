@@ -1,0 +1,86 @@
+import hashlib
+import json
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+base = Path('D:/agentsync-debug/m122-composed-recovery')
+client = paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root', key_filename='D:/agentsync-debug/vm/debug_ed25519', look_for_keys=False, allow_agent=False, timeout=15)
+probe = '''import hashlib,json,os,sqlite3,subprocess,sys
+from pathlib import Path
+root=Path('/root/amadeus-m122-composed-recovery')
+assert Path('/proc/sys/kernel/random/boot_id').read_text().strip()=='573141a0-a4cc-4c28-a53f-79f0d15b5a5d'
+sys.path.insert(0,str(root))
+import prepare,cleanup
+prepare.runtime()
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def read(n):return json.loads((root/n).read_bytes())
+checkpoint=read('controller-exit-checkpoint.json');reconciled=read('controller-reconcile.json');result=read('continuation-result.json');replay=read('replay.json');grant=sha(root/'live-authorization.json')
+assert result['authorization_sha256']==grant and reconciled['checkpoint_sha256']==sha(root/'controller-exit-checkpoint.json')
+assert checkpoint['identity']['pid']!=reconciled['identity']['pid']
+pids=[checkpoint['identity']['pid'],reconciled['identity']['pid']]
+for name in ('producer','receiver'):
+ exit_record=read(name+'-exit.json');snapshot=exit_record['snapshot']
+ assert snapshot['parent_ended'] and snapshot['state']=='exited'
+ if name=='producer':pids.append(read('producer-interruption-boundary.json')['parent_pid'])
+ capture=read(name+'-capture.json')
+ assert capture['saved'] and not capture['stdout_truncated'] and not capture['stderr_truncated']
+ for stream in ('stdout','stderr'):
+  p=root/(name+'-capture/raw/'+stream+'.bin')
+  assert p.stat().st_size==capture[stream+'_bytes'] and sha(p)==capture[stream+'_sha256']
+assert all(not Path('/proc/'+str(pid)).exists() for pid in pids)
+assert reconciled['model_calls']==reconciled['receiver_callbacks']==replay['model_calls']==replay['receiver_callbacks']==0
+assert replay['outcome']==result['outcome'] and replay['tasks_and_receipts_unchanged'] is True
+assert result['tasks']==checkpoint['tasks']
+receipts=root/'receipts'
+assert {p.name:sha(p) for p in receipts.glob('*.json')}==checkpoint['receipt_sha256']
+assert not cleanup.mounts() and not any((root/'private-home').iterdir())
+assert cleanup.require_stopped(grant)=={'producer':'terminal_recorded','receiver':'terminal_recorded'}
+assert not any((root/n).exists() for n in ('stage-entry.json','execution-entry.json','completion-entry.json','stage-result.json','execution-result.json','completion-result.json'))
+workers=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+ try:
+  comm=(p/'comm').read_text().strip();cmd=(p/'cmdline').read_bytes()
+  if ('python' in comm or 'codex' in comm) and any(t in cmd for t in (b'/root/amadeus-',b'/root/agentsync-')):workers.append(int(p.name))
+ except (OSError,ProcessLookupError):pass
+assert not workers
+assert not subprocess.check_output(['/usr/bin/docker','ps','-aq'],text=True,timeout=30).strip()
+image=subprocess.check_output(['/usr/bin/docker','image','inspect','--format','{{.Id}}','sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'],text=True,timeout=30).strip()
+assert image=='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'
+database=root/'core/agentsync.db';before=sha(database)
+with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as conn:
+ conn.execute('PRAGMA query_only=ON')
+ columns=[row[1] for row in conn.execute('PRAGMA table_info(tasks)')]
+ rows=conn.execute('SELECT id,status,version FROM tasks ORDER BY id').fetchall()
+assert {row[0]:{'status':row[1],'version':row[2]} for row in rows}=={key:{'status':value['status'],'version':value['version']} for key,value in result['tasks'].items()}
+assert sha(database)==before
+state=read('state.json');secrets=[state['owner']['admin_token']]+[state[who]['session_token'] for who in ('producer','receiver','stager','reviewer')]
+selected=[p for p in root.glob('*.json') if p.name not in {'state.json'}]
+assert not any(secret.encode() in p.read_bytes() for p in selected for secret in secrets)
+print(json.dumps({'runtime_members_unchanged':97,'boot_id':checkpoint['identity']['boot_id'],'controllers':{'exited':checkpoint['identity'],'recovered':reconciled['identity']},'observed_absent_pids':pids,'tasks':result['tasks'],'database_sha256':before,'database_bytes_unchanged':True,'receipt_hashes_unchanged':True,'raw_capture_hashes_checked_locally':4,'sensitive_project_values_in_public_json':0,'public_json_files_checked':len(selected),'model_calls':2,'recovery_and_replay_calls':0,'temporary_auth_absent':True,'private_home_empty':True,'private_home_unmounted':True,'workers':workers,'containers':[],'candidate_execution':'NOT RUN','candidate_image':image}))
+'''
+try:
+    incoming, outgoing, errors = client.exec_command('/root/amadeus-m122l/w/bin/python -I -B -', timeout=60)
+    incoming.write(probe)
+    incoming.flush()
+    incoming.channel.shutdown_write()
+    out, err = outgoing.read(), errors.read()
+    code = outgoing.channel.recv_exit_status()
+    for name, data in (('root-postcheck-r2.stdout', out), ('root-postcheck-r2.stderr', err)):
+        with (base / 'host' / name).open('xb') as stream:
+            stream.write(data)
+    assert code == 0 and not err, (code, err.decode())
+    result = json.loads(out)
+    original = json.loads((base / 'auth-setup-result.private.json').read_bytes())
+    assert hashlib.sha256(Path('C:/Users/JayChan/.codex/auth.json').read_bytes()).hexdigest() == original['original_auth_sha256']
+    result.update(utc=datetime.now(UTC).isoformat(), original_auth_unchanged=True)
+    with (base / 'root-postcheck.json').open('x', encoding='utf-8') as stream:
+        json.dump(result, stream, indent=2)
+    print(json.dumps(result, indent=2))
+finally:
+    client.close()

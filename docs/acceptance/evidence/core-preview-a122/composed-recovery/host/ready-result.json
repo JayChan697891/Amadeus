@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-17T07:10:09.026602+00:00",
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/prepare.py ready 5e430549d0eaf9f27f5cccb1bdd797db8d82fbbd38537072952e005425c2745f",
+  "retry": false,
+  "finished_at": "2026-11-17T07:10:10.861089+00:00",
+  "exit_code": 0
+}

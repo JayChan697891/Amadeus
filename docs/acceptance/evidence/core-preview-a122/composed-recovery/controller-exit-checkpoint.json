@@ -1,0 +1,76 @@
+{
+  "identity": {
+    "pid": 3117,
+    "boot_id": "573141a0-a4cc-4c28-a53f-79f0d15b5a5d",
+    "started_ticks": 33561
+  },
+  "authorization_sha256": "ed25331a41f9987cf2d7ee6f2546c2f93339ff43b76cdb4f96cc727045a3eccc",
+  "plan_sha256": "059e7c6b37d598edd46269fc81ad25dd6c5db29ee36030b7ac9129f1e37f9a57",
+  "wave_id": "dc173f231112dd973a75698f6e30815d71d43025e6b339de9934e66f977d8462",
+  "continuation": {
+    "state": "incomplete",
+    "task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+    "task_status": "review",
+    "task_version": 5,
+    "source_task_id": "90153c6e-61f2-43a6-b9b9-39fc21a64d5b",
+    "publication": {
+      "context_id": "33228c36-9ef3-41bf-a400-2fc11e551d37",
+      "context_version": 1,
+      "content_sha256": "b2b604002c02429c3320165240deb1d559d1872bf4da297b1c80f71d9b11610f",
+      "publication_task_version": 4,
+      "publication_session_id": "5a61ef77-2c3b-40de-bb6b-23c6182e19dd",
+      "publication_request_id": "relay:0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017:proposal:publish",
+      "verification": "unverified"
+    },
+    "wave": {
+      "state": "incomplete",
+      "tasks": [],
+      "verification": "unverified"
+    },
+    "verification": "unverified"
+  },
+  "tasks": {
+    "90153c6e-61f2-43a6-b9b9-39fc21a64d5b": {
+      "id": "90153c6e-61f2-43a6-b9b9-39fc21a64d5b",
+      "status": "failed",
+      "version": 5,
+      "dependencies": [],
+      "task_verification": "unverified"
+    },
+    "f5084f7a-0ea5-47df-b83c-3804e7df67e8": {
+      "id": "f5084f7a-0ea5-47df-b83c-3804e7df67e8",
+      "status": "pending",
+      "version": 2,
+      "dependencies": [
+        "d583d431-24ae-48e6-9595-4c5b2ded440a"
+      ],
+      "task_verification": "unverified"
+    },
+    "d583d431-24ae-48e6-9595-4c5b2ded440a": {
+      "id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+      "status": "review",
+      "version": 5,
+      "dependencies": [],
+      "task_verification": "unverified"
+    }
+  },
+  "receiver_observation_sha256": "978db32dfc98958d0826bf7db3b252fa2d0813a424f096922712637d61255e8f",
+  "receipt_sha256": {
+    "consent-5ec7fe0daae9b640bd001872a52d7f910777580c95d14b1ceb3cdb47673ef581.json": "0f298b7289bcc1c87be00e2cf1b203f756abe46f3f3a3684d2aea61a2d5c2f2f",
+    "consent-80ad1b4a87f4624882b56ee6c64f3c8c67acd087ef35ed7539fb1cd7abefaa12.json": "e477fbefc2e96ee5ccaf98342b12105be6ac86dc2065c7f60845e52cf2bb9553",
+    "continuation-50160cca7151a22c48f7894fd5c2759a70f4ed90b2a62bb1e501d01818ac02ad-dispatch.json": "d8c15ee9ca9a403c713c9e72e35f270cb8be1ccc4e1eebaed044c50d95b99dbc",
+    "launch-39c3e12d9a92186c8a34881f8d4208eac03051f86b963b2aadd7fa7b17212aa8.json": "0f298b7289bcc1c87be00e2cf1b203f756abe46f3f3a3684d2aea61a2d5c2f2f",
+    "launch-f8c1195f7d8bf00dad16bdf9c7701f48a1c90aa4f16f1f44bb9e05421be64685.json": "e477fbefc2e96ee5ccaf98342b12105be6ac86dc2065c7f60845e52cf2bb9553",
+    "relay-04fbfbe24d2379d8c623b843a0fb76baff1b0e2d0654ab6d9ce640ff4ba8d108-first-dispatched.json": "40c52ebd7ddb575adcd194ed7ae1284c8d57e4c3974e3467854c3e1bcedebbcb",
+    "relay-04fbfbe24d2379d8c623b843a0fb76baff1b0e2d0654ab6d9ce640ff4ba8d108-first-stopped.json": "e78cac893c39bb7c700460fe94b61bdf4c9112af180ffa9cdd3945ef82bd95ef",
+    "relay-04fbfbe24d2379d8c623b843a0fb76baff1b0e2d0654ab6d9ce640ff4ba8d108-incomplete.json": "8dcbf7cccab5d6ca5f612e616bba21395f7b99b2a97ca3b0b866d25b909dc160",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-first-dispatched.json": "764540e1ab4f4226e43f6cc63e56c0570f2163861717293a5e542bc8a49e4ac9",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-first-observed.json": "50e70dfc8017d64e5cdb8f918ad4bdb78e1929b2610adf0bf7c382d8077d1249",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-incomplete.json": "076324b0e8e1f792b473896d77ea5859c132386b119eba698632e794485024eb",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-proposal-publish-intent.json": "15689ee1a5e566cf69eda0cd5eaec6ece72f1c8f5ac4846a26c66fb447b5ae38",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-proposal-review-intent.json": "3f2020399b0349a3f6b679c06df5c6d70ba016502acea7ad9de15a58990bd058",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-proposal-review-submitted.json": "352be52ff8ddaa5afc64b7afa96865baef8249de6969c04ef666080e64f4c143",
+    "relay-0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017-proposal-stored.json": "71362f0832667122622420aedbd01bdfcca14af0b8de7a01ad20fcce9ed32e82"
+  },
+  "expected_exit_code": 73
+}

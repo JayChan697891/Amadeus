@@ -2,6 +2,14 @@
 
 ## Execution adjustment — 2026-11-15
 
+The previously deferred real collaboration/controller-recovery composition has
+now run once on frozen a122. The real receiver proposal survives controller exit73;
+the next controller reconciles the same task with zero additional calls. Root and
+Astra accept this bounded observation. Independent candidate completion is still
+NOT RUN and awaits a new exact owner grant; no additional model call is needed.
+See [actual evidence](acceptance/evidence/core-preview-a122/composed-recovery/summary.json)
+and PROGRESS for the precise recovery entry. Formal Release remains BLOCKED.
+
 P1 deadline repair1700d1d is delivered in the a122 development preview. The shared
 adapter and its launch wait now check the absolute deadline before cancelling work.
 Both failing reproductions are retained. Each fresh wheel and source-archive install
@@ -15,7 +23,7 @@ Formal Release remains BLOCKED.
 The corrected native MCP handoff completed the first check in the frozen
 a122/5232e9e acceptance plan. Root and Astra accepted its zero-inference scope.
 The recipient reached review v8 and remained unverified. Prepare the remaining
-deferred composed real recovery check against the same original archives. The
+remaining candidate completion for the composed recovery check against the same original archives. The
 original M6 requirements assess local lifecycle behavior and declared capabilities;
 service-internal generation at the deadline is an unverified capability, not an
 additional release gate. See the scope correction in acceptance/DESIGN.md. Record the exact

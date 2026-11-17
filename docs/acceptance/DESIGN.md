@@ -26,7 +26,7 @@ the table order among ready rows; an unavailable row does not block unrelated wo
 | --- | --- | --- |
 | M2-05, M3-03/04 | **SCOPED PASS**, one actual a122 run: both actors, pinned context, old-lease/recipient/lock denials, owner audit and normal host reopen. See [exact plan and result](evidence/core-preview-a122/native-handoff/summary.json). | Five install bindings were reviewed before one new-fixture execution. Zero model calls, no account credentials or candidate execution. Root matched18 persisted audit records; both hosts ended by EOF and all10 recorded PIDs were absent. Task stays review/unverified, with no independent candidate acceptance. Do not repeat; original a121 exit1 remains BLOCKED. |
 | M6-03, T13/T14 | Assess real-client local timeout and advertised lifecycle controls against the original requirements, with exact version bindings. Full a122 control-adapter acceptance remains **NOT RUN**. | Keep old local timeout/cancel/interruption evidence in its recorded scope. Model activity at the exact deadline and server-side cancellation remain UNVERIFIED, not newly invented formal exit conditions. Unsupported capabilities stay explicit; neither offline deadline tests nor this scope correction certify current real-client acceptance. |
-| M7-02, M8-02 | Previously deferred composition of real collaboration and controller-exit recovery. **DEFERRED to this final queue; NOT RUN** on a122. | Reuse the existing continuation/recovery APIs and preserve prior evidence. Freeze one combined scenario with exact process boundary and independent completion. Any new candidate execution requires its own authorization; the consumed a119 one-shot approval is not reusable. Do not repeat the old live experiment merely to change its version label. |
+| M7-02, M8-02 | **SCOPED PASS** for two real Codex calls and recovery of the persisted receiver proposal after actual controller exit73 on a122. Independent candidate completion remains **NOT RUN**. | Root/Astra accepted [the observed boundary](evidence/core-preview-a122/composed-recovery/summary.json); same receiver/context/receipts, zero additional recovery/replay calls, temporary auth cleaned. New candidate staging/execution/completion requires exact authorization; the consumed a119 grant is not reusable. Do not repeat the live calls or extend this to full M7/M8. |
 | M9-01/02 | Remaining complete current-candidate platform, distribution and release gates. **BLOCKED / NOT RUN** as individually recorded. | Preserve unavailable macOS and real Claude/Cursor cases, original static FAIL, pending license decision and manual credential cleanup. Do not call the all-in-one collector just to repeat completed work. No public release without separate approval. |
 
 Scope correction after checking SPECIFICATION, RAT-M6-03 and the
@@ -36,7 +36,8 @@ local lifecycle behavior and declared capabilities, not service-internal token
 generation. The [public CLI event contract](https://learn.chatgpt.com/docs/non-interactive-mode)
 provides no timestamped guarantee of that internal state. Preserve the limitation
 without adding a release condition or declaring any requirement passed. The next
-actionable item is the already planned real collaboration/recovery composition.
+actionable item is independent completion of the recovered real receiver proposal,
+under a new exact candidate-execution grant.
 
 Store only new sanitized results under `evidence/core-preview-a122/` after actual
 execution; planned paths are not existing evidence. Preserve failed attempts,
