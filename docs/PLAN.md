@@ -2,6 +2,19 @@
 
 ## Execution adjustment — 2026-11-15
 
+P0 recovery boundary — 2026-11-16 America/Tijuana: test-source27594dc adds one
+native coordinator exit after receiver review/terminal receipts, before its final
+wave record. Existing relay-reconcile in a fresh CLI restores the same receiver's
+staging-preview eligibility with no new launch/launch-consent callback. One new
+Windows installed-a120 case passed;92 existing mapping checks pass. Runtime859775b
+and packages are unchanged, with97 installed members verified. This is a local
+deterministic protocol fixture, not new real-client acceptance. Original M8-02
+requires process recovery; whole-host power loss is not a new mandatory stage.
+See [actual output and boundaries](acceptance/evidence/core-preview-a120/coordinator-review-recovery/summary.json).
+Next assess this precise coordinator-exit boundary for a bounded real-client plan;
+do not rerun earlier client-parent interruption or installed suites. Execution at
+that new real-client boundary is NOT RUN; existing approval/gate limits remain.
+
 P1 installable CLI improvements — 2026-11-16: a120/859775b combines the existing
 workflow-start directory guard with e1c2fd9's structured storage errors for both
 owner entry points. Real corrupt-file reproductions failed before repair; the

@@ -1,5 +1,24 @@
 # Amadeus current progress
 
+P0 process-recovery supplement — test-source27594dc, original a120 runtime859775b.
+At2026-11-17T00:04Z (Nov16 America/Tijuana), native6dda68 exited0 with1 new case
+passed. Receiver protocol child had naturally exited0 and persisted terminal/review
+receipts before coordinator4252 exited73 ahead of the final wave record. New CLI
+relay-reconcile restored that same receiver's staging preview; reopening before/
+after added0 launch/launch-consent callbacks. Source stayed failed, dependencyv2
+and original receipts stayed unchanged; no candidate staged/executed/completed.
+Root read the actual output/JUnit/diff and checked97 installed members unchanged.
+Existing mapping checks: nativea55030,92pass. Ruff/format pass. Original earlier
+checkpoint IDs and behavior preserved; those passed cases were not repeated.
+Evidence: acceptance/evidence/core-preview-a120/coordinator-review-recovery/summary.json.
+
+This is one native process test using an owned deterministic protocol child, not
+a real Codex or whole-machine test. It maps to original M7-02/M8-02 without changing
+their formal status or adding an M5 phase. Product/packages remain unchanged.
+Recovery entry: assess a bounded real-client plan for this precise coordinator
+exit, using existing recovery commands and approval limits. That live scenario
+is NOT RUN; no new model/credential/VM job has started. Release remains BLOCKED.
+
 Resumed P1 delivery — 2026-11-16 UTC, a120/859775b. The paused6192b87 repair,
 five document edits and13 original records were preserved and uploaded at1dfce47.
 Both workflow status and owner list_members then reproduced an uncaught SQLite

@@ -1,5 +1,15 @@
 # Release Acceptance Report
 
+P0 native recovery supplement — test-source27594dc against unchanged installed
+a120/859775b. One Windows case passed: coordinator exit73 after receiver review and
+terminal receipts, exact-wave reconciliation in a fresh CLI, same-task staging
+preview recovered, no duplicate launch/launch-consent callback. Failed source,
+dependency and original receipts remain unchanged.92 existing mapping checks pass;
+Root inspected actual outputs and97 installed-member bindings. Only a local
+deterministic protocol child ran; no new real-client, candidate execution/completion
+or whole-host claim. These original M7-02/M8-02 mappings remain partial; Release
+BLOCKED. [Actual evidence](evidence/core-preview-a120/coordinator-review-recovery/summary.json).
+
 Latest P1 result — a120/859775b, 2026-11-16: **bounded Windows/Linux installation PASS;
 formal Release BLOCKED**. The CLI now returns structured errors for missing or
 corrupt project databases. Corrupt files stay unchanged. Two pre-fix failing tests

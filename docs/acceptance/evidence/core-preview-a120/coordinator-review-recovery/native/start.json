@@ -1,0 +1,28 @@
+{
+  "source_commit": "968b1710f06f6cc5853c9184592f23e582a74cc9",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_path": "tests/integration/test_unfinished_continuation.py",
+  "test_sha256": "a8fe1da121fe79986377c30aaae18e21be9b297fbc73a8f073f581cbe59f3e50",
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_at": "2026-11-17T00:04:37.6857183Z",
+  "argv": [
+    "D:/agentsync-debug/m120p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-s",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m8-contexit-20261116/t",
+    "--junitxml",
+    "D:/agentsync-debug/m8-contexit-20261116/junit.xml",
+    "tests/integration/test_unfinished_continuation.py::test_host_exit_after_receiver_review_reconciles_existing_wave[verifiable_codex]"
+  ],
+  "profile": "Installed Windows a120 with local deterministic Python protocol child only",
+  "git_config_global": "NUL",
+  "home": "D:/agentsync-debug/m8-contexit-20261116/home"
+}
