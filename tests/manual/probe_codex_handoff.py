@@ -276,6 +276,7 @@ def run_handoff(helpers, binary, workspace, report, secrets):
             kind="progress",
             title="Handoff checkpoint",
             content=CONTEXT,
+            expected_version=0,
         )
         assert context["content"] == CONTEXT and context["version"] == 1
         assert context["author_agent_id"] == sessions["A"]["agent_id"]
