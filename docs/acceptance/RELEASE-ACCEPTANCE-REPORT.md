@@ -1,13 +1,20 @@
 # Release Acceptance Report
 
+Linux a122 installed license metadata:6 checks exit0 from the existing wheel/sdist
+environments,31 distributions/35 license files each. Root rehashed70 license files
+and97 runtime members per environment; inventories match with no metadata review
+items. Original inputs preserved, VM normally off. This is not license clearance:
+review stays pending, publication unauthorized and formal Release BLOCKED.
+[Actual files and inspection](evidence/core-preview-a122/linux-licenses/root-review.json).
+
 Windows a122 installed-license metadata is now collected from the existing
 wheel/sdist environments:6 native checks exit0,32 distributions and43 license
 files per installation. Root rehashed all86 license files and97 runtime members
 per installation; both inventories are identical and have no metadata review
 items. This records declarations only: license_review remains pending,
 publication_authorized false and Release BLOCKED. No build/install/test/model
-repeat. Linux a122 inventories remain NOT RUN; reuse existing installs after
-capacity review rather than rerunning completed suites.
+repeat. The subsequent Linux collection is recorded above; its original pending
+review remains separate from metadata completeness.
 [Actual metadata and inspection](evidence/core-preview-a122/windows-licenses/root-review.json).
 
 First full frozen a122 Linux3.14 installed-wheel regression completed at

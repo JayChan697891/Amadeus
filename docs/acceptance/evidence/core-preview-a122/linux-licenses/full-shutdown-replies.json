@@ -1,0 +1,17 @@
+[
+  {
+    "return": {},
+    "id": "capabilities"
+  },
+  {
+    "timestamp": {
+      "seconds": 1794925362,
+      "microseconds": 657368
+    },
+    "event": "POWERDOWN"
+  },
+  {
+    "return": {},
+    "id": "powerdown"
+  }
+]

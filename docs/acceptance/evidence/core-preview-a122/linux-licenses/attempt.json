@@ -1,0 +1,13 @@
+{
+  "scope": "Existing Linux a122 wheel/sdist installed runtime license metadata supplement; no build/install/full suite",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "tool_source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "license_tool_sha256": "8623f794b0fc3e3b87f96f09c1d7c51d67baf07d17b161a4cee82f439a21a0c2",
+  "driver_sha256": "8291409b4842e056b7e62f8a1b5311d1e1b2017e46b51c1dbc2afd90e0b98422",
+  "started_at": "2026-11-17T14:21:20.650144+00:00",
+  "checks": [],
+  "inventories": {},
+  "license_review": "pending",
+  "publication_authorized": false,
+  "formal_release": "BLOCKED"
+}

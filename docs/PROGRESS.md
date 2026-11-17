@@ -1,13 +1,26 @@
 # Amadeus current progress
 
+Linux a122 installed-license metadata is now collected from the same existing
+wheel/sdist installations:6 native checks exit0,31 distributions and35 recorded
+license files each. Root independently rehashed70 license files and97 runtime
+members per installation; both inventories match and metadata review items are
+empty. Original archives and installs remain unchanged. Normal VM shutdown was
+acknowledged, PID10644 absent and SSH/QMP ports closed; disk and prior logs retained.
+This is metadata collection, not license clearance: review remains pending and
+formal Release BLOCKED. No rebuild/install/test/model repeat occurred.
+[Original records and inspection](acceptance/evidence/core-preview-a122/linux-licenses/root-review.json).
+Next original queue item: prepare the first Windows a122 installed-sdist full
+regression using the existing installation and frozen5232e9e inputs. Do not repeat
+either completed full wheel suite or the97-case installation checks.
+
 Windows a122 installed-license metadata is now collected from the existing
 wheel/sdist environments:6 native checks exit0,32 distributions and43 license
 files per installation. Root rehashed all86 license files and97 runtime members
 per installation; both inventories are identical and have no metadata review
 items. This records declarations only: license_review remains pending,
 publication_authorized false and Release BLOCKED. No build/install/test/model
-repeat. Linux a122 inventories remain NOT RUN; reuse existing installs after
-capacity review rather than rerunning completed suites.
+repeat. The subsequent Linux collection is recorded above; its original pending
+review remains separate from metadata completeness.
 [Actual metadata and inspection](acceptance/evidence/core-preview-a122/windows-licenses/root-review.json).
 
 ACTIVE original goal; completed checkpoint:

@@ -1,0 +1,43 @@
+{
+  "observed_at": "2026-11-17T14:22:04.972923+00:00",
+  "scope": "Linux3.14 a122 existing wheel/sdist license metadata only",
+  "native_collection_chunk": "f6a743",
+  "native_exit_code": 0,
+  "checks": 6,
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "installs": {
+    "wheel": {
+      "distributions": 31,
+      "license_files_rehashed": 35,
+      "runtime_members": 97
+    },
+    "sdist": {
+      "distributions": 31,
+      "license_files_rehashed": 35,
+      "runtime_members": 97
+    }
+  },
+  "inventories_identical": true,
+  "license_review": "pending",
+  "publication_authorized": false,
+  "formal_release": "BLOCKED",
+  "postcheck": "[]",
+  "files": {
+    "attempt.json": "6f0ce186732539ac1b3139fe55e77f17e2cd248804ab3dae494c42846edb5e35",
+    "result.json": "3f55f991d5a7f107228d66cf034f5c212eab92faf349c837797d61a43e64ac5b",
+    "sdist-inventory.json": "a1f11cd1208ebc98363e55c2b1785eaab2c6c59b663d78bd05f7ffb3a3d34efb",
+    "wheel-inventory.json": "a1f11cd1208ebc98363e55c2b1785eaab2c6c59b663d78bd05f7ffb3a3d34efb",
+    "logs/sdist_license_origin_after.process.json": "d64228a57e8355df04b673bcb7a8bd70c9faccfa2ef64985f2813a2c964b5e36",
+    "logs/wheel_license_origin_after.process.json": "91c7d5bb661c705d36c4f5ec257715c388e70ff906d6da5fc5654f7d9fc8fe15",
+    "logs/sdist_license_origin_before.process.json": "63a79b16579f5a4d753cc8c521958cc2a74d415b6f9e0880bd743ec1ff15e074",
+    "logs/sdist_license_inventory.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/wheel_license_origin_after.log": "0b4708ecbf360e8acd73252a71f32e4ba1a4c67d70ffb82f5aa2ddaa8f5b4e8b",
+    "logs/sdist_license_origin_after.log": "d2298858e91b43d6e2ef3b5cb9b252b9e62c05b46d351b272fbfb5f13b37417e",
+    "logs/sdist_license_inventory.process.json": "93360e6034e8d8f16f38aaabd90da08504805006a7a98b7a5a84796d1305a0a5",
+    "logs/wheel_license_inventory.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/wheel_license_origin_before.process.json": "67db6049ba55a07c2ebe411c8831e91e337fefb8fee8eb9601acf62e1b19fa5f",
+    "logs/wheel_license_origin_before.log": "0b4708ecbf360e8acd73252a71f32e4ba1a4c67d70ffb82f5aa2ddaa8f5b4e8b",
+    "logs/sdist_license_origin_before.log": "d2298858e91b43d6e2ef3b5cb9b252b9e62c05b46d351b272fbfb5f13b37417e",
+    "logs/wheel_license_inventory.process.json": "c3bab9dc50bdc4feaeb26dd892e15745366d19109d5f0a19166cead5279c126f"
+  }
+}

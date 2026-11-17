@@ -27,6 +27,13 @@ Formal Release remains BLOCKED.
 [Preview packages](../releases/0.3.0a122/preview-5232e9e/) and
 [checkpoint and receipts](PROGRESS.md).
 
+Current a122 Windows/Linux wheel/sdist license inventories are collected without
+reinstallation: Windows32 distributions/43 license files per environment;
+Linux31/35. Root rehashed the actual files and installed members. Metadata has no
+missing items, but license review remains pending; this does not authorize release.
+Next original distribution gap is the Windows installed-sdist full suite using
+the frozen source and existing installation, without repeating completed checks.
+
 The corrected native MCP handoff completed the first check in the frozen
 a122/5232e9e acceptance plan. Root and Astra accepted its zero-inference scope.
 The separate native-MCP recipient reached review v8 and remained unverified.
