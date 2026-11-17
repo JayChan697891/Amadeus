@@ -1,5 +1,22 @@
 # Amadeus current progress
 
+ACTIVE after explicit owner resume: first full a122 Linux3.14 installed-wheel
+suite started once in the existing D-drive VM. Native handle74411 (80427b) and
+actual guest controller2935/pytest2952 were observed live (d69be0), boot
+6ef0cfcd-3b1d-486c-9a81-0aae13dbc93a, VM3652. Driver11a3253b reads the original
+5232e9e snapshot and existing /root/amadeus-m122l/w installation; original4 inputs,
+97 installed members and Docker image were checked before launch. This is the
+first full Linux suite, with36 existing Docker observation records required.
+No rebuild/install, focused97, Windows full-suite or model repeat occurred.
+Final outcome remains unavailable: observe the SAME native74411 and actual guest
+processes, never restart from a saved status or observation timeout. Final result:
+/root/amadeus-m122fulll/run/result.json. Host observer:
+D:/agentsync-debug/m122fulll/observe-full.py. Raw stdout/JUnit stay in guest t/;
+only sanitized final evidence may be collected. Inspect actual XML, source/install
+hashes and Docker results after terminal, then independent acceptance and normal
+VM shutdown. [Starting receipts](acceptance/evidence/core-preview-a122/full-linux314/preparation.json).
+The earlier safety-pause checkpoint remains unchanged under F:/syuc/amadeus-checkpoints/.
+
 The first complete a122 Windows3.12 installed-wheel suite finished at08:21:24Z
 on2026-11-17. Native43609 closed with exit0 (d04f44):2539pass/57skip, zero
 failures/errors. Root and Astra inspected actual XML, logs, hashes and installed
