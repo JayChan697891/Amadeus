@@ -11,11 +11,13 @@ debug runtime, dependencies, caches, fixtures and VM disks live in D:/agentsync-
 - Portable QEMU11.1.0, published Windows build20260811, SHA512 checked against the
   publisher; no system installer was run.
 - Official Alpine3.24.2 cloud-init VM image, SHA512 checked against Alpine's index.
-- A private32GiB QCOW2 overlay on D: now layers over the preserved complete16GiB
-  `vm/guest-before-growth-20261112.qcow2`, which still refers to the downloaded base.
-  Keep the whole backing chain. The guest expanded its partition/filesystem via
-  existing cloud-init at boot; the partition start stayed unchanged. About15GiB
-  free was observed afterward. No previous fixtures were removed.
+- A private64GiB QCOW2 overlay now layers over the preserved32GiB image
+  `vm/guest-before-growth-20261117.qcow2`, then the preserved16GiB
+  `vm/guest-before-growth-20261112.qcow2` and downloaded base. Keep all four
+  images. The32GiB image hash was unchanged across creation; guest boot expanded
+  the partition/filesystem and31,108,015,104 free bytes were observed. Existing
+  a122 result hashes and both97-member installations match. No fixture was removed.
+  [Capacity evidence and observer limitations](acceptance/evidence/core-preview-a122/local-capacity/review.json).
 -3GiB guest RAM, one virtual CPU, WHPX acceleration with kernel-irqchip=off.
 - Linux6.18.54-0-virt, Python3.14.7, Docker29.8.2, cgroupv2 and builtin seccomp.
 - Only127.0.0.1 ports22222(SSH) and22223(QMP) are bound. No host directory is shared.

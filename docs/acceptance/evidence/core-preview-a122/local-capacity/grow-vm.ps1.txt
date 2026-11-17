@@ -1,0 +1,35 @@
+$ErrorActionPreference = 'Stop'
+$vmRoot = [IO.Path]::GetFullPath('D:\agentsync-debug\vm')
+$disk = [IO.Path]::GetFullPath((Join-Path $vmRoot 'guest.qcow2'))
+$preserved = [IO.Path]::GetFullPath((Join-Path $vmRoot 'guest-before-growth-20261117.qcow2'))
+$records = 'D:\agentsync-debug\vm-growth-20261117'
+$qemu = 'D:\agentsync-debug\tools\qemu\qemu-img.exe'
+foreach ($path in @($disk,$preserved)) {
+    if ([IO.Path]::GetDirectoryName($path) -ne $vmRoot) { throw 'Path outside VM directory' }
+}
+if (Test-Path -LiteralPath $records) { throw 'Existing growth records' }
+if (Test-Path -LiteralPath $preserved) { throw 'Existing preserved disk' }
+if (Get-Process qemu-system-x86_64 -ErrorAction SilentlyContinue) { throw 'VM running' }
+if (Get-NetTCPConnection -LocalPort 22222,22223 -State Listen -ErrorAction SilentlyContinue) { throw 'VM ports occupied' }
+New-Item -ItemType Directory -Path $records | Out-Null
+foreach ($name in @('process.json','serial.log','qemu.stdout.log','qemu.stderr.log')) {
+    Copy-Item -LiteralPath (Join-Path $vmRoot $name) -Destination (Join-Path $records $name)
+}
+$before = & $qemu info --output=json --backing-chain $disk
+if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect original disk' }
+$chain = ($before -join "`n") | ConvertFrom-Json
+if ($chain[0].'virtual-size' -ne 34359738368 -or $chain[0].'dirty-flag') { throw 'Unexpected original image state' }
+$before | Set-Content -LiteralPath (Join-Path $records 'before.json')
+$digest = (Get-FileHash -LiteralPath $disk -Algorithm SHA256).Hash.ToLower()
+@{utc=[DateTime]::UtcNow.ToString('o');source=$disk;preserved=$preserved;sha256=$digest;bytes=(Get-Item -LiteralPath $disk).Length;requested_virtual_bytes=68719476736} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $records 'plan.json')
+Move-Item -LiteralPath $disk -Destination $preserved
+& $qemu create -f qcow2 -F qcow2 -b $preserved $disk 64G
+if ($LASTEXITCODE -ne 0) { throw 'Overlay creation failed; preserved disk remains intact, do not boot' }
+$after = & $qemu info --output=json --backing-chain $disk
+if ($LASTEXITCODE -ne 0) { throw 'Overlay inspection failed; do not boot' }
+$after | Set-Content -LiteralPath (Join-Path $records 'after.json')
+$newChain = ($after -join "`n") | ConvertFrom-Json
+if ($newChain[0].'virtual-size' -ne 68719476736 -or $newChain[0].'full-backing-filename' -ne $preserved -or $newChain.Count -ne 4) { throw 'Unexpected overlay chain; do not boot' }
+if ((Get-FileHash -LiteralPath $preserved -Algorithm SHA256).Hash.ToLower() -ne $digest) { throw 'Preserved disk mismatch; do not boot' }
+@{utc=[DateTime]::UtcNow.ToString('o');preserved_sha256=$digest;preserved_hash_matches=$true;chain_images=$newChain.Count;new_virtual_bytes=$newChain[0].'virtual-size';guest_expansion='NOT RUN'} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $records 'result.json')
+Write-Output '64 GiB overlay ready; original image hash unchanged. Guest expansion not yet verified.'

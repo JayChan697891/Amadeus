@@ -1,0 +1,6 @@
+{
+  "utc": "2026-11-17T14:32:11.674717+00:00",
+  "pid": 7828,
+  "method": "QMP system_powerdown",
+  "guard": "Exact boot; completed run; no project workers or containers\n"
+}

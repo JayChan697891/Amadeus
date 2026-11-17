@@ -1,0 +1,25 @@
+import hashlib,json
+from pathlib import Path
+base=Path('D:/agentsync-debug/vm-growth-20261117')
+repo=Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a122')
+post=json.loads((base/'guest-postcheck.json').read_bytes())
+assert post['results']['/root/amadeus-m122fulll/run/result.json']==hashlib.sha256((repo/'full-linux314/result.json').read_bytes()).hexdigest()
+assert post['results']['/root/amadeus-m122licenses/run/result.json']==hashlib.sha256((repo/'linux-licenses/result.json').read_bytes()).hexdigest()
+assert not post['workers'] and not post['containers'] and post['runtime_members_per_install']==97
+assert int(post['disk_layout']['vda']['size'])*512==64*1024**3
+assert post['filesystem_bytes']>32*1024**3
+result=json.loads((base/'result.json').read_text(encoding='utf-8-sig'))
+assert result['preserved_hash_matches'] and result['chain_images']==4
+summary={'scope':'Local debug capacity restoration, not product acceptance',
+ 'overlay_virtual_bytes':64*1024**3,'free_bytes':post['free_bytes'],
+ 'filesystem_bytes':post['filesystem_bytes'],'preserved_disk_sha256':result['preserved_sha256'],
+ 'preserved_disk':'D:/agentsync-debug/vm/guest-before-growth-20261117.qcow2',
+ 'existing_result_hashes_match':True,'installed_members_checked_per_environment':97,
+ 'failures_preserved':[
+  {'chunk':'67f299','cause':'First SSH banner read before guest ready; no guest command executed'},
+  {'chunk':'c2608c','cause':'Read-only observer assumed lsblk installed; not available; observer failed'},
+  {'chunk':'62caae','cause':'Observer expected >30GiB available after expansion; actual31108015104 bytes, partition/filesystem expanded. No product test or gate changed'}],
+ 'next_capacity_policy':'Use measured capacity for the next bounded fixture; no automatic deletion or unbounded queue',
+ 'formal_release':'BLOCKED'}
+with (base/'review.json').open('x',encoding='utf8') as f:json.dump(summary,f,indent=2)
+print(json.dumps(summary))

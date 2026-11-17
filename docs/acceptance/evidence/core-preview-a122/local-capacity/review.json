@@ -1,0 +1,26 @@
+{
+  "scope": "Local debug capacity restoration, not product acceptance",
+  "overlay_virtual_bytes": 68719476736,
+  "free_bytes": 31108015104,
+  "filesystem_bytes": 64312465408,
+  "preserved_disk_sha256": "0da111f3efcd4310869e462bef04f2b319f618ce6e6ce5634bc6c02c7bfe587f",
+  "preserved_disk": "D:/agentsync-debug/vm/guest-before-growth-20261117.qcow2",
+  "existing_result_hashes_match": true,
+  "installed_members_checked_per_environment": 97,
+  "failures_preserved": [
+    {
+      "chunk": "67f299",
+      "cause": "First SSH banner read before guest ready; no guest command executed"
+    },
+    {
+      "chunk": "c2608c",
+      "cause": "Read-only observer assumed lsblk installed; not available; observer failed"
+    },
+    {
+      "chunk": "62caae",
+      "cause": "Observer expected >30GiB available after expansion; actual31108015104 bytes, partition/filesystem expanded. No product test or gate changed"
+    }
+  ],
+  "next_capacity_policy": "Use measured capacity for the next bounded fixture; no automatic deletion or unbounded queue",
+  "formal_release": "BLOCKED"
+}

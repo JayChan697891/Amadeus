@@ -50,10 +50,16 @@ Original disk, raw local logs and all prior evidence remain. Zero model calls,
 rebuilds or installations. **SCOPED PASS only; formal Release BLOCKED.**
 
 [Final evidence](acceptance/evidence/core-preview-a122/full-linux314/root-review.json).
-Next: inspect the existing preview/license decision and remaining distribution
-coverage before starting another run. Guest free space is only261884928 bytes;
-do not start a large suite or delete old evidence to make room. Preserve the
-original safety-pause checkpoint. No test queue remains active from this run.
+The subsequent license inventories are recorded above. The later local capacity
+repair preserves the complete32GiB disk as a backing image and adds a64GiB overlay;
+the original image hash is unchanged. Guest boot expands the filesystem, with
+31,108,015,104 bytes free. Both97-member installs and existing result hashes match.
+All original fixtures/disks remain, and VM7828 normally shut down. The observer's
+initial SSH readiness failure, missing lsblk assumption and incorrect >30GiB free
+space assertion remain recorded; none changes product tests or acceptance gates.
+[Capacity record](acceptance/evidence/core-preview-a122/local-capacity/review.json).
+Preserve the original safety-pause checkpoint. No Linux test queue is running;
+Windows installed-sdist execution remains separately active as recorded above.
 
 The first complete a122 Windows3.12 installed-wheel suite finished at08:21:24Z
 on2026-11-17. Native43609 closed with exit0 (d04f44):2539pass/57skip, zero
