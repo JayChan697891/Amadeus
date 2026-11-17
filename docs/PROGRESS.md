@@ -12,8 +12,17 @@ Astra independently confirmed the immutable-evidence vs complete-static-scope
 conflict. No fix/unsafe-fix, rename, exclusion, rule or old-manifest change was made.
 An explicit owner decision is needed before changing that scope or those originals.
 
-Next independent work: missing current-candidate source/sdist/platform collection
-and license inventories. Existing collector has no skip/resume interface; calling
+Windows3.12 license metadata supplement completed on existing a120 wheel/sdist
+installs: nativef87a34 exit0,6 checks. Each records32 distributions/43 license files;
+Root independently rehashed both sets, inventories byte-identical,97 runtime
+members unchanged per install. No rebuild/install/test rerun. license_review stays
+pending and publication_authorized false. See acceptance/evidence/core-preview-a120/
+windows-licenses/summary.json. This does not cancel static FAIL or cleanup BLOCKED.
+
+Next independent work: first Linux3.14 license metadata collection using the
+existing a120 wheel/sdist environments and same frozen tool. Check no older queue,
+preserve VM state and use normal owned startup/shutdown. It has not started.
+Source/sdist/full platform collection also remains incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.
 The composite validator also requires exact identity and each package's one true

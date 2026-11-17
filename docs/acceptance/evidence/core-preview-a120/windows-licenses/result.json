@@ -1,0 +1,169 @@
+{
+  "scope": "Existing Windows a120 wheel/sdist installed runtime license metadata supplement; no build/install/full suite",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "tool_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "license_tool_sha256": "8623f794b0fc3e3b87f96f09c1d7c51d67baf07d17b161a4cee82f439a21a0c2",
+  "driver_sha256": "a49182009bd6df257f21066ac29757c660f8616c71cfe6081dc33cd04d4b5c80",
+  "started_at": "2026-11-17T02:34:50.368966+00:00",
+  "checks": [
+    {
+      "id": "wheel_license_origin_before",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import hashlib,importlib.metadata as md,json,sys,sysconfig\nfrom pathlib import Path\nimport agentsync\ninstall,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nassert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,12,16)\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'\ndirect=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))\nassert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected\nassert hashlib.sha256(archive.read_bytes()).hexdigest()==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert len(actual)==97 and actual==json.loads(members.read_bytes())\nprint(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))\n",
+        "D:\\agentsync-debug\\m120p\\w",
+        "D:\\agentsync-debug\\m120p\\dist\\agentsync_local-0.3.0a120-py3-none-any.whl",
+        "D:\\agentsync-debug\\m120p\\run\\runtime-members.json",
+        "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120licenses\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:34:50.368966+00:00",
+      "finished_at": "2026-11-17T02:34:50.466324+00:00",
+      "log": "logs/wheel_license_origin_before.log",
+      "log_sha256": "b78625948cc4cca4580df47c2664522f899ecfa7111caa421ee6d8b041317c1b",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "wheel_license_inventory",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\m120fullw\\s\\tools\\license_inventory.py",
+        "--distribution",
+        "agentsync-local"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120licenses\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:34:50.468416+00:00",
+      "finished_at": "2026-11-17T02:34:50.790355+00:00",
+      "log": "logs/wheel_license_inventory.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "wheel_license_origin_after",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import hashlib,importlib.metadata as md,json,sys,sysconfig\nfrom pathlib import Path\nimport agentsync\ninstall,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nassert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,12,16)\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'\ndirect=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))\nassert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected\nassert hashlib.sha256(archive.read_bytes()).hexdigest()==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert len(actual)==97 and actual==json.loads(members.read_bytes())\nprint(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))\n",
+        "D:\\agentsync-debug\\m120p\\w",
+        "D:\\agentsync-debug\\m120p\\dist\\agentsync_local-0.3.0a120-py3-none-any.whl",
+        "D:\\agentsync-debug\\m120p\\run\\runtime-members.json",
+        "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120licenses\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:34:50.794664+00:00",
+      "finished_at": "2026-11-17T02:34:50.896138+00:00",
+      "log": "logs/wheel_license_origin_after.log",
+      "log_sha256": "b78625948cc4cca4580df47c2664522f899ecfa7111caa421ee6d8b041317c1b",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "sdist_license_origin_before",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\d\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import hashlib,importlib.metadata as md,json,sys,sysconfig\nfrom pathlib import Path\nimport agentsync\ninstall,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nassert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,12,16)\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'\ndirect=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))\nassert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected\nassert hashlib.sha256(archive.read_bytes()).hexdigest()==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert len(actual)==97 and actual==json.loads(members.read_bytes())\nprint(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))\n",
+        "D:\\agentsync-debug\\m120p\\d",
+        "D:\\agentsync-debug\\m120p\\dist\\agentsync_local-0.3.0a120.tar.gz",
+        "D:\\agentsync-debug\\m120p\\run\\runtime-members.json",
+        "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120licenses\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:34:50.898131+00:00",
+      "finished_at": "2026-11-17T02:34:51.007568+00:00",
+      "log": "logs/sdist_license_origin_before.log",
+      "log_sha256": "97d2f2fe03bca818a2adf32d684235314525d0c34bc696f10b8093710728d932",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "sdist_license_inventory",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\d\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\m120fullw\\s\\tools\\license_inventory.py",
+        "--distribution",
+        "agentsync-local"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120licenses\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:34:51.009573+00:00",
+      "finished_at": "2026-11-17T02:34:51.313911+00:00",
+      "log": "logs/sdist_license_inventory.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "sdist_license_origin_after",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\d\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import hashlib,importlib.metadata as md,json,sys,sysconfig\nfrom pathlib import Path\nimport agentsync\ninstall,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nassert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,12,16)\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'\ndirect=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))\nassert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected\nassert hashlib.sha256(archive.read_bytes()).hexdigest()==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert len(actual)==97 and actual==json.loads(members.read_bytes())\nprint(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))\n",
+        "D:\\agentsync-debug\\m120p\\d",
+        "D:\\agentsync-debug\\m120p\\dist\\agentsync_local-0.3.0a120.tar.gz",
+        "D:\\agentsync-debug\\m120p\\run\\runtime-members.json",
+        "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120licenses\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:34:51.317908+00:00",
+      "finished_at": "2026-11-17T02:34:51.426819+00:00",
+      "log": "logs/sdist_license_origin_after.log",
+      "log_sha256": "97d2f2fe03bca818a2adf32d684235314525d0c34bc696f10b8093710728d932",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "inventories": {
+    "wheel": {
+      "path": "wheel-inventory.json",
+      "sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9",
+      "distributions": 32,
+      "review_items": [],
+      "archive_sha256": "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+    },
+    "sdist": {
+      "path": "sdist-inventory.json",
+      "sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9",
+      "distributions": 32,
+      "review_items": [],
+      "archive_sha256": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
+    }
+  },
+  "license_review": "pending",
+  "publication_authorized": false,
+  "formal_release": "BLOCKED",
+  "status": "metadata collected; license review pending",
+  "finished_at": "2026-11-17T02:34:51.427744+00:00"
+}

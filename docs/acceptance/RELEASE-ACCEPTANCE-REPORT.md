@@ -1,5 +1,15 @@
 # Release Acceptance Report
 
+Windows3.12 installed license metadata collected from both original a120 preview
+installs:6 native checks exit0 (f87a34),32 runtime distributions and43 license files
+each, with byte-identical inventories. Root rehashed86 recorded license files and
+checked native receipts, original archive origins and97 unchanged runtime members
+per install. No package rebuild/reinstall or test repetition. No missing metadata
+items were reported by the collector; **license_review remains pending and
+publication_authorized false**. This is not a complete matrix row or a license
+approval. Ruff/format FAIL, cleanup BLOCKED and formal Release BLOCKED remain.
+[Original inventories and checks](evidence/core-preview-a120/windows-licenses/summary.json).
+
 Current static supplement: **Ruff FAIL, format FAIL, mypy PASS; Release BLOCKED**.
 Native353772 exited1 on frozen d427355. Ruff reports22 issues in7 historical raw
 drivers; format reports13 historical files,377 already formatted. mypy checks96

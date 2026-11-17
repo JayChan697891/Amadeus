@@ -2,6 +2,13 @@
 
 ## Execution adjustment — 2026-11-15
 
+Existing Windows3.12 a120 wheel/sdist license inventories are now collected:
+32 runtime distributions and43 recorded license files each; actual metadata and
+hashes agree. Six native checks pass, installed97 members unchanged per env.
+No build/install/test repetition. License review remains pending and publication
+unauthorized; static FAIL and cleanup BLOCKED remain. Next collect the first
+Linux3.14 inventory supplement on the existing installs; no such job has started.
+
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected
 files are immutable raw evidence, with current source/runtime unchanged. Preserve

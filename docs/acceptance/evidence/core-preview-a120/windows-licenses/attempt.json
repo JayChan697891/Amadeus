@@ -1,0 +1,13 @@
+{
+  "scope": "Existing Windows a120 wheel/sdist installed runtime license metadata supplement; no build/install/full suite",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "tool_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "license_tool_sha256": "8623f794b0fc3e3b87f96f09c1d7c51d67baf07d17b161a4cee82f439a21a0c2",
+  "driver_sha256": "a49182009bd6df257f21066ac29757c660f8616c71cfe6081dc33cd04d4b5c80",
+  "started_at": "2026-11-17T02:34:50.368966+00:00",
+  "checks": [],
+  "inventories": {},
+  "license_review": "pending",
+  "publication_authorized": false,
+  "formal_release": "BLOCKED"
+}
