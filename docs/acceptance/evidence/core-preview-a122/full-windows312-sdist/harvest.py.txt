@@ -1,0 +1,190 @@
+"""Collect only public evidence after the single a122 Windows sdist suite exits."""
+
+import argparse
+import collections
+import ctypes
+import hashlib
+import json
+import re
+import runpy
+import shutil
+import sys
+import xml.etree.ElementTree as ET
+from ctypes import wintypes
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m122fullwd")
+LOCAL = Path("D:/agentsync-debug/m122fullwd-preparation")
+RUN = BASE / "run"
+DEST = LOCAL / "harvest"
+REPORT = LOCAL / "postcheck.json"
+DRIVER_SHA = "5dce546c6a60f4c7bca04f2f0ba61f5cc003bc81d1e1d0fbb8ab7cf5b121d99e"
+COMMIT = "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+CHECKS = ("sdist_origin_before", "sdist_pytest", "sdist_origin_after")
+OBSERVED_PIDS = (5136, 23208, 2272, 13896)
+STARTUP = {
+    "attempt.json": "d1fb22afa3a405b861db9e77909f5cf88be0dbdc847fb27712c31074a0fb5958",
+    "pytest-start.json": "9016b7ebb20e40110b6bd0ce86805a55ef54221816ed10df12f4a91e35a732e5",
+}
+
+
+def process_state(pid):
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    open_process = kernel.OpenProcess
+    open_process.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+    open_process.restype = wintypes.HANDLE
+    wait = kernel.WaitForSingleObject
+    wait.argtypes = (wintypes.HANDLE, wintypes.DWORD)
+    wait.restype = wintypes.DWORD
+    close = kernel.CloseHandle
+    close.argtypes = (wintypes.HANDLE,)
+    close.restype = wintypes.BOOL
+    handle = open_process(0x00100000, False, pid)  # SYNCHRONIZE only.
+    if not handle:
+        if ctypes.get_last_error() == 87:  # ERROR_INVALID_PARAMETER; PID absent.
+            return "absent"
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        outcome = wait(handle, 0)
+        if outcome == 0:
+            return "terminal"
+        if outcome == 258:
+            return "live"
+        raise ctypes.WinError(ctypes.get_last_error())
+    finally:
+        close(handle)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("terminal_chunk")
+    parser.add_argument("native_exit_code", type=int, choices=(0, 1))
+    args = parser.parse_args()
+    assert sys.platform == "win32" and __debug__ and sys.flags.isolated and sys.dont_write_bytecode
+    assert re.fullmatch(r"[0-9a-f]{6}", args.terminal_chunk) and not REPORT.exists()
+    result = json.loads((RUN / "result.json").read_bytes())
+    assert result["finished_at"] and result["status"] in {"pass", "fail", "unknown"}
+    assert result["product_runtime_commit"] == result["test_source_commit"] == COMMIT
+    assert result["driver_sha256"] == DRIVER_SHA and result["controller_pid"] == 23208
+    assert result["formal_release"] == "BLOCKED" and result["automatic_retry"] is False
+    assert (args.native_exit_code == 0) == (result["status"] == "pass")
+    processes = {str(pid): process_state(pid) for pid in OBSERVED_PIDS}
+    assert all(state in {"absent", "terminal"} for state in processes.values())
+
+    driver = BASE / "run-sdist.py"
+    assert hashlib.sha256(driver.read_bytes()).hexdigest() == DRIVER_SHA
+    pins = runpy.run_path(str(driver))
+    sha = pins["sha"]
+    assert all(sha(RUN / name) == digest for name, digest in STARTUP.items())
+    assert pins["BASE"] == BASE and Path(sys.executable).resolve() == pins["PYTHON"].resolve()
+    assert result["inputs"] == {
+        str(path): {"bytes": size, "sha256": digest}
+        for path, (size, digest) in pins["INPUTS"].items()
+    }
+    pins["pinned_inputs"]()
+    manifest = json.loads(pins["MANIFEST"].read_bytes())
+    pins["verify_source"](manifest)
+    collector_path = pins["SOURCE"] / "tools/release_acceptance.py"
+    assert sha(collector_path) == result["collector_sha256"] == pins["COLLECTOR_SHA"]
+    sys.path.insert(0, str(pins["SOURCE"]))
+    from tools.release_acceptance import redact_credentials
+
+    site = pins["INSTALL"] / "Lib/site-packages"
+    members = {
+        path.relative_to(site).as_posix(): sha(path)
+        for path in (site / "agentsync").rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts and path.resolve() == path
+    }
+    assert members == json.loads(pins["MEMBERS"].read_bytes()) and len(members) == 97
+    direct = json.loads((site / "agentsync_local-0.3.0a122.dist-info/direct_url.json").read_bytes())
+    assert direct["url"] == pins["SDIST"].as_uri() and "dir_info" not in direct
+    assert direct["archive_info"]["hashes"]["sha256"] == pins["INPUTS"][pins["SDIST"]][1]
+
+    started = json.loads((RUN / "pytest-start.json").read_bytes())
+    assert started["controller_pid"] == result["controller_pid"]
+    assert started["started_at"] == "2026-11-17T14:25:10.678232+00:00"
+    assert started["timeout_seconds"] == 7200
+    ids = [entry["id"] for entry in result["checks"]]
+    assert tuple(ids) == CHECKS[: len(ids)]
+    logs = ["logs/sdist_pytest.stdout.log"]
+    for name in CHECKS:
+        logs.extend((f"logs/{name}.log", f"logs/{name}.process.json"))
+    files = {name: RUN / name for name in (
+        "result.json", "attempt.json", "pytest-start.json", "sdist-junit.xml", *logs,
+    ) if (RUN / name).exists()}
+    checks = []
+    for check in result["checks"]:
+        name = check["id"]
+        assert check["log"] == f"logs/{name}.log"
+        assert sha(files[check["log"]]) == check["log_sha256"]
+        receipt = json.loads(files[f"logs/{name}.process.json"].read_bytes())
+        assert receipt["phase"] == "finished" and receipt["result"] == check
+        checks.append({"id": name, "actual_exit_code": check["exit_code"], "receipt_outcome": receipt["outcome"]})
+    for key in ("junit", "pytest_stdout"):
+        if key in result:
+            entry = result[key]
+            assert sha(files[entry["path"]]) == entry["sha256"]
+
+    previous = pins["junit_outcomes"](pins["WHEEL_BASELINE"])
+    assert collections.Counter(previous.values()) == {"pass": 2539, "skipped": 57}
+    current = pins["junit_outcomes"](files["sdist-junit.xml"]) if "sdist-junit.xml" in files else {}
+    counts = dict(collections.Counter(current.values()))
+    if result["status"] == "pass":
+        assert len(checks) == 3 and all(
+            row["actual_exit_code"] == 0 and row["receipt_outcome"] == "exited" for row in checks
+        )
+        assert result["pinned_inputs_unchanged"] and result["frozen_source_unchanged"]
+        assert set(files) == {"result.json", "attempt.json", "pytest-start.json", "sdist-junit.xml", *logs}
+        assert files["logs/sdist_origin_before.log"].read_bytes() == files["logs/sdist_origin_after.log"].read_bytes()
+
+    files["run-sdist.py.txt"] = driver
+    inventory = {}
+    for name, path in sorted(files.items()):
+        size = path.stat().st_size
+        assert path.resolve(strict=True) == path and size <= 20 * 1024**2
+        if path.suffix == ".xml":
+            for node in ET.parse(path).iter():
+                for value in (*node.attrib.values(), node.text or "", node.tail or ""):
+                    assert redact_credentials(value)[1] == 0, name
+        else:
+            assert redact_credentials(path.read_text(encoding="utf-8"))[1] == 0, name
+        inventory[name] = {"bytes": size, "sha256": sha(path)}
+    assert sum(item["bytes"] for item in inventory.values()) <= 64 * 1024**2
+    if DEST.exists():
+        assert {p.relative_to(DEST).as_posix() for p in DEST.rglob("*") if p.is_file()} <= inventory.keys()
+    for name, path in files.items():
+        target = DEST / name
+        assert target.resolve().is_relative_to(DEST)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if not target.exists():
+            with path.open("rb") as source, target.open("xb") as stream:
+                shutil.copyfileobj(source, stream)
+        assert sha(target) == inventory[name]["sha256"] and target.read_bytes() == path.read_bytes()
+
+    record = {
+        "scope": "Terminal authorized a122 Windows 3.12 sdist inspection; no test execution",
+        "status": result["status"], "observed_at": datetime.now(UTC).isoformat(),
+        "native_session": 44933, "native_terminal_chunk": args.terminal_chunk,
+        "native_exit_code": args.native_exit_code, "finished_at": result["finished_at"],
+        "runtime_commit": COMMIT, "driver_sha256": DRIVER_SHA,
+        "process_states": processes, "checks": checks, "inputs_rehashed": len(result["inputs"]),
+        "source_files_rehashed": len(manifest), "installed_members_rehashed": len(members),
+        "counts": {"tests": len(current), "passed": counts.get("pass", 0),
+                   "skipped": counts.get("skipped", 0), "failures": counts.get("failure", 0),
+                   "errors": counts.get("error", 0)},
+        "wheel_baseline_sha256": sha(pins["WHEEL_BASELINE"]),
+        "matching_case_outcomes": sum(current.get(case) == value for case, value in previous.items()),
+        "all_case_outcomes_match": current == previous, "raw_evidence_accessed": False,
+        "copied_original_files": inventory, "formal_release": "BLOCKED",
+    }
+    with REPORT.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(record, stream, indent=2)
+        stream.write("\n")
+    print(json.dumps({"status": result["status"], "counts": record["counts"],
+                      "matching_case_outcomes": record["matching_case_outcomes"], "files": len(inventory)}))
+    return 0 if result["status"] == "pass" and current == previous else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

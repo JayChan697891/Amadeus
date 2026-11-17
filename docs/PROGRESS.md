@@ -1,31 +1,34 @@
 # Amadeus current progress
 
-Second independent active queue: first Linux3.14 a122 installed-sdist full suite
-started once at2026-11-17T14:36:21Z, native84212 (785a94). VM20760 boot
-966e4a14-739a-47d5-90d4-877f3be0e41b; actual controller2935/start5951 and
-pytest2949/start6240 were observed live (39c4a9). Drivered56a3f5 uses the
-existing m122l/d installation and original5232e9e snapshot/archive. Preflight
-5befc6 verified4 original inputs,97 members, archive origin, empty Docker/workers,
-the fixed image and31.1GB free. Initial SSH-banner readiness failure occurred
-before any guest command and remains recorded. No build/install/focused/model
-repeat. Final result NOT AVAILABLE. Observe native84212 and
-/root/amadeus-m122fullld/run/result.json; do not restart from observation timeout.
-After terminal, collect only sanitized originals, inspect XML and36 actual Docker
-observations, compare with the completed Linux wheel suite, then independent review
-and normal VM shutdown. This fixture is separate from the live Windows suite below.
-[Startup and recovery evidence](acceptance/evidence/core-preview-a122/full-linux314-sdist/execution-start.json).
+Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
-ACTIVE queue: first Windows3.12 a122 installed-sdist full regression started once
-at2026-11-17T14:25:10Z. Native44933 (8b4594); Root observed controller23208 and
-pytest13896 with their launcher parents5136/2272. Driver5dce546c reuses the
-original5232e9e snapshot, existing m122p/d installation and original sdist archive.
-Only origin-before, full pytest, origin-after; no build/install/focused/model
-repeat. Final result is NOT AVAILABLE. Observe the same native handle and actual
-processes, never restart because of an observation timeout. Local result entry:
-D:/agentsync-debug/m122fullwd/run/result.json. On terminal, inspect actual XML,
-all input/source/runtime hashes and comparison to the completed wheel suite;
-then independent review. Raw local logs stay on D: and are not publication inputs.
-[Original startup records](acceptance/evidence/core-preview-a122/full-windows312-sdist/execution-start.json).
+The first complete a122 installed-sdist suites have finished and received
+independent Root/Astra scoped acceptance: Windows3.12 **2539 pass/57 skip**,
+Linux3.14 **2589 pass/7 skip**, each2596 unique cases and zero failures/errors.
+Every case identity/outcome matches its corresponding completed wheel suite.
+Original5232e9e inputs and97 installed members are bound by the receipts; Linux
+also retains36 actual Docker observations. All processes ended and the VM shut
+down normally. The safety-pause checkpoint remains unchanged. Evidence collection
+and independent review are now complete; no suite was rerun on resume.
+Formal Release remains **BLOCKED**; these are four installed suites, not the full
+source/platform matrix or universal real-client acceptance.
+[Windows sdist](acceptance/evidence/core-preview-a122/full-windows312-sdist/resume-root-review.json) · [Linux sdist](acceptance/evidence/core-preview-a122/full-linux314-sdist/resume-root-review.json).
+
+The limited owner-trial entry has now run once through the installed amadeus.exe
+(ceef4a exit0). Root independently opened its SQLite database read-only (60c95b):
+same saved task/workflow completed, accepted handoff, failed/succeeded/succeeded
+attempts and a distinct reviewer. Output remains simulation_only/unverified;
+zero model calls. English/Chinese quick starts now install the frozen wheel and
+run this durable demo, with developer testing kept in CONTRIBUTING. This improves
+the existing entry without changing/rebuilding the runtime or adding a product
+stage. [Actual trial](acceptance/evidence/core-preview-a122/owner-trial/root-review.json).
+Independent review finds no technical blocker to this limited local trial.
+Next inspect the existing real Codex host/SDK entry for a concrete owner-usability
+gap, retaining exact approvals and evidence rather than duplicating working code. Do not
+present the simulated trial as completion of real multi-Agent autonomous behavior.
+Remaining source matrices, unavailable clients/platforms, preserved static FAIL and license review
+remain in original C/Release scope; no gate is removed or historical evidence
+relabelled. No test queue is currently active.
 
 Linux a122 installed-license metadata is now collected from the same existing
 wheel/sdist installations:6 native checks exit0,31 distributions and35 recorded
@@ -36,8 +39,8 @@ acknowledged, PID10644 absent and SSH/QMP ports closed; disk and prior logs reta
 This is metadata collection, not license clearance: review remains pending and
 formal Release BLOCKED. No rebuild/install/test/model repeat occurred.
 [Original records and inspection](acceptance/evidence/core-preview-a122/linux-licenses/root-review.json).
-The first Windows a122 installed-sdist full regression is now running as recorded
-above. Do not repeat either completed full wheel suite or the97-case install checks.
+The completed installed-sdist results are recorded above. Do not repeat these
+suites or the97-case installation checks.
 
 Windows a122 installed-license metadata is now collected from the existing
 wheel/sdist environments:6 native checks exit0,32 distributions and43 license
@@ -73,8 +76,8 @@ All original fixtures/disks remain, and VM7828 normally shut down. The observer'
 initial SSH readiness failure, missing lsblk assumption and incorrect >30GiB free
 space assertion remain recorded; none changes product tests or acceptance gates.
 [Capacity record](acceptance/evidence/core-preview-a122/local-capacity/review.json).
-Preserve the original safety-pause checkpoint. The subsequent Linux and Windows
-installed-sdist queues are separately active as recorded above.
+Preserve the original safety-pause checkpoint. Both Linux and Windows installed-sdist queues have ended; their results are
+recorded above and no current queue remains active.
 
 The first complete a122 Windows3.12 installed-wheel suite finished at08:21:24Z
 on2026-11-17. Native43609 closed with exit0 (d04f44):2539pass/57skip, zero

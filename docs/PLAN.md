@@ -1,5 +1,22 @@
 # Amadeus delivery order: usable core first, original release gates retained
 
+## Owner-trial priority — 2026-11-17
+
+Keep a122/5232e9e frozen for the next limited owner trial. All four Windows/Linux
+wheel/sdist full suites now have scoped Root/Astra acceptance. The remaining
+source/formal matrix is C work, not a new precondition for the bounded local demo.
+Next deliver one clear installation and demo/recovery entry using existing code;
+validate only that entry and any affected behavior. It must label simulated Agents,
+unverified demo output and separately recorded real Codex evidence accurately.
+No new M5 stage, broad rebuild, repeated full suite or public release is planned.
+This is a quota-conscious delivery order, not a guaranteed quota estimate.
+
+The existing amadeus.exe durable trial has now completed once with a read-only
+database check. Both quick starts use the frozen wheel and omit developer test
+setup. This limited trial is available now; it does not complete the original
+real-Agent/independent-execution requirements. Continue the controlled real
+host/SDK usability path next, preserving every exact approval and source binding.
+
 ## Execution adjustment — 2026-11-15
 
 The previously deferred real collaboration/controller-recovery composition has
@@ -21,8 +38,9 @@ passed the same 97 targeted cases on Windows 3.12 and Linux 3.14. Windows passed
 The first full a122 Windows3.12 installed-wheel regression now passes2539/57skip,
 with unchanged original inputs and all2587 previous case identities/outcomes plus
 9 passing cases. Linux3.14 installed-wheel now also passes2589/7skip, with
-36 Docker observations and independent Root/Astra review. Other full a122 matrix cells and complete real-client control
-acceptance remain unrun.
+36 Docker observations and independent Root/Astra review. The full installed-sdist suites now also match these
+case identities/outcomes exactly; Root/Astra accepted the bounded results. Full
+source/platform and complete real-client control acceptance remain unrun.
 Formal Release remains BLOCKED.
 [Preview packages](../releases/0.3.0a122/preview-5232e9e/) and
 [checkpoint and receipts](PROGRESS.md).
@@ -31,8 +49,8 @@ Current a122 Windows/Linux wheel/sdist license inventories are collected without
 reinstallation: Windows32 distributions/43 license files per environment;
 Linux31/35. Root rehashed the actual files and installed members. Metadata has no
 missing items, but license review remains pending; this does not authorize release.
-Next original distribution gap is the Windows installed-sdist full suite using
-the frozen source and existing installation, without repeating completed checks.
+The Windows/Linux installed-sdist full suites have now finished. Prioritize the
+owner-trial entry above; retain remaining original distribution requirements for C.
 
 The corrected native MCP handoff completed the first check in the frozen
 a122/5232e9e acceptance plan. Root and Astra accepted its zero-inference scope.

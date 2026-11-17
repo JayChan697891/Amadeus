@@ -98,22 +98,23 @@ Cursor 的终态响应不能证明未调用工具，仍须满足原有宿主隔�
 
 ## Windows 安装与演示
 
-在本项目目录打开 PowerShell，已安装 Python 3.11 或以上版本：
+体验冻结的 a122：在本项目目录打开 PowerShell，先安装 Python 3.12。
+环境名称和数据目录应选用尚不存在的名称：
 
 ```powershell
-py -m venv .venv
-& .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
-& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\demo" demo
-& .\.venv\Scripts\python.exe -m pytest
+py -3.12 -m venv .venv-a122
+& .\.venv-a122\Scripts\python.exe -m pip install .\releases\0.3.0a122\preview-5232e9e\agentsync_local-0.3.0a122-py3-none-any.whl
+& .\.venv-a122\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-a122-01" demo --durable
 ```
 
-不需要激活虚拟环境或修改执行策略。演示会注册两个模拟 Agent，让 A 认领任务，
-验证 B 的重复认领被拒绝，再由 A 提交结果、B 留下验收记录，重新打开数据库检查持久化。
-重复演示时使用新的专用数据目录。
-仅安装运行依赖时，使用 `& .\.venv\Scripts\python.exe -m pip install -e .`。
-运行依赖已支持演示；上述 pytest 步骤需要安装 `.[dev]`。当前依赖以 `pyproject.toml` 声明为准。
-两份 `requirements*-lock.txt` 保留旧 Windows 环境快照，并非当前跨平台锁文件。
-离线安装需事先准备与所选 Python 版本兼容的依赖包。
+不需要激活虚拟环境或修改执行策略。安装可能联网下载运行依赖；演示本身使用模拟 Agent，
+无需模型账号或 API 调用，会在新进程中重新打开并续接同一持久化任务。
+预期输出 `ok: true`、已接受的交接，以及 `simulation_only: true`、
+`verification: unverified`。不同模拟身份留下的评审不等于独立执行验证。
+[本次真实 CLI 运行与数据库只读核对](docs/acceptance/evidence/core-preview-a122/owner-trial/root-review.json)。
+每次演示使用新数据目录，保留数据库即可保留现场。
+下载校验见 [SHA256SUMS](releases/0.3.0a122/preview-5232e9e/SHA256SUMS)，
+开发安装与测试见 [CONTRIBUTING.md](CONTRIBUTING.md)。上方真实 Codex 实验的证据与本演示分开记录。
 
 ## 体验持久化协作
 

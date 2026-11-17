@@ -1,0 +1,10 @@
+{
+  "vm_pid": 20760,
+  "ports_closed": true,
+  "observed_utc": "2026-11-17T14:58:01.2121665Z",
+  "process_absent": true,
+  "review_status": "Independent final review NOT RUN due to owner pause",
+  "disk_chain_retained": true,
+  "linux_native_exit": 0,
+  "linux_native_terminal": "fc0b66"
+}

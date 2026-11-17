@@ -139,24 +139,25 @@ probes passed independently. See [M2 continuation](docs/M2-CONTINUATION.zh-CN.md
 
 ## Windows quick start
 
-From this repository directory, with Python 3.11+ installed:
+For the frozen a122 owner trial, open PowerShell in this repository with Python
+3.12 installed. Choose unused environment and data directory names:
 
 ```powershell
-py -m venv .venv
-& .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
-& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\demo" demo
-& .\.venv\Scripts\python.exe -m pytest
+py -3.12 -m venv .venv-a122
+& .\.venv-a122\Scripts\python.exe -m pip install .\releases\0.3.0a122\preview-5232e9e\agentsync_local-0.3.0a122-py3-none-any.whl
+& .\.venv-a122\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-a122-01" demo --durable
 ```
 
-No activation or PowerShell execution-policy changes are needed. Demo uses two simulated agents,
-rejects the second claim, submits a result, records separate review and checks persistence.
-Use a dedicated empty data directory for repeatable demo runs.
-For runtime-only installation use `& .\.venv\Scripts\python.exe -m pip install -e .`.
-The demo works with runtime dependencies; the pytest step requires `.[dev]`.
-The package dependencies are declared in `pyproject.toml`. The two
-`requirements*-lock.txt` files preserve an older Windows environment snapshot;
-they are not the current cross-platform lock.
-For offline installation, prepare wheels compatible with the selected Python version.
+No activation or execution-policy change is needed. Installation can download
+runtime dependencies. The demo itself uses simulated Agents, requires no model
+account or API call, and reopens the same saved task in fresh processes. Expect
+`ok: true`, an accepted handoff, `simulation_only: true` and
+`verification: unverified`. A distinct simulated reviewer is not independent
+execution verification. [Observed CLI trial and read-only database check](docs/acceptance/evidence/core-preview-a122/owner-trial/root-review.json).
+Use a new data directory for each demo; preserve its database if you want to inspect
+the run later. The package hashes are in [SHA256SUMS](releases/0.3.0a122/preview-5232e9e/SHA256SUMS).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development installation and tests.
+Real Codex experiment evidence is linked above and is separate from this demo.
 
 ## Try persisted collaboration
 

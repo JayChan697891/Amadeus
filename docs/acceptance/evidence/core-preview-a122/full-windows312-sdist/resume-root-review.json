@@ -1,0 +1,18 @@
+{
+  "scope": "Frozen a122 installed-sdist full regression only; formal Release BLOCKED",
+  "native_terminal_chunk": "9d8ed4",
+  "native_exit_code": 0,
+  "finished_at": "2026-11-17T15:14:16.221917+00:00",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "case_count": 2596,
+  "outcomes": {
+    "pass": 2539,
+    "skipped": 57
+  },
+  "same_wheel_case_outcomes": true,
+  "original_files_checked": 12,
+  "original_bytes": 466193,
+  "junit_sha256": "a5a419615e6befd957481dc49df78ebb45c9456e668e4ffaa3d7c977287a4d71",
+  "formal_release": "BLOCKED",
+  "new_test_execution": false
+}

@@ -1,0 +1,18 @@
+{
+  "reviewer": "astra_recovery_scope",
+  "decision": "SCOPED PASS",
+  "frozen_source": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "scope": "a122 linux314 installed-sdist full regression",
+  "inspected": [
+    "actual XML unique cases and wheel outcome parity",
+    "archive/source/installed provenance and original hashes",
+    "actual process terminal evidence",
+    "36 Docker observations including same receiver completion and cleanup"
+  ],
+  "limits": [
+    "not full source/platform matrix",
+    "not real-model execution evidence",
+    "formal Release BLOCKED"
+  ],
+  "owner_trial": "existing limited local demo has no identified technical blocker; simulated output remains unverified"
+}

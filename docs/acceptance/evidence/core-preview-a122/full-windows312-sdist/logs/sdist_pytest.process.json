@@ -1,0 +1,57 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m122fullwd\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m122fullwd\\t\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m122fullwd\\t\\p",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m122fullwd\\t\\pytest-cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122fullwd\\run",
+    "started_at": "2026-11-17T14:25:10.678232+00:00",
+    "timeout_seconds": 7200
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m122fullwd\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m122fullwd\\t\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m122fullwd\\t\\p",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m122fullwd\\t\\pytest-cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122fullwd\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T14:25:10.678232+00:00",
+    "finished_at": "2026-11-17T15:14:13.118624+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 7200
+  }
+}

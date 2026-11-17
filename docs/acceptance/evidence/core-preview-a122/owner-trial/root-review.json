@@ -1,0 +1,25 @@
+{
+  "scope": "Owner-facing existing a122 CLI durable demo; not a new full regression or real-model test",
+  "native_chunk": "ceef4a",
+  "native_exit_code": 0,
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "entry": "existing installed amadeus.exe --data-dir NEW_DIRECTORY demo --durable",
+  "task_id": "a18dced6-612a-40dc-8ae6-e11afa7a8966",
+  "task_status": "completed",
+  "workflow_id": "c5f528c2-0b0d-459a-b386-01a24de76d4f",
+  "workflow_state": "completed",
+  "attempt_states": [
+    "failed",
+    "succeeded",
+    "succeeded"
+  ],
+  "handoff_accepted": true,
+  "reviewer_distinct": true,
+  "database_checked_readonly": true,
+  "simulation_only": true,
+  "verification": "unverified",
+  "model_calls": 0,
+  "source_database_uploaded": false,
+  "formal_release": "BLOCKED",
+  "stdout_sha256": "28a584611e58443ed7e55ac7a991a0342d1b8976171c46d2b36a885312c3f742"
+}

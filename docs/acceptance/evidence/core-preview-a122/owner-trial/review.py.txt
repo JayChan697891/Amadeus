@@ -1,0 +1,35 @@
+import hashlib,json,sqlite3
+from pathlib import Path
+base=Path('D:/agentsync-debug/owner-trial-a122-20261117')
+response=json.loads((base/'demo.stdout.json').read_text(encoding='utf-8-sig'))
+assert response['ok'] is True and (base/'demo.stderr.log').stat().st_size==0
+data=response['data']
+assert data['simulation_only'] is True and data['verification']=='unverified'
+assert data['resumed_in_fresh_process'] is True and data['attempts']==['failed','succeeded','succeeded']
+connection=sqlite3.connect((base/'data/agentsync.db').as_uri()+'?mode=ro',uri=True)
+try:
+ task=connection.execute('SELECT id, status FROM tasks WHERE id=?',(data['task_id'],)).fetchone()
+ workflow=connection.execute('SELECT id, state FROM mock_workflows WHERE id=?',(data['run_id'],)).fetchone()
+ handoff=connection.execute('SELECT id,status,sender_agent_id,recipient_agent_id FROM handoffs WHERE id=?',(data['handoff']['id'],)).fetchone()
+ reviews=connection.execute('SELECT reviewer_agent_id,accept FROM reviews WHERE task_id=?',(data['task_id'],)).fetchall()
+ attempts=connection.execute('SELECT state FROM mock_workflow_attempts WHERE run_id=? ORDER BY sequence',(data['run_id'],)).fetchall()
+finally:connection.close()
+assert task==(data['task_id'],'completed') and workflow==(data['run_id'],'completed')
+assert handoff[1]=='accepted' and len(reviews)==1 and reviews[0][1]==1
+assert reviews[0][0] not in handoff[2:]
+assert [row[0] for row in attempts]==data['attempts']
+record={'scope':'Owner-facing existing a122 CLI durable demo; not a new full regression or real-model test',
+ 'native_chunk':'ceef4a','native_exit_code':0,'runtime_commit':'5232e9e8bd33a949f7ffdc68410cd614a297af66',
+ 'entry':'existing installed amadeus.exe --data-dir NEW_DIRECTORY demo --durable',
+ 'task_id':task[0],'task_status':task[1],'workflow_id':workflow[0],'workflow_state':workflow[1],
+ 'attempt_states':[row[0] for row in attempts],'handoff_accepted':True,'reviewer_distinct':True,
+ 'database_checked_readonly':True,'simulation_only':True,'verification':'unverified','model_calls':0,
+ 'source_database_uploaded':False,'formal_release':'BLOCKED',
+ 'stdout_sha256':hashlib.sha256((base/'demo.stdout.json').read_bytes()).hexdigest()}
+dest=Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a122/owner-trial')
+dest.mkdir()
+for name in ['demo.stdout.json','demo.stderr.log','execution.json']:
+ with (dest/name).open('xb') as stream:stream.write((base/name).read_bytes())
+with (dest/'root-review.json').open('x',encoding='utf8') as stream:json.dump(record,stream,indent=2)
+with (dest/'review.py.txt').open('xb') as stream:stream.write(Path(__file__).read_bytes())
+print(json.dumps(record))

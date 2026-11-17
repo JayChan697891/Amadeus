@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+The first complete a122 installed-sdist suites have finished and received
+independent Root/Astra scoped acceptance: Windows3.12 **2539 pass/57 skip**,
+Linux3.14 **2589 pass/7 skip**, each2596 unique cases and zero failures/errors.
+Every case identity/outcome matches its corresponding completed wheel suite.
+Original5232e9e inputs and97 installed members are bound by the receipts; Linux
+also retains36 actual Docker observations. All processes ended and the VM shut
+down normally. The safety-pause checkpoint remains unchanged. Evidence collection
+and independent review are now complete; no suite was rerun on resume.
+Formal Release remains **BLOCKED**; these are four installed suites, not the full
+source/platform matrix or universal real-client acceptance.
+[Windows sdist](evidence/core-preview-a122/full-windows312-sdist/resume-root-review.json) · [Linux sdist](evidence/core-preview-a122/full-linux314-sdist/resume-root-review.json).
+
+
 Linux a122 installed license metadata:6 checks exit0 from the existing wheel/sdist
 environments,31 distributions/35 license files each. Root rehashed70 license files
 and97 runtime members per environment; inventories match with no metadata review
