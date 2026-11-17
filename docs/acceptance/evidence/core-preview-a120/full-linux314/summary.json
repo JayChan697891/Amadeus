@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "status": "scoped Linux installed-wheel full regression passed",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "version": "0.3.0a120",
+  "platform": "Linux CPython3.14.7; dedicated D-drive VM",
+  "native": {
+    "session": 11295,
+    "terminal_chunk": "fe11f7",
+    "exit_code": 0,
+    "checks": 4,
+    "started_at": "2026-11-17T01:33:32.510291+00:00",
+    "finished_at": "2026-11-17T01:52:37.428116+00:00"
+  },
+  "junit": {
+    "unique_cases": 2587,
+    "passed": 2580,
+    "skipped": 7,
+    "failed": 0,
+    "errors": 0,
+    "seconds": 1136.48,
+    "warnings": 120,
+    "credential_redactions": 6,
+    "root_checked_raw_to_public_sanitization": true,
+    "sha256": "ea5dc5ac99678af640929174db2072973b4fe05a4c578ffe306e6019b9ee51e9"
+  },
+  "comparison": {
+    "retained_old_linux_cases": 2545,
+    "removed_cases": 0,
+    "changed_old_outcomes": 0,
+    "added_cases": 42,
+    "added_passed": 42,
+    "same_windows_case_identities": true,
+    "platform_outcome_differences": 64,
+    "skip_reasons": "Six Windows-only checks and one unsupported-host branch; no missing-image Docker skip",
+    "detail": "case-diff.json"
+  },
+  "docker": {
+    "actual_observations": 36,
+    "groups": 7,
+    "retained_observations": 35,
+    "retained_selected_outcomes_unchanged": true,
+    "new_observation": "proposal_pipeline/continuation-verified.json",
+    "continuation_same_receiver_completed_verified": true,
+    "continuation_completion_version": 6,
+    "source_remains_failed": true,
+    "functional_cases_passed": 2,
+    "isolation_checks_passed": 19,
+    "cleanup_confirmed": true,
+    "model_boundary": "known local Python protocol fixture, not a real model call",
+    "details": "docker-diff.json"
+  },
+  "root_review": {
+    "native_receipts_and_log_hashes_checked": 4,
+    "frozen_source_files_rehashed": 5369,
+    "installed_members_rehashed": 97,
+    "unchanged": true,
+    "originals_copied": 48,
+    "original_bytes": 627873,
+    "collection_native_chunk": "e24c47",
+    "post_run_workers": [],
+    "post_run_containers": [],
+    "raw_xml_kept_local": true
+  },
+  "independent_review": {
+    "reviewer": "native Astra",
+    "decision": "accept scoped a120 Linux3.14 installed-wheel full suite and recorded actual local Docker scenarios",
+    "checked": "actual process/log/XML records, skipped cases, Docker continuation and negative controls; full member rehash performed separately by root",
+    "formal_release_decision": false
+  },
+  "environment": {
+    "normal_powerdown_request_chunk": "bb81d4",
+    "confirmed_shutdown_chunk": "67430e",
+    "vm_process_absent": true,
+    "loopback_ports_closed": true,
+    "disk_preserved": true
+  },
+  "preserved": {
+    "startup_checkpoint_commit": "2370e07",
+    "historical_start_records_unchanged": true,
+    "windows_result_unchanged": true,
+    "packages_rebuilt": false
+  },
+  "limitations": [
+    "Full source/sdist and complete current platform matrix are not supplied by this installed-wheel run.",
+    "This run uses deterministic protocol fixtures and actual Docker; old a119 live-model evidence retains its original version.",
+    "macOS, cross-vendor clients, actual terminal hidden-input interaction, combined live coordinator-exit boundary and external Work acceptance remain outside this result."
+  ],
+  "formal_release": "BLOCKED",
+  "next": "Finish P1 first-use/recovery entry review on unchanged a120, beginning with the still-unrun actual terminal prompt path in an isolated local project. Reuse these full-suite results; no new M5 phase, package rebuild or prior live-run retry."
+}

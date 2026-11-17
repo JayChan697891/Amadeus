@@ -1,18 +1,31 @@
 # Amadeus current progress
 
-RUNNING LOCAL CHECKPOINT — first a120 Linux3.14 installed-wheel full suite.
-Native session11295, guest controller2945, owned VM18824; started2026-11-17T01:33:32Z
-(Nov16 America/Tijuana). Runtime859775b and existing /root/amadeus-m120l/w are reused;
-5369 frozen d427355 inputs match the completed Windows run. Fixed local Docker
-image34386ef; no models/login copies, package rebuild or hosted execution.
-Actual pytest-start and initial process receipts have been read. Result UNKNOWN,
-not a pass. Full driver ad27ece is frozen and has no retry. Observe session11295
-and /root/amadeus-m120full/run/result.json; do not restart the job or stop its VM.
-Host checkpoint: D:/agentsync-debug/m120fulll. After terminal exit inspect actual
-JUnit/logs/Docker observations, compare previous case identities, verify cleanup
-and hashes, then archive final evidence and normally stop only the owned VM.
-See acceptance/evidence/core-preview-a120/full-linux314/startup-checkpoint.json.
-All preceding completed evidence remains unchanged. Release stays BLOCKED.
+COMPLETED LOCAL RUN — a120 Linux3.14 installed-wheel full regression.
+Native session11295 ended2026-11-17T01:52:37Z (Nov16 America/Tijuana), chunkfe11f7
+exit0. Four checks pass;2587 unique cases:2580pass/7skip/0fail/error,1136.48s.
+Same runtime859775b, original a120 install and5369 d427355 inputs as Windows.
+All2545 old Linux identities/outcomes remain;42 added all pass. Windows has the
+same2587 identities;64 outcome differences are the explicit platform branches.
+36 actual Docker observations retain the35 old selected outcomes. Added
+continuation completes the same receiver verified v6, source still failed, with
+2/2 cases and19/19 isolation checks. This uses a known local protocol fixture,
+not new real-model evidence. Root checked native/log/XML records, all6 XML
+redactions and5369 source/97 installed hashes;48 originals/627873bytes retained.
+Independent Astra accepts this bounded scope. No workers/containers remained;
+owned VM18824 normally stopped, ports closed, disk preserved (native67430e).
+See acceptance/evidence/core-preview-a120/full-linux314/summary.json.
+Do not poll closed session11295, restart the driver or repeat the completed full
+Windows/Linux wheel runs. Startup2370e07 remains historical, superseded by this result.
+Formal Release stays BLOCKED; current source/sdist/full matrix and macOS remain
+incomplete. Prior a119 real-client evidence is unchanged and not relabelled.
+
+Next resume entry: finish P1 first-use/recovery access on unchanged a120, starting
+with the still-unrun actual secure terminal prompt in an isolated local project.
+No model call, new package, M5 phase or repeated full suite is needed. Respect
+existing failure/no-retry behavior. This next task has not started.
+
+Historical checkpoints below retain their original time/version and do not
+override the current entry above.
 
 COMPLETED LOCAL RUN — a120 Windows3.12 installed-wheel full regression.
 Native session28686 ended2026-11-17T01:16:44Z (Nov16 America/Tijuana), chunk3255b8

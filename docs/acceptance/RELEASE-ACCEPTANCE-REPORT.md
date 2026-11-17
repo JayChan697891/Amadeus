@@ -1,5 +1,19 @@
 # Release Acceptance Report
 
+Latest full local result — a120 Linux3.14 installed wheel **PASS with7 explicit
+skips; formal Release BLOCKED**. Runtime859775b/tests d427355; native11295 ended
+2026-11-17T01:52:37Z, exit0.2587 unique cases:2580pass/7skip/0fail/error in1136.48s.
+All2545 old Linux identities/outcomes remain,42 added pass, and current Windows
+identities match.36 real Docker records preserve35 old selected outcomes; the new
+continuation fixture completes the same receiver verified v6 with2/2 cases,
+19/19 isolation checks and confirmed cleanup. Its model is a deterministic local
+protocol fixture, not a new live client. Root checked native/log/XML,6 XML
+redactions,5369 inputs/97 installed members unchanged;48 originals retained.
+Independent Astra accepts this scope. No workers/containers remained; owned VM
+normally stopped with disk preserved. Source/sdist/full platform matrix, macOS,
+actual terminal interaction and new real-client acceptance are not inferred.
+[Actual results and boundaries](evidence/core-preview-a120/full-linux314/summary.json).
+
 Latest full local result — a120 Windows3.12 installed wheel **PASS with57 explicit
 skips; formal Release BLOCKED**. Runtime859775b, frozen tests d427355. Native
 session28686 ended2026-11-17T01:16:44Z, exit0; four checks pass.2587 unique cases:

@@ -1,0 +1,10 @@
+{
+  "utc": "2026-11-17T01:54:41.0410232Z",
+  "process_absent": true,
+  "method": "QMP system_powerdown",
+  "exit_code": 0,
+  "request_native_chunk": "bb81d4",
+  "loopback_ports_closed": true,
+  "disk_preserved": true,
+  "pid": 18824
+}

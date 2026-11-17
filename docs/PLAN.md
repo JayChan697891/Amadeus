@@ -2,6 +2,17 @@
 
 ## Execution adjustment — 2026-11-15
 
+The first complete a120 Linux3.14 installed-wheel suite now passes:2580pass/7skip,
+0fail/error; all2545 old cases retained and42 new cases pass. Its2587 identities
+match Windows.36 real Docker observations preserve35 old outcomes and add the
+same-receiver continuation completion (2 cases/19 isolation checks). Root/Astra
+accepted this limited scope; runtime859775b and frozen d427355 inputs unchanged.
+Owned VM is normally off. See PROGRESS and full-linux314/summary.json. Reuse both
+completed wheel suites. Next finish the existing P1 recovery entry's actual
+terminal interaction; no new M5 phase/package or repeat of old live experiments.
+Complete current source/sdist/platform matrix and deferred live composition stay
+unverified; C/Release remains BLOCKED.
+
 P1 recovery entry — 2026-11-16 America/Tijuana: examples/recover_relay.py now makes
 the existing status/history/task/reconcile commands usable through hidden prompts
 without changing the installed runtime. The exact wave is user-selected; tokens

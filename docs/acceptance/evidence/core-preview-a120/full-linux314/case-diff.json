@@ -1,0 +1,749 @@
+{
+  "current_unique_cases": 2587,
+  "counts": {
+    "passed": 2580,
+    "skipped": 7,
+    "failure": 0,
+    "error": 0
+  },
+  "retained_original_cases": 2545,
+  "removed_original_cases": [],
+  "changed_original_outcomes": {},
+  "added_cases": {
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-cancel]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-resume]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-start]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-status]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-cancel]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-resume]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-start]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-status]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_status_reports_corrupt_database": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses0-connected-2]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses1-mcp_startup_timeout-2]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses2-mcp_not_connected-1]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses3-tool_discovery_error-1]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses4-mcp_status_unavailable-1]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_declines_insecure_input[echo-warning]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_declines_insecure_input[redirected]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_passes_credentials_only_to_stdin_and_does_not_retry": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_reads_real_owner_status": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[foreign_request-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[marker-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[mode-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[publisher-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[selection-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[terminal_launch-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[unknown_source-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[unknown_wave-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[version-verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_proposal_without_solution_is_review_only": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-synthetic]": {
+      "outcome": "passed"
+    },
+    "tests.integration.test_unfinished_continuation::test_host_exit_after_receiver_review_reconciles_existing_wave[verifiable_codex]": {
+      "outcome": "passed"
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_existing_database_supports_explicit_write_and_env_read": {
+      "outcome": "passed"
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[empty-dir-argument]": {
+      "outcome": "passed"
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[empty-dir-environment]": {
+      "outcome": "passed"
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[missing-dir-argument]": {
+      "outcome": "passed"
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[missing-dir-environment]": {
+      "outcome": "passed"
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_reports_corrupt_database": {
+      "outcome": "passed"
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_passes_valid_image_id_to_existing_demo": {
+      "outcome": "passed"
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[]": {
+      "outcome": "passed"
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[python:3.14]": {
+      "outcome": "passed"
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]": {
+      "outcome": "passed"
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[sha256:aaaaaaaaaaaa]": {
+      "outcome": "passed"
+    }
+  },
+  "windows_case_identity_match": true,
+  "windows_linux_outcome_differences": {
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_cancel_after_running_keeps_correct_result_unverified": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_crash_after_created_reopens_and_cleans_exact_id": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_executes_candidate_not_base": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_timeout_is_unresolved_and_never_retried": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_wrong_result_fails_and_stays_fenced": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "Actual Linux backend belongs to the separately controlled Docker fixture"
+      }
+    },
+    "tests.integration.test_candidate_export_security::test_nonregular_bare_config_is_rejected_without_reading_it": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "POSIX FIFO metadata fixture requires Linux"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_checks_all_external_cases": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_memory_bound": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_output_bounds[stderr]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_output_bounds[stdout]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_pid_bound": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_scratch_bound": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_wall_time": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_isolation_controls": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_kernel_cgroup_limits": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Real Linux Docker/image not configured; policy tests are a separate tier"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_hard_exit_then_explicit_cleanup_never_restores_success[created]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual reconciliation requires an explicitly configured local Linux image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_hard_exit_then_explicit_cleanup_never_restores_success[running]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual reconciliation requires an explicitly configured local Linux image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_initial_absence_is_not_claimed_as_proven_cleanup": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual reconciliation requires an explicitly configured local Linux image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_lost_create_ack_is_never_reconciled_by_name[lost_ack]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual reconciliation requires an explicitly configured local Linux image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_renamed_container_is_protected_from_cleanup": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual reconciliation requires an explicitly configured local Linux image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_m4b_workspaces::test_fixture_git_reads_long_windows_reference": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "Windows Git long-path fixture"
+      }
+    },
+    "tests.integration.test_m4b_workspaces::test_managed_git_creates_private_ref_beyond_win32_path_limit": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "Git for Windows path-length regression"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_cancel_after_create_prevents_start": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_enforces_wall_time[owner_case0]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_executes_fixed_snapshot_and_persists_independent_result": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_expired_lease_cannot_accept_passing_backend": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[early-exit]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[forged-junit]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[wrong-result]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Actual owner execution requires an explicitly configured local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_proposal_docker_pipeline::test_same_core_proposal_to_independent_docker_acceptance[verified]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_proposal_docker_pipeline::test_same_core_proposal_to_independent_docker_acceptance[wrong-result]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[budget-resume]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[budget-staging]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-completion]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-execution]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-staging]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[docker-cursor]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[host-exit-dispatch-intent]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[host-exit-pre-dispatch]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[reopen]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[verified]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[wrong-result]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Proposal execution requires an explicitly pinned local Linux Docker image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.integration.test_verified_task_completion::test_actual_linux_docker_to_independent_verified_completion": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires separately controlled local Linux Docker and preloaded immutable image"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "Windows conflict keys case-fold"
+      }
+    },
+    "tests.security.test_resource_paths::test_explicit_project_symlink_root_is_canonicalized": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m120fullw\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m120fullw\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\selected'"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.security.test_resource_paths::test_junction_is_denied": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "Windows junction-specific boundary"
+      }
+    },
+    "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "Windows junction-specific ancestor boundary"
+      }
+    },
+    "tests.security.test_resource_paths::test_symlink_and_nonexistent_target_through_link_are_denied": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m120fullw\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m120fullw\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_codex_invocation::test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit": {
+      "windows": {
+        "outcome": "passed"
+      },
+      "linux": {
+        "outcome": "skipped",
+        "message": "The opt-in MXC plan requires native Windows"
+      }
+    },
+    "tests.unit.test_core_admission::test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Requires Linux/POSIX fork"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_cursor_node_bundle::test_bundle_rejects_actual_links[False]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "This host cannot create the actual symlink fixture"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_cursor_node_bundle::test_bundle_rejects_actual_links[True]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "This host cannot create the actual symlink fixture"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_inspect_claude_events::test_fifo_input_is_rejected_without_waiting_for_a_writer": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "FIFO fixture requires os.mkfifo"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_pytest_case_journal::test_existing_fifo_is_rejected_without_opening_or_replacing_it": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Local FIFO creation unavailable"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_pytest_case_journal::test_output_path_guards_preserve_existing_objects[parent-symlink]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Local symlink creation unavailable"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_pytest_case_journal::test_output_path_guards_preserve_existing_objects[symlink]": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Local symlink creation unavailable"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    },
+    "tests.unit.test_verification_snapshot::test_replaced_objects_directory_link_is_rejected_before_git_runs": {
+      "windows": {
+        "outcome": "skipped",
+        "message": "Creating directory symlinks requires unavailable host privileges"
+      },
+      "linux": {
+        "outcome": "passed"
+      }
+    }
+  },
+  "skips": {
+    "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution": {
+      "outcome": "skipped",
+      "message": "Actual Linux backend belongs to the separately controlled Docker fixture"
+    },
+    "tests.integration.test_m4b_workspaces::test_fixture_git_reads_long_windows_reference": {
+      "outcome": "skipped",
+      "message": "Windows Git long-path fixture"
+    },
+    "tests.integration.test_m4b_workspaces::test_managed_git_creates_private_ref_beyond_win32_path_limit": {
+      "outcome": "skipped",
+      "message": "Git for Windows path-length regression"
+    },
+    "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict": {
+      "outcome": "skipped",
+      "message": "Windows conflict keys case-fold"
+    },
+    "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root": {
+      "outcome": "skipped",
+      "message": "Windows junction-specific ancestor boundary"
+    },
+    "tests.security.test_resource_paths::test_junction_is_denied": {
+      "outcome": "skipped",
+      "message": "Windows junction-specific boundary"
+    },
+    "tests.unit.test_codex_invocation::test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit": {
+      "outcome": "skipped",
+      "message": "The opt-in MXC plan requires native Windows"
+    }
+  }
+}

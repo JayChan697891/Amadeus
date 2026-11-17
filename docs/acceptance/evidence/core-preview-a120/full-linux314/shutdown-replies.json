@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-17T01:54:20.875888+00:00",
+  "replies": [
+    {
+      "command": "qmp_capabilities",
+      "accepted": true
+    },
+    {
+      "command": "system_powerdown",
+      "accepted": true
+    }
+  ]
+}

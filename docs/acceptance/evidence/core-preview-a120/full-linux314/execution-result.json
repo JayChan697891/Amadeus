@@ -1,0 +1,8 @@
+{
+  "native_exit_code": 0,
+  "command": "/root/amadeus-m120l/w/bin/python -I -B /root/amadeus-m120full/run-wheel.py",
+  "status": "completed",
+  "model_calls": 0,
+  "utc": "2026-11-17T01:52:38.9412913Z",
+  "automatic_retry": false
+}
