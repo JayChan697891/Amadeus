@@ -28,17 +28,22 @@ Compared with Windows, pywin32 is Windows-only; pydantic-core/rpds-py metadata
 differs and the exact records are retained. License review remains pending,
 publication unauthorized. See linux-licenses/summary.json and root-review.json.
 
-Next independent work: first complete Linux3.14 installed-sdist suite on the
-existing a120 install and frozen d427355 inputs. Preparation only; not started.
-Owned local VM21292 remains available for this next authorized check; prior VM
+RUNNING: first complete Linux3.14 installed-sdist suite, native session32517.
+Uses existing /root/amadeus-m120l/d and frozen d427355 inputs; no build/reinstall
+or repeat of the wheel suite. Pip and origin checks exited0; pytest has started,
+but no final verdict exists. See full-linux314-sdist-start for the exact driver
+and initial attempt/command receipts. Driver223fc4ab...76fb uses a fresh guest
+/root/amadeus-m120fullsdist; host controller D:/agentsync-debug/m120sdistl-start.py,
+records D:/agentsync-debug/m120sdistl. Resume by observing the existing session
+and result.json; never start a second copy or interrupt its pending test queue.
+Owned local VM21292 remains running; prior VM
 state/logs were copied and hash-checked before startup. No model/auth copy occurs.
 Source/sdist/full platform collection also remains incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.
 The composite validator also requires exact identity and each package's one true
-record directory; preserve original receipts. Select a genuinely unexecuted check
-with accurate origin/scope, not a fabricated complete matrix row. No next run has
-started. The two complete wheel suites and M0-M9 plan remain valid in their scope.
+record directory; preserve original receipts. Do not fabricate a complete matrix
+row. The two complete wheel suites and M0-M9 plan remain valid in their scope.
 
 P1 native Windows recovery-entry interaction completed on unchanged a120/859775b.
 Five actual terminal commands exited0: status, history, task, exact-wave reconcile,

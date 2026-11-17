@@ -10,6 +10,7 @@ unauthorized; static FAIL and cleanup BLOCKED remain. Linux3.14 now also has bot
 inventories:31 distributions/35 files each,6 native checks pass,70 file hashes
 independently checked. No rebuild/install/test rerun. Next prepare the first full
 Linux3.14 installed-sdist suite using the existing install and frozen d427355 tests.
+It is now running as native32517; exact recovery entry is in PROGRESS. No verdict yet.
 
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected
@@ -19,7 +20,7 @@ See static-checks/summary.json and archive-format-conflict.json. This is an
 existing C delivery conflict, not a new M5 stage. Owner chose originals plus FAIL;
 continue other missing source/sdist/license/platform checks independently.
 The collector cannot skip/reuse individual completed checks, and mixed snapshots
-cannot be promoted to a formal row. No source/sdist collection has been started.
+cannot be promoted to a formal row. Full source collection remains NOT RUN.
 
 P1 existing recovery helper now has actual Windows terminal evidence: five
 commands exited0 with hidden credential input, preserving the same pending task
