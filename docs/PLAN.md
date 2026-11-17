@@ -7,7 +7,7 @@ adapter and its launch wait now check the absolute deadline before cancelling wo
 Both failing reproductions are retained. Each fresh wheel and source-archive install
 passed the same 97 targeted cases on Windows 3.12 and Linux 3.14. Windows passed
 19 native checks and Linux passed 16. Root and Astra accepted the scoped results.
-Full a122 regression and real active-generation timeout validation remain unrun.
+Full a122 regression and complete real-client control acceptance remain unrun.
 Formal Release remains BLOCKED.
 [Preview packages](../releases/0.3.0a122/preview-5232e9e/) and
 [checkpoint and receipts](PROGRESS.md).
@@ -15,8 +15,10 @@ Formal Release remains BLOCKED.
 The corrected native MCP handoff completed the first check in the frozen
 a122/5232e9e acceptance plan. Root and Astra accepted its zero-inference scope.
 The recipient reached review v8 and remained unverified. Prepare the remaining
-active-generation timeout and deferred composed real recovery checks against the
-same original archives. Record the exact
+deferred composed real recovery check against the same original archives. The
+original M6 requirements assess local lifecycle behavior and declared capabilities;
+service-internal generation at the deadline is an unverified capability, not an
+additional release gate. See the scope correction in acceptance/DESIGN.md. Record the exact
 authorization and stop conditions for each run. Do not execute or retry
 automatically. [Actual native result](acceptance/evidence/core-preview-a122/native-handoff/summary.json).
 

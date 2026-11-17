@@ -1,0 +1,72 @@
+[
+  {
+    "path": "plan.json",
+    "sha256": "63420a34eafed1fc9aa4a1d8119d31cdaf273a525ea692ac2e9ea80e35888f2a",
+    "bytes": 6204
+  },
+  {
+    "path": "readiness.json",
+    "sha256": "37c6095dc55f641eae94a2af9b263b16848592b4ede166afc61079e983998c80",
+    "bytes": 412
+  },
+  {
+    "path": "bound-helpers.json",
+    "sha256": "79b795665abfc68a2cda2624e08fedaf36294e474045caec0fe1e61c34330835",
+    "bytes": 783
+  },
+  {
+    "path": "live-authorization.template.json",
+    "sha256": "7f55fcf70426ae0a2e4bd0dd9980deade03f3f191d874c4cbb09c1b2ba493e23",
+    "bytes": 1373
+  },
+  {
+    "path": "drivers/live.py.txt",
+    "sha256": "5b0bf77d0eb4753528bfa42bbae70424e6eb22faeef6ea83b42edca335bb9f7c",
+    "bytes": 38519
+  },
+  {
+    "path": "drivers/cleanup.py.txt",
+    "sha256": "8f77714ad8596f4b66ed41d25ed44af66a5d6c891310e627127b5620f5446dba",
+    "bytes": 16032
+  },
+  {
+    "path": "drivers/recovery.py.txt",
+    "sha256": "c25b1daf52d2cb528ecd374cfde23b021e11480c6588c6aec29913a8be4b2501",
+    "bytes": 10750
+  },
+  {
+    "path": "drivers/verify.py.txt",
+    "sha256": "cbd20d12f68990cf910e9dfabb47f8cfbaf52553c53cc68362b2fb58ff828470",
+    "bytes": 17467
+  },
+  {
+    "path": "drivers/run-stage.py.txt",
+    "sha256": "f3a812ddbeec0232603cb9881c4571d281ef064630656047e681cd0a2fadc1da",
+    "bytes": 6794
+  },
+  {
+    "path": "drivers/receiver-decision.py.txt",
+    "sha256": "f9e8f75260da043cebe30b79cbca25f054d70132949765986a3927347fed3463",
+    "bytes": 5098
+  },
+  {
+    "path": "drivers/setup-auth.py.txt",
+    "sha256": "f3f7484b42205ad1088e94f1d381dd4e22387c56da0e4bb3077199821af7b209",
+    "bytes": 7352
+  },
+  {
+    "path": "drivers/prepare.py.txt",
+    "sha256": "5a76e330141235414c58d451225a8a99f2248edd4f61d1613448445679e5aee8",
+    "bytes": 14700
+  },
+  {
+    "path": "drivers/private_capture.py.txt",
+    "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "bytes": 3377
+  },
+  {
+    "path": "drivers/interrupt_parent.py.txt",
+    "sha256": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+    "bytes": 6790
+  }
+]

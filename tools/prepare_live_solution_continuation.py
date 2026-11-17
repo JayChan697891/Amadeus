@@ -14,9 +14,11 @@ OLD_GUEST = "/root/amadeus-interrupted-a117-r2-20261116"
 GUEST = "/root/amadeus-interrupted-a119-solution-20261116"
 PACKAGE = "/root/amadeus-m119l"
 PYTHON = PACKAGE + "/w/bin/python"
+VERSION = "0.3.0a119"
 COMMIT = "4be51345d5b8846da58d79df5b8567619e9acfed"
 WHEEL_SHA = "cbcf38bfe80a61510cbc95fb2a7112173222a7b6bb03404a324e52e23d237c31"
 MEMBERS_SHA = "545b490670bdbb0f73a74fb13dca77cf9b875c38f350d5a1b2f0f4fdb3b829a7"
+MEMBERS = EVIDENCE / "core-preview-a119/windows/run/runtime-members.json"
 TEMPLATES = {
     "prepare.py": "f85dc33940a0e39c68a09d7faf3b5ea627895131b75cea17d935229e49f77cd0",
     "live.py": "a2914736eb8e2a9e8d9eaba7a433c4d2d584493822df920c0cb7c41e43d52d18",
@@ -88,9 +90,12 @@ def preparation():
                 '"f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"',
                 repr(MEMBERS_SHA),
             ),
-            ('"agentsync_local-0.3.0a117.tar.gz"', '"agentsync_local-0.3.0a119-py3-none-any.whl"'),
+            (
+                '"agentsync_local-0.3.0a117.tar.gz"',
+                json.dumps(f"agentsync_local-{VERSION}-py3-none-any.whl"),
+            ),
             ('(PACKAGE / "installed")', '(PACKAGE / "w")'),
-            ('"0.3.0a117"', '"0.3.0a119"'),
+            ('"0.3.0a117"', json.dumps(VERSION)),
             (
                 'WAVE_REQUEST = "interrupted-add-producer-wave"',
                 'WAVE_REQUEST = "interrupted-solution-producer-wave"',
@@ -144,7 +149,7 @@ def write_json(name, value):
     write(name, (json.dumps(value, indent=2) + "\n").encode())
 
 
-def render():
+def render(recovery=False):
     common = {
         "prepare.py": preparation().encode(),
         "private_capture.py": checked(
@@ -155,9 +160,7 @@ def render():
             R2 / "interrupted-controller/interrupt_parent.py.txt",
             "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
         ),
-        "runtime-members.json": checked(
-            EVIDENCE / "core-preview-a119/windows/run/runtime-members.json", MEMBERS_SHA
-        ),
+        "runtime-members.json": checked(MEMBERS, MEMBERS_SHA),
         "cleanup.py": substitute(
             template("cleanup.py"),
             (
@@ -172,22 +175,70 @@ def render():
         "verify.py": (REPO / "tools/run_live_solution_verification.py").read_bytes(),
         "reference-solution.py.txt": REFERENCE.encode(),
     }
+    if recovery:
+        common["cleanup.py"] = (
+            substitute(
+                common["cleanup.py"].decode(),
+                (('        "verify.py",', '        "verify.py",\n        "recovery.py",'),),
+            )
+            .replace(
+                "amadeus-interrupted-a119-solution-auth", "amadeus-m122-composed-recovery-auth"
+            )
+            .encode()
+        )
+        common["verify.py"] = (
+            substitute(
+                common["verify.py"].decode(),
+                (
+                    ('"/root/amadeus-interrupted-a119-solution-20261116"', repr(GUEST)),
+                    (
+                        "def publication(live, core, state, request, grant):\n",
+                        "def publication(live, core, state, request, grant):\n    import recovery\n",
+                    ),
+                    (
+                        '        "continuation_plan_sha256": original["plan_sha256"],',
+                        '        "continuation_plan_sha256": original["plan_sha256"],\n'
+                        "        **recovery.approval_binding(live, original),",
+                    ),
+                ),
+            )
+            .replace("one a119 continuation", "one recovered a122 continuation")
+            .encode()
+        )
+        common["recovery.py"] = (REPO / "tools/run_live_solution_recovery.py").read_bytes()
+        common["scope.json"] = (
+            json.dumps(
+                {
+                    "runtime_commit": COMMIT,
+                    "wheel_sha256": WHEEL_SHA,
+                    "runtime_manifest_sha256": MEMBERS_SHA,
+                    "model_execution": "NOT RUN",
+                    "maximum_subscription_calls": 2,
+                    "extra_fees_allowed": False,
+                    "automatic_retry": False,
+                    "candidate_execution": "NOT RUN; exact new approval required after preview",
+                },
+                indent=2,
+            )
+            + "\n"
+        ).encode()
     OUTPUT.mkdir(exist_ok=False)
     for name, data in common.items():
         write(name, data)
     write_json("prepared-inputs.json", {name: sha(data) for name, data in common.items()})
 
 
-def bind():
+def bind(recovery=False):
     inputs = json.loads((OUTPUT / "prepared-inputs.json").read_bytes())
-    for name in (
+    prepared = (
         "prepare.py",
         "private_capture.py",
         "interrupt_parent.py",
         "runtime-members.json",
         "cleanup.py",
         "verify.py",
-    ):
+    ) + (("recovery.py",) if recovery else ())
+    for name in prepared:
         checked(OUTPUT / name, inputs[name])
     plan_file, ready_file = (
         (OUTPUT / name).read_bytes() for name in ("plan.json", "readiness.json")
@@ -269,6 +320,8 @@ def bind():
             ("['add.py']", "['solution.py']"),
         ),
     )
+    if recovery:
+        live, runner = recovery_sources(live, runner)
     write("live.py", live.encode())
     write("run-stage.py", runner.encode())
     write("receiver-decision.py", receiver.encode())
@@ -289,6 +342,7 @@ def bind():
                     "live.py",
                     "cleanup.py",
                     "verify.py",
+                    *(("recovery.py",) if recovery else ()),
                 )
             },
             "expires_at": None,
@@ -303,13 +357,97 @@ def bind():
     )
 
 
+def recovery_sources(live, runner):
+    live = substitute(
+        live,
+        (
+            (
+                'set(PREPARED) | {"live.py", "cleanup.py", "verify.py"}',
+                'set(PREPARED) | {"live.py", "cleanup.py", "verify.py", "recovery.py"}',
+            ),
+            (
+                "    async def authority(review):\n        nonlocal authorizations, capture, approved_review",
+                "    checkpoint = None\n"
+                "    async def retain_before_exit(result):\n"
+                "        nonlocal checkpoint\n"
+                "        checkpoint = await diagnostics(\n"
+                '            "receiver", relay, state, task_id, capture, authorizations,\n'
+                "            approved_review, None, asdict(result),\n"
+                "        )\n"
+                "        return checkpoint\n\n"
+                "    async def authority(review):\n        nonlocal authorizations, capture, approved_review",
+            ),
+            (
+                "        outcome = await flow.run_once(\n            request,",
+                "        import recovery\n"
+                "        outcome = await recovery.run_to_checkpoint(\n"
+                "            sys.modules[__name__], flow, request, core, state, entry, retain_before_exit,",
+            ),
+            (
+                "            execution_budget_seconds=230,\n        )",
+                "            execution_budget_seconds=230,\n        )\n"
+                '        raise AssertionError("Receiver did not stop at the reviewed checkpoint.")',
+            ),
+            (
+                '        observed, schema_exact, snapshot, final_turn, meta = await diagnostics(\n            "receiver",',
+                '        observed, schema_exact, snapshot, final_turn, meta = checkpoint or await diagnostics(\n            "receiver",',
+            ),
+            (
+                '    stages.add_parser("replay")',
+                '    stages.add_parser("recover")\n    stages.add_parser("replay")',
+            ),
+            (
+                "        return asyncio.run(replay(grant))",
+                '        if args.stage == "recover":\n'
+                "            import recovery\n"
+                "            return recovery.recover(sys.modules[__name__], grant)\n"
+                "        return asyncio.run(replay(grant))",
+            ),
+        ),
+    )
+    runner = substitute(
+        runner,
+        (
+            (
+                '    stages.add_parser("replay")',
+                '    stages.add_parser("recover")\n    stages.add_parser("replay")',
+            ),
+            (
+                "    stage = args.stage\n",
+                "    stage = args.stage\n"
+                '    if stage == "recover":\n'
+                '        exited = json.loads((BASE / "continue-once-result.json").read_bytes())\n'
+                '        if exited.get("status") != "terminal" or exited.get("exit_code") != 73:\n'
+                '            parser.error("The exact receiver controller exit 73 was not observed.")\n',
+            ),
+        ),
+    )
+    return live.replace("a119 producer", "a122 producer"), runner.replace("a119", "a122")
+
+
+def configure_recovery():
+    global OUTPUT, GUEST, PACKAGE, PYTHON, VERSION, COMMIT, WHEEL_SHA, MEMBERS_SHA, MEMBERS
+    OUTPUT = Path("D:/agentsync-debug/m122-composed-recovery")
+    GUEST = "/root/amadeus-m122-composed-recovery"
+    PACKAGE = "/root/amadeus-m122l"
+    PYTHON = PACKAGE + "/w/bin/python"
+    VERSION = "0.3.0a122"
+    COMMIT = "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+    WHEEL_SHA = "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    MEMBERS_SHA = "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    MEMBERS = EVIDENCE / "core-preview-a122/windows/runtime-members.json"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     if not __debug__:
         parser.error("Do not disable checks.")
     parser.add_argument("action", choices=("render", "bind"))
+    parser.add_argument("--composed-recovery", action="store_true")
     args = parser.parse_args()
-    (render if args.action == "render" else bind)()
+    if args.composed_recovery:
+        configure_recovery()
+    (render if args.action == "render" else bind)(args.composed_recovery)
 
 
 if __name__ == "__main__":

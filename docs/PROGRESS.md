@@ -1,5 +1,16 @@
 # Amadeus current progress
 
+The existing M7-02/M8-02 composed recovery check is now prepared against the frozen
+a122 runtime. The wrapper retains a completed receiver proposal and process
+diagnostics before controller exit73, then uses a fresh controller and the original
+CLI to reconcile the same wave without a new model launch. Two focused offline
+checks pass; these use a Python protocol fixture and intercepted exit, not real
+Codex or actual controller death. Root inspected the original XML and all prepared
+hashes; Astra accepted preparation scope. Exact live binding and execution remain
+NOT RUN. A new candidate execution still requires its own exact owner approval.
+The old active-generation-at-deadline wording exceeded the original M6 scope and
+is corrected in DESIGN.md; no historical result or current requirement becomes PASS.
+
 The first check in the frozen a122/5232e9e acceptance plan completed with Windows
 Codex 0.162.0 at 06:39:36Z on 2026-11-17 (bf7a51, exit 0). The fresh native MCP fixture
 accepted a structured handoff with pinned context v1 while the latest context

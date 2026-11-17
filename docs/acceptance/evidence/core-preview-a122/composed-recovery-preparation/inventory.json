@@ -1,0 +1,154 @@
+{
+  "originals": [
+    {
+      "path": "final.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\final.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "final.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\final.log",
+      "bytes": 100,
+      "sha256": "8573c63fe4ccd82165794ee320caf9d595d092ba86ad02d9edf9e2212da8fff6"
+    },
+    {
+      "path": "final.xml",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\final.xml",
+      "bytes": 465,
+      "sha256": "b287619270ae7ddd13eeed48c48692a67b1e65c92a0601a507d82990d296ccbe"
+    },
+    {
+      "path": "format-final.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\format-final.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "format-final.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\format-final.log",
+      "bytes": 27,
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
+    },
+    {
+      "path": "format.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\format.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "format.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\format.log",
+      "bytes": 21,
+      "sha256": "aa1d1e99257f1375564760254c0c0b8eae0c7cc96ff1eb94a2064d5ff7601cea"
+    },
+    {
+      "path": "initial.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\initial.exit",
+      "bytes": 3,
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "path": "initial.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\initial.log",
+      "bytes": 739,
+      "sha256": "5350f8039b61d8bb1b7cc50167626baef3caa2bbe6420c102052f39716fca632"
+    },
+    {
+      "path": "initial.xml",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\initial.xml",
+      "bytes": 1140,
+      "sha256": "5971d283fb0c5ec8a34a93150276e5ae3d15649b2ccddfe297646d7217d58ec4"
+    },
+    {
+      "path": "r2.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\r2.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "r2.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\r2.log",
+      "bytes": 100,
+      "sha256": "a59d93a1e4a63bad6dbcbca1e7f670b883686b9556bea01616215d73dfebff99"
+    },
+    {
+      "path": "r2.xml",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\r2.xml",
+      "bytes": 465,
+      "sha256": "212b5edb6c1c2c57e1eeb01a4466890683f0d628bbb70ffce91ba47f16d4935e"
+    },
+    {
+      "path": "render-final.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\render-final.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "render-final.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\render-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "render.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\render.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "render.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\render.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "ruff-final.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\ruff-final.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "ruff-final.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\ruff-final.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "ruff-initial.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\ruff-initial.exit",
+      "bytes": 3,
+      "sha256": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b"
+    },
+    {
+      "path": "ruff-initial.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\ruff-initial.log",
+      "bytes": 116,
+      "sha256": "d784ba724f29ec6dd4085f8bd26aab1db0a7eec404571ba6250e9f6b9a04b4fa"
+    },
+    {
+      "path": "ruff-r2.exit",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\ruff-r2.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "ruff-r2.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\ruff-r2.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "test_recovery.py.txt",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery-offline\\test_recovery.py",
+      "bytes": 7848,
+      "sha256": "fa681754dfcb8ce29cff51e8438fd7674a15681f9b1081c04af7c3d44acc313d"
+    },
+    {
+      "path": "prepared-inputs.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\prepared-inputs.json",
+      "bytes": 801,
+      "sha256": "84aff52abec2bdb65dcbc0e409b1687af3bf991526e30c2d3547169bf89809e1"
+    }
+  ]
+}
