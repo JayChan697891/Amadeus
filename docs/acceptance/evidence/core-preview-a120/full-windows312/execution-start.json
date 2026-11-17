@@ -1,0 +1,22 @@
+{
+  "status": "RUNNING",
+  "native_session": 28686,
+  "native_start_chunk": "3ff502",
+  "controller_pid": 23088,
+  "controller_started_at": "2026-11-17T00:32:58.414783+00:00",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "driver_sha256": "6c936ec18d764e868c4b308d53e8dbc93fb5b26ef495d44e9c381b7804b8cf93",
+  "source_files": 5369,
+  "source_snapshot_sha256": "1efa1b6d1dcf5d18b0eef1826115e6c6cbf6aa63fc2c9f84c33ef89123711b6f",
+  "source_manifest_sha256": "584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc",
+  "prechecks": {
+    "wheel_pip_check": 0,
+    "wheel_origin_before": 0,
+    "installed_members": 97
+  },
+  "final_result": "NOT AVAILABLE",
+  "automatic_retry": false,
+  "resume": "Poll native session28686; if handle unavailable inspect D:/agentsync-debug/m120fullw/run/result.json and .process.json plus exact process identities. Never restart this driver against the existing attempt.",
+  "formal_release": "BLOCKED"
+}

@@ -9,9 +9,11 @@ stay in memory/stdin, unsafe input is refused and timeout does not retry. Four
 new focused checks pass, including one actual Core/CLI subprocess with injected
 prompt input. This is a checkout example, not a new API, package or M phase.
 See [usage](RELAY-RECOVERY.md) and [results](acceptance/evidence/core-preview-a120/recovery-example/summary.json).
-Next run the first full Windows3.12 installed-wheel regression for unchanged a120
-against a frozen current test checkout; no new build or repeated focused suite.
-Full a120 acceptance and the deferred combined live-client scenario remain NOT RUN.
+The first full Windows3.12 installed-wheel regression is now running in native
+session28686 on unchanged a120 with test snapshot d427355; see PROGRESS and the
+full-windows312 execution-start record. No new build or repeated focused suite.
+Full-suite results are pending; complete a120 acceptance and the deferred combined
+live-client scenario remain NOT RUN.
 
 P0 recovery boundary — 2026-11-16 America/Tijuana: test-source27594dc adds one
 native coordinator exit after receiver review/terminal receipts, before its final

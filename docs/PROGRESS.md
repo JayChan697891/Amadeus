@@ -1,5 +1,19 @@
 # Amadeus current progress
 
+ACTIVE LOCAL RUN — a120 Windows3.12 installed-wheel full regression.
+Native session28686/controller23088 started2026-11-17T00:32:58Z; pytest started
+00:33:17Z (Nov16 America/Tijuana). Original wheel/runtime859775b is reused;
+test/example snapshot is frozen d427355,5369 files. Pip/origin checks exited0,
+97 members match. Full-suite result is not yet available; no acceptance claim.
+See acceptance/evidence/core-preview-a120/full-windows312/execution-start.json.
+Recovery: poll session28686, then inspect D:/agentsync-debug/m120fullw/run/result.json
+and native .process.json records. If the session handle is unavailable, first
+match the saved controller identity and current processes; never restart an
+existing attempt. Preserve raw JUnit locally and use the collector's sanitized
+copy for storage. After the actual terminal result, inspect case identities,
+failures/skips and unchanged source/runtime before deciding targeted repair.
+No model, VM or GitHub execution is involved; Release remains BLOCKED.
+
 P1 recovery entry delivered against unchanged a120/859775b: the checkout's
 examples/recover_relay.py exposes status/history/task and an explicitly selected
 wave reconciliation through the existing installed CLI. Hidden prompt input goes
@@ -17,10 +31,10 @@ no worker/VM/model job remains from this batch. Interactive terminal echo and
 Linux/macOS example checks are NOT RUN; formal Release remains BLOCKED.
 See [user recovery path](RELAY-RECOVERY.md) and the archive's summary.json.
 
-Next local acceptance item: the first full Windows3.12 installed-wheel regression
-for unchanged a120, with these current test/example inputs frozen separately.
-The focused package checks and prior a116/a117 full runs are retained, not repeated
-or relabelled. A new full run has not started. Do not reconstruct old live fixtures;
+The first full a120 Windows3.12 installed-wheel regression is now running as above,
+with these current test/example inputs frozen separately. Focused package checks
+and prior a116/a117 full runs are retained, not repeated or relabelled.
+Do not reconstruct old live fixtures;
 the additional real-client coordinator window stays deferred as recorded below.
 
 P0 process-recovery supplement — test-source27594dc, original a120 runtime859775b.

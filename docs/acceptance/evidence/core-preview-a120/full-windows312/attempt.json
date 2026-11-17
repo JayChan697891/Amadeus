@@ -1,0 +1,27 @@
+{
+  "scope": "Windows 3.12 full installed-wheel suite on the existing a120 environment",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "product_runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "version": "0.3.0a120",
+  "wheel_path": "D:\\agentsync-debug\\m120p\\dist\\agentsync_local-0.3.0a120-py3-none-any.whl",
+  "wheel_sha256": "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6",
+  "runtime_members_sha256": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4",
+  "driver_sha256": "6c936ec18d764e868c4b308d53e8dbc93fb5b26ef495d44e9c381b7804b8cf93",
+  "source_archive_command": [
+    "git",
+    "-C",
+    "F:\\syuc\\amadeus-m6-single",
+    "archive",
+    "--format=zip",
+    "d4273550359ffe767d0195445d1fccef6651cfc7"
+  ],
+  "controller_pid": 23088,
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+  "started_at": "2026-11-17T00:32:58.414783+00:00",
+  "status": "unknown",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_platform_matrix": "NOT RUN"
+}
