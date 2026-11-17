@@ -1,0 +1,27 @@
+{
+  "TMP": "D:/agentsync-debug/m122-owner-resume",
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "PYTHONDONTWRITEBYTECODE": "1",
+  "TEMP": "D:/agentsync-debug/m122-owner-resume",
+  "argv": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-c",
+    "pyproject.toml",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:/agentsync-debug/m122-owner-resume/tmp-initial",
+    "--junitxml",
+    "D:/agentsync-debug/m122-owner-resume/initial.xml",
+    "tests/integration/test_proposal_staging.py::test_owner_resume_stages_same_proposal_after_publisher_expiry",
+    "tests/integration/test_proposal_staging.py::test_owner_resume_refuses_changed_original_plan",
+    "tests/integration/test_proposal_staging.py::test_owner_resume_refuses_changed_capture_record_before_authenticating",
+    "tests/integration/test_proposal_staging.py::test_producer_may_expire_but_owner_staging_identity_must_be_current"
+  ]
+}

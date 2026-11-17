@@ -1,0 +1,88 @@
+import collections
+import datetime
+import hashlib
+import json
+import shutil
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+base = Path('D:/agentsync-debug/m122fullw')
+run = base / 'run'
+repo = Path('F:/syuc/amadeus-m6-single')
+dest = repo / 'docs/acceptance/evidence/core-preview-a122/full-windows312'
+sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+r = json.loads((run / 'result.json').read_bytes())
+assert r['status'] == 'pass' and r['product_runtime_commit'] == '5232e9e8bd33a949f7ffdc68410cd614a297af66'
+assert r['pinned_inputs_unchanged'] and r['frozen_source_unchanged']
+for name, pin in r['inputs'].items():
+    p = Path(name)
+    assert p.stat().st_size == pin['bytes'] and sha(p) == pin['sha256']
+assert sha(base / 'run-wheel.py') == r['driver_sha256']
+assert sha(base / 's/tools/release_acceptance.py') == r['collector_sha256']
+for check in r['checks']:
+    assert check['status'] == 'pass' and check['exit_code'] == 0
+    assert sha(run / check['log']) == check['log_sha256']
+    receipt = json.loads((run / f"logs/{check['id']}.process.json").read_bytes())
+    assert receipt['phase'] == 'finished' and receipt['outcome'] == 'exited'
+    assert receipt['result'] == check
+for item in ('junit', 'pytest_stdout'):
+    assert sha(run / r[item]['path']) == r[item]['sha256']
+for item, name in [('raw_junit_local','wheel-junit.xml'),('raw_stdout_local','wheel-pytest-stdout.raw.log')]:
+    p = base / 't' / name
+    assert sha(p) == r[item]['sha256'] and p.stat().st_size == r[item]['bytes']
+members = json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())
+site = Path('D:/agentsync-debug/m122p/w/Lib/site-packages')
+assert len(members) == 97
+assert {p.relative_to(site).as_posix():sha(p) for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts} == members
+
+def cases(path):
+    data = {}
+    skips = collections.Counter()
+    for node in ET.parse(path).iter('testcase'):
+        key = node.attrib['classname'] + '::' + node.attrib['name']
+        assert key not in data
+        outcome = next((kind for kind in ['failure','error','skipped'] if node.find(kind) is not None),'pass')
+        data[key] = outcome
+        if outcome == 'skipped':
+            skips[node.find('skipped').attrib.get('message','')] += 1
+    return data, skips
+
+current, skips = cases(run/'wheel-junit.xml')
+previous_path = repo/'docs/acceptance/evidence/core-preview-a120/full-windows312/wheel-junit.xml'
+previous, _ = cases(previous_path)
+assert len(current) == 2596 and collections.Counter(current.values()) == {'pass':2539,'skipped':57}
+assert not previous.keys() - current.keys()
+changed = {key:[value,current[key]] for key,value in previous.items() if current[key] != value}
+assert not changed
+added = {key:current[key] for key in sorted(current.keys()-previous.keys())}
+assert len(added) == 9 and all(value == 'pass' for value in added.values())
+inventory = {}
+for p in sorted(run.rglob('*')):
+    if p.is_file():
+        rel = p.relative_to(run)
+        target = dest / rel
+        assert not target.exists() or target.read_bytes() == p.read_bytes(), str(rel)
+        target.parent.mkdir(exist_ok=True,parents=True)
+        if not target.exists():
+            with target.open('xb') as out:
+                out.write(p.read_bytes())
+        assert sha(target) == sha(p)
+        inventory[rel.as_posix()] = {'bytes':p.stat().st_size,'sha256':sha(p)}
+report = {
+    'scope':'Independent inspection of the first complete frozen a122 Windows 3.12 wheel regression; no re-execution',
+    'observed_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'runtime_commit':r['product_runtime_commit'],'native_session':43609,'native_terminal_chunk':'d04f44','native_exit_code':0,
+    'started_at':r['started_at'],'finished_at':r['finished_at'],
+    'counts':{'tests':2596,'passed':2539,'skipped':57,'failures':0,'errors':0},
+    'runtime_members_rechecked':97,'original_inputs_rechecked':True,
+    'old_a120_junit_sha256':sha(previous_path),'same_old_case_outcomes':len(previous),'added_passing_cases':added,
+    'skip_reasons':dict(skips),'copied_original_files':inventory,
+    'raw_local_only':['t/wheel-junit.xml','t/wheel-pytest-stdout.raw.log'],
+    'junit_credential_redactions':r['junit']['credential_redactions'],
+    'formal_release':'BLOCKED','real_clients':'NOT RUN in this suite',
+    'full_platform_matrix':'NOT RUN for a122','source_modified_by_postcheck':False
+}
+for p in [base/'root-postcheck.json',dest/'root-postcheck.json']:
+    with p.open('x',encoding='utf-8') as out:
+        json.dump(report,out,indent=2,ensure_ascii=True);out.write('\n')
+print(json.dumps({'status':'pass','counts':report['counts'],'preserved_old_cases':len(previous),'added':len(added),'copied':len(inventory)}))

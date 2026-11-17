@@ -6,7 +6,9 @@ The previously deferred real collaboration/controller-recovery composition has
 now run once on frozen a122. The real receiver proposal survives controller exit73;
 the next controller reconciles the same task with zero additional calls. Root and
 Astra accept this bounded observation. Independent candidate completion is still
-NOT RUN and awaits a new exact owner grant; no additional model call is needed.
+NOT RUN; the exact owner grant is now received. The reviewed resume helper uses
+fresh normally enrolled staging/reviewer identities because the original sessions
+expired during full regression. No additional model call is needed.
 See [actual evidence](acceptance/evidence/core-preview-a122/composed-recovery/summary.json)
 and PROGRESS for the precise recovery entry. Formal Release remains BLOCKED.
 
@@ -15,7 +17,10 @@ adapter and its launch wait now check the absolute deadline before cancelling wo
 Both failing reproductions are retained. Each fresh wheel and source-archive install
 passed the same 97 targeted cases on Windows 3.12 and Linux 3.14. Windows passed
 19 native checks and Linux passed 16. Root and Astra accepted the scoped results.
-Full a122 regression and complete real-client control acceptance remain unrun.
+The first full a122 Windows3.12 installed-wheel regression now passes2539/57skip,
+with unchanged original inputs and all2587 previous case identities/outcomes plus
+9 passing cases. Other full a122 matrix cells and complete real-client control
+acceptance remain unrun.
 Formal Release remains BLOCKED.
 [Preview packages](../releases/0.3.0a122/preview-5232e9e/) and
 [checkpoint and receipts](PROGRESS.md).

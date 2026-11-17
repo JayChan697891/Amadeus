@@ -1,0 +1,103 @@
+{
+  "scope": "Independent inspection of the first complete frozen a122 Windows 3.12 wheel regression; no re-execution",
+  "observed_at": "2026-11-17T08:33:16.275214+00:00",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session": 43609,
+  "native_terminal_chunk": "d04f44",
+  "native_exit_code": 0,
+  "started_at": "2026-11-17T07:36:00.387745+00:00",
+  "finished_at": "2026-11-17T08:21:24.762593+00:00",
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "runtime_members_rechecked": 97,
+  "original_inputs_rechecked": true,
+  "old_a120_junit_sha256": "b01981602daad0c26614e347afa4eedf41ca2a044f73f368e960dedbea72d90b",
+  "same_old_case_outcomes": 2587,
+  "added_passing_cases": {
+    "tests.integration.test_durable_demo::test_durable_demo_reports_unicode_directory_with_legacy_stdout": "pass",
+    "tests.integration.test_handoff_recovery::test_owner_recovery_reports_unicode_reason_with_legacy_stdout": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[cancel-wins]": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[natural-exit-wins]": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[owned-parent]": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[pending-factory]": "pass",
+    "tests.unit.test_launch_context_deadline::test_early_timer_preserves_one_launch_wait[deadline]": "pass",
+    "tests.unit.test_launch_context_deadline::test_early_timer_preserves_one_launch_wait[external-cancel]": "pass",
+    "tests.unit.test_launch_context_deadline::test_early_timer_preserves_one_launch_wait[swallowed-cancel]": "pass"
+  },
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 6,
+    "POSIX FIFO metadata fixture requires Linux": 1,
+    "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+    "Actual reconciliation requires an explicitly configured local Linux image": 5,
+    "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+    "Proposal execution requires an explicitly pinned local Linux Docker image": 14,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m122fullw\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m122fullw\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m122fullw\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m122fullw\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+    "Requires Linux/POSIX fork": 1,
+    "This host cannot create the actual symlink fixture": 2,
+    "FIFO fixture requires os.mkfifo": 1,
+    "Local symlink creation unavailable": 2,
+    "Local FIFO creation unavailable": 1,
+    "Creating directory symlinks requires unavailable host privileges": 1
+  },
+  "copied_original_files": {
+    "attempt.json": {
+      "bytes": 1554,
+      "sha256": "33be0d3d377c9fb9da869a819b14fd70e371c2c431d1d7e206af0c74d23cfd5b"
+    },
+    "logs/wheel_origin_after.log": {
+      "bytes": 514,
+      "sha256": "603c694c4da933921a66bdd57a25a788f9b9e883dfe8b8d8199052c70a05d66c"
+    },
+    "logs/wheel_origin_after.process.json": {
+      "bytes": 4582,
+      "sha256": "42f6633b8d872d327c925a93dd98ece78b2ac8ce99e6d23ed9795cf75daaeb5f"
+    },
+    "logs/wheel_origin_before.log": {
+      "bytes": 514,
+      "sha256": "603c694c4da933921a66bdd57a25a788f9b9e883dfe8b8d8199052c70a05d66c"
+    },
+    "logs/wheel_origin_before.process.json": {
+      "bytes": 4585,
+      "sha256": "304c61654082cbef4da056c02921af01c4849741a07a87053efb8db9fb976836"
+    },
+    "logs/wheel_pytest.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/wheel_pytest.process.json": {
+      "bytes": 1752,
+      "sha256": "d1ab5bbeb3aebc46601d8424e425416f0e6307f07f0d62167568ac023041feff"
+    },
+    "logs/wheel_pytest.stdout.log": {
+      "bytes": 19509,
+      "sha256": "1943af8c82fc897e2f227b45fdef44b51601fe7ab969daf07a171bfe50c17c06"
+    },
+    "pytest-start.json": {
+      "bytes": 537,
+      "sha256": "8fd8043f95fb431f82379cb2072d3b6f7a5c9425495986b0219826edbcff957e"
+    },
+    "result.json": {
+      "bytes": 8117,
+      "sha256": "2c367798ac6d1bff6133257a82b6ab82dbeba76b7db8fcaa270f475f90d286f3"
+    },
+    "wheel-junit.xml": {
+      "bytes": 409706,
+      "sha256": "96fac8fcc0d50f04c65124dede0ae9106453be4875e761e76b4350b490f43a27"
+    }
+  },
+  "raw_local_only": [
+    "t/wheel-junit.xml",
+    "t/wheel-pytest-stdout.raw.log"
+  ],
+  "junit_credential_redactions": 6,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN in this suite",
+  "full_platform_matrix": "NOT RUN for a122",
+  "source_modified_by_postcheck": false
+}

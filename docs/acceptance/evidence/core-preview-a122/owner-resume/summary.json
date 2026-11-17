@@ -1,0 +1,15 @@
+{
+  "scope": "Fresh owner-enrolled identities for the saved a122 receiver proposal; preparation only",
+  "helper_sha256": "80c41ab2b202b3ffa0c765e853283478e22d8ec9f6e629e63145f06d7a2da606",
+  "tests_sha256": "c940ec35ab41854360f8e0dd5765c3db6ab9dddf8c01519b61640ddaec95d5ea",
+  "final_junit_sha256": "2a8c86c82929d351a12845216ba3ffd7ddda0072ea6392c221134b5fe4f34c53",
+  "final_native_session": 82356,
+  "final_native_terminal": "5b6f8a",
+  "exit_code": 0,
+  "tests": {"passed":4,"failed":0,"errors":0,"skipped":0},
+  "checks": {"ruff":"PASS ae9906", "format":"PASS 14170e"},
+  "initial_results_preserved": ["4 PASS 352c0b", "Ruff B023 FAIL c110a9", "format FAIL 2d7f49"],
+  "review": "Root inspected files and XML; Astra independently accepted the capture-record fix and scoped preparation",
+  "limitations": ["Actual complete helper NOT RUN at this checkpoint", "No real model or Docker/candidate execution in focused checks", "Four focused tests are not the full suite"],
+  "formal_release": "BLOCKED"
+}

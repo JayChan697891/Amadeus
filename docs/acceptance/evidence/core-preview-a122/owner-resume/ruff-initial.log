@@ -1,0 +1,12 @@
+B023 Function definition does not bind loop variable `actual`
+   --> tests\integration\test_proposal_staging.py:380:30
+    |
+378 |         actual = original | {modified: "c" * 64}
+379 |         live = SimpleNamespace(
+380 |             sha=lambda path: actual[path.name],
+    |                              ^^^^^^
+381 |             present=lambda _: False,
+382 |             read=lambda name: {"stage-plan.json": plan}[name],
+    |
+
+Found 1 error.

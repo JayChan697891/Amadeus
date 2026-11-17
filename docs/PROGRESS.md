@@ -1,15 +1,29 @@
 # Amadeus current progress
 
-ACTIVE independent queue: the first full a122 Windows3.12 installed-wheel suite
-started at07:36:04Z on2026-11-17. Native handle43609 is live (50b2b2; process check
-2dbb12), controller644/pytest8796 with launcher PIDs23768/24392. Observe this
-same handle; do not restart from an observation timeout or this saved status.
-`D:/agentsync-debug/m122fullw/run/result.json` is written only at completion.
-The suite uses original5232e9e tests and the existing m122p/w installation; no
-rebuild, installation, focused97, static, license or model repeat. Raw evidence
-stays on D; final outcome is not yet available. See
-[reviewed driver and starting state](acceptance/evidence/core-preview-a122/full-windows312/preparation.json).
-This existing RAT-M9-01 gap is independent of the still-pending real-candidate grant.
+The first complete a122 Windows3.12 installed-wheel suite finished at08:21:24Z
+on2026-11-17. Native43609 closed with exit0 (d04f44):2539pass/57skip, zero
+failures/errors. Root and Astra inspected actual XML, logs, hashes and installed
+97 members. All2587 a120 case identities/outcomes remain;9 additional cases pass.
+The original5232e9e tests, wheel and3992 source files are unchanged. All four
+recorded controller/test PIDs were absent at08:33:16Z. No suite rerun, rebuild or
+installation occurred. Root's first evidence copy refused an existing identical
+pytest-start.json; the corrected observer retained it and copied only missing
+files. Both observer scripts and the error are preserved. This is one full
+Windows wheel suite, not the complete a122 matrix or formal Release.
+[Actual results and independent inspection](acceptance/evidence/core-preview-a122/full-windows312/root-postcheck.json).
+
+The owner granted the exact149-byte candidate's once-only Docker verification and
+independent same-task completion. New helper80c41ab2 uses normal owner-enrolled
+fresh identities after old sessions expire; it cannot revive old credentials,
+change the candidate or relaunch a model. Four focused checks and changed-file
+Ruff/format pass; initial lint/format failures remain. Root/Astra accepted this
+preparation scope only. Real helper and candidate effects remain NOT RUN at this
+checkpoint. VM2732 booted normally at08:33:50Z with prior logs retained; read-only
+inspection confirmed the same review-v5 task, expired old sessions, original
+runtime/image, no workers/containers and1.06GB free. Next: normal fresh enrollment,
+prepare/review the new exact plan, stage once, inspect execution plan, execute once,
+inspect completion plan and independently complete the same receiver task.
+No new model calls, account-login copying or retry after failure/unknown.
 
 The a122 composed real check now reaches its authorized boundary. Two real Codex
 subscription calls ran once. The first parent was interrupted after turn.started
@@ -23,7 +37,7 @@ Temporary login removed, RAM home unmounted/empty, original login unchanged, no
 workers/containers remain. Root's three observation errors are retained; no live
 step was repeated. [Actual results](acceptance/evidence/core-preview-a122/composed-recovery/summary.json).
 
-Next: obtain a new explicit owner grant for the exact recovered candidate's
+The owner grant is now recorded for the exact recovered candidate's
 isolated staging, one Docker verification and independent same-task completion.
 The149-byte source is inert and unchanged; [stage plan](acceptance/evidence/core-preview-a122/composed-recovery/stage-plan.json)
 SHA28969e1168f5514a02776db6f5f5fee700d265f71707f5024e2dd45f1f24e2da
@@ -31,11 +45,11 @@ binds receiverd583d431-24ae-48e6-9595-4c5b2ded440a v5, source8172bd12,
 checkpointf95e6904 and reconcile53d08022, the fixed Docker image and two cases.
 Candidate staging/execution/completion remain NOT RUN; old a119 grant consumed.
 Do not restart producer/receiver/recovery/replay. No full M7/M8 or Release pass.
-The new authorization question is pending. VM8280 shut down normally at
+The original authorization question is answered; see the grant above. VM8280 shut down normally at
 07:25:34Z on2026-11-17; Root8d5bae observed process absent, ports closed, no
-matching workers and preserved disk. Resume only after the exact candidate grant:
-start the existing VM, inspect the same fixture/task and session readiness, then
-use the existing `verify.py stage-once` plan binding above. Inspect each generated
+matching workers and preserved disk. Its subsequent boot and readiness are recorded
+above. Original session expiry requires the reviewed `resume_verify.py` owner
+route and freshly bound identities; do not use expired credentials. Inspect each generated
 execution/completion plan before its corresponding effect; no new model call.
 Do not infer that permission was granted or work resumed from this saved entry.
 

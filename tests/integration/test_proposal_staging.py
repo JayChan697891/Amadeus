@@ -1,10 +1,13 @@
 """Actual disposable Git/Core staging, no model or candidate code execution."""
 
 import json
+import runpy
 import shutil
 import subprocess
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from conftest import owner_grant
@@ -292,6 +295,96 @@ def test_producer_may_expire_but_owner_staging_identity_must_be_current(world):
     with connect(world[0].db_path) as db:
         db.execute("UPDATE sessions SET expires_at=0 WHERE id=?", (args["session_id"],))
     assert observe(service, args)["state"] == "staged"  # Owner-only historical read.
+
+
+@pytest.fixture
+def owner_resume(world, monkeypatch):
+    core, owner, publisher, _, _, _, _ = world
+    service, initial, files = setup(world)
+    stage = service.preview(**initial)
+    old = {
+        "staging": stage,
+        "binding": {
+            "task_id": initial["task_id"],
+            "review_task_version": initial["expected_task_version"],
+            "context_id": initial["context_id"],
+            "publication_sha256": initial["expected_content_sha256"],
+        },
+    }
+    history = {key: initial[key] for key in ("publication_session_id", "publication_request_id")}
+    original = {
+        "producer": publisher,
+        "receiver": publisher,
+        "stager": {"agent_id": stage["plan"]["staging_agent_id"]},
+        "reviewer": publisher,
+    }
+    now = time.time() + 3601
+    monkeypatch.setattr(time, "time", lambda: now)
+    assert publisher["expires_at"] <= now
+    credentials = {}
+    for operation, role in (("stager", "worker"), ("reviewer", "reviewer")):
+        actor = core.execute("register_agent", {**owner, "name": f"Fresh {operation}"})
+        owner_grant(core, owner, actor, (role,))
+        credentials[operation] = {key: actor[key] for key in ("session_id", "session_token")}
+    tool = runpy.run_path(
+        str(Path(__file__).resolve().parents[2] / "tools/resume_live_solution_verification.py")
+    )
+    actors = tool["actor_binding"](core, owner, original, credentials)
+    assert actors["stager"]["agent_id"] != actors["reviewer"]["agent_id"]
+    return service, owner, old, history, credentials, actors, tool["stage_preview"], files
+
+
+def test_owner_resume_stages_same_proposal_after_publisher_expiry(owner_resume):
+    service, owner, old, history, credentials, actors, preview, files = owner_resume
+    stage, payload = preview(service, owner, old, history, credentials["stager"], actors["stager"])
+    assert stage["plan_sha256"] != old["staging"]["plan_sha256"]
+    assert stage["plan"]["publication_session_id"] == history["publication_session_id"]
+    with pytest.raises(AgentSyncError):
+        service.stage_once(**payload, expected_plan_sha256=old["staging"]["plan_sha256"])
+    result = service.stage_once(**payload, expected_plan_sha256=stage["plan_sha256"])
+    assert result["task_id"] == old["binding"]["task_id"] and result["execution_started"] is False
+    export = OwnerCandidateExporter(service._core).export(
+        **owner, candidate_id=result["candidate_id"], expected_candidate_sha=result["candidate_sha"]
+    )
+    assert export.snapshot.source == files[0]["content"].encode()
+    with pytest.raises(AgentSyncError) as duplicate:
+        preview(service, owner, old, history, credentials["stager"], actors["stager"])
+    assert duplicate.value.code == "proposal_staging_exists"
+
+
+def test_owner_resume_refuses_changed_original_plan(owner_resume):
+    service, owner, old, history, credentials, actors, preview, _ = owner_resume
+    old["staging"]["plan"]["original_receipt_sha256"] = "a" * 64
+    with pytest.raises(AssertionError):
+        preview(service, owner, old, history, credentials["stager"], actors["stager"])
+    assert (
+        observe(service, owner | {"task_id": old["binding"]["task_id"]})["state"] == "not_started"
+    )
+
+
+def test_owner_resume_refuses_changed_capture_record_before_authenticating():
+    tool_path = Path(__file__).resolve().parents[2] / "tools/resume_live_solution_verification.py"
+    tool = runpy.run_path(str(tool_path))
+    original = {
+        "stage-plan.json": tool["ORIGINAL_STAGE"],
+        "producer-capture.json": "a" * 64,
+        "receiver-capture.json": "b" * 64,
+    }
+    plan = {
+        "binding": {
+            f"{actor}_capture_record_sha256": original[f"{actor}-capture.json"]
+            for actor in ("producer", "receiver")
+        }
+    }
+    for modified in ("producer-capture.json", "receiver-capture.json"):
+        actual = original | {modified: "c" * 64}
+        live = SimpleNamespace(
+            sha=lambda path, hashes=actual: hashes[path.name],
+            present=lambda _: False,
+            read=lambda name: {"stage-plan.json": plan}[name],
+        )
+        with pytest.raises(AssertionError):
+            tool["prepare_result"](live, None, None, None, {}, None, {})
 
 
 def test_historical_receipt_does_not_authorize_changed_task(world):
