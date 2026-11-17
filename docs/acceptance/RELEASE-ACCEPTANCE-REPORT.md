@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+Linux3.14 a120 fresh editable-source full suite **PASS with7 skips**. Native77917
+ended2026-11-17T04:26:58Z exit0;7 commands pass,2580pass/7skip/0fail/error in1153.57s,
+120 warnings retained. Actual source/CLI origins and editable metadata are bound
+to the new copy; original and copied5369 files/97 runtime members remain unchanged.
+Root checked55 originals/651374bytes and6 XML redactions.2587 unique identities/
+outcomes and36 selected Docker observations match Linux wheel; this is no new
+model proof. Astra accepts this bounded source result. No workers/containers
+remained; owned VM normally off, disk retained. Windows source is RUNNING, not
+passed; static FAIL, full formal matrix, license review and manual credential
+cleanup remain. **Release BLOCKED**.
+[Actual source provenance and complete result](evidence/core-preview-a120/full-linux314-source/summary.json).
+
 Windows3.12 a120 installed-sdist complete suite **PASS with57 explicit skips**:
 native71082 ended2026-11-17T03:56:07Z exit0;2530pass/57skip/0fail/error,2688.74s.
 All4 commands passed;2587 unique case identities/outcomes match Windows wheel,

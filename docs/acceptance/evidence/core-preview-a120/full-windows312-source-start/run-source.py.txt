@@ -1,0 +1,280 @@
+"""Run one Windows full suite with a fresh editable copy of frozen a120 source."""
+
+import hashlib
+import json
+import os
+import shutil
+import stat
+import sys
+import tomllib
+import xml.etree.ElementTree as ET
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m120sourcew")
+FROZEN = BASE.parent / "m120fullw"
+INSTALL = BASE / "e"
+OFFLINE = BASE.parent / "continuation-cc30ed21"
+BASE_PYTHON = OFFLINE / "windows-py312-venv/Scripts/python.exe"
+WHEELHOUSE = OFFLINE / "windows-py312-wheelhouse"
+VERSION = "0.3.0a120"
+SNAPSHOT = FROZEN / "source.zip"
+MANIFEST = FROZEN / "run/source-manifest.json"
+MEMBERS = BASE.parent / "m120p/run/runtime-members.json"
+SOURCE = BASE / "s"
+RUN, SCRATCH, HOME = (BASE / name for name in ("run", "t", "home"))
+TEST_COMMIT = "d4273550359ffe767d0195445d1fccef6651cfc7"
+PRODUCT_COMMIT = "859775bf3f1a1492153ba550d36f4ad2b146c58f"
+PINNED = {
+    SNAPSHOT: (159181319, "1efa1b6d1dcf5d18b0eef1826115e6c6cbf6aa63fc2c9f84c33ef89123711b6f"),
+    MANIFEST: (1052422, "584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc"),
+    MEMBERS: (10144, "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4"),
+}
+SOURCE_FILES = 5369
+
+
+ORIGIN_PROBE = r"""
+import hashlib, importlib.metadata as md, json, sys, sysconfig
+from pathlib import Path
+import agentsync, agentsync.cli
+
+install, checkout, members = map(Path, sys.argv[1:4])
+version = sys.argv[4]
+checkout = checkout.resolve(strict=True)
+source = checkout / "src"
+assert sys.version_info[:3] == (3, 12, 16)
+assert Path(sys.prefix).resolve() == install.resolve()
+site = Path(sysconfig.get_path("purelib")).resolve()
+assert site.is_relative_to(install.resolve())
+origin = Path(agentsync.__file__).resolve()
+assert origin == source / "agentsync/__init__.py"
+assert Path(agentsync.cli.__file__).resolve() == source / "agentsync/cli.py"
+dist = md.distribution("agentsync-local")
+assert dist.version == agentsync.__version__ == version
+assert Path(dist.locate_file("")).resolve() == site
+direct = json.loads(dist.read_text("direct_url.json"))
+assert direct["url"] == checkout.as_uri()
+assert direct["dir_info"]["editable"] is True and "archive_info" not in direct
+actual = {}
+for path in (source / "agentsync").rglob("*"):
+    if path.is_file() and "__pycache__" not in path.parts:
+        assert path.resolve(strict=True) == path
+        with path.open("rb") as stream:
+            actual[path.relative_to(source).as_posix()] = hashlib.file_digest(stream, "sha256").hexdigest()
+assert actual == json.loads(members.read_bytes()) and len(actual) == 97
+print(json.dumps({"python": sys.version, "version": version, "origin": str(origin),
+                  "runtime_members": len(actual), "direct_url": direct}))
+"""
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def verify_inputs():
+    for path, expected in PINNED.items():
+        assert path.resolve(strict=True) == path and stat.S_ISREG(path.lstat().st_mode), path.name
+        assert (path.stat().st_size, sha(path)) == expected, path.name
+
+
+def verify_source(root, manifest):
+    assert root.resolve(strict=True) == root and root.is_dir()
+    allowed_dirs = {
+        parent.as_posix() for name in manifest for parent in Path(name).parents
+        if parent != Path(".")
+    }
+    names = set()
+    for path in root.rglob("*"):
+        assert path.resolve(strict=True) == path
+        info = path.lstat()
+        name = path.relative_to(root).as_posix()
+        if stat.S_ISDIR(info.st_mode):
+            assert name in allowed_dirs, name
+            continue
+        assert stat.S_ISREG(info.st_mode)
+        assert manifest[name] == {"sha256": sha(path), "bytes": info.st_size}, name
+        names.add(name)
+    assert names == manifest.keys() and len(names) == SOURCE_FILES
+    return len(names)
+
+
+def isolate_environment():
+    for name in tuple(os.environ):
+        upper = name.upper()
+        if upper.startswith((
+            "AGENTSYNC_", "ANTHROPIC_", "CLAUDE_", "CODEX_", "CURSOR_", "DEEPSEEK_", "DOCKER_",
+            "GEMINI_", "GIT_", "GITHUB_", "GOOGLE_", "OPENAI_", "PIP_", "PYTEST_", "PYTHON", "UV_", "XDG_",
+        )) or upper.endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")) or upper == "SSH_AUTH_SOCK":
+            os.environ.pop(name)
+    for name in ("roaming", "local"):
+        (HOME / name).mkdir()
+    os.environ.update(
+        HOME=str(HOME), USERPROFILE=str(HOME), CODEX_HOME=str(HOME),
+        APPDATA=str(HOME / "roaming"), LOCALAPPDATA=str(HOME / "local"),
+        XDG_CONFIG_HOME=str(HOME / "config"), XDG_CACHE_HOME=str(HOME / "cache"),
+        TEMP=str(SCRATCH), TMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+        PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0",
+        GCM_INTERACTIVE="Never", PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1",
+        PIP_DISABLE_PIP_VERSION_CHECK="1", PIP_NO_CACHE_DIR="1",
+        RUFF_CACHE_DIR=str(SCRATCH / "ruff"), MYPY_CACHE_DIR=str(SCRATCH / "mypy"),
+    )
+
+
+def main():
+    if (
+        os.name != "nt" or sys.version_info[:3] != (3, 12, 16)
+        or Path(sys.executable).resolve() != BASE_PYTHON.resolve()
+        or Path(sys.prefix).resolve() != BASE_PYTHON.parent.parent.resolve()
+        or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__
+    ):
+        raise SystemExit(f"Use the pinned Windows 3.12.16 base interpreter with -I -B: {BASE_PYTHON}")
+    script = Path(__file__).resolve(strict=True)
+    assert script == BASE.parent / "m120full-source-windows.py"
+    assert BASE.resolve(strict=True) == BASE and BASE.is_dir()
+    if any(BASE.iterdir()):
+        raise SystemExit("A fresh driver directory is required. Preserve any existing attempt.")
+    RUN.mkdir()
+    start = {
+        "scope": "Windows 3.12 full editable a120 source suite with platform skips",
+        "editable_source": str(SOURCE), "offline_wheelhouse": str(WHEELHOUSE),
+        "test_source_commit": TEST_COMMIT, "product_runtime_commit": PRODUCT_COMMIT, "version": VERSION,
+        "pinned_inputs": {str(path): {"bytes": size, "sha256": digest} for path, (size, digest) in PINNED.items()},
+        "driver_sha256": sha(script), "controller_pid": os.getpid(), "python": sys.version,
+        "python_executable": sys.executable, "model_calls": 0,
+        "started_at": datetime.now(UTC).isoformat(), "status": "unknown", "automatic_retry": False,
+        "formal_release": "BLOCKED", "real_clients": "NOT RUN", "full_platform_matrix": "NOT RUN",
+    }
+    save(RUN / "attempt.json", start)
+    result = {**start, "status": "fail", "phase": "prepare", "checks": []}
+    source_verified = False
+    try:
+        (RUN / "logs").mkdir()
+        SCRATCH.mkdir()
+        HOME.mkdir()
+        isolate_environment()
+        verify_inputs()
+        manifest = json.loads(MANIFEST.read_bytes())
+        assert len(manifest) == SOURCE_FILES
+        result["frozen_files_before"] = verify_source(FROZEN / "s", manifest)
+        source_verified = True
+        shutil.copytree(FROZEN / "s", SOURCE, symlinks=True, copy_function=shutil.copyfile)
+        result["copy_files_before"] = verify_source(SOURCE, manifest)
+        members = json.loads(MEMBERS.read_bytes())
+        assert len(members) == 97 and members == {
+            name.removeprefix("src/"): row["sha256"]
+            for name, row in manifest.items() if name.startswith("src/agentsync/")
+        }
+        result.update(source_files=len(manifest), runtime_members=len(members),
+                      collector_sha256=manifest["tools/release_acceptance.py"]["sha256"])
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+
+        project = tomllib.loads((SOURCE / "pyproject.toml").read_text(encoding="utf-8"))
+        packages = collector._prepare_offline_packages(project, WHEELHOUSE, SCRATCH, RUN)
+
+        def check(name, command, timeout=900):
+            result["phase"] = name
+            observed = collector.execute(
+                name, list(map(str, command)), SOURCE if name == "pytest" else RUN, RUN, SCRATCH,
+                pytest_timeout=timeout, offline_wheelhouse=packages.wheelhouse,
+            )
+            result["checks"].append(observed)
+            if observed["exit_code"] is None:
+                result["status"] = "unknown"
+            return observed
+
+        def require(observed):
+            assert observed["status"] == "pass" and observed["exit_code"] == 0
+            assert observed["log_truncated"] is False
+
+        python = str(INSTALL / "Scripts/python.exe")
+        origin = [python, "-I", "-B", "-c", ORIGIN_PROBE, INSTALL, SOURCE, MEMBERS, VERSION]
+        require(check("source_venv", [sys.executable, "-I", "-B", "-m", "venv", INSTALL]))
+        require(check("source_offline_dependencies", collector._offline_install(
+            python, packages.wheelhouse, "--only-binary=:all:", *packages.backend, *packages.application,
+        )))
+        require(check("source_editable_install", collector._offline_install(
+            python, packages.wheelhouse, "--no-build-isolation", "--no-deps", "-e", str(SOURCE),
+        )))
+        result["copy_files_after_install"] = verify_source(SOURCE, manifest)
+        require(check("source_pip_check", [python, "-I", "-B", "-m", "pip", "check"]))
+        require(check("source_origin_before", origin))
+
+        raw = SCRATCH / "source-junit.xml"
+        junit = RUN / raw.name
+        pytest_command = [
+            python, "-B", "-m", "pytest", str(SOURCE / "tests"), "--junitxml", str(raw),
+            "--basetemp", str(SCRATCH / "p"), "-o", f"cache_dir={SCRATCH / 'pytest-cache'}",
+        ]
+        save(RUN / "pytest-start.json", {
+            "controller_pid": os.getpid(), "argv": pytest_command,
+            "requested_at": datetime.now(UTC).isoformat(), "timeout_seconds": 7200,
+            "test_source_commit": TEST_COMMIT, "pinned_inputs": start["pinned_inputs"],
+        })
+        origin_after = None
+        try:
+            tested = check("pytest", pytest_command, timeout=7200)
+        finally:
+            try:
+                if raw.is_file():
+                    assert not junit.exists()
+                    redactions = collector.persist_junit(raw, junit)
+                    counts = collector.junit_counts(junit)
+                    cases = [(node.get("classname"), node.get("name")) for node in ET.parse(junit).iter("testcase")]
+                    assert len(cases) == counts["tests"] == len(set(cases)) and all(all(case) for case in cases)
+                    result["junit"] = {
+                        "path": junit.name, "sha256": sha(junit), "credential_redactions": redactions, **counts,
+                    }
+            except Exception as exc:
+                result["junit_error_type"] = type(exc).__name__
+            try:
+                origin_after = check("source_origin_after", origin)
+            except Exception as exc:
+                result["source_origin_after_error_type"] = type(exc).__name__
+        result["phase"] = "full_suite_evidence"
+        require(tested)
+        assert origin_after is not None
+        require(origin_after)
+        before, after = (RUN / "logs" / f"source_origin_{phase}.log" for phase in ("before", "after"))
+        assert before.read_bytes() == after.read_bytes()
+        counts = result["junit"]
+        assert counts["tests"] > 0 and counts["failures"] == counts["errors"] == 0
+        result["status"] = "pass"
+    except KeyboardInterrupt:
+        result.update(status="unknown", error_type="KeyboardInterrupt")
+    except Exception as exc:
+        result["error_type"] = type(exc).__name__
+    finally:
+        try:
+            verify_inputs()
+            result["pinned_artifacts_unchanged"] = True
+            if source_verified:
+                result["frozen_files_after"] = verify_source(FROZEN / "s", manifest)
+                result["frozen_source_unchanged"] = True
+        except Exception as exc:
+            if result["status"] == "pass":
+                result["status"] = "fail"
+            result["postcheck_error_type"] = type(exc).__name__
+        if source_verified and SOURCE.is_dir():
+            try:
+                result["copy_files_after"] = verify_source(SOURCE, manifest)
+            except Exception as exc:
+                if result["status"] == "pass":
+                    result["status"] = "fail"
+                result["copy_after_error_type"] = type(exc).__name__
+        result["finished_at"] = datetime.now(UTC).isoformat()
+        save(RUN / "result.json", result)
+        print(f"{result['status']}: {RUN / 'result.json'}", flush=True)
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,20 +1,26 @@
 # Amadeus current progress
 
-RUNNING: first current Linux3.14 editable-source complete suite, native77917.
-Source runtime859775b/tests d427355; original5369-file snapshot is copied into
-/root/amadeus-m120source/s, with a new offline editable environment at e. Five
-setup/origin commands completed; the actual isolated origin probe imports new
-s/src/agentsync and CLI with editable direct_url and all97 runtime hashes. The
-copy remains unchanged after installation. Full pytest is now started, no verdict.
-Driver D:/agentsync-debug/m120full-source-linux.py SHAaa2db3bc...88bec; root and
-Astra reviewed preparation only. Host controller D:/agentsync-debug/m120sourcel/
-start.py, actual records in that host directory and guest /root/amadeus-m120source/run.
-VM21328 is owned/running, boot e3031733-f559-4432-a824-8349f81bdeca. Before boot,
-old VM state/logs were copied and rehashed. No competing worker/container existed.
-See full-linux314-source-start for original start/provenance records. Resume by
-observing existing77917/result.json; never start a duplicate or infer a pass from
-the successful editable setup. No real model, account auth copy, installed-suite
-repeat, static rerun or published-package rebuild is part of this check.
+COMPLETED: Linux3.14 fresh editable-source full suite, native77917 exited0
+2026-11-17T04:26:58Z (223255). Seven actual commands pass;2587 unique cases:
+2580pass/7skip/0fail/error,1153.57s,120 warnings. Source/CLI origins and editable
+metadata point to the new frozen copy; both original/copy5369 files and97 runtime
+members are unchanged. Root checked55 originals/651374bytes and6 XML redactions;
+case identities/outcomes and36 selected Docker observations match Linux wheel.
+Astra accepted this limited source result. No workers/containers remained;
+VM21328 normally stopped04:28:28Z, ports closed, disk preserved (99874f).
+See full-linux314-source/summary.json. Do not poll closed77917 or repeat this suite.
+
+RUNNING: first Windows3.12 editable-source full suite, native2511. New source
+copy/environment/run/t/home under D:/agentsync-debug/m120sourcew. Five setup/origin
+commands exited0; actual probe imports the new s/src/agentsync and CLI with correct
+editable metadata and97 hashes. Full pytest has started, no final verdict yet.
+Driver D:/agentsync-debug/m120full-source-windows.py SHA0d1c1ddc...f8f6a uses the
+existing offline Python3.12.16/wheelhouse (all60 packages independently checked).
+Root/Astra accepted preparation only. See full-windows312-source-start for exact
+inputs and process receipts. Observe existing2511/result.json, do not duplicate
+or interrupt the queue. Original runtime859775b/tests d427355 remain fixed.
+No real model, account auth copy, installed-suite repeat, static rerun or existing
+published-package rebuild occurs. Formal Release remains BLOCKED.
 
 Current frozen static supplement d427355: native353772 exited1. Full Ruff FAIL
 (22 diagnostics/7 files), format FAIL(13 files;377 already formatted), mypy PASS
@@ -64,9 +70,9 @@ See full-windows312-sdist/summary.json. No matching test workers remain; VM is o
 Do not poll closed71082 or repeat any of the four completed installed suites.
 Original runtime859775b, test inputs d427355 and source archive remain unchanged.
 
-The first Linux3.14 frozen-source full suite is now running as recorded above.
+Linux3.14 source is complete; Windows3.12 source is running as recorded above.
 Do not rebuild/reinstall passed packages or invoke the all-in-one collector that
-would repeat them. Windows source and remaining platform rows are still NOT RUN.
+would repeat them. Remaining complete formal platform rows are still incomplete.
 Goal remains active; this is no Release pass.
 Full source/remaining platform collection is incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged

@@ -1,0 +1,37 @@
+[
+  {
+    "path": "attempt.json",
+    "bytes": 1478,
+    "sha256": "7f0060c068a877dacba540749141a081eac2dc825f04d137f1aac7cdfe052448"
+  },
+  {
+    "path": "pytest-start.json",
+    "bytes": 1112,
+    "sha256": "0a34f3d91bbf923e4b8d7450f6eec739fcbe6131eae7ab38e52b53e3f39ca77e"
+  },
+  {
+    "path": "logs/pytest.process.json",
+    "bytes": 826,
+    "sha256": "7bb4df195c305cd07da8f997be987de5ae516221e8cb0bd64eac4eb24de571d8"
+  },
+  {
+    "path": "logs/source_origin_before.log",
+    "bytes": 306,
+    "sha256": "f03d07abdb1c86a710bf952c696d6d7d686c680fbcfe19885cf2359cc0ebf062"
+  },
+  {
+    "path": "logs/source_origin_before.process.json",
+    "bytes": 4698,
+    "sha256": "3595791d19b4c010cf0c90815234d344087c7505854315bbde8a21d5cc889345"
+  },
+  {
+    "path": "run-source.py.txt",
+    "bytes": 12936,
+    "sha256": "0d1c1ddc14fec462ab6c55bcf245457ede3e2f4bd03bdbf8bb58403df10f8f6a"
+  },
+  {
+    "path": "host-preflight.json",
+    "bytes": 588,
+    "sha256": "88864528dbcb7027d3df58aa3b001b5f5708ca5216ca40fce862f0df4cd0e030"
+  }
+]

@@ -1,0 +1,101 @@
+"""Read completed guest evidence and preserve original bytes; no test execution."""
+import hashlib,json,stat
+from datetime import UTC,datetime
+from pathlib import Path,PurePosixPath
+import paramiko
+BASE=Path('D:/agentsync-debug/m120sourcel')
+DEST=BASE/'harvest'
+assert not DEST.exists()
+client=paramiko.SSHClient();client.load_host_keys('D:/agentsync-debug/vm/known_hosts');client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+probe=r'''
+import hashlib,json,os,stat,subprocess,sys,xml.etree.ElementTree as ET
+from pathlib import Path
+base=Path('/root/amadeus-m120source');run=base/'run';frozen=Path('/root/amadeus-m120full')
+boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+assert boot=='e3031733-f559-4432-a824-8349f81bdeca'
+result=json.loads((run/'result.json').read_bytes())
+assert result['finished_at'] and result['status'] in ('pass','fail','unknown')
+active=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid(): continue
+ try:
+  comm=(p/'comm').read_text().strip();cmd=(p/'cmdline').read_bytes()
+  if ('python' in comm or 'codex' in comm) and any(t in cmd for t in (b'/root/amadeus-',b'/root/agentsync-')): active.append({'pid':int(p.name),'name':comm})
+ except (OSError,ProcessLookupError):pass
+assert not active
+containers=subprocess.check_output(['/usr/bin/docker','ps','-aq','--no-trunc'],text=True,timeout=30).split()
+assert not containers
+manifest_path=frozen/'source-manifest.json'
+assert hashlib.sha256(manifest_path.read_bytes()).hexdigest()=='584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc'
+manifest=json.loads(manifest_path.read_bytes())
+entries=manifest
+assert len(entries)==5369
+source=frozen/'s'
+assert {p.relative_to(source).as_posix() for p in source.rglob('*') if p.is_file()}==entries.keys()
+site=base/'s/src'
+expected=json.loads((frozen/'runtime-members.json').read_bytes())
+actual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert actual==expected and len(actual)==97
+for name,item in entries.items():
+ path=source/name
+ assert path.resolve()==path and path.stat().st_size==item['bytes']
+ with path.open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==item['sha256']
+copy=base/'s'
+assert {p.relative_to(copy).as_posix() for p in copy.rglob('*') if p.is_file()}==entries.keys()
+for name,item in entries.items():
+ path=copy/name
+ assert path.resolve()==path and path.stat().st_size==item['bytes']
+ with path.open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==item['sha256']
+metadata=list((base/'e/lib/python3.14/site-packages').glob('agentsync_local-*.dist-info'))
+assert len(metadata)==1
+editable=json.loads((metadata[0]/'direct_url.json').read_bytes())
+assert editable=={'dir_info':{'editable':True},'url':copy.as_uri()}
+sys.path.insert(0,str(copy))
+from tools.release_acceptance import redact_credentials
+raw=list(ET.parse(base/'t/source-junit.xml').iter());public=list(ET.parse(run/'source-junit.xml').iter())
+assert len(raw)==len(public)
+redactions=0
+for left,right in zip(raw,public):
+ assert left.tag==right.tag and left.attrib.keys()==right.attrib.keys()
+ for k,v in left.attrib.items():
+  clean,n=redact_credentials(v);redactions+=n;assert clean==right.attrib[k]
+ for field in ('text','tail'):
+  v=getattr(left,field)
+  if v is None: assert getattr(right,field) is None
+  else:
+   clean,n=redact_credentials(v);redactions+=n;assert clean==getattr(right,field)
+assert redactions==result['junit']['credential_redactions']
+files=[]
+for path in sorted(run.rglob('*')):
+ assert path.resolve()==path
+ if path.is_file():
+  assert stat.S_ISREG(path.lstat().st_mode) and path.suffix in ('.json','.xml','.log')
+  assert path.stat().st_size<=20*1024**2
+  with path.open('rb') as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
+  files.append({'path':path.relative_to(run).as_posix(),'bytes':path.stat().st_size,'sha256':digest})
+assert sum(x['bytes'] for x in files)<=64*1024**2
+print(json.dumps({'run_status':result['status'],'boot_id':boot,'frozen_files_rehashed':len(entries),'source_runtime_members_rehashed':len(actual),'editable_source_files_rehashed':len(entries),'editable_direct_url':editable,'raw_to_public_checked':True,'xml_redactions':redactions,'workers':active,'containers':containers,'files':files}))
+'''
+try:
+ stdin,stdout,stderr=client.exec_command('/root/jobs-env/bin/python -I -B -',timeout=180)
+ stdin.write(probe);stdin.flush();stdin.channel.shutdown_write()
+ output,errors=stdout.read(),stderr.read();code=stdout.channel.recv_exit_status()
+ assert code==0,errors.decode('utf8',errors='replace')
+ record=json.loads(output)
+ DEST.mkdir()
+ with client.open_sftp() as sftp:
+  for entry in record['files']:
+   name=PurePosixPath(entry['path']);assert not name.is_absolute() and '..' not in name.parts
+   remote='/root/amadeus-m120source/run/'+name.as_posix()
+   assert stat.S_ISREG(sftp.lstat(remote).st_mode)
+   path=DEST.joinpath(*name.parts);path.parent.mkdir(parents=True,exist_ok=True)
+   digest=hashlib.sha256();size=0
+   with sftp.open(remote,'rb') as source,path.open('xb') as dest:
+    while data:=source.read(1024*1024):size+=len(data);digest.update(data);dest.write(data)
+   assert size==entry['bytes'] and digest.hexdigest()==entry['sha256']
+ record['collected_at']=datetime.now(UTC).isoformat()
+ with (BASE/'host/transfer-summary.json').open('x',encoding='utf8') as f:json.dump(record,f,indent=2);f.write('\n')
+ print(json.dumps({k:v for k,v in record.items() if k!='files'}))
+ print(json.dumps({'files':len(record['files']),'bytes':sum(x['bytes'] for x in record['files'])}))
+finally:client.close()

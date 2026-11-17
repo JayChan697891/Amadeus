@@ -14,10 +14,12 @@ comparison failure and scoped correction preserved. Astra accepted the limited
 result; local VM normally off. Windows3.12 full installed-sdist also passes2530/
 57skip, identical2587 identities/outcomes to wheel,4 native commands, unchanged
 5369 inputs/97 runtime members. Root/Astra accepted only the installed-sdist scope.
-All four installed suites are complete. The first Linux3.14 frozen-source full
-suite is now running as native77917 after a fresh offline editable install and
-actual source/CLI-origin proof; no final verdict. See PROGRESS for its exact
-recovery entry. No M5 expansion, repeated installed suite or static rerun.
+All four installed suites are complete. Linux3.14 editable-source full suite now
+passes2580/7skip,7 commands, same2587 case identities/outcomes and36 selected Docker
+results as wheel. Both5369-file trees/97 runtime members unchanged; Root/Astra
+accept the limited source result, VM normally off. Windows3.12 editable-source
+first full suite is running as native2511 after observed source/CLI-origin proof;
+no final verdict. See PROGRESS. No M5 expansion, installed-suite or static repeat.
 
 The missing full static batch on d427355 has now run: mypy96 source files PASS,
 Ruff22 diagnostics/7 files FAIL, format13 historical drivers FAIL. All affected
