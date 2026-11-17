@@ -1,0 +1,28 @@
+{
+  "explicit_source": {
+    "argv": [
+      "D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe",
+      "-s",
+      "-B",
+      "-c",
+      "import agentsync, agentsync.cli, json, sys; print(json.dumps({'prefix': sys.prefix, 'agentsync': agentsync.__file__, 'cli': agentsync.cli.__file__}))"
+    ],
+    "exit_code": 0,
+    "prefix": "D:\\agentsync-debug\\m120-demo-encoding\\source-env",
+    "agentsync": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py",
+    "cli": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\cli.py"
+  },
+  "isolated_child": {
+    "argv": [
+      "D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "import agentsync, agentsync.cli, json, sys; print(json.dumps({'prefix': sys.prefix, 'agentsync': agentsync.__file__, 'cli': agentsync.cli.__file__}))"
+    ],
+    "exit_code": 0,
+    "prefix": "D:\\agentsync-debug\\m120-demo-encoding\\source-env",
+    "agentsync": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py",
+    "cli": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\cli.py"
+  }
+}

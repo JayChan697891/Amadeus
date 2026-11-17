@@ -2,6 +2,14 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 concrete usability repair b095c5e: demo/owner JSON now survives CP1252 output
+with Chinese paths or recovery reasons. Two genuine failing CLI reproductions
+are preserved;19 affected source checks and changed-file Ruff/format pass. Root
+verified actual results, not only the development summary. Source advances to
+0.3.0a121 for an installable correction; build/install checks remain NOT RUN.
+Reuse the existing offline preview builder and focused package checks, without
+new M5 phases or repeating the unchanged frozen a120 suites running below.
+
 Existing Windows3.12 a120 wheel/sdist license inventories are now collected:
 32 runtime distributions and43 recorded license files each; actual metadata and
 hashes agree. Six native checks pass, installed97 members unchanged per env.

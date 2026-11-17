@@ -1,5 +1,14 @@
 # Release Acceptance Report
 
+CLI output repair b095c5e has **19 targeted source checks PASS**: both real
+CP1252 Unicode-output reproductions failed before the two-line correction and
+pass afterward. Root verified original logs/JUnit/hashes/import origins; changed
+files pass Ruff/format. The preserved complete-static FAIL is unchanged. Source
+version now0.3.0a121; no a121 build/install or full-matrix result is yet claimed.
+The original a120 archives and frozen suites below do not include this repair.
+**Formal Release remains BLOCKED**.
+[Actual failed reproductions and repair](evidence/core-preview-a120/cli-output-encoding/summary.json).
+
 Linux3.14 a120 fresh editable-source full suite **PASS with7 skips**. Native77917
 ended2026-11-17T04:26:58Z exit0;7 commands pass,2580pass/7skip/0fail/error in1153.57s,
 120 warnings retained. Actual source/CLI origins and editable metadata are bound

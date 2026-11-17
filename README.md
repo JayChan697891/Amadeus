@@ -8,10 +8,16 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a120 development source. Formal Release BLOCKED.** The unchanged
+Status: **0.3.0a121 development source. Formal Release BLOCKED.** The unchanged
 0.3.0a116 candidate completed all six available Windows/Linux matrix rows; macOS
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
+
+The current source also fixes demo/owner JSON output on legacy Windows streams:
+Chinese paths and recovery reasons survive round-trip decoding. Two actual
+failures and19 passing targeted source checks are recorded in the
+[repair evidence](docs/acceptance/evidence/core-preview-a120/cli-output-encoding/summary.json).
+This correction is not yet in the archived a120 packages below.
 
 The [a120 development preview](releases/0.3.0a120/preview-859775b/)
 adds missing-project protection for `workflow start` and structured database errors

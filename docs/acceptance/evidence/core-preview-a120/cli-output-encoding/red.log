@@ -1,0 +1,119 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_______ test_durable_demo_reports_unicode_directory_with_legacy_stdout ________
+
+tmp_path = WindowsPath('D:/agentsync-debug/m120-demo-encoding/red-tmp/test_durable_demo_reports_unic0')
+
+    def test_durable_demo_reports_unicode_directory_with_legacy_stdout(tmp_path):
+        directory = tmp_path.resolve() / "\u6301\u4e45\u534f\u4f5c"
+        source = Path(durable_demo.__file__).resolve().parents[1]
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-s",
+                "-B",
+                "-m",
+                "agentsync",
+                "--data-dir",
+                str(directory),
+                "demo",
+                "--durable",
+            ],
+            env=os.environ | {"PYTHONIOENCODING": "cp1252", "PYTHONPATH": str(source)},
+            capture_output=True,
+            timeout=90,
+            check=False,
+        )
+    
+        assert (directory / "agentsync.db").is_file()
+>       assert process.returncode == 0, process.stderr.decode("ascii", errors="replace")
+E       AssertionError: Traceback (most recent call last):
+
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+
+E           File "<frozen runpy>", line 88, in _run_code
+
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\__main__.py", line 4, in <module>
+
+E             raise SystemExit(main())
+
+E                              ^^^^^^
+
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\cli.py", line 348, in main
+
+E             print(json.dumps(result, ensure_ascii=False))
+
+E           File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+
+E             return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E         UnicodeEncodeError: 'charmap' codec can't encode characters in position 118-121: character maps to <undefined>
+
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe', '-s', '-B', '-m', '...UnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 118-121: character maps to <undefined>\r\n').returncode
+
+tests\integration\test_durable_demo.py:101: AssertionError
+________ test_owner_recovery_reports_unicode_reason_with_legacy_stdout ________
+
+abandoned = (<agentsync.core.service.Core object at 0x00000205DA50BE90>, {'project_id': '0fb4def1-002c-4ed6-bf0b-05e81988d9e2', 'a...8', 'task_id': 'bf5b5861-723d-4df2-9bcb-c9bebeeec564', 'handoff_id': '132bd7db-8c03-4cd7-87a3-a896aee1d4b7', ...}, ...)
+
+    def test_owner_recovery_reports_unicode_reason_with_legacy_stdout(abandoned):
+        core, _, _, _, original, request, _ = abandoned
+        reason = "\u539f\u4f1a\u8bdd\u5df2\u7ed3\u675f"
+        source = Path(agentsync.__file__).resolve().parents[1]
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-s",
+                "-B",
+                "-m",
+                "agentsync",
+                "--data-dir",
+                str(core.data_dir),
+                "owner",
+                "recover_handoff",
+            ],
+            input=json.dumps(request | {"reason": reason}).encode("ascii"),
+            env=os.environ | {"PYTHONIOENCODING": "cp1252", "PYTHONPATH": str(source)},
+            capture_output=True,
+            timeout=20,
+            check=False,
+        )
+    
+>       assert process.returncode == 0, process.stderr.decode("ascii", errors="replace")
+E       AssertionError: Traceback (most recent call last):
+
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+
+E           File "<frozen runpy>", line 88, in _run_code
+
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\__main__.py", line 4, in <module>
+
+E             raise SystemExit(main())
+
+E                              ^^^^^^
+
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\cli.py", line 328, in main
+
+E             print(json.dumps(response, ensure_ascii=False))
+
+E           File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+
+E             return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E         UnicodeEncodeError: 'charmap' codec can't encode characters in position 1084-1089: character maps to <undefined>
+
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe', '-s', '-B', '-m', '...icodeEncodeError: \'charmap\' codec can\'t encode characters in position 1084-1089: character maps to <undefined>\r\n').returncode
+
+tests\integration\test_handoff_recovery.py:103: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_durable_demo.py::test_durable_demo_reports_unicode_directory_with_legacy_stdout
+FAILED tests/integration/test_handoff_recovery.py::test_owner_recovery_reports_unicode_reason_with_legacy_stdout
+2 failed in 5.06s

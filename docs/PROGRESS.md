@@ -1,5 +1,17 @@
 # Amadeus current progress
 
+P1 source repair b095c5e: demo and owner commands now return ASCII-escaped JSON
+on legacy output streams, preserving decoded Unicode paths/recovery reasons.
+Both actual CLI regressions first failed with UnicodeEncodeError; after the
+two-line repair,19 focused cases pass without skips. Changed-file Ruff/format
+pass. Root checked original logs/JUnit, exact hashes and real parent/isolated-child
+source origins (63a9be). See core-preview-a120/cli-output-encoding/summary.json.
+Existing a120 archives and the running frozen Windows source suite are unchanged;
+that suite does not cover this later repair. Source is now0.3.0a121 to keep the
+next installable preview distinct; a121 build/install validation has NOT RUN.
+Continue that bounded preview preparation while observing native2511 below.
+No new M phase, model call, static-scope change or repeated full suite is needed.
+
 COMPLETED: Linux3.14 fresh editable-source full suite, native77917 exited0
 2026-11-17T04:26:58Z (223255). Seven actual commands pass;2587 unique cases:
 2580pass/7skip/0fail/error,1153.57s,120 warnings. Source/CLI origins and editable
