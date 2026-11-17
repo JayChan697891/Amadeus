@@ -1,5 +1,21 @@
 # Amadeus current progress
 
+RUNNING: first current Linux3.14 editable-source complete suite, native77917.
+Source runtime859775b/tests d427355; original5369-file snapshot is copied into
+/root/amadeus-m120source/s, with a new offline editable environment at e. Five
+setup/origin commands completed; the actual isolated origin probe imports new
+s/src/agentsync and CLI with editable direct_url and all97 runtime hashes. The
+copy remains unchanged after installation. Full pytest is now started, no verdict.
+Driver D:/agentsync-debug/m120full-source-linux.py SHAaa2db3bc...88bec; root and
+Astra reviewed preparation only. Host controller D:/agentsync-debug/m120sourcel/
+start.py, actual records in that host directory and guest /root/amadeus-m120source/run.
+VM21328 is owned/running, boot e3031733-f559-4432-a824-8349f81bdeca. Before boot,
+old VM state/logs were copied and rehashed. No competing worker/container existed.
+See full-linux314-source-start for original start/provenance records. Resume by
+observing existing77917/result.json; never start a duplicate or infer a pass from
+the successful editable setup. No real model, account auth copy, installed-suite
+repeat, static rerun or published-package rebuild is part of this check.
+
 Current frozen static supplement d427355: native353772 exited1. Full Ruff FAIL
 (22 diagnostics/7 files), format FAIL(13 files;377 already formatted), mypy PASS
 (96 source files). All diagnostics are historical raw Python driver files under
@@ -48,13 +64,10 @@ See full-windows312-sdist/summary.json. No matching test workers remain; VM is o
 Do not poll closed71082 or repeat any of the four completed installed suites.
 Original runtime859775b, test inputs d427355 and source archive remain unchanged.
 
-NEXT: first current frozen-source complete suite, starting Linux3.14. Before
-execution, check exact source import/CLI origins with isolated new output and
-explicit environment; installed-package provenance alone cannot certify source
-execution. Reuse original d427355 inputs and completed installed-suite evidence;
-do not rebuild/reinstall passed packages or invoke the all-in-one collector that
-would repeat them. No source driver, environment or full-source run has started.
-All active local queues are complete. Goal remains active; this is no Release pass.
+The first Linux3.14 frozen-source full suite is now running as recorded above.
+Do not rebuild/reinstall passed packages or invoke the all-in-one collector that
+would repeat them. Windows source and remaining platform rows are still NOT RUN.
+Goal remains active; this is no Release pass.
 Full source/remaining platform collection is incomplete. Existing collector has no skip/resume interface; calling
 collect(candidate=...) would repeat build/wheel tests. Do not invoke it unchanged
 or relabel the focused859775b/3362-input install records as d427355/5369 records.

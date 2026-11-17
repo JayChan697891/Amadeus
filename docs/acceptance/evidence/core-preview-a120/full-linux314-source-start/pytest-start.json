@@ -1,0 +1,35 @@
+{
+  "controller_pid": 2954,
+  "boot_id": "e3031733-f559-4432-a824-8349f81bdeca",
+  "argv": [
+    "/root/amadeus-m120source/e/bin/python",
+    "-B",
+    "-m",
+    "pytest",
+    "/root/amadeus-m120source/s/tests",
+    "--junitxml",
+    "/root/amadeus-m120source/t/source-junit.xml",
+    "--basetemp",
+    "/root/amadeus-m120source/t/p",
+    "-o",
+    "cache_dir=/root/amadeus-m120source/t/pytest-cache"
+  ],
+  "requested_at": "2026-11-17T04:07:40.161848+00:00",
+  "timeout_seconds": 7200,
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "pinned_inputs": {
+    "/root/amadeus-m120full/source.zip": {
+      "bytes": 159181319,
+      "sha256": "1efa1b6d1dcf5d18b0eef1826115e6c6cbf6aa63fc2c9f84c33ef89123711b6f"
+    },
+    "/root/amadeus-m120full/source-manifest.json": {
+      "bytes": 1052422,
+      "sha256": "584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc"
+    },
+    "/root/amadeus-m120full/runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4"
+    }
+  },
+  "required_docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+}
