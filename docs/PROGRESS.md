@@ -20,6 +20,13 @@ binds receiverd583d431-24ae-48e6-9595-4c5b2ded440a v5, source8172bd12,
 checkpointf95e6904 and reconcile53d08022, the fixed Docker image and two cases.
 Candidate staging/execution/completion remain NOT RUN; old a119 grant consumed.
 Do not restart producer/receiver/recovery/replay. No full M7/M8 or Release pass.
+The new authorization question is pending. VM8280 shut down normally at
+07:25:34Z on2026-11-17; Root8d5bae observed process absent, ports closed, no
+matching workers and preserved disk. Resume only after the exact candidate grant:
+start the existing VM, inspect the same fixture/task and session readiness, then
+use the existing `verify.py stage-once` plan binding above. Inspect each generated
+execution/completion plan before its corresponding effect; no new model call.
+Do not infer that permission was granted or work resumed from this saved entry.
 
 Preparation checkpoint ad4e84d bound the M7-02/M8-02 composed check to the frozen
 a122 runtime. The wrapper retains a completed receiver proposal and process

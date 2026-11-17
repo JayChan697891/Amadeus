@@ -1,0 +1,22 @@
+[
+  {
+    "path": "host/shutdown.py.txt",
+    "bytes": 3083,
+    "sha256": "a13433a7133eb2a7deb95dca80240cf0e47034176e56c37c798870f01122954e"
+  },
+  {
+    "path": "host/shutdown-request.json",
+    "bytes": 240,
+    "sha256": "205fe91db431e390d10a91c85afcc97d682dddd759a213951c291e0456484897"
+  },
+  {
+    "path": "host/shutdown-replies.json",
+    "bytes": 237,
+    "sha256": "428384a7d9cade2e87881db2f471691bcfd04b541b7ddd8d7f8379803c0d4131"
+  },
+  {
+    "path": "host/shutdown-result.json",
+    "bytes": 383,
+    "sha256": "2a3e487fba94feb0062b457d34696c2f3649588b5a403aee82bd6f93d2aaf8bf"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "matching_workers": 0,
+  "pid": 8280,
+  "prior_identity_guard": "53acf2 refused before action; 5d7806 confirmed exact path/start; direct DateTime ticks retained precision",
+  "disk_preserved": true,
+  "utc": "2026-11-17T07:25:34.9446249Z",
+  "method": "normal QMP system_powerdown",
+  "ports_closed": true,
+  "vm_absent": true,
+  "native_shutdown_receipt": "cdb334"
+}
