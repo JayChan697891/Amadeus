@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+The a121 native Codex structured-handoff run is **BLOCKED**, not PASS: the final
+owner-audit assertion expected null where the context schema supplies0. Original
+probe36a672d exited1 (dfd1a2); the result is immutable. Earlier actual MCP calls
+observed the handoff, recipient review/v8, pinned context, four correct denials,
+metadata locks and fresh-host reads. Root subsequently matched18 audit events
+read-only and confirmed unchanged DB/runtime plus ended processes. Probe repair
+a9cbcfe has an actual local Core regression and changed-file static PASS; repaired
+native run **NOT RUN**, no retry. Zero inference, no candidate execution or
+independent candidate verification. **Formal Release remains BLOCKED**.
+[Original native failure, observed facts and bounded correction](evidence/core-preview-a121/native-handoff/summary.json).
+
 CLI output repair b095c5e has **19 targeted source checks PASS**: both real
 CP1252 Unicode-output reproductions failed before the two-line correction and
 pass afterward. Root verified original logs/JUnit/hashes/import origins; changed
@@ -11,7 +22,7 @@ records; Astra accepts this limited installation scope. The same original
 packages now pass16 Linux3.14 commands and23 cases per fresh install, matching
 Windows. Root checked37 originals,3809 inputs and97 members per install; Astra
 accepted the supplement and the VM is normally off. No a121 full-matrix or
-real-client result is claimed.
+control-adapter acceptance is claimed; the separate MCP run above remains blocked.
 The original a120 archives and frozen suites below do not include this repair.
 **Formal Release remains BLOCKED**.
 [Actual failed reproductions and repair](evidence/core-preview-a120/cli-output-encoding/summary.json).

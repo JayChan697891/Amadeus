@@ -1,0 +1,81 @@
+{
+  "files": [
+    {
+      "path": "result.json",
+      "bytes": 5520,
+      "sha256": "695266d817be1ab78760caa4cd207b5d0e83ba98daf96ac5c76172dd9f666eaf"
+    },
+    {
+      "path": "execution.json",
+      "bytes": 796,
+      "sha256": "bd77652134fd52dcd2e93d57900a8bcbe59fa846ebf08ac93ea7700c17b121c1"
+    },
+    {
+      "path": "run-native-once.py.txt",
+      "bytes": 2341,
+      "sha256": "133853a41eaa9c0cbe4789ac541389eed0d4ec2ae15ee97501b9a65358be083e"
+    },
+    {
+      "path": "offline-preparation.json",
+      "bytes": 1141,
+      "sha256": "d4dc5db13faa21f85d7abc911a40566455cece8973bd85707c970c5c26a3f4ca"
+    },
+    {
+      "path": "offline-preparation.py.txt",
+      "bytes": 4292,
+      "sha256": "04aa054911c8f97edd270f2719053a0644570bb6e819bfd673d1a184f648f561"
+    },
+    {
+      "path": "preparation-ruff.log",
+      "bytes": 66,
+      "sha256": "3deeb57d6ed1523cfbb4b77816a4adf1edb058a79e0360b39948029c1a12567e"
+    },
+    {
+      "path": "read-only-postcheck.json",
+      "bytes": 6164,
+      "sha256": "21b3eb7f7c98b8e7ba1b0ca00697ca2e58c6ce9cfaf56ad0a6543fedf319096d"
+    },
+    {
+      "path": "read-only-postcheck.py.txt",
+      "bytes": 7286,
+      "sha256": "ae894486a32d6607f6b63d9f99345641837f062edc7b11b7ff44f1acf4a55ac8"
+    },
+    {
+      "path": "process-postcheck.json",
+      "bytes": 218,
+      "sha256": "09c29798c5d01c2feb51719ed3e9d67c3c531263838e3b28a2d4c733beec75ee"
+    },
+    {
+      "path": "audit-fix/check.py.txt",
+      "bytes": 3875,
+      "sha256": "b2a01b18fa751d592b0470d167df8decce50b4168ff4a9eea58b7dc61ebfcd1e"
+    },
+    {
+      "path": "audit-fix/result.json",
+      "bytes": 2772,
+      "sha256": "5e1c8650a8b7fe5cb6b67e04e927a2ef86344015ed0ed8278de685d02d50f544"
+    },
+    {
+      "path": "audit-fix/check.log",
+      "bytes": 109,
+      "sha256": "d2bd229e59ef9b2cb889bebfe1ea35e2ad8374508926817f3c02ec085bdae04d"
+    },
+    {
+      "path": "audit-fix/check.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "audit-fix/ruff.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "audit-fix/format.log",
+      "bytes": 26,
+      "sha256": "7688ae71c60af2e4266827abb3678cc2145655f587daf33dfa649dbac2c619c3"
+    }
+  ],
+  "count": 15,
+  "bytes": 34629
+}

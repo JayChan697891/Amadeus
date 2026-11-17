@@ -1,5 +1,22 @@
 # Amadeus current progress
 
+Native Codex structured-handoff probe36a672d ran once on the unchanged installed
+a121/4b82494 runtime. It ended2026-11-17T05:40:13Z exit1 (dfd1a2), at the final
+owner-audit assertion: initial publish_context defaults expected_version to0,
+while the probe expected null. Keep the original result BLOCKED. Before that
+failure, actual MCP calls observed task v1-v8, accepted structured handoff,
+pinned context v1/latest v2, four authorization/lock denials, recipient continuation
+to review/unverified, and the same state after a fresh host. Both hosts exited0
+by EOF; seven MCP children ended. Root's read-only postcheck matched all18 audit
+requests, preserved database bytes and97 installed members, and found all10 exact
+PIDs absent. Audit inspection was local owner Core/SQLite, not an MCP audit tool.
+One probe line now explicitly supplies0 (a9cbcfe); a separate real local Core check
+proves the old expectation fails and the correction matches. Changed-file static
+checks pass; Root/Astra accept only this repair. Corrected native probe NOT RUN;
+no retry, model call, candidate execution, runtime or package change occurred.
+See acceptance/evidence/core-preview-a121/native-handoff/summary.json. These are
+deterministic real-host observations, not M7 or formal Release acceptance.
+
 P1 source repair b095c5e: demo and owner commands now return ASCII-escaped JSON
 on legacy output streams, preserving decoded Unicode paths/recovery reasons.
 Both actual CLI regressions first failed with UnicodeEncodeError; after the
@@ -122,10 +139,12 @@ Owner chose to handle manual removal later. No deletion retry or bypass is allow
 verify absence after the owner confirms removal. Cleanup remains BLOCKED.
 Never upload private/ or the temporary database. All exported records omit tokens.
 
-Next resume entry: keep a121/4b82494 as the usable core preview and review the
-remaining original requirements against its targeted evidence plus the frozen
-a120 baseline. Select only an uncovered required local check; do not repeat the
-six a120 full suites or four a121 focused installs. No next check is launched.
+Next resume entry: keep a121/4b82494 as the usable core preview. The bounded native
+handoff check above is finished with its original failure preserved; do not rerun
+it automatically. Its repaired probe can enter a separately reviewed final frozen
+client plan. Select another uncovered original requirement against existing
+evidence; do not repeat the six a120 full suites or four a121 focused installs.
+No next check is launched; no new product/M5 phase is created by this probe repair.
 Current formal matrix, license decision, macOS/cross-vendor access, preserved
 static FAIL and manual cleanup remain separate gaps. No new M5 stage or broader
 live/candidate-execution authorization is implied. Goal/M0-M9/A-B bounds remain.

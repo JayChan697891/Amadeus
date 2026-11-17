@@ -8,6 +8,7 @@ No paid inference calls are authorized by this acceptance checkpoint.
 | Client / interface | Existing evidence | Verified scope | Missing release evidence / status |
 |---|---|---|---|
 | Codex public app-server MCP | [a118 actual native probes](evidence/recovery-preview-a118/clients/summary.json); historical `../codex-host-probe.json` retained | Installed0.162.0 discovers34 tools; two deterministic identities create/claim/submit/text-review task v1→v5, share pinned context v1, reject duplicate claim, and reopen task/context through a new host. Zero inference; current package members unchanged | **SCOPED PASS**. Only recorded operations invoked; not all34 tools or structured handoff API. Text review stays unverified. Desktop UI and model-driven relay are not established by this probe. Original connection failure remains recorded with unknown concrete cause. |
+| Codex public app-server MCP, a121 handoff supplement | [One native run and preserved failure](evidence/core-preview-a121/native-handoff/summary.json), probe36a672d; unchanged installed4b82494 runtime | Actual deterministic MCP calls observed submit/get/resolve_handoff, recipient fresh lease and review/v8, pinned context v1/latest v2, old-lease/nonrecipient/lock rejection, released metadata locks and fresh-host reads. Zero inference; two host EOF exits and seven MCP children ended. Root read-only inspection matched18 audit events. | **BLOCKED**: final owner-Core audit assertion expected null instead of schema default0. One-line probe fix a9cbcfe passes a separate local Core check; corrected native run **NOT RUN**, no repeat. This is not an MCP audit-tool test, Git merge conflict proof, independent candidate verification, model relay or Release pass. |
 | Claude Code CLI MCP | [a118 actual health check](evidence/recovery-preview-a118/clients/claude/result.json); historical `../claude-host-probe.json` retained | Installed2.1.295 public MCP CLI connects to the a118 installed server in a new isolated configuration;4 native commands exit0; zero model prompts/credentials | **SCOPED PASS** for health connection only. Tool calls, desktop UI, control adapter and model-driven relay remain **NOT RUN**. |
 | Cursor MCP / CLI | Local inventory found desktop3.27.22; no standalone agent CLI on PATH or confirmed zero-inference MCP health interface | No execution claim | **NOT EXECUTED**. Desktop presence is not MCP/control-adapter compatibility. |
 | Codex control adapter | [Continuous installed09425da flow](evidence/m7-continuous-live/summary.json); historical runs retain their own SHA scope | Two real pinned0.167 CLI identities in one continuous flow: immutable proposal, exact host decisions,8/8 local Docker/19isolation checks, independent Core verified producer, automatic dependent task/context handoff, full model review and separate host document acceptance; normal reopen with no new launch | **SCOPED PASS** for same-vendor gated collaboration, not whole-client/Release acceptance. Four explicit host decisions were involved; review text stays unverified. Cross-vendor behavior, unattended application and active-generation timeout remain unverified; unsupported cancellation/resume capabilities stay declared rather than inferred. Billing is owner-confirmed only. |
@@ -18,6 +19,13 @@ No paid inference calls are authorized by this acceptance checkpoint.
 | Mock adapter | Implemented MockAdapter and instance-local MockRunManager; unit and Core-boundary integration tests | In-memory simulation and public planning compatibility only; no real client execution or Core task mutation | Simulation-only, real client capability **UNVERIFIED**; never substitute for any row above. |
 
 ## Required real-client procedure
+
+The a121 handoff supplement uses `tests/manual/probe_codex_handoff.py` with the
+existing installed a121 Windows interpreter and pinned native binary. Its exact
+executed command and source SHA are in native-handoff/execution.json. The original
+exit1 stays BLOCKED after the offline probe correction; do not automatically repeat
+it or replace its result. A future frozen client plan must explicitly identify the
+corrected probe and a new fixture. Older a118 procedures below retain their scope.
 
 Current a118 probe commands, from the repository with an installed a118 environment:
 

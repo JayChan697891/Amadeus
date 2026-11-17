@@ -1,0 +1,209 @@
+{
+  "checked_utc": "2026-11-17T05:42:58.375605+00:00",
+  "scope": "Read-only postmortem of one finished native run; no native replay or model call",
+  "native_run_status": "BLOCKED",
+  "native_exit_code": 1,
+  "failed_assertion": {
+    "request": "context-v1",
+    "field": "pre_version",
+    "probe_expected": null,
+    "actual": 0,
+    "schema_default": 0
+  },
+  "task_status": "review",
+  "task_version": 8,
+  "review_count": 0,
+  "handoff_status": "accepted",
+  "pinned_context_version": 1,
+  "latest_context_version": 2,
+  "released_metadata_locks": 2,
+  "audit_observations": [
+    {
+      "request": "context-v1",
+      "request_sha256": "6591444eaef80a31523d8ffd5b8e33b07ee0c6022f1ecff8418dea4d7c8910df",
+      "actor": "A",
+      "operation": "publish_context",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 0,
+      "post_version": 1
+    },
+    {
+      "request": "create-task",
+      "request_sha256": "6f58b4954a23668e04562b60de5c703a66b828c4e831d30091c3fd668d97eb09",
+      "actor": "A",
+      "operation": "create_task",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": null,
+      "post_version": 1
+    },
+    {
+      "request": "sender-claim",
+      "request_sha256": "c9ccccf2bdc56fd24a3a388c71cb1c6ca4f7a69c402f1030d69fbd2bb8784ad6",
+      "actor": "A",
+      "operation": "claim_task",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 1,
+      "post_version": 2
+    },
+    {
+      "request": "sender-run",
+      "request_sha256": "1c91d9e996b49ac345586d3cf1e9ebdc9284417c5f2a9abeadec64fd49840fb5",
+      "actor": "A",
+      "operation": "update_task",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 2,
+      "post_version": 3
+    },
+    {
+      "request": "handoff-submit",
+      "request_sha256": "5fe4782586d61ba878edaf22e407fdaae0d002b1abd3ad0cf8fc65f03c746cc4",
+      "actor": "A",
+      "operation": "submit_handoff",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 3,
+      "post_version": null
+    },
+    {
+      "request": "context-v2",
+      "request_sha256": "f6aec4613927baaa865894897976bf712962cb809a2d49cc3369c8c5651cad20",
+      "actor": "A",
+      "operation": "publish_context",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 1,
+      "post_version": 2
+    },
+    {
+      "request": "old-sender-lease",
+      "request_sha256": "ebd2192478b94218385e292d0a51d26bfbef556c440dd8661b619eeb7e74c5dc",
+      "actor": "A",
+      "operation": "update_task",
+      "outcome": "denied",
+      "code": "lease_denied",
+      "pre_version": 4,
+      "post_version": null
+    },
+    {
+      "request": "nonrecipient-resolve",
+      "request_sha256": "ce7cd20ea02ad982b541206b0f2429ea5881d5fc9e56d4a34b0df5bb40792a2f",
+      "actor": "A",
+      "operation": "resolve_handoff",
+      "outcome": "denied",
+      "code": "handoff_denied",
+      "pre_version": 4,
+      "post_version": null
+    },
+    {
+      "request": "recipient-accept",
+      "request_sha256": "aac40571b5c157e1f615ab159c01cdf75488e09f5cafb6a9d88b1cf10d51e58b",
+      "actor": "B",
+      "operation": "resolve_handoff",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 4,
+      "post_version": null
+    },
+    {
+      "request": "nonrecipient-claim",
+      "request_sha256": "ab293ac807b87a8d3f3a11e4b59e14ef7cae0cbe7040f1304a7635d1602b3189",
+      "actor": "A",
+      "operation": "claim_task",
+      "outcome": "denied",
+      "code": "assignment_denied",
+      "pre_version": 5,
+      "post_version": null
+    },
+    {
+      "request": "recipient-claim",
+      "request_sha256": "ee7d989142d065469e1aff0277271df97ae7a8c2ce9a5b144b2cb16646505112",
+      "actor": "B",
+      "operation": "claim_task",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 5,
+      "post_version": 6
+    },
+    {
+      "request": "recipient-run",
+      "request_sha256": "d00d0021ba393649f280586f70b6880955f2ff064fc6688d38e0b1308f94405e",
+      "actor": "B",
+      "operation": "update_task",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 6,
+      "post_version": 7
+    },
+    {
+      "request": "recipient-submit",
+      "request_sha256": "b67f6530fa21385f677d9356802cdeaff38d5d09a10f9b334688a941e7b5ea64",
+      "actor": "B",
+      "operation": "update_task",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 7,
+      "post_version": 8
+    },
+    {
+      "request": "lock-acquire-A",
+      "request_sha256": "2b32f3287202c88a66c6ba4024c7683a980db7aa1cc0b0c4837ec6df052b0335",
+      "actor": "A",
+      "operation": "acquire_file_lock",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": null,
+      "post_version": 1
+    },
+    {
+      "request": "lock-contended",
+      "request_sha256": "eb5682420ff5165ccb1f15d9c2e6e4d870de68e0c93cc362cd4f0a57be8817f1",
+      "actor": "B",
+      "operation": "acquire_file_lock",
+      "outcome": "denied",
+      "code": "lock_busy",
+      "pre_version": null,
+      "post_version": null
+    },
+    {
+      "request": "lock-release-A",
+      "request_sha256": "fc26326c37e1333d7a78c8060c742786f94a3dffbd020242e56f58a1aa13cbb4",
+      "actor": "A",
+      "operation": "release_file_lock",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 1,
+      "post_version": 2
+    },
+    {
+      "request": "lock-acquire-B",
+      "request_sha256": "ecf664057c1506873617bc2b52f1183d2a5c78448501fc8e1c72c0a6cdb85840",
+      "actor": "B",
+      "operation": "acquire_file_lock",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": null,
+      "post_version": 1
+    },
+    {
+      "request": "lock-release-B",
+      "request_sha256": "05c300ea1c061c38169107dfa963215a9267c0fcf1b8eb9e4476eec150f7a75e",
+      "actor": "B",
+      "operation": "release_file_lock",
+      "outcome": "success",
+      "code": "ok",
+      "pre_version": 1,
+      "post_version": 2
+    }
+  ],
+  "audit_events_matched": 18,
+  "database_bytes_unchanged": true,
+  "installed_runtime_members_unchanged": 97,
+  "native_hosts_eof_exit_zero": 2,
+  "reported_mcp_children_ended": 7,
+  "inference_requests": 0,
+  "formal_release": "BLOCKED"
+}

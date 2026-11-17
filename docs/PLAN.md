@@ -2,6 +2,17 @@
 
 ## Execution adjustment — 2026-11-15
 
+The existing M2/M3 native-client handoff gap was exercised once on installed a121.
+Actual Codex MCP calls observed structured handoff, recipient continuation, pinned
+context, metadata-lock contention and normal host reopen. The final audit assertion
+failed because the probe omitted a schema default; retain that native BLOCKED
+result. A one-line probe correction and separate local Core check are complete;
+no native retry or runtime/package change. Root read-only inspection matched18
+persisted audit events and confirmed cleanup. This closes implementation of the
+bounded probe, not full client/M7/Release acceptance. See native-handoff/summary.json
+under acceptance/evidence/core-preview-a121. Keep the usable preview and select
+remaining original requirements without adding a new phase or repeating suites.
+
 P1 concrete usability repair b095c5e: demo/owner JSON now survives CP1252 output
 with Chinese paths or recovery reasons. Two genuine failing CLI reproductions
 are preserved;19 affected source checks and changed-file Ruff/format pass. Root

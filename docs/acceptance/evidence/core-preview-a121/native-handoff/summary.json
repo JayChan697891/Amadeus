@@ -1,0 +1,68 @@
+{
+  "status": "BLOCKED - original native probe exited 1 at the final audit assertion",
+  "runtime_version": "0.3.0a121",
+  "runtime_source_commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+  "executed_probe_commit": "36a672d799f01d12e0662c259b4e55b98cac157b",
+  "executed_probe_sha256": "040bece7b966aa2460e9b3d3c41aabf1ec3305620dc1f40548820a34ffe46f13",
+  "repaired_probe_commit": "a9cbcfe31b65e294586382c4c995461e543b9eb4",
+  "repaired_probe_sha256": "fc458d0fec4d7434e794523a3a42a7dba6f4066d157499b93efaec900b2bfe01",
+  "repaired_native_probe": "NOT RUN - no automatic repeat of the completed attempt",
+  "native_terminal_chunk": "dfd1a2",
+  "native_exit_code": 1,
+  "started_utc": "2026-11-17T05:40:08.771135+00:00",
+  "finished_utc": "2026-11-17T05:40:13.783650+00:00",
+  "observed_scope": [
+    "Real Codex public app-server with two separately authenticated Amadeus actors; deterministic MCP calls, zero model requests",
+    "One task created, sender claimed and ran, structured handoff submitted/read/accepted, recipient claimed with a fresh lease and submitted text for review",
+    "Task versions 1 through 8; accepted handoff pinned to context version 1 while latest context is version 2",
+    "Old lease, non-recipient resolve, reserved-task claim and competing metadata lock correctly denied",
+    "Two actors sequentially acquired and released the same cooperative metadata lock; fixture file unchanged",
+    "A fresh native host read the same task, accepted handoff and pinned context after normal EOF shutdown",
+    "Local owner Core audit read reached the final assertion; it is not an MCP audit-tool test"
+  ],
+  "failure": {
+    "request": "context-v1",
+    "field": "pre_version",
+    "expected_by_original_probe": null,
+    "actual_schema_default": 0,
+    "product_runtime_defect_established": false,
+    "repair": "Explicit expected_version=0 on the initial publish_context call; one probe line only"
+  },
+  "independent_postcheck": {
+    "terminal_chunk": "e11e44",
+    "sqlite_mode": "read-only, query_only",
+    "matched_exact_audit_requests": 18,
+    "task": "review v8, zero reviews, unverified",
+    "database_bytes_unchanged": true,
+    "installed_members_unchanged": 97,
+    "native_hosts_eof_exit_zero": 2,
+    "mcp_children_reported_ended": 7,
+    "exact_pids_absent_after_run": 10,
+    "first_comparison_failure": "08d1fe compared CRLF stdout bytes with LF result bytes; original postcheck retained locally, parsed JSON equality passed without replay"
+  },
+  "repair_checks": {
+    "terminal_chunk": "fd3ed7",
+    "exit_code": 0,
+    "scope": "A separate actual local Core context write proves old None expectation rejected and 0 accepted; all 18 probe request schemas checked",
+    "changed_file_ruff_and_format": "PASS (db5511)",
+    "native_host_started": false
+  },
+  "independent_review": "Root checked actual files, original receipt and read-only fixture; Astra accepted only the one-line repair and these observed bounds, explicitly retaining the native failure",
+  "no_model_account_credentials_read_or_copied": true,
+  "no_candidate_execution_or_application": true,
+  "model_requests": 0,
+  "junit": "NOT APPLICABLE - manual native process receipts and a targeted standalone Core check; no pytest/JUnit result fabricated",
+  "not_established": [
+    "Corrected native probe full pass",
+    "Model-driven relay",
+    "Independent candidate verification",
+    "Git merge conflict handling",
+    "Desktop UI",
+    "Cross-vendor compatibility",
+    "M7 or formal Release acceptance"
+  ],
+  "formal_release": "BLOCKED",
+  "originals_policy": "All archived receipts are exact copies; original native result and failed assertion preserved. Raw stderr, homes/config, fixture databases and private traceback remain local and are not uploaded.",
+  "script_policy": "Raw executed driver snapshots use the existing .py.txt evidence convention; no historical file, Ruff rule or scope was changed.",
+  "next_entry": "Use the a121 preview; retain this one native failure. No automatic rerun, new stage or Release promotion. Select another uncovered original requirement, or include the repaired probe only in a separately reviewed final frozen client plan."
+}

@@ -1,0 +1,50 @@
+"""Run the reviewed, inference-free native fixture once and retain its exit receipt."""
+
+import hashlib
+import json
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("F:/syuc/amadeus-m6-single")
+PREP = Path("D:/agentsync-debug/m121-handoff-preparation")
+RUN = PREP / "native-execution"
+PROBE = ROOT / "tests/manual/probe_codex_handoff.py"
+PIN = "040bece7b966aa2460e9b3d3c41aabf1ec3305620dc1f40548820a34ffe46f13"
+BINARY = Path("C:/Users/JayChan/AppData/Roaming/npm/node_modules/@openai/codex/node_modules/"
+              "@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe")
+
+
+def save(name, value):
+    with (RUN / name).open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+assert Path(sys.executable).resolve() == Path("D:/agentsync-debug/m121p/w/Scripts/python.exe")
+assert sys.flags.isolated and sys.dont_write_bytecode
+assert hashlib.sha256(PROBE.read_bytes()).hexdigest() == PIN
+commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+blob = subprocess.check_output(["git", "show", "HEAD:tests/manual/probe_codex_handoff.py"], cwd=ROOT)
+assert hashlib.sha256(blob).hexdigest() == PIN
+assert list(PREP.glob("native-handoff-*")) == []
+RUN.mkdir()
+argv = [sys.executable, "-I", "-B", str(PROBE), "--codex-binary", str(BINARY),
+        "--scratch-parent", str(PREP)]
+receipt = {"argv": argv, "cwd": str(ROOT), "source_commit": commit,
+           "probe_sha256": PIN, "started_utc": datetime.now(timezone.utc).isoformat()}
+start = time.monotonic()
+with (RUN / "stdout.log").open("xb") as stdout, (RUN / "stderr.log").open("xb") as stderr:
+    process = subprocess.Popen(argv, cwd=ROOT, stdout=stdout, stderr=stderr,
+                               creationflags=subprocess.CREATE_NO_WINDOW)
+    receipt["pid"] = process.pid
+    save("started.json", receipt)
+    code = process.wait()
+receipt.update(exit_code=code, finished_utc=datetime.now(timezone.utc).isoformat(),
+               duration_seconds=round(time.monotonic() - start, 3))
+save("execution.json", receipt)
+print(json.dumps({key: receipt[key] for key in
+                  ("source_commit", "pid", "exit_code", "started_utc", "finished_utc", "duration_seconds")}))
+raise SystemExit(code)
