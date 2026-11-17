@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-11-17T07:37:14.386489+00:00",
+  "status": "RUNNING; terminal result not yet observed",
+  "scope": "First full Windows3.12 installed-wheel pytest on frozen a122; no build/install/focused/static/license repetition",
+  "requirement": "RAT-M9-01",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "driver_sha256": "dafcc5c5e454d6128ec5b7d1f05d09dcded167bfa3e44fa3f05e991dd63f5489",
+  "native_session": 43609,
+  "start_receipt": "50b2b2",
+  "process_observation_receipt": "2dbb12",
+  "controller_pid": 644,
+  "pytest_pid": 8796,
+  "launcher_pids": [
+    23768,
+    24392
+  ],
+  "source_snapshot_files": 3992,
+  "installed_runtime_members": 97,
+  "test_timeout_seconds": 7200,
+  "existing_wheel_environment": "D:/agentsync-debug/m122p/w",
+  "temporary_root": "D:\\agentsync-debug\\m122fullw",
+  "raw_output_stays_local": true,
+  "automatic_retry": false,
+  "final_result": "NOT YET AVAILABLE",
+  "candidate_execution_authorized": false,
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "review": "Root inspected concrete driver and collector; Astra confirmed original M9 scope.",
+  "preparation_observations": [
+    {
+      "receipt": "6f2a3a",
+      "exit_code": 1,
+      "provenance": "After-run transcription from native receipt",
+      "scope": "Read-only inventory guard found build-generated egg-info in old expanded source. Old directory preserved; original pinned ZIP will be extracted once into isolated fresh directory."
+    },
+    {
+      "receipt": "9a6ea7",
+      "exit_code": 0,
+      "provenance": "After-run transcription from native receipt",
+      "scope": "Original ZIP3992 members, source/wheel/install97 runtime members and direct_url pins match."
+    }
+  ]
+}

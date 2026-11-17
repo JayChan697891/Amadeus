@@ -1,5 +1,16 @@
 # Amadeus current progress
 
+ACTIVE independent queue: the first full a122 Windows3.12 installed-wheel suite
+started at07:36:04Z on2026-11-17. Native handle43609 is live (50b2b2; process check
+2dbb12), controller644/pytest8796 with launcher PIDs23768/24392. Observe this
+same handle; do not restart from an observation timeout or this saved status.
+`D:/agentsync-debug/m122fullw/run/result.json` is written only at completion.
+The suite uses original5232e9e tests and the existing m122p/w installation; no
+rebuild, installation, focused97, static, license or model repeat. Raw evidence
+stays on D; final outcome is not yet available. See
+[reviewed driver and starting state](acceptance/evidence/core-preview-a122/full-windows312/preparation.json).
+This existing RAT-M9-01 gap is independent of the still-pending real-candidate grant.
+
 The a122 composed real check now reaches its authorized boundary. Two real Codex
 subscription calls ran once. The first parent was interrupted after turn.started
 and recorded failed; the distinct receiver returned the149-byte addition proposal
