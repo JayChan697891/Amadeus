@@ -1,5 +1,19 @@
 # Amadeus current progress
 
+RUNNING LOCAL CHECKPOINT — first a120 Linux3.14 installed-wheel full suite.
+Native session11295, guest controller2945, owned VM18824; started2026-11-17T01:33:32Z
+(Nov16 America/Tijuana). Runtime859775b and existing /root/amadeus-m120l/w are reused;
+5369 frozen d427355 inputs match the completed Windows run. Fixed local Docker
+image34386ef; no models/login copies, package rebuild or hosted execution.
+Actual pytest-start and initial process receipts have been read. Result UNKNOWN,
+not a pass. Full driver ad27ece is frozen and has no retry. Observe session11295
+and /root/amadeus-m120full/run/result.json; do not restart the job or stop its VM.
+Host checkpoint: D:/agentsync-debug/m120fulll. After terminal exit inspect actual
+JUnit/logs/Docker observations, compare previous case identities, verify cleanup
+and hashes, then archive final evidence and normally stop only the owned VM.
+See acceptance/evidence/core-preview-a120/full-linux314/startup-checkpoint.json.
+All preceding completed evidence remains unchanged. Release stays BLOCKED.
+
 COMPLETED LOCAL RUN — a120 Windows3.12 installed-wheel full regression.
 Native session28686 ended2026-11-17T01:16:44Z (Nov16 America/Tijuana), chunk3255b8
 exit0. Four native checks pass.2587 unique cases:2530pass/57skip/0fail/error;

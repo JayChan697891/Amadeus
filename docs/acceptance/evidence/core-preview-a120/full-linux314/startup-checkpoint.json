@@ -1,0 +1,15 @@
+{
+  "status": "RUNNING; no result yet",
+  "native_session": 11295,
+  "controller_pid": 2945,
+  "vm_pid": 18824,
+  "boot_id": "01f251ae-a38e-4cda-8b2c-f67df7e0b98f",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "driver_sha256": "ad27ecea04aef1fb4f796ed63790af81f6e4ae402c4fd7b66dc347df21c119d5",
+  "guest_root": "/root/amadeus-m120full",
+  "local_root": "D:\\agentsync-debug\\m120fulll",
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "instructions": "Observe the existing native session and guest result. Do not rerun the driver, reinstall packages, start a competing queue or stop the VM while active. Read PROGRESS for recovery."
+}
