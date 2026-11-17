@@ -1,5 +1,15 @@
 # Amadeus current progress
 
+Windows a122 installed-license metadata is now collected from the existing
+wheel/sdist environments:6 native checks exit0,32 distributions and43 license
+files per installation. Root rehashed all86 license files and97 runtime members
+per installation; both inventories are identical and have no metadata review
+items. This records declarations only: license_review remains pending,
+publication_authorized false and Release BLOCKED. No build/install/test/model
+repeat. Linux a122 inventories remain NOT RUN; reuse existing installs after
+capacity review rather than rerunning completed suites.
+[Actual metadata and inspection](acceptance/evidence/core-preview-a122/windows-licenses/root-review.json).
+
 ACTIVE original goal; completed checkpoint:
 
 First full frozen a122 Linux3.14 installed-wheel regression completed at

@@ -1,0 +1,78 @@
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+base = Path('D:/agentsync-debug/m122licenses')
+repo = Path('F:/syuc/amadeus-m6-single')
+sys.path.insert(0, 'D:/agentsync-debug/m122p/s')
+from tools.release_acceptance import redact_credentials
+
+result = json.loads((base / 'run/result.json').read_bytes())
+assert len(result['checks']) == 6
+assert all(c['status'] == 'pass' and c['exit_code'] == 0 for c in result['checks'])
+assert result['runtime_commit'] == '5232e9e8bd33a949f7ffdc68410cd614a297af66'
+assert result['driver_sha256'] == hashlib.sha256((base / 'collect.py').read_bytes()).hexdigest()
+counts = {}
+for kind, env in [('wheel', 'w'), ('sdist', 'd')]:
+    raw = (base / 'run' / f'{kind}-inventory.json').read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == result['inventories'][kind]['sha256']
+    report = json.loads(raw)
+    assert report['license_review'] == 'pending' and not report['publication_authorized']
+    assert report['review_items'] == []
+    site = Path('D:/agentsync-debug/m122p') / env / 'Lib/site-packages'
+    count = 0
+    for declaration in report['distributions'].values():
+        for entry in declaration['license_files']:
+            assert entry['status'] == 'recorded'
+            path = site / entry['member']
+            assert path.resolve().is_relative_to(site.resolve())
+            data = path.read_bytes()
+            assert len(data) == entry['bytes']
+            assert hashlib.sha256(data).hexdigest() == entry['sha256']
+            count += 1
+    members = json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())
+    assert len(members) == 97
+    assert all(hashlib.sha256((site / name).read_bytes()).hexdigest() == digest for name, digest in members.items())
+    counts[kind] = {'distributions': len(report['distributions']), 'license_files_rehashed': count, 'runtime_members': len(members)}
+assert (base / 'run/wheel-inventory.json').read_bytes() == (base / 'run/sdist-inventory.json').read_bytes()
+files = sorted(p for p in (base / 'run').rglob('*') if p.is_file())
+for file in files:
+    assert redact_credentials(file.read_text(encoding='utf-8'))[1] == 0, file
+dest = repo / 'docs/acceptance/evidence/core-preview-a122/windows-licenses'
+dest.mkdir()
+for src in files:
+    dst = dest / src.relative_to(base / 'run')
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    with dst.open('xb') as f:
+        f.write(src.read_bytes())
+    assert dst.read_bytes() == src.read_bytes()
+for name in ['collect.py', 'review-save.py']:
+    with (dest / (name + '.txt')).open('xb') as f:
+        f.write((base / name).read_bytes())
+review = {'scope': 'a122 Windows3.12 existing installed dependency metadata only',
+          'native_collection_chunk': '094995', 'exit_code': 0, 'checks': 6,
+          'source_commit': result['runtime_commit'], 'installs': counts,
+          'inventory_sha256': result['inventories']['wheel']['sha256'],
+          'inventories_identical': True, 'review_items': [], 'license_review': 'pending',
+          'publication_authorized': False, 'formal_release': 'BLOCKED',
+          'no_rebuild_install_test_or_model_call': True,
+          'files': {str(p.relative_to(base / 'run')): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}}
+with (dest / 'root-review.json').open('x', encoding='utf-8') as f:
+    json.dump(review, f, indent=2)
+addition = '''Windows a122 installed-license metadata is now collected from the existing
+wheel/sdist environments:6 native checks exit0,32 distributions and43 license
+files per installation. Root rehashed all86 license files and97 runtime members
+per installation; both inventories are identical and have no metadata review
+items. This records declarations only: license_review remains pending,
+publication_authorized false and Release BLOCKED. No build/install/test/model
+repeat. Linux a122 inventories remain NOT RUN; reuse existing installs after
+capacity review rather than rerunning completed suites.
+'''
+for relative, link in [('docs/PROGRESS.md', 'acceptance/'), ('docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md', '')]:
+    path = repo / relative
+    text = path.read_text(encoding='utf-8')
+    pos = text.index('\n') + 1
+    text = text[:pos] + '\n' + addition + f'[{"Actual metadata and inspection"}]({link}evidence/core-preview-a122/windows-licenses/root-review.json).\n' + text[pos:]
+    path.write_text(text, encoding='utf-8')
+print(json.dumps(counts))

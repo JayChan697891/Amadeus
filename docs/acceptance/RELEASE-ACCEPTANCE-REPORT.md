@@ -1,5 +1,15 @@
 # Release Acceptance Report
 
+Windows a122 installed-license metadata is now collected from the existing
+wheel/sdist environments:6 native checks exit0,32 distributions and43 license
+files per installation. Root rehashed all86 license files and97 runtime members
+per installation; both inventories are identical and have no metadata review
+items. This records declarations only: license_review remains pending,
+publication_authorized false and Release BLOCKED. No build/install/test/model
+repeat. Linux a122 inventories remain NOT RUN; reuse existing installs after
+capacity review rather than rerunning completed suites.
+[Actual metadata and inspection](evidence/core-preview-a122/windows-licenses/root-review.json).
+
 First full frozen a122 Linux3.14 installed-wheel regression completed at
 2026-11-17T14:10:22Z, native74411 exit0 (ad13b3): **2589 PASS /7 SKIP,
 0 failures/errors**,2596 unique cases. Root and Astra inspected actual XML,

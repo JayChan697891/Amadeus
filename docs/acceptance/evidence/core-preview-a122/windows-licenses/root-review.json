@@ -1,0 +1,44 @@
+{
+  "scope": "a122 Windows3.12 existing installed dependency metadata only",
+  "native_collection_chunk": "094995",
+  "exit_code": 0,
+  "checks": 6,
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "installs": {
+    "wheel": {
+      "distributions": 32,
+      "license_files_rehashed": 43,
+      "runtime_members": 97
+    },
+    "sdist": {
+      "distributions": 32,
+      "license_files_rehashed": 43,
+      "runtime_members": 97
+    }
+  },
+  "inventory_sha256": "01684b8b4627b1306e01f371e7bc783b4f8012c3ce3cf9e3e7531c0797934387",
+  "inventories_identical": true,
+  "review_items": [],
+  "license_review": "pending",
+  "publication_authorized": false,
+  "formal_release": "BLOCKED",
+  "no_rebuild_install_test_or_model_call": true,
+  "files": {
+    "attempt.json": "30fdbaec03f56e034cb6b300013514713165157a5aad08094bf8461606bac278",
+    "logs\\sdist_license_inventory.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs\\sdist_license_inventory.process.json": "d68b67901fb8a3389f0e79a9d2cc0f3d0224065075dff3f9cb2fcd386942fecd",
+    "logs\\sdist_license_origin_after.log": "e43975dc9519ff0598e634dbd68415e80f5dff8d7f93e5532c55757d62393322",
+    "logs\\sdist_license_origin_after.process.json": "9a17fb1544f4e4fd7f36b6cd93548d0aa2abc20027d2a6e517384baada797930",
+    "logs\\sdist_license_origin_before.log": "e43975dc9519ff0598e634dbd68415e80f5dff8d7f93e5532c55757d62393322",
+    "logs\\sdist_license_origin_before.process.json": "3543ac2a76b95e09bbbd0b388f9de043bcd73b26f67ffdd46b520e7054589566",
+    "logs\\wheel_license_inventory.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs\\wheel_license_inventory.process.json": "9c9a6e67fc170658d197f274212a3df7afd3b5d0fe763718fd083e17d4f13f22",
+    "logs\\wheel_license_origin_after.log": "603c694c4da933921a66bdd57a25a788f9b9e883dfe8b8d8199052c70a05d66c",
+    "logs\\wheel_license_origin_after.process.json": "4a41e048688fd373f8a7fd66aa07039a2821af48d475f476b9e5e8317ca30ea0",
+    "logs\\wheel_license_origin_before.log": "603c694c4da933921a66bdd57a25a788f9b9e883dfe8b8d8199052c70a05d66c",
+    "logs\\wheel_license_origin_before.process.json": "6619b2bea336d1a1100e4af4534b597c0f29bc67994415e4f4445324e11e2f29",
+    "result.json": "0cc1bad281976958139c6388d7e209795b721589164e22589896076d99428b18",
+    "sdist-inventory.json": "01684b8b4627b1306e01f371e7bc783b4f8012c3ce3cf9e3e7531c0797934387",
+    "wheel-inventory.json": "01684b8b4627b1306e01f371e7bc783b4f8012c3ce3cf9e3e7531c0797934387"
+  }
+}
