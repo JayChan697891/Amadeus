@@ -17,6 +17,8 @@
 并让所有者及工作流命令在数据库损坏时返回明确错误。wheel 和源码包的新安装各通过21项
 定向用例；同一组原包在 Windows3.12/Linux3.14 的四个新安装环境中结果一致。
 a120 的 macOS、完整验收及真实客户端验证尚未执行。
+随后完成的[Windows3.12 已安装 wheel 全量回归](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json)
+为2530通过、57项明确跳过、零失败/错误；它不是完整平台及源码包验收矩阵。
 
 此前的 [a119 开发预览](releases/0.3.0a119/preview-4be5134/)已包含所有者命令的错目录保护，
 以及续接任务在同一核心内完成独立验收的接线。同一 wheel 和源码包在 Windows 新安装中

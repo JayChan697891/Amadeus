@@ -1,18 +1,29 @@
 # Amadeus current progress
 
-ACTIVE LOCAL RUN — a120 Windows3.12 installed-wheel full regression.
-Native session28686/controller23088 started2026-11-17T00:32:58Z; pytest started
-00:33:17Z (Nov16 America/Tijuana). Original wheel/runtime859775b is reused;
-test/example snapshot is frozen d427355,5369 files. Pip/origin checks exited0,
-97 members match. Full-suite result is not yet available; no acceptance claim.
-See acceptance/evidence/core-preview-a120/full-windows312/execution-start.json.
-Recovery: poll session28686, then inspect D:/agentsync-debug/m120fullw/run/result.json
-and native .process.json records. If the session handle is unavailable, first
-match the saved controller identity and current processes; never restart an
-existing attempt. Preserve raw JUnit locally and use the collector's sanitized
-copy for storage. After the actual terminal result, inspect case identities,
-failures/skips and unchanged source/runtime before deciding targeted repair.
-No model, VM or GitHub execution is involved; Release remains BLOCKED.
+COMPLETED LOCAL RUN — a120 Windows3.12 installed-wheel full regression.
+Native session28686 ended2026-11-17T01:16:44Z (Nov16 America/Tijuana), chunk3255b8
+exit0. Four native checks pass.2587 unique cases:2530pass/57skip/0fail/error;
+pytest2603.57s. Original runtime859775b/wheel reused, test snapshot d427355.
+All2545 old Windows cases retain their outcomes;42 added=41pass+1skip. The added
+Docker continuation case requires the fixed Linux image; its synthetic branch
+passes. No old failure was changed to a skip. Root read all actual native/log/XML
+records, independently rehashed5369 inputs/97 installed members unchanged, and
+checked the6 raw-to-public XML redactions. Raw XML stays local. Independent Astra
+accepts only the complete Windows installed-wheel suite with these explicit skips.
+12 original run records plus1 derived case comparison/1510734bytes are archived.
+See acceptance/evidence/core-preview-a120/full-windows312/summary.json.
+The matching-worker check found no remaining run process; VM remains off.
+Do not poll the closed session or rerun the completed driver. Historical start
+records remain unchanged; final result supersedes their running/unknown status.
+No model, login copy, Actions or main merge; full source/sdist, current platform
+matrix, real clients and formal Release are not implied. Release remains BLOCKED.
+
+Next resume entry: prepare the first full Linux3.14 installed-wheel regression
+using the same d427355 test snapshot and original a120 install at
+/root/amadeus-m120l/w in the dedicated D-drive Linux VM. First confirm no older
+queue is active, use normal owned-VM startup and the existing fixed local image,
+then freeze the Linux collector inputs before running. No such job has started;
+do not rebuild packages or repeat the finished Windows/focused suites.
 
 P1 recovery entry delivered against unchanged a120/859775b: the checkout's
 examples/recover_relay.py exposes status/history/task and an explicitly selected
@@ -31,7 +42,7 @@ no worker/VM/model job remains from this batch. Interactive terminal echo and
 Linux/macOS example checks are NOT RUN; formal Release remains BLOCKED.
 See [user recovery path](RELAY-RECOVERY.md) and the archive's summary.json.
 
-The first full a120 Windows3.12 installed-wheel regression is now running as above,
+The first full a120 Windows3.12 installed-wheel regression is complete as above,
 with these current test/example inputs frozen separately. Focused package checks
 and prior a116/a117 full runs are retained, not repeated or relabelled.
 Do not reconstruct old live fixtures;

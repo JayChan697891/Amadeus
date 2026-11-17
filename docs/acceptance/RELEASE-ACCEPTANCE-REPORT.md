@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+Latest full local result — a120 Windows3.12 installed wheel **PASS with57 explicit
+skips; formal Release BLOCKED**. Runtime859775b, frozen tests d427355. Native
+session28686 ended2026-11-17T01:16:44Z, exit0; four checks pass.2587 unique cases:
+2530pass/57skip/0fail/error. All2545 old Windows case identities/outcomes remain;
+42 added=41pass+1skip for the fixed Linux Docker continuation branch. The latter
+is not Windows execution evidence; its deterministic branch passed.
+Root inspected actual native receipts/log/XML, rehashed5369 frozen files and97
+installed members unchanged, and checked all6 XML redactions against local raw
+XML.12 original records plus1 derived comparison are archived; no matching run
+worker remains. Independent Astra accepts only this Windows installed-wheel scope.
+No full source/sdist, complete current platform matrix, real-client or external
+Work acceptance follows. [Results and boundaries](evidence/core-preview-a120/full-windows312/summary.json).
+
 P1 checkout recovery helper:4 focused Windows checks pass on installed a120,
 including actual Core/CLI status inspection with injected prompt input; unsafe
 terminal refusal and timeout/no-retry behavior are deterministic tests. Root

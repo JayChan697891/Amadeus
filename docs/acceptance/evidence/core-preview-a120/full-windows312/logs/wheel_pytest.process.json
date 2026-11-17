@@ -1,0 +1,57 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m120fullw\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m120fullw\\t\\wheel-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m120fullw\\t\\p",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m120fullw\\t\\pytest-cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\m120fullw\\run",
+    "started_at": "2026-11-17T00:33:17.868996+00:00",
+    "timeout_seconds": 7200
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m120fullw\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\m120fullw\\t\\wheel-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m120fullw\\t\\p",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m120fullw\\t\\pytest-cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\m120fullw\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T00:33:17.868996+00:00",
+    "finished_at": "2026-11-17T01:16:42.233841+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "2b629d255c189952d9d75a69842cf46883b62d0eb5a41fb2ea178782ffecad80",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 7200
+  }
+}

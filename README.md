@@ -18,6 +18,9 @@ adds missing-project protection for `workflow start` and structured database err
 for `owner`/`workflow`. Fresh wheel and source-package installs each passed21
 focused cases on Windows3.12 and Linux3.14 using the same archives. macOS,
 full a120 acceptance and a120 real-client validation are NOT RUN.
+The subsequent [full Windows3.12 installed-wheel regression](docs/acceptance/evidence/core-preview-a120/full-windows312/summary.json)
+passed2530 cases with57 explicit skips and no failures/errors. This is one complete
+test run, not the full platform/source-package acceptance matrix.
 
 For an existing stopped relay, use the [recovery guide](docs/RELAY-RECOVERY.md)
 and interactive [helper](examples/recover_relay.py) to inspect the saved wave and
