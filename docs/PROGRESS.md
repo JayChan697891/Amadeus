@@ -12,20 +12,35 @@ files. Both observer scripts and the error are preserved. This is one full
 Windows wheel suite, not the complete a122 matrix or formal Release.
 [Actual results and independent inspection](acceptance/evidence/core-preview-a122/full-windows312/root-postcheck.json).
 
-The owner granted the exact149-byte candidate's once-only Docker verification and
-independent same-task completion. New helper80c41ab2 uses normal owner-enrolled
-fresh identities after old sessions expire; it cannot revive old credentials,
-change the candidate or relaunch a model. Four focused checks and changed-file
-Ruff/format pass; initial lint/format failures remain. Root/Astra accepted this
-preparation scope only. Real helper and candidate effects remain NOT RUN at this
-checkpoint. VM2732 booted normally at08:33:50Z with prior logs retained; read-only
-inspection confirmed the same review-v5 task, expired old sessions, original
-runtime/image, no workers/containers and1.06GB free. Next: normal fresh enrollment,
-prepare/review the new exact plan, stage once, inspect execution plan, execute once,
-inspect completion plan and independently complete the same receiver task.
-No new model calls, account-login copying or retry after failure/unknown.
+The owner-authorized149-byte candidate verification completed at08:40:07Z. The
+same receiverd583d431 is now completed v6/verified; source remains failed v5 and
+dependent pending v2 unchanged. Normal owner enrollment supplied a fresh worker
+and distinct reviewer after original sessions expired. Reviewed helper80c41ab2
+retained every original source/task/recovery binding. Exactly one Docker execution
+passed2/2 cases and19 isolation checks; its container was removed. Root inspected
+each actual plan before its effect, then independently checked database rows,
+original receipts, four raw capture hashes and97 installed members. Astra accepted
+this bounded same-vendor recovery plus same-task verification result. Zero new
+model calls or account credential access. Four helper checks and changed-file
+Ruff/format pass; initial lint/format failures remain.
+[Actual plans, results, independent inspection and limits](acceptance/evidence/core-preview-a122/composed-recovery/verification/summary.json).
 
-The a122 composed real check now reaches its authorized boundary. Two real Codex
+VM2732 shut down normally; at08:43:20Z Root confirmed it absent, both ports closed
+and the disk retained. No project worker/container remains. Model login remains
+absent; new synthetic project credentials stay only in the private guest fixture.
+Original Windows full-suite43609 is terminal and must not be restarted. The first
+push of local03a3074 failed with TLS EOF; the original failure is retained and
+remote synchronization is confirmed separately. No main merge or Actions.
+
+Next recovery entry: review the remaining original M6-03 local lifecycle evidence
+against frozen5232e9e and the current acceptance queue; select only its missing
+current-version evidence. Do not rerun this consumed candidate verification,
+producer/receiver calls, controller recovery, native MCP handoff, four97-case
+installation checks or completed Windows wheel suite. No new job is currently
+running. Cross-vendor/macOS remain unavailable; full M7/M8 and Release remain unaccepted.
+
+Before that final verification, the a122 composed real check reached its original
+authorization boundary. Two real Codex
 subscription calls ran once. The first parent was interrupted after turn.started
 and recorded failed; the distinct receiver returned the149-byte addition proposal
 and naturally exited0. Controller3117 then exited73 after persisting review v5,
@@ -37,21 +52,16 @@ Temporary login removed, RAM home unmounted/empty, original login unchanged, no
 workers/containers remain. Root's three observation errors are retained; no live
 step was repeated. [Actual results](acceptance/evidence/core-preview-a122/composed-recovery/summary.json).
 
-The owner grant is now recorded for the exact recovered candidate's
-isolated staging, one Docker verification and independent same-task completion.
-The149-byte source is inert and unchanged; [stage plan](acceptance/evidence/core-preview-a122/composed-recovery/stage-plan.json)
+The original, pre-expiry [stage plan](acceptance/evidence/core-preview-a122/composed-recovery/stage-plan.json)
 SHA28969e1168f5514a02776db6f5f5fee700d265f71707f5024e2dd45f1f24e2da
 binds receiverd583d431-24ae-48e6-9595-4c5b2ded440a v5, source8172bd12,
 checkpointf95e6904 and reconcile53d08022, the fixed Docker image and two cases.
-Candidate staging/execution/completion remain NOT RUN; old a119 grant consumed.
-Do not restart producer/receiver/recovery/replay. No full M7/M8 or Release pass.
-The original authorization question is answered; see the grant above. VM8280 shut down normally at
+Its historical NOT RUN state is preserved. The new owner grant and identity-bound
+plans above supersede only the next action, not those original bytes. VM8280 shut down normally at
 07:25:34Z on2026-11-17; Root8d5bae observed process absent, ports closed, no
-matching workers and preserved disk. Its subsequent boot and readiness are recorded
-above. Original session expiry requires the reviewed `resume_verify.py` owner
-route and freshly bound identities; do not use expired credentials. Inspect each generated
-execution/completion plan before its corresponding effect; no new model call.
-Do not infer that permission was granted or work resumed from this saved entry.
+matching workers and preserved disk. Its subsequent boot, one verification and
+normal shutdown are recorded above. Both the old a119 grant and this new once-only
+candidate grant are consumed. Do not reuse them.
 
 Preparation checkpoint ad4e84d bound the M7-02/M8-02 composed check to the frozen
 a122 runtime. The wrapper retains a completed receiver proposal and process

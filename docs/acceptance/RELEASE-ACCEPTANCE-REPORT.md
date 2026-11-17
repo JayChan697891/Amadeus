@@ -1,12 +1,32 @@
 # Release Acceptance Report
 
+Frozen a122 now has **SCOPED PASS** for the authorized completion of its original
+composed-recovery candidate. The fixed149-byte program passed exactly one Docker
+execution:2/2 cases and19 isolation checks. A fresh owner-enrolled independent
+reviewer completed the same receiver task v6/verified; source remains failed v5
+and dependent pending v2 unchanged. No additional model/account access occurred.
+Root checked the actual plans before effects and actual database, original
+receipts/captures,97 runtime members and cleanup afterward. Astra independently
+accepted this same-vendor boundary; the VM shut down normally. Independent
+identity acceptance is not another model review. Full M7/M8 and Release remain
+unaccepted. [Final verification evidence](evidence/core-preview-a122/composed-recovery/verification/summary.json).
+
+The first full a122 Windows3.12 installed-wheel suite **PASS with57 explicit
+skips**:2539pass, zero failures/errors; native43609 exit0. All2587 previous a120
+case identities/outcomes remain and9 additional cases pass. Original5232e9e
+archive/source/install bindings,97 runtime members and final process receipts
+were checked independently by Root/Astra. This does not complete the other
+current-candidate platform/distribution cells. **Formal Release BLOCKED**.
+[Full suite and independent inspection](evidence/core-preview-a122/full-windows312/root-postcheck.json).
+
 Frozen a122 has a **SCOPED PASS** for real same-vendor handoff and recovery of a
 persisted receiver result after actual controller exit73. The fresh controller
 reconciled the same review v5 task, context and publication with no new call;
 genuine replay changed no tasks or receipts. Two real calls were used, temporary
 login was cleaned, and Root/Astra accepted only this observed boundary. Candidate
-staging, isolated execution and independent completion remain **NOT RUN**, pending
-a new exact owner grant. This does not pass full M7/M8 or formal Release.
+staging, isolated execution and independent completion were **NOT RUN** at that
+original checkpoint; the subsequent once-authorized result is recorded above.
+Neither checkpoint passes full M7/M8 or formal Release.
 [Actual receipts, cleanup and limitations](evidence/core-preview-a122/composed-recovery/summary.json).
 
 Frozen a122/5232e9e has a **SCOPED PASS** for the corrected native Codex MCP handoff.
@@ -36,8 +56,9 @@ platforms passed the same 97 distinct targeted cases with matching identities
 and outcomes. Root verified the two archive hashes, 3,992 frozen files and 97
 runtime members per install. Root and Astra accepted the scoped results. The
 failed initial Linux SSH connection is retained as NOT RUN. Both native
-validation jobs finished and the owned Linux VM shut down normally. Full a122
-regressions, macOS and complete real-model control acceptance remain **NOT RUN**. Historical
+validation jobs finished and the owned Linux VM shut down normally. The first
+full Windows wheel regression subsequently passed as recorded above; remaining
+a122 full-matrix cells, macOS and complete real-model control acceptance remain **NOT RUN**. Historical
 static FAIL and pending license review still block formal Release.
 [Windows results](evidence/core-preview-a122/windows/summary.json),
 [Linux results](evidence/core-preview-a122/linux/summary.json), and

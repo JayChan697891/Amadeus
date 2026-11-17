@@ -1,0 +1,16 @@
+{
+  "actors": {
+    "stager": {
+      "agent_id": "80f7a3d4-2d12-4e64-b23f-33dd55718fb9",
+      "session_id": "46b0706f-8331-4275-834d-503576a7fd38",
+      "expires_at": 1794908297.2189803
+    },
+    "reviewer": {
+      "agent_id": "13110b64-88f9-48ca-ad18-636c32db601f",
+      "session_id": "c59b0fa9-6c38-46ed-8f1b-d14eb3b62602",
+      "expires_at": 1794908297.228197
+    }
+  },
+  "model_calls": 0,
+  "candidate_executions": 0
+}

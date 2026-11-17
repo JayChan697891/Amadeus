@@ -1,0 +1,6 @@
+{
+  "utc": "2026-11-17T08:36:20.345240+00:00",
+  "command": "/root/amadeus-m122l/w/bin/python -I -B -",
+  "retry": false,
+  "model_calls_authorized": 0
+}

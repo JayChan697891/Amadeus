@@ -5,11 +5,12 @@
 The previously deferred real collaboration/controller-recovery composition has
 now run once on frozen a122. The real receiver proposal survives controller exit73;
 the next controller reconciles the same task with zero additional calls. Root and
-Astra accept this bounded observation. Independent candidate completion is still
-NOT RUN; the exact owner grant is now received. The reviewed resume helper uses
-fresh normally enrolled staging/reviewer identities because the original sessions
-expired during full regression. No additional model call is needed.
-See [actual evidence](acceptance/evidence/core-preview-a122/composed-recovery/summary.json)
+Astra accept this bounded observation. The exact owner-authorized candidate has
+now passed one Docker run (2 cases/19 isolation checks); a fresh independent
+reviewer completed the same receiver task v6/verified. Normal owner enrollment
+handled expired sessions without changing historical source/task/recovery evidence.
+This final step made zero model calls; Root and Astra inspected actual results.
+See [actual evidence](acceptance/evidence/core-preview-a122/composed-recovery/verification/summary.json)
 and PROGRESS for the precise recovery entry. Formal Release remains BLOCKED.
 
 P1 deadline repair1700d1d is delivered in the a122 development preview. The shared
@@ -27,8 +28,9 @@ Formal Release remains BLOCKED.
 
 The corrected native MCP handoff completed the first check in the frozen
 a122/5232e9e acceptance plan. Root and Astra accepted its zero-inference scope.
-The recipient reached review v8 and remained unverified. Prepare the remaining
-remaining candidate completion for the composed recovery check against the same original archives. The
+The separate native-MCP recipient reached review v8 and remained unverified.
+The composed-recovery receiver has since been independently completed as recorded
+above; do not conflate the two experiments or repeat either. The
 original M6 requirements assess local lifecycle behavior and declared capabilities;
 service-internal generation at the deadline is an unverified capability, not an
 additional release gate. See the scope correction in acceptance/DESIGN.md. Record the exact

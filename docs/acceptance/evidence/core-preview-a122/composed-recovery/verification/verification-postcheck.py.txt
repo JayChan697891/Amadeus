@@ -1,0 +1,96 @@
+import hashlib
+import json
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE=Path('D:/agentsync-debug/m122-composed-recovery')
+OUT=BASE/'verification-host'
+client=paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+probe='''import hashlib,json,os,sqlite3,subprocess,sys
+from pathlib import Path
+root=Path('/root/amadeus-m122-composed-recovery')
+boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+assert boot=='20aed695-2774-4761-bea7-49ca81abf6ff'
+sys.path.insert(0,str(root))
+import prepare,cleanup,live,verify
+live.prep,live.cleanup=prepare,cleanup
+core,state=live.core_state()
+_,grant=cleanup.validate_authorization(allow_expired=True)
+verify.require_closed(cleanup,grant)
+def read(n):return json.loads((root/n).read_bytes())
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+old=read('continuation-result.json');checkpoint=read('controller-exit-checkpoint.json')
+plan=read('resume-completion-plan.json');execution=read('resume-execution-result.json')
+completed=read('resume-completion-result.json');post=read('resume-completion-postcheck.json')
+assert plan['execution_result_sha256']==sha(root/'resume-execution-result.json')
+assert completed['task_id']==old['outcome']['task_id']==plan['binding']['task_id']
+assert completed['task_verification']=='verified' and post['model_calls']==0
+assert post['tasks']==old['tasks']|{completed['task_id']:old['tasks'][completed['task_id']]|{'status':'completed','version':completed['version'],'task_verification':'verified'}}
+assert {p.name:sha(p) for p in (root/'receipts').glob('*.json')}==checkpoint['receipt_sha256']
+for name in ('producer','receiver'):
+ capture=read(name+'-capture.json')
+ for stream in ('stdout','stderr'):
+  p=root/(name+'-capture/raw/'+stream+'.bin')
+  assert p.stat().st_size==capture[stream+'_bytes'] and sha(p)==capture[stream+'_sha256']
+result=execution['execution']['result']
+assert result['passed_case_count']==result['expected_case_count']==result['completed_case_count']==2
+assert result['source_sha256']=='8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44'
+assert result['candidate_exit_code']==0 and result['cleanup_confirmed'] and not result['errors']
+assert len(result['isolation']['checks'])==19 and all(result['isolation']['checks'].values())
+database=core.db_path;before=sha(database)
+with sqlite3.connect(database.as_uri()+'?mode=ro',uri=True) as db:
+ db.execute('PRAGMA query_only=ON');db.row_factory=sqlite3.Row
+ tasks=[dict(row) for row in db.execute('SELECT id,status,version,dependencies FROM tasks ORDER BY id')]
+ verifications=[dict(row) for row in db.execute('SELECT id,task_id,completed_version,job_id,execution_id,reviewer_agent_id,reviewer_session_id,proof_sha256 FROM task_verifications')]
+ executions=[dict(row) for row in db.execute('SELECT id,job_id,revision,phase,assessment,container_id,result_sha256 FROM candidate_executions')]
+ audits=[dict(row) for row in db.execute('SELECT event_id,actor_kind,actor_id,operation,target_id,outcome,code,pre_version,post_version,time FROM audit_events WHERE time>=?',(read('resume-enrollment.json')['actors']['stager']['expires_at']-3600,))]
+assert sha(database)==before
+assert {row['id']:{'id':row['id'],'status':row['status'],'version':row['version'],'dependencies':json.loads(row['dependencies'])} for row in tasks}=={key:{k:v for k,v in val.items() if k!='task_verification'} for key,val in post['tasks'].items()}
+(v,)=verifications;(e,)=executions
+assert v['task_id']==completed['task_id'] and v['completed_version']==completed['version']
+assert v['execution_id']==e['id']==plan['execution_id'] and v['job_id']==e['job_id']==plan['job_id']
+assert v['reviewer_agent_id']==plan['binding']['actors']['reviewer']['agent_id']
+assert v['reviewer_session_id']==plan['binding']['actors']['reviewer']['session_id']
+assert v['reviewer_agent_id'] not in {state['receiver']['agent_id'],plan['binding']['actors']['stager']['agent_id']}
+assert e['revision']==5 and e['phase']=='finished' and e['assessment']=='passed' and e['container_id']==plan['container_id']
+assert e['result_sha256']==hashlib.sha256(json.dumps(result,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+workers=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+ try:
+  comm=(p/'comm').read_text().strip();cmd=(p/'cmdline').read_bytes()
+  if ('python' in comm or 'codex' in comm) and any(t in cmd for t in (b'/root/amadeus-',b'/root/agentsync-')):workers.append(int(p.name))
+ except (OSError,ProcessLookupError):pass
+assert not workers and not subprocess.check_output(['/usr/bin/docker','ps','-aq'],text=True,timeout=30).strip()
+names=['resume-'+n+'.json' for n in ('enrollment-entry','enrollment','stage-plan','stage-entry','stage-result','enqueue-result','execution-plan','execution-entry','execution-result','completion-plan','completion-entry','completion-result','completion-postcheck')]
+credentials=read('resume-actors.private.json')
+secrets=[state['owner']['admin_token']]+[state[n]['session_token'] for n in ('producer','receiver','stager','reviewer')]+[credentials[n]['session_token'] for n in ('stager','reviewer')]
+assert not any(secret.encode() in (root/name).read_bytes() for name in names for secret in secrets)
+files={name:{'bytes':(root/name).stat().st_size,'sha256':sha(root/name)} for name in names}
+assert sha(root/'resume_verify.py')=='80c41ab2b202b3ffa0c765e853283478e22d8ec9f6e629e63145f06d7a2da606'
+print(json.dumps({'boot_id':boot,'runtime_members_unchanged':97,'tasks':post['tasks'],'verifications':verifications,'executions':executions,'new_audits':audits,'database_sha256':before,'database_unchanged_during_read':True,'original_receipt_hashes_unchanged':True,'raw_capture_hashes_checked_locally':4,'new_model_calls':0,'candidate_executions':1,'passed_cases':2,'isolation_checks':19,'temporary_model_auth_absent':True,'private_home_unmounted_and_empty':True,'workers':workers,'containers':[],'public_files':files,'credential_scan_matches':0,'fresh_fixture_credentials':'retained only in private0700/0600 guest; no model credentials'}))
+'''
+try:
+    incoming,outgoing,errors=client.exec_command('/root/amadeus-m122l/w/bin/python -I -B -',timeout=60)
+    incoming.write(probe);incoming.flush();incoming.channel.shutdown_write()
+    out,err=outgoing.read(),errors.read();code=outgoing.channel.recv_exit_status()
+    for name,data in [('postcheck.stdout',out),('postcheck.stderr',err)]:
+        with (OUT/name).open('xb') as stream:stream.write(data)
+    assert code==0 and not err,(code,err.decode())
+    report=json.loads(out);report['observed_at']=datetime.now(UTC).isoformat()
+    with client.open_sftp() as sftp:
+        for name,pin in report['public_files'].items():
+            with sftp.open('/root/amadeus-m122-composed-recovery/'+name,'rb') as stream:data=stream.read(262145)
+            assert len(data)==pin['bytes'] and hashlib.sha256(data).hexdigest()==pin['sha256']
+            target=OUT/name
+            if target.exists():assert target.read_bytes()==data
+            else:
+                with target.open('xb') as stream:stream.write(data)
+    with (OUT/'root-postcheck.json').open('x',encoding='utf-8') as stream:json.dump(report,stream,indent=2)
+    print(json.dumps({k:v for k,v in report.items() if k not in ('public_files','new_audits')},indent=2))
+finally:client.close()
