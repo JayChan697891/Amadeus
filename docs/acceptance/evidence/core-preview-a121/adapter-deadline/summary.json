@@ -1,0 +1,92 @@
+{
+  "status": "SCOPED PASS - source deadline repair; no new package or real-client acceptance",
+  "repair_commit": "1700d1d8c79bab276ee3f3e3cefff7db23abf60d",
+  "base_commit": "621116c18127ac55095203ce6ddf785bff646fa0",
+  "tested_source_version": "0.3.0a121",
+  "defect": "An early asyncio timer callback could cancel preparation or an owned process before the adapter's absolute deadline.",
+  "repair": [
+    "The shared adapter uses the same absolute deadline as admission, checks monotonic time before stopping, rearms early callbacks and suppresses duplicate or already-stopped timeout requests.",
+    "LaunchContext uses the public timeout(None)/reschedule API behind a guarded deadline timer; the wait is called once, the timer is cleaned, external cancellation is preserved, and swallowed cancellation cannot return a late grant."
+  ],
+  "source_files": [
+    "src/agentsync/adapters/_host_process.py",
+    "src/agentsync/adapters/launch_context.py"
+  ],
+  "new_tests": [
+    "tests/unit/test_host_process_deadline.py",
+    "tests/unit/test_launch_context_deadline.py"
+  ],
+  "unchanged": [
+    "process_capture.py",
+    "owner authorization and exact approvals",
+    "no-retry and unknown-slot rules",
+    "all existing a121/a120 packages",
+    "historical static failures"
+  ],
+  "results": {
+    "shared_scheduler_red": {
+      "terminal_chunk": "cc60e9",
+      "exit_code": 1,
+      "failed": 4
+    },
+    "shared_scheduler_green": {
+      "terminal_chunk": "d3cff3",
+      "exit_code": 0,
+      "passed": 16,
+      "seconds": 3.3
+    },
+    "three_adapter_regressions": {
+      "terminal_chunk": "e1d6fc",
+      "exit_code": 0,
+      "passed": 73,
+      "seconds": 7.33
+    },
+    "launch_wait_red": {
+      "terminal_chunk": "8dc7ed",
+      "exit_code": 1,
+      "failed": 1
+    },
+    "first_launch_wait_collection": {
+      "terminal_chunk": "4667b1",
+      "exit_code": 4,
+      "errors": 1,
+      "reason": "Borrowed dependency path did not process pywin32.pth; tests were not run."
+    },
+    "launch_wait_retry_after_environment_fix": {
+      "terminal_chunk": "03f162",
+      "exit_code": 1,
+      "passed": 5,
+      "failed": 3,
+      "reason": "New test clock intercepted call_at but not call_later; three fixture failures preserved."
+    },
+    "launch_wait_final": {
+      "terminal_chunk": "77a7f8",
+      "exit_code": 0,
+      "passed": 3,
+      "seconds": 0.08,
+      "reason": "Only test clock wiring changed after the preceding run; product source bytes unchanged."
+    },
+    "unique_passing_cases": 97,
+    "full_suite_or_single_run_claimed": false,
+    "ruff_and_format": "PASS for the four changed files",
+    "mypy": {
+      "terminal_chunk": "f97140",
+      "exit_code": 0,
+      "source_files": 96
+    }
+  },
+  "provenance": "Actual commands, environments, source hashes, original logs/JUnit and exit files are retained. Final launcher checks actual F-drive imports before and after pytest; standard site.addsitedir loads existing dependency pth files only in the new process, without changing old installations.",
+  "root_review": {
+    "terminal_chunk": "dc64d5",
+    "checked": "Original XML identities/outcomes, 97 unique passes, frozen source hashes, old product Git bytes, reconstructed original context-test hash, actual import origins and unchanged 97-member installed a121 runtime."
+  },
+  "independent_review": "Astra reviewed both paths and actual receipts, accepting only scoped source correction. No further source change requested.",
+  "additional_launcher_note": "Implementer reported an argv-recording error before an r3 pytest start; no file-backed execution receipt exists, so no test result is counted for it.",
+  "original_context_test_note": "context-red-test.py.txt was reconstructed after the run and its exact SHA matches the test hash recorded before the original RED run.",
+  "fixtures": "Controlled-clock/transport fixtures plus existing known local Python child processes; no real Codex, Claude or Cursor execution, model call, account credential access, candidate execution or VM boot.",
+  "upstream_reference": "https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.call_later",
+  "local_stdlib_check": "Root inspected Python3.12 BaseEventLoop._run_once: timers before time()+_clock_resolution become ready, consistent with the documented early-callback window.",
+  "package_validation": "NOT RUN for this repair; prepare a new a122 preview rather than modifying old packages.",
+  "real_active_generation_timeout": "NOT VERIFIED",
+  "formal_release": "BLOCKED"
+}

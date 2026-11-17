@@ -8,10 +8,17 @@ and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancel
 Free, MIT-licensed local coordination for multiple agents. Python SDK, MCP stdio and HTTP API
 share one SQLite task system. No paid model, API key, cloud server or GUI is needed.
 
-Status: **0.3.0a121 development source. Formal Release BLOCKED.** The unchanged
+Status: **0.3.0a122 development source. Formal Release BLOCKED.** The unchanged
 0.3.0a116 candidate completed all six available Windows/Linux matrix rows; macOS
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
+
+The a122 source fixes premature timeouts in shared adapter scheduling and
+pre-launch waits. Early callbacks now recheck the absolute deadline before
+cancelling work; authorization, cancellation and no-retry rules are unchanged.
+The [source repair evidence](docs/acceptance/evidence/core-preview-a121/adapter-deadline/summary.json)
+contains97 scoped passing cases and original failures. Its new package validation
+is pending; existing a121 packages below are immutable and do not contain this fix.
 
 The current source also fixes demo/owner JSON output on legacy Windows streams:
 Chinese paths and recovery reasons survive round-trip decoding. Two actual

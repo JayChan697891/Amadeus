@@ -1,0 +1,67 @@
+{
+  "checked_utc": "2026-11-17T06:11:11.934413+00:00",
+  "scope": "Source deadline repair only; no test or client replay by this read-only review",
+  "batches": {
+    "red": {
+      "exit_code": 1,
+      "passed": 0,
+      "failed": 4,
+      "errors": 0
+    },
+    "green": {
+      "exit_code": 0,
+      "passed": 16,
+      "failed": 0,
+      "errors": 0
+    },
+    "regression": {
+      "exit_code": 0,
+      "passed": 73,
+      "failed": 0,
+      "errors": 0
+    },
+    "context-red": {
+      "exit_code": 1,
+      "passed": 0,
+      "failed": 1,
+      "errors": 0
+    },
+    "context-green": {
+      "exit_code": 4,
+      "passed": 0,
+      "failed": 0,
+      "errors": 1
+    },
+    "context-green-r2": {
+      "exit_code": 1,
+      "passed": 5,
+      "failed": 3,
+      "errors": 0
+    },
+    "context-green-final": {
+      "exit_code": 0,
+      "passed": 3,
+      "failed": 0,
+      "errors": 0
+    }
+  },
+  "unique_passing_cases": 97,
+  "single_full_suite_claimed": false,
+  "current_tested_file_sha256": {
+    "src/agentsync/__init__.py": "9dccc62c84f1c2c2c64c8fb5b503fb552d265b6e99009cebb185c7eacaa3a790",
+    "src/agentsync/adapters/_host_process.py": "76dfd26985a8b77d215be587fb06219b38e893ae2c37c4be30ac657922b60c9e",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b",
+    "src/agentsync/adapters/launch_context.py": "ea9897ee62bcf9c69cbc32a24bb5d02335ca432b09404b215539443aa81d9053",
+    "tests/unit/test_launch_context_deadline.py": "5d3bc2ffe5dfc74aa3e0efa5c677588cc3855b3a415c4346633414ee4fed892d",
+    "src/agentsync/adapters/approved_launch.py": "56595cbd6b0ddc76f4f53b7569a78600ba626a9add66d62e55bb5621a5e5ebca"
+  },
+  "source_origins_verified_before_and_after": true,
+  "original_red_product_bytes_match_git_621116c": true,
+  "original_context_red_fixture_reconstruction_hash_matches": true,
+  "mypy_source_files": 96,
+  "installed_a121_members_unchanged": 97,
+  "native_clients_or_models_executed": false,
+  "package_validation": "NOT RUN for this source repair",
+  "formal_release": "BLOCKED"
+}

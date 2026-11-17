@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="8" time="5.529" timestamp="2026-11-16T22:05:35.113115-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.unit.test_launch_context_deadline" name="test_early_timer_preserves_one_launch_wait[deadline]" time="0.003"><failure message="AttributeError: 'Timer' object has no attribute '_source_traceback'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000275BCC8ACF0&gt;
+outcome = 'deadline'
+
+    @pytest.mark.parametrize("outcome", ["deadline", "external-cancel", "swallowed-cancel"])
+    async def test_early_timer_preserves_one_launch_wait(monkeypatch, outcome):
+        loop = asyncio.get_running_loop()
+        clock = ClockLoop(loop)
+        monkeypatch.setattr(loop, "time", clock.time)
+        monkeypatch.setattr(
+            loop,
+            "call_at",
+            lambda when, callback, *args, context=None: clock.call_at(when, callback, *args),
+        )
+        monkeypatch.setattr(
+            launch_context, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        task = AdapterTask("p", "s", "t", "r")
+        deadline = clock.now + 1
+        context = launch_context._new_launch_context(task, loop, deadline, lambda: False)
+        started = cancelled = 0
+    
+        async def wait():
+            nonlocal started, cancelled
+            started += 1
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                cancelled += 1
+                if outcome == "swallowed-cancel":
+                    return "late grant"
+                raise
+    
+        job = asyncio.create_task(context.wait_before_start(task, wait))
+        try:
+            await asyncio.sleep(0)
+            assert started == 1 and len(clock.timers) == 1
+            timer = clock.timers[0]
+            assert timer.when == deadline
+&gt;           clock.fire(timer, deadline - 0.006)
+
+tests\unit\test_launch_context_deadline.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_process_capture_deadline.py:82: in fire
+    timer.callback(*timer.args)
+src\agentsync\adapters\launch_context.py:75: in expire_when_due
+    timer = self._loop.call_later(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;ProactorEventLoop running=False closed=False debug=False&gt;, delay = 0.025
+callback = &lt;function LaunchContext.wait_before_start.&lt;locals&gt;.expire_when_due at 0x00000275BF5B2160&gt;
+context = None, args = ()
+
+    def call_later(self, delay, callback, *args, context=None):
+        """Arrange for a callback to be called at a given time.
+    
+        Return a Handle: an opaque object with a cancel() method that
+        can be used to cancel the call.
+    
+        The delay can be an int or float, expressed in seconds.  It is
+        always relative to the current time.
+    
+        Each callback will be called exactly once.  If two callbacks
+        are scheduled for exactly the same time, it is undefined which
+        will be called first.
+    
+        Any positional arguments after the callback will be passed to
+        the callback when it is called.
+        """
+        if delay is None:
+            raise TypeError('delay must not be None')
+        timer = self.call_at(self.time() + delay, callback, *args,
+                             context=context)
+&gt;       if timer._source_traceback:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'Timer' object has no attribute '_source_traceback'
+
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\base_events.py:767: AttributeError</failure></testcase><testcase classname="tests.unit.test_launch_context_deadline" name="test_early_timer_preserves_one_launch_wait[external-cancel]" time="0.024"><failure message="AttributeError: 'Timer' object has no attribute '_source_traceback'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000275BF541910&gt;
+outcome = 'external-cancel'
+
+    @pytest.mark.parametrize("outcome", ["deadline", "external-cancel", "swallowed-cancel"])
+    async def test_early_timer_preserves_one_launch_wait(monkeypatch, outcome):
+        loop = asyncio.get_running_loop()
+        clock = ClockLoop(loop)
+        monkeypatch.setattr(loop, "time", clock.time)
+        monkeypatch.setattr(
+            loop,
+            "call_at",
+            lambda when, callback, *args, context=None: clock.call_at(when, callback, *args),
+        )
+        monkeypatch.setattr(
+            launch_context, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        task = AdapterTask("p", "s", "t", "r")
+        deadline = clock.now + 1
+        context = launch_context._new_launch_context(task, loop, deadline, lambda: False)
+        started = cancelled = 0
+    
+        async def wait():
+            nonlocal started, cancelled
+            started += 1
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                cancelled += 1
+                if outcome == "swallowed-cancel":
+                    return "late grant"
+                raise
+    
+        job = asyncio.create_task(context.wait_before_start(task, wait))
+        try:
+            await asyncio.sleep(0)
+            assert started == 1 and len(clock.timers) == 1
+            timer = clock.timers[0]
+            assert timer.when == deadline
+&gt;           clock.fire(timer, deadline - 0.006)
+
+tests\unit\test_launch_context_deadline.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_process_capture_deadline.py:82: in fire
+    timer.callback(*timer.args)
+src\agentsync\adapters\launch_context.py:75: in expire_when_due
+    timer = self._loop.call_later(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;ProactorEventLoop running=False closed=False debug=False&gt;, delay = 0.025
+callback = &lt;function LaunchContext.wait_before_start.&lt;locals&gt;.expire_when_due at 0x00000275BF5A2A20&gt;
+context = None, args = ()
+
+    def call_later(self, delay, callback, *args, context=None):
+        """Arrange for a callback to be called at a given time.
+    
+        Return a Handle: an opaque object with a cancel() method that
+        can be used to cancel the call.
+    
+        The delay can be an int or float, expressed in seconds.  It is
+        always relative to the current time.
+    
+        Each callback will be called exactly once.  If two callbacks
+        are scheduled for exactly the same time, it is undefined which
+        will be called first.
+    
+        Any positional arguments after the callback will be passed to
+        the callback when it is called.
+        """
+        if delay is None:
+            raise TypeError('delay must not be None')
+        timer = self.call_at(self.time() + delay, callback, *args,
+                             context=context)
+&gt;       if timer._source_traceback:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'Timer' object has no attribute '_source_traceback'
+
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\base_events.py:767: AttributeError</failure></testcase><testcase classname="tests.unit.test_launch_context_deadline" name="test_early_timer_preserves_one_launch_wait[swallowed-cancel]" time="0.002"><failure message="AttributeError: 'Timer' object has no attribute '_source_traceback'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000275BF533F80&gt;
+outcome = 'swallowed-cancel'
+
+    @pytest.mark.parametrize("outcome", ["deadline", "external-cancel", "swallowed-cancel"])
+    async def test_early_timer_preserves_one_launch_wait(monkeypatch, outcome):
+        loop = asyncio.get_running_loop()
+        clock = ClockLoop(loop)
+        monkeypatch.setattr(loop, "time", clock.time)
+        monkeypatch.setattr(
+            loop,
+            "call_at",
+            lambda when, callback, *args, context=None: clock.call_at(when, callback, *args),
+        )
+        monkeypatch.setattr(
+            launch_context, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        task = AdapterTask("p", "s", "t", "r")
+        deadline = clock.now + 1
+        context = launch_context._new_launch_context(task, loop, deadline, lambda: False)
+        started = cancelled = 0
+    
+        async def wait():
+            nonlocal started, cancelled
+            started += 1
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                cancelled += 1
+                if outcome == "swallowed-cancel":
+                    return "late grant"
+                raise
+    
+        job = asyncio.create_task(context.wait_before_start(task, wait))
+        try:
+            await asyncio.sleep(0)
+            assert started == 1 and len(clock.timers) == 1
+            timer = clock.timers[0]
+            assert timer.when == deadline
+&gt;           clock.fire(timer, deadline - 0.006)
+
+tests\unit\test_launch_context_deadline.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_process_capture_deadline.py:82: in fire
+    timer.callback(*timer.args)
+src\agentsync\adapters\launch_context.py:75: in expire_when_due
+    timer = self._loop.call_later(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;ProactorEventLoop running=False closed=False debug=False&gt;, delay = 0.025
+callback = &lt;function LaunchContext.wait_before_start.&lt;locals&gt;.expire_when_due at 0x00000275BF5A2B60&gt;
+context = None, args = ()
+
+    def call_later(self, delay, callback, *args, context=None):
+        """Arrange for a callback to be called at a given time.
+    
+        Return a Handle: an opaque object with a cancel() method that
+        can be used to cancel the call.
+    
+        The delay can be an int or float, expressed in seconds.  It is
+        always relative to the current time.
+    
+        Each callback will be called exactly once.  If two callbacks
+        are scheduled for exactly the same time, it is undefined which
+        will be called first.
+    
+        Any positional arguments after the callback will be passed to
+        the callback when it is called.
+        """
+        if delay is None:
+            raise TypeError('delay must not be None')
+        timer = self.call_at(self.time() + delay, callback, *args,
+                             context=context)
+&gt;       if timer._source_traceback:
+           ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'Timer' object has no attribute '_source_traceback'
+
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\asyncio\base_events.py:767: AttributeError</failure></testcase><testcase classname="tests.unit.test_codex_process" name="test_stopped_threaded_preparation_never_enters_capture[cancel]" time="0.007" /><testcase classname="tests.unit.test_codex_process" name="test_stopped_threaded_preparation_never_enters_capture[deadline]" time="1.003" /><testcase classname="tests.unit.test_claude_process" name="test_cancelled_threaded_preparation_never_starts_and_keeps_unknown_slot" time="0.004" /><testcase classname="tests.unit.test_relay_execution_budget" name="test_expired_relay_budget_prevents_launch_preparation_and_reservation" time="0.005" /><testcase classname="tests.integration.test_proposal_handoff" name="test_exact_launch_authority_denial_stays_fenced" time="3.195" /></testsuite></testsuites>

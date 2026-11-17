@@ -1,5 +1,19 @@
 # Amadeus current progress
 
+P1 adapter deadline repair1700d1d is complete at source scope. Shared host timer
+callbacks and LaunchContext preparation waits now check the actual absolute
+deadline before cancelling work. This fixes the same premature-timeout defect
+in both paths without reopening M5 or changing approval, unknown-slot or no-retry
+rules. Original host4fail and launch-wait1fail reproductions are retained. Scoped
+results:16 scheduler/baseline cases,73 three-adapter regressions,5 existing launch/
+approval checks and3 final launch-wait cases pass (97 distinct cases, not one full
+suite). The intermediate dependency collection error and3 fixture failures also
+remain. Root checked actual XML/hashes/import origins and unchanged97-member a121
+installation (dc64d5); mypy96 source files passes (f97140), changed-file Ruff/format
+passes. Astra accepts this bounded source repair. See adapter-deadline/summary.json
+under acceptance/evidence/core-preview-a121. Source version is now0.3.0a122;
+fresh package validation is the next active preparation, not yet executed.
+
 Native Codex structured-handoff probe36a672d ran once on the unchanged installed
 a121/4b82494 runtime. It ended2026-11-17T05:40:13Z exit1 (dfd1a2), at the final
 owner-audit assertion: initial publish_context defaults expected_version to0,
@@ -139,12 +153,15 @@ Owner chose to handle manual removal later. No deletion retry or bypass is allow
 verify absence after the owner confirms removal. Cleanup remains BLOCKED.
 Never upload private/ or the temporary database. All exported records omit tokens.
 
-Next resume entry: keep a121/4b82494 as the usable core preview. The bounded native
+Next resume entry: finish the new a122 deadline-repair preview's offline build and
+focused installations on the frozen source, reusing the established local workflow.
+Keep a121/4b82494 unchanged as the earlier usable preview. The bounded native
 handoff check above is finished with its original failure preserved; do not rerun
 it automatically. Its repaired probe can enter a separately reviewed final frozen
 client plan. Select another uncovered original requirement against existing
 evidence; do not repeat the six a120 full suites or four a121 focused installs.
-No next check is launched; no new product/M5 phase is created by this probe repair.
+The a122 package driver is being prepared; no package run has started yet.
+No new product/M5 phase is created by either repair.
 Current formal matrix, license decision, macOS/cross-vendor access, preserved
 static FAIL and manual cleanup remain separate gaps. No new M5 stage or broader
 live/candidate-execution authorization is implied. Goal/M0-M9/A-B bounds remain.

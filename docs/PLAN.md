@@ -2,6 +2,15 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 deadline correctness now takes priority over another real-model timeout run.
+Two actual early-timer reproductions exposed premature cancellation in the shared
+adapter and its launch wait. Repair1700d1d covers both;97 distinct scoped cases and
+source type/static checks pass, with all failed runs retained. Root/Astra reviewed
+the actual files and evidence. Deliver the correction as a new a122 preview using
+the existing offline build/install workflow; old packages and real-client claims
+stay frozen. This is a concrete reliability fix within M6, not a new M5 stage or
+an active-generation timeout acceptance. See PROGRESS for the live preparation.
+
 The existing M2/M3 native-client handoff gap was exercised once on installed a121.
 Actual Codex MCP calls observed structured handoff, recipient continuation, pinned
 context, metadata-lock contention and normal host reopen. The final audit assertion

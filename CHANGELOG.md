@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0a122 - adapter deadline repair, package validation pending
+
+- Recheck absolute deadlines before a shared adapter timer cancels preparation
+  or an owned process; early callbacks rearm without starting duplicate stops.
+- Apply the same guard to launch waits, preserving one invocation, external
+  cancellation and rejection of late results even if cancellation is swallowed.
+- Retain actual failing reproductions and97 scoped passing cases. Existing
+  packages remain unchanged; real-client and formal Release gates remain blocked.
+
 ## 0.3.0a118 - recovery-path preview, full acceptance pending
 
 - Refuse workflow status/resume/cancel on a missing database without creating

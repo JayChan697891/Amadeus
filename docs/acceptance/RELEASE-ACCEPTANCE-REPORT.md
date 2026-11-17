@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+Adapter deadline repair1700d1d has **SCOPED SOURCE PASS**: original4+1 failing
+reproductions prove premature stops in shared scheduling and launch waits. The
+two paths now guard their absolute deadlines. Actual16+73+5+3 passing observations
+are97 distinct cases, not a single full-suite pass; intermediate setup/fixture
+failures are preserved. Root verified XML identities, source hashes/import origins
+and unchanged old installation. Ruff/format and mypy96 source files pass; Astra
+accepts only this source scope. New a122 package validation is **NOT RUN** pending
+the prepared offline delivery. Real active-generation timeout remains unverified.
+**Formal Release BLOCKED**.
+[Actual reproductions, correction and scoped regression](evidence/core-preview-a121/adapter-deadline/summary.json).
+
 The a121 native Codex structured-handoff run is **BLOCKED**, not PASS: the final
 owner-audit assertion expected null where the context schema supplies0. Original
 probe36a672d exited1 (dfd1a2); the result is immutable. Earlier actual MCP calls

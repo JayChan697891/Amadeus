@@ -1,0 +1,273 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+__ test_early_adapter_callback_waits_for_absolute_deadline[pending-factory] ___
+
+tmp_path = WindowsPath('D:/agentsync-debug/m121-host-deadline/red-tmp/test_early_adapter_callback_wa0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000152E954F5C0>
+adapter_type = <class 'agentsync.adapters.codex.CodexAdapter'>
+outcome = 'factory-timeout'
+
+    @pytest.mark.parametrize(
+        ("adapter_type", "outcome"),
+        [
+            (CodexAdapter, "factory-timeout"),
+            (ClaudeAdapter, "capture-timeout"),
+            (CursorAdapter, "cancel"),
+            (CodexAdapter, "exit"),
+        ],
+        ids=["pending-factory", "owned-parent", "cancel-wins", "natural-exit-wins"],
+    )
+    @pytest.mark.asyncio
+    async def test_early_adapter_callback_waits_for_absolute_deadline(
+        tmp_path, monkeypatch, adapter_type, outcome
+    ):
+        clock = ClockLoop(asyncio.get_running_loop())
+        monkeypatch.setattr(asyncio, "get_running_loop", lambda: clock)
+        monkeypatch.setattr(
+            _host_process, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        ready, release, factory_done = asyncio.Event(), asyncio.Event(), asyncio.Event()
+        pending = outcome == "factory-timeout"
+    
+        async def factory(_task):
+            try:
+                if pending:
+                    ready.set()
+                    await release.wait()
+                    raise RuntimeError("Pending factory fixture released without launching")
+                capture = await CapturedProcess.start(
+                    (sys.executable, "-I", "-c", "pass"),
+                    cwd=tmp_path,
+                    stdin_text="",
+                    timeout_seconds=5,
+                    env={},
+                )
+                ready.set()
+                return capture
+            finally:
+                factory_done.set()
+    
+        adapter = adapter_type("p", "s", factory=factory)
+        run = await adapter.start_task(AdapterTask("p", "s", "t", "r", timeout_seconds=1))
+        deadline = run.started_at + 1
+        cancel_job = None
+        try:
+            await asyncio.wait_for(ready.wait(), 1)
+            status = "starting" if pending else "running"
+            assert (await adapter.get_status(run.run_id)).status == status
+            timer = clock.timers[0]
+            assert timer.when == deadline
+            for early_by in (0.006, 0.001):
+                clock.fire(timer, deadline - early_by)
+                await asyncio.sleep(0)
+                await asyncio.sleep(0)
+>               assert (await adapter.get_status(run.run_id)).status == status
+E               AssertionError: assert 'unknown' == 'starting'
+E                 
+E                 - starting
+E                 + unknown
+
+tests\unit\test_host_process_deadline.py:73: AssertionError
+____ test_early_adapter_callback_waits_for_absolute_deadline[owned-parent] ____
+
+tmp_path = WindowsPath('D:/agentsync-debug/m121-host-deadline/red-tmp/test_early_adapter_callback_wa1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000152E94AFEF0>
+adapter_type = <class 'agentsync.adapters.claude.ClaudeAdapter'>
+outcome = 'capture-timeout'
+
+    @pytest.mark.parametrize(
+        ("adapter_type", "outcome"),
+        [
+            (CodexAdapter, "factory-timeout"),
+            (ClaudeAdapter, "capture-timeout"),
+            (CursorAdapter, "cancel"),
+            (CodexAdapter, "exit"),
+        ],
+        ids=["pending-factory", "owned-parent", "cancel-wins", "natural-exit-wins"],
+    )
+    @pytest.mark.asyncio
+    async def test_early_adapter_callback_waits_for_absolute_deadline(
+        tmp_path, monkeypatch, adapter_type, outcome
+    ):
+        clock = ClockLoop(asyncio.get_running_loop())
+        monkeypatch.setattr(asyncio, "get_running_loop", lambda: clock)
+        monkeypatch.setattr(
+            _host_process, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        ready, release, factory_done = asyncio.Event(), asyncio.Event(), asyncio.Event()
+        pending = outcome == "factory-timeout"
+    
+        async def factory(_task):
+            try:
+                if pending:
+                    ready.set()
+                    await release.wait()
+                    raise RuntimeError("Pending factory fixture released without launching")
+                capture = await CapturedProcess.start(
+                    (sys.executable, "-I", "-c", "pass"),
+                    cwd=tmp_path,
+                    stdin_text="",
+                    timeout_seconds=5,
+                    env={},
+                )
+                ready.set()
+                return capture
+            finally:
+                factory_done.set()
+    
+        adapter = adapter_type("p", "s", factory=factory)
+        run = await adapter.start_task(AdapterTask("p", "s", "t", "r", timeout_seconds=1))
+        deadline = run.started_at + 1
+        cancel_job = None
+        try:
+            await asyncio.wait_for(ready.wait(), 1)
+            status = "starting" if pending else "running"
+            assert (await adapter.get_status(run.run_id)).status == status
+            timer = clock.timers[0]
+            assert timer.when == deadline
+            for early_by in (0.006, 0.001):
+                clock.fire(timer, deadline - early_by)
+                await asyncio.sleep(0)
+                await asyncio.sleep(0)
+                assert (await adapter.get_status(run.run_id)).status == status
+>               assert clock.transport is None if pending else clock.transport.kills == 0
+E               assert False
+
+tests\unit\test_host_process_deadline.py:74: AssertionError
+____ test_early_adapter_callback_waits_for_absolute_deadline[cancel-wins] _____
+
+tmp_path = WindowsPath('D:/agentsync-debug/m121-host-deadline/red-tmp/test_early_adapter_callback_wa2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000152E94AD730>
+adapter_type = <class 'agentsync.adapters.cursor.CursorAdapter'>
+outcome = 'cancel'
+
+    @pytest.mark.parametrize(
+        ("adapter_type", "outcome"),
+        [
+            (CodexAdapter, "factory-timeout"),
+            (ClaudeAdapter, "capture-timeout"),
+            (CursorAdapter, "cancel"),
+            (CodexAdapter, "exit"),
+        ],
+        ids=["pending-factory", "owned-parent", "cancel-wins", "natural-exit-wins"],
+    )
+    @pytest.mark.asyncio
+    async def test_early_adapter_callback_waits_for_absolute_deadline(
+        tmp_path, monkeypatch, adapter_type, outcome
+    ):
+        clock = ClockLoop(asyncio.get_running_loop())
+        monkeypatch.setattr(asyncio, "get_running_loop", lambda: clock)
+        monkeypatch.setattr(
+            _host_process, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        ready, release, factory_done = asyncio.Event(), asyncio.Event(), asyncio.Event()
+        pending = outcome == "factory-timeout"
+    
+        async def factory(_task):
+            try:
+                if pending:
+                    ready.set()
+                    await release.wait()
+                    raise RuntimeError("Pending factory fixture released without launching")
+                capture = await CapturedProcess.start(
+                    (sys.executable, "-I", "-c", "pass"),
+                    cwd=tmp_path,
+                    stdin_text="",
+                    timeout_seconds=5,
+                    env={},
+                )
+                ready.set()
+                return capture
+            finally:
+                factory_done.set()
+    
+        adapter = adapter_type("p", "s", factory=factory)
+        run = await adapter.start_task(AdapterTask("p", "s", "t", "r", timeout_seconds=1))
+        deadline = run.started_at + 1
+        cancel_job = None
+        try:
+            await asyncio.wait_for(ready.wait(), 1)
+            status = "starting" if pending else "running"
+            assert (await adapter.get_status(run.run_id)).status == status
+            timer = clock.timers[0]
+            assert timer.when == deadline
+            for early_by in (0.006, 0.001):
+                clock.fire(timer, deadline - early_by)
+                await asyncio.sleep(0)
+                await asyncio.sleep(0)
+                assert (await adapter.get_status(run.run_id)).status == status
+>               assert clock.transport is None if pending else clock.transport.kills == 0
+E               assert False
+
+tests\unit\test_host_process_deadline.py:74: AssertionError
+_ test_early_adapter_callback_waits_for_absolute_deadline[natural-exit-wins] __
+
+tmp_path = WindowsPath('D:/agentsync-debug/m121-host-deadline/red-tmp/test_early_adapter_callback_wa3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000152E94AE8A0>
+adapter_type = <class 'agentsync.adapters.codex.CodexAdapter'>, outcome = 'exit'
+
+    @pytest.mark.parametrize(
+        ("adapter_type", "outcome"),
+        [
+            (CodexAdapter, "factory-timeout"),
+            (ClaudeAdapter, "capture-timeout"),
+            (CursorAdapter, "cancel"),
+            (CodexAdapter, "exit"),
+        ],
+        ids=["pending-factory", "owned-parent", "cancel-wins", "natural-exit-wins"],
+    )
+    @pytest.mark.asyncio
+    async def test_early_adapter_callback_waits_for_absolute_deadline(
+        tmp_path, monkeypatch, adapter_type, outcome
+    ):
+        clock = ClockLoop(asyncio.get_running_loop())
+        monkeypatch.setattr(asyncio, "get_running_loop", lambda: clock)
+        monkeypatch.setattr(
+            _host_process, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        ready, release, factory_done = asyncio.Event(), asyncio.Event(), asyncio.Event()
+        pending = outcome == "factory-timeout"
+    
+        async def factory(_task):
+            try:
+                if pending:
+                    ready.set()
+                    await release.wait()
+                    raise RuntimeError("Pending factory fixture released without launching")
+                capture = await CapturedProcess.start(
+                    (sys.executable, "-I", "-c", "pass"),
+                    cwd=tmp_path,
+                    stdin_text="",
+                    timeout_seconds=5,
+                    env={},
+                )
+                ready.set()
+                return capture
+            finally:
+                factory_done.set()
+    
+        adapter = adapter_type("p", "s", factory=factory)
+        run = await adapter.start_task(AdapterTask("p", "s", "t", "r", timeout_seconds=1))
+        deadline = run.started_at + 1
+        cancel_job = None
+        try:
+            await asyncio.wait_for(ready.wait(), 1)
+            status = "starting" if pending else "running"
+            assert (await adapter.get_status(run.run_id)).status == status
+            timer = clock.timers[0]
+            assert timer.when == deadline
+            for early_by in (0.006, 0.001):
+                clock.fire(timer, deadline - early_by)
+                await asyncio.sleep(0)
+                await asyncio.sleep(0)
+                assert (await adapter.get_status(run.run_id)).status == status
+>               assert clock.transport is None if pending else clock.transport.kills == 0
+E               assert False
+
+tests\unit\test_host_process_deadline.py:74: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_host_process_deadline.py::test_early_adapter_callback_waits_for_absolute_deadline[pending-factory]
+FAILED tests/unit/test_host_process_deadline.py::test_early_adapter_callback_waits_for_absolute_deadline[owned-parent]
+FAILED tests/unit/test_host_process_deadline.py::test_early_adapter_callback_waits_for_absolute_deadline[cancel-wins]
+FAILED tests/unit/test_host_process_deadline.py::test_early_adapter_callback_waits_for_absolute_deadline[natural-exit-wins]
+4 failed in 0.27s

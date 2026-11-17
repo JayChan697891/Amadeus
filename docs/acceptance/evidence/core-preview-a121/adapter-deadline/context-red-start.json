@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m121-host-deadline/context-red-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m121-host-deadline/context-red.xml",
+    "tests/unit/test_launch_context_deadline.py::test_early_timer_preserves_one_launch_wait[deadline]"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T06:03:38.3502590Z",
+  "environment": {
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMP": "D:/agentsync-debug/m121-host-deadline/context-red-scratch",
+    "TMPDIR": "D:/agentsync-debug/m121-host-deadline/context-red-scratch",
+    "TEMP": "D:/agentsync-debug/m121-host-deadline/context-red-scratch"
+  },
+  "source_sha256": {
+    "src/agentsync/adapters/_host_process.py": "76dfd26985a8b77d215be587fb06219b38e893ae2c37c4be30ac657922b60c9e",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b",
+    "src/agentsync/adapters/launch_context.py": "0d0e5a4bd12fad7cec94d558f4621061cd23677a1b1bb0a08835f906ea7dc94d",
+    "tests/unit/test_launch_context_deadline.py": "21e8c4e0bc3b7839e7d8fd727cb83e1a217089ff9a3661c4246532e957215ebb",
+    "src/agentsync/adapters/approved_launch.py": "56595cbd6b0ddc76f4f53b7569a78600ba626a9add66d62e55bb5621a5e5ebca"
+  }
+}
