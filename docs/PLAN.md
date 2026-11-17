@@ -2,6 +2,15 @@
 
 ## Execution adjustment — 2026-11-15
 
+P1 existing recovery helper now has actual Windows terminal evidence: five
+commands exited0 with hidden credential input, preserving the same pending task
+and incomplete/unverified wave. No mock prompt or CLI process; runtime/helper
+bytes unchanged. Its temporary fixture credential cleanup is separately BLOCKED
+by automatic approval and awaits the owner's manual removal. See PROGRESS and
+native-terminal/summary.json. No new product/M5 stage or package is needed.
+Next consolidate the remaining current-candidate collection gaps and run only
+unexecuted required local checks; retain both completed full-wheel results.
+
 The first complete a120 Linux3.14 installed-wheel suite now passes:2580pass/7skip,
 0fail/error; all2545 old cases retained and42 new cases pass. Its2587 identities
 match Windows.36 real Docker observations preserve35 old outcomes and add the

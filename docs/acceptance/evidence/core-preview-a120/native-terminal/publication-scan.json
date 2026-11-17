@@ -1,0 +1,15 @@
+{
+  "actual_fixture_credential_values_in_exports": 0,
+  "generic_pattern_findings": [
+    {
+      "path": "check-results.py.txt",
+      "pattern_matches": 2,
+      "classification": "reviewed source variable references, not credential literals"
+    }
+  ],
+  "first_scan_native_chunk": "66031c",
+  "first_scan_result": "failed on two source-variable false positives; preserved in native record",
+  "review_chunk": "e90851",
+  "non_source_pattern_matches": 0,
+  "private_files_uploaded": false
+}

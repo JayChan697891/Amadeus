@@ -1,0 +1,64 @@
+"""Check native terminal records and the unchanged temporary project's state."""
+import hashlib
+import json
+import re
+from datetime import UTC, datetime
+from pathlib import Path
+
+from agentsync.controlled_relay import ControlledRelay
+from agentsync.core.service import Core
+from agentsync.relay_queue import RelayQueue
+
+base = Path('D:/agentsync-debug/m120terminal')
+fixture = json.loads((base / 'fixture.json').read_bytes())
+credentials = json.loads((base / 'private/credentials.json').read_bytes())
+raw = (base / 'terminal-observations.json').read_text(encoding='utf8')
+observed = json.loads(raw)
+for key in ('admin_token', 'session_id', 'session_token'):
+    assert credentials[key] not in raw
+
+def clean(text):
+    text = re.sub(r'\x1b\][^\x07]*(?:\x07|\x1b\\)', '', text)
+    return re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text)
+
+parsed = {}
+for operation in observed['operations']:
+    last = operation['steps'][-1]
+    assert last['exit_code'] == 0 and 'session_id' not in last
+    assert all(not step.get('credential_echo_fields', []) for step in operation['steps'])
+    text = ''.join(clean(step['output']) for step in operation['steps'])
+    assert text.count('Project owner token:') == 1
+    if operation['name'] == 'reconcile':
+        assert text.count('Project session ID:') == text.count('Project session token:') == 1
+    response = json.JSONDecoder().raw_decode(text[text.index('{"ok":'):])[0]
+    assert response['ok'] is True
+    parsed[operation['name']] = response['data']
+
+assert parsed['status_before'] == parsed['status_after']
+assert parsed['status_after']['wave_id'] == fixture['wave_id']
+assert parsed['status_after']['receipt_state'] == 'admitted'
+assert parsed['history']['waves'][0]['wave_id'] == fixture['wave_id']
+assert parsed['task']['task_id'] == fixture['task_id']
+assert len(parsed['task']['attempts']) == 2
+assert all(row['state'] == 'not_dispatched' for row in parsed['task']['attempts'])
+assert parsed['reconcile'] == {'state': 'incomplete', 'tasks': [], 'verification': 'unverified'}
+auth = {key: credentials[key] for key in ('project_id', 'session_id', 'session_token')}
+core = Core(Path(fixture['data_dir']))
+task, = core.execute('get_project_state', auth)['tasks']
+assert task['id'] == fixture['task_id'] and task['version'] == 1 and task['status'] == 'pending'
+assert task['task_verification'] == 'unverified' and task['verification'] is None
+queue = RelayQueue(ControlledRelay(core, Path(fixture['scratch_root']), Path(fixture['receipts'])))
+pending = queue.owner_observe_pending(fixture['project_id'], admin_token=credentials['admin_token'])
+assert pending.wave_id == fixture['wave_id'] and pending.receipt_state == 'admitted'
+attempts = queue._relay.owner_inspect_attempts(fixture['project_id'], fixture['task_id'], admin_token=credentials['admin_token'])
+assert len(attempts) == 2 and all(item.state == 'not_dispatched' for item in attempts)
+site = Path('D:/agentsync-debug/m120p/w/Lib/site-packages')
+actual = {p.relative_to(site).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in (site / 'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert len(actual) == 97 and actual == json.loads(Path('D:/agentsync-debug/m120p/run/runtime-members.json').read_bytes())
+helper = Path('F:/syuc/amadeus-m6-single/examples/recover_relay.py')
+assert hashlib.sha256(helper.read_bytes()).hexdigest() == observed['helper_sha256']
+result = {'utc': datetime.now(UTC).isoformat(), 'status': 'scoped native Windows terminal pass', 'operations': len(parsed), 'credential_echoes': 0, 'helper_unchanged': True, 'runtime_members_unchanged': 97, 'pending_wave_unchanged': True, 'task_status': task['status'], 'task_version': task['version'], 'task_verification': task['task_verification'], 'attempts': ['not_dispatched', 'not_dispatched'], 'reconcile': parsed['reconcile'], 'model_calls': 0, 'candidate_execution': False, 'formal_release': 'BLOCKED'}
+with (base / 'postcheck.json').open('x', encoding='utf8') as stream:
+    json.dump(result, stream, indent=2)
+    stream.write('\n')
+print(json.dumps(result))

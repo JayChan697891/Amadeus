@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED",
+  "action": "Delete newly generated local fixture credentials at D:/agentsync-debug/m120terminal/private/credentials.json after terminal tests",
+  "command_executed": false,
+  "reason": "CreateProcess rejected: blocked by policy",
+  "request_id": null,
+  "no_retry": true,
+  "observed_at_utc": "2026-11-17T02:13:39Z",
+  "exact_rejection_time": "not supplied by tool",
+  "postcheck_native_chunk": "f2e3d4",
+  "file_still_present": true,
+  "matching_workers": [],
+  "acl": "current user and SYSTEM only; inheritance disabled",
+  "account_credentials_read_or_copied": false,
+  "user_manual_cleanup_requested": true
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "status": "native Windows terminal functionality passed; temporary fixture credential cleanup BLOCKED",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "source_commit": "821c227d0ff8782400309cca7b47fc0bf7eb74ef",
+  "helper_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "helper_sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9",
+  "platform": "Windows CPython3.12.16, native exec terminal",
+  "real_terminal_probe": {
+    "native_chunk": "e81270",
+    "stdin_isatty": true,
+    "stdout_isatty": true,
+    "stderr_isatty": true
+  },
+  "fixture": {
+    "preparation_chunk": "4c1512",
+    "driver_sha256": "3f519f8f71ffe9f7576dccea5ade348122102c64f23f380e7dfefedfc6121d14",
+    "meaning": "New real Core pending task and enrolled worker; admitted wave uses the existing deterministic journal fixture. No Agent run or fabricated terminal completion."
+  },
+  "native_operations": [
+    {
+      "operation": "status_before",
+      "session": 55289,
+      "terminal_chunk": "df40ec",
+      "exit_code": 0
+    },
+    {
+      "operation": "history",
+      "session": 23745,
+      "terminal_chunk": "31772c",
+      "exit_code": 0
+    },
+    {
+      "operation": "task",
+      "session": 37685,
+      "terminal_chunk": "6e5099",
+      "exit_code": 0
+    },
+    {
+      "operation": "reconcile",
+      "session": 65097,
+      "terminal_chunk": "1beeb4",
+      "exit_code": 0
+    },
+    {
+      "operation": "status_after",
+      "terminal_chunk": "0725ee",
+      "exit_code": 0,
+      "session": 32190
+    }
+  ],
+  "assertions": {
+    "credential_values_echoed": 0,
+    "owner_prompts": 5,
+    "session_id_prompts": 1,
+    "session_token_prompts": 1,
+    "getpass_or_subprocess_mocked": false,
+    "same_pending_wave_retained": true,
+    "task_remains_pending_version": 1,
+    "task_verification": "unverified",
+    "attempts": [
+      "not_dispatched",
+      "not_dispatched"
+    ],
+    "reconcile_state": "incomplete",
+    "reconcile_does_not_mean_task_passed": true,
+    "helper_unchanged": true,
+    "runtime_members_unchanged": 97
+  },
+  "root_review": {
+    "actual_terminal_chunks_read": true,
+    "postcheck_native_chunk": "a2f0b3",
+    "observations_sha256": "d8ab006ecb0f286fe24426684406dcc380e73cbaece9891c2aad07a3dc8267aa",
+    "all_final_native_exits_zero": true
+  },
+  "cleanup": {
+    "status": "BLOCKED",
+    "path": "D:/agentsync-debug/m120terminal/private/credentials.json",
+    "reason": "Automatic approval rejected the deletion before execution: blocked by policy; no more specific reason supplied",
+    "attempt_repeated": false,
+    "file_still_present_at_last_check": true,
+    "acl": "current user and SYSTEM only; inheritance disabled",
+    "matching_workers": [],
+    "user_manual_cleanup_requested": true,
+    "credentials_uploaded": false,
+    "account_credentials_read_or_copied": false
+  },
+  "limits": [
+    "Only observed native Windows terminal behavior and existing CLI on the deterministic admitted-wave fixture.",
+    "Resolved real-Agent recovery, real clients, Linux/macOS terminal echo, full source/sdist/platform acceptance and external Work acceptance are not inferred.",
+    "The existing Windows/Linux full wheel suites are retained unchanged and were not rerun."
+  ],
+  "formal_release": "BLOCKED",
+  "next": "Complete only the outstanding local fixture cleanup when the user confirms it; independently audit remaining current-candidate release collection gaps and select the first unexecuted required local check. Do not create new M5 stages or repeat these terminal/full-wheel runs.",
+  "publication_scan": "publication-scan.json"
+}

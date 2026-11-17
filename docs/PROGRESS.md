@@ -1,5 +1,30 @@
 # Amadeus current progress
 
+P1 native Windows recovery-entry interaction completed on unchanged a120/859775b.
+Five actual terminal commands exited0: status, history, task, exact-wave reconcile,
+status. Real getpass input was not echoed; no prompt/CLI subprocess mock. The
+new isolated fixture has one pending v1 task and an admitted journal wave, with
+both attempts not_dispatched. Reconcile remains incomplete/unverified, and the
+same pending wave/task survives. Root checked actual native output, helper hash
+and97 installed members unchanged (postcheck a2f0b3). No model/Agent/Docker run.
+See acceptance/evidence/core-preview-a120/native-terminal/summary.json.
+
+Local cleanup BLOCKED: automatic approval rejected deletion of only
+D:/agentsync-debug/m120terminal/private/credentials.json before command execution
+("blocked by policy", no further reason supplied). The file remains restricted
+to the current user and SYSTEM, no matching test workers remain, and no account
+credentials were read/copied. No alternative deletion/retry was attempted.
+Manual removal has been requested; verify absence only after the user responds.
+Never upload private/ or the temporary database. All exported records omit tokens.
+
+Next independent work: audit remaining current-candidate release collection gaps,
+select the first unexecuted required local check, and reuse both completed full
+wheel suites. Do not add M5 phases or repeat terminal/live experiments. The
+original M0-M9 requirements, A/B bounds and formal Release BLOCKED remain intact.
+This next collection/audit has not started.
+
+Historical checkpoint follows; the Linux/Windows results remain valid in scope.
+
 COMPLETED LOCAL RUN — a120 Linux3.14 installed-wheel full regression.
 Native session11295 ended2026-11-17T01:52:37Z (Nov16 America/Tijuana), chunkfe11f7
 exit0. Four checks pass;2587 unique cases:2580pass/7skip/0fail/error,1136.48s.

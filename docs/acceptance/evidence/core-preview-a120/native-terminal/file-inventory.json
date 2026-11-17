@@ -1,0 +1,42 @@
+[
+  {
+    "path": "check-results.py.txt",
+    "bytes": 4070,
+    "sha256": "12c0f017932829c7bed892eb87434d3639e53c6dd471ef7c883624ca53003182"
+  },
+  {
+    "path": "cleanup-blocked.json",
+    "bytes": 639,
+    "sha256": "11eef69229303b7321622f189cefe86f8f9f718a06c96ce02319cbf4e6264815"
+  },
+  {
+    "path": "fixture.json",
+    "bytes": 533,
+    "sha256": "d2d9a3ae9cd21fc2b1122520eb63c78e5ea2b0c0ffe04048cd00429576774c0e"
+  },
+  {
+    "path": "postcheck.json",
+    "bytes": 597,
+    "sha256": "16386731b5d17ef16776d246da75616ec194654b957db2291403900e77929767"
+  },
+  {
+    "path": "prepare-fixture.py.txt",
+    "bytes": 4735,
+    "sha256": "3f519f8f71ffe9f7576dccea5ade348122102c64f23f380e7dfefedfc6121d14"
+  },
+  {
+    "path": "publication-scan.json",
+    "bytes": 509,
+    "sha256": "ce958a672acd32f6d7d1ca6129e0aebdaacd4eb62e26bda2e5bb7912e1591234"
+  },
+  {
+    "path": "summary.json",
+    "bytes": 3654,
+    "sha256": "1b7d913a77e487e4ea6a1d31cc5ae7a039fe75d29d109c6d45593aa0fb953b95"
+  },
+  {
+    "path": "terminal-observations.json",
+    "bytes": 10976,
+    "sha256": "d8ab006ecb0f286fe24426684406dcc380e73cbaece9891c2aad07a3dc8267aa"
+  }
+]

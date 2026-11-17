@@ -1,0 +1,100 @@
+"""Create one fresh admitted relay wave for the native recovery example."""
+
+import hashlib
+import importlib.metadata as metadata
+import json
+import sys
+import sysconfig
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m120terminal")
+INSTALL = BASE.parent / "m120p/w"
+PYTHON = INSTALL / "Scripts/python.exe"
+WHEEL = INSTALL.parent / "dist/agentsync_local-0.3.0a120-py3-none-any.whl"
+MEMBERS = INSTALL.parent / "run/runtime-members.json"
+HELPER = Path("F:/syuc/amadeus-m6-single/examples/recover_relay.py")
+PRIVATE = BASE / "private"
+WHEEL_SHA = "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def main():
+    assert sys.platform == "win32" and sys.version_info[:3] == (3, 12, 16)
+    assert sys.flags.isolated and sys.dont_write_bytecode and __debug__
+    assert Path(sys.executable).resolve() == PYTHON and Path(sys.prefix).resolve() == INSTALL
+    assert Path(__file__).resolve() == BASE / "prepare-fixture.py" and BASE.resolve() == BASE
+    assert {path.name for path in BASE.iterdir()} == {"prepare-fixture.py", PRIVATE.name}
+    assert PRIVATE.is_dir() and PRIVATE.resolve() == PRIVATE and not any(PRIVATE.iterdir())
+
+    assert sha(HELPER) == "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9"
+    assert sha(MEMBERS) == "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4"
+    assert sha(WHEEL) == WHEEL_SHA
+    site = Path(sysconfig.get_path("purelib")).resolve()
+    assert site == INSTALL / "Lib/site-packages"
+    actual = {
+        path.relative_to(site).as_posix(): sha(path)
+        for path in (site / "agentsync").rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts
+    }
+    assert len(actual) == 97 and actual == json.loads(MEMBERS.read_bytes())
+    dist = metadata.distribution("agentsync-local")
+    assert dist.version == "0.3.0a120" and Path(dist.locate_file("")).resolve() == site
+    direct = json.loads(dist.read_text("direct_url.json"))
+    assert direct["url"] == WHEEL.as_uri() and "dir_info" not in direct
+    assert direct["archive_info"]["hashes"]["sha256"] == WHEEL_SHA
+
+    import agentsync
+    from agentsync.adapters.approved_launch import digest
+    from agentsync.controlled_relay import ControlledRelay
+    from agentsync.core.service import Core
+    from agentsync.relay_queue import RelayQueue
+
+    assert Path(agentsync.__file__).resolve() == site / "agentsync/__init__.py"
+    assert agentsync.__version__ == dist.version
+    root = BASE / "scratch"
+    root.mkdir()
+    data, receipts = root / "core", root / "receipts"
+    receipts.mkdir()
+    core = Core(data)
+    owner = core.execute("create_project", {"name": "Native terminal relay", "root_path": str(root)})
+    session = core.execute("register_agent", {**owner, "name": "Terminal fixture session"})
+    member, = core.execute_owner("list_members", owner)["members"]
+    assert member["agent_id"] == session["agent_id"]
+    core.execute_owner("set_agent_roles", {
+        **owner, "agent_id": session["agent_id"], "roles": ["worker"],
+        "expected_version": member["version"], "request_id": "terminal-fixture-worker",
+    })
+    auth = {key: session[key] for key in ("session_id", "session_token")}
+    task = core.execute("create_task", {
+        **auth, "project_id": owner["project_id"], "title": "Admitted relay fixture task",
+        "request_id": "native-terminal-fixture-task",
+    })
+    assert task["status"] == "pending" and task["version"] == 1
+    queue = RelayQueue(ControlledRelay(core, root, receipts))
+    project_key, wave_id = digest(owner["project_id"]), digest("native-terminal-pending-wave")
+    queue._relay._check_receipt_anchor(owner["project_id"], bind=True)
+    queue._check_journal_anchor(project_key, bind=True)
+    queue._journal.admit(project_key, wave_id, (task["id"],))
+
+    with (PRIVATE / "credentials.json").open("x", encoding="utf-8") as stream:
+        json.dump({**owner, **auth}, stream)
+    public = {
+        "project_id": owner["project_id"], "task_id": task["id"], "wave_id": wave_id,
+        "task_status": task["status"], "task_version": task["version"], "receipt_state": "admitted",
+        "data_dir": str(data), "scratch_root": str(root), "receipts": str(receipts),
+        "expected_reconcile_state": "incomplete", "expected_verification": "unverified",
+    }
+    with (BASE / "fixture.json").open("x", encoding="utf-8") as stream:
+        json.dump(public, stream)
+    print(json.dumps(public), flush=True)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        raise SystemExit(f"Fixture preparation failed: {type(error).__name__}") from None

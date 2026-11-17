@@ -82,6 +82,17 @@ does not submit a staging plan or authorize candidate execution.
 
 ## Evidence boundary
 
+The checkout helper was also exercised through an actual Windows terminal with
+the unchanged a120 installation: status, history, task, one exact-wave reconcile,
+and status again all exited0. The real hidden prompts did not echo the temporary
+project credentials. No prompt or CLI subprocess was mocked. This fixture had a
+real pending task and an admitted journal wave, with no Agent dispatch; reconcile
+correctly remained incomplete/unverified and preserved the pending task.
+[Native terminal observations and limitations](acceptance/evidence/core-preview-a120/native-terminal/summary.json).
+Linux/macOS terminal interaction is not covered by that check. Cleanup of this
+local test's temporary project credential file was rejected before execution;
+it remains a separate BLOCKED local cleanup, with no credentials in the evidence.
+
 The [a120 native recovery case](acceptance/evidence/core-preview-a120/coordinator-review-recovery/summary.json)
 observed coordinator exit after a deterministic receiver's review was saved,
 then recovered the same task's staging-preview eligibility through a fresh CLI,

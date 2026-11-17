@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+P1 interactive entry — actual Windows terminal functionality **PASS**, local
+fixture credential cleanup **BLOCKED**. Five commands on unchanged a120/859775b
+exit0 through real getpass and installed CLI. No credential echo; pending wave
+and task v1 remain unverified, both attempts not_dispatched. Root verified actual
+terminal records, state, unchanged helper and97 installed members. No real Agent
+or new candidate execution is represented by this deterministic admitted-wave
+fixture. The credential file remains restricted locally after automatic approval
+rejected deletion before execution; no bypass/retry or credential upload occurred.
+Manual cleanup is pending. Linux/macOS terminal behavior, complete current matrix
+and formal Release are not supplied by this check; Release stays BLOCKED.
+[Observed outputs and scope](evidence/core-preview-a120/native-terminal/summary.json).
+
 Latest full local result — a120 Linux3.14 installed wheel **PASS with7 explicit
 skips; formal Release BLOCKED**. Runtime859775b/tests d427355; native11295 ended
 2026-11-17T01:52:37Z, exit0.2587 unique cases:2580pass/7skip/0fail/error in1136.48s.
