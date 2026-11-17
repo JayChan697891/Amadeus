@@ -26,6 +26,13 @@ Independent review finds no technical blocker to this limited local trial.
 Next inspect the existing real Codex host/SDK entry for a concrete owner-usability
 gap, retaining exact approvals and evidence rather than duplicating working code. Do not
 present the simulated trial as completion of real multi-Agent autonomous behavior.
+That inspection found the reusable `VerifiedProposalFlow.run_once` host API,
+documented in M6-ADAPTERS.md, already composes the controlled real path. Existing
+CLI scripts are fixed acceptance/import fixtures, not a general owner task runner.
+The remaining usability choice is one complete thin terminal host example around
+that API, not another Core/orchestrator. Any such entry must retain exact staging,
+execution and completion decisions and must not start a receiver before verified
+producer completion; it is not implemented or claimed accepted here.
 Remaining source matrices, unavailable clients/platforms, preserved static FAIL and license review
 remain in original C/Release scope; no gate is removed or historical evidence
 relabelled. No test queue is currently active.
