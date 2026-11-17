@@ -1,5 +1,15 @@
 # Release Acceptance Report
 
+Original M6-03/T13 has **SCOPED PASS** for current a122 real Codex launch, recorded
+command/version/run/session bindings, result collection and independently verified
+artifact. Root/Sol/Astra compared the original clauses and actual evidence; no new
+model run is needed to repeat that conclusion. The separate RAT-M6-03 advertised
+control probes are not silently passed: current real `cancel_task`/natural-timeout
+observations remain NOT RUN, while historical runs retain their original SHA.
+Directly interrupting a parent is not adapter cancellation. Current deterministic
+tests support explicit unsupported resume/server-cancel declarations. This does
+not accept full M6 or other clients and changes no formal Release gate.
+
 Frozen a122 now has **SCOPED PASS** for the authorized completion of its original
 composed-recovery candidate. The fixed149-byte program passed exactly one Docker
 execution:2/2 cases and19 isolation checks. A fresh owner-enrolled independent

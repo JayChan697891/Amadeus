@@ -25,7 +25,7 @@ the table order among ready rows; an unavailable row does not block unrelated wo
 | Original requirements | Remaining bounded evidence | Readiness and stop conditions |
 | --- | --- | --- |
 | M2-05, M3-03/04 | **SCOPED PASS**, one actual a122 run: both actors, pinned context, old-lease/recipient/lock denials, owner audit and normal host reopen. See [exact plan and result](evidence/core-preview-a122/native-handoff/summary.json). | Five install bindings were reviewed before one new-fixture execution. Zero model calls, no account credentials or candidate execution. Root matched18 persisted audit records; both hosts ended by EOF and all10 recorded PIDs were absent. Task stays review/unverified, with no independent candidate acceptance. Do not repeat; original a121 exit1 remains BLOCKED. |
-| M6-03, T13/T14 | Assess real-client local timeout and advertised lifecycle controls against the original requirements, with exact version bindings. Full a122 control-adapter acceptance remains **NOT RUN**. | Keep old local timeout/cancel/interruption evidence in its recorded scope. Model activity at the exact deadline and server-side cancellation remain UNVERIFIED, not newly invented formal exit conditions. Unsupported capabilities stay explicit; neither offline deadline tests nor this scope correction certify current real-client acceptance. |
+| M6-03, T13/T14 | **SCOPED PASS** for a122 real Codex launch, version/command/run/session bindings, result collection and independent artifact verification. Current standalone real adapter-cancel/timeout probes remain **NOT RUN**; full M6 unaccepted. | Root/Sol/Astra matched original M6-03/T13 to the composed evidence. No extra model run is needed for this bounded conclusion. RAT-M6-03 advertised-control probing is not silently passed: owned-parent interruption is not `cancel_task`; old cancel/timeout evidence retains its SHA. Current component tests support explicit unsupported resume/server-cancel declarations. Do not add service-internal generation/cancellation proof as a gate. |
 | M7-02, M8-02 | **SCOPED PASS** for two real Codex calls, recovery of the persisted receiver proposal after actual controller exit73, and independent completion of the same receiver v6/verified. | Root/Astra accepted [the final observed boundary](evidence/core-preview-a122/composed-recovery/verification/summary.json). One owner-authorized Docker run passed2 cases/19 isolation checks, fresh owner-enrolled identities handled expiry, and no additional model calls occurred. Source remains failed and dependent unchanged. Both candidate grants are consumed. Do not repeat or extend this to full M7/M8 or cross-vendor acceptance. |
 | M9-01/02 | First full current a122 Windows3.12 wheel suite **PASS:2539/57skip**. Other complete current-candidate platform, distribution and release gates remain **BLOCKED / NOT RUN** as recorded. | Original archive/source/install hashes and all2587 old cases plus9 new cases checked. Do not repeat this suite or the completed97-case install checks. Preserve unavailable macOS and real Claude/Cursor cases, original static FAIL, pending license decision and manual credential cleanup. No all-in-one collector repeat or public release without separate approval. |
 
@@ -36,9 +36,10 @@ local lifecycle behavior and declared capabilities, not service-internal token
 generation. The [public CLI event contract](https://learn.chatgpt.com/docs/non-interactive-mode)
 provides no timestamped guarantee of that internal state. Preserve the limitation
 without adding a release condition or declaring any requirement passed. Independent
-completion of the recovered real receiver proposal is now recorded above. The next
-action is to assess remaining original M6-03 lifecycle evidence against the current
-frozen runtime, without repeating completed checks or inventing an extra gate.
+completion of the recovered real receiver proposal and the bounded M6-03 scope
+assessment are now recorded above. The next actionable original gap is the a122
+Linux installed-wheel complete suite, without repeating completed checks or
+inventing an extra gate. That suite has not yet started.
 
 Store only new sanitized results under `evidence/core-preview-a122/` after actual
 execution; planned paths are not existing evidence. Preserve failed attempts,

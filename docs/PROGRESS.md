@@ -32,9 +32,22 @@ Original Windows full-suite43609 is terminal and must not be restarted. The firs
 push of local03a3074 failed with TLS EOF; the original failure is retained and
 remote synchronization is confirmed separately. No main merge or Actions.
 
-Next recovery entry: review the remaining original M6-03 local lifecycle evidence
-against frozen5232e9e and the current acceptance queue; select only its missing
-current-version evidence. Do not rerun this consumed candidate verification,
+The subsequent read-only original-scope review is complete: Root/Sol/Astra matched
+SPEC M6-03 and T13 to the actual a122 command/client version, run/session/thread
+digests, terminal result and independently verified artifact. This is SCOPED PASS
+for real launch/result/artifact, without another model call. RAT-M6-03 also asks to
+probe advertised controls: a122 direct `cancel_task` and natural-timeout probes
+remain NOT RUN; direct producer interruption is not adapter cancellation. Existing
+current component tests support explicit unsupported resume/server-cancel
+declarations; historical real cancel/timeout evidence retains its old SHA. Full
+M6 and other clients remain unaccepted; no gate was removed.
+
+Both implementation/evidence commits were successfully pushed to20df8c4; PR35
+was read back at that SHA and remains open/draft/unmerged. The earlier TLS failure
+did not lose the local commit. Next recovery entry: the existing M9 a122 Linux
+installed-wheel full-suite gap, using original5232e9e tests/archive and the existing
+D-drive guest installation. It is NOT STARTED; inspect fixture/readiness before
+launching once, and preserve original evidence. Do not rerun this consumed candidate verification,
 producer/receiver calls, controller recovery, native MCP handoff, four97-case
 installation checks or completed Windows wheel suite. No new job is currently
 running. Cross-vendor/macOS remain unavailable; full M7/M8 and Release remain unaccepted.
