@@ -1,0 +1,6 @@
+{
+  "status": "completed",
+  "exit_code": 0,
+  "utc": "2026-11-17T06:27:05.214361+00:00",
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m122l/linux-run-preview.py"
+}

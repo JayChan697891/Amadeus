@@ -9,9 +9,18 @@
 免费、MIT 开源许可、本地运行的多 Agent 协作核心。MCP、Python SDK 和 HTTP 共用
 一个 SQLite 数据库。核心协作无需模型或付费 API，云端开发环境为可选。
 
-当前为 **0.3.0a121 开发源码，正式发布仍处于阻断状态**。冻结的 0.3.0a116
+当前为 **0.3.0a122 开发源码，正式发布仍处于阻断状态**。冻结的 0.3.0a116
 已完成现有 Windows/Linux 六组本地矩阵，macOS 尚未实测；这些证据不覆盖新增开发代码。
 交付顺序见[总计划](docs/PLAN.md)。
+
+a122 开发预览修复了共享适配器调度及启动前等待的提前超时。回调在取消工作前重新核对
+绝对截止时间。原始 wheel 和源码包在 Windows 3.12 与 Linux 3.14 上各安装一次，
+四个环境均通过同一组 97 项定向用例。Windows 通过 19 项原生构建和安装检查，Linux
+通过 16 项安装检查。a122 的完整回归和真实客户端验证尚未执行。
+[下载预览包](releases/0.3.0a122/preview-5232e9e/)、
+[源码修复证据](docs/acceptance/evidence/core-preview-a121/adapter-deadline/summary.json)、
+[Windows 结果](docs/acceptance/evidence/core-preview-a122/windows/summary.json)、
+[Linux 结果](docs/acceptance/evidence/core-preview-a122/linux/summary.json)。
 
 当前源码已修复演示和所有者命令在 Windows 旧输出编码下的中文结果输出失败；
 中文目录和恢复原因能够完整解码还原。两项真实失败及修复后19项定向测试结果见

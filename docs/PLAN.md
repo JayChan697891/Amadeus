@@ -2,14 +2,21 @@
 
 ## Execution adjustment — 2026-11-15
 
-P1 deadline correctness now takes priority over another real-model timeout run.
-Two actual early-timer reproductions exposed premature cancellation in the shared
-adapter and its launch wait. Repair1700d1d covers both;97 distinct scoped cases and
-source type/static checks pass, with all failed runs retained. Root/Astra reviewed
-the actual files and evidence. Deliver the correction as a new a122 preview using
-the existing offline build/install workflow; old packages and real-client claims
-stay frozen. This is a concrete reliability fix within M6, not a new M5 stage or
-an active-generation timeout acceptance. See PROGRESS for the live preparation.
+P1 deadline repair1700d1d is delivered in the a122 development preview. The shared
+adapter and its launch wait now check the absolute deadline before cancelling work.
+Both failing reproductions are retained. Each fresh wheel and source-archive install
+passed the same 97 targeted cases on Windows 3.12 and Linux 3.14. Windows passed
+19 native checks and Linux passed 16. Root and Astra accepted the scoped results.
+Full a122 regression and real active-generation timeout validation remain unrun.
+Formal Release remains BLOCKED.
+[Preview packages](../releases/0.3.0a122/preview-5232e9e/) and
+[checkpoint and receipts](PROGRESS.md).
+
+The a122 validation jobs are closed and the Linux VM is off. Prepare the existing
+final acceptance plan for a122/5232e9e and its original archives. Consolidate the
+unrun active-generation timeout, corrected native MCP handoff and deferred composed
+real recovery checks. Record the exact authorization and stop conditions for each
+run. Do not execute or retry automatically.
 
 The existing M2/M3 native-client handoff gap was exercised once on installed a121.
 Actual Codex MCP calls observed structured handoff, recipient continuation, pinned

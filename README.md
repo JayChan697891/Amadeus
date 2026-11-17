@@ -13,12 +13,15 @@ Status: **0.3.0a122 development source. Formal Release BLOCKED.** The unchanged
 remains untested. Its evidence
 does not certify new development changes. See [delivery priorities](docs/PLAN.md).
 
-The a122 source fixes premature timeouts in shared adapter scheduling and
-pre-launch waits. Early callbacks now recheck the absolute deadline before
-cancelling work; authorization, cancellation and no-retry rules are unchanged.
-The [source repair evidence](docs/acceptance/evidence/core-preview-a121/adapter-deadline/summary.json)
-contains97 scoped passing cases and original failures. Its new package validation
-is pending; existing a121 packages below are immutable and do not contain this fix.
+The a122 development preview fixes premature timeouts in shared adapter scheduling
+and pre-launch waits. Early callbacks recheck the absolute deadline before
+cancelling work. The original wheel and source archive each passed the same 97 targeted
+cases on Windows 3.12 and Linux 3.14. Windows passed 19 native build and installation
+checks, and Linux passed 16 installation checks. Full a122 regressions and real-client
+validation remain unrun. [Preview packages](releases/0.3.0a122/preview-5232e9e/),
+[source repair evidence](docs/acceptance/evidence/core-preview-a121/adapter-deadline/summary.json),
+[Windows results](docs/acceptance/evidence/core-preview-a122/windows/summary.json), and
+[Linux results](docs/acceptance/evidence/core-preview-a122/linux/summary.json).
 
 The current source also fixes demo/owner JSON output on legacy Windows streams:
 Chinese paths and recovery reasons survive round-trip decoding. Two actual

@@ -6,10 +6,23 @@ two paths now guard their absolute deadlines. Actual16+73+5+3 passing observatio
 are97 distinct cases, not a single full-suite pass; intermediate setup/fixture
 failures are preserved. Root verified XML identities, source hashes/import origins
 and unchanged old installation. Ruff/format and mypy96 source files pass; Astra
-accepts only this source scope. New a122 package validation is **NOT RUN** pending
-the prepared offline delivery. Real active-generation timeout remains unverified.
+accepts this source scope. Real active-generation timeout remains unverified.
 **Formal Release BLOCKED**.
 [Actual reproductions, correction and scoped regression](evidence/core-preview-a121/adapter-deadline/summary.json).
+
+Frozen a122/5232e9e has **SCOPED INSTALLED PASS**. Windows 3.12 passed 19 native
+build and installation checks. Linux 3.14 passed 16 installation checks using the
+original Windows-built archives. Wheel and source-archive installs on both
+platforms passed the same 97 distinct targeted cases with matching identities
+and outcomes. Root verified the two archive hashes, 3,992 frozen files and 97
+runtime members per install. Root and Astra accepted the scoped results. The
+failed initial Linux SSH connection is retained as NOT RUN. Both native
+validation jobs finished and the owned Linux VM shut down normally. Full a122
+regressions, macOS and real-client validation remain **NOT RUN**. Historical
+static FAIL and pending license review still block formal Release.
+[Windows results](evidence/core-preview-a122/windows/summary.json),
+[Linux results](evidence/core-preview-a122/linux/summary.json), and
+[preview packages](../../releases/0.3.0a122/preview-5232e9e/).
 
 The a121 native Codex structured-handoff run is **BLOCKED**, not PASS: the final
 owner-audit assertion expected null where the context schema supplies0. Original

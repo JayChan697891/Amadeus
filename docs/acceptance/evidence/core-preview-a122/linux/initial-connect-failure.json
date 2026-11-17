@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-17T06:26:02.895462+00:00",
+  "native_session": 8009,
+  "terminal_receipt": "b5e73b",
+  "exit_code": 1,
+  "failure": "Error reading SSH protocol banner; SSHException: No existing session",
+  "point": "SSHClient.connect, before any remote command/upload",
+  "tests": "NOT RUN",
+  "original_tool_output_retained": true,
+  "subsequent_action": "Inspect completed guest boot before first test execution; no process restart"
+}

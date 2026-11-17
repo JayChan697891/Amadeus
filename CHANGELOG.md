@@ -1,13 +1,15 @@
 # Changelog
 
-## 0.3.0a122 - adapter deadline repair, package validation pending
+## 0.3.0a122 - adapter deadline development preview
 
 - Recheck absolute deadlines before a shared adapter timer cancels preparation
   or an owned process; early callbacks rearm without starting duplicate stops.
 - Apply the same guard to launch waits, preserving one invocation, external
   cancellation and rejection of late results even if cancellation is swallowed.
-- Retain actual failing reproductions and97 scoped passing cases. Existing
-  packages remain unchanged; real-client and formal Release gates remain blocked.
+- Retain the original failures and 97 distinct passing source cases. Fresh wheel
+  and source-archive installs on Windows 3.12 and Linux 3.14 all passed those same
+  97 cases. Windows passed 19 native checks and Linux passed 16. Full a122 and
+  real-client validation remain unrun. Formal Release remains BLOCKED.
 
 ## 0.3.0a118 - recovery-path preview, full acceptance pending
 

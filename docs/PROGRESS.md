@@ -11,8 +11,24 @@ suite). The intermediate dependency collection error and3 fixture failures also
 remain. Root checked actual XML/hashes/import origins and unchanged97-member a121
 installation (dc64d5); mypy96 source files passes (f97140), changed-file Ruff/format
 passes. Astra accepts this bounded source repair. See adapter-deadline/summary.json
-under acceptance/evidence/core-preview-a121. Source version is now0.3.0a122;
-fresh package validation is the next active preparation, not yet executed.
+under acceptance/evidence/core-preview-a121.
+
+The a122 preview is frozen at5232e9e. Windows 3.12 native session70966 exited0
+(e3423c), with 19 build and installation checks passing. Linux 3.14 used the same
+original packages, and session58409 exited0 (fce5a1) after 16 checks. Wheel and
+source-archive installs across both platforms passed the same 97 unique cases with
+zero failures, errors or skips. Root verified 3,992 frozen files, 97 runtime
+members per install, the original archive hashes and native receipts. Both Root
+and Astra accepted the scoped installation results. [Preview packages](../releases/0.3.0a122/preview-5232e9e/),
+[Windows evidence](acceptance/evidence/core-preview-a122/windows/summary.json), and
+[Linux evidence](acceptance/evidence/core-preview-a122/linux/summary.json).
+
+The initial Linux SSH connection (8009) failed at the banner before any remote
+command, upload or test. That attempt remains NOT RUN. The first actual Linux
+test run then completed. Owned VM6480 shut down normally at06:28:47Z on
+2026-11-17 (7492b5), with ports closed and the disk retained. Both validation
+sessions are closed and there are no active a122 validation jobs. Full a122
+regressions and real-client checks remain NOT RUN. Formal Release remains BLOCKED.
 
 Native Codex structured-handoff probe36a672d ran once on the unchanged installed
 a121/4b82494 runtime. It ended2026-11-17T05:40:13Z exit1 (dfd1a2), at the final
@@ -153,18 +169,16 @@ Owner chose to handle manual removal later. No deletion retry or bypass is allow
 verify absence after the owner confirms removal. Cleanup remains BLOCKED.
 Never upload private/ or the temporary database. All exported records omit tokens.
 
-Next resume entry: finish the new a122 deadline-repair preview's offline build and
-focused installations on the frozen source, reusing the established local workflow.
-Keep a121/4b82494 unchanged as the earlier usable preview. The bounded native
-handoff check above is finished with its original failure preserved; do not rerun
-it automatically. Its repaired probe can enter a separately reviewed final frozen
-client plan. Select another uncovered original requirement against existing
-evidence; do not repeat the six a120 full suites or four a121 focused installs.
-The a122 package driver is being prepared; no package run has started yet.
-No new product/M5 phase is created by either repair.
-Current formal matrix, license decision, macOS/cross-vendor access, preserved
-static FAIL and manual cleanup remain separate gaps. No new M5 stage or broader
-live/candidate-execution authorization is implied. Goal/M0-M9/A-B bounds remain.
+Prepare the existing final frozen acceptance plan against a122/5232e9e and the
+original archives above. Consolidate the unrun active-generation timeout,
+corrected native MCP handoff and deferred composed real recovery checks. The
+a121 native handoff result remains BLOCKED. Record the exact authorization and
+stop conditions for each planned run before scheduling. Do not execute or retry
+automatically. Use the completed a120 full suites and a121/a122 focused installs
+as recorded. [Delivery plan](PLAN.md).
+Claude/Cursor access, macOS evidence, and new candidate-execution and
+public-release authorization remain unavailable. The formal matrix, license
+decision, preserved static FAIL and manual cleanup remain unresolved.
 
 Historical checkpoint follows; the Linux/Windows results remain valid in scope.
 
