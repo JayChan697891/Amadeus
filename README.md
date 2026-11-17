@@ -17,11 +17,24 @@ The a122 development preview fixes premature timeouts in shared adapter scheduli
 and pre-launch waits. Early callbacks recheck the absolute deadline before
 cancelling work. The original wheel and source archive each passed the same 97 targeted
 cases on Windows 3.12 and Linux 3.14. Windows passed 19 native build and installation
-checks, and Linux passed 16 installation checks. Full a122 regressions and real-client
-validation remain unrun. [Preview packages](releases/0.3.0a122/preview-5232e9e/),
+checks, and Linux passed 16 installation checks. The first complete Windows wheel
+suite subsequently passed2539 cases with57 explicit skips and no failures/errors.
+The first complete Linux wheel suite is running; its final result is not available.
+Real same-vendor Codex handoff, persisted-result controller recovery and independent
+completion of the same task have scoped evidence. This does not certify all
+clients, lifecycle controls, platforms or formal Release.
+[Windows full result](docs/acceptance/evidence/core-preview-a122/full-windows312/root-postcheck.json),
+[real flow and limits](docs/acceptance/evidence/core-preview-a122/composed-recovery/verification/summary.json),
+[Preview packages](releases/0.3.0a122/preview-5232e9e/),
 [source repair evidence](docs/acceptance/evidence/core-preview-a121/adapter-deadline/summary.json),
 [Windows results](docs/acceptance/evidence/core-preview-a122/windows/summary.json), and
 [Linux results](docs/acceptance/evidence/core-preview-a122/linux/summary.json).
+
+For a first local trial, use the [packaged Windows installation and demo steps](releases/0.3.0a122/preview-5232e9e/README.md).
+That offline demo uses simulated agents and reports `simulation_only: true` and
+`verification: unverified`; it does not call a model. The archived preview README
+records its original validation checkpoint; use [current progress](docs/PROGRESS.md)
+for subsequent results. The real Codex flow above is a separate, owner-approved experiment.
 
 The current source also fixes demo/owner JSON output on legacy Windows streams:
 Chinese paths and recovery reasons survive round-trip decoding. Two actual

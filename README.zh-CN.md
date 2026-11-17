@@ -16,11 +16,21 @@
 a122 开发预览修复了共享适配器调度及启动前等待的提前超时。回调在取消工作前重新核对
 绝对截止时间。原始 wheel 和源码包在 Windows 3.12 与 Linux 3.14 上各安装一次，
 四个环境均通过同一组 97 项定向用例。Windows 通过 19 项原生构建和安装检查，Linux
-通过 16 项安装检查。a122 的完整回归和真实客户端验证尚未执行。
+通过 16 项安装检查。随后完成的首次 Windows wheel 完整回归为2539通过、57明确跳过、
+零失败/错误；首次 Linux wheel 完整回归正在运行，尚无最终结果。
+真实同厂商 Codex 交接、已持久化结果的控制器恢复及同任务独立验证已有限定证据，
+不代表全部客户端、生命周期控制、平台或正式 Release 通过。
+[Windows 完整结果](docs/acceptance/evidence/core-preview-a122/full-windows312/root-postcheck.json)、
+[真实流程与限制](docs/acceptance/evidence/core-preview-a122/composed-recovery/verification/summary.json)、
 [下载预览包](releases/0.3.0a122/preview-5232e9e/)、
 [源码修复证据](docs/acceptance/evidence/core-preview-a121/adapter-deadline/summary.json)、
 [Windows 结果](docs/acceptance/evidence/core-preview-a122/windows/summary.json)、
 [Linux 结果](docs/acceptance/evidence/core-preview-a122/linux/summary.json)。
+
+首次本地体验可直接按[Windows 预览包安装与演示步骤](releases/0.3.0a122/preview-5232e9e/README.md)操作。
+该离线演示使用模拟 Agent，明确输出 `simulation_only: true` 和 `verification: unverified`，
+不会调用模型。归档预览包 README 保留原验收时点的记录，后续结果以[当前进度](docs/PROGRESS.md)为准。
+上面的真实 Codex 流程是另一项经过所有者批准的实验。
 
 当前源码已修复演示和所有者命令在 Windows 旧输出编码下的中文结果输出失败；
 中文目录和恢复原因能够完整解码还原。两项真实失败及修复后19项定向测试结果见
