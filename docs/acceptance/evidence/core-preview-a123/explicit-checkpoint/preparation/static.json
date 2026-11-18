@@ -1,0 +1,71 @@
+{
+  "static_only": true,
+  "pytest": "NOT RUN; awaiting final dual-message review",
+  "version": "0.3.0a123",
+  "ast_files": 11,
+  "checks": [
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/ruff.exe",
+        "check",
+        "--no-cache",
+        "src/agentsync/adapters/process_capture.py",
+        "src/agentsync/adapters/codex.py",
+        "src/agentsync/controlled_relay.py",
+        "src/agentsync/relay_queue.py",
+        "src/agentsync/continuation.py",
+        "src/agentsync/proposals.py",
+        "examples/verified_codex_task.py",
+        "tests/unit/test_codex_adapter.py",
+        "tests/unit/test_proposals.py",
+        "tests/integration/test_codex_proposal_relay_queue.py",
+        "tests/integration/test_verified_codex_terminal.py"
+      ],
+      "started_at": "2026-11-18T05:53:36.203387+00:00",
+      "ended_at": "2026-11-18T05:53:36.267441+00:00",
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/ruff.exe",
+        "format",
+        "--check",
+        "--no-cache",
+        "src/agentsync/adapters/process_capture.py",
+        "src/agentsync/adapters/codex.py",
+        "src/agentsync/controlled_relay.py",
+        "src/agentsync/relay_queue.py",
+        "src/agentsync/continuation.py",
+        "src/agentsync/proposals.py",
+        "examples/verified_codex_task.py",
+        "tests/unit/test_codex_adapter.py",
+        "tests/unit/test_proposals.py",
+        "tests/integration/test_codex_proposal_relay_queue.py",
+        "tests/integration/test_verified_codex_terminal.py"
+      ],
+      "started_at": "2026-11-18T05:53:36.267441+00:00",
+      "ended_at": "2026-11-18T05:53:36.332539+00:00",
+      "exit_code": 0,
+      "stdout": "11 files already formatted\n",
+      "stderr": ""
+    }
+  ],
+  "files_sha256": {
+    "src/agentsync/adapters/process_capture.py": "075885beccf8545d5d859eaf61a90937708817adef3370b062946e944ad818e0",
+    "src/agentsync/adapters/codex.py": "68d0b7c8b76e9efd85d23861135ecb66b5cb77c3516f67ffedc3c8d6a7e877e1",
+    "src/agentsync/controlled_relay.py": "c3975f47ae99dfa27935991d5254fb56d4975a6ee8b31a055de16161c3003446",
+    "src/agentsync/relay_queue.py": "239a5e09677da6a949a94aa4f1b6bcd813a4891669afbc5609b605eefd9b5512",
+    "src/agentsync/continuation.py": "eec2f002ccc391eb2ca885258ea982af1ddbf283479d1a98193877f260fcb804",
+    "src/agentsync/proposals.py": "0e62468d0b129f7607605da5af53af9862b760ddb1fb6fb50e06844678d74a14",
+    "examples/verified_codex_task.py": "746ef87a7c3f1c506e789b72edb29b9b8c5f8d95f3692bb9eff6cafb0aa6d515",
+    "tests/unit/test_codex_adapter.py": "8cae5cf7601cfdab3430fb6a81fd419bc5f3db412e62ca04482a575538a9b1e4",
+    "tests/unit/test_proposals.py": "d4ab246a5258e559858f3d622c3a3d7c9ec130d8c7cc89cdbe93aeebc6e753d9",
+    "tests/integration/test_codex_proposal_relay_queue.py": "93333daf42b99dcdadd3cbc41c86b0e7e49ac4745078e50609f33d0e608c1d24",
+    "tests/integration/test_verified_codex_terminal.py": "4fbfe9842ac067b2a5512a87f016d12b7c9dda6905ce81c5fcf0039907b57f08",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "14207fa123666c7ff1b7d818e0f062c2610f0c4d6960be922c074bdd01d91562",
+    "pyproject.toml": "00f09feb161787329da51dc1e4485e9c2c5bc6a53ef109942761dfbff806feea",
+    "src/agentsync/__init__.py": "8a6a3fb63c6f455eba964d0e257a7d2d0b017ae724de83d67f38b447c2881401"
+  }
+}

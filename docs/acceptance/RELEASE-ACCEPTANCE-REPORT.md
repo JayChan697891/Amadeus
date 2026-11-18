@@ -29,10 +29,15 @@ not nine complete formal matrix rows. All Windows3.14 forms are prepared, NOT RU
 [Actual sdist evidence and scoped acceptance](evidence/core-preview-a122/full-windows311-sdist/summary.json).
 Historical static FAIL, other platform/client gaps and formal Release BLOCKED remain.
 
-Development a123 adds an opt-in checkpoint path, currently being refined to an
-explicit version-bound checkpoint/final protocol. Its initial static/install
-preparation is preserved, but no a123 pytest or real-client validation has run.
-The a122 results above do not certify a123 or change its pending status.
+Development a123 now implements an explicit version-bound checkpoint/final
+protocol. Its affected installed-Windows regression has Root/Astra scoped joint
+acceptance:213pass5skip across218 unique cases, including32 new cases. Initial
+execution was212pass5skip plus one setup/teardown error case caused by a huge
+pytest parameter ID; that original FAIL remains saved. Only six labels changed,
+and the affected file passed47 cases on retest with inputs/assertions unchanged.
+This is combined evidence, not a single all-pass run. No a123 full suite or real
+client validation has run; the a122 results above do not certify those gaps.
+[Bounded a123 results](evidence/core-preview-a123/explicit-checkpoint/summary.json).
 
 Current license-material disposition,2026-11-18: technical integrity/coverage
 checking is complete for frozen a122's own wheel/source archives. Root/Astra

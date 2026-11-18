@@ -31,6 +31,15 @@ validation remains required. Preserve the initial preparation, but test the
 final protocol implementation once rather than running obsolete intermediate
 fixtures. No new M stage or release gate is introduced.
 
+The explicit protocol is now implemented and its seven-file affected regression
+has scoped independent acceptance:213 pass/5 platform skips in joint evidence,
+including32 new cases. The original oversized pytest parameter-ID failure remains
+saved; only that file was repaired/retested, with its oversized input unchanged.
+Next validate actual CLI message timing without artificial output pacing. A saved
+fixture checkpoint is not real-Agent recovery, and a valid final response with no
+observed checkpoint must remain accurately reported as such. Published r5 stays
+unchanged while this opt-in a123 development capability gains real evidence.
+
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source

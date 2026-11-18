@@ -30,6 +30,14 @@ def test_checkpoint_message_preserves_exact_phase_and_proposal_rules(phase):
         '{"phase":"checkpoint","files":[{"path":"other.py","content":"a"}]}',
         " " * 32769,
     ],
+    ids=[
+        "wrong-phase",
+        "duplicate-phase",
+        "extra-field",
+        "duplicate-content",
+        "wrong-path",
+        "large-envelope",
+    ],
 )
 def test_checkpoint_message_rejects_phase_or_envelope_drift(raw):
     with pytest.raises(AgentSyncError) as error:

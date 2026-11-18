@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "label_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/unit/test_proposals.py",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short",
+      "--basetemp",
+      "D:\\agentsync-debug\\m123-progress\\label-fix\\t\\pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m123-progress\\label-fix\\t\\raw.xml"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-progress\\label-fix\\source",
+    "started_at": "2026-11-18T06:04:28.452509+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "label_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "tests/unit/test_proposals.py",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short",
+      "--basetemp",
+      "D:\\agentsync-debug\\m123-progress\\label-fix\\t\\pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m123-progress\\label-fix\\t\\raw.xml"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-progress\\label-fix\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-18T06:04:28.452509+00:00",
+    "finished_at": "2026-11-18T06:04:28.929524+00:00",
+    "log": "logs/label_pytest.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

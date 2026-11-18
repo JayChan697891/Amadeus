@@ -1,0 +1,16 @@
+Looking in links: file:///D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse
+Processing D:\agentsync-debug\m123-progress\frozen-r3
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building wheel for agentsync-local (pyproject.toml): started
+  Building wheel for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a123-py3-none-any.whl size=332991 sha256=81ee3a18807bd480adf55161eb598640a57b71a6d03b43830b3b8304179d10b5
+  Stored in directory: D:\agentsync-debug\m123-progress\install-tmp-r3\pip-ephem-wheel-cache-pdudj19f\wheels\d6\1b\6f\a233c36c1813461982ece8936c3bcd1e1a74307fb131969de5
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+  Attempting uninstall: agentsync-local
+    Found existing installation: agentsync-local 0.3.0a123
+    Uninstalling agentsync-local-0.3.0a123:
+      Successfully uninstalled agentsync-local-0.3.0a123
+Successfully installed agentsync-local-0.3.0a123

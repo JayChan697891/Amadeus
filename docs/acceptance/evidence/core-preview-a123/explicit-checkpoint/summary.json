@@ -1,0 +1,52 @@
+{
+  "scope": "a123 explicit checkpoint/final protocol; seven affected files using installed Windows3.12.16 runtime",
+  "status": "SCOPED PASS after parameter-ID repair; initial failure retained",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "initial_attempt": {
+    "session": 19264,
+    "terminal": "59aa27",
+    "exit_code": 1,
+    "unique_cases": 218,
+    "passed": 212,
+    "skipped": 5,
+    "error_cases": 1,
+    "error_events": 2,
+    "reason": "Oversized pytest-generated test ID exceeded Windows environment variable limit; boundary test body NOT RUN"
+  },
+  "repair": {
+    "scope": "Six explicit parameter IDs only; input and assertions unchanged",
+    "source": "tests/unit/test_proposals.py",
+    "sha256": "f417224f45803ab245b202cbb9725a426acf45fa29fd287eb5415da1d292a799",
+    "static_native": "d2ab7b exit0",
+    "terminal": "9c083e",
+    "exit_code": 0,
+    "passed": 47,
+    "runtime_reinstalled": false
+  },
+  "joint_coverage": {
+    "unique_cases": 218,
+    "passed": 213,
+    "skipped": 5,
+    "new_cases_passed": 32,
+    "meaning": "Other six files:166pass5skip; repaired proposals file:47pass. Not a single all-pass run."
+  },
+  "root_review": "8fac88 and5661c8 exit0: original error evidence, actual process receipts/XML/stdout, unchanged frozen inputs and installed runtime verified",
+  "independent_review": "Astra independently accepted the exact joint coverage after reading actual XML/logs, six process receipts and hashes, original failure archive, source-only-ID diff and97 installed members",
+  "runtime_members": 97,
+  "frozen_source_files": 282,
+  "static": {
+    "receipt": "preparation/static.json",
+    "native": "98d0e9 exit0",
+    "ast_files": 11,
+    "ruff": "PASS",
+    "format": "PASS",
+    "mypy_native": "87d95b exit0",
+    "mypy_source_files": 96,
+    "label_patch_static": "d2ab7b exit0"
+  },
+  "real_clients": "NOT RUN; protocol fixtures do not prove CLI message timing",
+  "full_a123_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "published_preview": "a122/r5 unchanged",
+  "next": "Review and prepare one bounded subscription-only read-only real Codex observation. Preserve actual missing-window/failed/unknown results; no artificial output delays or automatic retry. No candidate execution is authorized by this evidence."
+}

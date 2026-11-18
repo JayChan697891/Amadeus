@@ -6,9 +6,20 @@ Current a123 implementation: the explicit, version-bound checkpoint / final
 two-message contract is written and Root/Astra have accepted code preparation.
 It keeps strict proposal validation, default-off compatibility and all existing
 failure/approval gates. The final14 file hashes match; AST11/Ruff/format passed
-in98d0e9, and Root mypy passed96 source files in87d95b.32 new parameter cases are
-NOT RUN. Freeze/install this revision once and run seven affected test files,
-including test_proposals.py, before any real-client experiment.
+in98d0e9, and Root mypy passed96 source files in87d95b. Revisionbdd808b8e5cd1caa91ec94d69cb11de9aed4cee7 was frozen
+with no working diff and installed offline once (4827e8 exit0). Root matched282
+source files,97 installed members and all three setup receipts (0c2512 exit0).
+Seven affected test files started at05:56:22Z in19264 and ended59aa27 exit1:
+212pass5skip, one oversized-ID case with setup/teardown errors. Its test body was
+NOT RUN because Windows could not store pytest's32769-space parameter ID.
+Only six short explicit IDs were added, retaining every input/assertion; the
+single affected file then passed47 cases (9c083e exit0), without reinstalling or
+rerunning the other six files. Root/Astra independently accepted joint coverage:
+218 unique cases,213pass5skip, all32 new cases pass. The original failure is
+retained, not rewritten as success. [Actual evidence and limits](acceptance/evidence/core-preview-a123/explicit-checkpoint/summary.json).
+No test remains active from these attempts. Next: prepare a bounded real Codex
+observation of the explicit protocol; no a123 real-client call or full suite has
+run. Do not restart19264 or execute the superseded six-file driver.
 The earlier opportunistic a123 source, static results and installed snapshot
 below remain preserved. Its prepared six-file test driver is superseded and
 NOT RUN; do not launch it. Original6844 has now terminated

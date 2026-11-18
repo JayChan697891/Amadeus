@@ -1,0 +1,13 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\agentsync-debug\m123-progress\label-fix\source
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 47 items
+
+tests\unit\test_proposals.py ........................................... [ 91%]
+....                                                                     [100%]
+
+-- generated xml file: D:\agentsync-debug\m123-progress\label-fix\t\raw.xml ---
+============================= 47 passed in 0.10s ==============================
