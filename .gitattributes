@@ -115,3 +115,6 @@ docs/acceptance/evidence/core-preview-a121/** -text -whitespace
 releases/0.3.0a121/** -text -whitespace
 docs/acceptance/evidence/core-preview-a122/** -text -whitespace
 releases/0.3.0a122/** -text -whitespace
+
+# Keep the next candidate's recorded hashes stable across Windows checkouts.
+docs/acceptance/evidence/core-preview-a123/** -text
