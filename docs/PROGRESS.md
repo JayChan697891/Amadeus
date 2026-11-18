@@ -2,38 +2,46 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
-The owner has now explicitly approved the new repaired-terminal experiment,
-including its temporary login copy/cleanup, at most2 subscription calls and one
-conditional exact149-byte candidate verification/completion. [Exact grant](acceptance/evidence/core-preview-a122/terminal-repaired/owner-grant-20261118.json).
-It is recorded against the existing reviewed ready hash; no new fixture or wider
-authority is inferred. Execution is queued until the running Linux source suite
-finishes and its results/workers/containers are checked. Do not interrupt that
-suite or copy model login while its tests run. Windows can continue separately.
-The experiment remains NOT RUN; preserve all one-attempt/no-retry conditions.
+The owner preview r3 is available now: [download and short instructions](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md).
+Its default Windows demo uses simulated Agents and stays unverified. The bundled
+Windows3.12 constraints resolve to the32 tested distributions. Frozen wheel,
+examples, ZIP and prior evidence are unchanged; no new version is needed solely
+to record the following completed validation.
 
-The current [owner preview r3](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md)
-fixes an installation reproducibility gap: the quick start now passes a bundled
-Windows3.12 constraints file. Offline pip dry-run resolves32 distributions exactly
-matching the tested a122 runtime inventory. The historical repository constraints
-pin httpcore2/httpx2 to2.14.0 whereas the actual tested versions are2.15.1; that
-historical file is preserved. Only README/manifest/checksums and the31 dependency
-pins change in the ZIP. Original wheel/examples and r2 remain untouched; existing
-help checks are reused, no installation/model call/full suite is repeated.
-Root checked actual resolver output and archive delta; Astra accepted this
-Windows-only packaging correction, not cross-platform or formal acceptance.
+The newly authorized repaired-terminal experiment completed once at
+2026-11-18T01:53:52Z, native44361/558580 exit0. Two real Codex subscription calls
+returned proposals; the exact approved149-byte program passed one Docker run
+(2/2 cases,19 isolation checks). A different Core identity completed the producer
+task v6/verified; the receiver obtained pinned context and returned review.md,
+remaining review/v5/unverified. Root checked the actual database and35 plan/receipt
+records, all97 runtime members and original inputs. This is a manually approved
+proposal relay, not unattended autonomy or an M3 same-task handoff. No retry,
+third model review, source-workspace application or public release occurred.
+Temporary login removed, memory mount gone, original login unchanged, no owned
+model workers/containers remain. The original failed experiment stays FAIL.
+[Result and limits](acceptance/evidence/core-preview-a122/terminal-repaired/result/summary.json).
+Astra independently rehashed7 public files and checked35 embedded records;
+Root/Astra accept only this bounded manually approved flow.
+This grant is consumed; do not replay the successful or failed fixture.
 
-After delivering the owner ZIP at25b52e8, the two remaining frozen a122 source
-suites are now RUNNING, not accepted: Windows3.12 session22428/controller6064
-in D:/agentsync-debug/m122sourcew, and Linux3.14 session77417/controller2948 in
-the D-hosted VM at /root/amadeus-m122source (VM PID10040). Both were started once
-after Root/Astra preparation review.3992 input files and97 runtime members bind
-5232e9e; fresh editable environments and temporary projects are separate from
-the four completed installed suites, the delivered preview and pending terminal
-experiment. No model credentials or live models are used. Restore observation
-from the existing handles/result files; do not relaunch on observation timeout.
-[Windows start](acceptance/evidence/core-preview-a122/full-windows312-source/execution-start.json)
-and [Linux start](acceptance/evidence/core-preview-a122/full-linux314-source/execution-start.json)
-preserve exact commands and inputs. Formal Release remains BLOCKED.
+Frozen a122 Linux3.14 editable-source full regression has scoped Root/Astra
+acceptance:2589 pass/7 skip,2596 unique cases, zero failures/errors; all7 process
+receipts exit0. Case identities/outcomes equal the installed wheel,36 Docker
+observations are retained,3992 original/copy files and97 runtime members match.
+[Actual source evidence](acceptance/evidence/core-preview-a122/full-linux314-source/summary.json).
+Windows3.12 source session22428/controller6064 in D:/agentsync-debug/m122sourcew
+is still RUNNING, not accepted. Continue the existing handle and inspect its final
+XML/result against the completed installed suites; do not relaunch. Four completed
+wheel/sdist suites remain accepted within their scopes. Formal Release BLOCKED.
+
+Immediate continuation: finish the existing Windows source result/independent
+review, retain the current preview and collect owner feedback. Do not expand M5,
+repeat passing suites, rebuild unchanged packages or infer broader acceptance.
+After readonly evidence collection/review, the D-hosted VM shut down normally:
+guest poweroff exit0, PID10040 absent and SSH/QMP ports closed. Windows source
+continues independently. The long-term Goal is active.
+
+## Earlier checkpoints (historical status; superseded only by actual results above)
 
 The owner preview is now assembled into one 336474-byte ZIP: the unchanged a122
 wheel, MIT license, three byte-identical reviewed examples, bounded terminal guide,

@@ -8,6 +8,13 @@ terminal examples; Python 3.12 is required for the Windows quick start. The defa
 demo uses simulated Agents, with no model calls. Its Windows dependency constraints
 match the tested environment. Formal Release remains BLOCKED.
 
+The included Linux terminal entry now has a successful bounded real Codex run:
+producer proposal, one approved Docker verification, independent producer
+completion and a second Codex receiving pinned context. The receiver's review
+stays unverified; each effect required approval. See the
+[usage and actual evidence](docs/VERIFIED-TASK-EXAMPLE.md), separate from the
+default simulated demo. The ZIP remains unchanged.
+
 Current development continues under [AGENTS.md](AGENTS.md), [WORKFLOW.md](WORKFLOW.md)
 and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancelled.
 

@@ -1,5 +1,28 @@
 # Release Acceptance Report
 
+Current preview update,2026-11-18: the repaired terminal entry7085ec0 completed
+one authorized real trial on frozen a122/5232e9e. Two Codex subscription calls
+returned proposals. Exactly one149-byte addition candidate passed2/2 Docker cases
+and19 isolation checks; an independent Core identity completed the producer
+v6/verified. The receiver obtained pinned context, submitted review.md and remains
+review/v5/unverified. Manual effect approvals remain required; this is neither
+unattended autonomy nor M3 same-task handoff acceptance. Root inspected actual
+database/receipts and cleanup; Astra independently accepted the bounded result.
+The VM then shut down normally; Windows source continues independently.
+[Bounded terminal result](evidence/core-preview-a122/terminal-repaired/result/summary.json).
+
+Linux3.14 editable-source a122 now also has scoped Root/Astra acceptance:
+2589 pass/7 skip,2596 unique cases, zero failures/errors,7 exit0 process receipts,
+36 actual Docker observations. Identity/outcome set equals its installed wheel;
+3992 original/copy source files and97 runtime members remain unchanged.
+[Actual source result](evidence/core-preview-a122/full-linux314-source/summary.json).
+Windows source is still RUNNING. This makes five completed selected a122 suites,
+not all nine platform/form matrix rows. Formal Release remains **BLOCKED**:
+macOS and other real clients lack environments, current real cancel/natural-timeout
+probes are NOT RUN, license review is pending and historical static FAIL is retained.
+
+## Earlier acceptance checkpoints
+
 The first complete a122 installed-sdist suites have finished and received
 independent Root/Astra scoped acceptance: Windows3.12 **2539 pass/57 skip**,
 Linux3.14 **2589 pass/7 skip**, each2596 unique cases and zero failures/errors.

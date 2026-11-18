@@ -103,9 +103,16 @@ Use [recover_relay.py](../examples/recover_relay.py) for status/history with
 and the original project ID. Inspect existing owner services before any recovery
 action. This example does not automatically resume a producer or verifier.
 
-Validation of this terminal example is separate from the earlier bounded real
-Codex experiments. Offline protocol/verifier fixtures do not establish real
-client acceptance. Formal Release gates remain unchanged and BLOCKED.
+This exact repaired terminal entry (7085ec0) has now completed one authorized real
+run on the frozen a122 runtime: two Codex subscription calls, one exact149-byte
+addition candidate execution,2/2 cases and19 isolation checks. The producer is
+completed/v6/verified by a distinct Core identity; the receiver submitted review.md
+and remains review/v5/unverified. Five effect decisions used seven manual input
+lines. This proves a controlled pinned-proposal relay, not unattended operation
+or an M3 same-task handoff (the M3 handoffs table has no row in this experiment).
+Both model processes ended normally; temporary login cleanup and unchanged
+original credentials were confirmed. [Actual evidence](acceptance/evidence/core-preview-a122/terminal-repaired/result/summary.json).
+Formal Release gates remain unchanged and BLOCKED.
 
 [Recorded checks](acceptance/evidence/core-preview-a122/terminal-host/summary.json)
 cover both installed Windows/Linux runtimes, the exact approval refusals and
@@ -116,7 +123,7 @@ blocking input outlasted the task deadline. Its adapter remains unknown, and its
 Core task remains running without verification; no candidate was executed.
 Temporary login cleanup was confirmed. The input repair subsequently passed
 12 local Linux cases and8 Windows cases (4 Linux-only skips), including real PTY
-cancellation and terminal restoration. These are offline checks, not a successful
-real model/Docker E2E run. Do not replay the failed fixture.
+cancellation and terminal restoration. Those offline checks are distinct from
+the newly authorized successful real run above. Do not replay the failed fixture.
 [Actual attempt](acceptance/evidence/core-preview-a122/terminal-live/result-summary.json) ·
 [Repair evidence](acceptance/evidence/core-preview-a122/terminal-live/input-fix/summary.json).

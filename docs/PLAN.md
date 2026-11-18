@@ -10,12 +10,18 @@ Windows3.12 versions; offline resolution matches the saved32-distribution
 inventory including Amadeus. Core and entry scripts are unchanged; old packages
 and the historical repository constraints remain preserved.
 Full source matrix work stays in C; do not repeat the four completed installed
-suites. The next real-terminal experiment below retains its exact permission gate.
+suites. The real-terminal result below retains its exact permission boundary.
 
-The next P0 action is the [prepared post-repair terminal experiment](acceptance/evidence/core-preview-a122/terminal-repaired/execution-plan.md).
-It binds the initializer and corrected entry to a new real local project; actual
-preflight is complete, but fresh post-failure execution permission is still
-required. Preserve the earlier failed fixture and all original release gates.
+The prepared post-repair terminal experiment has now run once under its fresh
+owner grant: real producer, one exact candidate Docker verification, independent
+producer completion, then a real Codex receiver returning an unverified review.
+[Actual result and limits](acceptance/evidence/core-preview-a122/terminal-repaired/result/summary.json).
+This closes the bounded terminal-entry E2E gap; it does not certify unattended,
+cross-vendor or M3 same-task handoff behavior. Preserve the earlier failed fixture.
+Use the existing r3 preview for owner experience/feedback. Finish only the already
+running Windows source suite; Linux source is independently accepted. Keep
+remaining formal/cross-platform gates in C without making them new prerequisites
+for this limited preview. Do not rebuild unchanged artifacts or repeat live calls.
 
 Keep a122/5232e9e frozen for the next limited owner trial. All four Windows/Linux
 wheel/sdist full suites now have scoped Root/Astra acceptance. The remaining
@@ -42,8 +48,9 @@ its unknown/factory_timeout record and the later confirmed credential cleanup;
 do not replay the failed fixture. Cancellable terminal input is now repaired:
 12 Linux passes,8 Windows passes/4 Linux-only skips, scoped Root/Astra acceptance.
 The90/600s deadlines and exact approval gates remain unchanged; frozen Core and
-packages are not rebuilt. New-entry successful real E2E remains unverified. This is
-existing A/B delivery work, not a new M5 stage or formal Release approval.
+packages are not rebuilt. The separately authorized repaired run above now supplies
+limited real E2E evidence. This is existing A/B delivery work, not a new M5 stage
+or formal Release approval.
 
 The same entry's missing project setup is now implemented as a small Linux
 initializer: fresh private root, isolated Git setup, Core registration and a

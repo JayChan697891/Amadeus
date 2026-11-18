@@ -1,0 +1,35 @@
+{
+  "status": "cleaned",
+  "ready_sha256": "dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1",
+  "action": "cleanup",
+  "temporary_auth_absent": true,
+  "home_unmounted": true,
+  "private_home_empty": true,
+  "attempts": [
+    {
+      "task_id": "7993381c-36ca-48d1-9eab-0f1718369d36",
+      "approved": true,
+      "state": "terminal_recorded",
+      "status": "proposal_received",
+      "error_code": null,
+      "admission_state": "both_reservations_recorded",
+      "startup_not_admitted": false,
+      "unknown_result_preserved": false,
+      "parent_ended": true,
+      "exit_code": 0
+    },
+    {
+      "task_id": "e787ea60-d438-48d9-80a5-d4ae59991d1a",
+      "approved": true,
+      "state": "terminal_recorded",
+      "status": "proposal_received",
+      "error_code": null,
+      "admission_state": "both_reservations_recorded",
+      "startup_not_admitted": false,
+      "unknown_result_preserved": false,
+      "parent_ended": true,
+      "exit_code": 0
+    }
+  ],
+  "original_unchanged": true
+}
