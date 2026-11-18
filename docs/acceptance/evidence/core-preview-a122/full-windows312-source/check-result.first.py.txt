@@ -1,0 +1,111 @@
+"""Read-only terminal checks and create-only public summaries; no test execution."""
+
+import hashlib
+import io
+import json
+import os
+import sys
+import xml.etree.ElementTree as ET
+from collections import Counter
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m122sourcew")
+RUN = BASE / "run"
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def cases(path):
+    rows = {}
+    for node in ET.parse(path).iter("testcase"):
+        key = (node.get("classname"), node.get("name"))
+        assert all(key) and key not in rows
+        states = [name for name in ("failure", "error", "skipped") if node.find(name) is not None]
+        assert len(states) <= 1
+        rows[key] = states[0] if states else "passed"
+    return rows
+
+
+result = json.loads((RUN / "result.json").read_bytes())
+assert result["status"] == "pass"
+assert result["driver_sha256"] == sha(BASE / "run-source.py")
+assert [check["id"] for check in result["checks"]] == [
+    "source_venv", "source_offline_dependencies", "source_editable_install",
+    "source_pip_check", "source_origin_before", "pytest", "source_origin_after",
+]
+for check in result["checks"]:
+    receipt = json.loads((RUN / "logs" / (check["id"] + ".process.json")).read_bytes())
+    assert receipt["phase"] == "finished" and receipt["outcome"] == "exited"
+    assert receipt["error_type"] is None and receipt["result"] == check
+    assert check["status"] == "pass" and check["exit_code"] == 0
+    assert check["log_truncated"] is False
+    assert sha(RUN / check["log"]) == check["log_sha256"]
+
+current = cases(RUN / "source-junit.xml")
+assert len(current) == 2596 and Counter(current.values()) == {"passed": 2539, "skipped": 57}
+assert cases(BASE / "t/source-junit.xml") == current
+comparisons = []
+for path in (
+    BASE.parent / "m122fullw/run/wheel-junit.xml",
+    BASE.parent / "m122fullwd/run/sdist-junit.xml",
+):
+    baseline = cases(path)
+    assert baseline == current
+    comparisons.append({"path": str(path), "sha256": sha(path), "unique_cases": len(baseline),
+                        "identity_differences": 0, "outcome_differences": 0})
+save("case-diff.json", {"scope": "Identities and outcomes only; no new test execution",
+                        "unique_cases": len(current), "outcomes": dict(Counter(current.values())),
+                        "baselines": comparisons})
+
+sys.path.insert(0, str(BASE / "s"))
+from tools import release_acceptance as collector
+
+assert Path(collector.__file__).resolve() == BASE / "s/tools/release_acceptance.py"
+document = ET.parse(BASE / "t/source-junit.xml")
+redactions = 0
+for node in document.iter():
+    for name, value in list(node.attrib.items()):
+        node.attrib[name], changes = collector.redact_credentials(value)
+        redactions += changes
+    for field in ("text", "tail"):
+        value = getattr(node, field)
+        if value is not None:
+            clean, changes = collector.redact_credentials(value)
+            setattr(node, field, clean)
+            redactions += changes
+buffer = io.BytesIO()
+document.write(buffer, encoding="utf-8", xml_declaration=True)
+assert buffer.getvalue() == (RUN / "source-junit.xml").read_bytes()
+assert redactions == result["junit"]["credential_redactions"] == 6
+raw_stdout = (BASE / "t/source-pytest-stdout.raw.log").read_bytes()
+assert hashlib.sha256(raw_stdout).hexdigest() == result["raw_stdout_local"]["sha256"]
+clean, stdout_redactions = collector.redact_credentials(raw_stdout.decode("utf-8", errors="replace"))
+assert clean.replace("\n", os.linesep).encode("utf-8") == (RUN / "logs/source_pytest.stdout.log").read_bytes()
+assert stdout_redactions == result["pytest_stdout"]["credential_redactions"] == 0
+assert sha(BASE / "t/source-junit.xml") == result["raw_junit_local"]["sha256"]
+assert sha(RUN / "source-junit.xml") == result["junit"]["sha256"]
+
+root_review = json.loads((BASE / "root-review.json").read_bytes())
+assert root_review["result_sha256"] == sha(RUN / "result.json")
+assert root_review["rehashed_original_source_files"] == 3992
+assert root_review["rehashed_editable_source_files"] == 3992
+save("check-result.json", {"status": "pass", "scope": "Post-run receipt, case and redaction checks",
+                           "checked_process_receipts": 7, "unique_cases": 2596,
+                           "passed": 2539, "skipped": 57, "failures": 0, "errors": 0,
+                           "junit_redactions": redactions, "junit_reproduced_byte_exact": True,
+                           "stdout_redactions": stdout_redactions, "stdout_reproduced_byte_exact": True,
+                           "source_byte_checks": "Root independent inspection, not repeated here",
+                           "root_review_sha256": sha(BASE / "root-review.json"),
+                           "root_inspect_sha256": sha(BASE / "root-inspect.py"),
+                           "result_sha256": sha(RUN / "result.json"), "model_calls": 0,
+                           "test_executions_in_this_check": 0, "formal_release": "BLOCKED"})
+print("PASS: 7 receipts, 2596 cases match wheel/sdist, exact6 JUnit redactions and0 stdout redactions")

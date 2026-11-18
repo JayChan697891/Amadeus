@@ -8,7 +8,7 @@ v6/verified. The receiver obtained pinned context, submitted review.md and remai
 review/v5/unverified. Manual effect approvals remain required; this is neither
 unattended autonomy nor M3 same-task handoff acceptance. Root inspected actual
 database/receipts and cleanup; Astra independently accepted the bounded result.
-The VM then shut down normally; Windows source continues independently.
+The VM then shut down normally; the independent Windows source run also ended.
 [Bounded terminal result](evidence/core-preview-a122/terminal-repaired/result/summary.json).
 
 Linux3.14 editable-source a122 now also has scoped Root/Astra acceptance:
@@ -16,8 +16,12 @@ Linux3.14 editable-source a122 now also has scoped Root/Astra acceptance:
 36 actual Docker observations. Identity/outcome set equals its installed wheel;
 3992 original/copy source files and97 runtime members remain unchanged.
 [Actual source result](evidence/core-preview-a122/full-linux314-source/summary.json).
-Windows source is still RUNNING. This makes five completed selected a122 suites,
-not all nine platform/form matrix rows. Formal Release remains **BLOCKED**:
+Windows3.12 editable-source is now also accepted by Root/Astra:2539 pass/57 skip,
+2596 unique cases, zero failures/errors,7 normal process exits; every case matches
+both Windows installed forms. Original and copy each retain3992 files and97 runtime
+members. [Actual Windows source result](evidence/core-preview-a122/full-windows312-source/summary.json).
+This completes six selected a122 test suites, not all nine formal platform/form
+matrix rows or their non-pytest gates. Formal Release remains **BLOCKED**:
 macOS and other real clients lack environments, current real cancel/natural-timeout
 probes are NOT RUN, license review is pending and historical static FAIL is retained.
 

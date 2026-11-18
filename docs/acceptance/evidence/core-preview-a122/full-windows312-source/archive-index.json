@@ -1,0 +1,169 @@
+{
+  "source_inventory_sha256": "41814ddbcd6b6bc8837474db2b70f4cca1d824b5767371d556329fcd33bbf516",
+  "layout": "run/ prefix removed to reuse the already saved preparation attempt and start records without duplicate copies",
+  "files": [
+    {
+      "path": "attempt.json",
+      "bytes": 1467,
+      "sha256": "b26d1d9b8adf9b94e016929f79336a2449735b5a1757254eb60b92c288e41a4b"
+    },
+    {
+      "path": "logs/pytest.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/pytest.process.json",
+      "bytes": 1740,
+      "sha256": "e77104826e993ec9782eee0c0b7299b8175caf59ff883db7eec632e0ef0ffb18"
+    },
+    {
+      "path": "logs/source_editable_install.log",
+      "bytes": 1160,
+      "sha256": "b0e9d142548edb5dd7e5f2cd66151691fb96f38330d513d3790857e727480693"
+    },
+    {
+      "path": "logs/source_editable_install.process.json",
+      "bytes": 1773,
+      "sha256": "c9392008ff6834c87d2818bd48706430de3a644518199363a0829ab2a6adb99d"
+    },
+    {
+      "path": "logs/source_offline_dependencies.log",
+      "bytes": 7999,
+      "sha256": "4c7321e002c199cda56f74d04e7378afa5339c7819e3bfa1e2afe2880e3c45a7"
+    },
+    {
+      "path": "logs/source_offline_dependencies.process.json",
+      "bytes": 2269,
+      "sha256": "ff45048cb467f56b78b22aa7bc1b6220b70d43de89deeb3bb770675a42acadec"
+    },
+    {
+      "path": "logs/source_origin_after.log",
+      "bytes": 306,
+      "sha256": "4edc4e14f109658f6822f2e7572d01f795f47b3846f8ce7da5889306ca929dd0"
+    },
+    {
+      "path": "logs/source_origin_after.process.json",
+      "bytes": 4695,
+      "sha256": "b28728f576395fbc269285d9f6356fcc4166fc8272a507c5624a19fbfbbe4482"
+    },
+    {
+      "path": "logs/source_origin_before.log",
+      "bytes": 306,
+      "sha256": "4edc4e14f109658f6822f2e7572d01f795f47b3846f8ce7da5889306ca929dd0"
+    },
+    {
+      "path": "logs/source_origin_before.process.json",
+      "bytes": 4698,
+      "sha256": "d59843a788dee28ead27d718681c5d92899ebd971a6ac14fdc241949c7786848"
+    },
+    {
+      "path": "logs/source_pip_check.log",
+      "bytes": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "logs/source_pip_check.process.json",
+      "bytes": 1224,
+      "sha256": "2a8528678bd2df44c235f335011d0481dad1010695c99e14efb5be15c17f1e18"
+    },
+    {
+      "path": "logs/source_pytest.stdout.log",
+      "bytes": 18624,
+      "sha256": "8e64e26721ddf8e6acb08eff52f1d54ba0ef4155f8cc8c18adc0d736e7a82bf3"
+    },
+    {
+      "path": "logs/source_venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/source_venv.process.json",
+      "bytes": 1325,
+      "sha256": "78e585c49ecd7e30476f152f9e16a5d79a263f698bed93168fdc02ad495c7f3c"
+    },
+    {
+      "path": "offline-wheelhouse.json",
+      "bytes": 10131,
+      "sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1"
+    },
+    {
+      "path": "pytest-start.json",
+      "bytes": 1101,
+      "sha256": "f69f2e1fcf7415558e9d158b41fc2528cbec3930fd6360488391d7f09b8c1fc7"
+    },
+    {
+      "path": "result.json",
+      "bytes": 11912,
+      "sha256": "85964839c05b5df7cfd40b3c923246bf9e6b5dbf8bc459c9c168b36f038c23b0"
+    },
+    {
+      "path": "source-junit.xml",
+      "bytes": 409801,
+      "sha256": "c874e02c28b3f491ed0e68157a0e3cf9db525649b44b7bf94e497bbbe710c697"
+    },
+    {
+      "path": "native-terminal.json",
+      "bytes": 582,
+      "sha256": "d887c610f90b4f54379b0362c9f4595a7e7c90460cb311205cf8da3ef1236a92"
+    },
+    {
+      "path": "check-result.json",
+      "bytes": 770,
+      "sha256": "1a62efa6607b6bc6aeda75e9c4d916ef54c3ad295bfbb7d7d4f80bbf5f3dff34"
+    },
+    {
+      "path": "case-diff.json",
+      "bytes": 692,
+      "sha256": "100930a6b9e7a14b2b9b622184d76c83d6ac2fcc51ab99327ac2bbef272d8940"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 2494,
+      "sha256": "f63292c1c507873ad26cbb41fdbc510a587a4bab54d6df29d7a937d63a9b06d4"
+    },
+    {
+      "path": "check-result-first-failure.json",
+      "bytes": 523,
+      "sha256": "b4ae5dc2c44c7d8850ee3b1a6a1b9e91a59bcc88cef995eb794b0588986918f0"
+    },
+    {
+      "path": "check-result-second-failure.json",
+      "bytes": 462,
+      "sha256": "4fc123a74109078cb203364f897eef41b94d4e2fb5ada5fd058cb19f6b7ca66f"
+    },
+    {
+      "path": "check-result.py.txt",
+      "bytes": 5085,
+      "sha256": "ce78a28e85e16e44d72f1d80a6556d4422eec68ce5302d07e26fe96ab8bc00c2"
+    },
+    {
+      "path": "check-result.first.py.txt",
+      "bytes": 5314,
+      "sha256": "7afb3d50bf80262264276f25654ccef5e656950f1129019fd140d623460f0e7e"
+    },
+    {
+      "path": "check-result.second.py.txt",
+      "bytes": 5407,
+      "sha256": "1b4b6b327fc582060f6b5acbdb17767b73c33c90c93582e893cb625a8d8aed7d"
+    },
+    {
+      "path": "root-review.json",
+      "bytes": 948,
+      "sha256": "f4737f9ccb9fb0857780a63a99a053bfbb9093211fc7ceda35aee6fa3df51b26"
+    },
+    {
+      "path": "root-inspect.py.txt",
+      "bytes": 3056,
+      "sha256": "8f3acafdbc09c87ead6059ad522a9b5e673d175fdb32094b993c2a5833835b3d"
+    }
+  ],
+  "copied_originals": 27,
+  "reused_identical_originals": 2,
+  "independent_review": {
+    "root": "Actual XML, 7 receipts/log hashes, both3992-file source trees, installed case identity/outcomes and editable origin checked",
+    "astra": "Accepted Windows3.12 editable-source scope after independent XML, receipts, logs and platform skips review; no raw credentials read",
+    "sol": "Original collector reproduces sanitized XML byte-exact with6 redactions and stdout with0 redactions; two checker failures retained, no test rerun"
+  },
+  "formal_release": "BLOCKED"
+}

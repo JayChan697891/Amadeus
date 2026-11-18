@@ -1,0 +1,19 @@
+{
+  "scope": "After-run export of the observed native tool receipt; not another execution",
+  "native_session_id": 22428,
+  "initial_chunk_id": "949cea",
+  "terminal_tool_result": {
+    "chunk_id": "b3d8f7",
+    "wall_time_seconds": 29.2512071,
+    "exit_code": 0,
+    "original_token_count": 14,
+    "output": "pass: D:\\agentsync-debug\\m122sourcew\\run\\result.json\r\n"
+  },
+  "argv": [
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "D:/agentsync-debug/m122sourcew/run-source.py"
+  ],
+  "automatic_retry": false
+}

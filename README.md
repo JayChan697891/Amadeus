@@ -34,6 +34,10 @@ checks, and Linux passed 16 installation checks. The first complete Windows whee
 suite subsequently passed2539 cases with57 explicit skips and no failures/errors.
 The first complete Linux wheel suite passed2589 cases with7 explicit skips and
 no failures/errors; [actual results](docs/acceptance/evidence/core-preview-a122/full-linux314/root-review.json).
+Both source and installed-sdist full suites subsequently matched their respective
+wheel results exactly. All six selected Windows/Linux suites are complete; the
+[current acceptance report](docs/acceptance/RELEASE-ACCEPTANCE-REPORT.md) retains
+the remaining formal-release requirements.
 Real same-vendor Codex handoff, persisted-result controller recovery and independent
 completion of the same task have scoped evidence. This does not certify all
 clients, lifecycle controls, platforms or formal Release.

@@ -18,10 +18,17 @@ producer completion, then a real Codex receiver returning an unverified review.
 [Actual result and limits](acceptance/evidence/core-preview-a122/terminal-repaired/result/summary.json).
 This closes the bounded terminal-entry E2E gap; it does not certify unattended,
 cross-vendor or M3 same-task handoff behavior. Preserve the earlier failed fixture.
-Use the existing r3 preview for owner experience/feedback. Finish only the already
-running Windows source suite; Linux source is independently accepted. Keep
+Use the existing r3 preview for owner experience/feedback. Both source suites now
+have independent scoped acceptance, completing all six selected Windows/Linux
+source/wheel/sdist suites for frozen a122. Keep
 remaining formal/cross-platform gates in C without making them new prerequisites
 for this limited preview. Do not rebuild unchanged artifacts or repeat live calls.
+
+The next original evidence gap is real adapter cancellation/natural-timeout behavior
+on the current frozen version. Review the existing harness and exact standing-grant
+bounds before any new attempt. Parent interruption evidence is already complete
+and must not be relabelled or repeated as cancellation. No additional M5 phase,
+candidate execution or new package is required for this assessment.
 
 Keep a122/5232e9e frozen for the next limited owner trial. All four Windows/Linux
 wheel/sdist full suites now have scoped Root/Astra acceptance. The remaining

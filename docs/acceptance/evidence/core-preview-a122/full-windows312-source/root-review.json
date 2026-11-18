@@ -1,0 +1,25 @@
+{
+  "status": "SCOPED PASS - Root actual file inspection",
+  "native_session": 22428,
+  "native_terminal_chunk": "b3d8f7",
+  "native_exit_code": 0,
+  "frozen_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "result_sha256": "85964839c05b5df7cfd40b3c923246bf9e6b5dbf8bc459c9c168b36f038c23b0",
+  "junit_sha256": "c874e02c28b3f491ed0e68157a0e3cf9db525649b44b7bf94e497bbbe710c697",
+  "unique_cases": 2596,
+  "passed": 2539,
+  "skipped": 57,
+  "failures": 0,
+  "errors": 0,
+  "matching_installed_evidence": [
+    "docs\\acceptance\\evidence\\core-preview-a122\\full-windows312\\wheel-junit.xml",
+    "docs\\acceptance\\evidence\\core-preview-a122\\full-windows312-sdist\\sdist-junit.xml"
+  ],
+  "checked_process_receipts": 7,
+  "rehashed_original_source_files": 3992,
+  "rehashed_editable_source_files": 3992,
+  "origin_before_after_equal": true,
+  "runtime_members": 97,
+  "model_calls": 0,
+  "formal_release": "BLOCKED"
+}

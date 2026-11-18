@@ -29,17 +29,25 @@ acceptance:2589 pass/7 skip,2596 unique cases, zero failures/errors; all7 proces
 receipts exit0. Case identities/outcomes equal the installed wheel,36 Docker
 observations are retained,3992 original/copy files and97 runtime members match.
 [Actual source evidence](acceptance/evidence/core-preview-a122/full-linux314-source/summary.json).
-Windows3.12 source session22428/controller6064 in D:/agentsync-debug/m122sourcew
-is still RUNNING, not accepted. Continue the existing handle and inspect its final
-XML/result against the completed installed suites; do not relaunch. Four completed
-wheel/sdist suites remain accepted within their scopes. Formal Release BLOCKED.
+Windows3.12 source session22428 completed normally (b3d8f7 exit0):2539 pass/57 skip,
+2596 unique cases, zero failures/errors,7 process receipts exit0. Root inspected
+the original XML/logs and rehashed3992 files in each original/editable tree;
+wheel and sdist case identities/outcomes match exactly. Astra independently
+accepted this Windows source scope. The57 skips retain Linux Docker/POSIX and
+host symlink restrictions. [Actual result](acceptance/evidence/core-preview-a122/full-windows312-source/summary.json).
+All six selected a122 Windows/Linux source/wheel/sdist suites are complete.
+These are test suites, not six complete formal matrix rows; static/license/client
+and macOS gates remain separate. Formal Release BLOCKED.
 
-Immediate continuation: finish the existing Windows source result/independent
-review, retain the current preview and collect owner feedback. Do not expand M5,
-repeat passing suites, rebuild unchanged packages or infer broader acceptance.
+Immediate continuation: retain the usable preview and its completed terminal
+entry; address concrete owner-feedback defects and the remaining original lifecycle
+evidence (current real adapter cancellation/natural timeout). Prepare exact bounded
+plans before any new live action; no candidate execution authorization carries
+over. Do not expand M5, repeat passing suites, rebuild unchanged packages or infer
+broader acceptance.
 After readonly evidence collection/review, the D-hosted VM shut down normally:
-guest poweroff exit0, PID10040 absent and SSH/QMP ports closed. Windows source
-continues independently. The long-term Goal is active.
+guest poweroff exit0, PID10040 absent and SSH/QMP ports closed. Windows source also
+ended; its controller/pytest processes are absent. The long-term Goal is active.
 
 ## Earlier checkpoints (historical status; superseded only by actual results above)
 
