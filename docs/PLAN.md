@@ -16,8 +16,11 @@ token after Agent session expiry. Its bounded exit condition is met:14 focused
 Windows checks, changed-file static checks and independent scoped review.
 The lookup exposes unverified receipt metadata only, without granting renewal,
 continuation or execution. This is not a new M stage. The existing public r5
-and frozen a123 wheel remain unchanged; package validation is the next dependency
-before this increment can enter any later preview. See the
+and frozen a123 wheel remain unchanged. A separate offline Windows wheel from
+7e160bbc now also passes the same14 affected cases, with97 actual installed
+members and isolated parent/child import origins verified. It is a development
+artifact, not a new public preview or full release decision. Other platforms,
+full suites and real-client validation are not inferred from it. See the
 [actual source evidence](acceptance/evidence/core-preview-a123/owner-checkpoint-inspection/summary.json).
 
 Current P0 increment: optional completed-proposal progress capture in the real

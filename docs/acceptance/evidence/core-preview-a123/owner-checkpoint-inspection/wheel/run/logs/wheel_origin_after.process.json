@@ -1,0 +1,50 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_origin_after",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m123-owner-package\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib,importlib.metadata as m,json,subprocess,sys,sysconfig\nfrom pathlib import Path\nimport agentsync,agentsync.controlled_relay\nenv,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert Path(sys.prefix).resolve()==env.resolve() and site.is_relative_to(env.resolve())\nassert sys.version_info[:3]==(3,12,16)\norigin=Path(agentsync.__file__).resolve()\nassert origin==site/'agentsync/__init__.py'\nassert Path(agentsync.controlled_relay.__file__).resolve()==site/'agentsync/controlled_relay.py'\nassert hasattr(agentsync.controlled_relay.ControlledRelay,'owner_observe_codex_checkpoint')\nassert not any(str(p).replace(chr(92),'/').lower().startswith('f:/syuc') for p in sys.path)\ndist=m.distribution('agentsync-local');direct=json.loads(dist.read_text('direct_url.json'))\nassert dist.version==agentsync.__version__=='0.3.0a123'\nassert direct['url']==archive.resolve().as_uri() and 'dir_info' not in direct\nassert direct['archive_info']['hashes']['sha256']==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()\n        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual==json.loads(members.read_bytes()) and len(actual)==97\nchild=subprocess.run([sys.executable,'-I','-B','-c','import agentsync,json,sys;print(json.dumps({\"origin\":agentsync.__file__,\"prefix\":sys.prefix}))'],capture_output=True,check=True,text=True)\nobserved=json.loads(child.stdout)\nassert Path(observed['origin']).resolve()==origin and Path(observed['prefix']).resolve()==env.resolve()\nprint(json.dumps({'origin':str(origin),'child_origin':observed['origin'],'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))\n",
+      "D:\\agentsync-debug\\m123-owner-package\\w",
+      "D:\\agentsync-debug\\m123-owner-package\\dist\\agentsync_local-0.3.0a123-py3-none-any.whl",
+      "D:\\agentsync-debug\\m123-owner-package\\runtime-members.json",
+      "0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-owner-package\\run",
+    "started_at": "2026-11-18T07:47:48.241040+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_origin_after",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m123-owner-package\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib,importlib.metadata as m,json,subprocess,sys,sysconfig\nfrom pathlib import Path\nimport agentsync,agentsync.controlled_relay\nenv,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]\nsite=Path(sysconfig.get_path('purelib')).resolve()\nassert Path(sys.prefix).resolve()==env.resolve() and site.is_relative_to(env.resolve())\nassert sys.version_info[:3]==(3,12,16)\norigin=Path(agentsync.__file__).resolve()\nassert origin==site/'agentsync/__init__.py'\nassert Path(agentsync.controlled_relay.__file__).resolve()==site/'agentsync/controlled_relay.py'\nassert hasattr(agentsync.controlled_relay.ControlledRelay,'owner_observe_codex_checkpoint')\nassert not any(str(p).replace(chr(92),'/').lower().startswith('f:/syuc') for p in sys.path)\ndist=m.distribution('agentsync-local');direct=json.loads(dist.read_text('direct_url.json'))\nassert dist.version==agentsync.__version__=='0.3.0a123'\nassert direct['url']==archive.resolve().as_uri() and 'dir_info' not in direct\nassert direct['archive_info']['hashes']['sha256']==expected\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()\n        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual==json.loads(members.read_bytes()) and len(actual)==97\nchild=subprocess.run([sys.executable,'-I','-B','-c','import agentsync,json,sys;print(json.dumps({\"origin\":agentsync.__file__,\"prefix\":sys.prefix}))'],capture_output=True,check=True,text=True)\nobserved=json.loads(child.stdout)\nassert Path(observed['origin']).resolve()==origin and Path(observed['prefix']).resolve()==env.resolve()\nprint(json.dumps({'origin':str(origin),'child_origin':observed['origin'],'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))\n",
+      "D:\\agentsync-debug\\m123-owner-package\\w",
+      "D:\\agentsync-debug\\m123-owner-package\\dist\\agentsync_local-0.3.0a123-py3-none-any.whl",
+      "D:\\agentsync-debug\\m123-owner-package\\runtime-members.json",
+      "0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-owner-package\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-18T07:47:48.241040+00:00",
+    "finished_at": "2026-11-18T07:47:48.597461+00:00",
+    "log": "logs/wheel_origin_after.log",
+    "log_sha256": "24d11e960685056eb274c8db6f01824d44c0d4c7cc403841ee958631622277bc",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

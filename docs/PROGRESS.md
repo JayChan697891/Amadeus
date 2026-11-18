@@ -13,10 +13,18 @@ original missing-field reproduction and import-order failure remain preserved.
 After testing, only standard-library import order and guide wording changed;
 Root confirmed identical imports/non-import AST and unchanged runtime hashes.
 [Bound source evidence](acceptance/evidence/core-preview-a123/owner-checkpoint-inspection/summary.json).
-No new model/candidate call, full suite or package installation was performed.
-The public a122/r5 ZIP and earlier a123 wheel are unchanged and do not include
-this source increment. Next integrate this lookup into a bound development
-package and validate affected installation paths before considering a new preview.
+No new model/candidate call or full suite was performed. The follow-up package
+check is now complete: a fresh offline Windows3.12.16 wheel installation from
+7e160bbc7c282cd55f3dbbb44377d8456f8a8c66 passed the same14 cases (77113/d1b761 exit0).
+Root checked283 Git source blobs,97 wheel/installed members, parent/child import
+origins, both XML case sets and all9 actual build/install/test process receipts.
+[Installed-wheel evidence](acceptance/evidence/core-preview-a123/owner-checkpoint-inspection/wheel/summary.json)
+and [pinned development artifact](../releases/0.3.0a123/owner-checkpoint/README.md).
+The public a122/r5 ZIP and earlier a123 wheel remain unchanged. The new wheel
+adds no full-suite, Linux/macOS or live-client acceptance. First upload of7e160
+failed with a GitHub TLS connection error; preserve the commits and inspect the
+remote before retrying storage publication. Continue bounded recovery usability
+work from this checked package without repeating the completed14-case runs.
 The original live checkpoint result below remains NOT_VERIFIED; do not retry it.
 
 a123 Linux wheel follow-up completed once in51503/642c29 exit0:217 pass,
