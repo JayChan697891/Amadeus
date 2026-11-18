@@ -2,6 +2,18 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Current lifecycle checkpoint,2026-11-18: one actual Codex call on frozen a122
+observed `turn.started` and a live owned parent before direct `cancel_task(run_id)`.
+Native774b13 exited0; independent collection5ba70d exited0. The parent ended with
+exit-9; adapter status stays `unknown/local_cancel_requested`, timed_out=false,
+slot_held=true. Root/Astra accept this local cancellation scope, not model success,
+server cancellation, descendant cleanup or Core completion. One subscription call,
+zero candidate executions, no retry. Temporary login removed/unmounted, original
+unchanged,97 runtime members unchanged and no related workers remain.
+[Actual cancel evidence](acceptance/evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
+The D-hosted VM was restarted for this probe and remains running for the separately
+prepared natural-timeout check. That check is still NOT RUN; do not replay cancel.
+
 The owner preview r3 is available now: [download and short instructions](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md).
 Its default Windows demo uses simulated Agents and stays unverified. The bundled
 Windows3.12 constraints resolve to the32 tested distributions. Frozen wheel,
@@ -41,7 +53,7 @@ and macOS gates remain separate. Formal Release BLOCKED.
 
 Immediate continuation: retain the usable preview and its completed terminal
 entry; address concrete owner-feedback defects and the remaining original lifecycle
-evidence (current real adapter cancellation/natural timeout). Prepare exact bounded
+evidence (current real adapter natural timeout). Prepare exact bounded
 plans before any new live action; no candidate execution authorization carries
 over. Do not expand M5, repeat passing suites, rebuild unchanged packages or infer
 broader acceptance.

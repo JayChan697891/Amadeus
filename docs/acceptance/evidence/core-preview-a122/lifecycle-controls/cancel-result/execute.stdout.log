@@ -1,0 +1,1 @@
+{"status": "SCOPED_PASS", "mode": "cancel", "exit_observation_sha256": "30794d1464136b7985493b3451e71cd62342d3b1a9e5fb028258d96fce5a4578", "actual_error_code": "local_cancel_requested", "retry_allowed": false, "server_cancel_verified": false, "core_completion": false, "formal_release": "BLOCKED"}

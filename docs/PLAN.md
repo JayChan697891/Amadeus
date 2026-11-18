@@ -24,11 +24,14 @@ source/wheel/sdist suites for frozen a122. Keep
 remaining formal/cross-platform gates in C without making them new prerequisites
 for this limited preview. Do not rebuild unchanged artifacts or repeat live calls.
 
-The next original evidence gap is real adapter cancellation/natural-timeout behavior
-on the current frozen version. Review the existing harness and exact standing-grant
-bounds before any new attempt. Parent interruption evidence is already complete
-and must not be relabelled or repeated as cancellation. No additional M5 phase,
-candidate execution or new package is required for this assessment.
+The current frozen adapter now has scoped Root/Astra acceptance for one actual
+`cancel_task` call after `turn.started`: the owned parent ended and the original
+`unknown/local_cancel_requested` result is retained. See the
+[cancel result](acceptance/evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
+Natural timeout remains the next separate original evidence gap. Review its exact
+standing-grant plan before one new attempt. Parent interruption evidence must not
+be relabelled or repeated as cancellation. No additional M5 phase, candidate
+execution or new package is required for this assessment.
 
 Keep a122/5232e9e frozen for the next limited owner trial. All four Windows/Linux
 wheel/sdist full suites now have scoped Root/Astra acceptance. The remaining

@@ -1,0 +1,6 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/route.py cancel",
+  "exit_code": 0,
+  "stdout_sha256": "67422ed39f5ca97309197415d78776195b4d612c3212041d40d6cfc581e8f20d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

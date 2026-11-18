@@ -1,0 +1,6 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/auth_home.py cancel mount",
+  "exit_code": 0,
+  "stdout_sha256": "3aa16e836b2a227779840c7cc90754b72f3fa777de63123159524a2e2387e780",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

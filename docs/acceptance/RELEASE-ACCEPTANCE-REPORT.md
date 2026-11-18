@@ -1,5 +1,18 @@
 # Release Acceptance Report
 
+Current lifecycle update,2026-11-18: actual a122 `cancel_task(run_id)` has scoped
+Root/Astra acceptance. One real Codex call reached `turn.started`; cancellation
+was invoked with the owned parent alive and about84 seconds before its deadline.
+The matching parent ended with exit-9. Preserve the real adapter result
+`unknown/local_cancel_requested`, timed_out=false and slot_held=true; it is not a
+completed model task. Fifteen public originals, exact launch/consent receipts,
+private-capture metadata, unchanged97-member runtime, clean fixture, temporary
+login cleanup and unchanged original login were independently checked. No raw
+model output or credentials were published. Zero candidate executions, no retry.
+Natural timeout remains NOT RUN; server-side cancellation, descendant-tree
+cleanup and Core completion are outside this result. Formal Release BLOCKED.
+[Actual cancellation evidence](evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
+
 Current preview update,2026-11-18: the repaired terminal entry7085ec0 completed
 one authorized real trial on frozen a122/5232e9e. Two Codex subscription calls
 returned proposals. Exactly one149-byte addition candidate passed2/2 Docker cases
@@ -22,8 +35,8 @@ both Windows installed forms. Original and copy each retain3992 files and97 runt
 members. [Actual Windows source result](evidence/core-preview-a122/full-windows312-source/summary.json).
 This completes six selected a122 test suites, not all nine formal platform/form
 matrix rows or their non-pytest gates. Formal Release remains **BLOCKED**:
-macOS and other real clients lack environments, current real cancel/natural-timeout
-probes are NOT RUN, license review is pending and historical static FAIL is retained.
+macOS and other real clients lack environments, current natural-timeout evidence
+is NOT RUN, license review is pending and historical static FAIL is retained.
 
 ## Earlier acceptance checkpoints
 

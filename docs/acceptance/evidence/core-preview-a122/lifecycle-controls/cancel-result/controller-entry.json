@@ -1,0 +1,6 @@
+{
+  "mode": "cancel",
+  "plan_sha256": "7eeb9435214ffd464d63b9a304e3352661a937bec7711b18346dfa0953becc11",
+  "retry_allowed": false,
+  "max_model_calls": 1
+}
