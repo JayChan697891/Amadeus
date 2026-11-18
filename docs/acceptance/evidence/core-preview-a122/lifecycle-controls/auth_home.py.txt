@@ -1,0 +1,166 @@
+"""Single-fixture temporary login mount; refuses cleanup without terminal evidence."""
+
+import json
+import os
+import stat
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+
+def main():
+    mode, action = sys.argv[1:]
+    assert mode in ("cancel", "timeout") and action in ("mount", "cleanup")
+    assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+    os.umask(0o077)
+    root = Path("/root/amadeus-lifecycle-a122-" + mode)
+    home = root / "private-home"
+    label = "amadeus-lifecycle-a122-" + mode
+    for p in (root, home):
+        s = p.lstat()
+        assert p.resolve(strict=True) == p and stat.S_ISDIR(s.st_mode)
+        assert s.st_uid == 0 and stat.S_IMODE(s.st_mode) == 0o700
+
+    def load(name):
+        p = root / name
+        s = p.lstat()
+        assert stat.S_ISREG(s.st_mode) and s.st_uid == 0 and s.st_nlink == 1
+        assert stat.S_IMODE(s.st_mode) == 0o600 and 0 < s.st_size <= 65536
+        return json.loads(p.read_bytes())
+
+    def mounts():
+        return [
+            v
+            for line in Path("/proc/mounts").read_text().splitlines()
+            if len(v := line.split()) >= 4 and v[1] == str(home)
+        ]
+
+    def mounted():
+        rows = mounts()
+        assert len(rows) == 1 and rows[0][0] == label and rows[0][2] == "tmpfs"
+        assert {"rw", "nosuid", "nodev", "mode=700"} <= set(rows[0][3].split(","))
+
+    def save(name, value):
+        with (root / name).open("x", encoding="utf8") as f:
+            json.dump(value, f, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+
+    active = []
+    for p in Path("/proc").iterdir():
+        if not p.name.isdecimal() or int(p.name) == os.getpid():
+            continue
+        try:
+            comm = (p / "comm").read_text().strip()
+            argv = (p / "cmdline").read_bytes()
+            if ("python" in comm or "codex" in comm) and any(
+                s in argv
+                for s in (
+                    str(root).encode(),
+                    b"/amadeus-lifecycle-a122-helpers/pilot.py",
+                    b"/amadeus-codex-linux-0167/bin/codex",
+                )
+            ):
+                active.append(int(p.name))
+        except FileNotFoundError:
+            pass
+    assert not active
+    if action == "mount":
+        grant = load("owner-grant.json")
+        assert (
+            grant["authorized"]
+            and grant["mode"] == mode
+            and time.time() < grant["expires_at"]
+        )
+        assert not mounts() and not any(home.iterdir())
+        assert not any(
+            (root / n).exists()
+            for n in ("attempt.json", "auth-mount.json", "auth-cleanup.json")
+        )
+        save("auth-mount-intent.json", {"label": label, "credentials_copied": False})
+        subprocess.run(
+            [
+                "/bin/mount",
+                "-t",
+                "tmpfs",
+                "-o",
+                "size=64m,mode=700,nodev,nosuid",
+                label,
+                str(home),
+            ],
+            check=True,
+            capture_output=True,
+            timeout=10,
+        )
+        mounted()
+        value = {
+            "status": "mounted",
+            "label": label,
+            "private_home_mode": "0700",
+            "credentials_copied": False,
+        }
+        save("auth-mount.json", value)
+    else:
+        host = load("host-terminal.json")
+        if host["model_execution_attempted"] is True:
+            assert (
+                host["terminal"] is True
+                and type(host["exit_code"]) is int
+                and host["exit_code"] >= 0
+            )
+        else:
+            assert host["model_execution_attempted"] is False
+            assert host["terminal"] is False and host["exit_code"] is None
+            assert not (root / "attempt.json").exists()
+        if (root / "attempt.json").exists():
+            observation = load("exit-observation.json")
+            assert type(observation["captured_start_invoked"]) is bool
+            if observation["captured_start_invoked"]:
+                snapshot = observation["snapshot"]
+                assert (
+                    snapshot["parent_ended"] is True
+                    and type(snapshot["exit_code"]) is int
+                )
+                run = observation["run"]
+                assert run["capture_id"] == snapshot["capture_id"]
+                assert (
+                    run["parent_ended"] is True
+                    and run["exit_code"] == snapshot["exit_code"]
+                )
+        mounted()
+        auth = home / "auth.json"
+        if os.path.lexists(auth):
+            s = auth.lstat()
+            assert stat.S_ISREG(s.st_mode) and s.st_uid == 0 and s.st_nlink == 1
+            assert stat.S_IMODE(s.st_mode) == 0o600
+            auth.unlink()
+        assert not os.path.lexists(auth)
+        subprocess.run(
+            ["/bin/umount", str(home)], check=True, capture_output=True, timeout=10
+        )
+        assert not mounts() and not any(home.iterdir())
+        value = {
+            "status": "cleaned",
+            "temporary_auth_absent": True,
+            "private_home_unmounted": True,
+            "private_home_empty": True,
+            "active_related_processes": [],
+        }
+        save("auth-cleanup.json", value)
+    print(json.dumps(value))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (
+        AssertionError,
+        OSError,
+        ValueError,
+        KeyError,
+        TypeError,
+        subprocess.SubprocessError,
+    ) as error:
+        print(json.dumps({"status": "stopped", "error_type": type(error).__name__}))
+        raise SystemExit(1) from None

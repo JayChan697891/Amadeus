@@ -1,0 +1,26 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> D:/agentsync-debug/m122-lifecycle-preparation/test_pilot.py:3:1
+   |
+ 1 |   """Known local Python protocol fixtures; never real Codex/credential acceptance."""
+ 2 |
+ 3 | / import asyncio
+ 4 | | import json
+ 5 | | import sys
+ 6 | | from types import SimpleNamespace
+ 7 | |
+ 8 | | import pilot
+ 9 | | import pytest
+10 | |
+11 | | from agentsync.adapters.base import AdapterTask
+12 | | from agentsync.adapters.codex import CodexAdapter
+13 | | from agentsync.adapters.process_capture import CapturedProcess
+   | |______________________________________________________________^
+help: Organize imports
+   |
+9  | import pytest
+   -
+10 | from agentsync.adapters.base import AdapterTask
+   |
+
+Found 1 error.
+[*] 1 fixable with `--fix`.

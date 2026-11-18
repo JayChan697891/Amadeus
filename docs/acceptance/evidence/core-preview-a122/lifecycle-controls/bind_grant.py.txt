@@ -1,0 +1,38 @@
+"""Bind the owner's standing grant to the one prepared cancel plan; no account access."""
+import hashlib,json,time
+from pathlib import Path
+import paramiko
+
+base=Path(__file__).parent
+control_path=base/'control-cancel.json'
+control=json.loads(control_path.read_bytes())
+plan_raw=(base/'plan-cancel.json').read_bytes()
+assert hashlib.sha256(plan_raw).hexdigest()==control['plan_file_sha256']
+grant={'authorized':True,'source':'Owner standing answer call_443a666c91f548f4bcbcdde9daa2c8a9: 允许本次，后面每次都允许，无需询问',
+       'source_record':'docs/acceptance/evidence/durable-demo-a117/interrupted-controller/owner-grant-20261116.json',
+       'mode':'cancel','plan_sha256':control['plan_sha256'],'plan_file_sha256':control['plan_file_sha256'],
+       'max_subscription_calls':1,'max_candidate_executions':0,'confirmed_cost':True,'confirmed_isolation':True,
+       'cost_basis':'Existing owner-confirmed subscription, zero paid credits and auto recharge off; require same-environment ChatGPT CLI route; not an independent bill audit',
+       'scope':'Fixed-text standalone adapter.cancel_task observation; owned parent only. No Core completion, arbitrary code execution or timeout-mode launch.',
+       'temporary_auth_source':'C:/Users/JayChan/.codex/auth.json',
+       'temporary_auth_destination':'/root/amadeus-lifecycle-a122-cancel/private-home/auth.json',
+       'temporary_auth_cleanup_required':True,'original_auth_must_remain_unchanged':True,
+       'raw_capture_publication':False,'retry_after_failure_unknown_or_missed_window':False,
+       'expires_at':time.time()+3600,'model_calls':0,'live_execution':'NOT RUN','formal_release':'BLOCKED'}
+raw=(json.dumps(grant,indent=2,ensure_ascii=True)+'\n').encode()
+with (base/'owner-grant-cancel.json').open('xb') as f:f.write(raw)
+control['owner_grant_sha256']=hashlib.sha256(raw).hexdigest()
+control['host_controller_sha256']=hashlib.sha256((base/'run_once.py').read_bytes()).hexdigest()
+c=paramiko.SSHClient();c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+root='/root/amadeus-lifecycle-a122-cancel'
+with c.open_sftp() as sftp:
+    assert not {'attempt.json','auth-mount-intent.json','owner-grant.json'} & set(sftp.listdir(root))
+    assert not sftp.listdir(root+'/private-home')
+    with sftp.open(root+'/plan.json','rb') as f:assert f.read()==plan_raw
+    with sftp.open(root+'/owner-grant.json','wx') as f:
+        sftp.chmod(root+'/owner-grant.json',0o600);f.write(raw)
+    with sftp.open(root+'/owner-grant.json','rb') as f:assert f.read()==raw
+c.close()
+control_path.write_text(json.dumps(control,indent=2)+'\n',encoding='utf8')
+print(json.dumps({'mode':'cancel','plan_sha256':control['plan_sha256'],'grant_sha256':control['owner_grant_sha256'],'host_controller_sha256':control['host_controller_sha256'],'model_calls':0,'credential_access':0}))

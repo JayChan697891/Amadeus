@@ -1,0 +1,73 @@
+{
+  "status": "PREPARATION_ONLY_NOT_RUN",
+  "product_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "version": "0.3.0a122",
+  "files": {
+    "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+    "test_pilot.py": "98720e590568ad86090b1b899d9c6605bbb2d812ed6d034947e78df5042f1de2",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+  },
+  "scope": "Standalone CodexAdapter local owned-parent lifecycle; no Core/relay/Docker/candidate/release acceptance",
+  "modes": {
+    "cancel": {
+      "fixture": "/root/amadeus-lifecycle-a122-cancel",
+      "adapter_budget_seconds": 90,
+      "cancel_window_seconds": 60,
+      "direct_method": "await adapter.cancel_task(run_id)"
+    },
+    "timeout": {
+      "fixture": "/root/amadeus-lifecycle-a122-timeout",
+      "adapter_budget_seconds": 15,
+      "state": "Do not instantiate until first cancel ends, cleanup is confirmed and Root separately decides"
+    }
+  },
+  "max_subscription_calls_per_mode": 1,
+  "max_subscription_calls_total": 2,
+  "automatic_retry": false,
+  "cli_version": "0.167.0-alpha.3.2",
+  "model_calls": 0,
+  "auth_copied": false,
+  "candidate_executions": 0,
+  "cli_stages": [
+    "pilot.py prepare cancel",
+    "pilot.py run cancel EXPECTED_PLAN_SHA"
+  ],
+  "interpreter": "/root/amadeus-m122l/w/bin/python -I -B",
+  "future_prepare": "Creates new Git fixture and adapter namespace; emits actual plan+file hashes. No concrete live plan has been executed/prepared in this development task.",
+  "root_owns": [
+    "VM/preflight/helper upload",
+    "separate recognized ChatGPT login-route observation",
+    "reviewed grant and dedicated temporary-auth tmpfs setup/copy",
+    "host native process receipts and cleanup"
+  ],
+  "cleanup_requirements": [
+    "Use dedicated tmpfs label amadeus-lifecycle-a122-cancel (timeout label distinct),64m,0700,nodev,nosuid; preserve original auth",
+    "Old credential_home require_stopped uses relay receipts and is NOT directly reusable",
+    "Require actual host terminal receipt; same run/capture ID, run AND snapshot parent_ended=true, integer exit code; retained capture metadata hashes; no live same Codex EXE or fixture host",
+    "If capture association/end is unknown or record is missing, refuse automated cleanup and ask Root to inspect; never rewrite unknown",
+    "After positive stop proof delete only this tmpfs auth.json regular root-owned0600 file; unmount exact dedicated home; verify absent/unmounted/empty and original auth unchanged"
+  ],
+  "public_allowlist": [
+    "plan.json",
+    "attempt.json",
+    "fixture-before.json",
+    "run-start.json",
+    "parent-running.json",
+    "cancel-boundary.json",
+    "cancel-return.json",
+    "deadline-window.json",
+    "exit-observation.json",
+    "result.json",
+    "capture-metadata.json",
+    "receipts launch/consent metadata"
+  ],
+  "private_excluded": [
+    "private-capture/stdout.bin",
+    "private-capture/stderr.bin",
+    "private-home/**",
+    "any account auth or original-credential hashes"
+  ],
+  "offline_result_sha256": "391461fbbf96784d3c1fd3a393de727bebc0573d8ba5639768d92a5790d3b004",
+  "formal_release": "BLOCKED"
+}
