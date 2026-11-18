@@ -21,9 +21,13 @@ That path now has a thin Linux terminal example at13eb075: owner-supplied task a
 cases, existing project, separate exact launch/staging/execution/completion gates,
 and truthful receiver failure status. Limited offline Windows/Linux checks and
 Root/Astra review cover the example; the frozen a122 runtime is unchanged.
-Next prepare a bounded real terminal-entry plan, reuse the standing subscription
-grant only within its existing limits, and obtain separate exact candidate
-execution consent if needed. New-entry real E2E remains NOT RUN. This is the
+The exact terminal trial prepared atf8843d3 has now stopped before launch
+admission: synchronous approval input outlasted the90s startup budget. Preserve
+its unknown/factory_timeout record and the later confirmed credential cleanup;
+do not replay the failed fixture. Cancellable terminal input is now repaired:
+12 Linux passes,8 Windows passes/4 Linux-only skips, scoped Root/Astra acceptance.
+The90/600s deadlines and exact approval gates remain unchanged; frozen Core and
+packages are not rebuilt. New-entry successful real E2E remains unverified. This is
 existing A/B delivery work, not a new M5 stage or formal Release approval.
 
 ## Execution adjustment — 2026-11-15

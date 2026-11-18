@@ -59,6 +59,13 @@ model launches also require a fresh cost/isolation confirmation. Inspect the
 actual candidate source before staging, the image and cases before execution,
 and the execution proof and reviewer before completion. There is no `--yes`.
 
+Approval input is hidden and cancellable. Waiting for launch approval shares the
+existing 90-second task budget; the complete flow has a 600-second budget. If a
+deadline expires, the pending input is cancelled and terminal settings restored.
+Review the fixed inputs before starting; do not enlarge these limits to replay
+an interrupted attempt. Approval lines are bounded to 256 UTF-8 bytes including
+their newline. The initial owner-token prompt runs before the timed flow.
+
 At most two model launches are attempted. A refused or mismatched decision stops
 that part of the flow. Denial, failure, interruption or an unknown result never
 causes an automatic retry. The existing `ROOT/terminal-run` directory prevents
@@ -85,4 +92,12 @@ client acceptance. Formal Release gates remain unchanged and BLOCKED.
 cover both installed Windows/Linux runtimes, the exact approval refusals and
 the receiver's actual local process exit. A resolved wave alone is not success:
 the receiver must actually reach review with its matching ready-for-review result.
-This new entry's real model/Docker end-to-end run remains NOT RUN.
+The first real terminal-entry attempt stopped before launch admission when
+blocking input outlasted the task deadline. Its adapter remains unknown, and its
+Core task remains running without verification; no candidate was executed.
+Temporary login cleanup was confirmed. The input repair subsequently passed
+12 local Linux cases and8 Windows cases (4 Linux-only skips), including real PTY
+cancellation and terminal restoration. These are offline checks, not a successful
+real model/Docker E2E run. Do not replay the failed fixture.
+[Actual attempt](acceptance/evidence/core-preview-a122/terminal-live/result-summary.json) ·
+[Repair evidence](acceptance/evidence/core-preview-a122/terminal-live/input-fix/summary.json).

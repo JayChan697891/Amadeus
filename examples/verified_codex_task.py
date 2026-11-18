@@ -16,6 +16,9 @@ Each launch and candidate effect needs its own exact terminal approval. This
 single attempt stops on denial, failure or unknown state. Inspect saved state
 through examples/recover_relay.py and the documented owner APIs before acting.
 The example does not manage or remove the caller's prepared login home.
+Hidden approval input yields to the existing launch/flow deadlines. Cancellation
+restores the terminal and stops the pending decision. Approval lines are limited
+to 256 UTF-8 bytes. The initial owner credential uses the ordinary hidden prompt.
 """
 
 import argparse
@@ -47,6 +50,52 @@ def prompt(label):
     with warnings.catch_warnings():
         warnings.simplefilter("error", getpass.GetPassWarning)
         return getpass.getpass(label)
+
+
+async def prompt_async(label):
+    if sys.platform != "linux" or not sys.stdin.isatty():
+        raise ValueError("secure_terminal_required")
+    import termios
+
+    loop = asyncio.get_running_loop()
+    future = loop.create_future()
+    descriptor = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+    original = None
+    pending = bytearray()
+
+    def readable():
+        if future.done():
+            return
+        try:
+            data = os.read(descriptor, 4096)
+            if not data:
+                raise EOFError
+            pending.extend(data)
+            if len(pending) > 256:
+                raise ValueError("approval_input_limit")
+            if pending.endswith(b"\n"):
+                future.set_result(pending[:-1].decode("utf-8").rstrip("\r"))
+        except BlockingIOError:
+            pass
+        except (OSError, UnicodeError, ValueError, EOFError) as error:
+            future.set_exception(error)
+
+    try:
+        original = termios.tcgetattr(descriptor)
+        hidden = termios.tcgetattr(descriptor)
+        hidden[3] = (hidden[3] | termios.ICANON) & ~(termios.ECHO | termios.ECHONL)
+        termios.tcsetattr(descriptor, termios.TCSANOW, hidden)
+        loop.add_reader(descriptor, readable)
+        os.write(descriptor, label.encode("utf-8"))
+        return await future
+    finally:
+        loop.remove_reader(descriptor)
+        try:
+            if original is not None:
+                termios.tcsetattr(descriptor, termios.TCSANOW, original)
+        finally:
+            os.close(descriptor)
+        print(file=sys.stderr, flush=True)
 
 
 def emit(value):
@@ -190,11 +239,16 @@ async def run(args, owner_token, goal, cases, profile):
             },
         )
         if (
-            prompt("Confirm subscription-only cost and effective isolation by typing CONFIRM: ")
+            await prompt_async(
+                "Confirm subscription-only cost and effective isolation by typing CONFIRM: "
+            )
             != "CONFIRM"
         ):
             return None
-        if prompt("Approve this launch by typing its plan SHA-256: ") != review.plan_sha256:
+        if (
+            await prompt_async("Approve this launch by typing its plan SHA-256: ")
+            != review.plan_sha256
+        ):
             return None
         save(f"launch-{launches}-approved.json", {"plan_sha256": review.plan_sha256})
         return LaunchConsent(
@@ -250,7 +304,7 @@ async def run(args, owner_token, goal, cases, profile):
                 raise ValueError("proposal_changed")
             display["proposal_files"] = json.loads(context["content"])["files"]
         save(stage + "-plan.json", display)
-        if prompt("Approve " + stage + " by typing its exact SHA-256: ") != value[key]:
+        if await prompt_async("Approve " + stage + " by typing its exact SHA-256: ") != value[key]:
             return None
         save(stage + "-approved.json", {key: value[key]})
         return value[key]

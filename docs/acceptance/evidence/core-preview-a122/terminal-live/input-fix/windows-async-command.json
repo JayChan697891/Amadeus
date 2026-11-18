@@ -1,0 +1,20 @@
+{
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "note": "Windows protocol fixture and synthetic verifier; Linux PTY skipped",
+  "argv": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:/agentsync-debug/terminal-input-20261118/windows-async-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/terminal-input-20261118/windows-async-junit.xml",
+    "tests/integration/test_verified_codex_terminal.py"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "scope": "Cancellable hidden Linux terminal approval; unchanged frozen a122 runtime",
+  "inputs_sha256": {
+    "examples/verified_codex_task.py": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+    "tests/integration/test_verified_codex_terminal.py": "89a148dd33324440e1e8da35256d4ea17d16377a0c07b783920383144627a5fe"
+  },
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "original_example_commit": "13eb0759138de485e2ebba445e93369a28e3c916",
+  "runs": {
+    "linux_original": {
+      "native": "2740a1",
+      "pytest_exit": 1,
+      "passed": 2,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "linux_repaired": {
+      "native": "21713/287aeb",
+      "pytest_exit": 0,
+      "passed": 12,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "windows_repaired": {
+      "native": "20356/4c9317",
+      "pytest_exit": 0,
+      "passed": 8,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 4
+    }
+  },
+  "root_review": "Exact code, actual XML, captured commands/results and restored97 Linux runtime members inspected. Original real PTY cancellation failure reproduced; fixed PTY restores terminal attributes/descriptors and exits without late input. Existing Core/protocol/verifier fixture boundaries remain synthetic.",
+  "independent_review": "Astra inspected final diff, source hashes and actual XML; accepted this offline repair only.",
+  "static": {
+    "ruff_check": "bca711 exit0, changed2files only",
+    "ruff_format_check": "49951a exit0, changed2files only",
+    "git_diff_check": "49951a exit0"
+  },
+  "budgets_unchanged_seconds": {
+    "task": 90,
+    "flow": 600
+  },
+  "historical_static_fail": "Preserved, not rerun or excluded",
+  "live_after_repair": "NOT RUN",
+  "real_model_calls": 0,
+  "real_candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "files_sha256": {
+    "after/controller-exit.json": "124fd50cb6d223cdd18fedc166d00af7254199b6e6dedf9be82f71db87af6d01",
+    "after/junit.xml": "d7ba3f42183e7c96d063ed31ccaef672cbec806e8e8edf362eb99bfd5c435dc4",
+    "after/report.json": "5cc1430ee0889af62d09d5b30237e23c33da5b78ad35233b534a95640c1175d1",
+    "after/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "after/stdout.log": "97535a7f8f22bd19bd6d3d65ee5fb30538b35f7aa99912da953a92a7f3e87434",
+    "before/controller-exit.json": "124fd50cb6d223cdd18fedc166d00af7254199b6e6dedf9be82f71db87af6d01",
+    "before/junit.xml": "9f7dd0bf74b9303538066b60f784f06da05dc789c52837869ccaf3ce3d2d1b73",
+    "before/report.json": "0e93dfdd616f6244378b1ab130176fa8515bc1de953ca00784ce3368bcd0bc8c",
+    "before/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "before/stdout.log": "54f33ccd2f19ffaad0415b2da2d29e9b221496ab44845e65c74ea8b3bb7e3e0c",
+    "before/test_verified_codex_terminal.py.txt": "cf35925e056bf2925922e35ec674f40016383b90004eb1d4602f13201e8fbe6a",
+    "pre-shutdown.json": "63e737b59efe30e1a78a67ba825c2ea3adef91f07303820b43e66aa7ab55af35",
+    "run_linux.py.txt": "5b5daa0768c160acf09e7f2a54e7d7319f2e83863d2df773c491037a231f18f6",
+    "shutdown-confirmed.json": "a522948a3150407c26c03c4501fb5b6745e3d70cd24404166989a361c320d659",
+    "shutdown-request.json": "6c9655eca88779d223f036ca421683fd78464f26fb31455e448933894a58c156",
+    "windows-async-command.json": "3fb372d8045507180bd0895d491e896ac309020cf0f87fb9e34703849ed9f571",
+    "windows-async-junit.xml": "8cdff05525b729c24da71b0af6b0456517915ba8da8b783c6977786953bd0b5b",
+    "windows-async.exit": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "windows-async.log": "487703fd8bb6b8d7543e542e2da2f5c2e436482f4feea9c8e14a243bfafe38c9"
+  }
+}

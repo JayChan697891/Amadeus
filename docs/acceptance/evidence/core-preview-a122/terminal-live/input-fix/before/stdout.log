@@ -1,0 +1,20 @@
+F..F                                                                     [100%]
+=================================== FAILURES ===================================
+___________________ test_real_hidden_terminal_input[cancel] ____________________
+tests/integration/test_verified_codex_terminal.py:106: in test_real_hidden_terminal_input
+    assert result["status"] == {"cancel": "cancelled", "line": "accepted", "eof": "eof",
+E   AssertionError: assert 'accepted' == 'cancelled'
+E     
+E     - cancelled
+E     + accepted
+__________________ test_real_hidden_terminal_input[overlong] ___________________
+tests/integration/test_verified_codex_terminal.py:106: in test_real_hidden_terminal_input
+    assert result["status"] == {"cancel": "cancelled", "line": "accepted", "eof": "eof",
+E   AssertionError: assert 'accepted' == 'rejected'
+E     
+E     - rejected
+E     + accepted
+=========================== short test summary info ============================
+FAILED tests/integration/test_verified_codex_terminal.py::test_real_hidden_terminal_input[cancel]
+FAILED tests/integration/test_verified_codex_terminal.py::test_real_hidden_terminal_input[overlong]
+2 failed, 2 passed, 8 deselected in 2.84s

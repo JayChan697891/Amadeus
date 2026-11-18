@@ -1,0 +1,104 @@
+"""Copy the authorized login once into this fixture's dedicated RAM home."""
+
+import hashlib
+import json
+import stat
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+AUTH = Path("C:/Users/JayChan/.codex/auth.json")
+REMOTE = "/root/amadeus-terminal-live-a122-20261118"
+READY_SHA = "c68daf94483ae292749b2697ccf052747029ca05572f27b88caeff023b369f25"
+
+
+def main():
+    assert hashlib.sha256((BASE / "ready.json").read_bytes()).hexdigest() == READY_SHA
+    grant = json.loads((BASE / "owner-grant.json").read_text(encoding="utf-8"))
+    assert grant["authorized"] is True and grant["ready_sha256"] == READY_SHA
+    assert not (BASE / "private/auth-setup.json").exists()
+    assert not (BASE / "terminal-intent.json").exists()
+    info = AUTH.lstat()
+    assert stat.S_ISREG(info.st_mode) and not getattr(info, "st_file_attributes", 0) & 0x400
+    assert 0 < info.st_size < 128 * 1024
+    raw = AUTH.read_bytes()
+    value = json.loads(raw)
+    assert value.get("auth_mode") == "chatgpt" and not value.get("OPENAI_API_KEY")
+    original = hashlib.sha256(raw).hexdigest()
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    mounted = copied = False
+    try:
+        client.connect(
+            "127.0.0.1",
+            port=22222,
+            username="root",
+            key_filename="D:/agentsync-debug/vm/debug_ed25519",
+            look_for_keys=False,
+            allow_agent=False,
+            timeout=15,
+        )
+        with client.open_sftp() as sftp:
+            with sftp.open(REMOTE + "/ready.json", "rb") as stream:
+                assert hashlib.sha256(stream.read(65537)).hexdigest() == READY_SHA
+            with sftp.open(REMOTE + "/auth_home.py", "rb") as stream:
+                assert stream.read() == (BASE / "auth_home.py").read_bytes()
+        _, out, err = client.exec_command(
+            "/root/amadeus-m122l/w/bin/python -I -B " + REMOTE + "/auth_home.py mount", timeout=30
+        )
+        result = json.loads(out.read())
+        err.read()
+        assert out.channel.recv_exit_status() == 0, (
+            "Mount was not confirmed; inspect without retry."
+        )
+        assert result["status"] == "mounted"
+        mounted = True
+        target = REMOTE + "/private-home/auth.json"
+        with client.open_sftp() as sftp:
+            with sftp.open(target, "x+b") as stream:
+                sftp.chmod(target, 0o600)
+                stream.write(raw)
+                stream.flush()
+            copied = True
+            info = sftp.lstat(target)
+            assert stat.S_ISREG(info.st_mode) and info.st_uid == 0
+            assert stat.S_IMODE(info.st_mode) == 0o600
+            with sftp.open(target, "rb") as stream:
+                assert hashlib.sha256(stream.read(128 * 1024)).hexdigest() == original
+        assert hashlib.sha256(AUTH.read_bytes()).hexdigest() == original
+        print(
+            json.dumps(
+                {
+                    "mounted": mounted,
+                    "copied": copied,
+                    "original_unchanged": True,
+                    "local_auth_mode": "chatgpt",
+                    "model_calls": 0,
+                }
+            )
+        )
+    finally:
+        with (BASE / "private/auth-setup.json").open("x", encoding="utf8") as stream:
+            json.dump(
+                {
+                    "at": datetime.now(UTC).isoformat(),
+                    "mounted": mounted,
+                    "copied": copied,
+                    "original_sha256": original,
+                    "original_unchanged": hashlib.sha256(AUTH.read_bytes()).hexdigest() == original,
+                },
+                stream,
+            )
+        client.close()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        raise SystemExit(
+            "Auth setup stopped: " + type(error).__name__ + "; inspect, do not retry."
+        ) from None

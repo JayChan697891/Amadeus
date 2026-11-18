@@ -2,6 +2,40 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The exact terminal live experiment prepared at **f8843d3** stopped on
+2026-11-18T00:34:55Z (2026-11-17 16:34:55, America/Tijuana), remote exit1.
+The real PTY and ChatGPT login-route check worked. Synchronous hidden approval
+input blocked the event loop for158002ms; the existing90s startup budget then
+rejected continuation with factory_timeout/relay_boundary. The actual adapter
+record remains **unknown**, admission not_recorded; the Core task remains
+running/v3 without verification. No launch/consent
+receipt, staging, candidate execution, independent completion or receiver launch
+occurred. This is a failed entry experiment, not real-client E2E acceptance.
+No retry was made. [Actual result and retained originals](acceptance/evidence/core-preview-a122/terminal-live/result-summary.json).
+
+Root/Astra checked the precise prelaunch timeout cleanup path, actual receipts
+and absence of owned processes. The temporary login copy is removed, its tmpfs
+unmounted and original login unchanged;97 frozen installed members still match.
+The local controller had also saved the remote terminal result before a daemon
+stdin reader caused interpreter-shutdown failure. Its separate reader repair
+passed3 Windows OS-pipe cases; the full repaired SSH controller remains NOT RUN.
+The terminal-input repair is complete: approval waits are now cancellable and
+restore terminal settings/descriptors. Existing90/600s budgets and exact consent
+gates are unchanged. Original source reproduced2 real-PTY failures; the corrected
+example passes all12 Linux cases and8 Windows cases with4 Linux-only skips.
+Ruff check/format-check pass for the changed files. Root/Astra accept only this
+offline repair; no model or real candidate execution was repeated. The VM shut
+down normally after confirming no live Python/Codex process and no temporary auth.
+[Repair, commands, originals and exact hashes](acceptance/evidence/core-preview-a122/terminal-live/input-fix/summary.json).
+
+Resume from this corrected example and the existing owner trial. Successful
+real terminal E2E is still unverified; retain the failed fixture for inspection,
+do not replay it or reuse its one-fixture candidate grant for another project.
+Any future real attempt needs a newly reviewed bounded plan and its applicable
+authorization; ordinary local development can continue independently. Original
+M0-M9 and formal Release **BLOCKED** remain intact. Earlier entry checks below
+describe their original commits and are not new runs of the corrected example.
+
 The next concrete usability gap is now implemented at **13eb075**: an advanced
 Linux terminal host accepts an owner's task and JSON-lines cases, then uses the
 existing `VerifiedProposalFlow` for separately approved launches, staging,
@@ -26,9 +60,8 @@ probe remain recorded. Root/Astra accept this limited offline example scope;
 Actual script help and fail-closed platform/non-terminal checks also passed;
 97 installed runtime members remained unchanged. The owned VM shut down normally,
 and no project test/controller process remains. New-entry real model/Docker E2E
-is **NOT RUN**; historical real-client proof is separate. Next prepare one exact
-terminal-entry live plan using the standing subscription-only grant, retaining
-the separate candidate-execution authorization boundary. Do not repeat completed
+was **NOT RUN** at that checkpoint; the later failed attempt and repair are
+recorded above. Historical real-client proof is separate. Do not repeat completed
 full suites, reopen M5 scope or call this formal Release acceptance.
 
 The first complete a122 installed-sdist suites have finished and received

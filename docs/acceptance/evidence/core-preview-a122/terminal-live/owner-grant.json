@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-18T00:28:02.879097+00:00",
+  "source": "Owner answer call_b2f70abd3a47434ea8e17ac66ae83999",
+  "answer": "允许本次有条件的隔离验证及独立验收",
+  "authorized": true,
+  "plan_commit": "f8843d3bbce2415042165092bceee4d9441d4bfe",
+  "plan_sha256": "a2a06687c837665f10698e648a760d94f66961ae36609c2a1144af9b8bd3c0d6",
+  "ready_sha256": "c68daf94483ae292749b2697ccf052747029ca05572f27b88caeff023b369f25",
+  "project_id": "1328971c-cdf9-4c73-937b-c50504fa5fbb",
+  "candidate_sha256": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44",
+  "max_staging": 1,
+  "max_candidate_executions": 1,
+  "independent_producer_completion": true,
+  "receiver_review_stays_unverified": true,
+  "max_subscription_calls": 2,
+  "no_extra_fees": true,
+  "paid_api_allowed": false,
+  "retry_allowed": false,
+  "execution": "NOT RUN"
+}

@@ -2,8 +2,11 @@
 
 import getpass
 import json
+import os
 import runpy
+import select
 import sys
+import time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -17,6 +20,102 @@ from agentsync.adapters import codex_invocation
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.errors import AgentSyncError
 from agentsync.verification import candidate_executor
+
+
+@pytest.mark.skipif(sys.platform != "linux", reason="Real Linux terminal input")
+@pytest.mark.parametrize("mode", ["cancel", "line", "eof", "overlong"])
+def test_real_hidden_terminal_input(terminal_host, mode):
+    import pty
+
+    example = os.environ.get("AGENTSYNC_TERMINAL_INPUT_EXAMPLE", terminal_host["__file__"])
+    program = r"""
+import asyncio,json,os,runpy,sys,termios,time
+host=runpy.run_path(sys.argv[1])
+mode=sys.argv[2]
+async def check():
+    original=termios.tcgetattr(0)
+    descriptors=set(os.listdir('/proc/self/fd'))
+    started=time.monotonic()
+    matched=False
+    async def read():
+        if 'prompt_async' in host:
+            return await host['prompt_async']('Approve fixture: ')
+        return host['prompt']('Approve fixture: ')
+    try:
+        async with asyncio.timeout(0.1 if mode=='cancel' else 2):
+            value=await read()
+        status='accepted'
+        matched=value=='fixture-secret'
+    except TimeoutError:
+        status='cancelled'
+    except EOFError:
+        status='eof'
+    except ValueError:
+        status='rejected'
+    print(json.dumps({'status':status,'matched':matched,'elapsed':time.monotonic()-started,
+                      'restored':termios.tcgetattr(0)==original,
+                      'descriptors_restored':set(os.listdir('/proc/self/fd'))==descriptors}),flush=True)
+asyncio.run(check())
+"""
+    pid, descriptor = pty.fork()
+    if pid == 0:
+        os.execv(sys.executable, [sys.executable, "-I", "-B", "-c", program, example, mode])
+    output = bytearray()
+    prompt_at = None
+    sent = exited = False
+    deadline = time.monotonic() + 10
+    try:
+        while time.monotonic() < deadline:
+            readable, _, _ = select.select([descriptor], [], [], 0.02)
+            if readable:
+                try:
+                    chunk = os.read(descriptor, 4096)
+                except OSError:
+                    chunk = b""
+                output.extend(chunk)
+            if b"Approve fixture: " in output and prompt_at is None:
+                prompt_at = time.monotonic()
+            if prompt_at is not None and not sent:
+                if mode != "cancel" or time.monotonic() - prompt_at >= 0.35:
+                    payload = {
+                        "cancel": b"late\n",
+                        "line": b"fixture-secret\n",
+                        "eof": b"\x04",
+                        "overlong": b"x" * 300 + b"\n",
+                    }[mode]
+                    os.write(descriptor, payload)
+                    sent = True
+            done, status = os.waitpid(pid, os.WNOHANG)
+            if done:
+                exited = True
+                assert os.waitstatus_to_exitcode(status) == 0, output.decode(errors="replace")
+                while select.select([descriptor], [], [], 0)[0]:
+                    try:
+                        remaining = os.read(descriptor, 4096)
+                    except OSError:
+                        break
+                    if not remaining:
+                        break
+                    output.extend(remaining)
+                break
+        assert exited, "Terminal subprocess did not end."
+    finally:
+        if not exited:
+            os.kill(pid, 9)
+            os.waitpid(pid, 0)
+        os.close(descriptor)
+    assert b"fixture-secret" not in output
+    text = output.decode()
+    result = json.JSONDecoder().raw_decode(text[text.index('{"status":') :])[0]
+    assert (
+        result["status"]
+        == {"cancel": "cancelled", "line": "accepted", "eof": "eof", "overlong": "rejected"}[mode]
+    )
+    assert result["restored"] and result["descriptors_restored"]
+    if mode == "cancel":
+        assert not sent and result["elapsed"] < 0.35
+    elif mode == "line":
+        assert result["matched"]
 
 
 @pytest.fixture
@@ -101,12 +200,15 @@ async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host,
         verifications.append(source)
         return synthetic_backend(source, **options)
 
+    async def async_answer(label):
+        return answer(label)
+
     # Only approved process/verifier and terminal-input boundaries are synthetic.
     monkeypatch.setattr(codex_invocation, "sys", SimpleNamespace(platform="linux"))
     monkeypatch.setattr(CapturedProcess, "start", classmethod(process))
     monkeypatch.setattr(candidate_executor, "verify_python_json_lines", verify)
     monkeypatch.setitem(terminal_host["run"].__globals__, "emit", records.append)
-    monkeypatch.setitem(terminal_host["run"].__globals__, "prompt", answer)
+    monkeypatch.setitem(terminal_host["run"].__globals__, "prompt_async", async_answer)
     if deny == "launch":
         with pytest.raises(AgentSyncError):
             await terminal_host["run"](

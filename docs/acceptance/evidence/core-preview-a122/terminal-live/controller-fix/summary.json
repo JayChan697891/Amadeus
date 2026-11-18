@@ -1,0 +1,24 @@
+{
+  "scope": "Windows OS stdin reader only; no controller SSH/model execution",
+  "source_sha256": "0b4f84738db076b4a57ed2e26807435a6a113ba682d2a0a1ef93d7a62132c557",
+  "original_preserved_sha256": "2bdc65f02a881aa068c5c0c381f4ea51b83fda1d6f5ae57822acc27d7a952c4f",
+  "native_result": "6a5c5b exit0",
+  "passed": 3,
+  "failed": 0,
+  "initial_collection": "7168bd exit2; importing full driver required absent Paramiko in isolated test Python. Final fixture compiles the actual reader AST; original failure retained.",
+  "root_review": "Actual tests, XML and function inspected; limited reader fix accepted, full fixed controller NOT RUN.",
+  "real_model_calls": 0,
+  "formal_release": "BLOCKED",
+  "files_sha256": {
+    "command-r2.json": "52400807a93c020e4b773ce7eba96b545a4048a8b12c3de0a0f7e2cd32f255f9",
+    "command.json": "3fd43f3a3a4eca1b07dfe761bb051cb3b1cc664a5932bbbca289037bed2a9f25",
+    "exit-r2.txt": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "exit.txt": "df4e26a04a444901b95afef44e4a96cfae34690fff2ad2c66389c70079cdff2b",
+    "junit-r2.xml": "1f0db6fd8416e59ba621b692a4d465c55563005ec2ef59b92412ba948f88e1e3",
+    "junit.xml": "4ad5d6d91b3f278fe81e7c05fb8d49824ed91183c26ba5d302981fc811cf38bd",
+    "pytest-r2.log": "2b158fd674ebd9c4d132fe77efd513036a69a6648780990340d8011ee2365721",
+    "pytest.log": "e13de22cb9d3cf1e9c38d06b2b67d49f38d04993ac1ab8b69b056f9cb468d0e0",
+    "terminal_control_fixed.py.txt": "0b4f84738db076b4a57ed2e26807435a6a113ba682d2a0a1ef93d7a62132c557",
+    "test_stdin_exit.py.txt": "1abd46919f35ca92fee7ac92d78a357e5909fda5c369c6ef9b340b4b431f47ed"
+  }
+}

@@ -1,0 +1,122 @@
+"""One-time cleanup after the observed, unadmitted terminal launch timeout."""
+
+import hashlib
+import importlib.util
+import json
+import os
+import stat
+import subprocess
+import sys
+from dataclasses import asdict
+from pathlib import Path
+
+from agentsync.controlled_relay import ControlledRelay
+from agentsync.core.service import Core
+
+ROOT = Path("/root/amadeus-terminal-live-a122-20261118")
+HELPER_SHA = "edcd90bb1dfb1e3b5095bb9ebe2ceafff6369a4a47acee5cf03b7d0c68f40e05"
+assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+assert sys.flags.isolated and sys.dont_write_bytecode
+assert Path(__file__).resolve() == ROOT / "auth_timeout_cleanup.py"
+assert hashlib.sha256((ROOT / "auth_home.py").read_bytes()).hexdigest() == HELPER_SHA
+spec = importlib.util.spec_from_file_location(
+    "terminal_auth_helper", ROOT / "auth_home.py"
+)
+h = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(h)
+os.umask(0o077)
+
+with h.locked():
+    host = h.load("host-exit.json")
+    assert host["status"] == "terminal" and host["exit_code"] == 1
+    assert host["ready_sha256"] == h.READY_SHA
+    assert host["finished_at"] == "2026-11-18T00:34:55.066628+00:00"
+    ready = h.load("ready.json")
+    assert hashlib.sha256((ROOT / "ready.json").read_bytes()).hexdigest() == h.READY_SHA
+    assert h.load("auth-mount-result.json")["status"] == "mounted"
+    h.require_mount()
+    h.no_codex_parent()
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdecimal():
+            continue
+        try:
+            argv = (entry / "cmdline").read_bytes().split(b"\0")
+        except FileNotFoundError:
+            continue
+        assert str(ROOT / "verified_codex_task.py").encode() not in argv
+    output = ROOT / "terminal-run"
+    assert {p.name for p in output.glob("*.json")} == {
+        "entry.json",
+        "launch-1-plan.json",
+        "launch-1-approved.json",
+        "stopped.json",
+    }
+    plan = h.load("terminal-run/launch-1-plan.json")
+    assert (
+        plan["plan_sha256"]
+        == "2de57a45f63f113a7897f78dfbb3bc61fb27590e7620c4855429e754fc976887"
+    )
+    assert h.load("terminal-run/launch-1-approved.json") == {
+        "plan_sha256": plan["plan_sha256"]
+    }
+    prefix = "relay-2ada1760c3a3551028bfd912120e4073e438cad3a122470485aab98913e02ce3"
+    assert {p.name for p in (output / "receipts").iterdir()} == {
+        prefix + "-first-dispatched.json",
+        prefix + "-first-stopped.json",
+        prefix + "-incomplete.json",
+    }
+    owner = h.load("private-owner.json")
+    assert owner["project_id"] == ready["project_id"] == plan["task"]["project_id"]
+    first, second = ControlledRelay(
+        Core(ROOT / "core"), ROOT, output / "receipts"
+    ).owner_inspect_attempts(
+        owner["project_id"], plan["task"]["task_id"], admin_token=owner["admin_token"]
+    )
+    assert first.state == "terminal_recorded" and first.status == "unknown"
+    assert first.error_code == "factory_timeout" and first.timed_out is True
+    assert first.parent_ended is False and first.exit_code is None
+    assert first.adapter_elapsed_ms == 158002 and first.client == "codex"
+    assert (
+        first.admission.state == "not_recorded" and first.admission.plan_sha256 is None
+    )
+    assert (
+        first.admission.execution_verified is False and second.state == "not_dispatched"
+    )
+    h.save(
+        "auth-cleanup-intent.json",
+        {
+            "mode": "observed_prelaunch_timeout",
+            "ready_sha256": h.READY_SHA,
+            "first": asdict(first),
+            "second": asdict(second),
+            "no_live_owned_process": True,
+            "unknown_result_preserved": True,
+            "retry_allowed": False,
+        },
+    )
+    target = ROOT / "private-home/auth.json"
+    info = target.lstat()
+    assert target.resolve(strict=True) == target and stat.S_ISREG(info.st_mode)
+    assert (
+        info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600 and info.st_nlink == 1
+    )
+    target.unlink()
+    assert not os.path.lexists(target)
+    subprocess.run(
+        ["/bin/umount", str(h.PRIVATE_HOME)],
+        check=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert not h.mounts() and not any(h.PRIVATE_HOME.iterdir())
+    result = {
+        "status": "cleaned",
+        "mode": "observed_prelaunch_timeout",
+        "temporary_auth_absent": True,
+        "home_unmounted": True,
+        "private_home_empty": True,
+        "unknown_result_preserved": True,
+        "retry_allowed": False,
+    }
+    h.save("auth-cleanup-result.json", result)
+    print(json.dumps(result))

@@ -1,0 +1,19 @@
+
+=================================== ERRORS ====================================
+_____________________ ERROR collecting test_stdin_exit.py _____________________
+ImportError while importing test module 'D:\agentsync-debug\terminal-stdin-regression-20261118\test_stdin_exit.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_stdin_exit.py:12: in <module>
+    READ = runpy.run_path(str(FIXED))["read_manual"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\terminal-live-a122-20261118\terminal_control_fixed.py:16: in <module>
+    import paramiko
+E   ModuleNotFoundError: No module named 'paramiko'
+=========================== short test summary info ===========================
+ERROR test_stdin_exit.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.15s

@@ -1,0 +1,77 @@
+import hashlib
+import json
+import shlex
+import sys
+from pathlib import Path
+
+import paramiko
+
+phase = sys.argv[1]
+assert phase in ('before', 'after')
+base = Path(__file__).resolve().parent
+repo = Path('F:/syuc/amadeus-m6-single')
+root = '/root/amadeus-terminal-input-20261118-' + phase
+local = base / phase
+local.mkdir()
+names = ('examples/verified_codex_task.py', 'tests/integration/test_verified_codex_terminal.py')
+payload = {name: (repo / name).read_bytes() for name in names}
+if phase == 'before':
+    payload[names[0]] = (base / 'original_example.py.txt').read_bytes()
+for name, raw in payload.items():
+    path = local / (Path(name).name + '.txt')
+    path.write_bytes(raw)
+manifest = {name: hashlib.sha256(raw).hexdigest() for name, raw in payload.items()}
+archive_sha = hashlib.sha256(Path('D:/agentsync-debug/verified-terminal-20261117/test-inputs.zip').read_bytes()).hexdigest()
+client = paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename='D:/agentsync-debug/vm/debug_ed25519',
+               look_for_keys=False, allow_agent=False, timeout=15)
+try:
+    with client.open_sftp() as sftp:
+        for part in ('', '/examples', '/tests', '/tests/integration'):
+            sftp.mkdir(root + part, 0o700)
+        for name, raw in payload.items():
+            with sftp.open(root + '/' + name, 'x+b') as stream:
+                stream.write(raw)
+    code = '''import hashlib,json,subprocess,sys,zipfile
+from pathlib import Path
+import agentsync
+root=Path(ROOT)
+expected_inputs=MANIFEST
+archive=Path('/root/amadeus-terminal-20261117/test-inputs.zip')
+assert hashlib.sha256(archive.read_bytes()).hexdigest()==ARCHIVE_SHA
+with zipfile.ZipFile(archive) as z:
+    members=[name for name in z.namelist() if name not in expected_inputs]
+    assert all((root/name).resolve().is_relative_to(root) for name in members)
+    z.extractall(root,members=members)
+assert all(hashlib.sha256((root/name).read_bytes()).hexdigest()==sha for name,sha in expected_inputs.items())
+members=json.loads((root/'runtime-members.json').read_bytes())
+site=Path(agentsync.__file__).resolve().parents[1]
+assert len(members)==97
+assert all(hashlib.sha256((site/name).read_bytes()).hexdigest()==sha for name,sha in members.items())
+argv=[sys.executable,'-I','-B','-m','pytest','-q','-p','no:cacheprovider','--tb=short','--basetemp',str(root/'tmp'),'--junitxml',str(root/'junit.xml'),str(root/'tests/integration/test_verified_codex_terminal.py')]
+if PHASE=='before': argv+=['-k','test_real_hidden_terminal_input']
+with (root/'stdout.log').open('xb') as out,(root/'stderr.log').open('xb') as err:
+    result=subprocess.run(argv,cwd=root,stdout=out,stderr=err,timeout=240,check=False)
+assert all(hashlib.sha256((site/name).read_bytes()).hexdigest()==sha for name,sha in members.items())
+report={'phase':PHASE,'argv':argv,'exit_code':result.returncode,'inputs':expected_inputs,'runtime_members_unchanged':97,'real_model_calls':0,'real_candidate_executions':0}
+with (root/'report.json').open('x') as f:json.dump(report,f,indent=2)
+print(json.dumps(report))
+'''.replace('ROOT', repr(root)).replace('MANIFEST', repr(manifest)).replace('ARCHIVE_SHA', repr(archive_sha)).replace('PHASE', repr(phase))
+    stdin, stdout, stderr = client.exec_command('/root/amadeus-m122l/w/bin/python -I -B -', timeout=270)
+    stdin.write(code)
+    stdin.channel.shutdown_write()
+    out, err = stdout.read(), stderr.read()
+    status = stdout.channel.recv_exit_status()
+    (local / 'controller.log').write_bytes(out + err)
+    (local / 'controller-exit.json').write_text(json.dumps({'exit_code': status}))
+    print(out.decode() + err.decode())
+    assert status == 0
+    with client.open_sftp() as sftp:
+        for name in ('junit.xml', 'stdout.log', 'stderr.log', 'report.json'):
+            sftp.get(root + '/' + name, str(local / name))
+    print((local / 'stdout.log').read_text())
+finally:
+    client.close()
