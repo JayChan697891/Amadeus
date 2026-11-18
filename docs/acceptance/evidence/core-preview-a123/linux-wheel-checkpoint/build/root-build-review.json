@@ -1,0 +1,9 @@
+{
+  "status": "pass",
+  "native": "632177 exit0",
+  "source_files": 282,
+  "runtime_members": 97,
+  "process_receipts": 2,
+  "bundle_sha256": "2273ebe7b65bf831c64cc0e5fb8d313592ea90371996eb315fab07a01f481122",
+  "tests": "NOT RUN"
+}
