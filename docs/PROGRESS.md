@@ -2,6 +2,17 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The next bounded P0 real-document recovery experiment is prepared, not executed.
+Root/Astra accepted23 offline helper checks, including a real Core/owned-Python
+checkpoint/interruption/pin case; the independent60-second observer restriction
+was removed without increasing the90-second model budget. Actual isolated
+fixture initialization used zero models/account copies. The exact
+[execution plan](acceptance/evidence/core-preview-a123/model-checkpoint-recovery/execution-plan.md)
+binds the standing max-two-call authorization, producer and separately approved
+receiver, unchanged runtime, strict no-retry stops and terminal-gated cleanup.
+Next run its producer only after all prepared bindings and private-directory
+checks; a second launch remains conditional on the actual first result.
+
 Current P0 user entry is implemented: `examples/continue_codex_task.py` uses the
 existing confirmed-failure pin, owner preview and one-shot continuation service.
 After explicit receiver preparation, continuation and launch approvals, the new

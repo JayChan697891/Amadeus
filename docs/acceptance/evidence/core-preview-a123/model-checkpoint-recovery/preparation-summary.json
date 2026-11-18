@@ -1,0 +1,38 @@
+{
+  "status": "PREPARED_NOT_EXECUTED",
+  "created_at": "2026-11-18T09:12:20.068220+00:00",
+  "source_head": "81dd09b2b52a4e8aa61687e11fe9a0d49fc4789f",
+  "runtime_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "offline_tests": {
+    "pass": 23,
+    "fail": 0,
+    "error": 0,
+    "skip": 0,
+    "observer": 14,
+    "cleanup_mock": 8,
+    "actual_core_owned_python": 1,
+    "native_exit": "257853 exit0",
+    "root_verification": "96094b actual XML/receipt/11inputs/8helpers",
+    "astra": "Accepted prepared code,23-case scope and final binding"
+  },
+  "fixture_prepare": {
+    "native_exit": "12b1d7 exit0",
+    "model_calls": 0,
+    "auth_copies": 0,
+    "ready_sha256": "df59b0b464adaa8776404859a35dff222793c7dec04f57148d40d779be5b6181",
+    "plan_sha256": "cd60e58deaf267a243da9350a3751e64ff100bd6236ccf8dc0a4270c036b0240"
+  },
+  "review_corrections": [
+    "Removed independent60s observer cutoff within unchanged90s model budget",
+    "Bound producer/receiver to same grant and original plan; cleanup requires matching receiver terminal state",
+    "Cleanup mock fixture receipts directory repaired before test execution",
+    "Root missing-method concern withdrawn: existing _confirmed_failure wrapper exists"
+  ],
+  "static_history": "Initial import/style errors repaired; host twelve-style-error snapshot/output retained. No original evidence changed.",
+  "archive_inspection": "b24f84 initially stopped on variable references incorrectly treated as literal log credentials.9ff1dd inspected the references and fixed NOT GRANTED notice; exact sources retained, runtime output scanning unchanged.",
+  "real_recovery": "NOT RUN",
+  "account_copy": "NOT RUN",
+  "candidate_execution": "FORBIDDEN",
+  "formal_release": "BLOCKED",
+  "public_preview": "a122/r5 unchanged"
+}

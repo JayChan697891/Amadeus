@@ -1,0 +1,217 @@
+{
+  "members": [
+    {
+      "path": "pilot.py.txt",
+      "source_path": "pilot.py",
+      "bytes": 23009,
+      "sha256": "ce66f1c454824c37e2d38adbebb86e804848e399f26e36c85528ec6d802cca2c"
+    },
+    {
+      "path": "auth_home.py.txt",
+      "source_path": "auth_home.py",
+      "bytes": 12764,
+      "sha256": "0554cad5e8c7f885c839c91296b359b40fca39a800c59cdd6e15301dfd8cc0be"
+    },
+    {
+      "path": "private_capture.py.txt",
+      "source_path": "private_capture.py",
+      "bytes": 3377,
+      "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7"
+    },
+    {
+      "path": "initialize_terminal_project.py.txt",
+      "source_path": "initialize_terminal_project.py",
+      "bytes": 4528,
+      "sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d"
+    },
+    {
+      "path": "runtime-members.json",
+      "source_path": "runtime-members.json",
+      "bytes": 10144,
+      "sha256": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff"
+    },
+    {
+      "path": "interrupt_parent.py.txt",
+      "source_path": "interrupt_parent.py",
+      "bytes": 13977,
+      "sha256": "70057327b4a287dc99bdae6f3a0b23b4cdabac59ecb85f826e808322f243f074"
+    },
+    {
+      "path": "continue_codex_task.py.txt",
+      "source_path": "continue_codex_task.py",
+      "bytes": 12287,
+      "sha256": "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c"
+    },
+    {
+      "path": "verified_codex_task.py.txt",
+      "source_path": "verified_codex_task.py",
+      "bytes": 16674,
+      "sha256": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710"
+    },
+    {
+      "path": "test_interrupt_parent.py.txt",
+      "source_path": "test_interrupt_parent.py",
+      "bytes": 7881,
+      "sha256": "ebade7860a06379bda150a5e1d8d48cc75a69a1a662c46baa6513aa00101e1f8"
+    },
+    {
+      "path": "test_auth_home.py.txt",
+      "source_path": "test_auth_home.py",
+      "bytes": 4134,
+      "sha256": "f3b12ac55c03b09d8baae7bf23cf860fde77bb4c4f7c44eb9c19f500e91fbfad"
+    },
+    {
+      "path": "test_checkpoint_gate_core.py.txt",
+      "source_path": "test_checkpoint_gate_core.py",
+      "bytes": 3843,
+      "sha256": "e6e031e3236be222887e3dca8e6e033c56309c7e038f28659ecaf21368449231"
+    },
+    {
+      "path": "offline-inputs.json",
+      "source_path": "offline-inputs.json",
+      "bytes": 1799,
+      "sha256": "43d11853290cd5845628c8c87e2c1c513c26c8e6c4b30afdf5f70be1b50e9f13"
+    },
+    {
+      "path": "offline-summary.json",
+      "source_path": "offline-summary.json",
+      "bytes": 2048,
+      "sha256": "d05cedca4050b7eea68f05efaf10538a4585b7a82b00a584fd8f8bd096ec2170"
+    },
+    {
+      "path": "offline-native-result.json",
+      "source_path": "offline-native-result.json",
+      "bytes": 151,
+      "sha256": "92150ba2d0a42c193f14fcafd028c418891154f679d006b496b40b0ed5b0aa66"
+    },
+    {
+      "path": "offline-transport.log",
+      "source_path": "offline-transport.log",
+      "bytes": 86,
+      "sha256": "5d36a233e6a4b49180592ab89fc61e32f5bbc382da062799e66ae23a22b14f72"
+    },
+    {
+      "path": "run-offline.py.txt",
+      "source_path": "run-offline.py",
+      "bytes": 4444,
+      "sha256": "7bfce87d15eb860175f26d914f8517edecb98e05b3407d2fedacc19778ea5593"
+    },
+    {
+      "path": "run-offline.sh.txt",
+      "source_path": "run-offline.sh",
+      "bytes": 288,
+      "sha256": "3a0d4b36639caac31859237e2d4b25d67a758e6b0752a707ba96cc16979d4918"
+    },
+    {
+      "path": "prepare-fixture.sh.txt",
+      "source_path": "prepare-fixture.sh",
+      "bytes": 1551,
+      "sha256": "28c7ef43b8444246c9354f2548ae772877769b30b42f36c159d7aad11a91e4f5"
+    },
+    {
+      "path": "prepare-fixture.log",
+      "source_path": "prepare-fixture.log",
+      "bytes": 405,
+      "sha256": "8aaa505842da272799aaea09e32241499673906855107ea505be1b055f260505"
+    },
+    {
+      "path": "document-ready.json",
+      "source_path": "document-ready.json",
+      "bytes": 2558,
+      "sha256": "df59b0b464adaa8776404859a35dff222793c7dec04f57148d40d779be5b6181"
+    },
+    {
+      "path": "document-plan.json",
+      "source_path": "document-plan.json",
+      "bytes": 5637,
+      "sha256": "2e111b242553966e0098db8d0e09d5636c0abbe8e786126949549a9b706a6148"
+    },
+    {
+      "path": "host/finish-auth.py.txt",
+      "source_path": "host/finish-auth.py",
+      "bytes": 6950,
+      "sha256": "0986485a1a34315fb3f735fbc2c9398cd8302c4c8c91ead3ac65ec2135426229"
+    },
+    {
+      "path": "host/launch.py.txt",
+      "source_path": "host/launch.py",
+      "bytes": 5511,
+      "sha256": "c8ad6fbc3523fdb945b6f3236e5f40ea84092050724ef447b93981965074a8a7"
+    },
+    {
+      "path": "host/native_host.py.txt",
+      "source_path": "host/native_host.py",
+      "bytes": 6375,
+      "sha256": "2dd655c02e549844faaaba7b03e419da15245669b4f16e9c32d3bdd08dda6f0e"
+    },
+    {
+      "path": "host/setup_auth.py.txt",
+      "source_path": "host/setup_auth.py",
+      "bytes": 8623,
+      "sha256": "451b1ca4614876bfc523c65f356c10aa938422b0cf7729dea8403b5f11b9eab7"
+    },
+    {
+      "path": "host/terminal_control.py.txt",
+      "source_path": "host/terminal_control.py",
+      "bytes": 12471,
+      "sha256": "7b470b371155193270b457f33915a70724d5b171741ce79f94c6be40cfa8fde2"
+    },
+    {
+      "path": "host/owner-grant.json",
+      "source_path": "host/owner-grant.json",
+      "bytes": 2470,
+      "sha256": "68ba3b54fc419ca54c308355bae642aec9a3bdd22a2a58bd359d9bb10e8ec051"
+    },
+    {
+      "path": "host-checks/results.json",
+      "source_path": "host-checks/results.json",
+      "bytes": 8132,
+      "sha256": "66d31607da8707d416fda56b5f921f67da4387351e984d51693444140bdf38aa"
+    },
+    {
+      "path": "offline-public/junit.xml",
+      "source_path": "offline-public/junit.xml",
+      "bytes": 2631,
+      "sha256": "b7a30f24ea31c548ab7025ddc5b2af9b5dbeb25bb101bff9befe833d14f05ca2"
+    },
+    {
+      "path": "offline-public/logs/offline_helpers.log",
+      "source_path": "offline-public/logs/offline_helpers.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "offline-public/logs/offline_helpers.process.json",
+      "source_path": "offline-public/logs/offline_helpers.process.json",
+      "bytes": 2553,
+      "sha256": "b75231cea8d7a0ef3f78b6ae351061ad12c7cf9ee18c21e199ee3e50dc85aeb2"
+    },
+    {
+      "path": "offline-public/result.json",
+      "source_path": "offline-public/result.json",
+      "bytes": 2100,
+      "sha256": "cd6b44a29fd84826ab10165f8df39486030b09597cc985914ddc8f23f345f470"
+    },
+    {
+      "path": "offline-public/start.json",
+      "source_path": "offline-public/start.json",
+      "bytes": 532,
+      "sha256": "bd4b1f87ebb7f3a53ff088a11d24e5dc66c3655ab678320d8dfdaccb75e19d24"
+    },
+    {
+      "path": "offline-public/stdout.log",
+      "source_path": "offline-public/stdout.log",
+      "bytes": 99,
+      "sha256": "40ebc2f045c4f95ad443fec6f8c250aebd1a83ef6e00959431e4069e8b0504cc"
+    },
+    {
+      "path": "host-checks/pre-format.zip",
+      "source_path": "host-checks/pre-format.zip",
+      "bytes": 9125,
+      "sha256": "661c2f38d15bc3e2a00959d1c355992f6d2a58a1ba23a1f1a91abf9cc62dc517"
+    }
+  ],
+  "raw_model_output_included": false,
+  "credentials_included": false,
+  "archive_review": "Explicit source/fixture/public-output allowlist. Output redactor is not applied to Python variable references or the fixed NOT GRANTED notice; offline runtime logs scanned with zero matches."
+}

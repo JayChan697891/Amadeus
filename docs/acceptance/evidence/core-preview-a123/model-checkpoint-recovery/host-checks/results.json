@@ -1,0 +1,67 @@
+[
+  {
+    "name": "before",
+    "argv": [
+      "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "check",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\native_host.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py"
+    ],
+    "exit_code": 1,
+    "stdout": "E701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py:48:49\n   |\n46 |             info = sftp.lstat(path)\n47 |             assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600 and info.st_size <= 262144\n48 |             with sftp.open(path, \"rb\") as stream: raw = stream.read(262145)\n   |                                                 ^\n49 |             assert len(raw) == info.st_size\n50 |             return raw\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py:67:79\n   |\n65 |         assert len(raw) + len(errors) <= 65536\n66 |         for name, data in ((\"stdout\", raw), (\"stderr\", errors)):\n67 |             with (BASE / (\"finish.\" + name + \".private\")).open(\"xb\") as stream: stream.write(data)\n   |                                                                               ^\n68 |         result[\"cleanup_exit_code\"] = code\n69 |         assert code == 0\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py:84:8\n   |\n83 | if __name__ == \"__main__\":\n84 |     try: main()\n   |        ^\n85 |     except Exception as error:\n86 |         raise SystemExit(\"Cleanup stopped: \" + type(error).__name__ + \"; inspect without retry.\") from None\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py:52:68\n   |\n50 |             for name, expected in [(\"ready.json\", READY), (\"owner-grant.json\", sha(raw_grant)),\n51 |                                    (\"native_host.py\", grant[\"host_helper_sha256\"][\"native_host.py\"])]:\n52 |                 with sftp.open(REMOTE + \"/\" + name, \"rb\") as stream: raw = stream.read(262145)\n   |                                                                    ^\n53 |                 assert len(raw) <= 262144 and sha(raw) == expected\n54 |         channel = client.get_transport().open_session(timeout=15)\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py:71:29\n   |\n69 |             if channel.exit_status_ready() and drained:\n70 |                 code = channel.recv_exit_status()\n71 |                 if code >= 0: result.update(status=\"terminal\", exit_code=code)\n   |                             ^\n72 |                 break\n73 |             if not client.get_transport().is_active() and drained:\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py:87:79\n   |\n85 |                       logs_truncated=sum(counts.values()) > 65536, observed_at=datetime.now(UTC).isoformat())\n86 |         for name, data in buffers.items():\n87 |             with (BASE / (\"launch.\" + name + \".private\")).open(\"xb\") as stream: stream.write(data)\n   |                                                                               ^\n88 |         save(\"launch-result.json\", result)\n89 |         client.close()\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\native_host.py:30:8\n   |\n28 |         os.fsync(stream.fileno())\n29 |     fd = os.open(ROOT, os.O_RDONLY | os.O_DIRECTORY)\n30 |     try: os.fsync(fd)\n   |        ^\n31 |     finally: os.close(fd)\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\native_host.py:31:12\n   |\n29 |     fd = os.open(ROOT, os.O_RDONLY | os.O_DIRECTORY)\n30 |     try: os.fsync(fd)\n31 |     finally: os.close(fd)\n   |            ^\n32 |\n33 | def main():\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py:73:45\n   |\n71 |         info = sftp.lstat(path)\n72 |         assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600 and info.st_size <= limit\n73 |         with sftp.open(path, \"rb\") as stream: data = stream.read(limit + 1)\n   |                                             ^\n74 |         assert len(data) == info.st_size\n75 |         return data\n   |\n\nE701 Multiple statements on one line (colon)\n  --> D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py:89:63\n   |\n87 |             assert sha(remote_read(sftp, \"ready.json\")) == READY and ready[\"plan_sha256\"] == PLAN\n88 |             assert grant[\"helper_sha256\"] == ready[\"helper_sha256\"]\n89 |             for name, digest in ready[\"helper_sha256\"].items(): assert sha(remote_read(sftp, name)) == digest\n   |                                                               ^\n90 |             assert sha(remote_read(sftp, \"native_host.py\")) == grant[\"host_helper_sha256\"][\"native_host.py\"]\n91 |             try:\n   |\n\nE701 Multiple statements on one line (colon)\n   --> D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py:98:17\n    |\n 96 |                     stream.write(raw_grant)\n 97 |                     stream.flush()\n 98 |             else: assert existing == raw_grant\n    |                 ^\n 99 |             assert remote_read(sftp, \"owner-grant.json\") == raw_grant\n100 |         preflight = command([PYTHON, \"-I\", \"-B\", \"-c\", PREFLIGHT, READY, PLAN])\n    |\n\nE701 Multiple statements on one line (colon)\n   --> D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py:136:8\n    |\n135 | if __name__ == \"__main__\":\n136 |     try: main()\n    |        ^\n137 |     except Exception as error:\n138 |         raise SystemExit(\"Setup stopped: \" + type(error).__name__ + \"; inspect, do not retry or synthesize host-exit.\") from None\n    |\n\nFound 12 errors.\n",
+    "stderr": ""
+  },
+  {
+    "name": "format",
+    "argv": [
+      "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "format",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\native_host.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py"
+    ],
+    "exit_code": 0,
+    "stdout": "4 files reformatted\n",
+    "stderr": ""
+  },
+  {
+    "name": "after",
+    "argv": [
+      "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "check",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\native_host.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py"
+    ],
+    "exit_code": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "name": "format-check",
+    "argv": [
+      "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\finish-auth.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\launch.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\native_host.py",
+      "D:\\agentsync-debug\\m123-document-continuation\\host\\setup_auth.py"
+    ],
+    "exit_code": 0,
+    "stdout": "4 files already formatted\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "status": "fail",
+  "scope": "Offline owned-handle checks, cleanup mocks, and one actual Core/local Python checkpoint interruption; no models/accounts/mount/candidate",
+  "runtime_origin": "/root/amadeus-continuation-entry-a123-20261118/w/lib/python3.14/site-packages/agentsync/__init__.py",
+  "runtime_members": 97,
+  "source_manifest_sha256": "1c54de277e62fce7556f390843a380d086153cbbd97c1bef3a334a3b52c0206f",
+  "inputs_sha256": "43d11853290cd5845628c8c87e2c1c513c26c8e6c4b30afdf5f70be1b50e9f13",
+  "automatic_retry": false
+}

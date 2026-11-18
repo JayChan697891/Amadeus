@@ -1,0 +1,341 @@
+"""Interrupt one a123 owned parent only after its real checkpoint is durable."""
+
+import asyncio
+import hashlib
+import json
+import math
+import re
+import time
+from collections.abc import Callable
+from typing import Literal
+from weakref import WeakSet
+
+from agentsync.adapters.approved_launch import LaunchReview, _launch_key, digest
+from agentsync.adapters.codex_events import parse_codex_jsonl
+from agentsync.adapters.codex_invocation import CodexInvocation
+from agentsync.adapters.process_capture import CapturedProcess, _Protocol
+from agentsync.controlled_relay import ControlledRelay, RelayActor
+from agentsync.errors import AgentSyncError
+from agentsync.proposals import CHECKPOINT_PROTOCOL, parse_checkpoint_message
+from agentsync.storage.database import connect
+
+_CAPTURE_FIELDS = frozenset(
+    """
+    _loop _creation_order _id _state _transport _started _deadline _finished _stdout _stderr
+    _closed _parent_ended _done _limit _truncated _reason _error _capture_broken _timer _grace
+    _kill_confirmation _spawn_task _progress_cache
+""".split()
+)
+_OBSERVED: WeakSet[CapturedProcess] = WeakSet()
+_POLL_SECONDS = 0.05
+
+Interruption = Literal[
+    "kill_call_returned",
+    "missed_window",
+    "terminal_observed",
+    "truncated",
+    "observation_not_saved",
+    "already_observed",
+    "unknown",
+]
+
+
+def _turn_state(stdout: bytes) -> Literal["waiting", "started", "terminal", "unknown"]:
+    if not stdout.endswith(b"\n"):
+        return "waiting"
+    try:
+        text = stdout.decode("utf-8")
+        report = parse_codex_jsonl(text, exit_code=None)
+        if report.error_code in ("upstream_error", "process_unknown"):
+            return "terminal"
+        if report.error_code != "incomplete_stream":
+            return "unknown"
+        if report.tool_item_event_count != 0:
+            return "unknown"
+        if len(report.agent_messages) > 1:
+            return "unknown"  # A final answer already observed is not unfinished progress.
+        if report.agent_messages:
+            parse_checkpoint_message(report.agent_messages[0], ["review.md"], phase="checkpoint")
+        return (
+            "started"
+            if any(json.loads(line).get("type") == "turn.started" for line in text.split("\n")[:-1])
+            else "waiting"
+        )
+    except (AgentSyncError, UnicodeError, ValueError, RecursionError):
+        return "unknown"
+
+
+def _owned_live_pid(capture: CapturedProcess, transport: object) -> int | None:
+    if (
+        not isinstance(transport, asyncio.SubprocessTransport)
+        or transport is not capture._transport
+        or capture._done.done()
+        or capture._parent_ended
+        or capture._reason is not None
+        or capture._error is not None
+        or capture._capture_broken
+    ):
+        return None
+    try:
+        protocol = transport.get_protocol()
+        if type(protocol) is not _Protocol or protocol.owner is not capture:
+            return None
+        if transport.get_returncode() is not None or transport.is_closing():
+            return None
+        pid = transport.get_pid()
+    except (OSError, RuntimeError):
+        return None
+    return pid if type(pid) is int and pid > 0 else None
+
+
+async def interrupt_owned_parent(
+    capture: CapturedProcess,
+    review: LaunchReview,
+    *,
+    deadline: float,
+    save_boundary: Callable[[dict[str, object]], None],
+    checkpoint_gate: Callable[[], dict[str, object] | None],
+) -> Interruption:
+    """Require the same reviewed plan and captured process from the exact launch hook.
+
+    The caller must verify the installed a123 manifest, obtain the external
+    authorization for this review, and pass that review with the process returned
+    by PrivateCapture. Its exact-argument hook binds argv, cwd, stdin, and
+    environment. The deadline uses absolute event-loop time. The synchronous callback must durably save each
+    observation before it returns. The original capture owns terminal classification.
+    """
+    loop = asyncio.get_running_loop()
+    if (
+        type(capture) is not CapturedProcess
+        or vars(capture).keys() != _CAPTURE_FIELDS
+        or capture._loop is not loop
+        or type(capture._stdout) is not bytearray
+        or type(capture._stderr) is not bytearray
+        or type(capture._truncated) is not set
+        or not isinstance(capture._done, asyncio.Future)
+        or not isinstance(capture._spawn_task, asyncio.Task)
+        or not capture._spawn_task.done()
+        or capture._spawn_task.cancelled()
+    ):
+        return "unknown"
+    if (
+        type(review) is not LaunchReview
+        or review.client != "codex"
+        or type(review.plan) is not CodexInvocation
+        or type(review.plan_sha256) is not str
+        or re.fullmatch(r"[0-9a-f]{64}", review.plan_sha256) is None
+        or capture._limit != review.plan.output_limit
+        or capture._deadline != capture._started + review.plan.timeout_seconds
+        or type(deadline) not in (int, float)
+        or not math.isfinite(deadline)
+        or not callable(save_boundary)
+    ):
+        return "unknown"
+    if capture in _OBSERVED:
+        return "already_observed"
+    _OBSERVED.add(capture)
+    end = min(deadline, capture._deadline)
+    transport = capture._transport
+    pid = _owned_live_pid(capture, transport)
+    if pid is None:
+        return "unknown"
+    last_stdout_size = -1
+    turn_state = "waiting"
+    while loop.time() < end:
+        snapshot = await capture.snapshot()
+        if snapshot.stdout_truncated or snapshot.stderr_truncated:
+            return "truncated"
+        if snapshot.state != "running" or snapshot.exit_code is not None or snapshot.parent_ended:
+            return "missed_window"
+        if _owned_live_pid(capture, transport) != pid:
+            return "unknown"
+        if snapshot.stdout_bytes + snapshot.stderr_bytes > review.plan.output_limit:
+            return "unknown"
+        if snapshot.stdout_bytes != last_stdout_size:
+            turn_state = _turn_state(bytes(capture._stdout))
+            last_stdout_size = snapshot.stdout_bytes
+        if turn_state == "terminal":
+            return "terminal_observed"
+        if turn_state == "unknown":
+            return "unknown"
+        if turn_state != "started":
+            await asyncio.sleep(min(_POLL_SECONDS, max(0.0, end - loop.time())))
+            continue
+        try:
+            checkpoint = checkpoint_gate()
+        except Exception:
+            return "unknown"
+        if checkpoint is None:
+            await asyncio.sleep(min(_POLL_SECONDS, max(0.0, end - loop.time())))
+            continue
+        if (
+            loop.time() >= end
+            or _owned_live_pid(capture, transport) != pid
+            or len(capture._stdout) != snapshot.stdout_bytes
+            or len(capture._stderr) != snapshot.stderr_bytes
+            or capture._truncated
+        ):
+            return "unknown"
+        boundary = {
+            "plan_sha256": review.plan_sha256,
+            "capture_id": snapshot.capture_id,
+            "parent_pid": pid,
+            "owned_transport": True,
+            "parent_alive": True,
+            "turn_started_observed": True,
+            "terminal_event_observed": False,
+            "stdout_truncated": False,
+            "stderr_truncated": False,
+            "stdout_bytes": snapshot.stdout_bytes,
+            "stderr_bytes": snapshot.stderr_bytes,
+            "observed_at": loop.time(),
+            "scope": "owned_parent_only",
+            "checkpoint": checkpoint,
+        }
+        try:
+            if save_boundary(boundary) is not None:
+                return "observation_not_saved"
+        except Exception:
+            return "observation_not_saved"
+        if (
+            loop.time() >= end
+            or await capture.snapshot() != snapshot
+            or _owned_live_pid(capture, transport) != pid
+        ):
+            return "unknown"
+        # Re-read the durable/Core binding after saving. No yield from the final
+        # gate and live-parent/deadline checks to the one owned-handle kill.
+        try:
+            if checkpoint_gate() != checkpoint:
+                return "unknown"
+        except Exception:
+            return "unknown"
+        if (
+            loop.time() >= end
+            or _owned_live_pid(capture, transport) != pid
+            or len(capture._stdout) != snapshot.stdout_bytes
+            or len(capture._stderr) != snapshot.stderr_bytes
+            or capture._truncated
+        ):
+            return "unknown"
+        try:
+            transport.kill()
+        except (OSError, RuntimeError):
+            return "unknown"
+        return "kill_call_returned"
+    return "missed_window"
+
+
+def saved_checkpoint(
+    relay: ControlledRelay, actor: RelayActor, review: LaunchReview, capture: CapturedProcess
+) -> dict[str, object] | None:
+    """Read the pinned relay receipt and its exact live Core publication witness.
+
+    This fixed-host instrumentation uses the version-pinned private receipt key;
+    it neither publishes progress itself nor grants continuation permission.
+    """
+    task = review.task
+    project = actor.profile.project_id
+    assert (task.project_id, task.session_id) == (project, actor.profile.session_id)
+    key = relay._task_receipt_key(project, task.task_id)
+    progress = relay._read_receipt(key, "proposal-progress", durable=True)
+    if progress is None:
+        return None
+    admission = relay._read_receipt(key, "incomplete", durable=True)
+    dispatch = relay._read_receipt(key, "first-dispatched", durable=True)
+    assert admission is not None and dispatch is not None
+    assert admission["mode"] == "codex_proposal"
+    assert admission["checkpoint_completed_proposal"] is True
+    assert (
+        admission["checkpoint_protocol"] == progress["checkpoint_protocol"] == CHECKPOINT_PROTOCOL
+    )
+    assert progress["capture_sha256"] == digest(capture._id)
+    assert (
+        progress["launch_request_sha256"] == dispatch["launch_request_sha256"] == _launch_key(task)
+    )
+    assert dispatch["agent_sha256"] == digest(actor.agent_id)
+    assert dispatch["session_sha256"] == digest(task.session_id)
+    assert relay._read_receipt(key, "first-observed", durable=True) is None
+    assert relay._read_receipt(key, "first-stopped", durable=True) is None
+    raw = bytes(capture._stdout)
+    assert raw.endswith(b"\n") and not capture._truncated
+    report = parse_codex_jsonl(raw.decode("utf-8"), exit_code=None)
+    assert report.error_code == "incomplete_stream" and report.tool_item_event_count == 0
+    assert len(report.agent_messages) == 1
+    files = parse_checkpoint_message(report.agent_messages[0], ["review.md"], phase="checkpoint")
+    assert files[0]["content"].strip()
+    started = False
+    prefix, matched = hashlib.sha256(), False
+    for line in raw.split(b"\n")[:-1]:
+        prefix.update(line + b"\n")
+        matched = matched or prefix.hexdigest() == progress["stdout_sha256"]
+        event = json.loads(line)
+        if event["type"] == "turn.started":
+            started = True
+        elif started and isinstance(event.get("item"), dict):
+            assert event["item"].get("type") != "error"
+    assert started and matched
+    auth = {
+        "project_id": project,
+        "session_id": task.session_id,
+        "session_token": actor.session_token,
+    }
+    context = relay._core.execute(
+        "get_context", {**auth, "context_id": progress["context_id"], "version": 1}
+    )
+    assert progress["context_version"] == context["version"] == 1
+    assert context["source"] == "amadeus:task-proposal" and context["kind"] == "note"
+    assert (
+        context["author_agent_id"] == actor.agent_id
+        and context["author_session_id"] == task.session_id
+    )
+    assert (
+        hashlib.sha256(context["content"].encode("utf-8")).hexdigest() == progress["content_sha256"]
+    )
+    body = json.loads(context["content"])
+    assert body["format"] == "amadeus-source-proposal-v1" and body["files"] == files
+    assert body["project_id"] == project and body["task_id"] == task.task_id
+    assert body["task_version"] == progress["task_version"]
+    assert body["worktree_id"] == admission["worktree_id"] == actor.worktree_id
+    assert body["base_head"] == admission["base_head"] == actor.expected_head
+    assert body["execution_provenance"] == "unverified"
+    expected = {
+        name: progress[name]
+        for name in ("context_id", "context_version", "content_sha256", "task_version")
+    }
+    expected.update(
+        task_id=task.task_id,
+        worktree_id=actor.worktree_id,
+        base_head=actor.expected_head,
+        verification="unverified",
+        execution_provenance="unverified",
+    )
+    with connect(relay._core.db_path) as db:
+        witness = db.execute(
+            "SELECT response FROM idempotency WHERE project_id=? AND session_id=? AND operation='publish_task_proposal' AND request_id=?",
+            (project, task.session_id, f"relay:{key}:first:completed-proposal-checkpoint"),
+        ).fetchall()
+        current = db.execute(
+            "SELECT status,version,owner_session_id,lease_expires_at FROM tasks WHERE project_id=? AND id=?",
+            (project, task.task_id),
+        ).fetchone()
+    assert len(witness) == 1 and json.loads(witness[0]["response"]) == expected
+    assert (
+        current is not None
+        and current["status"] == "running"
+        and current["version"] == progress["task_version"]
+    )
+    assert (
+        current["owner_session_id"] == task.session_id and current["lease_expires_at"] > time.time()
+    )
+    return {
+        "context_id": progress["context_id"],
+        "context_version": 1,
+        "content_sha256": progress["content_sha256"],
+        "task_version": progress["task_version"],
+        "progress_receipt_sha256": digest(progress),
+        "publication_sha256": digest(expected),
+        "capture_sha256": progress["capture_sha256"],
+        "run_sha256": progress["run_sha256"],
+        "launch_request_sha256": progress["launch_request_sha256"],
+    }

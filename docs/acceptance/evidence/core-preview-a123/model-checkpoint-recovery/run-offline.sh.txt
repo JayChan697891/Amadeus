@@ -1,0 +1,4 @@
+set -eu
+umask 077
+cd /root/amadeus-document-continuation-offline-a123-20261118
+exec /root/amadeus-continuation-entry-a123-20261118/w/bin/python -I -B /root/amadeus-document-continuation-offline-a123-20261118/run-offline.py 43d11853290cd5845628c8c87e2c1c513c26c8e6c4b30afdf5f70be1b50e9f13

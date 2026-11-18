@@ -1,0 +1,112 @@
+"""Cleanup admission checks only: no credentials, mount, deletion or model calls."""
+
+import json
+from types import SimpleNamespace
+
+import auth_home as home
+import pytest
+
+
+@pytest.fixture
+def cleanup(tmp_path, monkeypatch):
+    base = tmp_path / "project"
+    (base / "core").mkdir(parents=True)
+    (base / "core/agentsync.db").touch()
+    (base / "receipts").mkdir()
+    ready = {"project_id": "project", "task": {"id": "producer"}}
+    records = {
+        "host-exit.json": {"status": "terminal", "exit_code": 0, "ready_sha256": "ready"},
+        "private-owner.json": {"project_id": "project", "admin_token": "fixture-owner"},
+    }
+    attempts = {}
+    monkeypatch.setattr(home, "BASE", base)
+    monkeypatch.setattr(home, "READY_SHA", "ready")
+    monkeypatch.setattr(home, "load", lambda name: records[str(name)])
+    monkeypatch.setattr(home, "no_codex_parent", lambda: None)
+    monkeypatch.setattr(home, "Core", lambda path: object())
+
+    class Relay:
+        def __init__(self, *_):
+            pass
+
+        def owner_inspect_attempts(self, project_id, task_id, **auth):
+            assert project_id == "project" and auth == {"admin_token": "fixture-owner"}
+            return attempts[task_id], SimpleNamespace(state="not_dispatched")
+
+    monkeypatch.setattr(home, "ControlledRelay", Relay)
+
+    def plan(receiver=False):
+        task_id = "receiver" if receiver else "producer"
+        folder = "continue-" + home.digest(["project", "producer"]) if receiver else "terminal-run"
+        prefix = "receiver-launch" if receiver else "launch-1"
+        output = base / folder
+        output.mkdir()
+        for suffix in ("plan", "approved"):
+            name = folder + "/" + prefix + "-" + suffix + ".json"
+            (base / name).write_text(json.dumps({}))
+            records[name] = {"plan_sha256": task_id + "-plan"}
+        records[folder + "/" + prefix + "-plan.json"].update(
+            client="codex",
+            task={"project_id": "project", "task_id": task_id, "session_id": task_id},
+        )
+        attempts[task_id] = SimpleNamespace(
+            state="terminal_recorded",
+            client="codex",
+            session_sha256=home.digest(task_id),
+            admission=SimpleNamespace(
+                state="both_reservations_recorded", plan_sha256=task_id + "-plan"
+            ),
+            parent_ended=True,
+            exit_code=0 if receiver else -9,
+            status="succeeded" if receiver else "failed",
+            error_code=None,
+        )
+        return attempts[task_id]
+
+    return ready, records, attempts, plan, base
+
+
+def test_cleanup_inspects_both_distinct_terminal_launches(cleanup):
+    ready, records, _, plan, base = cleanup
+    plan()
+    plan(True)
+    (base / "receiver-host-intent.json").touch()
+    records["receiver-host-exit.json"] = dict(records["host-exit.json"])
+    assert [row["task_id"] for row in home.stopped(ready)] == ["producer", "receiver"]
+
+
+def test_cleanup_requires_receiver_host_terminal_after_intent(cleanup):
+    ready, _, _, _, base = cleanup
+    (base / "receiver-host-intent.json").touch()
+    with pytest.raises(KeyError):
+        home.stopped(ready)
+
+
+@pytest.mark.parametrize("receiver", [False, True])
+@pytest.mark.parametrize("invalid", ["running", "wrong-plan"])
+def test_cleanup_refuses_unconfirmed_or_mismatched_launch(cleanup, receiver, invalid):
+    ready, _, _, plan, _ = cleanup
+    first = plan()
+    second = plan(True)
+    selected = second if receiver else first
+    if invalid == "running":
+        selected.state = "running"
+    else:
+        selected.admission.plan_sha256 = "different"
+    with pytest.raises(AssertionError):
+        home.stopped(ready)
+
+
+def test_cleanup_checks_actual_process_boundary_even_without_plans(cleanup, monkeypatch):
+    ready, _, _, _, _ = cleanup
+
+    def live():
+        raise AssertionError("owned parent still running")
+
+    monkeypatch.setattr(home, "no_codex_parent", live)
+    with pytest.raises(AssertionError, match="owned parent"):
+        home.stopped(ready)
+
+
+def test_cleanup_accepts_no_dispatch_after_confirmed_host_exit(cleanup):
+    assert home.stopped(cleanup[0]) == []
