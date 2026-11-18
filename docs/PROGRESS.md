@@ -22,6 +22,10 @@ prepared3.14.6 wheel environment: six offline setup checks pass, exact97 members
 and original wheel provenance match. Root/Astra accepted preparation only; its
 full suite is NOT RUN and no parallel pytest was started.
 [Prepared later runner](acceptance/evidence/core-preview-a122/full-windows314-wheel/preparation/root-review.json).
+Its source driver and independent sdist installation are also prepared and
+reviewed; sdist has six passing offline setup checks, but its baseline must come
+from the future314 wheel result, never311/312. Both full suites remain NOT RUN.
+[Source](acceptance/evidence/core-preview-a122/full-windows314-source/preparation/root-review.json) / [sdist](acceptance/evidence/core-preview-a122/full-windows314-sdist/preparation/root-review.json).
 This is the existing minimum-Python matrix gap, not a new stage or repeat of the
 six completed Windows3.12/Linux3.14 suites. The r4 owner trial remains available.
 

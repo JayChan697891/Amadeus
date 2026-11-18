@@ -1,0 +1,16 @@
+{
+  "scope": "Windows3.14.6 a122 source preparation only",
+  "status": "SOURCE DRIVER READY; FULL SUITE NOT RUN",
+  "tests": "NOT RUN",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "root_review": "Actual minimal driver diff b6a3a0; actual6 setup receipts/log hashes, 97 installed sdist members and both driver copies checked in65ac52 exit0.",
+  "independent_review": "Astra accepted preparation scope; noted incorrect copied observer-session note, corrected before archiving without changing drivers or installation receipts.",
+  "note_correction": "314 sdist baseline depends on its own future314 wheel terminal result, whose session is not yet started;66521 belongs only to311. Driver baseline path was always correct.",
+  "execution_order": "Complete and review original311 combination before selecting314; bind actual314 wheel XML before sdist. No parallel full-suite launch.",
+  "formal_release": "BLOCKED",
+  "model_calls": 0,
+  "files_sha256": {
+    "preparation.json": "55226182e0fd51255df937b8f7ce675c799034b476471a91a2a97855a6247fab",
+    "run-source.py.txt": "99c5929e15444b650d4c7e4fd3e08108fd669063b49975379fb9d9d8b8803e39"
+  }
+}
