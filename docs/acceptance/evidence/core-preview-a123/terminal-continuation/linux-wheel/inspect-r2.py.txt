@@ -1,0 +1,64 @@
+"""Verify exact harvested files and bounded test identities; never execute tests."""
+import hashlib
+import json
+import xml.etree.ElementTree as ET
+import zipfile
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+transfer = json.loads((BASE/'transfer.json').read_bytes())
+bundle = json.loads((BASE/'bundle.json').read_bytes())
+for name, path in [('public-evidence.zip',BASE/'public-evidence.zip'),('raw-private.zip',BASE/'private/raw-private.zip')]:
+    with path.open('rb') as f: digest=hashlib.file_digest(f,'sha256').hexdigest()
+    assert {'size':path.stat().st_size,'sha256':digest}==transfer['transfers'][name]
+out=BASE/'harvest'
+assert out.is_dir()
+with zipfile.ZipFile(BASE/'public-evidence.zip') as z:
+    assert set(z.namelist())==set(transfer['files']) and len(z.namelist())==len(transfer['files'])
+    for name,row in transfer['files'].items():
+        assert not Path(name).is_absolute() and '..' not in Path(name).parts and '\\' not in name
+        data=z.read(name)
+        assert len(data)==row['size'] and hashlib.sha256(data).hexdigest()==row['sha256']
+        path=out/name
+        assert path.read_bytes()==data
+result=json.loads((out/'run/result.json').read_bytes())
+assert result['status']=='pass' and len(result['checks'])==7
+cases={}
+for case in ET.parse(out/'run/focused-junit.xml').iter('testcase'):
+    key=(case.get('classname'),case.get('name'))
+    assert key not in cases
+    cases[key]=next((kind for kind in ('failure','error','skipped') if case.find(kind) is not None),'pass')
+assert set(cases)=={tuple(row) for row in bundle['expected_cases']} and set(cases.values())=={'pass'}
+for check in result['checks']:
+    assert check['status']=='pass' and check['exit_code']==0
+    assert hashlib.sha256((out/'run'/check['log']).read_bytes()).hexdigest()==check['log_sha256']
+with zipfile.ZipFile(BASE/'private/raw-private.zip') as z:
+    with z.open('t/focused-raw.xml') as f: raw_xml=hashlib.file_digest(f,'sha256').hexdigest()
+    with z.open('run/stdout.private') as f: raw_stdout=hashlib.file_digest(f,'sha256').hexdigest()
+assert raw_xml==result['junit']['raw_private_sha256']
+assert raw_stdout==result['stdout']['raw_private_sha256']
+assert result['junit']['credential_redactions']==result['stdout']['credential_redactions']==0
+# Zero redactions does not imply byte-identical XML: persist_junit serializes it.
+import sys,types
+manifest=json.loads((BASE/'source-manifest.json').read_bytes())
+with zipfile.ZipFile(BASE/'source.zip') as z:
+    source=z.read('tools/release_acceptance.py')
+assert hashlib.sha256(source).hexdigest()==manifest['tools/release_acceptance.py']['sha256']
+collector=types.ModuleType('frozen_continuation_collector')
+sys.modules[collector.__name__]=collector
+exec(compile(source,'frozen_release_acceptance.py','exec'),collector.__dict__)
+with zipfile.ZipFile(BASE/'private/raw-private.zip') as z:
+    raw_path=BASE/'private/raw-junit.xml'
+    with raw_path.open('xb') as f: f.write(z.read('t/focused-raw.xml'))
+    raw_text=z.read('run/stdout.private').decode('utf-8',errors='replace')
+normalized=BASE/'private/regenerated-public.xml'
+assert not normalized.exists()
+redactions=collector.persist_junit(raw_path,normalized)
+assert redactions==result['junit']['credential_redactions']
+assert normalized.read_bytes()==(out/'run/focused-junit.xml').read_bytes()
+clean,redactions=collector.redact_credentials(raw_text)
+assert redactions==result['stdout']['credential_redactions']
+assert clean.encode('utf-8')==(out/'run/stdout.log').read_bytes()
+record={'status':'pass','native_transport_exit':0,'native_session':2571,'native_terminal_chunk':'9adc0d','harvest':str(out),'source_commit':bundle['source_commit'],'runtime_commit':bundle['runtime_commit'],'files':transfer['file_count'],'total_bytes':transfer['total_bytes'],'same_windows_deterministic_cases':18,'native_hidden_input_cases':4,'all_cases':len(cases),'native_checks':7,'raw_to_frozen_collector_public_identical':True,'credential_redactions':0,'model_calls':0,'real_candidate_execution':False,'scope':'18 deterministic entry/Core checks plus 4 actual PTY input checks, not real-model/whole-entry interactive E2E'}
+with (BASE/'inspection-r2.json').open('x',encoding='utf-8') as f: json.dump(record,f,indent=2)
+print(json.dumps(record))

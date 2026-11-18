@@ -1,0 +1,20 @@
+{
+  "status": "fail",
+  "version": "0.3.0a123",
+  "source_commit": "6cd580752d3a4feaf0052c130235190f04168df8",
+  "runtime_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "bundle_sha256": "5d64b7a34c8283d11d876e5069e673414d49edc04f13b28b26225bc37325af37",
+  "controller_pid": 11497,
+  "driver_sha256": "77f40ebf7d77efac581eaa3fa98e9377a5f802ac5098970906e77aafea3d1da1",
+  "started_at": "2026-11-18T08:32:48.348629+00:00",
+  "boot_id": "fb12aa21-3547-421f-883b-4bfaf4495506",
+  "scope": "Linux installed wheel: 18 deterministic entry/Core checks and 4 native hidden-input PTY checks; no model E2E",
+  "model_calls": 0,
+  "real_clients": "NOT RUN",
+  "candidate_execution": "No real candidate execution; synthetic verifier only",
+  "docker": "NOT RUN; opt-in environment cleared, existing fixture skips retained",
+  "full_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": []
+}

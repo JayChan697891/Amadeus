@@ -16,10 +16,18 @@ members are unchanged, so the pinned0113065f wheel needs no rebuild.
 Early missing-entry, selection and incorrect-test-expectation failures remain
 preserved. Their old working trees were not snapshotted, so exact old-source
 reruns are unavailable; final code/test bytes are bound to the saved hashes.
-Next check the frozen example pair on local Linux, then prepare a separate
-reviewed inert-document checkpoint/interruption/continuation plan. No new real
-model, credential copy or candidate execution has started. Native Linux terminal
-and real-model recovery remain NOT RUN; the149/150-byte experiment is not retried.
+The frozen6cd5807 examples now also pass22 checks in a fresh local Linux3.14.7
+installation of the same0113065f wheel:18 deterministic entry/Core cases and4
+actual hidden-input PTY cases. Original2571/9adc0d exited0; Root/Astra checked
+the actual XML,7 process receipts,284 source blobs and97 installed members.
+[Linux result and limits](acceptance/evidence/core-preview-a123/terminal-continuation/linux-wheel/summary.json).
+Two report-processing assertions failed separately from the tests: XML
+serialization, then a Windows CRLF difference. Both scripts/failures remain;
+the original reports were not rewritten and no tests were repeated.
+Next prepare a separate reviewed inert-document checkpoint/interruption/
+continuation plan. No new real model, credential copy or candidate execution
+has started. Whole-entry interactive E2E and real-model recovery remain NOT RUN;
+the149/150-byte experiment is not retried. Public r5 remains unchanged.
 
 The next bounded P1 improvement is complete in development source: project owners
 can inspect saved checkpoint metadata through `relay-status --task-id` and

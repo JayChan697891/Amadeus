@@ -27,11 +27,16 @@ The P0 terminal continuation gap is now implemented using the existing SDK,
 without a Core rewrite or new phase. The new example requires an authentic
 saved checkpoint and confirmed ended failure, explicit receiver preparation,
 then separate continuation and launch approvals. Its18 affected Windows checks
-and independent review pass; raw model execution and candidate execution remain
-outside that result. Next validate this example pair on local Linux before a
-separate bounded real-document interruption/continuation experiment. This cannot
-reuse or relabel the previous successful-producer/failed-fixture attempt.
+and independent review pass. A fresh Linux installation of the existing pinned
+wheel also passes the same18 cases plus4 actual hidden-input PTY checks;
+Root/Astra inspected actual XML, process receipts and source/installed bindings.
+These are not whole-entry interactive E2E or real-model recovery results.
+Next prepare a separate bounded real-document interruption/continuation
+experiment. This cannot reuse or relabel the previous successful-producer/
+failed-fixture attempt, and does not authorize candidate execution.
 See [the actual entry evidence](acceptance/evidence/core-preview-a123/terminal-continuation/summary.json).
+The [Linux follow-up](acceptance/evidence/core-preview-a123/terminal-continuation/linux-wheel/summary.json)
+preserves separate report-processing failures without repeating tests.
 
 Current P0 increment: optional completed-proposal progress capture in the real
 producer path, bound to launch approval and the existing live Core lease. Its
