@@ -1,0 +1,15 @@
+{
+  "scope": "Windows3.11 a122 source preparation only",
+  "status": "READY AFTER ORIGINAL WHEEL TERMINAL REVIEW",
+  "tests": "NOT RUN",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "root_review": "Actual driver diff, offline installation logs/receipts and 97 installed sdist members checked. Native 1c1082 exit0. Astra independently accepted preparation scope.",
+  "observer_correction": "918e4e KeyError from reading exit_code at receipt top level; corrected to result.exit_code after actual schema inspection; no setup/test was repeated.",
+  "depends_on": "Original wheel native session66521 must reach observed terminal and be reviewed. sdist also requires actual current311 XML size/hash binding.",
+  "formal_release": "BLOCKED",
+  "model_calls": 0,
+  "files_sha256": {
+    "preparation.json": "540a16a7813b88a45c1050d8fdb6738d9ad74eda785aeb2f926c774e19b3ab3d",
+    "run-source.py.txt": "55598acea8567411b3ebbfd69030b23c698c2d60a73a8d675c88b4cc45dbd523"
+  }
+}

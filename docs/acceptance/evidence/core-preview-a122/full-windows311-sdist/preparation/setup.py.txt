@@ -1,0 +1,135 @@
+"""Offline setup only; leaves the first Windows3.11 full pytest for Root review."""
+
+import hashlib
+import json
+import os
+import runpy
+import sys
+import tomllib
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+ROOT = Path("D:/agentsync-debug/m122win311")
+INSTALL = ROOT / "d"
+OLD = Path("D:/agentsync-debug/continuation-cc30ed21/windows-py311-venv")
+WHEELHOUSE = OLD.parent / "windows-py311-wheelhouse"
+FROZEN = Path("D:/agentsync-debug/m122fullw/s")
+RUN = BASE / "setup"
+SCRATCH, HOME = RUN / "t", RUN / "home"
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(name, value):
+    with (RUN / name).open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def old_members():
+    return {p.relative_to(OLD).as_posix(): sha(p) for p in (OLD / "Lib/site-packages/agentsync").rglob("*")
+            if p.is_file() and "__pycache__" not in p.parts}
+
+
+def verify_inputs(driver):
+    # The test baseline is bound only after the separately running wheel suite ends.
+    for path, (size, digest) in driver["INPUTS"].items():
+        if path == driver["WHEEL_BASELINE"]:
+            continue
+        assert path.resolve(strict=True) == path and path.is_file()
+        assert path.stat().st_size == size and sha(path) == digest
+
+
+def main():
+    assert os.name == "nt" and sys.version_info[:3] == (3, 11, 15)
+    assert Path(sys.prefix).resolve() == OLD and sys.flags.isolated and sys.dont_write_bytecode
+    assert __debug__ and not INSTALL.exists()
+    RUN.mkdir()
+    (RUN / "logs").mkdir()
+    SCRATCH.mkdir()
+    HOME.mkdir()
+    for name in tuple(os.environ):
+        upper = name.upper()
+        if upper.startswith(("AGENTSYNC_", "ANTHROPIC_", "AWS_", "CLAUDE_", "CODEX_", "CURSOR_",
+                             "DOCKER_", "GEMINI_", "GIT_", "GITHUB_", "GOOGLE_", "OPENAI_", "PIP_",
+                             "PYTEST_", "PYTHON", "SSH_", "UV_")) or upper.endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(name)
+    for name in ("roaming", "local"):
+        (HOME / name).mkdir()
+    os.environ.update(HOME=str(HOME), USERPROFILE=str(HOME), CODEX_HOME=str(HOME),
+                      APPDATA=str(HOME / "roaming"), LOCALAPPDATA=str(HOME / "local"),
+                      XDG_CONFIG_HOME=str(HOME / "config"), XDG_CACHE_HOME=str(HOME / "cache"),
+                      TEMP=str(SCRATCH), TMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+                      PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1", PIP_CONFIG_FILE=os.devnull,
+                      PIP_NO_INDEX="1", PIP_NO_CACHE_DIR="1", PIP_DISABLE_PIP_VERSION_CHECK="1",
+                      GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0")
+    driver = runpy.run_path(str(BASE / "run-sdist.py"))
+    verify_inputs(driver)
+    manifest = json.loads(driver["MANIFEST"].read_bytes())
+    members = json.loads(driver["MEMBERS"].read_bytes())
+    assert len(manifest) == 3992 and len(members) == 97
+    assert members == {name.removeprefix("src/"): row["sha256"] for name, row in manifest.items()
+                       if name.startswith("src/agentsync/")}
+    assert sha(FROZEN / "tools/release_acceptance.py") == driver["COLLECTOR_SHA"]
+    assert sha(FROZEN / "pyproject.toml") == manifest["pyproject.toml"]["sha256"]
+    before = old_members()
+    start = {"started_at": datetime.now(UTC).isoformat(), "controller_pid": os.getpid(),
+             "python": sys.version, "base_interpreter": sys.executable,
+             "old_environment_scope": "a109 base interpreter only, not current acceptance evidence",
+             "fresh_install": str(INSTALL), "version": "0.3.0a122",
+             "source_commit": driver["COMMIT"], "source_files": 3992, "runtime_members": 97,
+             "driver_sha256": sha(BASE / "run-sdist.py"), "setup_sha256": sha(Path(__file__)),
+             "inputs": {str(p): {"bytes": size, "sha256": digest} for p, (size, digest) in driver["INPUTS"].items() if p != driver["WHEEL_BASELINE"]},
+             "offline_wheelhouse": str(WHEELHOUSE), "full_pytest": "NOT RUN",
+             "model_calls": 0, "candidate_executions": 0, "automatic_retry": False,
+             "formal_release": "BLOCKED"}
+    save("attempt.json", start)
+    result = {**start, "status": "fail", "checks": []}
+    try:
+        sys.path.insert(0, str(FROZEN))
+        from tools import release_acceptance as collector
+
+        assert Path(collector.__file__).resolve() == FROZEN / "tools/release_acceptance.py"
+        project = tomllib.loads((FROZEN / "pyproject.toml").read_text(encoding="utf-8"))
+        assert project["project"]["version"] == "0.3.0a122"
+        packages = collector._prepare_offline_packages(project, WHEELHOUSE, SCRATCH, RUN)
+        def check(name, command):
+            observed = collector.execute(name, list(map(str, command)), RUN, RUN, SCRATCH,
+                                         offline_wheelhouse=packages.wheelhouse)
+            result["checks"].append(observed)
+            assert observed["exit_code"] == 0 and observed["status"] == "pass" and not observed["log_truncated"]
+        python = INSTALL / "Scripts/python.exe"
+        check("venv", [sys.executable, "-I", "-B", "-m", "venv", INSTALL])
+        check("offline_dependencies", collector._offline_install(
+            str(python), packages.wheelhouse, "--only-binary=:all:", *packages.backend, *packages.application))
+        check("sdist_install", collector._offline_install(
+            str(python), packages.wheelhouse, "--no-build-isolation", "--no-deps", "--", str(driver["SDIST"])))
+        check("pip_check", [python, "-I", "-B", "-m", "pip", "check"])
+        check("origin", [python, "-I", "-B", "-c", driver["ORIGIN_PROBE"], INSTALL,
+                         driver["SDIST"], driver["MEMBERS"], driver["INPUTS"][driver["SDIST"]][1], driver["VERSION"]])
+        check("package_inventory", [python, "-I", "-B", "-c",
+              "import importlib.metadata as m,json;print(json.dumps(sorted((d.metadata['Name'],d.version) for d in m.distributions())))"])
+        result["status"] = "pass"
+    except Exception as error:
+        result["error_type"] = type(error).__name__
+    finally:
+        try:
+            verify_inputs(driver)
+            assert old_members() == before
+            result["old_runtime_files_unchanged"] = len(before)
+            result["inputs_unchanged"] = True
+        except Exception as error:
+            result.update(status="fail", postcheck_error_type=type(error).__name__)
+        result["finished_at"] = datetime.now(UTC).isoformat()
+        save("result.json", result)
+    print(json.dumps({"status": result["status"], "checks": len(result["checks"]),
+                      "full_pytest": "NOT RUN", "result": str(RUN / "result.json")}))
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

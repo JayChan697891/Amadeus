@@ -12,7 +12,11 @@ and all input pins are preserved. [Preparation and live launch](acceptance/evide
 Resume by polling original session66521; inspect D:/agentsync-debug/w122311/run
 only after actual terminal status. A polling timeout is not a failed process and
 does not permit a restart. Source/sdist for this combination are not running;
-independent preparation may proceed, with full suites later run sequentially.
+independent preparation is complete, with full suites later run sequentially.
+Source driver is ready after wheel terminal review; the separate sdist installation
+passed six offline checks, but its driver intentionally refuses until the actual
+Windows3.11 wheel XML is bound. Both full suites remain NOT RUN.
+[Source preparation](acceptance/evidence/core-preview-a122/full-windows311-source/preparation/root-review.json) / [sdist preparation](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/root-review.json).
 This is the existing minimum-Python matrix gap, not a new stage or repeat of the
 six completed Windows3.12/Linux3.14 suites. The r4 owner trial remains available.
 
