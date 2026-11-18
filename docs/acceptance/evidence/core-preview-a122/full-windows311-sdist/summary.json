@@ -1,0 +1,29 @@
+{
+  "scope": "Frozen a122 Windows3.11.15 installed-sdist full pytest only",
+  "status": "SCOPED PASS; Root and Astra independently reviewed actual artifacts",
+  "product_test_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session": 6844,
+  "terminal_chunk": "f90461",
+  "exit_code": 0,
+  "finished_at": "2026-11-18T05:41:31.536751+00:00",
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "case_comparison": "All2596 unique case identities/outcomes match Windows3.11 wheel;57 skips retained",
+  "original_inputs_unchanged": true,
+  "source_files_checked": 3992,
+  "runtime_members_checked": 97,
+  "archived_originals": 11,
+  "process_receipts_checked": 3,
+  "root_inspection_native": "063894 exit0",
+  "independent_review": "Astra independently checked actual XML,11 archive/source pairs,5 input pins,97 runtime members,three successful process receipts/logs and before/after original sdist origin; accepted only this frozen scope",
+  "root_report_sha256": "c167d929c230985efb636f85fc2bb33ee3af82d885fced3192ce4f20c6ef4b41",
+  "junit_sha256": "dca4aed3d0f8e56c33d0dc6edcd85a6154941f0d637c2841e8d5b16fbcd2390f",
+  "a123": "NOT COVERED; no a123 pytest run at this checkpoint",
+  "model_calls": 0,
+  "formal_release": "BLOCKED"
+}

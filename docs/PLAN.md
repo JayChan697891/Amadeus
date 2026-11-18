@@ -7,7 +7,8 @@ receiver-document accept/reject, eight passing local Core checks and independent
 review. The owner authorized GitHub prerelease publication on2026-11-18, then
 explicitly authorized making the repository public. Anonymous preview download
 is verified; hosted Actions stays disabled and formal Release stays BLOCKED.
-The prepared311 sdist matrix is now RUNNING in original native6844 after delivery.
+The311 sdist suite completed in6844/f90461 exit0 after delivery:2539 pass/57 skip,
+zero failure/error. Root/Astra independently accepted this frozen scope.
 
 Next P0 implementation: optional completed-proposal progress capture in the real
 producer path, bound to launch approval and the existing live Core lease. Its
@@ -15,17 +16,28 @@ exit condition is affected regression plus an independently reviewed, bounded
 real-client observation; deterministic process fixtures alone cannot prove that
 Codex offers a checkpoint window. Partial drafts, terminal/unknown relaxation
 and unattended candidate execution are outside this increment. Development is
-a123, separate from published a122 r5. Complete the current311 sdist run without
-interruption, then prioritize a123 affected checks over more full platform runs.
+a123, separate from published a122 r5. The311 sdist run has completed without
+interruption; prioritize a123 affected checks over more full platform runs.
 The remaining matrix stays in node C and is neither removed nor marked passed.
+
+Feasibility review found that the initial a123 contract still requested only a
+final message, so its checkpoint relied on an incidental pre-terminal window.
+Do not spend a real model call to present that as meaningful mid-task recovery.
+Complete this same increment with an explicit, version-bound opt-in protocol:
+one complete checkpoint message, then an independently checked final proposal.
+Both messages must pass the existing strict proposal validation; default mode
+stays single-message. The provider may still omit an observable window, so real
+validation remains required. Preserve the initial preparation, but test the
+final protocol implementation once rather than running obsolete intermediate
+fixtures. No new M stage or release gate is introduced.
 
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source
 suite has also completed once in51949/4669bf exit0 with identical case outcomes,
-seven successful process receipts and scoped Root/Astra acceptance. Sdist is
-prepared and bound to the real311 wheel XML, now RUNNING after the document-review
-preview delivery. Continue that original run without restart. Windows3.14.6 preparations are also
+seven successful process receipts and scoped Root/Astra acceptance. Sdist then
+completed with the same2596 case outcomes and unchanged source/runtime; its
+independent review accepted this scope. Do not restart it. Windows3.14.6 preparations are also
 ready for later work, with all full suites NOT RUN. Reuse frozen bytes and avoid
 repeating completed3.12-Windows/3.14-Linux suites. Selected pytest results do not
 complete formal matrix non-test gates. No model/VM is needed for this queue.

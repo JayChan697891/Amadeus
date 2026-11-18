@@ -21,10 +21,18 @@ The independent311 source suite also completed in51949/4669bf exit0 at04:44:43Z:
 2539 pass/57 skip,2596 unique cases, same311 wheel outcomes. Root/Astra checked
 seven actual process receipts,20 originals, both3992-file source trees and97 runtime
 members. [Actual source result](evidence/core-preview-a122/full-windows311-source/summary.json).
-This makes eight completed selected suites, not eight complete formal matrix rows.
-311 sdist is bound to the real311 wheel baseline and now RUNNING in original6844;
-its result is not accepted. All Windows3.14 forms are prepared, NOT RUN.
+The311 sdist suite has also completed in6844/f90461 exit0 at05:41:31Z, with
+2539 pass/57 skip and all2596 case outcomes matching311 wheel. Root checked actual
+XML/stdout, three process receipts,3992 source files,97 members and11 originals;
+Astra independently accepted this frozen scope. This makes nine completed selected suites,
+not nine complete formal matrix rows. All Windows3.14 forms are prepared, NOT RUN.
+[Actual sdist evidence and scoped acceptance](evidence/core-preview-a122/full-windows311-sdist/summary.json).
 Historical static FAIL, other platform/client gaps and formal Release BLOCKED remain.
+
+Development a123 adds an opt-in checkpoint path, currently being refined to an
+explicit version-bound checkpoint/final protocol. Its initial static/install
+preparation is preserved, but no a123 pytest or real-client validation has run.
+The a122 results above do not certify a123 or change its pending status.
 
 Current license-material disposition,2026-11-18: technical integrity/coverage
 checking is complete for frozen a122's own wheel/source archives. Root/Astra

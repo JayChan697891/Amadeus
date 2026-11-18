@@ -1,0 +1,20 @@
+{
+  "controller_pid": 11632,
+  "command": [
+    "D:\\agentsync-debug\\m122win311\\d\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "D:\\agentsync-debug\\w122311d\\s\\tests",
+    "--junitxml",
+    "D:\\agentsync-debug\\w122311d\\t\\sdist-junit.xml",
+    "--basetemp",
+    "D:\\agentsync-debug\\w122311d\\t\\p",
+    "-o",
+    "cache_dir=D:\\agentsync-debug\\w122311d\\t\\pytest-cache"
+  ],
+  "cwd": "D:\\agentsync-debug\\w122311d\\run",
+  "started_at": "2026-11-18T04:55:36.786730+00:00",
+  "timeout_seconds": 7200
+}

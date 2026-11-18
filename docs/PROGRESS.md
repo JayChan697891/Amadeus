@@ -2,6 +2,18 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Current implementation adjustment: Root/Astra found the first a123 checkpoint
+contract still asks for only a final proposal. It can save an opportunistic
+pre-terminal result, but cannot demonstrate useful mid-task progress. Sol is
+completing the same opt-in feature with an explicit version-bound checkpoint /
+final two-message contract, keeping strict proposal validation and all existing
+failure/approval gates. The initial a123 source, static results and installed
+snapshot below remain preserved. Its prepared six-file test driver is superseded
+and NOT RUN; do not launch it. Review the final protocol, install that frozen
+revision once, then run its affected regression. Original6844 has now terminated
+normally (f90461 exit0); do not poll or restart it.
+No real-client experiment has been launched for a123.
+
 P0 next product increment is a123: an opt-in terminal/SDK producer checkpoint
 for one complete valid proposal observed before process terminal. It keeps the
 same owner approval, exact launch binding, worktree and live lease checks; it
@@ -15,8 +27,8 @@ retains the initial static failure and exact static receipt. The subsequent
 preserves supported pre-turn warnings while refusing in-turn errors. Revised
 static/type checks passed; Root matched282 frozen source files,97 installed
 members and three actual offline installation receipts. Published r5
-and its a122 evidence are unchanged. Finish the already-running native6844 first,
-then test this increment in D:/agentsync-debug/m123-progress; do not start another
+and its a122 evidence are unchanged. The a122 run is complete; test the final
+protocol in D:/agentsync-debug/m123-progress; do not start another
 full platform matrix before the P0 affected checks. No new M5 substage is created.
 Prepared one-shot regression entry (NOT RUN):
 `D:/agentsync-debug/m123-progress/venv/Scripts/python.exe -I -B D:/agentsync-debug/m123-progress/run-affected.py`.
@@ -25,7 +37,7 @@ sanitized JUnit, and refuses an existing run directory. The source snapshot and
 97 installed members are pinned; no F-drive checkout import is intended. The
 [driver text](acceptance/evidence/core-preview-a123/completed-proposal-checkpoint/run-affected.txt)
 is preserved for recovery. Actual installation fc26ae exit0 and Root hash review
-4c3a9e cover preparation only. Do not run it before6844 reaches observed terminal.
+4c3a9e cover preparation only. This original driver is now superseded and NOT RUN.
 
 Owner explicitly authorized public repository visibility after the private
 prerelease. The repository is now PUBLIC, confirmed by authenticated settings
@@ -50,10 +62,14 @@ remains BLOCKED. [Publication receipt](../releases/0.3.0a122/owner-preview-docum
 The already prepared311 sdist full suite has now started once, after preview
 delivery: original native6844/40f6e6, pytest request2026-11-18T04:55:36Z,
 controller11632 and pytest6848 observed live. Its pre-test installed origin check
-passed with97 unchanged members and original sdist provenance. This is RUNNING,
-NOT ACCEPTED; poll6844 and inspect D:/agentsync-debug/w122311d/run after observed
-terminal. Never restart because an observation times out. This is the sole full
-pytest; preserve completed suites and new-entry results without repeating them.
+passed with97 unchanged members and original sdist provenance. The run completed
+once at2026-11-18T05:41:31Z, nativef90461 exit0:2539 pass/57 skip,2596 unique cases,
+zero failure/error and identical311 wheel outcomes. Root independently inspected
+the three process receipts, actual XML/stdout,3992 frozen files,97 installed
+members and11 archived originals (063894 exit0). Astra independently accepted this
+frozen scope after checking actual XML, archive pairs, input pins, receipts and
+installed origin. [Scoped result](acceptance/evidence/core-preview-a122/full-windows311-sdist/summary.json).
+No full pytest remains active from this queue; preserve this result without repeat.
 [Actual launch](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/launch.json).
 
 P1 receiver-document closure,2026-11-18: the new manual accept/reject entry uses
@@ -93,8 +109,9 @@ not restart51949. [Completed source result](acceptance/evidence/core-preview-a12
 [Actual source launch](acceptance/evidence/core-preview-a122/full-windows311-source/preparation/launch.json).
 The311 sdist environment is ready and its one comparison pin now binds the actual
 completed311 wheel XML409565B/cbf0e565; original unbound preparation is retained.
-Its first full suite is now RUNNING in6844 following the completed r5 publication;
-final result is pending. The prepared runner was not repeated.
+Its first full suite completed once in6844/f90461 exit0 following r5 publication;
+Root verified2539 pass/57 skip and unchanged inputs; Astra accepted this scope.
+The prepared runner was not repeated.
 [Exact binding](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/baseline-binding.json).
 
 The next original Windows3.14.6 combination is prepared for later sequential work:
