@@ -1,0 +1,45 @@
+{
+  "project_id": "7f747747-1628-4571-9bf2-b9fd2bc1ff6e",
+  "producer": {
+    "agent_id": "15297313-30a5-4a84-a57d-3cfe8f6c9880",
+    "session_id": "f506e4e6-88ae-4f80-b558-c05be80d92eb"
+  },
+  "task": {
+    "id": "7d734315-5848-4bdb-8911-f445e190b7f6",
+    "version": 1
+  },
+  "tree": {
+    "path": "/root/amadeus-checkpoint-a123-20261118/core/managed-git/worktrees/51bbf1b1-ba17-577f-99ba-4432998ede14",
+    "worktree_id": "51bbf1b1-ba17-577f-99ba-4432998ede14",
+    "head_sha": "e497083c80f6285d4b0f4cdc23e7d123318de803",
+    "snapshot_id": "ee92b834-f897-5a6d-80c8-4d784e1e0f22"
+  },
+  "helper_sha256": {
+    "pilot.py": "38a7ed4d36157952e263b88a36de969506010dbc5e15326ce76fd51fd81ea079",
+    "auth_home.py": "5150d719b6d685184eb19785055a5bc6794341bc737350f0a0bb4df9183cdd5a",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "357c71a579758d397f05edb507ba755f090975ddc7bc0d599be981358ed874d4"
+  },
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "wheel_sha256": "d1121821ed1f51714cab11f289fe6232c230ea31529331b3ab09274a511776c8",
+  "source_head": "e497083c80f6285d4b0f4cdc23e7d123318de803",
+  "source_readme_sha256": "675fa2c7afcb01d0294450b774adbb6911270b8e2d408bfd9f3dd93e237f5315",
+  "max_subscription_calls": 1,
+  "max_candidate_executions": 0,
+  "retry_allowed": false,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "scope": "One producer checkpoint observation; no verification, receiver or continuation",
+  "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+  "plan_file_sha256": "abae1167b050d7d631cb2b5707515135a305dbb864fc308a72861a7c8d7d015c",
+  "selection_sha256": "856334de8358356a39083558e49a404ad8745291197017972347806c28474c43",
+  "wave_request_id": "checkpoint-a123-once",
+  "command_prefix": [
+    "/root/amadeus-m123-live/w/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-checkpoint-a123-20261118/pilot.py",
+    "run"
+  ]
+}

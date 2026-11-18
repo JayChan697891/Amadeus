@@ -48,7 +48,9 @@ and unchanged97-member installed origin for this limited scope. The initial Wind
 preparation failure is preserved alongside its successful, separately bound
 build repair. This adds no product stage and does not repeat the full matrix.
 Next prepare one producer-only, subscription-only checkpoint/final observation;
-the driver and true client result are still NOT RUN. Do not execute candidate
+the driver and fresh zero-model fixture are prepared and independently reviewed.
+The host credential-copy/actual-terminal wrapper and exact fresh grant remain
+pending; actual client validation is still NOT RUN. Do not execute candidate
 code or launch a receiver under this observation's read-only scope.
 
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,

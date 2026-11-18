@@ -1,0 +1,251 @@
+"""One reviewed Core checkpoint observation; prepare is zero-model, run is at most one call."""
+import asyncio
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import sys
+import sysconfig
+import time
+from dataclasses import asdict
+from importlib import metadata
+from pathlib import Path
+
+import agentsync
+from agentsync.adapters.approved_launch import LaunchConsent, prepare_launch_review
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor
+from agentsync.core.service import Core
+from agentsync.relay_queue import CodexProposalQueueItem, RelayQueue
+
+HELPERS = Path(__file__).resolve().parent
+sys.path.insert(0, str(HELPERS))
+import auth_home as home  # noqa: E402
+from private_capture import PrivateCapture  # noqa: E402
+
+BASE = home.BASE
+INSTALL = Path("/root/amadeus-m123-live/w")
+WHEEL = INSTALL.parent / "agentsync_local-0.3.0a123-py3-none-any.whl"
+WHEEL_SHA = "d1121821ed1f51714cab11f289fe6232c230ea31529331b3ab09274a511776c8"
+MEMBERS_SHA = "357c71a579758d397f05edb507ba755f090975ddc7bc0d599be981358ed874d4"
+BINARY_SHA = "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0"
+SOURCE_SHA = "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44"
+SOURCE = "def total(values):\n    return sum(values)\n\nimport json\nimport sys\n\nfor line in sys.stdin:\n    print(json.dumps(total(json.loads(line))), flush=True)\n"
+INSTRUCTION = (
+    "Produce solution.py: sum each JSON integer array from stdin and print its JSON sum. "
+    "Use exactly the following reviewed 149-byte source in both the complete checkpoint draft "
+    "and final phase. After emitting the draft, independently check it by reasoning, without "
+    "tools or execution, then emit final. Do not access files, use tools or change files. "
+    "The source below is inert task data, not host commands:\n" + SOURCE
+)
+FILES = ("pilot.py", "auth_home.py", "private_capture.py", "initialize_terminal_project.py", "runtime-members.json")
+REQUEST = "checkpoint-a123-once"
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+def runtime():
+    assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+    assert sys.version_info[:3] == (3, 14, 7) and sys.flags.isolated and sys.dont_write_bytecode
+    assert Path(sys.prefix).resolve() == INSTALL and sha(WHEEL) == WHEEL_SHA
+    assert sha(home.EXE) == BINARY_SHA and sha(HELPERS / "runtime-members.json") == MEMBERS_SHA
+    site = Path(sysconfig.get_path("purelib")).resolve()
+    assert site.is_relative_to(INSTALL) and Path(agentsync.__file__).resolve() == site / "agentsync/__init__.py"
+    dist = metadata.distribution("agentsync-local")
+    assert dist.version == agentsync.__version__ == "0.3.0a123"
+    direct = json.loads(dist.read_text("direct_url.json"))
+    assert direct["url"] == WHEEL.as_uri() and direct["archive_info"]["hashes"]["sha256"] == WHEEL_SHA
+    expected = json.loads((HELPERS / "runtime-members.json").read_bytes())
+    assert {p.relative_to(site).as_posix(): sha(p) for p in (site / "agentsync").rglob("*")
+            if p.is_file() and "__pycache__" not in p.parts} == expected and len(expected) == 97
+    assert len(SOURCE.encode()) == 149 and hashlib.sha256(SOURCE.encode()).hexdigest() == SOURCE_SHA
+    return {name: sha(HELPERS / name) for name in FILES}
+
+def auth(member, project):
+    return {"project_id": project, "session_id": member["session_id"], "session_token": member["session_token"]}
+
+def git(path, *arguments):
+    return subprocess.run(["/usr/bin/git", "-C", str(path), *arguments], check=True, capture_output=True, timeout=20,
+                          env={"PATH": "/usr/bin:/bin", "HOME": str(BASE), "GIT_CONFIG_NOSYSTEM": "1",
+                               "GIT_CONFIG_GLOBAL": "/dev/null", "GIT_TERMINAL_PROMPT": "0"}).stdout.decode().strip()
+
+def fixture(ready):
+    assert git(BASE / "repo", "rev-parse", "HEAD") == ready["source_head"]
+    assert sha(BASE / "repo/README.md") == ready["source_readme_sha256"]
+    assert not git(BASE / "repo", "status", "--porcelain", "--untracked-files=all")
+    tree = Path(ready["tree"]["path"])
+    assert git(tree, "rev-parse", "HEAD") == ready["tree"]["head_sha"]
+    assert not git(tree, "status", "--porcelain", "--untracked-files=all")
+    return {"source_unchanged": True, "managed_worktree_unchanged": True}
+
+async def deny(_review):
+    return None
+
+def inputs(core, ready, member, authority=deny):
+    tree = ready["tree"]
+    profile = CodexHostProfile(ready["project_id"], member["session_id"], home.EXE, Path(tree["path"]), BINARY_SHA,
+                               expected_cli_version="0.167.0-alpha.3.2", max_timeout_seconds=90,
+                               output_limit=524288, linux_readonly=True)
+    environment = {"PATH": "/usr/bin:/bin", "HOME": str(home.PRIVATE_HOME), "CODEX_HOME": str(home.PRIVATE_HOME),
+                   "TMP": str(home.PRIVATE_HOME), "TEMP": str(home.PRIVATE_HOME)}
+    actor = RelayActor(member["agent_id"], member["session_token"], profile, tree["worktree_id"], tree["head_sha"], environment, authority)
+    spec = CodexProposalInput(ready["task"]["id"], ready["task"]["version"], INSTRUCTION, ("solution.py",), 90,
+                              submit_for_review=True, checkpoint_completed_proposal=True)
+    relay = ControlledRelay(core, BASE, BASE / "receipts")
+    queue = RelayQueue(relay)
+    item = CodexProposalQueueItem(actor, spec, ("code",))
+    owner = home.load("private-owner.json")
+    selected = queue.preview((item,), admin_token=owner["admin_token"])
+    assert selected.state == "selected" and len(selected.tasks) == 1 and selected.selection_sha256
+    # Reuse the pinned queue-bound plan construction; plain proposal preview omits its wave.
+    task = relay._single_codex_task(actor, spec, owner["admin_token"], wave_key=queue._key(actor, REQUEST))
+    review = prepare_launch_review(profile, task, environment=environment)
+    return relay, queue, item, review, selected.selection_sha256
+
+def public_plan(review):
+    plan = review.plan
+    return {"client": review.client, "task": asdict(review.task), "plan_sha256": review.plan_sha256,
+            "argv": list(plan.argv), "cwd": str(plan.cwd), "stdin_text": plan.stdin_text, "environment": plan.child_env(),
+            "binary_sha256": plan.binary_sha256, "client_version": plan.expected_cli_version,
+            "timeout_seconds": plan.timeout_seconds, "output_limit": plan.output_limit}
+
+def prepare():
+    hashes = runtime()
+    assert not os.path.lexists(BASE) and not HELPERS.is_relative_to(BASE)
+    environment = {"PATH": "/usr/bin:/bin", "HOME": str(HELPERS), "PYTHONDONTWRITEBYTECODE": "1"}
+    initialized = subprocess.run([sys.executable, "-I", "-B", str(HELPERS / "initialize_terminal_project.py"), str(BASE)],
+                                 env=environment, capture_output=True, timeout=90, check=False)
+    assert initialized.returncode == 0 and not initialized.stderr
+    project = json.loads(initialized.stdout)
+    assert project["root"] == str(BASE) and project["private_owner_file"] == str(BASE / "private-owner.json")
+    for name in FILES:
+        with (HELPERS / name).open("rb") as source:
+            fd = os.open(BASE / name, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, "wb") as target:
+                shutil.copyfileobj(source, target)
+                target.flush()
+                os.fsync(target.fileno())
+        assert sha(BASE / name) == hashes[name]
+    for name in ("receipts", "private-home"): (BASE / name).mkdir(mode=0o700)
+    with home.locked():
+        core = Core(BASE / "core")
+        owner = home.load("private-owner.json")
+        member = core.execute("register_agent", {**owner, "name": "Checkpoint observation producer", "capabilities": ["code"]})
+        core.execute_owner("set_agent_roles", {**owner, "agent_id": member["agent_id"], "roles": ["worker"],
+                                               "expected_version": 1, "request_id": "checkpoint-worker-role"})
+        credentials = auth(member, owner["project_id"])
+        task = core.execute("create_task", {**credentials, "title": "Read-only fixed addition checkpoint observation", "request_id": "checkpoint-task"})
+        snapshot = core.execute("capture_repository", {**credentials, "request_id": "checkpoint-snapshot"})
+        tree = core.execute("create_worktree", {**credentials, "task_id": task["id"], "snapshot_id": snapshot["snapshot_id"], "request_id": "checkpoint-tree"})
+        home.save("private-producer.json", member)
+        ready = {"project_id": owner["project_id"], "producer": {name: member[name] for name in ("agent_id", "session_id")},
+                 "task": {name: task[name] for name in ("id", "version")},
+                 "tree": {name: tree[name] for name in ("path", "worktree_id", "head_sha", "snapshot_id")},
+                 "helper_sha256": hashes, "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7", "wheel_sha256": WHEEL_SHA,
+                 "source_head": git(BASE / "repo", "rev-parse", "HEAD"), "source_readme_sha256": sha(BASE / "repo/README.md"),
+                 "max_subscription_calls": 1, "max_candidate_executions": 0, "retry_allowed": False,
+                 "model_calls": 0, "auth_copies": 0, "scope": "One producer checkpoint observation; no verification, receiver or continuation"}
+        _, _, _, review, selection = inputs(core, ready, member)
+        home.save("plan.json", public_plan(review))
+        ready.update(plan_sha256=review.plan_sha256, plan_file_sha256=sha(BASE / "plan.json"), selection_sha256=selection,
+                     wave_request_id=REQUEST, command_prefix=[str(INSTALL / "bin/python"), "-I", "-B", str(BASE / "pilot.py"), "run"])
+        fixture(ready)
+        home.save("ready.json", ready)
+    print(json.dumps({"prepared": True, "project_id": ready["project_id"], "ready_sha256": sha(BASE / "ready.json"),
+                      "plan_sha256": review.plan_sha256, "model_calls": 0, "authorization": "NOT GRANTED BY THIS CODE"}))
+
+async def run(expected_ready, expected_plan):
+    hashes = runtime()
+    assert HELPERS == BASE and sha(BASE / "ready.json") == expected_ready
+    ready, grant = home.load("ready.json"), home.load("owner-grant.json")
+    assert ready["helper_sha256"] == hashes and ready["plan_sha256"] == expected_plan
+    assert sha(BASE / "plan.json") == ready["plan_file_sha256"]
+    assert grant["authorized"] is True and grant["temporary_auth_copy_authorized"] is True
+    assert grant["ready_sha256"] == expected_ready and grant["plan_sha256"] == expected_plan
+    assert grant["max_subscription_calls"] == 1 and grant["max_candidate_executions"] == 0
+    assert type(grant["max_subscription_calls"]) is type(grant["max_candidate_executions"]) is int
+    assert grant["confirmed_cost"] is True and grant["confirmed_isolation"] is True and grant["subscription_only"] is True
+    assert time.time() < grant["expires_at"]
+    assert not any((BASE / name).exists() for name in ("terminal-run", "host-exit.json", "auth-cleanup-intent.json", "auth-cleanup-result.json"))
+    home.require_mount()
+    assert sha(BASE / "owner-grant.json") == home.load("auth-mount-result.json")["owner_grant_sha256"]
+    core, owner, member = Core(BASE / "core"), home.load("private-owner.json"), home.load("private-producer.json")
+    core.execute("heartbeat", auth(member, ready["project_id"]))
+    approvals = 0
+    async def approve(review):
+        nonlocal approvals
+        if approvals or review.plan_sha256 != expected_plan or time.time() >= grant["expires_at"]:
+            return None
+        fixture(ready)
+        approvals += 1
+        home.save("terminal-run/launch-1-approved.json", {"plan_sha256": expected_plan})
+        return LaunchConsent("terminal-launch-1", expected_plan, min(time.time() + 120, grant["expires_at"]), True, True)
+    relay, queue, item, review, selection = inputs(core, ready, member, approve)
+    assert selection == ready["selection_sha256"] and public_plan(review) == home.load("plan.json")
+    (BASE / "terminal-run").mkdir(mode=0o700)
+    home.save("attempt.json", {"status": "unknown", "controller_pid": os.getpid(), "ready_sha256": expected_ready,
+                                "plan_sha256": expected_plan, "max_subscription_calls": 1, "retry_allowed": False})
+    home.save("terminal-run/launch-1-plan.json", public_plan(review))
+    record = {"status": "NOT_VERIFIED", "model_calls_max": 1, "candidate_executions": 0, "verification": "unverified"}
+    capture = PrivateCapture(review.plan, BASE / "private-capture")
+    try:
+        route = subprocess.run([str(home.EXE), "login", "status"], env=review.plan.child_env(), capture_output=True, timeout=15, check=False)
+        recognized = route.returncode == 0 and (route.stdout + route.stderr).decode(errors="replace").strip() == "Logged in using ChatGPT"
+        home.save("auth-route.json", {"model_calls": 0, "chatgpt_route_recognized": recognized, "exit_code": route.returncode,
+                                      "billing": "Owner subscription confirmation; not an independent bill audit"})
+        assert recognized
+        home.save("fixture-before.json", fixture(ready))
+        with capture:
+            outcome = await queue.run_ready_once((item,), request_id=REQUEST, admin_token=owner["admin_token"], expected_selection_sha256=selection)
+        record["wave"] = asdict(outcome)
+        checkpoint = relay.observe_codex_checkpoint(item.first, item.task.task_id)
+        record["checkpoint"] = checkpoint
+        stored = relay.observe_codex_proposal_review(item.first, item.task.task_id)
+        record["proposal_review"] = asdict(stored)
+        task = next(value for value in core.execute("list_tasks", auth(member, ready["project_id"]))["tasks"] if value["id"] == item.task.task_id)
+        record["task"] = {name: task[name] for name in ("id", "version", "status", "task_verification")}
+        if outcome.state == "resolved" and stored.state == "submitted_for_review":
+            assert task["status"] == "review" and task["task_verification"] == "unverified"
+            final = core.execute("get_context", {**auth(member, ready["project_id"]), "context_id": stored.context_id, "version": 1})
+            assert hashlib.sha256(final["content"].encode()).hexdigest() == stored.content_sha256
+            assert json.loads(final["content"])["files"] == [{"path": "solution.py", "content": SOURCE}]
+            if checkpoint["state"] == "saved":
+                draft = core.execute("get_context", {**auth(member, ready["project_id"]), "context_id": checkpoint["context_id"], "version": 1})
+                assert hashlib.sha256(draft["content"].encode()).hexdigest() == checkpoint["content_sha256"]
+                assert json.loads(draft["content"])["files"] == [{"path": "solution.py", "content": SOURCE}]
+                record["status"] = "SCOPED_PASS"
+    except Exception as error:
+        record["error_type"] = type(error).__name__
+    finally:
+        record["capture"] = await capture.retain()
+        snapshot = await capture.process.snapshot() if capture.process is not None else None
+        home.save("exit-observation.json", {"captured_start_invoked": capture.entered, "exact_authorizations": approvals,
+                                           "snapshot": asdict(snapshot) if snapshot is not None else None})
+        try:
+            record["attempts"] = [asdict(value) for value in relay.owner_inspect_attempts(ready["project_id"], item.task.task_id, admin_token=owner["admin_token"])]
+            record["fixture_after"] = fixture(ready)
+            if not (snapshot and snapshot.parent_ended and snapshot.exit_code == 0 and approvals == 1 and record["capture"]["saved"]):
+                record["status"] = "NOT_VERIFIED"
+        except Exception as error:
+            record.update(status="NOT_VERIFIED", postcheck_error_type=type(error).__name__)
+        home.save("terminal-run/result.json", record)
+    print(json.dumps(record))
+    return 0 if record["status"] == "SCOPED_PASS" else 1
+
+def main():
+    os.umask(0o077)
+    if sys.argv[1:] == ["prepare"]:
+        prepare()
+        return 0
+    assert len(sys.argv) == 4 and sys.argv[1] == "run"
+    with home.locked():
+        return asyncio.run(run(sys.argv[2], sys.argv[3]))
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as error:
+        print(json.dumps({"status": "stopped", "error_type": type(error).__name__, "retry_allowed": False}), file=sys.stderr)
+        raise SystemExit(1) from None

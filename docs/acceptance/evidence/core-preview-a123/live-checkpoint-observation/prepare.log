@@ -1,0 +1,6 @@
+pilot.py: OK
+auth_home.py: OK
+initialize_terminal_project.py: OK
+private_capture.py: OK
+runtime-members.json: OK
+{"prepared": true, "project_id": "7f747747-1628-4571-9bf2-b9fd2bc1ff6e", "ready_sha256": "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc", "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4", "model_calls": 0, "authorization": "NOT GRANTED BY THIS CODE"}

@@ -27,7 +27,16 @@ Resume with preparation/review of one read-only real checkpoint/final
 observation through RelayQueue.run_ready_once, without artificial pacing,
 candidate execution, a receiver call or retry after failed/unknown/no-window
 outcomes. Reuse the initializer and existing private-capture/cleanup helpers;
-do not launch the full VerifiedProposalFlow. This live driver is NOT PREPARED.
+do not launch the full VerifiedProposalFlow. The producer-only driver and fresh
+zero-model fixture have now been prepared once (47f56f exit0) and independently
+reviewed by Root/Astra. Task remains pending v1; both attempts are not dispatched,
+private login home is empty/unmounted, and five helper/97 runtime identities
+match. A cleanup receipt-directory defect was fixed before execution.
+[Exact preparation](acceptance/evidence/core-preview-a123/live-checkpoint-observation/summary.json).
+Next finish and review the host credential-copy/actual-terminal wrapper and
+fresh exact grant under the standing owner authorization, then check fixture
+validity before the single call. These host controls are NOT PREPARED; no model
+login was copied or call launched. Preserve the current fixture and all results.
 
 Current a123 implementation: the explicit, version-bound checkpoint / final
 two-message contract is written and Root/Astra have accepted code preparation.

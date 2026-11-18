@@ -1,0 +1,30 @@
+{
+  "status": "PREPARED_ONLY",
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "preparation_native": "47f56f exit0",
+  "root_readiness_native": "c9f6d7 exit0",
+  "static_native": "b855de exit0",
+  "ready_sha256": "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc",
+  "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+  "project_id": "7f747747-1628-4571-9bf2-b9fd2bc1ff6e",
+  "max_subscription_calls": 1,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "candidate_executions": 0,
+  "real_client": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "retry_allowed": false,
+  "independent_review": "Root/Astra accepted zero-model preparation only; actual bindings and five helper hashes matched. The receipt-directory cleanup defect was corrected before any execution.",
+  "remaining": [
+    "Implement and review the bounded host credential-copy and actual-terminal wrapper.",
+    "Write an exact fresh grant under the existing standing owner authorization only after checking current fixture validity.",
+    "Only then perform one read-only observation and confirm temporary credential cleanup. No live task has started."
+  ],
+  "resume": {
+    "guest_root": "/root/amadeus-checkpoint-a123-20261118",
+    "python": "/root/amadeus-m123-live/w/bin/python",
+    "vm_metadata": "D:/agentsync-debug/m123-live/vm-run/process.json"
+  },
+  "limits": "One producer, fixed 149-byte addition text, 90 seconds; no artificial pacing, receiver, candidate execution or continuation. saved/not_observed/unknown remain distinct. Failure or unknown outcome is not retried."
+}
