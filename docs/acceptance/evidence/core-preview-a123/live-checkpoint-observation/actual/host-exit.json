@@ -1,0 +1,31 @@
+{
+  "status": "terminal",
+  "exit_code": 1,
+  "ready_sha256": "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc",
+  "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+  "owner_grant_sha256": "6e24b5f27c99ac9396cef7a776040dd2a98394e9c6e6a5127be5b98d1f5d43c6",
+  "wrapper_pid": 11086,
+  "child_pid": 11087,
+  "argv": [
+    "/root/amadeus-m123-live/w/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-checkpoint-a123-20261118/pilot.py",
+    "run",
+    "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc",
+    "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4"
+  ],
+  "observed_at": "2026-11-18T07:12:24.574791+00:00",
+  "scope": "Pilot subprocess terminal only; Codex termination is independently checked through Core",
+  "output_bytes": {
+    "stdout": 3265,
+    "stderr": 0
+  },
+  "output_sha256": {
+    "stdout": "9b44ce5fa9b0439aa501fbbc232d28a49cefcb834b586e057d1310cd7dcda43c",
+    "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logs_truncated": false,
+  "pipe_eof_incomplete": false,
+  "automatic_retry": false
+}

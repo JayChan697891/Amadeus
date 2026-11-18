@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "ready_sha256": "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc",
+  "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+  "task_status": "pending",
+  "task_version": 1,
+  "both_not_dispatched": true,
+  "heartbeat_refreshed": true,
+  "model_calls": 0
+}

@@ -1,5 +1,5 @@
 {
-  "status": "PREPARED_ONLY",
+  "status": "HISTORICAL_ZERO_MODEL_PREPARATION",
   "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
   "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
   "preparation_native": "47f56f exit0",
@@ -17,8 +17,8 @@
   "retry_allowed": false,
   "independent_review": "Root/Astra accepted zero-model preparation only; actual bindings and five helper hashes matched. The receipt-directory cleanup defect was corrected before any execution.",
   "remaining": [
-    "Host controls, exact grant and ACL now prepared/reviewed; see host/review.json.",
-    "Within grant expiry, execute the reviewed setup/one-call/terminal cleanup sequence once, then inspect actual results. No live task has started."
+    "This prepared attempt executed once; original strict byte-match failure is preserved in actual/summary.json.",
+    "No model retry or candidate execution is queued; continue independent product work."
   ],
   "resume": {
     "guest_root": "/root/amadeus-checkpoint-a123-20261118",
@@ -26,5 +26,7 @@
     "vm_metadata": "D:/agentsync-debug/m123-live/vm-run/process.json"
   },
   "limits": "One producer, fixed 149-byte addition text, 90 seconds; no artificial pacing, receiver, candidate execution or continuation. saved/not_observed/unknown remain distinct. Failure or unknown outcome is not retried.",
-  "host_preparation": "host/review.json"
+  "host_preparation": "host/review.json",
+  "current_result": "actual/summary.json",
+  "current_attempt_status": "NOT_VERIFIED"
 }

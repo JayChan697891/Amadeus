@@ -10,7 +10,7 @@ is verified; hosted Actions stays disabled and formal Release stays BLOCKED.
 The311 sdist suite completed in6844/f90461 exit0 after delivery:2539 pass/57 skip,
 zero failure/error. Root/Astra independently accepted this frozen scope.
 
-Next P0 implementation: optional completed-proposal progress capture in the real
+Current P0 increment: optional completed-proposal progress capture in the real
 producer path, bound to launch approval and the existing live Core lease. Its
 exit condition is affected regression plus an independently reviewed, bounded
 real-client observation; deterministic process fixtures alone cannot prove that
@@ -35,10 +35,11 @@ The explicit protocol is now implemented and its seven-file affected regression
 has scoped independent acceptance:213 pass/5 platform skips in joint evidence,
 including32 new cases. The original oversized pytest parameter-ID failure remains
 saved; only that file was repaired/retested, with its oversized input unchanged.
-Next validate actual CLI message timing without artificial output pacing. A saved
-fixture checkpoint is not real-Agent recovery, and a valid final response with no
-observed checkpoint must remain accurately reported as such. Published r5 stays
-unchanged while this opt-in a123 development capability gains real evidence.
+Actual CLI timing has now been observed without artificial output pacing, with
+the strict fixture failure and limited positive evidence separated below.
+A saved checkpoint is not real-Agent recovery, and a valid final response with
+no observed checkpoint must remain accurately reported as such. Published r5
+stays unchanged while this opt-in a123 development capability gains evidence.
 
 The same a123 runtime now also has a fresh Linux3.14.7 wheel installation and
 seven-file regression:217 pass/1 explicit Docker opt-in skip,218 identities
@@ -47,11 +48,17 @@ passed. Root/Astra accepted actual XML, seven process receipts,13 archived origi
 and unchanged97-member installed origin for this limited scope. The initial Windows ZIP-mode
 preparation failure is preserved alongside its successful, separately bound
 build repair. This adds no product stage and does not repeat the full matrix.
-Next prepare one producer-only, subscription-only checkpoint/final observation;
-the driver and fresh zero-model fixture are prepared and independently reviewed.
-The host credential-copy/actual-terminal wrapper and exact fresh grant remain
-pending; actual client validation is still NOT RUN. Do not execute candidate
-code or launch a receiver under this observation's read-only scope.
+The producer-only subscription observation ran once in1034/a81167 exit1 and
+remains NOT_VERIFIED: both real messages contained150 source bytes instead of
+the exact149-byte fixture, adding one LF. Its strict assertion is retained.
+Separately, actual receipt/capture/context evidence confirms checkpoint storage
+before the terminal observation (about16.86s between receipts), then a final
+review/unverified proposal. Root/Astra accepted only this limited observation;
+no atomic database/OS-exit ordering, automatic recovery or M6 completion is
+claimed. Temporary login cleanup passed; no candidate, receiver or retry ran.
+Do not spend another model call merely to change the newline outcome or loosen
+the original check. Continue independent usability work using these preserved
+facts; formal Release stays BLOCKED and the full matrix remains in node C.
 
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching

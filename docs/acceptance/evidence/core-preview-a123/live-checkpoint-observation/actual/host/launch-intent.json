@@ -1,0 +1,15 @@
+{
+  "status": "unknown",
+  "ready_sha256": "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc",
+  "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+  "owner_grant_sha256": "6e24b5f27c99ac9396cef7a776040dd2a98394e9c6e6a5127be5b98d1f5d43c6",
+  "argv": [
+    "/root/amadeus-m123-live/w/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-checkpoint-a123-20261118/native_host.py",
+    "6e24b5f27c99ac9396cef7a776040dd2a98394e9c6e6a5127be5b98d1f5d43c6"
+  ],
+  "recorded_at": "2026-11-18T07:10:59.088558+00:00",
+  "automatic_retry": false
+}

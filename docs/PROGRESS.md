@@ -22,21 +22,30 @@ Published preview r5 is unchanged; formal Release stays BLOCKED.
 No test remains active from51503. The local VM remains available, with its
 current process metadata at D:/agentsync-debug/m123-live/vm-run/process.json;
 the older global vm/process.json is historical and must not be used blindly.
-No a123 model login has been copied and no real-client call has run.
-Resume with preparation/review of one read-only real checkpoint/final
-observation through RelayQueue.run_ready_once, without artificial pacing,
-candidate execution, a receiver call or retry after failed/unknown/no-window
-outcomes. Reuse the initializer and existing private-capture/cleanup helpers;
-do not launch the full VerifiedProposalFlow. The producer-only driver and fresh
-zero-model fixture have now been prepared once (47f56f exit0) and independently
-reviewed by Root/Astra. Task remains pending v1; both attempts are not dispatched,
-private login home is empty/unmounted, and five helper/97 runtime identities
-match. A cleanup receipt-directory defect was fixed before execution.
-[Exact preparation](acceptance/evidence/core-preview-a123/live-checkpoint-observation/summary.json).
-Next finish and review the host credential-copy/actual-terminal wrapper and
-fresh exact grant under the standing owner authorization, then check fixture
-validity before the single call. These host controls are NOT PREPARED; no model
-login was copied or call launched. Preserve the current fixture and all results.
+The one reviewed a123 live observation has now executed and ended normally as
+an unsuccessful strict fixture check:1034/a81167 exit1, original NOT_VERIFIED.
+The actual Codex process exited0, emitted checkpoint and final messages, saved
+the checkpoint and submitted its final proposal for review. Both returned
+sources are150 bytes: the expected149 bytes plus one LF, so the exact-source
+assertion correctly failed. Do not trim the output, loosen the assertion or
+repeat this attempt. No candidate was executed or second Agent dispatched.
+Root matched the checkpoint receipt to the first667 bytes of the actual1153-byte
+private stdout, containing one checkpoint and no final/turn.completed event.
+Run/capture/launch/context hashes agree; the progress receipt precedes the
+terminal receipt by16.8599 seconds. This is limited real checkpoint evidence,
+not successful fixed-source acceptance, automatic recovery or OS-exit atomicity.
+Root/Astra accepted that distinction after inspecting actual saved evidence;
+Astra did not read private raw output. The task remains review/unverified v5.
+Temporary login was copied once (8ead82 exit0), then removed after actual
+termination (4ca31f exit0): original unchanged, home unmounted/empty, no Codex
+parent. Raw streams stay only in the local D-drive environment.
+[Actual result and limits](acceptance/evidence/core-preview-a123/live-checkpoint-observation/actual/summary.json).
+The initial zero-model preparation (47f56f exit0), corrected cleanup path and
+exact approved plan remain in the same evidence directory. An idle preview's
+120-second heartbeat failure was diagnosed separately; the existing Core
+heartbeat restored normal scheduling before the only real attempt.
+Resume with independent product usability work and the preserved real checkpoint
+evidence. No model retry, candidate execution or new full matrix is queued.
 
 Current a123 implementation: the explicit, version-bound checkpoint / final
 two-message contract is written and Root/Astra have accepted code preparation.
@@ -53,14 +62,14 @@ single affected file then passed47 cases (9c083e exit0), without reinstalling or
 rerunning the other six files. Root/Astra independently accepted joint coverage:
 218 unique cases,213pass5skip, all32 new cases pass. The original failure is
 retained, not rewritten as success. [Actual evidence and limits](acceptance/evidence/core-preview-a123/explicit-checkpoint/summary.json).
-No test remains active from these attempts. Next: prepare a bounded real Codex
-observation of the explicit protocol; no a123 real-client call or full suite has
-run. Do not restart19264 or execute the superseded six-file driver.
+No test remains active from these attempts. The real observation is recorded
+above; no a123 full suite has run. Do not restart19264 or execute the superseded
+six-file driver.
 The earlier opportunistic a123 source, static results and installed snapshot
 below remain preserved. Its prepared six-file test driver is superseded and
 NOT RUN; do not launch it. Original6844 has now terminated
 normally (f90461 exit0); do not poll or restart it.
-No real-client experiment has been launched for a123.
+The sole a123 real-client attempt above remains NOT_VERIFIED and is not retried.
 
 Earlier a123 preparation (superseded by the explicit protocol above): an opt-in terminal/SDK producer checkpoint
 for one complete valid proposal observed before process terminal. It keeps the

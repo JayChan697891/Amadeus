@@ -1,0 +1,29 @@
+{
+  "original_attempt_status": "NOT_VERIFIED",
+  "fixture_expectation_match": false,
+  "failure_reason": "Both real phase messages contain exactly the expected149-byte source plus one LF, totaling150bytes. The original exact-byte assertion remains failed.",
+  "source_expected_bytes": 149,
+  "source_actual_bytes": 150,
+  "extra_byte_decimal": 10,
+  "source_actual_sha256": "4e6bc9e750fc25c872cca16e5790d88f44595b30689afca1abb9b506b8167cd6",
+  "real_checkpoint_observation": "saved; prefix bound to actual capture, one checkpoint and no final/turn.completed event in matched prefix",
+  "matched_prefix_bytes": 667,
+  "full_stdout_bytes": 1153,
+  "matched_prefix_sha256": "473da13c439f3855467279a74348e7347c8d5d0bef5d80d283d4f6bcd767402a",
+  "receipt_time_order": true,
+  "seconds_progress_to_terminal_receipt": 16.85989260673523,
+  "os_exit_commit_order": "NOT ASSERTED; receipt observation does not prove atomic DB commit before actual OS exit",
+  "context_sha256": "3ee5d90e2d38518a2c8bd0f005638a4c912dc3c9e8f9c4266e4d9748f041c672",
+  "model_launches_observed": 1,
+  "additional_model_calls": 0,
+  "second_agent": "NOT DISPATCHED",
+  "candidate_execution": "NOT RUN",
+  "task_status": "review",
+  "task_verification": "unverified",
+  "fixture_after": {
+    "source_unchanged": true,
+    "managed_worktree_unchanged": true
+  },
+  "cleanup": "temporary auth absent; home unmounted/empty; no Codex parent",
+  "formal_release": "BLOCKED"
+}

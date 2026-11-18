@@ -1,0 +1,18 @@
+{
+  "first-dispatched.json": {
+    "sha256": "af6c544b2c8f8f11617ef1699d0176c614a29ba6de5e220fe8d847505883c507",
+    "size": 559
+  },
+  "proposal-progress.json": {
+    "sha256": "afbde68e2145693457b29acc7d39508aa3c105a2bddf3dc6d71bcc60a162c8b8",
+    "size": 641
+  },
+  "first-observed.json": {
+    "sha256": "dc2a40e569d5404800446eea26eb3d6f7359e08e064cbfca20c96ef234cb992f",
+    "size": 764
+  },
+  "postcheck.json": {
+    "sha256": "330b8860987f14be4c5dd56d0d2a970b237fcdefdacbae8b473b4c7559a5f6ea",
+    "size": 1438
+  }
+}
