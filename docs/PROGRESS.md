@@ -2,6 +2,20 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The terminal example now includes `examples/initialize_terminal_project.py` for
+its missing first-use preparation step. It creates only a new dedicated Linux
+root, clean Git repository and Core project, privately saving the owner credential.
+Existing roots are refused; failed writes retain partial state without retry.
+Linux actual Git/Core checks:3 pass/1 non-Linux skip; Windows:2 pass/2 Linux skips.
+The original CLI also ran once: exit0, usable private owner, registered repository
+matches,0700 root/0600 credentials, no token in output. Root inspected actual XML,
+source and CLI results; Astra accepted the limited implementation.97 installed
+runtime members remain unchanged. No model/account access or candidate execution
+occurred; the owned VM was normally shut down. This closes the existing P1 entry
+setup gap, not a new phase or real-client acceptance. See
+[initialization evidence](acceptance/evidence/core-preview-a122/terminal-init/summary.json)
+and [usage](VERIFIED-TASK-EXAMPLE.md#prepare-once).
+
 The exact terminal live experiment prepared at **f8843d3** stopped on
 2026-11-18T00:34:55Z (2026-11-17 16:34:55, America/Tijuana), remote exit1.
 The real PTY and ChatGPT login-route check worked. Synchronous hidden approval

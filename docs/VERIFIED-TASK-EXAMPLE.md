@@ -14,8 +14,27 @@ example does not claim native Windows candidate execution.
 
 ## Prepare once
 
-- Install the frozen a122 wheel in a Python environment. Run this repository's
-  example using that environment's Python; no editable installation is needed.
+First install the frozen a122 wheel in a Python environment; no editable
+installation is needed. For a new dedicated Linux project, use that Python with the
+repository initializer (the parent directory must already exist):
+
+```sh
+/path/to/venv/bin/python -I -B /path/to/Amadeus/examples/initialize_terminal_project.py /path/to/new-project
+```
+
+It creates a clean `ROOT/repo` Git repository and registers it in `ROOT/core`.
+The result prints your project ID and the location of `ROOT/private-owner.json`;
+it does not print the owner token. Keep that file private and locally available:
+use its `admin_token` at the hidden owner prompt below. The root is mode 0700 and
+the credential file mode 0600. Never upload the credential file or database.
+No model login, model launch or candidate execution occurs during initialization.
+
+An existing root is refused unchanged. If initialization fails after creating
+files, retain the entire directory for inspection; the credential file may be
+incomplete. Do not run tasks until initialization succeeded, and do not delete
+or reuse partial state to retry automatically. Windows users should use the
+packaged durable demo; this initializer supports Linux only.
+
 - Use an existing, dedicated local project: its database is
   `ROOT/core/agentsync.db`, and its registered clean Git repository is inside
   `ROOT`. Keep project ID and owner token in your private credential store.

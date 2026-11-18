@@ -30,6 +30,13 @@ The90/600s deadlines and exact approval gates remain unchanged; frozen Core and
 packages are not rebuilt. New-entry successful real E2E remains unverified. This is
 existing A/B delivery work, not a new M5 stage or formal Release approval.
 
+The same entry's missing project setup is now implemented as a small Linux
+initializer: fresh private root, isolated Git setup, Core registration and a
+private owner file. Actual Linux/Windows scoped checks and one original CLI
+invocation are recorded in PROGRESS. Frozen Core/packages remain unchanged.
+The remaining real-terminal E2E boundary above is unchanged; initialization
+does not start models, authorize execution or expand formal acceptance.
+
 ## Execution adjustment — 2026-11-15
 
 The previously deferred real collaboration/controller-recovery composition has
