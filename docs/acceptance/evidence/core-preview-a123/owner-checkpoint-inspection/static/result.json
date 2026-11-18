@@ -1,0 +1,54 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "src/agentsync/controlled_relay.py",
+        "src/agentsync/relay_status_cli.py",
+        "tests/integration/test_relay_owner_status.py"
+      ],
+      "exit_code": 1
+    },
+    {
+      "argv": [
+        "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "src/agentsync/controlled_relay.py",
+        "src/agentsync/relay_status_cli.py",
+        "tests/integration/test_relay_owner_status.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "mypy",
+        "--cache-dir",
+        "D:\\agentsync-debug\\m123-owner-checkpoint\\mypy-cache",
+        "src/agentsync"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "source_sha256": {
+    "src/agentsync/controlled_relay.py": "9b5fbbcc289d950915c58138940bd33ae6b4852f32ff53f10423ed7912fca322",
+    "src/agentsync/relay_status_cli.py": "6b0e54c2345b5fdf96d07a7f9b9762af59dfc90f2f1c2cbdc2a690c6a6bce788",
+    "tests/integration/test_relay_owner_status.py": "9955aefde1756ec5ab2e0227a82c904051c9ade398303911f33fa4a5bad84acc",
+    "docs/RELAY-RECOVERY.md": "455859dd9c113f50701b28b48528ca5cd4a42d7de8364491cc10a104992865dc"
+  }
+}

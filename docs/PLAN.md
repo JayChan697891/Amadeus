@@ -10,6 +10,16 @@ is verified; hosted Actions stays disabled and formal Release stays BLOCKED.
 The311 sdist suite completed in6844/f90461 exit0 after delivery:2539 pass/57 skip,
 zero failure/error. Root/Astra independently accepted this frozen scope.
 
+P1 owner recovery usability now includes a readonly checkpoint lookup in the
+development source, using the existing task status command and project owner
+token after Agent session expiry. Its bounded exit condition is met:14 focused
+Windows checks, changed-file static checks and independent scoped review.
+The lookup exposes unverified receipt metadata only, without granting renewal,
+continuation or execution. This is not a new M stage. The existing public r5
+and frozen a123 wheel remain unchanged; package validation is the next dependency
+before this increment can enter any later preview. See the
+[actual source evidence](acceptance/evidence/core-preview-a123/owner-checkpoint-inspection/summary.json).
+
 Current P0 increment: optional completed-proposal progress capture in the real
 producer path, bound to launch approval and the existing live Core lease. Its
 exit condition is affected regression plus an independently reviewed, bounded

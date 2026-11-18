@@ -1899,8 +1899,20 @@ class ControlledRelay:
         if type(actor) is not RelayActor or client_kind(actor.profile) != "codex":
             _reject()
         self._state(actor, task_id)
-        self._check_receipt_anchor(actor.profile.project_id)
-        key = self._key(actor, task_id)
+        return self._project_codex_checkpoint(actor.profile.project_id, task_id)
+
+    def owner_observe_codex_checkpoint(
+        self, project_id: str, task_id: str, *, admin_token: str
+    ) -> dict[str, Any]:
+        """Read persisted checkpoint metadata with owner authority, without an agent session."""
+        _identifier(project_id)
+        _identifier(task_id)
+        self._authorize_project_owner(project_id, admin_token)
+        return self._project_codex_checkpoint(project_id, task_id)
+
+    def _project_codex_checkpoint(self, project_id: str, task_id: str) -> dict[str, Any]:
+        self._check_receipt_anchor(project_id)
+        key = self._task_receipt_key(project_id, task_id)
         admission = self._read_receipt(key, "incomplete", durable=True)
         result: dict[str, Any] = {
             "state": "unknown",

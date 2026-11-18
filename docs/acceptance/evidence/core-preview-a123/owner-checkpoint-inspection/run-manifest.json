@@ -1,0 +1,67 @@
+{
+  "scope": "Deterministic owner checkpoint inspection only; zero models/candidate execution",
+  "origin": "F:\\syuc/amadeus-m6-single/src\\agentsync\\__init__.py",
+  "prefix": "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env",
+  "red_result": "D:\\agentsync-debug\\m123-owner-checkpoint\\red\\result.json",
+  "red_exit": 1,
+  "green_result": "D:\\agentsync-debug\\m123-owner-checkpoint\\green\\result.json",
+  "green_exit": 0,
+  "junit_path": "D:\\agentsync-debug\\m123-owner-checkpoint\\green\\junit.xml",
+  "junit_sha256": "ad7a77a43b73a613ec2a0878f81cf6c3489168cbd7d933398f0aa6886bf1b735",
+  "final_sha256": {
+    "src/agentsync/controlled_relay.py": "9b5fbbcc289d950915c58138940bd33ae6b4852f32ff53f10423ed7912fca322",
+    "src/agentsync/relay_status_cli.py": "6b0e54c2345b5fdf96d07a7f9b9762af59dfc90f2f1c2cbdc2a690c6a6bce788",
+    "tests/integration/test_relay_owner_status.py": "ae1b8e3561a675e290de01a4fb9cadb5a704becfb8f4678c3417fa0912ca3909",
+    "docs/RELAY-RECOVERY.md": "455859dd9c113f50701b28b48528ca5cd4a42d7de8364491cc10a104992865dc"
+  },
+  "post_test_changes": "Only standard-library import order and guide wording; runtime source hashes unchanged",
+  "test_nonimport_ast_equal": true,
+  "test_import_set_equal": true,
+  "guide_tested_sha256": "e5d437e5d0386a56015bc47a7f639a5599f3bb22212149096cab0d365b8428b8",
+  "static": [
+    {
+      "argv": [
+        "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "ruff",
+        "check",
+        "--no-cache",
+        "src/agentsync/controlled_relay.py",
+        "src/agentsync/relay_status_cli.py",
+        "tests/integration/test_relay_owner_status.py"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--no-cache",
+        "src/agentsync/controlled_relay.py",
+        "src/agentsync/relay_status_cli.py",
+        "tests/integration/test_relay_owner_status.py"
+      ],
+      "exit_code": 0,
+      "stdout": "3 files already formatted\n",
+      "stderr": ""
+    }
+  ],
+  "mypy_result": "D:\\agentsync-debug\\m123-owner-checkpoint\\static\\result.json",
+  "mypy_exit": 0,
+  "old_installed_runtime97_unchanged": true,
+  "native_receipts_after_run_transcription": {
+    "red": "149e28 exit1",
+    "green_start": "f66676 session56506",
+    "green_terminal": "d5ca2b exit0",
+    "initial_static": "d4da7f exits1,0,0"
+  }
+}

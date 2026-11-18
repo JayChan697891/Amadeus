@@ -1,0 +1,50 @@
+{
+  "scope": "Owner-only persisted checkpoint inspection; development source, not published preview",
+  "status": "SCOPED_PASS",
+  "base_commit": "58443bb528ddd499ca3bc4936149dd5eca90b578",
+  "reviewed_at": "2026-11-18T07:40:34.744415+00:00",
+  "source_sha256": {
+    "src/agentsync/controlled_relay.py": "9b5fbbcc289d950915c58138940bd33ae6b4852f32ff53f10423ed7912fca322",
+    "src/agentsync/relay_status_cli.py": "6b0e54c2345b5fdf96d07a7f9b9762af59dfc90f2f1c2cbdc2a690c6a6bce788",
+    "tests/integration/test_relay_owner_status.py": "ae1b8e3561a675e290de01a4fb9cadb5a704becfb8f4678c3417fa0912ca3909",
+    "docs/RELAY-RECOVERY.md": "455859dd9c113f50701b28b48528ca5cd4a42d7de8364491cc10a104992865dc"
+  },
+  "tests": {
+    "passed": 14,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "platform": "Windows",
+    "python": "3.12.16",
+    "junit_sha256": "ad7a77a43b73a613ec2a0878f81cf6c3489168cbd7d933398f0aa6886bf1b735",
+    "original_reproduction": "red: 1 expected failure, missing checkpoint CLI field"
+  },
+  "static": {
+    "changed_file_ruff": "PASS",
+    "changed_file_format": "PASS",
+    "source_mypy": "PASS: 96 files",
+    "initial_import_order_failure": "PRESERVED"
+  },
+  "post_test_changes": {
+    "runtime_unchanged": true,
+    "test_import_order_only": true,
+    "same_import_set_and_nonimport_ast": true,
+    "guide_wording_only": true,
+    "pytest_repeated_for_formatting": false
+  },
+  "review": {
+    "root": "Actual diff, both XMLs, hashes and terminal receipts inspected; static originals checked",
+    "astra": "Independent auth/project isolation and actual 14-case evidence accepted; static final check by Root"
+  },
+  "limits": [
+    "Expiry is applied to the SDK Core request clock; CLI subprocess uses owner credentials only, not an inherited fake clock.",
+    "Saved metadata is unverified receipt observation, not current Core content validation.",
+    "No session renewal, Agent launch, continuation or candidate execution permission.",
+    "No new model calls, full suite, Linux/macOS run or new wheel/package validation.",
+    "Historical Ruff failures and live checkpoint NOT_VERIFIED remain unchanged.",
+    "Published a122 r5 and frozen a123 wheel do not contain this source increment."
+  ],
+  "formal_release": "BLOCKED",
+  "public_preview": "v0.3.0a122-preview-r5 unchanged",
+  "next": "Retain existing real checkpoint failure; integrate and validate this owner lookup in a future bound development package before any preview replacement."
+}

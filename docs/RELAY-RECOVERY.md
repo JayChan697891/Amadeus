@@ -47,6 +47,23 @@ tasks passed. Inspect saved history or a particular task separately:
 & .\.venv\Scripts\python.exe -I -B examples\recover_relay.py @location task YOUR_TASK_ID
 ```
 
+In the development checkout, the task response also includes `data.checkpoint`.
+It uses the project owner token, so an expired Agent session does not prevent
+inspection. SDK hosts can call
+`ControlledRelay.owner_observe_codex_checkpoint(project_id, task_id, admin_token=...)`.
+The existing Agent-based observer still requires a valid session.
+
+`saved` returns the recorded context ID, fixed version, content SHA-256 and task
+version; these are **unverified receipt metadata**, not a check of the current Core
+context's content. `not_observed` and `checkpoint_observed: false` require an explicit
+terminal observation. Missing checkpoint receipts after a crash remain `unknown`,
+and disabled capture is `not_enabled`. Malformed checkpoint JSON or inconsistent
+progress/protocol metadata returns an error rather than being reported as absent. No token is included
+in the response. This inspection does not renew a session, launch an Agent, or grant
+continuation, staging, execution or completion permission. `OwnerContinuation`
+still independently checks confirmed failure and the actual Core publication witness.
+The owner inspection addition is not in the previously frozen a123 wheel or a122/r5 ZIP.
+
 History is bounded to the existing CLI's default page. For more pages, use
 `amadeus relay-status --help` and the existing `--history --before` options from
 your trusted host, supplying owner JSON through standard input.

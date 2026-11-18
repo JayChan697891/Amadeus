@@ -1,22 +1,131 @@
 import getpass
+import hashlib
 import io
 import json
 import runpy
 import subprocess
 import sys
+import time
 import warnings
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
+from test_codex_proposal_capture import pilot as pilot
+from test_codex_proposal_relay_queue import cancel_fixture_load
+from test_codex_proposal_relay_queue import proposal_wave as proposal_wave
+from test_task_proposals import world as world
 
+import agentsync.core.service as service
 from agentsync.adapters.approved_launch import digest
 from agentsync.cli import main
 from agentsync.controlled_relay import ControlledRelay
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue
+
+
+@pytest.mark.parametrize("receipt", ["saved", "missing", "malformed", "unknown-protocol"])
+async def test_owner_inspects_checkpoint_after_producer_session_expiry(
+    pilot, world, proposal_wave, monkeypatch, receipt
+):
+    core, owner, _, _, task, _, source, receipts, _ = pilot
+    relay, item, _, approvals, captures, _ = proposal_wave
+    cancel_fixture_load(world)
+    spec = replace(
+        item.task, instruction="Checkpoint fixture succeeded", checkpoint_completed_proposal=True
+    )
+    await relay.run_codex_proposal_once(item.first, spec, admin_token=owner["admin_token"])
+    expected = relay.observe_codex_checkpoint(item.first, task["id"])
+    assert expected["state"] == "saved"
+    other = core.execute("create_project", {"name": "Other owner", "root_path": str(source)})
+    key = relay._key(item.first, task["id"])
+    progress = receipts / relay._receipt_name(key, "proposal-progress")
+    if receipt == "missing":
+        progress.unlink()
+    elif receipt == "malformed":
+        progress.write_text("{", encoding="utf8")
+    elif receipt == "unknown-protocol":
+        value = json.loads(progress.read_bytes())
+        value["checkpoint_protocol"] = "unknown-v2"
+        progress.write_text(json.dumps(value), encoding="utf8")
+
+    def files():
+        return {
+            str(path): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in [core.db_path, *sorted(receipts.iterdir())]
+            if path.is_file()
+        }
+
+    before = files()
+    # Advance only the normal Core request clock. No session/credential bypass or DB repair.
+    now = time.time() + 3601
+    monkeypatch.setattr(service, "time", SimpleNamespace(time=lambda: now))
+    with pytest.raises(AgentSyncError) as expired:
+        relay.observe_codex_checkpoint(item.first, task["id"])
+    assert expired.value.code == "session_expired"
+    command = [
+        sys.executable,
+        "-I",
+        "-B",
+        "-m",
+        "agentsync",
+        "--data-dir",
+        str(core.data_dir),
+        "relay-status",
+        "--scratch-root",
+        str(source.parent),
+        "--receipts",
+        str(receipts),
+        "--task-id",
+        task["id"],
+    ]
+    # CLI owner inspection carries no agent session and therefore cannot revive it.
+    child = subprocess.run(
+        command,
+        input=json.dumps(owner).encode(),
+        capture_output=True,
+        check=False,
+        cwd=source.parent,
+    )
+    response = json.loads(child.stdout)
+    assert owner["admin_token"].encode() not in child.stdout + child.stderr
+    if receipt in ("saved", "missing"):
+        assert child.returncode == 0 and response["ok"] is True
+        checkpoint = response["data"]["checkpoint"]
+        assert (
+            relay.owner_observe_codex_checkpoint(
+                owner["project_id"], task["id"], admin_token=owner["admin_token"]
+            )
+            == checkpoint
+        )
+        assert (
+            checkpoint["scope"] == "receipt_observation"
+            and checkpoint["verification"] == "unverified"
+        )
+        if receipt == "saved":
+            assert checkpoint == expected
+        else:
+            assert checkpoint["state"] == "unknown" and checkpoint["checkpoint_observed"] is None
+    else:
+        assert child.returncode == 1 and response["ok"] is False
+        with pytest.raises(AgentSyncError):
+            relay.owner_observe_codex_checkpoint(
+                owner["project_id"], task["id"], admin_token=owner["admin_token"]
+            )
+    with pytest.raises(AgentSyncError) as foreign:
+        relay.owner_observe_codex_checkpoint(
+            owner["project_id"], task["id"], admin_token=other["admin_token"]
+        )
+    assert foreign.value.code == "unauthorized"
+    own_project = relay.owner_observe_codex_checkpoint(
+        other["project_id"], task["id"], admin_token=other["admin_token"]
+    )
+    assert own_project["state"] == "unknown" and "context_id" not in own_project
+    assert files() == before
+    assert len(approvals) == len(captures) == 1  # Only a known local Python process fixture.
 
 
 def test_owner_recovers_pending_wave_identity_without_an_agent_session(

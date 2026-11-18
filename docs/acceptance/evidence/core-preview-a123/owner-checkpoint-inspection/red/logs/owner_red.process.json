@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "owner_red",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short",
+      "--basetemp",
+      "D:\\agentsync-debug\\m123-owner-checkpoint\\red-t\\pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m123-owner-checkpoint\\red-t\\junit-raw.xml",
+      "tests/integration/test_relay_owner_status.py::test_owner_inspects_checkpoint_after_producer_session_expiry[saved]"
+    ],
+    "cwd": "F:\\syuc\\amadeus-m6-single",
+    "started_at": "2026-11-18T07:33:46.963696+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "owner_red",
+    "status": "fail",
+    "command": [
+      "D:\\agentsync-debug\\m123-owner-checkpoint\\source-env\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short",
+      "--basetemp",
+      "D:\\agentsync-debug\\m123-owner-checkpoint\\red-t\\pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m123-owner-checkpoint\\red-t\\junit-raw.xml",
+      "tests/integration/test_relay_owner_status.py::test_owner_inspects_checkpoint_after_producer_session_expiry[saved]"
+    ],
+    "cwd": "F:\\syuc\\amadeus-m6-single",
+    "exit_code": 1,
+    "started_at": "2026-11-18T07:33:46.963696+00:00",
+    "finished_at": "2026-11-18T07:33:52.314134+00:00",
+    "log": "logs/owner_red.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

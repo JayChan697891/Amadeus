@@ -2,6 +2,23 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The next bounded P1 improvement is complete in development source: project owners
+can inspect saved checkpoint metadata through `relay-status --task-id` and
+`owner_observe_codex_checkpoint` without a valid Agent session. The Agent entry
+still requires its session; owner inspection remains read-only and unverified.
+Four new deterministic cases plus existing owner/actor checks passed14/14 on
+Windows3.12.16 (56506/d5ca2b exit0). Root/Astra independently reviewed the actual
+diff, XML and receipt scope. Changed-file Ruff/format and mypy96 passed; the
+original missing-field reproduction and import-order failure remain preserved.
+After testing, only standard-library import order and guide wording changed;
+Root confirmed identical imports/non-import AST and unchanged runtime hashes.
+[Bound source evidence](acceptance/evidence/core-preview-a123/owner-checkpoint-inspection/summary.json).
+No new model/candidate call, full suite or package installation was performed.
+The public a122/r5 ZIP and earlier a123 wheel are unchanged and do not include
+this source increment. Next integrate this lookup into a bound development
+package and validate affected installation paths before considering a new preview.
+The original live checkpoint result below remains NOT_VERIFIED; do not retry it.
+
 a123 Linux wheel follow-up completed once in51503/642c29 exit0:217 pass,
 one intentionally unconfigured Docker case skipped,218 unique cases,166.50s.
 Root/Astra matched the same218 Windows joint case identities; the four Linux
