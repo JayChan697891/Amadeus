@@ -1,0 +1,6 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/auth_home.py timeout mount",
+  "exit_code": 0,
+  "stdout_sha256": "3ea0cc515509fc77b10864973382ee57f8a3c7227863b055006683a0d6dc0cf0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

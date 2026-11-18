@@ -1,0 +1,6 @@
+{
+  "mode": "timeout",
+  "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+  "retry_allowed": false,
+  "max_model_calls": 1
+}

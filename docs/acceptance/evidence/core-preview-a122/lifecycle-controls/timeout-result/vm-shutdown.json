@@ -1,0 +1,9 @@
+{
+  "boot_id": "ed2080a3-5d27-428e-b29e-19de29e93218",
+  "active_workers": [],
+  "active_containers": [],
+  "cancel_and_timeout_auth_homes_empty_unmounted": true,
+  "poweroff_exit_code": 0,
+  "poweroff_stdout_bytes": 0,
+  "poweroff_stderr_bytes": 0
+}

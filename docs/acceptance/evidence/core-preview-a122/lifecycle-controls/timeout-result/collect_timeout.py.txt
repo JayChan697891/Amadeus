@@ -1,0 +1,100 @@
+"""Collect the one timeout attempt without interpreting a missed window as success."""
+import hashlib
+import json
+from pathlib import Path
+
+import paramiko
+
+base = Path(__file__).parent
+out = base / 'timeout-public'
+out.mkdir(exist_ok=False)
+host = json.loads((base / 'timeout-attempt/controller-result.json').read_bytes())
+assert host['execution_host_terminal'] and host['cleanup_exit_code'] == 0
+assert host['original_auth_unchanged'] is True
+c = paramiko.SSHClient()
+c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.connect('127.0.0.1', port=22222, username='root',
+          key_filename='D:/agentsync-debug/vm/debug_ed25519',
+          look_for_keys=False, allow_agent=False, timeout=15)
+program = r'''
+import hashlib,json,os,sys
+from pathlib import Path
+sys.path.insert(0,'/root/amadeus-lifecycle-a122-helpers')
+import pilot
+r=Path('/root/amadeus-lifecycle-a122-timeout')
+pilot.runtime()
+plan=pilot.load(r,'plan.json')
+fixture=pilot.fixture(r,plan)
+names=['attempt.json','fixture-before.json','run-start.json','launch-approved.json',
+       'parent-running.json','deadline-window.json','exit-observation.json','result.json',
+       'capture-metadata.json','auth-route.json','auth-mount-intent.json','auth-mount.json',
+       'host-terminal.json','auth-cleanup.json']
+missing=[n for n in names if not (r/n).exists()]
+records={n:pilot.load(r,n) for n in names if (r/n).exists()}
+observation=records['exit-observation.json'];run=observation.get('run',{});snapshot=observation.get('snapshot',{})
+assert records['result.json']['exit_observation_sha256']==pilot.sha(r/'exit-observation.json')
+assert records['host-terminal.json']['terminal'] is True
+assert records['auth-cleanup.json']
+if snapshot:
+    assert run['capture_id']==snapshot['capture_id']
+    assert run['parent_ended'] and snapshot['parent_ended'] and run['exit_code']==snapshot['exit_code']
+    assert run['task_id']==plan['task']['task_id'] and run['project_id']==plan['task']['project_id']
+for p in sorted((r/'receipts').glob('*.json')):
+    record=json.loads(p.read_bytes());assert record['plan_sha256']==plan['plan_sha256']
+    records['receipts/'+p.name]=record
+meta=records['capture-metadata.json'];assert meta['saved']
+raws={}
+for stream in ('stdout','stderr'):
+    raw=(r/'private-capture'/f'{stream}.bin').read_bytes()
+    assert len(raw)==meta[stream+'_bytes'] and hashlib.sha256(raw).hexdigest()==meta[stream+'_sha256']
+    raws[stream]=raw
+assert sum(map(len,raws.values()))<=1048576
+counts={kind:0 for kind in ('thread.started','turn.started','turn.completed','turn.failed','error')}
+invalid=tools=0
+for line in raws['stdout'].splitlines():
+    try:e=json.loads(line)
+    except (ValueError,UnicodeError):invalid+=1;continue
+    if not isinstance(e,dict):invalid+=1;continue
+    if e.get('type') in counts:counts[e['type']]+=1
+    if isinstance(e.get('item'),dict) and e['item'].get('type') in ('command_execution','file_change','mcp_tool_call','web_search'):tools+=1
+assert not any((r/'private-home').iterdir())
+assert not any(str(r/'private-home') in line for line in Path('/proc/mounts').read_text().splitlines())
+active=[]
+for p in Path('/proc').iterdir():
+    if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+    try:
+        comm=(p/'comm').read_text().strip();argv=(p/'cmdline').read_bytes()
+        if ('python' in comm or 'codex' in comm) and any(s in argv for s in (str(r).encode(),b'/amadeus-lifecycle-a122-helpers/pilot.py',b'/amadeus-codex-linux-0167/bin/codex')):active.append(int(p.name))
+    except FileNotFoundError:pass
+assert not active
+result={'runtime_members_unchanged':97,'fixture_after':fixture,'raw_capture_hashes_independently_matched':True,
+        'stdout_event_counts':counts,'invalid_json_lines':invalid,'tool_events':tools,
+        'raw_bytes':sum(map(len,raws.values())),'raw_exported':False,'related_processes':active,
+        'private_home_empty':True,'private_home_unmounted':True,'missing_optional_records':missing,
+        'records':records,'source_files':{n:{'sha256':pilot.sha(r/n),'bytes':(r/n).stat().st_size} for n in records}}
+print(json.dumps(result))
+'''
+_, stdout, stderr = c.exec_command(
+    "/root/amadeus-m122l/w/bin/python -I -B - <<'PY'\n" + program + '\nPY', timeout=30)
+raw, error = stdout.read(), stderr.read()
+code = stdout.channel.recv_exit_status()
+c.close()
+assert code == 0, error.decode(errors='replace')
+value = json.loads(raw)
+with (out / 'observed.json').open('x', encoding='utf8') as f:
+    json.dump(value, f, indent=2)
+for p in (base / 'timeout-attempt').iterdir():
+    assert p.is_file() and p.suffix in ('.json', '.log')
+    with (out / p.name).open('xb') as f:
+        f.write(p.read_bytes())
+manifest = {p.name: {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
+            for p in out.iterdir()}
+with (out / 'manifest.json').open('x', encoding='utf8') as f:
+    json.dump(manifest, f, indent=2)
+run = value['records']['exit-observation.json'].get('run', {})
+print(json.dumps({'result': value['records']['result.json'], 'run_id': run.get('run_id'),
+                  'actual_status': run.get('status'), 'error_code': run.get('error_code'),
+                  'parent_ended': run.get('parent_ended'), 'exit_code': run.get('exit_code'),
+                  'events': value['stdout_event_counts'], 'raw_bytes': value['raw_bytes'],
+                  'private_home_unmounted': True, 'related_processes': value['related_processes'],
+                  'public_files': len(manifest)}))

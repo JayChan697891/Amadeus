@@ -1,0 +1,53 @@
+"""Record quiescence, then request normal shutdown of the owned local VM."""
+import json
+from pathlib import Path
+import paramiko
+
+base = Path(__file__).parent
+assert not (base / 'vm-shutdown.json').exists()
+c = paramiko.SSHClient()
+c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.connect('127.0.0.1', port=22222, username='root',
+          key_filename='D:/agentsync-debug/vm/debug_ed25519',
+          look_for_keys=False, allow_agent=False, timeout=15)
+program = r'''
+import json,os,subprocess
+from pathlib import Path
+assert Path('/proc/sys/kernel/random/boot_id').read_text().strip()=='ed2080a3-5d27-428e-b29e-19de29e93218'
+active=[]
+for p in Path('/proc').iterdir():
+    if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+    try:
+        comm=(p/'comm').read_text().strip();argv=(p/'cmdline').read_bytes()
+        if ('python' in comm or 'codex' in comm) and any(s in argv for s in (b'amadeus',b'agentsync',b'pytest')):active.append(int(p.name))
+    except FileNotFoundError:pass
+assert not active
+assert not subprocess.check_output(['docker','ps','-q']).strip()
+for mode in ('cancel','timeout'):
+    r=Path('/root/amadeus-lifecycle-a122-'+mode)
+    cleanup=json.loads((r/'auth-cleanup.json').read_bytes())
+    assert cleanup['temporary_auth_absent'] and cleanup['private_home_unmounted']
+    assert not any((r/'private-home').iterdir())
+    assert not any(str(r/'private-home') in line for line in Path('/proc/mounts').read_text().splitlines())
+print(json.dumps({'boot_id':'ed2080a3-5d27-428e-b29e-19de29e93218','active_workers':active,
+                  'active_containers':[],'cancel_and_timeout_auth_homes_empty_unmounted':True}))
+'''
+_, stdout, stderr = c.exec_command(
+    "/root/amadeus-m122l/w/bin/python -I -B - <<'PY'\n" + program + '\nPY', timeout=30)
+raw, error = stdout.read(), stderr.read()
+code = stdout.channel.recv_exit_status()
+assert code == 0, error.decode(errors='replace')
+record = json.loads(raw)
+with (base / 'vm-quiescent.json').open('x', encoding='utf8') as f:
+    json.dump(record, f, indent=2)
+_, stdout, stderr = c.exec_command('/sbin/poweroff', timeout=15)
+output, error = stdout.read(), stderr.read()
+code = stdout.channel.recv_exit_status()
+c.close()
+record['poweroff_exit_code'] = code
+record['poweroff_stdout_bytes'] = len(output)
+record['poweroff_stderr_bytes'] = len(error)
+with (base / 'vm-shutdown.json').open('x', encoding='utf8') as f:
+    json.dump(record, f, indent=2)
+print(json.dumps(record))
+assert code == 0

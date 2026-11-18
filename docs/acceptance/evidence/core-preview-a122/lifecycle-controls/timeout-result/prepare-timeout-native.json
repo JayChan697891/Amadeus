@@ -1,0 +1,38 @@
+{
+  "scope": "After-run export of observed credential-free preparation native receipt",
+  "native_chunk": "e91bbb",
+  "native_exit_code": 0,
+  "interpreter": "D:/agentsync-debug/venv/Scripts/python.exe",
+  "argv": [
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\m122-lifecycle-host\\prepare_timeout.py"
+  ],
+  "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+  "files": {
+    "prepare_timeout.py": "a47c79cd2f1bc67207127b5aa56ed200c09b6ba8a79c427d8f44bd58a715e33a",
+    "plan-timeout.json": "9fde9ea8b7553e78b1c40682e4e3e18bd32b531c793afef745b508e6ee662f9e",
+    "control-timeout.json": "0c054875e56cc53f324ba5d2559f8c7f0855d7753769a80e1456dc968dbd449b",
+    "owner-grant-timeout.json": "11e5596468a01dea4cd4776dbe68b2a4579648d92069f0ea6842d9f0dab86232",
+    "prepare-timeout-attempt.json": "645f13a9b2879f70ac33dcc4b9f47c2d15ddb7033cfa560d4cafcf319b75aa8b",
+    "prepare-timeout-result.json": "3f632023078c81d25e3633bb80edfb5b531b2e09e5b8b4902e168cbd01e32f44",
+    "timeout-preflight-before.json": "a1d1016c219934fc4c87142db1b871fd800b254fd9bfe93a48946d24ab44e265",
+    "timeout-preflight-after.json": "76cbafbe4e259eb4b19c156377dcca316979a7cd9dddba6a7ae7e38cb0451a1a"
+  },
+  "static_chunk": "6cbce8",
+  "static_exit_code": 0,
+  "boot_id": "ed2080a3-5d27-428e-b29e-19de29e93218",
+  "cancel_originals_unchanged": true,
+  "helper_hashes_unchanged": 5,
+  "host_controller_unchanged": true,
+  "guest_grant_uploaded": false,
+  "credential_access": 0,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "expires_at": 1794973437.4998648,
+  "model_execution": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "initial_host_environment_observations": [
+    "D:/python/python.exe lacks paramiko with and without -I; no network/fixture effect; used parent-provided existing venv instead"
+  ]
+}

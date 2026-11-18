@@ -28,10 +28,13 @@ The current frozen adapter now has scoped Root/Astra acceptance for one actual
 `cancel_task` call after `turn.started`: the owned parent ended and the original
 `unknown/local_cancel_requested` result is retained. See the
 [cancel result](acceptance/evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
-Natural timeout remains the next separate original evidence gap. Review its exact
-standing-grant plan before one new attempt. Parent interruption evidence must not
-be relabelled or repeated as cancellation. No additional M5 phase, candidate
-execution or new package is required for this assessment.
+The separate15-second natural-timeout probe now also has scoped Root/Astra
+acceptance: owned parent ended with `unknown/adapter_timeout`, without an explicit
+cancel call. [Actual timeout result](acceptance/evidence/core-preview-a122/lifecycle-controls/timeout-result/summary.json).
+Both fixtures are consumed. Deliver the unchanged owner preview; remaining formal
+gates and feedback fixes follow without new M5 stages, repeated live calls or
+unnecessary package rebuilds. These observations do not prove service-side
+cancellation, complete process-tree cleanup or Core task completion.
 
 Keep a122/5232e9e frozen for the next limited owner trial. All four Windows/Linux
 wheel/sdist full suites now have scoped Root/Astra acceptance. The remaining

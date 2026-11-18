@@ -1,0 +1,344 @@
+{
+  "runtime_members_unchanged": 97,
+  "fixture_after": {
+    "head": "f16ca706302250497c73b907615e68a5c3e81809",
+    "fixture_sha256": "6ec2faf151467d75950d6eccf0ed39457b1512dc199bbbfaae61cac99452fb8f",
+    "clean": true
+  },
+  "raw_capture_hashes_independently_matched": true,
+  "stdout_event_counts": {
+    "thread.started": 1,
+    "turn.started": 1,
+    "turn.completed": 0,
+    "turn.failed": 0,
+    "error": 0
+  },
+  "invalid_json_lines": 0,
+  "tool_events": 0,
+  "raw_bytes": 335,
+  "raw_exported": false,
+  "related_processes": [],
+  "private_home_empty": true,
+  "private_home_unmounted": true,
+  "missing_optional_records": [],
+  "records": {
+    "attempt.json": {
+      "mode": "timeout",
+      "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+      "controller_pid": 3101,
+      "max_subscription_calls": 1,
+      "retry_allowed": false,
+      "status": "unknown"
+    },
+    "fixture-before.json": {
+      "head": "f16ca706302250497c73b907615e68a5c3e81809",
+      "fixture_sha256": "6ec2faf151467d75950d6eccf0ed39457b1512dc199bbbfaae61cac99452fb8f",
+      "clean": true
+    },
+    "run-start.json": {
+      "scope": "host_process_protocol",
+      "provenance": "trusted_host_factory",
+      "real_client_verified": false,
+      "verification": "unverified",
+      "core_authorization": "unverified",
+      "capacity_scope": "instance_protocol_runs",
+      "tree_cleanup": "unverified",
+      "project_id": "45bb2371b2884fcf9686450bef7deb67",
+      "session_id": "d9b8b63601e5497eaa74f6b281cca82e",
+      "task_id": "afd66c683da1494d9260eace61786d9f",
+      "request_id": "718f38da1a0a4b8e9e62cce44d54e43a",
+      "run_id": "d9ff90be93cb45b5bbbc03ee9b765fe0",
+      "status": "starting",
+      "started_at": 970.486492025,
+      "finished_at": null,
+      "capture_id": null,
+      "capture_state": null,
+      "exit_code": null,
+      "parent_ended": false,
+      "timed_out": false,
+      "slot_held": true,
+      "error_code": null,
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null
+    },
+    "launch-approved.json": {
+      "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc"
+    },
+    "parent-running.json": {
+      "run_id": "d9ff90be93cb45b5bbbc03ee9b765fe0",
+      "capture_id": "aa832cf5655d4e7eacdfb73e9f05e546",
+      "parent_pid": 3107,
+      "observed_at_monotonic": 971.951356978,
+      "absolute_deadline": 985.486492025,
+      "snapshot": {
+        "capture_id": "aa832cf5655d4e7eacdfb73e9f05e546",
+        "state": "running",
+        "exit_code": null,
+        "started_at": 971.939432327,
+        "deadline_at": 986.939432327,
+        "finished_at": null,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "parent_ended": false,
+        "error_code": null,
+        "termination_scope": "parent_only",
+        "tree_cleanup": "unverified",
+        "sandbox": false,
+        "real_client_verified": false
+      },
+      "boundary": {
+        "valid": true,
+        "started": false,
+        "terminal": false,
+        "tools": 0
+      }
+    },
+    "deadline-window.json": {
+      "run_id": "d9ff90be93cb45b5bbbc03ee9b765fe0",
+      "capture_id": "aa832cf5655d4e7eacdfb73e9f05e546",
+      "parent_pid": 3107,
+      "observed_at_monotonic": 984.491149305,
+      "absolute_deadline": 985.486492025,
+      "snapshot": {
+        "capture_id": "aa832cf5655d4e7eacdfb73e9f05e546",
+        "state": "running",
+        "exit_code": null,
+        "started_at": 971.939432327,
+        "deadline_at": 986.939432327,
+        "finished_at": null,
+        "stdout_bytes": 335,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "parent_ended": false,
+        "error_code": null,
+        "termination_scope": "parent_only",
+        "tree_cleanup": "unverified",
+        "sandbox": false,
+        "real_client_verified": false
+      },
+      "boundary": {
+        "valid": true,
+        "started": true,
+        "terminal": false,
+        "tools": 0
+      }
+    },
+    "exit-observation.json": {
+      "status": "NOT_VERIFIED",
+      "mode": "timeout",
+      "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+      "scope": "owned parent only; server cancellation/tree cleanup unverified",
+      "observation": {
+        "cancel_method_called": false,
+        "deadline_window_observed": true
+      },
+      "run": {
+        "scope": "host_process_protocol",
+        "provenance": "trusted_host_factory",
+        "real_client_verified": false,
+        "verification": "unverified",
+        "core_authorization": "unverified",
+        "capacity_scope": "instance_protocol_runs",
+        "tree_cleanup": "unverified",
+        "project_id": "45bb2371b2884fcf9686450bef7deb67",
+        "session_id": "d9b8b63601e5497eaa74f6b281cca82e",
+        "task_id": "afd66c683da1494d9260eace61786d9f",
+        "request_id": "718f38da1a0a4b8e9e62cce44d54e43a",
+        "run_id": "d9ff90be93cb45b5bbbc03ee9b765fe0",
+        "status": "unknown",
+        "started_at": 970.486492025,
+        "finished_at": 985.490404761,
+        "capture_id": "aa832cf5655d4e7eacdfb73e9f05e546",
+        "capture_state": "cancelled",
+        "exit_code": -9,
+        "parent_ended": true,
+        "timed_out": true,
+        "slot_held": true,
+        "error_code": "adapter_timeout",
+        "protocol_error_reason": null,
+        "stdout_bytes": null,
+        "stderr_bytes": null,
+        "stdout_sha256": null,
+        "stderr_sha256": null,
+        "stdout_truncated": null,
+        "stderr_truncated": null
+      },
+      "protocol_session_sha256": null,
+      "capture": {
+        "scope": "Private bounded raw capture; never automatically upload",
+        "saved": true,
+        "stdout_bytes": 335,
+        "stderr_bytes": 0,
+        "stdout_sha256": "df786603afa27baf742dd87e57045f3882f0d6acbdec0a802d8ac6f98b9d7126",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_truncated": false,
+        "stderr_truncated": false
+      },
+      "snapshot": {
+        "capture_id": "aa832cf5655d4e7eacdfb73e9f05e546",
+        "state": "cancelled",
+        "exit_code": -9,
+        "started_at": 971.939432327,
+        "deadline_at": 986.939432327,
+        "finished_at": 985.49035916,
+        "stdout_bytes": 335,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "parent_ended": true,
+        "error_code": "cancelled",
+        "termination_scope": "parent_only",
+        "tree_cleanup": "unverified",
+        "sandbox": false,
+        "real_client_verified": false
+      },
+      "final_boundary": {
+        "valid": true,
+        "started": true,
+        "terminal": false,
+        "tools": 0
+      },
+      "fixture_after": {
+        "head": "f16ca706302250497c73b907615e68a5c3e81809",
+        "fixture_sha256": "6ec2faf151467d75950d6eccf0ed39457b1512dc199bbbfaae61cac99452fb8f",
+        "clean": true
+      },
+      "exact_authorizations": 1,
+      "captured_start_invoked": true
+    },
+    "result.json": {
+      "status": "SCOPED_PASS",
+      "mode": "timeout",
+      "exit_observation_sha256": "b31c5448b561e711b3cd25027d2f6be96e2f624e079af97740ea7572a14c7c44",
+      "actual_error_code": "adapter_timeout",
+      "retry_allowed": false,
+      "server_cancel_verified": false,
+      "core_completion": false,
+      "formal_release": "BLOCKED"
+    },
+    "capture-metadata.json": {
+      "scope": "Private bounded raw capture; never automatically upload",
+      "saved": true,
+      "stdout_bytes": 335,
+      "stderr_bytes": 0,
+      "stdout_sha256": "df786603afa27baf742dd87e57045f3882f0d6acbdec0a802d8ac6f98b9d7126",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_truncated": false,
+      "stderr_truncated": false
+    },
+    "auth-route.json": {
+      "login_status_exit_code": 0,
+      "chatgpt_route_recognized": true,
+      "model_calls": 0,
+      "billing": "Owner confirmed existing subscription/zero credits/no auto recharge; not an independently inspected bill"
+    },
+    "auth-mount-intent.json": {
+      "label": "amadeus-lifecycle-a122-timeout",
+      "credentials_copied": false
+    },
+    "auth-mount.json": {
+      "status": "mounted",
+      "label": "amadeus-lifecycle-a122-timeout",
+      "private_home_mode": "0700",
+      "credentials_copied": false
+    },
+    "host-terminal.json": {
+      "terminal": true,
+      "exit_code": 0,
+      "model_execution_attempted": true
+    },
+    "auth-cleanup.json": {
+      "status": "cleaned",
+      "temporary_auth_absent": true,
+      "private_home_unmounted": true,
+      "private_home_empty": true,
+      "active_related_processes": []
+    },
+    "receipts/consent-3e09f9bc748e7bdc340363d811169c70ee2a092325f74d77ee7beeb2ed43eac3.json": {
+      "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+      "client": "codex",
+      "request_sha256": "e6bc2f18ab6b9ede6a89c1694f9c50ad529f15e827816d748bed7fc9b9911fb1",
+      "consent_sha256": "3e09f9bc748e7bdc340363d811169c70ee2a092325f74d77ee7beeb2ed43eac3"
+    },
+    "receipts/launch-e6bc2f18ab6b9ede6a89c1694f9c50ad529f15e827816d748bed7fc9b9911fb1.json": {
+      "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+      "client": "codex",
+      "request_sha256": "e6bc2f18ab6b9ede6a89c1694f9c50ad529f15e827816d748bed7fc9b9911fb1",
+      "consent_sha256": "3e09f9bc748e7bdc340363d811169c70ee2a092325f74d77ee7beeb2ed43eac3"
+    }
+  },
+  "source_files": {
+    "attempt.json": {
+      "sha256": "e0660edd76b9b6e2b952ec536cbaa88965db9581da84a122cbd5325fa7c5382e",
+      "bytes": 215
+    },
+    "fixture-before.json": {
+      "sha256": "1c6408cddaf861e87658a65d78e71a333c5ac7793cbbc7537b9e841286a57605",
+      "bytes": 162
+    },
+    "run-start.json": {
+      "sha256": "741c74aa3376b9d5498be7a8bec882ec25debb4da370c3a798f89bab3f32f83b",
+      "bytes": 936
+    },
+    "launch-approved.json": {
+      "sha256": "0fa3d71093fa04576c6ad2374cc8278245726966ce896444fe20d666cc0cbd1a",
+      "bytes": 88
+    },
+    "parent-running.json": {
+      "sha256": "f1c449952700e59f2ceb51a97a8ecab68187b0c7d179d9b53aaaa3956e1b7049",
+      "bytes": 808
+    },
+    "deadline-window.json": {
+      "sha256": "2ac4eedbbea996ebcbc2754ef9fd055b54d313aa2eb9ab437e2d3ff9e4774aa8",
+      "bytes": 809
+    },
+    "exit-observation.json": {
+      "sha256": "b31c5448b561e711b3cd25027d2f6be96e2f624e079af97740ea7572a14c7c44",
+      "bytes": 2680
+    },
+    "result.json": {
+      "sha256": "9326f7bb2b9cd0105c0a8dba4edc2bd2a7fd753fa3f31a8276c8b0e597502138",
+      "bytes": 310
+    },
+    "capture-metadata.json": {
+      "sha256": "724041ff7e93bf19e028ae7656d7ccd4c1588cc07816e5425c0314920a9ea660",
+      "bytes": 366
+    },
+    "auth-route.json": {
+      "sha256": "3a6970ae7139ff29204626d2f80f11a3fd6c73a5e650a901240acc17d3bdfa2b",
+      "bytes": 210
+    },
+    "auth-mount-intent.json": {
+      "sha256": "62e2a2d2ef0fa419db9d7db1679f5a6add1038d158f3eff6ac171aea08be8c6b",
+      "bytes": 78
+    },
+    "auth-mount.json": {
+      "sha256": "d6c4272ca7ad010957573d809a3458acd3863d1bb3f625c0ade2332334b12540",
+      "bytes": 132
+    },
+    "host-terminal.json": {
+      "sha256": "ea1364cf45b57e18818ec092921089481a0f2d5d95397bf5f1c9681d1934a689",
+      "bytes": 69
+    },
+    "auth-cleanup.json": {
+      "sha256": "27436623f564b9d82a4874c7b940162b9e57064112886acb647621f23d55fb55",
+      "bytes": 156
+    },
+    "receipts/consent-3e09f9bc748e7bdc340363d811169c70ee2a092325f74d77ee7beeb2ed43eac3.json": {
+      "sha256": "d57f2b73cced61411f3190495dc7d08a03604490a59378e5060cdd10b02b0675",
+      "bytes": 274
+    },
+    "receipts/launch-e6bc2f18ab6b9ede6a89c1694f9c50ad529f15e827816d748bed7fc9b9911fb1.json": {
+      "sha256": "d57f2b73cced61411f3190495dc7d08a03604490a59378e5060cdd10b02b0675",
+      "bytes": 274
+    }
+  }
+}

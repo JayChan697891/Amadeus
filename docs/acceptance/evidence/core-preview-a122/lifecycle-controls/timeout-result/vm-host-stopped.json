@@ -1,0 +1,8 @@
+{
+  "observed_at_utc": "2026-11-18T02:47:03.0086940Z",
+  "vm_pid": 22076,
+  "vm_process_absent": true,
+  "listening_ports": [
+    null
+  ]
+}

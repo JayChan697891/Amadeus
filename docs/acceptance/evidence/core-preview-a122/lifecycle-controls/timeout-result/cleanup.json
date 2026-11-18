@@ -1,0 +1,6 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/auth_home.py timeout cleanup",
+  "exit_code": 0,
+  "stdout_sha256": "5edc73aa1aa5a88708bf41d2eaea5663ee0a6d66e5b2c856aef64698755dd986",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

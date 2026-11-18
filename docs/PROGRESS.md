@@ -11,8 +11,17 @@ server cancellation, descendant cleanup or Core completion. One subscription cal
 zero candidate executions, no retry. Temporary login removed/unmounted, original
 unchanged,97 runtime members unchanged and no related workers remain.
 [Actual cancel evidence](acceptance/evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
-The D-hosted VM was restarted for this probe and remains running for the separately
-prepared natural-timeout check. That check is still NOT RUN; do not replay cancel.
+The separate natural-timeout attempt also completed once: session76129/acbbf5
+exit0, independent collection0b037b exit0. At the15-second adapter deadline the
+same owned parent ended, exit-9; original `unknown/adapter_timeout`, timed_out=true
+and slot_held=true are retained. The eligible window was observed0.995s before
+deadline, and parent termination preceded the capture's own deadline by1.449s.
+Root/Astra accept local timeout handling only; no explicit cancel call, candidate
+execution or retry. Temporary login was removed/unmounted, original unchanged,
+fixture and97 runtime members unchanged. [Actual timeout evidence](acceptance/evidence/core-preview-a122/lifecycle-controls/timeout-result/summary.json).
+The owned VM then shut down normally (e471dc exit0); PID22076 absent and no SSH/QMP
+listeners (c60b44). No related workers or containers remained before shutdown.
+Both single-attempt fixtures are consumed; do not replay either.
 
 The owner preview r3 is available now: [download and short instructions](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md).
 Its default Windows demo uses simulated Agents and stays unverified. The bundled
@@ -51,12 +60,13 @@ All six selected a122 Windows/Linux source/wheel/sdist suites are complete.
 These are test suites, not six complete formal matrix rows; static/license/client
 and macOS gates remain separate. Formal Release BLOCKED.
 
-Immediate continuation: retain the usable preview and its completed terminal
-entry; address concrete owner-feedback defects and the remaining original lifecycle
-evidence (current real adapter natural timeout). Prepare exact bounded
-plans before any new live action; no candidate execution authorization carries
-over. Do not expand M5, repeat passing suites, rebuild unchanged packages or infer
-broader acceptance.
+Immediate continuation: deliver the existing r3 preview and short instructions,
+then address concrete owner-feedback defects. Current cancel/timeout observations
+are complete within their stated scope; do not repeat them. The remaining original
+formal gates include unavailable macOS/other-client evidence, pending license
+review and preserved static FAIL. These do not become new phases or prevent the
+limited owner trial. No candidate execution authorization carries over. Do not
+expand M5, repeat passing suites, rebuild unchanged packages or infer broader acceptance.
 After readonly evidence collection/review, the D-hosted VM shut down normally:
 guest poweroff exit0, PID10040 absent and SSH/QMP ports closed. Windows source also
 ended; its controller/pytest processes are absent. The long-term Goal is active.

@@ -9,9 +9,20 @@ completed model task. Fifteen public originals, exact launch/consent receipts,
 private-capture metadata, unchanged97-member runtime, clean fixture, temporary
 login cleanup and unchanged original login were independently checked. No raw
 model output or credentials were published. Zero candidate executions, no retry.
-Natural timeout remains NOT RUN; server-side cancellation, descendant-tree
-cleanup and Core completion are outside this result. Formal Release BLOCKED.
+Server-side cancellation, descendant-tree cleanup and Core completion are outside
+this result. Formal Release BLOCKED.
 [Actual cancellation evidence](evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
+
+The separately prepared natural-timeout attempt also has scoped Root/Astra
+acceptance: one actual Codex call, zero candidate executions, no retry. The
+qualified window was observed0.995s before the15-second deadline; the owned parent
+ended after15.0039s, before the capture's own deadline by1.449s. No explicit cancel
+method was invoked. Preserve `unknown/adapter_timeout`, timed_out=true,
+slot_held=true and exit-9; this is local deadline handling, not model success.
+Fifteen public originals, plan/receipt/capture bindings, unchanged97 runtime
+members, clean fixture and credential cleanup were independently checked.
+The VM shut down normally afterward; no related workers/containers remained.
+[Actual timeout evidence](evidence/core-preview-a122/lifecycle-controls/timeout-result/summary.json).
 
 Current preview update,2026-11-18: the repaired terminal entry7085ec0 completed
 one authorized real trial on frozen a122/5232e9e. Two Codex subscription calls
@@ -35,8 +46,9 @@ both Windows installed forms. Original and copy each retain3992 files and97 runt
 members. [Actual Windows source result](evidence/core-preview-a122/full-windows312-source/summary.json).
 This completes six selected a122 test suites, not all nine formal platform/form
 matrix rows or their non-pytest gates. Formal Release remains **BLOCKED**:
-macOS and other real clients lack environments, current natural-timeout evidence
-is NOT RUN, license review is pending and historical static FAIL is retained.
+macOS and other real clients lack environments, license review is pending and
+historical static FAIL is retained. Current cancel/timeout observations only
+close the local owned-parent scope recorded above, not all M6/Release requirements.
 
 ## Earlier acceptance checkpoints
 
