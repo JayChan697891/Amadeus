@@ -159,6 +159,11 @@ the run later. The package hashes are in [SHA256SUMS](releases/0.3.0a122/preview
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development installation and tests.
 Real Codex experiment evidence is linked above and is separate from this demo.
 
+For your own bounded task, the [terminal host example](docs/VERIFIED-TASK-EXAMPLE.md)
+uses the existing SDK with separate launch, staging, execution and completion
+approvals. It requires a prepared isolated Linux project, Codex login and local
+Docker; its new entry has separate validation from historical real-client runs.
+
 ## Try persisted collaboration
 
 The newer [a118 development preview](releases/0.3.0a118/preview-7f0ba0a/) includes
@@ -183,7 +188,7 @@ After the Windows installation above, run the following from the repository
 directory (choose another new directory name for each run):
 
 ```powershell
-& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-demo-01" demo --durable
+& .\.venv-a122\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-demo-01" demo --durable
 ```
 
 On Linux, an equivalent disposable location is `/tmp/amadeus-demo-01`.
@@ -302,7 +307,7 @@ complete input: SDK project creation, then three separate CLI processes for
 from this repository run:
 
 ```powershell
-& .\.venv\Scripts\python.exe -I -B examples\persisted_workflow.py "$PWD\local-data\my-workflow-01"
+& .\.venv-a122\Scripts\python.exe -I -B examples\persisted_workflow.py "$PWD\local-data\my-workflow-01"
 ```
 
 Choose a new directory each time. Output shows the same `run_id`, first `waiting`

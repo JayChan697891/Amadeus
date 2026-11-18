@@ -116,6 +116,10 @@ py -3.12 -m venv .venv-a122
 下载校验见 [SHA256SUMS](releases/0.3.0a122/preview-5232e9e/SHA256SUMS)，
 开发安装与测试见 [CONTRIBUTING.md](CONTRIBUTING.md)。上方真实 Codex 实验的证据与本演示分开记录。
 
+需要输入自己的任务时，可使用[受控终端示例](docs/VERIFIED-TASK-EXAMPLE.md)。
+它复用既有 SDK，分别审批启动、候选暂存、隔离执行和验收，需要事先准备专用 Linux
+项目、Codex 登录及本地 Docker。新入口的验证与历史真实客户端实验分开记录。
+
 ## 体验持久化协作
 
 [预览目录](releases/0.3.0a117/demo-fc27f15/)提供同一冻结运行时的 wheel 和源码包。
@@ -132,7 +136,7 @@ Windows3.12 的源码安装、源码包安装，以及 Linux3.14 源码包安装
 完成上面的 Windows 安装后，在项目目录运行；每次使用一个尚不存在的新目录：
 
 ```powershell
-& .\.venv\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-demo-01" demo --durable
+& .\.venv-a122\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-demo-01" demo --durable
 ```
 
 Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务、保存一次
@@ -158,7 +162,7 @@ Linux 可使用 `/tmp/amadeus-demo-01`。演示复用现有核心：创建任务
 完成安装后，在仓库目录运行；每次选择一个不存在的新目录：
 
 ```powershell
-& .\.venv\Scripts\python.exe -I -B examples\persisted_workflow.py "$PWD\local-data\my-workflow-01"
+& .\.venv-a122\Scripts\python.exe -I -B examples\persisted_workflow.py "$PWD\local-data\my-workflow-01"
 ```
 
 输出的 `run_id` 保持一致，状态从 `waiting` 变为 `completed`，同时明确保留
