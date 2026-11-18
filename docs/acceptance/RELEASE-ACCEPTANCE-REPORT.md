@@ -1,5 +1,14 @@
 # Release Acceptance Report
 
+Owner preview r5 adds manual independent receiver-document accept/reject with
+eight actual local Core checks passing and Root/Astra scoped acceptance. The
+11-member package retains the frozen a122 runtime and six original r4 payloads;
+hashes/CRC and extracted helper help were checked. Native terminal interaction
+and a new Linux/model run for this helper are NOT RUN. The owner authorizes a
+GitHub prerelease, not formal acceptance or a repository visibility change.
+[Bounded entry results](evidence/core-preview-a122/document-review/summary.json).
+Formal Release remains BLOCKED.
+
 Current Windows3.11.15 a122 wheel result has scoped Root/Astra acceptance:
 2539 pass/57 skip,2596 unique cases, zero failures/errors; all case identities and
 outcomes match the current Windows3.12 wheel. Original native66521 ended once at

@@ -11,7 +11,14 @@ and file hashes and accepted this limited scope.
 Confirmation is a deterministic test input, not native terminal/live-client proof.
 No model, candidate execution or runtime change. Documents remain unverified.
 [Actual checks](acceptance/evidence/core-preview-a122/document-review/root-review.json).
-The r5 package is next; it is not yet built here.
+The [r5 owner preview](../releases/0.3.0a122/owner-preview-document-review-r5/README.md)
+is now built from5f7d75a:341993 bytes,11 members, ZIP SHA cf5c6125e56ec94ce12ff7a2aa36b4a97975240fcce1405569e3461ba1ee2e2c.
+Root verified CRC, all manifest/checksum entries, actual extracted helper/help
+output, and all six unchanged r4 payload members. Original r4 remains intact.
+Build98b202 exit0; Root728346 exit0. An earlier read-only display of Chinese
+README text hit console encoding (6f2f2d); no artifact or test failed or changed.
+No install/full-suite/model rerun. Owner now authorizes GitHub preview publication;
+publish only as prerelease, keep existing repository visibility and formal gates.
 
 Current original M9 matrix work: the first a122 Windows3.11.15 wheel full
 suite completed once, native66521/6d442e exit0, at2026-11-18T03:58:59Z.

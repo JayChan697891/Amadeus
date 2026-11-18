@@ -2,6 +2,12 @@
 
 ## Owner-trial priority — 2026-11-17
 
+Owner-preview r5 is built and checked: unchanged frozen Core plus explicit
+receiver-document accept/reject, eight passing local Core checks and independent
+review. The owner authorized GitHub prerelease publication on2026-11-18; retain
+private repository visibility, disable hosted Actions before publication, and
+keep formal Release BLOCKED. Resume the prepared311 sdist matrix after delivery.
+
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source

@@ -2,11 +2,15 @@
 
 # Amadeus
 
-**Try the packaged preview:** [download the a122 ZIP](releases/0.3.0a122/owner-preview-input-bounds-r4/Amadeus-owner-preview-a122.zip)
+**Try the packaged preview:** [download the a122 r5 ZIP](releases/0.3.0a122/owner-preview-document-review-r5/Amadeus-owner-preview-a122.zip)
 and follow its short README. It includes the original frozen wheel and reviewed
 terminal examples; Python 3.12 is required for the Windows quick start. The default
 demo uses simulated Agents, with no model calls. Its Windows dependency constraints
 match the tested environment. Formal Release remains BLOCKED.
+
+R5 adds manual acceptance/rejection of the receiver's fixed `review.md` using a
+new independent Core reviewer. Eight local Core checks pass; document review
+remains unverified and performs no model or candidate execution.
 
 The included Linux terminal entry now has a successful bounded real Codex run:
 producer proposal, one approved Docker verification, independent producer
