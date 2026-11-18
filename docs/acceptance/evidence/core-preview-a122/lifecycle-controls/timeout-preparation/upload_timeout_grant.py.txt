@@ -1,0 +1,42 @@
+"""Upload only the reviewed per-mode permission record; no account access."""
+import hashlib
+import json
+import stat
+from pathlib import Path
+import paramiko
+
+base = Path(__file__).parent
+control = json.loads((base / 'control-timeout.json').read_bytes())
+raw = (base / 'owner-grant-timeout.json').read_bytes()
+assert hashlib.sha256(raw).hexdigest() == control['owner_grant_sha256']
+plan = (base / 'plan-timeout.json').read_bytes()
+assert hashlib.sha256(plan).hexdigest() == control['plan_file_sha256']
+c = paramiko.SSHClient()
+c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.connect('127.0.0.1', port=22222, username='root',
+          key_filename='D:/agentsync-debug/vm/debug_ed25519',
+          look_for_keys=False, allow_agent=False, timeout=15)
+root = '/root/amadeus-lifecycle-a122-timeout'
+with c.open_sftp() as sftp:
+    assert not {'attempt.json','owner-grant.json','auth-mount-intent.json'} & set(sftp.listdir(root))
+    assert not sftp.listdir(root + '/private-home')
+    with sftp.open('/proc/sys/kernel/random/boot_id', 'rb') as f:
+        assert f.read().decode().strip() == control['boot_id']
+    with sftp.open(root + '/plan.json', 'rb') as f:
+        assert f.read() == plan
+    for name, digest in control['helper_sha256'].items():
+        with sftp.open('/root/amadeus-lifecycle-a122-helpers/' + name, 'rb') as f:
+            assert hashlib.sha256(f.read()).hexdigest() == digest
+    with sftp.open(root + '/owner-grant.json', 'wx') as f:
+        sftp.chmod(root + '/owner-grant.json', 0o600)
+        f.write(raw)
+    with sftp.open(root + '/owner-grant.json', 'rb') as f:
+        assert f.read() == raw
+    assert stat.S_IMODE(sftp.lstat(root + '/owner-grant.json').st_mode) == 0o600
+c.close()
+record = {'status':'uploaded_byte_identical', 'mode':'timeout',
+          'plan_sha256':control['plan_sha256'], 'grant_sha256':control['owner_grant_sha256'],
+          'model_calls':0, 'credential_access':0}
+with (base / 'timeout-grant-upload.json').open('x', encoding='utf8') as f:
+    json.dump(record, f, indent=2)
+print(json.dumps(record))

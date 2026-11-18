@@ -1,0 +1,8 @@
+{
+  "status": "uploaded_byte_identical",
+  "mode": "timeout",
+  "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+  "grant_sha256": "11e5596468a01dea4cd4776dbe68b2a4579648d92069f0ea6842d9f0dab86232",
+  "model_calls": 0,
+  "credential_access": 0
+}

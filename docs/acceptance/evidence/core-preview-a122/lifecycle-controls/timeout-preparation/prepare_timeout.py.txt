@@ -1,0 +1,300 @@
+"""Prepare only the second, independent lifecycle fixture; no auth/model actions."""
+
+import hashlib
+import json
+import shlex
+import stat
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+SOURCE = BASE.parent / "m122-lifecycle-preparation"
+REMOTE = "/root/amadeus-lifecycle-a122-helpers"
+ROOT = "/root/amadeus-lifecycle-a122-timeout"
+PYTHON = "/root/amadeus-m122l/w/bin/python"
+BOOT = "ed2080a3-5d27-428e-b29e-19de29e93218"
+CONTROLLER_SHA = "e12f56145a3e379e0ac49f2f6aaead943d92acbad1dada14bf4e1cb1985e02ec"
+
+PREFLIGHT = r"""
+import hashlib,json,os,sys
+from pathlib import Path
+phase, expected_json = sys.argv[1:]
+expected = json.loads(expected_json)
+helpers = Path('/root/amadeus-lifecycle-a122-helpers')
+cancel = Path('/root/amadeus-lifecycle-a122-cancel')
+target = Path('/root/amadeus-lifecycle-a122-timeout')
+sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+assert Path('/proc/sys/kernel/random/boot_id').read_text().strip() == 'ed2080a3-5d27-428e-b29e-19de29e93218'
+assert {name: sha(helpers/name) for name in expected} == expected
+sys.path.insert(0, str(helpers))
+import pilot
+pilot.runtime()
+plan = pilot.load(cancel, 'plan.json')
+assert plan['mode'] == 'cancel'
+pilot.fixture(cancel, plan)
+cleanup = pilot.load(cancel, 'auth-cleanup.json')
+assert cleanup == {'status':'cleaned', 'temporary_auth_absent':True,
+                   'private_home_unmounted':True, 'private_home_empty':True,
+                   'active_related_processes':[]}
+assert not any((cancel/'private-home').iterdir())
+assert not os.path.lexists(cancel/'private-home/auth.json')
+mounts = [row.split()[1] for row in Path('/proc/mounts').read_text().splitlines()]
+assert str(cancel/'private-home') not in mounts and str(target/'private-home') not in mounts
+active = []
+for process in Path('/proc').iterdir():
+    if not process.name.isdecimal() or int(process.name) == os.getpid():
+        continue
+    try:
+        argv = (process/'cmdline').read_bytes().split(b'\0')
+        executable = os.readlink(process/'exe')
+    except FileNotFoundError:
+        continue
+    if (executable == str(pilot.EXE) or str(pilot.EXE).encode() in argv
+            or str(helpers/'pilot.py').encode() in argv
+            or any(arg.startswith(str(root).encode()+b'/') for arg in argv for root in (cancel,target))):
+        active.append(int(process.name))
+assert not active
+names = ('plan.json','attempt.json','result.json','exit-observation.json',
+         'capture-metadata.json','host-terminal.json','auth-cleanup.json')
+cancel_hashes = {name:sha(cancel/name) for name in names}
+if phase == 'before':
+    assert not os.path.lexists(target)
+else:
+    assert target.resolve(strict=True) == target
+    assert not {'attempt.json','owner-grant.json','auth-mount-intent.json','auth-mount.json'} & {p.name for p in target.iterdir()}
+    assert not any((target/'private-home').iterdir()) and not any((target/'receipts').iterdir())
+    fresh = pilot.load(target,'plan.json')
+    assert fresh['mode'] == 'timeout' and fresh['timeout_seconds'] == fresh['task']['timeout_seconds'] == 15
+    assert fresh['model_calls'] == 0 and fresh['max_model_calls'] == 1 and fresh['candidate_executions'] == 0
+    assert fresh['task']['instruction'] == plan['task']['instruction'] == pilot.INSTRUCTION
+    assert fresh['helper_sha256'] == {name:expected[name] for name in ('pilot.py','private_capture.py','runtime-members.json')}
+    pilot.fixture(target,fresh)
+print(json.dumps({'phase':phase,'boot_id':'ed2080a3-5d27-428e-b29e-19de29e93218',
+                  'helper_sha256':expected,'cancel_original_sha256':cancel_hashes,
+                  'cancel_cleaned':True,'active_related_processes':active,
+                  'runtime_members':97,'model_calls':0,'credential_access':0}))
+"""
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2, ensure_ascii=True)
+        stream.write("\n")
+
+
+def main():
+    names = (
+        "plan-timeout.json",
+        "control-timeout.json",
+        "owner-grant-timeout.json",
+        "prepare-timeout-attempt.json",
+    )
+    assert not any((BASE / name).exists() for name in names), (
+        "Preserve existing preparation; do not retry."
+    )
+    cancel_control = json.loads((BASE / "control-cancel.json").read_bytes())
+    observed = json.loads((BASE / "cancel-public/observed.json").read_bytes())
+    host = json.loads((BASE / "cancel-public/controller-result.json").read_bytes())
+    assert (
+        host["execution_host_terminal"] is True
+        and host["execution_exit_code"] == host["cleanup_exit_code"] == 0
+    )
+    assert host["original_auth_unchanged"] is True
+    assert (
+        observed["related_processes"] == []
+        and observed["private_home_empty"]
+        and observed["private_home_unmounted"]
+    )
+    assert observed["records"]["result.json"]["status"] == "SCOPED_PASS"
+    paths = {
+        name: SOURCE / name for name in ("pilot.py", "private_capture.py", "runtime-members.json")
+    }
+    paths.update({name: BASE / name for name in ("auth_home.py", "route.py")})
+    hashes = {name: sha(path.read_bytes()) for name, path in paths.items()}
+    assert hashes == cancel_control["helper_sha256"]
+    assert sha((BASE / "run_once.py").read_bytes()) == CONTROLLER_SHA
+    prepare = " ".join(
+        map(shlex.quote, (PYTHON, "-I", "-B", REMOTE + "/pilot.py", "prepare", "timeout"))
+    )
+    save(
+        "prepare-timeout-attempt.json",
+        {
+            "started_at": datetime.now(UTC).isoformat(),
+            "command": prepare,
+            "boot_id": BOOT,
+            "helper_sha256": hashes,
+            "host_controller_sha256": CONTROLLER_SHA,
+            "model_calls": 0,
+            "credential_access": 0,
+            "automatic_retry": False,
+        },
+    )
+    result = {
+        "status": "unknown",
+        "model_calls": 0,
+        "credential_access": 0,
+        "prepare_invoked": False,
+    }
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+
+    def command(text, prefix):
+        channel = client.get_transport().open_session(timeout=15)
+        channel.exec_command(text)
+        stdout, stderr = bytearray(), bytearray()
+        deadline = time.monotonic() + 45
+        try:
+            while True:
+                for ready, read, target in (
+                    (channel.recv_ready, channel.recv, stdout),
+                    (channel.recv_stderr_ready, channel.recv_stderr, stderr),
+                ):
+                    if ready():
+                        target.extend(read(16384))
+                assert len(stdout) + len(stderr) <= 65536
+                if (
+                    channel.exit_status_ready()
+                    and not channel.recv_ready()
+                    and not channel.recv_stderr_ready()
+                ):
+                    code = channel.recv_exit_status()
+                    break
+                if channel.closed or time.monotonic() >= deadline:
+                    raise TimeoutError("Preparation observation unknown; do not retry.")
+                time.sleep(0.02)
+        finally:
+            for suffix, data in (("stdout", stdout), ("stderr", stderr)):
+                with (BASE / (prefix + "." + suffix + ".log")).open("xb") as stream:
+                    stream.write(data)
+        save(
+            prefix + ".json",
+            {
+                "command": text,
+                "exit_code": code,
+                "stdout_sha256": sha(stdout),
+                "stderr_sha256": sha(stderr),
+            },
+        )
+        assert code == 0, prefix
+        return json.loads(stdout)
+
+    try:
+        client.connect(
+            "127.0.0.1",
+            port=22222,
+            username="root",
+            key_filename="D:/agentsync-debug/vm/debug_ed25519",
+            look_for_keys=False,
+            allow_agent=False,
+            timeout=15,
+            banner_timeout=15,
+            auth_timeout=15,
+        )
+
+        def preflight(phase):
+            text = " ".join(
+                map(shlex.quote, (PYTHON, "-I", "-B", "-c", PREFLIGHT, phase, json.dumps(hashes)))
+            )
+            return command(text, "timeout-preflight-" + phase)
+
+        before = preflight("before")
+        result["prepare_invoked"] = True
+        prepared = command(prepare, "prepare-timeout")
+        after = preflight("after")
+        assert before["cancel_original_sha256"] == after["cancel_original_sha256"]
+        with client.open_sftp() as sftp:
+            info = sftp.lstat(ROOT + "/plan.json")
+            assert (
+                stat.S_ISREG(info.st_mode)
+                and info.st_uid == 0
+                and stat.S_IMODE(info.st_mode) == 0o600
+            )
+            assert 0 < info.st_size <= 65536
+            with sftp.open(ROOT + "/plan.json", "rb") as stream:
+                plan_raw = stream.read(65537)
+            assert len(plan_raw) == info.st_size
+        plan = json.loads(plan_raw)
+        assert (
+            plan["plan_sha256"] == prepared["plan_sha256"]
+            and sha(plan_raw) == prepared["plan_file_sha256"]
+        )
+        with (BASE / "plan-timeout.json").open("xb") as stream:
+            stream.write(plan_raw)
+        standing = json.loads((BASE / "owner-grant-cancel.json").read_bytes())
+        grant = {
+            **standing,
+            "mode": "timeout",
+            "plan_sha256": plan["plan_sha256"],
+            "plan_file_sha256": sha(plan_raw),
+            "expires_at": time.time() + 3600,
+            "temporary_auth_destination": ROOT + "/private-home/auth.json",
+            "scope": "One fixed-text standalone natural15-second adapter deadline; no explicit cancellation, Core completion, candidate execution or cancel-mode launch. Early completion is MISSED/NOT VERIFIED; no budget/prompt/output changes or retry.",
+            "issued_at": datetime.now(UTC).isoformat(),
+            "model_calls": 0,
+            "live_execution": "NOT RUN",
+        }
+        assert (
+            grant["authorized"] is True
+            and grant["max_subscription_calls"] == 1
+            and grant["max_candidate_executions"] == 0
+        )
+        grant_raw = (json.dumps(grant, indent=2, ensure_ascii=True) + "\n").encode()
+        with (BASE / "owner-grant-timeout.json").open("xb") as stream:
+            stream.write(grant_raw)
+        control = {
+            "mode": "timeout",
+            "plan_sha256": plan["plan_sha256"],
+            "plan_file_sha256": sha(plan_raw),
+            "boot_id": BOOT,
+            "helper_sha256": hashes,
+            "max_model_calls": 1,
+            "max_candidate_executions": 0,
+            "subscription_only": True,
+            "model_calls": 0,
+            "credential_copy": False,
+            "owner_grant_sha256": sha(grant_raw),
+            "host_controller_sha256": CONTROLLER_SHA,
+        }
+        save("control-timeout.json", control)
+        assert hashes == {name: sha(path.read_bytes()) for name, path in paths.items()}
+        assert sha((BASE / "run_once.py").read_bytes()) == CONTROLLER_SHA
+        result.update(
+            status="prepared",
+            control=control,
+            prepared=prepared,
+            cancel_originals_unchanged=True,
+            credential_copy=False,
+            guest_grant_uploaded=False,
+            expiry_seconds=3600,
+        )
+    except Exception as error:
+        result["error_type"] = type(error).__name__
+        raise
+    finally:
+        client.close()
+        result["finished_at"] = datetime.now(UTC).isoformat()
+        save("prepare-timeout-result.json", result)
+    print(
+        json.dumps(
+            {
+                "status": result["status"],
+                "plan_sha256": result["control"]["plan_sha256"],
+                "plan_file_sha256": result["control"]["plan_file_sha256"],
+                "model_calls": 0,
+                "credential_access": 0,
+                "guest_grant_uploaded": False,
+            }
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()
