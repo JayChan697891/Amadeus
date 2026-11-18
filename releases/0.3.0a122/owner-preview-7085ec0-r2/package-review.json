@@ -1,0 +1,108 @@
+{
+  "archive": "Amadeus-owner-preview-a122.zip",
+  "sha256": "03cf1055e89ce6e8ff5e5c94b940dc21cb001cf7fd779eb2ce7d861f7afe3726",
+  "bytes": 336474,
+  "archive_members": 9,
+  "crc_and_exact_payload_match": true,
+  "original_wheel_unchanged": true,
+  "source_files_byte_identical": true,
+  "documentation_transform": "Replace absent evidence-relative links with original pinned GitHub URLs; new short quick start.",
+  "extracted_script_help": [
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\preview-bundle-20261118-r2\\Amadeus-preview-a122\\examples\\initialize_terminal_project.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "0276dda3007a89d480a6c51226521567bb84a6fd98624447ca67a6e7db0abc37"
+    },
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\preview-bundle-20261118-r2\\Amadeus-preview-a122\\examples\\verified_codex_task.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "aadad5137f79a0350c5711fb285d74733995f91959a4d43a77ed54861c14970c"
+    },
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\preview-bundle-20261118-r2\\Amadeus-preview-a122\\examples\\recover_relay.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "95dfdbc68946ec399a8c118098d9395ca43d7265713931f35927e41302d1c3d7"
+    }
+  ],
+  "install_repeated": false,
+  "full_suites_repeated": false,
+  "real_model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "manifest": {
+    "version": "0.3.0a122",
+    "scope": "limited owner preview",
+    "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+    "entry_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+    "documentation_commit": "6dcad6f45530be72c220e0b9e402cc690a1d6c9d",
+    "formal_release": "BLOCKED",
+    "default_demo": "simulation_only/unverified",
+    "files": {
+      "agentsync_local-0.3.0a122-py3-none-any.whl": {
+        "bytes": 328435,
+        "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+      },
+      "LICENSE": {
+        "bytes": 1079,
+        "sha256": "a34848c085a0b1a5b161e4a1122002e054ff35970f92fb78c0a33e6fd385c1f3"
+      },
+      "examples/initialize_terminal_project.py": {
+        "bytes": 4528,
+        "sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d"
+      },
+      "examples/verified_codex_task.py": {
+        "bytes": 15464,
+        "sha256": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233"
+      },
+      "examples/recover_relay.py": {
+        "bytes": 2979,
+        "sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9"
+      },
+      "docs/VERIFIED-TASK-EXAMPLE.md": {
+        "bytes": 7370,
+        "sha256": "9b86524c4163ed9d966208a9a58441b69b28289cbc5306bfedd65b2b417b4fd3"
+      },
+      "README.md": {
+        "bytes": 2490,
+        "sha256": "c21fa8ef63a10a1dfcd2bcba3515b7243a1d4b9c6e4266c8efab8359a387e67f"
+      }
+    }
+  },
+  "root_review": {
+    "all_manifest_and_checksum_entries_match": true,
+    "no_control_characters_in_markdown": true,
+    "relative_document_links_resolve": 3,
+    "powershell_quick_start_parse": {
+      "native_chunk": "e53b44",
+      "errors": 0,
+      "statements": 3
+    },
+    "unpublished_first_bundle": "REJECTED: README escape corruption; retained under D:/agentsync-debug/preview-bundle-20261118-rejected; not uploaded",
+    "accepted_archive_sha256": "03cf1055e89ce6e8ff5e5c94b940dc21cb001cf7fd779eb2ce7d861f7afe3726",
+    "scope": "Package integrity and entry help only; existing installation evidence reused, not rerun"
+  },
+  "independent_review": {
+    "reviewer": "Astra recovery scope",
+    "result": "Accepted r2 as private owner preview",
+    "scope": "Package contents and usage only; no additional runtime or formal release acceptance",
+    "archive_sha256": "03cf1055e89ce6e8ff5e5c94b940dc21cb001cf7fd779eb2ce7d861f7afe3726"
+  }
+}

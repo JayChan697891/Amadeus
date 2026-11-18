@@ -2,6 +2,12 @@
 
 ## Owner-trial priority — 2026-11-17
 
+Owner acceleration: deliver the [small owner preview ZIP](../releases/0.3.0a122/owner-preview-7085ec0-r2/README.md)
+now, reusing the frozen wheel and reviewed entry scripts. The three-command
+Windows quick start is a simulated durable demo, not real-Agent acceptance.
+Full source matrix work stays in C; do not repeat the four completed installed
+suites. The next real-terminal experiment below retains its exact permission gate.
+
 The next P0 action is the [prepared post-repair terminal experiment](acceptance/evidence/core-preview-a122/terminal-repaired/execution-plan.md).
 It binds the initializer and corrected entry to a new real local project; actual
 preflight is complete, but fresh post-failure execution permission is still

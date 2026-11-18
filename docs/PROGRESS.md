@@ -2,6 +2,18 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The owner preview is now assembled into one 336474-byte ZIP: the unchanged a122
+wheel, MIT license, three byte-identical reviewed examples, bounded terminal guide,
+short Chinese quick start and file hashes. [Download and package checks](../releases/0.3.0a122/owner-preview-7085ec0-r2/README.md).
+Archive CRC, payload identity and all three extracted example --help commands
+passed; the Windows quick-start block parses as three commands with no errors.
+The first unpublished bundle had string-escape corruption in its README and was
+rejected and retained locally; the corrected r2 is the only delivery candidate.
+This is packaging of already-tested inputs, not a new install/full-suite or real
+model run. Default simulation/unverified output and formal Release BLOCKED are
+explicit. Remaining source matrix work is deferred behind usable preview delivery;
+the prepared real terminal E2E below is still awaiting its fresh authorization.
+
 Next P0 terminal E2E is concretely prepared for the corrected entry at7085ec0,
 using the real initializer and a new dedicated project. Root observed a clean
 registered repository, zero tasks,0700/0600 protection and empty model-login home;
