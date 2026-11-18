@@ -1,0 +1,33 @@
+{
+  "scope": "P1 terminal input-file memory bound; runtime unchanged",
+  "status": "SCOPED PASS - affected Windows offline checks",
+  "parent_commit": "6ad473223ac2cc685fbea6f31eee87bae5a8b764",
+  "code_change": "Read at most1001 task bytes and32769 case bytes before original1000/32768 limits; no approval, launch or execution changes",
+  "reproduction": "Two actual1MiB files reproduced unbounded read(-1); original2 failures retained",
+  "actual_tests": {
+    "native_terminal": "3ef550 exit0",
+    "passed": 14,
+    "skipped": 4,
+    "errors": 0,
+    "failures": 0,
+    "skip_reason": "Linux real terminal input not run"
+  },
+  "root_review": "Read actual failure and success XML/logs, all code diff and boundary tests; verified final source hashes against tested files. No full suite repeated.",
+  "installed_runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "models": 0,
+  "candidate_executions": 0,
+  "new_linux_entry_run": "NOT RUN",
+  "historical_real_entry": "7085ec0, not upgraded by this offline repair",
+  "formal_release": "BLOCKED",
+  "files_sha256": {
+    "green-start.json": "396cd98868bf72bb8b90ee9189839b407a403e1e8a2583bcd5ff086536725feb",
+    "green.exit": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+    "green.log": "7189ac6bce40fdc013245d2c0621a175241512d77a5fdd5acb4dece839749e7d",
+    "green.xml": "dd646af004d9a3dbf6f869e714dd25afcf82869f6b60c74c08d6950eb83c05e0",
+    "native-results.json": "8fc106ebecf55ff8960b2dbccf7166e9e06582a6406705d3f699103aec7ed481",
+    "origin.json": "3ef6cd61584adb547f566342aace88f6b673514974c7bd2ae33d22562d262180",
+    "red.exit": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+    "red.log": "4bc1c3f9c124420f42ba265978499904992883bcb5eb150ed0029c46d9d0080f",
+    "red.xml": "af01f22ab4d9cf7e6c28a844af42566d3b38de564e48499c9b8e3acc7236a42b"
+  }
+}

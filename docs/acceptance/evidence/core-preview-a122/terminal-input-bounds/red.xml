@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.118" timestamp="2026-11-17T18:53:15.137888-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_verified_codex_terminal" name="test_inputs_bound_oversized_file_reads[task-1000]" time="0.008"><failure message="assert [-1] == [1001]&#10;  &#10;  At index 0 diff: -1 != 1001&#10;  Use -v to get more diff">terminal_host = {'__name__': '&lt;run_path&gt;', '__doc__': 'Run one owner-approved Linux Codex task through verification and handoff.\n\nRe...-8 bytes. The initial owner credential uses the ordinary hidden prompt.\n', '__package__': '', '__loader__': None, ...}
+tmp_path = WindowsPath('D:/agentsync-debug/m122-terminal-input-bounds/red-t/test_inputs_bound_oversized_fi0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023E9D2CB260&gt;
+field = 'task', limit = 1000
+
+    @pytest.mark.parametrize("field,limit", [("task", 1000), ("cases", 32768)])
+    def test_inputs_bound_oversized_file_reads(terminal_host, tmp_path, monkeypatch, field, limit):
+        task, cases = tmp_path / "task.txt", tmp_path / "cases.json"
+        task.write_bytes(b"Sum JSON arrays.")
+        cases.write_bytes(b'[{"input":[2,3],"expected":5}]')
+        oversized = {"task": task, "cases": cases}[field]
+        oversized.write_bytes(b"x" * (1024 * 1024))
+        args = SimpleNamespace(task=task, cases=cases, image_id="sha256:" + "a" * 64)
+        original_open = Path.open
+        requests, received = [], []
+    
+        @contextmanager
+        def tracked_open(path, *args, **kwargs):
+            with original_open(path, *args, **kwargs) as stream:
+                if path != oversized:
+                    yield stream
+                    return
+    
+                def read(size=-1):
+                    requests.append(size)
+                    result = stream.read(size)
+                    received.append(len(result))
+                    return result
+    
+                yield SimpleNamespace(read=read)
+    
+        monkeypatch.setattr(Path, "open", tracked_open)
+        with pytest.raises(ValueError, match="^input_limit$"):
+            terminal_host["inputs"](args)
+&gt;       assert requests == [limit + 1]
+E       assert [-1] == [1001]
+E         
+E         At index 0 diff: -1 != 1001
+E         Use -v to get more diff
+
+F:\syuc\amadeus-m6-single\tests\integration\test_verified_codex_terminal.py:157: AssertionError</failure></testcase><testcase classname="tests.integration.test_verified_codex_terminal" name="test_inputs_bound_oversized_file_reads[cases-32768]" time="0.006"><failure message="assert [-1] == [32769]&#10;  &#10;  At index 0 diff: -1 != 32769&#10;  Use -v to get more diff">terminal_host = {'__name__': '&lt;run_path&gt;', '__doc__': 'Run one owner-approved Linux Codex task through verification and handoff.\n\nRe...-8 bytes. The initial owner credential uses the ordinary hidden prompt.\n', '__package__': '', '__loader__': None, ...}
+tmp_path = WindowsPath('D:/agentsync-debug/m122-terminal-input-bounds/red-t/test_inputs_bound_oversized_fi1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023E9D2CAF90&gt;
+field = 'cases', limit = 32768
+
+    @pytest.mark.parametrize("field,limit", [("task", 1000), ("cases", 32768)])
+    def test_inputs_bound_oversized_file_reads(terminal_host, tmp_path, monkeypatch, field, limit):
+        task, cases = tmp_path / "task.txt", tmp_path / "cases.json"
+        task.write_bytes(b"Sum JSON arrays.")
+        cases.write_bytes(b'[{"input":[2,3],"expected":5}]')
+        oversized = {"task": task, "cases": cases}[field]
+        oversized.write_bytes(b"x" * (1024 * 1024))
+        args = SimpleNamespace(task=task, cases=cases, image_id="sha256:" + "a" * 64)
+        original_open = Path.open
+        requests, received = [], []
+    
+        @contextmanager
+        def tracked_open(path, *args, **kwargs):
+            with original_open(path, *args, **kwargs) as stream:
+                if path != oversized:
+                    yield stream
+                    return
+    
+                def read(size=-1):
+                    requests.append(size)
+                    result = stream.read(size)
+                    received.append(len(result))
+                    return result
+    
+                yield SimpleNamespace(read=read)
+    
+        monkeypatch.setattr(Path, "open", tracked_open)
+        with pytest.raises(ValueError, match="^input_limit$"):
+            terminal_host["inputs"](args)
+&gt;       assert requests == [limit + 1]
+E       assert [-1] == [32769]
+E         
+E         At index 0 diff: -1 != 32769
+E         Use -v to get more diff
+
+F:\syuc\amadeus-m6-single\tests\integration\test_verified_codex_terminal.py:157: AssertionError</failure></testcase></testsuite></testsuites>

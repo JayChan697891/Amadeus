@@ -2,6 +2,20 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+P1 input-reading repair,2026-11-18: the terminal example previously read whole
+task/case files before enforcing1000/32768-byte limits. Two real1MiB files
+reproduced that unbounded read; both original failures are retained. The entry
+now reads at most1001/32769 bytes and preserves the original validation and valid
+inputs. Six added checks cover bounded reads and exact/over-limit inputs.
+The affected Windows3.12 terminal suite passed14 cases with4 Linux-only skips,
+zero failures/errors (3ef550 exit0); changed-file Ruff/format checks passed.
+Root inspected actual logs/XML, tested-file hashes and the minimal diff.
+[Actual repair evidence](acceptance/evidence/core-preview-a122/terminal-input-bounds/summary.json).
+Frozen runtime97 members and wheel remain unchanged; no model, candidate, VM or
+full-suite rerun. New Linux execution is NOT RUN. Existing real terminal evidence
+remains tied to7085ec0, not silently promoted to this revision. The repository
+quick start also now applies the existing tested Windows dependency constraints.
+
 Current lifecycle checkpoint,2026-11-18: one actual Codex call on frozen a122
 observed `turn.started` and a live owned parent before direct `cancel_task(run_id)`.
 Native774b13 exited0; independent collection5ba70d exited0. The parent ended with

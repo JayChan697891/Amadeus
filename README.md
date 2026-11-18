@@ -161,7 +161,7 @@ For the frozen a122 owner trial, open PowerShell in this repository with Python
 
 ```powershell
 py -3.12 -m venv .venv-a122
-& .\.venv-a122\Scripts\python.exe -m pip install .\releases\0.3.0a122\preview-5232e9e\agentsync_local-0.3.0a122-py3-none-any.whl
+& .\.venv-a122\Scripts\python.exe -m pip install -c .\releases\0.3.0a122\owner-preview-7085ec0-r3\constraints-windows312.txt .\releases\0.3.0a122\preview-5232e9e\agentsync_local-0.3.0a122-py3-none-any.whl
 & .\.venv-a122\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-a122-01" demo --durable
 ```
 

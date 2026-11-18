@@ -103,8 +103,10 @@ def emit(value):
 
 
 def inputs(args):
-    instruction = args.task.read_bytes()
-    cases = args.cases.read_bytes()
+    with args.task.open("rb") as stream:
+        instruction = stream.read(1001)
+    with args.cases.open("rb") as stream:
+        cases = stream.read(32769)
     if not 0 < len(instruction) <= 1000 or len(cases) > 32768:
         raise ValueError("input_limit")
     goal = instruction.decode("utf-8").strip()

@@ -7,6 +7,7 @@ import runpy
 import select
 import sys
 import time
+from contextlib import contextmanager
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -122,6 +123,63 @@ asyncio.run(check())
 def terminal_host():
     path = Path(__file__).resolve().parents[2] / "examples/verified_codex_task.py"
     return runpy.run_path(str(path))
+
+
+@pytest.mark.parametrize("field,limit", [("task", 1000), ("cases", 32768)])
+def test_inputs_bound_oversized_file_reads(terminal_host, tmp_path, monkeypatch, field, limit):
+    task, cases = tmp_path / "task.txt", tmp_path / "cases.json"
+    task.write_bytes(b"Sum JSON arrays.")
+    cases.write_bytes(b'[{"input":[2,3],"expected":5}]')
+    oversized = {"task": task, "cases": cases}[field]
+    oversized.write_bytes(b"x" * (1024 * 1024))
+    args = SimpleNamespace(task=task, cases=cases, image_id="sha256:" + "a" * 64)
+    original_open = Path.open
+    requests, received = [], []
+
+    @contextmanager
+    def tracked_open(path, *args, **kwargs):
+        with original_open(path, *args, **kwargs) as stream:
+            if path != oversized:
+                yield stream
+                return
+
+            def read(size=-1):
+                requests.append(size)
+                result = stream.read(size)
+                received.append(len(result))
+                return result
+
+            yield SimpleNamespace(read=read)
+
+    monkeypatch.setattr(Path, "open", tracked_open)
+    with pytest.raises(ValueError, match="^input_limit$"):
+        terminal_host["inputs"](args)
+    assert requests == [limit + 1]
+    assert received == [limit + 1]
+
+
+@pytest.mark.parametrize("field,limit", [("task", 1000), ("cases", 32768)])
+@pytest.mark.parametrize("extra", [0, 1])
+def test_inputs_preserve_byte_limits(terminal_host, tmp_path, field, limit, extra):
+    task, cases = tmp_path / "task.txt", tmp_path / "cases.json"
+    task.write_bytes(b"Sum JSON arrays.")
+    content = b'[{"input":[2,3],"expected":5}]'
+    cases.write_bytes(content)
+    if field == "task":
+        task.write_bytes(b"x" * (limit + extra))
+    else:
+        cases.write_bytes(content + b" " * (limit + extra - len(content)))
+    args = SimpleNamespace(task=task, cases=cases, image_id="sha256:" + "a" * 64)
+    if extra:
+        with pytest.raises(ValueError, match="^input_limit$"):
+            terminal_host["inputs"](args)
+    else:
+        goal, examples, profile = terminal_host["inputs"](args)
+        assert goal == ("x" * 1000 if field == "task" else "Sum JSON arrays.")
+        assert examples == [{"input": [2, 3], "expected": 5}]
+        assert profile == terminal_host["DockerProfile"](
+            args.image_id, (terminal_host["JsonCase"]([2, 3], 5),)
+        )
 
 
 def test_prompt_refuses_insecure_terminal_without_fallback(terminal_host, monkeypatch):

@@ -2,6 +2,13 @@
 
 ## Owner-trial priority — 2026-11-17
 
+P1 concrete trial repair,2026-11-18: task/case input now respects its existing
+memory-reading bounds before validation, with two retained reproductions and
+14 passing affected Windows checks (4 Linux-only skips). Repackage this checked
+entry with the unchanged a122 wheel and tested dependency constraints; preserve
+the prior preview and real-run evidence. No new phase, runtime rebuild, live
+experiment or complete regression repeat is needed for this narrow correction.
+
 Owner acceleration: deliver the [small owner preview ZIP](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md)
 now, reusing the frozen wheel and reviewed entry scripts. The three-command
 Windows quick start is a simulated durable demo, not real-Agent acceptance.

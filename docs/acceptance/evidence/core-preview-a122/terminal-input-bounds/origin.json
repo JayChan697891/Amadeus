@@ -1,0 +1,10 @@
+{
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "interpreter": "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+  "agentsync_origin": "D:\\agentsync-debug\\m122p\\w\\Lib\\site-packages\\agentsync\\__init__.py",
+  "agentsync_version": "0.3.0a122",
+  "example_origin": "F:\\syuc\\amadeus-m6-single\\examples\\verified_codex_task.py",
+  "original_example_sha256": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+  "red_test_sha256": "7b4030bbbf33ceca100cbd787be1c0ba7129669d0a0763755fe11a55ec924649",
+  "scope": "Input-file IO only; no Core/model/candidate execution"
+}

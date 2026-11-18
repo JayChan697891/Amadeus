@@ -47,9 +47,11 @@ packaged durable demo; this initializer supports Linux only.
   Read-only CLI flags alone do not establish isolation or prevent extra fees.
 - Use a preloaded, independently checked Docker image ID (`sha256:` plus its
   full digest). The verifier does not pull images or fall back to host execution.
-- Write your task in a UTF-8 file (at most 1000 bytes). The supported output is a
+- Write your task in a UTF-8 file (at most 1000 bytes). Task and case files are read
+  only up to their limit plus one byte; oversized input is refused before any
+  owner prompt or model launch. The supported output is a
   standalone `solution.py` that reads and writes one JSON value per line.
-  Write owner-defined cases as a JSON array, for example:
+  Write owner-defined cases as a JSON array of at most32768 bytes, for example:
 
 ```json
 [{"input": [2, 3], "expected": 5}, {"input": [-7, 4], "expected": -3}]
@@ -103,7 +105,11 @@ Use [recover_relay.py](../examples/recover_relay.py) for status/history with
 and the original project ID. Inspect existing owner services before any recovery
 action. This example does not automatically resume a producer or verifier.
 
-This exact repaired terminal entry (7085ec0) has now completed one authorized real
+The current entry adds bounded task/case reads, with14 passing affected Windows
+checks and4 Linux-only skips. No new Linux or real-model run accompanied that
+input-reading change. [Repair evidence](acceptance/evidence/core-preview-a122/terminal-input-bounds/summary.json).
+
+The earlier repaired terminal entry (7085ec0) completed one authorized real
 run on the frozen a122 runtime: two Codex subscription calls, one exact149-byte
 addition candidate execution,2/2 cases and19 isolation checks. The producer is
 completed/v6/verified by a distinct Core identity; the receiver submitted review.md
