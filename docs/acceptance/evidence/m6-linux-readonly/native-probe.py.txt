@@ -1,0 +1,61 @@
+from pathlib import Path
+from datetime import datetime,timezone
+import hashlib,json,re,subprocess,tomllib
+import sys
+sys.path.insert(0,'/root/amadeus-linux-readonly-source-a2634ec/source')
+import agentsync
+from agentsync.adapters.base import AdapterTask
+from agentsync.adapters.codex_invocation import CodexHostProfile,prepare_invocation
+
+base=Path('/root/amadeus-codex-linux-preflight/portable-a2634ec');base.mkdir(mode=0o700)
+package=Path('/root/amadeus-linux-readonly-source-a2634ec')
+config=json.loads((package/'linux-config.json').read_text())
+site=Path(agentsync.__file__).resolve().parent.parent
+assert site == package/'source'
+def verify_modules():
+ for name,expected in config['module_hashes'].items():assert hashlib.sha256((site/name).read_bytes()).hexdigest()==expected
+verify_modules()
+root=base/'single-task-workspace';root.mkdir(mode=0o700)
+(root/'baseline.txt').write_text('Authorized local read-only fixture.\n')
+home=base/'single-task-home';home.mkdir(mode=0o700)
+env={'PATH':'/usr/bin:/bin','HOME':str(home),'CODEX_HOME':str(home),'TEMP':str(home),'TMP':str(home)}
+binary=Path('/root/amadeus-codex-linux-0167/bin/codex')
+with binary.open('rb') as stream:binary_sha=hashlib.file_digest(stream,'sha256').hexdigest()
+profile=CodexHostProfile('fixture-project','fixture-session',binary,root,binary_sha,expected_cli_version='0.167.0-alpha.3.2',linux_readonly=True)
+plan=prepare_invocation(profile,AdapterTask('fixture-project','fixture-session','fixture-task','fixture-request','Fixed local projection only; no model turn.',30),environment=env)
+configs=[v for i,arg in enumerate(plan.argv) if arg=='-c' for v in ('-c',plan.argv[i+1])]
+requested=tomllib.loads('\n'.join(configs[1::2]))
+commands={
+ 'effective-features':[str(binary),*configs,'features','list'],
+ 'strict-config':[str(binary),'--strict-config',*configs,'app-server','--print-startup-config'],
+ 'prompt-projection':[str(binary),'-a','never','-C',str(root),*configs,'debug','prompt-input','Fixed local projection only; no model turn.'],
+ 'read-only-files':[str(binary),*configs,'sandbox','--permission-profile','amadeus_readonly','-C',str(root),'--','/bin/sh','-c','test -r baseline.txt || exit 40; if touch denied.txt 2>/dev/null; then exit 41; fi; printf AMADEUS_READ_ONLY_OK'],
+ 'login-status':[str(binary),'-c','forced_login_method="chatgpt"','login','status'],
+}
+observed={};outputs={}
+for name,command in commands.items():
+ result=subprocess.run(command,cwd=root,env=plan.child_env(),capture_output=True,timeout=45)
+ assert len(result.stdout)+len(result.stderr)<2*1024*1024
+ observed[name]={'exit_code':result.returncode,'stdout_bytes':len(result.stdout),'stderr_bytes':len(result.stderr),'stdout_sha256':hashlib.sha256(result.stdout).hexdigest(),'stderr_sha256':hashlib.sha256(result.stderr).hexdigest()}
+ outputs[name]=result.stdout
+ if name!='prompt-projection':(base/(name+'.stdout')).write_bytes(result.stdout)
+ (base/(name+'.stderr')).write_bytes(result.stderr)
+features={row.split()[0]:row.split()[-1] for row in outputs['effective-features'].decode().splitlines() if row.split()}
+projection_shape=None;tool_names=[];headings=[];projection_error=None
+try:
+ projection=json.loads(outputs['prompt-projection'])
+ projection_shape={key:type(value).__name__ for key,value in projection.items()} if isinstance(projection,dict) else {'root_type':type(projection).__name__,'length':len(projection)}
+ def walk(value):
+  if isinstance(value,dict):
+   if value.get('type') in ('function','custom') and isinstance(value.get('name'),str):tool_names.append(value['name'])
+   for nested in value.values():walk(nested)
+  elif isinstance(value,list):
+   for nested in value:walk(nested)
+  elif isinstance(value,str):headings.extend(re.findall(r'###? `([^`]+)`',value))
+ walk(projection)
+except (ValueError,TypeError) as error:projection_error=type(error).__name__
+assert not (home/'auth.json').exists()
+verify_modules()
+summary={'product_sha':config['product_sha'],'wheel_sha256':config['wheel_sha256'],'binary_sha256':binary_sha,'cli_version':'0.167.0-alpha.3.2','timestamp':datetime.now(timezone.utc).isoformat(),'plan_argument_count':len(plan.argv),'model_calls':0,'credentials_present':False,'requested_config':requested,'commands':observed,'requested_feature_effective_state':{name:features.get(name,'not_listed') for name in requested['features']},'projection_shape':projection_shape,'projection_tools':sorted(set(tool_names)),'projection_headings':sorted(set(headings)),'projection_parse_error':projection_error,'denied_file_exists':(root/'denied.txt').exists(),'read_only_marker':outputs['read-only-files']==b'AMADEUS_READ_ONLY_OK','runtime_modules_matched_before_after':len(config['module_hashes']),'raw_projection_saved':False,'formal_release':'BLOCKED'}
+(base/'native-probe.json').write_text(json.dumps(summary,indent=2))
+print(json.dumps(summary))

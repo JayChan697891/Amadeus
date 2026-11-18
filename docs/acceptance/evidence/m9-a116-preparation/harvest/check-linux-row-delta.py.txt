@@ -1,0 +1,92 @@
+"""Compare saved case results and selected Docker semantics; never rerun fixtures."""
+import argparse
+from collections import Counter
+import hashlib
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--row', required=True, choices=('linux-311', 'linux-312'))
+args = parser.parse_args()
+base = Path('D:/agentsync-debug/m116/harvest')
+reference, current = base / 'linux-314', base / args.row
+
+def cases(path):
+    result = {}
+    for element in ET.parse(path).getroot().iter('testcase'):
+        key = (element.get('classname'), element.get('name'))
+        assert key not in result
+        result[key] = ('failed' if element.find('failure') is not None else
+                       'error' if element.find('error') is not None else
+                       'skipped' if element.find('skipped') is not None else 'passed')
+    return result
+
+expected_cases = cases(reference / 'junit.xml')
+suite_counts = {}
+for filename in ('junit.xml', 'wheel-junit.xml', 'sdist-junit.xml'):
+    actual = cases(current / filename)
+    assert actual == expected_cases and len(actual) == 2533
+    suite_counts[filename] = dict(Counter(actual.values()))
+    assert suite_counts[filename] == {'passed': 2526, 'skipped': 7}
+
+keys = set('''schema provenance backend platform profile_id profile_kind verifier_version
+verifier_source_sha256 image_id image_sha256 status phase assessment execution_assessment
+task_verification current_state execution_connected lease_expired clock_regressed
+permanently_fenced cancel_requested create_intent create_reply_complete start_intent
+cleanup_attempted execution_started reason_code error_code errors kind receipt_kind
+cleanup_confirmed constraints_verified isolation absence_observed daemon_consistent
+identity_matched outcome remove_acknowledged protocol oom_killed parent_ended
+real_docker real_clients revision version claim_version execution_revision
+completed_version left_task_version right_task_version review_version
+initial_receiver_authorities total_receiver_launches_including_reopen'''.split())
+
+def projection(value, prefix=''):
+    result = {}
+    if isinstance(value, dict):
+        for key, item in value.items():
+            path = prefix + '/' + key
+            if key in keys or key.endswith('_case_count') or key.endswith('_exit_code'):
+                result[path] = item
+            elif key.endswith('_json') and isinstance(item, str):
+                result.update(projection(json.loads(item), path))
+            else:
+                result.update(projection(item, path))
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            result.update(projection(item, prefix + '/' + str(index)))
+    return result
+
+def observations(root):
+    result = {}
+    for path in sorted((root / 'observations').rglob('*.json')):
+        parts = path.relative_to(root / 'observations').parts
+        key = '/'.join((parts[0], parts[1], parts[-1]))
+        assert key not in result
+        item = projection(json.loads(path.read_text(encoding='utf-8')))
+        assert item
+        result[key] = item
+    assert len(result) == 105
+    return result
+
+before, after = observations(reference), observations(current)
+assert before.keys() == after.keys()
+differences = []
+for key in before:
+    for field in sorted(before[key].keys() | after[key].keys()):
+        if field not in before[key] or field not in after[key] or before[key][field] != after[key][field]:
+            differences.append({'fixture': key, 'field': field,
+                'before': before[key].get(field), 'after': after[key].get(field)})
+report = {'row': args.row, 'reference': 'linux-314', 'junit': suite_counts,
+    'case_identities_and_outcomes_equal': True, 'docker_observations_compared': len(after),
+    'projection_fields': sorted(keys), 'additional_fields': ['*_case_count', '*_exit_code'],
+    'projection_sha256': hashlib.sha256(json.dumps(after, sort_keys=True).encode()).hexdigest(),
+    'selected_semantics_equal': not differences, 'differences': differences,
+    'scope': 'Selected status, phase, constraints and cleanup delta; not every identity/hash, a fresh independent full review, real clients or formal Release',
+    'formal_release': 'BLOCKED'}
+with (base.parent / (args.row + '-delta.json')).open('x', encoding='utf-8') as stream:
+    json.dump(report, stream, indent=2)
+    stream.write('\n')
+print(json.dumps({'row': args.row, 'junit_each': suite_counts['junit.xml'],
+    'docker_observations': len(after), 'selected_semantics_equal': not differences,
+    'differences': differences}))

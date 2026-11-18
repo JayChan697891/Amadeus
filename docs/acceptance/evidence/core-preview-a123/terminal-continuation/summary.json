@@ -1,0 +1,68 @@
+{
+  "status": "SCOPED_PASS",
+  "scope": "Owner-approved single continuation terminal entry; Windows deterministic Core/process validation",
+  "base_commit": "e4618882e46a968593520da88ac1c1c1d173319f",
+  "reviewed_at": "2026-11-18T08:23:40.177630+00:00",
+  "files_sha256": {
+    "examples/verified_codex_task.py": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710",
+    "examples/continue_codex_task.py": "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c",
+    "tests/integration/test_continue_codex_terminal.py": "5950e0bf5c0664d6921867d59ada7d586e72bf9017ef28425f9c2884bcdb1020",
+    "tests/integration/test_unfinished_continuation.py": "db2d3899c55975b17fcf42bb3e15bafcd861dbf9c584241588771ffc9040315c",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "77b567f556ea6b28247faa559e3463c0697346d15121385867473ba0c389c3d5"
+  },
+  "runtime": "97 members unchanged from7e160; existing development wheel0113065f retained without rebuild",
+  "actual_checks": {
+    "passed": 18,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "unique_cases": 18,
+    "entry_cases": 9,
+    "complete_checkpoint_continuation_cases": 1,
+    "existing_terminal_approval_cases": 8,
+    "python": "3.12.16",
+    "platform": "Windows",
+    "junit_sha256": "14972bc7b268e55764720d04fe2a980bf3b64d0e62c70512d0537ecb12ecd074",
+    "native_terminal": "43267/2eea00 exit0",
+    "ruff_and_format": "PASS: four authored Python files;9ba2a0 exit0"
+  },
+  "review": {
+    "root": "Inspected actual diff, XML/logs, source bindings, static results and unchanged97 runtime members; a53329/afa1dc",
+    "astra": "Accepted final source/evidence scope after known-secret preview guard repair"
+  },
+  "historical_failures": [
+    {
+      "stage": "red",
+      "exit": 1,
+      "tests": 1,
+      "failed": 1,
+      "reason": "New entry did not exist yet"
+    },
+    {
+      "stage": "first-green",
+      "exit": 5,
+      "tests": 0,
+      "status": "NOT RUN",
+      "reason": "Invalid test selection"
+    },
+    {
+      "stage": "green-r2",
+      "exit": 1,
+      "tests": 6,
+      "passed": 4,
+      "failed": 2,
+      "reason": "Tests incorrectly expected launch/fee denial to raise; actual SDK returns incomplete. Zero-launch assertions retained."
+    }
+  ],
+  "reproducibility_limit": "Earlier failed working trees were not snapshotted. Commands, hashes, logs and XML remain, but exact old-source rerun is unavailable. Final authored files are hash-bound and preserved by the containing Git commit.",
+  "not_run": [
+    "Native Linux terminal for new entry",
+    "Real model checkpoint followed by continuation",
+    "New package build or full suite"
+  ],
+  "model_calls": 0,
+  "candidate_execution": false,
+  "public_preview": "a122/r5 unchanged",
+  "formal_release": "BLOCKED",
+  "next": "Validate the frozen example pair on local Linux with the existing pinned runtime. Then review a separate at-most-two-call inert-document interruption/continuation plan under the standing grant; no credential copy or model launch has started. Preserve the old149/150-byte NOT_VERIFIED attempt without retry."
+}

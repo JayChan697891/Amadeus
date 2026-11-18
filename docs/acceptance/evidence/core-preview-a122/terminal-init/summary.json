@@ -1,0 +1,56 @@
+{
+  "scope": "First-use Linux terminal project initialization; no new Core API or model control",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "inputs_sha256": {
+    "examples/initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "tests/integration/test_initialize_terminal_project.py": "7fd5786b7bd949f483288fc8f4d023812dc14e7657e9d6b01f97a685d1c7801a"
+  },
+  "linux": {
+    "native": "469198",
+    "passed": 3,
+    "skipped": 1,
+    "failed": 0,
+    "runtime_members_unchanged": 97
+  },
+  "windows": {
+    "native": "87d270",
+    "passed": 2,
+    "skipped": 2,
+    "failed": 0
+  },
+  "original_cli": {
+    "native": "4d8ec5",
+    "exit_code": 0,
+    "private_owner_usable": true,
+    "credential_in_output": false
+  },
+  "static": {
+    "ruff": "c19f5b exit0",
+    "format_check": "497c30 exit0"
+  },
+  "review": "Root inspected code, exact hashes, XML and original CLI results. Astra accepted the actual Linux Git/Core, private delivery and failure-retention scope. Windows does not claim Linux permissions validation.",
+  "vm_shutdown": {
+    "normal_poweroff_exit": 0,
+    "pid16996_absent": true,
+    "ports_closed": {
+      "22222": true,
+      "22223": true
+    }
+  },
+  "real_model_calls": 0,
+  "candidate_executions": 0,
+  "model_auth_access": false,
+  "credentials_uploaded": false,
+  "formal_release": "BLOCKED",
+  "files_sha256": {
+    "cli-review.json": "f2dfed2bc8b638240f592817377edfbb53bf80dd9ced6cc21148fad6c97657d4",
+    "linux-junit.xml": "06fce52e7d1783e586ee4e52b07b016ea90468f8e2f9bd8f0cdf02f1440bdf56",
+    "linux-report.json": "97e540f2991842c53c402eff2dae57818c5d454a4c6ad3a572745c20a2fb2c07",
+    "linux-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "linux-stdout.log": "1a7db7c104bd42082619a75b234f93705f768665295f494c5647820badbca05a",
+    "windows-command.json": "a5e7baeb6d4b6d9ab4895bf9f03c19e47e35883bc1b6a9a42eaa0084002ad6b4",
+    "windows-exit.txt": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "windows-junit.xml": "5556a0aea84849bb07e7e06a85c3b38c6467b734374a41c817e032df44b7cfd0",
+    "windows-pytest.log": "d25fbf1d00aab15e5e3a5ba5404e60493c98b39227b876b12eb5db733c379a0a"
+  }
+}

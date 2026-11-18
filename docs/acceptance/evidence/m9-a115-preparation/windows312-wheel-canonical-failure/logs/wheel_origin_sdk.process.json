@@ -1,0 +1,40 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_origin_sdk",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; assert pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-wheel-canonical-r1\\\\scratch\\\\wheel-yu9zi1ra').resolve()); assert not pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-r3\\\\s')); assert importlib.metadata.version('agentsync-local') == '0.3.0a115'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///D:/agentsync-debug/m115-wheel-canonical-r1/run/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a'; assert not direct.get('dir_info', {}).get('editable', False); print('installed origin:', agentsync.__file__); tmp = tempfile.TemporaryDirectory(); root = pathlib.Path(tmp.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(tmp.name) / 'data'); result = client.call('create_project', name='isolated wheel smoke', root_path=str(root)); assert result['ok'], result; print('SDK smoke: pass'); tmp.cleanup()"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "started_at": "2026-11-15T03:51:44.116333+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_origin_sdk",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; assert pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-wheel-canonical-r1\\\\scratch\\\\wheel-yu9zi1ra').resolve()); assert not pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-r3\\\\s')); assert importlib.metadata.version('agentsync-local') == '0.3.0a115'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///D:/agentsync-debug/m115-wheel-canonical-r1/run/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a'; assert not direct.get('dir_info', {}).get('editable', False); print('installed origin:', agentsync.__file__); tmp = tempfile.TemporaryDirectory(); root = pathlib.Path(tmp.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(tmp.name) / 'data'); result = client.call('create_project', name='isolated wheel smoke', root_path=str(root)); assert result['ok'], result; print('SDK smoke: pass'); tmp.cleanup()"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T03:51:44.116333+00:00",
+    "finished_at": "2026-11-15T03:51:44.438121+00:00",
+    "log": "logs/wheel_origin_sdk.log",
+    "log_sha256": "0661e7b99dd07071a5d94be0ed85ec4ce7c036471fb0cc99b3fc44ce389508f2",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

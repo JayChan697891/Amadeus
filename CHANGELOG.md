@@ -1,5 +1,69 @@
 # Changelog
 
+## 0.3.0a122 - adapter deadline development preview
+
+- Recheck absolute deadlines before a shared adapter timer cancels preparation
+  or an owned process; early callbacks rearm without starting duplicate stops.
+- Apply the same guard to launch waits, preserving one invocation, external
+  cancellation and rejection of late results even if cancellation is swallowed.
+- Retain the original failures and 97 distinct passing source cases. Fresh wheel
+  and source-archive installs on Windows 3.12 and Linux 3.14 all passed those same
+  97 cases. Windows passed 19 native checks and Linux passed 16. Full a122 and
+  real-client validation remain unrun. Formal Release remains BLOCKED.
+
+## 0.3.0a118 - recovery-path preview, full acceptance pending
+
+- Refuse workflow status/resume/cancel on a missing database without creating
+  an empty data directory. Preserve start and existing database behavior.
+- Package the focused CLI repair separately from the immutable a117 preview.
+  Windows3.12 offline build/install passed19 native checks; wheel and sdist each
+  passed12 focused cases. Full/platform/client acceptance remains incomplete;
+  this candidate does not inherit a117 full-suite or formal Release acceptance.
+
+## 0.3.0a116 - corrected acceptance candidate, validation pending
+
+- Give the Windows test Git helper the same command-scoped long-path support
+  already used by managed Git, with a real long-reference regression.
+- Include the reviewed composite-evidence verifier and explicit stable labels
+  for six redaction fixtures. Existing a115 results keep their original source
+  identity; the corrected candidate requires its own full local collection.
+- Preserve the failed a115 Windows3.12 wheel run and separate60pass/1skip repair
+  evidence. No runtime behavior change beyond the candidate version; formal
+  Release remains blocked, including unavailable macOS and real-client evidence.
+
+## 0.3.0a115 - implementation complete, validation pending
+
+- Check the actual monotonic deadline before stopping a captured process when
+  asyncio delivers its timer early. Preserve cancel/natural-exit precedence,
+  real completion timestamps and the original deadline assertion. All142
+  affected source/protocol cases pass; new full candidate acceptance is pending.
+- Recover abandoned ordinary handoffs through exact owner/version checks; retain
+  original context, expiry boundaries, history and separate execution fences.
+- Persist project-scoped model-advice call intents and outcomes, separating
+  provider observations, client receipts and imported usage; unknown calls never
+  dispatch again on replay, and estimates remain distinct from actual billing.
+- Continue pinned unfinished code after a confirmed ended failure using a new
+  task, transferred pending dependencies, independent worktree and fresh exact
+  launch authority. Permanent dispatch intent is not a restart permission.
+- Complete the original-plan code inventory and begin the remaining debugging
+  pass. Frozen 4a27a00 Windows source and installed wheel each record 2405 pass /
+  56 skip with matching case IDs/outcomes; sdist recorded2404pass56skip1fail in
+  the premature timeout assertion. The original failure remains archived;
+  repaired full package/platform validation is pending. No formal Release claim.
+- Preserve already-redacted evidence and parameterized JUnit identities when
+  processing it again; attached secret suffixes are still removed. The repair
+  has 267 affected unit passes and targeted lint/format checks, not a new full run.
+
+## 0.3.0a114 - approved target integration
+
+- Integrate an exactly approved, independently verified candidate into a new
+  branch and worktree while preserving the original checkout and index.
+- Keep interrupted effects observable without implicit retries or cleanup.
+- Frozen ddd4b42 Windows 3.12 source/wheel/sdist each recorded 2371 passing and
+  56 skipped cases. Other platforms and formal Release remain incomplete.
+- Earlier a32-a113 implementation checkpoints and their individual acceptance
+  limits are retained in docs/PROGRESS.md and the versioned evidence archives.
+
 ## 0.3.0a31 - controlled relay and model assistance source
 
 - Add a host-controlled two-client relay with exact launch approval, one-attempt

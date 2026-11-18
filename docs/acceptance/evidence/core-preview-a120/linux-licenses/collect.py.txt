@@ -1,0 +1,74 @@
+"""Read license metadata from the two existing a120 Linux installations."""
+import hashlib
+import json
+import os
+import shutil
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path('/root/amadeus-m120licenses')
+SOURCE = Path('/root/amadeus-m120full/s')
+ORIGINAL = Path('/root/amadeus-m120l')
+assert sys.platform == 'linux' and sys.version_info[:3] == (3, 14, 7)
+assert sys.flags.isolated and sys.dont_write_bytecode and __debug__
+assert Path(__file__).resolve() == BASE / 'collect.py' and BASE.resolve() == BASE
+assert {p.name for p in BASE.iterdir()} == {'collect.py'}
+(BASE / 'run/logs').mkdir(parents=True)
+(BASE / 't').mkdir()
+os.environ.update(PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PIP_NO_INDEX='1')
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+probe = '''import hashlib,importlib.metadata as md,json,sys,sysconfig
+from pathlib import Path
+import agentsync
+install,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]
+assert Path(sys.prefix).resolve()==install and sys.version_info[:3]==(3,14,7)
+site=Path(sysconfig.get_path('purelib')).resolve()
+assert site.is_relative_to(install)
+assert Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py' and agentsync.__version__=='0.3.0a120'
+direct=json.loads(md.distribution('agentsync-local').read_text('direct_url.json'))
+assert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==expected
+assert hashlib.sha256(archive.read_bytes()).hexdigest()==expected
+actual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert len(actual)==97 and actual==json.loads(members.read_bytes())
+print(json.dumps({'python':sys.version,'version':agentsync.__version__,'origin':agentsync.__file__,'runtime_members':97,'direct_url':direct}))
+'''
+manifest_path = SOURCE.parent / 'source-manifest.json'
+members = ORIGINAL / 'runtime-members.json'
+assert sha(manifest_path) == '584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc'
+assert sha(members) == '1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4'
+manifest = json.loads(manifest_path.read_bytes())
+assert sha(SOURCE / 'tools/license_inventory.py') == manifest['tools/license_inventory.py']['sha256']
+assert sha(SOURCE / 'tools/release_acceptance.py') == manifest['tools/release_acceptance.py']['sha256']
+sys.path.insert(0, str(SOURCE))
+from tools import release_acceptance as collector
+
+result = {'scope':'Existing Linux a120 wheel/sdist installed runtime license metadata supplement; no build/install/full suite', 'runtime_commit':'859775bf3f1a1492153ba550d36f4ad2b146c58f', 'tool_source_commit':'d4273550359ffe767d0195445d1fccef6651cfc7', 'license_tool_sha256':sha(SOURCE/'tools/license_inventory.py'), 'driver_sha256':sha(Path(__file__)), 'started_at':datetime.now(UTC).isoformat(), 'checks':[], 'inventories':{}, 'license_review':'pending', 'publication_authorized':False, 'formal_release':'BLOCKED'}
+with (BASE/'run/attempt.json').open('x',encoding='utf8') as f:json.dump(result,f,indent=2)
+for kind,env,filename,digest in (
+    ('wheel','w','agentsync_local-0.3.0a120-py3-none-any.whl','19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6'),
+    ('sdist','d','agentsync_local-0.3.0a120.tar.gz','e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848'),
+):
+    install=ORIGINAL/env;python=str(install/'bin/python');archive=ORIGINAL/filename
+    origin=[python,'-I','-B','-c',probe,str(install),str(archive),str(members),digest]
+    before=collector.execute(kind+'_license_origin_before',origin,BASE/'run',BASE/'run',BASE/'t');result['checks'].append(before)
+    assert before['status']=='pass' and before['exit_code']==0
+    raw=BASE/'t'/f'{kind}-inventory.json'
+    check=collector.execute(kind+'_license_inventory',[python,'-I','-B',str(SOURCE/'tools/license_inventory.py'),'--distribution','agentsync-local'],BASE/'run',BASE/'run',BASE/'t',capture_stdout=raw);result['checks'].append(check)
+    assert check['exit_code'] in (0,1) and not check['log_truncated'] and not collector.redact_credentials(raw.read_text(encoding='utf8'))[1]
+    inventory=json.loads(raw.read_bytes());assert inventory['root']=='agentsync-local' and inventory['license_review']=='pending' and inventory['publication_authorized'] is False
+    assert inventory['distributions']['agentsync-local']['version']=='0.3.0a120'
+    assert bool(inventory['review_items'])==(check['exit_code']==1)
+    with (BASE/'run'/raw.name).open('xb') as f:f.write(raw.read_bytes())
+    result['inventories'][kind]={'path':raw.name,'sha256':sha(raw),'distributions':len(inventory['distributions']),'review_items':inventory['review_items'],'archive_sha256':digest}
+    after=collector.execute(kind+'_license_origin_after',origin,BASE/'run',BASE/'run',BASE/'t');result['checks'].append(after)
+    assert after['status']=='pass' and after['exit_code']==0
+    assert (BASE/'run'/before['log']).read_bytes()==(BASE/'run'/after['log']).read_bytes()
+result['status']='metadata collected; license review pending'
+result['finished_at']=datetime.now(UTC).isoformat()
+with (BASE/'run/result.json').open('x',encoding='utf8') as f:json.dump(result,f,indent=2);f.write('\n')
+print(json.dumps({'status':result['status'],'inventories':result['inventories']}))

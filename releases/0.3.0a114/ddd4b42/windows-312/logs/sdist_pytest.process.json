@@ -1,0 +1,51 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-o5l3614v\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m114\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba",
+    "started_at": "2026-11-13T12:03:19.333105+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-o5l3614v\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m114\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba",
+    "exit_code": 0,
+    "started_at": "2026-11-13T12:03:19.333105+00:00",
+    "finished_at": "2026-11-13T12:46:17.057767+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "94f3753b5d8da3f0cb5ea4a35c7ab11f21343c357889d0d7bcb8cddd7ec9d40f",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "scoped full Windows installed-wheel regression passed",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "version": "0.3.0a120",
+  "platform": "Windows CPython3.12.16",
+  "native": {
+    "session": 28686,
+    "terminal_chunk": "3255b8",
+    "exit_code": 0,
+    "checks": 4,
+    "started_at": "2026-11-17T00:32:58.414783+00:00",
+    "finished_at": "2026-11-17T01:16:44.554872+00:00"
+  },
+  "junit": {
+    "unique_cases": 2587,
+    "passed": 2530,
+    "skipped": 57,
+    "failed": 0,
+    "errors": 0,
+    "seconds": 2603.57,
+    "credential_redactions": 6,
+    "root_checked_raw_to_public_sanitization": true,
+    "sha256": "b01981602daad0c26614e347afa4eedf41ca2a044f73f368e960dedbea72d90b"
+  },
+  "comparison": {
+    "baseline": "a117 Windows3.12 installed-wheel, tests33ffbc3",
+    "retained_cases": 2545,
+    "removed_cases": 0,
+    "changed_old_outcomes": 0,
+    "added_cases": 42,
+    "added_passed": 41,
+    "added_skipped": 1,
+    "new_skip": "test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]: fixed local Linux Docker image unavailable on this Windows run",
+    "detail": "case-diff.json"
+  },
+  "root_review": {
+    "native_receipts_and_log_hashes_checked": 4,
+    "frozen_source_files_rehashed": 5369,
+    "installed_members_rehashed": 97,
+    "frozen_source_and_runtime_unchanged": true,
+    "raw_xml_kept_local": true,
+    "matching_workers_after_run": 0,
+    "worker_query_chunk": "af70f3"
+  },
+  "independent_review": {
+    "reviewer": "native Astra High",
+    "decision": "accepted scoped Windows installed-wheel full suite",
+    "actual_evidence_checked": "Driver identity, actual final JSON/log/XML/native receipts, original2545 case identities/outcomes and new skip fixture; source/runtime rehash performed independently by root.",
+    "formal_release_decision": false
+  },
+  "preserved": {
+    "original_run_records": 12,
+    "derived_case_comparison_files": 1,
+    "total_run_files": 13,
+    "total_bytes": 1510734,
+    "startup_checkpoint_kept": true,
+    "raw_xml_uploaded": false
+  },
+  "boundaries": [
+    "Complete tests directory executed without -k/-m filtering or retry;57 explicit skips are not passes.",
+    "The existing a120 wheel installation was reused, not rebuilt or reinstalled. Fresh Windows/Linux focused package results remain separate.",
+    "No full source/sdist or current nine-row platform acceptance, macOS, real model, new candidate-code live execution or external Work acceptance is inferred.",
+    "No extra model login/calls, VM job, Actions, main changes/merge or public release."
+  ],
+  "formal_release": "BLOCKED",
+  "next": "Prepare first full Linux3.14 installed-wheel regression with the same d427355 test snapshot and original a120 runtime, using the existing dedicated D-drive Linux environment after checking no prior queue is running. Not started by this record."
+}

@@ -1,0 +1,16 @@
+{
+  "exit_code": 0,
+  "output": "{\"source\": \"/root/amadeus-m114/s\", \"commit_sha\": \"ddd4b42a3d6b44b7b09ef734220e8e0bb9a8918f\", \"tree_sha\": \"d2144e32344d231ab2c41e8a3f74aeb9eb517c38\", \"inputs\": {\"ddd4b42.bundle\": {\"size\": 64760302, \"sha256\": \"a6a7f9a87941a3874306218797c040d784b2b20aea08e9dc6950bfa90d2218a4\"}, \"m9-candidate-row.py\": {\"size\": 5259, \"sha256\": \"ed10f8d8e6b500d8e5e6d5f223a9bf019d7752d8d6dd3c092bc8e309d8cd8680\"}}, \"tests_started\": false, \"candidate_packages_staged\": false}\n",
+  "error": "Cloning into '/root/amadeus-m114/s'...\nHEAD is now at ddd4b42 Integrate approved verified candidates into new target worktrees [skip ci]\n",
+  "guest": "/root/amadeus-m114",
+  "inputs": {
+    "ddd4b42.bundle": {
+      "size": 64760302,
+      "sha256": "a6a7f9a87941a3874306218797c040d784b2b20aea08e9dc6950bfa90d2218a4"
+    },
+    "m9-candidate-row.py": {
+      "size": 5259,
+      "sha256": "ed10f8d8e6b500d8e5e6d5f223a9bf019d7752d8d6dd3c092bc8e309d8cd8680"
+    }
+  }
+}

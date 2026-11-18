@@ -1,0 +1,54 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "benchmark_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116-benchmark-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pip",
+      "install",
+      "--no-index",
+      "--no-cache-dir",
+      "--find-links",
+      "/root/intent-wheelhouse",
+      "/root/amadeus-m116/windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m116-benchmark-r1",
+    "started_at": "2026-11-15T12:30:02.560902+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "benchmark_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116-benchmark-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pip",
+      "install",
+      "--no-index",
+      "--no-cache-dir",
+      "--find-links",
+      "/root/intent-wheelhouse",
+      "/root/amadeus-m116/windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m116-benchmark-r1",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:30:02.560902+00:00",
+    "finished_at": "2026-11-15T12:30:05.382839+00:00",
+    "log": "logs/benchmark_install.log",
+    "log_sha256": "e3709da781e71332d113c570a2eb82cc5beb97632d8241184ad7d7010fbf4e88",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

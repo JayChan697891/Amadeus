@@ -1,0 +1,10 @@
+{
+  "test_source_sha": "c181f99c2b3ea535061d2aab0babc4c1db40785e",
+  "runtime_product_sha": "d4c7cf9c578aec2f7d61b321db438a5e47612e5c",
+  "wheel_sha256": "4bc4bbfa7c2b6ab2e2d5217f33989095db0cbcc19bed88f6966ebf2a37cb4ed7",
+  "runtime_modules_matched_before_after": 87,
+  "source_shadowing": false,
+  "model_calls": 0,
+  "candidate_execution_backend": "actual local Linux Docker",
+  "exit_code": 0
+}

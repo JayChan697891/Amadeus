@@ -1,0 +1,4 @@
+{"case": "test_verified_flow_gates_and_r0", "receipt": "relay-e869f519226f9b71f29e34a811be81048d96b9a771d3fb02103f94e12cf66d77-first-stopped.json", "error_code": "attempt_already_reserved", "status": "unknown"}
+{"case": "test_verified_flow_gates_and_r0", "receipt": "relay-f32b69fe53ddfabd2c07a8a3b7697ef2a72958944dd6e3fd1b30dbdf2ec0c15f-first-observed.json", "status": "proposal_received"}
+{"case": "test_verified_flow_gates_and_r2", "receipt": "relay-065020dc9c7c2ca230542fce1098a4c9c03cdb381016b50d8e9024b332e3e13f-first-observed.json", "status": "proposal_received"}
+{"case": "test_verified_flow_gates_and_r2", "receipt": "relay-6c8e4718772d62ddf1732e5dceb1a697e22fd74da1e222aa6fff5a5897296b3e-first-stopped.json", "error_code": "attempt_already_reserved", "status": "unknown"}

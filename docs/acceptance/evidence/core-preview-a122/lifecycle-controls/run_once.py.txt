@@ -1,0 +1,276 @@
+"""Run one reviewed lifecycle mode; never launches another mode or retries."""
+
+import hashlib
+import json
+import shlex
+import stat
+import sys
+import time
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+PYTHON = "/root/amadeus-m122l/w/bin/python"
+HELPERS = "/root/amadeus-lifecycle-a122-helpers"
+AUTH = Path("C:/Users/JayChan/.codex/auth.json")
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def main():
+    (mode,) = sys.argv[1:]
+    assert mode in ("cancel", "timeout")
+    control = json.loads((BASE / ("control-" + mode + ".json")).read_bytes())
+    assert sha(Path(__file__).read_bytes()) == control["host_controller_sha256"]
+    assert control["mode"] == mode and control["max_model_calls"] == 1
+    assert (
+        control["max_candidate_executions"] == 0
+        and control["subscription_only"] is True
+    )
+    root = "/root/amadeus-lifecycle-a122-" + mode
+    home = root + "/private-home"
+    out = BASE / (mode + "-attempt")
+    out.mkdir(exist_ok=False)
+
+    def save(name, value):
+        with (out / name).open("x", encoding="utf8") as f:
+            json.dump(value, f, indent=2)
+
+    save(
+        "controller-entry.json",
+        {
+            "mode": mode,
+            "plan_sha256": control["plan_sha256"],
+            "retry_allowed": False,
+            "max_model_calls": 1,
+        },
+    )
+    c = paramiko.SSHClient()
+    c.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    c.set_missing_host_key_policy(paramiko.RejectPolicy())
+    c.connect(
+        "127.0.0.1",
+        port=22222,
+        username="root",
+        key_filename="D:/agentsync-debug/vm/debug_ed25519",
+        look_for_keys=False,
+        allow_agent=False,
+        timeout=15,
+    )
+
+    def read(sftp, path, limit=65536):
+        info = sftp.lstat(path)
+        assert stat.S_ISREG(info.st_mode) and info.st_uid == 0
+        assert stat.S_IMODE(info.st_mode) == 0o600 and 0 <= info.st_size <= limit
+        with sftp.open(path, "rb") as f:
+            data = f.read(limit + 1)
+        assert len(data) == info.st_size
+        return data
+
+    def command(text, name, timeout):
+        channel = c.get_transport().open_session(timeout=15)
+        channel.exec_command(text)
+        stdout = bytearray()
+        stderr = bytearray()
+        deadline = time.monotonic() + timeout
+        while True:
+            for ready, recv, buf in (
+                (channel.recv_ready, channel.recv, stdout),
+                (channel.recv_stderr_ready, channel.recv_stderr, stderr),
+            ):
+                if ready():
+                    buf.extend(recv(16384))
+            if len(stdout) + len(stderr) > 65536:
+                raise RuntimeError("controller_output_limit")
+            if (
+                channel.exit_status_ready()
+                and not channel.recv_ready()
+                and not channel.recv_stderr_ready()
+            ):
+                break
+            if time.monotonic() >= deadline:
+                raise TimeoutError("observation_unknown_do_not_restart")
+            time.sleep(0.05)
+        code = channel.recv_exit_status()
+        channel.close()
+        # These helper commands emit selected JSON only, never raw model streams.
+        for suffix, data in (("stdout", stdout), ("stderr", stderr)):
+            with (out / (name + "." + suffix + ".log")).open("xb") as f:
+                f.write(data)
+        save(
+            name + ".json",
+            {
+                "command": text,
+                "exit_code": code,
+                "stdout_sha256": sha(stdout),
+                "stderr_sha256": sha(stderr),
+            },
+        )
+        return code
+
+    mount_attempted = copied = execution_started = terminal = False
+    original = None
+    exit_code = cleanup_code = None
+    try:
+        with c.open_sftp() as sftp:
+            plan_raw = read(sftp, root + "/plan.json")
+            assert sha(plan_raw) == control["plan_file_sha256"]
+            plan = json.loads(plan_raw)
+            assert (
+                plan["plan_sha256"] == control["plan_sha256"] and plan["mode"] == mode
+            )
+            grant_raw = read(sftp, root + "/owner-grant.json")
+            assert sha(grant_raw) == control["owner_grant_sha256"]
+            grant = json.loads(grant_raw)
+            assert grant["authorized"] and grant["plan_file_sha256"] == sha(plan_raw)
+            assert grant["mode"] == mode and grant["expires_at"] - time.time() > 300
+            assert grant["confirmed_cost"] and grant["confirmed_isolation"]
+            assert (
+                grant["max_subscription_calls"] == 1
+                and grant["max_candidate_executions"] == 0
+            )
+            for name, expected in control["helper_sha256"].items():
+                assert sha(read(sftp, HELPERS + "/" + name)) == expected
+            with sftp.open("/proc/sys/kernel/random/boot_id", "rb") as f:
+                assert f.read().decode().strip() == control["boot_id"]
+            assert not {
+                "attempt.json",
+                "auth-mount-intent.json",
+                "auth-cleanup.json",
+            } & set(sftp.listdir(root))
+        mount_attempted = True
+        mount_command = " ".join(
+            map(
+                shlex.quote,
+                (PYTHON, "-I", "-B", HELPERS + "/auth_home.py", mode, "mount"),
+            )
+        )
+        assert command(mount_command, "mount", 30) == 0
+        with c.open_sftp() as sftp:
+            assert not sftp.listdir(home)
+            for p in (AUTH.parent, AUTH):
+                info = p.lstat()
+                assert (
+                    not stat.S_ISLNK(info.st_mode)
+                    and not getattr(info, "st_file_attributes", 0) & 0x400
+                )
+            assert stat.S_ISREG(info.st_mode) and 0 < info.st_size < 128 * 1024
+            raw = AUTH.read_bytes()
+            document = json.loads(raw)
+            assert document.get("auth_mode") == "chatgpt" and not document.get(
+                "OPENAI_API_KEY"
+            )
+            original = sha(raw)
+            with sftp.open(home + "/auth.json", "wx") as f:
+                sftp.chmod(home + "/auth.json", 0o600)
+                f.write(raw)
+                f.flush()
+            copied = True
+            assert sha(read(sftp, home + "/auth.json", 128 * 1024)) == original
+            del raw, document
+        route = " ".join(
+            map(shlex.quote, (PYTHON, "-I", "-B", HELPERS + "/route.py", mode))
+        )
+        assert command(route, "route", 30) == 0
+        execution_started = True
+        execute = " ".join(
+            map(
+                shlex.quote,
+                (
+                    PYTHON,
+                    "-I",
+                    "-B",
+                    HELPERS + "/pilot.py",
+                    "run",
+                    mode,
+                    control["plan_sha256"],
+                ),
+            )
+        )
+        exit_code = command(execute, "execute", 240)
+        terminal = exit_code >= 0
+    finally:
+        try:
+            if mount_attempted and (terminal or not execution_started):
+                # If mounting itself was uncertain, do not improvise cleanup or retry.
+                with c.open_sftp() as sftp:
+                    if "auth-mount.json" in sftp.listdir(root):
+                        marker = {
+                            "terminal": terminal,
+                            "exit_code": exit_code,
+                            "model_execution_attempted": execution_started,
+                        }
+                        with sftp.open(root + "/host-terminal.json", "wx") as f:
+                            sftp.chmod(root + "/host-terminal.json", 0o600)
+                            f.write(json.dumps(marker).encode())
+                        cleanup = " ".join(
+                            map(
+                                shlex.quote,
+                                (
+                                    PYTHON,
+                                    "-I",
+                                    "-B",
+                                    HELPERS + "/auth_home.py",
+                                    mode,
+                                    "cleanup",
+                                ),
+                            )
+                        )
+                        cleanup_code = command(cleanup, "cleanup", 30)
+        finally:
+            unchanged = None if original is None else sha(AUTH.read_bytes()) == original
+            save(
+                "controller-result.json",
+                {
+                    "mode": mode,
+                    "temporary_copy_created": copied,
+                    "execution_started": execution_started,
+                    "execution_host_terminal": terminal,
+                    "execution_exit_code": exit_code,
+                    "cleanup_exit_code": cleanup_code,
+                    "original_auth_unchanged": unchanged,
+                    "automatic_retry": False,
+                },
+            )
+            c.close()
+    assert terminal and cleanup_code == 0 and unchanged is True
+    print(
+        json.dumps(
+            {
+                "mode": mode,
+                "host_exit_code": exit_code,
+                "cleanup_exit_code": cleanup_code,
+                "original_auth_unchanged": True,
+                "retry_allowed": False,
+            }
+        )
+    )
+    return 0 if exit_code == 0 else 1
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except (
+        AssertionError,
+        OSError,
+        ValueError,
+        KeyError,
+        TypeError,
+        RuntimeError,
+        EOFError,
+        paramiko.SSHException,
+    ) as error:
+        print(
+            json.dumps(
+                {
+                    "status": "stopped",
+                    "error_type": type(error).__name__,
+                    "retry_allowed": False,
+                }
+            )
+        )
+        raise SystemExit(1) from None

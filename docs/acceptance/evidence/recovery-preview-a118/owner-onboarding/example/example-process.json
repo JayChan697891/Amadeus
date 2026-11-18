@@ -1,0 +1,15 @@
+{
+  "started_at": "2026-11-16T12:58:05.421400+00:00",
+  "finished_at": "2026-11-16T12:58:09.507815+00:00",
+  "exit_code": 0,
+  "command": [
+    "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "F:\\syuc\\amadeus-m6-single\\examples\\persisted_workflow.py",
+    "D:\\agentsync-debug\\owner-onboarding-20261116\\new-project"
+  ],
+  "example_sha256": "771673f413c7e4227eeda82c8a3b84abe8b27aa60c02eba2909291ba368fb8ff",
+  "installed_version": "0.3.0a118",
+  "models": 0
+}

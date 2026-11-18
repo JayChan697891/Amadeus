@@ -1,0 +1,166 @@
+{
+  "native_checks": 6,
+  "checks_all_exited_zero": true,
+  "installed_license_file_hash_checks": {
+    "wheel": {
+      "distributions": 31,
+      "installed_license_files_rehashed": 35,
+      "installed_members_rehashed": 97,
+      "inventory_sha256": "b47da7a4c0579c1db9f395eb312d10ca86a951319881240d46f810fe5639e156"
+    },
+    "sdist": {
+      "distributions": 31,
+      "installed_license_files_rehashed": 35,
+      "installed_members_rehashed": 97,
+      "inventory_sha256": "b47da7a4c0579c1db9f395eb312d10ca86a951319881240d46f810fe5639e156"
+    }
+  },
+  "inventories_byte_identical": true,
+  "license_review": "pending",
+  "publication_authorized": false,
+  "windows_linux_metadata_differences": {
+    "pydantic-core": {
+      "windows": {
+        "declared_license_files": [
+          "LICENSE"
+        ],
+        "legacy_license": null,
+        "license_classifiers": [],
+        "license_expression": "MIT",
+        "license_files": [
+          {
+            "bytes": 1101,
+            "member": "pydantic_core-2.50.1.dist-info/licenses/LICENSE",
+            "sha256": "fbe7f615f18d135c07000e5a86325db27f42c7729699ef166ac1f7a3f4586bf4",
+            "status": "recorded"
+          }
+        ],
+        "version": "2.50.1"
+      },
+      "linux": {
+        "declared_license_files": [
+          "LICENSE"
+        ],
+        "legacy_license": null,
+        "license_classifiers": [],
+        "license_expression": "MIT",
+        "license_files": [
+          {
+            "bytes": 1080,
+            "member": "pydantic_core-2.50.1.dist-info/licenses/LICENSE",
+            "sha256": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a",
+            "status": "recorded"
+          }
+        ],
+        "version": "2.50.1"
+      }
+    },
+    "pywin32": {
+      "windows": {
+        "declared_license_files": [
+          "adodbapi/license.txt",
+          "com/License.txt",
+          "com/win32comext/mapi/src/MAPIStubLibrary/LICENSE",
+          "isapi/README.txt",
+          "pythonwin/License.txt",
+          "pythonwin/Scintilla/License.txt",
+          "pythonwin/pywin/idle/LICENSE.txt",
+          "win32/License.txt"
+        ],
+        "legacy_license": "PSF",
+        "license_classifiers": [
+          "License :: OSI Approved :: Python Software Foundation License"
+        ],
+        "license_expression": null,
+        "license_files": [
+          {
+            "bytes": 26925,
+            "member": "pywin32-312.dist-info/licenses/adodbapi/license.txt",
+            "sha256": "5ea2f23c7f00c3006bacf267183e816d8d4b6dc95ea57a4ddb0ff81de6d8719e",
+            "status": "recorded"
+          },
+          {
+            "bytes": 1570,
+            "member": "pywin32-312.dist-info/licenses/com/License.txt",
+            "sha256": "fad39c18fc3825fa278db1c86fd52cf88d7c525b3c2fbf7817fa383cbae4d423",
+            "status": "recorded"
+          },
+          {
+            "bytes": 1087,
+            "member": "pywin32-312.dist-info/licenses/com/win32comext/mapi/src/MAPIStubLibrary/LICENSE",
+            "sha256": "1c4cf44d2fb8bf2d10214d6da80cc9e05502824cc4460f35be4c7bcb4cde53da",
+            "status": "recorded"
+          },
+          {
+            "bytes": 330,
+            "member": "pywin32-312.dist-info/licenses/isapi/README.txt",
+            "sha256": "41383bcc95edb8138d37077ae54bfdcbd2a3b77bf745a8529a9c161146e22303",
+            "status": "recorded"
+          },
+          {
+            "bytes": 1541,
+            "member": "pywin32-312.dist-info/licenses/pythonwin/License.txt",
+            "sha256": "a74d826efb242db087b850348e20abbfd591b51e2081f2048735290913872924",
+            "status": "recorded"
+          },
+          {
+            "bytes": 873,
+            "member": "pywin32-312.dist-info/licenses/pythonwin/Scintilla/License.txt",
+            "sha256": "57ec79bbeab4fd1cf7460a7ad450d2ab01471810459aeae9e75e4c66b472095f",
+            "status": "recorded"
+          },
+          {
+            "bytes": 12540,
+            "member": "pywin32-312.dist-info/licenses/pythonwin/pywin/idle/LICENSE.txt",
+            "sha256": "a0fa1e7b8a4230055685e796548ac084a6c0eea395294574093bba72efd9191b",
+            "status": "recorded"
+          },
+          {
+            "bytes": 1541,
+            "member": "pywin32-312.dist-info/licenses/win32/License.txt",
+            "sha256": "a74d826efb242db087b850348e20abbfd591b51e2081f2048735290913872924",
+            "status": "recorded"
+          }
+        ],
+        "version": "312"
+      },
+      "linux": null
+    },
+    "rpds-py": {
+      "windows": {
+        "declared_license_files": [
+          "LICENSE"
+        ],
+        "legacy_license": null,
+        "license_classifiers": [],
+        "license_expression": "MIT",
+        "license_files": [
+          {
+            "bytes": 1076,
+            "member": "rpds_py-2026.9.1.dist-info/licenses/LICENSE",
+            "sha256": "8bcb72c82ea8ae74802293c41d93ad7d51434001b0ae45a603a5af0f507aee0a",
+            "status": "recorded"
+          }
+        ],
+        "version": "2026.9.1"
+      },
+      "linux": {
+        "declared_license_files": [
+          "LICENSE"
+        ],
+        "legacy_license": null,
+        "license_classifiers": [],
+        "license_expression": "MIT",
+        "license_files": [
+          {
+            "bytes": 1057,
+            "member": "rpds_py-2026.9.1.dist-info/licenses/LICENSE",
+            "sha256": "314e4e91be3baa93c0fb4bccc9e4e97cd643eb839b065af921782c2175fe9909",
+            "status": "recorded"
+          }
+        ],
+        "version": "2026.9.1"
+      }
+    }
+  }
+}

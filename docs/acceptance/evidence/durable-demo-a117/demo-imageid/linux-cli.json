@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-11-16T06:03:54.887940+00:00",
+  "probe_exit_code": 0,
+  "tool_sha256": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157",
+  "stderr": "",
+  "observation": {
+    "command": [
+      "/root/amadeus-m117l/e/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-demo-imageid-20261115/pilot.py",
+      "--demo",
+      "--root",
+      "/root/amadeus-proposal-pilot-invalid-id-20261115",
+      "--image-id",
+      "python:3.14"
+    ],
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "usage: pilot.py [-h] --root ROOT (--demo | --proposal PROPOSAL)\n                [--proposal-sha256 PROPOSAL_SHA256] [--origin ORIGIN]\n                --image-id IMAGE_ID\npilot.py: error: --image-id must be a full local Docker image ID (sha256: and 64 lowercase hex digits)\n",
+    "project_directory_absent": true,
+    "model_calls": 0,
+    "docker_called": false
+  }
+}

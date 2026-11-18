@@ -1,0 +1,75 @@
+{
+  "scope": "Windows 3.12 a120 installed wheel; deterministic local Python codex protocol fixture",
+  "native_chunk": "6dda68",
+  "native_exit_code": 0,
+  "focused_passed": 1,
+  "ruff_chunk": "e17755",
+  "ruff_exit_code": 0,
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "installed_runtime_manifest": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4",
+  "unchanged_runtime_members": 97,
+  "test_path": "tests/integration/test_unfinished_continuation.py",
+  "test_sha256": "a8fe1da121fe79986377c30aaae18e21be9b297fbc73a8f073f581cbe59f3e50",
+  "observed": {
+    "protocol_fixture": true,
+    "checkpoint_exit_code": 73,
+    "checkpoint": {
+      "pid": 4252,
+      "worktree": [
+        "b734047d-08ee-4c57-85e0-4b3aac81db2c",
+        "5ffb4a53-9e87-5397-908d-116f8deb4722",
+        "608357ac5fd1378e8e088fcc682e50ca09b8912a"
+      ],
+      "wave_id": "8b51bedd0ef2063b4e7f936305440fdc2c1ebddfb3206f47c3fff35dd1dd0a41",
+      "approvals": 1,
+      "launches": 1,
+      "receiver_terminal": {
+        "state": "terminal_recorded",
+        "status": "continuation_proposal_received",
+        "parent_ended": true,
+        "exit_code": 0
+      }
+    },
+    "before_reconcile": {
+      "pid": 23060,
+      "approvals": 0,
+      "launches": 0
+    },
+    "reconcile_exit_code": 0,
+    "reconciled_wave": {
+      "state": "resolved",
+      "tasks": [
+        {
+          "task_id": "b734047d-08ee-4c57-85e0-4b3aac81db2c",
+          "state": "ready_for_review",
+          "failure_code": null
+        }
+      ],
+      "verification": "unverified"
+    },
+    "staging_preview_task_id": "b734047d-08ee-4c57-85e0-4b3aac81db2c",
+    "replay": {
+      "pid": 532,
+      "approvals": 0,
+      "launches": 0
+    },
+    "source_task_status": "failed",
+    "dependent_task_id": "d428b984-97d3-42c5-94de-6d7c52f50747",
+    "dependent_version": 2,
+    "receipts_unchanged": true
+  },
+  "original_file_sha256": {
+    "start.json": "5a2720b60dede80e90ef2235a6252e851527dc868210b86971c80ec497fe5b5a",
+    "origin.log": "5fdf8b0e54bde22a058dba9085a5d01d68efb75ac06b07a4ffd75fa5daa2efc5",
+    "pytest.log": "d2be00dd71391d575b229593d06d80f90650fd99bcc85c83658892bd2c9afcf4",
+    "native.exit": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+    "junit.xml": "18ff2b4170c7a11d1fda806bff0ec5f927d07088b1e697f219009a0f2a10c97c",
+    "format.log": "d9d79976036ac55b771b47f6cecaa66a30fe59749dba207bd67b2104ca5c29d7",
+    "ruff-check.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "ruff-format.log": "7688ae71c60af2e4266827abb3678cc2145655f587daf33dfa649dbac2c619c3"
+  },
+  "real_model_calls": 0,
+  "external_credentials_accessed": false,
+  "candidate_executions": 0,
+  "old_checkpoint_cases_repeated": false
+}

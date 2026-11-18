@@ -1,0 +1,97 @@
+"""One owner-authorized loopback transfer and one Linux pilot execution; no retry."""
+from datetime import UTC,datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import stat
+import time
+
+import paramiko
+
+BASE=Path('D:/agentsync-debug/m7-heartbeat-live-20261112')
+AUTH=Path('C:/Users/JayChan/.codex/auth.json')
+REMOTE='/root/amadeus-queued-heartbeat-live-20261112'
+PYTHON='/root/amadeus-proposal-queue-6017005/venv/bin/python'
+def save(name,value):
+    with (BASE/name).open('x',encoding='utf-8') as out:json.dump(value,out,indent=2)
+
+for item in (AUTH,AUTH.parent,BASE):
+    info=item.lstat()
+    assert not stat.S_ISLNK(info.st_mode) and not getattr(info,'st_file_attributes',0)&0x400
+raw=AUTH.read_bytes()
+assert 0<len(raw)<128*1024
+document=json.loads(raw)
+assert document.get('auth_mode')=='chatgpt' and not document.get('OPENAI_API_KEY')
+original=hashlib.sha256(raw).hexdigest()
+save('controller-entry.json',{'timestamp':datetime.now(UTC).isoformat(),'authorization':'New bounded heartbeat-maintained queued Linux run under owner standing continuous execution and first-choice approval; subscription only, no extra payment; old single-use attempts not reused','retry_allowed':False,'source_route_chatgpt':True,'temporary_copy_destination':REMOTE+'/private-home/auth.json','temporary_storage':'guest RAM filesystem','plan_sha256':json.loads((BASE/'plan.json').read_text())['plan_sha256']})
+client=paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=10,auth_timeout=15)
+
+def command(text,name,limit=180):
+    channel=client.get_transport().open_session(timeout=10)
+    channel.set_combine_stderr(True);channel.exec_command(text)
+    result=bytearray();deadline=time.monotonic()+limit
+    while True:
+        while channel.recv_ready():
+            result.extend(channel.recv(4096))
+            assert len(result)<=65536
+        if channel.exit_status_ready() and not channel.recv_ready():break
+        if time.monotonic()>deadline:
+            save(name+'-unknown.json',{'observation_timed_out':True,'restart_allowed':False})
+            raise RuntimeError('Observation timeout; inspect live process without restarting')
+        time.sleep(0.1)
+    code=channel.recv_exit_status()
+    (BASE/(name+'.log')).write_bytes(result)
+    channel.close()
+    return code
+
+copied=False;terminal=False;execution_started=False;exit_code=None;cleanup_exit=None
+try:
+    assert command(PYTHON+' -I -B '+REMOTE+'/pilot.py ready-once','readiness',30)==0
+    with client.open_sftp() as sftp:
+        for directory in (REMOTE,REMOTE+'/private-home'):
+            entry=sftp.lstat(directory)
+            assert stat.S_ISDIR(entry.st_mode) and stat.S_IMODE(entry.st_mode)==0o700 and entry.st_uid==0
+        plan=json.loads(sftp.open(REMOTE+'/plan.json').read())
+        assert plan['plan_sha256']==json.loads((BASE/'plan.json').read_text())['plan_sha256']
+        assert 'attempt.json' not in sftp.listdir(REMOTE) and 'execute-entry.json' not in sftp.listdir(REMOTE)
+        ready=json.loads(sftp.open(REMOTE+'/readiness.json').read())
+        assert ready['online'] is True and ready['plan_sha256']==plan['plan_sha256']
+        assert ready['selection_sha256']==plan['selection_sha256']
+        assert 0<=time.time()-datetime.fromisoformat(ready['timestamp']).timestamp()<20
+        assert 0<=ready['heartbeat_age_seconds']<20 and ready['session_remaining_seconds']>120
+        assert not sftp.listdir(REMOTE+'/private-home')
+        home=json.loads(sftp.open(REMOTE+'/credential-home.json').read())
+        assert home['temporary_storage']=='tmpfs'
+        with sftp.open('/proc/mounts','rb') as mounts_file:
+            mounts=[line.split() for line in mounts_file.read().decode('utf-8').splitlines()]
+        matching=[entry for entry in mounts if len(entry)>=4 and entry[1]==REMOTE+'/private-home']
+        assert len(matching)==1
+        mount=matching[0]
+        assert mount[0]=='amadeus-live-auth' and mount[2]=='tmpfs'
+        options=set(mount[3].split(','))
+        assert {'rw','nosuid','nodev','mode=700'}.issubset(options)
+        destination=REMOTE+'/private-home/auth.json'
+        with sftp.open(destination,'x+b') as target:
+            sftp.chmod(destination,0o600)
+            target.write(raw);target.flush()
+        copied=True
+        with sftp.open(destination,'rb') as target:assert hashlib.sha256(target.read()).hexdigest()==original
+    del raw,document
+    execution_started=True
+    exit_code=command(PYTHON+' -I -B '+REMOTE+'/pilot.py execute-once','execution-host',180)
+    terminal=True
+finally:
+    try:
+        if terminal or not execution_started:
+            cleanup_exit=command(PYTHON+' -I -B '+REMOTE+'/credential_home.py cleanup','auth-cleanup',30)
+        unchanged=hashlib.sha256(AUTH.read_bytes()).hexdigest()==original
+        save('controller-result.json',{'timestamp':datetime.now(UTC).isoformat(),'temporary_copy_created':copied,'execution_host_terminal':terminal,'execution_host_exit_code':exit_code,'credential_cleanup_exit_code':cleanup_exit,'original_auth_unchanged':unchanged,'retry_allowed':False})
+        assert unchanged
+    finally:
+        client.close()
+assert terminal and cleanup_exit==0 and exit_code==0
+print('One pilot execution ended; temporary authentication cleaned; original unchanged.')

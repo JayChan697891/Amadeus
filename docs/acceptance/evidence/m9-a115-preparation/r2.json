@@ -1,0 +1,144 @@
+{
+  "recorded_at": "2026-11-13T14:29:09.427981+00:00",
+  "scope": "Corrected-candidate execution preparation, not test acceptance",
+  "config": {
+    "commit_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+    "tree_sha": "488cc352dde12ed170b100955b9ebca7525ef90d",
+    "source": "D:\\agentsync-debug\\m115-r2\\s",
+    "python": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+    "wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-wheelhouse",
+    "scope": "Windows 3.12 original build and complete source, wheel, sdist suites; formal Release remains blocked",
+    "collector_sha256": "5f319a112ee7eefb50d3b3231f3135c142558106a1b0b595d43ec0774dc62df1"
+  },
+  "bootstrap_session": 61366,
+  "continuation_session": 95010,
+  "bootstrap_status": "source suite RUNNING",
+  "continuation_status": "WAITING; later rows NOT RUN",
+  "linux_staging": {
+    "exit_code": 0,
+    "output": "{\"source\": \"/root/amadeus-m115-r2/s\", \"commit_sha\": \"4a27a00a7ef5e055c99b0724374506a867ae62e8\", \"tree_sha\": \"488cc352dde12ed170b100955b9ebca7525ef90d\", \"inputs\": {\"4a27a00.bundle\": {\"size\": 70516327, \"sha256\": \"054b89b063793023d829ffc379f9e959e2b012affc6dd5fde93c50241dc5da29\"}, \"m9-candidate-row.py\": {\"size\": 5259, \"sha256\": \"ed10f8d8e6b500d8e5e6d5f223a9bf019d7752d8d6dd3c092bc8e309d8cd8680\"}}, \"tests_started\": false, \"candidate_packages_staged\": false}\n",
+    "error": "Cloning into '/root/amadeus-m115-r2/s'...\nHEAD is now at 4a27a00 chore: retain failed full run and verified traceability repair [skip ci]\n",
+    "guest": "/root/amadeus-m115-r2",
+    "inputs": {
+      "4a27a00.bundle": {
+        "size": 70516327,
+        "sha256": "054b89b063793023d829ffc379f9e959e2b012affc6dd5fde93c50241dc5da29"
+      },
+      "m9-candidate-row.py": {
+        "size": 5259,
+        "sha256": "ed10f8d8e6b500d8e5e6d5f223a9bf019d7752d8d6dd3c092bc8e309d8cd8680"
+      }
+    }
+  },
+  "maximum_concurrent_collectors": 2,
+  "automatic_retry": false,
+  "helper_reconstruction": [
+    {
+      "output_file": "bootstrap.py",
+      "template_path": "docs/acceptance/evidence/m9-a115-preparation/bootstrap.py.txt",
+      "template_sha256": "1b9ba9d15d987206efe1e3ca66450a8b3ad11056f8483b82b134e103ad471f3e",
+      "replacements": [
+        [
+          "BASE = ROOT/'m115-candidate'",
+          "BASE = ROOT/'m115-r2'"
+        ],
+        [
+          "str(ROOT/'t115r')",
+          "str(ROOT/'t115s')"
+        ]
+      ],
+      "newline": "CRLF",
+      "output_size": 5484,
+      "output_sha256": "abd40ea6f53b051a0b56b5f01843d684bc68dff4d7cebe7b414db51857cc84f7"
+    },
+    {
+      "output_file": "finalize.py",
+      "template_path": "docs/acceptance/evidence/m9-a115-preparation/finalize.py.txt",
+      "template_sha256": "bfcdae8097038260575ae9a643c73bdeca91eb4214a1289cd923a249e0831d86",
+      "replacements": [
+        [
+          "D:/agentsync-debug/m115-candidate",
+          "D:/agentsync-debug/m115-r2"
+        ],
+        [
+          "release-20261113T132425Z-8c123f11a31b",
+          "release-20261113T142616Z-1eea95dd39a3"
+        ],
+        [
+          "/root/amadeus-m115",
+          "/root/amadeus-m115-r2"
+        ]
+      ],
+      "newline": "CRLF",
+      "output_size": 7201,
+      "output_sha256": "8754576830062470df4ed8cd8ce8f88dc7c54951b87c11693125fe5568fefa74"
+    },
+    {
+      "output_file": "linux-queue.py",
+      "template_path": "docs/acceptance/evidence/m9-a115-preparation/linux-queue.py.txt",
+      "template_sha256": "5ed9828be04ea61f48fa4292c01d2add137e8e749b3c1edf45acdb5b6e8ce71c",
+      "replacements": [
+        [
+          "base=root/'m115-candidate'",
+          "base=root/'m115-r2'"
+        ],
+        [
+          "/root/amadeus-m115",
+          "/root/amadeus-m115-r2"
+        ]
+      ],
+      "newline": "CRLF",
+      "output_size": 3337,
+      "output_sha256": "0f6275993f25d2f108de633a9bfcf8df13388f8ad56b13e93ad876efc3fe0803"
+    },
+    {
+      "output_file": "continue-matrix.py",
+      "template_path": "docs/acceptance/evidence/m9-a115-preparation/continue-matrix.py.txt",
+      "template_sha256": "6cd48c9c6e4ffd0e72a900ac8ec9345b42247c3fb74e2df26b9e6c2f64d79158",
+      "replacements": [
+        [
+          "BASE = ROOT / 'm115-candidate'",
+          "BASE = ROOT / 'm115-r2'"
+        ],
+        [
+          "HELPERS = ROOT / 'm115'",
+          "HELPERS = ROOT / 'm115-r2-tools'"
+        ],
+        [
+          "c56cbe2cd4c772b92992f3e4571da6d08eefc292",
+          "4a27a00a7ef5e055c99b0724374506a867ae62e8"
+        ]
+      ],
+      "newline": "CRLF",
+      "output_size": 4942,
+      "output_sha256": "74b96eb315474f95c9bdf8f68ac6381ecdd3141061a03c56534602e127fb8a6e"
+    },
+    {
+      "output_file": "stage-linux.py",
+      "template_path": "docs/acceptance/evidence/m9-a114-preparation/m9-stage-linux-source.py.txt",
+      "template_sha256": "cecfc5af4c2f08b8ca9aaa59af5a962c353e808a9ac5fd96bc19446db25af689",
+      "replacements": [
+        [
+          "base=root/'m114'",
+          "base=root/'m115-r2'"
+        ],
+        [
+          "ddd4b42.bundle",
+          "4a27a00.bundle"
+        ],
+        [
+          "/root/amadeus-m114",
+          "/root/amadeus-m115-r2"
+        ]
+      ],
+      "newline": "CRLF",
+      "output_size": 2985,
+      "output_sha256": "27f38b84592a865d03d458a1eb39cd27b2c780e96107e507ee4189f24a710742"
+    }
+  ],
+  "supersedes_execution_handles": [
+    83040,
+    22389
+  ],
+  "formal_release": "BLOCKED"
+}

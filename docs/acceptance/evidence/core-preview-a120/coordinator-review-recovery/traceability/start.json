@@ -1,0 +1,25 @@
+{
+  "started_at": "2026-11-17T00:03:49.073466+00:00",
+  "command": [
+    "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:\\agentsync-debug\\m120-recovery-trace-20261116\\tmp",
+    "--junitxml",
+    "D:\\agentsync-debug\\m120-recovery-trace-20261116\\junit.xml",
+    "F:\\syuc\\amadeus-m6-single\\tests\\unit\\test_acceptance_traceability.py"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "input_sha256": {
+    "docs/acceptance/requirements.json": "d3e9d97221a5ebc059f61bd152427f7adab2d069de984c8a34571e924a0db634",
+    "tests/unit/test_acceptance_traceability.py": "f33443d59f656d581e96007fccc06120e628277331d172c91429f65586fdb355"
+  },
+  "scope": "existing requirement mappings only; no product execution or release acceptance"
+}

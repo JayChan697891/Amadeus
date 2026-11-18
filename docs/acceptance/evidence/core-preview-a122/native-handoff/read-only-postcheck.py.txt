@@ -1,0 +1,117 @@
+"""Inspect the finished successful probe without replaying or changing its fixture."""
+
+import hashlib
+import json
+import sqlite3
+from datetime import datetime, timezone
+from pathlib import Path
+
+PREP = Path("D:/agentsync-debug/m122-final-native-preparation")
+FIXTURE = PREP / "native-handoff-ar58ugul"
+report = json.loads((FIXTURE / "result.json").read_bytes())
+execution = json.loads((PREP / "execution.json").read_bytes())
+assert execution["exit_code"] == 0 and report["status"] == "passed_scoped"
+assert report["phase"] == "complete" and "error_type" not in report
+assert report == json.loads((PREP / "stdout.private.log").read_bytes())
+assert all(h["exit_code"] == 0 and h["close_mode"] == "stdin_eof" and
+           h["mcp_children_ended"] == len(h["mcp_child_pids"]) and not h["unexpected_turn"]
+           for h in report["native_hosts"])
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+database = FIXTURE / "data/agentsync.db"
+before = sha(database)
+db = sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)
+db.row_factory = sqlite3.Row
+db.execute("PRAGMA query_only=ON")
+try:
+    actors = {row["name"].removeprefix("Handoff "): row["id"] for row in
+              db.execute("SELECT id,name FROM agents WHERE project_id=?", (report["project_id"],))}
+    assert set(actors) == {"A", "B"} and len(set(actors.values())) == 2
+    task = db.execute("SELECT t.id,t.status,t.version,t.result,s.agent_id FROM tasks t "
+                      "JOIN sessions s ON s.id=t.owner_session_id WHERE t.id=?",
+                      (report["task_id"],)).fetchone()
+    assert (task["status"], task["version"], task["agent_id"]) == ("review", 8, actors["B"])
+    assert hashlib.sha256(task["result"].encode()).hexdigest() == report["result_sha256"]
+    assert db.execute("SELECT count(*) FROM reviews").fetchone()[0] == 0
+    handoff = db.execute("SELECT id,task_id,status,task_version,sender_agent_id,recipient_agent_id,"
+                         "package,contexts FROM handoffs WHERE id=?", (report["handoff_id"],)).fetchone()
+    assert (handoff["task_id"], handoff["status"], handoff["task_version"]) == (task["id"], "accepted", 5)
+    assert (handoff["sender_agent_id"], handoff["recipient_agent_id"]) == (actors["A"], actors["B"])
+    context_id = report["context"]["context_id"]
+    assert json.loads(handoff["package"])["context_refs"] == [{"context_id": context_id, "version": 1}]
+    pinned, = json.loads(handoff["contexts"])
+    assert pinned["version"] == 1
+    context_rows = db.execute("SELECT version,content FROM context_revisions WHERE context_id=? "
+                             "ORDER BY version", (context_id,)).fetchall()
+    assert [row["version"] for row in context_rows] == [1, 2]
+    assert pinned["content"] == context_rows[0]["content"]
+    assert hashlib.sha256(context_rows[0]["content"].encode()).hexdigest() == report["context"]["pinned_sha256"]
+    assert hashlib.sha256(context_rows[1]["content"].encode()).hexdigest() == report["context"]["latest_sha256"]
+    locks = {row["owner_agent_id"]: dict(row) for row in db.execute(
+        "SELECT id,owner_agent_id,path,status,version FROM file_locks")}
+    assert set(locks) == set(actors.values())
+    assert all((row["path"],row["status"],row["version"]) == ("lock-fixture.txt","released",2)
+               for row in locks.values())
+    assert (FIXTURE / "project/lock-fixture.txt").read_bytes() == b"Native MCP coordination metadata only.\n"
+    t, h, c = report["task_id"], report["handoff_id"], context_id
+    la, lb = locks[actors["A"]]["id"], locks[actors["B"]]["id"]
+    expected = [
+        ("context-v1", "A", "publish_context", "ok", c, 0, 1),
+        ("create-task", "A", "create_task", "ok", t, None, 1),
+        ("sender-claim", "A", "claim_task", "ok", t, 1, 2),
+        ("sender-run", "A", "update_task", "ok", t, 2, 3),
+        ("handoff-submit", "A", "submit_handoff", "ok", h, 3, None),
+        ("context-v2", "A", "publish_context", "ok", c, 1, 2),
+        ("old-sender-lease", "A", "update_task", "lease_denied", None, 4, None),
+        ("nonrecipient-resolve", "A", "resolve_handoff", "handoff_denied", None, 4, None),
+        ("recipient-accept", "B", "resolve_handoff", "ok", h, 4, None),
+        ("nonrecipient-claim", "A", "claim_task", "assignment_denied", None, 5, None),
+        ("recipient-claim", "B", "claim_task", "ok", t, 5, 6),
+        ("recipient-run", "B", "update_task", "ok", t, 6, 7),
+        ("recipient-submit", "B", "update_task", "ok", t, 7, 8),
+        ("lock-acquire-A", "A", "acquire_file_lock", "ok", la, None, 1),
+        ("lock-contended", "B", "acquire_file_lock", "lock_busy", None, None, None),
+        ("lock-release-A", "A", "release_file_lock", "ok", la, 1, 2),
+        ("lock-acquire-B", "B", "acquire_file_lock", "ok", lb, None, 1),
+        ("lock-release-B", "B", "release_file_lock", "ok", lb, 1, 2),
+    ]
+    audit = []
+    for request, actor, operation, code, target, pre, post in expected:
+        pin = hashlib.sha256(request.encode()).hexdigest()
+        event, = db.execute("SELECT * FROM audit_events WHERE request_id_digest=?", (pin,)).fetchall()
+        assert event["project_id"] == report["project_id"] and event["actor_kind"] == "agent"
+        assert event["actor_id"] == actors[actor]
+        assert (event["operation"], event["code"], event["target_id"], event["pre_version"], event["post_version"]) == (
+            operation, code, target, pre, post)
+        assert event["outcome"] == ("success" if code == "ok" else "denied")
+        audit.append({"request": request, "request_sha256": pin, "actor": actor,
+                      **{key: event[key] for key in ("operation", "outcome", "code", "pre_version", "post_version")}})
+    observed = {item["request"]: item for item in report["audit_observations"]}
+    assert len(observed) == len(audit) == 18
+    for item in audit:
+        assert {key: observed[item["request"]][key] for key in item} == item
+finally:
+    db.close()
+assert sha(database) == before
+site = Path("D:/agentsync-debug/m122p/w/Lib/site-packages")
+members = json.loads(Path("D:/agentsync-debug/m122p/run/runtime-members.json").read_bytes())
+actual = {p.relative_to(site).as_posix(): sha(p) for p in (site / "agentsync").rglob("*")
+          if p.is_file() and "__pycache__" not in p.parts}
+assert actual == members and len(actual) == 97
+result = {"checked_utc": datetime.now(timezone.utc).isoformat(),
+          "scope": "Read-only postmortem of one finished native run; no native replay or model call",
+          "native_run_status": "SCOPED PASS", "native_exit_code": 0,
+          "task_status": "review", "task_version": 8, "review_count": 0,
+          "handoff_status": "accepted", "pinned_context_version": 1, "latest_context_version": 2,
+          "released_metadata_locks": 2, "audit_observations": audit, "audit_events_matched": len(audit),
+          "database_bytes_unchanged": True, "installed_runtime_members_unchanged": 97,
+          "native_hosts_eof_exit_zero": 2, "reported_mcp_children_ended": 7,
+          "inference_requests": 0, "formal_release": "BLOCKED"}
+with (PREP / "read-only-postcheck.json").open("x", encoding="utf-8", newline="\n") as stream:
+    json.dump(result, stream, indent=2)
+    stream.write("\n")
+print(json.dumps({k: v for k, v in result.items() if k != "audit_observations"}))

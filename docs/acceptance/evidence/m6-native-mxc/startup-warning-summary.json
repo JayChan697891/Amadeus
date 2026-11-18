@@ -1,0 +1,104 @@
+{
+  "product_sha": "ee456900fad6bb4cfc09cad0eecdc9ce1371ab74",
+  "preceding_runtime_sha": "080722e8882a7c4d83a7afa80fc6427170e93fec",
+  "actual_run": {
+    "at_utc": "2026-11-12T07:17:31.612162+00:00",
+    "plan_sha256": "806d85f2da3ca833394a468410cb342dccd9cc3e19d78e348b2fe910696846b0",
+    "calls": 1,
+    "status": "UNKNOWN / NOT ACCEPTED",
+    "reason": "invalid_event_sequence",
+    "authorization_consumed": true,
+    "temporary_auth_removed": true,
+    "original_auth_unchanged": true,
+    "raw_output": "Local-only restricted D-drive directory; never uploaded",
+    "task_receipt": "Unchanged incomplete receipt; no retry"
+  },
+  "change": "Accept only completed error items with string message between thread.started and turn.started. Preserve duplicate IDs, bounds, fatal failures, message suppression, and turn-success requirements.",
+  "upstream_corroboration": {
+    "url": "https://github.com/openai/codex/blob/main/codex-rs/exec/src/event_processor_with_jsonl_output.rs",
+    "symbols": [
+      "collect_warning",
+      "ConfigWarning"
+    ],
+    "limitation": "Current upstream is corroboration, not the pinned local CLI build."
+  },
+  "validation": {
+    "windows_source": {
+      "passed": 101,
+      "failed": 0,
+      "skipped": 0,
+      "command": "python -X utf8 -m pytest tests/unit/test_codex_events.py tests/unit/test_codex_adapter.py tests/integration/test_controlled_relay_pipeline.py -q -p no:cacheprovider --basetemp D:/agentsync-debug/m6-startup-warning-repair/pytest --junitxml D:/agentsync-debug/m6-startup-warning-repair/junit.xml"
+    },
+    "ruff_changed_files": "PASS",
+    "ruff_format_changed_files": "PASS",
+    "mypy_84_modules": "PASS",
+    "private_capture_replay": "PASS protocol projection and exact expected reply; no Core reclassification",
+    "independent_astra_review": "Scoped no-blocker; does not establish real-client acceptance",
+    "windows_installed": {
+      "passed": 17,
+      "deselected": 46,
+      "failed": 0,
+      "skipped": 0,
+      "runtime_modules_matched": 84,
+      "source_shadowing": false,
+      "pip_check": "PASS",
+      "build": "Frozen source sdist, wheel rebuilt from sdist; offline fresh install",
+      "artifacts": {
+        "agentsync_local-0.3.0a109-py3-none-any.whl": "75e6efa3c5251358cad9b348ad0fc0b05130d806c5b7515f51bd05831686352e",
+        "agentsync_local-0.3.0a109.tar.gz": "5db999d16f65b9d08b0b848204793b91252a4ed93c5b012b594bd36dea300845"
+      }
+    },
+    "linux_installed": {
+      "python": "3.14.7",
+      "passed": 17,
+      "deselected": 46,
+      "failed": 0,
+      "skipped": 0,
+      "runtime_modules_matched": 84,
+      "pip_check": "PASS",
+      "same_wheel_as_windows": true,
+      "source_shadowing": false,
+      "owned_vm_stopped": true,
+      "model_requests": 0
+    }
+  },
+  "not_run": [
+    "New real invocation of repaired product",
+    "macOS tests for this parser delta",
+    "Full release matrix",
+    "Real second-agent relay"
+  ],
+  "formal_release": "BLOCKED",
+  "evidence_files": {
+    "diagnostic-actual-result.json": "637211eeba6afaade3edcb0ce14e3f4fad96f001a486ac9a2a50b2a604e0fd78",
+    "diagnostic-actual-cleanup.json": "213441e666cd4a4348136e2d2337db965143b90ea2839e6c7c2357404a9105ae",
+    "diagnostic-actual-structure.json": "22c91e41f116e00a2eaddec4f9057d9304950cf1cc5cf6dc989be58ad313e25e",
+    "startup-warning-replay.json": "8ea238b7f764ef96ad8db62b3f02751101076a69091a0e6f87ecf52558921f45",
+    "startup-warning-windows.xml": "1559717a74640e6633b1c3bbf9171a18e669c551f12394660db6d02838ed9f95",
+    "startup-warning-windows.log": "7ad1557a10c7027a7019a6c2ee8797967036d0d3462b8bbba0551bb3b5235595",
+    "startup-warning-installed.log": "7a4584b34401bc8b75214398d32f1d8717cc86bdbba55ca49d6fdbf979ba0126",
+    "startup-warning-installed.xml": "314499051108fc65e42880fddc3cd99d95e46b6e08b7540beedd09c15345666d",
+    "startup-warning-installed-origin.json": "c4a133a51525cb480718a374f2b198750cf207162fd169437c1fab9ff94cd246",
+    "startup-warning-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "startup-warning-next-plan.json": "38fd45200a36d0ef5fb01c692e878d50a3a9b35c359f35da1971861765faa7c2",
+    "startup-warning-linux-tests.log": "be07e6421a80e99fb542378dd34c701fc9e29929f2fde56346183a767b00e5cd",
+    "startup-warning-linux-installed.xml": "796d147a0899cd944f22c72f276492ee0763b4dcb9b5d600acde788534ac8302",
+    "startup-warning-linux-origin.json": "e79315ff62b93b0a1ef31f780156ae4414958152521a5eab136268d655263fab",
+    "startup-warning-linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "startup-warning-linux-build-binding.json": "b7efaab68e23f9ecb08652d2da06c8f7a27208499dbfbd4c5154aa5df133e4b6"
+  },
+  "next_live": {
+    "authorization": "PENDING; no credential copy or real call",
+    "plan_sha256": "ce6032da2c3624ef3aee259da404c2f15e82a1ef2d60681e730148f3976499b3",
+    "directory": "D:\\agentsync-debug\\m6-startup-warning-live-20261112",
+    "reply": "AMADEUS_STARTUP_WARNING_OK",
+    "timeout_seconds": 90,
+    "max_calls": 1,
+    "raw_limit_bytes": 1048576,
+    "harness_sha256": {
+      "pilot.py": "adf13460082112ed16855daffb37e1347c83b0dc8f6e33c8b15a15ad93f04cc8",
+      "private_capture.py": "e142e6ee7b4d41a4d4ea794294b549fce8e5938943716f825dc93911fd12517c",
+      "cleanup-auth.ps1": "a91b5882aa2d23adfb447d9e338978d9cb9f321fb66304be3339207eb7feec38"
+    }
+  }
+}

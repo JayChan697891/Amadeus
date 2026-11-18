@@ -1,0 +1,12 @@
+{
+  "observed_at": "2026-11-16T08:01:13.499956+00:00",
+  "files": {
+    "run-source.py": "1a4138f699d6043f970a16f213c7b2156ecf73e20aebc8569a5af4e98d4da94d"
+  },
+  "guest_directory": "/root/amadeus-m117ls",
+  "preflight": {
+    "active_python_codex": [],
+    "containers": []
+  },
+  "execution_started": false
+}

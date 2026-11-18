@@ -1,0 +1,15 @@
+set -eu
+/root/amadeus-delivery-529df3b/installed/bin/python -I -B - <<'PY'
+from datetime import UTC,datetime
+import json,subprocess,tempfile
+from pathlib import Path
+from agentsync.verification.docker import _trusted_cli
+base=Path('/root/amadeus-delivery-529df3b')
+cli=_trusted_cli()
+with tempfile.TemporaryDirectory(prefix='cleanup-observation-',dir=base) as config:
+    result=subprocess.run([cli,'--host','unix:///var/run/docker.sock','--config',config,'container','ls','--all','--no-trunc','--format','{{.ID}}'],env={'PATH':'/usr/bin:/bin','HOME':config,'LC_ALL':'C'},capture_output=True,text=True,check=True,timeout=15)
+record={'timestamp':datetime.now(UTC).isoformat(),'docker_host':'unix:///var/run/docker.sock','trusted_cli':cli,'container_count':len(result.stdout.splitlines()),'all_containers_absent':not result.stdout.strip(),'scope':'Read-only postcheck of dedicated local test daemon after the affected529df3b owner delivery installed-sdist suite'}
+with (base/'docker-cleanup-observation.json').open('x') as out:json.dump(record,out,indent=2)
+print(json.dumps(record))
+assert record['all_containers_absent']
+PY

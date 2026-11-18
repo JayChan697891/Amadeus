@@ -1,0 +1,35 @@
+{
+  "status": "BOUND_TO_EXISTING_OWNER_AUTHORIZATION",
+  "authorized": true,
+  "temporary_auth_copy_authorized": true,
+  "confirmed_cost": true,
+  "confirmed_isolation": true,
+  "subscription_only": true,
+  "expires_at": 1794987524.1559393,
+  "ready_sha256": "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc",
+  "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+  "plan_file_sha256": "abae1167b050d7d631cb2b5707515135a305dbb864fc308a72861a7c8d7d015c",
+  "selection_sha256": "856334de8358356a39083558e49a404ad8745291197017972347806c28474c43",
+  "helper_sha256": {
+    "pilot.py": "38a7ed4d36157952e263b88a36de969506010dbc5e15326ce76fd51fd81ea079",
+    "auth_home.py": "5150d719b6d685184eb19785055a5bc6794341bc737350f0a0bb4df9183cdd5a",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "357c71a579758d397f05edb507ba755f090975ddc7bc0d599be981358ed874d4"
+  },
+  "host_helper_sha256": {
+    "native_host.py": "852bcd44beb278f7ad80551de12bc62a3541a7308e10a73ff08c8c668dec2096",
+    "setup_auth.py": "0e4191082f0101846ac31dbb8c69551d5f34b74bcfddd00e6f6aabad7b0689b7",
+    "launch.py": "158c59b1cb9e5cad6acb308a37d4983b9a5376cd6e9ecc7978414f6a1b7a7c0f",
+    "finish-auth.py": "d56b3bf9a36f982635bb0313dde3f71f020c0485189a82fffc7dafe75d733168"
+  },
+  "max_subscription_calls": 1,
+  "max_candidate_executions": 0,
+  "retry_allowed": false,
+  "owner_scope_reference": "Owner standing answer call_443a666c91f548f4bcbcdde9daa2c8a9: same bounded subscription-only validations without repeated questions; at most one readonly call here, no extra fee or candidate execution.",
+  "recorded_at": "2026-11-18T07:08:44.155939+00:00",
+  "review": "Root/Astra inspected all five guest helpers and four host controls; exact ready/plan/selection pins; private ACL observed in ddbd27.",
+  "cost_basis": "Owner confirmed zero credits and automatic recharge off; forced ChatGPT route, no API key. Not an independent billing audit.",
+  "private_acl": "Current Windows user and SYSTEM only; protected inheritance, two full-control rules verified.",
+  "formal_release": "BLOCKED"
+}

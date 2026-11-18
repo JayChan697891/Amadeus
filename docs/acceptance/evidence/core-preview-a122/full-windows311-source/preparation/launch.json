@@ -1,0 +1,21 @@
+{
+  "status": "RUNNING; NOT ACCEPTED",
+  "native_session": 51949,
+  "initial_chunk": "259b6d",
+  "pytest_requested_at": "2026-11-18T04:00:08.063850+00:00",
+  "controller_pid": 14848,
+  "pytest_pid": 7568,
+  "actual_process_observation": "ae0331: matching command lines and creation times; original wheel PIDs absent before launch",
+  "actual_setup_checks_passed": [
+    "source_venv",
+    "source_offline_dependencies",
+    "source_editable_install",
+    "source_pip_check",
+    "source_origin_before"
+  ],
+  "origin": "editable a122 in D:/agentsync-debug/w122311s/s/src/agentsync;97 members",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_driver_sha256": "55598acea8567411b3ebbfd69030b23c698c2d60a73a8d675c88b4cc45dbd523",
+  "resume": "Poll original51949. Do not restart on observation timeout. Read run/result.json/XML only after observed terminal.",
+  "formal_release": "BLOCKED"
+}

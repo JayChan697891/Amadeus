@@ -1,0 +1,136 @@
+"""Known local Python protocol fixtures; never real Codex/credential acceptance."""
+
+import asyncio
+import json
+import sys
+from types import SimpleNamespace
+
+import pilot
+import pytest
+from agentsync.adapters.base import AdapterTask
+from agentsync.adapters.codex import CodexAdapter
+from agentsync.adapters.process_capture import CapturedProcess
+
+
+def stream(started=True, completed=False):
+    events = [{"type": "thread.started", "thread_id": "local-fixture"}]
+    if started:
+        events.append({"type": "turn.started"})
+    if completed:
+        events.extend(
+            [
+                {
+                    "type": "item.completed",
+                    "item": {"id": "m", "type": "agent_message", "text": "fixture"},
+                },
+                {
+                    "type": "turn.completed",
+                    "usage": {"input_tokens": 1, "cached_input_tokens": 0, "output_tokens": 1},
+                },
+            ]
+        )
+    return "".join(json.dumps(event) + "\n" for event in events)
+
+
+async def setup(tmp_path, text):
+    capture = SimpleNamespace(process=None)
+    calls = []
+
+    async def factory(_):
+        capture.process = await CapturedProcess.start(
+            (
+                sys.executable,
+                "-I",
+                "-B",
+                "-u",
+                "-c",
+                f"import sys,time;sys.stdout.write({text!r});sys.stdout.flush();time.sleep(5)",
+            ),
+            cwd=tmp_path,
+            stdin_text="",
+            timeout_seconds=1,
+            output_limit=524288,
+        )
+        return capture.process
+
+    adapter = CodexAdapter("p", "s", factory=factory, max_runs=1)
+    original = adapter.cancel_task
+
+    async def counted(run_id):
+        calls.append(run_id)
+        return await original(run_id)
+
+    adapter.cancel_task = counted
+    task = AdapterTask("p", "s", "t", "r", "known fixture", 1)
+    run = await adapter.start_task(task)
+    return adapter, capture, task, run, calls
+
+
+@pytest.mark.parametrize(
+    "mode,started,completed,expected",
+    [
+        ("cancel", True, False, True),
+        ("timeout", True, False, True),
+        ("timeout", False, False, False),
+        ("timeout", True, True, False),
+    ],
+)
+def test_actual_owned_python_observation(tmp_path, mode, started, completed, expected):
+    async def check():
+        adapter, capture, task, run, calls = await setup(tmp_path, stream(started, completed))
+        records = {}
+
+        def emit(name, value):
+            assert name not in records
+            if name == "cancel-boundary.json":
+                assert not calls  # Evidence is saved before direct adapter.cancel_task.
+            records[name] = value
+
+        observed = await pilot.observe(adapter, capture, run, task, mode, emit)
+        final = await adapter.get_status(run.run_id)
+        assert final.parent_ended is True and type(final.exit_code) is int
+        assert final.status == "unknown" and final.slot_held is True
+        assert final.error_code == (
+            "local_cancel_requested" if mode == "cancel" else "adapter_timeout"
+        )
+        assert calls == ([run.run_id] if mode == "cancel" else [])
+        key = "cancel_method_called" if mode == "cancel" else "deadline_window_observed"
+        assert observed[key] is expected
+        if expected:
+            boundary = records[
+                "cancel-boundary.json" if mode == "cancel" else "deadline-window.json"
+            ]
+            assert boundary["run_id"] == run.run_id and boundary["parent_pid"] > 0
+            assert boundary["snapshot"]["parent_ended"] is False
+            assert boundary["boundary"] == {
+                "valid": True,
+                "started": True,
+                "terminal": False,
+                "tools": 0,
+            }
+
+    asyncio.run(check())
+
+
+def test_boundary_save_failure_never_calls_cancel(tmp_path):
+    async def check():
+        adapter, capture, task, run, calls = await setup(tmp_path, stream())
+
+        def emit(name, _):
+            if name == "cancel-boundary.json":
+                raise OSError("fixture save failure")
+
+        with pytest.raises(OSError):
+            await pilot.observe(adapter, capture, run, task, "cancel", emit)
+        assert calls == []
+        final = await adapter.wait_terminal(run.run_id, timeout_seconds=4)
+        assert final.parent_ended and final.error_code == "adapter_timeout"
+
+    asyncio.run(check())
+
+
+def test_unterminated_turn_line_is_not_observed_boundary():
+    process = SimpleNamespace(_stdout=bytearray(b'{"type":"turn.started"}'))
+    assert pilot.flags(process)["started"] is False
+    process._stdout.extend(b"\n")
+    assert pilot.flags(process)["started"] is True

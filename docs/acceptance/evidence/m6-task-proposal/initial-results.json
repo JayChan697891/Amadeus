@@ -1,0 +1,45 @@
+{
+  "scope": "Initial fixture/setup failures; original full logs retained locally because pytest included environment repr",
+  "failures": [
+    {
+      "test": "test_malformed_or_out_of_scope_output_is_static_error[                                              ",
+      "kind": "error",
+      "message": "failed on setup with \"ValueError: the environment variable is longer than 32767 characters\""
+    },
+    {
+      "test": "test_malformed_or_out_of_scope_output_is_static_error[                                              ",
+      "kind": "error",
+      "message": "failed on teardown with \"ValueError: the environment variable is longer than 32767 characters\""
+    },
+    {
+      "test": "test_publication_survives_restart_without_task_or_workspace_mutation",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Proposal requires a running task."
+    },
+    {
+      "test": "test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Proposal requires a running task."
+    },
+    {
+      "test": "test_audit_failure_rolls_back_context_and_idempotency",
+      "kind": "failure",
+      "message": "agentsync.errors.AgentSyncError: Proposal requires a running task."
+    },
+    {
+      "test": "test_lease_is_rechecked_after_git_inspection",
+      "kind": "failure",
+      "message": "AssertionError: assert 'invalid_state' == 'lease_expired'\n  \n  - lease_expired\n  + invalid_state"
+    }
+  ],
+  "raw_local_sha256": {
+    "first.log": "d1165ca4921297a0587a7d6bb0a72dc29367bd4a44b453c780f3fbc4eb3fb5c3",
+    "first.xml": "643b3ff9172c82cdf02200c749f64af0862f07d3c603f4f9e3316cf347b2d20e"
+  },
+  "repairs": [
+    "Explicit claimed-to-running transition in fixture",
+    "Short explicit pytest IDs avoid Windows environment-variable size limit",
+    "Update mapped Codex selector count from8 to11",
+    "Install declared offline dev dependency httpx for fresh wheel tests"
+  ]
+}

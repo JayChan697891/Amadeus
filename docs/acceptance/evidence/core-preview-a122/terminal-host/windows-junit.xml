@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="4" time="4.351" timestamp="2026-11-17T15:52:57.010922-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_verified_codex_terminal" name="test_prompt_refuses_insecure_terminal_without_fallback" time="0.004" /><testcase classname="tests.integration.test_verified_codex_terminal" name="test_terminal_uses_real_core_and_exact_decisions[None]" time="0.941"><failure message="agentsync.errors.AgentSyncError: Git is not installed.">tests\integration\test_verified_codex_terminal.py:105: in test_terminal_uses_real_core_and_exact_decisions
+    status = await terminal_host["run"](
+examples\verified_codex_task.py:149: in run
+    snapshot = core.execute(
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\workspaces.py:166: in _capture_repository
+    receipt = self._workspace_store().capture_repository(root, identity)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\workspaces.py:88: in _workspace_store
+    return GitWorkspaceStore(self.data_dir)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\workspaces\git.py:80: in __init__
+    fail("unsupported", "Git is not installed.")
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Git is not installed.</failure></testcase><testcase classname="tests.integration.test_verified_codex_terminal" name="test_terminal_uses_real_core_and_exact_decisions[launch]" time="0.900"><failure message="AssertionError: assert False&#10; +  where False = is_file()&#10; +    where is_file = (WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1') / 'terminal-run/stopped.json').is_file&#10; +      where WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1') = namespace(root=WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1'...=WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1/private-home')).root">tests\integration\test_verified_codex_terminal.py:103: in test_terminal_uses_real_core_and_exact_decisions
+    assert (args.root / "terminal-run/stopped.json").is_file()
+E   AssertionError: assert False
+E    +  where False = is_file()
+E    +    where is_file = (WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1') / 'terminal-run/stopped.json').is_file
+E    +      where WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1') = namespace(root=WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1'...=WindowsPath('D:/agentsync-debug/verified-terminal-20261117/windows-tmp/test_terminal_uses_real_core_a1/private-home')).root</failure></testcase><testcase classname="tests.integration.test_verified_codex_terminal" name="test_terminal_uses_real_core_and_exact_decisions[staging]" time="0.932"><failure message="agentsync.errors.AgentSyncError: Git is not installed.">tests\integration\test_verified_codex_terminal.py:105: in test_terminal_uses_real_core_and_exact_decisions
+    status = await terminal_host["run"](
+examples\verified_codex_task.py:149: in run
+    snapshot = core.execute(
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\workspaces.py:166: in _capture_repository
+    receipt = self._workspace_store().capture_repository(root, identity)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\core\workspaces.py:88: in _workspace_store
+    return GitWorkspaceStore(self.data_dir)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\workspaces\git.py:80: in __init__
+    fail("unsupported", "Git is not installed.")
+D:\agentsync-debug\m122p\w\Lib\site-packages\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Git is not installed.</failure></testcase></testsuite></testsuites>

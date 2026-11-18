@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-11-12T11:48:05.521921+00:00",
+  "observation": "read-only reopened Core and pinned local Docker daemon",
+  "product_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "wheel_sha256": "bdd8fc4e98de6824d3a6f5a6be7fa2a477df7acfe9bb06f061d8479f50ee1b33",
+  "runtime_modules_matched": 87,
+  "installed_origin": "/root/amadeus-linux-readonly-a2634ec/venv/lib/python3.14/site-packages/agentsync/__init__.py",
+  "task": {
+    "id": "bc95694a-3daf-481f-8139-045085da5b4b",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "verified"
+  },
+  "container_id": "877c516c66f347b9a3c441462baa6fbf88e3b8d0b1513cfd6ea5a9bfeba8f15e",
+  "container_absent": true,
+  "docker_host": "unix:///var/run/docker.sock",
+  "docker_cli": "/usr/bin/docker",
+  "source_sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+  "candidate_sha": "eea1f2f51d1bc332911d7d6958dec9acf4d61f4d",
+  "source_and_producer_unchanged": true,
+  "reviewer_distinct_from_producer_and_stager": true,
+  "reviewer_kind": "host-mediated distinct Core identity, not a second model",
+  "auth_cleanup_confirmed": true,
+  "formal_release": "BLOCKED"
+}

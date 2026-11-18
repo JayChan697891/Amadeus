@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-14T08:32:00.060672+00:00",
+  "classification": "Required canonical wheel evidence; not a new M5 phase or a product failure",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+  "existing_observation": "Actual independent exit0/2426pass/56skip retained; canonical started/unknown unchanged",
+  "gap": "CIM identity preceded OpenProcess; native handle creation time was not compared or persisted. Existing artifacts cannot retrospectively prove that binding. This is not a claim that PID reuse happened.",
+  "decision": "Do not introduce a weaker acceptance type. After the existing Windows queue, execute only a new canonical wheel component with exact same archive in a fresh environment; source, sdist and build are NOT RUN in that invocation.",
+  "prepared_driver": "D:/agentsync-debug/m115-wheel-canonical.py",
+  "execution": "NOT RUN",
+  "driver_validation": "Syntax/unique original AST branch inspected; independent read-only review found no blocker; not an execution pass",
+  "original_collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "wheel_branch_ast_sha256": "ec15519679337172dd063d7df108ae406f81735f14c5bd67659733bb17fe6f80",
+  "start_conditions": [
+    "Windows3.11 and3.14 original queue actually terminal and successful",
+    "No original Windows row remains live",
+    "Frozen source, original successful build, candidate manifest and wheel bytes match"
+  ],
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "wheel-canonical.py.txt",
+      "size": 8293,
+      "sha256": "461bf21c85d21b490514d4298653089ddc1502ce086f07f6fdc2a548fdb7e948"
+    },
+    {
+      "path": "original-pause-observer.py.txt",
+      "size": 5610,
+      "sha256": "20f8dfb2b8af8c3b26e4226d2dbd14a81948951676f81f3982e05bdc3e501533"
+    },
+    {
+      "path": "wheel-boundary-observer.json",
+      "size": 563,
+      "sha256": "74cc451f26806c15cee69fe95092331e1dd916b336c8afdb7e514c3cf2a9fb7d"
+    },
+    {
+      "path": "before-boundary-control.json",
+      "size": 1355,
+      "sha256": "fea8aa9c961e74c8937f554f6c25a91ace1117fad6ebd29197b262dfbd554c88"
+    }
+  ]
+}

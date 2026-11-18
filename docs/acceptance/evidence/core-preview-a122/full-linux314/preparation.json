@@ -1,0 +1,14 @@
+{
+  "status": "RUNNING snapshot, not final acceptance",
+  "native_session": 74411,
+  "native_start_chunk": "80427b",
+  "live_observation_chunk": "d69be0",
+  "controller_pid": 2935,
+  "pytest_pid": 2952,
+  "guest_boot_id": "6ef0cfcd-3b1d-486c-9a81-0aae13dbc93a",
+  "driver_sha256": "11a3253b2e49fb4fcadf9a4d8c0d6f2164241854109a5efbe22193d7bd34b33f",
+  "model_calls": 0,
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "next": "Observe native74411 and actual guest processes. Never rerun start-full.py or run-wheel.py. Inspect final result/JUnit and36 Docker records only after terminal. Keep raw output local."
+}

@@ -1,0 +1,62 @@
+import hashlib,json,xml.etree.ElementTree as ET
+from pathlib import Path
+
+base=Path('D:/agentsync-debug/m122sourcel');run=base/'harvest'
+reference=Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a122/full-linux314')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def cases(path):
+    rows={}
+    for node in ET.parse(path).iter('testcase'):
+        key=node.attrib['classname']+'::'+node.attrib['name'];assert key not in rows
+        outcome=next((name for name in ('failure','error','skipped') if node.find(name) is not None),'passed')
+        rows[key]={'outcome':outcome}
+        if outcome!='passed':rows[key]['message']=node.find(outcome).attrib.get('message','')
+    return rows
+result=json.loads((run/'result.json').read_bytes());assert result['finished_at']
+current=cases(run/'source-junit.xml');wheel=cases(reference/'wheel-junit.xml')
+counts={s:sum(row['outcome']==s for row in current.values()) for s in ('passed','skipped','failure','error')}
+checks=[]
+for check in result['checks']:
+    receipt=json.loads((run/'logs'/f"{check['id']}.process.json").read_bytes())
+    assert receipt['phase']=='finished' and receipt['outcome']=='exited' and receipt['result']==check
+    assert check['status']=='pass' and check['exit_code']==0 and not check['log_truncated']
+    assert sha(run/check['log'])==check['log_sha256']
+    checks.append({'check':check['id'],'exit_code':check['exit_code'],'log_sha256':check['log_sha256']})
+assert sha(run/'source-junit.xml')==result['junit']['sha256']
+comparison={'unique_cases':len(current),'counts':counts,'wheel_case_identity_equal':current.keys()==wheel.keys(),'removed_cases':sorted(wheel.keys()-current.keys()),'added_cases':sorted(current.keys()-wheel.keys()),'outcome_differences':{k:{'wheel':wheel[k],'source':current[k]} for k in sorted(current.keys()&wheel.keys()) if current[k]['outcome']!=wheel[k]['outcome']},'skips':{k:v for k,v in current.items() if v['outcome']=='skipped'},'checks':checks}
+with (base/'case-diff.json').open('x',encoding='utf8') as f:json.dump(comparison,f,indent=2);f.write('\n')
+fields=set(json.loads((Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a120/full-linux314/docker-diff.json')).read_bytes())['projection_fields'])|{'same_core','source_task_status','receiver_task_status','receiver_task_verification','publication_verification'}
+def projection(value,prefix=''):
+    out={}
+    if isinstance(value,dict):
+        for key,item in value.items():
+            path=prefix+'/'+key
+            if key in fields or key.endswith(('_case_count','_exit_code')):out[path]=item
+            elif key.endswith('_json') and isinstance(item,str):out.update(projection(json.loads(item),path))
+            else:out.update(projection(item,path))
+    elif isinstance(value,list):
+        for index,item in enumerate(value):out.update(projection(item,prefix+'/'+str(index)))
+    return out
+def observations(root):
+    result=json.loads((root/'result.json').read_bytes())
+    rows={};paths={}
+    for p in sorted((root/'observations').rglob('*.json')):
+        rel=p.relative_to(root).as_posix()
+        assert hashlib.sha256(p.read_bytes()).hexdigest()==result['fixture_observations_sha256'][rel]
+        key=p.relative_to(root/'observations').parts[0]+'/'+p.name
+        assert key not in rows
+        rows[key]=projection(json.loads(p.read_bytes()));assert rows[key]
+        paths[key]=rel
+    assert len(rows)==len(result['fixture_observations_sha256'])==36
+    return rows,paths
+a,ap=observations(reference);b,bp=observations(run);differences=[]
+for name in sorted(a.keys()&b.keys()):
+    for key in sorted(a[name].keys()|b[name].keys()):
+        if key not in a[name] or key not in b[name] or a[name][key]!=b[name][key]:
+            differences.append({'fixture':name,'field':key,'wheel':a[name].get(key),'source':b[name].get(key),'wheel_present':key in a[name],'source_present':key in b[name]})
+result={'scope':'Selected semantic outcomes only; raw bytes/paths preserved','normalization':'Unique group plus file basename, matching existing historical check-result.py.txt observations() convention; raw paths and hashes retained.','wheel_observations':len(a),'source_observations':len(b),'removed':sorted(a.keys()-b.keys()),'added':sorted(b.keys()-a.keys()),'differences':differences,'raw_paths':{name:{'wheel':ap.get(name),'source':bp.get(name)} for name in sorted(ap.keys()|bp.keys())},'projection_fields':sorted(fields),'projection_suffixes':['_case_count','_exit_code']}
+with (base/'docker-diff.json').open('x',encoding='utf8') as f:json.dump(result,f,indent=2);f.write('\n')
+print(json.dumps({k:v for k,v in result.items() if k not in ('raw_paths','projection_fields')}))
+assert a.keys()==b.keys() and not differences
+
+assert len(checks)==7 and counts=={'passed':2589,'skipped':7,'failure':0,'error':0} and current.keys()==wheel.keys() and not comparison['outcome_differences']

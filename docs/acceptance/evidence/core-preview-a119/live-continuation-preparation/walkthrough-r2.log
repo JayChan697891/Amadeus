@@ -1,0 +1,15 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________________ test_driver_walkthrough[verifiable_codex] __________________
+D:\agentsync-debug\strategy-demo\interrupted-a119-solution-20261116-offline\test_walkthrough.py:144: in test_driver_walkthrough
+    tool["drive"](live, cleanup, grant, action, live.sha(base / file))
+tools\run_live_solution_verification.py:256: in drive
+    assert job == execution_plan["job"] and job["status"] == "queued"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError
+---------------------------- Captured stdout call -----------------------------
+{"plan": "stage-plan.json", "sha256": "c15b69816116905160b4195b3b5408f5230595418d75cce8e23751e92064810c"}
+{"plan": "execution-plan.json", "sha256": "0cc27d570a96d7eba5757bb10dc08f7eabaeeccd04fa2dc2c7c17a390a6edfec"}
+=========================== short test summary info ===========================
+FAILED ::test_driver_walkthrough[verifiable_codex] - AssertionError
+1 failed in 12.11s

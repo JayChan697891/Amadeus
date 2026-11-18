@@ -1,0 +1,1 @@
+{"timestamp": "2026-11-12T12:23:39.011366+00:00", "docker_host": "unix:///var/run/docker.sock", "trusted_cli": "/usr/bin/docker", "container_count": 0, "all_containers_absent": true, "scope": "Read-only postcheck of dedicated local test daemon after a263 full suite and 6017005 package checks"}

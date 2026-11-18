@@ -1,0 +1,33 @@
+{
+  "status": "PREPARED",
+  "build_and_tests": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "driver": "D:\\agentsync-debug\\m121p-preparation\\run-preview.py",
+  "driver_sha256": "4113d3a3cdf148eacf888819663e0e2d100a7575b015a280776ead31e73e8a1d",
+  "driver_bytes": 18225,
+  "candidate_commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+  "candidate": "0.3.0a121",
+  "exported_source_files": 3809,
+  "exported_source_bytes": 51925703,
+  "expected_runtime_members": 97,
+  "expected_focused_cases_per_install": 23,
+  "prior_focused_cases_observed_per_install": 21,
+  "focused_selection": [
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_status_reports_corrupt_database",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+    "tests/integration/test_durable_demo.py::test_durable_demo_reports_unicode_directory_with_legacy_stdout",
+    "tests/integration/test_handoff_recovery.py::test_owner_recovery_reports_unicode_reason_with_legacy_stdout"
+  ],
+  "previous_archives": {
+    "agentsync_local-0.3.0a120-py3-none-any.whl": "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6",
+    "agentsync_local-0.3.0a120.tar.gz": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848",
+    "agentsync_local-0.3.0a119-py3-none-any.whl": "cbcf38bfe80a61510cbc95fb2a7112173222a7b6bb03404a324e52e23d237c31",
+    "agentsync_local-0.3.0a119.tar.gz": "249f726f5c484c101337546aa137151418829eca1bb0b1a5f21f89c97e1e014e"
+  },
+  "base_python": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+  "wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-wheelhouse",
+  "wheelhouse_items_verified": 60,
+  "future_base_exists": false
+}

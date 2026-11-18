@@ -1,0 +1,15 @@
+{
+  "helper": "m115-compose-evidence.py",
+  "exit_code": 1,
+  "line": 126,
+  "error": "AssertionError: BytesIO replay differs from original pathname serialization by the Windows XML declaration CRLF",
+  "source_and_sdist_lf_normalized_equal": true,
+  "source_replay_length": 391408,
+  "source_original_length": 391409,
+  "sdist_replay_length": 391296,
+  "sdist_original_length": 391297,
+  "source_and_sdist_original_CRLF_count": 1,
+  "composite_directory_created": false,
+  "product_tests_rerun": false,
+  "repair": "Replay via original pathname API and retain exact byte equality; do not normalize away the difference"
+}

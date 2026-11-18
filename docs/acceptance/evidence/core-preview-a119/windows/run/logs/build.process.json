@@ -1,0 +1,46 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "build",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m119p\\t\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "D:\\agentsync-debug\\m119p\\dist"
+    ],
+    "cwd": "D:\\agentsync-debug\\m119p\\s",
+    "started_at": "2026-11-16T13:42:34.959810+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "build",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m119p\\t\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "D:\\agentsync-debug\\m119p\\dist"
+    ],
+    "cwd": "D:\\agentsync-debug\\m119p\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-16T13:42:34.959810+00:00",
+    "finished_at": "2026-11-16T13:42:46.053837+00:00",
+    "log": "logs/build.log",
+    "log_sha256": "2c7222f8621d9d1dd8b8397b63fd61eb021a3dd75f773ddf7fc25fdb1b7108a6",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

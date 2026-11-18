@@ -1,0 +1,18 @@
+{
+  "version": "0.3.0a120",
+  "source_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "status": "development preview on branch; formal Release BLOCKED",
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a120-py3-none-any.whl",
+      "size": 327247,
+      "sha256": "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a120.tar.gz",
+      "size": 5446893,
+      "sha256": "e3d7a3b45555a31d8cb309a9c51f3f99c3a01673d3c73c422917179b6006c848"
+    }
+  },
+  "validation": "Windows3.12:19 native checks; Linux3.14:16 native checks; each of four fresh wheel/sdist installs passed the same21 selected cases. macOS/full suite/a120 real clients NOT RUN."
+}

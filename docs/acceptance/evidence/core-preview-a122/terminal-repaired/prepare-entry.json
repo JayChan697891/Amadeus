@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-11-18T00:59:20.209954+00:00",
+  "script_sha256": "61adbb8ae7735abc75c838899e65af5cbb52747164c0aaa36d8cccb220480720",
+  "new_root": "/root/amadeus-terminal-repaired-a122-20261118",
+  "input_sha256": {
+    "verified_codex_task.py": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "candidate-source.json": "3467118a6014942484422ccbca740eff02ef82caf702fe40e08f0a96ec8d045f"
+  },
+  "automatic_retry": false,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "candidate_executions": 0
+}

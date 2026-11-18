@@ -1,0 +1,7 @@
+{
+  "product_sha": "f74f29f73148d0e0e9a69ebb486eaffe6061d936",
+  "wheel_sha256": "c1a82eb9586e8e372625c3578952546687ce153965756d719a5309245c8c0d63",
+  "offline_install": true,
+  "pytest_exit": 0,
+  "formal_release": "BLOCKED"
+}

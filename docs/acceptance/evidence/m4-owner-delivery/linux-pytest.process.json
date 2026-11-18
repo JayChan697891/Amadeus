@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "owner_delivery_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-delivery-529df3b/installed/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-delivery-529df3b/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-delivery-529df3b/source",
+    "started_at": "2026-11-13T07:58:48.389848+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "owner_delivery_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-delivery-529df3b/installed/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-delivery-529df3b/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-delivery-529df3b/source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:58:48.389848+00:00",
+    "finished_at": "2026-11-13T08:04:56.983952+00:00",
+    "log": "logs/owner_delivery_pytest.log",
+    "log_sha256": "a97b1faac6f86be175fbd3bd778c816fbabddd7dd2407e386857a8314f87dc87",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

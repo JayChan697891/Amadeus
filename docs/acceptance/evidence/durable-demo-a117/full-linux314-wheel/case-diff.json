@@ -1,0 +1,63 @@
+{
+  "a117_sdist_counts": {
+    "passed": 2538,
+    "skipped": 7
+  },
+  "a117_sdist_junit_sha256": "ade19ad9d35df226ed1d7a62608027ae3470543248db808a034e1abd48dbce77",
+  "a117_wheel_counts": {
+    "passed": 2538,
+    "skipped": 7
+  },
+  "a117_wheel_junit_sha256": "84951b82251d7c343aca4022becaf2d54302a8c5bf54bf4a9c7071645b04ea31",
+  "added": [],
+  "native_checks": {
+    "wheel_install": {
+      "exit_code": 0,
+      "log_sha256": "635227dc52fbde8a8f7b90484c67f9dae3b057f85082aef9462022d716cea81e",
+      "outcome": "exited",
+      "receipt_sha256": "9f7866cb6dc64f464d6e6d64a13ea2a244706bcda209c2dd74947fe49b984630"
+    },
+    "wheel_offline_dependencies": {
+      "exit_code": 0,
+      "log_sha256": "6481c93bd27894b45bcc0c8663865ae235f59e184374743169e575160cfddacd",
+      "outcome": "exited",
+      "receipt_sha256": "232c8a1d767d38df5d148138cf21f0a763326a9994d67b99cb23b7edceb6e8bb"
+    },
+    "wheel_origin_after": {
+      "exit_code": 0,
+      "log_sha256": "afcd5027af664fbe9f9f122627f3cda46b7d3a6ba3b8c1f08df11122f30b61e5",
+      "outcome": "exited",
+      "receipt_sha256": "5607e01247ca79ca5549cd78bfac3e4f0b615a4f34f007f7eb098a31a1a130a9"
+    },
+    "wheel_origin_before": {
+      "exit_code": 0,
+      "log_sha256": "afcd5027af664fbe9f9f122627f3cda46b7d3a6ba3b8c1f08df11122f30b61e5",
+      "outcome": "exited",
+      "receipt_sha256": "99f3e0b9168c155070fc07777d083f6e92b768db818326e9676ec2c201706c7e"
+    },
+    "wheel_pip_check": {
+      "exit_code": 0,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "outcome": "exited",
+      "receipt_sha256": "6db68ff8ad3c9515543951f3bf57e2c5534cdcba1d19ab03674c1aa16dee6ddc"
+    },
+    "wheel_pytest": {
+      "exit_code": 0,
+      "log_sha256": "b69787b775f89a1c659915b6fe2a589f0d0e45576a20dfb7b10d0d051bd75562",
+      "outcome": "exited",
+      "receipt_sha256": "f4faadf1c3ab37159827f684f39c6d8594195e54498a93742770a17ebb011b93"
+    },
+    "wheel_venv": {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "exited",
+      "receipt_sha256": "245f2bd8892f1d20d6be993e0ceded207d4d20c08f27b7e08034fd80cd83971e"
+    }
+  },
+  "original_sdist_comparison_script_sha256": "3ae00c534ab578b069b3c73b601c1fa27011e686f9e4767d29b5ff7f257af8a5",
+  "outcome_changes": [],
+  "problems": [],
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "removed": [],
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189"
+}

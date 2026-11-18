@@ -1,0 +1,14 @@
+{
+  "stage": "producer-once",
+  "started_at": "2026-11-17T07:13:28.181853+00:00",
+  "observer_pid": 10936,
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/live.py producer-once 5e430549d0eaf9f27f5cccb1bdd797db8d82fbbd38537072952e005425c2745f",
+  "automatic_retry": false,
+  "remote_exec_requested": false,
+  "log_bytes": {
+    "stdout": 0,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "observing"
+}

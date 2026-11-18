@@ -1,0 +1,72 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "status": "PASS within stated local integration scope",
+  "scope": "Trusted host composition: new protocol-fixture producer, exact staging/execution/completion decisions, real local Docker proof, independent Core verified completion, then dependent fixture receiver; safe reopen only after verified source.",
+  "final_linux": {
+    "python": "3.14.7",
+    "passed": 8,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 30.74,
+    "suite": "test_verified_proposal_flow.py"
+  },
+  "prior_regression": {
+    "product_sha": "17e0ab41c84c6ac9ebf5e371013cdbcf12e065d8",
+    "passed": 24,
+    "failed": 0,
+    "evidence": "regression-17e0ab4.json",
+    "reuse_scope": "17 existing component tests unchanged; only flow runtime and its test file changed. Counts are separate executions/SHAs, not one combined final test run."
+  },
+  "correction": "Count synchronous verified-state lookup against receiver budget before entering handoff. Controlled-clock regression proves no downstream task or launch after expiry; no existing permission rule changed.",
+  "runtime_package_members_matched_before_after": 90,
+  "runtime_python_modules": 89,
+  "source_shadowing": false,
+  "static": {
+    "ruff_files": 2,
+    "format_files": 2,
+    "mypy_modules": 89,
+    "status": "PASS"
+  },
+  "actual_docker_executions": 5,
+  "docker_passed_executions": 4,
+  "expected_wrong_result_executions": 1,
+  "independent_verified_task_proofs": 3,
+  "recorded_containers_absent": true,
+  "real_model_calls": 0,
+  "protocol_boundary": "Owned Python JSONL emitters, not actual model acceptance",
+  "candidate_application": false,
+  "github_actions_used": false,
+  "artifact": {
+    "path": "releases/0.3.0a109/m7-verified-09425da/agentsync_local-0.3.0a109-py3-none-any.whl",
+    "sha256": "8763059784278bb611f591792c9d5d1c5fe4730dbeb00a384366dc4dedf7dcdd",
+    "kind": "frozen-input offline wheel; sdist NOT RUN"
+  },
+  "not_run": [
+    "continuous real-model producer/verifier/receiver chain for this module",
+    "new full regression matrix",
+    "new Windows/macOS integration and sdist installation",
+    "Claude/Cursor real clients (no owner subscription)",
+    "interrupted unknown execution recovery"
+  ],
+  "independent_review": "Accepted limited local integration scope: final source/budget regression; 16 final and 19 prior artifact hashes; final wheel and all90 runtime members against Git; 8-case XML, runtime origin, five actual Docker observations/cleanup; separate prior regression scope and unchanged42 requirement gates. No additional model calls or tests by reviewer.",
+  "formal_release": "BLOCKED",
+  "evidence_sha256": {
+    "final-config.json": "fcf8af922be061e380f3972876474bb09b2a726c8c0800cc022d102d8001dcbf",
+    "final-build.log": "905fe570d21ee514feef081816e156782d62057af06fef20b71f62b1721cb29e",
+    "final-linux-install.log": "2381176791ce85a31b7538fe4f67404c9eaa8b96e1fe445746291f4c416cedd8",
+    "final-linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "final-linux-installed.log": "ba1d0d8fc161adfdc01d40e4e00757a7f9b7d4e0ef66b36a7b200540967d82b4",
+    "final-linux-installed.xml": "3e967b892468cc18dcac6067071a5d3a65c21fd95567cc47c0674483c1d9a0e1",
+    "final-linux-origin.json": "61e6977cebc4b70701ab438aac99de252110763cd33591f74ec7214933cc3ec4",
+    "final-docker-observation.json": "7b718b8989c2a6fe8a4361a5dcbf0c495217e5c14938ee6b38f65ebb204129b2",
+    "final-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "final-format.log": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "final-mypy.log": "1c13773bc21d8ae3a759614f3a828d16af7aa66d04f93c4daeeb51d5d6be16c1",
+    "final-test-installed.py.txt": "96f1311d76565c464999ae82f2590f73312cec82999612a3cdecb6567c1c9b96",
+    "final-run-linux.sh.txt": "1bbbdfd234e3e3d561e2c1519e67ab0170695cc1091d6192c628ed51c03d1643",
+    "final-observe-docker.py.txt": "c0480784b9b0d12ed4d0f410a68ee36c96b249ba2b29e7882809a2f697fd7db6",
+    "final-build-wheel.py.txt": "2b8265774e5948a9a30989d97f3caaffdc138dc9c41a88cc9d648238f7db7b89",
+    "regression-17e0ab4.json": "736370673d724bdcf139244768fbce8a79023810f7199b59e3024cfaf2ff7324"
+  }
+}

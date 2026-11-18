@@ -1,0 +1,63 @@
+........................................................................ [  3%]
+.....................sssss........................................s..... [  6%]
+........................................................................ [  9%]
+........................................................................ [ 12%]
+.....................sssssssssssssssssss................................ [ 15%]
+........................................................................ [ 18%]
+............................................sssssssss................... [ 21%]
+.....................................................................s.. [ 25%]
+........................................................................ [ 28%]
+........................................................................ [ 31%]
+........................................................................ [ 34%]
+..........................................s............................. [ 37%]
+......s................................................................. [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 62%]
+...................s.................................................... [ 65%]
+.....................................ss................................. [ 68%]
+..................s..................................................... [ 72%]
+........................................................................ [ 75%]
+......................................ss....s........................... [ 78%]
+........................................................................ [ 81%]
+........................................................................ [ 84%]
+........................................................................ [ 87%]
+........................................................................ [ 90%]
+........................................................................ [ 94%]
+........................................................................ [ 97%]
+...............................................................s         [100%]
+=========================== short test summary info ===========================
+SKIPPED [6] tests\integration\test_candidate_execution.py:606: Requires separately controlled local Linux Docker and preloaded immutable image
+SKIPPED [1] tests\integration\test_candidate_export_security.py:169: POSIX FIFO metadata fixture requires Linux
+SKIPPED [1] tests\integration\test_docker_verifier.py:109: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [5] tests\integration\test_docker_verifier.py:124: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:145: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:193: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [2] tests\integration\test_docker_verifier.py:204: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:216: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:225: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:241: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:264: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [2] tests\integration\test_execution_reconciliation.py:246: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_execution_reconciliation.py:286: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_execution_reconciliation.py:302: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_execution_reconciliation.py:321: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_owner_execution.py:79: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [3] tests\integration\test_owner_execution.py:144: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [1] tests\integration\test_owner_execution.py:165: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [1] tests\integration\test_owner_execution.py:178: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [1] tests\integration\test_owner_execution.py:213: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [2] tests\integration\test_proposal_docker_pipeline.py:72: Proposal execution requires an explicitly pinned local Linux Docker image
+SKIPPED [1] tests\\security\\test_resource_paths.py:43: Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\selected'
+SKIPPED [1] tests\\security\\test_resource_paths.py:238: Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m7-full-74e1527\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'
+SKIPPED [1] tests\unit\test_core_admission.py:197: Requires Linux/POSIX fork
+SKIPPED [2] tests\unit\test_cursor_node_bundle.py:203: This host cannot create the actual symlink fixture
+SKIPPED [1] tests\unit\test_inspect_claude_events.py:255: FIFO fixture requires os.mkfifo
+SKIPPED [2] tests\unit\test_pytest_case_journal.py:154: Local symlink creation unavailable
+SKIPPED [1] tests\unit\test_pytest_case_journal.py:176: Local FIFO creation unavailable
+SKIPPED [1] tests\unit\test_verification_snapshot.py:352: Creating directory symlinks requires unavailable host privileges
+2251 passed, 45 skipped in 1891.01s (0:31:31)

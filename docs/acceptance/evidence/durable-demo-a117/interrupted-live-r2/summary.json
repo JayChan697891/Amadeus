@@ -1,0 +1,78 @@
+{
+  "status": "PASS_LIMITED",
+  "scope": "Interrupted owned Codex parent, host-known checkpoint, controlled second Codex continuation and fresh-process replay",
+  "version": "0.3.0a117",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "runtime_members": 97,
+  "producer_plan_sha256": "b78f84c53cbdef2eb055719b53f4a7d163bded339ada208745136c2f05d4b00d",
+  "continuation_plan_sha256": "e7a366ae1e5af31343a69aa70b43a792dc8258360108452ea467a08300253d41",
+  "receiver_launch_plan_sha256": "85cb3cf98614b74f7bda1d8004f188fb27c2baf02f8254f03e5bad3cd65d7086",
+  "guest_authorization_sha256": "dae5b9e10f603cafe1201d6fc8e840be013e7d85b50017feca30792d68537cac",
+  "owner_grant": "../interrupted-controller/owner-grant-20261116.json",
+  "subscription_calls": 2,
+  "current_bounded_grant_consumed": true,
+  "producer": {
+    "native_session_id": 40899,
+    "host_exit_code": 0,
+    "parent_exit_code": -9,
+    "failure": "process_failed",
+    "confirmed_after_turn_started_before_terminal": true,
+    "checkpoint_model_authorship": false
+  },
+  "receiver": {
+    "native_session_id": 8653,
+    "host_exit_code": 0,
+    "parent_exit_code": 0,
+    "status": "continuation_proposal_received",
+    "task_status": "review",
+    "verification": "unverified",
+    "proposal_bytes": 32,
+    "candidate_executed": false
+  },
+  "fresh_process_replay": {
+    "native_host_pid": 25044,
+    "exit_code": 0,
+    "receiver_callbacks": 0,
+    "model_calls": 0,
+    "tasks_and_receipts_unchanged": true
+  },
+  "task_changes": "Source v4→v5/failed; one new receiver task review/unverified; sole dependent v1→v2 now points to receiver. Exactly three tasks.",
+  "cleanup": {
+    "temporary_auth_absent": true,
+    "tmpfs_unmounted": true,
+    "home_empty": true,
+    "original_auth_unchanged": true,
+    "guest_python_codex_absent_at_postcheck": true,
+    "normal_vm_shutdown_confirmed_at": "2026-11-16T08:47:15.8368029Z",
+    "force_kill_vm": false
+  },
+  "raw_capture": {
+    "uploaded": false,
+    "producer_stdout_bytes": 335,
+    "producer_stderr_bytes": 357,
+    "receiver_stdout_bytes": 664,
+    "receiver_stderr_bytes": 238,
+    "receiver_item_types": [
+      "agent_message",
+      "error"
+    ],
+    "stderr_classification": "NOT CLASSIFIED",
+    "root_hash_and_message_binding_checked": true
+  },
+  "billing": "Owner confirmed zero credits/auto-recharge off; ChatGPT login route recognized. Independent billing verification NOT RUN.",
+  "preparation": "Original expired fixture retained with zero-model preflight failure. New R2 used normal registration, same bounded task; old template labels NOT GRANTED/NOT IMPLEMENTED remain immutable and are superseded by actual authorization/execution records.",
+  "review": "Accepted for this limited scope; see lead-review.json",
+  "evidence_inventory": "file-inventory.json",
+  "not_verified": [
+    "Whole-host crash/recovery",
+    "Model-authored interrupted checkpoint",
+    "Server-side cancellation",
+    "General descendant cleanup guarantee",
+    "Cross-vendor collaboration",
+    "Unattended owner approval",
+    "Independent execution/verification of continuation source",
+    "Complete node B",
+    "Formal Release"
+  ],
+  "formal_release": "BLOCKED"
+}

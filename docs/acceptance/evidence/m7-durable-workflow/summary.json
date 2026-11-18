@@ -1,0 +1,246 @@
+{
+  "product_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+  "test_source_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+  "version": "0.3.0a112",
+  "scope": "Owner-only durable Mock workflow, Core schema16 and affected installed regression",
+  "platforms": {
+    "windows": {
+      "tests": 631,
+      "passed": 630,
+      "skipped": [
+        {
+          "class": "tests.integration.test_verified_task_completion",
+          "name": "test_actual_linux_docker_to_independent_verified_completion",
+          "reason": "Requires separately controlled local Linux Docker and preloaded immutable image"
+        }
+      ],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "started_at": "2026-11-13T09:07:57.476830+00:00",
+      "finished_at": "2026-11-13T09:14:30.061646+00:00",
+      "result": "windows-result.json"
+    },
+    "linux": {
+      "tests": 631,
+      "passed": 631,
+      "skipped": [],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+      "started_at": "2026-11-13T09:09:26.925777+00:00",
+      "finished_at": "2026-11-13T09:17:54.743492+00:00",
+      "result": "linux-result.json"
+    }
+  },
+  "selected_test_files": [
+    "tests/integration/test_durable_mock_workflow.py",
+    "tests/integration/test_mock_workflow.py",
+    "tests/unit/test_mock_run_manager.py",
+    "tests/unit/test_retry_planning.py",
+    "tests/recovery/test_process_recovery.py",
+    "tests/unit/test_core.py",
+    "tests/unit/test_core_startup_diagnostic.py",
+    "tests/security/test_m5_permissions.py",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/integration/test_transports.py",
+    "tests/integration/test_candidate_claim_migration.py",
+    "tests/integration/test_candidate_intent_migration.py",
+    "tests/integration/test_m3_migration.py",
+    "tests/integration/test_m4_migration.py",
+    "tests/integration/test_m4b_migration.py",
+    "tests/integration/test_m5_migration.py",
+    "tests/unit/test_candidate_queue_migration.py",
+    "tests/integration/test_verified_task_completion.py",
+    "tests/integration/test_candidate_execution.py::test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed",
+    "tests/unit/test_verification_executor.py::test_schema_seven_historical_rows_and_fk_survive_transactional_rebuild",
+    "tests/unit/test_verification_jobs.py::test_schema_six_upgrade_preserves_all_existing_rows_and_failure_rolls_back",
+    "tests/unit/test_verification_reconciliation.py::test_migration9_preserves_schema8_rows_and_rolls_back",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "packaged_git_files_verified": 1001,
+  "runtime_members_verified": 91,
+  "identical_parameterized_case_ids": 631,
+  "source_shadowing": false,
+  "actual_linux_delivery": {
+    "owner_cli_exit_code": 0,
+    "result": {
+      "plan": {
+        "schema": "agentsync.managed-delivery-plan.v1",
+        "approval_id": "9a1d32bc-bef0-4527-88c4-f81265767a60",
+        "pending_version": 1,
+        "requester_agent_id": "250599dc-549a-4631-aaac-f02e4b657c19",
+        "requester_session_id": "89114042-d473-45c2-91a8-8b1281415560",
+        "task_id": "367880f5-67c3-4fd0-ab4b-2d869c6df120",
+        "task_version": 4,
+        "verification_id": "4e1a6924-47c3-4c5d-b0f0-725e6aba47af",
+        "verification_sha256": "4635ed6799dbe9e5f52dc5e96268c3276f69a9438b61127a714b9ae7e0c07f46",
+        "candidate_id": "16d613c6-bdd8-583f-8846-5819ed2a9d60",
+        "candidate_sha": "5342ddd7c642c7a0b29b951a9911205b9ad8856e",
+        "tree_sha": "8f60ac6f776d03110e2002b3b17da84a83bce6d7",
+        "snapshot_id": "6a48d99b-dbbe-58d1-bcf9-a5f05e40c5c4",
+        "snapshot_receipt_sha256": "b5e52cec341671bcba887b79f93f31126ccd38f4cb43c1b1a36491760bd658cb",
+        "current_binding_sha256": "baaa955d7bfd8f51fd86894e21ca8b86d68b5429dc1009d5059d4e7ddb106377",
+        "destination_ref": "refs/agentsync/deliveries/309c8078eadce9bf12dd36fbac9a9638813d793edada19442764901647c41f9f",
+        "expires_at": 1794561736.8847466
+      },
+      "approval_status": "consumed",
+      "effect": "exact"
+    },
+    "reopened_status_matches": true,
+    "source_unchanged": true
+  },
+  "docker_cleanup": {
+    "timestamp": "2026-11-13T09:18:04.111246+00:00",
+    "docker_host": "unix:///var/run/docker.sock",
+    "trusted_cli": "/usr/bin/docker",
+    "container_count": 0,
+    "all_containers_absent": true,
+    "scope": "Read-only postcheck of dedicated local test daemon after the affected7fa4597 durable workflow installed-sdist suite"
+  },
+  "static_checks": {
+    "scope": "Source prechecks; not a new packaged-source full static run",
+    "ruff": "pass",
+    "format": {
+      "status": "pass",
+      "files": 342
+    },
+    "mypy": {
+      "status": "pass",
+      "source_files": 90
+    }
+  },
+  "source_prechecks": {
+    "frozen_product_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+    "final_manifest_members_match_frozen_package": 25,
+    "files_changed_between_main_and_supplements": [
+      "tests/integration/test_durable_mock_workflow.py"
+    ],
+    "main_source": {
+      "passed": 325,
+      "skipped": 6,
+      "failed": 0,
+      "errors": 0
+    },
+    "supplements": "3 then 1 strengthened prior case IDs, not extra unique tests",
+    "separate_traceability_collector": {
+      "passed": 246
+    },
+    "scope": "Windows source evidence only; not fresh package or Linux execution of the slow verifier modules"
+  },
+  "model_calls": 0,
+  "github_actions_used": false,
+  "paid_api_calls": 0,
+  "limitations": [
+    "Selected affected regression, not a new full-suite run",
+    "Unchanged slow verifier modules reuse Windows source evidence, not new Linux package execution",
+    "Budget and workflow execution are explicitly Mock; estimates are not real usage or bills",
+    "No new real Agent run; no Claude/Cursor or macOS acceptance",
+    "Original user-workspace application remains disabled/deferred"
+  ],
+  "formal_release": "BLOCKED",
+  "external_work_acceptance": "NOT RUN",
+  "raw_execution_sources": {
+    "check-source-prechecks.py.txt": {
+      "original_execution_name": "check-source-prechecks.py",
+      "sha256": "3bfa9b3929f21ea1c32fa9783acf37eb210df7dcd5561d4e16a9e9b31a4409fa"
+    },
+    "driver.py.txt": {
+      "original_execution_name": "driver.py",
+      "sha256": "48893a824747af90bfd9447cfac224d4a6e9766b45284f94094f7dd30350bdc4"
+    },
+    "observe-docker-cleanup.sh.txt": {
+      "original_execution_name": "observe-docker-cleanup.sh",
+      "sha256": "a9a9b8cba9ce5c93270e8c1508b104b73e084f936af4e3d3f2370eac03812640"
+    },
+    "prepare-durable-package.py.txt": {
+      "original_execution_name": "prepare-durable-package.py",
+      "sha256": "4b43acc7ae649316cbf227eb3159c13c22afa118fc4e9217d1f0301b08fdbe0a"
+    },
+    "run-linux.sh.txt": {
+      "original_execution_name": "run-linux.sh",
+      "sha256": "7a0290336c12fd3d653d58bfbe4d2891e88575c271cf0ba48a0d077572480fda"
+    },
+    "run-windows.py.txt": {
+      "original_execution_name": "run-windows.py",
+      "sha256": "9f73519990cd787d70a6b1eeabe6753db86571b016f9a4a7a67bc8ffaf6215ba"
+    }
+  },
+  "artifacts": {
+    "build.log": "a343b337d160c297cb6b7afe8cce933cd5deb9669d4959b896d199b7cc0cb971",
+    "check-source-prechecks.py.txt": "3bfa9b3929f21ea1c32fa9783acf37eb210df7dcd5561d4e16a9e9b31a4409fa",
+    "driver.py.txt": "48893a824747af90bfd9447cfac224d4a6e9766b45284f94094f7dd30350bdc4",
+    "identity.json": "175daff0a081ca165959094bc32bccec8ea61a67d62c82f764f46b26a9a3fd41",
+    "linux-actual-verified-task-completion.json": "6b30ce2fb7e89f53ab87636f2b039c877e99e479e7a9673cc4c3651fcf91eac7",
+    "linux-console.log": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f",
+    "linux-docker-cleanup-observation.json": "77c89f01de7d9a39ef385b4ac85a9b808525612060ac44854cda2b89edbe0fe6",
+    "linux-install.log": "783deef5c8b0fd158c9e1a932e881a0154aee244bcbbb4b5d55ee47038bb5403",
+    "linux-junit.xml": "cad91b9e32433327ad259f5d7ce4c6cf11c3c938b1d5124d07d7b9c5735d154f",
+    "linux-origin.json": "9666703902a1ec59f6203fac0fceff3bd820fe8e2b5ec76acb8cf6d4e62d64f4",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-pytest.log": "88e46b095fc9743e2af83861822a87eb6f6810f1527bbf84e67fe85b5438b2bc",
+    "linux-pytest.process.json": "c8d4a0f117e5516f017552e758a88e509f07c9f5424ca5cc036b468510d677e0",
+    "linux-result.json": "8d3ee5d81f8828507785d13982a39267a3d5d282013a1aa11932abf1e13f3c95",
+    "observe-docker-cleanup.sh.txt": "a9a9b8cba9ce5c93270e8c1508b104b73e084f936af4e3d3f2370eac03812640",
+    "prepare-durable-package.py.txt": "4b43acc7ae649316cbf227eb3159c13c22afa118fc4e9217d1f0301b08fdbe0a",
+    "run-linux.sh.txt": "7a0290336c12fd3d653d58bfbe4d2891e88575c271cf0ba48a0d077572480fda",
+    "run-windows.py.txt": "9f73519990cd787d70a6b1eeabe6753db86571b016f9a4a7a67bc8ffaf6215ba",
+    "source-generation-strengthened-result.json": "87ba9a147ae245dabeb031dbf474431130b0c0fa8c2609a1cc5e70dcbc1a9a80",
+    "source-generation-strengthened.log": "291b5bc97d346c2bc2d55883a10bd5eb5a8e1f6d386e45ab29998613470592e3",
+    "source-generation-strengthened.xml": "86d54acd7068e8c6d0425723671e5b446eee90fb0a6323ab64379016b2954d23",
+    "source-junit.xml": "a903b1378e6521b748830b99e2f279df94634c1870aa52d5e9dd93581d3b5687",
+    "source-mypy.log": "b1bfc04d9622a59e6b68f4c2967786082364b4ba63774cccee90114d1ecd1d94",
+    "source-prechecks-identity.json": "fc9ad2a3c473df757ab9f6299ab62075fa9d098d13168186053a1d9b73d923b2",
+    "source-pytest-result.json": "945609af36ec2f73296289873d1fb7b8a5893f4ad8c8ccda0dde843aaf18c21f",
+    "source-pytest.log": "12e46a5eb14ce2b5ae97774a1cbddb9d25f55827cae50e9d85a0c0167d998291",
+    "source-root-format.log": "967e80450ef3a9471afa21ec23f9f7420c3b1c090210ecc4dd54fdc4799f61f3",
+    "source-root-ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "source-ruff-supplement.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "source-source-members-final.json": "6f2fe5543d8130f6bddf98b51c35f8b121e3bc15ed89aad6fbf86eeaaaefbb7d",
+    "source-source-members-generation-strengthened.json": "5da648809654fad4199425cc7ce60d00eab59aba81d4827c6e63f062f6c20121",
+    "source-source-members.json": "e7e3e9005cd1661b995cfaa5f11298194e551e02c079868e7b6acb103d0271a4",
+    "source-supplement-result.json": "8a681605bfda082316563d3a9c602d5c3204ce7f9c1f4b893bbbc271714dea80",
+    "source-supplement.log": "0a6fbfd0e2595bd9c89c35424bd0755893e7fc8710119db65189b92d4dec29a2",
+    "source-supplement.xml": "f1fb77634875c2495a49375f6c17404aceb45f67ae6e2cd480de7ea45b72a706",
+    "source-trace-junit.xml": "7a59601525c18e6a96cd3c650dc40384f8bb35fb81c60483aec1b8624348b937",
+    "source-trace.log": "4e443ccd4aa9d7eea635e30c60f11fa888c597cc61451291c5862f10a84e4d5b",
+    "windows-console.log": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "windows-console.process.json": "f5fba113c5699d02ed71961f9b58a4f7a22122eb6144f4ba6d67e2af7558e737",
+    "windows-install.log": "4c02aecf2545c72199e788c96d9446ee49fa85c4855286649b205f1d32d93a9f",
+    "windows-junit.xml": "49136c71a2dba3a3c6cbba51018d052766b2c2eef10cc2d47910bea1f9384402",
+    "windows-origin.json": "889d12d059bf355ba796a45b447b0e17a1527937956a8ec39a10cf05407e4149",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-pytest.log": "bbf7bd0ced0a862b6f17a285ce2965f0783d4686fd0be503b5b10c81feef0efc",
+    "windows-pytest.process.json": "ce7424320c49c8c422564226e25876cd0ad5fd9449ac60b84000c85af42e61db",
+    "windows-result.json": "00f3844f9ae153931baf5198a2f7d6935f5015c22a6858a378ac298ad29469b4"
+  },
+  "packages": {
+    "releases/0.3.0a112/7fa4597/agentsync_local-0.3.0a112-py3-none-any.whl": {
+      "sha256": "be58d9c8cf2a68c6ea9391723bb33a2c31cca6752c94b52d46d1513c25e97be3",
+      "size": 284825
+    },
+    "releases/0.3.0a112/7fa4597/agentsync_local-0.3.0a112.tar.gz": {
+      "sha256": "bd05f7c3f1046a8954add8b4bec32c108393bce88eb057b7a3337fea57f70fd3",
+      "size": 2351941
+    }
+  },
+  "independent_technical_review": {
+    "reviewer": "Native Astra review agent",
+    "status": "accepted_limited_scope",
+    "product_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+    "checked": [
+      "46 evidence hashes and both packages",
+      "1001 packaged Git files and 91 runtime files",
+      "631 matching unique case IDs and terminal logs",
+      "installed archive and before-after identity/source checks",
+      "25 final source manifest members match frozen inputs, source 325+6 skips and supplements retained separately",
+      "actual Docker 1/1, 19 isolation checks, distinct verified completion and exact SDK/CLI delivery",
+      "source preserved, reopened status matches, zero containers, credential exposure inspection"
+    ],
+    "blockers": [],
+    "formal_release": "BLOCKED",
+    "external_work_acceptance": "NOT RUN"
+  }
+}

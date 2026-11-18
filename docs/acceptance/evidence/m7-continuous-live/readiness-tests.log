@@ -1,0 +1,15 @@
+test_delay_before_copy (__main__.Freshness.test_delay_before_copy) ... ok
+test_expiring_guest_session (__main__.Freshness.test_expiring_guest_session) ... ok
+test_invalid_guest_heartbeat (__main__.Freshness.test_invalid_guest_heartbeat) ... ok
+test_negative_monotonic_elapsed (__main__.Freshness.test_negative_monotonic_elapsed) ... ok
+test_offline (__main__.Freshness.test_offline) ... ok
+test_other_plan (__main__.Freshness.test_other_plan) ... ok
+test_remote_clock_ahead (__main__.Freshness.test_remote_clock_ahead) ... ok
+test_remote_clock_behind (__main__.Freshness.test_remote_clock_behind) ... ok
+test_slow_ready_at_limit (__main__.Freshness.test_slow_ready_at_limit) ... ok
+test_stale_guest_heartbeat (__main__.Freshness.test_stale_guest_heartbeat) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK

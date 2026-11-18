@@ -1,0 +1,25 @@
+{
+  "scope": "Root actual file/log/JUnit check and independent native GPT-6 Astra static/incremental review",
+  "status": "SCOPED OFFLINE PASS",
+  "reviewed_hashes": {
+    "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+    "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+    "test_live.py": "3444029fd542e455da6e74b737fc7ac1f98fb7da99a69dd247fa9872719013ef",
+    "test_cleanup.py": "8bf55ba27ad1bb02057ecb938f72e13ad860ebe2565c9dc194895abf220a900f"
+  },
+  "root_checked_native_exit_logs_junit_and_hashes": true,
+  "current_tests_passed": 22,
+  "full_suite_repeated": false,
+  "independent_findings_remaining": [],
+  "last_test_delta": "Root import-only Ruff correction; same8cases rerun and passed; live/cleanup unchanged.",
+  "not_run": [
+    "Real producer interruption and confirmed failure",
+    "Real receiver callback and execution",
+    "Real continuation and fresh-process replay",
+    "Real model-auth tmpfs lifecycle",
+    "Whole-host crash recovery",
+    "Cross-vendor clients"
+  ],
+  "execution_permission": "Requires new explicit owner grant",
+  "formal_release": "BLOCKED"
+}

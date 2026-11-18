@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "D:/agentsync-debug/venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "F:/syuc/amadeus-m6-single/tools/local_vm_exec.py",
+    "--script",
+    "D:/agentsync-debug/m123-continuation-linux/run-linux-check.sh",
+    "--log",
+    "D:/agentsync-debug/m123-continuation-linux/transport.log",
+    "--timeout",
+    "900"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_at": "2026-11-18T08:32:49.2600276Z",
+  "host_shell_pid": 21176,
+  "source_commit": "6cd580752d3a4feaf0052c130235190f04168df8",
+  "driver_sha256": "77f40ebf7d77efac581eaa3fa98e9377a5f802ac5098970906e77aafea3d1da1",
+  "bundle_sha256": "5d64b7a34c8283d11d876e5069e673414d49edc04f13b28b26225bc37325af37"
+}

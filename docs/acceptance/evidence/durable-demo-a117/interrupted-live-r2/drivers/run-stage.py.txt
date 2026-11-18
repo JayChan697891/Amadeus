@@ -1,0 +1,166 @@
+'''Observe one R2 guest stage over SSH and record its terminal status if known.'''
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import shlex
+import socket
+import threading
+import time
+from datetime import UTC, datetime
+from pathlib import Path, PurePosixPath
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+GUEST = PurePosixPath("/root/amadeus-interrupted-a117-r2-20261116")
+PYTHON = "/root/amadeus-demo-a117-sdist-r1/installed/bin/python"
+VM = Path(r"D:\agentsync-debug\vm")
+HOST = "127.0.0.1"
+PORT = 22222
+PLAN_FILE_SHA256 = "c975d7abad85b122d6850d5ca78eded295e2c4ecfb18b96fe5c66add3a4cf2c7"
+MAX_BYTES = 64 * 1024
+MAX_SECONDS = 250
+
+
+def plan_digest(value):
+    if not isinstance(value, str) or re.fullmatch(r"[0-9a-fA-F]{64}", value) is None:
+        raise argparse.ArgumentTypeError("expected a 64-digit hexadecimal plan digest")
+    return value.lower()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def observe(command, stdout, stderr, deadline, result):
+    client = paramiko.SSHClient()
+    client.load_host_keys(str(VM / "known_hosts"))
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as connection:
+        def expire():
+            try:
+                connection.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+
+        # Paramiko's wait for an exec acknowledgement has no channel timeout.
+        # Closing this observer's transport unblocks it without sending a signal.
+        watchdog = threading.Timer(deadline - time.monotonic(), expire)
+        watchdog.daemon = True
+        watchdog.start()
+        try:
+            connection.settimeout(15)
+            connection.connect((HOST, PORT))
+            client.connect(
+                HOST,
+                port=PORT,
+                username="root",
+                sock=connection,
+                key_filename=str(VM / "debug_ed25519"),
+                look_for_keys=False,
+                allow_agent=False,
+                timeout=15,
+                banner_timeout=15,
+                auth_timeout=15,
+            )
+            transport = client.get_transport()
+            transport.set_keepalive(30)
+            channel = transport.open_session(timeout=30)
+            if time.monotonic() >= deadline:
+                raise TimeoutError
+            result["remote_exec_requested"] = True
+            channel.exec_command(command)
+            channel.shutdown_write()
+            print(f"Observer PID {os.getpid()} sent one stage command", flush=True)
+            outputs = (
+                ("stdout", stdout, channel.recv_ready, channel.recv),
+                ("stderr", stderr, channel.recv_stderr_ready, channel.recv_stderr),
+            )
+            while time.monotonic() < deadline:
+                for name, stream, ready, recv in outputs:
+                    if ready():
+                        data = recv(4096)
+                        remaining = MAX_BYTES - sum(result["log_bytes"].values())
+                        kept = data[:remaining]
+                        stream.write(kept)
+                        stream.flush()
+                        result["log_bytes"][name] += len(kept)
+                        if len(data) > len(kept):
+                            result["log_truncated"] = True
+                if channel.closed and not channel.recv_ready() and not channel.recv_stderr_ready():
+                    code = channel.recv_exit_status()
+                    if code < 0:
+                        result["error_type"] = "MissingRemoteExitStatus"
+                        return
+                    result.update(status="terminal", exit_code=code)
+                    return
+                if not channel.recv_ready() and not channel.recv_stderr_ready():
+                    time.sleep(max(0, min(0.1, deadline - time.monotonic())))
+            raise TimeoutError
+        finally:
+            # Transport shutdown here only disconnects the observer.
+            client.close()
+            watchdog.cancel()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    stages = parser.add_subparsers(dest="stage", required=True)
+    stages.add_parser("producer-once")
+    stages.add_parser("continuation-preview")
+    stages.add_parser("continue-once").add_argument("expected_plan", type=plan_digest)
+    stages.add_parser("replay")
+    stages.add_parser("cleanup")
+    args = parser.parse_args()
+
+    stage = args.stage
+    argv = [PYTHON, "-I", "-B", str(GUEST / ("cleanup.py" if stage == "cleanup" else "live.py")), stage]
+    if stage == "producer-once":
+        raw = (BASE / "plan.json").read_bytes()
+        if hashlib.sha256(raw).hexdigest() != PLAN_FILE_SHA256:
+            parser.error("local plan.json does not match the reviewed R2 file digest")
+        argv.append(plan_digest(json.loads(raw)["producer_plan"]["plan_sha256"]))
+    elif stage == "continue-once":
+        argv.append(args.expected_plan)
+    command = " ".join(shlex.quote(arg) for arg in argv)
+    start = BASE / f"{stage}-start.json"
+    terminal = BASE / f"{stage}-result.json"
+    stdout_path = BASE / f"{stage}-stdout.log"
+    stderr_path = BASE / f"{stage}-stderr.log"
+    if any(path.exists() or path.is_symlink() for path in (start, terminal, stdout_path, stderr_path)):
+        parser.error("stage already has host evidence")
+    result = {
+        "stage": stage,
+        "started_at": datetime.now(UTC).isoformat(),
+        "observer_pid": os.getpid(),
+        "command": command,
+        "automatic_retry": False,
+        "remote_exec_requested": False,
+        "log_bytes": {"stdout": 0, "stderr": 0},
+        "log_truncated": False,
+        "status": "observing",
+    }
+    save(start, result)
+    deadline = time.monotonic() + MAX_SECONDS
+    result["status"] = "unknown"
+    try:
+        with stdout_path.open("xb") as stdout, stderr_path.open("xb") as stderr:
+            observe(command, stdout, stderr, deadline, result)
+    except (Exception, KeyboardInterrupt) as exc:
+        result["error_type"] = "TimeoutError" if time.monotonic() >= deadline else type(exc).__name__
+    finally:
+        result["finished_at"] = datetime.now(UTC).isoformat()
+        save(terminal, result)
+    print(json.dumps(result), flush=True)
+    return result.get("exit_code", 1)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

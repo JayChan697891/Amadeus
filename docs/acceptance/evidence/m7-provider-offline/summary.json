@@ -1,0 +1,78 @@
+{
+  "test_source_sha": "2af7ccc45892a0387833e31f945897c47d50fe71",
+  "runtime_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "installed_sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "scope": "Twenty new provider cases plus three existing usage/provider cases and246traceability/collector cases; frozen current tests against unchanged installed runtime",
+  "results": {
+    "windows": {
+      "passed": 269,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]"
+    },
+    "linux": {
+      "passed": 269,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]"
+    }
+  },
+  "case_id_sets_equal": true,
+  "runtime_members_matched_before_after": 90,
+  "source_files": 889,
+  "source_unchanged": true,
+  "source_shadowing": false,
+  "coverage": [
+    "five provider synthetic wire/usage responses",
+    "exact one-shot consent and expired/mismatched refusal",
+    "malformed/truncated/tool/blocked/credential-echo output rejection",
+    "real owned ephemeral loopback HTTP success/429/redirect refusal/size limits/cancellation"
+  ],
+  "network_scope": "All six actual socket cases are restricted to their owned127.0.0.1ephemeral endpoint; cloud send replaced in unit cases",
+  "real_provider_calls": 0,
+  "real_provider_compatibility": "NOT RUN",
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "m5_scope": "No runtime change; prior frozen technical closure retained",
+  "review": "Root inspected both added test files, mapping diff and actual269-case JUnit/log results on each platform; no product defect or runtime edit",
+  "protocol_reference_check": [
+    {
+      "url": "https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create",
+      "scope": "Reviewed current max_completion_tokens/store fields; not a live API test"
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/api/migration-2026-10-21",
+      "scope": "Confirmed pinned API version and removed sampling fields; not a live API test"
+    }
+  ],
+  "evidence_sha256": {
+    "windows-result.json": "9a6b0b7794a93c021d0368608301c3f4e77430d0364ac1fc64aa2e0a622c4098",
+    "windows-origin.json": "59895ed6f390aee531f2939361c347f7c1266e28b5e243c4ecc04f173dcd8845",
+    "windows-junit.xml": "8aac8cd618b23aeed675e5cae51450c6abad0f606d16ab21003cec3cbca1e014",
+    "windows-provider_pytest.log": "65d5622f1214bdfd5c62afd789491fd343a7ace508316ab7c7e226b859aa3b3e",
+    "windows-provider_pytest.process.json": "5c5e55a518a8296cb4f8876fecd38259d49ff2bcd03a33a4fcd66b657922b70a",
+    "linux-result.json": "01209cc462d5fc592c793afc9abfbca5e33a05f242a767e8edad5f59a75665ec",
+    "linux-origin.json": "136d6008896f211a080f1f1ab52010e65f96df9ee8ec8e0820327c7bb01ca110",
+    "linux-junit.xml": "264a665b1edbbd7b3663ddfc3baa0a604287cfacd7b57d6dd1226112c1a24f0b",
+    "linux-provider_pytest.log": "49b04444f371873270e6f89943046674c10923f4cbf4ab1915655c4bbe17a383",
+    "linux-provider_pytest.process.json": "033421da2de46ccdbdb9b9b0d3ee98a7acbe2acfd78f15cef0753dd562c77bf7",
+    "run-linux.sh": "836ee8cc66f3af1cc598f2d9f5ca3d754eeb123793d622db2fb187e944be51d5",
+    "identity.json": "72cd484a0283985b6ae9877d2152147c44c3f1112b48164f86adf365f8fcd418",
+    "source.zip": "3130e337f76dbe8ddbc815fd18242eda6c8a84cfaffe1ffc094a7325cfc5783f",
+    "source-ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "source-ruff-format.log": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
+    "driver.py.txt": "be845219a535c69a0153009a0c014aa485fc89d26bf51742ee93c9f5b2efdc59"
+  },
+  "raw_execution_sources": {
+    "driver.py.txt": {
+      "previous_archive_name": "driver.py",
+      "execution_filenames": [
+        "driver.py"
+      ],
+      "sha256": "be845219a535c69a0153009a0c014aa485fc89d26bf51742ee93c9f5b2efdc59"
+    }
+  },
+  "raw_source_note": "Immutable historical execution source stored as text. Restore recorded filenames in an isolated reproduction directory; prior model/credential authorization limits still apply. No historical source bytes were reformatted or rerun; current active-code lint does not certify these archived scripts."
+}

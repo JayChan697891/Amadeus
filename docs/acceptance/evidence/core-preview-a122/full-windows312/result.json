@@ -1,0 +1,144 @@
+{
+  "scope": "Windows 3.12 full installed-wheel pytest suite on the original a122 environment",
+  "test_source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "product_runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "version": "0.3.0a122",
+  "inputs": {
+    "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl": {
+      "bytes": 328435,
+      "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\source-manifest.json": {
+      "bytes": 762297,
+      "sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"
+    },
+    "D:\\agentsync-debug\\m122p\\source.zip": {
+      "bytes": 18232229,
+      "sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"
+    }
+  },
+  "driver_sha256": "dafcc5c5e454d6128ec5b7d1f05d09dcded167bfa3e44fa3f05e991dd63f5489",
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "controller_pid": 644,
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+  "started_at": "2026-11-17T07:36:00.387745+00:00",
+  "status": "pass",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_platform_matrix": "NOT RUN",
+  "phase": "full_suite_evidence",
+  "checks": [
+    {
+      "id": "wheel_origin_before",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, wheel, members = map(Path, sys.argv[1:4])\nwheel_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 12, 16)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = install.resolve() / \"Lib/site-packages\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == wheel.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == wheel_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "D:\\agentsync-debug\\m122p\\w",
+        "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl",
+        "D:\\agentsync-debug\\m122p\\run\\runtime-members.json",
+        "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+        "0.3.0a122"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122fullw\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T07:36:03.809639+00:00",
+      "finished_at": "2026-11-17T07:36:04.092292+00:00",
+      "log": "logs/wheel_origin_before.log",
+      "log_sha256": "603c694c4da933921a66bdd57a25a788f9b9e883dfe8b8d8199052c70a05d66c",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "wheel_pytest",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "D:\\agentsync-debug\\m122fullw\\s\\tests",
+        "--junitxml",
+        "D:\\agentsync-debug\\m122fullw\\t\\wheel-junit.xml",
+        "--basetemp",
+        "D:\\agentsync-debug\\m122fullw\\t\\p",
+        "-o",
+        "cache_dir=D:\\agentsync-debug\\m122fullw\\t\\pytest-cache"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122fullw\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T07:36:04.094251+00:00",
+      "finished_at": "2026-11-17T08:21:23.146294+00:00",
+      "log": "logs/wheel_pytest.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process",
+      "timeout_seconds": 7200
+    },
+    {
+      "id": "wheel_origin_after",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, wheel, members = map(Path, sys.argv[1:4])\nwheel_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 12, 16)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = install.resolve() / \"Lib/site-packages\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == wheel.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == wheel_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "D:\\agentsync-debug\\m122p\\w",
+        "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl",
+        "D:\\agentsync-debug\\m122p\\run\\runtime-members.json",
+        "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+        "0.3.0a122"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122fullw\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T08:21:23.187213+00:00",
+      "finished_at": "2026-11-17T08:21:23.474651+00:00",
+      "log": "logs/wheel_origin_after.log",
+      "log_sha256": "603c694c4da933921a66bdd57a25a788f9b9e883dfe8b8d8199052c70a05d66c",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "source_files": 3992,
+  "runtime_members": 97,
+  "raw_junit_local": {
+    "bytes": 409736,
+    "sha256": "3b4bfc0c3639afebb9f35baf0f0a3ce24d9e1f77bd7e777fbfc1dde05ac671fe"
+  },
+  "junit": {
+    "path": "wheel-junit.xml",
+    "sha256": "96fac8fcc0d50f04c65124dede0ae9106453be4875e761e76b4350b490f43a27",
+    "credential_redactions": 6,
+    "tests": 2596,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 57
+  },
+  "raw_stdout_local": {
+    "bytes": 19293,
+    "sha256": "111845993d416ff8702d499bad4a22e526b0a0160847d49964f7b89c3be649a8"
+  },
+  "pytest_stdout": {
+    "path": "logs/wheel_pytest.stdout.log",
+    "sha256": "1943af8c82fc897e2f227b45fdef44b51601fe7ab969daf07a171bfe50c17c06",
+    "credential_redactions": 0,
+    "truncated": false
+  },
+  "pinned_inputs_unchanged": true,
+  "frozen_source_unchanged": true,
+  "finished_at": "2026-11-17T08:21:24.762593+00:00"
+}

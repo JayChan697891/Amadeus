@@ -1,0 +1,20 @@
+{
+  "pid": 10516,
+  "started_at": "2026-11-14T07:26:04.150506+00:00",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "source_tree": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+  "scope": "Only previously unrun installed-sdist checks; no source/wheel/build rerun",
+  "archive_sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+  "archive_size": 2926414,
+  "original_build_receipt": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d\\logs\\build.process.json",
+  "original_build_receipt_sha256": "b9dae251775a89e04a97c2940706f733e1bc17e269f3268962d5df85ac74aa81",
+  "original_build_log_sha256": "9b954273bf1d4c0f465af41319716b77169591489ed824616070adcebab8baad",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "source_files_verified": 2083,
+  "driver_sha256": "887372c2bad0e45364f745dceb78176d845274ba73b66ba4b929277c576880e3",
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

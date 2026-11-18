@@ -1,0 +1,183 @@
+"""Observe and interrupt one exact owned Codex parent in the pinned a117 runtime."""
+
+import asyncio
+import json
+import math
+import re
+from collections.abc import Callable
+from typing import Literal
+from weakref import WeakSet
+
+from agentsync.adapters.approved_launch import LaunchReview
+from agentsync.adapters.codex_events import parse_codex_jsonl
+from agentsync.adapters.codex_invocation import CodexInvocation
+from agentsync.adapters.process_capture import CapturedProcess, _Protocol
+from agentsync.errors import AgentSyncError
+
+_CAPTURE_FIELDS = frozenset(
+    """
+    _loop _creation_order _id _state _transport _started _deadline _finished _stdout _stderr
+    _closed _parent_ended _done _limit _truncated _reason _error _capture_broken _timer _grace
+    _kill_confirmation _spawn_task
+""".split()
+)
+_OBSERVED: WeakSet[CapturedProcess] = WeakSet()
+_POLL_SECONDS = 0.05
+
+Interruption = Literal[
+    "kill_call_returned",
+    "missed_window",
+    "terminal_observed",
+    "truncated",
+    "observation_not_saved",
+    "already_observed",
+    "unknown",
+]
+
+
+def _turn_state(stdout: bytes) -> Literal["waiting", "started", "terminal", "unknown"]:
+    if not stdout.endswith(b"\n"):
+        return "waiting"
+    try:
+        text = stdout.decode("utf-8")
+        report = parse_codex_jsonl(text, exit_code=None)
+        if report.error_code in ("upstream_error", "process_unknown"):
+            return "terminal"
+        if report.error_code != "incomplete_stream":
+            return "unknown"
+        return (
+            "started"
+            if any(json.loads(line).get("type") == "turn.started" for line in text.split("\n")[:-1])
+            else "waiting"
+        )
+    except (AgentSyncError, UnicodeError, ValueError, RecursionError):
+        return "unknown"
+
+
+def _owned_live_pid(capture: CapturedProcess, transport: object) -> int | None:
+    if (
+        not isinstance(transport, asyncio.SubprocessTransport)
+        or transport is not capture._transport
+        or capture._done.done()
+        or capture._parent_ended
+        or capture._reason is not None
+        or capture._error is not None
+        or capture._capture_broken
+    ):
+        return None
+    try:
+        protocol = transport.get_protocol()
+        if type(protocol) is not _Protocol or protocol.owner is not capture:
+            return None
+        if transport.get_returncode() is not None or transport.is_closing():
+            return None
+        pid = transport.get_pid()
+    except (OSError, RuntimeError):
+        return None
+    return pid if type(pid) is int and pid > 0 else None
+
+
+async def interrupt_owned_parent(
+    capture: CapturedProcess,
+    review: LaunchReview,
+    *,
+    deadline: float,
+    save_boundary: Callable[[dict[str, object]], None],
+) -> Interruption:
+    """Require the same reviewed plan and captured process from the exact launch hook.
+
+    The caller must verify the installed a117 manifest, obtain the external
+    authorization for this review, and pass that review with the process returned
+    by PrivateCapture. Its exact-argument hook binds argv, cwd, stdin, and
+    environment. The deadline uses absolute event-loop time. The synchronous callback must durably save each
+    observation before it returns. The original capture owns terminal classification.
+    """
+    loop = asyncio.get_running_loop()
+    if (
+        type(capture) is not CapturedProcess
+        or vars(capture).keys() != _CAPTURE_FIELDS
+        or capture._loop is not loop
+        or type(capture._stdout) is not bytearray
+        or type(capture._stderr) is not bytearray
+        or type(capture._truncated) is not set
+        or not isinstance(capture._done, asyncio.Future)
+        or not isinstance(capture._spawn_task, asyncio.Task)
+        or not capture._spawn_task.done()
+        or capture._spawn_task.cancelled()
+    ):
+        return "unknown"
+    if (
+        type(review) is not LaunchReview
+        or review.client != "codex"
+        or type(review.plan) is not CodexInvocation
+        or type(review.plan_sha256) is not str
+        or re.fullmatch(r"[0-9a-f]{64}", review.plan_sha256) is None
+        or capture._limit != review.plan.output_limit
+        or capture._deadline != capture._started + review.plan.timeout_seconds
+        or type(deadline) not in (int, float)
+        or not math.isfinite(deadline)
+        or not callable(save_boundary)
+    ):
+        return "unknown"
+    if capture in _OBSERVED:
+        return "already_observed"
+    _OBSERVED.add(capture)
+    end = min(deadline, capture._deadline)
+    transport = capture._transport
+    pid = _owned_live_pid(capture, transport)
+    if pid is None:
+        return "unknown"
+    last_stdout_size = -1
+    turn_state = "waiting"
+    while loop.time() < end:
+        snapshot = await capture.snapshot()
+        if snapshot.stdout_truncated or snapshot.stderr_truncated:
+            return "truncated"
+        if snapshot.state != "running" or snapshot.exit_code is not None or snapshot.parent_ended:
+            return "missed_window"
+        if _owned_live_pid(capture, transport) != pid:
+            return "unknown"
+        if snapshot.stdout_bytes + snapshot.stderr_bytes > review.plan.output_limit:
+            return "unknown"
+        if snapshot.stdout_bytes != last_stdout_size:
+            turn_state = _turn_state(bytes(capture._stdout))
+            last_stdout_size = snapshot.stdout_bytes
+        if turn_state == "terminal":
+            return "terminal_observed"
+        if turn_state == "unknown":
+            return "unknown"
+        if turn_state != "started":
+            await asyncio.sleep(min(_POLL_SECONDS, max(0.0, end - loop.time())))
+            continue
+        boundary = {
+            "plan_sha256": review.plan_sha256,
+            "capture_id": snapshot.capture_id,
+            "parent_pid": pid,
+            "owned_transport": True,
+            "parent_alive": True,
+            "turn_started_observed": True,
+            "terminal_event_observed": False,
+            "stdout_truncated": False,
+            "stderr_truncated": False,
+            "stdout_bytes": snapshot.stdout_bytes,
+            "stderr_bytes": snapshot.stderr_bytes,
+            "observed_at": loop.time(),
+            "scope": "owned_parent_only",
+        }
+        try:
+            if save_boundary(boundary) is not None:
+                return "observation_not_saved"
+        except Exception:
+            return "observation_not_saved"
+        if (
+            loop.time() >= end
+            or await capture.snapshot() != snapshot
+            or _owned_live_pid(capture, transport) != pid
+        ):
+            return "unknown"
+        try:
+            transport.kill()
+        except (OSError, RuntimeError):
+            return "unknown"
+        return "kill_call_returned"
+    return "missed_window"

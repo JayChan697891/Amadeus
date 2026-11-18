@@ -1,0 +1,183 @@
+"""Zero-model local checks. No guest process, credentials or Docker are used."""
+
+import ast
+import json
+import runpy
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock
+
+import pytest
+
+from agentsync.adapters.approved_launch import digest
+from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.verification.owner_flow import OwnerCandidateFlow
+
+REPO = Path("F:/syuc/amadeus-m6-single")
+TOOLS = REPO / "tools"
+
+PREP = runpy.run_path(str(TOOLS / "prepare_live_solution_continuation.py"))
+VERIFY = runpy.run_path(str(TOOLS / "run_live_solution_verification.py"))
+
+
+@pytest.fixture(autouse=True)
+def no_external_effects(monkeypatch):
+    calls = Mock(side_effect=AssertionError("No model or candidate may start."))
+    monkeypatch.setattr(CapturedProcess, "start", calls)
+    monkeypatch.setattr(OwnerCandidateFlow, "start_once", calls)
+    yield calls
+    calls.assert_not_called()
+
+
+def test_real_templates_render_bind_exact_guest_bytes(tmp_path, monkeypatch):
+    base = tmp_path / "fixture"
+    monkeypatch.setitem(PREP["render"].__globals__, "OUTPUT", base)
+    PREP["render"]()
+    hashes = json.loads((base / "prepared-inputs.json").read_bytes())
+    assert all(PREP["sha"]((base / name).read_bytes()) == sha for name, sha in hashes.items())
+    assert not (base / "live.py").exists()
+    assert not (base / "live-authorization.json").exists()
+    assert (base / "verify.py").read_bytes() == (TOOLS / "run_live_solution_verification.py").read_bytes()
+
+    tree = ast.parse((REPO / "tests/integration/test_unfinished_continuation.py").read_bytes())
+    code = next(node.value.value for node in tree.body if isinstance(node, ast.Assign)
+                and getattr(node.targets[0], "id", "") == "TOTAL_JSON_LINES")
+    assert PREP["JSON_LINES"] == code
+    assert (base / "reference-solution.py.txt").read_bytes() == (
+        "def total(values):\n    return sum(values)\n" + code
+    ).encode()
+
+    producer = "a" * 64
+    selection = "b" * 64
+    plan = {
+        "producer_plan": {"plan_sha256": producer, "selection_sha256": selection},
+        "runtime_commit": PREP["COMMIT"], "wheel_sha256": PREP["WHEEL_SHA"],
+        "runtime_members": 97, "proposed_model_call_limit": 2, "automatic_retry": False,
+        "helper_sha256": {name: hashes[name] for name in (
+            "prepare.py", "private_capture.py", "runtime-members.json",
+        )},
+        "host_checkpoint": {"origin": "host_known_partial_source", "model_authorship": False, "files": [{
+            "path": "solution.py", "content": PREP["PARTIAL"] + code,
+        }]},
+        "continuation_instruction": PREP["CONTINUATION"],
+        "model_calls": 0, "external_auth_copies": 0,
+    }
+    ready = {"producer_plan_sha256": producer, "selection_sha256": selection,
+             "model_calls": 0, "external_auth_copies": 0,
+             "private_home_empty": True}
+    for name, value in (("plan.json", plan), ("readiness.json", ready)):
+        (base / name).write_bytes((json.dumps(value) + "\n").encode())
+    PREP["bind"]()
+    grant = json.loads((base / "live-authorization.template.json").read_bytes())
+    assert grant["expires_at"] is grant["owner_confirmed_zero_credits_and_auto_recharge_off"] is None
+    assert grant["producer_plan_sha256"] == producer
+    assert all(PREP["sha"]((base / name).read_bytes()) == sha for name, sha in grant["files"].items())
+    command = (base / "receiver-decision.py").read_text()
+    assert digest(PREP["CONTINUATION"]) in command
+    assert "add.py" not in command and "solution.py" in command
+    file_hash = PREP["sha"]((base / "plan.json").read_bytes())
+    assert file_hash in command and file_hash in (base / "run-stage.py").read_text()
+    assert not (base / "live-authorization.json").exists()
+
+
+def test_no_core_before_confirmed_cleanup():
+    cleanup = SimpleNamespace(load=Mock(side_effect=FileNotFoundError), require_stopped=Mock())
+    live = SimpleNamespace(core_state=Mock(side_effect=AssertionError("Core must not open.")))
+    with pytest.raises(FileNotFoundError):
+        VERIFY["drive"](live, cleanup, "a" * 64, "preview", None)
+    live.core_state.assert_not_called()
+    cleanup.require_stopped.assert_not_called()
+
+
+def test_cleanup_certificate_needs_current_attempts_and_unmounted_empty_home(tmp_path):
+    grant = "a" * 64
+    stopped = {"producer": "terminal_recorded", "receiver": "terminal_recorded"}
+    values = {
+        "closing.json": {"authorization_sha256": grant, "further_launches_allowed": False},
+        "auth-cleanup.json": {"temporary_auth_absent": True, "home_unmounted": True,
+                              "private_home_empty": True, "current_attempts": stopped,
+                              "further_launches_allowed": False},
+    }
+    cleanup = SimpleNamespace(load=values.__getitem__, PRIVATE_HOME=tmp_path,
+                              private_directory=Mock(), mounts=Mock(return_value=["stale"]),
+                              require_stopped=Mock(return_value=stopped))
+    with pytest.raises(AssertionError):
+        VERIFY["require_closed"](cleanup, grant)
+    cleanup.require_stopped.assert_not_called()
+    cleanup.mounts.return_value = []
+    cleanup.require_stopped.return_value = {**stopped, "receiver": "unknown"}
+    with pytest.raises(AssertionError):
+        VERIFY["require_closed"](cleanup, grant)
+    cleanup.require_stopped.return_value = stopped
+    VERIFY["require_closed"](cleanup, grant)
+
+
+@pytest.mark.parametrize("action", ("stage", "execution", "completion"))
+def test_approval_requires_explicit_exact_digest_and_exclusive_entry(tmp_path, monkeypatch, action):
+    monkeypatch.setitem(VERIFY["approve"].__globals__, "BASE", tmp_path)
+    plan = {"action": action, "task_id": "same-receiver"}
+    path = tmp_path / (action + "-plan.json")
+    path.write_text(json.dumps(plan), encoding="utf-8")
+    expected = VERIFY["sha"](path.read_bytes())
+
+    def write(name, value, _state):
+        with (tmp_path / name).open("x", encoding="utf-8") as stream:
+            json.dump(value, stream)
+
+    live = SimpleNamespace(sha=lambda selected: VERIFY["sha"](selected.read_bytes()),
+                           read=lambda name: json.loads((tmp_path / name).read_bytes()), write=write)
+    intent = tmp_path / (action + "-entry.json")
+    for wrong in (None, "0" * 64):
+        with pytest.raises(AssertionError):
+            VERIFY["approve"](live, {}, action, wrong, plan)
+        assert not intent.exists()
+    with pytest.raises(AssertionError):
+        VERIFY["approve"](live, {}, action, expected, {**plan, "task_id": "another"})
+    assert not intent.exists()
+    VERIFY["approve"](live, {}, action, expected, plan)
+    with pytest.raises(FileExistsError):
+        VERIFY["approve"](live, {}, action, expected, plan)
+
+
+@pytest.mark.parametrize("case", ("proposal", "tool", "changed-raw", "changed-stderr"))
+def test_captured_solution_uses_original_bytes_and_refuses_tools(tmp_path, monkeypatch, case):
+    monkeypatch.setitem(VERIFY["captured_proposal"].__globals__, "BASE", tmp_path)
+    raw_file = tmp_path / "receiver-capture/raw/stdout.bin"
+    raw_file.parent.mkdir(parents=True)
+    source = {"path": "solution.py", "content": "# no resynthesis\nprint(2 + 3)\n"}
+    events = [{"type": "thread.started", "thread_id": "local-protocol-fixture"},
+              {"type": "turn.started"}]
+    if case == "tool":
+        events.append({"type": "item.completed", "item": {"id": "tool", "type": "command_execution"}})
+    events.extend([
+        {"type": "item.completed", "item": {"id": "message", "type": "agent_message",
+                                               "text": json.dumps({"files": [source]})}},
+        {"type": "turn.completed"},
+    ])
+    raw = ("\n".join(json.dumps(event) for event in events) + "\n").encode()
+    raw_file.write_bytes(raw)
+    stderr = b"fixture notice\n"
+    raw_file.with_name("stderr.bin").write_bytes(stderr)
+    sha = VERIFY["sha"](raw) if case != "changed-raw" else "0" * 64
+    truncation = {"stdout_truncated": False, "stderr_truncated": False}
+    attempt = {"parent_ended": True, "timed_out": False, "state": "terminal_recorded", "exit_code": 0}
+    values = {
+        "receiver-capture.json": {"saved": True, "stdout_bytes": len(raw), "stdout_sha256": sha,
+                                  "stderr_bytes": len(stderr),
+                                  "stderr_sha256": VERIFY["sha"](stderr) if case != "changed-stderr" else "0" * 64,
+                                  **truncation},
+        "receiver-dispatch-observation.json": {"actors": {"receiver": {"attempts": [attempt]}}},
+        "receiver-exit.json": {"snapshot": {"parent_ended": True, "exit_code": 0,
+                                              "stdout_bytes": len(raw), "stderr_bytes": len(stderr), **truncation}},
+    }
+    live = SimpleNamespace(read=values.__getitem__, private_file=Mock(), prep=SimpleNamespace(OUTPUT_LIMIT=2**20))
+    if case == "proposal":
+        assert VERIFY["captured_proposal"](live, "receiver") == ([source], sha)
+    else:
+        with pytest.raises(AssertionError):
+            VERIFY["captured_proposal"](live, "receiver")
+
+
+def test_launch_callback_is_denied():
+    with pytest.raises(AssertionError, match="cannot authorize"):
+        VERIFY["deny_launch"](object())

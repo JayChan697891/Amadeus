@@ -1,0 +1,216 @@
+{
+  "scope": "One authorized verification of the original a122 composed-recovery candidate and independent completion of the same receiver task",
+  "status": "SCOPED PASS",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "helper_commit": "03a3074a4a67ce6fc7c593f7baeeb56a201a3c75",
+  "helper_sha256": "80c41ab2b202b3ffa0c765e853283478e22d8ec9f6e629e63145f06d7a2da606",
+  "owner_grant": "../owner-verification-grant-20261117.json",
+  "owner_grant_sha256": "bb26cf908937e8ab7e399a7b402b5058cf317408308756514a1e03ea481fa598",
+  "source_sha256": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44",
+  "source_bytes": 149,
+  "receiver_task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+  "receiver_final": {
+    "status": "completed",
+    "version": 6,
+    "task_verification": "verified"
+  },
+  "native_receipts": {
+    "inspect": "9765cd",
+    "enroll": "df6d96",
+    "prepare": "7b36a3",
+    "stage": "5fec96",
+    "execute": "dee338",
+    "complete": "8c478c",
+    "independent_postcheck": "668b2a",
+    "normal_shutdown": "6e6fdf",
+    "shutdown_observation": "0ef32b"
+  },
+  "plans": {
+    "resume-stage-plan.json": "ec0b2fed5ace0d72b70e3fcc5401541a2e1e14867b4bb37d1352ef3ebb343ea9",
+    "resume-execution-plan.json": "851ec8f64e9da6067982f7f5902cfbc6ad078b4f92471db1abd5955eb9b82a66",
+    "resume-completion-plan.json": "7891082966020f5d58d03bae04041c16748df9b65d6ecfa2ab8bce5b66c8b491"
+  },
+  "candidate_executions": 1,
+  "cases_passed": 2,
+  "isolation_checks_passed": 19,
+  "new_model_calls": 0,
+  "new_account_credential_access": false,
+  "review": "Root inspected exact plans before each effect and actual result plus read-only database afterward; Astra accepted only this bounded same-vendor result.",
+  "database_proof": [
+    {
+      "id": "1fddf519-48c6-4702-8414-ec624c63a17b",
+      "task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+      "completed_version": 6,
+      "job_id": "ee9ff858-61fe-4eb2-9ccb-54ef963d790d",
+      "execution_id": "d2ec35ad-d12d-4192-aca7-5ee8d566a99d",
+      "reviewer_agent_id": "13110b64-88f9-48ca-ad18-636c32db601f",
+      "reviewer_session_id": "c59b0fa9-6c38-46ed-8f1b-d14eb3b62602",
+      "proof_sha256": "16588e84c1f166240f25882c43584aae9b82838044303ee31975a6c8abd20454"
+    }
+  ],
+  "original_receipts_and_raw_captures_unchanged": true,
+  "runtime_members_unchanged": 97,
+  "cleanup": {
+    "candidate_container_removed": true,
+    "no_workers_or_containers": true,
+    "model_login_absent": true,
+    "private_home_empty_unmounted": true,
+    "vm_normally_stopped": true,
+    "disk_retained": true
+  },
+  "limits": [
+    "Same vendor only; no Claude/Cursor inference",
+    "Fresh independent reviewer identity, not an additional model review",
+    "Source task remains failed v5/unverified; dependent pending v2 unchanged",
+    "Owner approves each fixed plan; not uncontrolled autonomy",
+    "Receiver result was already persisted before controller death; not recovery of in-flight model generation",
+    "No proof of provider-side cancellation, tree cleanup guarantee or whole-machine failure",
+    "Full M7/M8, full a122 platform matrix and formal Release remain unaccepted"
+  ],
+  "formal_release": "BLOCKED",
+  "original_static_fail": "PRESERVED",
+  "private_material": "No fixture credentials, model credentials, database, VM disks or raw model capture copied",
+  "synchronization": "03a3074 first push failed TLS EOF (eef0c0); local commit preserved. Final synchronization is recorded separately after actual success.",
+  "files": {
+    "resume-enrollment-entry.json": {
+      "bytes": 122,
+      "sha256": "f8e92505f2cfdaad8b2b208f7bc93abf9d2060dff55ddd9e6f0f13654068396b"
+    },
+    "resume-enrollment.json": {
+      "bytes": 431,
+      "sha256": "a3af97eb7417c87cf5fbe6812cc84e6854da7733ab6527b18c7574d6bc1a0661"
+    },
+    "resume-stage-plan.json": {
+      "bytes": 4008,
+      "sha256": "ec0b2fed5ace0d72b70e3fcc5401541a2e1e14867b4bb37d1352ef3ebb343ea9"
+    },
+    "resume-stage-entry.json": {
+      "bytes": 116,
+      "sha256": "31aecd6fc7c11864a205e921dd4ef3913fb2295d2d03ba7264e7b16c8f943fa5"
+    },
+    "resume-stage-result.json": {
+      "bytes": 460,
+      "sha256": "62b6ca8d099e87f63e014c9a6507e16370bac11e456791b6b5131e66d0136e2a"
+    },
+    "resume-enqueue-result.json": {
+      "bytes": 1301,
+      "sha256": "a6d18d0af8bcc355382044f0e25d052606092fe7429ef53443a3ea375869343d"
+    },
+    "resume-execution-plan.json": {
+      "bytes": 3635,
+      "sha256": "851ec8f64e9da6067982f7f5902cfbc6ad078b4f92471db1abd5955eb9b82a66"
+    },
+    "resume-execution-entry.json": {
+      "bytes": 120,
+      "sha256": "ea729cede185c26f8f87ad8f702ea6e6bd4088915da7206cef8d6b77059be260"
+    },
+    "resume-execution-result.json": {
+      "bytes": 3691,
+      "sha256": "b483a257bd434cac2508ed9f76ac3c19d6e88946ac09dec87df365407b56225f"
+    },
+    "resume-completion-plan.json": {
+      "bytes": 2716,
+      "sha256": "7891082966020f5d58d03bae04041c16748df9b65d6ecfa2ab8bce5b66c8b491"
+    },
+    "resume-completion-entry.json": {
+      "bytes": 121,
+      "sha256": "d9b10ece1b3a470d07c4c7d89cb7f5e10f75f1fdedd49b5951decb6ffab0bc25"
+    },
+    "resume-completion-result.json": {
+      "bytes": 1884,
+      "sha256": "795fba09553938cf3abf3fa1cb1360c3da73975dff60f356ae46bf6e8e896568"
+    },
+    "resume-completion-postcheck.json": {
+      "bytes": 747,
+      "sha256": "570a5c8a12cfd0f14d5cc1b515c02d499cdba5bc50d2a1fb6e22678ae7b49067"
+    },
+    "inspect-start.json": {
+      "bytes": 158,
+      "sha256": "3ab4f2856386a94d3809b07a6a99e279babb8982272269ac3baacd23472dfd4f"
+    },
+    "inspect-result.json": {
+      "bytes": 231,
+      "sha256": "40d8f03ee5695790a8b3b16f22d46817df907abf7350a8fb95718beb2e631f18"
+    },
+    "enroll-start.json": {
+      "bytes": 158,
+      "sha256": "54dc1517b483a214d4a0326faa8439565094fd56ba3df69e615c5dc9fea4445d"
+    },
+    "enroll-result.json": {
+      "bytes": 231,
+      "sha256": "b92756a8fc87e2340c961d24b579425ca7d805bc1090644548bd4dc6760dbbb7"
+    },
+    "prepare-start.json": {
+      "bytes": 158,
+      "sha256": "74687f71e52e0664d01b854810d5b3d4c227a56b6a7c8e21f01f1a8a2020391b"
+    },
+    "prepare-result.json": {
+      "bytes": 231,
+      "sha256": "c581c95153470ab3e75b2323dad74becd1400a6d5265ed5ff0ab4bd085bb422d"
+    },
+    "stage-once-start.json": {
+      "bytes": 286,
+      "sha256": "dfc514e3af9e359bb2135fcb273a36cd0d853a56f854d52f6f8cf5c9b4fa6415"
+    },
+    "stage-once-result.json": {
+      "bytes": 359,
+      "sha256": "fffc12315b21d578ef8b6a163e23b199bb8f7319247484196796cbe4dd2cf078"
+    },
+    "execute-once-start.json": {
+      "bytes": 288,
+      "sha256": "ee3ae43cad783f4b890549ec533eff6588db4e8a6e4c6d6e38a806860c081ba4"
+    },
+    "execute-once-result.json": {
+      "bytes": 361,
+      "sha256": "176cb9e34a68c94a0f78598192ee518bb70e0610eb49cb9c1c0cf9251839c24b"
+    },
+    "complete-once-start.json": {
+      "bytes": 289,
+      "sha256": "3cf59f63fa4661859bf3cc6eef568b951a34d5477a22ac6a2643e93e750ee006"
+    },
+    "complete-once-result.json": {
+      "bytes": 362,
+      "sha256": "8c5d0c9f63bd8e333defd845bd8851a1ac6e17f7cd7fb0045d7d569c201fa671"
+    },
+    "fixture-inspection.json": {
+      "bytes": 1166,
+      "sha256": "5b1c91b23b1db28c883b4566369e4addbfb83d15fa7d55aa4dbca42f67cba174"
+    },
+    "root-postcheck.json": {
+      "bytes": 10933,
+      "sha256": "526492b9ca77092002f334a7422f3b377cc2cefc2e2c629760d2b95cacbc4441"
+    },
+    "shutdown-request.json": {
+      "bytes": 240,
+      "sha256": "a004e82ebf1182cadf181608f2ad5c4c15789ac652e558ae5ed50ae45396ae72"
+    },
+    "shutdown-replies.json": {
+      "bytes": 237,
+      "sha256": "eb0d6ad646dd962d528384262f2e1302f9f928c358df2d926697e96d1f8ea22d"
+    },
+    "shutdown-result.json": {
+      "bytes": 194,
+      "sha256": "bc00a64f25a007636e2605ed49882d7780fb3883d0c5db94aa9c1eeda90219a7"
+    },
+    "vm-start.json": {
+      "bytes": 331,
+      "sha256": "3ca93c2b4d9ee0e0fdc3e983ea9f8adc7b3510b856802bddf93a75efabbd14f2"
+    },
+    "verification-host.py.txt": {
+      "bytes": 6559,
+      "sha256": "b8aa68883fac4a8baef531bc6218c7a9cb3813e6cb9d1b095a09acca52fd03cd"
+    },
+    "read-verification-plan.py.txt": {
+      "bytes": 2006,
+      "sha256": "3f8e07a4dc1875cc9ab8e6585b0317160f963fd7f25a7286388bf9cde596040a"
+    },
+    "verification-postcheck.py.txt": {
+      "bytes": 7610,
+      "sha256": "dcb532f2d43f8c5e09051205e06d37664435f6d661a6058e0789ae84575a486c"
+    },
+    "verification-shutdown.py.txt": {
+      "bytes": 3150,
+      "sha256": "915a51f49057fbf288b77c34b05abd11a519ee261e62fb458f4c3e78193106f5"
+    }
+  }
+}

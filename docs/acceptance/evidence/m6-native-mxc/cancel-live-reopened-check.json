@@ -1,0 +1,31 @@
+{
+  "runtime_sha": "f74f29f73148d0e0e9a69ebb486eaffe6061d936",
+  "execution_head": "7d573a08772bfccd89fdf906ccd1e716969f2289",
+  "reopened_observation": {
+    "state": "incomplete",
+    "verification": "unverified"
+  },
+  "task_status": "running",
+  "task_verification": "unverified",
+  "attempt_state": "terminal_recorded",
+  "attempt_status": "unknown",
+  "error_code": "local_cancel_requested",
+  "parent_ended": true,
+  "exit_code": 1,
+  "event_types": [
+    "thread.started",
+    "item.completed",
+    "turn.started"
+  ],
+  "has_agent_message": false,
+  "has_turn_terminal": false,
+  "source_unchanged": true,
+  "worktree_unchanged": true,
+  "runtime_unchanged": true,
+  "second_leg": "not_dispatched",
+  "task_retried": false,
+  "raw_uploaded": false,
+  "server_cancellation": "UNVERIFIED",
+  "descendant_cleanup": "UNVERIFIED",
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "PASS - Linux targeted installation supplement; formal Release BLOCKED",
+  "version": "0.3.0a122",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session": 58409,
+  "terminal_chunk": "fce5a1",
+  "native_exit_code": 0,
+  "started_at": "2026-11-17T06:26:04.037993+00:00",
+  "finished_at": "2026-11-17T06:27:03.664516+00:00",
+  "native_checks": 16,
+  "junit": {
+    "wheel": {
+      "path": "wheel-focused.xml",
+      "sha256": "33f0285433d3426a3d1a064c12b4cbf7c1bf184ad9a3c0bc0d2056847998a018",
+      "credential_redactions": 0,
+      "tests": 97,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "case_identities_sha256": "bc9799b328e8129de273933076ff7a06d664a3d637faff243338e6104102440e"
+    },
+    "sdist": {
+      "path": "sdist-focused.xml",
+      "sha256": "095e21e6853ed0a16651590e88c7663273cd815e91ba675c1926a4771bd9b9ae",
+      "credential_redactions": 0,
+      "tests": 97,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "case_identities_sha256": "bc9799b328e8129de273933076ff7a06d664a3d637faff243338e6104102440e"
+    }
+  },
+  "package_cases": {
+    "wheel": {
+      "unique_cases": 97,
+      "passed": 97,
+      "identical_windows_identities_and_outcomes": true
+    },
+    "sdist": {
+      "unique_cases": 97,
+      "passed": 97,
+      "identical_windows_identities_and_outcomes": true
+    }
+  },
+  "same_original_windows_artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a122-py3-none-any.whl",
+      "size": 328435,
+      "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a122.tar.gz",
+      "size": 6735308,
+      "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+    }
+  },
+  "source_files_rehashed": 3992,
+  "runtime_members_per_install": 97,
+  "original_records": 37,
+  "original_bytes": 138321,
+  "xml_redactions": 0,
+  "root_collect_chunk": "bc8559",
+  "root_review_chunk": "bc8559",
+  "independent_review": "Astra read-only incremental review accepts the bounded Linux wheel/sdist installation supplement; no new full regression or Release decision.",
+  "shutdown": {
+    "pid": 6480,
+    "method": "normal QMP system_powerdown",
+    "process_absent": true,
+    "disk_preserved": true,
+    "loopback_ports_closed": true,
+    "force_kill": false,
+    "utc": "2026-11-17T06:28:47.1700826Z",
+    "boot_id": "e72dc8f6-8e84-40ea-9ba2-3ccd1b33fb76"
+  },
+  "shutdown_observation_chunk": "7492b5",
+  "initial_connection": "Native8009 exited1 before remote command, transfer or test because SSH was not yet ready. Preserved as NOT RUN; native58409 is the first actual test run.",
+  "model_calls": 0,
+  "no_package_rebuild": true,
+  "limits": [
+    "The four new Windows/Linux installs each pass the same97 cases. This is targeted installation evidence, not a full current-platform matrix.",
+    "The existing a120 full suite keeps its old runtime859775b/tests d427355 binding and does not cover the later a122 correction.",
+    "Historical static FAIL, license review and owner manual fixture credential cleanup remain unchanged.",
+    "No real-client, macOS or new Docker candidate execution is supplied."
+  ]
+}

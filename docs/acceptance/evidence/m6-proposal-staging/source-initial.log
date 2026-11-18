@@ -1,0 +1,19 @@
+........................................................................ [ 39%]
+................s....................................................... [ 79%]
+..................................F..                                    [100%]
+================================== FAILURES ===================================
+_ test_codex_host_factory_components_keep_actual_client_acceptance_unverified _
+
+    def test_codex_host_factory_components_keep_actual_client_acceptance_unverified():
+        item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
+        assert item["coverage"] == "partial"
+        assert item["execution_status"] == "not_run"
+>       assert len(item["existing_tests"]) == 12
+E       AssertionError: assert 14 == 12
+E        +  where 14 = len(['tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope', 'tests/unit...client', 'tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner', ...])
+
+tests\unit\test_acceptance_traceability.py:167: AssertionError
+=========================== short test summary info ===========================
+SKIPPED [1] tests\integration\test_candidate_export_security.py:169: POSIX FIFO metadata fixture requires Linux
+FAILED tests/unit/test_acceptance_traceability.py::test_codex_host_factory_components_keep_actual_client_acceptance_unverified
+1 failed, 179 passed, 1 skipped in 220.84s (0:03:40)

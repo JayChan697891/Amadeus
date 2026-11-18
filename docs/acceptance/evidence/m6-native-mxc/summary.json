@@ -1,0 +1,84 @@
+{
+  "commit_sha": "dcd7ca141253bc5bef409075a225174f2eb03291",
+  "scope": "Opt-in Windows MXC invocation plan; native non-model boundary checks only",
+  "source_sha256": {
+    "src/agentsync/adapters/codex_invocation.py": "12ef54b4e5f128ff83485c9bacda5d0f6b39f56565e6e0b05c89f995f63df56a",
+    "tests/unit/test_codex_invocation.py": "1507820e2272cfc13394f3409bcb87d4da7a64c01e1e3ebdfa98b4aa05a024a7"
+  },
+  "tests": {
+    "platform": "Windows Python 3.12",
+    "passed": 48,
+    "skipped": 0,
+    "failed": 0,
+    "errors": 0
+  },
+  "static_checks": {
+    "ruff": "passed",
+    "format": "passed",
+    "mypy_84_modules": "passed"
+  },
+  "native_checks": {
+    "explicit_profile_fixture_read": "passed",
+    "outside_fixture_read_denied": "passed",
+    "fixture_write_denied": "passed",
+    "owned_loopback_positive_control": "passed",
+    "same_loopback_connection_inside_mxc": "denied, curl exit7 and no accepted connection",
+    "external_network_probe": "NOT RUN",
+    "strict_config_recognition": "passed via supported app-server --strict-config --print-startup-config",
+    "default_profile_selection": "restricted minimal/project read profile rendered by supported debug prompt-input; not an exec/model run",
+    "default_sandbox_probe": "NOT RUN: --include-managed-config requires an explicit --permission-profile; exit2 preserved",
+    "effective_unified_exec": true,
+    "requested_unified_exec": false,
+    "extra_collaboration_tools_advertised": true,
+    "extra_tool_dispatch_enforcement": "UNVERIFIED"
+  },
+  "fees": "User confirmed no paid credits and auto-recharge disabled; no account API verification",
+  "authentication": "Isolated-home existing keyring lookup not_logged_in; no credentials copied; real auth.json existence checked only",
+  "real_adapter_model_requests": 0,
+  "single_model_authorization": "unconsumed; conditional on remaining B1/B3 prerequisites",
+  "independent_review": {
+    "model": "gpt-6-astra",
+    "reasoning": "high",
+    "method": "Read-only source and saved evidence review; reviewer ran no tests or clients",
+    "implementation": "No blocking defect identified in reviewed plan delta",
+    "live_launch": "BLOCKED pending effective extra-tool dispatch restrictions and isolated authentication; whole-CLI containment is not a new mandatory gate"
+  },
+  "remaining": [
+    "Establish exact-version enforcement or a supported control for advertised collaboration/other extra-action handlers before any real call",
+    "Only then resolve supported isolated authentication and any necessary credential-transfer authorization",
+    "Execute the once-authorized real pilot; no retry after failure/unknown",
+    "After real single-client result, separately authorize and verify dual-client handoff",
+    "Complete independent M5 and M9 acceptance, including unavailable macOS coverage"
+  ],
+  "not_run": [
+    "Real Codex/Claude/Cursor execution",
+    "New delta package installations",
+    "New delta Linux/macOS tests",
+    "Formal Release acceptance"
+  ],
+  "formal_release": "BLOCKED",
+  "local_evidence": "D:\\agentsync-debug\\m6-single-stop-9a65ed6",
+  "official_references": [
+    "https://learn.chatgpt.com/docs/windows/windows-sandbox",
+    "https://learn.chatgpt.com/docs/permissions",
+    "https://learn.chatgpt.com/docs/auth",
+    "https://learn.chatgpt.com/docs/config-file/config-reference"
+  ],
+  "evidence_sha256": {
+    "mxc-final.xml": "7f311d29fce571945b3c53fc50663be279139644647df34de184fd0a2e36ed37",
+    "mxc-final.log": "5ed719301e7128fc9df53cf69af1203385a452aa2c9bc8b36024b233a89a96ef",
+    "exact-profile.json": "42ab74dcefdb37830985b80ca9184110713bb90e56339c252ed0a7a25dcbe030",
+    "strict-config-check.json": "44d920e2c4cc8f53ae5f6246fc6164e5f4d76f1242144c1a161e3f25315d5cbe",
+    "effective-surface.json": "6ffb1e389c5aec218c5be5980d182b38ba3b7abd75103c6bf11b70be1ac736cc",
+    "isolated-auth-status.json": "13b402d2f15c1df4aac09ca7a44fb4fa498785e0e8090fa8fbded22d99c5004c",
+    "exact-files.stdout.log": "3c902f66d430b964b3c4fb806bffc6d20833d24e72a9d7829c197e0946d0514c",
+    "exact-files.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exact-network-control.stdout.log": "70c95c4b3e0dbbf6863d8d888c4cce41afbf45aceb7a4afc70aab945da104a05",
+    "exact-network-control.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exact-network.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exact-network.stderr.log": "46d92642e7791c2bb70c74fcaa885c026d939992f35000cabe080426a7a8d642",
+    "exact-features.stdout.log": "f8039c6f0941bda1d543a6265c7ffb3a1e2d1356dfdbf592c0b343d64be8f078",
+    "exact-features.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "default-profile.json": "a50287eeaefa3e15579a603fe54afbf32aa13d845e82fc442cb11f7ffde03310"
+  }
+}

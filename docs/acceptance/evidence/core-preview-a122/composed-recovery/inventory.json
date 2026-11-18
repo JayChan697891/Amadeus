@@ -1,0 +1,460 @@
+{
+  "files": [
+    {
+      "path": "live-authorization.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\live-authorization.json",
+      "bytes": 1387,
+      "sha256": "ed25331a41f9987cf2d7ee6f2546c2f93339ff43b76cdb4f96cc727045a3eccc"
+    },
+    {
+      "path": "producer-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-result.json",
+      "bytes": 1997,
+      "sha256": "37c29f761bc4c53169c1394bacdc1c1a782e7ce233a7b153595f86abb44ec2eb"
+    },
+    {
+      "path": "producer-dispatch-observation.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-dispatch-observation.json",
+      "bytes": 3495,
+      "sha256": "f86a425cd823fad542808599dd2212fe9530ffa878a7601bfee2ec0c65b05fb8"
+    },
+    {
+      "path": "producer-checkpoint.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-checkpoint.json",
+      "bytes": 544,
+      "sha256": "a7ef463c1499ba6517f8c2a1abb42fd033e94c50dc9b8cd897a5643c9c0079e8"
+    },
+    {
+      "path": "producer-exit.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-exit.json",
+      "bytes": 546,
+      "sha256": "fced0034408a933507f5e7bfd47f8d3e6384a987c8008189392ce78f0d6bd0ef"
+    },
+    {
+      "path": "producer-interruption-boundary.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-interruption-boundary.json",
+      "bytes": 448,
+      "sha256": "612dbc466439f3af80ba845510ecc5ab96d169b398b54b6622939eb4843dac55"
+    },
+    {
+      "path": "producer-capture.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-capture.json",
+      "bytes": 366,
+      "sha256": "9ee870f06fd126e2c9686ef540be334e09b174c3f0c15c0bf93add53a260ece6"
+    },
+    {
+      "path": "producer-auth-route.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-auth-route.json",
+      "bytes": 57,
+      "sha256": "0b7dad7dbeba938ef56ee817a321dc4a36c5c313f8d8b15242b4bf8db8ff77f8"
+    },
+    {
+      "path": "producer-entry.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-entry.json",
+      "bytes": 731,
+      "sha256": "ee04313660fab604110f0e1e470b688ed8c7f681da6c731181683f4018e592bc"
+    },
+    {
+      "path": "producer-interruption.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-interruption.json",
+      "bytes": 37,
+      "sha256": "c8ad9d15f7cf9d75b7444232741ae43904a82626b0f8bd6d30ee8121d812db1e"
+    },
+    {
+      "path": "continuation-plan.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continuation-plan.json",
+      "bytes": 2674,
+      "sha256": "8a64e64a50b438e53b7a69705b4200fdd4e009b91840a53cde20ee405039c184"
+    },
+    {
+      "path": "receiver-request.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-request.json",
+      "bytes": 5260,
+      "sha256": "306d06c6638f57f17d20c2682bcc0c64ee723a4c720c6f3d17cbe677bc3b39d9"
+    },
+    {
+      "path": "receiver-decision.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-decision.json",
+      "bytes": 238,
+      "sha256": "7c0bacb993e7de8c644a1b81c70b658fe60a2042a2d008e6baa3f521c3306ed8"
+    },
+    {
+      "path": "controller-exit-checkpoint.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\controller-exit-checkpoint.json",
+      "bytes": 4555,
+      "sha256": "f95e690473bdbf1e1ed7a9b007b1ac0a07cc3e295a141375b084b242bca57c45"
+    },
+    {
+      "path": "controller-reconcile.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\controller-reconcile.json",
+      "bytes": 583,
+      "sha256": "53d0802272db08f0d4c1a0f8b29063d2412f329df8600c4a15229625d59a7c94"
+    },
+    {
+      "path": "controller-reconcile-entry.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\controller-reconcile-entry.json",
+      "bytes": 431,
+      "sha256": "f4843a04f51c354ed9f301e25b102e178055a6d30e2e89c9239f36c2f08c0100"
+    },
+    {
+      "path": "controller-reconcile-exit.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\controller-reconcile-exit.json",
+      "bytes": 21,
+      "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2"
+    },
+    {
+      "path": "dispatch-observation.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\dispatch-observation.json",
+      "bytes": 7334,
+      "sha256": "15c92478f08183d781b31870d6c6326505e24b4acceaedc6c7e004a5431d1cf4"
+    },
+    {
+      "path": "continuation-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continuation-result.json",
+      "bytes": 2171,
+      "sha256": "e34ca23f71c390f1cc961c8f7e5a8a249bf31cfbe0bb80dd24f03e892de95aed"
+    },
+    {
+      "path": "receiver-dispatch-observation.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-dispatch-observation.json",
+      "bytes": 3600,
+      "sha256": "978db32dfc98958d0826bf7db3b252fa2d0813a424f096922712637d61255e8f"
+    },
+    {
+      "path": "receiver-exit.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-exit.json",
+      "bytes": 546,
+      "sha256": "28c8e18253809a509d66c8bc1a7b72c2574d4811bce521866ba74b07a29d597b"
+    },
+    {
+      "path": "receiver-capture.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-capture.json",
+      "bytes": 366,
+      "sha256": "9678071dc217d2b6f214db97025e35e09924c195ada96c4c1a7dade37f112914"
+    },
+    {
+      "path": "receiver-auth-route.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-auth-route.json",
+      "bytes": 57,
+      "sha256": "0b7dad7dbeba938ef56ee817a321dc4a36c5c313f8d8b15242b4bf8db8ff77f8"
+    },
+    {
+      "path": "receiver-workspace.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-workspace.json",
+      "bytes": 306,
+      "sha256": "c2276ddad2a98a830cab112737b5cdd264c8096a69a1443d04c7696e12446b62"
+    },
+    {
+      "path": "receiver-entry.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\receiver-entry.json",
+      "bytes": 635,
+      "sha256": "b3b2256a16fb6a00907eaa735a9a78ac5a2f40ff41d0adc95085be6f836efd0e"
+    },
+    {
+      "path": "replay.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\replay.json",
+      "bytes": 1277,
+      "sha256": "094306050b368d9d6eb65dd8db911be4fbf941005611c6be8dacaa2644ec65d9"
+    },
+    {
+      "path": "auth-cleanup.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\auth-cleanup.json",
+      "bytes": 231,
+      "sha256": "2fa2ae9c0acaab3d4f18d681fba6b895692d0098f5f1d03c61d7787f785ed2c7"
+    },
+    {
+      "path": "closing.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\closing.json",
+      "bytes": 134,
+      "sha256": "8bf32e362af68ad7c5916ebb687fa42d45c8eb180d20c63fda6ee22f14848a3f"
+    },
+    {
+      "path": "stage-plan.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\stage-plan.json",
+      "bytes": 3490,
+      "sha256": "28969e1168f5514a02776db6f5f5fee700d265f71707f5024e2dd45f1f24e2da"
+    },
+    {
+      "path": "candidate-source.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\candidate-source.json",
+      "bytes": 202,
+      "sha256": "3467118a6014942484422ccbca740eff02ef82caf702fe40e08f0a96ec8d045f"
+    },
+    {
+      "path": "root-postcheck.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\root-postcheck.json",
+      "bytes": 1906,
+      "sha256": "f6c2f1797ba8ecfb8936cc827f74786564355a75c705fe037c4e54c8d7ea8d3c"
+    },
+    {
+      "path": "verify-preview-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\verify-preview-start.json",
+      "bytes": 204,
+      "sha256": "c4b67e6779df0371c3adf4db2d69bd6d3573d3fe9c8a5d001772f601134edf7b"
+    },
+    {
+      "path": "verify-preview-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\verify-preview-result.json",
+      "bytes": 68,
+      "sha256": "412b61b652958a1fd5f1b38ccd515dbc79dcedda06265622fb34e3bdc82e4f8c"
+    },
+    {
+      "path": "verify-preview.stdout",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\verify-preview.stdout",
+      "bytes": 163,
+      "sha256": "94fe4875d9aebf0a6aeea8a39e43585eb497d7d062abd35632f01609284af63f"
+    },
+    {
+      "path": "verify-preview.stderr",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\verify-preview.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "auth-setup-entry.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\auth-setup-entry.json",
+      "bytes": 80,
+      "sha256": "1deede5ec396eda45a5084b1185ec3f5942f768010fdd5293b21225a78daec1e"
+    },
+    {
+      "path": "auth-mount-command.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\auth-mount-command.json",
+      "bytes": 68,
+      "sha256": "5b8df240d43f26578b63db7854727507a073ce6a2cec7237e14589bea6ab3dfb"
+    },
+    {
+      "path": "producer-once-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-once-start.json",
+      "bytes": 469,
+      "sha256": "9ae0727097b47c64f391523589518b36977c6e6d0b4c6e34617e55f0c5cc8ee3"
+    },
+    {
+      "path": "producer-once-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-once-result.json",
+      "bytes": 541,
+      "sha256": "2d4c60d92607fdaf22eb3b4067526b1959a6a3bd1dfb2ddb6b861b3f17c7ed07"
+    },
+    {
+      "path": "producer-once-stdout.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-once-stdout.log",
+      "bytes": 83,
+      "sha256": "2e28fb2c520704701b8d53c5ab24297279eb6433dcc959411b8bd7af7032ff49"
+    },
+    {
+      "path": "producer-once-stderr.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\producer-once-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "continuation-preview-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continuation-preview-start.json",
+      "bytes": 418,
+      "sha256": "7aa77ec82a2668dcf6c2ee352f73b2d997bccaab144d4a52e827154cab24a5bd"
+    },
+    {
+      "path": "continuation-preview-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continuation-preview-result.json",
+      "bytes": 491,
+      "sha256": "363a23b0d2df5c808ec831673d7095bbf37cea6400e6462ca769312480e95182"
+    },
+    {
+      "path": "continuation-preview-stdout.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continuation-preview-stdout.log",
+      "bytes": 115,
+      "sha256": "b9310a2cc1bc04feb97aaf369afdbb3a1314e178d390ba52283e5670c11a248e"
+    },
+    {
+      "path": "continuation-preview-stderr.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continuation-preview-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "continue-once-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continue-once-start.json",
+      "bytes": 469,
+      "sha256": "afa946e3257825acc1d31554ea1ee8203bf7ddb754de4ce06e019a448c409fa4"
+    },
+    {
+      "path": "continue-once-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continue-once-result.json",
+      "bytes": 543,
+      "sha256": "b445b11979cdade51d940a8633ca0f826f8b0d1350fc1a1dd1890570723b4495"
+    },
+    {
+      "path": "continue-once-stdout.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continue-once-stdout.log",
+      "bytes": 180,
+      "sha256": "c699c9c79b79d8c676a8d717bd356209fabaf6c49e06baa2ed6540a07a0fc46f"
+    },
+    {
+      "path": "continue-once-stderr.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\continue-once-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "recover-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\recover-start.json",
+      "bytes": 391,
+      "sha256": "60084fa3219285acc867c64213e57a582ad102c7404ae67af278b73e728ef40e"
+    },
+    {
+      "path": "recover-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\recover-result.json",
+      "bytes": 463,
+      "sha256": "90a29a9d4ee144211e489a7266d39fb2f40b59856778ed4f0af639ce616de17a"
+    },
+    {
+      "path": "recover-stdout.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\recover-stdout.log",
+      "bytes": 91,
+      "sha256": "9047f819b7bbb7984ffb78218116e35fec7ef2e13b8ed811a9637ef13f9222f6"
+    },
+    {
+      "path": "recover-stderr.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\recover-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "replay-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\replay-start.json",
+      "bytes": 390,
+      "sha256": "25336d32f11a183fa209a1d5008ab91ca48377ed714225c8f8333ad0b3b827c9"
+    },
+    {
+      "path": "replay-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\replay-result.json",
+      "bytes": 462,
+      "sha256": "26a36dcdda91dfeda4f893d63de145895aa6a2d91a780f98d4b61e5fcc8c4284"
+    },
+    {
+      "path": "replay-stdout.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\replay-stdout.log",
+      "bytes": 40,
+      "sha256": "75b4a100ca473b0a6b7791f169e08029971a060c844bc78ba1ecca367c5b106f"
+    },
+    {
+      "path": "replay-stderr.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\replay-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cleanup-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\cleanup-start.json",
+      "bytes": 395,
+      "sha256": "058b9bb962d76a570d3d0351caa5cf8e528579751521ec8c7200a3770eb638ab"
+    },
+    {
+      "path": "cleanup-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\cleanup-result.json",
+      "bytes": 466,
+      "sha256": "dae538b7a3918b3fa465c9675bd7ae514a2f69e4d51a3f3bf25dcbe4e71ccccb"
+    },
+    {
+      "path": "cleanup-stdout.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\cleanup-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "cleanup-stderr.log",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\cleanup-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host/root-postcheck.py.txt",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck.py",
+      "bytes": 5963,
+      "sha256": "9088932f5b3e41ff409eae3761d961eb94e5c292c66ad6d88c1b52d09ef96705"
+    },
+    {
+      "path": "host/root-postcheck-r2.py.txt",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck-r2.py",
+      "bytes": 6110,
+      "sha256": "f7e9c2c90152e38fde17043fddc2c1125606d5c824c5c5e158f5c68b478495bf"
+    },
+    {
+      "path": "host/root-postcheck-r3.py.txt",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck-r3.py",
+      "bytes": 6138,
+      "sha256": "d4889caabfaff3076b6c1bb35cfeb3017e4b3d20c7fc70178a016e489187a109"
+    },
+    {
+      "path": "host/root-postcheck.stdout",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host/root-postcheck.stderr",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck.stderr",
+      "bytes": 97,
+      "sha256": "42296ba557aedeacf425e70b9fc1012dbd00242886bab77f678a1868f5567f1f"
+    },
+    {
+      "path": "host/root-postcheck-r2.stdout",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck-r2.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host/root-postcheck-r2.stderr",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck-r2.stderr",
+      "bytes": 89,
+      "sha256": "8dcf27049081692b55c9855ae13bfdccacf15dd7bbadbe202537c7e06816d4c0"
+    },
+    {
+      "path": "host/root-postcheck-r3.stdout",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck-r3.stdout",
+      "bytes": 1507,
+      "sha256": "169ddba597a22108d34ea1d314064a6e22e28b83cbcffba8c7eecfe3e60b5641"
+    },
+    {
+      "path": "host/root-postcheck-r3.stderr",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\root-postcheck-r3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "host/vm-start.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\vm-start.json",
+      "bytes": 309,
+      "sha256": "f73d7e7c5ff9f03b07b3fcda6fc88b7b04bd124d4c1c25aea2225003e65f36ff"
+    },
+    {
+      "path": "host/guest-preflight.stdout",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\guest-preflight.stdout",
+      "bytes": 111,
+      "sha256": "d421521492dfcdaf8b482a59b076b1be1d1d8b382c27449dcf2df8e37026d8ca"
+    },
+    {
+      "path": "host/guest-preflight-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\guest-preflight-result.json",
+      "bytes": 192,
+      "sha256": "1c084a21f7e75fdf3dc669f1a8122c43795a0f238ccfe631757deb9ff1486b3c"
+    },
+    {
+      "path": "host/prepare-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\prepare-result.json",
+      "bytes": 253,
+      "sha256": "b182abfeb6f87ae9cf5a4b47745437a5f0e209540e2cbb8a1b0f9bf3c228210f"
+    },
+    {
+      "path": "host/ready-result.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\ready-result.json",
+      "bytes": 316,
+      "sha256": "122f8780413c83c8637467b4cea73f3cfbe3f427a157dba61849707c21f7cf63"
+    },
+    {
+      "path": "host/upload-bound.json",
+      "source": "D:\\agentsync-debug\\m122-composed-recovery\\host\\upload-bound.json",
+      "bytes": 1435,
+      "sha256": "22c96a58435fd9a55a7ebe5f03abb6cb96267750806a4aa02cac13a93f54d11d"
+    }
+  ]
+}

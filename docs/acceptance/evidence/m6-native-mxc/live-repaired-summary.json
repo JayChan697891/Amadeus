@@ -1,0 +1,39 @@
+{
+  "product_sha": "ee456900fad6bb4cfc09cad0eecdc9ce1371ab74",
+  "execution_head": "24b02febe4f9813ca66387f2fa2af6b24354e85e",
+  "plan_sha256": "ce6032da2c3624ef3aee259da404c2f15e82a1ef2d60681e730148f3976499b3",
+  "execution_time_utc": "2026-11-12T08:15:51.142606+00:00",
+  "execution_time_local": "2026-11-12T00:15:51.142606-08:00 America/Tijuana",
+  "scope": "Actual single fixed-text Codex through approved adapter to Core review, then host-mediated distinct reviewer",
+  "result": "SCOPED ACCEPTED; not full M6 or Release",
+  "model_launches": 1,
+  "retry": false,
+  "cli_version": "0.167.0-alpha.3.2",
+  "cli_sha256": "4f91ae86895ff124760d70ed1630e2354ca874765c9bb61ae524b600327efc17",
+  "parent_exit": 0,
+  "elapsed_ms": 55953,
+  "final_task_status": "completed",
+  "task_verification": "unverified",
+  "independent_review": "Native Astra scoped review and root checks; separate Core reviewer identity; not second-client evidence",
+  "raw_output": "602 stdout bytes and476 stderr bytes retained only in restricted local folder; never uploaded",
+  "stderr_status": "Unclassified diagnostics; no broader health assertion",
+  "credentials": "Temporary copy removed; original unchanged",
+  "authorization": "Single call/copy grant consumed; later owner standing first-choice approvals do not rewrite past grants",
+  "not_established": [
+    "full M6",
+    "general B1/B3",
+    "billing verification",
+    "actual timeout/cancel/descendant cleanup",
+    "real second-client relay",
+    "M7",
+    "formal Release"
+  ],
+  "evidence_sha256": {
+    "live-repaired-result.json": "4c9c4fc3c65cd01eff96120900a3006bdb922489b3e5e1880ba86d5b0f3a2e1c",
+    "live-repaired-cleanup.json": "a4a2d1ca1b69c16280066bed0d39fe492f910cd0e50838f2aa83503ee7c02a19",
+    "live-repaired-capture-metadata.json": "ca23071d6156e511384734ac478a98f99104b77485b8147c2643473a84347d98",
+    "live-repaired-auth-route.json": "b82b7b4b48df8adf3f77e73a4493a979f70165c103bcb4ebaf36a9357ef1c78a",
+    "live-repaired-reopened-check.json": "abd381fadc768b6266005bac08f325f0c10957c0b794fb256364fb530dc4095a",
+    "live-repaired-independent-review.json": "36a62f2261acbd304324cb7045fcb5aeed15a2a2d234463f90c49c373daaf8c8"
+  }
+}

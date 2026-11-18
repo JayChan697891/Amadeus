@@ -1,0 +1,198 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\agentsync-debug\m115-r3\s
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 2482 items
+
+tests\concurrency\test_claims.py ......                                  [  0%]
+tests\concurrency\test_file_lock_races.py .                              [  0%]
+tests\concurrency\test_m3_races.py ....                                  [  0%]
+tests\concurrency\test_m5_approval_races.py .                            [  0%]
+tests\integration\test_acceptance.py .                                   [  0%]
+tests\integration\test_adapter_manager_core_boundary.py .                [  0%]
+tests\integration\test_binding_transaction.py .......                    [  0%]
+tests\integration\test_candidate_binding_git_records.py ..               [  0%]
+tests\integration\test_candidate_claim_migration.py ....                 [  1%]
+tests\integration\test_candidate_claims.py ............................. [  2%]
+.....                                                                    [  2%]
+tests\integration\test_candidate_execution.py .......................... [  3%]
+......sssss                                                              [  3%]
+tests\integration\test_candidate_export.py ............................. [  5%]
+.......                                                                  [  5%]
+tests\integration\test_candidate_export_security.py ....s                [  5%]
+tests\integration\test_candidate_integration.py ........................ [  6%]
+                                                                         [  6%]
+tests\integration\test_candidate_intent_migration.py ....                [  6%]
+tests\integration\test_candidate_intent_security.py .                    [  6%]
+tests\integration\test_candidate_intents.py ............................ [  7%]
+.......                                                                  [  8%]
+tests\integration\test_candidate_jobs.py ............................... [  9%]
+.........                                                                [  9%]
+tests\integration\test_candidate_queue_security.py ......                [ 10%]
+tests\integration\test_capability_planning_core_boundary.py .            [ 10%]
+tests\integration\test_claude_adapter_core_boundary.py ...               [ 10%]
+tests\integration\test_codex_adapter_core_boundary.py ...                [ 10%]
+tests\integration\test_codex_invocation_process.py .                     [ 10%]
+tests\integration\test_codex_proposal_capture.py ......................  [ 11%]
+tests\integration\test_codex_proposal_relay_queue.py ................... [ 12%]
+....                                                                     [ 12%]
+tests\integration\test_codex_proposal_review.py ........................ [ 13%]
+                                                                         [ 13%]
+tests\integration\test_controlled_relay_pipeline.py ..............       [ 13%]
+tests\integration\test_cursor_adapter_core_boundary.py ...               [ 13%]
+tests\integration\test_dispatch_planning_core_boundary.py ...            [ 13%]
+tests\integration\test_docker_verifier.py ssssssssssssss                 [ 14%]
+tests\integration\test_durable_mock_workflow.py ..................       [ 15%]
+tests\integration\test_execution_reconciliation.py sssss                 [ 15%]
+tests\integration\test_handoff_recovery.py .........                     [ 15%]
+tests\integration\test_host_report.py .........                          [ 16%]
+tests\integration\test_live_http.py .                                    [ 16%]
+tests\integration\test_m3_migration.py ...                               [ 16%]
+tests\integration\test_m3_transports.py ...                              [ 16%]
+tests\integration\test_m4_migration.py ...                               [ 16%]
+tests\integration\test_m4_transports.py ..                               [ 16%]
+tests\integration\test_m4b_migration.py ..                               [ 16%]
+tests\integration\test_m4b_transports.py ..                              [ 16%]
+tests\integration\test_m4b_workspaces.py ............................... [ 18%]
+.                                                                        [ 18%]
+tests\integration\test_m5_governance.py ........                         [ 18%]
+tests\integration\test_m5_migration.py .....                             [ 18%]
+tests\integration\test_m5_transports.py ..                               [ 18%]
+tests\integration\test_mcp_install.py ..................                 [ 19%]
+tests\integration\test_mock_adapter_core_boundary.py ........            [ 19%]
+tests\integration\test_mock_run_manager_core_boundary.py .....           [ 19%]
+tests\integration\test_mock_workflow.py ................................ [ 21%]
+.............                                                            [ 21%]
+tests\integration\test_owner_execution.py sssssss                        [ 22%]
+tests\integration\test_project_provider_usage.py .......                 [ 22%]
+tests\integration\test_proposal_docker_pipeline.py ss                    [ 22%]
+tests\integration\test_proposal_handoff.py ...............               [ 23%]
+tests\integration\test_proposal_staging.py ............................. [ 24%]
+...                                                                      [ 24%]
+tests\integration\test_provider_loopback_transport.py ......             [ 24%]
+tests\integration\test_relay_owner_status.py .                           [ 24%]
+tests\integration\test_relay_usage.py ...............                    [ 25%]
+tests\integration\test_relay_wave_journal.py .                           [ 25%]
+tests\integration\test_scheduling_core_boundary.py ....                  [ 25%]
+tests\integration\test_task_proposals.py ................                [ 26%]
+tests\integration\test_transports.py .......                             [ 26%]
+tests\integration\test_unfinished_continuation.py ..................     [ 27%]
+tests\integration\test_verified_proposal_flow.py sssssssssss............ [ 27%]
+..                                                                       [ 28%]
+tests\integration\test_verified_task_completion.py ..................... [ 28%]
+......s                                                                  [ 29%]
+tests\recovery\test_process_recovery.py ..                               [ 29%]
+tests\security\test_core_security.py ..........................          [ 30%]
+tests\security\test_file_locks.py ........................               [ 31%]
+tests\security\test_http_boundary.py .....                               [ 31%]
+tests\security\test_m3_security.py ................                      [ 32%]
+tests\security\test_m5_audit_transactions.py ...                         [ 32%]
+tests\security\test_m5_owner_cli_inputs.py .....                         [ 32%]
+tests\security\test_m5_permissions.py .................................. [ 33%]
+........................................................................ [ 36%]
+.......................................................................  [ 39%]
+tests\security\test_resource_paths.py ..s............................... [ 40%]
+....s....                                                                [ 41%]
+tests\unit\test_acceptance_traceability.py ............................. [ 42%]
+...............................................................          [ 45%]
+tests\unit\test_adapter_run_manager.py ................................. [ 46%]
+........................................................................ [ 49%]
+.........                                                                [ 49%]
+tests\unit\test_adapters.py ...................................          [ 51%]
+tests\unit\test_candidate_binding.py .........................           [ 52%]
+tests\unit\test_candidate_intent_relations.py .....                      [ 52%]
+tests\unit\test_candidate_queue_migration.py ....                        [ 52%]
+tests\unit\test_capture_creation_fence.py .......                        [ 52%]
+tests\unit\test_claude_adapter.py ......................                 [ 53%]
+tests\unit\test_claude_events.py ....................................... [ 55%]
+......................................                                   [ 56%]
+tests\unit\test_claude_invocation.py ......                              [ 56%]
+tests\unit\test_claude_process.py .....                                  [ 57%]
+tests\unit\test_codex_adapter.py ......................................  [ 58%]
+tests\unit\test_codex_events.py ........................................ [ 60%]
+..........                                                               [ 60%]
+tests\unit\test_codex_invocation.py ...................................  [ 62%]
+tests\unit\test_codex_process.py ............                            [ 62%]
+tests\unit\test_context.py ........................                      [ 63%]
+tests\unit\test_coordination_benchmark.py .......                        [ 63%]
+tests\unit\test_core.py ..................                               [ 64%]
+tests\unit\test_core_admission.py .........s                             [ 64%]
+tests\unit\test_core_startup_diagnostic.py ....                          [ 65%]
+tests\unit\test_cursor_adapter.py .............                          [ 65%]
+tests\unit\test_cursor_events.py ....................................... [ 67%]
+................                                                         [ 67%]
+tests\unit\test_cursor_invocation.py .                                   [ 67%]
+tests\unit\test_cursor_node_bundle.py ................ss                 [ 68%]
+tests\unit\test_data_path.py .                                           [ 68%]
+tests\unit\test_dispatch_planning.py ...............................     [ 69%]
+tests\unit\test_http_providers.py ..............                         [ 70%]
+tests\unit\test_inspect_claude_events.py ...................s.           [ 71%]
+tests\unit\test_inspect_codex_events.py ...............                  [ 71%]
+tests\unit\test_inspect_local_attempts.py ........................       [ 72%]
+tests\unit\test_mock_run_manager.py ................................     [ 74%]
+tests\unit\test_owned_process_cleanup.py ....                            [ 74%]
+tests\unit\test_planning_cli.py .....                                    [ 74%]
+tests\unit\test_process_capture.py .................................     [ 75%]
+tests\unit\test_process_capture_deadline.py .......                      [ 76%]
+tests\unit\test_process_capture_start_cancel.py .                        [ 76%]
+tests\unit\test_proposals.py .......................................     [ 77%]
+tests\unit\test_provider_usage_and_budget.py ...                         [ 77%]
+tests\unit\test_pytest_case_journal.py ......ss....s..                   [ 78%]
+tests\unit\test_relay_execution_budget.py ..                             [ 78%]
+tests\unit\test_release_acceptance.py .................................. [ 79%]
+........................................................................ [ 82%]
+..............................................................           [ 85%]
+tests\unit\test_release_review_evidence.py .......                       [ 85%]
+tests\unit\test_retry_planning.py ..................                     [ 86%]
+tests\unit\test_scheduling.py .....................................      [ 87%]
+tests\unit\test_unstarted_capture_adapter.py ....                        [ 87%]
+tests\unit\test_usage.py ...............                                 [ 88%]
+tests\unit\test_usage_checkpoint_storage.py ..                           [ 88%]
+tests\unit\test_usage_cli.py ....                                        [ 88%]
+tests\unit\test_verification_docker.py ................................. [ 90%]
+........................................................................ [ 93%]
+..................................                                       [ 94%]
+tests\unit\test_verification_executor.py ............................... [ 95%]
+....                                                                     [ 95%]
+tests\unit\test_verification_jobs.py ..........................          [ 96%]
+tests\unit\test_verification_reconciliation.py ......................... [ 97%]
+..................                                                       [ 98%]
+tests\unit\test_verification_snapshot.py ............................... [ 99%]
+...s                                                                     [100%]
+
+- generated xml file: D:\agentsync-debug\t115matrix\.scratch-1xr3f2vy\junit.xml -
+=========================== short test summary info ===========================
+SKIPPED [6] tests\integration\test_candidate_execution.py:608: Requires separately controlled local Linux Docker and preloaded immutable image
+SKIPPED [1] tests\integration\test_candidate_export_security.py:169: POSIX FIFO metadata fixture requires Linux
+SKIPPED [1] tests\integration\test_docker_verifier.py:109: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [5] tests\integration\test_docker_verifier.py:124: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:145: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:193: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [2] tests\integration\test_docker_verifier.py:204: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:216: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:225: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:241: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [1] tests\integration\test_docker_verifier.py:264: Real Linux Docker/image not configured; policy tests are a separate tier
+SKIPPED [2] tests\integration\test_execution_reconciliation.py:246: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_execution_reconciliation.py:286: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_execution_reconciliation.py:302: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_execution_reconciliation.py:321: Actual reconciliation requires an explicitly configured local Linux image
+SKIPPED [1] tests\integration\test_owner_execution.py:79: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [3] tests\integration\test_owner_execution.py:144: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [1] tests\integration\test_owner_execution.py:165: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [1] tests\integration\test_owner_execution.py:178: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [1] tests\integration\test_owner_execution.py:213: Actual owner execution requires an explicitly configured local Linux Docker image
+SKIPPED [2] tests\integration\test_proposal_docker_pipeline.py:72: Proposal execution requires an explicitly pinned local Linux Docker image
+SKIPPED [11] tests\integration\test_verified_proposal_flow.py:118: Proposal execution requires an explicitly pinned local Linux Docker image
+SKIPPED [1] tests\\security\\test_resource_paths.py:43: Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\t115matrix\\\\.scratch-1xr3f2vy\\\\pytest\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\t115matrix\\\\.scratch-1xr3f2vy\\\\pytest\\\\test_explicit_project_symlink_0\\\\selected'
+SKIPPED [1] tests\\security\\test_resource_paths.py:238: Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\t115matrix\\\\.scratch-1xr3f2vy\\\\pytest\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\t115matrix\\\\.scratch-1xr3f2vy\\\\pytest\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'
+SKIPPED [1] tests\unit\test_core_admission.py:197: Requires Linux/POSIX fork
+SKIPPED [2] tests\unit\test_cursor_node_bundle.py:203: This host cannot create the actual symlink fixture
+SKIPPED [1] tests\unit\test_inspect_claude_events.py:255: FIFO fixture requires os.mkfifo
+SKIPPED [2] tests\unit\test_pytest_case_journal.py:154: Local symlink creation unavailable
+SKIPPED [1] tests\unit\test_pytest_case_journal.py:176: Local FIFO creation unavailable
+SKIPPED [1] tests\unit\test_verification_snapshot.py:352: Creating directory symlinks requires unavailable host privileges
+================ 2426 passed, 56 skipped in 2889.94s (0:48:09) ================

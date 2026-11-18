@@ -1,0 +1,12 @@
+{
+  "time_utc": "2026-11-12T05:38:30.286114+00:00",
+  "product_sha": "6a8ff4127166d6e029360c3d782b3bbd4e89cab2",
+  "plan_sha256": "ae6ec471b56b0cd2233ee363350acc8a4da103e721051fdc6fc3c0bba1cf666f",
+  "harness_sha256": "4ebe32887758d833cdb560281788e33f3654de664bc1d901fabc323ce69a694b",
+  "cleanup_script_sha256": "7e4908d1ab1b557f112921dfc1710903e848d7ef0ea08ba32ae3af7ba1475c4e",
+  "runtime_origin_verified": true,
+  "source_and_worktree_unchanged_from_separately_pinned_baselines": true,
+  "preflight_correction": "Shared byte-hash check rejected CRLF source versus LF managed checkout. Same HEAD and clean state, both literal fixture contents verified. Separate before/after hashes pinned. Initial LF-to-CRLF direction assumption also rejected before correction.",
+  "credentials_copied": false,
+  "model_requests": 0
+}

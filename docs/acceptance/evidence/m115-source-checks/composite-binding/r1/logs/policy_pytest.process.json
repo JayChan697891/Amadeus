@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "policy_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "-c",
+      "D:\\agentsync-debug\\m115-composite-validation\\pytest.ini",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\agentsync-debug\\m115-composite-validation\\r1\\scratch\\pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m115-composite-validation\\r1\\scratch\\junit.xml",
+      "D:\\agentsync-debug\\m115-composite-validation\\s\\tests\\unit\\test_composite_acceptance_evidence.py"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-composite-validation\\s",
+    "started_at": "2026-11-14T07:47:41.740731+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "policy_pytest",
+    "status": "pass",
+    "command": [
+      "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "-c",
+      "D:\\agentsync-debug\\m115-composite-validation\\pytest.ini",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\agentsync-debug\\m115-composite-validation\\r1\\scratch\\pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m115-composite-validation\\r1\\scratch\\junit.xml",
+      "D:\\agentsync-debug\\m115-composite-validation\\s\\tests\\unit\\test_composite_acceptance_evidence.py"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-composite-validation\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:47:41.740731+00:00",
+    "finished_at": "2026-11-14T07:47:42.661963+00:00",
+    "log": "logs/policy_pytest.log",
+    "log_sha256": "81bd87f6a7717a7fef6f1404ba87fb34e90bdf4deac88a8b8f269348718dda76",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

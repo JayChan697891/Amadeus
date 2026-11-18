@@ -1,0 +1,5 @@
+........................................................................ [ 76%]
+....................ss                                                   [100%]
+=========================== short test summary info ===========================
+SKIPPED [2] tests\integration\test_proposal_docker_pipeline.py:44: Proposal execution requires an explicitly pinned local Linux Docker image
+92 passed, 2 skipped in 1.75s

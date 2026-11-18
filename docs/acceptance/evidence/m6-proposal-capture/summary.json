@@ -1,0 +1,88 @@
+{
+  "product_sha": "bf54d44cd2e9550e902ca3d5d18ab6c7e296862b",
+  "scope": "Opt-in approved Codex source proposal capture into task-bound inert Core context",
+  "windows_source": {
+    "passed": 187,
+    "traceability_cases_included": 92,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fresh_offline_windows_wheel": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "runtime_module_hashes_matched_before_and_after": 85,
+    "pip_check": "PASS"
+  },
+  "ruff": "PASS",
+  "format": "PASS",
+  "mypy_modules_passed": 85,
+  "actual_codex": {
+    "result": "SCOPED ACCEPTED: actual capture-to-Core only",
+    "plan_sha256": "af02675e6a76360065885aff1a4e54c520252e5daf02b4a378b05bc98e7ce52b",
+    "time_utc": "2026-11-12T09:49:48.935546+00:00",
+    "time_local": "2026-11-12T01:49:48.935546-08:00 America/Tijuana",
+    "cli_version": "0.167.0-alpha.3.2",
+    "model_calls": 1,
+    "retry": false,
+    "exit_code": 0,
+    "adapter_elapsed_ms": 22014,
+    "observed_status": "proposal_received",
+    "reopened_state": "proposal_stored",
+    "core_task_status": "running",
+    "task_verification": "unverified",
+    "proposal_bytes": 63,
+    "proposal_sha256": "0049214146c09e015865e54237ecc4d15c9e043886cb20d1d9c68659bf744bc9",
+    "syntax_check_only": true,
+    "code_executed": false,
+    "code_imported": false,
+    "raw_capture": "695 stdout plus119 unclassified stderr bytes; restricted local storage only",
+    "credentials": "Temporary copy removed; original unchanged",
+    "fixtures_and_runtime": "Unchanged",
+    "authorization": "Standing first-choice owner preference within subscription/no-extra-fee and private temporary-copy constraints"
+  },
+  "review": "Native Astra independently reviewed source and safe real-run records; root verified source/installed results. Actual capture-to-Core accepted only; not artifact correctness or full M6.",
+  "not_run": [
+    "Independent generated artifact execution and verification",
+    "Owner-authorized managed proposal import",
+    "Linux/macOS for this new delta",
+    "Complete current-SHA Release matrix"
+  ],
+  "not_established": [
+    "No independent billing proof",
+    "No descendant/server cancellation proof",
+    "No cross-client acceptance",
+    "No full M6/M7/Release acceptance"
+  ],
+  "reproduction_note": "Helpers preserved as nonexecuting text records. Consumed one-shot pilot must not be rerun. Legacy Core title is not the task specification; the pinned launch instruction and output contract control.",
+  "shared_private_capture_helper": {
+    "path": "../m6-native-mxc/cancel-live-private_capture.py.txt",
+    "sha256": "e142e6ee7b4d41a4d4ea794294b549fce8e5938943716f825dc93911fd12517c"
+  },
+  "formal_release": "BLOCKED",
+  "artifact_sha256": {
+    "agentsync_local-0.3.0a109-py3-none-any.whl": "9e4b64bf82c4ce8c9e3d1d43a00a25c19a142f7f094f41292023f234f7eacaa5",
+    "agentsync_local-0.3.0a109.tar.gz": "f17289e1f8bad0758adc01a25ba52d619db6e986613d970320b743a2f2945283"
+  },
+  "evidence_sha256": {
+    "windows-source.log": "015aad47d003e0df5f3a6dcebf21dc13a099f5cd275a2b2eeeb2829bf0324d12",
+    "windows-source.xml": "3e3c466ce88f16e1f27597b8e595e9bfa6d0a3a23a83cc38755a502fc7bfa1c1",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "format.log": "5fb9c7c836f6c743fd52a5203d82bcfa0cd5a61c31ed5c87c02cc39278209f9c",
+    "mypy.log": "a83a70edf408d123cd597d2aef487538650d1d33f5e9a95e4fc05d86733a72ec",
+    "windows-installed.log": "deed36f43a4e7d4e64448af3e8a4b47a1a6063954a78c07bc823d87a8db0fd9e",
+    "windows-installed.xml": "7f8db9a071510dcc55d1ccff763d4ac05487947fcc98c2c1a1b71d8e3fca1c5c",
+    "windows-origin.json": "a76be075fb1ca31a89560068f98381fe6dace78d5cc4a45edbfb8c9b1d1945b8",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "runtime-manifest.json": "1871c5dba80bbb4e1be38c34ee0329bfd3e4c233a558909fa3c05c848facca56",
+    "live-result.json": "c7257b9e767ad3977ec94a3fba745faf8a0aac1c03f4bb250d807b327ee70b03",
+    "live-reopened-check.json": "7ab4192b151d7be48a66285c2b79ca2cd66b82069a5ec60c3745dd09904b4971",
+    "live-auth-route.json": "b82b7b4b48df8adf3f77e73a4493a979f70165c103bcb4ebaf36a9357ef1c78a",
+    "live-cleanup.json": "e043532e59b225c1fdd1e707221522761e6ae3392ddc38e1fd5b0a9aa7a46848",
+    "live-capture-metadata.json": "a4104b118dfcf0fe307a0b17aabe274b2f7aa6f127929f3e3ba6a253ee954875",
+    "live-pilot.py.txt": "a2ce716c10efe4d62168ba193c198a07d2c575ab28af81d4e4a009b850663169",
+    "live-run-authorized.ps1.txt": "40b65781a30276d04296cd93ebcb2a67d164834177da0ec310b00919dff23762",
+    "live-inspect_once.py.txt": "6aa343fa3cff764cddfb9947352ad787da0727885365ae5134b80b81477bce34",
+    "initial-results.json": "ab6022a71083b0676b4d6d1ad7979bd26bc83b0ee1a3068882649075bcf728b7"
+  }
+}

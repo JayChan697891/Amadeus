@@ -1,0 +1,62 @@
+{
+  "scope": "prefreeze_collection_and_static_checks_only",
+  "base_commit": "015ad527a25102d4c033f3d9e6a78a571087d047",
+  "working_version": "0.3.0a116",
+  "collection": {
+    "scope": "collection_only_not_test_execution",
+    "exit_code": 0,
+    "collected": 2533,
+    "unique_original": 2533,
+    "unique_sanitized": 2533,
+    "sanitized_ids_sha256": "9502c85472056f1b635a2e40ccddbc6db90c736626c2619a81aa9031d3eef38c"
+  },
+  "test_execution": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "collection.json",
+      "size": 239,
+      "sha256": "77bf8e2b7f7e0b5462e907b2165c557efffab7e3a7d7d72fe291fe1f5dae4a20"
+    },
+    {
+      "path": "result.json",
+      "size": 2068,
+      "sha256": "3f820d2f70174f0bf9ae2469741e9ceb688346dbe506d8e315b13f5904b8fe93"
+    },
+    {
+      "path": "logs/ruff.log",
+      "size": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "logs/ruff.process.json",
+      "size": 1222,
+      "sha256": "399efaacc8d15313c7a217e10e9aeaa2d22f2b712245a2e334df09804f34afe2"
+    },
+    {
+      "path": "logs/ruff_format.log",
+      "size": 29,
+      "sha256": "96beb46882cf0ae91ed615e69559cf524e64997efe2ec68356cd7a75f13c6c65"
+    },
+    {
+      "path": "logs/ruff_format.process.json",
+      "size": 1279,
+      "sha256": "f6eb3c684c0ff3dd50a2d7136f3ed38f8ef24b408107d169de1f364e967c4ca0"
+    },
+    {
+      "path": "logs/collection.log",
+      "size": 228,
+      "sha256": "4d6940c963c58ff31a38b5c0c88ed7921a016e2ce211261c8ac8218c0f0be95c"
+    },
+    {
+      "path": "logs/collection.process.json",
+      "size": 1286,
+      "sha256": "3e4642a27a2d660444a8874255f7689796cbc8eabd506c052cef1b3589232d98"
+    },
+    {
+      "path": "preflight.py.txt",
+      "size": 3318,
+      "sha256": "58889e01da3cba9c3eb5ece54a83d5db272eb13b25d9845a9e6588019b1c80c1"
+    }
+  ]
+}

@@ -92,7 +92,7 @@ def test_m4b_five_mcp_operations_share_real_git_state_with_http_and_sdk(tmp_path
 
             listing = await client.list_tools()
             schemas = {tool.name: tool.input_schema for tool in listing.tools}
-            assert len(schemas) == 33
+            assert len(schemas) == 34
             for operation in (
                 "capture_repository",
                 "create_worktree",

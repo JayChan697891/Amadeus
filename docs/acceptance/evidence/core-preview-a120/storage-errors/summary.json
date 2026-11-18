@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "source_commit": "e1c2fd94f3de6b59324807f6b10e224886830f91",
+  "scope": "P1 structured CLI database errors; no new M5 stage",
+  "status": "bounded_windows_source_pass",
+  "formal_release": "BLOCKED",
+  "change": "Both owner and workflow use one sqlite3.Error boundary; return storage_error with exit 1 without exposing traceback or repairing the database.",
+  "final_evidence": "combined-results.json",
+  "results": {
+    "direct_reproductions": 2,
+    "pre_fix_failing_tests": 2,
+    "intermediate_workflow_only_passes": 10,
+    "final_combined_passes": 16,
+    "final_failures": 0,
+    "final_errors": 0,
+    "final_skips": 0,
+    "format_first_attempt": "failed; signature formatting only",
+    "final_lint_and_format": "passed"
+  },
+  "review": "Root inspected actual three-file diff, raw reproductions, red/combined JUnit, final hashes and unchanged corrupt fixture. Source-only results are separate from subsequent installed-preview tests.",
+  "limitations": [
+    "No model, credential copy, Docker or VM.",
+    "Source tests are Windows-only; Linux, fresh installations and full suite NOT RUN at this source checkpoint.",
+    "Frozen a119 packages and all prior failed outputs retained.",
+    "No auto-repair or successful database recovery is claimed."
+  ],
+  "files": [
+    {
+      "path": "combined-origin.log",
+      "bytes": 53,
+      "sha256": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3"
+    },
+    {
+      "path": "combined-results.json",
+      "bytes": 4771,
+      "sha256": "2b140df426b86ede80ae2b06b031f05941636cf9023a4fc065f4f5a67c778cd8"
+    },
+    {
+      "path": "combined-ruff-format.log",
+      "bytes": 401,
+      "sha256": "1feb0867fcd4bd4c206a498ec560df22d1b9f4565b8d4771f6c638d56b1c6cf8"
+    },
+    {
+      "path": "combined.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "combined.log",
+      "bytes": 101,
+      "sha256": "476e407916d256c642c3a9aeca1dbb89cd2eb94c053661573e52f50e8c311259"
+    },
+    {
+      "path": "combined.xml",
+      "bytes": 2629,
+      "sha256": "a130be2d7ad3c09d5572338189a48884aa0ecfcc60c731b61a259419a8bdbfa7"
+    },
+    {
+      "path": "final-ruff-check.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "final-ruff-format.log",
+      "bytes": 27,
+      "sha256": "81e0708af79a682467b0ecbd3453a0a33cfcbbe2812201b4d4f405f78ded2976"
+    },
+    {
+      "path": "green-origin.log",
+      "bytes": 53,
+      "sha256": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3"
+    },
+    {
+      "path": "green.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "green.log",
+      "bytes": 101,
+      "sha256": "0e41e002eca07b3375dff3ebcf2a020a62725bd8b07e9096489dea97d3ed37a2"
+    },
+    {
+      "path": "green.xml",
+      "bytes": 1733,
+      "sha256": "7560578ab993d2ccdeca12a3ba556bcf2dceda0505c02243890d8c6263e62607"
+    },
+    {
+      "path": "native-results.json",
+      "bytes": 2362,
+      "sha256": "02876e6b36c5fbf5ea2cc3906ec15759941f02ba9399c556e2b9fb290cb554fc"
+    },
+    {
+      "path": "owner-red-origin.log",
+      "bytes": 53,
+      "sha256": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3"
+    },
+    {
+      "path": "owner-red.exit",
+      "bytes": 3,
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "path": "owner-red.log",
+      "bytes": 1312,
+      "sha256": "4f5d3327ec1517584835d3f6834d0add8662857045cecf3492941808ca1111ea"
+    },
+    {
+      "path": "owner-red.xml",
+      "bytes": 2153,
+      "sha256": "a940e1ff355a605a7de40a188c0fee74778f94e2a3f1cbf73a896e69b8e152d5"
+    },
+    {
+      "path": "owner-repro-result.json",
+      "bytes": 213,
+      "sha256": "da6a36c64eff7670bc7a86db7f5868b52cc00f22bced23c3f1d1e2802e3bc925"
+    },
+    {
+      "path": "owner-repro-start.json",
+      "bytes": 597,
+      "sha256": "25ed25e79f4481096ff548e06802b8ee6e5d9ba21438945a30c9d40913b836c8"
+    },
+    {
+      "path": "owner-repro-stderr.log",
+      "bytes": 1069,
+      "sha256": "2832829814840b6e492bfc0e7f9bafeba4c5de2cbe11e33463c1c511e662b6ad"
+    },
+    {
+      "path": "owner-repro-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "red.exit",
+      "bytes": 3,
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "path": "red.log",
+      "bytes": 1058,
+      "sha256": "3d7647c38269718aa8faae0605aa5948705c8e7d3cf7b848a6ffb94619b0a1bb"
+    },
+    {
+      "path": "red.xml",
+      "bytes": 1556,
+      "sha256": "ea696f86cb51b049afe64cf416be6687adb820c4ab8c65bc8d29a5a49912441a"
+    },
+    {
+      "path": "repro-result.json",
+      "bytes": 213,
+      "sha256": "da6a36c64eff7670bc7a86db7f5868b52cc00f22bced23c3f1d1e2802e3bc925"
+    },
+    {
+      "path": "repro-start.json",
+      "bytes": 594,
+      "sha256": "72b2e08e7f49a5d06ae8a9f5fbf80b0f978861307b544f90140ef87ff26b72e0"
+    },
+    {
+      "path": "repro-stderr.log",
+      "bytes": 1041,
+      "sha256": "a77a7fdf8f58c745391298ddf560fbb7c58f105c6a05876ecf923680bc2be9d6"
+    },
+    {
+      "path": "repro-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "ruff-check.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "ruff-format.log",
+      "bytes": 27,
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
+    },
+    {
+      "path": "source-origin.log",
+      "bytes": 53,
+      "sha256": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3"
+    }
+  ]
+}

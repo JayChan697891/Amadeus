@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "F:\syuc\amadeus-m6-single\src\agentsync\__main__.py", line 4, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "F:\syuc\amadeus-m6-single\src\agentsync\cli.py", line 325, in main
+    response = AgentSyncClient(directory).owner_call(args.operation, **payload)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\syuc\amadeus-m6-single\src\agentsync\sdk\__init__.py", line 22, in __init__
+    self.core = Core(data_dir=data_dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\syuc\amadeus-m6-single\src\agentsync\core\service.py", line 42, in __init__
+    migrate(self.db_path)
+  File "F:\syuc\amadeus-m6-single\src\agentsync\storage\database.py", line 500, in migrate
+    _enable_wal(db)
+  File "F:\syuc\amadeus-m6-single\src\agentsync\storage\database.py", line 610, in _enable_wal
+    db.execute("PRAGMA journal_mode=WAL")
+sqlite3.DatabaseError: file is not a database

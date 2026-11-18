@@ -1,0 +1,267 @@
+{
+  "product_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "wheel_sha256": "bdd8fc4e98de6824d3a6f5a6be7fa2a477df7acfe9bb06f061d8479f50ee1b33",
+  "started_at": "2026-11-12T11:53:16.967264+00:00",
+  "platform": "win32",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "scope": "complete existing suite against previously fresh installed a2634ec wheel; not a new installation",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "status": "fail",
+  "check": {
+    "id": "wheel_pytest",
+    "status": "fail",
+    "command": [
+      "D:\\agentsync-debug\\m6-package-linux-readonly-portable\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m6-linux-live-20261112\\full-regression.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m6-package-linux-readonly-portable\\source",
+    "exit_code": 1,
+    "started_at": "2026-11-12T11:53:16.968257+00:00",
+    "finished_at": "2026-11-12T12:25:27.082199+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "bd390f4081c28e4386ba0a116d512085c28d5d8e78d7346d00081dd236cdba82",
+    "credential_redactions": 1,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  },
+  "source_unchanged": true,
+  "source_file_count": 1126,
+  "source_fingerprint_sha256": "83521e672eab7f4ca812f6505b2127f63f94ece1d704f431388485ed0e1ecae5",
+  "changed_source_paths": [],
+  "junit_redactions": 7,
+  "junit": {
+    "tests": 2285,
+    "failures": 34,
+    "errors": 0,
+    "skipped": 45
+  },
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 6,
+    "POSIX FIFO metadata fixture requires Linux": 1,
+    "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+    "Actual reconciliation requires an explicitly configured local Linux image": 5,
+    "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+    "Proposal execution requires an explicitly pinned local Linux Docker image": 2,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m6-full-a2634ec\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m6-full-a2634ec\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m6-full-a2634ec\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m6-full-a2634ec\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+    "Requires Linux/POSIX fork": 1,
+    "This host cannot create the actual symlink fixture": 2,
+    "FIFO fixture requires os.mkfifo": 1,
+    "Local symlink creation unavailable": 2,
+    "Local FIFO creation unavailable": 1,
+    "Creating directory symlinks requires unavailable host privileges": 1
+  },
+  "failed_cases": [
+    {
+      "class": "tests.integration.test_transports",
+      "name": "test_real_mcp_stdio_tools_and_core",
+      "kind": "failure",
+      "message": "AssertionError(\"assert {'acquire_fil...te_task', ...} == {'acquire_fil...te_task', ...}\\n  \\n  Extra items in the left set:\\n  'publish_task_proposal'\\n  Use -v to get more diff\") [single exception in ExceptionGroup]"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay[neighbors-only-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 8\n +  where 9 = len([{'selector': 'tests/unit/test_cursor_node_bundle.py', 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, ... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay[neighbors-only-wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 8\n +  where 9 = len([{'selector': 'tests/unit/test_cursor_node_bundle.py', 'observations': [{'junit': 'wheel-junit.xml', 'counts': {'tests...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay[neighbors-only-sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 8\n +  where 9 = len([{'selector': 'tests/unit/test_cursor_node_bundle.py', 'observations': [{'junit': 'sdist-junit.xml', 'counts': {'tests...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay[components-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 8\n +  where 9 = len([{'selector': 'tests/unit/test_cursor_node_bundle.py', 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, ... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay[components-wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 8\n +  where 9 = len([{'selector': 'tests/unit/test_cursor_node_bundle.py', 'observations': [{'junit': 'wheel-junit.xml', 'counts': {'tests...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_protocol_junit_never_promotes_real_client_or_relay[components-sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 9 == 8\n +  where 9 = len([{'selector': 'tests/unit/test_cursor_node_bundle.py', 'observations': [{'junit': 'sdist-junit.xml', 'counts': {'tests...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[local_process-neighbors-only-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[local_process-neighbors-only-wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[local_process-neighbors-only-sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[local_process-components-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[local_process-components-wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[local_process-components-sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[mock-neighbors-only-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[mock-neighbors-only-wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[mock-neighbors-only-sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[mock-components-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[mock-components-wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified[mock-components-sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_codex_factory_and_core_records_do_not_verify_real_client[junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_codex_factory_and_core_records_do_not_verify_real_client[wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_synthetic_codex_factory_and_core_records_do_not_verify_real_client[sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 1, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_protocol_only_codex_junit_cannot_promote_real_start_or_relay[junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_protocol_only_codex_junit_cannot_promote_real_start_or_relay[wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_protocol_only_codex_junit_cannot_promote_real_start_or_relay[sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptance[junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptance[wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptance[sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'... 'observations': [{'junit': 'junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[wheel-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'wheel-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[sdist-junit.xml]",
+      "kind": "failure",
+      "message": "AssertionError: assert 16 == 8\n +  where 16 = len([{'selector': 'tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope'...rvations': [{'junit': 'sdist-junit.xml', 'counts': {'tests': 0, 'failures': 0, 'errors': 0, 'skipped': 0, ...}}]}, ...])"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_manager_selectors_only_map_local_components_without_cursor_acceptance[False]",
+      "kind": "failure",
+      "message": "AssertionError: assert ['tests/unit/...se_text', ...] == ['tests/unit/..._errors', ...]\n  \n  At index 0 diff: 'tests/unit/test_cursor_node_bundle.py' != 'tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start'\n  Left contains one more item: 'tests/integration/test_cursor_adapter_core_boundary.py::test_default_cursor_route_cannot_launch_or_change_core'\n  Use -v to get more diff"
+    },
+    {
+      "class": "tests.unit.test_release_acceptance",
+      "name": "test_manager_selectors_only_map_local_components_without_cursor_acceptance[True]",
+      "kind": "failure",
+      "message": "AssertionError: assert ['tests/unit/...se_text', ...] == ['tests/unit/..._errors', ...]\n  \n  At index 0 diff: 'tests/unit/test_cursor_node_bundle.py' != 'tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start'\n  Left contains one more item: 'tests/integration/test_cursor_adapter_core_boundary.py::test_default_cursor_route_cannot_launch_or_change_core'\n  Use -v to get more diff"
+    },
+    {
+      "class": "tests.unit.test_verification_jobs",
+      "name": "test_two_claimants_have_exactly_one_winner[processes]",
+      "kind": "failure",
+      "message": "_queue.Empty"
+    }
+  ],
+  "finished_at": "2026-11-12T12:25:27.485557+00:00"
+}

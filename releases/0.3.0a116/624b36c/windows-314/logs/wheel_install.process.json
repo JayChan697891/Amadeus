@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-sowd__q0\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m116/tmp/.scratch-zq1sxbvc/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b\\artifacts\\agentsync_local-0.3.0a116-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b",
+    "started_at": "2026-11-15T11:01:11.691710+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\wheel-sowd__q0\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m116/tmp/.scratch-zq1sxbvc/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b\\artifacts\\agentsync_local-0.3.0a116-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b",
+    "exit_code": 0,
+    "started_at": "2026-11-15T11:01:11.691710+00:00",
+    "finished_at": "2026-11-15T11:01:12.435558+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "2bf7c10add572836da41a7a7466512a847495b378221025beafd427b290d9083",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

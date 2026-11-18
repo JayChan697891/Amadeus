@@ -1,0 +1,109 @@
+{
+  "status": "pass",
+  "scope": "local Core audit only; Codex host not run",
+  "probe_sha256": "fc458d0fec4d7434e794523a3a42a7dba6f4066d157499b93efaec900b2bfe01",
+  "installed_runtime": {
+    "version": "0.3.0a121",
+    "commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+    "runtime_members": 97,
+    "wheel_sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71",
+    "runtime_members_sha256": "d51bb40232073acf69b4c9748eac2ffd674404c767dcbee8ab67ab237d88dea6"
+  },
+  "old_none_rejected": true,
+  "correct_zero_accepted": true,
+  "observed_pre_version": 0,
+  "observed_post_version": 1,
+  "probe_audit_requests_checked": 18,
+  "probe_request_schema_review": {
+    "context-v1": {
+      "operation": "publish_context",
+      "pre_version": 0,
+      "denied": null
+    },
+    "create-task": {
+      "operation": "create_task",
+      "pre_version": null,
+      "denied": null
+    },
+    "sender-claim": {
+      "operation": "claim_task",
+      "pre_version": 1,
+      "denied": null
+    },
+    "sender-run": {
+      "operation": "update_task",
+      "pre_version": 2,
+      "denied": null
+    },
+    "handoff-submit": {
+      "operation": "submit_handoff",
+      "pre_version": 3,
+      "denied": null
+    },
+    "context-v2": {
+      "operation": "publish_context",
+      "pre_version": 1,
+      "denied": null
+    },
+    "old-sender-lease": {
+      "operation": "update_task",
+      "pre_version": 4,
+      "denied": "lease_denied"
+    },
+    "nonrecipient-resolve": {
+      "operation": "resolve_handoff",
+      "pre_version": 4,
+      "denied": "handoff_denied"
+    },
+    "recipient-accept": {
+      "operation": "resolve_handoff",
+      "pre_version": 4,
+      "denied": null
+    },
+    "nonrecipient-claim": {
+      "operation": "claim_task",
+      "pre_version": 5,
+      "denied": "assignment_denied"
+    },
+    "recipient-claim": {
+      "operation": "claim_task",
+      "pre_version": 5,
+      "denied": null
+    },
+    "recipient-run": {
+      "operation": "update_task",
+      "pre_version": 6,
+      "denied": null
+    },
+    "recipient-submit": {
+      "operation": "update_task",
+      "pre_version": 7,
+      "denied": null
+    },
+    "lock-acquire-A": {
+      "operation": "acquire_file_lock",
+      "pre_version": null,
+      "denied": null
+    },
+    "lock-acquire-B": {
+      "operation": "acquire_file_lock",
+      "pre_version": null,
+      "denied": null
+    },
+    "lock-release-A": {
+      "operation": "release_file_lock",
+      "pre_version": 1,
+      "denied": null
+    },
+    "lock-release-B": {
+      "operation": "release_file_lock",
+      "pre_version": 1,
+      "denied": null
+    },
+    "lock-contended": {
+      "operation": "acquire_file_lock",
+      "pre_version": null,
+      "denied": "lock_busy"
+    }
+  }
+}

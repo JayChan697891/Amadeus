@@ -1,0 +1,27 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "started",
+  "outcome": "unknown",
+  "check_id": "pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m120source/e/bin/python",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-m120source/s/tests",
+      "--junitxml",
+      "/root/amadeus-m120source/t/source-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m120source/t/p",
+      "-o",
+      "cache_dir=/root/amadeus-m120source/t/pytest-cache"
+    ],
+    "cwd": "/root/amadeus-m120source/s",
+    "started_at": "2026-11-17T04:07:40.161975+00:00",
+    "timeout_seconds": 7200
+  }
+}

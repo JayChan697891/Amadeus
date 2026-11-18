@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "installed runtime metadata collection complete; license review pending",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "tool_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "platform": "Linux CPython3.14.7",
+  "native_chunk": "e21094",
+  "exit_code": 0,
+  "native_checks": 6,
+  "started_at": "2026-11-17T02:46:36.876157+00:00",
+  "finished_at": "2026-11-17T02:46:38.000929+00:00",
+  "installations": {
+    "wheel": "existing /root/amadeus-m120l/w",
+    "sdist": "existing /root/amadeus-m120l/d"
+  },
+  "distributions_per_install": 31,
+  "installed_license_files_rehashed_per_install": 35,
+  "runtime_members_unchanged_per_install": 97,
+  "inventories_byte_identical": true,
+  "inventory_sha256": "b47da7a4c0579c1db9f395eb312d10ca86a951319881240d46f810fe5639e156",
+  "metadata_review_items": [],
+  "license_review": "pending",
+  "publication_authorized": false,
+  "root_harvest_chunk": "86761b",
+  "original_records": 16,
+  "original_bytes": 69644,
+  "no_rebuild_reinstall_or_test_rerun": true,
+  "formal_release": "BLOCKED",
+  "limits": [
+    "Recorded metadata and installed license-file hashes are not license approval or release authorization.",
+    "Separate correctly bounded supplements cannot be relabelled as a complete formal candidate matrix row.",
+    "Owner chose to preserve the historical originals and static FAIL. Local terminal fixture cleanup will be handled manually later."
+  ],
+  "next": "First full Linux3.14 installed-sdist regression on the existing a120 install and frozen d427355 tests is preparing; it has not started."
+}

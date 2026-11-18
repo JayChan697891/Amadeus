@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-11-12T12:43:02.523779+00:00",
+  "authorization": "New bounded queued Linux run under owner standing continuous execution and first-choice approval; subscription only, no extra payment; old single-use attempts not reused",
+  "retry_allowed": false,
+  "source_route_chatgpt": true,
+  "temporary_copy_destination": "/root/amadeus-queued-proposal-live-20261112/private-home/auth.json",
+  "temporary_storage": "guest RAM filesystem",
+  "plan_sha256": "9991b7123105d981646825ecf45a00f398889aef8f4debe7c4bc050b6267d5bf"
+}

@@ -1,0 +1,34 @@
+{
+  "runtime_sha": "f74f29f73148d0e0e9a69ebb486eaffe6061d936",
+  "execution_head": "d73e04403794e612360fbfcd5ced11c8cdbca69e",
+  "reopened_observation": {
+    "state": "incomplete",
+    "verification": "unverified"
+  },
+  "task_status": "running",
+  "attempt_state": "terminal_recorded",
+  "attempt_status": "unknown",
+  "error_code": "adapter_timeout",
+  "timed_out": true,
+  "parent_ended": true,
+  "exit_code": 1,
+  "adapter_elapsed_ms": 15014,
+  "event_types": [
+    "thread.started",
+    "item.completed",
+    "turn.started",
+    "item.completed",
+    "turn.completed"
+  ],
+  "turn_started_observed": true,
+  "turn_terminal_observed": true,
+  "source_unchanged": true,
+  "worktree_unchanged": true,
+  "runtime_unchanged": true,
+  "second_leg": "not_dispatched",
+  "task_retried": false,
+  "server_cancellation": "UNVERIFIED",
+  "descendant_cleanup": "UNVERIFIED",
+  "raw_uploaded": false,
+  "formal_release": "BLOCKED"
+}

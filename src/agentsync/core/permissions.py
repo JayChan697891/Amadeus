@@ -40,6 +40,7 @@ WORKER_OPERATIONS = frozenset(
         "update_task",
         "reclaim_expired",
         "publish_context",
+        "publish_task_proposal",
         "submit_handoff",
         "resolve_handoff",
         "withdraw_handoff",
@@ -62,7 +63,13 @@ AGENT_WRITES = (
     | BOOTSTRAP_OPERATIONS
 )
 OWNER_WRITES = frozenset(
-    {"set_agent_roles", "decide_approval", "revoke_approval", "import_usage_checkpoint"}
+    {
+        "set_agent_roles",
+        "decide_approval",
+        "revoke_approval",
+        "import_usage_checkpoint",
+        "recover_handoff",
+    }
 )
 VERIFICATION_AUDIT_OPERATIONS = frozenset(
     {
@@ -83,6 +90,16 @@ VERIFICATION_AUDIT_OPERATIONS = frozenset(
         "candidate_execution_cleanup_record",
         "candidate_delivery_approve",
         "candidate_delivery_admit",
+        "candidate_integration_approve",
+        "candidate_integration_admit",
+        "candidate_integration_observed",
+        "proposal_staging_admit",
+        "proposal_staging_finish",
+        "mock_workflow_transition",
+        "sync_relay_usage",
+        "provider_usage_admit",
+        "provider_usage_finish",
+        "continue_failed_task",
         "verification_cancel",
         "verification_claim",
         "verification_renew",
@@ -429,7 +446,9 @@ class PermissionsMixin:
         response: dict[str, Any],
         now: float,
     ) -> dict[str, Any]:
-        if operation == "import_usage_checkpoint":
+        if operation in {"import_usage_checkpoint", "recover_handoff"}:
+            # A recovery receipt describes the completed metadata transition.
+            # Replaying it never recovers or reassigns a subsequently changed task.
             return response
         if operation == "set_agent_roles":
             current = self._public_member(self._member(db, p))

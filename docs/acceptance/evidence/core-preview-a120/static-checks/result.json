@@ -1,0 +1,79 @@
+{
+  "scope": "Complete Ruff/format/mypy supplement only; not a formal candidate matrix row",
+  "source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "tools": {
+    "ruff": "0.17.1",
+    "mypy": "2.4.0"
+  },
+  "started_at": "2026-11-17T02:22:41.350198+00:00",
+  "driver_sha256": "ceae0e9f7c732570e6a4dd132a72a0cc338b777766a484f0a02e582990f8f939",
+  "status": "fail",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "checks": [
+    {
+      "id": "ruff",
+      "status": "fail",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "."
+      ],
+      "cwd": "D:\\agentsync-debug\\m120fullw\\s",
+      "exit_code": 1,
+      "started_at": "2026-11-17T02:22:43.069674+00:00",
+      "finished_at": "2026-11-17T02:22:43.286195+00:00",
+      "log": "logs/ruff.log",
+      "log_sha256": "44efaea8e80393901ec0cb54306bc9b83092634df06b06b45b4508c4b6050c6c",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "format",
+      "status": "fail",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "cwd": "D:\\agentsync-debug\\m120fullw\\s",
+      "exit_code": 1,
+      "started_at": "2026-11-17T02:22:43.287188+00:00",
+      "finished_at": "2026-11-17T02:22:43.466268+00:00",
+      "log": "logs/format.log",
+      "log_sha256": "0dde145d6d17f0ea443640577c10ebc874255a3082d4b7ec9b69488144d9a858",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "mypy",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe",
+        "-m",
+        "mypy"
+      ],
+      "cwd": "D:\\agentsync-debug\\m120fullw\\s",
+      "exit_code": 0,
+      "started_at": "2026-11-17T02:22:43.469252+00:00",
+      "finished_at": "2026-11-17T02:22:47.469907+00:00",
+      "log": "logs/mypy.log",
+      "log_sha256": "bf16e9f6f0937edd1b4149cf9e8961b9af066954336c3984589da8abc3183184",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "frozen_files_unchanged": 5369,
+  "runtime_members_unchanged": 97,
+  "finished_at": "2026-11-17T02:22:49.085488+00:00"
+}

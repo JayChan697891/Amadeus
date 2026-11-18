@@ -7,6 +7,67 @@ those requirements passed. The machine-readable traceability register is
 execution method, expected outcome, existing selectors, missing work, and target
 evidence location. The original T01–T16 scenarios remain mapped separately.
 
+## Current frozen acceptance queue — a122
+
+Product source is fixed at `5232e9e8bd33a949f7ffdc68410cd614a297af66`.
+Use the original [a122 archives](../../releases/0.3.0a122/preview-5232e9e/manifest.json):
+wheel SHA256 `8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab`,
+sdist SHA256 `c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f`.
+The four Windows/Linux installations already passed the same 97 affected cases.
+Their completed commands are not a queue to repeat or a complete release matrix.
+Historical a116/a120 full results retain their own source bindings.
+
+This queue consolidates existing missing evidence; it adds no product requirement,
+M5 phase or release exception. Each row needs its own exact driver/fixture hashes,
+readiness review and observed exit before its status changes. Execution order is
+the table order among ready rows; an unavailable row does not block unrelated work.
+
+Current matrix clarification: six a122 suites are complete across Windows3.12
+and Linux3.14; the seventh, Windows3.11 wheel, has now completed with2539 pass/
+57 skip and zero failures/errors. Root checked2596 unique cases and exact matching
+Windows3.12 outcomes, original inputs and97 installed members; Root/Astra
+accepted this scope. Its source full suite is actually RUNNING, and sdist is prepared/bound
+but NOT RUN. Windows3.14 all forms are prepared but NOT RUN. Linux3.11/3.12 and
+macOS still lack their current-candidate complete evidence.
+[Actual311 wheel result](evidence/core-preview-a122/full-windows311-wheel/root-postcheck.json).
+These are the original three-Python-minor matrix requirements, not new gates.
+
+| Original requirements | Remaining bounded evidence | Readiness and stop conditions |
+| --- | --- | --- |
+| M2-05, M3-03/04 | **SCOPED PASS**, one actual a122 run: both actors, pinned context, old-lease/recipient/lock denials, owner audit and normal host reopen. See [exact plan and result](evidence/core-preview-a122/native-handoff/summary.json). | Five install bindings were reviewed before one new-fixture execution. Zero model calls, no account credentials or candidate execution. Root matched18 persisted audit records; both hosts ended by EOF and all10 recorded PIDs were absent. Task stays review/unverified, with no independent candidate acceptance. Do not repeat; original a121 exit1 remains BLOCKED. |
+| M6-03, T13/T14 | **SCOPED PASS** for a122 real Codex launch, version/command/run/session bindings, result collection and independent artifact verification. Current direct cancellation and separate natural15s timeout also have scoped Root/Astra acceptance; full M6 unaccepted. | [Cancel result](evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json) and [timeout result](evidence/core-preview-a122/lifecycle-controls/timeout-result/summary.json) preserve actual `unknown/local_cancel_requested` and `unknown/adapter_timeout` states with the owned parent ended. Both fixtures consumed, no retry. Neither establishes server cancellation, descendant cleanup or Core completion. Older evidence retains its SHA; unsupported resume/server-cancel declarations remain explicit. Do not add service-internal generation/cancellation proof as a gate. |
+| M7-02, M8-02 | **SCOPED PASS** for two real Codex calls, recovery of the persisted receiver proposal after actual controller exit73, and independent completion of the same receiver v6/verified. | Root/Astra accepted [the final observed boundary](evidence/core-preview-a122/composed-recovery/verification/summary.json). One owner-authorized Docker run passed2 cases/19 isolation checks, fresh owner-enrolled identities handled expiry, and no additional model calls occurred. Source remains failed and dependent unchanged. Both candidate grants are consumed. Do not repeat or extend this to full M7/M8 or cross-vendor acceptance. |
+| M9-01/02 | First full current a122 Windows3.12 wheel suite **PASS:2539/57skip**; first Linux3.14 wheel suite **PASS:2589/7skip**,36 Docker observations, Root/Astra reviewed. Both first installed-sdist full suites now match their respective wheel case identities/outcomes, with Root/Astra scoped acceptance. Other complete current-candidate source/platform and release gates remain **BLOCKED / NOT RUN** as recorded. | Original archive/source/install hashes and all2587 old cases plus9 new cases checked. Do not repeat this suite or the completed97-case install checks. Preserve unavailable macOS and real Claude/Cursor cases, original static FAIL, pending license decision and manual credential cleanup. No all-in-one collector repeat or public release without separate approval. |
+
+Scope correction after checking SPECIFICATION, RAT-M6-03 and the
+[frozen M5 boundary](../M5-FINAL-ACCEPTANCE.md): the previous queue wording promoted
+an unverified capability into an extra gate. The original requirements evaluate
+local lifecycle behavior and declared capabilities, not service-internal token
+generation. The [public CLI event contract](https://learn.chatgpt.com/docs/non-interactive-mode)
+provides no timestamped guarantee of that internal state. Preserve the limitation
+without adding a release condition or declaring any requirement passed. Independent
+completion of the recovered real receiver proposal and the bounded M6-03 scope
+assessment are now recorded above. The a122 Linux installed-wheel complete suite has now finished once; see
+[actual results](evidence/core-preview-a122/full-linux314/root-review.json).
+Remaining distribution coverage and the existing license decision require review;
+do not repeat these suites or invent an extra gate. Guest disk capacity must be
+checked before further large runs.
+
+Store only new sanitized results under `evidence/core-preview-a122/` after actual
+execution; planned paths are not existing evidence. Preserve failed attempts,
+original logs and exact commands. The current working record and next executable
+entry are in [PROGRESS](../PROGRESS.md); [CLIENT-MATRIX](CLIENT-MATRIX.md) distinguishes
+native protocol observations from real model control. This plan does not start
+jobs, extend credentials permissions or accept any of the 42 formal requirements.
+
+Historical execution scripts may be stored as `.py.txt` evidence data. Their
+original bytes and SHA-256 remain unchanged; each summary's `raw_execution_sources`
+maps the archive name to the recorded execution filename(s). To reproduce, restore
+those names in an isolated temporary directory, respecting any original one-shot
+model/credential authorization limits. Logs and commands retain their original
+names. Current active Python lint results do not claim that archived execution
+scripts were reformatted, linted successfully or rerun.
+
 ## Initial audit and gaps
 
 The code inspection found 14 requirements with existing component coverage,

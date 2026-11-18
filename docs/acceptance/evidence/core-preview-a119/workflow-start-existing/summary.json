@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "scope": "P1 workflow CLI requires existing project database",
+  "status": "bounded_windows_source_pass",
+  "formal_release": "BLOCKED",
+  "source_commit": "6192b874f214097c0bf33f4f63b6e139566c252a",
+  "baseline_commit": "d34811e4356f19781ab8211de729cc7a09582291",
+  "change": "Remove workflow start exception to the existing-database guard; retain explicit SDK project creation.",
+  "tested_worktree_sha256": {
+    "src/agentsync/cli.py": "a7e2c0540ce9fefdd661ba8a32b79e5600ef4b9f6295fa7966c25282a3041870",
+    "tests/integration/test_durable_mock_workflow.py": "5d01bf37c3032baca4e3d04d94f2f84a5bdfb766ae94f1057fd87135d87fbff4"
+  },
+  "git_blob_sha256": {
+    "src/agentsync/cli.py": "a7e2c0540ce9fefdd661ba8a32b79e5600ef4b9f6295fa7966c25282a3041870",
+    "tests/integration/test_durable_mock_workflow.py": "5d01bf37c3032baca4e3d04d94f2f84a5bdfb766ae94f1057fd87135d87fbff4"
+  },
+  "installed_reproduction": {
+    "package": "0.3.0a119",
+    "product_commit": "4be51345d5b8846da58d79df5b8567619e9acfed",
+    "command": "start.json",
+    "result": "result.json",
+    "child_exit": 1,
+    "harness_exit": 0,
+    "native_id": "c547b3",
+    "unexpected_behavior": "Creates empty database then returns unauthorized.",
+    "synthetic_input_only": true
+  },
+  "source_runs": {
+    "red": {
+      "native_id": "cdb7c1",
+      "exit": 1,
+      "failed": 2,
+      "deselected": 6,
+      "runtime_code": "baseline; expanded regression tests already present"
+    },
+    "green": {
+      "native_id": "c83434",
+      "exit": 0,
+      "passed": 9,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "timestamp": "2026-11-16T07:07:27.352603-08:00",
+      "coverage": "start/status/resume/cancel against absent and empty directories, plus valid persisted start/handoff/independent simulated review"
+    }
+  },
+  "static_checks": {
+    "native_id": "29f424",
+    "exit": 0,
+    "ruff": "ruff-check.log",
+    "format": "ruff-format.log"
+  },
+  "reproduction_recipe_recorded_after_execution": {
+    "cwd": "F:\\syuc\\amadeus-m6-single",
+    "environment": {
+      "PYTHONPATH": "F:\\syuc\\amadeus-m6-single\\src"
+    },
+    "cleared_environment": [
+      "PYTEST_ADDOPTS",
+      "PYTEST_PLUGINS",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD",
+      "AGENTSYNC_DATA_DIR"
+    ],
+    "red": [
+      "D:/agentsync-debug/m119p/w/Scripts/python.exe",
+      "-s",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "--tb=short",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\agentsync-debug\\p1-onboarding-20261116\\red-tmp",
+      "--junitxml",
+      "D:\\agentsync-debug\\p1-onboarding-20261116\\red.xml",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+      "-k",
+      "start"
+    ],
+    "green": [
+      "D:/agentsync-debug/m119p/w/Scripts/python.exe",
+      "-s",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "--tb=short",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\agentsync-debug\\p1-onboarding-20261116\\green-tmp",
+      "--junitxml",
+      "D:\\agentsync-debug\\p1-onboarding-20261116\\green.xml",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+      "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews"
+    ],
+    "note": "No rerun during archive. Red requires baseline product code with the added regression tests. Use fresh output directories when reproducing."
+  },
+  "review": "Root read actual diff, logs, JUnit, native receipts and source origin; originals copied byte-for-byte after pause resumed.",
+  "limitations": [
+    "Windows source scope only; Linux, new package installation and full suite NOT RUN for this change.",
+    "Frozen a119 packages are unchanged and do not contain this later start correction.",
+    "No model calls, credential copies, VM startup, GitHub Actions, main merge or release.",
+    "Simulated workflow review is not real-client acceptance."
+  ],
+  "files": [
+    {
+      "path": "green.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "green.log",
+      "bytes": 100,
+      "sha256": "5d91c7f9372728fb35e37af07c8f8fe625abf125e52a4924a5b3504abf2ff96e"
+    },
+    {
+      "path": "green.xml",
+      "bytes": 1594,
+      "sha256": "0ee63d785f387594a564213feda9146f272bd3020bd719995a099e9f01c3ec55"
+    },
+    {
+      "path": "red.exit",
+      "bytes": 3,
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "path": "red.log",
+      "bytes": 1421,
+      "sha256": "be7fb3273a0bc644d38c72942e7a677827a050294d30d949c01b396aca25ff72"
+    },
+    {
+      "path": "red.xml",
+      "bytes": 1831,
+      "sha256": "3b27eb3356344be0c623bc5371f8802134cbd81780a441e57cd59a709b51f663"
+    },
+    {
+      "path": "result.json",
+      "bytes": 235,
+      "sha256": "ef012c94a90903f5d5d1ef2db79be6536f86478cb17846a299a42aa492e9d068"
+    },
+    {
+      "path": "ruff-check.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "ruff-format.log",
+      "bytes": 27,
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
+    },
+    {
+      "path": "source-origin.log",
+      "bytes": 53,
+      "sha256": "19cd17878f8a29236afd1e9a924cff9595fe30e6a2b112bd1ad4ba4943811da3"
+    },
+    {
+      "path": "start.json",
+      "bytes": 476,
+      "sha256": "2f3c2760625dafdc3a5c7d6855d6790be5556699a692e354ea0ee6f22ee554a5"
+    },
+    {
+      "path": "stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stdout.log",
+      "bytes": 93,
+      "sha256": "eed0b46d1e5c8a6d71e611f58e66aa0492058b6867acc1250f0728a682f6db8e"
+    }
+  ]
+}

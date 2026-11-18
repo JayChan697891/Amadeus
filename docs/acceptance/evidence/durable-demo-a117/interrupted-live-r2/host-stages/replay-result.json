@@ -1,0 +1,16 @@
+{
+  "stage": "replay",
+  "started_at": "2026-11-16T08:41:02.024228+00:00",
+  "observer_pid": 25044,
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-interrupted-a117-r2-20261116/live.py replay",
+  "automatic_retry": false,
+  "remote_exec_requested": true,
+  "log_bytes": {
+    "stdout": 40,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "terminal",
+  "exit_code": 0,
+  "finished_at": "2026-11-16T08:41:03.876241+00:00"
+}

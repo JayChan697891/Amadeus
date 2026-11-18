@@ -1,0 +1,66 @@
+{
+  "status": "resolved",
+  "error_code": null,
+  "authorization_sha256": "ed25331a41f9987cf2d7ee6f2546c2f93339ff43b76cdb4f96cc727045a3eccc",
+  "identity": {
+    "pid": 3215,
+    "boot_id": "573141a0-a4cc-4c28-a53f-79f0d15b5a5d",
+    "started_ticks": 40358
+  },
+  "plan_sha256": "059e7c6b37d598edd46269fc81ad25dd6c5db29ee36030b7ac9129f1e37f9a57",
+  "outcome": {
+    "state": "resolved",
+    "task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+    "task_status": "review",
+    "task_version": 5,
+    "source_task_id": "90153c6e-61f2-43a6-b9b9-39fc21a64d5b",
+    "publication": {
+      "context_id": "33228c36-9ef3-41bf-a400-2fc11e551d37",
+      "context_version": 1,
+      "content_sha256": "b2b604002c02429c3320165240deb1d559d1872bf4da297b1c80f71d9b11610f",
+      "publication_task_version": 4,
+      "publication_session_id": "5a61ef77-2c3b-40de-bb6b-23c6182e19dd",
+      "publication_request_id": "relay:0bea172c75a13bd009298a08cf87fd9059702c1463c2eb279de5201876326017:proposal:publish",
+      "verification": "unverified"
+    },
+    "wave": {
+      "state": "resolved",
+      "tasks": [
+        {
+          "task_id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+          "state": "ready_for_review",
+          "failure_code": null
+        }
+      ],
+      "verification": "unverified"
+    },
+    "verification": "unverified"
+  },
+  "tasks": {
+    "90153c6e-61f2-43a6-b9b9-39fc21a64d5b": {
+      "id": "90153c6e-61f2-43a6-b9b9-39fc21a64d5b",
+      "status": "failed",
+      "version": 5,
+      "dependencies": [],
+      "task_verification": "unverified"
+    },
+    "f5084f7a-0ea5-47df-b83c-3804e7df67e8": {
+      "id": "f5084f7a-0ea5-47df-b83c-3804e7df67e8",
+      "status": "pending",
+      "version": 2,
+      "dependencies": [
+        "d583d431-24ae-48e6-9595-4c5b2ded440a"
+      ],
+      "task_verification": "unverified"
+    },
+    "d583d431-24ae-48e6-9595-4c5b2ded440a": {
+      "id": "d583d431-24ae-48e6-9595-4c5b2ded440a",
+      "status": "review",
+      "version": 5,
+      "dependencies": [],
+      "task_verification": "unverified"
+    }
+  },
+  "publication_sha256": "b2b604002c02429c3320165240deb1d559d1872bf4da297b1c80f71d9b11610f",
+  "retry_allowed": false
+}

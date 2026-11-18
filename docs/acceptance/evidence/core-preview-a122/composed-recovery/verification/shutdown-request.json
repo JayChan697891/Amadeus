@@ -1,0 +1,7 @@
+{
+  "utc": "2026-11-17T08:42:48.194265+00:00",
+  "method": "QMP system_powerdown",
+  "pid": 2732,
+  "boot_id": "20aed695-2774-4761-bea7-49ca81abf6ff",
+  "guest_guard": "No project workers or containers; exact guest boot confirmed\n"
+}

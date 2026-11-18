@@ -1,0 +1,21 @@
+{
+  "scope": "Independent static review and root offline test verification, not live acceptance",
+  "status": "SCOPED PASS",
+  "reviewer": "Native GPT-6 Astra; read-only file/hash/log/JUnit review",
+  "tests": 9,
+  "real_processes_started_or_terminated": 0,
+  "model_calls": 0,
+  "private_capture_exact_plan_binding_required": true,
+  "save_callback_requires_actual_durable_write": true,
+  "kill_call_returned_proves_termination": false,
+  "requires_unmodified_capture_confirmed_failure_before_continuation": true,
+  "full_controller": "NOT IMPLEMENTED",
+  "receiver_launch_and_two_actor_cleanup": "NOT IMPLEMENTED",
+  "real_interruption_and_recovery": "NOT RUN",
+  "live_authorization": "NOT GRANTED",
+  "formal_release": "BLOCKED",
+  "hashes": {
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+    "test_interrupt_parent.py": "30849abe54d0ea463af87273c556194ebc0ad0e1ca404245b18780e8273a10c5"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "started_at": "2026-11-16T06:49:34.776858+00:00",
+  "guest_root": "/root/amadeus-interrupted-controller-checks-20261116T064934666579Z",
+  "input_sha256": {
+    "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+    "test_live.py": "3444029fd542e455da6e74b737fc7ac1f98fb7da99a69dd247fa9872719013ef"
+  },
+  "command": "/root/amadeus-m117l/e/bin/python -I -B -c 'import os,sys,pytest; sys.path.insert(0,'\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064934666579Z'\"'\"'); os.environ.pop(\"PYTEST_ADDOPTS\",None); os.environ.pop(\"PYTEST_PLUGINS\",None); os.environ[\"PYTEST_DISABLE_PLUGIN_AUTOLOAD\"]=\"1\"; raise SystemExit(pytest.main(['\"'\"'-q'\"'\"', '\"'\"'-p'\"'\"', '\"'\"'no:cacheprovider'\"'\"', '\"'\"'-p'\"'\"', '\"'\"'pytest_asyncio.plugin'\"'\"', '\"'\"'-o'\"'\"', '\"'\"'addopts='\"'\"', '\"'\"'--basetemp=/root/amadeus-interrupted-controller-checks-20261116T064934666579Z/scratch'\"'\"', '\"'\"'--junitxml=/root/amadeus-interrupted-controller-checks-20261116T064934666579Z/junit.xml'\"'\"', '\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064934666579Z/test_live.py'\"'\"']))'",
+  "model_calls": 0,
+  "real_model_auth_accessed": false,
+  "boot_id": "ad4636c1-6f52-452a-80f6-4a4585dc729a",
+  "finished_at": "2026-11-16T06:49:35.559506+00:00",
+  "native_exit_code": 0,
+  "artifact_sha256": {
+    "stdout.log": "7862e3e2f519df663d4f8d010e2b25ffd60fd52e8ea7bd5f1e40a5e19c619593",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "junit.xml": "3eee3c309614505f781fb94d83c63d096a60ce7435232caa1200d36fccf61b6b"
+  },
+  "test_inputs_unchanged": true,
+  "runtime_before": {
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "prefix": "/root/amadeus-m117l/e",
+    "module": "/root/amadeus-m117l/e/lib/python3.14/site-packages/agentsync/__init__.py",
+    "runtime_members": 97,
+    "reference_sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a",
+    "version": "0.3.0a117",
+    "members_match": true
+  },
+  "runtime_after": {
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "prefix": "/root/amadeus-m117l/e",
+    "module": "/root/amadeus-m117l/e/lib/python3.14/site-packages/agentsync/__init__.py",
+    "runtime_members": 97,
+    "reference_sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a",
+    "version": "0.3.0a117",
+    "members_match": true
+  }
+}

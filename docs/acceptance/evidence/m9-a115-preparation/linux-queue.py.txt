@@ -1,0 +1,62 @@
+"""Stage or observe one queue in the existing dedicated local Linux VM."""
+import argparse
+from datetime import UTC, datetime
+import hashlib
+import json
+from pathlib import Path
+import shlex
+import sys
+import paramiko
+
+parser=argparse.ArgumentParser()
+parser.add_argument('action',choices=('stage','run'))
+args=parser.parse_args()
+root=Path('D:/agentsync-debug');base=root/'m115-candidate'
+script=root/'m9-candidate-queue.py';guest='/root/amadeus-m115'
+pin=hashlib.sha256(script.read_bytes()).hexdigest()
+client=paramiko.SSHClient();client.load_host_keys(str(root/'vm/known_hosts'))
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename=str(root/'vm/debug_ed25519'),
+               look_for_keys=False,allow_agent=False,timeout=10)
+try:
+    if args.action=='stage':
+        with client.open_sftp() as sftp:
+            target=guest+'/'+script.name
+            try:sftp.lstat(target)
+            except FileNotFoundError:pass
+            else:raise RuntimeError('Queue already staged; inspect instead of overwriting')
+            with sftp.open(target,'wx') as stream:stream.write(script.read_bytes())
+            with sftp.open(target,'rb') as stream:assert hashlib.sha256(stream.read()).hexdigest()==pin
+        result={'path':target,'sha256':pin,'tests_started':False,'timestamp':datetime.now(UTC).isoformat()}
+        with (base/'linux-queue-staging.json').open('x',encoding='utf-8') as stream:json.dump(result,stream,indent=2)
+        print(json.dumps(result));raise SystemExit(0)
+    staging=json.loads((base/'linux-candidate-staging.json').read_text())
+    assert staging['exit_code']==0
+    manifest=base/'candidate-bootstrap.json'
+    manifest_sha=hashlib.sha256(manifest.read_bytes()).hexdigest()
+    commit=json.loads(manifest.read_text())['frozen']['commit_sha']
+    with client.open_sftp() as sftp:
+        with sftp.open(guest+'/'+script.name,'rb') as stream:assert hashlib.sha256(stream.read()).hexdigest()==pin
+        try:sftp.lstat(guest+'/linux-queue')
+        except FileNotFoundError:pass
+        else:raise RuntimeError('Original queue exists; inspect it, never start another')
+    command=shlex.join(['/root/jobs-env/bin/python','-I','-B',guest+'/'+script.name,
+                        '--base',guest,'--manifest-sha256',manifest_sha,'--commit',commit])
+    with (base/'linux-queue-launch.json').open('x',encoding='utf-8') as stream:
+        json.dump({'command':command,'started_at':datetime.now(UTC).isoformat(),
+                   'script_sha256':pin,'automatic_retry':False},stream,indent=2)
+    with (base/'linux-queue-driver.log').open('xb') as log:
+        channel=client.get_transport().open_session(timeout=10)
+        channel.set_combine_stderr(True)
+        channel.exec_command(command)
+        while True:
+            data=channel.recv(65536)
+            if not data:break
+            log.write(data);log.flush()
+            sys.stdout.write(data.decode('utf-8',errors='replace'));sys.stdout.flush()
+        code=channel.recv_exit_status()
+    with (base/'linux-queue-terminal.json').open('x',encoding='utf-8') as stream:
+        json.dump({'exit_code':code,'finished_at':datetime.now(UTC).isoformat()},stream,indent=2)
+finally:
+    client.close()
+raise SystemExit(code)

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="fixed_verified_collaboration" tests="1" failures="0" errors="0" skipped="0">
+  <properties>
+    <property name="kind" value="report-derived actual execution observations; not pytest" />
+    <property name="source_summary_sha256" value="14e3e26178ed0cde41a8beb5b510809bb60ef8d63386017d196dd07718c21c21" />
+  </properties>
+  <testcase classname="fixed_verified_collaboration" name="actual_docker_core_handoff_reopen" />
+</testsuite>

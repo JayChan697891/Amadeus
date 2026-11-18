@@ -1,0 +1,171 @@
+{
+  "observed_at": "2026-11-15T14:37:58.654944+00:00",
+  "status": "FULL RUN FAILED; TARGETED TRACEABILITY REPAIR PASSED",
+  "native_session_id": 45808,
+  "native_session_terminal_exit_code": 1,
+  "native_full_run_finished_at": "2026-11-15T14:34:24.185198+00:00",
+  "original_failed_result_preserved": true,
+  "test_source_commit": "4dcd7161d956135b12ee1ca8556c445a9bc52e5d",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "checks": {
+    "total": 7,
+    "passed": 6,
+    "failed": 1
+  },
+  "full_suite": {
+    "unique_cases": 2545,
+    "passed": 2488,
+    "failed": 1,
+    "errors": 0,
+    "skipped": 56,
+    "native_pytest_exit_code": 1,
+    "seconds": 2571.74,
+    "rerun": false,
+    "junit_credential_redactions": 6
+  },
+  "sole_failure": {
+    "selector": "tests/unit/test_acceptance_traceability.py::test_planning_foundations_remain_partial_without_real_relay_or_execution_claims",
+    "cause": "Exact expected M7-02 component set omitted the already mapped native-host-exit selector",
+    "fix": "Add this one explicit existing selector; preserve equality, partial scope, not_run status and release gates",
+    "runtime_change": false,
+    "requirement_manifest_change": false
+  },
+  "targeted_regression": {
+    "scope": "Entire changed traceability test file only",
+    "cases": 92,
+    "passed": 92,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 0.96,
+    "normalized_test_sha256": "55f0aeade32271e7815ae543f0691d3d1ca87d0c4648c361f2d9993c0953064d",
+    "ruff_check": "PASS",
+    "ruff_format_check": "PASS",
+    "root_review": "Actual files, patch, log and all92 unique JUnit cases checked; not solely executor statement"
+  },
+  "identity": {
+    "input_files_before_after": 2355,
+    "installed_runtime_members_before_after": 97,
+    "origin_logs_identical": true,
+    "source_archive_regenerated": false
+  },
+  "independent_review": {
+    "agent": "native Astra",
+    "compared_actual_receipts_junit_source_diff": true,
+    "repeating_full_suite_for_this_test_only_fix_required": false,
+    "full_current_release_acceptance": false
+  },
+  "current_claim": "Full installed-sdist Windows regression found one traceability maintenance failure; affected-file regression passes after its one-line fix. Original full run remains failed, not rewritten or claimed rerun.",
+  "platform_scope": "Windows11 x64/Python3.12; source/wheel full checks, other current platform rows and real-client gates remain separate. Windows56 platform skips remain visible.",
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "next": "Continue current-candidate local validation, beginning with available Linux full installed-sdist/Docker scope. Preserve this failed full run and its bounded delta; do not repeat it for documentation or this one-line test-only change.",
+  "artifacts": {
+    "case-diff.json": {
+      "sha256": "2c73f350a28ba602c830dd8df8daea56a0397799b5b3ad11c4ca2b785f592e44",
+      "bytes": 2944
+    },
+    "environment.json": {
+      "sha256": "47fc69f7defa5f609a0d453d9192faee7f169cfed681e98810b65b4dda4f129a",
+      "bytes": 352
+    },
+    "execution-start.json": {
+      "sha256": "391b5006f8926e3588b66ce744790998d9eec7f18111929ececd458cfff1a256",
+      "bytes": 779
+    },
+    "frozen-inputs.json": {
+      "sha256": "bf402028d53cc42df6cfc31e3e3b2247e8014eff72d2ee84bbdfa93cdfff63e8",
+      "bytes": 638344
+    },
+    "run/attempt.json": {
+      "sha256": "7b861e34b6f519b00b780624a1e23fd4c7a4c6a5f16f3d9da87e018669d890c0",
+      "bytes": 792
+    },
+    "run/logs/sdist_install.log": {
+      "sha256": "379f68f30593b0ae647d6409533487e5dd8aa1b7de5bad2af1087840424ed40a",
+      "bytes": 980
+    },
+    "run/logs/sdist_install.process.json": {
+      "sha256": "f1b0e35532b818cf89ccab90d02d905fd0a8c6b45d9f717286cd04768c1fd9b8",
+      "bytes": 1757
+    },
+    "run/logs/sdist_offline_dependencies.log": {
+      "sha256": "24fe7d85361f78a620d8bcfb4d36ebbdd5b87defede522c308f64b48f6d59506",
+      "bytes": 7663
+    },
+    "run/logs/sdist_offline_dependencies.process.json": {
+      "sha256": "cde5f62b92e85e4c1c5d92c16d3fdf7d0fc889f9a48fb3c3654a9373638400fa",
+      "bytes": 2230
+    },
+    "run/logs/sdist_origin_after.log": {
+      "sha256": "b87447a52e964bed31a8d36d0ed95992d8f98a690143dd22a0d53fb709aa4df6",
+      "bytes": 300
+    },
+    "run/logs/sdist_origin_after.process.json": {
+      "sha256": "e04adfd7e7645381e1c2b0536f0b379d7d8edc8a0856c53534ba0aadc31a7ccf",
+      "bytes": 4548
+    },
+    "run/logs/sdist_origin_before.log": {
+      "sha256": "b87447a52e964bed31a8d36d0ed95992d8f98a690143dd22a0d53fb709aa4df6",
+      "bytes": 300
+    },
+    "run/logs/sdist_origin_before.process.json": {
+      "sha256": "a7f0d8038c48b13e5152323986d101b9a802883f95a6106636b9f1fedad7e910",
+      "bytes": 4551
+    },
+    "run/logs/sdist_pip_check.log": {
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "bytes": 32
+    },
+    "run/logs/sdist_pip_check.process.json": {
+      "sha256": "ae792f1dfb9bda8f0e91d89fbf0d9aef1fa9d36371071d78c0bc64148f8c051a",
+      "bytes": 1197
+    },
+    "run/logs/sdist_pytest.log": {
+      "sha256": "f0ce59c7be6b30361c6430746ec6a9679be040d9264de433c3118d9e53ac2a49",
+      "bytes": 22943
+    },
+    "run/logs/sdist_pytest.process.json": {
+      "sha256": "886de649c8c83dec857b98ffae104d089c0e2642151cfed2a86afbb384fa8d1c",
+      "bytes": 1712
+    },
+    "run/logs/sdist_venv.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "run/logs/sdist_venv.process.json": {
+      "sha256": "6757011e24507419bfbb2ffdc767aa6121e1f752402bbd4489790b0e6c7b7b30",
+      "bytes": 1298
+    },
+    "run/result.json": {
+      "sha256": "481f015d23a5b2c07e69e2c98d88ad76c338ffe550bdf8ff9fc44a9c4f8845c7",
+      "bytes": 10339
+    },
+    "run/sdist-junit.xml": {
+      "sha256": "d86b30f2ff5598087efdf3abc1a5e0e775e5a676f68e0ef3232867a988a2f802",
+      "bytes": 405059
+    },
+    "run-sdist.py.txt": {
+      "sha256": "bbdbabefcd87441d9b9e11b3625dbfe42dc478ca45b501b5b4d9b841f1828f12",
+      "bytes": 10324
+    },
+    "started-summary.json": {
+      "sha256": "c75f3fb3c7b2946f7d95e5b5b2822b714c63cb3f84269c04266611e89d16221d",
+      "bytes": 4221
+    },
+    "traceability/fix.patch": {
+      "sha256": "118121230d4440d4ab97d3193879ad51116b845baff8e3bece77d0d6d224887f",
+      "bytes": 982
+    },
+    "traceability/junit.xml": {
+      "sha256": "b8dd1712a5c776d124b1ae945138b8418b37afde09507f7a1d5c71dcfbfd2a42",
+      "bytes": 13940
+    },
+    "traceability/pytest.log": {
+      "sha256": "6046f84bec1fb0c2bb0fe4dcde2d5ae72818d1515a9a50b15707492a2b036373",
+      "bytes": 853
+    }
+  }
+}

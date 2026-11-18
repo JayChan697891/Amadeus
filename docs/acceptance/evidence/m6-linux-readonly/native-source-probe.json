@@ -1,0 +1,149 @@
+{
+  "product_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "wheel_sha256": null,
+  "binary_sha256": "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0",
+  "cli_version": "0.167.0-alpha.3.2",
+  "timestamp": "2026-11-12T11:22:41.976149+00:00",
+  "plan_argument_count": 45,
+  "model_calls": 0,
+  "credentials_present": false,
+  "requested_config": {
+    "default_permissions": "amadeus_readonly",
+    "permissions": {
+      "amadeus_readonly": {
+        "filesystem": {
+          ":minimal": "read",
+          "/root/amadeus-codex-linux-preflight/portable-a2634ec/single-task-workspace": "read",
+          "/root/amadeus-codex-linux-0167/bin/codex": "read"
+        },
+        "network": {
+          "enabled": false
+        }
+      }
+    },
+    "features": {
+      "shell_tool": false,
+      "shell_snapshot": false,
+      "apps": false,
+      "multi_agent": false,
+      "hooks": false,
+      "remote_plugin": false,
+      "skill_search": false,
+      "skill_mcp_dependency_install": false,
+      "browser_use": false,
+      "browser_use_external": false,
+      "browser_use_full_cdp_access": false,
+      "computer_use": false,
+      "code_mode": false,
+      "code_mode_host": false,
+      "unified_exec": false,
+      "view_image": false,
+      "plugins": false,
+      "image_generation": false,
+      "goals": false
+    },
+    "browser_use": {
+      "default_origin_policy": {
+        "access": "deny"
+      }
+    },
+    "computer_use": {
+      "default_app_access": "deny"
+    },
+    "project_doc_max_bytes": 0,
+    "agents": {
+      "enabled": false
+    },
+    "forced_login_method": "chatgpt",
+    "model_provider": "openai",
+    "web_search": "disabled",
+    "mcp_servers": {},
+    "history": {
+      "persistence": "none"
+    },
+    "model_reasoning_effort": "low",
+    "service_tier": "default"
+  },
+  "commands": {
+    "effective-features": {
+      "exit_code": 0,
+      "stdout_bytes": 13217,
+      "stderr_bytes": 0,
+      "stdout_sha256": "ff7335bb5952f316a59ff31721f9eebd3e48a970917896c6fa74069ba1dc4a68",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "strict-config": {
+      "exit_code": 0,
+      "stdout_bytes": 945,
+      "stderr_bytes": 0,
+      "stdout_sha256": "bd14e695534c443cc8bd9d6a5986860392f67ad59ceca47912b9281a8ed57451",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prompt-projection": {
+      "exit_code": 0,
+      "stdout_bytes": 45082,
+      "stderr_bytes": 0,
+      "stdout_sha256": "5f131cd8c53f3789fba00912c517511241b7962ff1e6126f3b0a9dcec7c3c48d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "read-only-files": {
+      "exit_code": 0,
+      "stdout_bytes": 20,
+      "stderr_bytes": 0,
+      "stdout_sha256": "e294ecbb9f2cdcb7508362b54f105870f26c214de46d47b6a0f3f83ad64a8313",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "login-status": {
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr_bytes": 14,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a06d5ca8261150a5175e866fc3dc401070fb4ea30e849a1b9394b7e252fa1677"
+    }
+  },
+  "requested_feature_effective_state": {
+    "shell_tool": "false",
+    "shell_snapshot": "false",
+    "apps": "false",
+    "multi_agent": "false",
+    "hooks": "false",
+    "remote_plugin": "false",
+    "skill_search": "false",
+    "skill_mcp_dependency_install": "false",
+    "browser_use": "false",
+    "browser_use_external": "false",
+    "browser_use_full_cdp_access": "false",
+    "computer_use": "false",
+    "code_mode": "false",
+    "code_mode_host": "false",
+    "unified_exec": "true",
+    "view_image": "false",
+    "plugins": "false",
+    "image_generation": "false",
+    "goals": "false"
+  },
+  "projection_shape": {
+    "root_type": "list",
+    "length": 5
+  },
+  "projection_tools": [
+    "exec",
+    "request_user_input",
+    "request_user_input_async",
+    "sleep",
+    "wait"
+  ],
+  "projection_headings": [
+    "apply_patch",
+    "clock__curr_time",
+    "list_mcp_resource_templates",
+    "list_mcp_resources",
+    "read_mcp_resource"
+  ],
+  "projection_parse_error": null,
+  "denied_file_exists": false,
+  "read_only_marker": true,
+  "runtime_modules_matched_before_after": 87,
+  "raw_projection_saved": false,
+  "formal_release": "BLOCKED"
+}

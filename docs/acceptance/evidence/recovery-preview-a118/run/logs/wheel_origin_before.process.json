@@ -1,0 +1,52 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\nfrom agentsync.sdk import AgentSyncClient\n\nenv, archive, members = map(Path, sys.argv[1:4])\ndigest, version = sys.argv[4:]\nassert Path(sys.prefix).resolve() == env.resolve()\nassert sys.version_info[:3] == (3, 12, 16)\nsite = env.resolve() / \"Lib/site-packages\"\nassert Path(agentsync.__file__).resolve() == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\nassert AgentSyncClient.__module__ == \"agentsync.sdk\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve().as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == digest\nactual = {\n    p.relative_to(site).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()\n    for p in (site / \"agentsync\").rglob(\"*\") if p.is_file() and \"__pycache__\" not in p.parts\n}\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"origin\": str(Path(agentsync.__file__).resolve()), \"version\": version,\n                  \"python\": sys.version, \"direct_url\": direct, \"runtime_members\": len(actual)}))\n",
+      "D:\\agentsync-debug\\m118p\\w",
+      "D:\\agentsync-debug\\m118p\\dist\\agentsync_local-0.3.0a118-py3-none-any.whl",
+      "D:\\agentsync-debug\\m118p\\run\\runtime-members.json",
+      "1563c0e64f883aabd70f43b27de7cba75c91ce004552c1ec0fddc47cec4ce268",
+      "0.3.0a118"
+    ],
+    "cwd": "D:\\agentsync-debug\\m118p\\run",
+    "started_at": "2026-11-16T09:59:49.517270+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_origin_before",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\nfrom agentsync.sdk import AgentSyncClient\n\nenv, archive, members = map(Path, sys.argv[1:4])\ndigest, version = sys.argv[4:]\nassert Path(sys.prefix).resolve() == env.resolve()\nassert sys.version_info[:3] == (3, 12, 16)\nsite = env.resolve() / \"Lib/site-packages\"\nassert Path(agentsync.__file__).resolve() == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\nassert AgentSyncClient.__module__ == \"agentsync.sdk\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve().as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == digest\nactual = {\n    p.relative_to(site).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()\n    for p in (site / \"agentsync\").rglob(\"*\") if p.is_file() and \"__pycache__\" not in p.parts\n}\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"origin\": str(Path(agentsync.__file__).resolve()), \"version\": version,\n                  \"python\": sys.version, \"direct_url\": direct, \"runtime_members\": len(actual)}))\n",
+      "D:\\agentsync-debug\\m118p\\w",
+      "D:\\agentsync-debug\\m118p\\dist\\agentsync_local-0.3.0a118-py3-none-any.whl",
+      "D:\\agentsync-debug\\m118p\\run\\runtime-members.json",
+      "1563c0e64f883aabd70f43b27de7cba75c91ce004552c1ec0fddc47cec4ce268",
+      "0.3.0a118"
+    ],
+    "cwd": "D:\\agentsync-debug\\m118p\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T09:59:49.517270+00:00",
+    "finished_at": "2026-11-16T09:59:49.812386+00:00",
+    "log": "logs/wheel_origin_before.log",
+    "log_sha256": "1e802b2d0948627ff6974cb6a486aa359dd0e8104da8f931c30e1feb7e425768",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

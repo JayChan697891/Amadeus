@@ -1,0 +1,36 @@
+{
+  "kind": "After-run recipe for the original broad Windows invocation; not an original structured process receipt",
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "command": [
+    "D:/agentsync-debug/m118p/w/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:/agentsync-debug/continuation-verified-20261116/green-tmp",
+    "--junitxml=D:/agentsync-debug/continuation-verified-20261116/green.xml",
+    "tests/integration/test_unfinished_continuation.py",
+    "tests/integration/test_codex_proposal_review.py",
+    "-k",
+    "not verifiable_codex-docker"
+  ],
+  "environment_delta": {
+    "PYTHONPATH": "F:\\syuc\\amadeus-m6-single\\src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TEMP": "D:\\agentsync-debug\\continuation-verified-20261116",
+    "TMP": "D:\\agentsync-debug\\continuation-verified-20261116",
+    "HOME": "D:\\agentsync-debug\\continuation-verified-20261116\\home",
+    "USERPROFILE": "D:\\agentsync-debug\\continuation-verified-20261116\\home",
+    "LOCALAPPDATA": "D:\\agentsync-debug\\continuation-verified-20261116\\home",
+    "GIT_CONFIG_GLOBAL": "NUL",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "AGENTSYNC_DOCKER_TEST_IMAGE": null,
+    "AGENTSYNC_REQUIRE_DOCKER_TESTS": null
+  },
+  "reproduction_note": "The original command deliberately remains recorded with its two origin failures. To execute the exact host-exit cases use the archived isolated-host-exit-r2 driver in a fresh output directory. For Linux use run.py/run.sh plus source at product_commit and inputs.json; regenerate archive metadata for a new run without overwriting historical outputs."
+}

@@ -1,0 +1,10 @@
+{
+  "product_sha": "193d9b26d41d533d33a4bd3736e21ff8588ee0c9",
+  "wheel_sha256": "5774cffbb23691843ecf46031e7255941fe3c1d821d879d572d170db904f0400",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "runtime_modules_matched_before_and_after": 87,
+  "source_shadowing": false,
+  "exit_code": 0,
+  "model_requests": 0,
+  "candidate_code_execution": false
+}

@@ -1,0 +1,78 @@
+"""Preserve one remaining completed row without replacing prior evidence."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--row', required=True, choices=('linux-311', 'linux-312', 'windows-311', 'windows-314'))
+args = parser.parse_args()
+base = Path('D:/agentsync-debug/m116')
+source = base / 's'
+incoming = base / 'harvest' / args.row
+release = Path('F:/syuc/amadeus-m6-single/releases/0.3.0a116/624b36c')
+destination = release / args.row
+matrix_path = release / ('matrix-after-' + args.row.replace('-', '') + '.json')
+commit = '624b36c039a90feb9340559ac773f9df08ba86ad'
+assert not destination.exists() and not matrix_path.exists()
+assert hashlib.sha256((source / 'tools/acceptance_evidence.py').read_bytes()).hexdigest() == '6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c'
+sys.path.insert(0, str(source))
+from tools.acceptance_evidence import _member_parts, read_json, verify_report_evidence
+from tools.acceptance_matrix import summarize
+from tools.release_manifest import verify_manifest
+
+transfer = read_json((incoming / 'transfer-summary.json').read_bytes())
+assert transfer['row'] == args.row
+terminal = read_json((incoming / 'execution/queue-terminal.json').read_bytes())
+assert terminal['row'] == args.row and terminal['exit_code'] == 0
+assert terminal['local_checks_passed'] is True and terminal['strict_evidence_verified'] is True
+report = read_json((incoming / 'report.json').read_bytes())
+assert report['commit_sha'] == commit
+audit = verify_report_evidence(incoming / 'report.json', report, source_repo=source)
+assert audit == read_json((incoming / 'transfer-audit.json').read_bytes())
+for entry in transfer['files']:
+    path = incoming.joinpath(*_member_parts(entry['path']))
+    data = path.read_bytes()
+    assert len(data) == entry['size']
+    assert hashlib.sha256(data).hexdigest() == entry['sha256']
+snapshot = read_json((incoming / 'source-snapshot.json').read_bytes())
+for entry in snapshot:
+    data = source.joinpath(*_member_parts(entry['path'])).read_bytes()
+    assert len(data) == entry['size']
+    assert hashlib.sha256(data).hexdigest() == entry['sha256']
+candidate = verify_manifest(release / 'candidate-bootstrap.json', release,
+    manifest_sha256='23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95',
+    source_repo=source)
+assert candidate['artifact_bytes_verified'] is True
+expected = {entry['path'] for entry in transfer['files']} | {'transfer-summary.json'}
+paths = sorted(incoming.rglob('*'))
+assert not any(path.is_symlink() for path in paths)
+files = [path for path in paths if path.is_file()]
+assert {path.relative_to(incoming).as_posix() for path in files} == expected
+for path in files:
+    target = destination / path.relative_to(incoming)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    data = path.read_bytes()
+    with target.open('xb') as stream:
+        stream.write(data)
+    assert target.read_bytes() == data
+reports = [release / 'windows-312/reports/release-20261115T051200Z-ca70d702c8f4/report.json']
+for name in ('linux-314', 'linux-311', 'linux-312', 'windows-311', 'windows-314'):
+    if (release / name).exists():
+        path = release / name / 'report.json'
+        assert path.is_file()
+        reports.append(path)
+assert destination / 'report.json' in reports
+matrix = summarize(reports, commit, verify_artifacts=True,
+    require_license_inventory=True, python_minors=('3.11', '3.12', '3.14'), source_repo=source)
+assert matrix['local_matrix'] == 'incomplete'
+assert len(matrix['missing_os_python_combinations']) == 9 - len(reports)
+with matrix_path.open('x', encoding='utf-8') as stream:
+    json.dump(matrix, stream, indent=2)
+    stream.write('\n')
+print(json.dumps({'row': args.row, 'copied_files': len(files),
+    'copied_bytes': sum(p.stat().st_size for p in files), 'verified_source_paths': len(snapshot),
+    'matrix_complete_rows': len(reports), 'matrix_missing_rows': 9 - len(reports),
+    'scope': 'Original byte/archive verification only; fixture semantic delta review remains separate',
+    'formal_release': 'BLOCKED'}))

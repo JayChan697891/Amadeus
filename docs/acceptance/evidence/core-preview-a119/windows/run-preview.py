@@ -1,0 +1,348 @@
+"""Build and verify the frozen a119 Windows development preview offline once."""
+
+import hashlib
+import json
+import os
+import stat
+import subprocess
+import sys
+import tarfile
+import tomllib
+import xml.etree.ElementTree as ET
+import zipfile
+from datetime import UTC, datetime
+from email.parser import BytesHeaderParser
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m119p")
+REPO = Path("F:/syuc/amadeus-m6-single")
+COMMIT = "4be51345d5b8846da58d79df5b8567619e9acfed"
+REPAIR = "3b43647bb4332c646d82b0ecc4055f0e40fb462c"
+OWNER_REPAIR = "667779906b810664460b36a76bf11950d279be35"
+CONTINUATION_BRIDGE = "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1"
+VERSION = "0.3.0a119"
+PRIOR = REPO / "releases/0.3.0a118/preview-7f0ba0a"
+PRIOR_ARTIFACTS = {
+    "agentsync_local-0.3.0a118-py3-none-any.whl": "1563c0e64f883aabd70f43b27de7cba75c91ce004552c1ec0fddc47cec4ce268",
+    "agentsync_local-0.3.0a118.tar.gz": "e08665f67702751bd2179321bdced2bc6fc714b887746f806024e2faec57a631",
+}
+HISTORICAL = REPO / "releases/0.3.0a117/demo-fc27f15"
+HISTORICAL_ARTIFACTS = {
+    "agentsync_local-0.3.0a117-py3-none-any.whl": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+    "agentsync_local-0.3.0a117.tar.gz": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+}
+OFFLINE = Path("D:/agentsync-debug/continuation-cc30ed21")
+PYTHON = OFFLINE / "windows-py312-venv/Scripts/python.exe"
+WHEELHOUSE = OFFLINE / "windows-py312-wheelhouse"
+SOURCE, RUN, SCRATCH, DIST = (BASE / name for name in ("s", "run", "t", "dist"))
+EXPORT = (
+    "src", "tests", "tools", "docs", "examples", ".github", "AGENTS.md", "WORKFLOW.md",
+    "LICENSE", "README.md", "README.zh-CN.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md",
+    ".env.example", ".gitignore", ".gitattributes", "requirements-lock.txt",
+    "requirements-dev-lock.txt", "pyproject.toml", "MANIFEST.in",
+)
+OWNER_TEST = "tests/security/test_m5_owner_cli_inputs.py"
+CONTINUATION_TEST = "tests/integration/test_unfinished_continuation.py"
+STAGING_TEST = "tests/integration/test_codex_proposal_review.py"
+SELECTION = (
+    OWNER_TEST,
+    CONTINUATION_TEST + "::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-synthetic]",
+    CONTINUATION_TEST + "::test_continued_proposal_without_solution_is_review_only",
+    CONTINUATION_TEST + "::test_host_exit_preserves_continuation_recovery[prepared]",
+    CONTINUATION_TEST + "::test_host_exit_preserves_continuation_recovery[dispatch-intent]",
+    STAGING_TEST + "::test_controlled_proposal_review_and_native_staging[success]",
+)
+FOCUSED_CASES = 15
+GENERATED_SDIST = {
+    "PKG-INFO", "setup.cfg",
+    *("src/agentsync_local.egg-info/" + name for name in (
+        "PKG-INFO", "SOURCES.txt", "dependency_links.txt", "entry_points.txt", "requires.txt", "top_level.txt",
+    )),
+}
+MEMBERS_FILE = RUN / "runtime-members.json"
+
+ORIGIN = r"""
+import hashlib, importlib.metadata as md, json, sys
+from pathlib import Path
+import agentsync, agentsync.cli
+from agentsync.sdk import AgentSyncClient
+
+env, archive, members = map(Path, sys.argv[1:4])
+digest, version = sys.argv[4:]
+assert Path(sys.prefix).resolve() == env.resolve()
+assert sys.version_info[:3] == (3, 12, 16)
+site = env.resolve() / "Lib/site-packages"
+assert Path(agentsync.__file__).resolve() == site / "agentsync/__init__.py"
+assert Path(agentsync.cli.__file__).resolve() == site / "agentsync/cli.py"
+assert AgentSyncClient.__module__ == "agentsync.sdk"
+dist = md.distribution("agentsync-local")
+assert dist.version == agentsync.__version__ == version
+direct = json.loads(dist.read_text("direct_url.json"))
+assert direct["url"] == archive.resolve().as_uri() and "dir_info" not in direct
+assert direct["archive_info"]["hashes"]["sha256"] == digest
+actual = {
+    p.relative_to(site).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+    for p in (site / "agentsync").rglob("*") if p.is_file() and "__pycache__" not in p.parts
+}
+assert actual == json.loads(members.read_bytes()) and len(actual) == 97
+print(json.dumps({"origin": str(Path(agentsync.__file__).resolve()), "version": version,
+                  "python": sys.version, "direct_url": direct, "runtime_members": len(actual)}))
+"""
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def file_sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def previous_artifacts():
+    return {
+        name: file_sha(directory / name)
+        for directory, expected in ((PRIOR, PRIOR_ARTIFACTS), (HISTORICAL, HISTORICAL_ARTIFACTS))
+        for name in expected
+    }
+
+
+def freeze_source():
+    archive = BASE / "source.zip"
+    with archive.open("xb") as stream:
+        subprocess.run(
+            ["git", "-C", str(REPO), "archive", "--format=zip", COMMIT, "--", *EXPORT],
+            stdout=stream, check=True, timeout=90,
+        )
+    manifest = {}
+    SOURCE.mkdir()
+    with zipfile.ZipFile(archive) as tree:
+        for member in tree.infolist():
+            if member.is_dir():
+                continue
+            name = member.filename
+            target = SOURCE / name
+            assert target.resolve().is_relative_to(SOURCE) and name not in manifest
+            assert not stat.S_ISLNK(member.external_attr >> 16)
+            data = tree.read(member)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open("xb") as stream:
+                stream.write(data)
+            manifest[name] = {"sha256": sha(data), "bytes": len(data)}
+    return archive, manifest
+
+
+def runtime_members(manifest):
+    members = {
+        name.removeprefix("src/"): row["sha256"]
+        for name, row in manifest.items() if name.startswith("src/agentsync/")
+    }
+    assert len(members) == 97
+    with zipfile.ZipFile(PRIOR / next(iter(PRIOR_ARTIFACTS))) as prior:
+        old = {n: sha(prior.read(n)) for n in prior.namelist()
+               if n.startswith("agentsync/") and not n.endswith("/")}
+    assert members.keys() == old.keys()
+    assert {n for n in members if members[n] != old[n]} == {
+        "agentsync/__init__.py", "agentsync/cli.py", "agentsync/continuation.py", "agentsync/controlled_relay.py",
+    }
+    return members
+
+
+def verify_archives(wheel, sdist, members, manifest):
+    with zipfile.ZipFile(wheel) as package:
+        names = [name for name in package.namelist() if not name.endswith("/")]
+        dist_info = f"agentsync_local-{VERSION}.dist-info/"
+        assert len(names) == len(set(names))
+        assert all(name in members or name.startswith(dist_info) for name in names)
+        assert {name: sha(package.read(name)) for name in names if name in members} == members
+        assert BytesHeaderParser().parsebytes(package.read(dist_info + "METADATA"))["Version"] == VERSION
+
+    payload = {}
+    with tarfile.open(sdist, "r:gz") as package:
+        prefix = f"agentsync_local-{VERSION}/"
+        expected = set(manifest) | GENERATED_SDIST
+        for member in package:
+            if member.isdir():
+                continue
+            assert member.isfile() and member.name.startswith(prefix)
+            name = member.name.removeprefix(prefix)
+            assert name in expected and name not in payload
+            data = package.extractfile(member).read()
+            payload[name] = sha(data)
+            if name == "PKG-INFO":
+                assert BytesHeaderParser().parsebytes(data)["Version"] == VERSION
+    tracked = payload.keys() - GENERATED_SDIST
+    assert GENERATED_SDIST <= payload.keys()
+    assert all(payload[name] == manifest[name]["sha256"] for name in tracked)
+    assert {"pyproject.toml", "MANIFEST.in", "LICENSE"} <= tracked
+    assert {n for n in manifest if n.startswith(("src/agentsync/", "tests/"))} <= tracked
+    return len(tracked)
+
+
+def main():
+    if (
+        os.name != "nt" or sys.version_info[:3] != (3, 12, 16) or Path(sys.executable) != PYTHON
+        or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__
+    ):
+        raise SystemExit("Use the pinned Windows 3.12.16 interpreter with -I -B.")
+    assert BASE.resolve(strict=True) == BASE and Path(__file__).resolve().parent == BASE
+    assert {p.name for p in BASE.iterdir()} == {Path(__file__).name}
+    RUN.mkdir()
+    (RUN / "logs").mkdir()
+    SCRATCH.mkdir()
+    home = BASE / "home"
+    home.mkdir()
+    for key in tuple(os.environ):
+        if key.upper().startswith((
+            "OPENAI_", "ANTHROPIC_", "CLAUDE_", "CURSOR_", "CODEX_", "GEMINI_", "GOOGLE_",
+            "DEEPSEEK_", "GITHUB_", "AGENTSYNC_", "GIT_", "PYTHON", "PYTEST_", "PIP_",
+        )) or key.upper().endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(key)
+    os.environ.update(
+        HOME=str(home), USERPROFILE=str(home), TEMP=str(SCRATCH), TMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+        PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1", PIP_DISABLE_PIP_VERSION_CHECK="1",
+        PIP_NO_CACHE_DIR="1", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0",
+    )
+    start = {
+        "started_at": datetime.now(UTC).isoformat(), "controller_pid": os.getpid(), "version": VERSION,
+        "product_source_commit": COMMIT, "test_source_commit": COMMIT, "workflow_repair_commit": REPAIR,
+        "owner_repair_commit": OWNER_REPAIR, "continuation_bridge_commit": CONTINUATION_BRIDGE,
+        "driver_sha256": file_sha(Path(__file__)), "python": sys.version, "python_executable": sys.executable,
+        "scope": "Windows 3.12 development preview, wheel and sdist affected-install checks",
+        "full_regression": "NOT RUN", "platform_matrix": "NOT RUN", "vm": "NOT RUN",
+        "docker": "NOT RUN", "model_calls": 0, "real_clients": "NOT RUN", "formal_release": "BLOCKED",
+        "automatic_retry": False,
+    }
+    save(RUN / "start.json", start)
+    result = {**start, "status": "fail", "phase": "freeze_source"}
+    checks = []
+    junit = {}
+    expected_previous = {**PRIOR_ARTIFACTS, **HISTORICAL_ARTIFACTS}
+    try:
+        assert previous_artifacts() == expected_previous
+        archive, manifest = freeze_source()
+        save(RUN / "source-manifest.json", manifest)
+        members = runtime_members(manifest)
+        save(MEMBERS_FILE, members)
+        result.update(
+            export_paths=EXPORT, frozen_source_sha256=file_sha(archive), frozen_source_files=len(manifest),
+            source_manifest_sha256=file_sha(RUN / "source-manifest.json"),
+            runtime_member_manifest_sha256=file_sha(MEMBERS_FILE), runtime_members=len(members),
+            collector_sha256=manifest["tools/release_acceptance.py"]["sha256"],
+            test_file_sha256={name: manifest[name]["sha256"] for name in (OWNER_TEST, CONTINUATION_TEST, STAGING_TEST)},
+        )
+
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+
+        def require(check):
+            assert check["status"] == "pass" and check["exit_code"] == 0 and not check["log_truncated"]
+
+        def check(name, command, cwd=RUN, *, offline=None):
+            result["phase"] = name
+            outcome = collector.execute(name, list(map(str, command)), cwd, RUN, SCRATCH, offline_wheelhouse=offline)
+            checks.append(outcome)
+            require(outcome)
+
+        result["phase"] = "offline_build"
+        project = tomllib.loads((SOURCE / "pyproject.toml").read_text(encoding="utf-8"))
+        assert project["project"]["version"] == VERSION
+        packages = collector._prepare_offline_packages(project, WHEELHOUSE, SCRATCH, RUN)
+        result.update(offline_wheelhouse_sha256=file_sha(RUN / "offline-wheelhouse.json"),
+                      frontend=packages.frontend, backend=packages.backend, application=packages.application)
+        command = collector._offline_build_command(SOURCE, RUN, SCRATCH, packages, checks, artifact_output=DIST)
+        assert command is not None
+        for outcome in checks:
+            require(outcome)
+        check("build", command, SOURCE, offline=packages.wheelhouse)
+        built = {
+            "wheel": DIST / f"agentsync_local-{VERSION}-py3-none-any.whl",
+            "sdist": DIST / f"agentsync_local-{VERSION}.tar.gz",
+        }
+        result["phase"] = "archive_comparison"
+        assert set(DIST.iterdir()) == set(built.values())
+        assert all(file_sha(SOURCE / ("src/" + name)) == digest for name, digest in members.items())
+        result["sdist_tracked_payload_files"] = verify_archives(built["wheel"], built["sdist"], members, manifest)
+        result["artifacts"] = {
+            kind: {"filename": path.name, "size": path.stat().st_size, "sha256": file_sha(path)}
+            for kind, path in built.items()
+        }
+
+        previous_cases = None
+        for kind, path in built.items():
+            environment = BASE / ("w" if kind == "wheel" else "d")
+            python = str(environment / "Scripts/python.exe")
+            check(kind + "_venv", [sys.executable, "-I", "-B", "-m", "venv", environment])
+            backend = packages.backend if kind == "sdist" else ()
+            check(kind + "_offline_dependencies", collector._offline_install(
+                python, packages.wheelhouse, "--only-binary=:all:", *backend, *packages.application,
+            ), offline=packages.wheelhouse)
+            install_flags = ["--no-build-isolation"] if kind == "sdist" else []
+            check(kind + "_install", collector._offline_install(
+                python, packages.wheelhouse, "--no-deps", *install_flags, "--", str(path),
+            ), offline=packages.wheelhouse)
+            check(kind + "_pip_check", [python, "-I", "-B", "-m", "pip", "check"], offline=packages.wheelhouse)
+
+            artifact = result["artifacts"][kind]
+            origin = [python, "-I", "-B", "-c", ORIGIN, environment, path, MEMBERS_FILE, artifact["sha256"], VERSION]
+            check(kind + "_origin_before", origin)
+            result["phase"] = kind + "_console_smoke"
+            console = collector._installed_console_smoke(kind, python, RUN, SCRATCH, artifact)
+            console.pop("artifact")  # Keep the native receipt's result shape.
+            checks.append(console)
+            require(console)
+
+            raw = SCRATCH / f"{kind}-focused.xml"
+            output = RUN / raw.name
+            try:
+                check(kind + "_pytest", [
+                    python, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
+                    *(SOURCE / selector for selector in SELECTION),
+                    "--basetemp", SCRATCH / (kind + "-p"), "--junitxml", raw,
+                ], offline=packages.wheelhouse)
+            finally:
+                if raw.is_file():
+                    redacted = collector.persist_junit(raw, output)
+                    junit[kind] = {"path": output.name, "sha256": file_sha(output),
+                                   "credential_redactions": redacted, **collector.junit_counts(output)}
+            assert {k: junit[kind][k] for k in ("tests", "failures", "errors", "skipped")} == {
+                "tests": FOCUSED_CASES, "failures": 0, "errors": 0, "skipped": 0,
+            }
+            cases = {(row.get("classname"), row.get("name")) for row in ET.parse(output).iter("testcase")}
+            assert len(cases) == FOCUSED_CASES and all(all(case) for case in cases)
+            assert previous_cases is None or previous_cases == cases
+            previous_cases = cases
+            check(kind + "_origin_after", origin)
+            before, after = (RUN / "logs" / f"{kind}_origin_{part}.log" for part in ("before", "after"))
+            assert before.read_bytes() == after.read_bytes() and file_sha(path) == artifact["sha256"]
+
+        assert all(file_sha(SOURCE / ("src/" + name)) == digest for name, digest in members.items())
+        result["status"] = "pass"
+    except (Exception, KeyboardInterrupt) as exc:
+        result["error_type"] = type(exc).__name__
+    finally:
+        try:
+            result["a117_a118_archives_unchanged"] = previous_artifacts() == expected_previous
+        except OSError:
+            result["a117_a118_archives_unchanged"] = False
+        if not result["a117_a118_archives_unchanged"]:
+            result["status"] = "fail"
+        result.update(
+            finished_at=datetime.now(UTC).isoformat(), checks=checks, focused_selection=SELECTION, junit=junit,
+            previous_archive_sha256=expected_previous,
+            native_receipt_sha256={p.name: file_sha(p) for p in sorted((RUN / "logs").glob("*.process.json"))},
+        )
+        save(RUN / "result.json", result)
+    print(f"{result['status']}: {RUN / 'result.json'}", flush=True)
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

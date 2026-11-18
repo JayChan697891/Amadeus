@@ -1,0 +1,5 @@
+ss..                                                                     [100%]
+=========================== short test summary info ===========================
+SKIPPED [1] tests\integration\test_initialize_terminal_project.py:22: Actual Linux permissions and Git
+SKIPPED [1] tests\integration\test_initialize_terminal_project.py:66: Actual Linux initializer
+2 passed, 2 skipped in 0.23s

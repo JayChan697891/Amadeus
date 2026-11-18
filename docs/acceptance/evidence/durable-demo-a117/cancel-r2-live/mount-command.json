@@ -1,0 +1,8 @@
+{
+  "at": "2026-11-15T15:08:55.905896+00:00",
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-cancel-a117-r2-20261115/credential_home.py mount",
+  "exit_code": 0,
+  "stdout": "Dedicated RAM-backed home ready.\n",
+  "stderr": "",
+  "external_auth_copied_by_this_step": false
+}

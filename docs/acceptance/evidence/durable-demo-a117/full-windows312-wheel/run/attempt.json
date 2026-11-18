@@ -1,0 +1,16 @@
+{
+  "scope": "Windows 3.12, one full suite against the installed a117 preview wheel",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "fixture_snapshot_sha256": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+  "driver_sha256": "9a86ad90e2d8475bac4c931afeb34339b2ec84137e138b4cbea1b3a2f6de7192",
+  "controller_pid": 8872,
+  "controller_python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "started_at": "2026-11-16T07:00:35.713286+00:00",
+  "status": "unknown",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": []
+}

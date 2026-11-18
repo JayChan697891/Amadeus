@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_owner_inspects_checkpoint_after_producer_session_expiry[saved] _____
+tests\integration\test_relay_owner_status.py:70: in test_owner_inspects_checkpoint_after_producer_session_expiry
+    checkpoint = response["data"]["checkpoint"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'checkpoint'
+=========================== short test summary info ===========================
+FAILED tests/integration/test_relay_owner_status.py::test_owner_inspects_checkpoint_after_producer_session_expiry[saved]
+1 failed in 4.64s

@@ -1,0 +1,111 @@
+{
+  "schema": "amadeus.terminal-repaired-plan.v1",
+  "fixture": "/root/amadeus-terminal-repaired-a122-20261118",
+  "project_id": "4b3c5f79-537a-4673-b3d5-325744f988b3",
+  "entry_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+  "entry_sha256": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "ready_sha256": "dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1",
+  "candidate": {
+    "path": "solution.py",
+    "utf8_bytes": 149,
+    "sha256": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44",
+    "source_reference": "../composed-recovery/candidate-source.json"
+  },
+  "verifier": {
+    "profile_id": "python-json-lines-v1",
+    "profile_sha256": "824039ecab177221b5e288d73d086f6bdfa479dde12910e6f8bf44fa091d1816",
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "cases": [
+      {
+        "input": [
+          2,
+          3
+        ],
+        "expected": 5
+      },
+      {
+        "input": [
+          -4,
+          1
+        ],
+        "expected": -3
+      }
+    ],
+    "timeout_seconds": 5,
+    "network": false,
+    "host_execution_fallback": false
+  },
+  "requested_candidate_authority": {
+    "stage_once": true,
+    "execute_once": true,
+    "complete_producer_once": true,
+    "currently_authorized": false
+  },
+  "existing_subscription_authority": {
+    "standing_owner_grant": "durable-demo-a117/interrupted-controller/owner-grant-20261116.json",
+    "max_calls": 2,
+    "paid_api_allowed": false,
+    "retry_after_failure_unknown_or_mismatch": false,
+    "fresh_post_failure_permission_required": true
+  },
+  "order": [
+    "native PTY and hidden owner input",
+    "inspect exact producer launch and subscription/isolation conditions",
+    "require generated proposal exactly matches 149-byte approved source and current staging pins",
+    "one exact staging approval",
+    "one exact Docker execution approval",
+    "inspect actual result and distinct reviewer; approve exact producer completion",
+    "inspect and approve second Codex launch; receiver document remains review/unverified"
+  ],
+  "credentials": {
+    "source": "C:/Users/JayChan/.codex/auth.json",
+    "temporary_destination": "/root/amadeus-terminal-repaired-a122-20261118/private-home/auth.json",
+    "storage": "owner-only dedicated tmpfs",
+    "copy_status": "NOT RUN",
+    "cleanup": "Confirm actual host termination and no owned processes. For admitted attempts require precise terminal receipts; for unadmitted startup timeout/denial require missing launch/consent receipts and preserve unknown. Remove only the temporary model login and unmount its dedicated tmpfs; original unchanged.",
+    "private_project_owner": "Kept only in root-only fixture file; never uploaded"
+  },
+  "stop_conditions": [
+    "Any different source or binding",
+    "Unsupported CLI/account/billing/isolation conditions",
+    "Any failed or unknown model outcome",
+    "Any denied exact decision",
+    "Output limit or unknown process termination"
+  ],
+  "candidate_execution": "NOT RUN",
+  "new_terminal_real_e2e": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "initializer_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+  "initializer_sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+  "previous_attempt": {
+    "status": "FAIL; adapter unknown/factory_timeout",
+    "evidence": "../terminal-live/result-summary.json",
+    "preserve": true,
+    "replay": false
+  },
+  "fresh_authorization_required": true,
+  "requested_authority": {
+    "new_repaired_attempt": true,
+    "max_subscription_calls": 2,
+    "temporary_model_auth_copy_and_cleanup": true,
+    "exact_candidate_only": true,
+    "max_staging": 1,
+    "max_candidate_executions": 1,
+    "independent_producer_completion": true,
+    "extra_fees_allowed": false,
+    "paid_api_allowed": false,
+    "retry_allowed": false,
+    "currently_authorized": false
+  },
+  "budgets_seconds": {
+    "task_including_approval": 90,
+    "entire_flow": 600
+  },
+  "max_raw_output_bytes": 1048576,
+  "helpers_sha256": {
+    "terminal_control.py": "8999d28e2c3eab6fd8313a56e3bcc6cc40f6fb49d044401802fb7f3d9c92c083",
+    "setup_auth.py": "5925f8e809e8a58d5d306b8d89dd809f5a64b676690c6a1637826c875243c02e",
+    "auth_home.py": "d297e420f5cb9e2be82a36e8663a9e8654b4951e7674f3bc2fb20a00821eb716"
+  }
+}

@@ -1,0 +1,57 @@
+import json
+import socket
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+base = Path('D:/agentsync-debug/m122-composed-recovery/host')
+assert not (base / 'shutdown-request.json').exists()
+client = paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root', key_filename='D:/agentsync-debug/vm/debug_ed25519', look_for_keys=False, allow_agent=False, timeout=15)
+probe = '''import json,os,subprocess
+from pathlib import Path
+assert Path('/proc/sys/kernel/random/boot_id').read_text().strip()=='573141a0-a4cc-4c28-a53f-79f0d15b5a5d'
+root=Path('/root/amadeus-m122-composed-recovery')
+assert json.loads((root/'auth-cleanup.json').read_bytes())['temporary_auth_absent'] is True
+assert not any((root/'private-home').iterdir())
+assert json.loads((root/'continuation-result.json').read_bytes())['status']=='resolved'
+assert not (root/'execution-entry.json').exists()
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+ try:
+  comm=(p/'comm').read_text().strip();cmd=(p/'cmdline').read_bytes()
+  assert not (('python' in comm or 'codex' in comm) and any(t in cmd for t in (b'/root/amadeus-',b'/root/agentsync-')))
+ except (OSError,ProcessLookupError):pass
+assert not subprocess.check_output(['/usr/bin/docker','ps','-aq'],text=True,timeout=30).strip()
+print('No project workers or containers; exact guest boot confirmed')
+'''
+try:
+    stdin, stdout, stderr = client.exec_command('/root/jobs-env/bin/python -I -B -', timeout=50)
+    stdin.write(probe)
+    stdin.flush()
+    stdin.channel.shutdown_write()
+    out, err = stdout.read(), stderr.read()
+    assert stdout.channel.recv_exit_status() == 0 and not err
+finally:
+    client.close()
+with (base / 'shutdown-request.json').open('x', encoding='utf-8') as stream:
+    json.dump({'utc': datetime.now(UTC).isoformat(), 'method': 'QMP system_powerdown', 'pid': 8280, 'boot_id': '573141a0-a4cc-4c28-a53f-79f0d15b5a5d', 'guest_guard': out.decode()}, stream, indent=2)
+replies = []
+with socket.create_connection(('127.0.0.1', 22223), timeout=10) as connection:
+    with connection.makefile('rwb', buffering=0) as stream:
+        greeting = json.loads(stream.readline())
+        assert 'QMP' in greeting
+        for identity, command in (('capabilities', 'qmp_capabilities'), ('powerdown', 'system_powerdown')):
+            stream.write(json.dumps({'execute': command, 'id': identity}).encode() + b'\n')
+            while True:
+                response = json.loads(stream.readline())
+                replies.append(response)
+                if response.get('id') == identity:
+                    assert 'return' in response and 'error' not in response
+                    break
+with (base / 'shutdown-replies.json').open('x', encoding='utf-8') as stream:
+    json.dump(replies, stream, indent=2)
+print('Normal powerdown acknowledged; host process observation still required')

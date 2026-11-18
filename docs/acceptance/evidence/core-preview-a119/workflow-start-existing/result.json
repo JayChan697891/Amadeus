@@ -1,0 +1,13 @@
+{
+  "exit_code": 1,
+  "response": {
+    "ok": false,
+    "error": {
+      "code": "unauthorized",
+      "message": "Invalid project credentials."
+    }
+  },
+  "path_exists_after": true,
+  "database_created": true,
+  "model_calls": 0
+}

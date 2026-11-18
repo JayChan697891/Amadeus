@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="2.842" timestamp="2026-11-18T00:41:57.973787+00:00" hostname="agentsync-debug"><testcase classname="tests.integration.test_verified_codex_terminal" name="test_real_hidden_terminal_input[cancel]" time="0.707"><failure message="AssertionError: assert 'accepted' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + accepted">tests/integration/test_verified_codex_terminal.py:106: in test_real_hidden_terminal_input
+    assert result["status"] == {"cancel": "cancelled", "line": "accepted", "eof": "eof",
+E   AssertionError: assert 'accepted' == 'cancelled'
+E     
+E     - cancelled
+E     + accepted</failure></testcase><testcase classname="tests.integration.test_verified_codex_terminal" name="test_real_hidden_terminal_input[line]" time="0.340" /><testcase classname="tests.integration.test_verified_codex_terminal" name="test_real_hidden_terminal_input[eof]" time="0.342" /><testcase classname="tests.integration.test_verified_codex_terminal" name="test_real_hidden_terminal_input[overlong]" time="0.339"><failure message="AssertionError: assert 'accepted' == 'rejected'&#10;  &#10;  - rejected&#10;  + accepted">tests/integration/test_verified_codex_terminal.py:106: in test_real_hidden_terminal_input
+    assert result["status"] == {"cancel": "cancelled", "line": "accepted", "eof": "eof",
+E   AssertionError: assert 'accepted' == 'rejected'
+E     
+E     - rejected
+E     + accepted</failure></testcase></testsuite></testsuites>

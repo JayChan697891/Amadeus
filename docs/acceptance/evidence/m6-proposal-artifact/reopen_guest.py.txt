@@ -1,0 +1,25 @@
+from pathlib import Path
+import hashlib
+import json
+import sqlite3
+import subprocess
+
+root = Path('/root/amadeus-proposal-pilot-20261112')
+summary = json.loads((root / 'summary.json').read_text())
+execution = json.loads((root / 'execution.json').read_text())
+completion = json.loads((root / 'completion.json').read_text())
+connection = sqlite3.connect(f'file:{root}/core/agentsync.db?mode=ro', uri=True)
+connection.row_factory = sqlite3.Row
+task = connection.execute('SELECT status,version FROM tasks WHERE id=?', (summary['target_task_id'],)).fetchone()
+proof = connection.execute('SELECT * FROM task_verifications WHERE task_id=?', (summary['target_task_id'],)).fetchone()
+assert task['status'] == 'completed' and task['version'] == completion['version']
+assert proof is not None and proof['execution_id'] == execution['execution_id']
+cid = execution['execution']['container_id']
+assert len(cid) == 64 and all(ch in '0123456789abcdef' for ch in cid)
+# A healthy daemon with an empty exact-ID filtered list independently confirms absence.
+observed = subprocess.run(['docker', '--host', 'unix:///var/run/docker.sock', 'ps', '-a', '--no-trunc', '--filter', 'id=' + cid, '--format', '{{.ID}}'], capture_output=True, check=True, timeout=10)
+assert observed.stdout.strip() == b''
+record = {'reopened_readonly': True, 'fixture_task_status': task['status'], 'fixture_task_version': task['version'], 'verification_execution_link_matches': True, 'container_absent': True, 'container_id': cid, 'no_retry': True}
+with (root / 'reopened.json').open('x', encoding='utf-8') as stream:
+    json.dump(record, stream, indent=2)
+print(json.dumps(record))

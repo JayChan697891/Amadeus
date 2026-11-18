@@ -1,0 +1,25 @@
+{
+  "scope": "Not started; use pathname XML replay; previous prepared helper bytes preserved in helper-revisions/before-path-replay",
+  "artifacts": [
+    {
+      "path": "m115-derive-row.py",
+      "sha256": "51884d125d5eea30173af17b731ba943f6615bc3200fce13938295f39ec578a5",
+      "size": 6287
+    },
+    {
+      "path": "m115-candidate-row.py",
+      "sha256": "22267fa65b965878ca962528b58a28cedcb57de06a0c1efeff20eede4126bd5f",
+      "size": 8833
+    },
+    {
+      "path": "m115-candidate-queue.py",
+      "sha256": "0db206a3ae0fef3bc83fe303dfee9134f91cd985801f636d0125239cefd2f3d8",
+      "size": 3487
+    },
+    {
+      "path": "identity-label-fixture.py.txt",
+      "sha256": "41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df",
+      "size": 86119
+    }
+  ]
+}

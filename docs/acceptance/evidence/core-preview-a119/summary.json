@@ -1,0 +1,80 @@
+{
+  "version": "0.3.0a119",
+  "source_and_tests": "4be51345d5b8846da58d79df5b8567619e9acfed",
+  "owner_repair": "667779906b810664460b36a76bf11950d279be35",
+  "continuation_bridge": "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1",
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a119-py3-none-any.whl",
+      "size": 326638,
+      "sha256": "cbcf38bfe80a61510cbc95fb2a7112173222a7b6bb03404a324e52e23d237c31"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a119.tar.gz",
+      "size": 5180063,
+      "sha256": "249f726f5c484c101337546aa137151418829eca1bb0b1a5f21f89c97e1e014e"
+    }
+  },
+  "formal_release": "BLOCKED",
+  "status": "branch-stored development preview; not a published Release",
+  "recorded_at": "2026-11-16T13:51:00.689219+00:00",
+  "windows": {
+    "native_session": 34955,
+    "native_exit_chunk": "dafe65",
+    "exit_code": 0,
+    "python": "3.12.16",
+    "native_checks": 19,
+    "wheel_tests": 15,
+    "sdist_tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "same_case_identities": true
+  },
+  "linux": {
+    "native_session": 15165,
+    "native_start_chunk": "b180e5",
+    "native_exit_chunk": "ebd4bf",
+    "exit_code": 0,
+    "python": "3.14.7",
+    "native_checks": 16,
+    "wheel_tests": 16,
+    "sdist_tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "same_windows_cases": 15,
+    "extra_per_package": "actual Docker continuation bridge",
+    "docker_cases_per_package": 2,
+    "isolation_checks_per_package": 19,
+    "owned_containers_and_workers_absent": true,
+    "vm_normally_stopped": true
+  },
+  "binding": {
+    "source_files": 3090,
+    "sdist_tracked_files": 2123,
+    "runtime_members_per_install": 97,
+    "source_packages_and_all_four_installs_match": true,
+    "input_source_commit": "4be51345d5b8846da58d79df5b8567619e9acfed",
+    "same_original_windows_packages_installed_on_linux": true,
+    "runtime_delta_from_a118": [
+      "agentsync/__init__.py",
+      "agentsync/cli.py",
+      "agentsync/continuation.py",
+      "agentsync/controlled_relay.py"
+    ],
+    "old_a117_a118_archives_unchanged": true
+  },
+  "review": {
+    "root": "Read actual drivers, native receipts/logs/JUnit, rehashed original source and installed members, compared Windows/Linux case identities and candidate proof bindings, observed normal cleanup.",
+    "formal_work_review": "PENDING"
+  },
+  "limitations": [
+    "No new model inference, temporary login copy or paid service. Protocol fixtures are not real client acceptance.",
+    "New preview not covered by historical full suites or complete platform matrix; full a119 suites, real clients and macOS NOT RUN.",
+    "Same real-model interrupted receiver reaching verified completion has not been run.",
+    "No Actions, main merge, formal release or public promotion.",
+    "Original M0-M9, M5 frozen scope, all previous failures and packages remain preserved."
+  ],
+  "next": "Prepare the reviewed fixed solution.py real-model continuation experiment and its explicit candidate staging/execution/completion scope; standing model grant remains bounded and earlier interrupted scope excluded candidate execution."
+}

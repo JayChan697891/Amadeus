@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "scope": "Post-run receipt, case and redaction checks",
+  "checked_process_receipts": 7,
+  "unique_cases": 2596,
+  "passed": 2539,
+  "skipped": 57,
+  "failures": 0,
+  "errors": 0,
+  "junit_redactions": 6,
+  "junit_reproduced_byte_exact": true,
+  "stdout_redactions": 0,
+  "stdout_reproduced_byte_exact": true,
+  "source_byte_checks": "Root independent inspection, not repeated here",
+  "root_review_sha256": "f4737f9ccb9fb0857780a63a99a053bfbb9093211fc7ceda35aee6fa3df51b26",
+  "root_inspect_sha256": "8f3acafdbc09c87ead6059ad522a9b5e673d175fdb32094b993c2a5833835b3d",
+  "result_sha256": "85964839c05b5df7cfd40b3c923246bf9e6b5dbf8bc459c9c168b36f038c23b0",
+  "model_calls": 0,
+  "test_executions_in_this_check": 0,
+  "formal_release": "BLOCKED"
+}

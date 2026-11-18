@@ -1,0 +1,77 @@
+[
+  {
+    "path": "attempt.json",
+    "bytes": 1154,
+    "sha256": "d35e9d2f5a63b3d72486309fd2a9152bbd17b7f5c2b8c8a2aa33ba6092d208fb"
+  },
+  {
+    "path": "logs/sdist_origin_after.log",
+    "bytes": 504,
+    "sha256": "97d2f2fe03bca818a2adf32d684235314525d0c34bc696f10b8093710728d932"
+  },
+  {
+    "path": "logs/sdist_origin_after.process.json",
+    "bytes": 4564,
+    "sha256": "bc84e185d7a0dfabde3e76dad7b61b0f3a62f4a25b078355af67f3b7c01a23a5"
+  },
+  {
+    "path": "logs/sdist_origin_before.log",
+    "bytes": 504,
+    "sha256": "97d2f2fe03bca818a2adf32d684235314525d0c34bc696f10b8093710728d932"
+  },
+  {
+    "path": "logs/sdist_origin_before.process.json",
+    "bytes": 4567,
+    "sha256": "2c1574f465346fe64ed9bc5bc96d3c145510a696c1bcf21a6a9234d912dde790"
+  },
+  {
+    "path": "logs/sdist_pip_check.log",
+    "bytes": 32,
+    "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+  },
+  {
+    "path": "logs/sdist_pip_check.process.json",
+    "bytes": 1207,
+    "sha256": "8ba158e55cbff9463c435b8679fbd77c79c1cbd79276a31309dbe6dae51cca7c"
+  },
+  {
+    "path": "logs/sdist_pytest.log",
+    "bytes": 22819,
+    "sha256": "41cc1ac681fcfe009a43211a856ed834050c1a2cc654a3ff071dd7636c4da3e0"
+  },
+  {
+    "path": "logs/sdist_pytest.process.json",
+    "bytes": 1760,
+    "sha256": "0ffbe2f56fdc132285fbe9613a744e09b65bdd14a8353f0247d364468e668c28"
+  },
+  {
+    "path": "result.json",
+    "bytes": 8169,
+    "sha256": "77c755035477bd86bbea454494fb4469ea36d449a904cf3cbbb28758d188d5b7"
+  },
+  {
+    "path": "root-review.json",
+    "bytes": 15228,
+    "sha256": "6560db7ea33265d46d5dacb0f5be74d837e1f45fd133d4efc79e629873c01be0"
+  },
+  {
+    "path": "root-review.py.txt",
+    "bytes": 4056,
+    "sha256": "7c8e71af19572b4c7c9d6f9cf9b1800ad304660305ac1f5f073389058df2e98c"
+  },
+  {
+    "path": "run-sdist.py.txt",
+    "bytes": 10584,
+    "sha256": "49aae1f124873e4a6027eb38f03ced72461b39a4790421ed8923a13749c4effe"
+  },
+  {
+    "path": "sdist-junit.xml",
+    "bytes": 408375,
+    "sha256": "f142d73802d12de8463b964834d6aab62c2f22f705f0407a479aff0bc5be3e64"
+  },
+  {
+    "path": "summary.json",
+    "bytes": 2217,
+    "sha256": "495d8a457786f15c1e110b58ff7e963bb2c11023231e46e311880209d41d2ab8"
+  }
+]

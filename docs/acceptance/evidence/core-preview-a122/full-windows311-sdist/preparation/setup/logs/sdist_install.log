@@ -1,0 +1,12 @@
+Looking in links: file:///D:/agentsync-debug/m122win311-sdist-preparation/setup/t/offline-wheels, file:///D:/agentsync-debug/m122win311-sdist-preparation/setup/t/offline-wheels
+Processing d:\agentsync-debug\m122p\dist\agentsync_local-0.3.0a122.tar.gz
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building wheel for agentsync-local (pyproject.toml): started
+  Building wheel for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a122-py3-none-any.whl size=328435 sha256=8df966b92064e124d7ec2c555242c1e069403f4aa79ffbea9dbd408edfb35afc
+  Stored in directory: D:\agentsync-debug\m122win311-sdist-preparation\setup\t\pip-ephem-wheel-cache-_2r0twa5\wheels\b2\d8\de\3b26134d61d328fb00bce047db51a5b6561d183128721b9ae1
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a122

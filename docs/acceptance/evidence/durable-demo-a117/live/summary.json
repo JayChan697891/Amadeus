@@ -1,0 +1,295 @@
+{
+  "observed_at": "2026-11-15T12:15:54.626739+00:00",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "preparation_evidence": "../live-preparation/lead-review.json",
+  "preparation_plan_sha256": "65e0d16496425353340ecda451b3420900de7a3608e284b65f3bb7ce729fba83",
+  "helper_sha256": {
+    "pilot.py": "a8c99fee5b4eee9dce539252f7ecdd131f93e3e79e1602d682f243871a7200a4",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "credential_home.py": "8861e9c9b78ffbfd36d4c64d988e84a255ef57708df28d4050b232caf6e814ff",
+    "runtime.json": "66c0aa24182d1153595b37e4ec4e46ca27d1e8995d83c3c441332bf436a90591"
+  },
+  "scope": "One actual current-a117 two-Codex controlled flow, four explicit host gates, Docker verification, document acceptance and zero-launch reopen",
+  "status": "PASS_WITH_LIMITED_SCOPE",
+  "release_status": "BLOCKED",
+  "platform": "Local Linux guest on D-drive Windows host",
+  "client_version": "0.167.0-alpha.3.2",
+  "model": "gpt-6.1-sol",
+  "real_model_calls": 2,
+  "calls": {
+    "producer": {
+      "adapter_elapsed_ms": 26089,
+      "reported_input_tokens": 8162,
+      "reported_output_tokens": 61,
+      "exit_code": 0,
+      "parent_ended": true,
+      "agent_sha256": "de2db499ef419ffe442b66aa838d3c87c9164b8951be46caab7d4feb1c79b359",
+      "protocol_session_sha256": "5cb805e08f6fe8287ee3e361f5d37b16aa18d751321fff73e129027630497a02"
+    },
+    "receiver": {
+      "adapter_elapsed_ms": 74704,
+      "reported_input_tokens": 8546,
+      "reported_output_tokens": 88,
+      "exit_code": 0,
+      "parent_ended": true,
+      "agent_sha256": "82dcbdb87c56153b330b6638065cd56c9d31991d1344cba91bdd6e6a0d851e4f",
+      "protocol_session_sha256": "c3372b6ac456f2e506d37afc1854ec15e72617141afa5237c1ada74e810f9b2d"
+    }
+  },
+  "docker_cases_passed": 8,
+  "docker_isolation_checks_passed": 19,
+  "source_bytes": 153,
+  "source_sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+  "producer_task": {
+    "id": "af381443-2651-4622-add5-0715d6e59ad2",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "verified"
+  },
+  "review_task": {
+    "id": "3b367c1d-fdbd-4dd4-b704-67fb1b6456eb",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "unverified"
+  },
+  "review_note_bytes": 357,
+  "review_note_sha256": "632ac77476c1d93bcb8d599864f940bcfc2549bda6ec4351554b85be5bd8a15d",
+  "reopen_model_calls": 0,
+  "runtime_members_matched": 97,
+  "runtime_python_modules": 96,
+  "credentials": {
+    "temporary_copy_removed": true,
+    "ram_home_unmounted": true,
+    "original_unchanged": true
+  },
+  "raw_outputs_uploaded": false,
+  "private_core_uploaded": false,
+  "billing": "Subscription-only confirmed by owner; no independent billing assertion",
+  "private_protocol_reparse": {
+    "zero_tool_events_for_both": true,
+    "messages_equal_reviewed_artifacts": true,
+    "producer_stderr_bytes": 119,
+    "producer_stderr_category": "unclassified_private_stderr",
+    "stderr_remains_private": true
+  },
+  "independent_review": "Native Astra read actual sanitized evidence, accepted limited current two-Codex flow; not full M6/M7/B/Release",
+  "not_run_or_not_proven": [
+    "cross-vendor real clients; no Claude/Cursor subscriptions",
+    "actual host/process crash during this live flow",
+    "unattended approval policy",
+    "candidate application to original workspace",
+    "full a117 regression or sdist acceptance",
+    "Windows/macOS live integration",
+    "independent billing verification",
+    "complete M6/M7/B or formal Release"
+  ],
+  "junit_kind": "Report-derived actual command observations; not pytest",
+  "artifacts": [
+    {
+      "path": "accept-review.log",
+      "size": 68,
+      "sha256": "858ff9f9bca6606cd81685d895d0ffb1f383bc6a51048d229f33f254da4e1257"
+    },
+    {
+      "path": "attempt.json",
+      "size": 144,
+      "sha256": "6818db99c51a914b77546148288ede60b0623040ff2cd5fa95e73e5753310120"
+    },
+    {
+      "path": "auth-cleanup-command.json",
+      "size": 47,
+      "sha256": "f291f199cf08ceba9ae75d798a54624848f93065570badac66d0bc5b8a75e568"
+    },
+    {
+      "path": "auth-cleanup.json",
+      "size": 143,
+      "sha256": "6731869c27eef72ff4e8b3e8eee814855cf9ab9031b75943a20ed54485ead425"
+    },
+    {
+      "path": "auth-mount-result.json",
+      "size": 135,
+      "sha256": "4ffe3d0cea96018ac5f9e1c02b951b402412eba6ed84abdd639214d3471a4082"
+    },
+    {
+      "path": "auth-route-producer.json",
+      "size": 57,
+      "sha256": "0b7dad7dbeba938ef56ee817a321dc4a36c5c313f8d8b15242b4bf8db8ff77f8"
+    },
+    {
+      "path": "auth-route-receiver.json",
+      "size": 57,
+      "sha256": "0b7dad7dbeba938ef56ee817a321dc4a36c5c313f8d8b15242b4bf8db8ff77f8"
+    },
+    {
+      "path": "completion-accepted.json",
+      "size": 292,
+      "sha256": "76ddc1899969061a0dab4d07ec4ad9e6e1b8f89b727be62b35655306c8fd2c4d"
+    },
+    {
+      "path": "completion-decision.json",
+      "size": 241,
+      "sha256": "27cefb0653ca792b52e488cb48f69311372c0459f0ffd452bf89203d048862c0"
+    },
+    {
+      "path": "completion-request.json",
+      "size": 4729,
+      "sha256": "c2a015df07052665929ea360a03cb12be3eb2046ef4136ca571dfc6f1b9a88c4"
+    },
+    {
+      "path": "controller-entry.json",
+      "size": 251,
+      "sha256": "24c7469bbb35bd7a07daa4e488075b195fefbf682a09080e476e0db42c7187ff"
+    },
+    {
+      "path": "controller-result.json",
+      "size": 263,
+      "sha256": "395407db5737fb6d30d689e4b3dddfabf00cd59cabe6138c449cfe59eea790f2"
+    },
+    {
+      "path": "credential-home.json",
+      "size": 135,
+      "sha256": "e4241ea6476e6bb5ced1b16b13ddc5461e7a2b37b894cb6e02008c260c440002"
+    },
+    {
+      "path": "dispatch-observation.json",
+      "size": 5720,
+      "sha256": "0e6325e63da273c435f12b9cb00e6e6ce949119ce394a2109c1f3d6bac6aa744"
+    },
+    {
+      "path": "execution-accepted.json",
+      "size": 291,
+      "sha256": "d6ce878b017abbdbc36cb7dc97bef15e0aa173cd9ca89ff14228e7170fbeb6b8"
+    },
+    {
+      "path": "execution-decision.json",
+      "size": 240,
+      "sha256": "a93df70760ae5666bc390082a38195830270fb44faadf55780ef76842f96a1f1"
+    },
+    {
+      "path": "execution-host-command.json",
+      "size": 47,
+      "sha256": "0b1a9bb2f8fa07f7988985d3c993c4d30341a413eb5ee64fb4aa935ca838ede7"
+    },
+    {
+      "path": "execution-request.json",
+      "size": 1566,
+      "sha256": "2540133284711507f41caf21f7ef567ffc7e42423c035a65c95f4fe297478148"
+    },
+    {
+      "path": "execution.json",
+      "size": 3692,
+      "sha256": "d3d30dd6363fdab80a713731c01ae7f41bbcdf297a93cd6519ffce9316319edb"
+    },
+    {
+      "path": "final-observation.json",
+      "size": 5222,
+      "sha256": "dfa29c649cb88e23a03e4d87caf74bca7401e9b3877156c1f1b01bcedf20e39d"
+    },
+    {
+      "path": "generated-source.txt",
+      "size": 153,
+      "sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83"
+    },
+    {
+      "path": "host-acceptance.json",
+      "size": 430,
+      "sha256": "0b320e6c90d6d1f7c7bbf702723272eee2ef0839a51b7ea74e4a8de5711e4a79"
+    },
+    {
+      "path": "host-review-entry.json",
+      "size": 139,
+      "sha256": "b7095ca0e10956f168856daa0399711e537c4294ee118699a8544cb48cd63044"
+    },
+    {
+      "path": "job.json",
+      "size": 1301,
+      "sha256": "e5f39e5afb498918c554eff5354683b97a1a5d976ff7a3258b761952c9a4997b"
+    },
+    {
+      "path": "observe-submitted.log",
+      "size": 102,
+      "sha256": "3e243445eb3a82f6e2fb5d84cecdd8a0f362503af407410257dd5c244ce6d774"
+    },
+    {
+      "path": "private-protocol-review.json",
+      "size": 645,
+      "sha256": "c2915fb0514890a385511aa93e9f5f5519d2775b3fc03acae4092036aa776f80"
+    },
+    {
+      "path": "producer-capture.json",
+      "size": 368,
+      "sha256": "4010d0bc76cb20925b0b1df43b35dc3256efbbcd045d74b78ba0415417dab8ff"
+    },
+    {
+      "path": "producer-proposal.json",
+      "size": 254,
+      "sha256": "8414e06110d2594ece8af2a88b3c9be11691db0ebc367b44c473b797a3d05ca9"
+    },
+    {
+      "path": "readiness-command.json",
+      "size": 46,
+      "sha256": "53891e5a7dc5b8d587e1ff5ca292f137e769ccf2f51a3c80515325c286ae606d"
+    },
+    {
+      "path": "readiness.json",
+      "size": 274,
+      "sha256": "95f89e03b195dfe21b9b0c754d5ffc077254993e01eeaabd5ba3f7429b6a1475"
+    },
+    {
+      "path": "receiver-accepted.json",
+      "size": 290,
+      "sha256": "18d69082b7b99a658e4fdf17e629855054d8c190ec8ac62ef0e3460d13de79a2"
+    },
+    {
+      "path": "receiver-capture.json",
+      "size": 366,
+      "sha256": "80d50b1b604cde1ee4edb7c5551c1151391b95c338632e6b725a56fb7eb27fe6"
+    },
+    {
+      "path": "receiver-decision.json",
+      "size": 239,
+      "sha256": "812621d413409724351bbdc018aea139ca1ae309b6a22a24584ba4d4b8f48526"
+    },
+    {
+      "path": "receiver-request.json",
+      "size": 4876,
+      "sha256": "8c2fbd250f1d26ad90f7fc9d847d299a036bc785a763ff2c11eecde8784af0b1"
+    },
+    {
+      "path": "reopen.log",
+      "size": 76,
+      "sha256": "0597d9b6b1cab70c1b21d8b1e43de2ee402eaef03f5bf1f95a3f8376fb02560b"
+    },
+    {
+      "path": "result.json",
+      "size": 1912,
+      "sha256": "364001a0be60147eb6778577aa44faba7007e0deee65035691fa3c941da29262"
+    },
+    {
+      "path": "review-observation.json",
+      "size": 5108,
+      "sha256": "1d360ec386913e70e1a0b01a9dc5c3ca90731cc32f8d7ab520681eb101dbf364"
+    },
+    {
+      "path": "review.md",
+      "size": 357,
+      "sha256": "632ac77476c1d93bcb8d599864f940bcfc2549bda6ec4351554b85be5bd8a15d"
+    },
+    {
+      "path": "staging-accepted.json",
+      "size": 289,
+      "sha256": "f57354f66616146bc0abca0128474d4765bbcfc13804ee764c7adc77a1474390"
+    },
+    {
+      "path": "staging-decision.json",
+      "size": 238,
+      "sha256": "599c3d31437458af586f4ab89376a2b349b7d43cf70532a562b52a9e4855a5f4"
+    },
+    {
+      "path": "staging-request.json",
+      "size": 2663,
+      "sha256": "c877221ab7a8bab396595ce1d42d22671fc9e086449453192cebf6f12d9ccb9c"
+    }
+  ]
+}

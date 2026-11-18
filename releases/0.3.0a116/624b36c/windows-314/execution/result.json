@@ -1,0 +1,19 @@
+{
+  "phase": "finished",
+  "row": "windows-314",
+  "pid": 23476,
+  "started_at": "2026-11-15T10:16:21.907698+00:00",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "driver_sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_models": "NOT RUN",
+  "report": "D:\\agentsync-debug\\m116\\windows-314\\reports\\release-20261115T101621Z-22cf298b7e5b\\report.json",
+  "source_clean": true,
+  "unsuccessful_checks": [],
+  "local_checks_passed": true,
+  "strict_evidence_verified": true,
+  "finished_at": "2026-11-15T12:29:23.776155+00:00"
+}

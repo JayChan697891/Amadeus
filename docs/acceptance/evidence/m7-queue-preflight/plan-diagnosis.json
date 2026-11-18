@@ -1,0 +1,15 @@
+{
+  "selection_state": "no_ready_tasks",
+  "selection_sha256": null,
+  "expected_selection_sha256": "3eae37d9e53e870978dd742370498db3f19fa109e6a294c0fb5d561f168b9f04",
+  "selection_matches": false,
+  "plan_sha256": "9991b7123105d981646825ecf45a00f398889aef8f4debe7c4bc050b6267d5bf",
+  "expected_plan_sha256": "9991b7123105d981646825ecf45a00f398889aef8f4debe7c4bc050b6267d5bf",
+  "plan_matches": true,
+  "argv_matches": true,
+  "environment_matches": true,
+  "source_unchanged": true,
+  "model_attempt_absent": true,
+  "auth_route_absent": true,
+  "auth_absent": true
+}

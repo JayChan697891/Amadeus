@@ -1,0 +1,23 @@
+set -eu
+umask 077
+export PYTHONDONTWRITEBYTECODE=1 PIP_NO_INDEX=1 PIP_CONFIG_FILE=/dev/null PIP_DISABLE_PIP_VERSION_CHECK=1
+test ! -e /root/amadeus-verified-handoff-09425da
+/root/jobs-env/bin/python -I -B - <<'PY'
+from pathlib import Path
+import hashlib,json,zipfile
+base=Path('/root/amadeus-verified-handoff-09425da')
+base.mkdir(mode=0o700)
+with zipfile.ZipFile('/root/amadeus-verified-handoff-09425da.zip') as archive:
+    for name in archive.namelist():
+        assert (base/name).resolve().is_relative_to(base)
+    archive.extractall(base)
+config=json.loads((base/'config.json').read_text())
+assert config['product_sha']=='09425dafd00a6c73bac29a0a2f8329e22659e630'
+assert hashlib.sha256((base/'agentsync_local-0.3.0a109-py3-none-any.whl').read_bytes()).hexdigest()==config['wheel_sha256']
+PY
+cd /root/amadeus-verified-handoff-09425da
+/root/jobs-env/bin/python -m venv venv
+venv/bin/python -m pip install --no-index --find-links /root/intent-wheelhouse ./agentsync_local-0.3.0a109-py3-none-any.whl pytest==9.1.1 pytest-asyncio==1.4.0 httpx==0.28.1 > install.log 2>&1
+venv/bin/python -m pip check > pip-check.log
+venv/bin/python -I -B test-installed.py > installed.log 2>&1
+cat installed.log

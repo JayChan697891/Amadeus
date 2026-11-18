@@ -1,0 +1,185 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m4-owner-integration-a114-sol\pytest-cache
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 120 items
+
+tests\integration\test_candidate_integration.py EEEE..................EE [ 20%]
+                                                                         [ 20%]
+tests\integration\test_m4b_workspaces.py ............................... [ 45%]
+.                                                                        [ 46%]
+tests\integration\test_candidate_export.py ............................. [ 70%]
+.......                                                                  [ 76%]
+tests\integration\test_verified_task_completion.py ..................... [ 94%]
+......s                                                                  [100%]
+
+=================================== ERRORS ====================================
+_ ERROR at setup of test_exact_owner_cli_integration_materializes_verified_blob_bytes _
+tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.
+___ ERROR at setup of test_rejects_unsafe_target_or_unbound_approval[dirty] ___
+tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.
+_ ERROR at setup of test_rejects_unsafe_target_or_unbound_approval[dirty-after-approval] _
+tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.
+__ ERROR at setup of test_rejects_unsafe_target_or_unbound_approval[staged] ___
+tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.
+_ ERROR at setup of test_process_exit_after_each_effect_preserves_fence[write_worktree-partial] _
+tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.
+_ ERROR at setup of test_cross_approval_branch_and_path_reservations_are_atomic _
+tests\integration\test_candidate_integration.py:121: in integrated_candidate
+    prepared = protocol_candidate(world, CODE)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_candidate_execution.py:622: in protocol_candidate
+    left, right = worktree(world, snapshot, a), worktree(world, snapshot, b)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_m4b_workspaces.py:123: in worktree
+    return call(
+tests\integration\test_m4b_workspaces.py:60: in call
+    return core.execute(operation, {**actor, **payload})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:50: in execute
+    return self._execute_validated(operation, p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\service.py:129: in _execute_validated
+    response = getattr(self, "_" + operation)(db, p, now, session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\core\workspaces.py:189: in _create_worktree
+    receipt = store.create_worktree(snapshot, identity, task_id=p["task_id"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\agentsync\workspaces\git.py:466: in create_worktree
+    fail(
+src\agentsync\workspaces\git.py:27: in fail
+    raise AgentSyncError(code, message, 409)
+E   agentsync.errors.AgentSyncError: Interrupted workspace contains changes; retained for recovery.
+- generated xml file: D:\agentsync-debug\m4-owner-integration-a114-sol\source-final.xml -
+=========================== short test summary info ===========================
+SKIPPED [1] tests\integration\test_candidate_execution.py:608: Requires separately controlled local Linux Docker and preloaded immutable image
+ERROR tests/integration/test_candidate_integration.py::test_exact_owner_cli_integration_materializes_verified_blob_bytes
+ERROR tests/integration/test_candidate_integration.py::test_rejects_unsafe_target_or_unbound_approval[dirty]
+ERROR tests/integration/test_candidate_integration.py::test_rejects_unsafe_target_or_unbound_approval[dirty-after-approval]
+ERROR tests/integration/test_candidate_integration.py::test_rejects_unsafe_target_or_unbound_approval[staged]
+ERROR tests/integration/test_candidate_integration.py::test_process_exit_after_each_effect_preserves_fence[write_worktree-partial]
+ERROR tests/integration/test_candidate_integration.py::test_cross_approval_branch_and_path_reservations_are_atomic
+============ 113 passed, 1 skipped, 6 errors in 669.87s (0:11:09) =============

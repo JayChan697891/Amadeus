@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "benchmark_dependencies",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m116-benchmark-r1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116-benchmark-r1",
+    "started_at": "2026-11-15T12:33:40.579801+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "benchmark_dependencies",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m116-benchmark-r1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116-benchmark-r1",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:33:40.579801+00:00",
+    "finished_at": "2026-11-15T12:33:40.884481+00:00",
+    "log": "logs/benchmark_dependencies.log",
+    "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -14,6 +14,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import pytest
+from conftest import drop_mock_workflow_schema
 from test_candidate_claims import recover
 from test_candidate_intents import abandon
 from test_candidate_jobs import enqueue, owner, profile
@@ -561,6 +562,7 @@ def test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed
         before = {
             name: [tuple(row) for row in db.execute("SELECT * FROM " + name)] for name in tables
         }
+        drop_mock_workflow_schema(db)
         db.execute("DROP TABLE project_usage")
         db.execute("DROP TABLE task_verification_requests")
         db.execute("DROP TABLE task_verifications")
@@ -568,7 +570,7 @@ def test_schema12_upgrade_preserves_receipt_rows_and_missing_schema_fails_closed
         db.execute("PRAGMA user_version=12")
     database.migrate(prepared[0].db_path)
     with connect(prepared[0].db_path) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 15
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 16
         assert {
             name: [tuple(row) for row in db.execute("SELECT * FROM " + name)] for name in tables
         } == before

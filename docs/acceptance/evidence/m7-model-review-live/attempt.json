@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-11-12T14:21:05.666822+00:00",
+  "plan_sha256": "65dd408aa937f4d30b4017dce4ec03f0d16af6021596a0684293f7c5cf63823b",
+  "wave_id": "09a3f82c9e06c281b08dce1793290d9dfca8aeb30871aab15d61a18688565ba5",
+  "single_attempt_consumed": true,
+  "retry_allowed": false
+}

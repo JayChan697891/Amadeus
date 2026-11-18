@@ -1,0 +1,9 @@
+{
+  "native_session_id": 35434,
+  "native_exit_code": 0,
+  "observed_at": "2026-11-16T07:43:18.1528440Z",
+  "controller_pid": 8872,
+  "result_sha256": "1c5825007783e18d912c7766f5148edb06d9d606f2e97bd1d2b22a9025f90240",
+  "native_session_closed": true,
+  "finished_at": "2026-11-15T23:43:05.193943-08:00"
+}

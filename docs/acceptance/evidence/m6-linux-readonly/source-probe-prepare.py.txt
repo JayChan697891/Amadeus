@@ -1,0 +1,29 @@
+from pathlib import Path
+import hashlib,json,subprocess,zipfile
+repo=Path('F:/syuc/amadeus-m6-single');base=Path('D:/agentsync-debug/m6-linux-codex-preflight')
+sha='a2634ecb9a65b666f617942fb3deb9f67fdd2a76'
+paths=subprocess.check_output(['git','ls-tree','-r','--name-only',sha,'src/agentsync'],cwd=repo,text=True).splitlines()
+files={path[4:]:subprocess.check_output(['git','show',sha+':'+path],cwd=repo) for path in paths}
+manifest={name:hashlib.sha256(raw).hexdigest() for name,raw in files.items() if name.endswith('.py')}
+config={'product_sha':sha,'wheel_sha256':None,'module_hashes':manifest,'scope':'exact Git source native probe, not installed wheel'}
+script=(base/'native-probe-final.py').read_text()
+script=script.replace('final-7ebc4e3','portable-a2634ec').replace('amadeus-linux-readonly-7ebc4e3','amadeus-linux-readonly-source-a2634ec')
+script=script.replace('import agentsync',"import sys\nsys.path.insert(0,'/root/amadeus-linux-readonly-source-a2634ec/source')\nimport agentsync")
+script=script.replace("assert site.is_relative_to(package/'venv')", "assert site == package/'source'")
+(base/'native-source-probe.py').write_text(script)
+with zipfile.ZipFile(base/'source-probe.zip','w',compression=zipfile.ZIP_DEFLATED) as archive:
+ for name,raw in files.items():archive.writestr('source/'+name,raw)
+ archive.writestr('linux-config.json',json.dumps(config,indent=2))
+ archive.writestr('probe.py',script)
+(base/'source-probe.sh').write_text('''set -eu
+umask 077
+/root/jobs-env/bin/python - <<'PY'
+from pathlib import Path
+import zipfile
+root=Path('/root/amadeus-linux-readonly-source-a2634ec');root.mkdir(mode=0o700)
+with zipfile.ZipFile('/root/amadeus-codex-linux-preflight/source-probe.zip') as archive:
+ for name in archive.namelist():assert (root/name).resolve().is_relative_to(root)
+ archive.extractall(root)
+PY
+/root/amadeus-linux-readonly-7ebc4e3/venv/bin/python -I -B /root/amadeus-linux-readonly-source-a2634ec/probe.py
+''')

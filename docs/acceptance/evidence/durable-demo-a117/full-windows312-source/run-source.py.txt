@@ -1,0 +1,318 @@
+"""Run one Windows 3.12 suite from an editable copy of pinned a117 source."""
+
+import hashlib
+import json
+import os
+import shutil
+import stat
+import sys
+import tomllib
+import xml.etree.ElementTree as ET
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m117ws")
+FROZEN = Path("D:/agentsync-debug/m117l")
+SOURCE = BASE / "s"
+INSTALL = BASE / "e"
+RUN = BASE / "run"
+SCRATCH = BASE / "t"
+HOME = BASE / "home"
+BASE_PYTHON = Path(
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe"
+)
+WHEELHOUSE = Path("D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse")
+TEST_COMMIT = "33ffbc329cc369643cbaa06077da29fb63f8c189"
+PRODUCT_COMMIT = "fc27f15f47fa92ed5edcd764a573c1d84a68c107"
+VERSION = "0.3.0a117"
+DURABLE_TEST = (
+    "tests/integration/test_durable_demo.py::test_durable_demo_reopens_retry_and_records_handoff"
+)
+IDENTITIES = {
+    FROZEN / "frozen-inputs.tar": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+    FROZEN / "frozen-inputs.json": "635ba0600cedda71c47e2af65ee9c3f7dd96d711a2d71439e0614381ae6b6f91",
+    FROZEN / "runtime-members.json": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a",
+}
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def write_json(path, record):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(record, stream, indent=2)
+        stream.write("\n")
+
+
+def verify_tree(root, expected):
+    if root.resolve(strict=True) != root or not root.is_dir():
+        raise ValueError(f"Not a physical source root: {root}")
+    allowed_dirs = {
+        parent.as_posix()
+        for name in expected
+        for parent in Path(name).parents
+        if parent != Path(".")
+    }
+    verified = set()
+    for path in root.rglob("*"):
+        name = path.relative_to(root).as_posix()
+        info = path.lstat()
+        if path.resolve(strict=True) != path:
+            raise ValueError(f"Nonphysical source member: {name}")
+        if stat.S_ISDIR(info.st_mode) and name in allowed_dirs:
+            continue
+        if not stat.S_ISREG(info.st_mode) or name not in expected:
+            raise ValueError(f"Unexpected source output: {name}")
+        item = expected[name]
+        if info.st_size != item["bytes"] or sha(path) != item["sha256"]:
+            raise ValueError(f"Frozen file changed: {name}")
+        verified.add(name)
+    if verified != expected.keys():
+        raise ValueError("Source inventory changed")
+    return {"source_files": len(verified)}
+
+
+def verify_inputs():
+    for path, expected in IDENTITIES.items():
+        if path.resolve(strict=True) != path or not path.is_file() or sha(path) != expected:
+            raise ValueError(f"Pinned input changed: {path.name}")
+    manifest = json.loads((FROZEN / "frozen-inputs.json").read_bytes())
+    members = json.loads((FROZEN / "runtime-members.json").read_bytes())
+    expected = {item["path"]: item for item in manifest["files"]}
+    if (
+        len(expected) != len(manifest["files"]) or len(expected) != 2382
+        or len(members) != 97
+        or manifest["test_source_commit"] != TEST_COMMIT
+        or manifest["product_runtime_commit"] != PRODUCT_COMMIT
+    ):
+        raise ValueError("Frozen input inventory or source identity changed")
+    if any(expected[f"src/{name}"]["sha256"] != digest for name, digest in members.items()):
+        raise ValueError("Frozen fixture source and pinned product inventory disagree")
+    verify_tree(FROZEN / "s", expected)
+    return expected
+
+
+def isolate_environment():
+    for name in list(os.environ):
+        upper = name.upper()
+        if upper.startswith((
+            "AGENTSYNC_", "ANTHROPIC_", "CLAUDE_", "CODEX_", "CURSOR_", "DEEPSEEK_", "GEMINI_",
+            "GIT_", "GOOGLE_", "OPENAI_", "PIP_", "PYTEST_", "PYTHON", "UV_",
+        )) or upper.endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(name, None)
+    for subdir in ("roaming", "local"):
+        (HOME / subdir).mkdir()
+    os.environ.update(
+        HOME=str(HOME), USERPROFILE=str(HOME), CODEX_HOME=str(HOME),
+        APPDATA=str(HOME / "roaming"), LOCALAPPDATA=str(HOME / "local"),
+        XDG_CONFIG_HOME=str(HOME / "config"), XDG_CACHE_HOME=str(HOME / "cache"),
+        TEMP=str(SCRATCH), TMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+        PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0",
+        GCM_INTERACTIVE="Never", PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1",
+        RUFF_CACHE_DIR=str(SCRATCH / "ruff"), MYPY_CACHE_DIR=str(SCRATCH / "mypy"),
+    )
+
+
+ORIGIN_PROBE = """
+import hashlib
+import importlib.metadata
+import json
+import sys
+from pathlib import Path
+
+import agentsync
+
+install, checkout, manifest = map(Path, sys.argv[1:4])
+version = sys.argv[4]
+assert sys.version_info[:3] == (3, 12, 16)
+assert Path(sys.prefix).resolve() == install.resolve()
+checkout = checkout.resolve(strict=True)
+source = checkout / "src"
+origin = Path(agentsync.__file__).resolve()
+assert origin == source / "agentsync" / "__init__.py"
+assert agentsync.__version__ == version
+dist = importlib.metadata.distribution("agentsync-local")
+assert dist.version == version
+assert Path(dist.locate_file("")).resolve().is_relative_to(install.resolve())
+direct = json.loads(dist.read_text("direct_url.json"))
+assert direct["url"] == checkout.as_uri()
+assert direct["dir_info"]["editable"] is True and "archive_info" not in direct
+expected = json.loads(manifest.read_bytes())
+assert len(expected) == 97
+actual = {
+    file.relative_to(source).as_posix(): hashlib.sha256(file.read_bytes()).hexdigest()
+    for file in (source / "agentsync").rglob("*")
+    if file.is_file() and "__pycache__" not in file.parts
+}
+assert actual == expected
+print(json.dumps({"python": sys.version, "version": version, "origin": str(origin),
+                  "runtime_members": len(actual), "direct_url": direct}))
+"""
+
+
+def run():
+    if (
+        os.name != "nt" or sys.version_info[:3] != (3, 12, 16)
+        or Path(sys.executable).resolve() != BASE_PYTHON.resolve()
+        or Path(sys.prefix).resolve() != BASE_PYTHON.parent.parent.resolve()
+        or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__
+    ):
+        raise SystemExit(f"Use the pinned Windows 3.12.16 interpreter with -I -B: {BASE_PYTHON}")
+    if BASE.resolve(strict=True) != BASE or not BASE.is_dir():
+        raise SystemExit("Use the dedicated physical source-validation directory.")
+    if any(os.path.lexists(path) for path in (SOURCE, RUN, INSTALL, SCRATCH, HOME)):
+        raise SystemExit("Attempt already exists. Preserve it without retrying.")
+    RUN.mkdir()
+    (RUN / "logs").mkdir()
+    SCRATCH.mkdir()
+    HOME.mkdir()
+    isolate_environment()
+    result = {
+        "scope": "Windows 3.12, one full a117 editable-source suite with platform skips",
+        "editable_source": str(SOURCE),
+        "test_source_commit": TEST_COMMIT,
+        "product_runtime_commit": PRODUCT_COMMIT,
+        "version": VERSION,
+        "fixture_snapshot_sha256": IDENTITIES[FROZEN / "frozen-inputs.tar"],
+        "driver_sha256": sha(Path(__file__)),
+        "controller_pid": os.getpid(),
+        "controller_python": sys.version,
+        "model_calls": 0,
+        "started_at": datetime.now(UTC).isoformat(),
+        "status": "unknown",
+        "formal_release": "BLOCKED",
+        "automatic_retry": False,
+        "checks": [],
+    }
+    write_json(RUN / "attempt.json", result)
+
+    try:
+        expected = verify_inputs()
+        result["input_before"] = {"frozen_files": len(expected), "expected_runtime_members": 97}
+        shutil.copytree(FROZEN / "s", SOURCE, symlinks=True, copy_function=shutil.copyfile)
+        result["copy_before"] = verify_tree(SOURCE, expected)
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+
+        project = tomllib.loads((SOURCE / "pyproject.toml").read_text(encoding="utf-8"))
+        packages = collector._prepare_offline_packages(project, WHEELHOUSE, SCRATCH, RUN)
+        python = str(INSTALL / "Scripts" / "python.exe")
+        origin_command = [
+            python, "-I", "-B", "-c", ORIGIN_PROBE,
+            str(INSTALL), str(SOURCE), str(FROZEN / "runtime-members.json"), VERSION,
+        ]
+
+        def execute(name, command, timeout=900):
+            outcome = collector.execute(
+                name, command, SOURCE if name == "pytest" else RUN, RUN, SCRATCH,
+                pytest_timeout=timeout, offline_wheelhouse=packages.wheelhouse,
+            )
+            result["checks"].append(outcome)
+            return outcome
+
+        def require(name, command):
+            if execute(name, command)["status"] != "pass":
+                raise RuntimeError(f"{name} failed")
+
+        require("source_venv", [sys.executable, "-I", "-B", "-m", "venv", str(INSTALL)])
+        require("source_offline_dependencies", collector._offline_install(
+            python, packages.wheelhouse, "--only-binary=:all:", *packages.backend, *packages.application,
+        ))
+        require("source_editable_install", collector._offline_install(
+            python, packages.wheelhouse, "--no-build-isolation", "--no-deps", "-e", str(SOURCE),
+        ))
+        result["copy_after_install"] = verify_tree(SOURCE, expected)
+        require("source_pip_check", [python, "-I", "-B", "-m", "pip", "check"])
+        require("source_origin_before", origin_command)
+
+        def journal(raw, name):
+            junit = RUN / name
+            redactions = collector.persist_junit(raw, junit)
+            cases = list(ET.parse(junit).iter("testcase"))
+            return {
+                "path": junit.name, "sha256": sha(junit), "credential_redactions": redactions,
+                "cases": len(cases), **{
+                    field: sum(case.find(field) is not None for case in cases)
+                    for field in ("failure", "error", "skipped")
+                },
+            }
+
+        raw_smoke = SCRATCH / "durable-smoke.xml"
+        raw_junit = SCRATCH / "junit.xml"
+        try:
+            smoke = execute("source_durable_smoke", [
+                python, "-I", "-B", "-m", "pytest", str(SOURCE / DURABLE_TEST),
+                "--junitxml", str(raw_smoke), "--basetemp", str(SCRATCH / "smoke"),
+                "-o", f"cache_dir={SCRATCH / 'smoke-cache'}",
+            ])
+            if raw_smoke.is_file():
+                result["durable_smoke_junit"] = journal(raw_smoke, "durable-smoke.xml")
+            smoke_cases = result.get("durable_smoke_junit", {})
+            if (
+                smoke["status"] != "pass" or smoke_cases.get("cases") != 1
+                or any(smoke_cases.get(field) != 0 for field in ("failure", "error", "skipped"))
+            ):
+                raise RuntimeError("Editable durable demo smoke failed; full suite was not started")
+
+            tested = execute("pytest", [
+                python, "-B", "-m", "pytest", str(SOURCE / "tests"),
+                "--junitxml", str(raw_junit), "--basetemp", str(SCRATCH / "p"),
+                "-o", f"cache_dir={SCRATCH / 'pytest-cache'}",
+            ], timeout=7200)
+        finally:
+            test_error_pending = sys.exception() is not None
+            collection_errors = {}
+            try:
+                origin_after = execute("source_origin_after", origin_command)
+            except Exception as exc:
+                collection_errors["source_origin_after_error_type"] = type(exc).__name__
+            try:
+                if "durable_smoke_junit" not in result and raw_smoke.is_file():
+                    result["durable_smoke_junit"] = journal(raw_smoke, "durable-smoke.xml")
+            except Exception as exc:
+                collection_errors["durable_smoke_junit_error_type"] = type(exc).__name__
+            try:
+                if raw_junit.is_file():
+                    result["junit"] = journal(raw_junit, "junit.xml")
+            except Exception as exc:
+                collection_errors["source_junit_error_type"] = type(exc).__name__
+            result.update(collection_errors)
+            if collection_errors and not test_error_pending:
+                raise RuntimeError("Source validation evidence collection failed")
+        if (
+            tested["status"] != "pass" or origin_after["status"] != "pass"
+            or result.get("junit", {}).get("cases", 0) == 0
+            or result["junit"]["failure"] or result["junit"]["error"]
+        ):
+            raise RuntimeError("Full editable-source pytest or its evidence checks failed")
+        result["status"] = "pass"
+    except Exception as exc:
+        result["status"] = "fail"
+        result["error_type"] = type(exc).__name__
+    finally:
+        if "input_before" in result:
+            try:
+                final_expected = verify_inputs()
+                result["input_after"] = {
+                    "frozen_files": len(final_expected), "expected_runtime_members": 97,
+                }
+            except (OSError, ValueError, KeyError) as exc:
+                result["status"] = "fail"
+                result["input_after_error_type"] = type(exc).__name__
+        if "copy_before" in result:
+            try:
+                result["copy_after"] = verify_tree(SOURCE, expected)
+            except (OSError, ValueError, KeyError) as exc:
+                result["status"] = "fail"
+                result["copy_after_error_type"] = type(exc).__name__
+        result["finished_at"] = datetime.now(UTC).isoformat()
+        write_json(RUN / "result.json", result)
+        print(f"{result['status']}: {RUN / 'result.json'}", flush=True)
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(run())

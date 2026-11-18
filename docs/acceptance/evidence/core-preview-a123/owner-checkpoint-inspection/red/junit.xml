@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.591" timestamp="2026-11-17T23:33:47.426366-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_relay_owner_status" name="test_owner_inspects_checkpoint_after_producer_session_expiry[saved]" time="3.210"><failure message="KeyError: 'checkpoint'">tests\integration\test_relay_owner_status.py:70: in test_owner_inspects_checkpoint_after_producer_session_expiry
+    checkpoint = response["data"]["checkpoint"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'checkpoint'</failure></testcase></testsuite></testsuites>

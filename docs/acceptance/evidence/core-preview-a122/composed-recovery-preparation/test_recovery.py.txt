@@ -1,0 +1,160 @@
+"""Offline evidence for the wrapper, using the existing local Python protocol fixture."""
+
+import asyncio
+import hashlib
+import json
+import runpy
+import sys
+from dataclasses import asdict
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.core.service import Core
+
+REPO = Path("F:/syuc/amadeus-m6-single")
+sys.path[:0] = [str(REPO / "tests"), str(REPO / "tests/integration")]
+from test_unfinished_continuation import pilot, unfinished, world
+
+RECOVERY = runpy.run_path(str(REPO / "tools/run_live_solution_recovery.py"))
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_composed_renderer_binds_without_an_authorized_candidate(monkeypatch, tmp_path):
+    module = runpy.run_path(str(REPO / "tools/prepare_live_solution_continuation.py"))
+    module["configure_recovery"]()
+    path = tmp_path / "render"
+    monkeypatch.setitem(module["render"].__globals__, "OUTPUT", path)
+    module["render"](True)
+    inputs = json.loads((path / "prepared-inputs.json").read_bytes())
+    assert sha(path / "recovery.py") == inputs["recovery.py"]
+    assert "exact new approval" in json.loads((path / "scope.json").read_bytes())["candidate_execution"]
+    schedule = {"plan_sha256": "a" * 64, "selection_sha256": "b" * 64}
+    module["write_json"]("plan.json", {
+        "producer_plan": schedule,
+        "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+        "wheel_sha256": module["render"].__globals__["WHEEL_SHA"],
+        "runtime_members": 97,
+        "proposed_model_call_limit": 2,
+        "automatic_retry": False,
+        "helper_sha256": {name: inputs[name] for name in ("prepare.py", "private_capture.py", "runtime-members.json")},
+        "host_checkpoint": {
+            "files": [{"path": "solution.py", "content": module["PARTIAL"] + module["JSON_LINES"]}],
+            "origin": "host_known_partial_source", "model_authorship": False,
+        },
+        "continuation_instruction": module["CONTINUATION"],
+        "model_calls": 0, "external_auth_copies": 0,
+    })
+    module["write_json"]("readiness.json", {
+        "producer_plan_sha256": schedule["plan_sha256"], "selection_sha256": schedule["selection_sha256"],
+        "model_calls": 0, "external_auth_copies": 0, "private_home_empty": True,
+    })
+    module["bind"](True)
+    grant = json.loads((path / "live-authorization.template.json").read_bytes())
+    assert grant["expires_at"] is None and grant["owner_confirmed_zero_credits_and_auto_recharge_off"] is None
+    assert grant["files"]["recovery.py"] == inputs["recovery.py"]
+    assert "The exact receiver controller exit 73 was not observed" in (path / "run-stage.py").read_text()
+    with pytest.raises(FileExistsError):
+        module["bind"](True)
+
+
+class Exited(BaseException):
+    pass
+
+
+@pytest.mark.parametrize("unfinished", ["verifiable_codex"], indirect=True)
+async def test_checkpoint_reconciles_and_denies_replay(unfinished, pilot, monkeypatch):
+    flow, request, build, dependent, calls, approvals, _, key = unfinished
+    core, owner, _, _, source_task, _, source, receipts, _ = pilot
+    base = source.parent
+    owner_auth = {"admin_token": owner["admin_token"]}
+    approved = flow.preview(request, **owner_auth)
+    approved["source_receipt_sha256"] = {p.name: sha(p) for p in receipts.glob(f"relay-{key}-*.json")}
+    state = {"dependent": dependent}
+    baseline = {
+        row["id"]: row for row in core.execute("list_tasks", request.receiver.authentication())["tasks"]
+        if row["id"] not in {source_task["id"], dependent["id"]}
+    }
+    captured = []
+    original_start = CapturedProcess.start
+
+    async def capture(_cls, *args, **kwargs):
+        process = await original_start(*args, **kwargs)
+        captured.append(process)
+        return process
+
+    def write(name, value, _state):
+        with (base / name).open("x", encoding="utf-8") as stream:
+            json.dump(value, stream)
+
+    def read(name):
+        return json.loads((base / name).read_bytes())
+
+    def graph(db, _state):
+        return {
+            row["id"]: row
+            for row in db.execute("list_tasks", request.receiver.authentication())["tasks"]
+            if row["id"] not in baseline
+        }
+
+    identity = {"pid": 900000001, "boot_id": "synthetic", "started_ticks": 1}
+    live = SimpleNamespace(
+        BASE=base, RECEIPTS=receipts, native_identity=lambda: identity.copy(),
+        write=write, read=read, sha=sha, task_graph=graph, owner_args=lambda _: owner_auth,
+        stopped=lambda actor: actor["attempts"][0]["parent_ended"] is True,
+        receipt_hashes=lambda pattern: {p.name: sha(p) for p in receipts.glob(pattern)},
+        source_receipts=lambda *_: {p.name: sha(p) for p in receipts.glob(f"relay-{key}-*.json")},
+        prep=SimpleNamespace(runtime=lambda: None, require_fixtures=lambda _: None),
+        cleanup=SimpleNamespace(require_stopped=lambda _: {"producer": "terminal_recorded", "receiver": "terminal_recorded"}),
+        core_state=lambda: (Core(core.data_dir), state), load_continuation=lambda *_: (request, approved),
+        timestamp=lambda: "fixture",
+    )
+
+    async def retain(_result):
+        (process,) = captured
+        snapshot = asdict(await process.snapshot())
+        status = flow.status(owner["project_id"], request.source.launch_sha256, **owner_auth)
+        attempt = flow._relay.owner_inspect_attempts(owner["project_id"], status["task_id"], **owner_auth)[0]
+        actor = {"task_id": status["task_id"], "exact_authorizations": len(approvals) - 1, "attempts": [asdict(attempt)]}
+        write("receiver-dispatch-observation.json", {"actors": {"receiver": actor}}, {})
+        return actor, True, snapshot, "terminal", {"saved": True, "stdout_truncated": False, "stderr_truncated": False}
+
+    def exit73(code):
+        assert code == 73 and read(RECOVERY["CHECKPOINT"])["expected_exit_code"] == code
+        assert read("receiver-dispatch-observation.json")["actors"]["receiver"]["attempts"][0]["parent_ended"]
+        raise Exited
+
+    entry = {"authorization_sha256": "test-grant", "plan_sha256": approved["plan_sha256"]}
+    with monkeypatch.context() as patch:
+        patch.setattr(CapturedProcess, "start", classmethod(capture))
+        patch.setattr(RECOVERY["os"], "_exit", exit73)
+        with pytest.raises(Exited):
+            await RECOVERY["run_to_checkpoint"](
+                live, flow, request, core, state, entry, retain,
+                **owner_auth, expected_plan_sha256=approved["plan_sha256"], build_receiver=build,
+            )
+    checkpoint = read(RECOVERY["CHECKPOINT"])
+    write("producer-dispatch-observation.json", {"actors": {"producer": {}}}, {})
+    with pytest.raises(AssertionError):
+        await asyncio.to_thread(RECOVERY["recover"], live, "test-grant")
+    assert not (base / "controller-reconcile-entry.json").exists()
+    identity["pid"] += 1
+    assert await asyncio.to_thread(RECOVERY["recover"], live, "test-grant") == 0
+    result = read("continuation-result.json")
+    assert result["outcome"]["task_id"] == checkpoint["continuation"]["task_id"]
+    assert result["outcome"]["publication"] == checkpoint["continuation"]["publication"]
+    assert result["tasks"][source_task["id"]]["status"] == "failed"
+    assert result["tasks"][dependent["id"]]["dependencies"] == [result["outcome"]["task_id"]]
+    assert {
+        row["id"]: row for row in core.execute("list_tasks", request.receiver.authentication())["tasks"]
+        if row["id"] in baseline
+    } == baseline
+    assert len(calls) == len(approvals) == 2
+    assert RECOVERY["approval_binding"](live, result)["controller_exit_checkpoint_sha256"] == sha(base / RECOVERY["CHECKPOINT"])
+    with pytest.raises(AssertionError):
+        await asyncio.to_thread(RECOVERY["recover"], live, "test-grant")

@@ -1,0 +1,82 @@
+{
+  "product_sha": "b455d9b028b02d75b2ed06f611e0556237bc1e72",
+  "requirements": [
+    "M7-01",
+    "M7-02"
+  ],
+  "scope": "Trusted host-side automatic proposal reference derivation, independent-completion waiting and bounded dependent-task dispatch through existing Core and queue",
+  "source": {
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "total": 15,
+    "passed": 15,
+    "elapsed_seconds": 45.56
+  },
+  "initial_extended_source_run": {
+    "passed": 14,
+    "failed": 1,
+    "reason": "Test expected only asyncio TimeoutError; synchronous deadline check correctly returned relay_execution_limit. Assertion now accepts only these two exhaustion signals, still requires no downstream task/launch; no product safety rule changed."
+  },
+  "fresh_windows_wheel": {
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "total": 101,
+    "passed": 101,
+    "elapsed_seconds": 236.38
+  },
+  "fresh_linux_wheel": {
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "total": 101,
+    "passed": 101,
+    "elapsed_seconds": 90.27
+  },
+  "runtime_package_members_matched_before_after": 89,
+  "runtime_python_modules": 88,
+  "source_shadowing": false,
+  "pip_checks": "pass",
+  "independent_review": "Accepted limited source and installed-package scope. Independently matched18evidence hashes and2package hashes; equal101case IDs on Windows/Linux including15handoff cases; origin/integrity/dependency checks and89wheel runtime members/88Python modules plus783tracked sdist files match frozen Git. Original14pass/1budget-assertion failure retained. No actual model/full-matrix/sdist-install acceptance.",
+  "model_calls": 0,
+  "candidate_execution": false,
+  "actual_coordinator_real_model_chain": "NOT RUN",
+  "prior_real_evidence": "Saved6017005->2ac4557 Codex handoff remains valid only at its original versions; no upgrade inferred.",
+  "new_full_matrix": "NOT RUN; affected-scope regression only",
+  "sdist_install": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "sanitization": {
+    "source_log_redactions": 0,
+    "source_xml_redactions": 0
+  },
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m7-handoff-b455d9b/agentsync_local-0.3.0a109-py3-none-any.whl": "f548a7b9b6ba802ad57e1d973cd9b9113b1aa05d1391f2cc52f7e0fb6ca62470",
+    "releases/0.3.0a109/m7-handoff-b455d9b/agentsync_local-0.3.0a109.tar.gz": "c6b88c6780dc66a51c581bbdc78a43475d4c5367d022baa2268c6a59fec76095"
+  },
+  "evidence_sha256": {
+    "build-package.py.txt": "1b8ed70887faf40935f670ca8318a64e7c049dabc9d57898b07eccbba55a310d",
+    "build.log": "d15a1fe31216feb8243c25c81fdcf22d3eae1efad2bf2e3df603324ce15af55a",
+    "config.json": "d06431468212feef34eb465f1fd4340cddace683673ae4973cf5dc0d68f65eef",
+    "install.log": "5b34978662d3c8ac893e7b0db09e189517ab8df0b25d610577769bb40c1d3c0b",
+    "installed.log": "89f69f0a681c85e4e88914089c8fc864786ec40c10b2aeb2cff73d7c712096c7",
+    "installed.xml": "4c7bcc735cd9bf3b560081c6df440dc5ef5b3f2edddf1dc885a31a372f84d562",
+    "linux-installed.log": "c62ae9b1812aa837eaedc59878d2a5142ee3c7251aa9f80104f65e048b69c268",
+    "linux-installed.xml": "02a5b29d6e3d96dfbf79c6ea1251c33b9f05bca13aceeb0844130e6c67af3640",
+    "linux-origin.json": "49d7ab9a40aa5982cb362d73be0de227ea38a9adf5623aa5614201a44439eaec",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "origin.json": "09594dc9cbeebe440656694b2618dd43af8497c8d3b300943e70aabd2a966beb",
+    "pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "run-linux.sh.txt": "67439248b3e697bbfcc310e23ae728c3d5531c477ded430824d8a022aaa3a6f9",
+    "source-budget-first.log": "6c283ac7ee06a17d21cc0dff84ddc90ab48c26b36f50106dc29f0ffaece57875",
+    "source-budget-first.xml": "d14ccc94d73d4888998b8dba14d6fd4a15d7da75f1b7bbe96006dfe4da7a3e1f",
+    "source.log": "445b2e2c5f08bdd668ae00ecb8b67a8f683f8a2d023da8977c13df20f62cb67b",
+    "source.xml": "b6b23e57077e2174894e2eab841516a086f7025d2b153d49c0fa9e7d16b05298",
+    "test-installed.py.txt": "3ec42b69aee60ca98ea7e0685130dbb955cdbcb53780472cc40e973021667978"
+  },
+  "root_static_checks": {
+    "ruff_and_format_changed_files": 2,
+    "mypy_source_modules": 88,
+    "status": "pass"
+  }
+}

@@ -1,0 +1,163 @@
+"""Observe this exact package process, then continue authorized local rows once."""
+import ctypes
+from ctypes import wintypes as w
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import time
+
+ROOT=Path('D:/agentsync-debug')
+RESUME=Path(__file__).resolve().parent
+BASE=ROOT/'m115-r2'
+STATE=RESUME/'continuation'
+COMMIT='4a27a00a7ef5e055c99b0724374506a867ae62e8'
+PY312=ROOT/'continuation-cc30ed21/windows-py312-venv/Scripts/python.exe'
+PY314=ROOT/'venv/Scripts/python.exe'
+FINALIZER=RESUME/'finalize-packages.py'
+LINUX=ROOT/'m115-r2-tools/linux-queue.py'
+QUEUE=ROOT/'m9-candidate-queue.py'
+ROW=ROOT/'m9-candidate-row.py'
+
+def now():return datetime.now(timezone.utc).isoformat()
+
+def save(name,value):
+    with (STATE/name).open('x',encoding='utf-8') as stream:
+        json.dump(value,stream,indent=2)
+        stream.write('\n')
+
+def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def inspect(pid):
+    command=['pwsh','-NoProfile','-Command',
+        f'Get-CimInstance Win32_Process -Filter "ProcessId={pid}" | Select-Object ProcessId,CreationDate,CommandLine | ConvertTo-Json -Compress']
+    raw=subprocess.check_output(command,timeout=15).decode().strip()
+    return json.loads(raw) if raw else None
+
+attempt=json.loads((RESUME/'attempt.json').read_text(encoding='utf-8'))
+assert attempt['commit_sha']==COMMIT and attempt['pid']==3584
+assert digest(RESUME/'run-packages.py')==attempt['helper_sha256']
+identity=inspect(attempt['pid'])
+assert identity and 'm115-resume-20261113\\run-packages.py' in identity['CommandLine']
+assert not (RESUME/'result.json').exists(), 'Inspect a terminal run instead of creating another observer'
+pins={str(path):digest(path) for path in (FINALIZER,LINUX,QUEUE,ROW)}
+assert pins[str(FINALIZER)]=='aa8627263829ae0ddfe84f47ab4a22a51440f1691df99b0f3c248c8299c36e77'
+
+k=ctypes.WinDLL('kernel32',use_last_error=True)
+k.OpenProcess.argtypes=[w.DWORD,w.BOOL,w.DWORD];k.OpenProcess.restype=w.HANDLE
+k.GetProcessTimes.argtypes=[w.HANDLE]+[ctypes.POINTER(w.FILETIME)]*4
+k.GetExitCodeProcess.argtypes=[w.HANDLE,ctypes.POINTER(w.DWORD)]
+k.WaitForSingleObject.argtypes=[w.HANDLE,w.DWORD];k.WaitForSingleObject.restype=w.DWORD
+k.CloseHandle.argtypes=[w.HANDLE]
+handle=k.OpenProcess(0x100000|0x1000,False,attempt['pid'])
+assert handle, 'Cannot hold original package-process identity'
+try:
+    times=[w.FILETIME() for _ in range(4)]
+    assert k.GetProcessTimes(handle,*(ctypes.byref(t) for t in times))
+    ticks=(times[0].dwHighDateTime<<32)|times[0].dwLowDateTime
+    created=(ticks-116444736000000000)//10000
+    assert created==int(datetime.fromisoformat(identity['CreationDate']).timestamp()*1000)
+    assert created==int(datetime.fromisoformat('2026-11-13T23:45:34.627412+00:00').timestamp()*1000)
+    STATE.mkdir()
+    save('attempt.json',{'pid':os.getpid(),'started_at':now(),'observed_identity':identity,
+        'observed_creation_epoch_ms':created,'helper_pins':pins,'automatic_retry':False,
+        'maximum_concurrent_collectors':2,'scope':'No model calls; existing local M9 rows only'})
+    print('Waiting on the held original package process; no new row has started.',flush=True)
+    while True:
+        status=k.WaitForSingleObject(handle,1000)
+        if status==0:break
+        assert status==258,'Process observation failed; no restart'
+    code=w.DWORD()
+    assert k.GetExitCodeProcess(handle,ctypes.byref(code))
+    save('package-terminal.json',{'observed_at':now(),'exit_code':code.value,'pid':attempt['pid'],'creation_epoch_ms':created})
+    assert code.value==0,'Package process failed; inspect original execution, no retry'
+finally:
+    k.CloseHandle(handle)
+
+def unchanged():
+    for path,expected in pins.items():assert digest(Path(path))==expected,path
+
+def step(name,command):
+    unchanged()
+    save(name+'-request.json',{'command':command,'started_at':now()})
+    with (STATE/(name+'.log')).open('xb') as log:
+        process=subprocess.Popen(command,cwd=RESUME,stdout=log,stderr=subprocess.STDOUT)
+        save(name+'-process.json',{'pid':process.pid,'command':command})
+        code=process.wait()
+    save(name+'-result.json',{'exit_code':code,'finished_at':now()})
+    assert code==0,name+' failed; no automatic retry'
+
+children={}
+try:
+    terminal=json.loads((RESUME/'result.json').read_text(encoding='utf-8'))
+    assert terminal['phase']=='finished' and terminal['commit_sha']==COMMIT
+    assert terminal['source_clean'] is True and not terminal['unsuccessful_remaining_checks']
+    step('finalize',[str(PY312),'-I','-B',str(FINALIZER),'finalize'])
+    step('stage-linux',[str(PY314),'-I','-B',str(FINALIZER),'stage-linux'])
+    manifest=BASE/'candidate-bootstrap.json'
+    manifest_sha=digest(manifest)
+    assert json.loads(manifest.read_text(encoding='utf-8'))['frozen']['commit_sha']==COMMIT
+    commands={
+        'windows':[str(PY314),'-I','-B',str(QUEUE),'--base',str(BASE),'--manifest-sha256',manifest_sha,'--commit',COMMIT],
+        'linux':[str(PY314),'-I','-B',str(LINUX),'run'],
+    }
+    children={}
+    launch_failures=[]
+    for name,command in commands.items():
+        log=None
+        try:
+            unchanged()
+            save(name+'-request.json',{'command':command,'started_at':now()})
+            log=(STATE/(name+'.log')).open('xb')
+            child=subprocess.Popen(command,cwd=RESUME,stdout=log,stderr=subprocess.STDOUT)
+            children[name]=(child,log)
+            save(name+'-process.json',{'pid':child.pid,'command':command})
+            print(json.dumps({'host':name,'pid':child.pid,'phase':'started'}),flush=True)
+        except Exception as exc:
+            if log is not None and name not in children:log.close()
+            failure={'host':name,'error_type':type(exc).__name__,'at':now()}
+            save(name+'-launch-failure.json',failure)
+            launch_failures.append(failure)
+            break
+    results=[]
+    while children:
+        for name,(child,log) in list(children.items()):
+            code=child.poll()
+            if code is None:continue
+            log.close()
+            result={'host':name,'exit_code':code,'finished_at':now()}
+            save(name+'-result.json',result)
+            results.append(result)
+            del children[name]
+            print(json.dumps(result),flush=True)
+        if children:time.sleep(10)
+    save('result.json',{'hosts':results,'launch_failures':launch_failures,'formal_release':'BLOCKED','finished_at':now()})
+    raise SystemExit(1 if launch_failures or any(r['exit_code'] for r in results) else 0)
+except Exception as exc:
+    save('failure.json',{'type':type(exc).__name__,'message':str(exc),'at':now(),'automatic_retry':False})
+    raise
+finally:
+    # Logging or startup errors must not abandon another already-started host.
+    # Observe the original handles; never restart or terminate their tests.
+    for name,(child,log) in list(children.items()):
+        observation_errors=[]
+        while True:
+            try:
+                code=child.wait(timeout=10)
+                break
+            except subprocess.TimeoutExpired:
+                continue
+            except OSError as exc:
+                if len(observation_errors)<8:observation_errors.append(type(exc).__name__)
+                time.sleep(5)
+        try:log.close()
+        except OSError as exc:observation_errors.append(type(exc).__name__)
+        try:
+            save(name+'-cleanup-terminal.json',{'host':name,'exit_code':code,
+                'finished_at':now(),'observation_errors':observation_errors,
+                'scope':'Emergency observation after controller error; not acceptance'})
+        except OSError:
+            pass  # The original exception still makes this controller fail.
+        del children[name]

@@ -1,0 +1,28 @@
+{
+  "boot": "72896fa2-1cdd-4f1e-b480-cb7edb12077a",
+  "workers": [],
+  "containers": [],
+  "free_bytes": 261797888,
+  "install_files": [
+    "agentsync_local-0.3.0a122-py3-none-any.whl",
+    "agentsync_local-0.3.0a122.tar.gz",
+    "d",
+    "home",
+    "linux-run-preview.py",
+    "run",
+    "runtime-members.json",
+    "s",
+    "source-manifest.json",
+    "source.zip",
+    "t",
+    "w"
+  ],
+  "full_files": [
+    "guest-preflight.json",
+    "home",
+    "run",
+    "run-wheel.py",
+    "s",
+    "t"
+  ]
+}

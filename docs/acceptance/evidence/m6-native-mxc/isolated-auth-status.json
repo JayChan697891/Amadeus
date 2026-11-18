@@ -1,0 +1,8 @@
+{
+  "scope": "Metadata-only existing OS credential-store lookup from isolated CLI home",
+  "exit_code": 1,
+  "method": "not_logged_in",
+  "raw_output_saved": false,
+  "credentials_copied": false,
+  "model_requests": 0
+}

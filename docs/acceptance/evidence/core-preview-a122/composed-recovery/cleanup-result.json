@@ -1,0 +1,16 @@
+{
+  "stage": "cleanup",
+  "started_at": "2026-11-17T07:15:49.331616+00:00",
+  "observer_pid": 10672,
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/cleanup.py cleanup",
+  "automatic_retry": false,
+  "remote_exec_requested": true,
+  "log_bytes": {
+    "stdout": 0,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "terminal",
+  "exit_code": 0,
+  "finished_at": "2026-11-17T07:15:50.474913+00:00"
+}

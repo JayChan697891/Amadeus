@@ -1,0 +1,57 @@
+{
+  "scope": "First full Windows3.12.16 editable-source suite of frozen a122; not a new client/model/Docker execution",
+  "status": "SCOPED PASS",
+  "version": "0.3.0a122",
+  "product_runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "test_source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session_id": 22428,
+  "native_initial_chunk": "949cea",
+  "native_terminal_chunk": "b3d8f7",
+  "native_exit_code": 0,
+  "started_at": "2026-11-18T01:25:04.028529+00:00",
+  "finished_at": "2026-11-18T02:06:26.388829+00:00",
+  "native_checks": 7,
+  "unique_cases": 2596,
+  "passed": 2539,
+  "skipped": 57,
+  "failures": 0,
+  "errors": 0,
+  "pytest_reported_seconds": 2455.79,
+  "same_case_identities_and_outcomes_as": [
+    "a122 Windows wheel",
+    "a122 Windows sdist"
+  ],
+  "source_files_original_and_copy": 3992,
+  "runtime_members": 97,
+  "strict_source_before_after": true,
+  "source_unchanged_after_editable_install": true,
+  "origin": "D:/agentsync-debug/m122sourcew/s/src/agentsync/__init__.py",
+  "editable_direct_url": "file:///D:/agentsync-debug/m122sourcew/s",
+  "junit_credential_redactions": 6,
+  "junit_reproduced_from_raw_byte_exact": true,
+  "stdout_credential_redactions": 0,
+  "postcheck_native_chunk": "ad03af",
+  "postcheck_native_exit_code": 0,
+  "postcheck_first_failures": [
+    {
+      "chunk": "60fbf7",
+      "scope": "checker raw/public parameterized identity assumption; not suite failure"
+    },
+    {
+      "chunk": "2ca108",
+      "scope": "checker BytesIO versus Windows file serialization; not suite failure"
+    }
+  ],
+  "failure_records": "After-run descriptions of observed tool failures; exact checker source versions retained; no test rerun",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "historical_static_FAIL": "Unchanged",
+  "original_driver_sha256": "6a5cd97f2877438675eb63bac4576d4c2cc886041e9bbaacb9c866ad73045c56",
+  "result_sha256": "85964839c05b5df7cfd40b3c923246bf9e6b5dbf8bc459c9c168b36f038c23b0",
+  "junit_sha256": "c874e02c28b3f491ed0e68157a0e3cf9db525649b44b7bf94e497bbbe710c697",
+  "case_diff_sha256": "100930a6b9e7a14b2b9b622184d76c83d6ac2fcc51ab99327ac2bbef272d8940",
+  "check_result_sha256": "1a62efa6607b6bc6aeda75e9c4d916ef54c3ad295bfbb7d7d4f80bbf5f3dff34",
+  "raw_policy": "All t/raw XML/stdout, source/venv/home remain local and excluded",
+  "independent_byte_inspection": "Root root-review.json; 3992 original/copy files and all97 runtime; not rerun by this collector"
+}

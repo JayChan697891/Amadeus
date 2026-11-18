@@ -1,0 +1,314 @@
+{
+  "scope": "First complete frozen a122 Linux3.14 installed-wheel suite; not formal Release",
+  "native_session": 74411,
+  "native_terminal_chunk": "ad13b3",
+  "native_exit_code": 0,
+  "harvest_chunk": "0d3a12",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "tests_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "started_at": "2026-11-17T13:51:07.846198+00:00",
+  "finished_at": "2026-11-17T14:10:22.386803+00:00",
+  "counts": {
+    "pass": 2589,
+    "skipped": 7
+  },
+  "total": 2596,
+  "same_a120_case_outcomes": 2587,
+  "added_cases": {
+    "tests.integration.test_durable_demo::test_durable_demo_reports_unicode_directory_with_legacy_stdout": "pass",
+    "tests.integration.test_handoff_recovery::test_owner_recovery_reports_unicode_reason_with_legacy_stdout": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[cancel-wins]": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[natural-exit-wins]": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[owned-parent]": "pass",
+    "tests.unit.test_host_process_deadline::test_early_adapter_callback_waits_for_absolute_deadline[pending-factory]": "pass",
+    "tests.unit.test_launch_context_deadline::test_early_timer_preserves_one_launch_wait[deadline]": "pass",
+    "tests.unit.test_launch_context_deadline::test_early_timer_preserves_one_launch_wait[external-cancel]": "pass",
+    "tests.unit.test_launch_context_deadline::test_early_timer_preserves_one_launch_wait[swallowed-cancel]": "pass"
+  },
+  "same_windows_case_identities": 2596,
+  "platform_outcome_differences": {
+    "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_executes_candidate_not_base": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_wrong_result_fails_and_stays_fenced": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_timeout_is_unresolved_and_never_retried": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_cancel_after_running_keeps_correct_result_unverified": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_candidate_execution::test_actual_linux_docker_crash_after_created_reopens_and_cleans_exact_id": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_candidate_export_security::test_nonregular_bare_config_is_rejected_without_reading_it": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_checks_all_external_cases": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_isolation_controls": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_wall_time": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_output_bounds[stdout]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_output_bounds[stderr]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_memory_bound": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_scratch_bound": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_enforces_pid_bound": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_docker_verifier::test_actual_docker_kernel_cgroup_limits": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_hard_exit_then_explicit_cleanup_never_restores_success[created]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_hard_exit_then_explicit_cleanup_never_restores_success[running]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_initial_absence_is_not_claimed_as_proven_cleanup": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_renamed_container_is_protected_from_cleanup": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_execution_reconciliation::test_actual_lost_create_ack_is_never_reconciled_by_name[lost_ack]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_m4b_workspaces::test_fixture_git_reads_long_windows_reference": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.integration.test_m4b_workspaces::test_managed_git_creates_private_ref_beyond_win32_path_limit": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_executes_fixed_snapshot_and_persists_independent_result": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[early-exit]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[forged-junit]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_rejects_candidate_self_report[wrong-result]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_enforces_wall_time[owner_case0]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_cancel_after_create_prevents_start": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_owner_execution::test_actual_owner_expired_lease_cannot_accept_passing_backend": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_proposal_docker_pipeline::test_same_core_proposal_to_independent_docker_acceptance[verified]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_proposal_docker_pipeline::test_same_core_proposal_to_independent_docker_acceptance[wrong-result]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[verified]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[wrong-result]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[reopen]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[host-exit-pre-dispatch]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[host-exit-dispatch-intent]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-staging]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-execution]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[deny-completion]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[budget-staging]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[budget-resume]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_proposal_flow::test_verified_flow_gates_and_reopen[docker-cursor]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.integration.test_verified_task_completion::test_actual_linux_docker_to_independent_verified_completion": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.security.test_resource_paths::test_explicit_project_symlink_root_is_canonicalized": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.security.test_resource_paths::test_symlink_and_nonexistent_target_through_link_are_denied": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.security.test_resource_paths::test_junction_is_denied": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.unit.test_codex_invocation::test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit": {
+      "windows": "pass",
+      "linux": "skipped"
+    },
+    "tests.unit.test_core_admission::test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_cursor_node_bundle::test_bundle_rejects_actual_links[False]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_cursor_node_bundle::test_bundle_rejects_actual_links[True]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_inspect_claude_events::test_fifo_input_is_rejected_without_waiting_for_a_writer": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_pytest_case_journal::test_output_path_guards_preserve_existing_objects[symlink]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_pytest_case_journal::test_output_path_guards_preserve_existing_objects[parent-symlink]": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_pytest_case_journal::test_existing_fifo_is_rejected_without_opening_or_replacing_it": {
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    "tests.unit.test_verification_snapshot::test_replaced_objects_directory_link_is_rejected_before_git_runs": {
+      "windows": "skipped",
+      "linux": "pass"
+    }
+  },
+  "original_files_checked": 47,
+  "original_bytes": 628067,
+  "runtime_members_rechecked": 97,
+  "source_files_rechecked": 3992,
+  "docker_observation_groups": {
+    "VERIFIER": 14,
+    "OWNER_EXECUTOR": 7,
+    "RECONCILIATION": 5,
+    "CANDIDATE_EXECUTOR": 5,
+    "TASK_COMPLETION": 1,
+    "VERIFIED_REVIEW": 1,
+    "PROPOSAL_PIPELINE": 3
+  },
+  "docker_remaining": [],
+  "workers_remaining": [],
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN by this suite",
+  "full_platform_matrix": "NOT RUN for remaining a122 cells",
+  "junit_sha256": "76ea2747cabb22f240645c0f7fcf3c58ded52bf715a87547097cea44a7123ae2",
+  "junit_redactions": 6,
+  "observer_error_preserved": {
+    "native_chunk": "af7233",
+    "exit_code": 1,
+    "error": "AssertionError at cross-platform comparison",
+    "incorrect_assertion": "len(diffs)==50 and all(v=={'windows':'skipped','linux':'pass'} for v in diffs.values())",
+    "correction": "50 is the net pass-count difference, not differing case count. Actual XML has57 Windows-only skips and7 Linux-only skips,64 differing outcomes. Same old Linux outcomes and all2596 current identities retained. No product test rerun or changed threshold."
+  }
+}

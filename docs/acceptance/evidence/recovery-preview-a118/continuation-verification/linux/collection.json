@@ -1,0 +1,22 @@
+{
+  "results/process.json": {
+    "bytes": 1519,
+    "sha256": "6f611f021e7ce300bbfbfc28d9df539a834e7c82ae27d8d3165cdac876c9dba3"
+  },
+  "results/junit.xml": {
+    "bytes": 420,
+    "sha256": "546caca9ad4a32a1c257e8c78c55f0246ab386c6cb9693cd312710e52e3e1135"
+  },
+  "results/pytest.log": {
+    "bytes": 98,
+    "sha256": "1940ecba2dce60dc2972edf5c0bfcbc4c9d1e763f6ff12f79cef2c8a726a79d8"
+  },
+  "results/docker/continuation-verified.json": {
+    "bytes": 6287,
+    "sha256": "3b471e7b621f0c5b86eb5f5f24c4f2ef4c0b11ef5f4a8a236d9c1dbb7254baed"
+  },
+  "results/postcheck.json": {
+    "bytes": 266,
+    "sha256": "3b790d1c8aaa6552dc450874f1fdf3801cf7fbeface5dcc20fca5ff3303beedd"
+  }
+}

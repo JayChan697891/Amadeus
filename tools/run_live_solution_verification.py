@@ -1,0 +1,406 @@
+"""Verify one a119 continuation in its original Core after model auth cleanup."""
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+from agentsync.adapters.codex_events import parse_codex_jsonl
+from agentsync.controlled_relay import ControlledRelay
+from agentsync.errors import AgentSyncError
+from agentsync.proposals import parse_proposal
+from agentsync.verification.candidate import OwnerCandidateExporter
+from agentsync.verification.candidate_executor import OwnerCandidateExecutor
+from agentsync.verification.candidate_jobs import CandidateVerificationJobs
+from agentsync.verification.docker import DockerProfile, JsonCase
+from agentsync.verification.owner_flow import OwnerCandidateFlow
+
+BASE = Path("/root/amadeus-interrupted-a119-solution-20261116")
+IMAGE = "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+CASES = [[[2, 3], 5], [[-4, 1], -3]]
+COMPLETION_REQUEST = "complete-live-json-lines-receiver"
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def deny_launch(*_):
+    raise AssertionError("Verification cannot authorize a model launch.")
+
+
+def require_closed(cleanup, grant):
+    assert cleanup.load("closing.json") == {
+        "authorization_sha256": grant,
+        "further_launches_allowed": False,
+    }
+    stopped = {"producer": "terminal_recorded", "receiver": "terminal_recorded"}
+    assert cleanup.load("auth-cleanup.json") == {
+        "temporary_auth_absent": True,
+        "home_unmounted": True,
+        "private_home_empty": True,
+        "current_attempts": stopped,
+        "further_launches_allowed": False,
+    }
+    cleanup.private_directory(cleanup.PRIVATE_HOME)
+    assert not cleanup.mounts() and not any(cleanup.PRIVATE_HOME.iterdir())
+    assert cleanup.require_stopped(grant) == stopped
+
+
+def captured_proposal(live, name):
+    record = live.read(f"{name}-capture.json")
+    received = live.read(f"{name}-dispatch-observation.json")["actors"][name]["attempts"][0]
+    snapshot = live.read(f"{name}-exit.json")["snapshot"]
+    assert record["saved"] is True and snapshot["parent_ended"] is received["parent_ended"] is True
+    assert received["timed_out"] is False and received["state"] == "terminal_recorded"
+    assert record["stdout_truncated"] is snapshot["stdout_truncated"] is False
+    assert record["stderr_truncated"] is snapshot["stderr_truncated"] is False
+    assert snapshot["exit_code"] == received["exit_code"]
+    streams = {}
+    for stream in ("stdout", "stderr"):
+        path = BASE / f"{name}-capture/raw/{stream}.bin"
+        live.private_file(path)
+        assert path.stat().st_size == record[stream + "_bytes"] == snapshot[stream + "_bytes"]
+        assert 0 <= record[stream + "_bytes"] <= live.prep.OUTPUT_LIMIT
+        streams[stream] = path.read_bytes()
+        assert len(streams[stream]) == record[stream + "_bytes"]
+        assert sha(streams[stream]) == record[stream + "_sha256"]
+    raw = streams["stdout"]
+    assert raw and len(raw) + len(streams["stderr"]) <= live.prep.OUTPUT_LIMIT
+    report = parse_codex_jsonl(raw.decode("utf-8"), exit_code=received["exit_code"])
+    assert report.tool_item_event_count == 0
+    if name == "producer":
+        assert report.state == "failed" and report.error_code == "process_failed"
+        return None, record["stdout_sha256"]
+    assert report.state == "succeeded"
+    (message,) = report.agent_messages
+    return parse_proposal(message, ["solution.py"]), record["stdout_sha256"]
+
+
+def publication(live, core, state, request, grant):
+    original = live.read("continuation-result.json")
+    replay = live.read("replay.json")
+    assert original["status"] == "resolved" and original["authorization_sha256"] == grant
+    assert (
+        replay["outcome"] == original["outcome"] and replay["tasks_and_receipts_unchanged"] is True
+    )
+    assert replay["receiver_callbacks"] == replay["model_calls"] == 0
+    outcome = original["outcome"]
+    result = outcome["publication"]
+    context = core.execute(
+        "get_context",
+        {
+            **request.receiver.authentication(),
+            "context_id": result["context_id"],
+            "version": result["context_version"],
+        },
+    )
+    assert outcome["source_task_id"] == state["task"]["id"] and outcome["task_status"] == "review"
+    assert context["author_agent_id"] == state["receiver"]["agent_id"]
+    assert (
+        sha(context["content"].encode())
+        == original["publication_sha256"]
+        == result["content_sha256"]
+    )
+    assert result["context_version"] == 1 and result["verification"] == "unverified"
+    _, producer_capture = captured_proposal(live, "producer")
+    files, receiver_capture = captured_proposal(live, "receiver")
+    assert json.loads(context["content"])["files"] == files
+    (source,) = files
+    return {
+        "authorization_sha256": grant,
+        "project_id": state["owner"]["project_id"],
+        "task_id": outcome["task_id"],
+        "source_task_id": outcome["source_task_id"],
+        "review_task_version": original["tasks"][outcome["task_id"]]["version"],
+        "context_id": result["context_id"],
+        "context_version": result["context_version"],
+        "publication_sha256": result["content_sha256"],
+        "source_sha256": sha(source["content"].encode()),
+        "producer_stdout_sha256": producer_capture,
+        "receiver_stdout_sha256": receiver_capture,
+        "producer_capture_record_sha256": live.sha(BASE / "producer-capture.json"),
+        "receiver_capture_record_sha256": live.sha(BASE / "receiver-capture.json"),
+        "continuation_plan_sha256": original["plan_sha256"],
+    }, source
+
+
+def publish_plan(live, state, name, plan):
+    live.write(name, plan, state)
+    print(json.dumps({"plan": name, "sha256": live.sha(BASE / name)}), flush=True)
+
+
+def approve(live, state, action, expected, current):
+    name = action + "-plan.json"
+    assert re.fullmatch("[0-9a-f]{64}", expected or "")
+    assert live.sha(BASE / name) == expected and live.read(name) == current
+    live.write(action + "-entry.json", {"plan_sha256": expected, "action": action}, state)
+
+
+def docker_result(execution, source_sha256):
+    assert execution["execution_assessment"] == "passed"
+    result = execution["execution"]["result"]
+    assert result["backend"] == "local-linux-docker" and result["image_sha256"] == IMAGE
+    assert result["status"] == "passed" and result["source_sha256"] == source_sha256
+    assert result["expected_case_count"] == result["passed_case_count"] == len(CASES)
+    assert result["cleanup_confirmed"] is True
+    isolation = result["isolation"]["checks"]
+    assert len(isolation) == 19 and all(value is True for value in isolation.values())
+    return result
+
+
+def drive(live, cleanup, grant, action, expected):
+    require_closed(cleanup, grant)
+    core, state = live.core_state()
+    request, continuation = live.load_continuation(state, grant)
+    binding, source = publication(live, core, state, request, grant)
+    task_id = binding["task_id"]
+    owner = state["owner"]
+    relay = ControlledRelay(core, BASE, live.RECEIPTS)
+    original_receipts = live.source_receipts(relay, state, request.source.launch_sha256)
+    assert original_receipts == continuation["source_receipt_sha256"]
+    workspace = live.read("receiver-workspace.json")
+    assert workspace["task_id"] == task_id
+    actor = live.actor(state, "receiver", workspace, deny_launch)
+    assert (
+        len({state[who]["agent_id"] for who in ("producer", "receiver", "stager", "reviewer")}) == 4
+    )
+    profile = DockerProfile(IMAGE, tuple(JsonCase(value, total) for value, total in CASES))
+    policy = {"profile_sha256": profile.sha256, "image_id": IMAGE, "cases": CASES}
+    jobs = CandidateVerificationJobs(core)
+    flow = OwnerCandidateFlow(core)
+
+    graph = live.task_graph(core, state)
+    saved_graph = live.read("continuation-result.json")["tasks"]
+    source_task_id = binding["source_task_id"]
+    dependent_id = state["dependent"]["id"]
+    assert (
+        graph[source_task_id] == saved_graph[source_task_id]
+        and graph[source_task_id]["status"] == "failed"
+    )
+    assert graph[dependent_id] == saved_graph[dependent_id]
+    assert graph[dependent_id]["status"] == "pending" and graph[dependent_id]["dependencies"] == [
+        task_id
+    ]
+    if action != "replay":
+        assert graph == saved_graph and graph[task_id]["status"] == "review"
+
+    if action in ("preview", "stage-once"):
+        staging_auth = {
+            "admin_token": owner["admin_token"],
+            "continuation": request,
+            "staging_session_id": state["stager"]["session_id"],
+            "staging_session_token": state["stager"]["session_token"],
+        }
+        observed = relay.observe_continuation_proposal_review(
+            actor, task_id, **live.owner_args(state), continuation=request
+        )
+        assert observed.state == "submitted_for_review" and observed.verification == "unverified"
+        assert (
+            observed.context_id == binding["context_id"]
+            and observed.content_sha256 == binding["publication_sha256"]
+        )
+        assert observed.review_task_version == binding["review_task_version"]
+        stage = relay.preview_continuation_proposal_staging(actor, task_id, **staging_auth)
+        (file,) = stage["plan"]["files"]
+        assert file["path"] == "solution.py" and file["sha256"] == binding["source_sha256"]
+        plan = {
+            "action": "stage-and-enqueue-once",
+            "binding": binding,
+            "staging": stage,
+            "policy": policy,
+        }
+        if action == "preview":
+            live.write("candidate-source.json", source, state)
+            publish_plan(live, state, "stage-plan.json", plan)
+            return
+        approve(live, state, "stage", expected, plan)
+        staged = relay.stage_continuation_proposal_once(
+            actor, task_id, **staging_auth, expected_plan_sha256=stage["plan_sha256"]
+        )
+        live.write("stage-result.json", staged, state)
+        assert staged["state"] == "staged" and staged["task_id"] == task_id
+        assert staged["execution_started"] is False and staged["verification"] == "unverified"
+        candidate = {
+            "candidate_id": staged["candidate_id"],
+            "expected_candidate_sha": staged["candidate_sha"],
+        }
+        exported = OwnerCandidateExporter(core).export(**owner, **candidate)
+        assert exported.snapshot.source == source["content"].encode()
+        enqueued = jobs.enqueue(
+            **owner, **candidate, profile=profile, request_id="enqueue-live-json-lines-receiver"
+        )
+        live.write("enqueue-result.json", enqueued, state)
+        job = jobs.get(**owner, job_id=enqueued["id"])
+        assert job["status"] == "queued" and job["source_sha256"] == binding["source_sha256"]
+        publish_plan(
+            live,
+            state,
+            "execution-plan.json",
+            {
+                "action": "execute-once",
+                "binding": binding,
+                "job": job,
+                "policy": policy,
+                "staging_approval_sha256": expected,
+            },
+        )
+        return
+
+    execution_plan = live.read("execution-plan.json")
+    assert execution_plan["binding"] == binding and execution_plan["policy"] == policy
+    job_id = execution_plan["job"]["id"]
+    if action == "execute-once":
+        job = jobs.get(**owner, job_id=job_id)
+        assert job == execution_plan["job"] and job["status"] == "queued"
+        approve(live, state, "execution", expected, execution_plan)
+        execution = flow.start_once(
+            **owner,
+            job_id=job_id,
+            expected_job_version=job["version"],
+            expected_metadata_sha256=job["metadata_sha256"],
+            profile=profile,
+        )
+        live.write("execution-result.json", execution, state)
+        result = docker_result(execution, binding["source_sha256"])
+        publish_plan(
+            live,
+            state,
+            "completion-plan.json",
+            {
+                "action": "complete-once",
+                "binding": binding,
+                "job_id": job_id,
+                "policy": policy,
+                "execution_approval_sha256": expected,
+                "execution_result_sha256": live.sha(BASE / "execution-result.json"),
+                "execution_id": execution["execution_id"],
+                "execution_revision": execution["execution"]["revision"],
+                "reviewer_agent_id": state["reviewer"]["agent_id"],
+                "reviewer_session_id": state["reviewer"]["session_id"],
+                "container_id": result["container_id"],
+                "request_id": COMPLETION_REQUEST,
+            },
+        )
+        return
+
+    plan = live.read("completion-plan.json")
+    execution = OwnerCandidateExecutor(core).get(**owner, job_id=job_id)
+    assert plan["binding"] == binding and plan["policy"] == policy and plan["job_id"] == job_id
+    assert plan["execution_result_sha256"] == live.sha(BASE / "execution-result.json")
+    assert (
+        plan["execution_id"] == execution["execution_id"]
+        and plan["execution_revision"] == execution["execution"]["revision"]
+    )
+    assert execution["execution"] == live.read("execution-result.json")["execution"]
+    assert plan["reviewer_agent_id"] == state["reviewer"]["agent_id"]
+    assert (
+        plan["reviewer_session_id"] == state["reviewer"]["session_id"]
+        and plan["request_id"] == COMPLETION_REQUEST
+    )
+    assert (
+        docker_result(execution, binding["source_sha256"])["container_id"] == plan["container_id"]
+    )
+    if action == "complete-once":
+        approve(live, state, "completion", expected, plan)
+    else:
+        assert not live.present("verification-replay.json")
+        assert live.read("completion-entry.json") == {
+            "action": "completion",
+            "plan_sha256": live.sha(BASE / "completion-plan.json"),
+        }
+        completed = live.read("completion-result.json")
+        assert live.read("completion-postcheck.json")["tasks"] == graph
+        assert (
+            graph[task_id]["status"] == "completed"
+            and graph[task_id]["task_verification"] == "verified"
+        )
+    response = flow.complete_once(
+        **owner,
+        session_id=state["reviewer"]["session_id"],
+        session_token=state["reviewer"]["session_token"],
+        task_id=task_id,
+        expected_version=binding["review_task_version"],
+        job_id=job_id,
+        execution_id=plan["execution_id"],
+        expected_execution_revision=plan["execution_revision"],
+        request_id=COMPLETION_REQUEST,
+        profile=profile,
+    )
+    if action == "complete-once":
+        live.write("completion-result.json", response, state)
+    assert response["task_id"] == task_id and response["task_verification"] == "verified"
+    current = live.task_graph(core, state)
+    assert current == graph | {
+        task_id: graph[task_id]
+        | {
+            "status": "completed",
+            "task_verification": "verified",
+            "version": response["version"],
+        }
+    }
+    assert live.source_receipts(relay, state, request.source.launch_sha256) == original_receipts
+    live.prep.require_fixtures(state)
+    live.prep.runtime()
+    if action == "complete-once":
+        live.write(
+            "completion-postcheck.json",
+            {"tasks": current, "source_receipt_sha256": original_receipts, "model_calls": 0},
+            state,
+        )
+    else:
+        assert response == completed and current == graph
+        assert (
+            OwnerCandidateExecutor(core).get(**owner, job_id=job_id)["execution"]
+            == execution["execution"]
+        )
+        live.write(
+            "verification-replay.json",
+            {"task_id": task_id, "new_executions": 0, "model_calls": 0},
+            state,
+        )
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    stages = parser.add_subparsers(dest="action", required=True)
+    stages.add_parser("preview")
+    for action in ("stage-once", "execute-once", "complete-once"):
+        stages.add_parser(action).add_argument("expected_plan_sha256")
+    stages.add_parser("replay")
+    args = parser.parse_args()
+    if (
+        sys.platform != "linux"
+        or os.geteuid() != 0
+        or not __debug__
+        or not sys.flags.isolated
+        or not sys.dont_write_bytecode
+        or Path(__file__).resolve() != BASE / "verify.py"
+    ):
+        parser.error("Use the reviewed guest path and installed Python with -I -B.")
+    os.umask(0o077)
+    sys.path.insert(0, str(BASE))
+    import cleanup
+    import live
+    import prepare
+
+    live.prep, live.cleanup = prepare, cleanup
+    with cleanup.stage_lock(allow_closing=True):
+        _, grant = cleanup.validate_authorization(allow_expired=True)
+        drive(live, cleanup, grant, args.action, getattr(args, "expected_plan_sha256", None))
+    print(json.dumps({"stage": args.action, "complete": True, "model_calls": 0}), flush=True)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        code = error.code if isinstance(error, AgentSyncError) else type(error).__name__
+        print(
+            json.dumps({"status": "stopped", "error_code": code, "retry_allowed": False}),
+            file=sys.stderr,
+        )
+        raise SystemExit(1) from None

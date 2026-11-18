@@ -1,0 +1,38 @@
+{
+  "phase": "finished",
+  "pid": 6404,
+  "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+  "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "candidate_manifest_sha256": "88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11",
+  "started_at": "2026-11-14T08:12:24.169104+00:00",
+  "real_models": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "external_verifier_sha256": "6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c",
+  "external_verifier_commit": "6e5d21520b8caee525dccd314eb0a1d45d3626f1",
+  "row_driver_sha256": "22267fa65b965878ca962528b58a28cedcb57de06a0c1efeff20eede4126bd5f",
+  "identity_helper_sha256": "51884d125d5eea30173af17b731ba943f6615bc3200fce13938295f39ec578a5",
+  "finished_at": "2026-11-14T10:38:34.940502+00:00",
+  "report": "D:\\agentsync-debug\\m115-r3\\windows-311\\identity-derived\\report.json",
+  "source_clean": true,
+  "unsuccessful_checks": [],
+  "local_checks_passed": true,
+  "identity_capture": {
+    "junit.xml": {
+      "status": "captured",
+      "size": 391557,
+      "sha256": "be1359cf8f39a96643880e892ce5663fcfd5bb320642aa68a51e7cfdf4e658c4"
+    },
+    "wheel-junit.xml": {
+      "status": "captured",
+      "size": 391605,
+      "sha256": "2f5339d16b208983bf9bf0ec1406aab2c5ae10c6cb0752c58151479e3238355b"
+    },
+    "sdist-junit.xml": {
+      "status": "captured",
+      "size": 391605,
+      "sha256": "a01461045ec97abc1ec4c1cee7257f156d50ac99efdcf9230b34fd1f7b549017"
+    }
+  },
+  "original_report": "D:\\agentsync-debug\\m115-r3\\windows-311\\reports\\release-20261114T081224Z-4f25be342fb7\\report.json",
+  "identity_verified": true
+}

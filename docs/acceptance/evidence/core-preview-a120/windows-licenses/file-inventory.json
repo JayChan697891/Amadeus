@@ -1,0 +1,97 @@
+[
+  {
+    "path": "attempt.json",
+    "bytes": 635,
+    "sha256": "99504604074223ca62330c647fadc355bbdec3ba11ffc7b3a36ff1c6c4364aa1"
+  },
+  {
+    "path": "collect.py.txt",
+    "bytes": 5037,
+    "sha256": "a49182009bd6df257f21066ac29757c660f8616c71cfe6081dc33cd04d4b5c80"
+  },
+  {
+    "path": "logs/sdist_license_inventory.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "logs/sdist_license_inventory.process.json",
+    "bytes": 1397,
+    "sha256": "a036d88b74c720a67f4060433bcfbb5a0fae315b509517d6016c05f6129c1b71"
+  },
+  {
+    "path": "logs/sdist_license_origin_after.log",
+    "bytes": 504,
+    "sha256": "97d2f2fe03bca818a2adf32d684235314525d0c34bc696f10b8093710728d932"
+  },
+  {
+    "path": "logs/sdist_license_origin_after.process.json",
+    "bytes": 3812,
+    "sha256": "175f44c1f65a41d2935a7c48e6d6d9c6b15488e0b178267ff6f7b84c7eb685fb"
+  },
+  {
+    "path": "logs/sdist_license_origin_before.log",
+    "bytes": 504,
+    "sha256": "97d2f2fe03bca818a2adf32d684235314525d0c34bc696f10b8093710728d932"
+  },
+  {
+    "path": "logs/sdist_license_origin_before.process.json",
+    "bytes": 3815,
+    "sha256": "2d742ffe352c28309c9485a6ed5f48076f9515202182b72813bd9d5cc6a2cd1c"
+  },
+  {
+    "path": "logs/wheel_license_inventory.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "logs/wheel_license_inventory.process.json",
+    "bytes": 1397,
+    "sha256": "96896f7e7051125b92a665f47f89f43710162089803856661a4ce588ea97b811"
+  },
+  {
+    "path": "logs/wheel_license_origin_after.log",
+    "bytes": 514,
+    "sha256": "b78625948cc4cca4580df47c2664522f899ecfa7111caa421ee6d8b041317c1b"
+  },
+  {
+    "path": "logs/wheel_license_origin_after.process.json",
+    "bytes": 3832,
+    "sha256": "23023977b875388268e57e626102dcd645be8a13a0b7f953bb67fa7a07a7e7c1"
+  },
+  {
+    "path": "logs/wheel_license_origin_before.log",
+    "bytes": 514,
+    "sha256": "b78625948cc4cca4580df47c2664522f899ecfa7111caa421ee6d8b041317c1b"
+  },
+  {
+    "path": "logs/wheel_license_origin_before.process.json",
+    "bytes": 3835,
+    "sha256": "ae54c0ef02dcdcd8f3e87dfeae462a47213bcfc40a472820845afb123d2bfdf5"
+  },
+  {
+    "path": "result.json",
+    "bytes": 10850,
+    "sha256": "ede5cc5ce5ad5b7847250e448ca54b2a712896e5097f01372b5ed342f3ffe1eb"
+  },
+  {
+    "path": "root-review.json",
+    "bytes": 604,
+    "sha256": "2abc3d23629f933c5d03a4e9fab5249a62ed30a820c4995b5c18b3d56128fc13"
+  },
+  {
+    "path": "sdist-inventory.json",
+    "bytes": 23086,
+    "sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9"
+  },
+  {
+    "path": "summary.json",
+    "bytes": 1723,
+    "sha256": "6c6f3f664a462d0b90e9820b45117f6794815226965b42fdd1d80e8bd1e4b105"
+  },
+  {
+    "path": "wheel-inventory.json",
+    "bytes": 23086,
+    "sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9"
+  }
+]

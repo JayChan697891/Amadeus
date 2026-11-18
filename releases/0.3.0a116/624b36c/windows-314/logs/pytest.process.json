@@ -1,0 +1,47 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\s",
+    "started_at": "2026-11-15T10:16:23.512138+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--junitxml",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-zq1sxbvc\\pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-15T10:16:23.512138+00:00",
+    "finished_at": "2026-11-15T11:00:45.861228+00:00",
+    "log": "logs/pytest.log",
+    "log_sha256": "75ca9763141307c9f3f7aa35a8a8b2a016c6854242161e35764f2cee5385c9c0",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

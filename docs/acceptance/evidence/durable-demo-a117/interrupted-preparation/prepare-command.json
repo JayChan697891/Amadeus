@@ -1,0 +1,7 @@
+{
+  "observed_at": "2026-11-16T06:09:24.469914+00:00",
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-interrupted-a117-20261115/prepare.py prepare",
+  "exit_code": 0,
+  "stdout": "{\"prepared\": true, \"producer_plan_sha256\": \"b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928\", \"model_calls\": 0}\n",
+  "stderr": ""
+}

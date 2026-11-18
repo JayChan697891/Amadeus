@@ -1,0 +1,4 @@
+{"stage": "before", "origins": {"agentsync": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py", "_host_process": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\adapters\\_host_process.py", "launch_context": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\adapters\\launch_context.py"}}
+...                                                                      [100%]
+3 passed in 0.08s
+{"stage": "after", "origins": {"agentsync": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\__init__.py", "_host_process": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\adapters\\_host_process.py", "launch_context": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\adapters\\launch_context.py"}}

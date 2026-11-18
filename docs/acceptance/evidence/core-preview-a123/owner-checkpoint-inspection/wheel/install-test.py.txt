@@ -1,0 +1,143 @@
+"""One fresh offline wheel install and the same 14 deterministic owner checks."""
+import hashlib
+import json
+import os
+import sys
+import tomllib
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+SOURCE = BASE / "s"
+RUN, TEMP, HOME, ENV = (BASE / name for name in ("run", "test-t", "test-home", "w"))
+WHEELS = Path("D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse")
+COMMIT = "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66"
+VERSION = "0.3.0a123"
+WHEEL = BASE / "dist" / f"agentsync_local-{VERSION}-py3-none-any.whl"
+BASELINE = Path("D:/agentsync-debug/m123-owner-checkpoint/green/junit.xml")
+SELECTION = [
+    "tests/integration/test_relay_owner_status.py",
+    "tests/integration/test_codex_proposal_relay_queue.py::test_live_completed_proposal_checkpoint",
+    "tests/integration/test_codex_proposal_relay_queue.py::test_checkpoint_protocol_final_messages[valid-batch]",
+]
+PROBE = r'''
+import hashlib,importlib.metadata as m,json,subprocess,sys,sysconfig
+from pathlib import Path
+import agentsync,agentsync.controlled_relay
+env,archive,members=map(Path,sys.argv[1:4]);expected=sys.argv[4]
+site=Path(sysconfig.get_path('purelib')).resolve()
+assert Path(sys.prefix).resolve()==env.resolve() and site.is_relative_to(env.resolve())
+assert sys.version_info[:3]==(3,12,16)
+origin=Path(agentsync.__file__).resolve()
+assert origin==site/'agentsync/__init__.py'
+assert Path(agentsync.controlled_relay.__file__).resolve()==site/'agentsync/controlled_relay.py'
+assert hasattr(agentsync.controlled_relay.ControlledRelay,'owner_observe_codex_checkpoint')
+assert not any(str(p).replace(chr(92),'/').lower().startswith('f:/syuc') for p in sys.path)
+dist=m.distribution('agentsync-local');direct=json.loads(dist.read_text('direct_url.json'))
+assert dist.version==agentsync.__version__=='0.3.0a123'
+assert direct['url']==archive.resolve().as_uri() and 'dir_info' not in direct
+assert direct['archive_info']['hashes']['sha256']==expected
+actual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert actual==json.loads(members.read_bytes()) and len(actual)==97
+child=subprocess.run([sys.executable,'-I','-B','-c','import agentsync,json,sys;print(json.dumps({"origin":agentsync.__file__,"prefix":sys.prefix}))'],capture_output=True,check=True,text=True)
+observed=json.loads(child.stdout)
+assert Path(observed['origin']).resolve()==origin and Path(observed['prefix']).resolve()==env.resolve()
+print(json.dumps({'origin':str(origin),'child_origin':observed['origin'],'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))
+'''
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+def save(path, value):
+    with path.open("x", encoding="utf8") as stream: json.dump(value, stream, indent=2)
+
+def cases(path):
+    result = {}
+    for item in ET.parse(path).iter("testcase"):
+        key = (item.get("classname"), item.get("name"))
+        assert key not in result
+        result[key] = next((kind for kind in ("failure", "error", "skipped") if item.find(kind) is not None), "pass")
+    return result
+
+def main():
+    assert sys.version_info[:3] == (3, 12, 16) and sys.flags.isolated and sys.dont_write_bytecode
+    assert json.loads((BASE / "build/result.json").read_bytes())["status"] == "pass"
+    bundle = json.loads((BASE / "bundle.json").read_bytes())
+    assert bundle["source_commit"] == bundle["runtime_commit"] == COMMIT
+    manifest = json.loads((BASE / "source-manifest.json").read_bytes())
+    members = json.loads((BASE / "runtime-members.json").read_bytes())
+    assert len(members) == 97
+    def verify():
+        for name, row in bundle["inputs"].items():
+            path = WHEEL if name == WHEEL.name else BASE / name
+            assert (path.stat().st_size, sha(path)) == (row["size"], row["sha256"])
+        assert all((SOURCE / name).stat().st_size == row["size"] and sha(SOURCE / name) == row["sha256"] for name, row in manifest.items())
+    verify()
+    for directory in (RUN, TEMP, HOME): directory.mkdir(exist_ok=False)
+    assert not ENV.exists()
+    (RUN / "logs").mkdir()
+    for key in tuple(os.environ):
+        if key.upper().startswith(("PYTHON", "PYTEST_", "PIP_", "AGENTSYNC_", "OPENAI_", "ANTHROPIC_", "CODEX_", "CLAUDE_", "GIT_", "GITHUB_")):
+            os.environ.pop(key)
+    os.environ.update(HOME=str(HOME), USERPROFILE=str(HOME), APPDATA=str(HOME), LOCALAPPDATA=str(HOME),
+                      TEMP=str(TEMP), TMP=str(TEMP), TMPDIR=str(TEMP), PYTHONDONTWRITEBYTECODE="1",
+                      GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0")
+    sys.path.insert(0, str(SOURCE))
+    from tools import release_acceptance as collector
+    result = {"status": "fail", "source_commit": COMMIT, "version": VERSION,
+              "wheel_sha256": sha(WHEEL), "driver_sha256": sha(Path(__file__)), "checks": [],
+              "scope": "One Windows installed-wheel affected regression, same14 source cases",
+              "model_calls": 0, "candidate_execution": "NOT RUN", "full_suite": "NOT RUN", "formal_release": "BLOCKED"}
+    save(RUN / "start.json", result)
+    raw = TEMP / "junit-raw.xml"
+    packages = collector._prepare_offline_packages(tomllib.loads((SOURCE / "pyproject.toml").read_text("utf8")), WHEELS, TEMP, RUN)
+    python = ENV / "Scripts/python.exe"
+    origin = [python, "-I", "-B", "-c", PROBE, ENV, WHEEL, BASE / "runtime-members.json", sha(WHEEL)]
+    def execute(name, argv, capture=None):
+        check = collector.execute(name, list(map(str, argv)), RUN, RUN, TEMP,
+                                  offline_wheelhouse=packages.wheelhouse, capture_stdout=capture)
+        result["checks"].append(check)
+        assert check["status"] == "pass" and check["exit_code"] == 0 and not check["log_truncated"]
+    try:
+        execute("wheel_venv", [sys.executable, "-I", "-B", "-m", "venv", ENV])
+        execute("wheel_offline_dependencies", collector._offline_install(str(python), packages.wheelhouse, "--only-binary=:all:", *packages.application))
+        execute("wheel_install", collector._offline_install(str(python), packages.wheelhouse, "--no-deps", "--", str(WHEEL)))
+        execute("wheel_pip_check", [python, "-I", "-B", "-m", "pip", "check"])
+        execute("wheel_origin_before", origin)
+        try:
+            execute("wheel_pytest", [python, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider", "--tb=short",
+                                     "--basetemp", TEMP / "pytest", "--junitxml", raw, *(SOURCE / name for name in SELECTION)], RUN / "stdout.private")
+            result["status"] = "pass"
+        finally:
+            try: execute("wheel_origin_after", origin)
+            except Exception as error: result.update(status="fail", origin_after_error_type=type(error).__name__)
+            if raw.is_file():
+                try:
+                    count = collector.persist_junit(raw, RUN / "junit.xml")
+                    observed, expected = cases(RUN / "junit.xml"), cases(BASELINE)
+                    assert observed == expected and len(observed) == 14 and set(observed.values()) == {"pass"}
+                    result["junit"] = {"sha256": sha(RUN / "junit.xml"), "baseline_sha256": sha(BASELINE),
+                                       "credential_redactions": count, "same14cases_and_outcomes": True}
+                except Exception as error: result.update(status="fail", junit_error_type=type(error).__name__)
+            else: result.update(status="fail", junit_error_type="MissingJUnit")
+    except Exception as error:
+        result["error_type"] = type(error).__name__
+        raise
+    finally:
+        try: verify()
+        except Exception as error: result.update(status="fail", inputs_after_error_type=type(error).__name__)
+        stdout = RUN / "stdout.private"
+        if stdout.is_file():
+            with stdout.open("rb") as stream: data = stream.read(collector.MAX_LOG_BYTES + 1)
+            clean, redactions = collector.redact_credentials(data[:collector.MAX_LOG_BYTES].decode("utf8", errors="replace"))
+            with (RUN / "stdout.log").open("x", encoding="utf8") as stream: stream.write(clean)
+            result["stdout_credential_redactions"] = redactions
+            if len(data) > collector.MAX_LOG_BYTES: result.update(status="fail", stdout_error_type="OutputTruncated")
+        save(RUN / "result.json", result)
+    print(json.dumps({"status": result["status"], "result": str(RUN / "result.json"), "junit": result.get("junit")}))
+    return 0 if result["status"] == "pass" else 1
+
+if __name__ == "__main__":
+    raise SystemExit(main())

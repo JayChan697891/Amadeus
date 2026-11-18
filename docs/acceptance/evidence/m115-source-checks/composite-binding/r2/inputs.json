@@ -1,0 +1,102 @@
+[
+  {
+    "path": "pyproject.toml",
+    "sha256": "e8607109249924cbd6779949ea4d1940b4789a3d01a7c8d0fea29312d56dee5d"
+  },
+  {
+    "path": ".ruff_cache/.gitignore",
+    "sha256": "9e3a60f1e6ec4ae60215c11d54b171392745ec25e9dded433d5bd921363af316"
+  },
+  {
+    "path": ".ruff_cache/CACHEDIR.TAG",
+    "sha256": "5953156d7e0c564a427251316eaf26f8870e6483ae2197f916b630e4f93e31ae"
+  },
+  {
+    "path": "tools/acceptance_evidence.py",
+    "sha256": "6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c"
+  },
+  {
+    "path": "tools/acceptance_git_source.py",
+    "sha256": "fe61da12f8d5ab324c8fb1435eb9ba282a14e37ae026883f16a6ca67856fea94"
+  },
+  {
+    "path": "tools/acceptance_matrix.py",
+    "sha256": "ee409972192f37f694936d92248a3ec2a393509656fcc23bc3364ff33ecc2d62"
+  },
+  {
+    "path": "tools/benchmark_coordination.py",
+    "sha256": "3baaf2443e63a22f03114f9573804c99dd394903306a813961a0195f9878c222"
+  },
+  {
+    "path": "tools/diagnose_core_startup.py",
+    "sha256": "23d9c155dc90ff76dab570c885412dcf08f97ad0e7ba7787dfcfc29da8c1ee3e"
+  },
+  {
+    "path": "tools/inspect_claude_events.py",
+    "sha256": "d631df2ada8ddd5ca79a8014d1f8dbc191bf9d490c20b5849e606acc836bd4c7"
+  },
+  {
+    "path": "tools/inspect_codex_events.py",
+    "sha256": "62593bd4e8fb68329a2256ad100f65cfa7df6d2e03fcdf4d6809dcb5aea67b30"
+  },
+  {
+    "path": "tools/inspect_cursor_events.py",
+    "sha256": "48ced85601d43344c5f10118d77802e8a570e759cbeb897ce687604499c310dc"
+  },
+  {
+    "path": "tools/inspect_local_attempts.py",
+    "sha256": "145ce7341afabef2b1877038bb5af560c605fe54ad8a025b1cafb2c47a36b853"
+  },
+  {
+    "path": "tools/license_inventory.py",
+    "sha256": "8623f794b0fc3e3b87f96f09c1d7c51d67baf07d17b161a4cee82f439a21a0c2"
+  },
+  {
+    "path": "tools/local_vm_exec.py",
+    "sha256": "e9e9a70e55bbb1d0eff9222eda8c7824c35904889b49e1bd2c1ba1303bee19b9"
+  },
+  {
+    "path": "tools/prepare_local_vm.py",
+    "sha256": "e02be201cca9eabd5482723ef1544608ba2f9185cfc4f6b99d476081156a64cb"
+  },
+  {
+    "path": "tools/pytest_case_journal.py",
+    "sha256": "33b8433fa5a5d87bc197c45291064f6bdcc8f89056fbfd2104b74107740ad86e"
+  },
+  {
+    "path": "tools/release_acceptance.py",
+    "sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd"
+  },
+  {
+    "path": "tools/release_execution_receipt.py",
+    "sha256": "8b877de6e68b44754fb9d7f9851779f2d1f043b0d093d639bb2e36c738131152"
+  },
+  {
+    "path": "tools/release_manifest.py",
+    "sha256": "e67a87541a0ae25ac1196e5de61ff6cc5b0bc8fb91d27897b6f3053709ef3213"
+  },
+  {
+    "path": "tools/release_review.py",
+    "sha256": "1691639521674f8d4902f4c49c85049aa517428ffe688e1deca6ba1ea9a6ec88"
+  },
+  {
+    "path": "tools/run_proposal_candidate_pilot.py",
+    "sha256": "61faabcd5c486013360f259c97d421fac01a3e3c262815b59b66dab827c71bd9"
+  },
+  {
+    "path": "tools/_capture_inspection.py",
+    "sha256": "2ae5d7e78ccd9ad5aff1d229da64280cb5f8faee411eb45eb63b24e39f2c6327"
+  },
+  {
+    "path": ".ruff_cache/0.17.1/311665946965228511",
+    "sha256": "a2e697c705313212c507108476079c42db32a59493a344b7f2ec3102abeed4f4"
+  },
+  {
+    "path": ".ruff_cache/0.17.1/825922042188752698",
+    "sha256": "9f82093179cc50eb5abff7f9b890b52d325d8d05afed504f0c33b7ac40400f7a"
+  },
+  {
+    "path": "tests/unit/test_composite_acceptance_evidence.py",
+    "sha256": "09cac9bb9b89ec1a14b4151a9d724aaa35fa9d892d4a47e4c246d534e8e4f3b6"
+  }
+]

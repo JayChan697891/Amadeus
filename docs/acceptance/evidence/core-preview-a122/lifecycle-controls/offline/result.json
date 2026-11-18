@@ -1,0 +1,47 @@
+{
+  "status": "pass",
+  "scope": "Deterministic known local Python protocol fixtures only; no real Codex, auth or VM",
+  "native_pytest_chunk": "2b5568",
+  "native_pytest_exit_code": 0,
+  "cases": 6,
+  "passed": 6,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "pytest_reported_seconds": 4.21,
+  "runtime_before_after97_exact": true,
+  "agentsync_origin": "D:\\agentsync-debug\\m122p\\w\\Lib\\site-packages\\agentsync\\__init__.py",
+  "files": {
+    "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+    "test_pilot.py": "98720e590568ad86090b1b899d9c6605bbb2d812ed6d034947e78df5042f1de2",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+  },
+  "tested_files": {
+    "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "test_pilot.py": "8e22de3865c190d194d509e3340fc3bbc942b949f6063e7dd36fceeb9f2b3228",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+  },
+  "test_file_only_postrun_change": "Removed an import-group blank line for Ruff; no test/code behavior change",
+  "static_final_chunk": "d54193",
+  "ruff_exit": 0,
+  "format_check_exit": 0,
+  "initial_static_failures": [
+    {
+      "chunk": "78172f",
+      "exit": 1,
+      "reason": "standalone import E402 and import order I001"
+    },
+    {
+      "chunk": "5755ad",
+      "exit": 1,
+      "reason": "import-group blank line I001; log preserved"
+    }
+  ],
+  "junit_sha256": "4ce2155d806e598d1acb809edf58d706727c75ed74a799660ee6277578dff02e",
+  "pytest_log_sha256": "dc6d1e9ae0d767ca5027fa9e4311a69089b6c74d23ab939f04191bda1b8841de",
+  "model_calls": 0,
+  "credential_access": 0,
+  "candidate_executions": 0
+}

@@ -1,0 +1,27 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 6 items
+
+tests\integration\test_continue_codex_terminal.py ...FF                  [ 83%]
+tests\integration\test_unfinished_continuation.py .                      [100%]
+
+================================== FAILURES ===================================
+___ test_terminal_continues_saved_live_checkpoint[launch-checkpoint_codex] ____
+tests\integration\test_continue_codex_terminal.py:62: in test_terminal_continues_saved_live_checkpoint
+    with pytest.raises(AgentSyncError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE AgentSyncError
+_____ test_terminal_continues_saved_live_checkpoint[fee-checkpoint_codex] _____
+tests\integration\test_continue_codex_terminal.py:62: in test_terminal_continues_saved_live_checkpoint
+    with pytest.raises(AgentSyncError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE AgentSyncError
+- generated xml file: D:\agentsync-debug\m123-terminal-continuation\green-r2\junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/integration/test_continue_codex_terminal.py::test_terminal_continues_saved_live_checkpoint[launch-checkpoint_codex]
+FAILED tests/integration/test_continue_codex_terminal.py::test_terminal_continues_saved_live_checkpoint[fee-checkpoint_codex]
+======================== 2 failed, 4 passed in 21.15s =========================

@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_continued_task_completes_with_distinct_reviewer_and_synthetic_verifier[verifiable_codex] _
+tests\integration\test_unfinished_continuation.py:290: in test_continued_task_completes_with_distinct_reviewer_and_synthetic_verifier
+    observed = relay.observe_continuation_proposal_review(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'ControlledRelay' object has no attribute 'observe_continuation_proposal_review'. Did you mean: 'observe_codex_proposal_review'?
+=========================== short test summary info ===========================
+FAILED tests/integration/test_unfinished_continuation.py::test_continued_task_completes_with_distinct_reviewer_and_synthetic_verifier[verifiable_codex]
+1 failed in 5.17s

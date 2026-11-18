@@ -1,0 +1,39 @@
+{
+  "product_sha": "6a8ff4127166d6e029360c3d782b3bbd4e89cab2",
+  "scope": "Windows Python 3.12 fresh installed wheel rebuilt from frozen sdist; affected adapter and Core pipeline tests only",
+  "tests": {
+    "tests": 51,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runtime_modules_matched_before_and_after": 84,
+  "source_shadowing": false,
+  "offline_install": true,
+  "pip_check": "passed",
+  "initial_build_failure": "Existing source-test venv lacked setuptools. Original failure preserved; new dedicated build venv installed pinned build dependencies from existing D-drive wheelhouse. Corrected build exit0. No product repair needed.",
+  "built_from_sdist": true,
+  "artifact_sha256": {
+    "releases/0.3.0a109/m6-single-6a8ff41/agentsync_local-0.3.0a109-py3-none-any.whl": "1f7cc224cb0a2d29615e103bf77a7d6144044aed046cae5bc7aef25aaa0f7a31",
+    "releases/0.3.0a109/m6-single-6a8ff41/agentsync_local-0.3.0a109.tar.gz": "2c583f0c9089d0190daba34cecceab6410e8e6bd60a6f629b23085437e6d4074"
+  },
+  "evidence_sha256": {
+    "package-installed.xml": "f3f26fef56e76ea72d0093ed064c52f70009407d08fdb7e73054c2ddd457e274",
+    "package-installed.log": "156fca637b7d0402f240002a54267f8b0e15d0801041c65ba88dc2ea6c3bb82b",
+    "package-installed-origin.json": "b60750dd400c397c2c41a336a80c2fbe84280fb442d8486a36e231dd7df05b5e",
+    "package-build.log": "163b84338152914f66b4491c86772b5bedada72ee4c77cdb91cf9565da6b5c34",
+    "package-build-corrected.log": "e1f71cb1814c7be8fe20b610f0acef1e21df8b954731f53ce4048a57ab478ded",
+    "package-install-wheel.log": "95b97d2cef3f789933cdeb0bc18ba64b1b53aef568780eeb532e8056f92262f9",
+    "package-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "package-runtime-manifest.json": "b4cac409a782b47c9943437e036a2332b687feed121bdefa16900c10eef39a91"
+  },
+  "model_requests": 0,
+  "temporary_authentication_copy": "NOT RUN; awaiting separate permission",
+  "not_run": [
+    "Real Codex/Claude/Cursor tests",
+    "New delta Linux/macOS packages and tests",
+    "Full M5/M7/M9 acceptance"
+  ],
+  "formal_release": "BLOCKED",
+  "local_debug_root": "D:\\agentsync-debug\\m6-package-6a8ff41"
+}

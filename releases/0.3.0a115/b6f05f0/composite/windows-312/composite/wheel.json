@@ -1,0 +1,57 @@
+{
+  "version": "0.3.0a115",
+  "commit_sha": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "tree_sha": "8a65e7d29ef72b877cca319beb45c243a0df05e1",
+  "source_snapshot_sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "evidence_directory": "D:\\agentsync-debug\\m115-r3\\windows-312\\release-20261114T035240Z-6756b7e7fa0d",
+  "artifact": {
+    "kind": "wheel",
+    "path": "artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+    "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "size": 320001
+  },
+  "process_receipts": {
+    "wheel_cli": {
+      "path": "logs/wheel_cli.process.json",
+      "sha256": "15c19b9d0053fc4a69938d4ae2d5340d362c72602e9f4537072f4f8b614d38fe",
+      "size": 1331
+    },
+    "wheel_console_smoke": {
+      "path": "logs/wheel_console_smoke.process.json",
+      "sha256": "22a8469d61418de871bd3c94100d6eee8d0525cfdaa07b32ac0086790e5dcfa8",
+      "size": 4815
+    },
+    "wheel_install": {
+      "path": "logs/wheel_install.process.json",
+      "sha256": "f4b53fad68814c0c5f8708c8e6bff4e44baba2a6be084e29e6dfd06509cbdab6",
+      "size": 2095
+    },
+    "wheel_license_inventory": {
+      "path": "logs/wheel_license_inventory.process.json",
+      "sha256": "e9e029cd9a81cda87978301fadc63a28c2af837f1aef40c846e6bfa1cf81f2d3",
+      "size": 1517
+    },
+    "wheel_offline_dependencies": {
+      "path": "logs/wheel_offline_dependencies.process.json",
+      "sha256": "243261e0ba02fca79dd041c2015f4465bc1006412d42f11130065db7e3ba9570",
+      "size": 2322
+    },
+    "wheel_origin_sdk": {
+      "path": "logs/wheel_origin_sdk.process.json",
+      "sha256": "d1d308eb5bcc1b65b0741c443b4096e7b905d00b78a3491acfc0f704f337311d",
+      "size": 4006
+    },
+    "wheel_pip_check": {
+      "path": "logs/wheel_pip_check.process.json",
+      "sha256": "be274a1344c17b15d42d424760f6565ccdf4d77780916b55bd0bfbe145ff5115",
+      "size": 1335
+    },
+    "wheel_venv": {
+      "path": "logs/wheel_venv.process.json",
+      "sha256": "206ed264d17f81651a6d5fb134857f2d9ce81556bf9c2330cb2dff0e586a3dfd",
+      "size": 1314
+    }
+  }
+}

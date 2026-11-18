@@ -1,0 +1,10 @@
+{
+  "scope": "after-run transcription of local evidence-checker failure only; original test run unchanged",
+  "native_chunk": "81d7ee",
+  "native_exit_code": 1,
+  "script_sha256": "085960eae3871320ab3ea73533e980a9b5e0bb233319a4da013e9ee351df19e4",
+  "error_type": "AssertionError",
+  "cause": "Incorrect inference that zero redactions means identical raw/public XML; original persist_junit also serializes parsed XML",
+  "original_script_preserved": "inspect.py",
+  "corrected_script": "inspect-r2.py"
+}

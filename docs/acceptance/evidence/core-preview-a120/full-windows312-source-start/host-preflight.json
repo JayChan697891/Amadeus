@@ -1,0 +1,12 @@
+{
+  "windows_base": {
+    "version": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+    "prefix": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv",
+    "executable": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe"
+  },
+  "offline_wheels_verified": 60,
+  "original_offline_manifest_sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+  "wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-wheelhouse",
+  "new_output_absent": true,
+  "tests_started": false
+}

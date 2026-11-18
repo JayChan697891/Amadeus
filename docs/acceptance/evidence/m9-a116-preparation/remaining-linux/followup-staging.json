@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-11-15T08:57:55.187800+00:00",
+  "files": [
+    {
+      "path": "/root/amadeus-m116/benchmark-current.py",
+      "sha256": "b5b3d523a22078077aa4b036ccfefb37ff958c3f7206f18a09378346b64175eb",
+      "size": 10876,
+      "state": "created"
+    },
+    {
+      "path": "/root/amadeus-m116/transport-recovery.py",
+      "sha256": "fb66e4403d23fb6d3be936441efc2be389c000c13cf59a1eef72f34936ab9c12",
+      "size": 21404,
+      "state": "created"
+    }
+  ],
+  "execution": "NOT RUN",
+  "order": "Both original queues successful, Linux benchmark then recovery, owned VM normal shutdown, Windows equivalents"
+}

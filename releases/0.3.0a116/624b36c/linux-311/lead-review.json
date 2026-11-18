@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "scope": "completed_linux311_local_row_with_reference_delta",
+  "observed_at": "2026-11-15T09:54:41.813757+00:00",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "version": "0.3.0a116",
+  "native_row_finished_at": "2026-11-15T09:47:56.560748+00:00",
+  "native_row_exit_code": 0,
+  "successful_native_checks": 26,
+  "junit_each": {
+    "unique_cases": 2533,
+    "passed": 2526,
+    "skipped": 7,
+    "failed": 0,
+    "errors": 0
+  },
+  "all_three_suites_equal_linux314": true,
+  "local_frozen_source_files_rehashed": 3122,
+  "original_files_copied_byte_identically": 174,
+  "original_copied_bytes": 7149854,
+  "report_sha256": "1c1a37b5d5c4188fc4b5986ecf0f6b2d866fa28b8b88dc7f1371b230bd0de006",
+  "transfer_summary_sha256": "75037e2fd48948dfcd5249a257921ef87c407b56e6e51d4095f681894c72910e",
+  "delta_review_sha256": "3f79dfba15e1a25622bb1474791f170b86b2c474d9818d233ca70e10ce35bbed",
+  "archive_driver_sha256": "0f2849c1caea5d5d8e1a5cff129e9a531dce3a12d96c0f517b56c5049497f609",
+  "delta_reproducer_sha256": "2a32cd467492122077b87389f351d016c4fa5fbea6d34d086e36e952d58fbe1f",
+  "docker_delta": {
+    "reference": "linux-314 independently reviewed local row",
+    "observations": 105,
+    "selected_semantics_equal": true,
+    "field_presence_compared": true,
+    "scope": "Selected status, phase, constraints and cleanup; not every identity or hash and not 105 successful runs",
+    "fresh_full_independent_review": false,
+    "fixtures_rerun": false,
+    "real_clients": "NOT RUN"
+  },
+  "license_delta": {
+    "reference": "linux-314",
+    "all_31_distribution_records_equal": true,
+    "added_edges": [
+      [
+        "httpx2",
+        "typing-extensions"
+      ],
+      [
+        "referencing",
+        "typing-extensions"
+      ],
+      [
+        "starlette",
+        "typing-extensions"
+      ]
+    ],
+    "removed_edges": [],
+    "wheel_and_sdist_inventories_equal": true,
+    "license_review": "pending",
+    "publication_authorized": false
+  },
+  "remaining_queue": {
+    "linux312": "RUNNING from 2026-11-15T09:47:57.754414+00:00",
+    "worker_pid": 15612,
+    "native_ssh_session": 43548
+  },
+  "matrix_complete_rows": 3,
+  "matrix_missing_rows": 6,
+  "limitations": [
+    "Selected fixture delta only; original Linux314 independent review is not repeated.",
+    "Staged offline wheel bytes were not reverified after collector cleanup.",
+    "Benchmarks and product HTTP/MCP recovery scenarios remain NOT RUN.",
+    "No macOS environment or new real-model/cross-client acceptance.",
+    "No full queue exit claimed; original Windows and Linux queues are still live."
+  ],
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,54 @@
+{
+  "status": "SCOPED_PASS",
+  "source_commit": "6cd580752d3a4feaf0052c130235190f04168df8",
+  "runtime_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "reviewed_at": "2026-11-18T08:41:47.962065+00:00",
+  "wheel_sha256": "0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c",
+  "python": "3.14.7",
+  "platform": "Local Linux on D-backed VM",
+  "tests": {
+    "deterministic_entry_core": 18,
+    "native_hidden_input_pty": 4,
+    "unique_pass": 22,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "seconds": 46.695,
+    "junit_sha256": "fc05be801d51327b334c3cdf6c194adc1baa9c38af85803d55ea1418cae62c53"
+  },
+  "provenance": {
+    "actual_native_terminal": "2571/9adc0d exit0",
+    "actual_process_receipts": 7,
+    "source_blobs_verified": 284,
+    "runtime_members_before_after": 97,
+    "root_review": "f95a99 and92804/37eb10; actual XML, logs, receipts, source blobs and installed origin",
+    "astra_review": "Accepted same limited installed-runtime and22-case scope"
+  },
+  "postprocessing_failures": [
+    {
+      "native": "81d7ee exit1",
+      "reason": "Incorrect assumption that zero redactions implies byte-identical raw/public XML. Original collector also serializes XML.",
+      "original_script": "inspect.py.txt"
+    },
+    {
+      "native": "6659ce exit1",
+      "reason": "Windows regenerated XML byte comparison differed from Linux public XML. Original files retained.",
+      "original_script": "inspect-r2.py.txt"
+    }
+  ],
+  "postprocessing_resolution": {
+    "observation": "Root e847d0 exit0: Windows regeneration3619 bytes/one CRLF, Linux public3618 bytes/no CRLF; platform-newline-normalized comparison and parsed XML match. Neither original changed; no Linux collector rerun or pytest retry.",
+    "root_initial_inspection_error": "8ae4ca KeyError read exit_code at receipt top level; corrected readonly schema inspection in37eb10; not a test failure."
+  },
+  "model_calls": 0,
+  "real_candidate_execution": false,
+  "public_preview": "a122/r5 unchanged",
+  "formal_release": "BLOCKED",
+  "not_run": [
+    "Whole new-entry interactive terminal E2E",
+    "Real-model checkpoint recovery",
+    "Full suite or macOS",
+    "New package build"
+  ],
+  "next": "Prepare one separately reviewed inert-document checkpoint/owned-parent interruption/receiver experiment within the standing max-two-call grant. Reuse SDK; no candidate execution. This experiment has not started. Do not retry or relabel the preserved149/150-byte attempt."
+}

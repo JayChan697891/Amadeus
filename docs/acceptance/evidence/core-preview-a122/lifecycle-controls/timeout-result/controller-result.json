@@ -1,0 +1,10 @@
+{
+  "mode": "timeout",
+  "temporary_copy_created": true,
+  "execution_started": true,
+  "execution_host_terminal": true,
+  "execution_exit_code": 0,
+  "cleanup_exit_code": 0,
+  "original_auth_unchanged": true,
+  "automatic_retry": false
+}

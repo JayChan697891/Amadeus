@@ -1,0 +1,305 @@
+"""Run the first full Windows suite against the original a122 sdist installation."""
+
+import hashlib
+import json
+import os
+import shutil
+import stat
+import sys
+import xml.etree.ElementTree as ET
+import zipfile
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/w122311d")
+PREVIEW = Path("D:/agentsync-debug/m122p")
+INSTALL = Path("D:/agentsync-debug/m122win311/d")
+PYTHON = INSTALL / "Scripts/python.exe"
+SDIST = PREVIEW / "dist/agentsync_local-0.3.0a122.tar.gz"
+WHEEL_BASELINE = Path("D:/agentsync-debug/w122311/run/wheel-junit.xml")
+MEMBERS = PREVIEW / "run/runtime-members.json"
+MANIFEST = PREVIEW / "run/source-manifest.json"
+SNAPSHOT = PREVIEW / "source.zip"
+SOURCE, RUN, SCRATCH, HOME = (BASE / name for name in ("s", "run", "t", "home"))
+COMMIT = "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+VERSION = "0.3.0a122"
+INPUTS = {
+    SDIST: (6735308, "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"),
+    WHEEL_BASELINE: (None, None),  # Bind actual Windows3.11 wheel XML only after its terminal review.
+    MEMBERS: (10144, "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"),
+    MANIFEST: (762297, "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"),
+    SNAPSHOT: (18232229, "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"),
+}
+COLLECTOR_SHA = "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd"
+SOURCE_FILES = 3992
+
+ORIGIN_PROBE = r"""
+import hashlib, importlib.metadata as md, json, sys
+from pathlib import Path
+import agentsync, agentsync.cli
+
+install, archive, members = map(Path, sys.argv[1:4])
+archive_sha, version = sys.argv[4:]
+assert sys.version_info[:3] == (3, 11, 15)
+assert Path(sys.prefix).resolve() == install.resolve()
+site = install.resolve() / "Lib/site-packages"
+origin = Path(agentsync.__file__).resolve()
+assert origin == site / "agentsync/__init__.py"
+assert Path(agentsync.cli.__file__).resolve() == site / "agentsync/cli.py"
+dist = md.distribution("agentsync-local")
+assert dist.version == agentsync.__version__ == version
+direct = json.loads(dist.read_text("direct_url.json"))
+assert direct["url"] == archive.resolve(strict=True).as_uri() and "dir_info" not in direct
+assert direct["archive_info"]["hashes"]["sha256"] == archive_sha
+actual = {}
+for path in (site / "agentsync").rglob("*"):
+    if path.is_file() and "__pycache__" not in path.parts:
+        assert path.resolve(strict=True) == path
+        with path.open("rb") as stream:
+            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, "sha256").hexdigest()
+assert actual == json.loads(members.read_bytes()) and len(actual) == 97
+print(json.dumps({"python": sys.version, "version": version, "origin": str(origin),
+                  "runtime_members": len(actual), "direct_url": direct}))
+"""
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def pinned_inputs():
+    for path, (size, digest) in INPUTS.items():
+        assert path.resolve(strict=True) == path and path.is_file(), path.name
+        assert path.stat().st_size == size and sha(path) == digest, path.name
+
+
+def extract_source(manifest):
+    SOURCE.mkdir()
+    names = set()
+    with zipfile.ZipFile(SNAPSHOT) as archive:
+        assert archive.comment == COMMIT.encode("ascii")
+        for member in archive.infolist():
+            if member.is_dir():
+                continue
+            name = member.filename
+            path = SOURCE / name
+            assert path.resolve().is_relative_to(SOURCE) and name not in names
+            assert name in manifest and member.file_size == manifest[name]["bytes"]
+            assert not stat.S_ISLNK(member.external_attr >> 16)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with archive.open(member) as origin, path.open("xb") as destination:
+                shutil.copyfileobj(origin, destination)
+            names.add(name)
+    assert names == manifest.keys() and len(names) == SOURCE_FILES
+
+
+def verify_source(manifest):
+    assert SOURCE.resolve(strict=True) == SOURCE
+    names = set()
+    for path in SOURCE.rglob("*"):
+        assert path.resolve(strict=True) == path
+        info = path.lstat()
+        if stat.S_ISDIR(info.st_mode):
+            continue
+        assert stat.S_ISREG(info.st_mode)
+        name = path.relative_to(SOURCE).as_posix()
+        assert manifest[name] == {"sha256": sha(path), "bytes": info.st_size}, name
+        names.add(name)
+    assert names == manifest.keys() and len(names) == SOURCE_FILES
+
+
+def isolate_environment():
+    for name in tuple(os.environ):
+        upper = name.upper()
+        if upper.startswith((
+            "AGENTSYNC_", "ANTHROPIC_", "AWS_", "CLAUDE_", "CODEX_", "CURSOR_", "DEEPSEEK_",
+            "DOCKER_", "GEMINI_", "GIT_", "GITHUB_", "GOOGLE_", "OPENAI_", "PIP_", "PYTEST_",
+            "PYTHON", "SSH_", "UV_",
+        )) or upper.endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(name)
+    for name in ("roaming", "local"):
+        (HOME / name).mkdir()
+    os.environ.update(
+        HOME=str(HOME), USERPROFILE=str(HOME), CODEX_HOME=str(HOME),
+        APPDATA=str(HOME / "roaming"), LOCALAPPDATA=str(HOME / "local"),
+        XDG_CONFIG_HOME=str(HOME / "config"), XDG_CACHE_HOME=str(HOME / "cache"),
+        TEMP=str(SCRATCH), TMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+        PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0",
+        GCM_INTERACTIVE="Never", PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1",
+        PIP_DISABLE_PIP_VERSION_CHECK="1", PIP_NO_CACHE_DIR="1",
+        RUFF_CACHE_DIR=str(SCRATCH / "ruff"), MYPY_CACHE_DIR=str(SCRATCH / "mypy"),
+    )
+
+
+def junit_outcomes(path):
+    cases = {}
+    for node in ET.parse(path).iter("testcase"):
+        case = (node.get("classname"), node.get("name"))
+        assert all(case) and case not in cases
+        outcome = next((child.tag for child in node if child.tag in {"failure", "error", "skipped"}), "pass")
+        cases[case] = outcome
+    return cases
+
+
+def main():
+    if INPUTS[WHEEL_BASELINE][0] is None:
+        raise SystemExit("Bind the completed Windows3.11 wheel baseline before this first suite.")
+    if (
+        os.name != "nt" or sys.version_info[:3] != (3, 11, 15)
+        or Path(sys.executable).resolve() != PYTHON.resolve()
+        or Path(sys.prefix).resolve() != INSTALL.resolve()
+        or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__
+    ):
+        raise SystemExit(f"Use the installed a122 Windows 3.11.15 interpreter with -I -B: {PYTHON}")
+    assert BASE.resolve(strict=True) == BASE and Path(__file__).resolve() == BASE / "run-sdist.py"
+    if {path.name for path in BASE.iterdir()} != {Path(__file__).name}:
+        raise SystemExit("A fresh driver directory is required. Preserve any existing attempt.")
+    RUN.mkdir()
+    start = {
+        "scope": "Windows 3.11 full installed-sdist pytest suite on the fresh a122 environment",
+        "test_source_commit": COMMIT, "product_runtime_commit": COMMIT, "version": VERSION,
+        "inputs": {str(path): {"bytes": size, "sha256": digest} for path, (size, digest) in INPUTS.items()},
+        "driver_sha256": sha(Path(__file__)), "collector_sha256": COLLECTOR_SHA,
+        "controller_pid": os.getpid(), "python": sys.version, "python_executable": sys.executable,
+        "started_at": datetime.now(UTC).isoformat(), "status": "unknown", "automatic_retry": False,
+        "formal_release": "BLOCKED", "real_clients": "NOT RUN", "full_platform_matrix": "NOT RUN",
+    }
+    save(RUN / "attempt.json", start)
+    result = {**start, "status": "fail", "phase": "prepare", "checks": []}
+    manifest = None
+    try:
+        (RUN / "logs").mkdir()
+        SCRATCH.mkdir()
+        HOME.mkdir()
+        isolate_environment()
+        pinned_inputs()
+        manifest = json.loads(MANIFEST.read_bytes())
+        extract_source(manifest)
+        verify_source(manifest)
+        members = json.loads(MEMBERS.read_bytes())
+        assert len(members) == 97 and members == {
+            name.removeprefix("src/"): row["sha256"]
+            for name, row in manifest.items() if name.startswith("src/agentsync/")
+        }
+        assert manifest["tools/release_acceptance.py"]["sha256"] == COLLECTOR_SHA
+        result.update(source_files=len(manifest), runtime_members=len(members))
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+
+        assert Path(collector.__file__).resolve() == SOURCE / "tools/release_acceptance.py"
+
+        def check(name, command, **options):
+            result["phase"] = name
+            observed = collector.execute(name, list(map(str, command)), RUN, RUN, SCRATCH, **options)
+            result["checks"].append(observed)
+            if observed["exit_code"] is None:
+                result["status"] = "unknown"
+            return observed
+
+        def require(observed):
+            assert observed["status"] == "pass" and observed["exit_code"] == 0
+            assert observed["log_truncated"] is False
+
+        python = [sys.executable, "-I", "-B"]
+        origin = [*python, "-c", ORIGIN_PROBE, INSTALL, SDIST, MEMBERS, INPUTS[SDIST][1], VERSION]
+        require(check("sdist_origin_before", origin))
+        raw = SCRATCH / "sdist-junit.xml"
+        junit = RUN / raw.name
+        stdout = SCRATCH / "sdist-pytest-stdout.raw.log"
+        command = [
+            *python, "-m", "pytest", SOURCE / "tests", "--junitxml", raw,
+            "--basetemp", SCRATCH / "p", "-o", f"cache_dir={SCRATCH / 'pytest-cache'}",
+        ]
+        save(RUN / "pytest-start.json", {
+            "controller_pid": os.getpid(), "command": list(map(str, command)),
+            "cwd": str(RUN), "started_at": datetime.now(UTC).isoformat(), "timeout_seconds": 7200,
+        })
+        try:
+            tested = check("sdist_pytest", command, pytest_timeout=7200, capture_stdout=stdout)
+        finally:
+            try:
+                if raw.is_file():
+                    result["raw_junit_local"] = {"bytes": raw.stat().st_size, "sha256": sha(raw)}
+                    redactions = collector.persist_junit(raw, junit)
+                    counts = collector.junit_counts(junit)
+                    cases = [(node.get("classname"), node.get("name")) for node in ET.parse(junit).iter("testcase")]
+                    assert len(cases) == counts["tests"] == len(set(cases)) and all(all(case) for case in cases)
+                    result["junit"] = {"path": junit.name, "sha256": sha(junit),
+                                       "credential_redactions": redactions, **counts}
+            except Exception as exc:
+                result["junit_error_type"] = type(exc).__name__
+            try:
+                if stdout.is_file():
+                    result["raw_stdout_local"] = {"bytes": stdout.stat().st_size, "sha256": sha(stdout)}
+                    with stdout.open("rb") as stream:
+                        output = stream.read(collector.MAX_LOG_BYTES + 1)
+                    truncated = len(output) > collector.MAX_LOG_BYTES
+                    clean, redactions = collector.redact_credentials(
+                        output[:collector.MAX_LOG_BYTES].decode("utf-8", errors="replace")
+                    )
+                    log = RUN / "logs/sdist_pytest.stdout.log"
+                    with log.open("x", encoding="utf-8") as stream:
+                        stream.write(clean)
+                        if truncated:
+                            stream.write("\n[OUTPUT TRUNCATED: evidence processing limit reached]\n")
+                    result["pytest_stdout"] = {
+                        "path": log.relative_to(RUN).as_posix(), "sha256": sha(log),
+                        "credential_redactions": redactions, "truncated": truncated,
+                    }
+            except Exception as exc:
+                result["stdout_error_type"] = type(exc).__name__
+            try:
+                origin_after = check("sdist_origin_after", origin)
+            except Exception as exc:
+                result["origin_after_error_type"] = type(exc).__name__
+                origin_after = None
+        result["phase"] = "full_suite_evidence"
+        require(tested)
+        assert origin_after is not None
+        require(origin_after)
+        before, after = (RUN / "logs" / f"sdist_origin_{phase}.log" for phase in ("before", "after"))
+        assert before.read_bytes() == after.read_bytes()
+        assert result["pytest_stdout"]["truncated"] is False
+        counts = result["junit"]
+        assert counts["tests"] > 0 and counts["failures"] == counts["errors"] == 0
+        old, current = junit_outcomes(WHEEL_BASELINE), junit_outcomes(junit)
+        result["windows_wheel_comparison"] = {
+            "case_ids_match": old.keys() == current.keys(),
+            "same_outcomes": sum(current.get(case) == outcome for case, outcome in old.items()),
+            "wheel_cases": len(old), "sdist_cases": len(current),
+            "different_outcome_cases": [list(case) for case in old.keys() & current.keys()
+                                        if old[case] != current[case]],
+        }
+        assert result["windows_wheel_comparison"]["case_ids_match"]
+        result["status"] = "pass"
+    except KeyboardInterrupt:
+        result.update(status="unknown", error_type="KeyboardInterrupt")
+    except Exception as exc:
+        result["error_type"] = type(exc).__name__
+    finally:
+        try:
+            pinned_inputs()
+            result["pinned_inputs_unchanged"] = True
+            if manifest is not None:
+                verify_source(manifest)
+                result["frozen_source_unchanged"] = True
+        except Exception as exc:
+            if result["status"] == "pass":
+                result["status"] = "fail"
+            result["postcheck_error_type"] = type(exc).__name__
+        result["finished_at"] = datetime.now(UTC).isoformat()
+        save(RUN / "result.json", result)
+        print(f"{result['status']}: {RUN / 'result.json'}", flush=True)
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,37 @@
+{
+  "scope": "Linux 3.14 full installed a120 wheel suite with actual local Docker",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "product_runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "version": "0.3.0a120",
+  "pinned_inputs": {
+    "/root/amadeus-m120full/source.zip": {
+      "bytes": 159181319,
+      "sha256": "1efa1b6d1dcf5d18b0eef1826115e6c6cbf6aa63fc2c9f84c33ef89123711b6f"
+    },
+    "/root/amadeus-m120full/source-manifest.json": {
+      "bytes": 1052422,
+      "sha256": "584b731b325ba8d88b7a96bf836e6e0695ae260f706b10378d9df843fd381acc"
+    },
+    "/root/amadeus-m120full/runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "1d6d661b24126e5c9056d222c6f07f4beb88729d5ae1daeb85f16f25eccdf2c4"
+    },
+    "/root/amadeus-m120l/agentsync_local-0.3.0a120-py3-none-any.whl": {
+      "bytes": 327247,
+      "sha256": "19d0293dc8d0cae1191312163169649f67d800bb726ac2106b8fbd0965cfcdf6"
+    }
+  },
+  "driver_sha256": "ad27ecea04aef1fb4f796ed63790af81f6e4ae402c4fd7b66dc347df21c119d5",
+  "controller_pid": 2945,
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "python_executable": "/root/amadeus-m120l/w/bin/python",
+  "boot_id": "01f251ae-a38e-4cda-8b2c-f67df7e0b98f",
+  "required_docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "model_calls": 0,
+  "started_at": "2026-11-17T01:33:32.510291+00:00",
+  "status": "unknown",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_platform_matrix": "NOT RUN"
+}

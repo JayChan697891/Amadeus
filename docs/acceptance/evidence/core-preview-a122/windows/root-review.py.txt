@@ -1,0 +1,117 @@
+import hashlib
+import json
+import sys
+import tarfile
+import xml.etree.ElementTree as ET
+import zipfile
+from email.parser import BytesHeaderParser
+from pathlib import Path
+
+base = Path('D:/agentsync-debug/m122p')
+run = base / 'run'
+repo = Path('F:/syuc/amadeus-m6-single')
+result = json.loads((run / 'result.json').read_bytes())
+assert result['status'] == 'pass' and result['version'] == '0.3.0a122'
+assert result['product_source_commit'] == '5232e9e8bd33a949f7ffdc68410cd614a297af66'
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+manifest = json.loads((run / 'source-manifest.json').read_bytes())
+members = json.loads((run / 'runtime-members.json').read_bytes())
+assert len(manifest) == 3992 and len(members) == 97
+for name, item in manifest.items():
+    path = base / 's' / name
+    assert path.stat().st_size == item['bytes'] and sha(path) == item['sha256']
+assert sha(base / 'source.zip') == result['frozen_source_sha256']
+with zipfile.ZipFile(base / 'source.zip') as archive:
+    assert archive.comment.decode() == result['product_source_commit']
+    for name, item in manifest.items():
+        assert hashlib.sha256(archive.read(name)).hexdigest() == item['sha256']
+for check in result['checks']:
+    receipt = json.loads((run / 'logs' / (check['id'] + '.process.json')).read_bytes())
+    assert receipt['phase'] == 'finished' and receipt['outcome'] == 'exited'
+    assert receipt['result'] == check and sha(run / check['log']) == check['log_sha256']
+    assert check['status'] == 'pass' and check['exit_code'] == 0 and not check['log_truncated']
+assert len(result['checks']) == 19
+for name,digest in result['native_receipt_sha256'].items():
+    assert sha(run/'logs'/name)==digest
+for name,key in [('source-manifest.json','source_manifest_sha256'),('runtime-members.json','runtime_member_manifest_sha256'),('offline-wheelhouse.json','offline_wheelhouse_sha256')]:
+    assert sha(run/name)==result[key]
+sys.path.insert(0, str(base / 's'))
+from tools.release_acceptance import redact_credentials
+def cases(path):
+    rows = {}
+    for case in ET.parse(path).iter('testcase'):
+        identity = (case.get('classname'), case.get('name'))
+        assert identity not in rows and all(identity)
+        rows[identity] = next((kind for kind in ('failure', 'error', 'skipped') if case.find(kind) is not None), 'passed')
+    return rows
+observed = {}
+for kind, folder in (('wheel', 'w'), ('sdist', 'd')):
+    artifact = result['artifacts'][kind]
+    path = base / 'dist' / artifact['filename']
+    assert path.stat().st_size == artifact['size'] and sha(path) == artifact['sha256']
+    site = base / folder / 'Lib/site-packages'
+    actual = {p.relative_to(site).as_posix(): sha(p) for p in (site / 'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+    assert actual == members
+    dist = site / 'agentsync_local-0.3.0a122.dist-info'
+    direct = json.loads((dist / 'direct_url.json').read_bytes())
+    assert direct['url'] == path.as_uri() and 'dir_info' not in direct
+    assert direct['archive_info']['hashes']['sha256'] == artifact['sha256']
+    assert BytesHeaderParser().parsebytes((dist / 'METADATA').read_bytes())['Version'] == result['version']
+    assert (run / 'logs' / f'{kind}_origin_before.log').read_bytes() == (run / 'logs' / f'{kind}_origin_after.log').read_bytes()
+    current = cases(run / f'{kind}-focused.xml')
+    previous = {}
+    for batch in ('green', 'regression', 'context-green-r2', 'context-green-final'):
+        previous.update({k: v for k, v in cases(Path('D:/agentsync-debug/m121-host-deadline') / (batch + '.xml')).items() if v == 'passed'})
+    assert len(current) == len(previous) == 97 and current == previous
+    assert set(current.values()) == {'passed'}
+    raw = list(ET.parse(base / 't' / f'{kind}-focused.xml').iter())
+    public = list(ET.parse(run / f'{kind}-focused.xml').iter())
+    assert len(raw) == len(public)
+    redactions = 0
+    for a, b in zip(raw, public):
+        assert a.tag == b.tag and a.attrib.keys() == b.attrib.keys()
+        for key, value in a.attrib.items():
+            cleaned, count = redact_credentials(value)
+            redactions += count
+            assert cleaned == b.attrib[key]
+        for field in ('text', 'tail'):
+            value = getattr(a, field)
+            if value is None:
+                assert getattr(b, field) is None
+            else:
+                cleaned, count = redact_credentials(value)
+                redactions += count
+                assert cleaned == getattr(b, field)
+    assert redactions == result['junit'][kind]['credential_redactions'] == 0
+    assert sha(run / f'{kind}-focused.xml') == result['junit'][kind]['sha256']
+    observed[kind] = {'unique_cases': 97, 'passed': 97, 'same_source_cases': 97, 'added': sorted(set(current) - set(previous)), 'runtime_members_rehashed': 97, 'direct_url': direct, 'xml_redactions': redactions}
+assert observed['wheel']['added'] == observed['sdist']['added']
+with zipfile.ZipFile(base / 'dist' / result['artifacts']['wheel']['filename']) as archive:
+    runtime = {name: hashlib.sha256(archive.read(name)).hexdigest() for name in archive.namelist() if name.startswith('agentsync/') and not name.endswith('/')}
+    assert runtime == members
+with tarfile.open(base / 'dist' / result['artifacts']['sdist']['filename']) as archive:
+    prefix = 'agentsync_local-0.3.0a122/'
+    tracked = {}
+    for member in archive:
+        if member.isfile() and member.name.removeprefix(prefix) in manifest:
+            name = member.name.removeprefix(prefix)
+            assert name not in tracked
+            tracked[name] = hashlib.sha256(archive.extractfile(member).read()).hexdigest()
+            assert tracked[name] == manifest[name]['sha256']
+    assert len(tracked) == result['sdist_tracked_payload_files'] == 2731
+    assert {name for name in manifest if name.startswith(('src/agentsync/', 'tests/'))} <= tracked.keys()
+for name, digest in result['previous_archive_sha256'].items():
+    version, folder = ('0.3.0a120', 'preview-859775b') if 'a120' in name else ('0.3.0a121', 'preview-4b82494')
+    assert sha(repo / 'releases' / version / folder / name) == digest
+originals = [path for path in run.rglob('*') if path.is_file()]
+assert len(originals) == 45
+for path in originals:
+    assert redact_credentials(path.read_text(encoding='utf-8-sig'))[1] == 0, path.name
+review = {'source_files_rehashed': 3992, 'source_archive_rehashed': True, 'native_checks': 19, 'artifacts': result['artifacts'], 'package_installs': observed, 'sdist_tracked_payload_rehashed': len(tracked), 'old_archives_rehashed': 4, 'original_records': len(originals), 'original_bytes': sum(path.stat().st_size for path in originals), 'credential_matches': 0, 'release': 'BLOCKED'}
+with (base / 'root-review.json').open('x', encoding='utf-8') as stream:
+    json.dump(review, stream, indent=2)
+    stream.write('\n')
+print(json.dumps(review))

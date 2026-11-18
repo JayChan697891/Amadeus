@@ -1,0 +1,4 @@
+{
+  "path": "solution.py",
+  "content": "def total(values):\n    return sum(values)\n\nimport json\nimport sys\n\nfor line in sys.stdin:\n    print(json.dumps(total(json.loads(line))), flush=True)\n"
+}

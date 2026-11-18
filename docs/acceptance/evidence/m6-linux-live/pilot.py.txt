@@ -1,0 +1,243 @@
+"""Owner-only one-shot Linux pilot. No credential copying and no automatic apply."""
+import asyncio
+from dataclasses import asdict
+from datetime import UTC, datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import stat
+import subprocess
+import sys
+import time
+
+BASE = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE))
+from private_capture import PrivateCapture
+import agentsync
+from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.controlled_relay import CodexProposalInput, ControlledRelay, RelayActor
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+from agentsync.proposals import parse_proposal
+from agentsync.verification.candidate import OwnerCandidateExporter
+from agentsync.verification.candidate_jobs import CandidateVerificationJobs
+from agentsync.verification.docker import DockerProfile, JsonCase
+from agentsync.verification.owner_flow import OwnerCandidateFlow
+
+PACKAGE = Path('/root/amadeus-linux-readonly-a2634ec')
+EXE = Path('/root/amadeus-codex-linux-0167/bin/codex')
+HOME = BASE / 'private-home'
+PRODUCT = 'a2634ecb9a65b666f617942fb3deb9f67fdd2a76'
+IMAGE = 'sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'
+INSTRUCTION = ('Return one solution.py using only Python standard-library json and sys. '
+               'For each stdin line, parse a JSON array of integers, print the sum as one JSON number '
+               'followed by a newline and flush; continue until EOF. Do not use tools, read files, '
+               'modify files, start processes or access the network. Return source only inside the '
+               'host-specified JSON files envelope. No commentary, tests or extra files.')
+CASES = (([0, 0], 0), ([2, 3], 5), ([-7, 4], -3), ([-8, -9], -17),
+         ([17, -17], 0), ([2**63 - 1, 1], 2**63), ([-(2**63), -1], -(2**63)-1),
+         ([10**30, 10**30], 2*10**30))
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8') as out:
+        json.dump(value, out, indent=2)
+        out.write('\n')
+
+def load(name):
+    return json.loads((BASE / name).read_text())
+
+def runtime():
+    config = json.loads((PACKAGE / 'linux-config.json').read_text())
+    assert config['product_sha'] == PRODUCT
+    site = Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(PACKAGE / 'venv')
+    for name, expected in config['module_hashes'].items():
+        assert sha(site / name) == expected
+    for name, module in tuple(sys.modules.items()):
+        if name == 'agentsync' or name.startswith('agentsync.'):
+            assert Path(module.__file__).resolve().is_relative_to(site / 'agentsync')
+    return config
+
+def git(root, *args):
+    return subprocess.check_output(['/usr/bin/git', '-C', str(root), *args], stderr=subprocess.PIPE).decode().strip()
+
+def auth(state, who='producer'):
+    actor = state[who]
+    return {'project_id':state['owner']['project_id'], 'session_id':actor['session_id'], 'session_token':actor['session_token']}
+
+def environment():
+    return {'PATH':'/usr/bin:/bin', 'HOME':str(HOME), 'CODEX_HOME':str(HOME), 'TEMP':str(HOME), 'TMP':str(HOME)}
+
+async def deny(_review):
+    return None
+
+def actor_for(state, authority=deny):
+    member, tree = state['producer'], state['tree']
+    profile = CodexHostProfile(state['owner']['project_id'], member['session_id'], EXE,
+        Path(tree['path']), state['binary_sha256'], expected_cli_version='0.167.0-alpha.3.2',
+        max_timeout_seconds=90, linux_readonly=True)
+    return RelayActor(member['agent_id'], member['session_token'], profile, tree['worktree_id'],
+                      tree['head_sha'], environment(), authority)
+
+def spec(state):
+    return CodexProposalInput(state['task']['id'], state['task']['version'], INSTRUCTION,
+                              ('solution.py',), 90, submit_for_review=True)
+
+def relay(core):
+    return ControlledRelay(core, BASE, BASE / 'receipts')
+
+def intact(state):
+    for root in (BASE / 'source', Path(state['tree']['path'])):
+        if sha(root / 'fixture.txt') != state['fixture_sha256'] or git(root, 'rev-parse', 'HEAD') != state['baseline_head'] or git(root, 'status', '--porcelain'):
+            return False
+    return True
+
+def prepare():
+    config = runtime()
+    assert BASE == Path('/root/amadeus-linux-live-20261112') and not BASE.is_symlink()
+    assert stat.S_IMODE(BASE.stat().st_mode) == 0o700
+    for name in ('source', 'receipts', 'private-home'):
+        (BASE / name).mkdir(mode=0o700)
+    source = BASE / 'source'
+    git(source, 'init', '--initial-branch=fixture-main')
+    (source / 'fixture.txt').write_text('Amadeus Linux same-Core real proposal fixture\n')
+    git(source, 'add', '--', 'fixture.txt')
+    git(source, '-c', 'user.name=Amadeus fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'Isolated baseline')
+    core = Core(BASE / 'core')
+    owner = core.execute('create_project', {'name':'Linux real Codex proposal pipeline', 'root_path':str(source)})
+    def register(name, role):
+        member = core.execute('register_agent', {**owner, 'name':name})
+        members = core.execute_owner('list_members', {**owner, 'limit':100, 'offset':0})['members']
+        current = next(item for item in members if item['agent_id'] == member['agent_id'])
+        core.execute_owner('set_agent_roles', {**owner, 'agent_id':member['agent_id'], 'roles':[role],
+            'expected_version':current['version'], 'request_id':'role-'+role+'-'+member['agent_id']})
+        return member
+    state = {'owner':owner, 'producer':register('Real Codex producer','worker'),
+             'stager':register('Owner staging worker','worker'), 'reviewer':register('Independent owner reviewer','reviewer')}
+    task = core.execute('create_task', {**auth(state), 'title':'Real Codex JSON-lines integer sum proposal', 'request_id':'task'})
+    snapshot = core.execute('capture_repository', {**auth(state), 'request_id':'snapshot'})
+    tree = core.execute('create_worktree', {**auth(state), 'task_id':task['id'], 'snapshot_id':snapshot['snapshot_id'], 'request_id':'tree'})
+    state.update(task=task, tree=tree, binary_sha256=sha(EXE), fixture_sha256=sha(source/'fixture.txt'),
+                 baseline_head=git(source,'rev-parse','HEAD'), helper_sha256=sha(BASE/'pilot.py'), capture_helper_sha256=sha(BASE/'private_capture.py'))
+    assert state['binary_sha256'] == 'c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0'
+    review = relay(core).preview_codex_proposal(actor_for(state), spec(state), admin_token=owner['admin_token'])
+    state['plan_sha256'] = review.plan_sha256
+    save('state.json', state)
+    save('plan.json', {'product_sha':PRODUCT, 'wheel_sha256':config['wheel_sha256'], 'binary_sha256':state['binary_sha256'],
+         'plan_sha256':review.plan_sha256, 'argv':review.plan.argv, 'environment':review.plan.child_env(),
+         'instruction':INSTRUCTION, 'allowed_paths':['solution.py'], 'submit_for_review':True,
+         'timeout_seconds':90, 'output_limit':review.plan.output_limit,
+         'helper_sha256':state['helper_sha256'], 'capture_helper_sha256':state['capture_helper_sha256'],
+         'model_calls':0, 'credential_copy':False, 'source_unchanged':intact(state),
+         'candidate_execution':'Separate owner reviewed stage after temporary credential cleanup; local Docker only',
+         'owner_authority':'Standing continuous execution and first-choice approvals; existing subscription only; owner confirmed credits0 and auto-recharge disabled',
+         'billing_independently_verified':False, 'formal_release':'BLOCKED'})
+    print(json.dumps({'prepared':True, 'plan_sha256':review.plan_sha256, 'model_calls':0}))
+
+async def execute():
+    runtime(); state = load('state.json')
+    assert sha(BASE/'pilot.py') == state['helper_sha256'] and sha(BASE/'private_capture.py') == state['capture_helper_sha256']
+    assert sha(EXE) == state['binary_sha256'] and intact(state)
+    assert not (BASE/'attempt.json').exists()
+    save('execute-entry.json', {'timestamp':datetime.now(UTC).isoformat(), 'retry_allowed':False})
+    async def approve(review):
+        if review.plan_sha256 != state['plan_sha256']:
+            return None
+        return LaunchConsent('owner-standing-linux-proposal-20261112', review.plan_sha256, time.time()+120, True, True)
+    actor = actor_for(state, approve); core = Core(BASE/'core'); runner = relay(core)
+    preview = runner.preview_codex_proposal(actor, spec(state), admin_token=state['owner']['admin_token'])
+    assert preview.plan_sha256 == state['plan_sha256']
+    configs = [value for i,arg in enumerate(preview.plan.argv) if arg=='-c' for value in ('-c',preview.plan.argv[i+1])]
+    observed = subprocess.run([str(EXE),*configs,'login','status'],cwd=preview.plan.cwd,env=preview.plan.child_env(),capture_output=True,timeout=20)
+    recognized = observed.returncode == 0 and (observed.stdout+observed.stderr).decode(errors='replace').strip()=='Logged in using ChatGPT'
+    save('auth-route.json', {'recognized_chatgpt_route':recognized, 'exit_code':observed.returncode, 'model_calls':0})
+    if not recognized:
+        raise RuntimeError('Unrecognized authentication route; no model start')
+    save('attempt.json', {'timestamp':datetime.now(UTC).isoformat(), 'plan_sha256':preview.plan_sha256, 'single_attempt_consumed':True, 'retry_allowed':False})
+    capture = PrivateCapture(preview.plan, BASE/'private-capture')
+    outcome = None; error = None
+    try:
+        with capture:
+            outcome = asdict(await runner.run_codex_proposal_once(actor, spec(state), admin_token=state['owner']['admin_token']))
+    except AgentSyncError as exc:
+        error = exc.code
+    except Exception as exc:
+        error = type(exc).__name__
+    finally:
+        await capture.retain()
+        attempts = runner.owner_inspect_attempts(state['owner']['project_id'],state['task']['id'],admin_token=state['owner']['admin_token'])
+        runtime()
+        result = {'timestamp':datetime.now(UTC).isoformat(),'outcome':outcome,'error_code':error,
+                  'attempts':[asdict(item) for item in attempts], 'source_and_producer_unchanged':intact(state),
+                  'review':asdict(runner.observe_codex_proposal_review(actor,state['task']['id'])), 'formal_release':'BLOCKED'}
+        save('result.json', result)
+    print(json.dumps({'outcome':outcome,'error_code':error,'review':result['review']}))
+
+def clean_required():
+    clean = load('auth-cleanup.json')
+    assert clean['temporary_auth_absent'] and clean['home_unmounted'] and not (HOME/'auth.json').exists()
+
+def inspect_or_stage(action, expected=None):
+    runtime(); clean_required(); state=load('state.json'); core=Core(BASE/'core'); runner=relay(core)
+    assert intact(state)
+    actor=actor_for(state)
+    staging={'admin_token':state['owner']['admin_token'], 'staging_session_id':state['stager']['session_id'], 'staging_session_token':state['stager']['session_token']}
+    if action=='preview-stage':
+        observed=runner.observe_codex_proposal_review(actor,state['task']['id'])
+        assert observed.state=='submitted_for_review'
+        context=core.execute('get_context',{**auth(state),'context_id':observed.context_id,'version':1})
+        value=json.loads(context['content'])
+        files=parse_proposal(json.dumps({'files':value['files']}),['solution.py'])
+        preview=runner.preview_codex_proposal_staging(actor,state['task']['id'],**staging)
+        save('stage-preview.json',preview)
+        save('proposal-review.json',{'context_id':observed.context_id,'context_sha256':observed.content_sha256,'files':files,
+                                    'files_sha256':{item['path']:hashlib.sha256(item['content'].encode()).hexdigest() for item in files},'plan_sha256':preview['plan_sha256']})
+        print(json.dumps({'plan_sha256':preview['plan_sha256'],'review_ready':True}))
+    else:
+        assert expected == load('stage-preview.json')['plan_sha256']
+        staged=runner.stage_codex_proposal_once(actor,state['task']['id'],**staging,expected_plan_sha256=expected)
+        save('staged.json',staged)
+        print(json.dumps({'state':staged['state'],'candidate_id':staged['candidate_id'],'candidate_sha':staged['candidate_sha']}))
+
+def verification(action):
+    runtime(); clean_required(); state=load('state.json'); core=Core(BASE/'core'); staged=load('staged.json')
+    assert intact(state)
+    profile=DockerProfile(IMAGE,tuple(JsonCase(values,expected) for values,expected in CASES))
+    flow=OwnerCandidateFlow(core)
+    if action=='verify-once':
+        pins={**state['owner'],'candidate_id':staged['candidate_id'],'expected_candidate_sha':staged['candidate_sha']}
+        exported=OwnerCandidateExporter(core).export(**pins)
+        assert hashlib.sha256(exported.snapshot.source).hexdigest()==load('proposal-review.json')['files_sha256']['solution.py']
+        save('verification-entry.json',{'profile_sha256':profile.sha256,'candidate_sha':staged['candidate_sha'],'retry_allowed':False})
+        job=CandidateVerificationJobs(core).enqueue(**pins,profile=profile,request_id='queue')
+        save('job.json',job)
+        execution=flow.start_once(**state['owner'],job_id=job['id'],expected_job_version=job['version'],expected_metadata_sha256=job['metadata_sha256'],profile=profile)
+        save('execution.json',execution)
+        print(json.dumps({'execution_assessment':execution['execution_assessment'],'execution_id':execution['execution_id']}))
+    else:
+        job=load('job.json');execution=load('execution.json')
+        assert execution['execution_assessment']=='passed'
+        task=next(item for item in core.execute('list_tasks',auth(state))['tasks'] if item['id']==state['task']['id'])
+        assert task['status']=='review'
+        completed=flow.complete_once(**state['owner'],session_id=state['reviewer']['session_id'],session_token=state['reviewer']['session_token'],task_id=task['id'],expected_version=task['version'],job_id=job['id'],execution_id=execution['execution_id'],expected_execution_revision=execution['execution']['revision'],request_id='independent-completion',profile=profile)
+        save('completion.json',completed)
+        print(json.dumps({'task_verification':completed['task_verification']}))
+
+if __name__ == '__main__':
+    os.umask(0o077)
+    try:
+        action=sys.argv[1]
+        if action=='prepare':prepare()
+        elif action=='execute-once':asyncio.run(execute())
+        elif action in ('preview-stage','stage-once'):inspect_or_stage(action,sys.argv[2] if len(sys.argv)>2 else None)
+        elif action in ('verify-once','complete-once'):verification(action)
+        else:raise ValueError('Unsupported pilot action')
+    except Exception as exc:
+        print(json.dumps({'host_error':type(exc).__name__,'code':exc.code if isinstance(exc,AgentSyncError) else None}))
+        raise SystemExit(1) from None

@@ -1,0 +1,83 @@
+{
+  "finished_at": "2026-11-15T13:04:54.315407+00:00",
+  "status": "pass",
+  "checks": [
+    {
+      "id": "origin_before",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,agentsync\nroot=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert d.version=='0.3.0a117' and Path(agentsync.__file__).resolve().is_relative_to(root)\nexpected=json.loads(Path(sys.argv[1]).read_bytes());actual={}\nfor name,digest in expected.items():\n p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n actual[name]=hashlib.sha256(p.read_bytes()).hexdigest();assert actual[name]==digest\ndirect=json.loads(d.read_text('direct_url.json'));assert direct['archive_info']['hashes']['sha256']=='b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'\nprint(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'python':sys.version},sort_keys=True))\n",
+        "/root/amadeus-demo-a117-sdist-r1/runtime-members.json"
+      ],
+      "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+      "exit_code": 0,
+      "started_at": "2026-11-15T13:04:24.935153+00:00",
+      "finished_at": "2026-11-15T13:04:25.012218+00:00",
+      "log": "logs/origin_before.log",
+      "log_sha256": "27cdd2d207b0249a1216bc36fc017deb283b9ee69b5508132c7f2acc4bbe0485",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "affected_pytest",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "/root/amadeus-continuation-native-exit-r1/fixture/tests/integration/test_unfinished_continuation.py",
+        "--junitxml",
+        "/root/amadeus-continuation-native-exit-r1/run/private-junit/file.xml",
+        "--basetemp",
+        "/root/amadeus-continuation-native-exit-r1/run/pytest"
+      ],
+      "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+      "exit_code": 0,
+      "started_at": "2026-11-15T13:04:25.014762+00:00",
+      "finished_at": "2026-11-15T13:04:54.230884+00:00",
+      "log": "logs/affected_pytest.log",
+      "log_sha256": "4e0a0ac2564062a084c7447b527c00f581c619d1cd08c4688558330e973cc6ee",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "origin_after",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+        "-I",
+        "-B",
+        "-c",
+        "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,agentsync\nroot=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert d.version=='0.3.0a117' and Path(agentsync.__file__).resolve().is_relative_to(root)\nexpected=json.loads(Path(sys.argv[1]).read_bytes());actual={}\nfor name,digest in expected.items():\n p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n actual[name]=hashlib.sha256(p.read_bytes()).hexdigest();assert actual[name]==digest\ndirect=json.loads(d.read_text('direct_url.json'));assert direct['archive_info']['hashes']['sha256']=='b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672'\nprint(json.dumps({'members':actual,'direct_url':direct,'origin':agentsync.__file__,'python':sys.version},sort_keys=True))\n",
+        "/root/amadeus-demo-a117-sdist-r1/runtime-members.json"
+      ],
+      "cwd": "/root/amadeus-continuation-native-exit-r1/fixture",
+      "exit_code": 0,
+      "started_at": "2026-11-15T13:04:54.238048+00:00",
+      "finished_at": "2026-11-15T13:04:54.312309+00:00",
+      "log": "logs/origin_after.log",
+      "log_sha256": "27cdd2d207b0249a1216bc36fc017deb283b9ee69b5508132c7f2acc4bbe0485",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "junit": {
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runtime_members_unchanged": 97,
+  "test_sha256": "4fc76f32042bd498237167b5b1b75f2fcd73af7dcef7e6d457dea78c658cf0cc",
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

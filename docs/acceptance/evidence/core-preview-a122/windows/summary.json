@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "status": "PASS - Windows development preview targeted installation; formal Release BLOCKED",
+  "version": "0.3.0a122",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "repair_commit": "1700d1d8c79bab276ee3f3e3cefff7db23abf60d",
+  "native_session": 70966,
+  "terminal_chunk": "e3423c",
+  "native_exit_code": 0,
+  "started_at": "2026-11-17T06:17:32.009643+00:00",
+  "finished_at": "2026-11-17T06:18:56.114584+00:00",
+  "native_checks": 19,
+  "junit": {
+    "wheel": {
+      "path": "wheel-focused.xml",
+      "sha256": "e09273b15815ce5c1d4dc691ba9270f39a38458abb98f2def66c7aff02a07f89",
+      "credential_redactions": 0,
+      "tests": 97,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "sdist": {
+      "path": "sdist-focused.xml",
+      "sha256": "91292c79d1242a7a54c51fd924cb0e9087b159645e1bafdf9311a575eceefad4",
+      "credential_redactions": 0,
+      "tests": 97,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a122-py3-none-any.whl",
+      "size": 328435,
+      "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a122.tar.gz",
+      "size": 6735308,
+      "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+    }
+  },
+  "source_files_rehashed": 3992,
+  "runtime_members_per_install": 97,
+  "sdist_tracked_payload_rehashed": 2731,
+  "original_records": 45,
+  "original_bytes": 1453068,
+  "root_review_chunk": "ee1426",
+  "model_calls": 0,
+  "old_archives_unchanged": true,
+  "limits": [
+    "Each fresh Windows 3.12 install passed the same 97 scoped cases as the source repair.",
+    "Known local Python process and approval fixtures; real-client checks remain NOT RUN for a122.",
+    "Full a122 regressions, the complete platform matrix and formal Release remain unaccepted.",
+    "Historical static FAIL, license review and owner manual fixture credential cleanup remain unresolved."
+  ]
+}

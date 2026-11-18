@@ -1,0 +1,12 @@
+unformatted: File would be reformatted
+   --> src\agentsync\cli.py:134:17
+    |
+133 |
+    - def _call_owner(
+    -     data_dir: str | Path, operation: str, payload: dict[str, Any]
+    - ) -> dict[str, Any]:
+134 + def _call_owner(data_dir: str | Path, operation: str, payload: dict[str, Any]) -> dict[str, Any]:
+135 |     try:
+    |
+
+1 file would be reformatted, 2 files already formatted

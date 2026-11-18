@@ -1,0 +1,307 @@
+{
+  "product_sha": "10143077d512583a1e0efb9e5355dd54f2a2ce57",
+  "test_source_sha": "10143077d512583a1e0efb9e5355dd54f2a2ce57",
+  "version": "0.3.0a111",
+  "scope": "Restricted dependent review through prepared Codex/Claude/Cursor protocol fixtures; not real client acceptance",
+  "platforms": {
+    "windows": {
+      "tests": 371,
+      "passed": 360,
+      "skipped": [
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[verified]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[wrong-result]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[reopen]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[host-exit-pre-dispatch]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[host-exit-dispatch-intent]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[deny-staging]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[deny-execution]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[deny-completion]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[budget-staging]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[budget-resume]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        },
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[docker-cursor]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        }
+      ],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "started_at": "2026-11-13T08:30:50.886863+00:00",
+      "finished_at": "2026-11-13T08:37:33.964154+00:00",
+      "result": "windows-result.json"
+    },
+    "linux": {
+      "tests": 371,
+      "passed": 371,
+      "skipped": [],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+      "started_at": "2026-11-13T08:32:17.971525+00:00",
+      "finished_at": "2026-11-13T08:40:31.637409+00:00",
+      "result": "linux-result.json"
+    }
+  },
+  "selected_test_files": [
+    "tests/integration/test_verified_proposal_flow.py",
+    "tests/integration/test_proposal_handoff.py",
+    "tests/integration/test_codex_proposal_relay_queue.py",
+    "tests/integration/test_codex_proposal_capture.py",
+    "tests/integration/test_codex_proposal_review.py",
+    "tests/unit/test_codex_events.py",
+    "tests/unit/test_claude_events.py",
+    "tests/unit/test_cursor_events.py",
+    "tests/unit/test_codex_adapter.py",
+    "tests/unit/test_claude_adapter.py",
+    "tests/unit/test_cursor_adapter.py",
+    "tests/unit/test_capture_creation_fence.py"
+  ],
+  "packaged_git_files_verified": 982,
+  "runtime_members_verified": 90,
+  "identical_parameterized_case_ids": 371,
+  "source_shadowing": false,
+  "actual_linux_docker_and_owned_cursor_fixture": {
+    "docker": {
+      "backend": "local-linux-docker",
+      "candidate_exit_code": 0,
+      "cases_sha256": "60d8fee64365395bd7e9beb803f1c85480b5d92bd7cc82ad4078620b26cb9036",
+      "cgroup_version": "2",
+      "checked_case_count": 3,
+      "cleanup_confirmed": true,
+      "commit_sha": "d02862aea32ef8c4b85973dc5cb03f915e5a9cc3",
+      "completed_case_count": 3,
+      "container_id": "76ac9fe54e3974a52f408427f0a90e9d9db1a848fd1378610121b1f56c0244f3",
+      "container_state": {
+        "exit_code": 0,
+        "oom_killed": false,
+        "status": "exited"
+      },
+      "docker_server_version": "29.8.2",
+      "elapsed_seconds": 2.504859677999775,
+      "errors": [],
+      "execution_id": "1c30e805-e3f4-4e49-a297-888ee9f11985",
+      "execution_started": true,
+      "expected_case_count": 3,
+      "finished_at": "2026-11-13T08:34:31.087133+00:00",
+      "image_sha256": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+      "input_sha256": "73d5df4c46c34af022d8ea08b558b13c1b1fce82d055c6b487c43d1ad46228de",
+      "isolation": {
+        "checks": {
+          "capabilities": true,
+          "command": true,
+          "entrypoint": true,
+          "environment": true,
+          "groups": true,
+          "healthcheck": true,
+          "image": true,
+          "logs": true,
+          "mounts": true,
+          "namespaces": true,
+          "network": true,
+          "owner": true,
+          "privileged": true,
+          "readonly": true,
+          "resources": true,
+          "security": true,
+          "tmpfs": true,
+          "user": true,
+          "workdir": true
+        },
+        "expected_removal_marker_count": 3,
+        "expected_runtime_environment_count": 4,
+        "memory_bytes": 134217728,
+        "nano_cpus": 1000000000,
+        "pids": 32,
+        "seccomp": "builtin",
+        "stderr_limit": 65536,
+        "stdout_limit": 65536,
+        "swap_total_bytes": 134217728,
+        "timeout_seconds": 5,
+        "tmpfs_bytes": 8388608
+      },
+      "kernel": "6.18.54-0-virt",
+      "passed_case_count": 3,
+      "platform": "Linux",
+      "profile_id": "python-json-lines-v1",
+      "profile_sha256": "9d662e19d8db568964ae6fe634dc7ac5b72f3676a5ed6c61d537927deb9f0a9c",
+      "provenance": "docker_black_box",
+      "source_sha256": "a14a3e43266604d4e2f6edd84649b0d34e7e8dd9df5e345c3b6936614d07e5c6",
+      "started_at": "2026-11-13T08:34:28.582307+00:00",
+      "status": "passed",
+      "stderr_bytes": 0,
+      "stdout_bytes": 25,
+      "stdout_sha256": "4bdb8b649df7eb5f441465cad3f3a99edf2e14c6766aabcf0529eb7c585d1428",
+      "tree_sha": "17626eef0974cdf5f15cf2f04d899a204251b541",
+      "verifier_source_sha256": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+      "verifier_version": 1
+    },
+    "review": {
+      "client": "cursor",
+      "status": "dependent_review_received",
+      "exit_code": 0,
+      "parent_ended": true,
+      "task_verification": "unverified",
+      "context_sha256": "704d1b486c4c6798d0bfa43fde544d7077f755f741f4275a4495c1f4689607f3",
+      "initial_receiver_authorities": 1,
+      "total_receiver_launches_including_reopen": 1
+    }
+  },
+  "docker_cleanup": {
+    "timestamp": "2026-11-13T08:41:35.613029+00:00",
+    "docker_host": "unix:///var/run/docker.sock",
+    "trusted_cli": "/usr/bin/docker",
+    "container_count": 0,
+    "all_containers_absent": true,
+    "scope": "Read-only postcheck of dedicated local test daemon after the affected1014307 dependent review installed-sdist suite"
+  },
+  "static_checks": {
+    "ruff": "pass",
+    "format": {
+      "status": "pass",
+      "packaged_python_files": 327
+    },
+    "mypy": {
+      "status": "pass",
+      "source_files": 89
+    }
+  },
+  "source_prechecks": {
+    "location": "D:/agentsync-debug/m7-dependent-review-a111-sol",
+    "main": "357 passed / 11 skipped",
+    "directed_supplement": "5 passed, two strengthened prior IDs and three new IDs",
+    "earlier_fixture_failure": "10 failures before fixture client identification repair, then 10 passed; original logs retained locally",
+    "approval_mutation": "Injected staging read changes candidate SHA during consent; not a real persistent context edit"
+  },
+  "limitations": [
+    "Twelve-file affected regression, not a full-suite run",
+    "Owned protocol emitters are not real models; Claude/Cursor live compatibility and isolation remain NOT RUN",
+    "Docker-Cursor test checkpoints verified source then resumes reviewer; not an uninterrupted real-model invocation",
+    "Cross-client uncertain dispatch uses a controlled exception; prior actual process-exit evidence is separately scoped",
+    "Review document stays unverified and cannot enter producer staging"
+  ],
+  "model_calls": 0,
+  "paid_api_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "external_work_acceptance": "NOT RUN",
+  "raw_execution_sources": {
+    "driver.py.txt": {
+      "original_execution_name": "driver.py",
+      "sha256": "108e21b015806f7b69f288cb848db316ead1cef5a0724c976f539c00a5a98456"
+    },
+    "observe-docker-cleanup.sh.txt": {
+      "original_execution_name": "observe-docker-cleanup.sh",
+      "sha256": "7ab4de862e427258da84b038a973254b998c059f9f695994fb1f66c24fc8505a"
+    },
+    "prepare-dependent-review-package.py.txt": {
+      "original_execution_name": "prepare-dependent-review-package.py",
+      "sha256": "65d61567b0e30eceae110016bac22615e2810fa3eee5e8a0741f595fe2716033"
+    },
+    "run-linux.sh.txt": {
+      "original_execution_name": "run-linux.sh",
+      "sha256": "b6db00303609d36bfaf5ded1c9dfda510ede90b6df3b7c78a3cb6f06e5cdf823"
+    },
+    "run-windows.py.txt": {
+      "original_execution_name": "run-windows.py",
+      "sha256": "7b1e26ee8bdd67e04a28e92bab91bfefb23af80807737d48b877adbbd4ba997e"
+    }
+  },
+  "artifacts": {
+    "build.log": "b60245d08960d5bdcbee5bfac9e03983c8de4afd1c939c36defaf344aacc5d46",
+    "driver.py.txt": "108e21b015806f7b69f288cb848db316ead1cef5a0724c976f539c00a5a98456",
+    "format.log": "3fd0c66a7c348aea301c845ea2dbd910849a2ad9fa0eb44a967b12ecfa3bc5ed",
+    "identity.json": "cf86786b91fe778b42ad2e25fb936e889d9390e7b47d2fe5bcf8ff5f1281f25a",
+    "linux-console.log": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f",
+    "linux-docker-cleanup-observation.json": "1b61dd9a4a787af5ab85bfc5a6d3abb3568ba09cd4c2f989647d9dddfaedef03",
+    "linux-docker-cursor-review.json": "d6d866d2223fb4d339265b82773b5abb2f0bd0e82a52cd850048fbe495dff33d",
+    "linux-install.log": "3e2f747fbeb99b3c85fa9de6ed7880aa5523df264de54606bac800a808b9e077",
+    "linux-junit.xml": "2a4a4138f8dadc4acb75677550234b340b6af1dd88bed832bf3c37abdd04e523",
+    "linux-origin.json": "6c302c8743e8f16dbf01d03492f7f8dac5ecdd54ae0ca3ba08f29e47379ba5e7",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-pytest.log": "fda38338feebc69100e31f79a9e55f19045be05205596402eb7cae204829ff0d",
+    "linux-pytest.process.json": "330980be965fd96dc0dbff589b74c202338158ecb538d0f75ec6237614467c7f",
+    "linux-result.json": "2c123bbbfce062f1bc5a206b6de2df1429ffd2f3ba030592b38088bd74aaabce",
+    "mypy.log": "1c13773bc21d8ae3a759614f3a828d16af7aa66d04f93c4daeeb51d5d6be16c1",
+    "observe-docker-cleanup.sh.txt": "7ab4de862e427258da84b038a973254b998c059f9f695994fb1f66c24fc8505a",
+    "prepare-dependent-review-package.py.txt": "65d61567b0e30eceae110016bac22615e2810fa3eee5e8a0741f595fe2716033",
+    "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "run-linux.sh.txt": "b6db00303609d36bfaf5ded1c9dfda510ede90b6df3b7c78a3cb6f06e5cdf823",
+    "run-windows.py.txt": "7b1e26ee8bdd67e04a28e92bab91bfefb23af80807737d48b877adbbd4ba997e",
+    "windows-console.log": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "windows-install.log": "37746346a3f5a531c613ccca03fe9858bc7d33293fa13e6acb98c97d16aeafa6",
+    "windows-junit.xml": "54ee540bd3ad458196eca5d9b7bfb5350cae2d95447dd21651ee40a916027306",
+    "windows-origin.json": "0aa250a30442d660cbd745f92288eba4417f4b97bcc07ea226c1d24302dff464",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-pytest.log": "9da62a1bd21b047bc6ba9d45968c6920a492f75b2a396fbab7a34b6d4758c886",
+    "windows-pytest.process.json": "23fd9bf5ed8824087bb52e9db0033eeae158455797aa71d91ee47f03164e0c21",
+    "windows-result.json": "5743fc7b54f28652f7b67bfdef93beab19a66eb6d9d38da86640fed063c1ad48"
+  },
+  "packages": {
+    "releases/0.3.0a111/1014307/agentsync_local-0.3.0a111-py3-none-any.whl": {
+      "sha256": "64a7c756b3c09cbe864ecb9b82861ac9ce9d7486647f71008626fb68162d15a1",
+      "size": 272250
+    },
+    "releases/0.3.0a111/1014307/agentsync_local-0.3.0a111.tar.gz": {
+      "sha256": "392405064bbed37cb5d95eb1dc448755d0d62e968500acc36bc9c71e48bd0876",
+      "size": 2251750
+    }
+  },
+  "independent_technical_review": {
+    "reviewer": "Native Astra review agent",
+    "status": "accepted_limited_scope",
+    "product_sha": "10143077d512583a1e0efb9e5355dd54f2a2ce57",
+    "checked": [
+      "28 evidence hashes and both packages",
+      "982 packaged Git files and 90 runtime files",
+      "371 matching unique case IDs and terminal logs",
+      "installed archive and before-after identity/source checks",
+      "actual Docker 3/3, 19 isolation checks, owned Cursor fixture, unverified output and no extra reopen launch",
+      "zero containers and credential exposure inspection",
+      "prior reviewed final source hashes match frozen code"
+    ],
+    "blockers": [],
+    "formal_release": "BLOCKED",
+    "external_work_acceptance": "NOT RUN"
+  }
+}

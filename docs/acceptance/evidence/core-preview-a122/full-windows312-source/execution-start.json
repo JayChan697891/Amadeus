@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-11-18T01:28:36.257459+00:00",
+  "status": "RUNNING - not accepted",
+  "native_session": 22428,
+  "controller_pid": 6064,
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "scope": "First full editable-source suite for this frozen platform, not a repetition of installed suites",
+  "preparation_review": "Root and Astra accepted exact preparation only",
+  "automatic_retry": false,
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "recovery": "Inspect the existing process and saved run/result.json. Poll the same handle; never relaunch because an observation times out."
+}

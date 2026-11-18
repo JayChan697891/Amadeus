@@ -1,0 +1,14 @@
+{
+  "stage": "cleanup",
+  "started_at": "2026-11-16T08:41:04.310005+00:00",
+  "observer_pid": 24488,
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-interrupted-a117-r2-20261116/cleanup.py cleanup",
+  "automatic_retry": false,
+  "remote_exec_requested": false,
+  "log_bytes": {
+    "stdout": 0,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "observing"
+}

@@ -1,0 +1,24 @@
+{
+  "started_at": "2026-11-18T02:25:37.549118+00:00",
+  "interpreter": "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "agentsync_origin": "D:\\agentsync-debug\\m122p\\w\\Lib\\site-packages\\agentsync\\__init__.py",
+  "version": "0.3.0a122",
+  "runtime_members": 97,
+  "runtime_before_exact": true,
+  "files_before": {
+    "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "test_pilot.py": "8e22de3865c190d194d509e3340fc3bbc942b949f6063e7dd36fceeb9f2b3228",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+  },
+  "scope": "Deterministic known-Python process fixtures only; no real model, auth or VM",
+  "initial_static_failure": {
+    "chunk": "78172f",
+    "exit_code": 1,
+    "diagnostics": [
+      "standalone helper import E402",
+      "test import order I001"
+    ]
+  }
+}

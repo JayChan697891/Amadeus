@@ -1,0 +1,140 @@
+"""Run the two remaining Windows rows once, after the original row is verified."""
+import argparse
+from datetime import UTC, datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--row', choices=('windows-311', 'windows-314'))
+args = parser.parse_args()
+base = Path('D:/agentsync-debug/m116')
+source = base/'s'
+commit = '624b36c039a90feb9340559ac773f9df08ba86ad'
+runtimes = {
+    'windows-311': (Path('D:/agentsync-debug/continuation-cc30ed21/windows-py311-venv/Scripts/python.exe'),
+                    Path('D:/agentsync-debug/continuation-cc30ed21/windows-py311-wheelhouse'), (3, 11)),
+    'windows-314': (Path('D:/agentsync-debug/venv/Scripts/python.exe'),
+                    Path('D:/agentsync-debug/evidence/windows-final-aac28a0/windows-wheelhouse'), (3, 14)),
+}
+
+def write(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+def git(*arguments):
+    return subprocess.check_output(['git', '-C', str(source), *arguments], timeout=30).decode().strip()
+
+assert os.name == 'nt'
+assert not (base/'STOP_AFTER_CURRENT').exists(), 'Pause requested; no new row.'
+for name in list(os.environ):
+    upper = name.upper()
+    if upper.startswith(('OPENAI_', 'ANTHROPIC_', 'CODEX_', 'AGENTSYNC_', 'CLAUDE_',
+                         'CURSOR_', 'GIT_', 'PIP_', 'PYTEST_', 'GOOGLE_', 'GEMINI_',
+                         'DEEPSEEK_')) or upper in ('PYTHONPATH', 'PYTHONHOME') or upper.endswith(
+                             ('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        os.environ.pop(name, None)
+os.environ.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
+                  GIT_TERMINAL_PROMPT='0', PYTHONDONTWRITEBYTECODE='1',
+                  PYTHONNOUSERSITE='1', PYTHONUNBUFFERED='1',
+                  PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX='1', PIP_DISABLE_PIP_VERSION_CHECK='1')
+assert git('rev-parse', 'HEAD') == commit and not git('status', '--porcelain')
+bootstrap = json.loads((base/'windows-312/result.json').read_text(encoding='utf-8'))
+assert bootstrap['phase'] == 'finished' and bootstrap['local_checks_passed'] is True
+assert bootstrap['strict_evidence_verified'] is True and bootstrap['commit_sha'] == commit
+assert bootstrap['driver_sha256'] == 'a1af179deea1e2f6980b2b9e96453a10592321b6654c8a7d0234d139795e422a'
+manifest = base/'candidate-bootstrap.json'
+manifest_sha = bootstrap['candidate_manifest_sha256']
+sys.path.insert(0, str(source))
+from tools import release_acceptance as collector
+from tools.acceptance_matrix import summarize
+from tools.release_manifest import verify_manifest
+
+verified = verify_manifest(manifest, base, manifest_sha256=manifest_sha, source_repo=source)
+assert verified['frozen']['commit_sha'] == commit
+original_report = Path(bootstrap['report']).resolve(strict=True)
+assert original_report.is_relative_to((base/'windows-312/reports').resolve(strict=True))
+assert collector.sha256(original_report) == verified['build_report']['sha256']
+
+if args.row is not None:
+    row = base/args.row
+    assert sys.version_info[:2] == runtimes[args.row][2]
+    row.mkdir()
+    (row/'home').mkdir()
+    (row/'tmp').mkdir()
+    os.environ.update(HOME=str(row/'home'), USERPROFILE=str(row/'home'), CODEX_HOME=str(row/'home'),
+                      RUFF_CACHE_DIR=str(row/'tmp/ruff'), MYPY_CACHE_DIR=str(row/'tmp/mypy'),
+                      TMP=str(row/'tmp'), TEMP=str(row/'tmp'), TMPDIR=str(row/'tmp'))
+    state = {'phase': 'started', 'row': args.row, 'pid': os.getpid(),
+             'started_at': datetime.now(UTC).isoformat(), 'commit_sha': commit,
+             'candidate_manifest_sha256': manifest_sha, 'python': sys.version,
+             'driver_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+             'automatic_retry': False, 'formal_release': 'BLOCKED', 'real_models': 'NOT RUN'}
+    write(row/'attempt.json', state)
+    print(json.dumps(state), flush=True)
+    try:
+        run = collector.collect(source, row/'reports', run_checks=True, package_install=True,
+                                sdist_install=True, scratch_root=base/'tmp', pytest_timeout=3600,
+                                offline_wheelhouse=runtimes[args.row][1], license_inventory=True,
+                                candidate=(manifest, base, manifest_sha))
+        report = json.loads((run/'report.json').read_text(encoding='utf-8'))
+        state.update(report=str(run/'report.json'), source_clean=not git('status', '--porcelain'),
+                     unsuccessful_checks=[{'id': c['id'], 'status': c['status']}
+                                          for c in report['checks'] if c['status'] != 'pass'])
+        state['local_checks_passed'] = not state['unsuccessful_checks'] and state['source_clean']
+        if state['local_checks_passed']:
+            matrix = summarize([original_report, run/'report.json'], commit, verify_artifacts=True,
+                               require_license_inventory=True, python_minors=('3.11', '3.12', '3.14'),
+                               source_repo=source)
+            write(row/'matrix-with-original.json', matrix)
+            assert matrix['local_matrix'] == 'incomplete'
+            case_hashes = set()
+            for observation in matrix['observations']:
+                audit = observation['artifact_audit']
+                assert audit['junit_case_sets_match'] is True
+                case_hashes.update(audit['junit_case_set_sha256'].values())
+            assert len(case_hashes) == 1
+            state['strict_evidence_verified'] = True
+    except Exception as exc:
+        state.update(local_checks_passed=False, error_type=type(exc).__name__,
+                     error=collector.redact_credentials(str(exc))[0])
+    state.update(phase='finished', finished_at=datetime.now(UTC).isoformat())
+    write(row/'result.json', state)
+    print(json.dumps(state), flush=True)
+    raise SystemExit(0 if state.get('local_checks_passed') and state.get('strict_evidence_verified') else 1)
+
+queue = base/'remaining-windows-queue'
+for name, (python, wheels, _) in runtimes.items():
+    assert python.is_file() and wheels.is_dir() and not (base/name).exists()
+queue.mkdir()
+write(queue/'attempt.json', {'started_at': datetime.now(UTC).isoformat(), 'pid': os.getpid(),
+                             'commit_sha': commit, 'candidate_manifest_sha256': manifest_sha,
+                             'rows': list(runtimes), 'automatic_retry': False})
+results = []
+for name, (python, _, _) in runtimes.items():
+    if (base/'STOP_AFTER_CURRENT').exists():
+        write(queue/'result.json', {'complete': False, 'pause_requested': True, 'rows': results})
+        raise SystemExit(2)
+    command = [str(python), '-I', '-B', str(Path(__file__).resolve()), '--row', name]
+    with (queue/(name+'.log')).open('xb') as log:
+        child = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, cwd=base)
+        write(queue/(name+'-process.json'), {'pid': child.pid, 'command': command,
+                                            'started_at': datetime.now(UTC).isoformat()})
+        print(json.dumps({'row': name, 'pid': child.pid, 'phase': 'started'}), flush=True)
+        code = child.wait()
+    result_path = base/name/'result.json'
+    result = json.loads(result_path.read_text(encoding='utf-8')) if result_path.is_file() else {}
+    terminal = {'row': name, 'exit_code': code, 'finished_at': datetime.now(UTC).isoformat(),
+                'local_checks_passed': result.get('local_checks_passed') is True,
+                'strict_evidence_verified': result.get('strict_evidence_verified') is True}
+    write(queue/(name+'-terminal.json'), terminal)
+    results.append(terminal)
+    print(json.dumps(terminal), flush=True)
+    if code != 0 or not terminal['local_checks_passed'] or not terminal['strict_evidence_verified']:
+        write(queue/'result.json', {'complete': False, 'rows': results, 'automatic_retry': False})
+        raise SystemExit(code or 1)
+write(queue/'result.json', {'complete': True, 'rows': results, 'formal_release': 'BLOCKED'})

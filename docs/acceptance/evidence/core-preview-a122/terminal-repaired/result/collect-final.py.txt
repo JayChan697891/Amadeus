@@ -1,0 +1,100 @@
+import hashlib,json
+from pathlib import Path
+import paramiko
+
+base=Path(__file__).parent
+out=base/'public-result';out.mkdir(exist_ok=False)
+c=paramiko.SSHClient();c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+program=r'''
+import hashlib,json,os,sqlite3,subprocess
+from pathlib import Path
+from datetime import datetime,UTC
+import agentsync
+r=Path('/root/amadeus-terminal-repaired-a122-20261118')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+ready=json.loads((r/'ready.json').read_bytes())
+assert sha((r/'ready.json').read_bytes())=='dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1'
+for name,h in ready['files_sha256'].items():assert sha((r/name).read_bytes())==h,name
+site=Path(agentsync.__file__).resolve().parent.parent
+members=json.loads((r/'runtime-members.json').read_bytes())
+assert {p.relative_to(site).as_posix():sha(p.read_bytes()) for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}==members
+records={}
+for p in sorted((r/'terminal-run').glob('*.json'))+sorted((r/'terminal-run/receipts').glob('*.json')):
+ raw=p.read_bytes();assert len(raw)<1024*1024
+ records[str(p.relative_to(r))]={'sha256':sha(raw),'bytes':len(raw),'value':json.loads(raw)}
+observed=[v['value'] for k,v in records.items() if k.endswith('-first-observed.json')]
+assert len(observed)==2 and all(v['status']=='proposal_received' and v['exit_code']==0 and v['parent_ended'] and not v['timed_out'] for v in observed)
+assert len([k for k in records if '/receipts/launch-' in k])==2
+assert len([k for k in records if '/receipts/consent-' in k])==2
+completion=records['terminal-run/completion-plan.json']['value']['value']
+proof=completion['execution']['execution']['result']
+assert proof['status']=='passed' and proof['cleanup_confirmed'] and proof['candidate_exit_code']==0
+assert proof['expected_case_count']==proof['completed_case_count']==proof['passed_case_count']==2
+assert len(proof['isolation']['checks'])==19 and all(proof['isolation']['checks'].values())
+assert proof['source_sha256']==ready['candidate_sha256']
+with sqlite3.connect((r/'core/agentsync.db').as_uri()+'?mode=ro',uri=True) as db:
+ db.row_factory=sqlite3.Row
+ def rows(q):return [dict(v) for v in db.execute(q)]
+ tasks=rows('select id,project_id,status,version,owner_session_id,created_at,updated_at from tasks order by created_at')
+ verifications=rows('select id,project_id,task_id,completed_version,job_id,execution_id,reviewer_agent_id,reviewer_session_id,proof_sha256,created_at from task_verifications')
+ reviews=rows('select task_id,project_id,reviewer_agent_id,reviewer_session_id,accept,version,created_at from reviews')
+ executions=rows('select id,project_id,job_id,revision,phase,assessment,container_id,result_json,result_sha256,cleanup_attempted,cleanup_sha256 from candidate_executions')
+ contexts=[]
+ for v in rows('select context_id,version,content,author_agent_id,author_session_id from context_revisions'):
+  content=v.pop('content');v['content_sha256']=sha(content.encode());v['content_bytes']=len(content.encode())
+  # Only file names, byte counts and hashes leave the model response context.
+  value=json.loads(content);v['top_level_keys']=sorted(value)
+  files=[]
+  def walk(x):
+   if isinstance(x,dict):
+    if isinstance(x.get('path'),str) and isinstance(x.get('content'),str):files.append({'path':x['path'],'bytes':len(x['content'].encode()),'sha256':sha(x['content'].encode())})
+    for item in x.values():walk(item)
+   elif isinstance(x,list):
+    for item in x:walk(item)
+  walk(value);v['files']=files;contexts.append(v)
+ handoffs=rows('select id,task_id,status,task_version from handoffs')
+assert len(tasks)==2 and [(v['status'],v['version']) for v in tasks]==[('completed',6),('review',5)]
+assert len(verifications)==len(executions)==len(reviews)==1
+v=verifications[0];assert v['task_id']==tasks[0]['id'] and v['completed_version']==6
+assert v['execution_id']==completion['execution_id'] and v['reviewer_session_id']==completion['reviewer_session_id']
+assert v['reviewer_session_id'] not in [t['owner_session_id'] for t in tasks]
+assert reviews[0]['accept']==1 and reviews[0]['task_id']==v['task_id'] and reviews[0]['reviewer_session_id']==v['reviewer_session_id']
+execution=executions[0];dbproof=json.loads(execution.pop('result_json'));assert dbproof==proof
+execution['result']=dbproof
+assert execution['id']==v['execution_id'] and execution['phase']=='finished' and execution['assessment']=='passed'
+pin=records['terminal-run/result.json']['value']['flow']['handoff']['pin']
+assert any(x['context_id']==pin['context_id'] and x['version']==pin['context_version'] and x['content_sha256']==pin['content_sha256'] for x in contexts)
+assert not handoffs  # This path is a pinned proposal relay, not an M3 handoff row.
+assert not any((r/'private-home').iterdir())
+assert not any(str(r/'private-home') in line for line in Path('/proc/mounts').read_text().splitlines())
+containers=subprocess.check_output(['docker','ps','-aq','--no-trunc'],text=True).splitlines();assert not containers
+env={'PATH':'/usr/bin:/bin','HOME':str(r),'GIT_CONFIG_GLOBAL':'/dev/null','GIT_CONFIG_NOSYSTEM':'1','GIT_TERMINAL_PROMPT':'0'}
+git=subprocess.check_output(['git','-C',str(r/'repo'),'status','--porcelain'],env=env,text=True);assert not git.strip()
+workers=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+ try:
+  comm=(p/'comm').read_text().strip();argv=(p/'cmdline').read_bytes()
+  if ('python' in comm or 'codex' in comm) and any(v in argv for v in (b'/root/amadeus-',b'/root/agentsync-')):workers.append(int(p.name))
+ except FileNotFoundError:pass
+assert not workers
+result={'observed_at':datetime.now(UTC).isoformat(),'runtime_commit':ready['runtime_commit'],'example_commit':ready['example_commit'],'runtime_members_unchanged':len(members),'fixture_inputs_unchanged':True,'database':{'tasks':tasks,'verifications':verifications,'reviews':reviews,'executions':executions,'contexts':contexts,'m3_handoffs':handoffs},'records':records,'post_run':{'workers':workers,'containers':containers,'repository_clean':True,'private_home_empty':True,'private_home_unmounted':True},'raw_model_output_exported':False,'database_exported':False}
+# Exact private owner token stays in guest memory; ensure it cannot enter export.
+private=json.loads((r/'private-owner.json').read_bytes())
+encoded=json.dumps(result)
+for key,value in private.items():
+ if 'token' in key or 'credential' in key or 'secret' in key:
+  assert not isinstance(value,str) or value not in encoded
+print(encoded)
+'''
+_,stdout,stderr=c.exec_command("/root/amadeus-m122l/w/bin/python -I -B - <<'PY'\n"+program+'\nPY',timeout=30)
+raw=stdout.read();error=stderr.read();code=stdout.channel.recv_exit_status();c.close()
+assert code==0,error.decode(errors='replace')
+value=json.loads(raw)
+(out/'observed.json').write_text(json.dumps(value,indent=2)+'\n',encoding='utf8')
+for name in ['terminal-result.json','cleanup-observed.json','launch-1-route.json','staging-byte-check.json','completion-proof-check.json','pre-live.json']:
+ (out/name).write_bytes((base/name).read_bytes())
+manifest={p.name:{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in out.iterdir()}
+(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf8')
+print(json.dumps({'files':len(manifest),'runtime_members':value['runtime_members_unchanged'],'tasks':[(v['status'],v['version']) for v in value['database']['tasks']],'observations':len(value['records']),'m3_handoff_rows':len(value['database']['m3_handoffs']),'post_run':value['post_run']}))

@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "offline_build_tools",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-7tyexdww/offline-build/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m116/tmp/.scratch-7tyexdww/offline-wheels",
+      "--no-cache-dir",
+      "--only-binary=:all:",
+      "build==1.6.1",
+      "setuptools==82.0.1",
+      "wheel==0.46.3"
+    ],
+    "cwd": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+    "started_at": "2026-11-15T09:08:51.190627+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "offline_build_tools",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-7tyexdww/offline-build/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m116/tmp/.scratch-7tyexdww/offline-wheels",
+      "--no-cache-dir",
+      "--only-binary=:all:",
+      "build==1.6.1",
+      "setuptools==82.0.1",
+      "wheel==0.46.3"
+    ],
+    "cwd": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+    "exit_code": 0,
+    "started_at": "2026-11-15T09:08:51.190627+00:00",
+    "finished_at": "2026-11-15T09:08:52.479748+00:00",
+    "log": "logs/offline_build_tools.log",
+    "log_sha256": "c9ec1fbe62315999785c3f992c5bad42d0240be7e9bb9fae710258234bc45c1b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

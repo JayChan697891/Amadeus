@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m118p\\d\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m118p/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--no-build-isolation",
+      "--",
+      "D:\\agentsync-debug\\m118p\\dist\\agentsync_local-0.3.0a118.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m118p\\run",
+    "started_at": "2026-11-16T10:00:08.523551+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m118p\\d\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m118p/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--no-build-isolation",
+      "--",
+      "D:\\agentsync-debug\\m118p\\dist\\agentsync_local-0.3.0a118.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m118p\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T10:00:08.523551+00:00",
+    "finished_at": "2026-11-16T10:00:13.914232+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "ffdd5f13ea4d941afe06ab9cc87a7df485a7219fe50ff8821c82e63992408f5c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

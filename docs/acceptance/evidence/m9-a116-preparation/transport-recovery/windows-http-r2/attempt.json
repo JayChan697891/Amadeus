@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-15T11:04:48.049568+00:00",
+  "pid": 25768,
+  "command": [
+    "D:\\agentsync-debug\\m116-recovery-r1\\installed\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\m116\\transport-recovery-windows-http-r2.py"
+  ],
+  "driver_sha256": "2464792f702747565240baa5d1e4fa579748ea201b766cdc530fbf9a7c5d0ff9",
+  "automatic_retry": false,
+  "scope": "HTTP-only correction; original MCP pass and HTTP failure retained"
+}

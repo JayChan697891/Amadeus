@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-11-17T08:43:20.3137883Z",
+  "pid": 2732,
+  "process_absent": true,
+  "ports_closed": true,
+  "disk_preserved": true,
+  "method": "Normal QMP system_powerdown"
+}

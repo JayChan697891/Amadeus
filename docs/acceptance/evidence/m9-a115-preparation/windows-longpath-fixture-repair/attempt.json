@@ -1,0 +1,31 @@
+{
+  "at": "2026-11-15T04:43:58.667431+00:00",
+  "pid": 27272,
+  "installed_product": {
+    "origin": "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Lib\\site-packages\\agentsync\\__init__.py",
+    "version": "0.3.0a115",
+    "direct": {
+      "archive_info": {
+        "hash": "sha256=56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+        "hashes": {
+          "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a"
+        }
+      },
+      "url": "file:///D:/agentsync-debug/m115-wheel-canonical-r1/run/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl"
+    }
+  },
+  "test_base_commit": "670daae8cd106ef7682cd8e9b3339d39224082b5",
+  "test_files": [
+    {
+      "path": "tests/integration/test_m4b_workspaces.py",
+      "sha256": "04415fc3b9cc5ef493c29c51cc785e5760676b776d98c48a996c1c6632488f18"
+    },
+    {
+      "path": "tests/integration/test_verified_task_completion.py",
+      "sha256": "94f8c545295df6480a0ef4aaf9e642dfc7650bedcb3ea397b928363bdaf703f5"
+    }
+  ],
+  "scope": "Affected helper and task-completion integration modules against unchanged installed b6 product; corrected test source is separate, not a b6 full-suite pass",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

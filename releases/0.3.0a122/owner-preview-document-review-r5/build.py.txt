@@ -1,0 +1,173 @@
+"""Build r5 only after actual document-review checks pass on these exact bytes.
+
+Usage: python build.py COMMIT TARGETED_RESULT_JSON
+Receipt fields: status='pass', native_exit_code=0, native_chunk, junit_path,
+junit_sha256 and source_sha256 keyed by the three relative source paths below.
+The receipt/JUnit must describe real completed targeted checks, never a template.
+"""
+
+import hashlib
+import json
+import re
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+import zipfile
+from pathlib import Path
+
+repo = Path("F:/syuc/amadeus-m6-single")
+base = Path(__file__).resolve().parent
+old = repo / "releases/0.3.0a122/owner-preview-input-bounds-r4"
+dest = repo / "releases/0.3.0a122/owner-preview-document-review-r5"
+prefix = "Amadeus-preview-a122/"
+sha = lambda raw: hashlib.sha256(raw).hexdigest()
+EXPECTED_SOURCE = {
+    "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+    "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21",
+}
+EXPECTED_CASES = {
+    "test_independent_document_decision[accept-completed]",
+    "test_independent_document_decision[reject-pending]",
+    "test_document_boundary_refuses_other_inputs[code]",
+    "test_document_boundary_refuses_other_inputs[hash]",
+    "test_document_boundary_refuses_other_inputs[project]",
+    "test_confirmation_and_fixed_revision_binding[mismatch]",
+    "test_confirmation_and_fixed_revision_binding[task-changed]",
+    "test_confirmation_and_fixed_revision_binding[new-context-revision]",
+}
+
+(commit, receipt_name) = sys.argv[1:]
+assert re.fullmatch("[0-9a-f]{40}", commit)
+assert subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip() == commit
+assert not subprocess.check_output(["git", "status", "--porcelain"], cwd=repo).strip()
+assert not dest.exists(), "Preserve the existing package; never overwrite."
+assert all(sha((repo / name).read_bytes()) == expected for name, expected in EXPECTED_SOURCE.items())
+
+receipt_path = Path(receipt_name).resolve(strict=True)
+receipt_raw = receipt_path.read_bytes()
+receipt = json.loads(receipt_raw)
+assert receipt["status"] == "pass" and type(receipt["native_exit_code"]) is int and receipt["native_exit_code"] == 0
+assert isinstance(receipt["native_chunk"], str) and receipt["native_chunk"]
+assert all(receipt["source_sha256"].get(name) == expected for name, expected in EXPECTED_SOURCE.items())
+junit = Path(receipt["junit_path"]).resolve(strict=True)
+junit_raw = junit.read_bytes()
+assert sha(junit_raw) == receipt["junit_sha256"]
+cases = list(ET.fromstring(junit_raw).iter("testcase"))
+assert len(cases) == len(EXPECTED_CASES) == 8
+assert {case.get("name") for case in cases} == EXPECTED_CASES
+assert all((case.get("classname") or "").endswith("test_review_relay_document") for case in cases)
+assert all(case.find(tag) is None for case in cases for tag in ("failure", "error", "skipped"))
+
+old_zip = old / "Amadeus-owner-preview-a122.zip"
+OLD_SHA = "8884519ea77978edf6d741a5d7b9f2fec2c52d491af43917e23155f697fa70f1"
+assert sha(old_zip.read_bytes()) == OLD_SHA
+with zipfile.ZipFile(old_zip) as archive:
+    names = archive.namelist()
+    assert len(names) == len(set(names)) == 10 and all(name.startswith(prefix) for name in names)
+    original = {name.removeprefix(prefix): archive.read(name) for name in names}
+original_manifest = json.loads(original["manifest.json"])
+assert original_manifest["runtime_commit"] == "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+assert original_manifest["revision"] == "input-bounds-r4"
+for name, recorded in original_manifest["files"].items():
+    assert recorded == {"bytes": len(original[name]), "sha256": sha(original[name])}
+
+payload = {name: raw for name, raw in original.items() if name not in ("manifest.json", "SHA256SUMS")}
+payload["examples/review_relay_document.py"] = (repo / "examples/review_relay_document.py").read_bytes()
+guide = (repo / "docs/VERIFIED-TASK-EXAMPLE.md").read_text(encoding="utf-8")
+guide = guide.replace("](acceptance/", f"](https://github.com/JayChan697891/Amadeus/blob/{commit}/docs/acceptance/")
+payload["docs/VERIFIED-TASK-EXAMPLE.md"] = guide.encode("utf-8")
+readme = original["README.md"].decode("utf-8").replace("和三个示例脚本", "和四个示例脚本")
+readme = readme.replace(
+    "本修订仅修复任务/用例文件的限量读取，已做受影响的 Windows 离线检查，\n没有重跑真实模型或 Linux 终端实验，不能扩大原有验收范围。",
+    "本修订保留 r4 的限量读取入口，新增独立文档接受/拒绝示例，已做8项受影响的 Windows 本地 Core 检查。\n没有新增模型调用、候选执行或 Linux 终端实验，不能扩大原有验收范围。",
+)
+readme = re.sub(
+    r"https://github\.com/JayChan697891/Amadeus/blob/[0-9a-f]{40}/docs/PROGRESS\.md",
+    f"https://github.com/JayChan697891/Amadeus/blob/{commit}/docs/PROGRESS.md", readme,
+)
+readme += """
+## 高级：手工接受或拒绝 review.md
+
+新增 `examples/review_relay_document.py`，用已有项目的 owner 隐藏输入创建新独立
+reviewer，展示固定 context v1 文档及精确决定；输入计划 SHA 后才一次提交。
+参数和命令见 [文档审核指南](docs/VERIFIED-TASK-EXAMPLE.md#accept-or-reject-the-returned-document)。
+接受后任务 completed，拒绝后 pending；普通文档仍 unverified，不是代码验证。
+这一步不调用模型或 Docker、不重跑 receiver，也不恢复失败模型的未保存进度。
+"""
+payload["README.md"] = readme.encode("utf-8")
+unchanged = [
+    "agentsync_local-0.3.0a122-py3-none-any.whl", "LICENSE", "constraints-windows312.txt",
+    "examples/initialize_terminal_project.py", "examples/recover_relay.py", "examples/verified_codex_task.py",
+]
+assert all(payload[name] == original[name] for name in unchanged)
+assert sha(payload["agentsync_local-0.3.0a122-py3-none-any.whl"]) == "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+assert sha(payload["constraints-windows312.txt"]) == "23ab8373bc4c65f971fa0b477ea083c0fec5667a51048c7535fca50c08e6a8b1"
+manifest = dict(original_manifest)
+manifest.update(document_review_entry_commit=commit, documentation_commit=commit,
+                revision="document-review-r5", previous_revision="owner-preview-input-bounds-r4",
+                targeted_result_sha256=sha(receipt_raw), targeted_junit_sha256=sha(junit_raw),
+                targeted_source_sha256=EXPECTED_SOURCE)
+manifest["files"] = {name: {"bytes": len(raw), "sha256": sha(raw)} for name, raw in payload.items()}
+payload["manifest.json"] = (json.dumps(manifest, indent=2) + "\n").encode()
+payload["SHA256SUMS"] = "".join(f"{sha(raw)}  {name}\n" for name, raw in sorted(payload.items())).encode()
+assert len(payload) == 11
+
+# All actual targeted-result and source guards above precede the first F write.
+dest.mkdir(exist_ok=False)
+archive_path = dest / "Amadeus-owner-preview-a122.zip"
+with zipfile.ZipFile(archive_path, "x", compression=zipfile.ZIP_DEFLATED) as archive:
+    for name, raw in sorted(payload.items()):
+        archive.writestr(prefix + name, raw)
+with zipfile.ZipFile(archive_path) as archive:
+    assert archive.testzip() is None and len(archive.namelist()) == 11
+    assert set(archive.namelist()) == {prefix + name for name in payload}
+    assert all(archive.read(prefix + name) == raw for name, raw in payload.items())
+    example = base / "review_relay_document.py"
+    with example.open("xb") as stream:
+        stream.write(archive.read(prefix + "examples/review_relay_document.py"))
+command = ["D:/agentsync-debug/m122p/w/Scripts/python.exe", "-I", "-B", str(example), "--help"]
+process = subprocess.run(command, capture_output=True, timeout=30, check=False)
+for name, raw in (("help.stdout.log", process.stdout), ("help.stderr.log", process.stderr)):
+    with (base / name).open("xb") as stream:
+        stream.write(raw)
+assert process.returncode == 0
+assert sha(old_zip.read_bytes()) == OLD_SHA
+assert all(sha((repo / name).read_bytes()) == expected for name, expected in EXPECTED_SOURCE.items())
+review = {
+    "archive": archive_path.name, "sha256": sha(archive_path.read_bytes()), "bytes": archive_path.stat().st_size,
+    "archive_members": 11, "crc_and_exact_payload_match": True, "source_commit": commit,
+    "runtime_commit": original_manifest["runtime_commit"], "original_r4_unchanged": True,
+    "original_wheel_unchanged": True, "unchanged_payload_from_r4": unchanged,
+    "document_review_entry_sha256": sha(payload["examples/review_relay_document.py"]),
+    "unchanged_terminal_entry_sha256": sha(payload["examples/verified_codex_task.py"]),
+    "targeted_checks": {"scope": "8 actual local Core checks; deterministic confirmation, not native/client acceptance",
+                        "native_chunk": receipt["native_chunk"], "native_exit_code": 0, "passed": 8,
+                        "receipt_sha256": sha(receipt_raw), "junit_sha256": sha(junit_raw)},
+    "extracted_entry_help": {"argv": command, "exit_code": process.returncode,
+                             "stdout_sha256": sha(process.stdout), "stderr_sha256": sha(process.stderr)},
+    "dependency_resolution_reused": "r4/r3 package-review; same original wheel and Windows312 constraints",
+    "install_repeated": False, "full_suites_repeated": False, "real_model_calls": 0,
+    "candidate_executions": 0, "formal_release": "BLOCKED", "manifest": manifest,
+}
+release_readme = """# Amadeus a122 owner preview r5
+
+[Download the ZIP](Amadeus-owner-preview-a122.zip), extract it and follow its inner README.
+The default durable demo is simulated/unverified. The frozen a122 runtime and
+Windows3.12 constraints, initializer, recovery helper and r4 task entry are unchanged.
+This revision adds explicit manual accept/reject of a pinned review.md using a
+new Core reviewer; ordinary document review stays unverified. See the bundled guide.
+Eight local Core checks passed; no new model, candidate or full-suite execution is
+claimed by this packaging step. Formal Release remains BLOCKED.
+"""
+for name, raw in (
+    ("constraints-windows312.txt", payload["constraints-windows312.txt"]),
+    ("SHA256SUMS", f"{review['sha256']}  {archive_path.name}\n".encode()),
+    ("package-review.json", (json.dumps(review, indent=2) + "\n").encode()),
+    ("README.md", release_readme.encode()),
+    ("build.py.txt", Path(__file__).read_bytes()),
+):
+    with (dest / name).open("xb") as stream:
+        stream.write(raw)
+print(json.dumps({"archive": str(archive_path), "bytes": review["bytes"], "sha256": review["sha256"],
+                  "members": 11, "targeted_passed": 8, "help_exit": process.returncode}))

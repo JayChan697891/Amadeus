@@ -1,0 +1,51 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/sdist-_r3gbozj/bin/python",
+      "-I",
+      "-m",
+      "pytest",
+      "/root/amadeus-m116/s/tests",
+      "--junitxml",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/sdist-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/sdist-pytest"
+    ],
+    "cwd": "/root/amadeus-m116/linux-314/reports/release-20261115T075231Z-6a8b05dddcca",
+    "started_at": "2026-11-15T08:30:57.561383+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/sdist-_r3gbozj/bin/python",
+      "-I",
+      "-m",
+      "pytest",
+      "/root/amadeus-m116/s/tests",
+      "--junitxml",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/sdist-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m116/tmp/.scratch-_22ba8wb/sdist-pytest"
+    ],
+    "cwd": "/root/amadeus-m116/linux-314/reports/release-20261115T075231Z-6a8b05dddcca",
+    "exit_code": 0,
+    "started_at": "2026-11-15T08:30:57.561383+00:00",
+    "finished_at": "2026-11-15T08:49:35.554815+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "b8482b3ff03d2b9a504799b4ab90eae259e25071df8f5ce70327357a3458989f",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

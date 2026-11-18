@@ -1,0 +1,40 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_origin_sdk",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115r\\.scratch-wxx6qnqm\\wheel-x21wf320\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; assert pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\t115r\\\\.scratch-wxx6qnqm\\\\wheel-x21wf320').resolve()); assert not pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-candidate\\\\s')); assert importlib.metadata.version('agentsync-local') == '0.3.0a115'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///D:/agentsync-debug/m115-candidate/windows-312/release-20261113T132425Z-8c123f11a31b/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '15d7f198e7ff8a2852a625c9ba7dfe38d814d099f2c6c5cd14e556606793fbd7'; assert not direct.get('dir_info', {}).get('editable', False); print('installed origin:', agentsync.__file__); tmp = tempfile.TemporaryDirectory(); root = pathlib.Path(tmp.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(tmp.name) / 'data'); result = client.call('create_project', name='isolated wheel smoke', root_path=str(root)); assert result['ok'], result; print('SDK smoke: pass'); tmp.cleanup()"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-candidate\\windows-312\\release-20261113T132425Z-8c123f11a31b",
+    "started_at": "2026-11-13T14:08:56.157635+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_origin_sdk",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115r\\.scratch-wxx6qnqm\\wheel-x21wf320\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; assert pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\t115r\\\\.scratch-wxx6qnqm\\\\wheel-x21wf320').resolve()); assert not pathlib.Path(agentsync.__file__).resolve().is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-candidate\\\\s')); assert importlib.metadata.version('agentsync-local') == '0.3.0a115'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///D:/agentsync-debug/m115-candidate/windows-312/release-20261113T132425Z-8c123f11a31b/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '15d7f198e7ff8a2852a625c9ba7dfe38d814d099f2c6c5cd14e556606793fbd7'; assert not direct.get('dir_info', {}).get('editable', False); print('installed origin:', agentsync.__file__); tmp = tempfile.TemporaryDirectory(); root = pathlib.Path(tmp.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(tmp.name) / 'data'); result = client.call('create_project', name='isolated wheel smoke', root_path=str(root)); assert result['ok'], result; print('SDK smoke: pass'); tmp.cleanup()"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-candidate\\windows-312\\release-20261113T132425Z-8c123f11a31b",
+    "exit_code": 0,
+    "started_at": "2026-11-13T14:08:56.157635+00:00",
+    "finished_at": "2026-11-13T14:08:56.451731+00:00",
+    "log": "logs/wheel_origin_sdk.log",
+    "log_sha256": "798aa8bfc4620875ac9a49d578c7a603843dc290e3df4620f24fa92a0ceccde0",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,68 @@
+"""Lead-run offline fault checks; no real client, credential or process cancellation."""
+import hashlib
+import json
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+from datetime import UTC, datetime
+from importlib import metadata
+from pathlib import Path
+
+import agentsync
+
+base = Path('D:/agentsync-debug/strategy-demo/cancel-a117-repair')
+output = base / 'lead-run-02'
+output.mkdir(exist_ok=False)
+installed = Path('D:/agentsync-debug/strategy-demo/a117-sdist-r3/sdist-env').resolve()
+assert sys.flags.isolated and sys.dont_write_bytecode and not sys.flags.optimize
+assert Path(sys.prefix).resolve() == installed
+assert Path(agentsync.__file__).resolve().is_relative_to(installed)
+dist = metadata.distribution('agentsync-local')
+assert agentsync.__version__ == dist.version == '0.3.0a117'
+members = json.loads((base / 'runtime-members.json').read_bytes())
+assert len(members) == 97
+def origin():
+    result = {}
+    for name, expected in members.items():
+        member = Path(dist.locate_file(name)).resolve()
+        assert member.is_relative_to(installed)
+        result[name] = hashlib.sha256(member.read_bytes()).hexdigest()
+        assert result[name] == expected
+    return result
+
+files = {
+    'pilot.py': 'a41dfa82edfb53323470c6c9239e075b12f1e7e74ec0295bd8c1db3e7d963197',
+    'credential_home.py': 'f29e0c562f549946a68886d79fffe8f4cf12b5609dee3be7050c78be56d60a46',
+    'test_cancel_receipts.py': 'f12e553e425247454a74b69dfe6577db67a4b39631bd036e17aa5fe492fe41ac',
+}
+for name, expected in files.items():
+    assert hashlib.sha256((base / name).read_bytes()).hexdigest() == expected
+before = origin()
+command = [sys.executable, '-I', '-B', '-m', 'pytest', str(base / 'test_cancel_receipts.py'),
+           '-q', '-c', 'F:/syuc/amadeus-m6-single/pyproject.toml',
+           '--junitxml', str(output / 'lead-junit.xml'), '--basetemp', str(output / 'pytest-lead')]
+with (output / 'lead-attempt.json').open('x', encoding='utf-8') as f:
+    json.dump({'at': datetime.now(UTC).isoformat(), 'command': command, 'python': sys.version,
+               'files': files, 'runtime_members_before': before, 'real_clients': 'NOT RUN'}, f, indent=2)
+    f.write('\n')
+with (output / 'lead-tests.log').open('xb') as log:
+    result = subprocess.run(command, cwd=base, stdout=log, stderr=subprocess.STDOUT, timeout=60)
+after = origin()
+counts = None
+if (output / 'lead-junit.xml').exists():
+    root = ET.parse(output / 'lead-junit.xml').getroot()
+    suites = list(root.iter('testsuite'))
+    counts = {k: sum(int(s.get(k, '0')) for s in suites) for k in ('tests', 'failures', 'errors', 'skipped')}
+with (output / 'lead-result.json').open('x', encoding='utf-8') as f:
+    json.dump({'at': datetime.now(UTC).isoformat(), 'native_exit_code': result.returncode,
+               'counts': counts, 'method_cases': len(list(root.iter('testcase'))),
+               'junit_count_includes_subtests': True,
+               'runtime_members_after': after, 'runtime_unchanged': before == after,
+               'scope': 'Offline receipt and fault-injection checks only', 'model_calls': 0,
+               'live_cancellation': 'NOT VERIFIED', 'formal_release': 'BLOCKED'}, f, indent=2)
+    f.write('\n')
+assert result.returncode == 0
+assert counts == {'tests': 12, 'failures': 0, 'errors': 0, 'skipped': 0}
+assert len(list(root.iter('testcase'))) == 4
+print(json.dumps({'status': 'PASS', 'method_cases': 4, 'junit_counts': counts,
+                  'runtime_members_unchanged': 97, 'model_calls': 0}))

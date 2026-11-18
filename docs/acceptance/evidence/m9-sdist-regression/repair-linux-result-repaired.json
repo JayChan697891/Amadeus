@@ -1,0 +1,77 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "test_source_sha": "9fb36a10a18755be116cc2564a42450c453a9524",
+  "sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "scope": "Two modified test modules rerun from a fresh frozen sdist; full case collection reconciles with retained c262 results; no models or Actions",
+  "started_at": "2026-11-13T07:21:32.415399+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "platform": "linux",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "collection_check": {
+    "id": "sdist_collect",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-sdist-repair-9fb36a1/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-repair-9fb36a1/driver-repaired.py",
+      "collect"
+    ],
+    "cwd": "/root/amadeus-sdist-repair-9fb36a1/source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:21:32.416207+00:00",
+    "finished_at": "2026-11-13T07:21:59.089993+00:00",
+    "log": "logs/sdist_collect.log",
+    "log_sha256": "803fb55ed7bb79486df7216b5e606ce4875aa01566b437c875b5cb07d6dc7340",
+    "credential_redactions": 6,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "rerun_test_files": [
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "check": {
+    "id": "sdist_delta_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-sdist-repair-9fb36a1/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-repair-9fb36a1/driver-repaired.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-sdist-repair-9fb36a1/source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:21:59.104992+00:00",
+    "finished_at": "2026-11-13T07:22:18.128533+00:00",
+    "log": "logs/sdist_delta_pytest.log",
+    "log_sha256": "b39c6c6ab91e7015fe48eff3a6a36014b96620e363108426f2601f1fa7f9f771",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "source_unchanged": true,
+  "source_files": 895,
+  "source_fingerprint_sha256": "ab42bd78f14f2a982c5a578e54a70f16b2bfc8de607ecffcf56de8f854506487",
+  "changed_source_paths": [],
+  "installed_identity": {
+    "origin": "/root/amadeus-sdist-repair-9fb36a1/venv/lib/python3.14/site-packages/agentsync",
+    "runtime_package_members_matched": 90,
+    "runtime_python_modules": 89,
+    "source_shadowing": false
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 246,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skip_reasons": {},
+  "failed_cases": [],
+  "finished_at": "2026-11-13T07:22:19.622862+00:00"
+}

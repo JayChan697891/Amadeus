@@ -1,0 +1,7 @@
+........................................................................ [ 33%]
+.................................................s...................... [ 66%]
+........................................................................ [ 99%]
+..                                                                       [100%]
+=========================== short test summary info ============================
+SKIPPED [1] ../s/tests/integration/test_unfinished_continuation.py:288: Proposal execution requires an explicitly pinned local Linux Docker image
+217 passed, 1 skipped in 166.50s (0:02:46)

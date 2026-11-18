@@ -1,0 +1,300 @@
+"""Mount or remove only this terminal fixture's dedicated temporary login home."""
+
+import fcntl
+import hashlib
+import json
+import os
+import re
+import stat
+import subprocess
+import sys
+import time
+from contextlib import contextmanager
+from datetime import UTC, datetime
+from pathlib import Path
+
+from agentsync.adapters.approved_launch import digest
+from agentsync.controlled_relay import ControlledRelay
+from agentsync.core.service import Core
+
+BASE = Path("/root/amadeus-checkpoint-a123-20261118")
+PRIVATE_HOME = BASE / "private-home"
+EXE = Path("/root/amadeus-codex-linux-0167/bin/codex")
+LABEL = "amadeus-checkpoint-a123-auth"
+READY_SHA = None  # Supplied explicitly from Root's review of the actual prepared bytes.
+
+
+def physical_directory(path):
+    info = path.lstat()
+    assert path.resolve(strict=True) == path and stat.S_ISDIR(info.st_mode)
+    assert info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o700
+
+
+def load(name):
+    path = BASE / name
+    info = path.lstat()
+    assert path.resolve(strict=True) == path and stat.S_ISREG(info.st_mode)
+    assert info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600 and info.st_nlink == 1
+    assert 0 < info.st_size <= 262144
+    return json.loads(path.read_bytes())
+
+
+def save(name, value):
+    descriptor = os.open(
+        BASE / name,
+        os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+        0o600,
+    )
+    with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    descriptor = os.open((BASE / name).parent, os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+@contextmanager
+def locked():
+    physical_directory(BASE)
+    descriptor = os.open(
+        BASE / "lifecycle.lock",
+        os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_CLOEXEC,
+        0o600,
+    )
+    try:
+        entry = os.fstat(descriptor)
+        assert stat.S_ISREG(entry.st_mode) and entry.st_uid == 0 and entry.st_nlink == 1
+        assert stat.S_IMODE(entry.st_mode) == 0o600
+        fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        yield
+    finally:
+        os.close(descriptor)
+
+
+def mounts():
+    return [
+        line.split()
+        for line in Path("/proc/mounts").read_text().splitlines()
+        if len(line.split()) >= 4 and line.split()[1] == str(PRIVATE_HOME)
+    ]
+
+
+def require_mount():
+    physical_directory(PRIVATE_HOME)
+    table = mounts()
+    assert len(table) == 1 and table[0][0] == LABEL and table[0][2] == "tmpfs"
+    assert {"rw", "nosuid", "nodev", "mode=700"} <= set(table[0][3].split(","))
+
+
+def no_codex_parent():
+    expected = EXE.resolve(strict=True)
+    for process in Path("/proc").iterdir():
+        if not process.name.isdecimal():
+            continue
+        try:
+            executable = (process / "exe").resolve(strict=True)
+            argv = (process / "cmdline").read_bytes().split(b"\0")
+        except FileNotFoundError:
+            continue
+        assert executable != expected and str(EXE).encode() not in argv, "Codex parent still live."
+        assert str(BASE / "pilot.py").encode() not in argv, "Fixture host still live."
+
+
+def stopped(ready):
+    host = load("host-exit.json")
+    assert (
+        host["status"] == "terminal" and type(host["exit_code"]) is int and host["exit_code"] >= 0
+    )
+    assert host["ready_sha256"] == READY_SHA
+    no_codex_parent()
+    owner = load("private-owner.json")
+    assert (
+        set(owner) == {"project_id", "admin_token"} and owner["project_id"] == ready["project_id"]
+    )
+    assert (BASE / "core/agentsync.db").is_file()
+    output = BASE / "terminal-run"
+    plans = sorted(output.glob("launch-*-plan.json"))
+    assert len(plans) <= 1
+    assert {path.name for path in plans} <= {"launch-1-plan.json"}
+    assert {path.name for path in output.glob("launch-*-approved.json")} <= {
+        path.name.replace("-plan.json", "-approved.json") for path in plans
+    }
+    observations = []
+    if not plans:
+        return observations
+    assert (BASE / "receipts").is_dir()
+    relay = ControlledRelay(Core(BASE / "core"), BASE, BASE / "receipts")
+    for plan_path in plans:
+        plan = load(plan_path.relative_to(BASE))
+        task = plan["task"]
+        assert task["project_id"] == owner["project_id"] and plan["client"] == "codex"
+        approved_path = plan_path.with_name(plan_path.name.replace("-plan.json", "-approved.json"))
+        approved = approved_path.exists()
+        if approved:
+            assert load(approved_path.relative_to(BASE)) == {"plan_sha256": plan["plan_sha256"]}
+        first, second = relay.owner_inspect_attempts(
+            owner["project_id"], task["task_id"], admin_token=owner["admin_token"]
+        )
+        assert second.state == "not_dispatched"
+        startup_not_admitted = False
+        if first.state != "not_dispatched":
+            assert first.state == "terminal_recorded" and first.client == "codex"
+            assert first.session_sha256 == digest(task["session_id"])
+            assert first.admission is not None
+            if first.parent_ended is True:
+                assert approved and type(first.exit_code) is int
+                assert first.admission.state == "both_reservations_recorded"
+                assert first.admission.plan_sha256 == plan["plan_sha256"]
+            else:
+                assert first.status == "unknown" and first.exit_code is None
+                assert first.error_code in {"factory_timeout", "launch_not_authorized"}
+                assert first.admission.state == "not_recorded"
+                assert first.admission.plan_sha256 is None
+                request_key = digest(
+                    [
+                        task["project_id"],
+                        task["session_id"],
+                        task["task_id"],
+                        task["request_id"],
+                    ]
+                )
+                consent_key = digest("terminal-launch-" + plan_path.name.split("-")[1])
+                # These are the exact receipt names used by the pinned example/factory.
+                assert relay._receipt_store.read(f"launch-{request_key}.json", durable=True) is None
+                assert (
+                    relay._receipt_store.read(f"consent-{consent_key}.json", durable=True) is None
+                )
+                startup_not_admitted = True
+        observations.append(
+            {
+                "task_id": task["task_id"],
+                "approved": approved,
+                "state": first.state,
+                "status": first.status,
+                "error_code": first.error_code,
+                "admission_state": first.admission.state if first.admission else None,
+                "startup_not_admitted": startup_not_admitted,
+                "unknown_result_preserved": first.status == "unknown",
+                "parent_ended": first.parent_ended,
+                "exit_code": first.exit_code,
+            }
+        )
+    assert len({row["task_id"] for row in observations}) == len(observations)
+    return observations
+
+
+def main():
+    global READY_SHA
+    assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+    assert sys.flags.isolated and sys.dont_write_bytecode
+    assert Path(__file__).resolve() == BASE / "auth_home.py"
+    assert len(sys.argv) == 3 and sys.argv[1] in ("mount", "cleanup")
+    READY_SHA = sys.argv[2]
+    assert re.fullmatch(r"[0-9a-f]{64}", READY_SHA)
+    os.umask(0o077)
+    with locked():
+        ready = load("ready.json")
+        assert hashlib.sha256((BASE / "ready.json").read_bytes()).hexdigest() == READY_SHA
+        assert all(hashlib.sha256((BASE / name).read_bytes()).hexdigest() == expected
+                   for name, expected in ready["helper_sha256"].items())
+        grant = load("owner-grant.json")
+        grant_sha = hashlib.sha256((BASE / "owner-grant.json").read_bytes()).hexdigest()
+        physical_directory(PRIVATE_HOME)
+        action = sys.argv[1]
+        if action == "mount":
+            assert grant["authorized"] is True and grant["temporary_auth_copy_authorized"] is True
+            assert grant["ready_sha256"] == READY_SHA and grant["plan_sha256"] == ready["plan_sha256"]
+            assert grant["max_subscription_calls"] == 1 and grant["max_candidate_executions"] == 0
+            assert type(grant["max_subscription_calls"]) is type(grant["max_candidate_executions"]) is int
+            assert time.time() < grant["expires_at"]
+            assert not mounts() and not any(PRIVATE_HOME.iterdir())
+            assert not any(
+                os.path.lexists(BASE / name)
+                for name in (
+                    "terminal-run",
+                    "auth-mount-intent.json",
+                    "auth-mount-result.json",
+                    "auth-cleanup-intent.json",
+                    "auth-cleanup-result.json",
+                )
+            )
+            observations = []
+        else:
+            mounted = load("auth-mount-result.json")
+            assert mounted["status"] == "mounted" and mounted["owner_grant_sha256"] == grant_sha
+            assert not os.path.lexists(BASE / "auth-cleanup-result.json")
+            require_mount()
+            observations = stopped(ready)
+        save(
+            f"auth-{action}-intent.json",
+            {
+                "ready_sha256": READY_SHA,
+                "action": action,
+                "recorded_at": datetime.now(UTC).isoformat(),
+                "attempts": observations,
+                "owner_grant_sha256": grant_sha,
+            },
+        )
+        result = {"status": "unknown", "ready_sha256": READY_SHA, "action": action, "owner_grant_sha256": grant_sha}
+        try:
+            if action == "mount":
+                subprocess.run(
+                    [
+                        "/bin/mount",
+                        "-t",
+                        "tmpfs",
+                        "-o",
+                        "size=64m,mode=700,nodev,nosuid",
+                        LABEL,
+                        str(PRIVATE_HOME),
+                    ],
+                    check=True,
+                    capture_output=True,
+                    timeout=10,
+                )
+                require_mount()
+                assert not any(PRIVATE_HOME.iterdir())
+                result["status"] = "mounted"
+            else:
+                entry = PRIVATE_HOME / "auth.json"
+                if os.path.lexists(entry):
+                    info = entry.lstat()
+                    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and info.st_nlink == 1
+                    assert stat.S_IMODE(info.st_mode) == 0o600
+                    entry.unlink()
+                assert not os.path.lexists(entry)
+                subprocess.run(
+                    ["/bin/umount", str(PRIVATE_HOME)],
+                    check=True,
+                    capture_output=True,
+                    timeout=10,
+                )
+                assert not mounts() and not any(PRIVATE_HOME.iterdir())
+                result.update(
+                    status="cleaned",
+                    temporary_auth_absent=True,
+                    home_unmounted=True,
+                    private_home_empty=True,
+                    attempts=observations,
+                )
+        except Exception as error:
+            result["error_type"] = type(error).__name__
+            raise
+        finally:
+            save(f"auth-{action}-result.json", result)
+    print(json.dumps(result))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        print(
+            json.dumps({"status": "stopped", "error_type": type(error).__name__}),
+            file=sys.stderr,
+        )
+        raise SystemExit(1) from None

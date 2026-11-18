@@ -71,6 +71,15 @@ def _worker(row: Any) -> MockWorkflowWorker:
     return MockWorkflowWorker(label=row["label"], capabilities=tuple(capabilities))
 
 
+def read_workflow_document() -> Any:
+    raw = sys.stdin.buffer.read(_MAX_INPUT_BYTES + 1)
+    if len(raw) > _MAX_INPUT_BYTES:
+        raise ValueError("Workflow input is too large.")
+    return json.loads(
+        raw.decode("utf-8"), object_pairs_hook=_unique_members, parse_constant=_invalid_constant
+    )
+
+
 async def _decompose(document: Any) -> tuple[MockWorkflowTask, ...]:
     if type(document) is not dict or document.keys() != {"goal", "mock_response", "task_options"}:
         raise ValueError("Invalid Mock decomposition fields.")
@@ -137,14 +146,7 @@ def _error(code: str, message: str) -> int:
 
 def run_mock_workflow_cli(scratch_parent: Path) -> int:
     try:
-        raw = sys.stdin.buffer.read(_MAX_INPUT_BYTES + 1)
-        if len(raw) > _MAX_INPUT_BYTES:
-            raise ValueError("Workflow input is too large.")
-        payload = json.loads(
-            raw.decode("utf-8"),
-            object_pairs_hook=_unique_members,
-            parse_constant=_invalid_constant,
-        )
+        payload = read_workflow_document()
         if (
             type(payload) is not dict
             or len(payload.keys() & {"tasks", "decomposition"}) != 1

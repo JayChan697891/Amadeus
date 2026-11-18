@@ -1,0 +1,74 @@
+{
+  "runtime_implementation_sha": "193d9b26d41d533d33a4bd3736e21ff8588ee0c9",
+  "delivery_source_sha": "0712899da9c0305127cb495c6cbc4976da56ea44",
+  "post_implementation_diff": "one traceability test count changed from12 to14; runtime and staging tests byte-identical",
+  "source_initial": {
+    "passed": 179,
+    "failed": 1,
+    "skipped": 1,
+    "skip": "Windows lacks POSIX FIFO fixture",
+    "failure": "traceability count assertion; corrected and rerun"
+  },
+  "affected_source_recheck": {
+    "passed": 92,
+    "failed": 0,
+    "skipped": 0
+  },
+  "installed_staging_at_193d9b2": {
+    "windows_passed": 32,
+    "linux_passed": 32,
+    "failed": 0,
+    "skipped": 0,
+    "runtime_modules_matched_before_after": 87,
+    "wheel_sha256": "5774cffbb23691843ecf46031e7255941fe3c1d821d879d572d170db904f0400"
+  },
+  "delivery_package_at_0712899": {
+    "windows_traceability_passed": 92,
+    "failed": 0,
+    "runtime_modules_matched_before_after": 87,
+    "all_package_runtime_members_identical_to_tested_wheel": true,
+    "runtime_members_compared": 88,
+    "staging_suite_rerun": "NOT RUN: runtime and staging tests identical; affected traceability suite rerun",
+    "linux_new_artifact_install": "NOT RUN; earlier installed artifact/runtime equivalence explicitly recorded"
+  },
+  "independent_review": "Scoped source/package/evidence acceptance: 193d9b2 implementation and Windows/Linux staging tests; 0712899 count-only correction, 88 identical runtime members, 92 source and installed traceability checks. Formal Work/Release acceptance remains separate.",
+  "real_client_calls": 0,
+  "candidate_code_execution": false,
+  "source_workspace_apply": false,
+  "formal_release": "BLOCKED",
+  "full_matrix": "NOT RUN",
+  "cross_client": "NOT RUN: no Claude/Cursor subscription",
+  "evidence_sha256": {
+    "development-results.json": "fea0eb30f355b87fcc9874736ce9f69bcfb023a3be9028b9bd95ffe75e69eeac",
+    "final-package-origin.json": "1363b51f09e96ee85f91b5e2bc326518b4f18c42fa2ac83b4c368e593217cc2d",
+    "final-package-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "final-package-traceability.log": "3df2e4615a615deab8fefe3035d095d907d3bf8cea1e04c58d27bfc38aec8b3e",
+    "final-package-traceability.xml": "1298f1aa1d3b8e9e74fb51f30c588deb69ff7b2477ee209f00735bcb62018f2b",
+    "format.log": "f3d437855524ffe710e7bfa432d4edbaf1a57273ae1ec109620a976355f52ae0",
+    "linux-origin.json": "64502724260f000cb9b4800b7526c60058bd7ce499e0e2263c7b56822e0be496",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-staging.log": "25a9cedf9cf80cc7006a3bf4ef11cb9109bc5510dc0337d7045fbab41d92bcae",
+    "linux-staging.xml": "307ac9803f6f326ce7a0ca9cbcc8e2552ada5558cdc516bcc14c454256d607d9",
+    "mypy.log": "e5e2f5ad00c77c77911b70e177d9653cd94b6f1b3f5cf2ec0ef3ae641b33f7f0",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "runtime-files.json": "c1bdecc8f091142c0c8472ee2fcc20df4d342d27f4919978cc3bd88527bbfbbf",
+    "source-initial.log": "2eaf7603c56e69864a15f298efe73dc22afe0311bd5e0cdcb08bb73e1b02b050",
+    "source-initial.xml": "930f6268ea7d3b484feeee535be5abf7544233346d350b5e323614b4d4c5e9b6",
+    "traceability.log": "5d3c78938dae2fb503a0cc659509fc717352a084380425e93997f61d04aa25d1",
+    "traceability.xml": "5b9b7a10c01dc776ba7770caa52d3dcece42a96dff6d8395c5c0fa40c48377e6",
+    "vm-stop.log": "fa86c64d6cc4aadef23c6d618083973b0df85f6eb9fd897036574cf6ee024d82",
+    "windows-origin.json": "c53d1edf3b9d65b55df79b4b6f601c27e1d6635574db2b2ccf209c60b3ffda55",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-staging.log": "d4ff0d2978614ad0dd145015375c10b9766353e1cb277f2a5fd25858ae915f1b",
+    "windows-staging.xml": "d073983f9911a0b0a71ea57191cb687ae5f740c12f49b43d175b665f17a33c2c",
+    "build.py.txt": "b17a85e376b2bd080ef0d8214bf89b128445afd0779772a861a9ec9e4b078f83",
+    "linux-installed.py.txt": "2243d58c5e9f9e904f622a96a66cab6a5123a32c8bc61e5f240d2d273c4c27d4",
+    "run-linux.sh.txt": "2fb1351f0ed91dd523f51279d126974b794e74855d3304c15a64b93c1fc8eb7e",
+    "test-installed.py.txt": "a28f04c0499591c1fa490ba4f92d2d67b2edab051188ef1fbe9e5410c09f38cf"
+  },
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m6-staging-0712899/agentsync_local-0.3.0a109-py3-none-any.whl": "fdcde994b26c036991c435f483af2fda8dee2a48c38150a30c2debf8ad7b67e2",
+    "releases/0.3.0a109/m6-staging-0712899/agentsync_local-0.3.0a109.tar.gz": "4844c6a25e1f6000be7bf048690cfb746117c8b372a5b54efb1a64f1c1b86742",
+    "releases/0.3.0a109/m6-staging-193d9b2/agentsync_local-0.3.0a109-py3-none-any.whl": "5774cffbb23691843ecf46031e7255941fe3c1d821d879d572d170db904f0400"
+  }
+}

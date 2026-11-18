@@ -1,6 +1,16 @@
 # Compatibility matrix
 
-## Current staged evidence (2026-10-20)
+## Current evidence boundaries
+
+Runtime09425da has a continuous installed Linux Codex0.167.0-alpha.3.2 producer/
+receiver example with explicit host approvals, actual Docker8/8, independent Core
+verification and normal reopen without relaunch. The source-only review remains
+unverified. See [current client matrix](acceptance/CLIENT-MATRIX.md) and
+[current report](acceptance/RELEASE-ACCEPTANCE-REPORT.md) for exact scope and local
+platform/package results. Claude/Cursor actual clients remain NOT RUN; historical
+macOS results below do not certify the current runtime. GitHub Actions are not used.
+
+## Historical staged evidence (2026-10-20)
 
 PR14 at f1f13ded297b32dbd04c2b414c35deb1c45c6837 passed all9 OS/Python matrix
 jobs (Windows/Linux/macOS x3.11/3.12/3.14). Each actual source/wheel/sdist suite has

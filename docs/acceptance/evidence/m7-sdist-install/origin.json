@@ -1,0 +1,13 @@
+{
+  "product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "source_distribution_sha256": "f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_package_members_matched_before_after": 88,
+  "runtime_python_modules": 87,
+  "source_shadowing": false,
+  "origin": "D:\\agentsync-debug\\m7-sdist-6017005\\installed\\Lib\\site-packages\\agentsync",
+  "exit_code": 0,
+  "model_calls": 0,
+  "candidate_execution": false,
+  "formal_release": "BLOCKED"
+}

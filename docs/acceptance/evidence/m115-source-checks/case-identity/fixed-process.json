@@ -1,0 +1,18 @@
+{
+  "started_at": "2026-11-14T04:39:14.127904+00:00",
+  "command": [
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-c",
+    "import pytest;raise SystemExit(pytest.main(['-c', 'D:\\\\agentsync-debug\\\\m115-case-identity\\\\pytest.ini', '-p', 'no:cacheprovider', '--junitxml', 'D:\\\\agentsync-debug\\\\m115-case-identity\\\\fixed-junit.xml', '--basetemp', 'D:\\\\agentsync-debug\\\\m115-case-identity\\\\pytest-tmp', 'D:\\\\agentsync-debug\\\\m115-case-identity\\\\tests\\\\unit\\\\test_release_acceptance.py::test_redaction_is_stable_when_evidence_is_processed_again']))"
+  ],
+  "scope": "Existing six redaction regression cases; only explicit test labels changed",
+  "inputs": {
+    "tests/unit/test_release_acceptance.py": "41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df",
+    "tools/release_acceptance.py": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd"
+  },
+  "exit_code": 0,
+  "finished_at": "2026-11-14T04:39:14.632503+00:00",
+  "log_sha256": "17c28b0de14bd689fdd2e3a6fe3af516159fbb5a525165f261eceda1d126833a"
+}

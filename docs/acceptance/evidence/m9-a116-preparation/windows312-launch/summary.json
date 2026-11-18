@@ -1,0 +1,35 @@
+{
+  "scope": "started_local_collection_not_acceptance",
+  "frozen_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "tree_sha": "bbf15d9550443fe7af03c4a36c17859b0f7a21d9",
+  "source_snapshot_sha256": "39a7a7c1ce713c6b46d78d358a244bc6d82918375fc0718b10f58ecb21371d82",
+  "source_paths": 3122,
+  "version": "0.3.0a116",
+  "source": "D:/agentsync-debug/m116/s",
+  "run_root": "D:/agentsync-debug/m116/windows-312",
+  "native_session_id": 85611,
+  "pid": 2804,
+  "started_at": "2026-11-15T05:12:00.678883+00:00",
+  "status_at_checkpoint": "RUNNING",
+  "source_pytest": "RUNNING",
+  "wheel_suite": "NOT RUN",
+  "sdist_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "no_automatic_retry": true,
+  "macos": "NOT RUN: owner has no environment",
+  "github_branch_upload": "624b36c confirmed by git ls-remote",
+  "pr_feedback": "NOT VERIFIED: connector transport failed; unauthenticated API fallback returned404",
+  "recovery": "Observe the existing process, original receipt and result.json. Do not launch another collector or restart on observation timeout. On completion inspect all checks, JUnit and strict evidence verification before the next row.",
+  "artifacts": [
+    {
+      "path": "attempt.json",
+      "sha256": "bf07e857ed6595b0f48c682de3d6610397ca6175a0f575d097d5ff18fa976883",
+      "size": 736
+    },
+    {
+      "path": "collect.py.txt",
+      "sha256": "a1af179deea1e2f6980b2b9e96453a10592321b6654c8a7d0234d139795e422a",
+      "size": 5337
+    }
+  ]
+}

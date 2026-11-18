@@ -1,0 +1,182 @@
+"""Cleanup only after the wrapper and actual pilot child are terminal, including exit 1."""
+
+import hashlib
+import json
+import shlex
+import stat
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+REMOTE = "/root/amadeus-document-continuation-a123-20261118"
+PYTHON = "/root/amadeus-continuation-entry-a123-20261118/w/bin/python"
+READY = "df59b0b464adaa8776404859a35dff222793c7dec04f57148d40d779be5b6181"
+PLAN = "cd60e58deaf267a243da9350a3751e64ff100bd6236ccf8dc0a4270c036b0240"
+AUTH = Path("C:/Users/JayChan/.codex/auth.json")
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open("x", encoding="utf8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def main():
+    terminal = json.loads((BASE / "launch-result.json").read_bytes())
+    assert (
+        terminal["status"] == "terminal"
+        and type(terminal["exit_code"]) is int
+        and terminal["exit_code"] >= 0
+    )
+    assert terminal["ready_sha256"] == READY and terminal["plan_sha256"] == PLAN
+    grant_raw = (BASE / "owner-grant.json").read_bytes()
+    grant = json.loads(grant_raw)
+    assert terminal["owner_grant_sha256"] == sha(grant_raw)
+    assert all(
+        sha((BASE / name).read_bytes()) == digest
+        for name, digest in grant["host_helper_sha256"].items()
+    )
+    receiver_terminal = None
+    if (BASE / "terminal-intent.json").exists():
+        receiver_terminal = json.loads((BASE / "terminal-result.json").read_bytes())
+        assert receiver_terminal["status"] == "terminal"
+        assert type(receiver_terminal["exit_code"]) is int and receiver_terminal["exit_code"] >= 0
+        assert receiver_terminal["ready_sha256"] == READY
+        assert receiver_terminal["owner_grant_sha256"] == sha(grant_raw)
+        assert receiver_terminal["continuation_command_sha256"] == sha(
+            (BASE / "continue-command.json").read_bytes()
+        )
+    original = json.loads((BASE / "private/auth-setup.json").read_bytes())["original_sha256"]
+    assert isinstance(original, str) and sha(AUTH.read_bytes()) == original
+    save(
+        "finish-intent.json",
+        {
+            "status": "unknown",
+            "ready_sha256": READY,
+            "owner_grant_sha256": sha(grant_raw),
+            "pilot_exit_code": terminal["exit_code"],
+            "recorded_at": datetime.now(UTC).isoformat(),
+            "automatic_retry": False,
+        },
+    )
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    result = {
+        "status": "unknown",
+        "ready_sha256": READY,
+        "model_calls": 0,
+        "automatic_retry": False,
+    }
+    try:
+        client.connect(
+            "127.0.0.1",
+            port=22222,
+            username="root",
+            key_filename="D:/agentsync-debug/vm/debug_ed25519",
+            look_for_keys=False,
+            allow_agent=False,
+            timeout=15,
+        )
+
+        def read(sftp, name):
+            path = REMOTE + "/" + name
+            info = sftp.lstat(path)
+            assert (
+                stat.S_ISREG(info.st_mode)
+                and info.st_uid == 0
+                and stat.S_IMODE(info.st_mode) == 0o600
+                and info.st_size <= 262144
+            )
+            with sftp.open(path, "rb") as stream:
+                raw = stream.read(262145)
+            assert len(raw) == info.st_size
+            return raw
+
+        with client.open_sftp() as sftp:
+            assert (
+                read(sftp, "owner-grant.json") == grant_raw
+                and sha(read(sftp, "ready.json")) == READY
+            )
+            assert sha(read(sftp, "auth_home.py")) == grant["helper_sha256"]["auth_home.py"]
+            assert (
+                sha(read(sftp, "native_host.py")) == grant["host_helper_sha256"]["native_host.py"]
+            )
+            host_raw = read(sftp, "host-exit.json")
+            host = json.loads(host_raw)
+            assert host["status"] == "terminal" and host["exit_code"] == terminal["exit_code"]
+            assert (
+                host["ready_sha256"] == READY
+                and host["plan_sha256"] == PLAN
+                and host["owner_grant_sha256"] == sha(grant_raw)
+            )
+            expected = [PYTHON, "-I", "-B", REMOTE + "/pilot.py", "run", READY, PLAN]
+            assert host["argv"] == expected
+            if receiver_terminal is not None:
+                receiver_host = json.loads(read(sftp, "receiver-host-exit.json"))
+                assert receiver_host["status"] == "terminal"
+                for field in (
+                    "exit_code",
+                    "ready_sha256",
+                    "owner_grant_sha256",
+                    "continuation_command_sha256",
+                ):
+                    assert receiver_host[field] == receiver_terminal[field]
+                continuation = json.loads(read(sftp, "continue-command.json"))
+                assert (
+                    receiver_host["argv"] == receiver_terminal["command"] == continuation["command"]
+                )
+                assert (
+                    sha(read(sftp, "continue-command.json"))
+                    == receiver_terminal["continuation_command_sha256"]
+                )
+
+        command = " ".join(
+            map(shlex.quote, [PYTHON, "-I", "-B", REMOTE + "/auth_home.py", "cleanup", READY])
+        )
+        _, out, err = client.exec_command(command)
+        raw, errors = out.read(65537), err.read(65537)
+        code = out.channel.recv_exit_status()
+        assert len(raw) + len(errors) <= 65536
+        for name, data in (("stdout", raw), ("stderr", errors)):
+            with (BASE / ("finish." + name + ".private")).open("xb") as stream:
+                stream.write(data)
+        result["cleanup_exit_code"] = code
+        assert code == 0
+        clean = json.loads(raw)
+        assert (
+            clean["status"] == "cleaned"
+            and clean["ready_sha256"] == READY
+            and clean["owner_grant_sha256"] == sha(grant_raw)
+        )
+        assert (
+            clean["temporary_auth_absent"] is True
+            and clean["home_unmounted"] is True
+            and clean["private_home_empty"] is True
+        )
+        assert sha(AUTH.read_bytes()) == original
+        result.update(
+            status="cleaned", original_unchanged=True, cleanup=clean, host_exit_sha256=sha(host_raw)
+        )
+    except Exception as error:
+        result["error_type"] = type(error).__name__
+        raise
+    finally:
+        save("finish-result.json", result)
+        client.close()
+    print(json.dumps(result))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        raise SystemExit(
+            "Cleanup stopped: " + type(error).__name__ + "; inspect without retry."
+        ) from None

@@ -1,0 +1,18 @@
+{
+  "requested_at": "2026-11-15T15:14:26.291400+00:00",
+  "purpose": "Normal poweroff of owned dedicated local test VM after all native tasks ended; preserve disks and fixtures",
+  "vm_pid": 24664,
+  "vm_creation_utc": "2026-11-15T14:41:23.0762330Z",
+  "preflight": {
+    "active_python_or_codex": [],
+    "containers": [],
+    "temporary_auth_absent": true,
+    "private_home_empty": true,
+    "home_unmounted": true,
+    "boot_id": "86f98cbb-008d-4408-8886-2801a58f096e"
+  },
+  "shutdown_command": "/sbin/poweroff",
+  "process_force_kill": false,
+  "initial_preflight": "First host check aborted before SSH because parsed timestamp string omitted a trailing zero; corrected to exact UTC tick equality, with same executable and command line. No shutdown occurred in that check.",
+  "ssh_shutdown_exit_code": 0
+}

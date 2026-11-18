@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-11-16T23:52:13.895723+00:00",
+  "pid": 4028,
+  "method": "QMP system_powerdown",
+  "replies": [
+    {
+      "command": "qmp_capabilities",
+      "accepted": true
+    },
+    {
+      "command": "system_powerdown",
+      "accepted": true
+    }
+  ]
+}

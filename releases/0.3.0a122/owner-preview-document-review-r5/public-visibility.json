@@ -1,0 +1,14 @@
+{
+  "repository": "JayChan697891/Amadeus",
+  "url": "https://github.com/JayChan697891/Amadeus",
+  "private": false,
+  "visibility": "public",
+  "actions_enabled": false,
+  "main_sha_unchanged": "68588d5016678a001ae9d199a9201669988d2b50",
+  "release_url": "https://github.com/JayChan697891/Amadeus/releases/tag/v0.3.0a122-preview-r5",
+  "prerelease": true,
+  "anonymous_repository_and_release_access": true,
+  "anonymous_zip_download_bytes": 341993,
+  "anonymous_zip_sha256": "cf5c6125e56ec94ce12ff7a2aa36b4a97975240fcce1405569e3461ba1ee2e2c",
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\sdist-8fiton3b\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m115-r2\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-resume-20261113\\reports\\release-20261113T234539Z-90510b71d108",
+    "started_at": "2026-11-14T00:28:46.372049+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "fail",
+    "command": [
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\sdist-8fiton3b\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m115-r2\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-resume-20261113\\reports\\release-20261113T234539Z-90510b71d108",
+    "exit_code": 1,
+    "started_at": "2026-11-14T00:28:46.372049+00:00",
+    "finished_at": "2026-11-14T01:11:11.314530+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "a86e00451feb25902626a2589dd4ac7042a613374cd29b3b92d8c940e4f0fed2",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

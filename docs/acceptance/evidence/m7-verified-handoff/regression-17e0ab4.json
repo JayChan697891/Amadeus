@@ -1,0 +1,81 @@
+{
+  "product_sha": "17e0ab41c84c6ac9ebf5e371013cdbcf12e065d8",
+  "status": "PASS within stated local integration scope",
+  "scope": "Trusted host composition: new protocol-fixture producer, exact staging/execution/completion decisions, real local Docker proof, independent Core verified completion, then dependent fixture receiver; safe reopen only after verified source.",
+  "linux": {
+    "python": "3.14.7",
+    "passed": 24,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new_flow_cases": 7,
+    "elapsed_seconds": 52.33
+  },
+  "first_run": {
+    "product_sha": "6db02e5fa2d5adda25cbc25e86ae557d8d5d7eab",
+    "passed": 21,
+    "failed": 2,
+    "elapsed_seconds": 51.08,
+    "cause": "Fixture reused one single-use launch approval ID; existing admission correctly refused the receiver with attempt_already_reserved.",
+    "fix": "Unique per-plan fixture approval IDs; no admission rule changed.",
+    "raw_files_retained_privately": {
+      "linux-first.log": "8f5786723bee5fc594242d3dcbd71d15f15397f7947e3e117c2487e37ca1b914",
+      "linux-first.xml": "e6d00b85102fad8730e77028c1115a6fd461a945f9aa7c007733fcb2d07bd802"
+    },
+    "published_failure_records": "Fixture representations redacted; actual assertions, failures and source retained."
+  },
+  "additional_fix": "Explicit overall deadline checks after synchronous work and approvals, inherited producer deadline and remaining receiver budget; controlled-clock regression prevents staging after deadline. Preserve non-passing execution assessment instead of converting unknown to failed.",
+  "runtime_package_members_matched_before_after": 90,
+  "runtime_python_modules": 89,
+  "source_shadowing": false,
+  "static": {
+    "ruff_files": 2,
+    "format_files": 2,
+    "mypy_modules": 89,
+    "status": "PASS"
+  },
+  "actual_docker_executions": 6,
+  "docker_passed_cases": 4,
+  "expected_wrong_result_cases": 2,
+  "independent_verified_task_proofs": 3,
+  "recorded_containers_absent": true,
+  "real_model_calls": 0,
+  "protocol_boundary": "Owned Python JSONL emitter; not Codex model evidence",
+  "candidate_application": false,
+  "github_actions_used": false,
+  "artifact": {
+    "path": "releases/0.3.0a109/m7-verified-17e0ab4/agentsync_local-0.3.0a109-py3-none-any.whl",
+    "sha256": "01e37eb3627c3a9c8e20194e8d34a6f442d4645445fb55bc1d4bdc52946b3fa8",
+    "kind": "wheel built offline from frozen wheel inputs; no sdist claim"
+  },
+  "not_run": [
+    "continuous real-model producer/verifier/receiver chain for this module",
+    "new full regression matrix",
+    "new Windows/macOS integration and sdist installation",
+    "Claude/Cursor real clients (no owner subscription)",
+    "interrupted unknown execution recovery"
+  ],
+  "independent_review": "Historical regression results retained; later source review found receiver precheck budget gap, fixed in09425da. Not final product acceptance.",
+  "formal_release": "BLOCKED",
+  "evidence_sha256": {
+    "config.json": "1dd568dccfc1431c66978dae505a742fd2cfa8dd9bc3a829678742531fd8c0f7",
+    "build.log": "66b95f3cf8474ae5b4df92db42e43b134305ccea51c5aebe661c6cfa2250f4cb",
+    "linux-install.log": "2381176791ce85a31b7538fe4f67404c9eaa8b96e1fe445746291f4c416cedd8",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-installed.log": "7e3539ec681561355db0e4ae047c524197b5d7013a6ed2579b34f7bd3b41182a",
+    "linux-installed.xml": "bc5f37bfee43d9a8d534145b74a1749b5be73365bf045b0a9d1bfaf439fb090b",
+    "linux-origin.json": "9e35b44a4994ad9c2a3731b5bcea4f613b6ed6ee16d9beadce64b5af3ae01202",
+    "docker-observation.json": "806d9fb510deafa3cf93465d212fa11a0e824d0e72a85573290715054673d39d",
+    "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "format.log": "3bc53bf3e981a98a34a852e175bf9b77af841edea74fca595d9aedcbaf9a4938",
+    "mypy.log": "1c13773bc21d8ae3a759614f3a828d16af7aa66d04f93c4daeeb51d5d6be16c1",
+    "test-installed.py.txt": "96f1311d76565c464999ae82f2590f73312cec82999612a3cdecb6567c1c9b96",
+    "run-linux.sh.txt": "ff619692d987d0b0a043e988a06ceeb1e40901231c4d27ca36a7cddc332e29ab",
+    "observe-docker.py.txt": "d920de10538b6eddeb09b0a264c05068d60e74838c3437d6fff22b02037cb395",
+    "build-wheel.py.txt": "81bc9f03303cccce691f2af987e0e7d11dc01d652b7f0edc4c529c96f4919799",
+    "first-origin.json": "bb3bf8c129f1c5bab6fbd53f9d1b50361650f85bda31dbf869d2b7d089406bdb",
+    "first-receipt-observation.log": "8e514b7632a36d42e44344bf5263d1c306ef6f8852ec8f8e56ec70ac95d84d2c",
+    "linux-first-sanitized.log": "8813e0d4b002cc4a29c54022ca48fd935bae8ee21799069e51ef4bd56b8cd060",
+    "linux-first-sanitized.xml": "15fa8a0b05deac274efa6b575e3957ed6cb58f3c80b2ebdcb299eec5561dd789"
+  }
+}

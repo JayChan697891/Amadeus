@@ -1,0 +1,10 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 9 items / 9 deselected / 0 selected
+
+- generated xml file: D:\agentsync-debug\m123-terminal-continuation\first-green\junit.xml -
+============================ 9 deselected in 1.30s ============================

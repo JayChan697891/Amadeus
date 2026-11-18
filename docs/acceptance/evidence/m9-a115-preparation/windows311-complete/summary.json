@@ -1,0 +1,77 @@
+{
+  "at": "2026-11-14T10:40:19.487519+00:00",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Complete Windows/Python3.11 local component row; not full matrix or Release acceptance",
+  "report": "releases/0.3.0a115/b6f05f0/windows-311/report.json",
+  "report_sha256": "8b7e5d0f3959b19b5dc8f25f6c2dd90624c8b7c43b62af0e6fb649ccbaa07b75",
+  "transfer_summary_sha256": "a0d54fa66b68bb1c5f1c456ad3935529dbab048d0d633d72b5fd868d1eefee11",
+  "actual_checks_passed": 26,
+  "suites": {
+    "pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 56
+    },
+    "wheel_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 56
+    },
+    "sdist_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 56
+    }
+  },
+  "source_files_verified": 2083,
+  "installed_archive_sha256": {
+    "wheel": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "sdist": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+  },
+  "unique_case_ids_per_suite": 2482,
+  "originals_preserved": true,
+  "derived_label_changes_per_suite": 6,
+  "report_manifest_artifacts": 72,
+  "transferred_files_verified": 78,
+  "delta_review": {
+    "mode": "Direct strict artifact and case-delta inspection; no additional independent Release review claimed",
+    "reference": "linux-314/report.json",
+    "per_suite": {
+      "junit.xml": {
+        "unique_cases": 2482,
+        "windows_skips_passed_on_linux": 56,
+        "linux_skips_passed_on_windows": 6,
+        "remaining_both_pass": 2420
+      },
+      "wheel-junit.xml": {
+        "unique_cases": 2482,
+        "windows_skips_passed_on_linux": 56,
+        "linux_skips_passed_on_windows": 6,
+        "remaining_both_pass": 2420
+      },
+      "sdist-junit.xml": {
+        "unique_cases": 2482,
+        "windows_skips_passed_on_linux": 56,
+        "linux_skips_passed_on_windows": 6,
+        "remaining_both_pass": 2420
+      }
+    },
+    "scope": "Observed platform skip differences; no OS/Python row or real-client requirement waived"
+  },
+  "row_terminal": "2026-11-14T10:38:34.940502+00:00",
+  "queue_terminal": "2026-11-14T10:38:36.216809+00:00",
+  "row_exit_code": 0,
+  "raw_xml_uploaded": false,
+  "helper_sha256": "0280be23a0af6768bf1c5a4e354557e8e5c1a67dcfcd95f5463a1c3ded4e3762",
+  "next": {
+    "windows": "windows-314 actual row22928 started10:38:37 UTC; canonical windows312 wheel followup pending until queue success",
+    "linux": "linux-312 source passed; wheel running"
+  },
+  "matrix_snapshot": "releases/0.3.0a115/b6f05f0/matrix-after-windows311.json",
+  "remaining_os_python_combinations": 6,
+  "local_matrix": "incomplete",
+  "formal_release": "BLOCKED"
+}

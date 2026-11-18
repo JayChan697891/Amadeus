@@ -1,0 +1,84 @@
+{
+  "at": "2026-11-15T12:40:59.916347+00:00",
+  "error_type": "AssertionError",
+  "checks": [
+    {
+      "id": "build_sdist",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\strategy-demo\\node-a-lead-20261115T1015\\builder\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "build",
+        "--sdist",
+        "--no-isolation",
+        "--outdir",
+        "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\dist"
+      ],
+      "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+      "exit_code": 0,
+      "started_at": "2026-11-15T12:40:52.440452+00:00",
+      "finished_at": "2026-11-15T12:40:56.727764+00:00",
+      "log": "logs/build_sdist.log",
+      "log_sha256": "c5d618d5e368f8f06a92c8a2c52ae48a523fd1bf6b359271e1e8c837dc937d33",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "editable_venv",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\editable-env"
+      ],
+      "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+      "exit_code": 0,
+      "started_at": "2026-11-15T12:40:56.818357+00:00",
+      "finished_at": "2026-11-15T12:40:59.328575+00:00",
+      "log": "logs/editable_venv.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "editable_dependencies",
+      "status": "fail",
+      "command": [
+        "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\editable-env\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--only-binary=:all:",
+        "--find-links",
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-wheelhouse",
+        "-r",
+        "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source\\requirements-lock.txt",
+        "setuptools==82.0.1",
+        "wheel==0.46.3",
+        "pytest==9.1.1",
+        "pytest-asyncio==1.4.0",
+        "httpx==0.28.1"
+      ],
+      "cwd": "D:\\agentsync-debug\\strategy-demo\\a117-sdist-r1\\source",
+      "exit_code": 1,
+      "started_at": "2026-11-15T12:40:59.329820+00:00",
+      "finished_at": "2026-11-15T12:40:59.914837+00:00",
+      "log": "logs/editable_dependencies.log",
+      "log_sha256": "522cf941b13ced32e6cc76ac1e640a1a417368a88c192e6a2ac967c66549c04d",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "automatic_retry": false
+}

@@ -1,0 +1,2 @@
+D:/agentsync-debug/continuation-verified-20261116/frozen-src/src
+import site, sys; sys.dont_write_bytecode = True; site.addsitedir('D:/agentsync-debug/m118p/w/Lib/site-packages')

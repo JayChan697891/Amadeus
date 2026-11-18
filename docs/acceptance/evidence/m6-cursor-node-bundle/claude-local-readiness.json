@@ -1,0 +1,8 @@
+{
+  "settings.json": {
+    "exists": false
+  },
+  ".credentials.json": {
+    "exists": false
+  }
+}

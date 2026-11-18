@@ -1,0 +1,52 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib\nimport importlib.metadata\nimport json\nimport sys\nfrom pathlib import Path\n\nimport agentsync\n\ninstall, archive, manifest = map(Path, sys.argv[1:4])\nexpected_hash, version = sys.argv[4:6]\nassert sys.version_info[:2] == (3, 12)\nassert Path(sys.prefix).resolve() == install.resolve()\nassert agentsync.__version__ == version\ndist = importlib.metadata.distribution(\"agentsync-local\")\nassert dist.version == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve().as_uri()\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == expected_hash\nassert \"dir_info\" not in direct\nassert hashlib.sha256(archive.read_bytes()).hexdigest() == expected_hash\nsite = Path(dist.locate_file(\"\")).resolve()\norigin = Path(agentsync.__file__).resolve()\nassert site.is_relative_to(install.resolve())\nassert origin == site / \"agentsync\" / \"__init__.py\"\nexpected = json.loads(manifest.read_bytes())\nassert len(expected) == 97\nactual = {\n    file.relative_to(site).as_posix(): hashlib.sha256(file.read_bytes()).hexdigest()\n    for file in (site / \"agentsync\").rglob(\"*\")\n    if file.is_file() and \"__pycache__\" not in file.parts\n}\nassert actual == expected\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"sdist_sha256\": expected_hash}))\n",
+      "D:\\agentsync-debug\\m117w\\e",
+      "D:\\agentsync-debug\\m117w\\agentsync_local-0.3.0a117.tar.gz",
+      "D:\\agentsync-debug\\m117w\\runtime-members.json",
+      "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+      "0.3.0a117"
+    ],
+    "cwd": "D:\\agentsync-debug\\m117w\\run",
+    "started_at": "2026-11-15T13:51:30.518202+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_origin_before",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib\nimport importlib.metadata\nimport json\nimport sys\nfrom pathlib import Path\n\nimport agentsync\n\ninstall, archive, manifest = map(Path, sys.argv[1:4])\nexpected_hash, version = sys.argv[4:6]\nassert sys.version_info[:2] == (3, 12)\nassert Path(sys.prefix).resolve() == install.resolve()\nassert agentsync.__version__ == version\ndist = importlib.metadata.distribution(\"agentsync-local\")\nassert dist.version == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve().as_uri()\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == expected_hash\nassert \"dir_info\" not in direct\nassert hashlib.sha256(archive.read_bytes()).hexdigest() == expected_hash\nsite = Path(dist.locate_file(\"\")).resolve()\norigin = Path(agentsync.__file__).resolve()\nassert site.is_relative_to(install.resolve())\nassert origin == site / \"agentsync\" / \"__init__.py\"\nexpected = json.loads(manifest.read_bytes())\nassert len(expected) == 97\nactual = {\n    file.relative_to(site).as_posix(): hashlib.sha256(file.read_bytes()).hexdigest()\n    for file in (site / \"agentsync\").rglob(\"*\")\n    if file.is_file() and \"__pycache__\" not in file.parts\n}\nassert actual == expected\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"sdist_sha256\": expected_hash}))\n",
+      "D:\\agentsync-debug\\m117w\\e",
+      "D:\\agentsync-debug\\m117w\\agentsync_local-0.3.0a117.tar.gz",
+      "D:\\agentsync-debug\\m117w\\runtime-members.json",
+      "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+      "0.3.0a117"
+    ],
+    "cwd": "D:\\agentsync-debug\\m117w\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-15T13:51:30.518202+00:00",
+    "finished_at": "2026-11-15T13:51:30.652972+00:00",
+    "log": "logs/sdist_origin_before.log",
+    "log_sha256": "b87447a52e964bed31a8d36d0ed95992d8f98a690143dd22a0d53fb709aa4df6",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

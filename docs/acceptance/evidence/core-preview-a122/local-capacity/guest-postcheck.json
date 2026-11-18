@@ -1,0 +1,29 @@
+{
+  "boot_id": "228e8b97-acd1-4b2c-a09b-4244303ab5f8",
+  "free_bytes": 31108015104,
+  "filesystem_bytes": 64312465408,
+  "workers": [],
+  "containers": [],
+  "runtime_members_per_install": 97,
+  "results": {
+    "/root/amadeus-m122fulll/run/result.json": "d5b9543bb48e008bc355380fbb412c0484a1c40a5b12877ced9dad854cabc9af",
+    "/root/amadeus-m122licenses/run/result.json": "3f55f991d5a7f107228d66cf034f5c212eab92faf349c837797d61a43e64ac5b"
+  },
+  "disk_layout": {
+    "vda2": {
+      "size": "2048",
+      "start": "237568"
+    },
+    "vda3": {
+      "size": "133978079",
+      "start": "239616"
+    },
+    "vda1": {
+      "size": "235520",
+      "start": "2048"
+    },
+    "vda": {
+      "size": "134217728"
+    }
+  }
+}

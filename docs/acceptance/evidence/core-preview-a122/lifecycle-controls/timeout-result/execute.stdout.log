@@ -1,0 +1,1 @@
+{"status": "SCOPED_PASS", "mode": "timeout", "exit_observation_sha256": "b31c5448b561e711b3cd25027d2f6be96e2f624e079af97740ea7572a14c7c44", "actual_error_code": "adapter_timeout", "retry_allowed": false, "server_cancel_verified": false, "core_completion": false, "formal_release": "BLOCKED"}

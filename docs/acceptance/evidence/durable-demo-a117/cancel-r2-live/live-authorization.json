@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-11-15T15:08:55.784533+00:00",
+  "request_id": "call_1533becba04b4bd09b15fd3716fee972",
+  "owner_answer": "\u5141\u8bb8\u8fd9\u4e00\u6b21\u9a8c\u8bc1\u53ca\u4e34\u65f6\u590d\u5236\u6e05\u7406\uff0c\u786e\u8ba4\u65e0\u989d\u5916\u4ed8\u8d39",
+  "plan_sha256": "dd41631c2e2bab21f6f272b9402af9f922ef73556910a3969fc0ac8adbc63fd9",
+  "max_model_calls": 1,
+  "existing_subscription_only": true,
+  "owner_confirmed_zero_credits_and_auto_recharge_off": true,
+  "api_key_allowed": false,
+  "temporary_copy_scope": "Only the exact newly approved R2 private-home/auth.json tmpfs copy; remove after owned process terminal, original unchanged",
+  "retry_on_failure_unknown_or_missed_window": false
+}

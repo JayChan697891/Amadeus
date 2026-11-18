@@ -1,0 +1,5 @@
+{
+  "utc": "2026-11-17T14:21:21.384830+00:00",
+  "command": "env -i PATH=/usr/bin:/bin HOME=/root/amadeus-m122licenses /root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122licenses/collect.py",
+  "driver_sha256": "8291409b4842e056b7e62f8a1b5311d1e1b2017e46b51c1dbc2afd90e0b98422"
+}

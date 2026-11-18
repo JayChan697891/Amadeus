@@ -1,0 +1,75 @@
+"""One offline helper/Core check group on the unchanged installed a123 wheel."""
+import hashlib
+import json
+import os
+import sys
+import sysconfig
+import zipfile
+from pathlib import Path
+
+import agentsync
+
+BASE = Path('/root/amadeus-document-continuation-offline-a123-20261118')
+SOURCE = Path('/root/amadeus-continuation-entry-a123-20261118/s')
+INSTALL = SOURCE.parent / 'w'
+RUN, TEMP, INPUTS = (BASE / name for name in ('run', 't', 'inputs'))
+
+def sha(path):
+    with path.open('rb') as f: return hashlib.file_digest(f,'sha256').hexdigest()
+
+def save(path,value):
+    with path.open('x',encoding='utf-8') as f:json.dump(value,f,indent=2)
+
+assert sys.platform=='linux' and sys.version_info[:3]==(3,14,7) and sys.flags.isolated and sys.dont_write_bytecode
+assert len(sys.argv)==2 and sha(BASE/'offline-inputs.json')==sys.argv[1]
+meta=json.loads((BASE/'offline-inputs.json').read_bytes())
+assert sha(BASE/'offline-inputs.zip')==meta['archive_sha256']
+assert not Path('/root/amadeus-document-continuation-a123-20261118').exists()
+for path in (RUN,TEMP,INPUTS):path.mkdir()
+(RUN/'logs').mkdir()
+with zipfile.ZipFile(BASE/'offline-inputs.zip') as z:
+    assert set(z.namelist())==set(meta['files'])
+    for name,row in meta['files'].items():
+        assert Path(name).name==name
+        data=z.read(name)
+        assert len(data)==row['size'] and hashlib.sha256(data).hexdigest()==row['sha256']
+        with (INPUTS/name).open('xb') as f:f.write(data)
+members=json.loads((INPUTS/'runtime-members.json').read_bytes())
+site=Path(sysconfig.get_path('purelib')).resolve()
+assert Path(sys.prefix).resolve()==INSTALL and Path(agentsync.__file__).resolve()==site/'agentsync/__init__.py'
+assert agentsync.__version__=='0.3.0a123'
+assert sha(SOURCE.parent/'source-manifest.json')==meta['fixture_manifest_sha256']
+source_manifest=json.loads((SOURCE.parent/'source-manifest.json').read_bytes())
+def verify():
+    assert len(members)==97 and {p.relative_to(site).as_posix():sha(p) for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}==members
+    assert all((INPUTS/name).stat().st_size==row['size'] and sha(INPUTS/name)==row['sha256'] for name,row in meta['files'].items())
+    assert all((SOURCE/name).stat().st_size==row['size'] and sha(SOURCE/name)==row['sha256'] for name,row in source_manifest.items())
+verify()
+for key in tuple(os.environ):
+    if key.upper().startswith(('PYTHON','PYTEST','PIP_','AGENTSYNC_','OPENAI_','CODEX_','ANTHROPIC_','CLAUDE_','CURSOR_','GIT_')):os.environ.pop(key)
+os.environ.update(HOME=str(TEMP),TMPDIR=str(TEMP),TEMP=str(TEMP),TMP=str(TEMP),PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1',GIT_CONFIG_GLOBAL='/dev/null',GIT_CONFIG_NOSYSTEM='1',GIT_TERMINAL_PROMPT='0')
+sys.path.insert(0,str(SOURCE))
+from tools import release_acceptance as collector
+result={'status':'fail','scope':'Offline owned-handle checks, cleanup mocks, and one actual Core/local Python checkpoint interruption; no models/accounts/mount/candidate','runtime_origin':agentsync.__file__,'runtime_members':97,'source_manifest_sha256':meta['fixture_manifest_sha256'],'inputs_sha256':sys.argv[1],'automatic_retry':False}
+save(RUN/'start.json',result)
+raw=TEMP/'raw-junit.xml'
+try:
+    command=[sys.executable,'-I','-B','-m','pytest','-c',str(SOURCE/'pyproject.toml'),'-q','-p','no:cacheprovider','--tb=short','--basetemp',str(TEMP/'pytest'),'--junitxml',str(raw),*(str(INPUTS/name) for name in ('test_interrupt_parent.py','test_auth_home.py','test_checkpoint_gate_core.py'))]
+    check=collector.execute('offline_helpers',command,INPUTS,RUN,TEMP,capture_stdout=RUN/'stdout.private')
+    result['check']=check
+    result['status']='pass' if check['status']=='pass' and check['exit_code']==0 else 'fail'
+finally:
+    if raw.is_file():
+        result['credential_redactions']=collector.persist_junit(raw,RUN/'junit.xml')
+        result['junit_counts']=collector.junit_counts(RUN/'junit.xml')
+        result['junit_sha256']=sha(RUN/'junit.xml')
+    stdout=RUN/'stdout.private'
+    if stdout.is_file():
+        clean,count=collector.redact_credentials(stdout.read_text(errors='replace'))
+        with (RUN/'stdout.log').open('x') as f:f.write(clean)
+        result['stdout_redactions']=count
+    verify()
+    result['inputs_runtime_source_unchanged']=True
+    save(RUN/'result.json',result)
+print(json.dumps({'status':result['status'],'counts':result.get('junit_counts')}))
+raise SystemExit(0 if result['status']=='pass' else 1)

@@ -1,0 +1,27 @@
+{
+  "scope": "offline source compile, actual file provenance and synthetic guards only",
+  "status": "PREPARED",
+  "native_probe": "NOT RUN",
+  "model_calls": 0,
+  "probe_sha256": "040bece7b966aa2460e9b3d3c41aabf1ec3305620dc1f40548820a34ffe46f13",
+  "helper_sha256": "59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6",
+  "binary_sha256": "dce685d569526ef4712fa82d20ff20e1309baad5fcd34215e1126698f611242f",
+  "rpc_allowlist": [
+    "initialize",
+    "initialized",
+    "mcpServer/tool/call",
+    "mcpServerStatus/list",
+    "thread/start"
+  ],
+  "synthetic_inference_method_denied_before_process_access": true,
+  "synthetic_review_tool_denied_before_process_access": true,
+  "synthetic_handoff_audit_null_post_version_and_secret_rejection": true,
+  "private_traceback_handlers_without_locals": 2,
+  "installed_runtime": {
+    "version": "0.3.0a121",
+    "commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+    "runtime_members": 97,
+    "wheel_sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71",
+    "runtime_members_sha256": "d51bb40232073acf69b4c9748eac2ffd674404c767dcbee8ab67ab237d88dea6"
+  }
+}

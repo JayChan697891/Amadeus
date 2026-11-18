@@ -1,0 +1,128 @@
+{
+  "scope": "Root inspection of original Windows3.11 editable-source full suite; independent review remains separate",
+  "observed_at": "2026-11-18T04:44:55.507617+00:00",
+  "native_session": 51949,
+  "native_terminal_chunk": "4669bf",
+  "native_exit_code": 0,
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "started_at": "2026-11-18T03:59:40.778386+00:00",
+  "finished_at": "2026-11-18T04:44:43.850816+00:00",
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "baseline_windows311_wheel_sha256": "cbf0e565d1f7329085c5d8482facc249702c1c85ea1ec29c5f18bc5830a84820",
+  "outcome_differences": {},
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 6,
+    "POSIX FIFO metadata fixture requires Linux": 1,
+    "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+    "Actual reconciliation requires an explicitly configured local Linux image": 5,
+    "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+    "Proposal execution requires an explicitly pinned local Linux Docker image": 14,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\w122311s\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\w122311s\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\w122311s\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\w122311s\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+    "Requires Linux/POSIX fork": 1,
+    "This host cannot create the actual symlink fixture": 2,
+    "FIFO fixture requires os.mkfifo": 1,
+    "Local symlink creation unavailable": 2,
+    "Local FIFO creation unavailable": 1,
+    "Creating directory symlinks requires unavailable host privileges": 1
+  },
+  "source_files_rechecked": 3992,
+  "original_source_files_rechecked": 3992,
+  "runtime_members_rechecked": 97,
+  "original_inputs_rechecked": true,
+  "copied_original_files": {
+    "attempt.json": {
+      "bytes": 1465,
+      "sha256": "f0eb89cb2ff77ff3b23dcbd72428065fee72f836fb6475e8d0f3f5d88f3e0838"
+    },
+    "logs/pytest.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/pytest.process.json": {
+      "bytes": 1704,
+      "sha256": "e673efa86789f433e89623deb6fa05b554029d6ee1ab362e691ad445b1a6fa71"
+    },
+    "logs/source_editable_install.log": {
+      "bytes": 1148,
+      "sha256": "4e12d47a92c206bd03b51c99b6037a792593b35115c3f913573f91e84075c842"
+    },
+    "logs/source_editable_install.process.json": {
+      "bytes": 1749,
+      "sha256": "79111b9614d7bf8d535624d7de5bb7fa445c91b1a0558a67b7ea96497d5b5312"
+    },
+    "logs/source_offline_dependencies.log": {
+      "bytes": 8007,
+      "sha256": "065ae491d80cb524c77d08af3da6013bafb7c1f14733066abf7e1cd1375c7ec0"
+    },
+    "logs/source_offline_dependencies.process.json": {
+      "bytes": 2251,
+      "sha256": "195457917db8dda886542d049f96f81db15f67b5347049fbaecd589bda628efb"
+    },
+    "logs/source_origin_after.log": {
+      "bytes": 300,
+      "sha256": "dab7e178bd9797f2f0b9b8e6ab590de30cfe414f43fc2d6f32087fb74341e263"
+    },
+    "logs/source_origin_after.process.json": {
+      "bytes": 4671,
+      "sha256": "283fb2c9da3ce363e6da0fd2cbb160d0fafd40a4be18f015b219c8e56235d632"
+    },
+    "logs/source_origin_before.log": {
+      "bytes": 300,
+      "sha256": "dab7e178bd9797f2f0b9b8e6ab590de30cfe414f43fc2d6f32087fb74341e263"
+    },
+    "logs/source_origin_before.process.json": {
+      "bytes": 4674,
+      "sha256": "a4abaa18ad3421f822b690722c358c27e23139a5b5cc0cdde564da3c2229c396"
+    },
+    "logs/source_pip_check.log": {
+      "bytes": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    "logs/source_pip_check.process.json": {
+      "bytes": 1212,
+      "sha256": "a9a7964f7c444250ac8a7a03498906113876fa7e62eccb6391efa2969292cdc8"
+    },
+    "logs/source_pytest.stdout.log": {
+      "bytes": 18606,
+      "sha256": "c5cbdf8f9af163631e87c2a80a3ce4a7028ee05a6de6b4b1f2150ae22a7765fe"
+    },
+    "logs/source_venv.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/source_venv.process.json": {
+      "bytes": 1313,
+      "sha256": "1ed1a7f4b8c2e8b6f53b28268118db27c4cd748c5d2c8e337cffbc37f9998f4a"
+    },
+    "offline-wheelhouse.json": {
+      "bytes": 10131,
+      "sha256": "4a2c5b245a9b98b19df4884864f6e5bbd55473c6aa3518236c965b4cd2769386"
+    },
+    "pytest-start.json": {
+      "bytes": 1087,
+      "sha256": "20564499e57ee95e0237f100ad6eab6b368174035c3898a7be24dfb920dcaba6"
+    },
+    "result.json": {
+      "bytes": 11835,
+      "sha256": "66abd3d4d53b248e6149bec33d339c4a42f18d7fa7ccab73e9718b02a9d858f3"
+    },
+    "source-junit.xml": {
+      "bytes": 409638,
+      "sha256": "a1b447a07970bc93641a029be3abe5a2d6a0462319f8de755d3eb3450ee819bb"
+    }
+  },
+  "raw_local_only": [
+    "t/source-junit.xml",
+    "t/source-pytest-stdout.raw.log"
+  ],
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN in this suite",
+  "status": "ROOT SCOPED CHECKS PASS; INDEPENDENT REVIEW PENDING"
+}

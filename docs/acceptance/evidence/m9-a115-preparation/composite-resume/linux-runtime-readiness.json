@@ -1,0 +1,96 @@
+{
+  "at": "2026-11-14T07:57:29.488742+00:00",
+  "checks": [
+    {
+      "command": "test -z \"$(docker ps -aq)\"",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "modprobe nbd max_part=8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "test ! -e /sys/block/nbd0/pid",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "test -d /root/amadeus-minor-volume && test -z \"$(ls -A /root/amadeus-minor-volume)\"",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "nbd-client 10.0.2.2 22224 /dev/nbd0",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "test \"$(blockdev --getro /dev/nbd0)\" = 1",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "blkid /dev/nbd0",
+      "exit_code": 0,
+      "stdout": "/dev/nbd0: LABEL=\"AMADEUS_MINORS\" UUID=\"5446a2fa-e37e-4fce-a930-7cc32a42efb2\" BLOCK_SIZE=\"4096\" TYPE=\"ext4\"\n",
+      "stderr": ""
+    },
+    {
+      "command": "mount -t ext4 -o ro,noload,nosuid,nodev /dev/nbd0 /root/amadeus-minor-volume",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "mount | grep amadeus-minor-volume",
+      "exit_code": 0,
+      "stdout": "/dev/nbd0 on /root/amadeus-minor-volume type ext4 (ro,nosuid,nodev,relatime,norecovery)\n",
+      "stderr": ""
+    },
+    {
+      "command": "/root/amadeus-minor-volume/work/venv-3.11/bin/python --version",
+      "exit_code": 0,
+      "stdout": "Python 3.11.18\n",
+      "stderr": ""
+    },
+    {
+      "command": "/root/amadeus-minor-volume/work/venv-3.12/bin/python --version",
+      "exit_code": 0,
+      "stdout": "Python 3.12.16\n",
+      "stderr": ""
+    },
+    {
+      "command": "git -C /root/amadeus-m115-r3/s rev-parse HEAD",
+      "exit_code": 0,
+      "stdout": "b6f05f0473591dc568be25591047fdea963ef86c\n",
+      "stderr": ""
+    },
+    {
+      "command": "git -C /root/amadeus-m115-r3/s status --porcelain",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": "/root/jobs-env/bin/python --version",
+      "exit_code": 0,
+      "stdout": "Python 3.14.7\n",
+      "stderr": ""
+    },
+    {
+      "command": "docker ps -aq",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "tests_started": false
+}

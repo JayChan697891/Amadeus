@@ -1,0 +1,22 @@
+{
+  "at": "2026-11-14T00:30:21.814745+00:00",
+  "commit_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "scope": "Completed full Windows 3.12 installed wheel suite only",
+  "source_case_ids_and_outcomes_match": true,
+  "unique_cases": 2461,
+  "counts": {
+    "pass": 2405,
+    "failure": 0,
+    "error": 0,
+    "skipped": 56
+  },
+  "process_receipt_sha256": "70c67747e5c94a02309bf6c7c7cb83ebc6e49cf72ce03cb38c4c9d681ba9256a",
+  "log_sha256": "7675855415f42805888c396a12165822ca3f76a48c82928bd616d922af42fbc7",
+  "junit_sha256": "678438df4c5d30e37106ff0c885eb6049868ec709d9e5ca6d17309510449efad",
+  "finished_at": "2026-11-14T00:28:30.878758+00:00",
+  "sdist_status": "started",
+  "sdist_started_at": "2026-11-14T00:28:46.372049+00:00",
+  "collector_session": 49009,
+  "continuation_session": 8990,
+  "formal_release": "BLOCKED"
+}

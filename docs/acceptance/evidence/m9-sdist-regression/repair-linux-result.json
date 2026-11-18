@@ -1,0 +1,13 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "test_source_sha": "9fb36a10a18755be116cc2564a42450c453a9524",
+  "sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "scope": "Two modified test modules rerun from a fresh frozen sdist; full case collection reconciles with retained c262 results; no models or Actions",
+  "started_at": "2026-11-13T07:21:00.430111+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "platform": "linux",
+  "status": "running",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED"
+}

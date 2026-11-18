@@ -1,0 +1,14 @@
+{
+  "stage": "continue-once",
+  "started_at": "2026-11-16T08:38:58.947785+00:00",
+  "observer_pid": 2560,
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-interrupted-a117-r2-20261116/live.py continue-once e7a366ae1e5af31343a69aa70b43a792dc8258360108452ea467a08300253d41",
+  "automatic_retry": false,
+  "remote_exec_requested": false,
+  "log_bytes": {
+    "stdout": 0,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "observing"
+}

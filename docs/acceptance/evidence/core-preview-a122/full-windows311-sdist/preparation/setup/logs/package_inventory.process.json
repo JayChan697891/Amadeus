@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "package_inventory",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m122win311\\d\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "import importlib.metadata as m,json;print(json.dumps(sorted((d.metadata['Name'],d.version) for d in m.distributions())))"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122win311-sdist-preparation\\setup",
+    "started_at": "2026-11-18T03:18:37.005173+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "package_inventory",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m122win311\\d\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "import importlib.metadata as m,json;print(json.dumps(sorted((d.metadata['Name'],d.version) for d in m.distributions())))"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122win311-sdist-preparation\\setup",
+    "exit_code": 0,
+    "started_at": "2026-11-18T03:18:37.005173+00:00",
+    "finished_at": "2026-11-18T03:18:37.150899+00:00",
+    "log": "logs/package_inventory.log",
+    "log_sha256": "309f3bb6b980ec4b44083210b0db62ba6a8dbbb8012458abcb519019065e7563",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

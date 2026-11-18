@@ -1,0 +1,59 @@
+{
+  "scope": "Frozen a122 Windows3.11.15 sdist full preparation only; pytest NOT RUN",
+  "status": "INSTALL_READY_DRIVER_BASELINE_UNBOUND",
+  "product_test_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_files": 3992,
+  "runtime_members": 97,
+  "driver": "D:\\agentsync-debug\\w122311d\\run-sdist.py",
+  "driver_sha256": "822187baefef30f1f324cdcaf2e208adc5cf9ff48be1ef8cc713995e45b01684",
+  "parent_driver": "D:\\agentsync-debug\\m122fullwd\\run-sdist.py",
+  "parent_driver_sha256": "5dce546c6a60f4c7bca04f2f0ba61f5cc003bc81d1e1d0fbb8ab7cf5b121d99e",
+  "snapshot_sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6",
+  "manifest_sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78",
+  "members_sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+  "wheel_sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+  "sdist_sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f",
+  "python": "3.11.15",
+  "offline_wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-wheelhouse",
+  "full_timeout_seconds": 7200,
+  "full_pytest": "NOT RUN",
+  "wheel_active_environment97_unchanged": true,
+  "automatic_retry": false,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "install": "D:\\agentsync-debug\\m122win311\\d",
+  "argv": [
+    "D:\\agentsync-debug\\m122win311\\d\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\w122311d\\run-sdist.py"
+  ],
+  "setup_native": {
+    "initial_chunk": "9c6210",
+    "session": 77176,
+    "terminal_chunk": "f6a650",
+    "exit_code": 0,
+    "checks": 6
+  },
+  "setup_result_sha256": "6a48e86fcd9965ac6b6106593803f422e94c0b16341346787ea07697d9bb03a3",
+  "setup_driver_sha256": "6ad854c62d5a653e5a3077b64fba4caa14b8a823eb9531611ba91216edfc6a6e",
+  "origin": {
+    "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+    "version": "0.3.0a122",
+    "origin": "D:\\agentsync-debug\\m122win311\\d\\Lib\\site-packages\\agentsync\\__init__.py",
+    "runtime_members": 97,
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f",
+        "hashes": {
+          "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+        }
+      },
+      "url": "file:///D:/agentsync-debug/m122p/dist/agentsync_local-0.3.0a122.tar.gz"
+    }
+  },
+  "baseline": "D:\\agentsync-debug\\w122311\\run\\wheel-junit.xml",
+  "baseline_binding": "Explicit(None,None) and main refuses before any write; Root binds actual3.11 wheel size/hash after66521 terminalreview",
+  "driver_delta": "Short BASE/fresh d/3.11.15 scope; current3.11 baseline path plus fail-closed unbound guard. Original3checks/97/3992/7200/redaction remain"
+}

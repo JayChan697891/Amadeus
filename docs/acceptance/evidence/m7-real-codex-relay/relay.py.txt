@@ -1,0 +1,205 @@
+"""Private two-session read-only pilot; no authentication copying in this helper."""
+import asyncio
+from dataclasses import asdict
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+from agentsync.adapters.approved_launch import LaunchConsent
+from agentsync.adapters.codex_invocation import CodexHostProfile
+from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+
+BASE = Path(__file__).resolve().parent
+REPO = Path('F:/syuc/amadeus-m6-single')
+EXE = Path('C:/Users/JayChan/AppData/Local/OpenAI/Codex/bin/5449c1f0f26f1f98/codex.exe')
+FIRST_REPLY = 'AMADEUS_RELAY_FIRST_OK'
+SECOND_REPLY = 'AMADEUS_SHARED_CONTEXT_7A91'
+CONTEXT = 'The exact confirmation value is AMADEUS_SHARED_CONTEXT_7A91.'
+FIRST_INSTRUCTION = 'Reply exactly AMADEUS_RELAY_FIRST_OK. Do not use tools, access files or start other tasks.'
+SECOND_INSTRUCTION = 'Reply only with the exact confirmation value in the approved shared context below. Do not use tools, access files or start other tasks.'
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+
+def git(root, *args):
+    return subprocess.check_output(['git', '-C', str(root), *args], stderr=subprocess.PIPE).decode().strip()
+
+
+def sources():
+    return {str(p.relative_to(REPO)): sha(p) for p in sorted((REPO / 'src').rglob('*.py'))}
+
+
+def origin():
+    for name, module in tuple(sys.modules.items()):
+        if name == 'agentsync' or name.startswith('agentsync.'):
+            path = getattr(module, '__file__', None)
+            if not path or not Path(path).resolve().is_relative_to(REPO / 'src'):
+                raise RuntimeError('Unexpected runtime import origin.')
+
+
+def environment(index):
+    home = BASE / f'worker-{index}'
+    env = {n: os.environ[n] for n in ('SYSTEMROOT', 'SystemDrive', 'WINDIR', 'COMSPEC', 'PATHEXT') if n in os.environ}
+    env.update(PATH=str(Path(os.environ['SYSTEMROOT']) / 'System32'), CODEX_HOME=str(home / 'private-home'), USERPROFILE=str(home / 'profile'), APPDATA=str(home / 'profile/AppData/Roaming'), LOCALAPPDATA=str(home / 'profile/AppData/Local'), TEMP=str(home / 'tmp'), TMP=str(home / 'tmp'))
+    return env
+
+
+def actor(state, index, authority):
+    member, tree = state['members'][index], state['trees'][index]
+    profile = CodexHostProfile(state['owner']['project_id'], member['session_id'], EXE, Path(tree['path']), state['binary_sha256'], expected_cli_version='0.167.0-alpha.3.2', max_timeout_seconds=90, windows_mxc=True)
+    return RelayActor(member['agent_id'], member['session_token'], profile, tree['worktree_id'], tree['head_sha'], state['environments'][index], authority)
+
+
+def spec(state):
+    task, context = state['task'], state['context']
+    return RelayInput(task['id'], task['version'], context['context_id'], context['version'], hashlib.sha256(CONTEXT.encode()).hexdigest(), FIRST_INSTRUCTION, SECOND_INSTRUCTION, FIRST_REPLY, SECOND_REPLY, 90)
+
+
+async def deny(_review):
+    return None
+
+
+def intact(state):
+    for entry in state['fixtures']:
+        root = Path(entry['root'])
+        if sha(root / 'fixture.txt') != entry['sha256'] or git(root, 'rev-parse', 'HEAD') != entry['head'] or git(root, 'status', '--porcelain'):
+            return False
+    return sources() == state['source_hashes']
+
+
+def prepare():
+    origin()
+    if (BASE / 'state.json').exists() or (BASE / 'source').exists():
+        raise RuntimeError('Preserve existing prepared project.')
+    for name in ['source', 'receipts', *[f'worker-{i}/{part}' for i in range(2) for part in ('private-home', 'profile/AppData/Local', 'profile/AppData/Roaming', 'tmp')]]:
+        (BASE / name).mkdir(parents=True, exist_ok=False)
+    source = BASE / 'source'
+    git(source, 'init', '--initial-branch=fixture-main')
+    (source / 'fixture.txt').write_text('Isolated two-session relay fixture\n', encoding='utf-8')
+    git(source, 'add', 'fixture.txt')
+    git(source, '-c', 'user.name=Amadeus fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'Fixed relay baseline')
+    core = Core(BASE / 'core')
+    owner = core.execute('create_project', {'name': 'Two Codex fixed-text relay', 'root_path': str(source)})
+    members = []
+    for index in range(2):
+        member = core.execute('register_agent', {**owner, 'name': f'Codex worker {index}'})
+        current = next(x for x in core.execute_owner('list_members', {**owner, 'limit': 100, 'offset': 0})['members'] if x['agent_id'] == member['agent_id'])
+        core.execute_owner('set_agent_roles', {**owner, 'agent_id': member['agent_id'], 'roles': ['worker'], 'expected_version': current['version'], 'request_id': f'worker-role-{index}'})
+        members.append(member)
+    def call(index, operation, **payload):
+        m = members[index]
+        return core.execute(operation, {'project_id': owner['project_id'], 'session_id': m['session_id'], 'session_token': m['session_token'], **payload})
+    task = call(0, 'create_task', title='Two real Codex sessions with structured handoff', request_id='task')
+    context = call(0, 'publish_context', title='Fixed authorized context', kind='progress', content=CONTEXT, request_id='context')
+    snapshot = call(0, 'capture_repository', request_id='snapshot')
+    trees = [call(i, 'create_worktree', snapshot_id=snapshot['snapshot_id'], task_id=task['id'], request_id=f'worktree-{i}') for i in range(2)]
+    state = {'owner': owner, 'members': members, 'task': task, 'context': context, 'trees': trees, 'environments': [environment(i) for i in range(2)], 'source_hashes': sources(), 'binary_sha256': sha(EXE)}
+    state['fixtures'] = [{'root': str(p), 'sha256': sha(p / 'fixture.txt'), 'head': git(p, 'rev-parse', 'HEAD')} for p in [source, *[Path(t['path']) for t in trees]]]
+    relay = ControlledRelay(core, BASE, BASE / 'receipts')
+    plans = relay.preview_launches(actor(state, 0, deny), actor(state, 1, deny), spec(state), admin_token=owner['admin_token'])
+    state['plan_hashes'] = [p.plan_sha256 for p in plans]
+    save('state.json', state)  # Private synthetic Core credentials, never upload.
+    save('plan.json', {'product_sha': git(REPO, 'rev-parse', 'HEAD'), 'runtime_sha': 'ee456900fad6bb4cfc09cad0eecdc9ce1371ab74', 'binary_sha256': state['binary_sha256'], 'max_model_launches': 2, 'max_per_actor': 1, 'no_retry': True, 'timeout_per_actor_seconds': 90, 'authorization': 'Owner standing instruction to choose first approval within existing subscription/no-extra-fee constraints; no API keys or account changes', 'plans': [{'plan_sha256': p.plan_sha256, 'argv': p.plan.argv, 'cwd': str(p.plan.cwd), 'environment': p.plan.child_env()} for p in plans], 'raw_retention_limit_combined_bytes': 1048576, 'raw_retention': 'Private local only; no upload', 'credential_destinations': [str(BASE / f'worker-{i}/private-home/auth.json') for i in range(2)], 'model_requests': 0})
+    print(json.dumps({'prepared': True, 'plan_hashes': state['plan_hashes'], 'model_requests': 0}))
+
+
+async def execute():
+    origin()
+    state = json.loads((BASE / 'state.json').read_text(encoding='utf-8'))
+    if (BASE / 'attempt.json').exists():
+        raise RuntimeError('Possible previous start; no retry.')
+    if not intact(state) or sha(EXE) != state['binary_sha256']:
+        raise RuntimeError('Pinned fixtures, runtime or binary changed.')
+    grants = []
+    async def approve(review):
+        index = len(grants)
+        if index >= 2 or review.plan_sha256 != state['plan_hashes'][index]:
+            return None
+        grants.append(review.plan_sha256)
+        return LaunchConsent(f'owner-standing-two-codex-{index}', review.plan_sha256, time.time() + 120, True, True)
+    first, second = actor(state, 0, approve), actor(state, 1, approve)
+    relay = ControlledRelay(Core(BASE / 'core'), BASE, BASE / 'receipts')
+    plans = relay.preview_launches(first, second, spec(state), admin_token=state['owner']['admin_token'])
+    if [p.plan_sha256 for p in plans] != state['plan_hashes']:
+        raise RuntimeError('Prepared plans changed.')
+    routes = []
+    for review in plans:
+        config = [value for i, arg in enumerate(review.plan.argv) if arg == '-c' for value in ('-c', review.plan.argv[i + 1])]
+        r = subprocess.run([str(EXE), *config, 'login', 'status'], cwd=review.plan.cwd, env=review.plan.child_env(), capture_output=True, timeout=20)
+        routes.append(r.returncode == 0 and (r.stdout + r.stderr).decode('utf-8', errors='replace').strip() == 'Logged in using ChatGPT')
+    save('auth-route.json', {'recognized_chatgpt_routes': routes, 'model_requests': 0})
+    if routes != [True, True]:
+        raise RuntimeError('Subscription route not recognized; no model launch.')
+    real_start = CapturedProcess.start
+    descriptor = CapturedProcess.__dict__['start']
+    captures = []
+    started = []
+    async def observe_start(_cls, argv, **kwargs):
+        index = len(started)
+        if index >= 2:
+            raise RuntimeError('No additional process permitted.')
+        plan = plans[index].plan
+        if tuple(argv) != plan.argv or kwargs != {'cwd': plan.cwd, 'stdin_text': plan.stdin_text, 'timeout_seconds': plan.timeout_seconds, 'output_limit': plan.output_limit, 'env': plan.child_env()}:
+            raise RuntimeError('Actual launch differs from the approved plan.')
+        started.append(index)
+        capture = await real_start(argv, **kwargs)
+        captures.append((index, capture))
+        return capture
+    save('attempt.json', {'time_utc': datetime.now(timezone.utc).isoformat(), 'plan_hashes': state['plan_hashes'], 'max_calls': 2, 'no_retry': True})
+    outcome, error = None, None
+    CapturedProcess.start = classmethod(observe_start)
+    try:
+        outcome = asdict(await relay.run_once(first, second, spec(state), admin_token=state['owner']['admin_token']))
+    except AgentSyncError as exc:
+        error = exc.code
+    finally:
+        CapturedProcess.start = descriptor
+        metadata = []
+        remaining = 1048576
+        for index, capture in captures:
+            try:
+                async with asyncio.timeout(2):
+                    result = await capture.get_result()
+                size = len(result.stdout) + len(result.stderr)
+                item = {'index': index, 'parent_ended': result.snapshot.parent_ended, 'exit_code': result.snapshot.exit_code, 'saved': False}
+                if result.snapshot.parent_ended and size <= remaining:
+                    # Reserve before any write; partial files never refund bytes.
+                    remaining -= size
+                    directory = BASE / f'private-capture-{index}'
+                    directory.mkdir(exist_ok=False)
+                    for name, data in [('stdout', result.stdout), ('stderr', result.stderr)]:
+                        (directory / (name + '.bin')).write_bytes(data)
+                        item[name + '_bytes'] = len(data)
+                        item[name + '_sha256'] = hashlib.sha256(data).hexdigest()
+                    item.update(saved=True, stdout_truncated=result.snapshot.stdout_truncated, stderr_truncated=result.snapshot.stderr_truncated)
+                metadata.append(item)
+            except Exception:
+                metadata.append({'index': index, 'saved': False, 'reason': 'capture_unavailable'})
+        observed = relay.inspect_attempts(first, state['task']['id'], admin_token=state['owner']['admin_token'])
+        save('result.json', {'time_utc': datetime.now(timezone.utc).isoformat(), 'outcome': outcome, 'error_code': error, 'start_requests': len(started), 'captures_returned': len(captures), 'approved_plans': grants, 'attempts': [asdict(x) for x in observed], 'private_capture_metadata': metadata, 'source_worktrees_runtime_unchanged': intact(state), 'formal_release': 'BLOCKED', 'independent_review': 'pending'})
+    print(json.dumps({'outcome': outcome, 'error_code': error, 'start_requests': len(started)}))
+
+
+if __name__ == '__main__':
+    if sys.argv[1:] == ['prepare']:
+        prepare()
+    elif sys.argv[1:] == ['execute-once']:
+        asyncio.run(execute())
+    else:
+        raise SystemExit('Use prepare or explicitly authorized execute-once.')

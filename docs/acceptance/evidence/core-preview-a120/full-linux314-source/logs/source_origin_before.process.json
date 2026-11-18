@@ -1,0 +1,50 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "source_origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m120source/e/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys, sysconfig\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, checkout, members = map(Path, sys.argv[1:4])\nversion = sys.argv[4]\ncheckout = checkout.resolve(strict=True)\nsource = checkout / \"src\"\nassert sys.version_info[:3] == (3, 14, 7)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = Path(sysconfig.get_path(\"purelib\")).resolve()\nassert site.is_relative_to(install.resolve())\norigin = Path(agentsync.__file__).resolve()\nassert origin == source / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == source / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\nassert Path(dist.locate_file(\"\")).resolve() == site\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == checkout.as_uri()\nassert direct[\"dir_info\"][\"editable\"] is True and \"archive_info\" not in direct\nactual = {}\nfor path in (source / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(source).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+      "/root/amadeus-m120source/e",
+      "/root/amadeus-m120source/s",
+      "/root/amadeus-m120full/runtime-members.json",
+      "0.3.0a120"
+    ],
+    "cwd": "/root/amadeus-m120source/run",
+    "started_at": "2026-11-17T04:07:39.678436+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "source_origin_before",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m120source/e/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys, sysconfig\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, checkout, members = map(Path, sys.argv[1:4])\nversion = sys.argv[4]\ncheckout = checkout.resolve(strict=True)\nsource = checkout / \"src\"\nassert sys.version_info[:3] == (3, 14, 7)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = Path(sysconfig.get_path(\"purelib\")).resolve()\nassert site.is_relative_to(install.resolve())\norigin = Path(agentsync.__file__).resolve()\nassert origin == source / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == source / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\nassert Path(dist.locate_file(\"\")).resolve() == site\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == checkout.as_uri()\nassert direct[\"dir_info\"][\"editable\"] is True and \"archive_info\" not in direct\nactual = {}\nfor path in (source / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(source).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+      "/root/amadeus-m120source/e",
+      "/root/amadeus-m120source/s",
+      "/root/amadeus-m120full/runtime-members.json",
+      "0.3.0a120"
+    ],
+    "cwd": "/root/amadeus-m120source/run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T04:07:39.678436+00:00",
+    "finished_at": "2026-11-17T04:07:40.158958+00:00",
+    "log": "logs/source_origin_before.log",
+    "log_sha256": "44566428af2f680cefbba62b858ac5824374255afa945a32b783901e27eeb7f0",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

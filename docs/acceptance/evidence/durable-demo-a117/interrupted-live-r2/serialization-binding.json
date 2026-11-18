@@ -1,0 +1,16 @@
+{
+  "live-authorization.json": {
+    "guest_bytes": 1221,
+    "guest_sha256": "dae5b9e10f603cafe1201d6fc8e840be013e7d85b50017feca30792d68537cac",
+    "host_bytes": 1243,
+    "host_sha256": "65aa2d1f7cebe0bc4acb853b5010392d64521f28e6347e5f58fb531bf6c15eaf",
+    "json_values_equal": true
+  },
+  "receiver-decision.json": {
+    "guest_bytes": 235,
+    "guest_sha256": "218fa3f1317df2449801e76bd0f10fed7b55b73c66dd8c8260f736ef148f2c2c",
+    "host_bytes": 239,
+    "host_sha256": "e2f59ea3f1e05d0589d3471c8a1f42cdba8d5680693e5ff04b222c6c59f297b6",
+    "json_values_equal": true
+  }
+}

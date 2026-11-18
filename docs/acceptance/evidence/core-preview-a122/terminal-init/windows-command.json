@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:/agentsync-debug/initializer-windows-20261118/tmp",
+    "--junitxml",
+    "D:/agentsync-debug/initializer-windows-20261118/junit.xml",
+    "tests/integration/test_initialize_terminal_project.py"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "scope": "Windows rejection only; real Linux Git/permissions delegated"
+}

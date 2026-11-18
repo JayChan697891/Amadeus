@@ -1,0 +1,219 @@
+[
+  {
+    "package": "annotated-doc",
+    "version": "0.0.5",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "annotated-types",
+    "version": "0.8.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "anyio",
+    "version": "4.15.1",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "attrs",
+    "version": "26.1.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "cffi",
+    "version": "2.1.1",
+    "declared_license": "MIT-0",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "click",
+    "version": "8.5.0",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "cryptography",
+    "version": "50.0.2",
+    "declared_license": "Apache-2.0 OR BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "fastapi",
+    "version": "0.147.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "h11",
+    "version": "0.16.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "httpcore2",
+    "version": "2.15.1",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "httpx2",
+    "version": "2.15.1",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "idna",
+    "version": "3.20",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "jsonschema",
+    "version": "4.26.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "jsonschema-specifications",
+    "version": "2025.9.1",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "mcp",
+    "version": "2.3.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "mcp-types",
+    "version": "2.3.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "opentelemetry-api",
+    "version": "1.45.1",
+    "declared_license": "Apache-2.0",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "pycparser",
+    "version": "3.11",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "pydantic",
+    "version": "2.14.1",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "pydantic-core",
+    "version": "2.50.1",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "pyjwt",
+    "version": "2.15.1",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "python-multipart",
+    "version": "0.0.32",
+    "declared_license": "Apache-2.0",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "pywin32",
+    "version": "312",
+    "declared_license": "PSF",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "referencing",
+    "version": "0.37.0",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "rpds-py",
+    "version": "2026.9.1",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "sse-starlette",
+    "version": "3.5.0",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "starlette",
+    "version": "1.9.0",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "truststore",
+    "version": "0.10.5",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "typing-extensions",
+    "version": "4.16.0",
+    "declared_license": "PSF-2.0",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "typing-inspection",
+    "version": "0.4.4",
+    "declared_license": "MIT",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  },
+  {
+    "package": "uvicorn",
+    "version": "0.54.0",
+    "declared_license": "BSD-3-Clause",
+    "table_version_matches": true,
+    "table_declaration_matches": true
+  }
+]

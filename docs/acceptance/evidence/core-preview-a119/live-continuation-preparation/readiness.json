@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-11-16T14:14:16.403301+00:00",
+  "producer_plan_sha256": "9c23b8378bc2cca90f227136bef4d4cffa9f2804053ae3a157eb3d82fe8010b4",
+  "selection_sha256": "5703f39bbf4fce3e28154f0e865b3ed193021a37ed9d4d2bf0012cfc6d953c55",
+  "producer_online": true,
+  "receiver_online": true,
+  "private_home_empty": true,
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "live_authorization": "NOT GRANTED"
+}

@@ -1,0 +1,104 @@
+{
+  "archive": "Amadeus-owner-preview-a122.zip",
+  "sha256": "cf5c6125e56ec94ce12ff7a2aa36b4a97975240fcce1405569e3461ba1ee2e2c",
+  "bytes": 341993,
+  "archive_members": 11,
+  "crc_and_exact_payload_match": true,
+  "source_commit": "5f7d75af15532b04e0fe5da3cc48a69e2531086b",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "original_r4_unchanged": true,
+  "original_wheel_unchanged": true,
+  "unchanged_payload_from_r4": [
+    "agentsync_local-0.3.0a122-py3-none-any.whl",
+    "LICENSE",
+    "constraints-windows312.txt",
+    "examples/initialize_terminal_project.py",
+    "examples/recover_relay.py",
+    "examples/verified_codex_task.py"
+  ],
+  "document_review_entry_sha256": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+  "unchanged_terminal_entry_sha256": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d",
+  "targeted_checks": {
+    "scope": "8 actual local Core checks; deterministic confirmation, not native/client acceptance",
+    "native_chunk": "aedc41",
+    "native_exit_code": 0,
+    "passed": 8,
+    "receipt_sha256": "8294dbc7576c8f8b7eb74da5ef92c42b4dd0eb0d81f6b221e03af048f83659e9",
+    "junit_sha256": "7b6678e308c61aefdfe8ad5b7af6479e38a772a9426ab71cd8e49ed139a5d2d9"
+  },
+  "extracted_entry_help": {
+    "argv": [
+      "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m122ownerreview\\review_relay_document.py",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "ff984978252ecd91fdd57d98c8855f519060a07c36c483b59ce0e6c08b82b8cd",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "dependency_resolution_reused": "r4/r3 package-review; same original wheel and Windows312 constraints",
+  "install_repeated": false,
+  "full_suites_repeated": false,
+  "real_model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "manifest": {
+    "version": "0.3.0a122",
+    "scope": "limited owner preview",
+    "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+    "entry_commit": "a4f17c34acbef531b189eae9d05688a8714ac1bb",
+    "documentation_commit": "5f7d75af15532b04e0fe5da3cc48a69e2531086b",
+    "formal_release": "BLOCKED",
+    "default_demo": "simulation_only/unverified",
+    "files": {
+      "LICENSE": {
+        "bytes": 1079,
+        "sha256": "a34848c085a0b1a5b161e4a1122002e054ff35970f92fb78c0a33e6fd385c1f3"
+      },
+      "README.md": {
+        "bytes": 3603,
+        "sha256": "494c7146272b36536e08ee7eec24ec473f29a43a14cb501d7ac12bcf0c0e7d71"
+      },
+      "agentsync_local-0.3.0a122-py3-none-any.whl": {
+        "bytes": 328435,
+        "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+      },
+      "constraints-windows312.txt": {
+        "bytes": 757,
+        "sha256": "23ab8373bc4c65f971fa0b477ea083c0fec5667a51048c7535fca50c08e6a8b1"
+      },
+      "docs/VERIFIED-TASK-EXAMPLE.md": {
+        "bytes": 11132,
+        "sha256": "7a555456e1a5dedb4ee22e8d57d12ce1b883b0ac89b31a0d8130536624db53bc"
+      },
+      "examples/initialize_terminal_project.py": {
+        "bytes": 4528,
+        "sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d"
+      },
+      "examples/recover_relay.py": {
+        "bytes": 2979,
+        "sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9"
+      },
+      "examples/verified_codex_task.py": {
+        "bytes": 15545,
+        "sha256": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d"
+      },
+      "examples/review_relay_document.py": {
+        "bytes": 7362,
+        "sha256": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b"
+      }
+    },
+    "revision": "document-review-r5",
+    "previous_revision": "owner-preview-input-bounds-r4",
+    "document_review_entry_commit": "5f7d75af15532b04e0fe5da3cc48a69e2531086b",
+    "targeted_result_sha256": "8294dbc7576c8f8b7eb74da5ef92c42b4dd0eb0d81f6b221e03af048f83659e9",
+    "targeted_junit_sha256": "7b6678e308c61aefdfe8ad5b7af6479e38a772a9426ab71cd8e49ed139a5d2d9",
+    "targeted_source_sha256": {
+      "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+      "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+      "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21"
+    }
+  }
+}

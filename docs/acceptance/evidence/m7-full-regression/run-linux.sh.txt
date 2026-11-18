@@ -1,0 +1,15 @@
+set -eu
+umask 077
+cd /root/amadeus-full-74e1527
+/root/amadeus-sdist-6017005/venv/bin/python -I -B - <<'PY'
+from pathlib import Path
+import hashlib,json,zipfile
+base=Path.cwd()
+config=json.loads((base/'identity.json').read_text())
+assert hashlib.sha256((base/'source.zip').read_bytes()).hexdigest()==config['source_zip_sha256']
+assert not (base/'source').exists()
+with zipfile.ZipFile(base/'source.zip') as archive:
+    for name in archive.namelist():assert (base/'source'/name).resolve().is_relative_to(base/'source')
+    archive.extractall(base/'source')
+PY
+/root/amadeus-sdist-6017005/venv/bin/python -I -B driver.py

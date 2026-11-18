@@ -1,0 +1,15 @@
+{
+  "plan_sha256": "9c23b8378bc2cca90f227136bef4d4cffa9f2804053ae3a157eb3d82fe8010b4",
+  "capture_id": "a88f9b4ae81541caaf7bfa1fc6a93a4e",
+  "parent_pid": 2992,
+  "owned_transport": true,
+  "parent_alive": true,
+  "turn_started_observed": true,
+  "terminal_event_observed": false,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_bytes": 335,
+  "stderr_bytes": 357,
+  "observed_at": 122.262928155,
+  "scope": "owned_parent_only"
+}

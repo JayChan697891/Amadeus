@@ -1,0 +1,153 @@
+{
+  "observed_at": "2026-11-15T12:59:00.921845+00:00",
+  "status": "SCOPED PASS",
+  "scope": "Linux3.14 current frozen a117 sdist installation and existing focused demonstration tests",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "native_session": 54411,
+  "native_exit_code": 0,
+  "checks": 7,
+  "focused_junit": {
+    "tests": 10,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "same_identities_and_outcomes_as_windows": true
+  },
+  "runtime_members_unchanged": 97,
+  "model_calls": 0,
+  "package_rebuilt": false,
+  "raw_private_junit_uploaded": false,
+  "full_a117_matrix": "NOT RUN",
+  "macOS": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "result.json",
+      "size": 8683,
+      "sha256": "7c7a8ae9ac2ccf093839c5c078a967262e4c55d61ebb1957ea15a45f922f451d"
+    },
+    {
+      "path": "attempt.json",
+      "size": 488,
+      "sha256": "c11a29920ea7ddab77aff418a4ec5892553d9470e629a3a10718160d3d465fe2"
+    },
+    {
+      "path": "focused.xml",
+      "size": 1874,
+      "sha256": "c1a567ea9ee6e1457ee9b4b14a0ef3ac4ec57622cfd7b3420c17e0358bdf662f"
+    },
+    {
+      "path": "logs/sdist_venv.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/sdist_venv.process.json",
+      "size": 1280,
+      "sha256": "848f7bfff68d64caf7744b7d59a93e886284d4edcc0c91ffb3d0022389bc6ff9"
+    },
+    {
+      "path": "logs/sdist_dependencies.log",
+      "size": 5082,
+      "sha256": "d08a96afe7947085dff0b8d65be69e29d85d19fcb827696561958734af996091"
+    },
+    {
+      "path": "logs/sdist_dependencies.process.json",
+      "size": 1946,
+      "sha256": "e4aecfd9e00f0e4f875a7ede1c2b67369049ecd46b37f82c87e35daf2972dc9f"
+    },
+    {
+      "path": "logs/sdist_install.log",
+      "size": 904,
+      "sha256": "014433f556356f7f115ca63f4cd2c9c42fc4018be0b09eeea2133050dc47382b"
+    },
+    {
+      "path": "logs/sdist_install.process.json",
+      "size": 1561,
+      "sha256": "83006fa4e95f240f91835b2948c21fad444cce0987cc5de22a24bac2e3de86ac"
+    },
+    {
+      "path": "logs/sdist_pip_check.log",
+      "size": 30,
+      "sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "path": "logs/sdist_pip_check.process.json",
+      "size": 1275,
+      "sha256": "2dc943873691c13e2ee30062e2e516c572e27da8f448bd02605281220a51da02"
+    },
+    {
+      "path": "logs/sdist_origin_before.log",
+      "size": 10445,
+      "sha256": "fd62c8ab88b3b33eb27fff056e764bcb0abf3ffd1139d4c1c7571b2af4ac6235"
+    },
+    {
+      "path": "logs/sdist_origin_before.process.json",
+      "size": 3287,
+      "sha256": "a919437faa85ee05448bb48f6db86468aa20a3a903e3f5925f0abd1365ed485c"
+    },
+    {
+      "path": "logs/sdist_focused.log",
+      "size": 827,
+      "sha256": "3b210311317315abfe04a023a3db0a273bf2559aa3f9f0b57d45f4d45e92a95b"
+    },
+    {
+      "path": "logs/sdist_focused.process.json",
+      "size": 2395,
+      "sha256": "a76e4266b9af8b5e67ae2e6df425e3df11925aa28af1a7496e7bd752125168f0"
+    },
+    {
+      "path": "logs/sdist_origin_after.log",
+      "size": 10445,
+      "sha256": "fd62c8ab88b3b33eb27fff056e764bcb0abf3ffd1139d4c1c7571b2af4ac6235"
+    },
+    {
+      "path": "logs/sdist_origin_after.process.json",
+      "size": 3284,
+      "sha256": "ca12db0ae2132a2c1e0ad40664e1bdf74699df069693023693fc5a3cdfa893cd"
+    },
+    {
+      "path": "execution/staging.json",
+      "size": 570,
+      "sha256": "03497c3ab2d2c95d33cb343c57fdc5508694b6cbc86acadc060f9ff3e7c27344"
+    },
+    {
+      "path": "execution/execution-attempt.json",
+      "size": 283,
+      "sha256": "bf5588ee19b759d00d2e0603884aa7db660f10c9f3d2263b6e177ddf375a74b6"
+    },
+    {
+      "path": "execution/execution-result.json",
+      "size": 190,
+      "sha256": "aa8ea124c5266c11f93d1aeab574ebde9a60c2506699bb445f9ebd5b87bc227c"
+    },
+    {
+      "path": "execution/command.log",
+      "size": 77,
+      "sha256": "38b4cbed71a742ac19f08b487a2e8033460dbcc7c7c053271709dabce14bee9c"
+    },
+    {
+      "path": "run.py.txt",
+      "size": 5783,
+      "sha256": "89c27121aa9b28f5fe23a193c2621955a9456287132db5d45948bb4f7abbd9d4"
+    },
+    {
+      "path": "execution/vm-start.json",
+      "size": 815,
+      "sha256": "d2a7f604b3e48e5511a03ee094a8fa9215c1f38971aba018483f83f183478f6d"
+    },
+    {
+      "path": "execution/shutdown-request.json",
+      "size": 358,
+      "sha256": "09d47d8547265ea1a3611ede69fc4b6d29fcdedd1fb866195a570b14d5561111"
+    },
+    {
+      "path": "execution/shutdown-result.json",
+      "size": 183,
+      "sha256": "8f28c1ae052b728657a54fb77c24d2c03c92742c832dd53cc403e98ceeb380ba"
+    }
+  ],
+  "owned_vm_gracefully_stopped_after_checks": true
+}

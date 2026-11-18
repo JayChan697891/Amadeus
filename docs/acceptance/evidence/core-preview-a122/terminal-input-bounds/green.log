@@ -1,0 +1,16 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m122-terminal-input-bounds\cache
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 18 items
+
+F:\syuc\amadeus-m6-single\tests\integration\test_verified_codex_terminal.py s [  5%]
+sss..............                                                        [100%]
+
+- generated xml file: D:\agentsync-debug\m122-terminal-input-bounds\green.xml -
+=========================== short test summary info ===========================
+SKIPPED [4] F:\syuc\amadeus-m6-single\tests\integration\test_verified_codex_terminal.py:26: Real Linux terminal input
+======================= 14 passed, 4 skipped in 59.92s ========================

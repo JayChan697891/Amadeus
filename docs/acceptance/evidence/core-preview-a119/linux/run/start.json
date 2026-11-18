@@ -1,0 +1,22 @@
+{
+  "started_at": "2026-11-16T13:46:14.088100+00:00",
+  "controller_pid": 2925,
+  "version": "0.3.0a119",
+  "boot_id": "675554ba-f997-4ee1-9ac3-74712d71af2c",
+  "product_source_commit": "4be51345d5b8846da58d79df5b8567619e9acfed",
+  "test_source_commit": "4be51345d5b8846da58d79df5b8567619e9acfed",
+  "workflow_repair_commit": "3b43647bb4332c646d82b0ecc4055f0e40fb462c",
+  "owner_repair_commit": "667779906b810664460b36a76bf11950d279be35",
+  "continuation_bridge_commit": "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1",
+  "driver_sha256": "0607bf904565bbbd5a9c7e4d329fdbb2101b5d2f4655bd91223a5610b0c03efd",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "python_executable": "/root/jobs-env/bin/python",
+  "scope": "Linux 3.14 development preview, affected-install checks including local Docker bridge",
+  "full_regression": "NOT RUN",
+  "platform_matrix": "NOT RUN",
+  "docker_image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "model_calls": 0,
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false
+}

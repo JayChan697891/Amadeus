@@ -1,0 +1,36 @@
+import json
+import paramiko
+from pathlib import Path
+base=Path('D:/agentsync-debug/vm-growth-20261117')
+c=paramiko.SSHClient();c.load_host_keys('D:/agentsync-debug/vm/known_hosts');c.set_missing_host_key_policy(paramiko.RejectPolicy())
+c.connect('127.0.0.1',22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+probe='''import hashlib,json,os,subprocess
+from pathlib import Path
+v=os.statvfs('/root')
+members=json.loads(Path('/root/amadeus-m122l/runtime-members.json').read_bytes())
+assert len(members)==97
+for env in ['w','d']:
+ site=Path('/root/amadeus-m122l')/env/'lib/python3.14/site-packages'
+ assert all(hashlib.sha256((site/name).read_bytes()).hexdigest()==digest for name,digest in members.items())
+roots=['/root/amadeus-m122fulll/run/result.json','/root/amadeus-m122licenses/run/result.json']
+results={p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in roots}
+workers=[]
+for p in Path('/proc').glob('[0-9]*'):
+ try:
+  if int(p.name)!=os.getpid() and (p/'comm').read_text().strip().startswith(('python','pytest','codex')):workers.append(int(p.name))
+ except (FileNotFoundError,ProcessLookupError):pass
+containers=subprocess.check_output(['docker','ps','-aq'],text=True).split()
+print(json.dumps({'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'free_bytes':v.f_bavail*v.f_frsize,'filesystem_bytes':v.f_blocks*v.f_frsize,'workers':workers,'containers':containers,'runtime_members_per_install':97,'results':results,'disk_layout':{p.name:{key:(p/key).read_text().strip() for key in ['size','start'] if (p/key).exists()} for p in Path('/sys/class/block').glob('vda*')}}))
+'''
+i,o,e=c.exec_command('/root/amadeus-m122l/w/bin/python -I -B -',timeout=40);i.write(probe);i.flush();i.channel.shutdown_write()
+out=o.read();err=e.read();code=o.channel.recv_exit_status()
+assert code==0 and not err,(code,err.decode())
+report=json.loads(out)
+with (base/'guest-postcheck.json').open('x',encoding='utf8') as f:json.dump(report,f,indent=2)
+assert not report['workers'] and not report['containers']
+assert report['free_bytes']>30*1024**3
+repo=Path('F:/syuc/amadeus-m6-single/docs/acceptance/evidence/core-preview-a122')
+assert report['results']['/root/amadeus-m122fulll/run/result.json']==__import__('hashlib').sha256((repo/'full-linux314/result.json').read_bytes()).hexdigest()
+assert report['results']['/root/amadeus-m122licenses/run/result.json']==__import__('hashlib').sha256((repo/'linux-licenses/result.json').read_bytes()).hexdigest()
+print(json.dumps(report))
+c.close()

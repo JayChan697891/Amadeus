@@ -1,0 +1,7 @@
+{
+  "first_postcheck": {"native_chunk":"cbebba","exit_code":1,"error":"AssertionError: pytest-start.json","cause":"Create-only evidence collection encountered the already-preserved starting receipt; no test or original evidence was changed."},
+  "corrected_observer": {"native_chunk":"1f570e","exit_code":0,"scope":"Accept only byte-identical existing copies and create missing copies; no test rerun."},
+  "process_check": {"observed_at":"2026-11-17T08:33:16.3059739Z","recorded_pids":[644,23768,8796,24392],"remaining":0},
+  "review": "Root and Astra accepted only the frozen a122 Windows3.12 installed-wheel full-suite result.",
+  "formal_release":"BLOCKED"
+}

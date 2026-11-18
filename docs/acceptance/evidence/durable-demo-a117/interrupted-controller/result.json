@@ -1,0 +1,43 @@
+{
+  "scope": "Offline inert handle checks only; no process launched or terminated",
+  "check": {
+    "id": "interruption_offline_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m117w\\e\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\test_interrupt_parent.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\pytest",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller\\scratch\\cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\strategy-demo\\interrupted-a117-controller",
+    "exit_code": 0,
+    "started_at": "2026-11-16T06:16:15.836043+00:00",
+    "finished_at": "2026-11-16T06:16:16.407093+00:00",
+    "log": "logs/interruption_offline_pytest.log",
+    "log_sha256": "af641e5a5df72a3c5344b98cbce63edf6c4df90ed078c1f1715b45b8baec481b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "counts": {
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "hashes": {
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+    "test_interrupt_parent.py": "30849abe54d0ea463af87273c556194ebc0ad0e1ca404245b18780e8273a10c5"
+  },
+  "redactions": 0,
+  "live_execution": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

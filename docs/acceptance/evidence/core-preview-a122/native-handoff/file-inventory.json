@@ -1,0 +1,52 @@
+[
+  {
+    "path": "exactplan.json",
+    "bytes": 4210,
+    "sha256": "280fb81c6d437310d9aa1833c558839614d30275190d40a4ecf2e0c02b89642f"
+  },
+  {
+    "path": "execution-start.json",
+    "bytes": 903,
+    "sha256": "7cea56aa478f4825e599bd833dc67655525c652a7b4cae885e37d62d3af68842"
+  },
+  {
+    "path": "execution.json",
+    "bytes": 1024,
+    "sha256": "d42ef59368e3e07cbe60189997d630149aa4e228def471592a0ae4b9a059b86b"
+  },
+  {
+    "path": "probe_codex_collaboration.py.txt",
+    "bytes": 26848,
+    "sha256": "59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6"
+  },
+  {
+    "path": "probe_codex_handoff.py.txt",
+    "bytes": 22251,
+    "sha256": "a98377e8a792579df49e09e63f9556bf6e17e1a8aac94a7c6bffe73b82ea6698"
+  },
+  {
+    "path": "process-postcheck.json",
+    "bytes": 260,
+    "sha256": "554b824be6cfa93bdb395f22464aa6be9fd4142c3ac32ee7253e69820458df74"
+  },
+  {
+    "path": "read-only-postcheck.json",
+    "bytes": 6013,
+    "sha256": "70808091f36bc755bd8c316f27520a25a403723e58cb4071ae8d962e74798cd5"
+  },
+  {
+    "path": "read-only-postcheck.py.txt",
+    "bytes": 7434,
+    "sha256": "c9566bdf53c65b8b8b6483063150727a5b9fc4e662e8f82cb974491505839d82"
+  },
+  {
+    "path": "result.json",
+    "bytes": 12822,
+    "sha256": "c0dd9fc1aefb7faae4132aea95d448e4082e26ef1d81c27e8b85b0bde8640650"
+  },
+  {
+    "path": "summary.json",
+    "bytes": 3295,
+    "sha256": "962f09bcbf21881ea9aee4d6b5603bc19bc3a4e4d4bc252ecf6436586014b114"
+  }
+]

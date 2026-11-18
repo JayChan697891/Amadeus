@@ -1,5 +1,1816 @@
 # Release Acceptance Report
 
+Owner preview r5 adds manual independent receiver-document accept/reject with
+eight actual local Core checks passing and Root/Astra scoped acceptance. The
+11-member package retains the frozen a122 runtime and six original r4 payloads;
+hashes/CRC and extracted helper help were checked. Native terminal interaction
+and a new Linux/model run for this helper are NOT RUN. The owner authorizes a
+GitHub prerelease, not formal acceptance. The owner subsequently explicitly
+authorized public visibility; anonymous repository and exact ZIP download were
+verified. This does not change any product acceptance gate.
+[Bounded entry results](evidence/core-preview-a122/document-review/summary.json).
+Formal Release remains BLOCKED.
+
+Current Windows3.11.15 a122 wheel result has scoped Root/Astra acceptance:
+2539 pass/57 skip,2596 unique cases, zero failures/errors; all case identities and
+outcomes match the current Windows3.12 wheel. Original native66521 ended once at
+2026-11-18T03:58:59Z (6d442e exit0). Actual11 archived originals, three process
+receipts, four input pins,3992 source files and97 installed members were checked.
+No model calls, input changes or retry. [Actual result and review](evidence/core-preview-a122/full-windows311-wheel/summary.json).
+The independent311 source suite also completed in51949/4669bf exit0 at04:44:43Z:
+2539 pass/57 skip,2596 unique cases, same311 wheel outcomes. Root/Astra checked
+seven actual process receipts,20 originals, both3992-file source trees and97 runtime
+members. [Actual source result](evidence/core-preview-a122/full-windows311-source/summary.json).
+The311 sdist suite has also completed in6844/f90461 exit0 at05:41:31Z, with
+2539 pass/57 skip and all2596 case outcomes matching311 wheel. Root checked actual
+XML/stdout, three process receipts,3992 source files,97 members and11 originals;
+Astra independently accepted this frozen scope. This makes nine completed selected suites,
+not nine complete formal matrix rows. All Windows3.14 forms are prepared, NOT RUN.
+[Actual sdist evidence and scoped acceptance](evidence/core-preview-a122/full-windows311-sdist/summary.json).
+Historical static FAIL, other platform/client gaps and formal Release BLOCKED remain.
+
+Development a123 now implements an explicit version-bound checkpoint/final
+protocol. Its affected installed-Windows regression has Root/Astra scoped joint
+acceptance:213pass5skip across218 unique cases, including32 new cases. Initial
+execution was212pass5skip plus one setup/teardown error case caused by a huge
+pytest parameter ID; that original FAIL remains saved. Only six labels changed,
+and the affected file passed47 cases on retest with inputs/assertions unchanged.
+This is combined evidence, not a single all-pass run. No a123 full suite or real
+client validation has run; the a122 results above do not certify those gaps.
+[Bounded a123 results](evidence/core-preview-a123/explicit-checkpoint/summary.json).
+
+Current license-material disposition,2026-11-18: technical integrity/coverage
+checking is complete for frozen a122's own wheel/source archives. Root/Astra
+matched43 installed license files,31 table rows and the existing notices. Linux
+shared metadata agrees; both original hash differences reproduce exactly by
+Windows CRLF-to-LF conversion. Saved Linux evidence was reused without restarting
+the environment. The archives contain no dependency package/binary bundle; the
+source preserves the current notices. No rebuild/install/test/model call occurred.
+This is not legal suitability or formal M9/Release approval. Original inventory
+`license_review=pending` remains untouched; the final independent decision and
+publication authorization remain outstanding, alongside other recorded gates.
+[Bounded review and raw comparisons](evidence/core-preview-a122/license-material-review/summary.json).
+
+Current P1 input-reading repair: the terminal example now bounds file reads before
+the existing1000/32768-byte validation. Two failing real-file reproductions are
+retained; the affected Windows suite passes14 cases with4 Linux-only skips and no
+failures/errors. Root inspected the diff, actual XML/logs and tested-file hashes.
+Ruff/format checks pass for the changed two Python files; historical static FAIL
+is untouched. Frozen a122 runtime and wheel are unchanged. The r4 owner bundle
+contains the repaired example and retains exact original runtime/dependency bytes.
+No new Linux entry run, model call or complete suite is claimed; old real terminal
+evidence remains bound to7085ec0. Formal Release stays BLOCKED.
+[Repair evidence](evidence/core-preview-a122/terminal-input-bounds/summary.json).
+
+Current lifecycle update,2026-11-18: actual a122 `cancel_task(run_id)` has scoped
+Root/Astra acceptance. One real Codex call reached `turn.started`; cancellation
+was invoked with the owned parent alive and about84 seconds before its deadline.
+The matching parent ended with exit-9. Preserve the real adapter result
+`unknown/local_cancel_requested`, timed_out=false and slot_held=true; it is not a
+completed model task. Fifteen public originals, exact launch/consent receipts,
+private-capture metadata, unchanged97-member runtime, clean fixture, temporary
+login cleanup and unchanged original login were independently checked. No raw
+model output or credentials were published. Zero candidate executions, no retry.
+Server-side cancellation, descendant-tree cleanup and Core completion are outside
+this result. Formal Release BLOCKED.
+[Actual cancellation evidence](evidence/core-preview-a122/lifecycle-controls/cancel-result/summary.json).
+
+The separately prepared natural-timeout attempt also has scoped Root/Astra
+acceptance: one actual Codex call, zero candidate executions, no retry. The
+qualified window was observed0.995s before the15-second deadline; the owned parent
+ended after15.0039s, before the capture's own deadline by1.449s. No explicit cancel
+method was invoked. Preserve `unknown/adapter_timeout`, timed_out=true,
+slot_held=true and exit-9; this is local deadline handling, not model success.
+Fifteen public originals, plan/receipt/capture bindings, unchanged97 runtime
+members, clean fixture and credential cleanup were independently checked.
+The VM shut down normally afterward; no related workers/containers remained.
+[Actual timeout evidence](evidence/core-preview-a122/lifecycle-controls/timeout-result/summary.json).
+
+Current preview update,2026-11-18: the repaired terminal entry7085ec0 completed
+one authorized real trial on frozen a122/5232e9e. Two Codex subscription calls
+returned proposals. Exactly one149-byte addition candidate passed2/2 Docker cases
+and19 isolation checks; an independent Core identity completed the producer
+v6/verified. The receiver obtained pinned context, submitted review.md and remains
+review/v5/unverified. Manual effect approvals remain required; this is neither
+unattended autonomy nor M3 same-task handoff acceptance. Root inspected actual
+database/receipts and cleanup; Astra independently accepted the bounded result.
+The VM then shut down normally; the independent Windows source run also ended.
+[Bounded terminal result](evidence/core-preview-a122/terminal-repaired/result/summary.json).
+
+Linux3.14 editable-source a122 now also has scoped Root/Astra acceptance:
+2589 pass/7 skip,2596 unique cases, zero failures/errors,7 exit0 process receipts,
+36 actual Docker observations. Identity/outcome set equals its installed wheel;
+3992 original/copy source files and97 runtime members remain unchanged.
+[Actual source result](evidence/core-preview-a122/full-linux314-source/summary.json).
+Windows3.12 editable-source is now also accepted by Root/Astra:2539 pass/57 skip,
+2596 unique cases, zero failures/errors,7 normal process exits; every case matches
+both Windows installed forms. Original and copy each retain3992 files and97 runtime
+members. [Actual Windows source result](evidence/core-preview-a122/full-windows312-source/summary.json).
+This completes six selected a122 test suites, not all nine formal platform/form
+matrix rows or their non-pytest gates. Formal Release remains **BLOCKED**:
+macOS and other real clients lack environments, license review is pending and
+historical static FAIL is retained. Current cancel/timeout observations only
+close the local owned-parent scope recorded above, not all M6/Release requirements.
+
+## Earlier acceptance checkpoints
+
+The first complete a122 installed-sdist suites have finished and received
+independent Root/Astra scoped acceptance: Windows3.12 **2539 pass/57 skip**,
+Linux3.14 **2589 pass/7 skip**, each2596 unique cases and zero failures/errors.
+Every case identity/outcome matches its corresponding completed wheel suite.
+Original5232e9e inputs and97 installed members are bound by the receipts; Linux
+also retains36 actual Docker observations. All processes ended and the VM shut
+down normally. The safety-pause checkpoint remains unchanged. Evidence collection
+and independent review are now complete; no suite was rerun on resume.
+Formal Release remains **BLOCKED**; these are four installed suites, not the full
+source/platform matrix or universal real-client acceptance.
+[Windows sdist](evidence/core-preview-a122/full-windows312-sdist/resume-root-review.json) · [Linux sdist](evidence/core-preview-a122/full-linux314-sdist/resume-root-review.json).
+
+
+Linux a122 installed license metadata:6 checks exit0 from the existing wheel/sdist
+environments,31 distributions/35 license files each. Root rehashed70 license files
+and97 runtime members per environment; inventories match with no metadata review
+items. Original inputs preserved, VM normally off. This is not license clearance:
+review stays pending, publication unauthorized and formal Release BLOCKED.
+[Actual files and inspection](evidence/core-preview-a122/linux-licenses/root-review.json).
+
+Windows a122 installed-license metadata is now collected from the existing
+wheel/sdist environments:6 native checks exit0,32 distributions and43 license
+files per installation. Root rehashed all86 license files and97 runtime members
+per installation; both inventories are identical and have no metadata review
+items. This records declarations only: license_review remains pending,
+publication_authorized false and Release BLOCKED. No build/install/test/model
+repeat. The subsequent Linux collection is recorded above; its original pending
+review remains separate from metadata completeness.
+[Actual metadata and inspection](evidence/core-preview-a122/windows-licenses/root-review.json).
+
+First full frozen a122 Linux3.14 installed-wheel regression completed at
+2026-11-17T14:10:22Z, native74411 exit0 (ad13b3): **2589 PASS /7 SKIP,
+0 failures/errors**,2596 unique cases. Root and Astra inspected actual XML,
+47 sanitized originals (628067 bytes), original4 inputs,3992 source files,
+97 installed members and36 Docker observations. All2587 prior case identities
+and outcomes remain;9 additional cases pass. Windows identities match;57 Windows
+skips pass on Linux and7 Linux skips pass on Windows (64 differences, net50).
+The first observer incorrectly asserted50 differences; its failure and corrected
+comparison remain in root-review.json. No suite was repeated or altered.
+Normal VM powerdown acknowledged; PID3652 absent and SSH/QMP ports closed.
+Original disk, raw local logs and all prior evidence remain. Zero model calls,
+rebuilds or installations. **SCOPED PASS only; formal Release BLOCKED.**
+
+[Actual Linux suite and review](evidence/core-preview-a122/full-linux314/root-review.json).
+
+Original M6-03/T13 has **SCOPED PASS** for current a122 real Codex launch, recorded
+command/version/run/session bindings, result collection and independently verified
+artifact. Root/Sol/Astra compared the original clauses and actual evidence; no new
+model run is needed to repeat that conclusion. The separate RAT-M6-03 advertised
+control probes are not silently passed: current real `cancel_task`/natural-timeout
+observations remain NOT RUN, while historical runs retain their original SHA.
+Directly interrupting a parent is not adapter cancellation. Current deterministic
+tests support explicit unsupported resume/server-cancel declarations. This does
+not accept full M6 or other clients and changes no formal Release gate.
+
+Frozen a122 now has **SCOPED PASS** for the authorized completion of its original
+composed-recovery candidate. The fixed149-byte program passed exactly one Docker
+execution:2/2 cases and19 isolation checks. A fresh owner-enrolled independent
+reviewer completed the same receiver task v6/verified; source remains failed v5
+and dependent pending v2 unchanged. No additional model/account access occurred.
+Root checked the actual plans before effects and actual database, original
+receipts/captures,97 runtime members and cleanup afterward. Astra independently
+accepted this same-vendor boundary; the VM shut down normally. Independent
+identity acceptance is not another model review. Full M7/M8 and Release remain
+unaccepted. [Final verification evidence](evidence/core-preview-a122/composed-recovery/verification/summary.json).
+
+The first full a122 Windows3.12 installed-wheel suite **PASS with57 explicit
+skips**:2539pass, zero failures/errors; native43609 exit0. All2587 previous a120
+case identities/outcomes remain and9 additional cases pass. Original5232e9e
+archive/source/install bindings,97 runtime members and final process receipts
+were checked independently by Root/Astra. This does not complete the other
+current-candidate platform/distribution cells. **Formal Release BLOCKED**.
+[Full suite and independent inspection](evidence/core-preview-a122/full-windows312/root-postcheck.json).
+
+Frozen a122 has a **SCOPED PASS** for real same-vendor handoff and recovery of a
+persisted receiver result after actual controller exit73. The fresh controller
+reconciled the same review v5 task, context and publication with no new call;
+genuine replay changed no tasks or receipts. Two real calls were used, temporary
+login was cleaned, and Root/Astra accepted only this observed boundary. Candidate
+staging, isolated execution and independent completion were **NOT RUN** at that
+original checkpoint; the subsequent once-authorized result is recorded above.
+Neither checkpoint passes full M7/M8 or formal Release.
+[Actual receipts, cleanup and limitations](evidence/core-preview-a122/composed-recovery/summary.json).
+
+Frozen a122/5232e9e has a **SCOPED PASS** for the corrected native Codex MCP handoff.
+Both Windows hosts exited normally by EOF and all seven MCP children ended. The
+handoff was accepted with pinned context v1, and the recipient reached review v8
+with zero recorded reviews and an unverified result. Root matched 18 owner audit
+events read-only and confirmed unchanged database bytes, 97 installed members and
+the absence of all 10 recorded PIDs. Root and Astra accepted the scoped result.
+The run used zero inference, model-account credential access or candidate execution. M7 and formal
+Release remain unaccepted.
+[Actual execution and scope](evidence/core-preview-a122/native-handoff/summary.json).
+
+Adapter deadline repair1700d1d has **SCOPED SOURCE PASS**: original4+1 failing
+reproductions prove premature stops in shared scheduling and launch waits. The
+two paths now guard their absolute deadlines. Actual16+73+5+3 passing observations
+are97 distinct cases, not a single full-suite pass; intermediate setup/fixture
+failures are preserved. Root verified XML identities, source hashes/import origins
+and unchanged old installation. Ruff/format and mypy96 source files pass; Astra
+accepts this source scope. Real active-generation timeout remains unverified.
+**Formal Release BLOCKED**.
+[Actual reproductions, correction and scoped regression](evidence/core-preview-a121/adapter-deadline/summary.json).
+
+Frozen a122/5232e9e has **SCOPED INSTALLED PASS**. Windows 3.12 passed 19 native
+build and installation checks. Linux 3.14 passed 16 installation checks using the
+original Windows-built archives. Wheel and source-archive installs on both
+platforms passed the same 97 distinct targeted cases with matching identities
+and outcomes. Root verified the two archive hashes, 3,992 frozen files and 97
+runtime members per install. Root and Astra accepted the scoped results. The
+failed initial Linux SSH connection is retained as NOT RUN. Both native
+validation jobs finished and the owned Linux VM shut down normally. The first
+full Windows wheel regression subsequently passed as recorded above; remaining
+a122 full-matrix cells, macOS and complete real-model control acceptance remain **NOT RUN**. Historical
+static FAIL and pending license review still block formal Release.
+[Windows results](evidence/core-preview-a122/windows/summary.json),
+[Linux results](evidence/core-preview-a122/linux/summary.json), and
+[preview packages](../../releases/0.3.0a122/preview-5232e9e/).
+
+The a121 native Codex structured-handoff run is **BLOCKED**, not PASS: the final
+owner-audit assertion expected null where the context schema supplies0. Original
+probe36a672d exited1 (dfd1a2); the result is immutable. Earlier actual MCP calls
+observed the handoff, recipient review/v8, pinned context, four correct denials,
+metadata locks and fresh-host reads. Root subsequently matched18 audit events
+read-only and confirmed unchanged DB/runtime plus ended processes. Probe repair
+a9cbcfe has an actual local Core regression and changed-file static PASS. The
+corrected native run on a121 remains **NOT RUN**. Zero inference, no candidate execution or
+independent candidate verification. **Formal Release remains BLOCKED**.
+[Original native failure, observed facts and bounded correction](evidence/core-preview-a121/native-handoff/summary.json).
+
+CLI output repair b095c5e has **19 targeted source checks PASS**: both real
+CP1252 Unicode-output reproductions failed before the two-line correction and
+pass afterward. Root verified original logs/JUnit/hashes/import origins; changed
+files pass Ruff/format. The preserved complete-static FAIL is unchanged. Source
+version now0.3.0a121. Its4b82494 Windows preview completed19 native commands;
+fresh wheel/sdist each23 cases PASS, no failures/errors/skips. Root checked3809
+inputs,97 runtime members per install,2617 sdist payload files and45 original
+records; Astra accepts this limited installation scope. The same original
+packages now pass16 Linux3.14 commands and23 cases per fresh install, matching
+Windows. Root checked37 originals,3809 inputs and97 members per install; Astra
+accepted the supplement and the VM is normally off. No a121 full-matrix or
+control-adapter acceptance is claimed; the separate MCP run above remains blocked.
+The original a120 archives and frozen suites below do not include this repair.
+**Formal Release remains BLOCKED**.
+[Actual failed reproductions and repair](evidence/core-preview-a120/cli-output-encoding/summary.json).
+[Windows package provenance and actual results](evidence/core-preview-a121/windows/summary.json).
+[Linux package supplement](evidence/core-preview-a121/linux/summary.json).
+
+Frozen a120 Windows3.12 editable-source full suite **PASS with57 explicit skips**:
+native2511 ended2026-11-17T05:15:09Z exit0;7 commands,2530pass/57skip/0fail/error,
+2727.93s.2587 unique identities/outcomes equal its wheel. Root verified new source
+origin/editable metadata, original/copy5369 files,97 members and6 XML redactions;
+19 originals/478672bytes retained. Astra accepts only this bounded source result.
+No matching worker remains. All six selected a120 Windows/Linux source/wheel/sdist
+suites are complete, tied to runtime859775b/tests d427355; none is relabelled as
+a121 evidence or a fabricated formal matrix row. **Formal Release BLOCKED**.
+[Actual Windows source result](evidence/core-preview-a120/full-windows312-source/summary.json).
+
+Linux3.14 a120 fresh editable-source full suite **PASS with7 skips**. Native77917
+ended2026-11-17T04:26:58Z exit0;7 commands pass,2580pass/7skip/0fail/error in1153.57s,
+120 warnings retained. Actual source/CLI origins and editable metadata are bound
+to the new copy; original and copied5369 files/97 runtime members remain unchanged.
+Root checked55 originals/651374bytes and6 XML redactions.2587 unique identities/
+outcomes and36 selected Docker observations match Linux wheel; this is no new
+model proof. Astra accepts this bounded source result. No workers/containers
+remained; owned VM normally off, disk retained. Windows source later passed as
+recorded above; static FAIL, full formal matrix, license review and manual credential
+cleanup remain. **Release BLOCKED**.
+[Actual source provenance and complete result](evidence/core-preview-a120/full-linux314-source/summary.json).
+
+Windows3.12 a120 installed-sdist complete suite **PASS with57 explicit skips**:
+native71082 ended2026-11-17T03:56:07Z exit0;2530pass/57skip/0fail/error,2688.74s.
+All4 commands passed;2587 unique case identities/outcomes match Windows wheel,
+with no new skipped or removed cases. Root checked5369 source/97 installed hashes
+unchanged and6 raw/public XML redactions;11 originals/453655bytes preserved.
+Astra accepts the bounded installed-sdist result. No matching workers remain,
+VM is off. Four installed wheel/sdist suites on Windows3.12/Linux3.14 are now
+complete; source/full platform matrix, static FAIL, license review and manual
+fixture cleanup remain unresolved. **Formal Release BLOCKED**.
+[Actual Windows result and comparison](evidence/core-preview-a120/full-windows312-sdist/summary.json).
+
+Linux3.14 a120 installed-sdist complete suite **PASS with7 skips**: native32517
+ended2026-11-17T03:08:44Z exit0,2580pass/7skip/0fail/error,1129.89s,120 warnings.
+Four commands pass;2587 unique identities/outcomes match the a120 Linux wheel.
+Root checked48 originals/633277bytes,6 XML redactions and5369 source/97 installed
+members unchanged.36 real Docker observations have equal selected outcomes;
+the initial full-path comparison failure and corrected unique group/basename
+comparison are both retained. No test rerun or historical result replacement.
+Astra accepts this limited installed-sdist result. Zero models; no workers or
+containers remained; VM21292 normally off, disk preserved. The later Windows
+sdist result is recorded above. Formal matrix/source gates, static FAIL, license
+review pending and manual fixture cleanup remain; **Release BLOCKED**.
+[Actual Linux result and comparison history](evidence/core-preview-a120/full-linux314-sdist/summary.json).
+
+Linux3.14 installed license metadata collected from both existing a120 installs:
+6 native checks exit0 (e21094),31 distributions/35 license files each. Root checked
+all process/log receipts, rehashed70 license files and97 runtime members per env;
+inventories identical. All16 original records/69644bytes retained. Windows-only
+pywin32 and platform metadata differences for pydantic-core/rpds-py are explicitly
+recorded. **license_review pending, publication_authorized false, Release BLOCKED**.
+No build/install/test rerun or formal matrix row is inferred.
+[Original inventories and comparison](evidence/core-preview-a120/linux-licenses/summary.json).
+
+Windows3.12 installed license metadata collected from both original a120 preview
+installs:6 native checks exit0 (f87a34),32 runtime distributions and43 license files
+each, with byte-identical inventories. Root rehashed86 recorded license files and
+checked native receipts, original archive origins and97 unchanged runtime members
+per install. No package rebuild/reinstall or test repetition. No missing metadata
+items were reported by the collector; **license_review remains pending and
+publication_authorized false**. This is not a complete matrix row or a license
+approval. Ruff/format FAIL, cleanup BLOCKED and formal Release BLOCKED remain.
+[Original inventories and checks](evidence/core-preview-a120/windows-licenses/summary.json).
+
+Current static supplement: **Ruff FAIL, format FAIL, mypy PASS; Release BLOCKED**.
+Native353772 exited1 on frozen d427355. Ruff reports22 issues in7 historical raw
+drivers; format reports13 historical files,377 already formatted. mypy checks96
+source files without errors. All failure paths are inside evidence; no active
+src/tests/tools/examples diagnostic was reported. Originals,5369 inputs and97
+installed members remain unchanged. Root checked native receipts/log hashes;
+independent Astra confirmed the immutable-archive/check-scope conflict. No fix,
+unsafe fix, filename/scope/rule or old-manifest change was made. Preserve these
+failures per the owner's explicit choice to keep originals and FAIL; they do not erase the prior bounded
+wheel/terminal results and those results do not cancel this static failure.
+[Original outputs and exact13 files](evidence/core-preview-a120/static-checks/summary.json).
+
+P1 interactive entry — actual Windows terminal functionality **PASS**, local
+fixture credential cleanup **BLOCKED**. Five commands on unchanged a120/859775b
+exit0 through real getpass and installed CLI. No credential echo; pending wave
+and task v1 remain unverified, both attempts not_dispatched. Root verified actual
+terminal records, state, unchanged helper and97 installed members. No real Agent
+or new candidate execution is represented by this deterministic admitted-wave
+fixture. The credential file remains restricted locally after automatic approval
+rejected deletion before execution; no bypass/retry or credential upload occurred.
+Owner chose manual cleanup later. Linux/macOS terminal behavior, complete current matrix
+and formal Release are not supplied by this check; Release stays BLOCKED.
+[Observed outputs and scope](evidence/core-preview-a120/native-terminal/summary.json).
+
+Latest full local result — a120 Linux3.14 installed wheel **PASS with7 explicit
+skips; formal Release BLOCKED**. Runtime859775b/tests d427355; native11295 ended
+2026-11-17T01:52:37Z, exit0.2587 unique cases:2580pass/7skip/0fail/error in1136.48s.
+All2545 old Linux identities/outcomes remain,42 added pass, and current Windows
+identities match.36 real Docker records preserve35 old selected outcomes; the new
+continuation fixture completes the same receiver verified v6 with2/2 cases,
+19/19 isolation checks and confirmed cleanup. Its model is a deterministic local
+protocol fixture, not a new live client. Root checked native/log/XML,6 XML
+redactions,5369 inputs/97 installed members unchanged;48 originals retained.
+Independent Astra accepts this scope. No workers/containers remained; owned VM
+normally stopped with disk preserved. Source/sdist/full platform matrix, macOS,
+actual terminal interaction and new real-client acceptance are not inferred.
+[Actual results and boundaries](evidence/core-preview-a120/full-linux314/summary.json).
+
+Latest full local result — a120 Windows3.12 installed wheel **PASS with57 explicit
+skips; formal Release BLOCKED**. Runtime859775b, frozen tests d427355. Native
+session28686 ended2026-11-17T01:16:44Z, exit0; four checks pass.2587 unique cases:
+2530pass/57skip/0fail/error. All2545 old Windows case identities/outcomes remain;
+42 added=41pass+1skip for the fixed Linux Docker continuation branch. The latter
+is not Windows execution evidence; its deterministic branch passed.
+Root inspected actual native receipts/log/XML, rehashed5369 frozen files and97
+installed members unchanged, and checked all6 XML redactions against local raw
+XML.12 original records plus1 derived comparison are archived; no matching run
+worker remains. Independent Astra accepts only this Windows installed-wheel scope.
+No full source/sdist, complete current platform matrix, real-client or external
+Work acceptance follows. [Results and boundaries](evidence/core-preview-a120/full-windows312/summary.json).
+
+P1 checkout recovery helper:4 focused Windows checks pass on installed a120,
+including actual Core/CLI status inspection with injected prompt input; unsafe
+terminal refusal and timeout/no-retry behavior are deterministic tests. Root
+checked the actual outputs, tested file hashes and97 unchanged installed members.
+Interactive terminal echo, Linux/macOS helper execution and new real clients are
+NOT RUN. Runtime/packages are unchanged; Release BLOCKED.
+[Exact results](evidence/core-preview-a120/recovery-example/summary.json).
+
+P0 native recovery supplement — test-source27594dc against unchanged installed
+a120/859775b. One Windows case passed: coordinator exit73 after receiver review and
+terminal receipts, exact-wave reconciliation in a fresh CLI, same-task staging
+preview recovered, no duplicate launch/launch-consent callback. Failed source,
+dependency and original receipts remain unchanged.92 existing mapping checks pass;
+Root inspected actual outputs and97 installed-member bindings. Only a local
+deterministic protocol child ran; no new real-client, candidate execution/completion
+or whole-host claim. These original M7-02/M8-02 mappings remain partial; Release
+BLOCKED. [Actual evidence](evidence/core-preview-a120/coordinator-review-recovery/summary.json).
+
+Latest P1 result — a120/859775b, 2026-11-16: **bounded Windows/Linux installation PASS;
+formal Release BLOCKED**. The CLI now returns structured errors for missing or
+corrupt project databases. Corrupt files stay unchanged. Two pre-fix failing tests
+and an initial formatting failure are retained;16 final source cases pass. The
+intermediate10pass remains a separate earlier result.
+The same frozen source built wheel and sdist offline; each fresh Windows3.12
+installation passed21 affected cases, with19 native checks overall. Actual native
+receipts, logs, JUnit,3362 frozen inputs and97 members per install were inspected;
+an additional read-only review confirmed archive/origin bindings and unchanged
+a118/a119 packages. This does not repair damaged data or extend real-model claims.
+The same original archives also passed16 Linux3.14 install checks and21 cases in
+each fresh environment, with identical Windows case identities. Root checked
+actual receipts,39 transferred originals and installed bindings; inputs unchanged,
+no workers/containers, normal VM shutdown observed. The initial post-test shutdown
+guard's time-representation mismatch is retained separately; it issued no QMP
+action until exact process identity was rechecked. No model/Docker execution.
+macOS, full a120 suite/matrix and a120 real clients are NOT RUN. Earlier live
+evidence remains bound to a119. [Artifacts](../../releases/0.3.0a120/preview-859775b/)
+and [exact results/limitations](evidence/core-preview-a120/summary.json).
+
+Later P1 source correction — 2026-11-16,6192b87: `workflow start` now refuses a
+missing project database without creating state. The original installed a119
+reproduction and2 failing source cases are preserved;9 affected Windows source
+cases then passed, with clean Ruff/format checks. Root reviewed actual evidence.
+This correction is not in the frozen a119 packages. Linux, fresh-package and
+full-suite validation of this later change are NOT RUN; no real-client result is
+inferred from the deterministic workflow regression. Formal Release BLOCKED.
+[Exact source hashes and original outputs](evidence/core-preview-a119/workflow-start-existing/summary.json).
+
+Current bounded B result — 2026-11-16: **PASS for the explicit same-vendor path;
+formal Release remains BLOCKED**. Unchanged a119/4be5134 with controller4aa4f8
+completed two actual Codex calls: controlled parent interruption, then a distinct
+receiver continuing the pinned host-known checkpoint. Its original149-byte source
+passed one actual Docker execution (2/2 cases,19/19 isolation). The same receiver
+task completed/verified v6 via a distinct host reviewer; source remains failed/
+unverified v5. Fresh-process completion replay created nothing; one execution is
+in the database, and the dependent was actually claimed v3. This is not a third
+model's review or completion of the dependent.
+
+Owner approval, raw-output/publication/staging/source/proof bindings, temporary
+login cleanup and original-login integrity were inspected. No workers/containers
+remained;97 installed members and115 old-R2 files stayed unchanged. VM normal
+shutdown observed14:49:43Z, disk retained. Root and native Astra accepted the
+scoped evidence; external Work acceptance remains separate. The pre-auth SSH and
+renderer failures are retained and not described as failed model attempts.
+
+**NOT RUN / unverified:** whole-host crash, cross-vendor collaboration, unattended
+owner approval policy, complete current-version matrix and macOS. No full M6/M7,
+formal Release or billing audit is inferred. Existing subscription/no-extra-fee
+conditions rely on the owner's standing confirmation and the forced ChatGPT route.
+[Actual live records and boundaries](evidence/core-preview-a119/live-continuation/summary.json).
+
+The following earlier evidence retains its original version and scope.
+
+Installable a119/4be5134 now includes the owner CLI correction and continuation
+bridge. Windows:19 native build/install checks, two fresh installs each15pass.
+Linux:16 native install checks, the exact original packages each16pass, comprising
+the same15 Windows cases plus real Docker continuation verification. Each Docker
+run passed2 JSON cases/19 isolation checks and completed the same receiver with
+independent proof; source remains failed.3090 input files and97 runtime members
+in each install were checked unchanged; old packages are intact. Root inspected
+actual outputs and proof bindings, and observed container/process/VM cleanup.
+Models remain local protocol fixtures. No full a119 suite, complete platform
+matrix, macOS or real-model acceptance is inferred. Formal Release BLOCKED.
+[Packages](../../releases/0.3.0a119/preview-4be5134/) and
+[scoped evidence](evidence/core-preview-a119/summary.json).
+
+P0 source207e978 now connects a continuation receiver to independent completion
+inside the same Core. Original Windows report:53pass/2fail; only its two
+isolated-child import failures subsequently passed in a fresh source environment.
+The intervening pywin32 collection failure also remains recorded. Thus55 target
+Windows cases have passing evidence across two runs, without rewriting the failed
+report or rerunning the53 passes. Linux's same-source test passed with real Docker:
+2 JSON cases,19 isolation checks, same receiver completed/verified, source failed,
+dependency restored and exact completion replay with one execution.233 frozen
+inputs and97 old installed members remained equal. Root and independent Astra
+inspected original evidence; VM/container/fixture cleanup was observed.
+
+The model side is a known local protocol fixture with zero inference/auth copies.
+No new real-model interruption-to-verified-completion run is claimed. The bridge
+is not in the frozen a118 packages; old R2/add.py remains review/unverified.
+Formal Release BLOCKED and external Work review pending.
+[Exact results, retained failures and reproduction](evidence/recovery-preview-a118/continuation-verification/summary.json).
+
+Later source-only owner CLI fix: four missing-database reproductions failed, then
+27 affected Windows source cases passed with no failures/errors/skips. Actual
+logs/JUnit and tested file hashes are retained. The new SDK bootstrap example
+separately ran against the unchanged a118 install: start/status/resume in three
+CLI processes, one persisted run, explicit simulation_only/unverified output;
+reusing its directory was refused without changing saved state. No model, Docker,
+credential upload or current-package inclusion of the later source fix is claimed.
+Independent review was static and root inspected actual outputs. This improves
+onboarding; it does not close original-task continuation verification or Release.
+[Scoped results and reproduction recipe](evidence/recovery-preview-a118/owner-onboarding/summary.json).
+
+Current a118 has actual native MCP compatibility evidence: Codex0.162.0 discovers
+34 tools and exercises two deterministic identities, task/context sharing, distinct
+text review and host reopen; Claude2.1.295 health-connects using an isolated config.
+No model inference/credential copy;97 installed members remain unchanged. Original
+generic connection failure is preserved with unknown precise cause.14 static cases
+pass after the bounded starting-state repair. Root and separate Astra inspected
+actual reports and local private health output/config. Text review stays unverified;
+not all34 tools or structured handoff API were invoked. No current desktop UI,
+Claude tool flow or model-control acceptance is implied. Formal Release BLOCKED.
+[Native results, original failure and exact source](evidence/recovery-preview-a118/clients/summary.json).
+
+The same original a118 packages also passed the affected Linux3.14 installation
+supplement:16 native checks, wheel12pass/sdist12pass, zero failure/error/skip and
+the same12 identities/outcomes as Windows.2899 frozen source paths and97 members
+in each installed environment stayed unchanged. Root checked actual files and
+separate Astra review accepted only this scope. No package rebuild or model call.
+[Actual Linux evidence](evidence/recovery-preview-a118/linux/summary.json).
+Full a118 suites, complete platform matrix, macOS, Docker and real clients remain
+NOT RUN for this candidate. Formal Release remains BLOCKED.
+
+a118/7f0ba0a now has its own Windows3.12 offline build/install evidence:19 native
+checks, wheel12pass/sdist12pass with identical cases,97 Git/package/installed
+runtime members.2899 source files remained unchanged; sdist2018 tracked+8 generated
+metadata files. Root and independent Astra reviewed actual outputs. Original a117
+artifacts and their broader tests retain their original scope. Full a118 suites,
+macOS, Docker and real clients are NOT RUN. The subsequent Linux supplement is
+recorded above. Formal Release remains BLOCKED.
+[Preview evidence and artifact identities](evidence/recovery-preview-a118/summary.json).
+
+Later development-source CLI correction: seven targeted Windows3.12 tests pass
+for refusing missing databases on workflow status/resume/cancel while preserving
+the valid existing-database path. Six original failure reproductions are retained;
+the final source has root execution plus focused Ruff/format checks. This does
+not alter frozen runtimefc27f15 package evidence or the running source suite.
+[Exact change and results](evidence/durable-demo-a117/workflow-existing-database/summary.json).
+Formal Release remains BLOCKED.
+
+The frozen Windows3.12 editable-source supplement completed once: native44775
+exit0,2489pass/56skip/zero failure,error,2545 matching identities,8 native checks.
+Root and independent Astra accepted only runtimefc27f15/test33ffbc3;97 runtime
+members and2382 original/copy files stayed unchanged. The separate durable smoke
+is included in the full suite and is not counted twice. Evidence:
+[actual source result](evidence/durable-demo-a117/full-windows312-source/current-summary.json).
+
+R2's exact continuation output later passed8 actual Docker cases and19 isolation
+checks in a separate new Core fixture. Source/JSON/context/receipt pins and the
+verified new-task proof were inspected; the original R2 tree stayed unchanged,
+its task still review/unverified. This adds independent execution of the fixed
+output, not authenticated cross-Core transfer or original-task acceptance. The
+first preflight's63-digit hash typo remains failed/candidate NOT RUN; the corrected
+fresh experiment ran once, with zero models/auth copies. VM shutdown was confirmed
+by identity despite PID reuse. See
+[actual imported-output result](evidence/durable-demo-a117/interrupted-output-verification/summary.json).
+
+Actual R2 interrupted-parent continuation completed and independently reviewed:
+one Codex parent ended-9 after turn.started, another real Codex received the pinned
+host-known checkpoint and submitted a32-byte source proposal as review/unverified.
+Fresh-process replay used zero callbacks/model calls; the original failure receipts,
+three-task graph and single dependency retarget stayed unchanged. Both local CLI
+parents ended, temporary auth was deleted/unmounted and the original stayed unchanged.
+Actual guest authorization bytes are retained separately from host CRLF copies.
+[Bounded result and limitations](evidence/durable-demo-a117/interrupted-live-r2/summary.json).
+This does not prove whole-host crash, model-authored recovery, cross-vendor support,
+unattended approval or independent execution within the original R2 task. Its
+output's later separate-fixture execution is recorded above. Formal Release
+remains BLOCKED; the Windows source supplement is now complete as recorded above.
+
+Latest Linux editable-source supplement completed:2545 unique cases,2538pass/
+7skip/zero failure,error;8 native checks and35 actual Docker observations across7
+groups. Runtimefc27f15/test33ffbc3,1117.76s,120 warnings; original/copy2382 and97
+runtime members unchanged. Root inspected the actual files and independent Astra
+accepted this limited scope. Evidence: evidence/durable-demo-a117/full-linux314-source/repaired/current-summary.json. Original setup failure remains fail; its
+smoke/full suites were NOT RUN. No full matrix/Release promotion.
+A fresh authorized live preflight then stopped on expired sessions before any
+model or external auth access. This is not live crash recovery failure/success;
+actual experiment remains NOT RUN until fresh isolated preparation. Release BLOCKED.
+
+Current Windows wheel supplement — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+Native session35434 ended0 at07:43:05Z.7 checks passed; the frozen a117 wheel on
+Windows3.12 produced2489passed/56skipped/0failed/error in2536.07 seconds. All2545
+unique identities match the old Windows sdist and same-input Linux wheel. Only
+the documented traceability expectation changed from failure to passed; original
+sdist failure evidence remains unchanged.97 runtime members and2382 frozen inputs
+match before/after. Root and independent Astra inspected actual receipts/logs/XML
+and hashes;6 JUnit redactions are recorded. See
+[the actual wheel result](evidence/durable-demo-a117/full-windows312-wheel/current-summary.json).
+This is not a complete candidate matrix row, Windows Docker, real-client result
+or formal Release. Later CLI/controller checks remain separate. Release BLOCKED.
+
+Current incremental supplement — 2026-11-15 America/Tijuana (2026-11-16 UTC).
+The unchanged a117 wheel passed Linux3.14's7 native checks and full frozen33ffbc3
+suite:2538passed/7skipped/0failed/error,2545 unique identities matching the accepted
+same-input sdist.35 Docker observations retain equal selected outcome projections;
+97 installed members and2382 inputs stayed unchanged. Root inspected actual logs,
+JUnit, terminal receipts and53 original transferred files. See
+[the wheel supplement](evidence/durable-demo-a117/full-linux314-wheel/current-summary.json).
+The later demo image-ID guard has separate10-case CLI regression and a real Linux
+rejection before project creation; it is not part of that frozen full suite.
+Zero-model interrupted-client preparation and9 inert-handle observer tests are
+preparation only, not live interruption/continuation evidence. The complete
+experimental controller is now implemented, independently reviewed and supplemented
+by14 cleanup plus8 live-helper checks (all pass, zero skips). Original fixture/
+transfer failures remain preserved. Actual flock uses an inert process; replay
+uses real request binding with synthetic cached status; auth/unmount are fixtures.
+The unchanged97 runtime members were checked; native zero-model readiness passed.
+See [the controller scope and original results](evidence/durable-demo-a117/interrupted-controller/current-summary.json).
+Complete live execution, actual auth lifecycle, cross-vendor and host-crash checks
+remain NOT RUN; a new explicit at-most-two-call grant has not been given.
+**Formal Release remains BLOCKED; no gates or historical M5 conclusions changed.**
+
+## Current scoped outcome — 2026-11-15, installed-sdist regressions
+
+**Formal Release: BLOCKED.** Original gates and historical M5 acceptance remain.
+Current117/fc27f15 has a limited actual two-Codex controlled-flow PASS, independently
+reviewed against native attempts, four exact host gates, candidate/context pins,
+Docker8/8+19 isolation checks and cleanup records. Producer verified; second-model
+review accepted as a document only, still unverified. Both native parents ended0,
+no second attempts; a new-process reopen added zero model calls or authority and
+left task/attempt/history unchanged. Temporary auth was removed, RAM home unmounted
+and original auth unchanged.97 runtime members stayed pinned. One fresh two-call
+authorization was consumed; no retry. Private protocol replay found zero tool
+events and exact source/review matches;119bytes producer stderr remains private
+and unclassified. See evidence/durable-demo-a117/live/summary.json. This does not
+prove actual live crash recovery, cross-vendor, unattended policy, original-workspace
+application, independent billing or complete M6/M7/B/Release.
+
+Separately, runtime117/fc27f15 with pilot5b433f4 actually passed the fixed Linux
+Docker run:8 cases,19 isolation checks, verified producer, exact proof/context
+handoff and Core reopen.97 installed files unchanged, cleanup confirmed. Actors
+are deterministic; text review is unverified; no model call or real crash occurred.
+See evidence/durable-demo-a117/verified-linux/lead-review.json. Windows/Linux
+durable console observations and focused Windows10+pilotCLI5 checks are separate.
+The subsequent Windows3.12 editable-source and installed-sdist checks each
+passed the same10 focused cases as the wheel.
+97 runtime members were unchanged;1317 source-archive payload files match frozen
+Git and8 generated metadata files are identified. Archive SHA256
+b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672.
+The first two preparations failed before any tests (wrong Python minor, then
+historical snapshot mismatch); both remain in evidence/durable-demo-a117/sdist/.
+Corrected preparation used the exact same archive, Python3.12 and unchanged
+pyproject dependency pins. The same archive then passed Linux3.14's7 native
+checks and10 focused cases, matching Windows identities/outcomes with97 unchanged
+runtime members. See evidence/durable-demo-a117/sdist/linux/summary.json.
+The a117 acceptance matrix and macOS installation remain incomplete. The Linux
+installed-sdist result and the Windows failure and targeted repair are recorded below.
+
+The added OwnerContinuation native-exit tests run against that same installed117
+runtime: root Windows3.12 and Linux3.14 each passed the full affected20-case file,
+with equal case identities and97 unchanged runtime members. os._exit(73) after
+worktree commit allows one resumed deterministic receiver; exiting after dispatch
+intent keeps recovery/replay unknown with no launch. Original receipts/workspaces
+and single dependency transfer are checked.18 existing cases remain. Independent
+static review found no blocking issue. The initial two failures were a test's
+incorrect fixture task-count assumption; sanitized originals are preserved, with
+the missing initial-test SHA disclosed. See evidence/durable-demo-a117/continuation-exit/summary.json.
+Test SHA4fc76f32042bd498237167b5b1b75f2fcd73af7dcef7e6d457dea78c658cf0cc;
+mapped only to original M7-02/M8-02. No product changes, new milestone, real model
+failure/continuation or full requirement acceptance are inferred.
+
+Frozen116/624b36c matrix is6/9. All six Windows/Linux3.11/3.12/3.14 rows completed26
+checks each. Every source/wheel/sdist suite has2533 unique matching cases; Windows
+each2477pass56skip, Linux2526pass7skip. Windows3.14 finished12:29:23Z;69 original
+files/6,659,997bytes and3122 frozen source paths verified. Its three suites match
+Windows3.12 outcomes;32 distribution records match, with only three Python-conditional
+dependency edges removed. Raw license reviews remain pending/publication false.
+See ../../releases/0.3.0a116/624b36c/windows-314/lead-review.json and
+../../releases/0.3.0a116/624b36c/matrix-after-windows314.json. Mac's three rows remain
+NOT RUN. Both original queues ended0 and were not repeated.
+
+Four exact116-wheel recovery observations now pass: MCP and HTTP on Linux and
+Windows. Windows HTTP's first attempt failed at closure observation; its original
+failure is retained. The corrected HTTP-only run requires original worker identity
+ended and native listener absent before restart; it passed without repeating MCP
+or changing product code. See evidence/m9-a116-preparation/transport-recovery/current-summary.json.
+These scoped deterministic cases are not real-client recovery, performance, full
+M8 or Release acceptance. The JUnit supplements are labelled report-derived
+actual scenario observations, not pytest runs.
+
+The unchanged bounded benchmark subsequently passed7 native checks per platform:
+4threads x20 claims and2processes/mixed HTTP x20 claims. Linux p95 25.98/42.00ms;
+Windows16.27/25.12ms, against the fixed1000ms budget. Exact claim audit, single-winner,
+SQLite and other declared functional checks passed.96 installed members matched
+before/after and3122 frozen source paths were unchanged. Both queues ended before
+Linux ran; the owned VM shut down normally before Windows ran. Original disks and
+logs remain. See evidence/m9-a116-preparation/benchmark/{linux,windows}/lead-review.json.
+These are small diagnostic workloads; setup/verification/cleanup are outside claim
+timing, and the unchanged tool retains aggregate timings, not every raw sample.
+No exhaustive stress, production SLO or full M8/Release conclusion follows.
+No a116 result is attributed to117.
+
+Preparation only,2026-11-15T13:24Z: the exact a117 single-call cancellation plan
+c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41 was created after
+independent static review, with97 runtime members and CLI bytes checked. Zero
+model calls, no external auth read/copy and no RAM-home mount. Actual cancellation
+was NOT RUN at preparation; nothing here promotes recovery or Release status.
+See evidence/durable-demo-a117/cancel-preparation/summary.json.
+
+The newly authorized single live cancellation attempt then failed in the evidence
+driver at13:29:19Z (exit1). The exact observation-field assertion omitted three
+existing immutable fields and ran before dispatch/capture/result persistence;
+original live-window/raw-capture evidence was not retained. The earlier static
+review missed this mismatch. Automatic cleanup failed closed. Read-only postmortem
+confirmed a terminal owned-parent receipt (exit-9, unknown/local_cancel_requested),
+no second dispatch, incomplete/running/unverified task state,97 matching runtime
+members, unchanged repositories and no active Codex/Python processes in the guest.
+After independent review and a fresh positive-stop check, only the authorized
+temporary auth was removed and its tmpfs unmounted at13:32:21Z. Original auth was
+unchanged; no retry or additional call. Postmortem cleanup PASS does not repair
+missing execution evidence: live cancellation remains NOT VERIFIED. Original
+failed scripts/receipts are preserved, and the single grant is consumed. Offline
+driver repair is separate. See evidence/durable-demo-a117/cancel-live/summary.json.
+
+The repaired evidence driver passed4 root-run offline methods and8 subtests at
+13:40:57Z (JUnit counts12 including subtests, not12 independent methods), with97
+unchanged installed runtime members. Both injected observation and schema failures
+leave cancellation/capture diagnostics before propagating; strict full-schema and
+owned-stop gates remain. The first new test fixture failed from omitted slots=True;
+its exact source/log/JUnit are preserved, then only that fixture was corrected.
+Independent Astra accepted the repaired pilot/helper; root separately checked the
+final fault-injection tests. No product changes, new live plan or retry. The VM
+shut down normally after cleanup. Live acceptance stays NOT VERIFIED and formal
+Release stays BLOCKED. See evidence/durable-demo-a117/cancel-repair/summary.json.
+
+The current Windows3.12 full installed-sdist run ended at14:34:24Z: native
+session45808/pytest exit1,2545 unique cases (2488 passed,1 failed,56 skipped,0 errors).
+Six other native checks passed.2355 frozen inputs from4dcd716 and97 installed
+runtimefc27f15 members remained unchanged. The original2533 case identities remain;
+12 new cases passed and56 platform skips match the old row. The only changed old
+outcome was the traceability guard missing an already mapped M7-02 recovery case.
+The fix adds that explicit expected selector, without relaxing equality,partial,
+not_run or release assertions. Its entire92-case file passed; root checked the
+actual patch/log/JUnit and Ruff/format passed. Independent Astra accepted targeted
+validation for this one-line test-only change. The original full result remains
+FAILED, not overwritten or described as a full rerun PASS. This is a full installed
+regression plus bounded maintenance repair, not a complete current release matrix
+row. Original logs/JUnit (6 credential redactions), native receipts and case diff
+remain in evidence/durable-demo-a117/full-windows312/current-summary.json.
+
+The Linux 3.14 full installed-sdist run with actual Docker ended at 15:03:35Z.
+Native session 79159 exited 0 and all seven native checks passed. JUnit reports
+2,545 unique cases with 2,538 passed, 7 skipped, 0 failures and 0 errors. Pytest
+reported 120 warnings over 1,096.12 seconds. All 2,533 a116 case identities and
+outcomes were preserved, and all 12 additions passed. The selected fields in 35
+observations across seven Docker fixture groups matched a116, including expected
+rejections. The 53 harvested files total 635,517 bytes and match their recorded
+SHA-256 hashes. All 2,382 frozen inputs from 33ffbc3 and 97 installed members
+from fc27f15 remained unchanged. The original source archive was reused. Docker
+reported zero containers and the fixture had no remaining processes. No model
+call or credential action occurred. The result covers this installed archive on
+Linux 3.14 and formal Release remains BLOCKED.
+[Completed evidence](evidence/durable-demo-a117/full-linux314/current-summary.json)
+· [Start record](evidence/durable-demo-a117/full-linux314/started-summary.json)
+
+Cancellation R2 used one fresh, explicit single-call authorization and provided
+passing CodexAdapter evidence for the owned local parent (`owned_parent_only`).
+Native session 2878 closed with exit 0 at 15:09:16Z. Root and independent
+review checked the actual evidence. The driver observed `turn.started`, verified
+the parent was still running and no terminal event had arrived, then requested
+and propagated cancellation. The first leg was `terminal_recorded` with status
+`unknown`, error `local_cancel_requested`, exit -9 and `parent_ended=true`. The
+second leg was `not_dispatched`. A new Core instance in the same controller
+process saw identical attempts, an incomplete outcome and a running, unverified
+task. The 97 installed runtime members, source repository and worktree stayed
+unchanged. Temporary credential cleanup and tmpfs unmount passed. The original
+credential stayed unchanged and no related processes remained. Raw stdout (335
+bytes) and unclassified stderr (238 bytes) remained local. The authorization is
+consumed and there was no retry. Server cancellation, descendant cleanup,
+billing and real host-crash recovery remain unverified. Delivery node B and
+formal Release retain their existing scope, and the full a117 matrix remains
+incomplete.
+[R2 result](evidence/durable-demo-a117/cancel-r2-live/summary.json)
+· [R2 preparation](evidence/durable-demo-a117/cancel-r2-preparation/summary.json)
+
+A subsequent new native process (PID21300, exit0 at15:12:49Z) read the persisted
+cancelled state with zero authorization/model calls. Tasks, audit and five receipt
+files remained unchanged, as did97 installed members and the source/worktree.
+Independent review accepted this read-only persistence observation; no host crash
+was injected and no task execution was resumed. The owned VM shut down normally,
+with its absence observed at15:14:35Z and disks/workspaces preserved.
+
+## Earlier delivery checkpoint — 2026-11-15
+
+
+The original release requirements and accepted M5 frozen open scope are unchanged.
+P0/P1/P2 and nodes A/B/C now control delivery order (see ../PLAN.md); A/B do not
+waive formal release gates. New development0.3.0a117 at
+`fc27f15f47fa92ed5edcd764a573c1d84a68c107` adds `demo --durable`. Root observed
+10 passing installed-wheel cases,97 exact Git/source/wheel/installed runtime
+members and a successful actual console run. Ruff/format/mypy/pip checks pass.
+The initial missing-setuptools build failure is retained alongside the corrected
+offline build. Independent read-only Astra review found no blocking defect.
+See evidence/durable-demo-a117/summary.json and the preview wheel under
+../../releases/0.3.0a117/demo-fc27f15/. This is an offline simulated coordination
+demonstration subset, not full node A/B, real-model recovery or independent code
+verification. Full117 regression, sdist and other platforms remain NOT RUN.
+
+Separately, the unchanged624b36c/0.3.0a116 Windows3.11 row completed at10:16:20Z,
+exit0 with26 passing checks. All three source/wheel/sdist suites have2477pass56skip
+and2533 unique identities/outcomes equal Windows3.12. Strict report/candidate
+verification,3122 unchanged source paths and69 original transferred files passed;
+both license inventories equal Windows3.12 and remain pending/publication false.
+This is a reference-delta review, not repeated full independent acceptance.
+Evidence: ../../releases/0.3.0a116/624b36c/windows-311/lead-review.json;
+matrix-after-windows311.json now records4/9 complete,5 combinations missing.
+Windows3.14 and Linux3.12 continue in the original queues. Mac remains unavailable;
+benchmarks and prepared same-protocol recovery are NOT RUN. Formal Release BLOCKED.
+
+The earlier3/9 entry below is preserved as a historical checkpoint.
+
+## Current candidate:0.3.0a116 at624b36c; three complete local rows
+
+Windows3.12 finished2026-11-15T07:29:12Z, native session85611 exit0. All26 checks
+pass; source, installed wheel and installed sdist each2477pass56skip,2533 unique
+case identities, matching identities/outcomes and zero failures/errors. Strict
+verification covered all63 report manifest members,26 native logs,3122 Git source
+paths and exact original candidate archives. All70 transferred files match their
+D: originals; seven earlier source/wheel files were preserved byte-for-byte.
+Original scratch cleanup was observed. No raw private JUnit was uploaded.
+See ../../releases/0.3.0a116/624b36c/windows-312/transfer-summary.json and the
+original report/manifest beside it. The original manifest SHA256 is
+23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95.
+
+Bounded independent read-only inspection found no row/continuation-prerequisite
+blocker. It is not whole-product/Release acceptance. The raw license reviews are
+still pending/publication false; staged offline wheel bytes are not asserted
+verified after cleanup. The local matrix is now3/9 complete,6 combinations missing.
+Remaining Windows queue started07:47:06Z/session97559:3.11 RUNNING,3.14 NOT RUN.
+Windows3.11 source later completed08:36:36Z, exit0:2477pass56skip; its2533
+unique identities/outcomes match Windows3.12, and all3122 source files remain
+unchanged. Wheel finished09:26:10Z, exit0,2477pass56skip with identical2533
+identities/outcomes to source and Windows3.12 wheel. Sdist/final verification
+remain pending; see evidence/m9-a116-preparation/remaining-windows/wheel311-observation.json.
+Linux3.14 finished2026-11-15T08:49:47Z, original row exit0,26 native checks pass.
+Source/wheel/sdist each2526pass7skip,2533 unique cases, zero failures/errors;
+all identities/outcomes match. The same case set occurs on Windows3.12, with
+all platform skips passing on the other platform and no non-platform difference.
+Root checked strict report/source/candidate provenance,3122 unchanged source
+hashes and174 byte-identical copied files. Bounded independent inspection found
+no blocker in receipts, separate fresh installs or the105 Docker observations
+against seven frozen fixture groups. Expected failures and unverified/unresolved
+cases remain such; these are not105 successes or real-client runs. Both license
+inventories remain pending/publication false; offline staged wheel bytes were
+not reverified after cleanup. See ../../releases/0.3.0a116/624b36c/linux-314/
+lead-review.json and original report.json; the earlier matrix snapshot is saved at
+../../releases/0.3.0a116/624b36c/matrix-after-linux314.json.
+Linux3.11 finished09:47:56Z, original row exit0 and26 checks pass. Each suite
+2526pass7skip,2533 unique cases, identical identities/outcomes to Linux3.14.
+Strict candidate/report/Git verification and174 byte-identical original file
+copies passed. The105 separate Docker observations match selected status,
+phase, constraint and cleanup projections, including field presence. This is
+reference-delta inspection, not a repeated full independent acceptance; expected
+negative and unverified/unresolved states remain unchanged. All31 distribution
+license records match Linux3.14; only three dependency edges to typing-extensions
+are added. Inventories remain pending/publication false. See
+../../releases/0.3.0a116/624b36c/linux-311/lead-review.json and original report.json;
+../../releases/0.3.0a116/624b36c/matrix-after-linux311.json is the current matrix.
+The original Linux queue started3.12 at09:47:57Z; its source suite is RUNNING.
+No full-queue exit, new benchmark pass or product transport-recovery pass is claimed.
+Owner has no Mac environment;
+all three macOS rows NOT RUN. Existing real-client and release gates still apply.
+Formal Release stays BLOCKED. Do not transplant historical a115 observations.
+
+## Preserved a115 candidate:b6f05f0; five complete historical rows
+
+Latest resumed observation: Windows3.14 completed its original queue at
+2026-11-14T12:49:08Z, exit0. All26 checks pass; each source/wheel/sdist suite
+2426pass56skip,2482 unique identities. The78 transferred files,2083 source inputs
+and exact packages verified; case IDs/statuses match Windows3.11. Evidence:
+../../releases/0.3.0a115/b6f05f0/windows-314/report.json and
+evidence/m9-a115-preparation/windows314-complete/summary.json.
+Matrix-after-windows314.json records five complete rows and four missing
+OS/Python combinations. The original queue is terminal, not live.
+
+The resumed Windows3.12 canonical wheel-only component FAILED at
+2026-11-15T04:35:09Z:2425pass56skip1fail/exit1, with8 successful prior checks.
+Product delivery assertions passed; the test Git reader failed on an existing
+262-character ref path. Same-repository read-only comparison proved default
+Git exit128/Filename too long versus exit0/correct commit with core.longpaths=true,
+which production already sets. Original failure is retained in
+evidence/m9-a115-preparation/windows312-wheel-canonical-failure/summary.json.
+
+The minimal test-helper fix and genuine long-ref regression subsequently passed
+60 integration cases/1 Linux-Docker-only skip, including the failed delivery case.
+All96 installed product members match the exact b6 wheel after execution. These
+are separate corrected-test observations, not a new b6 full-suite pass; see
+evidence/m9-a115-preparation/windows-longpath-fixture-repair/summary.json.
+Existing gates bind tests within the frozen source, so a corrected formal
+candidate needs a new identity; none has started. Old source/sdist/build and
+unknown receipts remain unchanged. Success finalization and Windows benchmark
+are NOT RUN. The owner confirmed no macOS environment; its three rows are NOT RUN.
+No real-client or formal Release pass follows.
+The earlier running references below are historical checkpoint observations.
+
+Resumed sdist actually completed2426pass56skip, exit0 at08:08:36 UTC. Its canonical
+receipt and narrow identity recovery are verified. Explicit composite report and
+candidate manifest passed strict verification on Windows and Linux, with wheel
+canonical unverified, local_matrix incomplete and formal Release BLOCKED.
+The later Linux3.14,3.11 and3.12 rows are complete; remaining Windows rows
+are running or pending as detailed below. The original candidate pins remain in
+evidence/m9-a115-preparation/composite-resume/summary.json.
+
+Linux3.14 completed09:09 UTC: all26 real checks passed; source/wheel/sdist each
+2476pass6skip. Strict verification confirms2482 unique cases per suite, matching
+case sets,2083 Git inputs and exact candidate archives. Only six proven labels
+per XML were changed in separately derived evidence; all originals remain.
+Independent read-only review accepted only this Linux/Python3.14 local component
+row. Complete report: ../../releases/0.3.0a115/b6f05f0/linux-314/report.json.
+The105 separate Docker observations are pinned by transfer-summary.json and
+include expected failures/non-started cases. They are not105 successful executions,
+not all semantically covered by the original72-artifact report verifier, and not
+real models. No containers remained at the row boundary.
+
+Linux3.11 subsequently completed10:06 UTC: all26 checks pass and each of source,
+wheel and sdist has2476pass6skip. Exact candidate archive pins,2083 Git inputs
+and all2482 case identity/status pairs per suite match the previous Linux3.14
+row. This task performed strict artifact/delta inspection, without claiming a
+second full independent review. Its105 separate Docker observations and originals
+are retained with the same limitations as above; no containers remained.
+Complete report: ../../releases/0.3.0a115/b6f05f0/linux-311/report.json.
+Summary: evidence/m9-a115-preparation/linux311-complete/summary.json.
+
+Windows3.11 whole row completed10:38:36 UTC:26 checks pass, each source/wheel/
+sdist suite2426pass56skip/exit0. Strict verification covered78 transferred files,
+2083 Git inputs and2482 unique case identities per suite. The same case IDs occur
+in Linux3.14; all56 Windows skips passed on Linux and all6 Linux skips passed on
+Windows. No platform row is waived. Whole-row report:
+../../releases/0.3.0a115/b6f05f0/windows-311/report.json.
+Windows3.14 source completed11:22:16 UTC:2426pass56skip/exit0,2083 source
+hashes unchanged. Wheel completed12:05:08 UTC:2426pass56skip, zero failure/error,
+canonical exit0; log hash and sanitized JUnit counts checked locally. Sdist began
+12:05:24 UTC in the same queue (actual PID6320); its result and whole-row strict
+identity verification/archival remain pending. This interim observation does not
+add a completed matrix row. Source component evidence:
+evidence/m9-a115-preparation/windows314-source-observation/summary.json.
+Linux3.12 whole row completed11:03 UTC:26 checks pass, each source/wheel/sdist
+2476pass6skip, canonical exit0. All182 transfer hashes,2083 Git inputs, archive
+pins and2482 unique case identities per suite verified; case statuses match
+reviewed Linux3.14. The same105 separately pinned Docker-observation limitations
+apply; no containers remained. Full evidence:
+../../releases/0.3.0a115/b6f05f0/linux-312/report.json.
+
+Current-b6 Linux M8-02 installed benchmarks completed11:04 UTC, real driver exit0.
+The unchanged4-thread/20-round profile yielded80 claims/p95=27.53ms; the unchanged
+2-process/20-round mixed Core/loopback-HTTP profile yielded40 claims/p95=62.23ms.
+Both pass the declared1000ms diagnostic budget. Exact120 audit entries, one winner
+per round, expected conflicts, install/source hashes and cleanup verified. These
+are bounded diagnostics, not exhaustive stress/production SLO; the physical host
+had concurrent Windows3.14 source work. Windows equivalent remains NOT RUN.
+Evidence: evidence/m9-a115-preparation/current-benchmark-linux/summary.json.
+The completed Linux runtime was gracefully shut down; disks/evidence retained.
+The earlier matrix-after-linux312.json retains5 incomplete combinations; the
+later Windows314 snapshot has4 gaps and predates the failed canonical-wheel trial.
+Cross-platform skip observations do not waive any complete row or macOS gate.
+
+The historical wheel observer did not persist a native-handle creation-time
+binding after its separate CIM check. Existing observations are retained but
+cannot be promoted to strict acceptance. The later canonical wheel component
+ran and failed as documented above; its failure is not an observer timeout.
+See evidence/m9-a115-preparation/wheel-canonical-followup/summary.json.
+Its subsequent create-only composite finalizer has bounded independent read-only
+review and is also NOT RUN; real wheel success and final strict audit are required.
+
+A bounded independent read-only license check found no concrete member/terms
+omission or false pass claim in the current package/NOTICE scope. Both archive
+hashes and sdist documents matched;42 Windows third-party license originals
+corresponded to NOTICE. Linux35 installed license-file hashes, two newline-only
+differences and three Python-conditional dependency-edge differences were
+checked. An initial default-decoding discrepancy was eliminated by explicit
+UTF-8 comparison; no product text changed. The wheel contains project MIT but
+not third-party NOTICE; neither archive bundles dependency binaries.
+The later scoped_delivery_decision completes the technical classification for
+these exact archives: pywin32 is an external composite-license dependency;
+BSD-3-Clause is selected for cryptography's own code while retaining upstream
+OR metadata and both texts; the observed NOTICE placement is accepted for this
+project-only distribution scope. This uses existing evidence and independent
+Astra review, without another file audit or frozen-package change. Raw collector
+pending/publication-false labels stay unchanged. It is not legal approval or a
+decision about future dependency bundles. Public Release authorization and all
+platform/real-client gates remain pending; whole M9-02 is not passed. Evidence:
+evidence/m9-a115-preparation/b6-license-platform-delta.json.
+
+M9 evidence tooling now supports explicit composite installation sources.50
+synthetic policy cases and Ruff/format pass; independent review identified and
+the revision closed the environment-creation/installation binding gap. These
+checks concern verifier policy, not new b6 whole-suite or real-client acceptance.
+The existing sdist session73133 has now completed. Its verified composite permits
+the remaining platform rows to proceed; formal Release remains BLOCKED.
+
+Frozen product b6f05f0473591dc568be25591047fdea963ef86c (0.3.0a115) contains
+all original 42-task code inventory plus the process deadline and evidence
+redaction repairs. Implementation presence and targeted regression passes are
+not whole-requirement or formal Release acceptance.
+
+| Scope | Actual result and limitation |
+| --- | --- |
+| Deadline repair, Windows 3.12 | PASS: 45 process/lifecycle cases plus 97 unchanged direct-adapter protocol cases, 142 unique passes; no actual Agent models |
+| Deterministic old-code comparison | FAILED as expected: frozen4a27a00 has five failures/two passes across seven final timer/race cases; original timing assertion is unchanged |
+| Corrected source static checks | PASS: Ruff/format; full-source mypy on identical product bytes |
+| Earlier evidence-redaction repair | PASS: 267 affected checks; original once-redacted source XML reprocessing keeps bytes and case IDs unchanged |
+| New b6f05f0 Windows 3.12 full source | Execution PASS2426/56skip, exit0 at04:34:55 UTC; evidence identity gate BLOCKED by one sanitized fixture-name collision (2482 records/2481 unique). Original preserved; source identity recovery separately proved |
+| New b6f05f0 Windows3.12 wheel/sdist suites | Old wheel independent observation exit0/2426pass56skip remains separate from its started/unknown canonical receipt. The new canonical trial FAILED2425pass56skip1fail; a corrected-fixture targeted60pass1skip is separate evidence. Sdist completed08:08:36 UTC/2426pass56skip/exit0 with verified canonical receipt and label recovery. No full Windows3.12 pass |
+| Windows 3.11/3.14 and Linux 3.11/3.12/3.14 full rows | All five rows complete and artifact verified. Linux source/wheel/sdist each2476pass6skip; Windows each2426pass56skip. No actual client acceptance inferred |
+| Frozen4a27a00 source and wheel full suites | Each2405pass/56skip, zero failure/error; the source result is an independent completed-process observation, not a repaired canonical collector receipt |
+| Frozen4a27a00 sdist full suite | FAILED:2404pass/56skip/1fail at process deadline assertion; collector naturally exited1; complete original evidence and packages retained |
+| First c56cbe2 full source | FAILED:2404pass/56skip/1traceability failure; strict selector repair and253 affected retests retained; old wheel interrupted, sdist not run |
+| Real Codex and same-vendor relay | Prior limited live results retain their historical frozen versions and scope; not a new b6f05f0 real-client acceptance run |
+| Real Claude/Cursor and cross-vendor acceptance | BLOCKED: accounts unavailable; protocol fixtures cannot replace actual-client evidence |
+| macOS and independent Release decision | NOT RUN / BLOCKED; scoped technical license classification completed separately; no gate waived |
+
+The timeout repair checks the actual monotonic deadline before terminating its
+owned process when an event-loop timer arrives early. It preserves real measured
+completion timestamps, cancellation/natural-exit precedence, and the original
+strict assertion. Independent read-only review found no product correctness
+issue; its pending-cancel and clock-resolution coverage suggestions were added.
+
+Six explicit parameter labels repair this reporting collision; six existing cases
+pass and Ruff/format pass. Product/assertion AST is unchanged. The original full
+execution remains bound to b6; no new HEAD or complete package acceptance is inferred.
+
+Evidence:
+- [Explicit resumed sdist run and preserved pause observation](evidence/m9-a115-preparation/sdist-resume.json).
+- [Case identity repair, original evidence and separate proof](evidence/m115-source-checks/case-identity/summary.json).
+- [Final targeted repair and original failures](evidence/m115-source-checks/deadline-repair/final/summary.json).
+- [Original failed complete package collection](../../releases/0.3.0a115/4a27a00/windows-312-packages/report.json).
+- [Earlier completed source observation](evidence/m115-source-checks/full-windows-312/summary.json).
+- [Live frozen-candidate identity and recovery entry](evidence/m9-a115-preparation/r3-execution.json).
+
+All229 repaired source/test/config inputs bind to staged Git bytes:223 exact,
+six LF-normalization-only; the six reused adapter modules and all product source
+are byte-identical between the45-case and97-case runs. These are scoped input
+bindings, not a claim that the complete new candidate has passed.
+
+The original resumed sessions49009/8990 are terminal and must not be restarted.
+The frozen source is D:/agentsync-debug/m115-r3/s. Original session75435 was
+owner-stopped during the earlier pause; it did not complete. Resumed session73133
+completed the sdist component. Current Windows session82363 and Linux queue3818
+own the remaining rows. Linux's2083 source files match the frozen snapshot and
+its3.11/3.12 runtime volume is mounted read-only. Inspect actual terminal evidence
+before accepting any further row; do not restart consumed sessions.
+
+Formal Release remains **BLOCKED**. The failed4a27a00 result, skipped cases,
+canonical source-receipt gap and malformed historical derived XML remain visible.
+Current repairs do not inherit old whole-suite/package/client acceptance. No
+GitHub Actions, paid model calls, main merge or user-workspace application occurred.
+The sections below are historical scoped evidence, not current process states.
+
+## Approved target integration: frozen a114 Windows row complete
+
+Frozen ddd4b42 (0.3.0a114) adds explicit owner approval and create-only integration of the
+verified candidate into a new target branch and independent worktree. Original
+checkout contents are preserved; partial/unknown effects retain their reservations.
+Windows affected regression reconciles 120 unique cases: 119 pass and one Linux
+Docker skip. This combines 96 unaffected results with a repaired 24-case module,
+not a new complete run. The original six fixture errors and earlier long-path
+failures remain retained. Product bytes were unchanged by the fixture correction.
+Ruff/format and source mypy pass. Only disposable Git projects were modified;
+verifier proofs in this source scope are synthetic, not real Docker/client evidence.
+
+Source evidence: [affected run and repaired subset](evidence/m4-owner-integration/summary.json).
+The original full source/wheel/sdist collector completed on Windows 3.12 at
+2026-11-13 12:46:46 UTC, exit 0. All 26 collector checks pass. Each of the three
+complete suites has 2371 passes and 56 skips across 2427 unique cases, with zero
+failures/errors. Root read the archived report and compared every case identity
+and outcome across all three JUnit files: exact match. Frozen source remained
+unchanged; static/build, fresh installation, origin/dependency and inventory
+checks pass. The archived report SHA-256 is
+`a207c6730b2acc6eccce7c6a77520f3f6286e502adcabd16a3255ea8a74cd377`.
+Full evidence and the two exact packages are in
+[the frozen a114 archive](../../releases/0.3.0a114/ddd4b42/windows-312/report.json).
+Actual Linux Docker integration and other a114 rows were NOT RUN; they were
+superseded by the a115 implementation and current candidate execution above.
+This completed a114 row is not acceptance of later a115 product changes.
+Formal Release remains BLOCKED; macOS, unavailable real clients, final license
+classification and independent Release decision are not waived.
+
+## Bound receipt usage: affected installed checks passed
+
+Frozen 95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f now passes 18 selected installed
+test files/nodes: Windows 3.12.16 wheel 510 passed / 1 Linux Docker skip; Linux
+3.14.7 sdist 511 passed / 0 skips. The same 511 unique case IDs are collected,
+with no failures/errors. All 1033 packaged Git inputs and 92 runtime members
+match; installed archive/origin, before-after source/runtime and console checks
+pass. The existing Linux Docker-Cursor case verifies a candidate, resumes an owned
+reviewer and checks producer/reviewer usage sync, query and reopen without extra
+launches. The daemon has no containers left. The saved Docker observation retains
+its existing schema; usage assertions are evidenced by the exact test and JUnit.
+
+The source manifest covers 223 unchanged before/after members: 216 match frozen
+Git bytes and 7 differ only by CRLF-to-LF normalization, including five unchanged
+baseline files. The initial helper incorrectly expected only two such files;
+the corrected comparison and explanation are retained. No product change or test
+rerun was made for that metadata correction. Original four source-test failures
+and three mypy diagnostics remain local; final source 80/80 and separate 246-case
+traceability/collector results are not added to the installed unique count.
+
+Evidence: evidence/m8-receipt-usage/summary.json. Independent Astra technical review
+accepted this limited scope; no external Work or formal Release approval is claimed.
+Original installation handles92562/48653 are terminal0; do not restart. Debug:
+D:/agentsync-debug/m8-usage-95244e2; guest:/root/amadeus-usage-95244e2.
+This is affected regression, not a full-suite or real-vendor/billing acceptance.
+Formal Release remains BLOCKED. Next finish original M4-05's explicitly approved
+integration into a target repository's new branch and separate worktree; private
+ref delivery alone does not complete it. That implementation is in progress and
+does not authorize applying anything to a real user workspace. Then freeze for
+M9's current full local matrix; unavailable real clients/platforms stay explicit.
+
+## Durable owner-only Mock workflow: affected installed checks passed
+
+Frozen 7fa459758e42c94e70bb0d4829d54a8b07db3a6d (0.3.0a112) now passes the
+25-selector affected installed regression: Windows wheel 630 passed / 1 skip and Linux sdist 631 passed / 0 skips.
+The same 631 unique parameterized IDs are collected, with no failures/errors.
+All 1001 packaged Git inputs and 91 runtime members match. Installed origin/archive,
+before-after source/runtime, dependency and console checks pass. Linux also runs
+the existing actual Docker verification, independent task completion and exact
+owner SDK/CLI private-ref delivery; reopen matches, source is unchanged and the
+dedicated daemon has no containers left. These are local checks with zero models.
+
+Source325pass/6Linux Docker skips and the strengthened3-case/1-case supplements
+are retained with exact frozen-file hashes; supplements are prior IDs, not new
+unique cases. The separate246traceability/collector checks pass. Unchanged slow
+verifier modules reuse this Windows source evidence, not a new Linux package run.
+Source Ruff/format342files and mypy90modules pass. This is not a full-suite rerun,
+real-client recovery, actual billing or formal Release acceptance.
+Evidence: evidence/m7-durable-workflow/summary.json.
+Independent Astra technical review accepted this limited scope; external Work
+approval and formal Release are not claimed.
+Original process handles24863/57158 are terminal; do not restart. Debug roots:
+D:/agentsync-debug/m7-durable-7fa4597 and guest:/root/amadeus-durable-7fa4597.
+
+Next product work: M8-01 explicitly reconcile existing controlled-attempt receipts
+into owner project usage queries. Preserve reported/unknown metrics, idempotency,
+historical imports and existing authority; do not create a second dispatcher,
+infer bills, launch clients or reopen M5. This next implementation is in progress; its validation is NOT RUN.
+
+## Restricted cross-client dependent review: installed affected checks passed
+
+Frozen10143077d512583a1e0efb9e5355dd54f2a2ce57 (0.3.0a111) passes the twelve-file
+affected regression: Windows3.12.16 wheel360passed/11Docker skips; Linux3.14.7 sdist
+371passed/0skips, zero failures/errors. Both collect the same371unique parameterized
+IDs.982sdist Git inputs and90runtime files match; installed origin/archive identity,
+before-after source/runtime and console probes pass. Packaged-source Ruff, formatting
+327files and mypy89modules pass. [Evidence](evidence/m7-dependent-review/summary.json).
+
+New source/dependency/staging binding gates, approved-launch rechecks, strict tool
+event handling, unknown dispatch/reopen and legacy paths are covered. The source
+mutation during approval is a controlled injected staging observation; it is not
+a persistent database mutation. Actual Linux Docker3/3cases with19isolation checks
+produce a verified source; a resumed owned Cursor protocol emitter produces an
+unverified review document, and reopen retains one total reviewer launch. Containers
+are absent. This is not real Cursor, uninterrupted cross-vendor model execution,
+full-suite rerun, or universal crash-recovery evidence. All model/API calls are0.
+Independent Astra review accepted the exact files, installation evidence and limited
+scope; this is not external Work/PR approval. Formal Release remains BLOCKED, and
+this evidence does not apply to the later a112 Core/schema work in progress.
+
+## Explicit owner candidate delivery: installed affected checks passed
+
+Frozen529df3b3e073b9975fc1e722511ade59423fa330 (0.3.0a110) adds an owner-only
+SDK/CLI entry into the existing create-only private-ref delivery. Approval and
+publication are separate decisions; agent/HTTP/MCP access is not added. Windows
+3.12.16 wheel and Linux3.14.7 sdist each pass496cases/1platform skip,0failures/errors
+across eight affected test files. Both contain the same497unique parameterized IDs.
+This is not a full-suite rerun.964packaged files match Git;90runtime members match
+the wheel and installed environments. Archive identities, source preservation,
+console probes, Ruff, formatting340files and mypy89modules pass.
+
+The actual Linux observation binds Docker verification, independent task completion,
+SDK approval and separate owner CLI delivery to the same task/version/proof/candidate.
+CLI exit0 consumed the exact approval; reopen matches, the original source is
+unchanged and the dedicated daemon has no containers left. No real model calls,
+paid APIs or Actions were used. The console demo is Mock and is separately labeled.
+[Logs, JUnit XML, hashes and actual observation](evidence/m4-owner-delivery/summary.json).
+Independent Astra review accepted this limited scope after inspecting the frozen
+code, package members, evidence hashes, case IDs and exact delivery bindings.
+This is technical review, not external Work/PR approval. Original-workspace apply remains
+deferred; unavailable vendors, macOS and full Release remain unverified/blocked.
+
+## Declared M8 local contention load: diagnostic pass
+
+Existing2af7ccc tool and unchanged installed09425da runtime completed four actual
+commands:4threads/20rounds and2processes with Core/loopback HTTP/20rounds on each
+platform. All120claim audit events per platform match (40successful/80denied),
+one winner per round, no unexpected errors, valid database/foreign keys and empty
+scratch after cleanup. Windows p95:14.88/25.46ms; Linux VM:121.84/113.43ms, against
+the predeclared1000ms diagnostic budget. Hardware differs, so these numbers are not
+an OS ranking or production SLO. No model/provider/Actions calls. This supplements
+M8 recovery evidence without claiming complete M8 or Release acceptance.
+[Logs, process receipts and actual observations](evidence/m8-bounded-load/summary.json).
+
+## Optional provider offline coverage: limited pass
+
+Tests2af7ccc with unchanged installed09425da runtime pass269cases on each of
+Windows3.12.16/Linux3.14.7,0failure/error/skip. Twenty added cases cover five
+providers' synthetic request/response handling and six actual owned-loopback HTTP
+scenarios; three existing provider/usage and246acceptance tests also pass.
+Real provider compatibility is **NOT RUN**. No paid/provider calls, account changes
+or Actions occurred. The mapping now recordspartial component coverage instead of
+missing, while all42formal requirement execution statuses remainnot_run in the
+design register. [Evidence](evidence/m7-provider-offline/summary.json).
+No product/runtime change; the separately frozen M5 technical closure remains.
+Formal Release stays **BLOCKED** and no new full-matrix execution is claimed.
+
+## Current installed-source archive regression: PASS after affected-file repair
+
+Runtime09425da remains unchanged. Full c262 Windows/Linux runs each collected2334
+cases and failed the same4outdated M7 component-mapping assertions. Their original
+failed reports remain intact. Repair9fb36a1 updates only those two test files and
+ordinary documentation; all other test/runtime/collector/requirement/dependency
+inputs match. Fresh repair-sdist installations pass246affected cases per platform.
+Full collection and exact parameterized IDs prove coverage of all2334final cases
+by the retained full results plus the rerun; no new full run is claimed.
+
+| Platform | Original full run | Repair rerun | Reconciled result |
+| --- | --- | --- | --- |
+| Windows3.12.16 | 2275pass / 55skip / 4fail | 246pass / 0skip / 0fail | 2279pass / 55skip |
+| Linux3.14.7 | 2324pass / 6skip / 4fail | 246pass / 0skip / 0fail | 2328pass / 6skip |
+
+All61skip IDs pass on the other platform, with reasons preserved. This does not
+prove Windows symlink creation privileges, native Windows Linux-Docker support,
+or macOS compatibility.887packaged source files match Git,90runtime members match
+before/after; installed archive URI/hash, SDK/console probes and dependency checks
+pass. The dedicated Docker daemon has no leftover containers. No real model calls
+or GitHub Actions were used. [Evidence and preserved failures](evidence/m9-sdist-regression/summary.json).
+
+The first repair-driver attempt failed before tests due to a collector timeout
+parameter mismatch; a distinct corrected driver passed. Both attempts remain
+visible. The original Linux install-probe symlink guard failure and correction
+also remain recorded. These are validation-helper corrections, not product fixes.
+
+Independent technical review accepts B6 and closes M5 for its fixed open scope;
+the unique checklist records the five requirement decisions. This is not external
+Work approval or acceptance of all42formal requirements. Release remains **BLOCKED**:
+cross-vendor actual clients remain NOT RUN, macOS remains NOT RUN, dependency
+license review/publication approval are pending, and original-workspace apply
+remains disabled/deferred. Current real Codex flow retains its separate bounded
+evidence below; this offline matrix is not new live-client or whole-plan acceptance.
+
+## Verified-source coordinator process recovery: limited scope passed
+
+Tests07aba94 reuse installed runtime09425da (90members/89modules unchanged) and
+pass10Linux cases in112.164seconds, no failure/error/skip. Two new cases terminate
+an actual separate coordinator process with os._exit(73), after durable task/tree
+preparation or after dispatch intent before queue entry. Each is followed by two
+fresh-process recovery calls. Recoverable preparation launches the owned receiver
+once; uncertain intent remainsunknown and never dispatches. Source pin, task/tree,
+candidate job and source verification remain unchanged; candidate execution is
+explicitly prohibited in the recovery children. The previous8cases retain semantics.
+
+Actual Docker postcheck:7executions,6passed/1expected wrong,5verified task proofs,
+all7containers absent. Client output is an owned protocol fixture, not a real model.
+Ruff/format and independent Astra source/evidence review passed. [Evidence](evidence/m8-process-recovery/summary.json).
+Windows agent tool-output-only17pass/10skip is not promoted into persisted evidence.
+NOT PROVEN: model generation crash, whole-machine power failure, all lifecycle
+checkpoints, full current matrix or entire M8/Release. Formal Release stays BLOCKED.
+
+## Continuous actual Codex flow on09425da: limited scope passed
+
+One installed VerifiedProposalFlow invocation ran a fresh real producer and receiver
+with four explicit host decisions, independent local Docker8/8 and19isolation checks.
+Both CLI parents ended/exit0:46.810seconds with reported8157input/61output tokens,
+and59.985seconds with8554input/115output. Shared context was bound to the actual
+producer task/version/hash; the coordinator created the dependent task/worktree.
+Producer completion is Core verified. The358byte source-only model review was
+separately read and host-accepted as an unverified document, not test evidence.
+
+Fresh Core/flow reopen returned the same result with no authority/model calls or
+changed tasks, attempts or queue history.90installed members/89Python modules and
+fixture workspaces remain unchanged; the actual container is absent. Temporary
+authentication was removed and RAM storage unmounted, original authentication
+unchanged. Raw809/995byte model stdout stays private; both stderr streams are empty.
+Billing/credits are owner-confirmed only. [Evidence](evidence/m7-continuous-live/summary.json)
+contains48hash-bound artifacts plus a summary, including3receipt-derived JUnit
+observations (not pytest or additional model runs) and10offline controller checks.
+Independent Astra review accepted this limited scope, including all48artifact
+hashes, exact context/plan bindings, full source/review and final receipts.
+
+Preserved failure: an earlier controller rejected a guest timestamp0.38-0.48seconds
+ahead of the host, before credential copy/model execution. Cleanup succeeded and
+the controller was not retried. A distinct corrected controller bounds freshness
+with the host monotonic clock and retains exact-plan/guest-heartbeat/session checks.
+
+NOT RUN/unproven: actual interrupted-host recovery for this flow, other real vendors
+(no Claude/Cursor subscriptions), unattended approval policy, full094regression,
+Windows/macOS live integration and094sdist installation. This is one same-vendor
+continuous example, not full M5/M6/M7 or Release acceptance. Release stays BLOCKED.
+
+## Verified proposal flow: actual local Docker, protocol-fixture clients
+
+Frozen09425da connects producer output, saved source reference, three exact host
+decisions, independent candidate verification/completion and dependent handoff.
+The existing services retain all permission, single-use, candidate/version and
+reviewer checks. Only currently verified sources can resume a saved receiver;
+unknown execution is not retried and non-passing assessments remain distinguishable.
+
+Final Linux3.14.7 wheel8affected cases passed/0failed/error/skip in30.74seconds.
+90runtime members/89modules match before/after; dependency/static checks pass.
+5actual Docker executions comprise4passing and1expected incorrect-source result;
+3independent verified-task proofs and absence of all5containers were inspected.
+Protocol emitters are owned Python fixtures, with zero real models.
+[Evidence](evidence/m7-verified-handoff/summary.json).
+
+Earlier17e0ab4 passed24checks, including17unchanged component cases. Review found
+the synchronous verified-state lookup was not deducted from the receiver budget;
+09425da fixes this and the eighth affected test proves no downstream task/launch
+after that lookup exhausts the deadline. Prior24and final8are separate runs/SHAs,
+not one combined final suite. Both frozen evidence sets and wheels are retained.
+
+The initial21pass/2failure run is retained: duplicate fixture launch approval IDs
+were correctly refused. The fixture now supplies separate per-plan IDs. Explicit
+deadline checks also prevent later mutation/dispatch after synchronous work spends
+the flow budget; this does not promise immediate interruption of synchronous Docker.
+Independent review accepted this limited final source/package scope. New continuous real-client evidence,
+full matrix, Windows/macOS integration and sdist installation are NOT RUN. Earlier
+real-client evidence retains its own versions. Formal Release remains BLOCKED.
+
+## Actual host coordinator: staged continuation and reopen
+
+An installedb455d9b ProposalHandoff derived the saved real6017005 producer reference
+and created its dependent task/worktree. After a pre-dispatch exact-plan review,
+reopening dispatched one actual Codex receiver (21.635seconds, exit0). Root read its
+complete372byte source-only review; a distinct Core reviewer accepted the document
+asv6/completed/unverified. The original producer remainsv6/completed/verified.
+Fresh Core/coordinator reopen after completion returned the same result with no
+authority calls, new tasks, attempts or queue waves. Authentication cleanup and
+89installed runtime member hashes were checked. Candidate/workspace state is intact.
+
+[Evidence](evidence/m7-host-handoff-live/summary.json) includes31hash-bound artifacts
+and two receipt-derived JUnit observations, explicitly not pytest results. Independent review accepted these31artifacts
+and the complete model review within this limited scope. Raw model capture and private Core/credential
+state are excluded. Fees remain owner-confirmed, not independently billed.
+
+This is staged continuation from an already accepted source with host document
+acceptance, not two fresh agents, unattended source verification or interrupted-agent
+recovery. New full matrix/sdist installation, unavailable Claude/Cursor and remaining
+M5/M6/M7 lifecycle requirements remain unverified. Formal Release is BLOCKED.
+
+## Host handoff coordinator: limited implementation acceptance
+
+Frozenb455d9b connects source-outcome pin derivation, bounded independent-completion
+waiting, idempotent dependent task/worktree preparation and one exact-authorized
+queue dispatch. Reentry observes/reconciles an existing intent; it never restarts
+an uncertain run. Source expiry with a saved pin, same-Agent session replacement,
+concurrent triggers, preparation interruption, authority denial, active protocol
+fixture cancellation, missing source proof and budget exhaustion have local checks.
+The coordinator does not accept tasks, execute candidates or apply source changes.
+
+Final source15passed; new Windows/Linux installed wheels each101passed, no failures,
+errors or skips.89runtime members/88Python modules match, dependencies/static checks
+pass. The original14pass/1over-narrow budget-assertion failure is preserved with its
+precise test correction. [Evidence](evidence/m7-host-handoff/summary.json).
+
+No real model ran for this feature; actual coordinator acceptance is NOT RUN.
+Earlier6017005->2ac4557 real artifact-review evidence remains historical. New full
+matrix/sdist installation, unavailable Claude/Cursor and remaining lifecycle/relay
+requirements are not passed. Formal Release remains BLOCKED; the goal is active.
+
+## Pinned-input queue admission repair: limited regression acceptance
+
+Frozen8a4ba72 rejects deterministic invalid pinned source before wave reservation.
+The task remains unclaimed and no launch consent is requested; a later valid wave
+can proceed. Post-admission source change still produces an incomplete fence.
+Windows source23passed; fresh Windows/Linux wheels each86passed with zero failures,
+errors or skips.88runtime members remain exact; dependency and static checks pass.
+[Evidence](evidence/m7-pinned-admission/summary.json).
+
+This is offline affected-scope regression, with no new model/candidate execution.
+Earlier real handoff remains bound to6017005->2ac4557. New8a4ba72 full matrix and
+sdist installation are NOT RUN. M5/M6/M7/Release gates remain unchanged and formal
+Release remains BLOCKED. Work is paused at the owner's request after this checkpoint.
+
+## Actual pinned artifact handoff: limited cross-upgrade acceptance
+
+One real receiver on2ac4557 consumed the saved real6017005 producer through its own
+Core identity and returned a407byte source-only review in20.121seconds, exit0.
+The exact producer pin, launch/selection/wave, distinct authors and full document
+were independently checked. Host acceptance completed only the review document
+atv6/unverified; original producer remainsv6/verified. Workspaces and candidate
+state are unchanged, queue resolved, temporary auth removed/unmounted and original
+auth unchanged.88runtime members match. Raw stdout stays private; stderr empty.
+[Evidence](evidence/m7-model-review-live/summary.json).
+
+This is actual cross-upgrade artifact handoff between two Codex runs, with host
+preparation/acceptance. It does not establish unattended orchestration, two fresh
+agents on2ac4557, other vendors, active-generation cancellation, or new full-matrix/
+sdist acceptance. Claude/Cursor are NOT RUN because neither subscription exists.
+Formal M5/M6/M7/Release remains BLOCKED. Historical limitations below retain their
+original execution scope; this new observation only fills the stated handoff gap.
+
+## Pinned producer input: limited source and package acceptance
+
+Runtime2ac4557 lets a distinct actor consume a producer's exact immutable proposal
+through its own authenticated Core session. Full direct-source receipt/launch
+proof is required. Context pins bind the next launch, queue selection and replay;
+same-agent different-session review, forged/missing proof and oversized input are
+rejected. A-to-B-to-C reads only B while checking B's bound ancestor pin; it does
+not recursively read A or assert ancestor current validity. Legacy no-pin paths
+retain their digests. Review artifacts remain unverified data and do not grant
+Core approval, staging, execution, source application or verified completion.
+
+Final source85passed; fresh Windows3.12.16/Linux3.14.7 wheels each85passed, no
+failures/skips.88members match before/after, pip checks and root static checks
+pass. Independent review confirmed all88wheel members and735tracked sdist members
+against the frozen commit. Original21pass/1fixture-setup-error evidence is retained;
+only the trusted fixture's transport was changed, with product limits unchanged.
+[Evidence](evidence/m7-proposal-context/summary.json).
+
+New full matrix, sdist installation and actual second-model relay remain NOT RUN.
+Older6017005 full/actual evidence is not promoted to2ac4557. Formal Release remains
+BLOCKED; unavailable Claude/Cursor and unverified lifecycle requirements remain.
+
+## Actual single queued proposal: limited acceptance
+
+On runtime6017005, one actual subscription-route Codex call completed through the
+queue in34.689seconds, exit0. The approved plan, current heartbeat, selection and
+wave were checked. The captured immutable153byte proposal was submitted for review;
+one wave resolved and no pending fence remains. Separate explicit host approval of
+the actual source/staging digest produced a genuine candidate.8/8actual local
+Docker cases and19isolation checks passed, followed by completion through a distinct
+Core reviewer. Independent reopening confirms the same task completed/v6/verified;
+source hashes match context/candidate/execution/proof and the container is absent.
+
+Temporary auth was removed/unmounted before candidate execution; original auth,
+source and producer worktrees are unchanged.88installed runtime members match.
+Independent review accepts only this single-real-client queue path with host
+approval and independent Core identity.357raw stderr bytes remain private and
+unclassified; billing was owner-confirmed, not independently verified. The old
+failed preflight is preserved and was not retried. Private raw/state/auth excluded.
+[Actual queue evidence](evidence/m7-queue-live/summary.json).
+
+Independent model review, actual multi-task artifact/dependency relay, unavailable
+Claude/Cursor access, and unverified lifecycle capabilities remain outstanding.
+Formal M5/M6/M7/Release remain BLOCKED; no automatic source application is enabled.
+
+## Queue preflight and source-distribution installation
+
+The6017005 queued pilot failed its local eligibility preflight before any actual
+model dispatch. The producer was offline because its last heartbeat was277.944664
+seconds old; its authentication session had not expired. The exact launch plan
+was unchanged. Both attempts remain not_dispatched; task remains pending/v1 and
+unverified. Temporary authentication was removed/unmounted and its original left
+unchanged. Real queued-client test: NOT RUN. This attempt was not retried.
+[Evidence](evidence/m7-queue-preflight/summary.json).
+
+Test-only74e1527 adds an independent regression of stale-online refusal and legal
+heartbeat recovery, preserving exact consent;13Windows checks pass. Fresh offline
+installation from the frozen6017005 sdist passes one existing deterministic queue
+integration smoke case on each of Windows3.12.16/Linux3.14.7, with88 runtime members
+matching before/after and valid dependencies. These are limited installation
+checks, not real clients or a full regression.
+[Regression](evidence/m7-heartbeat-regression/summary.json),
+[sdist installation](evidence/m7-sdist-install/summary.json).
+
+Full local tests use74e1527 source and the6017005 sdist runtime. Linux is complete:
+2290passed/6skipped, zero failures/errors, including14actual Docker cases and two
+same-Core Docker proposal cases. The six skips concern five Windows-only cases
+and one non-Linux unsupported-backend check. Independent review accepts this
+Linux environment's B6 regression portion. Windows is also terminal:
+2251passed/45skipped, zero failures/errors. Both contain2296identicalcase IDs;
+Windows45skipped cases pass in Linux and Linux6skipped cases pass in Windows.
+The Windows symlink privilege limitations and Linux-only Docker/POSIX capabilities
+remain platform-specific limitations, not silently granted capabilities.
+Independent review accepts the complete local matrix in these two installed
+environments.1222source files and88runtime package members match before/after;
+all16evidence hashes, process records, sanitized logs and JUnit were checked.
+No full rerun is necessary absent a relevant change. This supports B6 only within
+the stated frozen runtime/test-source and platform scope, not formal M5 acceptance.
+[Full regression evidence](evidence/m7-full-regression/summary.json).
+Cross-client remains NOT RUN because the owner
+has neither Claude nor Cursor subscription. Formal M5/M6/M7/Release remain BLOCKED.
+
+## Prepared proposal queue: limited offline acceptance
+
+Product6017005 integrates single Codex proposal tasks into the existing queue,
+including dependency/priority/load/capability selection, exact wave-bound consent,
+execution budget and authenticated historical reconciliation. It stops at Core
+review and keeps results unverified; there is no automatic staging or candidate
+execution. Independent review found and closed one current-observer race, with a
+legitimate concurrent reviewer regression proving stale review is no longer shown.
+
+Final fresh Windows3.12.16/Linux3.14.7 wheel suites each72passed, no skips/failures.
+88 runtime package members match before/after; no source shadowing, pip check and
+static checks pass. Independent code/package review accepted this scope and matched
+642 sdist source members to6017005. Earlier71 source passes and final affected33
+passes retain separate scopes. [Evidence and artifacts](evidence/m7-proposal-queue/summary.json).
+
+NOT RUN: sdist installation, new full matrix, actual queued client and independent
+model review. The a2634ec actual task below is not promoted to this revision.
+Cross-client remains NOT RUN due to unavailable subscriptions. Full Release BLOCKED.
+
+## Full a2634ec baseline and affected repairs
+
+The original full installed suites remain recorded as Windows2206passed/34failed/
+45skipped and Linux2245passed/34failed/6skipped. Linux includes actual Docker.
+The34 matching failures are1 stale exact MCP tool-set expectation,32 stale
+acceptance-selector/count expectations and1 local driver multiprocessing reentry.
+No product change was needed for those failures. Test-only6e2975e retains precise
+matching and all unverified/formal-blocked gates; the guarded pytest driver avoids
+reentering the suite from a spawned worker. Each platform's affected163cases pass.
+Independent review accepted the limited repair; original failure logs/XML and all
+skip reasons remain saved. Initial Linux preparation failure occurred before tests.
+[Frozen baseline and repair evidence](evidence/m6-full-regression/summary.json).
+
+Full rerun after repair and the newer6017005 full matrix are NOT RUN. Neither the
+targeted repair nor package72-case checks replace the unique final M5/Release gate.
+
+## Actual Linux same-Core single-client pipeline
+
+At runtime a2634ec, one actual Codex subscription-route task returned the pinned
+proposal and reached review through the real adapter. Owner review of the153-byte
+source and exact staging digest preceded candidate creation. Existing local Linux
+Docker checked8 inputs:8passed,19 isolation predicates true, exit0 and cleanup
+confirmed. Independent observation of the same pinned local daemon confirms the
+container absent. A different Core reviewer completed the original same-Core task;
+reopening confirms completed/version6/verified.87 installed runtime hashes match
+before/after; source/producer workspaces and original authentication are unchanged.
+
+The temporary credential copy used a checked RAM filesystem and was removed and
+unmounted before candidate execution. The model ran once,27.416seconds, with no
+retry. Raw stdout/stderr remain private;476 stderr bytes are unclassified. Fees
+were owner-confirmed, not independently verified. The new JUnit case summarizes
+actual receipts; it is not a pytest or full current-SHA matrix execution.
+Independent development review accepted this narrow result.
+[Exact plans, receipts, limitations and hashes](evidence/m6-linux-live/summary.json).
+
+PASS: this bounded real Codex→Core review→owner staging→Docker→distinct Core reviewer
+path. NOT RUN: second client (no Claude/Cursor subscription), independent model
+reviewer, unattended application, current full matrix. UNVERIFIED: active-generation
+timeout and server/descendant cancellation. Full M5/M6/M7/Release remain BLOCKED.
+The older sections below retain their original evidence scopes; their pending
+same-Core experiment is now superseded only by this explicitly limited result.
+
+## Linux read-only single-task prerequisite
+
+a2634ec adds an explicit pinned Linux profile while retaining default/legacy/MXC
+plan compatibility. Source48passed; fresh Windows package48passed; fresh Linux
+package47passed/1Windows-native-only skip.87 module hashes match before/after,
+dependencies and static checks pass. Independent limited review accepted these
+results and the native observations below.
+
+The official0.167 musl package hash matches its publisher metadata. Actual CLI
+strict configuration and no-model prompt rendering succeed.18 requested features
+are effectively false; unified_exec remains true. Remaining advertised/nested
+tools are listed rather than misrepresented as absent. Exact frozen source native
+probes show project reads allowed, writes denied, outside synthetic canary reads
+denied and loopback sockets denied with a successful control. No model calls,
+credentials or external target probes occurred. Native source proof and final
+installed-package proof retain separate execution scopes and matching runtime hashes.
+
+Earlier command/test-helper failures and the portable re-exec path fix are recorded
+in [the evidence summary](evidence/m6-linux-readonly/summary.json). This is not whole
+CLI containment, real Linux agent task execution, complete M6 or Release acceptance.
+Real same-Core generated artifact acceptance, cross-client checks and current full
+matrix remain NOT RUN/BLOCKED. Existing M5/M6/M7/Release gates are unchanged.
+
+## Same-Core pipeline integration, model boundary still a fixture
+
+Runtime d4c7cf9 with test c181f99 passes2 actual local Linux Docker integration
+scenarios. Controlled proposal capture/review, owner/stager-approved managed Git
+candidate and independent Core identity completion share one Core. Three positive
+inputs pass; the wrong-output scenario cannot complete. Producer self-review and
+duplicate starts are refused; original workspaces and reopened state are checked.
+The model boundary is explicitly a fixed local Python JSONL emitter, with0 model
+calls. This does not prove real-client control or an independent model reviewer.
+
+The initial2 test failures at ba941c2 were an unsupported final observation API;
+their logs/XML are retained. Windows92 traceability passes/2 Docker skips belong to
+that test source. c181f99 reruns both affected cases in fresh Linux projects.
+7fe0c28 pins the independent cleanup observation to the actual verifier socket,
+trusted CLI and empty configuration. The new helper checks both old container IDs
+absent without rerunning candidate execution.87 runtime hashes match; the exact
+existing d4c7cf9 wheel was used. Full latest-SHA matrix/package rebuild NOT RUN.
+[Evidence, failures, source identities and cleanup observation](evidence/m6-proposal-pipeline/summary.json).
+Real same-Core model execution, cross-client validation and formal Release remain
+unverified/BLOCKED; existing M5/M6/M7 gates are unchanged.
+
+## Controlled review submission and native staging bridge
+
+d4c7cf9 adds explicit launch-bound review submission and owner-reviewed staging
+composition.151 source,45 fresh Windows wheel and23 fresh Linux wheel tests pass;
+87 runtime modules match before/after in both installations. Ruff/format/mypy pass.
+The original actual bf54d44 capture remains stored and unverified under a read-only
+compatibility observation. First test-helper failures and the Linux pre-test upload
+failure are retained in [the evidence summary](evidence/m6-proposal-review/summary.json).
+Independent source review found no blocker. These checks use known local process
+fixtures, actual Core/Git and queue operations; no new model call or candidate code
+execution occurred. Current full matrix, real-model end-to-end staging and cross-client
+validation are NOT RUN. Formal M5/M6/M7 and Release remain BLOCKED.
+
+## Owner-reviewed product staging
+
+193d9b2 implements real Core/Git proposal staging behind separate owner and worker
+authority, an exact preview digest and a durable once-per-task intent. Immutable
+publication proof and current review-state task/head pins are rechecked; generated
+bytes go only to a new managed worktree, then genuine candidate preparation.
+No model call, code execution, task completion or source-workspace application.
+Redirected Git metadata is rejected before consultation; failed effects are fenced.
+
+Source:179passed,1Windows POSIX-FIFO skip,1obsolete traceability-count failure.
+The sole0712899 change corrects12 to14;92 affected source checks pass. Fresh193d9b2
+Windows and Linux packages each pass32 staging cases. Both validate87 module hashes
+before/after and dependencies. Rebuilt0712899 Windows package passes92 affected
+traceability checks; all88 runtime package members and staging tests are identical
+to the previously tested artifact. Original failures and exact artifacts are saved.
+This is affected-scope revalidation, not a claimed single full green matrix.
+
+Full new-SHA matrix, final0712899 Linux artifact installation, current real-model
+staging and unattended verified relay are NOT RUN. Cross-client tests remain NOT RUN
+because the owner has neither Claude nor Cursor subscription. Existing M5/M6/M7 and
+Release gates remain BLOCKED. [Evidence and artifact hashes](evidence/m6-proposal-staging/summary.json).
+
+## Actual generated artifact through local isolation
+
+Runtimebf54d44, tool8520691, existing wheel9e4b64bf: one owner-mediated import of
+the previously captured63-byte add.py into a fresh dedicated Linux Core/project.
+Real managed worktrees and merge-candidate receipts bind the unchanged proposal
+and separately hashed JSON-lines driver. Existing Docker verification checked
+8 inputs, all passed;19 isolation predicates true, exit0, cleanup confirmed.
+A distinct host-mediated Core reviewer completed the new fixture task atversion5.
+Readonly reopening confirms its proof link and exact container absence.
+
+Original producer remains running/version4/unverified, with unchanged immutable
+context/source/worktree/runtime. Fresh Linux installed wheel85 module identities
+and migration bytes match before/after; pip check and pilot Ruff/format pass.
+No new model call, credential copy, source-workspace apply or GitHub execution.
+The JUnit file is one report-derived aggregate pipeline case, not a pytest run.
+
+Scoped artifact validation only: owner mediation is not automatic import or
+cross-Core authenticated provenance, and the reviewer is not a second model.
+Owner confirms neither Claude nor Cursor subscription: cross-client tests NOT RUN.
+Full new-SHA matrix, general proposal staging and unattended artifact relay remain
+NOT RUN/UNVERIFIED. M5/M6/M7 and formal Release remain BLOCKED.
+See [hash-bound evidence](evidence/m6-proposal-artifact/manifest.json).
+
+## Actual Codex source proposal capture
+
+Productbf54d44:187 Windows source cases pass (including92 traceability), fresh
+offline wheel36pass with85 runtime hashes matching before/after; pip check,
+Ruff/format/mypy85 pass. Tests cover output-contract binding, timeout/cancel,
+expired lease, concurrent admission, publication crash, receipt/content mismatch,
+foreign observer and historical version reads. Existing fixed-reply paths remain.
+
+Actual Codex on2026-11-12 09:49:48UTC exited0 after22.014s and stored a63-byte
+add.py proposal in immutable Core context. Reopening verified the exact context,
+version and hash. Task remains running/unverified. Astra accepted only actual
+capture-to-Core; code correctness, import, execution and independent artifact
+verification are NOT RUN/UNVERIFIED. Temp auth removed; original/fixtures/runtime
+unchanged. Raw695stdout/119unclassifiedstderr bytes remain restricted locally.
+
+Linux/macOS and full Release matrix for this new SHA remain NOT RUN. Historical
+results retain their original SHA scope. M5/M6/M7 and formal Release stay BLOCKED.
+See [exact evidence and helper sources](evidence/m6-proposal-capture/summary.json).
+
+## Task-bound inert proposal publication
+
+Product80754db passes241 Windows source cases across proposals, permissions and
+existing transports;92 traceability cases pass with formal requirement status
+unchanged. Fresh offline wheel55passed; all85 runtime module hashes matched before/
+after, pip check passed. Ruff/format/mypy85 pass. Actual temporary Core/Git and
+HTTP/MCP/SDK tests establish atomic publication, rollback, historical replay,
+revocation-before-replay and workspace/task preservation. Astra accepted this scoped source/package evidence. Initial setup/fixture failures and corrections are retained.
+
+This is authenticated inert data storage, not authenticated model provenance,
+code import, code execution or verified completion. Real generated-code capture,
+Linux/macOS and the new full release matrix remain NOT RUN. Earlier real-client
+results retain their earlier SHA scopes. M5/M6/M7 and Release remain BLOCKED.
+See [exact source/package evidence](evidence/m6-task-proposal/summary.json).
+
+## Actual local Codex deadline
+
+Runtime f74f29f/head d73e044 ran one isolated fixed-text task with a15-second
+limit. Receipt: adapter_timeout, timed_out=true, parent ended/exit1, elapsed15.014s.
+Core reopened running/unverified; controller incomplete. The600-byte private stream
+also contains the expected reply and turn.completed. Thus active-generation timeout
+and event-versus-deadline order remain UNVERIFIED; the captured reply does not
+replace the durable unknown result. Astra accepted only the real local deadline
+and fail-closed persistence. Auth cleanup and unchanged fixtures/runtime confirmed.
+
+No retry, server-cancellation claim, descendant-cleanup claim or Release upgrade.
+This evidence-only checkpoint did not rerun passing product suites. Exact records,
+method and limits: [deadline evidence](evidence/m6-native-mxc/timeout-live-summary.json).
+
+## Actual local Codex cancellation
+
+Runtime f74f29f/head7d573a0 executed one isolated fixed-text task on2026-11-12
+08:58:19UTC. After turn.started, with no observed terminal event and the parent
+still running, caller cancellation propagated and the owned parent exited1.
+The durable receipt remains unknown/local_cancel_requested; after reopening,
+controller is incomplete and Core task running/unverified. No retry or completion
+was attempted. Total adapter elapsed5.546s is not measured cancellation latency.
+Temporary auth removed; original, fixtures and runtime unchanged. Raw335 stdout
+bytes remain local only. Astra independently accepted this limited observation.
+
+Server cancellation, descendant cleanup, billing, actual timeout and full M6/M7
+remain unverified. Formal Release remains BLOCKED. No product code changed and
+no previously passing suite was rerun for this evidence-only checkpoint.
+See [safe records and exact helper sources](evidence/m6-native-mxc/cancel-live-summary.json).
+
+## Cursor native Node-bundle preparation
+
+Runtime f74f29f adds explicit sibling Node/entrypoint support, bounded package
+content pinning and bundle-bound approval. Windows source47passed/2symlink skips;
+fresh offline wheel16passed/2same skips. The same wheel on Linux18passed without
+skips, including actual file/directory links;84 runtime modules match each install.
+Pip check, Ruff/format and mypy pass;92 requirement traceability cases pass. Astra
+review found no remaining blocker after the queued-directory recheck fix.
+
+Actual Cursor2026.11.11-b912975 passed isolated version/help and package preparation
+only. Credentials/model execution/permissions/full external module resolution are
+unverified. Claude default login credentials absent; subscription/extra-billing
+facts pending. Full M6/M7 and Release remain BLOCKED. Historical successful Codex
+runs stay bound to ee45690. See [evidence](evidence/m6-cursor-node-bundle/summary.json).
+
+## Actual same-client two-session relay
+
+Runtime ee45690/head58d473c completed two real Codex sessions on2026-11-12
+08:29:04UTC. Both exit0 with exact replies, distinct sessions/worktrees and no
+observed tool items. Core's structured handoff preserved the pinned context and
+started the second agent automatically. Reopen reached review/unverified; after
+Astra/root scoped evidence review, a third Core identity completed the task using
+review_once. Task verification remains unverified for code artifacts. Temp auth
+copies removed, original and fixtures/runtime unchanged. Raw output local only.
+
+Accepted only for actual same-client fixed-text sequential relay. Cross-client
+compatibility, full M7, real failure recovery, billing and Release remain open.
+See [execution, hash derivation and independent review](evidence/m7-real-codex-relay/summary.json).
+
+## Actual repaired single-client validation
+
+On2026-11-12 08:15:51UTC, runtime ee45690 executed one explicitly authorized
+subscription fixed-text task through the adapter. Parent exit0 after55.953s, exact
+reply matched, Core reopened review/unverified. Native Astra/root evidence review
+accepted only this path; a distinct host-mediated Core reviewer completed the task
+without upgrading task_verification. Temp auth removed, original/fixtures/runtime
+unchanged. No tool items observed. Raw stdout602/stderr476 bytes remain local;
+stderr is unclassified, and reported tokens are not verified billing.
+
+This is real single-client submission evidence, not a full M6, B1/B3, M7 or Release
+pass. Historical failed attempts are untouched. Next is real two-session handoff;
+Claude and Cursor compatibility remain unverified. See
+[actual execution and independent review](evidence/m6-native-mxc/live-repaired-summary.json).
+
+## Historical M6 startup-warning compatibility repair
+
+Product `ee45690` repairs the observed completed warning item before turn.started,
+while preserving input bounds, lifecycle checks and fatal-error behavior. Windows
+source101 tests passed. The same frozen wheel passes17 tests in each fresh offline
+Windows3.12 and Linux3.14 installation (46 deselected each);84 module hashes match
+before/after, pip check, Ruff/format and mypy84 passed. The owned VM stopped.
+Astra's scoped review found no blocker. Offline replay of the private captured
+606 bytes now parses the expected reply; it is not live Core acceptance.
+
+The once-authorized diagnostic at the preceding080722e runtime exited0 but was
+rejected by that parser as invalid_event_sequence. Its incomplete Core receipt is
+preserved. Temp auth removed, original and both fixtures unchanged. Raw output is
+local-only. Both actual calls remain NOT ACCEPTED. New real validation is prepared
+but awaits a fresh explicit call/copy grant. macOS and the full release
+matrix for ee45690 are NOT RUN. M5/M6/M7 and formal Release remain BLOCKED.
+See [version-bound evidence](evidence/m6-native-mxc/startup-warning-summary.json).
+
+## Historical M6 authenticated attempt and diagnostic preservation
+
+The single authorized task at `6a8ff41` recognized ChatGPT login and exited0 after
+31 seconds. Adapter output parsing failed (`protocol_invalid`); Core remained
+incomplete/running/unverified after reopening. This is NOT ACCEPTED, even though
+the parent exited normally. No raw stdout survived, so the parser cause remains
+UNRESOLVED. Temporary authentication was removed, the original unchanged, and
+both source/worktree fixtures unchanged. The call/copy grants are consumed;
+there was no retry. See [actual evidence](evidence/m6-native-mxc/live-and-diagnostics-summary.json).
+
+Diagnostic delta `080722e` keeps fixed parser reasons, stream byte counts/hashes
+and truncation flags in the existing failure observations. It does not relax
+parsing, change unknown/held-slot semantics, or validate the failed real result.
+Windows Python3.12 passed86 shared-adapter/pipeline cases plus4 owner/journal/
+budget cases; Ruff, formatting and mypy84 passed. Five pre-change failures remain
+saved. Astra's final read-only review found no remaining diagnostic finding.
+The same frozen wheel subsequently passed7 new selected diagnostic cases in each
+fresh offline Windows3.12 and Linux3.14 installation;84 runtime modules matched
+before/after and pip check passed. The44 deselected cases per run are not passes.
+The VM stopped normally. See [package evidence](evidence/m6-native-mxc/diagnostic-package-summary.json).
+Real clients, macOS and full matrices for this delta remain NOT RUN; the actual
+protocol failure remains unresolved.
+
+The preceding frozen `6a8ff41` passed39 Windows source cases and51 fresh offline
+installed-wheel cases, with84 module hashes matched. Linux3.14 source additionally
+passed50 with1 native-Windows-MXC skip and84 imported module hashes matched.
+The owned VM was shut down after evidence retrieval. These remain limited,
+version-bound results. M5, M6 real result acceptance, M7 and formal Release remain
+BLOCKED. No additional client call or credentials transfer is currently authorized.
+
+## Historical M6 native Windows plan delta
+
+Product `dcd7ca1` passed 48 affected Windows Python 3.12 tests, Ruff/format and
+mypy (84 modules). The real installed CLI passed non-model named-MXC-profile
+filesystem checks and rejected an owned loopback connection whose positive
+control succeeded. Strict config validation passed; default restricted
+permissions appeared in the supported prompt renderer. These are preflight
+observations, not real Agent acceptance. See the [evidence index](evidence/m6-native-mxc/summary.json).
+
+The renderer still advertised collaboration tools despite the disable request;
+actual dispatch enforcement is UNVERIFIED. Isolated authentication is unavailable.
+The owner confirmed the spending condition, but no credentials were copied and
+the one conditional real-call grant remains unconsumed. A direct default sandbox
+probe exited 2 before execution because its command requires an explicit profile;
+it was not counted as a boundary pass. This delta's installed-package/Linux/macOS
+and real-client execution are NOT RUN. Independent Astra review accepts neither
+complete B3 nor M5/Release; the remaining launch prerequisite is recorded above.
+
+## M6 single-client pilot delta
+
+At product `2016554`, a cancelled controlled attempt saves its actual adapter
+stop observation before re-raising cancellation. The task remains incomplete,
+the durable attempt cannot replay, and parent termination does not certify
+descendant cleanup or result correctness. Local Windows Python 3.12 passed
+14 pipeline/budget cases and 2 owner-status/journal regressions, with zero skips,
+failures or errors. The pre-repair cancellation failure is retained alongside
+the passing JUnit and logs in [the evidence index](evidence/m6-single-stop/summary.json).
+Ruff check/format and mypy (84 modules) passed. These tests use disposable Python
+processes and synthetic client protocols. Real Codex/Claude/Cursor, this delta's
+installed packages and Linux/macOS tests are NOT RUN. M5 and Release remain BLOCKED.
+
 ## 0.3.0a109 local validation
 
 The runtime and package test baseline is `de44e7b`. Windows source revalidation

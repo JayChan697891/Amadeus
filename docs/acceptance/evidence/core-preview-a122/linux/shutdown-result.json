@@ -1,0 +1,10 @@
+{
+  "pid": 6480,
+  "method": "normal QMP system_powerdown",
+  "process_absent": true,
+  "disk_preserved": true,
+  "loopback_ports_closed": true,
+  "force_kill": false,
+  "utc": "2026-11-17T06:28:47.1700826Z",
+  "boot_id": "e72dc8f6-8e84-40ea-9ba2-3ccd1b33fb76"
+}

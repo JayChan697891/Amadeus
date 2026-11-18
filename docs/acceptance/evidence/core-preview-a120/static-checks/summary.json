@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "status": "FAIL: Ruff and format; mypy PASS",
+  "native_chunk": "353772",
+  "exit_code": 1,
+  "source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "tools": {
+    "ruff": "0.17.1",
+    "mypy": "2.4.0"
+  },
+  "started_at": "2026-11-17T02:22:41.350198+00:00",
+  "finished_at": "2026-11-17T02:22:49.085488+00:00",
+  "checks": [
+    {
+      "id": "ruff",
+      "status": "fail",
+      "exit_code": 1,
+      "log": "logs/ruff.log"
+    },
+    {
+      "id": "format",
+      "status": "fail",
+      "exit_code": 1,
+      "log": "logs/format.log"
+    },
+    {
+      "id": "mypy",
+      "status": "pass",
+      "exit_code": 0,
+      "log": "logs/mypy.log"
+    }
+  ],
+  "ruff": {
+    "errors": 22,
+    "files": 7,
+    "rule_counts": {
+      "E701": 10,
+      "E702": 5,
+      "E731": 3,
+      "F401": 1,
+      "I001": 3
+    }
+  },
+  "format": {
+    "unformatted_files": 13,
+    "already_formatted_files": 377
+  },
+  "mypy": {
+    "source_files": 96,
+    "errors": 0
+  },
+  "observed_failure_scope": "Every reported failure is under docs/acceptance/evidence; no diagnostic in src/tests/tools/examples. This is not an overall pass.",
+  "frozen_input_files_unchanged": 5369,
+  "installed_members_unchanged": 97,
+  "historical_raw_files_unchanged": true,
+  "independent_review": {
+    "reviewer": "native Astra",
+    "decision": "Keep FAIL. Current complete scope plus immutable bytes/paths/manifests cannot be satisfied by editing these originals. An owner decision is needed before changing either constraint."
+  },
+  "original_run_records": 8,
+  "original_run_bytes": 150000,
+  "previous_wheel_and_mypy_evidence_not_invalidated": true,
+  "formal_release": "BLOCKED",
+  "next": "Seek a narrow explicit decision on these13 historical originals; meanwhile continue independent unexecuted source/sdist/platform and license-inventory work without rerunning completed wheel checks or rewriting old receipts."
+}

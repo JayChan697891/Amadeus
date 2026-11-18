@@ -1,0 +1,19 @@
+{
+  "native_checks": 6,
+  "checks_all_exited_zero": true,
+  "installed_license_file_hash_checks": {
+    "wheel": {
+      "distributions": 32,
+      "installed_license_files_rehashed": 43,
+      "inventory_sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9"
+    },
+    "sdist": {
+      "distributions": 32,
+      "installed_license_files_rehashed": 43,
+      "inventory_sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9"
+    }
+  },
+  "inventories_byte_identical": true,
+  "license_review": "pending",
+  "publication_authorized": false
+}

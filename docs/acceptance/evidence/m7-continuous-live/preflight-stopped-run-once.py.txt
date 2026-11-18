@@ -1,0 +1,177 @@
+"""Owner controller for a reviewed, subscription-only one-shot launch."""
+
+import hashlib
+import json
+import re
+import stat
+import sys
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path('D:/agentsync-debug/m7-continuous-flow-live-20261113')
+AUTH = Path('C:/Users/JayChan/.codex/auth.json')
+REMOTE = '/root/amadeus-continuous-flow-live-20261113'
+HOME = REMOTE + '/private-home'
+PYTHON = '/root/amadeus-verified-handoff-09425da/venv/bin/python'
+PRODUCT = '09425dafd00a6c73bac29a0a2f8329e22659e630'
+HELPERS = ('pilot.py', 'private_capture.py', 'credential_home.py')
+
+
+def timestamp():
+    return datetime.now(UTC).isoformat()
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8') as out:
+        json.dump(value, out, indent=2)
+        out.write('\n')
+
+
+def remote_json(sftp, name):
+    path = REMOTE + '/' + name
+    entry = sftp.lstat(path)
+    assert stat.S_ISREG(entry.st_mode) and entry.st_uid == 0 and stat.S_IMODE(entry.st_mode) == 0o600
+    assert 0 < entry.st_size < 65536
+    with sftp.open(path, 'rb') as source:
+        data = source.read(65536)
+    return json.loads(data)
+
+
+def require_mount(sftp):
+    for path in (REMOTE, HOME):
+        info = sftp.lstat(path)
+        assert stat.S_ISDIR(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o700 and info.st_uid == 0
+    home = remote_json(sftp, 'credential-home.json')
+    assert home['temporary_storage'] == 'tmpfs' and home['credentials_copied'] is False
+    with sftp.open('/proc/mounts', 'rb') as mounts_file:
+        table = [line.split() for line in mounts_file.read(65536).decode('utf-8').splitlines()]
+    matches = [row for row in table if len(row) >= 4 and row[1] == HOME]
+    assert len(matches) == 1 and matches[0][0] == 'amadeus-continuous-flow-auth' and matches[0][2] == 'tmpfs'
+    assert {'rw', 'nosuid', 'nodev', 'mode=700'} <= set(matches[0][3].split(','))
+
+
+def command(client, text, label, limit):
+    transport = client.get_transport()
+    assert transport is not None and transport.is_active()
+    channel = transport.open_session(timeout=10)
+    channel.set_combine_stderr(True)
+    channel.exec_command(text)
+    received, deadline = 0, time.monotonic() + limit
+    try:
+        while True:
+            while channel.recv_ready():
+                # Remote stdout/stderr is never copied into Windows evidence.
+                received += len(channel.recv(4096))
+                assert received <= 65536
+            if channel.exit_status_ready() and not channel.recv_ready():
+                code = channel.recv_exit_status()
+                save(label + '-command.json', {'exit_code': code, 'output_bytes': received})
+                return code
+            if time.monotonic() > deadline:
+                save(label + '-unknown.json', {'observation_timed_out': True, 'retry_allowed': False})
+                raise RuntimeError('Remote terminal state unknown')
+            time.sleep(0.1)
+    finally:
+        channel.close()
+
+
+def main():
+    args = sys.argv[1:]
+    if len(args) != 2 or not re.fullmatch('[0-9a-f]{64}', args[0]) or args[1] != '--subscription-only':
+        raise SystemExit('Usage: run-once.py REVIEWED_PLAN_SHA --subscription-only')
+    plan_sha = args[0]
+    local_plan = json.loads((BASE / 'plan.json').read_text(encoding='utf-8'))
+    assert local_plan['product_sha'] == PRODUCT
+    assert local_plan['producer_plan']['plan_sha256'] == plan_sha
+    assert local_plan['model_calls'] == 0 and local_plan['max_model_calls'] == 2
+    assert local_plan['credential_copy'] is False
+    assert local_plan['producer_plan']['timeout_seconds'] == 90
+    assert local_plan['producer_plan']['output_limit'] == 1024 * 1024
+    assert local_plan['execution_budget_seconds'] == 600
+    assert {name: sha((BASE / name).read_bytes()) for name in HELPERS} == local_plan['helper_sha256']
+    save('controller-entry.json', {'timestamp': timestamp(), 'plan_sha256': plan_sha,
+        'subscription_only_confirmed_by_operator': True, 'api_key_allowed': False, 'retry_allowed': False})
+    client = paramiko.SSHClient()
+    client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    client.connect('127.0.0.1', port=22222, username='root',
+                   key_filename='D:/agentsync-debug/vm/debug_ed25519', look_for_keys=False,
+                   allow_agent=False, timeout=10, auth_timeout=15)
+    ready_command = f'{PYTHON} -I -B {REMOTE}/pilot.py ready-once {plan_sha}'
+    execute_command = f'{PYTHON} -I -B {REMOTE}/pilot.py execute-once {plan_sha}'
+    cleanup_command = f'{PYTHON} -I -B {REMOTE}/credential_home.py cleanup'
+    mounted = copied = execution_started = terminal = False
+    original = exit_code = cleanup_exit = None
+    try:
+        with client.open_sftp() as sftp:
+            require_mount(sftp)
+            mounted = True
+            assert remote_json(sftp, 'plan.json') == local_plan
+            assert not sftp.listdir(HOME)
+            assert not {'execute-entry.json', 'attempt.json'} & set(sftp.listdir(REMOTE))
+            for name in HELPERS:
+                path = REMOTE + '/' + name
+                info = sftp.lstat(path)
+                assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+                assert 0 < info.st_size < 65536
+                with sftp.open(path, 'rb') as script:
+                    assert sha(script.read(65536)) == local_plan['helper_sha256'][name]
+        assert command(client, ready_command, 'readiness', 35) == 0
+        with client.open_sftp() as sftp:
+            require_mount(sftp)
+            ready = remote_json(sftp, 'readiness.json')
+            assert ready['online'] is True and ready['plan_sha256'] == plan_sha
+            assert 0 <= time.time() - datetime.fromisoformat(ready['timestamp']).timestamp() < 20
+            assert 0 <= ready['heartbeat_age_seconds'] < 20 and ready['session_remaining_seconds'] > 120
+            assert not sftp.listdir(HOME) and not {'execute-entry.json', 'attempt.json'} & set(sftp.listdir(REMOTE))
+            for path in (AUTH, AUTH.parent):
+                info = path.lstat()
+                assert not stat.S_ISLNK(info.st_mode) and not getattr(info, 'st_file_attributes', 0) & 0x400
+            info = AUTH.lstat()
+            assert stat.S_ISREG(info.st_mode) and 0 < info.st_size < 128 * 1024
+            raw = AUTH.read_bytes()
+            document = json.loads(raw)
+            assert document.get('auth_mode') == 'chatgpt' and not document.get('OPENAI_API_KEY')
+            original = sha(raw)
+            destination = HOME + '/auth.json'
+            with sftp.open(destination, 'x+b') as target:
+                sftp.chmod(destination, 0o600)
+                target.write(raw)
+                target.flush()
+            copied = True
+            with sftp.open(destination, 'rb') as target:
+                assert sha(target.read(128 * 1024)) == original
+            del raw, document
+        execution_started = True
+        exit_code = command(client, execute_command, 'execution-host', 750)
+        terminal = exit_code >= 0
+    finally:
+        try:
+            if mounted and (terminal or not execution_started):
+                cleanup_exit = command(client, cleanup_command, 'auth-cleanup', 35)
+        finally:
+            try:
+                unchanged = None if original is None else sha(AUTH.read_bytes()) == original
+                save('controller-result.json', {'timestamp': timestamp(), 'temporary_copy_created': copied,
+                    'execution_host_terminal': terminal, 'execution_host_exit_code': exit_code,
+                    'credential_cleanup_exit_code': cleanup_exit, 'original_auth_unchanged': unchanged,
+                    'retry_allowed': False})
+                assert unchanged is not False
+            finally:
+                client.close()
+    assert terminal and exit_code == cleanup_exit == 0
+    print('One continuous flow ended and its temporary authentication was cleaned.')
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception:
+        raise SystemExit('Controller stopped. Inspect the safe receipts. Do not retry the pilot.') from None

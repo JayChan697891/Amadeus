@@ -1,0 +1,41 @@
+{
+  "archive": "/root/amadeus-m120l/public-linux-evidence.tar.gz",
+  "sha256": "c131abf784f8ca937bb9418777b7c466d108ab71aae0fd4eb67507d9571a1242",
+  "bytes": 25372,
+  "files": 39,
+  "checks": 16,
+  "junit": {
+    "wheel": {
+      "path": "wheel-focused.xml",
+      "sha256": "171a7aa2ca08846d6e0ad03e701253a34919498456612fe507c6c75f569f4929",
+      "credential_redactions": 0,
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "sdist": {
+      "path": "sdist-focused.xml",
+      "sha256": "0dc60694b38adcff9b227045af9ecb612c0a7cad574d00173d3cee6949e2a35e",
+      "credential_redactions": 0,
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "postcheck": {
+    "observed_at": "2026-11-16T23:50:44.606361+00:00",
+    "boot_id": "877890b5-28cd-421d-8be0-c67537860d1b",
+    "active_project_workers": [],
+    "running_containers": [],
+    "installed_members_verified": {
+      "wheel": 97,
+      "sdist": 97
+    },
+    "credential_copies": 0,
+    "model_calls": 0,
+    "candidate_executions": 0,
+    "formal_release": "BLOCKED"
+  }
+}

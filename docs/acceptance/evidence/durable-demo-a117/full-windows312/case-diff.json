@@ -1,0 +1,102 @@
+{
+  "baseline_cases": 2533,
+  "current_cases": 2545,
+  "missing_cases": [],
+  "new_cases": [
+    {
+      "id": [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments0-requires --data-dir]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments1-must be absolute]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments2-not allowed with argument]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_refuses_existing_state"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_reopens_retry_and_records_handoff"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.integration.test_unfinished_continuation",
+        "test_host_exit_preserves_continuation_recovery[dispatch-intent]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.integration.test_unfinished_continuation",
+        "test_host_exit_preserves_continuation_recovery[prepared]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_demo_keeps_the_dedicated_linux_root_gate"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode0-not allowed with argument]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode1---demo cannot be combined]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode2---demo cannot be combined]"
+      ],
+      "outcome": "passed"
+    },
+    {
+      "id": [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode3---proposal requires]"
+      ],
+      "outcome": "passed"
+    }
+  ],
+  "changed_common_cases": [
+    {
+      "id": [
+        "tests.unit.test_acceptance_traceability",
+        "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims"
+      ],
+      "before": "passed",
+      "after": "failure"
+    }
+  ],
+  "comparison_scope": "Actual case identity/outcome comparison, not reuse of historical results for current code"
+}

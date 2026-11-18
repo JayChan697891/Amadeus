@@ -1,0 +1,50 @@
+{
+  "files": {
+    "pilot.py": {
+      "size": 23009,
+      "sha256": "ce66f1c454824c37e2d38adbebb86e804848e399f26e36c85528ec6d802cca2c"
+    },
+    "interrupt_parent.py": {
+      "size": 13977,
+      "sha256": "70057327b4a287dc99bdae6f3a0b23b4cdabac59ecb85f826e808322f243f074"
+    },
+    "test_interrupt_parent.py": {
+      "size": 7881,
+      "sha256": "ebade7860a06379bda150a5e1d8d48cc75a69a1a662c46baa6513aa00101e1f8"
+    },
+    "test_checkpoint_gate_core.py": {
+      "size": 3843,
+      "sha256": "e6e031e3236be222887e3dca8e6e033c56309c7e038f28659ecaf21368449231"
+    },
+    "auth_home.py": {
+      "size": 12764,
+      "sha256": "0554cad5e8c7f885c839c91296b359b40fca39a800c59cdd6e15301dfd8cc0be"
+    },
+    "test_auth_home.py": {
+      "size": 4134,
+      "sha256": "f3b12ac55c03b09d8baae7bf23cf860fde77bb4c4f7c44eb9c19f500e91fbfad"
+    },
+    "runtime-members.json": {
+      "size": 10144,
+      "sha256": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff"
+    },
+    "private_capture.py": {
+      "size": 3377,
+      "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7"
+    },
+    "initialize_terminal_project.py": {
+      "size": 4528,
+      "sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d"
+    },
+    "continue_codex_task.py": {
+      "size": 12287,
+      "sha256": "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c"
+    },
+    "verified_codex_task.py": {
+      "size": 16674,
+      "sha256": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710"
+    }
+  },
+  "archive_sha256": "d869e3883ea5127710ec3f974841807e9f799d2d0561af2d5d3b6e98b7f94c39",
+  "fixture_manifest_sha256": "1c54de277e62fce7556f390843a380d086153cbbd97c1bef3a334a3b52c0206f"
+}

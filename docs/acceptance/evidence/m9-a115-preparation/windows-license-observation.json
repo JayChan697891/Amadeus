@@ -1,0 +1,66 @@
+{
+  "at": "2026-11-14T00:06:43.381865+00:00",
+  "source_commit": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "scope": "Read-only installed Windows wheel license hash comparison; prior scope only, no formal license approval",
+  "inventory_sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+  "third_party_inventory_unchanged": true,
+  "third_party_distributions": 31,
+  "installed_license_files_verified": 43,
+  "offline_wheelhouse_unchanged": true,
+  "pywin32_extra_components": [
+    {
+      "member": "adodbapi/license.txt",
+      "sha256": "5ea2f23c7f00c3006bacf267183e816d8d4b6dc95ea57a4ddb0ff81de6d8719e"
+    },
+    {
+      "member": "pythonwin/License.txt",
+      "sha256": "a74d826efb242db087b850348e20abbfd591b51e2081f2048735290913872924"
+    },
+    {
+      "member": "pythonwin/Scintilla-License.txt",
+      "sha256": "57ec79bbeab4fd1cf7460a7ad450d2ab01471810459aeae9e75e4c66b472095f"
+    },
+    {
+      "member": "pythonwin/pywin/idle/LICENSE.txt",
+      "sha256": "a0fa1e7b8a4230055685e796548ac084a6c0eea395294574093bba72efd9191b"
+    },
+    {
+      "member": "win32/License.txt",
+      "sha256": "a74d826efb242db087b850348e20abbfd591b51e2081f2048735290913872924"
+    },
+    {
+      "member": "win32com/License.txt",
+      "sha256": "fad39c18fc3825fa278db1c86fd52cf88d7c525b3c2fbf7817fa383cbae4d423"
+    },
+    {
+      "member": "win32comext/License.txt",
+      "sha256": "fad39c18fc3825fa278db1c86fd52cf88d7c525b3c2fbf7817fa383cbae4d423"
+    },
+    {
+      "member": "win32comext/mapi/MAPIStubLibrary-License.txt",
+      "sha256": "1c4cf44d2fb8bf2d10214d6da80cc9e05502824cc4460f35be4c7bcb4cde53da"
+    },
+    {
+      "member": "win32comext/mapi/NOTICE.md",
+      "sha256": "dedf997c8f5568a0e0aff57d009f501226ea30c401323d67912b6a8f8735a825"
+    }
+  ],
+  "license_review": "pending",
+  "formal_release": "BLOCKED",
+  "archives": {
+    "agentsync_local-0.3.0a115-py3-none-any.whl": {
+      "size": 319819,
+      "sha256": "d52ca504bed7c0e758605a669085a100b55e1b074760253782d70638533091ea"
+    },
+    "agentsync_local-0.3.0a115.tar.gz": {
+      "size": 2713168,
+      "sha256": "eb0b78083b99925cdaa8f9be642595af005baabb33e3f06d45ef24cb91aafa41"
+    }
+  },
+  "sdist_license_documents_equal_frozen_source": [
+    "LICENSE",
+    "docs/THIRD-PARTY-NOTICES.txt",
+    "docs/THIRD-PARTY-LICENSES.md"
+  ],
+  "wheel_project_license_equal_frozen_source": true
+}

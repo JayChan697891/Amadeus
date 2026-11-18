@@ -1,0 +1,16 @@
+IMPORTED D:\agentsync-debug\m115-deadline-final-20261114\source\src\agentsync\__init__.py
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: D:\agentsync-debug\m115-deadline-final-20261114\source
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 45 items
+
+tests\unit\test_process_capture_deadline.py .......                      [ 15%]
+tests\unit\test_process_capture.py .................................     [ 88%]
+tests\unit\test_process_capture_start_cancel.py .                        [ 91%]
+tests\unit\test_unstarted_capture_adapter.py ....                        [100%]
+
+- generated xml file: D:\agentsync-debug\m115-deadline-final-20261114\fixed-final-junit.xml -
+============================= 45 passed in 5.06s ==============================

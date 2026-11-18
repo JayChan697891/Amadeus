@@ -1,0 +1,46 @@
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path('F:/syuc/amadeus-m6-single')
+OUT = Path('D:/agentsync-debug/m115')
+name = sys.argv[1]
+if not name.replace('-', '').isalnum():
+    raise SystemExit('invalid run name')
+run = OUT / name
+run.mkdir()
+env = dict(os.environ)
+for key in list(env):
+    if any(part in key.upper() for part in ('TOKEN', 'SECRET', 'API_KEY', 'APIKEY', 'AUTH', 'CODEX', 'CLAUDE', 'CURSOR', 'ANTHROPIC', 'OPENAI', 'AGENTSYNC')):
+        env.pop(key)
+private = run / 'private'
+private.mkdir()
+temp = private / 'tmp'
+temp.mkdir()
+env.update(HOME=str(private), USERPROFILE=str(private), APPDATA=str(private), LOCALAPPDATA=str(private), TEMP=str(temp), TMP=str(temp), PYTHONPATH=str(ROOT / 'src'), PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_SYSTEM=os.devnull, GIT_TERMINAL_PROMPT='0', PIP_NO_INDEX='1')
+def git(*args):
+    return subprocess.check_output(['git', '-C', str(ROOT), *args], env=env).decode().strip()
+def snapshot():
+    return {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in git('ls-files', 'src', 'tests', 'pyproject.toml').splitlines() if (ROOT / p).is_file()}
+before = snapshot()
+Path('D:/agentsync-debug/t115').mkdir(exist_ok=True)
+command = [sys.executable, '-B', '-m', 'pytest', *sys.argv[2:], '-q', '-p', 'no:cacheprovider', '--basetemp', 'D:/agentsync-debug/t115/' + name, '--junitxml', str(run / 'junit.xml')]
+started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+identity = subprocess.check_output([sys.executable, '-B', '-c', 'import agentsync; print(agentsync.__file__); print(agentsync.__version__)'], env=env, cwd=ROOT).decode()
+record = dict(started=started, source_sha=git('rev-parse', 'HEAD'), status_before=git('status', '--porcelain'), command=command, interpreter=sys.executable, origin=identity, source_before=before)
+(run / 'attempt.json').write_text(json.dumps(record, indent=2), encoding='utf-8')
+print(json.dumps({k:v for k,v in record.items() if k != 'source_before'}), flush=True)
+with (run / 'pytest.log').open('x', encoding='utf-8') as log:
+    process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT)
+    (run / 'process.json').write_text(json.dumps({'pid':process.pid,'command':command}), encoding='utf-8')
+    code = process.wait()
+after = snapshot()
+result = dict(exit_code=code, ended=datetime.datetime.now(datetime.timezone.utc).isoformat(), source_unchanged=before == after, source_after=after)
+(run / 'result.json').write_text(json.dumps(result, indent=2), encoding='utf-8')
+print('\n'.join((run / 'pytest.log').read_text(encoding='utf-8').splitlines()[-55:]), flush=True)
+print(json.dumps({k:v for k,v in result.items() if k != 'source_after'}), flush=True)
+raise SystemExit(code if before == after else 99)

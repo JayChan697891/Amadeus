@@ -1,0 +1,82 @@
+"""Repackage the unchanged frozen runtime with the checked input-reading repair."""
+import hashlib
+import json
+import re
+import subprocess
+import sys
+import zipfile
+from pathlib import Path
+
+repo = Path('F:/syuc/amadeus-m6-single')
+base = Path(__file__).parent
+(commit,) = sys.argv[1:]
+assert re.fullmatch('[0-9a-f]{40}', commit)
+assert subprocess.check_output(['git','rev-parse','HEAD'], cwd=repo, text=True).strip() == commit
+assert not subprocess.check_output(['git','status','--porcelain'], cwd=repo).strip()
+old = repo / 'releases/0.3.0a122/owner-preview-7085ec0-r3'
+dest = repo / 'releases/0.3.0a122/owner-preview-input-bounds-r4'
+dest.mkdir(exist_ok=False)
+prefix = 'Amadeus-preview-a122/'
+old_zip = old / 'Amadeus-owner-preview-a122.zip'
+sha = lambda raw: hashlib.sha256(raw).hexdigest()
+assert sha(old_zip.read_bytes()) == 'ebb7cb04abaa1fdef9c0feda56bc11a58a1a6376be3d26f5be8eeb334eed5429'
+with zipfile.ZipFile(old_zip) as z:
+    original = {n.removeprefix(prefix):z.read(n) for n in z.namelist()}
+payload = {k:v for k,v in original.items() if k not in ('manifest.json','SHA256SUMS')}
+payload['examples/verified_codex_task.py'] = (repo/'examples/verified_codex_task.py').read_bytes()
+guide = (repo/'docs/VERIFIED-TASK-EXAMPLE.md').read_text(encoding='utf8')
+guide = guide.replace('](acceptance/', f'](https://github.com/JayChan697891/Amadeus/blob/{commit}/docs/acceptance/')
+payload['docs/VERIFIED-TASK-EXAMPLE.md'] = guide.encode('utf8')
+readme = original['README.md'].decode('utf8')
+readme = readme.replace('最新入口修复后的完整真实实验尚待授权和执行，不能称为已验收通过。',
+    '此前终端入口已完成一次逐项审批的真实双 Codex 验证；详情见当前指南。\n本修订仅修复任务/用例文件的限量读取，已做受影响的 Windows 离线检查，\n没有重跑真实模型或 Linux 终端实验，不能扩大原有验收范围。')
+readme = readme.replace('终端及初始化脚本来自已检查的7085ec0。',
+    f'初始化和恢复脚本保留原件；终端入口来自{commit[:7]}的限量读取修复。')
+readme = readme.replace('原 wheel/sdist 已完成四套限定完整安装回归；该记录不等同完整发布矩阵。',
+    '冻结核心已完成 Windows/Linux 六套限定回归；新入口只做受影响检查，\n该记录不等同完整发布矩阵。')
+readme = readme.replace('本体验包仅重新组合已有原件，未重跑完整测试套件。',
+    '本修订复用核心安装原件并加入已检查的入口修复，未重跑完整测试套件。')
+readme = re.sub(r'https://github\.com/JayChan697891/Amadeus/blob/[0-9a-f]{40}/docs/PROGRESS\.md',
+    f'https://github.com/JayChan697891/Amadeus/blob/{commit}/docs/PROGRESS.md', readme)
+payload['README.md'] = readme.encode('utf8')
+manifest = json.loads(original['manifest.json'])
+manifest.update(entry_commit=commit, documentation_commit=commit,
+                revision='input-bounds-r4', previous_revision='owner-preview-7085ec0-r3')
+manifest['files'] = {name:{'bytes':len(raw),'sha256':sha(raw)} for name,raw in payload.items()}
+payload['manifest.json'] = (json.dumps(manifest,indent=2)+'\n').encode()
+payload['SHA256SUMS'] = ''.join(f'{sha(raw)}  {name}\n' for name,raw in sorted(payload.items())).encode()
+assert len(payload) == 10
+unchanged = ['agentsync_local-0.3.0a122-py3-none-any.whl','LICENSE',
+             'examples/initialize_terminal_project.py','examples/recover_relay.py','constraints-windows312.txt']
+assert all(payload[name] == original[name] for name in unchanged)
+archive = dest/'Amadeus-owner-preview-a122.zip'
+with zipfile.ZipFile(archive,'x',compression=zipfile.ZIP_DEFLATED) as z:
+    for name,raw in sorted(payload.items()):
+        z.writestr(prefix+name,raw)
+with zipfile.ZipFile(archive) as z:
+    assert z.testzip() is None and len(z.namelist()) == 10
+    assert all(z.read(prefix+name)==raw for name,raw in payload.items())
+    example = base/'verified_codex_task.py'
+    with example.open('xb') as f:
+        f.write(z.read(prefix+'examples/verified_codex_task.py'))
+command = ['D:/agentsync-debug/m122p/w/Scripts/python.exe','-I','-B',str(example),'--help']
+process = subprocess.run(command,capture_output=True,timeout=30,check=False)
+for name,raw in [('help.stdout.log',process.stdout),('help.stderr.log',process.stderr)]:
+    with (base/name).open('xb') as f:f.write(raw)
+assert process.returncode == 0
+review = {'archive':archive.name,'sha256':sha(archive.read_bytes()),'bytes':archive.stat().st_size,
+    'archive_members':10,'crc_and_exact_payload_match':True,'source_commit':commit,
+    'runtime_commit':'5232e9e8bd33a949f7ffdc68410cd614a297af66','original_wheel_unchanged':True,
+    'unchanged_payload_from_r3':unchanged,'entry_sha256':sha(payload['examples/verified_codex_task.py']),
+    'extracted_entry_help':{'argv':command,'exit_code':process.returncode,
+                           'stdout_sha256':sha(process.stdout),'stderr_sha256':sha(process.stderr)},
+    'dependency_resolution_reused':'r3 package-review.json; constraints and wheel byte-identical',
+    'install_repeated':False,'full_suites_repeated':False,'real_model_calls':0,
+    'candidate_executions':0,'new_linux_entry_run':'NOT RUN', 'formal_release':'BLOCKED',
+    'manifest':manifest}
+for name,raw in [('constraints-windows312.txt',payload['constraints-windows312.txt']),
+                 ('SHA256SUMS',f"{review['sha256']}  {archive.name}\n".encode()),
+                 ('package-review.json',(json.dumps(review,indent=2)+'\n').encode())]:
+    with (dest/name).open('xb') as f:f.write(raw)
+print(json.dumps({'archive':str(archive),'bytes':review['bytes'],'sha256':review['sha256'],
+                  'original_wheel_unchanged':True,'help_exit':process.returncode}))

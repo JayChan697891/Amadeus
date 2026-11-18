@@ -1,0 +1,4 @@
+Looking in links: file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels, file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels
+Processing .\artifacts\agentsync_local-0.3.0a114-py3-none-any.whl
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a114

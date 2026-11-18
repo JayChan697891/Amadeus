@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/root/amadeus-m122l/w/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "agentsync",
+    "--data-dir",
+    "/root/amadeus-m122-composed-recovery/core",
+    "relay-reconcile",
+    "dc173f231112dd973a75698f6e30815d71d43025e6b339de9934e66f977d8462",
+    "--scratch-root",
+    "/root/amadeus-m122-composed-recovery",
+    "--receipts",
+    "/root/amadeus-m122-composed-recovery/receipts"
+  ],
+  "retry_allowed": false
+}

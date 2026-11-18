@@ -1,0 +1,9 @@
+{
+  "native_session_id": 35434,
+  "owned_worker_count": 0,
+  "observed_at": "2026-11-16T07:46:45.2914133Z",
+  "scope": "Python commands matching this fixed m117ww fixture",
+  "model_calls": 0,
+  "launcher_pid": 6404,
+  "controller_pid": 8872
+}

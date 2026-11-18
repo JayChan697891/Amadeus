@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-11-16T13:25:05.720152+00:00",
+  "source_files_unchanged": 233,
+  "owned_container_absent": true,
+  "remaining_container_count": 0,
+  "fixture_process_ids": [],
+  "docker_cases_passed": 2,
+  "isolation_checks_passed": 19,
+  "model_calls": 0
+}

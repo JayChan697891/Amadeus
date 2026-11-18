@@ -1,0 +1,31 @@
+{
+  "stage": "execution",
+  "decision_sha256": "994412bcaf6c779a98d379dc3bf666f4d316632c1bd9c87f992a292041faa0a3",
+  "timestamp": "2026-11-13T06:16:38.986194+00:00",
+  "expires_at": 1794550688.9862323,
+  "payload": {
+    "id": "2f50c3ec-b27e-4a9e-82e4-b532e7babc51",
+    "project_id": "3c3819ba-9f74-403a-bf47-283642e90f65",
+    "candidate_id": "68353454-918d-5032-8ead-985a1853b906",
+    "snapshot_id": "6d9a4f4c-7ed9-555a-8f9c-acc504845bf7",
+    "candidate_sha": "31ae936320cd45bbce36961ff1ce687e81326f8f",
+    "tree_sha": "1a6cd604164ebd98143093cbe5a1c87bb3e789cc",
+    "input_sha256": "daf873f894e8a14781a44940c9673d84c2fe42966e8db53dbab25107069a849b",
+    "source_sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+    "binding_sha256": "93112bf8724e13f42a6c0224f1fc451ccdc3274cc8dfe6c7c3e84ff95d5430ab",
+    "provenance_sha256": "76f31bac169d7c272bcdf79c77edbf371c2f6324549a0c88c1b2e503063fd070",
+    "metadata_sha256": "994412bcaf6c779a98d379dc3bf666f4d316632c1bd9c87f992a292041faa0a3",
+    "profile_kind": "python-json-lines-v1",
+    "profile_sha256": "fdc54df4cec722eb4d8f7f18d2df2056e4e87c8b7f42b35183a2beaf7121fbfb",
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "status": "queued",
+    "version": 1,
+    "created_at": 1794550598.9435225,
+    "updated_at": 1794550598.9435225,
+    "source_kind": "managed_merge_candidate_input",
+    "current_state": false,
+    "execution_connected": false,
+    "execution_assessment": "unverified",
+    "receipt_kind": "historical_enqueue"
+  }
+}

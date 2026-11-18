@@ -1,0 +1,801 @@
+{
+  "distributions": {
+    "agentsync-local": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1079,
+          "member": "agentsync_local-0.3.0a116.dist-info/licenses/LICENSE",
+          "sha256": "a34848c085a0b1a5b161e4a1122002e054ff35970f92fb78c0a33e6fd385c1f3",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.3.0a116"
+    },
+    "annotated-doc": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1086,
+          "member": "annotated_doc-0.0.5.dist-info/licenses/LICENSE",
+          "sha256": "fff170779a6acbf65abdb405c087f1cee1786691e4a96a4034517e4a504a0cdf",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.0.5"
+    },
+    "annotated-types": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1083,
+          "member": "annotated_types-0.8.0.dist-info/licenses/LICENSE",
+          "sha256": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.8.0"
+    },
+    "anyio": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1081,
+          "member": "anyio-4.15.1.dist-info/licenses/LICENSE",
+          "sha256": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0",
+          "status": "recorded"
+        }
+      ],
+      "version": "4.15.1"
+    },
+    "attrs": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1109,
+          "member": "attrs-26.1.0.dist-info/licenses/LICENSE",
+          "sha256": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f",
+          "status": "recorded"
+        }
+      ],
+      "version": "26.1.0"
+    },
+    "cffi": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT-0",
+      "license_files": [
+        {
+          "bytes": 1123,
+          "member": "cffi-2.1.1.dist-info/licenses/LICENSE",
+          "sha256": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.1.1"
+    },
+    "click": {
+      "declared_license_files": [
+        "LICENSE.txt"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1475,
+          "member": "click-8.5.0.dist-info/licenses/LICENSE.txt",
+          "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d",
+          "status": "recorded"
+        }
+      ],
+      "version": "8.5.0"
+    },
+    "cryptography": {
+      "declared_license_files": [
+        "LICENSE",
+        "LICENSE.APACHE",
+        "LICENSE.BSD"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "Apache-2.0 OR BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 197,
+          "member": "cryptography-50.0.2.dist-info/licenses/LICENSE",
+          "sha256": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb",
+          "status": "recorded"
+        },
+        {
+          "bytes": 11360,
+          "member": "cryptography-50.0.2.dist-info/licenses/LICENSE.APACHE",
+          "sha256": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
+          "status": "recorded"
+        },
+        {
+          "bytes": 1532,
+          "member": "cryptography-50.0.2.dist-info/licenses/LICENSE.BSD",
+          "sha256": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb",
+          "status": "recorded"
+        }
+      ],
+      "version": "50.0.2"
+    },
+    "fastapi": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1086,
+          "member": "fastapi-0.147.0.dist-info/licenses/LICENSE",
+          "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.147.0"
+    },
+    "h11": {
+      "declared_license_files": [
+        "LICENSE.txt"
+      ],
+      "legacy_license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_expression": null,
+      "license_files": [
+        {
+          "bytes": 1124,
+          "member": "h11-0.16.0.dist-info/licenses/LICENSE.txt",
+          "sha256": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.16.0"
+    },
+    "httpcore2": {
+      "declared_license_files": [
+        "LICENSE.md"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1599,
+          "member": "httpcore2-2.15.1.dist-info/licenses/LICENSE.md",
+          "sha256": "c4df125c807b0613501e943a5c92496dd11d2c16604ce396097a8dde396304d9",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.15.1"
+    },
+    "httpx2": {
+      "declared_license_files": [
+        "LICENSE.md"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: BSD License"
+      ],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1589,
+          "member": "httpx2-2.15.1.dist-info/licenses/LICENSE.md",
+          "sha256": "7e7d6dbaf7fe160d39fd6e84fd02c33cab96bcbea34d36998d545bceb4a19c30",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.15.1"
+    },
+    "idna": {
+      "declared_license_files": [
+        "LICENSE.md"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1541,
+          "member": "idna-3.20.dist-info/licenses/LICENSE.md",
+          "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04",
+          "status": "recorded"
+        }
+      ],
+      "version": "3.20"
+    },
+    "jsonschema": {
+      "declared_license_files": [
+        "COPYING"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1057,
+          "member": "jsonschema-4.26.0.dist-info/licenses/COPYING",
+          "sha256": "4f92a015a13c4d1a040bef018aa13430b4f1bc73b41b16bb846c346766de7439",
+          "status": "recorded"
+        }
+      ],
+      "version": "4.26.0"
+    },
+    "jsonschema-specifications": {
+      "declared_license_files": [
+        "COPYING"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1057,
+          "member": "jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING",
+          "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c",
+          "status": "recorded"
+        }
+      ],
+      "version": "2025.9.1"
+    },
+    "mcp": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_expression": null,
+      "license_files": [
+        {
+          "bytes": 1071,
+          "member": "mcp-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.3.0"
+    },
+    "mcp-types": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": "MIT",
+      "license_classifiers": [
+        "License :: OSI Approved :: MIT License"
+      ],
+      "license_expression": null,
+      "license_files": [
+        {
+          "bytes": 1071,
+          "member": "mcp_types-2.3.0.dist-info/licenses/LICENSE",
+          "sha256": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.3.0"
+    },
+    "opentelemetry-api": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "Apache-2.0",
+      "license_files": [
+        {
+          "bytes": 11357,
+          "member": "opentelemetry_api-1.45.1.dist-info/licenses/LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "status": "recorded"
+        }
+      ],
+      "version": "1.45.1"
+    },
+    "pycparser": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1543,
+          "member": "pycparser-3.11.dist-info/licenses/LICENSE",
+          "sha256": "0a9e78156ae8b96caf1b4f11ac2df424b83de29736f9e757630548a6272fdf90",
+          "status": "recorded"
+        }
+      ],
+      "version": "3.11"
+    },
+    "pydantic": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1129,
+          "member": "pydantic-2.14.1.dist-info/licenses/LICENSE",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.14.1"
+    },
+    "pydantic-core": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1080,
+          "member": "pydantic_core-2.50.1.dist-info/licenses/LICENSE",
+          "sha256": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.50.1"
+    },
+    "pyjwt": {
+      "declared_license_files": [
+        "AUTHORS.rst",
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 322,
+          "member": "pyjwt-2.15.1.dist-info/licenses/AUTHORS.rst",
+          "sha256": "925ce43461029eedbf558ec0b7cf7fc4b045def5120ebb97937c70814071cf07",
+          "status": "recorded"
+        },
+        {
+          "bytes": 1085,
+          "member": "pyjwt-2.15.1.dist-info/licenses/LICENSE",
+          "sha256": "797a7a20231d4c433e9f1911db1731d06b5828b98f499819a034f7c0f56f5ce5",
+          "status": "recorded"
+        }
+      ],
+      "version": "2.15.1"
+    },
+    "python-multipart": {
+      "declared_license_files": [
+        "LICENSE.txt"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [
+        "License :: OSI Approved :: Apache Software License"
+      ],
+      "license_expression": "Apache-2.0",
+      "license_files": [
+        {
+          "bytes": 11358,
+          "member": "python_multipart-0.0.32.dist-info/licenses/LICENSE.txt",
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.0.32"
+    },
+    "referencing": {
+      "declared_license_files": [
+        "COPYING"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1057,
+          "member": "referencing-0.37.0.dist-info/licenses/COPYING",
+          "sha256": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.37.0"
+    },
+    "rpds-py": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1057,
+          "member": "rpds_py-2026.9.1.dist-info/licenses/LICENSE",
+          "sha256": "314e4e91be3baa93c0fb4bccc9e4e97cd643eb839b065af921782c2175fe9909",
+          "status": "recorded"
+        }
+      ],
+      "version": "2026.9.1"
+    },
+    "sse-starlette": {
+      "declared_license_files": [
+        "AUTHORS",
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 395,
+          "member": "sse_starlette-3.5.0.dist-info/licenses/AUTHORS",
+          "sha256": "c2ff63d2ecf128bbda8ab1b2016830a5da124202fbb97168685bb9946aed3f1a",
+          "status": "recorded"
+        },
+        {
+          "bytes": 1511,
+          "member": "sse_starlette-3.5.0.dist-info/licenses/LICENSE",
+          "sha256": "80af6bfccbebd2c14d4aab96695cab9950e177190cc80f5ef819e99996883e8e",
+          "status": "recorded"
+        }
+      ],
+      "version": "3.5.0"
+    },
+    "starlette": {
+      "declared_license_files": [
+        "LICENSE.md"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1518,
+          "member": "starlette-1.9.0.dist-info/licenses/LICENSE.md",
+          "sha256": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf",
+          "status": "recorded"
+        }
+      ],
+      "version": "1.9.0"
+    },
+    "truststore": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1086,
+          "member": "truststore-0.10.5.dist-info/licenses/LICENSE",
+          "sha256": "33be7b7e8fa4fd19b1760e1a8ed8a668bdab852c91b692dd41424bcb725a9fca",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.10.5"
+    },
+    "typing-extensions": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "PSF-2.0",
+      "license_files": [
+        {
+          "bytes": 13936,
+          "member": "typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+          "status": "recorded"
+        }
+      ],
+      "version": "4.16.0"
+    },
+    "typing-inspection": {
+      "declared_license_files": [
+        "LICENSE"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "MIT",
+      "license_files": [
+        {
+          "bytes": 1090,
+          "member": "typing_inspection-0.4.4.dist-info/licenses/LICENSE",
+          "sha256": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.4.4"
+    },
+    "uvicorn": {
+      "declared_license_files": [
+        "LICENSE.md"
+      ],
+      "legacy_license": null,
+      "license_classifiers": [],
+      "license_expression": "BSD-3-Clause",
+      "license_files": [
+        {
+          "bytes": 1526,
+          "member": "uvicorn-0.54.0.dist-info/licenses/LICENSE.md",
+          "sha256": "efe1acf3e62fb99c288b0ec73e5a773b7268ef4320fe757ea994214e4b63c371",
+          "status": "recorded"
+        }
+      ],
+      "version": "0.54.0"
+    }
+  },
+  "edges": [
+    [
+      "agentsync-local",
+      "fastapi"
+    ],
+    [
+      "agentsync-local",
+      "mcp"
+    ],
+    [
+      "agentsync-local",
+      "pydantic"
+    ],
+    [
+      "agentsync-local",
+      "uvicorn"
+    ],
+    [
+      "anyio",
+      "idna"
+    ],
+    [
+      "anyio",
+      "typing-extensions"
+    ],
+    [
+      "cffi",
+      "pycparser"
+    ],
+    [
+      "cryptography",
+      "cffi"
+    ],
+    [
+      "fastapi",
+      "annotated-doc"
+    ],
+    [
+      "fastapi",
+      "opentelemetry-api"
+    ],
+    [
+      "fastapi",
+      "pydantic"
+    ],
+    [
+      "fastapi",
+      "starlette"
+    ],
+    [
+      "fastapi",
+      "typing-extensions"
+    ],
+    [
+      "fastapi",
+      "typing-inspection"
+    ],
+    [
+      "httpcore2",
+      "h11"
+    ],
+    [
+      "httpcore2",
+      "truststore"
+    ],
+    [
+      "httpx2",
+      "anyio"
+    ],
+    [
+      "httpx2",
+      "httpcore2"
+    ],
+    [
+      "httpx2",
+      "idna"
+    ],
+    [
+      "httpx2",
+      "truststore"
+    ],
+    [
+      "jsonschema",
+      "attrs"
+    ],
+    [
+      "jsonschema",
+      "jsonschema-specifications"
+    ],
+    [
+      "jsonschema",
+      "referencing"
+    ],
+    [
+      "jsonschema",
+      "rpds-py"
+    ],
+    [
+      "jsonschema-specifications",
+      "referencing"
+    ],
+    [
+      "mcp",
+      "anyio"
+    ],
+    [
+      "mcp",
+      "httpx2"
+    ],
+    [
+      "mcp",
+      "jsonschema"
+    ],
+    [
+      "mcp",
+      "mcp-types"
+    ],
+    [
+      "mcp",
+      "opentelemetry-api"
+    ],
+    [
+      "mcp",
+      "pydantic"
+    ],
+    [
+      "mcp",
+      "pyjwt"
+    ],
+    [
+      "mcp",
+      "python-multipart"
+    ],
+    [
+      "mcp",
+      "sse-starlette"
+    ],
+    [
+      "mcp",
+      "starlette"
+    ],
+    [
+      "mcp",
+      "typing-extensions"
+    ],
+    [
+      "mcp",
+      "typing-inspection"
+    ],
+    [
+      "mcp",
+      "uvicorn"
+    ],
+    [
+      "mcp-types",
+      "pydantic"
+    ],
+    [
+      "mcp-types",
+      "typing-extensions"
+    ],
+    [
+      "opentelemetry-api",
+      "typing-extensions"
+    ],
+    [
+      "pydantic",
+      "annotated-types"
+    ],
+    [
+      "pydantic",
+      "pydantic-core"
+    ],
+    [
+      "pydantic",
+      "typing-extensions"
+    ],
+    [
+      "pydantic",
+      "typing-inspection"
+    ],
+    [
+      "pydantic-core",
+      "typing-extensions"
+    ],
+    [
+      "pyjwt",
+      "cryptography"
+    ],
+    [
+      "referencing",
+      "attrs"
+    ],
+    [
+      "referencing",
+      "rpds-py"
+    ],
+    [
+      "sse-starlette",
+      "anyio"
+    ],
+    [
+      "sse-starlette",
+      "starlette"
+    ],
+    [
+      "starlette",
+      "anyio"
+    ],
+    [
+      "typing-inspection",
+      "typing-extensions"
+    ],
+    [
+      "uvicorn",
+      "click"
+    ],
+    [
+      "uvicorn",
+      "h11"
+    ]
+  ],
+  "license_review": "pending",
+  "publication_authorized": false,
+  "review_items": [],
+  "root": "agentsync-local",
+  "schema_version": 1,
+  "scope": "installed_runtime_dependency_metadata"
+}

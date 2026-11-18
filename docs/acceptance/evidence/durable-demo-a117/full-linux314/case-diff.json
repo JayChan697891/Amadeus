@@ -1,0 +1,145 @@
+{
+  "a116_counts": {
+    "passed": 2526,
+    "skipped": 7
+  },
+  "a116_junit_sha256": "a2272ac96b1dd5b107a0415b6198e6636a36df03e2d79198a2e30df3a4e4a4fd",
+  "a117_counts": {
+    "passed": 2538,
+    "skipped": 7
+  },
+  "a117_junit_sha256": "ade19ad9d35df226ed1d7a62608027ae3470543248db808a034e1abd48dbce77",
+  "added": [
+    [
+      [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments0-requires --data-dir]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments1-must be absolute]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments2-not allowed with argument]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_refuses_existing_state"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.integration.test_durable_demo",
+        "test_durable_demo_reopens_retry_and_records_handoff"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.integration.test_unfinished_continuation",
+        "test_host_exit_preserves_continuation_recovery[dispatch-intent]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.integration.test_unfinished_continuation",
+        "test_host_exit_preserves_continuation_recovery[prepared]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_demo_keeps_the_dedicated_linux_root_gate"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode0-not allowed with argument]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode1---demo cannot be combined]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode2---demo cannot be combined]"
+      ],
+      "passed"
+    ],
+    [
+      [
+        "tests.unit.test_proposal_candidate_pilot_cli",
+        "test_pilot_requires_one_complete_input_mode[mode3---proposal requires]"
+      ],
+      "passed"
+    ]
+  ],
+  "native_checks": {
+    "sdist_install": {
+      "exit_code": 0,
+      "log_sha256": "1f44a61dd46e5cc02f0b921bb189fd5a64e17b6f2dfcc109ed916a94df448a52",
+      "outcome": "exited",
+      "receipt_sha256": "f4a0862487ea39ebfa02363c93d68aa883da0cc2f0bb991e8722eaecffa7cf9e"
+    },
+    "sdist_offline_dependencies": {
+      "exit_code": 0,
+      "log_sha256": "e496a40d447fb88cfc2b4459230bfdd3def241eb1b592d1f40c7a3d1fc0a6e44",
+      "outcome": "exited",
+      "receipt_sha256": "9593100f4ff9c7a7806d100f985816bb9edd82f2580be8126d25f6e340c936ef"
+    },
+    "sdist_origin_after": {
+      "exit_code": 0,
+      "log_sha256": "0620f2c3b37c15a99e046838baf97bd2122232cda7f17af6c5875966608fea1a",
+      "outcome": "exited",
+      "receipt_sha256": "624aa80238e471c796c0716b961eaee41505690824f25e1f0fcf3185303c7948"
+    },
+    "sdist_origin_before": {
+      "exit_code": 0,
+      "log_sha256": "0620f2c3b37c15a99e046838baf97bd2122232cda7f17af6c5875966608fea1a",
+      "outcome": "exited",
+      "receipt_sha256": "6fbac7081d440f756bc4e0d543cc6be1102a6e8c66c33f6ff62203eedac51e66"
+    },
+    "sdist_pip_check": {
+      "exit_code": 0,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+      "outcome": "exited",
+      "receipt_sha256": "4a022d44251527bca2e150cd834b893e8fd08d740dced5c3e47d923a3d95598f"
+    },
+    "sdist_pytest": {
+      "exit_code": 0,
+      "log_sha256": "81ad3eff1d350d7f8294365b2094dca1eca2fa10207c99d41ee3f49b4160b43a",
+      "outcome": "exited",
+      "receipt_sha256": "2f9d5b32ae7d58e964a817bfbe4e870aa56547626a3611cca89c083b818fb49e"
+    },
+    "sdist_venv": {
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "exited",
+      "receipt_sha256": "209d690eaaa6672e9d1276777f5a2ae15ec982834a2f9ec41541c71c301cfefc"
+    }
+  },
+  "outcome_changes": [],
+  "problems": [],
+  "removed": []
+}

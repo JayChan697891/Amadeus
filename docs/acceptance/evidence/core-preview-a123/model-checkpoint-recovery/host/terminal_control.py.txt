@@ -1,0 +1,252 @@
+"""One reviewed SSH PTY execution; subsequent approval text comes from local stdin."""
+
+import hashlib
+import json
+import os
+import queue
+import re
+import shlex
+import socket
+import stat
+import sys
+import threading
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+REMOTE = "/root/amadeus-document-continuation-a123-20261118"
+PYTHON = "/root/amadeus-continuation-entry-a123-20261118/w/bin/python"
+READY_SHA = "df59b0b464adaa8776404859a35dff222793c7dec04f57148d40d779be5b6181"
+EXAMPLE_SHA = "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c"
+LIMIT = 1024 * 1024
+SECONDS = 650
+OWNER_PROMPT = b"Existing project owner token: "
+
+PRELUDE = "import hashlib,json,os,sys,termios,time,subprocess\nfrom pathlib import Path\nroot=Path('/root/amadeus-document-continuation-a123-20261118')\nprepared_raw=(root/'ready.json').read_bytes()\nassert hashlib.sha256(prepared_raw).hexdigest()==sys.argv[1]\nprepared_ready=json.loads(prepared_raw)\nraw=(root/'continue-command.json').read_bytes()\nassert hashlib.sha256(raw).hexdigest()==sys.argv[2]\nready=json.loads(raw)\nassert ready['ready_sha256']==sys.argv[1]\ngrant_raw=(root/'owner-grant.json').read_bytes()\nassert hashlib.sha256(grant_raw).hexdigest()==sys.argv[3]\ngrant=json.loads(grant_raw)\nassert grant['authorized'] is True and grant['ready_sha256']==sys.argv[1]\nassert grant['max_subscription_calls']==2 and grant['max_candidate_executions']==0\nassert time.time()<grant['expires_at']\nassert grant['plan_sha256']==prepared_ready['plan_sha256']\nassert all(hashlib.sha256((root/name).read_bytes()).hexdigest()==h for name,h in grant['helper_sha256'].items())\nproducer=json.loads((root/'host-exit.json').read_bytes())\nassert producer['status']=='terminal' and producer['exit_code']==0 and producer['ready_sha256']==sys.argv[1]\nassert producer['owner_grant_sha256']==sys.argv[3]\nassert producer['plan_sha256']==grant['plan_sha256']\nargv=ready['command']\nassert argv[:4]==['/root/amadeus-continuation-entry-a123-20261118/w/bin/python','-I','-B',str(root/'continue_codex_task.py')]\nassert hashlib.sha256((root/'continue_codex_task.py').read_bytes()).hexdigest()==ready['helper_sha256']['continue_codex_task.py']\nsys.path.insert(0,str(root)); import auth_home\nassert not (root/'receiver-host-intent.json').exists() and not (root/'receiver-host-exit.json').exists()\nauth_home.require_mount()\ntty=[os.isatty(fd) for fd in (0,1,2)]\nassert all(tty)\nmode=termios.tcgetattr(0); mode[3]&=~termios.ECHO\ntermios.tcsetattr(0,termios.TCSANOW,mode)\nassert not termios.tcgetattr(0)[3]&termios.ECHO\nos.umask(0o077)\nprint(json.dumps({'terminal_tty':tty,'echo':False}),flush=True)\nenv={'PATH':'/usr/bin:/bin','HOME':str(root),'TERM':'dumb',\n     'PYTHONDONTWRITEBYTECODE':'1','PYTHONNOUSERSITE':'1',\n     'GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_TERMINAL_PROMPT':'0'}\nrecord={'ready_sha256':sys.argv[1],'continuation_command_sha256':sys.argv[2],\n        'owner_grant_sha256':sys.argv[3],'argv':argv,'status':'unknown','automatic_retry':False}\nauth_home.save('receiver-host-intent.json',record)\nprocess=subprocess.Popen(argv,cwd=root,env=env)\ncode=process.wait()\nrecord.update(status='terminal',exit_code=code if code>=0 else 128-code,raw_returncode=code,child_pid=process.pid)\nauth_home.save('receiver-host-exit.json',record)\nraise SystemExit(record['exit_code'])\n"
+
+
+def save(name, record):
+    with (BASE / name).open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(record, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def timestamp():
+    return datetime.now(UTC).isoformat()
+
+
+def read_manual(lines, descriptor):
+    # A daemon may still be blocked when the remote process ends. Raw descriptor
+    # reads hold no BufferedReader lock during interpreter shutdown.
+    pending = b""
+    try:
+        while chunk := os.read(descriptor, 4096):
+            pending += chunk
+            while b"\n" in pending:
+                line, pending = pending.split(b"\n", 1)
+                if line.endswith(b"\r"):
+                    line = line[:-1]
+                lines.put(line + b"\n")
+            if len(pending) > 4096:
+                lines.put(pending)
+                return
+        if pending:
+            lines.put(pending)
+    except OSError:
+        pass
+    finally:
+        lines.put(None)
+
+
+def main():
+    if not __debug__ or not sys.flags.isolated or not sys.dont_write_bytecode:
+        raise SystemExit("Use the reviewed installed Python with -I -B.")
+    assert len(sys.argv) == 2 and re.fullmatch(r"[0-9a-f]{64}", sys.argv[1])
+    continuation_sha = sys.argv[1]
+    private = BASE / "private"
+    assert private.is_dir() and private.resolve(strict=True) == private
+    for name in (
+        "terminal-intent.json",
+        "terminal-result.json",
+        "private/terminal.raw",
+    ):
+        assert not (BASE / name).exists(), "Existing attempt retained; do not execute again."
+    local_ready = (BASE / "continue-command.json").read_bytes()
+    assert hashlib.sha256(local_ready).hexdigest() == continuation_sha
+    ready = json.loads(local_ready)
+    assert ready["helper_sha256"]["continue_codex_task.py"] == EXAMPLE_SHA
+    assert ready["ready_sha256"] == READY_SHA
+    grant_raw = (BASE / "owner-grant.json").read_bytes()
+    grant = json.loads(grant_raw)
+    assert grant["authorized"] is True and grant["ready_sha256"] == READY_SHA
+    assert time.time() < grant["expires_at"]
+    assert (
+        hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        == grant["host_helper_sha256"]["terminal_control.py"]
+    )
+    record = {
+        "started_at": timestamp(),
+        "status": "unknown",
+        "ready_sha256": READY_SHA,
+        "continuation_command_sha256": continuation_sha,
+        "owner_grant_sha256": hashlib.sha256(grant_raw).hexdigest(),
+        "command": ready["command"],
+        "project_id": ready["project_id"],
+        "exec_requested": False,
+        "owner_input_attempted": False,
+        "owner_input_sent": False,
+        "terminal_bytes": 0,
+        "forwarded_manual_lines": 0,
+        "automatic_approval": False,
+        "automatic_retry": False,
+    }
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    deadline = time.monotonic() + SECONDS
+    connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    try:
+        connection.settimeout(15)
+        connection.connect(("127.0.0.1", 22222))
+        client.connect(
+            "127.0.0.1",
+            port=22222,
+            username="root",
+            sock=connection,
+            key_filename="D:/agentsync-debug/vm/debug_ed25519",
+            look_for_keys=False,
+            allow_agent=False,
+            timeout=15,
+            banner_timeout=15,
+            auth_timeout=15,
+        )
+        with client.open_sftp() as sftp:
+            assert sftp.stat(REMOTE + "/continue-command.json").st_size <= 65536
+            with sftp.open(REMOTE + "/continue-command.json", "rb") as stream:
+                assert stream.read() == local_ready
+            owner_path = REMOTE + "/private-owner.json"
+            info = sftp.lstat(owner_path)
+            assert stat.S_ISREG(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o600
+            assert info.st_uid == 0 and 0 < info.st_size <= 8192
+            with sftp.open(owner_path, "rb") as stream:
+                owner = json.loads(stream.read())
+        assert set(owner) == {"project_id", "admin_token"}
+        assert owner["project_id"] == ready["project_id"]
+        token = owner["admin_token"].encode("utf-8")
+        assert 0 < len(token) <= 4096 and b"\n" not in token and b"\r" not in token
+        assert token not in local_ready
+        command = " ".join(
+            shlex.quote(part)
+            for part in (
+                PYTHON,
+                "-I",
+                "-B",
+                "-c",
+                PRELUDE,
+                READY_SHA,
+                continuation_sha,
+                hashlib.sha256(grant_raw).hexdigest(),
+            )
+        )
+        record["exec_requested"] = True
+        save("terminal-intent.json", record)
+        stdin, stdout, _ = client.exec_command(command, get_pty=True, timeout=15)
+        channel = stdout.channel
+        channel.settimeout(15)
+        lines = queue.Queue()
+
+        pending = b""
+        observed = b""
+        owner_sent = False
+        with (private / "terminal.raw").open("xb") as raw:
+            while True:
+                if time.monotonic() >= deadline and not record.get("observation_overdue"):
+                    record["observation_overdue"] = True
+                    print(
+                        json.dumps({"observation": "overdue; retaining the same live PTY"}),
+                        flush=True,
+                    )
+                if channel.recv_ready():
+                    chunk = channel.recv(16384)
+                    record["terminal_bytes"] += len(chunk)
+                    if record["terminal_bytes"] > LIMIT:
+                        raise ValueError("terminal_output_limit")
+                    pending += chunk
+                    if token in pending:
+                        record["credential_echo_blocked"] = True
+                        raise ValueError("credential_echo")
+                    # Hold a possible token prefix across chunks before output or retention.
+                    held = next(
+                        (
+                            size
+                            for size in range(min(len(token) - 1, len(pending)), 0, -1)
+                            if pending.endswith(token[:size])
+                        ),
+                        0,
+                    )
+                    public = pending[:-held] if held else pending
+                    pending = pending[-held:] if held else b""
+                    raw.write(public)
+                    raw.flush()
+                    sys.stdout.buffer.write(public)
+                    sys.stdout.buffer.flush()
+                    observed = (observed + public)[-8192:]
+                    if not owner_sent and OWNER_PROMPT in observed:
+                        assert b'"terminal_tty": [true, true, true], "echo": false' in observed
+                        record["owner_input_attempted"] = True
+                        channel.sendall(token + b"\n")
+                        record["owner_input_sent"] = True
+                        owner_sent = True
+                        threading.Thread(
+                            target=read_manual,
+                            args=(lines, sys.stdin.fileno()),
+                            daemon=True,
+                        ).start()
+                if owner_sent:
+                    try:
+                        line = lines.get_nowait()
+                    except queue.Empty:
+                        pass
+                    else:
+                        if line is None:
+                            record["local_stdin_eof"] = True
+                            channel.shutdown_write()
+                        else:
+                            assert len(line) <= 4096 and line.endswith(b"\n")
+                            assert token not in line
+                            channel.sendall(line)
+                            record["forwarded_manual_lines"] += 1
+                if channel.exit_status_ready() and not channel.recv_ready():
+                    code = channel.recv_exit_status()
+                    if code >= 0:
+                        record.update(status="terminal", exit_code=code)
+                    break
+                if channel.closed:
+                    break
+                time.sleep(0.02)
+            record["withheld_suffix_bytes"] = len(pending)
+    except (Exception, KeyboardInterrupt) as error:
+        record["error_type"] = type(error).__name__
+    finally:
+        client.close()
+        connection.close()
+        record["finished_at"] = timestamp()
+        save("terminal-result.json", record)
+    print(
+        json.dumps(
+            {key: record[key] for key in ("status", "exec_requested", "owner_input_sent")}
+            | {"exit_code": record.get("exit_code")}
+        ),
+        flush=True,
+    )
+    return record.get("exit_code", 1) if record["status"] == "terminal" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

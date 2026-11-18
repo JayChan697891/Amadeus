@@ -1,0 +1,9 @@
+{
+  "at": "2026-11-14T05:18:44.5636447Z",
+  "collector_pid": 4488,
+  "stop_reason": "Owner safe pause after original wheel natural exit and saved output",
+  "children_before_stop": 0,
+  "resumed": false,
+  "sdist_started": false,
+  "original_receipt_rewritten": false
+}

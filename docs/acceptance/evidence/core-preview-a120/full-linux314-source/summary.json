@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "PASS - bounded Linux editable-source suite; formal Release BLOCKED",
+  "version": "0.3.0a120",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "test_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "platform": "Linux CPython3.14.7",
+  "native_session": 77917,
+  "terminal_chunk": "223255",
+  "native_exit_code": 0,
+  "started_at": "2026-11-17T04:07:18.248795+00:00",
+  "finished_at": "2026-11-17T04:26:58.940833+00:00",
+  "driver_sha256": "aa2db3bcf69381e2aac556b609cd33c47b85f66c3a82e63b56e7d56a56588bec",
+  "native_checks": 7,
+  "junit": {
+    "path": "source-junit.xml",
+    "sha256": "a1bfcc6a741160ab1e2ad1ff3df6628a1ad310a50f946003b90bc1e94d677151",
+    "credential_redactions": 6,
+    "tests": 2587,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 7
+  },
+  "unique_cases": 2587,
+  "passed": 2580,
+  "skipped": 7,
+  "failures": 0,
+  "errors": 0,
+  "warnings": 120,
+  "elapsed_seconds": 1153.57,
+  "wheel_case_identities_and_outcomes_equal": true,
+  "original_records": 55,
+  "original_bytes": 651374,
+  "frozen_source_files_rehashed": 5369,
+  "editable_copy_files_rehashed": 5369,
+  "source_runtime_members_rehashed": 97,
+  "editable_direct_url": {
+    "dir_info": {
+      "editable": true
+    },
+    "url": "file:///root/amadeus-m120source/s"
+  },
+  "raw_to_public_xml_checked": true,
+  "xml_redactions": 6,
+  "docker_observations": 36,
+  "docker_selected_outcomes_equal_to_wheel": true,
+  "root_review_chunk": "b96d51",
+  "independent_review": "Astra incremental read-only review accepted bounded Linux editable-source result; not formal acceptance.",
+  "shutdown": {
+    "disk_preserved": true,
+    "pid": 21328,
+    "loopback_ports_closed": true,
+    "utc": "2026-11-17T04:28:28.2577296Z",
+    "process_absent": true,
+    "method": "QMP system_powerdown"
+  },
+  "shutdown_observation_chunk": "99874f",
+  "model_calls": 0,
+  "published_packages_unchanged": true,
+  "no_installed_suite_or_static_repeat": true,
+  "formal_release": "BLOCKED",
+  "limits": [
+    "Actual fresh offline editable installation and source/CLI origins are verified; no formal matrix row is fabricated from separate run directories.",
+    "Ruff/format failures are preserved per owner choice; license review remains pending.",
+    "Temporary Windows terminal fixture credential removal is deferred to owner manual action; no bypass or retry.",
+    "Docker uses deterministic local protocol fixtures, not new real clients or cross-vendor proof."
+  ],
+  "next": "First Windows3.12 editable-source full suite has been launched as native2511 in D:/agentsync-debug/m120sourcew; no final result yet."
+}

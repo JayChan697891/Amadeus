@@ -1,0 +1,78 @@
+{
+  "schema": "amadeus.terminal-live-plan.v1",
+  "fixture": "/root/amadeus-terminal-live-a122-20261118",
+  "project_id": "1328971c-cdf9-4c73-937b-c50504fa5fbb",
+  "entry_commit": "13eb0759138de485e2ebba445e93369a28e3c916",
+  "entry_sha256": "c4540ffda772877e4516b12b7673e256b70d4f9f90c6b39dc5638efcc5673ae9",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "ready_sha256": "c68daf94483ae292749b2697ccf052747029ca05572f27b88caeff023b369f25",
+  "candidate": {
+    "path": "solution.py",
+    "utf8_bytes": 149,
+    "sha256": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44",
+    "source_reference": "../composed-recovery/candidate-source.json"
+  },
+  "verifier": {
+    "profile_id": "python-json-lines-v1",
+    "profile_sha256": "824039ecab177221b5e288d73d086f6bdfa479dde12910e6f8bf44fa091d1816",
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+    "cases": [
+      {
+        "input": [
+          2,
+          3
+        ],
+        "expected": 5
+      },
+      {
+        "input": [
+          -4,
+          1
+        ],
+        "expected": -3
+      }
+    ],
+    "timeout_seconds": 5,
+    "network": false,
+    "host_execution_fallback": false
+  },
+  "requested_candidate_authority": {
+    "stage_once": true,
+    "execute_once": true,
+    "complete_producer_once": true,
+    "currently_authorized": false
+  },
+  "existing_subscription_authority": {
+    "standing_owner_grant": "durable-demo-a117/interrupted-controller/owner-grant-20261116.json",
+    "max_calls": 2,
+    "paid_api_allowed": false,
+    "retry_after_failure_unknown_or_mismatch": false
+  },
+  "order": [
+    "native PTY and hidden owner input",
+    "inspect exact producer launch and subscription/isolation conditions",
+    "require generated proposal exactly matches 149-byte approved source and current staging pins",
+    "one exact staging approval",
+    "one exact Docker execution approval",
+    "inspect actual result and distinct reviewer; approve exact producer completion",
+    "inspect and approve second Codex launch; receiver document remains review/unverified"
+  ],
+  "credentials": {
+    "source": "C:/Users/JayChan/.codex/auth.json",
+    "temporary_destination": "/root/amadeus-terminal-live-a122-20261118/private-home/auth.json",
+    "storage": "owner-only dedicated tmpfs",
+    "copy_status": "NOT RUN",
+    "cleanup": "Confirm owned parents ended before unlinking only temporary auth and unmounting; verify original unchanged",
+    "private_project_owner": "Kept only in root-only fixture file; never uploaded"
+  },
+  "stop_conditions": [
+    "Any different source or binding",
+    "Unsupported CLI/account/billing/isolation conditions",
+    "Any failed or unknown model outcome",
+    "Any denied exact decision",
+    "Output limit or unknown process termination"
+  ],
+  "candidate_execution": "NOT RUN",
+  "new_terminal_real_e2e": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

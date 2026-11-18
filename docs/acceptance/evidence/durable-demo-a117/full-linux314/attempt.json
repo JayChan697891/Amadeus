@@ -1,0 +1,19 @@
+{
+  "scope": "Linux 3.14, one full installed a117 preview sdist suite with actual local Docker",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "fixture_snapshot_sha256": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+  "driver_sha256": "d5aae8549bade5ab986c6c83cdf02cd65a229e333ecd17c1993967452aadea93",
+  "controller_pid": 2960,
+  "controller_python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "boot_id": "86f98cbb-008d-4408-8886-2801a58f096e",
+  "required_docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "model_calls": 0,
+  "started_at": "2026-11-15T14:45:02.126455+00:00",
+  "status": "unknown",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": []
+}

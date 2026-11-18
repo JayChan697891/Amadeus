@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "preparation_only",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "parent_commit": "71369918be5029c94973f0d6a0c14c8b1e46934d",
+  "requirements": [
+    "M7-02",
+    "M8-02"
+  ],
+  "source_sha256": {
+    "tools/prepare_live_solution_continuation.py": "81807138126d0006f21c2a9ed3e66c2cfad8b7f2e6e1762f18dc12e98000d39a",
+    "tools/run_live_solution_recovery.py": "c25b1daf52d2cb528ecd374cfde23b021e11480c6588c6aec29913a8be4b2501"
+  },
+  "results": {
+    "focused_checks": {
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit": "final.xml",
+      "native_receipt": "bf5a8e",
+      "exit_code": 0
+    },
+    "changed_tools_ruff": {
+      "native_receipt": "ff9a8b",
+      "exit_code": 0
+    },
+    "changed_tools_format": {
+      "native_receipt": "4a2796",
+      "exit_code": 0
+    },
+    "final_render": {
+      "native_receipt": "9c3262",
+      "exit_code": 0
+    }
+  },
+  "native_provenance": "Receipt identifiers transcribed after execution; raw logs and exit records preserved.",
+  "preserved_failures": {
+    "initial_test": "1 pass / 1 setup error before project asyncio config was supplied; initial.xml and initial.log",
+    "initial_ruff": "exit 2 invalid RUFF_NO_CACHE environment value; ruff-initial.log"
+  },
+  "limits": [
+    "Real Core and independently launched installed CLI, local Python protocol fixture.",
+    "os._exit intercepted; this is not actual controller death or model evidence.",
+    "Same frozen runtime; no runtime/product/version changes.",
+    "New candidate execution requires separate exact owner authorization."
+  ],
+  "root_review": {
+    "native_receipt": "a9af63",
+    "xml_read": true,
+    "source_and_prepared_hashes_verified": true
+  },
+  "astra_review": "Final offline preparation and exact bound live plan reviewed; one bounded experiment may proceed under standing owner grant. Candidate staging/execution/completion not granted.",
+  "model_calls": 0,
+  "credential_copies": 0,
+  "candidate_executions": 0,
+  "live_validation": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "command": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-c",
+    "F:/syuc/amadeus-m6-single/pyproject.toml",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:/agentsync-debug/m122-composed-recovery-offline/tmp-final",
+    "--junitxml",
+    "D:/agentsync-debug/m122-composed-recovery-offline/final.xml",
+    "D:/agentsync-debug/m122-composed-recovery-offline/test_recovery.py"
+  ],
+  "guest_preparation": {
+    "native_receipt": "559d72",
+    "exit_code": 0,
+    "model_calls": 0,
+    "credential_copies": 0,
+    "bound_helpers_verified": 10,
+    "binding_native_receipt": "43d807",
+    "guest_transfer_receipt": "d7229d"
+  }
+}

@@ -1,0 +1,314 @@
+{
+  "product_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+  "test_source_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+  "version": "0.3.0a113",
+  "scope": "Explicit owner reconciliation of bound relay usage into project storage; not real-client or billing acceptance",
+  "platforms": {
+    "windows": {
+      "tests": 511,
+      "passed": 510,
+      "skipped": [
+        {
+          "class": "tests.integration.test_verified_proposal_flow",
+          "name": "test_verified_flow_gates_and_reopen[docker-cursor]",
+          "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+        }
+      ],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+      "started_at": "2026-11-13T09:42:39.933604+00:00",
+      "finished_at": "2026-11-13T09:45:13.809339+00:00",
+      "result": "windows-result.json"
+    },
+    "linux": {
+      "tests": 511,
+      "passed": 511,
+      "skipped": [],
+      "failures": 0,
+      "errors": 0,
+      "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+      "started_at": "2026-11-13T09:44:06.264287+00:00",
+      "finished_at": "2026-11-13T09:48:53.792451+00:00",
+      "result": "linux-result.json"
+    }
+  },
+  "selected_test_files": [
+    "tests/integration/test_relay_usage.py",
+    "tests/integration/test_controlled_relay_pipeline.py",
+    "tests/integration/test_relay_owner_status.py",
+    "tests/integration/test_relay_wave_journal.py",
+    "tests/integration/test_codex_proposal_relay_queue.py",
+    "tests/unit/test_usage.py",
+    "tests/unit/test_usage_checkpoint_storage.py",
+    "tests/unit/test_usage_cli.py",
+    "tests/unit/test_relay_execution_budget.py",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-codex]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-claude]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[offline-cursor]",
+    "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen[docker-cursor]",
+    "tests/security/test_m5_permissions.py",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/integration/test_m5_transports.py",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "packaged_git_files_verified": 1033,
+  "runtime_members_verified": 92,
+  "identical_parameterized_case_ids": 511,
+  "source_shadowing": false,
+  "actual_linux_docker_and_owned_cursor_fixture": {
+    "docker": {
+      "backend": "local-linux-docker",
+      "candidate_exit_code": 0,
+      "cases_sha256": "60d8fee64365395bd7e9beb803f1c85480b5d92bd7cc82ad4078620b26cb9036",
+      "cgroup_version": "2",
+      "checked_case_count": 3,
+      "cleanup_confirmed": true,
+      "commit_sha": "1f3e406f0c9ded6b7718442af36c385f8f19219b",
+      "completed_case_count": 3,
+      "container_id": "1b413524b1163595aa2feefdcc24e3e4e2855c990d4f1a0ca1e5c47ec8662d39",
+      "container_state": {
+        "exit_code": 0,
+        "oom_killed": false,
+        "status": "exited"
+      },
+      "docker_server_version": "29.8.2",
+      "elapsed_seconds": 2.526451076999365,
+      "errors": [],
+      "execution_id": "2dd13ea2-253d-4948-9ee2-8793f9cb3689",
+      "execution_started": true,
+      "expected_case_count": 3,
+      "finished_at": "2026-11-13T09:47:18.648170+00:00",
+      "image_sha256": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+      "input_sha256": "f5415ffc95b9dcecba951250d00dd3eea6c064c6cff110e297f277623ce13b84",
+      "isolation": {
+        "checks": {
+          "capabilities": true,
+          "command": true,
+          "entrypoint": true,
+          "environment": true,
+          "groups": true,
+          "healthcheck": true,
+          "image": true,
+          "logs": true,
+          "mounts": true,
+          "namespaces": true,
+          "network": true,
+          "owner": true,
+          "privileged": true,
+          "readonly": true,
+          "resources": true,
+          "security": true,
+          "tmpfs": true,
+          "user": true,
+          "workdir": true
+        },
+        "expected_removal_marker_count": 3,
+        "expected_runtime_environment_count": 4,
+        "memory_bytes": 134217728,
+        "nano_cpus": 1000000000,
+        "pids": 32,
+        "seccomp": "builtin",
+        "stderr_limit": 65536,
+        "stdout_limit": 65536,
+        "swap_total_bytes": 134217728,
+        "timeout_seconds": 5,
+        "tmpfs_bytes": 8388608
+      },
+      "kernel": "6.18.54-0-virt",
+      "passed_case_count": 3,
+      "platform": "Linux",
+      "profile_id": "python-json-lines-v1",
+      "profile_sha256": "9d662e19d8db568964ae6fe634dc7ac5b72f3676a5ed6c61d537927deb9f0a9c",
+      "provenance": "docker_black_box",
+      "source_sha256": "a14a3e43266604d4e2f6edd84649b0d34e7e8dd9df5e345c3b6936614d07e5c6",
+      "started_at": "2026-11-13T09:47:16.121737+00:00",
+      "status": "passed",
+      "stderr_bytes": 0,
+      "stdout_bytes": 25,
+      "stdout_sha256": "4bdb8b649df7eb5f441465cad3f3a99edf2e14c6766aabcf0529eb7c585d1428",
+      "tree_sha": "17626eef0974cdf5f15cf2f04d899a204251b541",
+      "verifier_source_sha256": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+      "verifier_version": 1
+    },
+    "review": {
+      "client": "cursor",
+      "status": "dependent_review_received",
+      "exit_code": 0,
+      "parent_ended": true,
+      "task_verification": "unverified",
+      "context_sha256": "03515770aef36aa4344f499605ca3adca56b8044b9c9b09e890f618e904f71fe",
+      "initial_receiver_authorities": 1,
+      "total_receiver_launches_including_reopen": 1
+    }
+  },
+  "docker_cleanup": {
+    "timestamp": "2026-11-13T09:49:15.039055+00:00",
+    "docker_host": "unix:///var/run/docker.sock",
+    "trusted_cli": "/usr/bin/docker",
+    "container_count": 0,
+    "all_containers_absent": true,
+    "scope": "Read-only postcheck of dedicated local test daemon after the affected95244e2 receipt usage installed-sdist suite"
+  },
+  "static_checks": {
+    "scope": "Source checks, not repeated installed static checks",
+    "ruff": "pass",
+    "format": {
+      "status": "pass",
+      "selected_files": 218
+    },
+    "mypy": {
+      "status": "pass",
+      "source_files": 91
+    }
+  },
+  "source_prechecks": {
+    "frozen_product_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+    "raw_before_after_equal": true,
+    "members_compared": 223,
+    "exact_byte_matches": 216,
+    "git_lf_normalization_only": [
+      "docs/acceptance/requirements.json",
+      "tests/integration/test_controlled_relay_pipeline.py",
+      "tests/integration/test_m3_transports.py",
+      "tests/integration/test_m4_transports.py",
+      "tests/integration/test_m4b_transports.py",
+      "tests/integration/test_m5_transports.py",
+      "tests/unit/test_acceptance_traceability.py"
+    ],
+    "source_final": {
+      "tests": 80,
+      "passed": 80,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "source_initial": {
+      "tests": 76,
+      "passed": 72,
+      "failure": 4,
+      "error": 0,
+      "skipped": 0
+    },
+    "separate_traceability_collector": {
+      "tests": 246,
+      "passed": 246,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "scope": "Windows working-tree source checks; fresh frozen installed runs recorded separately",
+    "initial_failure": "Four newly added test assertions shadowed the source Path with a provenance string; corrected. Original raw reports retained locally.",
+    "initial_static_failure": "Three mypy exception-variable-reuse diagnostics corrected; initial log retained locally.",
+    "review_fix": "Require Core capture witness before classifying timed_out; negative and owned proposal/reviewer sync cases pass.",
+    "helper_correction": "Initial helper expected only two changed-file CRLF normalizations and failed its list assertion. Actual comparison found seven, including five unchanged baseline files; all seven differ from Git only by CRLF to LF. No product/test rerun or edit was made for this correction."
+  },
+  "limitations": [
+    "18 selected test files/nodes, not a full-suite run",
+    "Owned protocol emitters are not real models; Claude/Cursor live compatibility remains NOT RUN",
+    "Docker-Cursor case uses a verified source checkpoint then resumes a fixture reviewer",
+    "Token counts are client-reported, elapsed time local, costs and unavailable values remain unknown",
+    "Caller and receipt subtotals remain separate to avoid double counting; no billing or quota verification",
+    "Legacy two-leg binding is weaker and explicitly labeled; unbound old single/proposal receipts are unsupported"
+  ],
+  "model_calls": 0,
+  "paid_api_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "external_work_acceptance": "NOT RUN",
+  "raw_execution_sources": {
+    "build-receipt-usage-package.py.txt": {
+      "original_execution_name": "build-receipt-usage-package.py",
+      "sha256": "ac655c0c93d980a3dc1b00082fb615daab6e5959ca71d8013993df3cb1328e19"
+    },
+    "check-source-prechecks.py.txt": {
+      "original_execution_name": "check-source-prechecks.py",
+      "sha256": "eddde9668d8606ea640ff253a6df0aa48c6b61cc45e3fd408812f3aa16aae220"
+    },
+    "driver.py.txt": {
+      "original_execution_name": "driver.py",
+      "sha256": "df03720dc7645e557daa870cd8b9f28268aaa1832e7da36eaeccbe0cc5fb01f8"
+    },
+    "observe-docker-cleanup.sh.txt": {
+      "original_execution_name": "observe-docker-cleanup.sh",
+      "sha256": "3535f9ee08a7a5eee9a4bca2792afe8a9fee830b0289b7363749aadcd6a04e15"
+    },
+    "run-linux.sh.txt": {
+      "original_execution_name": "run-linux.sh",
+      "sha256": "005ac306bbac11c78c6af0a47d22fe41d648952ac3931caa19ad273c69e12ce3"
+    },
+    "run-windows.py.txt": {
+      "original_execution_name": "run-windows.py",
+      "sha256": "59f8473187f554f3f3a26713c94d886b0f574cd4909156f6b8e3ee925b547fef"
+    }
+  },
+  "artifacts": {
+    "build-receipt-usage-package.py.txt": "ac655c0c93d980a3dc1b00082fb615daab6e5959ca71d8013993df3cb1328e19",
+    "build.log": "2d17770f528c01caedeb6c8fc8cca61f82927b034eb6f132b05545f841f21735",
+    "check-source-prechecks.py.txt": "eddde9668d8606ea640ff253a6df0aa48c6b61cc45e3fd408812f3aa16aae220",
+    "driver.py.txt": "df03720dc7645e557daa870cd8b9f28268aaa1832e7da36eaeccbe0cc5fb01f8",
+    "identity.json": "bdf932a281661ae829a9cdfb7f12a9e3480f3b9a23599d3f17fc5babf84cc2bb",
+    "linux-console.log": "038dbca08fe1fef1b1d78b3d9894af66261d24a206bbb7d33f8e23780faf618f",
+    "linux-docker-cleanup-observation.json": "89a5784986e4ca21fa8e22bbe7339aace923cdb723395d30616f41cacf1020a8",
+    "linux-docker-cursor-review.json": "81a1dfa1c05071c158b26a7b011f818f7d0a0ce8fa6bf6372b1c9065c0193d45",
+    "linux-install.log": "7a48835d842eb3dc2fc30f0f390ceff9dbfe764635432b68c10505f7e6226d85",
+    "linux-junit.xml": "9eda927170dcfc80463999de51e5c38b7011a6077cf1a5ba8a9f67a6129553bf",
+    "linux-origin.json": "09ab8e16e78ac1fe3f4843a0ed1d2643f94ced318ea8d8cb7d0d12b530cc8b41",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-pytest.log": "395253b3c718cb52d2c681ccdb663f8018d576cee6a6a7f7a4574d541cb8c07f",
+    "linux-pytest.process.json": "c5e90f7ba8b88d18bbaa829bdbeea5319f9d84d82c1a6f21ed27d9c3385308f7",
+    "linux-result.json": "72eb548ff1832d7038fe10a4e92bcd454155c50942a89945c66aaab090013fdc",
+    "mypy-final.log": "50f151f5f4eb760b0a5a0cccc3ff40bf78db8b0090e81eb0574ccb3bc7ac07af",
+    "observe-docker-cleanup.sh.txt": "3535f9ee08a7a5eee9a4bca2792afe8a9fee830b0289b7363749aadcd6a04e15",
+    "root-trace.log": "11e88e172ddfdeec9c52e569dd73c52c197def8d8284517ac462b9ee261f37dc",
+    "root-trace.xml": "a0b71dc8ab3e24df385b74f3c5d8cae576e51273dd325d473af87d5d117cd1d2",
+    "ruff-final.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "ruff-format-final.log": "5e729b74297805fa55354191cd9651e15b144e0bdff6f449898a964fa3ef0736",
+    "run-linux.sh.txt": "005ac306bbac11c78c6af0a47d22fe41d648952ac3931caa19ad273c69e12ce3",
+    "run-windows.py.txt": "59f8473187f554f3f3a26713c94d886b0f574cd4909156f6b8e3ee925b547fef",
+    "source-final-after.json": "51f54a9031f920d01e94df0a80c4be227eb47c9e446238fa9bec01079b5f42e4",
+    "source-final-before.json": "51f54a9031f920d01e94df0a80c4be227eb47c9e446238fa9bec01079b5f42e4",
+    "source-final-junit.xml": "2e06572081b15fd2fd2d395cf9b3cc5e2fbf7861aa8c825d3b5b30ef387b4ff1",
+    "source-final-result.json": "9d16be571f656fd9a2273185e83e667ef5282862b8686387cfc6d9b5175a2864",
+    "source-final.log": "96407c3d5ffb00d7179f80747f27a4e695f4efac0263a55e835e965703ddaa2a",
+    "source-prechecks-identity.json": "3585e826f446248ca3d070ea7e399023b7833d3dccf19f6002d4ac839a0accab",
+    "static-final-result.json": "7d216fef3e8857ca73df9ca3fe7a311353f846b0fae1195645331a1ad0247c60",
+    "windows-console.log": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "windows-install.log": "4f6133d9ded6bb60f04f6175fa52cc1fee1992246f04f71eb0e058ccfa21b4bb",
+    "windows-junit.xml": "aa72b341812a65dbc9114718c55e98ef088af8f9bb3b818f3016d6f3a27b9f61",
+    "windows-origin.json": "ed8ee7255df3e29dda0a377b995a23f234e66a5741abc3e756dadfcc4953ebec",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-pytest.log": "aa32269cf3b92ac58401456189007244772098b97f7df6db06e808140952f0bd",
+    "windows-pytest.process.json": "bf30b3d903243de71cd00a7e9ed2077434ba3692aa8bb75ad6160cdb10d94c45",
+    "windows-result.json": "7539071a82d7bc39b2f22ccb7ddf49f97af15f8a83364755be8779f02fcf7fd8"
+  },
+  "packages": {
+    "releases/0.3.0a113/95244e2/agentsync_local-0.3.0a113-py3-none-any.whl": {
+      "sha256": "91fea5ac8f3effa7851bd15b4cbb9158681f648ee9a239425ec1f2a685908d69",
+      "size": 291489
+    },
+    "releases/0.3.0a113/95244e2/agentsync_local-0.3.0a113.tar.gz": {
+      "sha256": "fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be",
+      "size": 2470403
+    }
+  },
+  "independent_technical_review": {
+    "reviewer": "Native Astra review agent",
+    "status": "accepted_limited_scope",
+    "product_sha": "95244e2aa8daaf7ec59aba4661bd0d72fdb16e1f",
+    "checked": [
+      "38 evidence hashes and both packages",
+      "1033 packaged Git files and 92 runtime files",
+      "511 matching unique case IDs and terminal logs",
+      "installed archive and before-after identity/source checks",
+      "223 source members: 216 raw matches and seven CRLF to LF only",
+      "actual Docker 3/3 and 19 isolation checks, owned reviewer remains unverified",
+      "frozen test executes producer/reviewer usage sync, queries, idempotent reopen and no extra launches",
+      "zero containers and credential exposure inspection"
+    ],
+    "blockers": [],
+    "formal_release": "BLOCKED",
+    "external_work_acceptance": "NOT RUN"
+  }
+}

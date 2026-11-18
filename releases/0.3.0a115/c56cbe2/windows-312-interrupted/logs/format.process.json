@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "format",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "."
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-candidate\\s",
+    "started_at": "2026-11-13T14:08:29.690273+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "format",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-m",
+      "ruff",
+      "format",
+      "--check",
+      "."
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-candidate\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-13T14:08:29.690273+00:00",
+    "finished_at": "2026-11-13T14:08:29.838315+00:00",
+    "log": "logs/format.log",
+    "log_sha256": "887cf4080dec287c93aef6bdf5545f6315a9422b50bbed39ad255bd01aa6a0a8",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

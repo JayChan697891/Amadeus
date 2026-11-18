@@ -1,0 +1,66 @@
+{
+  "scope": "Frozen a122 Windows3.14.6 sdist full preparation only; pytest NOT RUN",
+  "status": "INSTALL_READY_DRIVER_BASELINE_UNBOUND",
+  "product_test_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_files": 3992,
+  "runtime_members": 97,
+  "driver": "D:\\agentsync-debug\\w122314d\\run-sdist.py",
+  "driver_sha256": "2a2c756664e01432e43f1b0feffe140385b84f9430e3b69dc67e4a0398643db5",
+  "parent_driver": "D:\\agentsync-debug\\m122win311-sdist-preparation\\run-sdist.py",
+  "parent_driver_sha256": "822187baefef30f1f324cdcaf2e208adc5cf9ff48be1ef8cc713995e45b01684",
+  "snapshot_sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6",
+  "manifest_sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78",
+  "members_sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+  "wheel_sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+  "sdist_sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f",
+  "python": "3.14.6",
+  "offline_wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\release-scratch\\.scratch-oxrs8db4\\offline-wheels",
+  "full_timeout_seconds": 7200,
+  "full_pytest": "NOT RUN",
+  "automatic_retry": false,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "install": "D:\\agentsync-debug\\m122win314\\d",
+  "argv": [
+    "D:\\agentsync-debug\\m122win314\\d\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\w122314d\\run-sdist.py"
+  ],
+  "setup_native": {
+    "initial_chunk": "82868c",
+    "session": 17932,
+    "terminal_chunk": "d882a9",
+    "exit_code": 0,
+    "checks": 6
+  },
+  "setup_result_sha256": "1da283c0f1bcfa0a3341c6d891f3d8c1f2e606460cc9aed878fd0eb32ed32ea1",
+  "setup_driver_sha256": "d252f044506a6dfd92dbf8cf55ef4789d04eb8c442f88c9700b89d8422636aae",
+  "origin": {
+    "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+    "version": "0.3.0a122",
+    "origin": "D:\\agentsync-debug\\m122win314\\d\\Lib\\site-packages\\agentsync\\__init__.py",
+    "runtime_members": 97,
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f",
+        "hashes": {
+          "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+        }
+      },
+      "url": "file:///D:/agentsync-debug/m122p/dist/agentsync_local-0.3.0a122.tar.gz"
+    }
+  },
+  "baseline": "D:\\agentsync-debug\\w122314\\run\\wheel-junit.xml",
+  "baseline_binding": "Explicit(None,None) and main refuses before any write; Root binds actual3.14 wheel size/hash only after the future Windows3.14 wheel native session reaches its observed terminal and is reviewed; that session has not started",
+  "driver_delta": "Only independent short paths, exact3.14.6 guards, verified3.14.6 base/offlinewheelhouse and scope; original source7checks or sdist3checks retained. SDIST baseline remains future314 wheel only/unbound.",
+  "existing_311_runs_or_prepared_roots_modified": false,
+  "metadata_initial_error": {
+    "native_chunk": "07e3d0",
+    "exit_code": 1,
+    "scope": "Inline metadata generator syntax error before any execution/write; setup not rerun"
+  },
+  "old_base_runtime_files_unchanged": 85,
+  "inputs_unchanged": true
+}

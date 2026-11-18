@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-15T12:32:50.872527+00:00",
+  "scope": "Graceful shutdown of the completed dedicated local Linux test VM only",
+  "preconditions": {
+    "boot_id": "65e8ae33-6fbc-4703-9c68-fb2bf3d7e125",
+    "other_python_or_codex": false,
+    "containers_remaining": false,
+    "benchmark_scratch_empty": true,
+    "temporary_live_auth_absent_and_unmounted": true
+  },
+  "original_vm_pid": 6440,
+  "original_vm_creation_utc": "2026-11-15T07:49:40.818882Z",
+  "disks_and_files": "Preserved",
+  "command": "/sbin/poweroff",
+  "host_exit_verification": "PENDING"
+}

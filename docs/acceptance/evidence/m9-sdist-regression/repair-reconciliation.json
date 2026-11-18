@@ -1,0 +1,655 @@
+{
+  "schema": "amadeus.full-plus-affected-rerun.v1",
+  "scope": "Retained c262 full results plus 9fb36a1 affected-file reruns, not a new full run",
+  "original_full_source_sha": "c262a29602fdaf3be3ee322dff997a3a1e2c629f",
+  "repair_source_sha": "9fb36a10a18755be116cc2564a42450c453a9524",
+  "runtime_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "original_sdist_sha256": "6e78b871c978a179b4edb48d09b928c5088ed5f44584694b9d3c3f1a99397965",
+  "repair_sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "git_matched_repair_files": 887,
+  "runtime_members_unchanged": 90,
+  "changed_files": [
+    "README.md",
+    "README.zh-CN.md",
+    "docs/COMPATIBILITY.md",
+    "docs/M6-ADAPTERS.md",
+    "docs/PROGRESS.md",
+    "docs/acceptance/CLIENT-MATRIX.md",
+    "docs/acceptance/INSTALLATION-REPORT.md",
+    "docs/acceptance/PACKAGE-INSTALLATION.md",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "unchanged_dependency_inputs": true,
+  "platforms": {
+    "windows": {
+      "original_full_run": {
+        "passed": 2275,
+        "skipped": 55,
+        "failure": 4
+      },
+      "delta_run": {
+        "passed": 246
+      },
+      "combined_results": {
+        "passed": 2279,
+        "skipped": 55
+      },
+      "original_full_run_remains_failed": true,
+      "full_suite_rerun_on_new_sha": false,
+      "collection_matches_original_all_2334_cases": true,
+      "collection_fixture_id_redactions": 12,
+      "unchanged_cases_reused": 2088,
+      "superseded_failure_ids": [
+        [
+          "tests.unit.test_acceptance_traceability",
+          "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims"
+        ],
+        [
+          "tests.unit.test_release_acceptance",
+          "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[junit.xml]"
+        ],
+        [
+          "tests.unit.test_release_acceptance",
+          "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[sdist-junit.xml]"
+        ],
+        [
+          "tests.unit.test_release_acceptance",
+          "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[wheel-junit.xml]"
+        ]
+      ]
+    },
+    "linux": {
+      "original_full_run": {
+        "passed": 2324,
+        "skipped": 6,
+        "failure": 4
+      },
+      "delta_run": {
+        "passed": 246
+      },
+      "combined_results": {
+        "passed": 2328,
+        "skipped": 6
+      },
+      "original_full_run_remains_failed": true,
+      "full_suite_rerun_on_new_sha": false,
+      "collection_matches_original_all_2334_cases": true,
+      "collection_fixture_id_redactions": 12,
+      "unchanged_cases_reused": 2088,
+      "superseded_failure_ids": [
+        [
+          "tests.unit.test_acceptance_traceability",
+          "test_planning_foundations_remain_partial_without_real_relay_or_execution_claims"
+        ],
+        [
+          "tests.unit.test_release_acceptance",
+          "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[junit.xml]"
+        ],
+        [
+          "tests.unit.test_release_acceptance",
+          "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[sdist-junit.xml]"
+        ],
+        [
+          "tests.unit.test_release_acceptance",
+          "test_all_planning_component_observations_leave_relay_unverified_and_release_blocked[wheel-junit.xml]"
+        ]
+      ]
+    }
+  },
+  "skips": [
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_candidate_execution",
+        "test_actual_linux_docker_executes_candidate_not_base"
+      ],
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_candidate_execution",
+        "test_actual_linux_docker_wrong_result_fails_and_stays_fenced"
+      ],
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_candidate_execution",
+        "test_actual_linux_docker_timeout_is_unresolved_and_never_retried"
+      ],
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_candidate_execution",
+        "test_actual_linux_docker_cancel_after_running_keeps_correct_result_unverified"
+      ],
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_candidate_execution",
+        "test_actual_linux_docker_crash_after_created_reopens_and_cleans_exact_id"
+      ],
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_candidate_export_security",
+        "test_nonregular_bare_config_is_rejected_without_reading_it"
+      ],
+      "reason": "POSIX FIFO metadata fixture requires Linux",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_checks_all_external_cases"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_rejects_self_reported_or_incomplete_success[early-exit]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_rejects_self_reported_or_incomplete_success[forged-junit]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_rejects_self_reported_or_incomplete_success[wrong-result]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_rejects_self_reported_or_incomplete_success[bool-not-int]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_rejects_self_reported_or_incomplete_success[extra-output]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_isolation_controls"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_enforces_wall_time"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_enforces_output_bounds[stdout]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_enforces_output_bounds[stderr]"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_enforces_memory_bound"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_enforces_scratch_bound"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_enforces_pid_bound"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_docker_verifier",
+        "test_actual_docker_kernel_cgroup_limits"
+      ],
+      "reason": "Real Linux Docker/image not configured; policy tests are a separate tier",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_execution_reconciliation",
+        "test_actual_hard_exit_then_explicit_cleanup_never_restores_success[created]"
+      ],
+      "reason": "Actual reconciliation requires an explicitly configured local Linux image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_execution_reconciliation",
+        "test_actual_hard_exit_then_explicit_cleanup_never_restores_success[running]"
+      ],
+      "reason": "Actual reconciliation requires an explicitly configured local Linux image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_execution_reconciliation",
+        "test_actual_initial_absence_is_not_claimed_as_proven_cleanup"
+      ],
+      "reason": "Actual reconciliation requires an explicitly configured local Linux image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_execution_reconciliation",
+        "test_actual_renamed_container_is_protected_from_cleanup"
+      ],
+      "reason": "Actual reconciliation requires an explicitly configured local Linux image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_execution_reconciliation",
+        "test_actual_lost_create_ack_is_never_reconciled_by_name[lost_ack]"
+      ],
+      "reason": "Actual reconciliation requires an explicitly configured local Linux image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_executes_fixed_snapshot_and_persists_independent_result"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_rejects_candidate_self_report[early-exit]"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_rejects_candidate_self_report[forged-junit]"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_rejects_candidate_self_report[wrong-result]"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_enforces_wall_time[owner_case0]"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_cancel_after_create_prevents_start"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_owner_execution",
+        "test_actual_owner_expired_lease_cannot_accept_passing_backend"
+      ],
+      "reason": "Actual owner execution requires an explicitly configured local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_proposal_docker_pipeline",
+        "test_same_core_proposal_to_independent_docker_acceptance[verified]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_proposal_docker_pipeline",
+        "test_same_core_proposal_to_independent_docker_acceptance[wrong-result]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[verified]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[wrong-result]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[reopen]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[host-exit-pre-dispatch]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[host-exit-dispatch-intent]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[deny-staging]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[deny-execution]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[deny-completion]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[budget-staging]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_proposal_flow",
+        "test_verified_flow_gates_and_reopen[budget-resume]"
+      ],
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.integration.test_verified_task_completion",
+        "test_actual_linux_docker_to_independent_verified_completion"
+      ],
+      "reason": "Requires separately controlled local Linux Docker and preloaded immutable image",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.security.test_resource_paths",
+        "test_explicit_project_symlink_root_is_canonicalized"
+      ],
+      "reason": "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m9-sdist-c262a29\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\m9-sdist-c262a29\\\\test-tmp\\\\test_explicit_project_symlink_0\\\\selected'",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.security.test_resource_paths",
+        "test_symlink_and_nonexistent_target_through_link_are_denied"
+      ],
+      "reason": "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\m9-sdist-c262a29\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\m9-sdist-c262a29\\\\test-tmp\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_core_admission",
+        "test_inherited_core_fork_resets_gate_and_registry_mutex_held_by_parent"
+      ],
+      "reason": "Requires Linux/POSIX fork",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_cursor_node_bundle",
+        "test_bundle_rejects_actual_links[False]"
+      ],
+      "reason": "This host cannot create the actual symlink fixture",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_cursor_node_bundle",
+        "test_bundle_rejects_actual_links[True]"
+      ],
+      "reason": "This host cannot create the actual symlink fixture",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_inspect_claude_events",
+        "test_fifo_input_is_rejected_without_waiting_for_a_writer"
+      ],
+      "reason": "FIFO fixture requires os.mkfifo",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_pytest_case_journal",
+        "test_output_path_guards_preserve_existing_objects[symlink]"
+      ],
+      "reason": "Local symlink creation unavailable",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_pytest_case_journal",
+        "test_output_path_guards_preserve_existing_objects[parent-symlink]"
+      ],
+      "reason": "Local symlink creation unavailable",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_pytest_case_journal",
+        "test_existing_fifo_is_rejected_without_opening_or_replacing_it"
+      ],
+      "reason": "Local FIFO creation unavailable",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "windows",
+      "case": [
+        "tests.unit.test_verification_snapshot",
+        "test_replaced_objects_directory_link_is_rejected_before_git_runs"
+      ],
+      "reason": "Creating directory symlinks requires unavailable host privileges",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "linux",
+      "case": [
+        "tests.integration.test_candidate_execution",
+        "test_unavailable_isolation_is_unsupported_without_host_execution"
+      ],
+      "reason": "Actual Linux backend belongs to the separately controlled Docker fixture",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "linux",
+      "case": [
+        "tests.integration.test_m4b_workspaces",
+        "test_managed_git_creates_private_ref_beyond_win32_path_limit"
+      ],
+      "reason": "Git for Windows path-length regression",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "linux",
+      "case": [
+        "tests.security.test_file_locks",
+        "test_windows_case_and_separator_aliases_conflict"
+      ],
+      "reason": "Windows conflict keys case-fold",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "linux",
+      "case": [
+        "tests.security.test_resource_paths",
+        "test_new_ancestor_junction_rejects_even_identical_physical_root"
+      ],
+      "reason": "Windows junction-specific ancestor boundary",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "linux",
+      "case": [
+        "tests.security.test_resource_paths",
+        "test_junction_is_denied"
+      ],
+      "reason": "Windows junction-specific boundary",
+      "other_platform_pass": true
+    },
+    {
+      "platform": "linux",
+      "case": [
+        "tests.unit.test_codex_invocation",
+        "test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit"
+      ],
+      "reason": "The opt-in MXC plan requires native Windows",
+      "other_platform_pass": true
+    }
+  ],
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "independent_review": "pending"
+}

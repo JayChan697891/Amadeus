@@ -1,0 +1,51 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/sdist-ht1i5ee5/bin/python",
+      "-I",
+      "-m",
+      "pytest",
+      "/root/amadeus-m115-r3/s/tests",
+      "--junitxml",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/sdist-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/sdist-pytest"
+    ],
+    "cwd": "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259",
+    "started_at": "2026-11-14T09:47:18.014783+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/sdist-ht1i5ee5/bin/python",
+      "-I",
+      "-m",
+      "pytest",
+      "/root/amadeus-m115-r3/s/tests",
+      "--junitxml",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/sdist-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/sdist-pytest"
+    ],
+    "cwd": "/root/amadeus-m115-r3/linux-311/reports/release-20261114T090902Z-3aa847474259",
+    "exit_code": 0,
+    "started_at": "2026-11-14T09:47:18.014783+00:00",
+    "finished_at": "2026-11-14T10:05:55.003286+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "14066837a2237abf0638f087b2a271fb5e73fba80d15f21f4d765ba501382cdc",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

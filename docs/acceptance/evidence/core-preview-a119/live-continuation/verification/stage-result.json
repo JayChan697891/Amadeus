@@ -1,0 +1,11 @@
+{
+  "state": "staged",
+  "plan_sha256": "0978f868ab2f4f48dc3ff3621648d96b9449c8bcfd8e57a8fe51388af4ca4a5b",
+  "task_id": "682bd522-afd0-483b-938a-282f008b701a",
+  "worktree_id": "75b4c890-1443-5e44-91e4-89a95e1512ea",
+  "head_sha": "5c38586c162d9e08f82eafdb1c233699c471fb41",
+  "candidate_id": "429ad313-c250-566d-8245-147868d3cdeb",
+  "candidate_sha": "fdef09686a39a5d2f93a22c1da4326e6c1bb6595",
+  "verification": "unverified",
+  "execution_started": false
+}

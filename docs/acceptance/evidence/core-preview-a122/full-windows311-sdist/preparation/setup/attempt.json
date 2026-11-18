@@ -1,0 +1,38 @@
+{
+  "started_at": "2026-11-18T03:18:15.732055+00:00",
+  "controller_pid": 12076,
+  "python": "3.11.15 (main, Apr 14 2026, 14:31:26) [MSC v.1944 64 bit (AMD64)]",
+  "base_interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-venv\\Scripts\\python.exe",
+  "old_environment_scope": "a109 base interpreter only, not current acceptance evidence",
+  "fresh_install": "D:\\agentsync-debug\\m122win311\\d",
+  "version": "0.3.0a122",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_files": 3992,
+  "runtime_members": 97,
+  "driver_sha256": "822187baefef30f1f324cdcaf2e208adc5cf9ff48be1ef8cc713995e45b01684",
+  "setup_sha256": "6ad854c62d5a653e5a3077b64fba4caa14b8a823eb9531611ba91216edfc6a6e",
+  "inputs": {
+    "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122.tar.gz": {
+      "bytes": 6735308,
+      "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\source-manifest.json": {
+      "bytes": 762297,
+      "sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"
+    },
+    "D:\\agentsync-debug\\m122p\\source.zip": {
+      "bytes": 18232229,
+      "sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"
+    }
+  },
+  "offline_wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-wheelhouse",
+  "full_pytest": "NOT RUN",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

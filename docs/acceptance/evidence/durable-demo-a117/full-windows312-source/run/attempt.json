@@ -1,0 +1,17 @@
+{
+  "scope": "Windows 3.12, one full a117 editable-source suite with platform skips",
+  "editable_source": "D:\\agentsync-debug\\m117ws\\s",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "fixture_snapshot_sha256": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+  "driver_sha256": "0b87ce5080087d91ce1d018f45685472b752b8cbdc3fd85b70d82cec1662770c",
+  "controller_pid": 23376,
+  "controller_python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "model_calls": 0,
+  "started_at": "2026-11-16T08:47:52.446971+00:00",
+  "status": "unknown",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": []
+}

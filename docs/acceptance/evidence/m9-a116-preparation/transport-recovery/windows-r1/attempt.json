@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-11-15T10:49:56.591107+00:00",
+  "source_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "wheel_sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+  "driver_sha256": "bf776aa60bb7a1c87284120530a731cd9980a1adc154cd276b63aa5bb28639f7",
+  "automatic_retry": false,
+  "scope": "Independent Windows correctness fixtures; no benchmark or original-queue change"
+}

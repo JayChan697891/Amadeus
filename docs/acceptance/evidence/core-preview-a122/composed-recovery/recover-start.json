@@ -1,0 +1,14 @@
+{
+  "stage": "recover",
+  "started_at": "2026-11-17T07:15:33.851889+00:00",
+  "observer_pid": 3132,
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/live.py recover",
+  "automatic_retry": false,
+  "remote_exec_requested": false,
+  "log_bytes": {
+    "stdout": 0,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "observing"
+}

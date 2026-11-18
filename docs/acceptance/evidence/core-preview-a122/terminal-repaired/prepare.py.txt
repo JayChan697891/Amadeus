@@ -1,0 +1,221 @@
+"""Prepare the repaired terminal trial once; run outside its new project root."""
+
+import hashlib
+import importlib.metadata
+import json
+import os
+import stat
+import subprocess
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+import agentsync
+
+ROOT = Path("/root/amadeus-terminal-repaired-a122-20261118")
+INSTALL = Path("/root/amadeus-m122l/w")
+SCRIPT = Path(__file__).resolve()
+INPUT = SCRIPT.parent
+EXE = Path("/root/amadeus-codex-linux-0167/bin/codex")
+BINARY_SHA = "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0"
+IMAGE = "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+SOURCE_SHA = "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44"
+SOURCE_COMMIT = "7085ec084b4d1213936b35d3f5c923b290ff6f90"
+RUNTIME_COMMIT = "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+FILES = {
+    "verified_codex_task.py": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "candidate-source.json": "3467118a6014942484422ccbca740eff02ef82caf702fe40e08f0a96ec8d045f",
+}
+CASES = [{"input": [2, 3], "expected": 5}, {"input": [-4, 1], "expected": -3}]
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def main():
+    assert sys.platform == "linux" and os.geteuid() == 0 and sys.version_info[:3] == (3, 14, 7)
+    assert sys.flags.isolated and sys.dont_write_bytecode and __debug__
+    assert Path(sys.prefix) == INSTALL and Path(sys.executable) == INSTALL / "bin/python"
+    assert not SCRIPT.is_relative_to(ROOT) and not os.path.lexists(ROOT)
+    os.umask(0o077)
+    for name, expected in FILES.items():
+        path = INPUT / name
+        assert path.resolve(strict=True) == path and stat.S_ISREG(path.lstat().st_mode)
+        assert sha(path) == expected
+    assert sha(EXE) == BINARY_SHA
+    expected = json.loads((INPUT / "runtime-members.json").read_bytes())
+    site = INSTALL / "lib/python3.14/site-packages"
+    assert Path(agentsync.__file__).resolve() == site / "agentsync/__init__.py"
+    assert importlib.metadata.version("agentsync-local") == agentsync.__version__ == "0.3.0a122"
+    actual = {
+        path.relative_to(site).as_posix(): sha(path)
+        for path in (site / "agentsync").rglob("*")
+        if path.is_file() and "__pycache__" not in path.parts
+    }
+    assert all((site / name).resolve(strict=True) == site / name for name in actual)
+    assert len(actual) == 97 and actual == expected
+    candidate = json.loads((INPUT / "candidate-source.json").read_bytes())
+    assert set(candidate) == {"path", "content"} and candidate["path"] == "solution.py"
+    source = candidate["content"].encode("utf-8")
+    assert len(source) == 149 and hashlib.sha256(source).hexdigest() == SOURCE_SHA
+    save(
+        INPUT / "prepare-entry.json",
+        {
+            "created_at": datetime.now(UTC).isoformat(),
+            "script_sha256": sha(SCRIPT),
+            "new_root": str(ROOT),
+            "input_sha256": FILES,
+            "automatic_retry": False,
+            "model_calls": 0,
+            "auth_copies": 0,
+            "candidate_executions": 0,
+        },
+    )
+    home = INPUT / "preflight-home"
+    home.mkdir(mode=0o700)
+    environment = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": str(home),
+        "CODEX_HOME": str(home),
+        "LANG": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONNOUSERSITE": "1",
+        "DOCKER_HOST": "unix:///var/run/docker.sock",
+        "DOCKER_CONFIG": str(home / ".docker"),
+    }
+    version = subprocess.run(
+        [str(EXE), "--version"],
+        env=environment,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    ).stdout.strip()
+    assert version == "codex-cli 0.167.0-alpha.3.2"
+    inspected = subprocess.run(
+        ["/usr/bin/docker", "image", "inspect", IMAGE],
+        env=environment,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    (image,) = json.loads(inspected.stdout)
+    assert image["Id"] == IMAGE
+    command = [sys.executable, "-I", "-B", str(INPUT / "initialize_terminal_project.py"), str(ROOT)]
+    initialized = subprocess.run(
+        command, env=environment, capture_output=True, timeout=90, check=False
+    )
+    save(INPUT / "initializer-exit.json", {"command": command, "exit_code": initialized.returncode})
+    assert initialized.returncode == 0 and not initialized.stderr
+    project = json.loads(initialized.stdout)
+    assert set(project) == {"project_id", "root", "private_owner_file"}
+    assert project["root"] == str(ROOT) and project["private_owner_file"] == str(
+        ROOT / "private-owner.json"
+    )
+    credential = (ROOT / "private-owner.json").lstat()
+    assert stat.S_ISREG(credential.st_mode) and credential.st_uid == 0
+    assert stat.S_IMODE(credential.st_mode) == 0o600
+    assert (ROOT / "repo/.git").is_dir() and (ROOT / "core/agentsync.db").is_file()
+    for name in FILES:
+        with (ROOT / name).open("xb") as stream:
+            stream.write((INPUT / name).read_bytes())
+        assert sha(ROOT / name) == FILES[name]
+    (ROOT / "private-home").mkdir(mode=0o700)
+    task = (
+        "Return solution.py with exactly these UTF-8 source bytes, including the final newline. "
+        "Do not improve, reformat or execute it.\n\n" + candidate["content"]
+    )
+    assert len(task.encode("utf-8")) <= 1000
+    with (ROOT / "task.txt").open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(task)
+    save(ROOT / "cases.json", CASES)
+    argv = [
+        sys.executable,
+        "-I",
+        "-B",
+        str(ROOT / "verified_codex_task.py"),
+        "--root",
+        str(ROOT),
+        "--project-id",
+        project["project_id"],
+        "--task",
+        str(ROOT / "task.txt"),
+        "--cases",
+        str(ROOT / "cases.json"),
+        "--codex",
+        str(EXE),
+        "--codex-sha256",
+        BINARY_SHA,
+        "--codex-version",
+        "0.167.0-alpha.3.2",
+        "--codex-home",
+        str(ROOT / "private-home"),
+        "--image-id",
+        IMAGE,
+    ]
+    assert (
+        not os.path.lexists(ROOT / "private-home/auth.json")
+        and not (ROOT / "terminal-run").exists()
+    )
+    ready = {
+        "created_at": datetime.now(UTC).isoformat(),
+        "fixture": str(ROOT),
+        "project_id": project["project_id"],
+        "private_owner_file": project["private_owner_file"],
+        "command": argv,
+        "example_commit": SOURCE_COMMIT,
+        "initializer_commit": SOURCE_COMMIT,
+        "example_sha256": FILES["verified_codex_task.py"],
+        "runtime_commit": RUNTIME_COMMIT,
+        "installed_members": len(actual),
+        "binary_sha256": BINARY_SHA,
+        "cli_version": version,
+        "image_id": IMAGE,
+        "candidate_sha256": SOURCE_SHA,
+        "candidate_bytes": len(source),
+        "cases": CASES,
+        "files_sha256": {name: sha(ROOT / name) for name in (*FILES, "task.txt", "cases.json")},
+        "prepare_sha256": sha(SCRIPT),
+        "initializer_result": project,
+        "max_model_calls": 2,
+        "max_candidate_executions": 1,
+        "retry_allowed": False,
+        "model_calls": 0,
+        "auth_copied": False,
+        "candidate_executions": 0,
+        "fresh_authorization_required": True,
+        "candidate_execution_authorized": False,
+        "formal_release": "BLOCKED",
+    }
+    save(ROOT / "ready.json", ready)
+    print(json.dumps(ready))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        print(
+            json.dumps(
+                {
+                    "status": "preparation_failed",
+                    "error_type": type(error).__name__,
+                    "automatic_retry": False,
+                }
+            ),
+            file=sys.stderr,
+        )
+        raise SystemExit(1) from None

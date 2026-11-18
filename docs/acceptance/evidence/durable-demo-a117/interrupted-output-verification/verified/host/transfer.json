@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "path": "start.json",
+      "bytes": 178,
+      "sha256": "4b68c366a5d0f0397dd05e794d3570923a7ddf77f3e2b89b3cf1d05744c03c13"
+    },
+    {
+      "path": "result.json",
+      "bytes": 1008,
+      "sha256": "a6b06c3b9080ec51e441a5f85bab4c9a348d7fe6753b4250172133af91b4b6d6"
+    },
+    {
+      "path": "proposal.json",
+      "bytes": 76,
+      "sha256": "20e2fa257bad58a968bfa708f3952f5cd2326925c39f8ecfa970a64815512653"
+    },
+    {
+      "path": "origin.json",
+      "bytes": 1655,
+      "sha256": "a823068c3d9211ee6eaca0fcc29b6a181ee99f521d19a71e618d44a4aaebeafc"
+    },
+    {
+      "path": "command.json",
+      "bytes": 739,
+      "sha256": "a6028dc6e137ea64866f8b024a2986bba5a66ff688e8927c42a08428e73687ab"
+    },
+    {
+      "path": "pilot-stdout.log",
+      "bytes": 133,
+      "sha256": "38c9fcb83a75d16232a3d300d03ce01501e8da1afd0c9f9c5da2a9cf605c4296"
+    },
+    {
+      "path": "pilot-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fixture/prepared.json",
+      "bytes": 4076,
+      "sha256": "892eb37391cb6eebe31aa00c1bef2ff8f68544e2bdae6bf548e35da509dca5ae"
+    },
+    {
+      "path": "fixture/execution.json",
+      "bytes": 3692,
+      "sha256": "62661a85a638973a2898873f2204708e526dc61d5d83c1bbe4f0a3c528800626"
+    },
+    {
+      "path": "fixture/completion.json",
+      "bytes": 1884,
+      "sha256": "b44ac3ef359b3dfe1ab30a7d81ad1564275dc8c8ab42e62ae922355e25496cc6"
+    },
+    {
+      "path": "fixture/summary.json",
+      "bytes": 4238,
+      "sha256": "d7e09aa1231fa9b46ab02923497239dcadec4d9720d334e61676823e314775fd"
+    }
+  ]
+}

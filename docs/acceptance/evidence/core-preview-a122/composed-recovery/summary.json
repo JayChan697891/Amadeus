@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "real_handoff_and_persisted_receiver_controller_recovery_observed",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "controller_commit": "ad4e84d513372085f6cdcf518b6f2f56d4aec85b",
+  "requirements": [
+    "M7-02",
+    "M8-02"
+  ],
+  "native_receipts": {
+    "auth_setup": {
+      "chunk": "3ba291",
+      "exit_code": 0
+    },
+    "producer": {
+      "session": 83445,
+      "chunk": "ef4b70",
+      "exit_code": 0
+    },
+    "continuation_preview": {
+      "chunk": "64a6e5",
+      "exit_code": 0
+    },
+    "receiver": {
+      "session": 86423,
+      "chunk": "522067",
+      "native_wrapper_exit_code": 1,
+      "observed_guest_exit_code": 73,
+      "expected_guest_exit_code": 73,
+      "note": "Intentional os._exit(73); native wrapper nonzero preserved, not a normal receiver failure."
+    },
+    "recover": {
+      "chunk": "5c83e1",
+      "exit_code": 0
+    },
+    "replay_and_cleanup": {
+      "chunk": "7de38e",
+      "exit_code": 0
+    },
+    "verification_preview": {
+      "chunk": "c6dd5b",
+      "exit_code": 0
+    },
+    "root_postcheck": {
+      "chunk": "73f468",
+      "exit_code": 0
+    }
+  },
+  "native_provenance": "Receipt identifiers transcribed after execution; original host stage records and logs retained.",
+  "authorization": {
+    "standing_owner_grant": "../../durable-demo-a117/interrupted-controller/owner-grant-20261116.json",
+    "actual_grant_sha256": "ed25331a41f9987cf2d7ee6f2546c2f93339ff43b76cdb4f96cc727045a3eccc",
+    "max_subscription_calls": 2,
+    "actual_calls": 2,
+    "extra_fees_allowed": false,
+    "independent_billing_verified": false,
+    "candidate_execution_authorized": false,
+    "retry": false
+  },
+  "results": {
+    "producer": "Observed turn.started with no terminal event; owned parent stopped, positively failed source.",
+    "receiver": "Distinct real Codex returned complete proposal and exited0 before controller exit73.",
+    "controller_recovery": "Fresh controller used actual CLI reconciliation and actual OwnerContinuation result for the same review/unverified receiver.",
+    "replay": "Zero new model calls or callbacks; original receipts/tasks unchanged.",
+    "root": "Read-only database matches task versions/dependency; runtime97 members unchanged, four local capture hashes checked, original login unchanged and temporary RAM login cleaned.",
+    "independent_candidate_verification": "NOT RUN; concrete source and stage plan await new owner authorization."
+  },
+  "limits": [
+    "Two real same-vendor Codex calls, not cross-vendor proof.",
+    "Host-authored unfinished checkpoint, not interrupted model-authored code.",
+    "Controller process exited after receiver result persisted; not whole-machine power failure or generation resumption.",
+    "Underlying capture parent-only termination/tree-cleanup unverified fields retained.",
+    "Receiver remains review v5/unverified; source failed v5/unverified.",
+    "Candidate not staged, executed or completed; no formal M6/M7/M8/Release pass."
+  ],
+  "private_exclusions": [
+    "state.json",
+    "continuation-private.json",
+    "auth-setup-result.private.json",
+    "private-home",
+    "all raw model capture bytes",
+    "SSH keys and VM seed/disk"
+  ],
+  "formal_release": "BLOCKED",
+  "review": "Root inspected actual files, database, runtime and receipts. Astra independently accepted limited real handoff/persisted-result controller recovery evidence and reviewed the exact candidate plan for submission to the owner; no candidate/Release acceptance."
+}

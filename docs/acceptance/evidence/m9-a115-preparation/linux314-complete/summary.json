@@ -1,0 +1,102 @@
+{
+  "at": "2026-11-14T09:12:59.435254+00:00",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "One complete Linux/Python3.14 local component row; not full matrix or Release acceptance",
+  "report": "releases/0.3.0a115/b6f05f0/linux-314/report.json",
+  "report_sha256": "7a567299da505c86ddccaa6434adf0a1f72a97817cc0ad7d4fbc981565d7537c",
+  "transfer_summary_sha256": "019bec8e85eac33d5ac2b29b36c3ab730c9a31038d41282f2273eb69196a251f",
+  "harvest_helper_sha256": "0f2a533babb011129ca3fd9ab4a505607fbfa1b072c590c60439d90169090b2e",
+  "actual_checks_passed": 26,
+  "suites": {
+    "pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    "wheel_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    "sdist_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    }
+  },
+  "unique_case_ids_per_suite": 2482,
+  "derived_label_changes_per_suite": 6,
+  "originals_preserved": true,
+  "git_source_files_verified": 2083,
+  "installed_archive_sha256": {
+    "wheel": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "sdist": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+  },
+  "report_manifest_artifacts": 72,
+  "transferred_files_verified": 182,
+  "docker_observation_files": 105,
+  "docker_observation_scope": "Separate transfer-manifest-pinned observations, including expected failures and non-started cases. Not 105 successful executions and not all semantically validated by the original 72-artifact report verifier. Fixed local protocol fixtures are not real models.",
+  "raw_xml_uploaded": false,
+  "linux_skips_passing_in_windows311_source": [
+    {
+      "classname": "tests.integration.test_candidate_execution",
+      "name": "test_unavailable_isolation_is_unsupported_without_host_execution",
+      "linux_skip_reason": "Actual Linux backend belongs to the separately controlled Docker fixture",
+      "windows311_source": "pass"
+    },
+    {
+      "classname": "tests.integration.test_m4b_workspaces",
+      "name": "test_managed_git_creates_private_ref_beyond_win32_path_limit",
+      "linux_skip_reason": "Git for Windows path-length regression",
+      "windows311_source": "pass"
+    },
+    {
+      "classname": "tests.security.test_file_locks",
+      "name": "test_windows_case_and_separator_aliases_conflict",
+      "linux_skip_reason": "Windows conflict keys case-fold",
+      "windows311_source": "pass"
+    },
+    {
+      "classname": "tests.security.test_resource_paths",
+      "name": "test_new_ancestor_junction_rejects_even_identical_physical_root",
+      "linux_skip_reason": "Windows junction-specific ancestor boundary",
+      "windows311_source": "pass"
+    },
+    {
+      "classname": "tests.security.test_resource_paths",
+      "name": "test_junction_is_denied",
+      "linux_skip_reason": "Windows junction-specific boundary",
+      "windows311_source": "pass"
+    },
+    {
+      "classname": "tests.unit.test_codex_invocation",
+      "name": "test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit",
+      "linux_skip_reason": "The opt-in MXC plan requires native Windows",
+      "windows311_source": "pass"
+    }
+  ],
+  "windows311_skips_passing_in_linux_source": 56,
+  "windows311_source_summary": "docs/acceptance/evidence/m9-a115-preparation/windows311-source-observation/summary.json",
+  "independent_review": {
+    "source": "native collaboration agent astra_resume_review, read-only final reply",
+    "decision": "No blocking gap for archiving/upload; limited frozen-b6 exact-package Linux/Python3.14 local component verification passed",
+    "limits": [
+      "105 is a file count, including expected negative and non-started cases",
+      "Fixture commit and cursor labels are not real product/client acceptance",
+      "Keep transfer manifest with the separate Docker observations",
+      "macOS, actual cross-vendor clients and independent license/Release decisions remain blocked"
+    ]
+  },
+  "next": {
+    "linux": "linux-311 actual row PID25497 started09:09:02 UTC; source09:09:04 UTC; then linux-312 on verified success",
+    "windows": "windows-311 source2426pass56skip completed09:00:36 UTC; wheel started09:01:08 UTC; then sdist and windows-314",
+    "windows312": "prepared canonical wheel-only component NOT RUN until current Windows queue succeeds"
+  },
+  "matrix_snapshot": "releases/0.3.0a115/b6f05f0/matrix-after-linux314.json",
+  "local_matrix": "incomplete",
+  "remaining_os_python_combinations": 8,
+  "formal_release": "BLOCKED"
+}

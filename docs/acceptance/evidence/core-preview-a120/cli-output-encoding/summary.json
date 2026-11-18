@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "status": "PASS - targeted source repair; formal Release BLOCKED",
+  "source_commit": "b095c5e8a8ac3eed67932543468c7b4ccafe48f1",
+  "previous_commit": "15bc780e1c21960fde0eae53434b4151d463d124",
+  "version": "0.3.0a120 development source; previously archived a120 packages are unchanged",
+  "problem": "Demo with a non-ASCII data directory, or owner recovery with a non-ASCII reason, completed state mutation but failed to print JSON to a CP1252 output stream.",
+  "change": "Only owner/demo output uses ASCII JSON escapes, matching workflow output; JSON-decoded values are unchanged.",
+  "native_chunks": {
+    "origin": "4faf8b",
+    "red": "25f046",
+    "green_start": "73967",
+    "green_terminal": "c78a03",
+    "static": "bfddc5",
+    "root_review": "63a9be"
+  },
+  "before": {
+    "exit_code": 1,
+    "failures": 2,
+    "cause": "UnicodeEncodeError in actual CLI subprocess stdout"
+  },
+  "after": {
+    "exit_code": 0,
+    "passed": 19,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 13.18
+  },
+  "targeted_ruff_and_format": "PASS for the three changed files; not a full static-suite pass",
+  "source_sha256": {
+    "src/agentsync/cli.py": "73b2648b749c69c1eb11a19c2e0f3dd32a4099f9d418461adae1f5bb53064cd3",
+    "tests/integration/test_durable_demo.py": "949b0ead18b5c74a6ecfdc6f54b9b43d53b3e1d9ba3086cf2cd6462a42ecce05",
+    "tests/integration/test_handoff_recovery.py": "5ea791f8968133296a3e4854aae7540abe19803798c762f22f9d6ff539bfaca5"
+  },
+  "root_review": "Actual diff, original stdout/exit codes, JUnit, hashes and parent/isolated-child source origins checked; no test rerun.",
+  "original_records": 12,
+  "original_bytes": 21520,
+  "model_calls": 0,
+  "limits": [
+    "Local simulated coordination and owner metadata recovery, not real-client acceptance.",
+    "The original frozen a120 full suite remains separate and unchanged; this fix has targeted source evidence only.",
+    "No package rebuild, current full-matrix certification or formal release.",
+    "Historical Ruff/format FAIL remains by owner choice; license review and manual fixture credential cleanup remain pending."
+  ]
+}

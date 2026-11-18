@@ -1,0 +1,104 @@
+[
+    {
+        "children": [
+            {
+                "name": "file",
+                "info": {
+                    "children": [
+                    ],
+                    "virtual-size": 17690853376,
+                    "filename": "D:\\agentsync-debug\\vm\\guest.qcow2",
+                    "format": "file",
+                    "actual-size": 17690853376
+                }
+            }
+        ],
+        "backing-filename-format": "qcow2",
+        "virtual-size": 34359738368,
+        "filename": "D:\\agentsync-debug\\vm\\guest.qcow2",
+        "cluster-size": 65536,
+        "format": "qcow2",
+        "actual-size": 17690853376,
+        "format-specific": {
+            "type": "qcow2",
+            "data": {
+                "compat": "1.1",
+                "compression-type": "zlib",
+                "lazy-refcounts": false,
+                "refcount-bits": 16,
+                "corrupt": false,
+                "extended-l2": false
+            }
+        },
+        "full-backing-filename": "D:\\agentsync-debug\\vm\\guest-before-growth-20261112.qcow2",
+        "backing-filename": "D:\\agentsync-debug\\vm\\guest-before-growth-20261112.qcow2",
+        "dirty-flag": false
+    },
+    {
+        "children": [
+            {
+                "name": "file",
+                "info": {
+                    "children": [
+                    ],
+                    "virtual-size": 15670837248,
+                    "filename": "D:\\agentsync-debug\\vm\\guest-before-growth-20261112.qcow2",
+                    "format": "file",
+                    "actual-size": 15670837248
+                }
+            }
+        ],
+        "backing-filename-format": "qcow2",
+        "virtual-size": 17179869184,
+        "filename": "D:\\agentsync-debug\\vm\\guest-before-growth-20261112.qcow2",
+        "cluster-size": 65536,
+        "format": "qcow2",
+        "actual-size": 15670837248,
+        "format-specific": {
+            "type": "qcow2",
+            "data": {
+                "compat": "1.1",
+                "compression-type": "zlib",
+                "lazy-refcounts": false,
+                "refcount-bits": 16,
+                "corrupt": false,
+                "extended-l2": false
+            }
+        },
+        "full-backing-filename": "D:\\agentsync-debug\\downloads\\alpine.qcow2",
+        "backing-filename": "D:\\agentsync-debug\\downloads\\alpine.qcow2",
+        "dirty-flag": false
+    },
+    {
+        "children": [
+            {
+                "name": "file",
+                "info": {
+                    "children": [
+                    ],
+                    "virtual-size": 157220864,
+                    "filename": "D:\\agentsync-debug\\downloads\\alpine.qcow2",
+                    "format": "file",
+                    "actual-size": 157220864
+                }
+            }
+        ],
+        "virtual-size": 463470592,
+        "filename": "D:\\agentsync-debug\\downloads\\alpine.qcow2",
+        "cluster-size": 65536,
+        "format": "qcow2",
+        "actual-size": 157220864,
+        "format-specific": {
+            "type": "qcow2",
+            "data": {
+                "compat": "1.1",
+                "compression-type": "zlib",
+                "lazy-refcounts": false,
+                "refcount-bits": 16,
+                "corrupt": false,
+                "extended-l2": false
+            }
+        },
+        "dirty-flag": false
+    }
+]

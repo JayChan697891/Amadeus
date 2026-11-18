@@ -1,0 +1,18 @@
+{
+  "scope": "Joint seven-file evidence; not one all-pass run or full suite",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "first_attempt": "59aa27 exit1 retained:212pass5skip,1error testcase with2error events",
+  "label_fix": "9c083e exit0:47pass; only parameter IDs changed",
+  "combined_unique_cases": 218,
+  "combined_outcomes": {
+    "pass": 213,
+    "skipped": 5
+  },
+  "new_cases_passed": 32,
+  "test_file_sha256": "f417224f45803ab245b202cbb9725a426acf45fa29fd287eb5415da1d292a799",
+  "runtime_reinstalled_for_fix": false,
+  "raw_output": "D drive only",
+  "independent_review": "PENDING",
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,16 @@
+{
+  "status": "fail",
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "version": "0.3.0a123",
+  "controller_pid": 23640,
+  "started_at": "2026-11-18T06:22:17.628380+00:00",
+  "driver_sha256": "10b3b09734ab987e2684bbdcf3f669d2207443d6aef116829a25421656a0dbf2",
+  "scope": "Offline pure wheel only",
+  "installation": "NOT RUN",
+  "pytest": "NOT RUN",
+  "model_calls": 0,
+  "candidate_execution": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "checks": []
+}

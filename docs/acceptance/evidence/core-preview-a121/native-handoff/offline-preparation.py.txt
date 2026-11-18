@@ -1,0 +1,84 @@
+import ast
+import hashlib
+import inspect
+import json
+import runpy
+from pathlib import Path
+
+repo = Path("F:/syuc/amadeus-m6-single")
+probe = repo / "tests/manual/probe_codex_handoff.py"
+helper = probe.with_name("probe_codex_collaboration.py")
+workspace = Path("D:/agentsync-debug/m121-handoff-preparation")
+binary = Path("C:/Users/JayChan/AppData/Roaming/npm/node_modules/@openai/codex/node_modules/"
+              "@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe")
+raw = probe.read_bytes()
+tree = ast.parse(raw)
+compile(raw, str(probe), "exec")
+subject = runpy.run_path(str(probe))
+existing = runpy.run_path(str(helper))
+assert subject["sha"](helper) == subject["HELPER_SHA"]
+assert subject["sha"](binary) == subject["BINARY_SHA"]
+assert subject["METHODS"] == existing["METHODS"]
+allowed = sorted(subject["METHODS"])
+assert allowed == ["initialize", "initialized", "mcpServer/tool/call", "mcpServerStatus/list", "thread/start"]
+for call, error in ((lambda: existing["NativeHost"].send(None, "turn/start"), ValueError),
+                    (lambda: subject["tool"](None, None, "review_task", {}), AssertionError)):
+    try:
+        call()
+    except error:
+        pass
+    else:
+        raise AssertionError("Forbidden operation reached the process boundary")
+runtime = subject["verify_runtime"]()
+assert 'post = response.get("version")' in inspect.getsource(subject["Core"]._audit_event)
+assert 'if denied is None and operation not in ("submit_handoff", "resolve_handoff"):' in raw.decode()
+tracebacks = [node for node in ast.walk(tree) if isinstance(node, ast.Call) and
+              isinstance(node.func, ast.Attribute) and node.func.attr == "print_exc"]
+assert len(tracebacks) == 2 and all([keyword.arg for keyword in node.keywords] == ["file"] for node in tracebacks)
+
+request = "fixture-handoff-success"
+pin = subject["digest"](request)
+fields = {"actor_id": "fixture-actor", "operation": "resolve_handoff", "outcome": "success",
+          "code": "ok", "target_id": "fixture-handoff", "pre_version": 4, "post_version": None}
+event = {**fields, "event_id": "fixture-event", "request_id_digest": pin,
+         "project_id": "fixture-project", "actor_kind": "agent"}
+owner = {"project_id": "fixture-project"}
+expected = {request: ("B", fields)}
+secret = "synthetic-offline-secret-not-an-account"
+class AuditFixture:
+    def execute_owner(self, operation, payload):
+        assert operation == "list_audit" and payload == {**owner, "limit": 100}
+        return {"events": [event], "has_more": False}
+
+projected, = subject["audit_observations"](AuditFixture(), owner, expected, {secret})
+assert projected == {"request": request, "request_sha256": pin, "event_id": "fixture-event",
+                     "actor": "B", **{key: value for key, value in fields.items() if key != "actor_id"}}
+for invalid in ({"post_version": 5}, {"unexpected_private_field": secret}):
+    event.update(invalid)
+    try:
+        subject["audit_observations"](AuditFixture(), owner, expected, {secret})
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("Unexpected handoff post_version or private data was not rejected")
+    for key in invalid:
+        if key in fields:
+            event[key] = fields[key]
+        else:
+            del event[key]
+assert list(workspace.glob("native-handoff-*")) == []
+result = {
+    "scope": "offline source compile, actual file provenance and synthetic guards only",
+    "status": "PREPARED", "native_probe": "NOT RUN", "model_calls": 0,
+    "probe_sha256": hashlib.sha256(raw).hexdigest(),
+    "helper_sha256": subject["HELPER_SHA"], "binary_sha256": subject["BINARY_SHA"],
+    "rpc_allowlist": allowed, "synthetic_inference_method_denied_before_process_access": True,
+    "synthetic_review_tool_denied_before_process_access": True,
+    "synthetic_handoff_audit_null_post_version_and_secret_rejection": True,
+    "private_traceback_handlers_without_locals": len(tracebacks),
+    "installed_runtime": runtime,
+}
+with (workspace / "offline-check-final.json").open("x", encoding="utf-8", newline="\n") as stream:
+    json.dump(result, stream, indent=2)
+    stream.write("\n")
+print(f"OK: offline only; actual binary/helper/wheel/97 runtime pins; synthetic RPC/audit guards; native NOT RUN; probe SHA256 {result['probe_sha256']}")

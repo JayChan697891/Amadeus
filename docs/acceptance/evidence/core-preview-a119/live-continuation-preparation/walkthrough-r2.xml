@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="12.075" timestamp="2026-11-16T06:20:21.958473-08:00" hostname="DESKTOP-II6VS85"><testcase classname="" name="test_driver_walkthrough[verifiable_codex]" time="10.515"><failure message="AssertionError">D:\agentsync-debug\strategy-demo\interrupted-a119-solution-20261116-offline\test_walkthrough.py:144: in test_driver_walkthrough
+    tool["drive"](live, cleanup, grant, action, live.sha(base / file))
+tools\run_live_solution_verification.py:256: in drive
+    assert job == execution_plan["job"] and job["status"] == "queued"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase></testsuite></testsuites>

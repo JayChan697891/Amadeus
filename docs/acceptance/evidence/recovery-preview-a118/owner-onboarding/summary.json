@@ -1,0 +1,165 @@
+{
+  "recorded_at": "2026-11-16T13:11:19.574129+00:00",
+  "base_commit": "2d11b893c016996a7ee34d5470125beafbe88d87",
+  "scope": "P1 owner CLI existing-state correction and runnable project bootstrap; no new milestone",
+  "source_inputs": [
+    {
+      "path": "src/agentsync/cli.py",
+      "worktree_sha256": "7c2263bf2422d378b73d7926c7184dd7c7b36f0aabbb0dd9fe26b909e27cdbed",
+      "git_blob": "4aeee69cee66c8a6fcd2a2b83273123954b0781a"
+    },
+    {
+      "path": "tests/security/test_m5_owner_cli_inputs.py",
+      "worktree_sha256": "113996812fb4fb64e03cb1745492d2ba548baf74b80c008eaa01edae0e428164",
+      "git_blob": "7eaad4ba933aba3ce5e264b541eae6e8100cd2b2"
+    },
+    {
+      "path": "tests/unit/test_planning_cli.py",
+      "worktree_sha256": "9b55e44e28158234898ab04ed64e5e5880f1db69e19ee0c19b6c6b314a5b9ae2",
+      "git_blob": "ab9f90fbe5c9cbe8326d382bd615bc1a67d5f236"
+    },
+    {
+      "path": "tests/unit/test_usage_cli.py",
+      "worktree_sha256": "ae762fb29ec300853a6341d28d5a430fe2fbaed6e879451c22d5c9f6be286793",
+      "git_blob": "99b2788c1574ab79d6462e9ace770f23281cfb09"
+    },
+    {
+      "path": "examples/persisted_workflow.py",
+      "worktree_sha256": "771673f413c7e4227eeda82c8a3b84abe8b27aa60c02eba2909291ba368fb8ff",
+      "git_blob": "301bf3df0fd3c6b46c7335d1c90df1a3bde4d49a"
+    }
+  ],
+  "owner_cli": {
+    "before": {
+      "tests": "4",
+      "failures": "4",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.672",
+      "timestamp": "2026-11-16T04:56:13.142048-08:00"
+    },
+    "after": {
+      "tests": "27",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "43.896",
+      "timestamp": "2026-11-16T04:57:19.015113-08:00"
+    },
+    "import_origin": "F:\\syuc\\amadeus-m6-single\\src\\agentsync\\cli.py",
+    "native_session": 99072,
+    "terminal_chunk": "8e1367",
+    "exit_code": 0,
+    "note": "Original log/XML/exit files exist. No original structured native command receipt was generated; reproduction.json is an after-run recipe."
+  },
+  "example": {
+    "installed_version": "0.3.0a118",
+    "source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+    "exit_code": 0,
+    "native_chunk": "37d1b1",
+    "run_id": "6574a48d-5293-4951-a4f1-210200216b65",
+    "start_status": "waiting/v6",
+    "resume_status": "completed/v14",
+    "simulation_only": true,
+    "verification": "unverified",
+    "existing_directory_exit": 2,
+    "existing_files_unchanged": 1,
+    "runtime_postcheck": {
+      "members": 97,
+      "matched_original_install_manifest": true,
+      "checked_at": "2026-11-16T13:11:19.602162+00:00",
+      "note": "Post-run comparison only; this example had no separate immediate pre-run runtime snapshot."
+    }
+  },
+  "review": {
+    "root": "Read actual source, failed/passed XML, logs, process receipts; checked exact tested hashes and original installed members.",
+    "independent_astra": "Static owner-path review found no material blocker; did not rerun tests."
+  },
+  "limits": [
+    "Later owner CLI fix is source-only, absent from frozen a118 packages.",
+    "Windows deterministic verifier fixtures do not prove real Docker or model collaboration.",
+    "Example credentials stay parent-memory/stdin; parent restart credential storage is the integrating host responsibility.",
+    "No live model, auth copy, VM, paid API, Actions or new package.",
+    "Same original continuation task completion remains unverified.",
+    "Formal Release BLOCKED; external Work acceptance pending."
+  ],
+  "original_files": [
+    {
+      "path": "owner-cli/red.exit",
+      "bytes": 3,
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04"
+    },
+    {
+      "path": "owner-cli/red.log",
+      "bytes": 6620,
+      "sha256": "a141b82f2598f006f2a114aabaf002254e67bdd1b4a6a9152741e32a1e9a3430"
+    },
+    {
+      "path": "owner-cli/red.xml",
+      "bytes": 7487,
+      "sha256": "da0ee4b9843d6acbdc486ce95f71f611ee0525d3739e62b731464e031a6898ec"
+    },
+    {
+      "path": "owner-cli/green.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "owner-cli/green.log",
+      "bytes": 102,
+      "sha256": "e21fcf7c5e5472bc24775053a2601c6d54c0e342d48c3d93bb546bb212df4803"
+    },
+    {
+      "path": "owner-cli/green.xml",
+      "bytes": 4369,
+      "sha256": "d86fd8effd0a9b4705be510517cce5a384dbb464433ec3107689bed5d12e9854"
+    },
+    {
+      "path": "owner-cli/import.log",
+      "bytes": 48,
+      "sha256": "b92d5b661e842ff1ae823c1a9254e0bb6de58ddaf654abcfb18f3e0a7fb1d005"
+    },
+    {
+      "path": "example/example-process.json",
+      "bytes": 510,
+      "sha256": "76f35b1e51154f4de8cad3dc804360f1d74bd58922cda85a283fec96ffb2f0b7"
+    },
+    {
+      "path": "example/example.stdout.log",
+      "bytes": 494,
+      "sha256": "c24b0a43ebc7819661305345ea47e0d6dd89ab7c58b16ac3f612baecbc353cea"
+    },
+    {
+      "path": "example/example.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "example/existing-process.json",
+      "bytes": 433,
+      "sha256": "328780b8e315eaa98e5ae4275bf83f39a8198ab035e9fdbf01dd93e7b25ffd69"
+    },
+    {
+      "path": "example/existing.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "example/existing.stderr.log",
+      "bytes": 150,
+      "sha256": "3ac07f3fd9be0b566ffd2628a19428fc9b7ec2463a61fef39b1227937fdcd651"
+    },
+    {
+      "path": "example/executed-example.py",
+      "bytes": 4384,
+      "sha256": "771673f413c7e4227eeda82c8a3b84abe8b27aa60c02eba2909291ba368fb8ff"
+    }
+  ],
+  "static_checks": {
+    "native_chunk": "1c86cf",
+    "exit_code": 0,
+    "ruff_check": "passed for five changed Python files",
+    "ruff_format": "five files already formatted",
+    "git_diff_check": "passed for the P1 documentation/source diff"
+  }
+}

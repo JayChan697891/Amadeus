@@ -4,12 +4,15 @@ import argparse
 import asyncio
 import json
 import os
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from agentsync.sdk import AgentSyncClient
+from agentsync.config import resolve_data_dir
+from agentsync.errors import AgentSyncError
+from agentsync.sdk import AgentSyncClient, error_envelope
 
 
 def run_demo(data_dir: str | Path) -> dict[str, Any]:
@@ -128,6 +131,15 @@ def run_demo(data_dir: str | Path) -> dict[str, Any]:
     }
 
 
+def _call_owner(data_dir: str | Path, operation: str, payload: dict[str, Any]) -> dict[str, Any]:
+    try:
+        return AgentSyncClient(data_dir).owner_call(operation, **payload)
+    except sqlite3.Error:
+        return error_envelope(
+            AgentSyncError("storage_error", "The local Core database is unavailable.", 503)
+        )
+
+
 def amadeus_main() -> int:
     return main(prog="amadeus")
 
@@ -190,15 +202,23 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
         "demo", help="Run two mock agents against an explicit local database"
     )
     demo.add_argument("--data-dir", dest="demo_data_dir")
-    demo.add_argument(
+    demo_mode = demo.add_mutually_exclusive_group()
+    demo_mode.add_argument(
         "--workflow",
         action="store_true",
         help="Run a disposable fixed Mock workflow in the existing scratch parent",
+    )
+    demo_mode.add_argument(
+        "--durable",
+        action="store_true",
+        help="Run a recoverable Mock handoff in a new local data directory",
     )
     mock_workflow = commands.add_parser(
         "mock-workflow", help="Run a disposable Mock task graph from bounded stdin JSON"
     )
     mock_workflow.add_argument("--scratch-parent", type=Path, required=True)
+    workflow = commands.add_parser("workflow", help="Operate an owner-only durable Mock workflow")
+    workflow.add_argument("operation", choices=("start", "resume", "status", "cancel"))
     args = parser.parse_args(argv)
     if args.command in {"plan", "plan-retry"}:
         from agentsync.planning_cli import invalid_input
@@ -217,6 +237,40 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
     data_dir = getattr(args, "demo_data_dir", None) or args.data_dir
     if data_dir and not Path(data_dir).is_absolute():
         parser.error("--data-dir must be absolute")
+    if args.command == "workflow":
+        if not data_dir:
+            parser.error("workflow requires an explicit --data-dir")
+        from agentsync.mock_workflow_cli import read_workflow_document
+
+        try:
+            payload = read_workflow_document()
+            if type(payload) is not dict or {"operation", "self"}.intersection(payload):
+                raise ValueError
+        except (ValueError, RecursionError, OverflowError):
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "error": {
+                            "code": "validation_error",
+                            "message": "Expected bounded workflow input.",
+                        },
+                    }
+                )
+            )
+            return 1
+        if not (Path(data_dir) / "agentsync.db").is_file():
+            response = {
+                "ok": False,
+                "error": {
+                    "code": "not_found",
+                    "message": "No project database found in --data-dir. Use the saved project directory.",
+                },
+            }
+        else:
+            response = _call_owner(data_dir, f"{args.operation}_mock_workflow", payload)
+        print(json.dumps(response, ensure_ascii=True, allow_nan=False))
+        return 0 if response["ok"] else 1
     if args.command in {"relay-status", "relay-reconcile"}:
         if not data_dir:
             parser.error(f"{args.command} requires an explicit --data-dir")
@@ -259,19 +313,39 @@ def main(argv: list[str] | None = None, *, prog: str = "agentsync") -> int:
                 )
             )
             return 1
-        response = AgentSyncClient(data_dir).owner_call(args.operation, **payload)
-        print(json.dumps(response, ensure_ascii=False))
+        try:
+            directory = resolve_data_dir(data_dir, create=False)
+            if not (directory / "agentsync.db").is_file():
+                raise AgentSyncError(
+                    "not_found",
+                    "No project database found. Point --data-dir or AGENTSYNC_DATA_DIR to the saved project directory.",
+                    404,
+                )
+        except AgentSyncError as error:
+            response = error_envelope(error)
+        else:
+            response = _call_owner(directory, args.operation, payload)
+        print(json.dumps(response, ensure_ascii=True))
         return 0 if response["ok"] else 1
     elif args.command == "demo":
         if not data_dir:
             parser.error("demo requires --data-dir PATH to avoid modifying default user state")
-        if args.workflow:
+        if args.durable:
+            from agentsync.durable_demo import DurableDemoError, run_durable_demo
+
+            try:
+                result = run_durable_demo(Path(data_dir))
+            except FileExistsError:
+                parser.error("demo --durable requires a new --data-dir")
+            except DurableDemoError as error:
+                parser.exit(1, f"{prog}: {error}\n")
+        elif args.workflow:
             from agentsync.mock_workflow import run_mock_workflow_demo
 
             result = asyncio.run(run_mock_workflow_demo(Path(data_dir)))
         else:
             result = run_demo(data_dir)
-        print(json.dumps(result, ensure_ascii=False))
+        print(json.dumps(result, ensure_ascii=True))
     elif args.command == "mcp":
         from agentsync.integrations.mcp import build_server
 

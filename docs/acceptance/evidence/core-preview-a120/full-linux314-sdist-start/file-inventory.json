@@ -1,0 +1,22 @@
+[
+  {
+    "path": "attempt.json",
+    "bytes": 1558,
+    "sha256": "43f6b50ee246d38a6154f67d66841269ea759534fb232f3e198ab83510ebdc54"
+  },
+  {
+    "path": "pytest-start.json",
+    "bytes": 1364,
+    "sha256": "ebaa4da1d19fa460c05ffd237957fd6c64ab94671181ae35bc55aa57cd08c9ba"
+  },
+  {
+    "path": "logs/sdist_pytest.process.json",
+    "bytes": 782,
+    "sha256": "6d8d01dc14601f66b2216652ee605694b9c7bab9e8abd63ed00d07e25c76b2c6"
+  },
+  {
+    "path": "run-sdist.py.txt",
+    "bytes": 15113,
+    "sha256": "223fc4ab75858e63c20c964c9f2913ef91aa41536811e7d6b3592efe57ea76fb"
+  }
+]

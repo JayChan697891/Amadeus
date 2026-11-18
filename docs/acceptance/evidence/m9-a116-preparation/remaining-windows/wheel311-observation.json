@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-11-15T09:27:41.497790+00:00",
+  "scope": "Windows311 installed wheel component only; full row incomplete",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "report_directory": "D:\\agentsync-debug\\m116\\windows-311\\reports\\release-20261115T074708Z-111842dee306",
+  "counts": {
+    "passed": 2477,
+    "skipped": 56,
+    "failed": 0,
+    "error": 0
+  },
+  "unique_cases": 2533,
+  "identities_outcomes_equal_source_and_windows312_wheel": true,
+  "native_exit_code": 0,
+  "finished_at": "2026-11-15T09:26:10.332008+00:00",
+  "junit_sha256": "a7bd2b0c6d6f3ef4badb7de1606060df75d70c91dff03cafe3b6cb9b2c44e157",
+  "receipt_sha256": "45f7d97b6b51afabb113841cc7d4f22171a1cdd8163646d5bd5dd49235abca6e",
+  "formal_release": "BLOCKED"
+}

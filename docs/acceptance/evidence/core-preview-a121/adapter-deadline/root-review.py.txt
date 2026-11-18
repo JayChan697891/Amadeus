@@ -1,0 +1,89 @@
+"""Inspect the original scoped test receipts and exact source bytes without rerunning tests."""
+
+import hashlib
+import json
+import subprocess
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path("F:/syuc/amadeus-m6-single")
+EVIDENCE = Path("D:/agentsync-debug/m121-host-deadline")
+expected = {
+    "red": (1, 0, 4, 0),
+    "green": (0, 16, 0, 0),
+    "regression": (0, 73, 0, 0),
+    "context-red": (1, 0, 1, 0),
+    "context-green": (4, 0, 0, 1),
+    "context-green-r2": (1, 5, 3, 0),
+    "context-green-final": (0, 3, 0, 0),
+}
+rows = {}
+passing = set()
+for name, (exit_code, passes, failures, errors) in expected.items():
+    actual_exit = int((EVIDENCE / f"{name}.exit").read_text(encoding="utf-8-sig"))
+    assert actual_exit == exit_code
+    cases = list(ET.parse(EVIDENCE / f"{name}.xml").iter("testcase"))
+    failed = [case for case in cases if case.find("failure") is not None]
+    errored = [case for case in cases if case.find("error") is not None]
+    skipped = [case for case in cases if case.find("skipped") is not None]
+    assert len(failed) == failures and len(errored) == errors and not skipped
+    assert len(cases) == passes + failures + errors
+    identities = {(case.get("classname"), case.get("name")) for case in cases}
+    assert len(identities) == len(cases)
+    if name in ("green", "regression", "context-green-r2", "context-green-final"):
+        for case in cases:
+            if case.find("failure") is None and case.find("error") is None:
+                identity = (case.get("classname"), case.get("name"))
+                assert identity not in passing
+                passing.add(identity)
+    rows[name] = {"exit_code": actual_exit, "passed": passes, "failed": failures, "errors": errors}
+
+assert len(passing) == 97
+sha = lambda raw: hashlib.sha256(raw).hexdigest()
+final = json.loads((EVIDENCE / "context-green-final-start.json").read_bytes())
+for path, digest in final["source_sha256"].items():
+    assert sha((ROOT / path).read_bytes()) == digest, path
+for name in ("green", "regression"):
+    for path, digest in json.loads((EVIDENCE / f"{name}-start.json").read_bytes())["source_sha256"].items():
+        assert sha((ROOT / path).read_bytes()) == digest, path
+for name, path in (("red", "src/agentsync/adapters/_host_process.py"),
+                   ("context-red", "src/agentsync/adapters/launch_context.py")):
+    old = subprocess.check_output(["git", "show", "621116c:" + path], cwd=ROOT)
+    assert sha(old) == json.loads((EVIDENCE / f"{name}-start.json").read_bytes())["source_sha256"][path]
+old_test = "tests/unit/test_launch_context_deadline.py"
+assert sha((EVIDENCE / "context-red-test.py.txt").read_bytes()) == json.loads(
+    (EVIDENCE / "context-red-start.json").read_bytes())["source_sha256"][old_test]
+assert int((EVIDENCE / "root-mypy.exit").read_text()) == 0
+assert "Success: no issues found in 96 source files" in (EVIDENCE / "root-mypy.log").read_text()
+origins = [json.loads(line) for line in (EVIDENCE / "context-green-final.log").read_text().splitlines()
+           if line.startswith('{"stage":')]
+assert [row["stage"] for row in origins] == ["before", "after"]
+assert origins[0]["origins"] == origins[1]["origins"]
+assert all(Path(path).resolve().is_relative_to(ROOT / "src") for path in origins[0]["origins"].values())
+site = Path("D:/agentsync-debug/m121p/w/Lib/site-packages")
+members = json.loads(Path("D:/agentsync-debug/m121p/run/runtime-members.json").read_bytes())
+actual = {path.relative_to(site).as_posix(): sha(path.read_bytes())
+          for path in (site / "agentsync").rglob("*")
+          if path.is_file() and "__pycache__" not in path.parts}
+assert actual == members and len(actual) == 97
+result = {
+    "checked_utc": datetime.now(timezone.utc).isoformat(),
+    "scope": "Source deadline repair only; no test or client replay by this read-only review",
+    "batches": rows,
+    "unique_passing_cases": len(passing),
+    "single_full_suite_claimed": False,
+    "current_tested_file_sha256": final["source_sha256"],
+    "source_origins_verified_before_and_after": True,
+    "original_red_product_bytes_match_git_621116c": True,
+    "original_context_red_fixture_reconstruction_hash_matches": True,
+    "mypy_source_files": 96,
+    "installed_a121_members_unchanged": 97,
+    "native_clients_or_models_executed": False,
+    "package_validation": "NOT RUN for this source repair",
+    "formal_release": "BLOCKED",
+}
+with (EVIDENCE / "root-review.json").open("x", encoding="utf-8", newline="\n") as stream:
+    json.dump(result, stream, indent=2)
+    stream.write("\n")
+print(json.dumps({"batches": rows, "unique_passing_cases": len(passing), "mypy": "96 pass", "a121_members_unchanged": 97}))

@@ -1,0 +1,42 @@
+.........F.....                                                          [100%]
+================================== FAILURES ===================================
+__________ test_wait_budget_expires_without_creating_a_receiver_task __________
+
+handoff = (<agentsync.core.service.Core object at 0x000001C6042989F0>, <agentsync.proposal_handoff.ProposalHandoff object at 0x0...ocals>.build_receiver at 0x000001C604298250>, <function handoff.<locals>.complete_producer at 0x000001C604233CC0>, ...)
+
+    async def test_wait_budget_expires_without_creating_a_receiver_task(handoff):
+        core, flow, request, admin, build, _, source, approvals, captures, _ = handoff
+        before = task_ids(core, request)
+        with pytest.raises(TimeoutError):
+>           await flow.run(
+                request,
+                admin_token=[REDACTED],
+                build_receiver=build,
+                source_outcome=source,
+                wait_seconds=10,
+                poll_seconds=0.01,
+                budget=0.05,
+            )
+
+tests\integration\test_proposal_handoff.py:250: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\agentsync\proposal_handoff.py:265: in run
+    return await self._run(
+src\agentsync\proposal_handoff.py:320: in _run
+    self._check(deadline)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+deadline = 2064.7068944000002
+
+    @staticmethod
+    def _check(deadline: float) -> None:
+        if asyncio.get_running_loop().time() >= deadline:
+>           raise AgentSyncError(
+                "relay_execution_limit", "The handoff execution budget expired.", 409
+            )
+E           agentsync.errors.AgentSyncError: The handoff execution budget expired.
+
+src\agentsync\proposal_handoff.py:143: AgentSyncError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_proposal_handoff.py::test_wait_budget_expires_without_creating_a_receiver_task
+1 failed, 14 passed in 45.98s

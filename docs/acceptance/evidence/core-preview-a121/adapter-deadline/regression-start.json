@@ -1,0 +1,40 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m121-host-deadline/regression-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m121-host-deadline/regression.xml",
+    "tests/unit/test_codex_adapter.py",
+    "tests/unit/test_claude_adapter.py",
+    "tests/unit/test_cursor_adapter.py"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T06:00:18.2644995Z",
+  "environment": {
+    "TEMP": "D:/agentsync-debug/m121-host-deadline/regression-scratch",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src",
+    "TMPDIR": "D:/agentsync-debug/m121-host-deadline/regression-scratch",
+    "TMP": "D:/agentsync-debug/m121-host-deadline/regression-scratch",
+    "PYTHONNOUSERSITE": "1"
+  },
+  "source_sha256": {
+    "src/agentsync/adapters/_host_process.py": "76dfd26985a8b77d215be587fb06219b38e893ae2c37c4be30ac657922b60c9e",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b",
+    "tests/unit/test_codex_adapter.py": "fc4c0540b402537c7d0a6a98e61dd31239ea54fe3abd2db9e1663947e7427a32",
+    "tests/unit/test_claude_adapter.py": "0e604ad0460ebc45288458f60695b7084770ac750f87856add9eabf7a0fb7116",
+    "tests/unit/test_cursor_adapter.py": "981181e4155bebc4baf0ee2eaa5cd02118e60eab929c3791b95ddbd3d4f53bad",
+    "src/agentsync/adapters/codex.py": "c76e9f2e178f68253d9306e096fd9d93cfbaf7a46ec0c91788d39f046dbd6d90",
+    "src/agentsync/adapters/claude.py": "3b0eef3fb2183e6a497687172fc0fc52b961832dce9916b64815bc4b912d45d1",
+    "src/agentsync/adapters/cursor.py": "11af290ab5f5a692d14d7a998530c7d6502c46130408b57b5ac5a3375455530b"
+  }
+}

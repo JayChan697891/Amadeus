@@ -1,0 +1,68 @@
+{
+  "observed_at": "2026-11-15T10:58:54.586645+00:00",
+  "scope": "Node A deterministic local engineering demonstration",
+  "status": "SCOPED PASS",
+  "tool_commit": "5b433f4f3864554ac1af399a73db743c56c1e9f7",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "launch_driver_sha256": "3fc42e9ed086229332a3f6e26eafc03a7225c9ee00206c5910b2128a8e07916f",
+  "cases_checked_passed": 8,
+  "isolation_checks_passed": 19,
+  "completion_proof_and_handoff_pins_match": true,
+  "fixed_source_and_git_blob_identity_checked": true,
+  "installed_members_unchanged": 97,
+  "containers_after": [],
+  "reopen_kind": "new_core_same_process",
+  "real_model_calls": 0,
+  "downstream_review": "unverified",
+  "limitations": [
+    "Deterministic Core identities, not real model cooperation",
+    "No actual crash in this demo",
+    "No owner approval bypass or target-repository application",
+    "Not cross-vendor, node B or formal Release acceptance"
+  ],
+  "formal_release": "BLOCKED",
+  "junit_kind": "one report-derived actual command observation, not pytest",
+  "artifacts": [
+    {
+      "path": "prepared.json",
+      "size": 2507,
+      "sha256": "2962fe954ee19a70738b97169cc5466a07fd40c76fcff6cc964b0c281971359c"
+    },
+    {
+      "path": "execution.json",
+      "size": 3691,
+      "sha256": "7d61f655a0c75b1ecd71e269dcbceec640d79663491818f4c35f45dc0938872f"
+    },
+    {
+      "path": "completion.json",
+      "size": 1884,
+      "sha256": "2cf3a2744f4b774f00fc43ea8a5b05fd4a60ac213f7353e922c14bca4afcbafb"
+    },
+    {
+      "path": "summary.json",
+      "size": 3479,
+      "sha256": "14e3e26178ed0cde41a8beb5b510809bb60ef8d63386017d196dd07718c21c21"
+    },
+    {
+      "path": "verified-attempt.json",
+      "size": 756,
+      "sha256": "d35f6b11d5da0da676781e360c287d4aa60a0ba27eb75a90178f87eb53640061"
+    },
+    {
+      "path": "verified-run.json",
+      "size": 342,
+      "sha256": "def0f6715dae726d315376940545422abd5af7c785800e8649e63d4f0ffaeab7"
+    },
+    {
+      "path": "verified-stdout.json",
+      "size": 1021,
+      "sha256": "9cc539cb6c989efa5de9b70124d0ea6d8d71f4940713ee9f1e617629a393358f"
+    },
+    {
+      "path": "verified-stderr.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

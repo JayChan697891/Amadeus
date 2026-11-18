@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-11-12T13:30:21.985157+00:00",
+  "heartbeat_age_seconds": 0.7860901355743408,
+  "session_remaining_seconds": 3599.2139098644257,
+  "online": true,
+  "selection_sha256": "577a3338ccc56c171a63a95f60d07ec4d8dbc23a867755360baa9334dd96d9e5",
+  "plan_sha256": "5934907c6d3b2b76bcb6cd46ec84e1c1feffc90bac74b6f4603a1a9c4ecf1aef",
+  "source_unchanged": true,
+  "model_calls": 0,
+  "credential_copy": false
+}

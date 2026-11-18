@@ -1,0 +1,61 @@
+{
+  "product_sha": "80754db2c8feb01cc046fed487de52fd324c58f2",
+  "scope": "Atomic inert task-bound proposal publication; no generated-code import or execution",
+  "windows_source": {
+    "passed": 241,
+    "failed": 0,
+    "skipped": 0
+  },
+  "traceability": {
+    "passed": 92,
+    "formal_requirement_status": "not_run"
+  },
+  "fresh_offline_windows_wheel": {
+    "passed": 55,
+    "failed": 0,
+    "skipped": 0,
+    "runtime_module_hashes_matched_before_and_after": 85,
+    "pip_check": "PASS"
+  },
+  "ruff": "PASS",
+  "format": "PASS",
+  "mypy_modules_passed": 85,
+  "initial_results": "Preserved initial fixture, collection and traceability failures; no test removed or security rule weakened",
+  "review": "SCOPED ACCEPTED: native Astra reviewed source and safe source/installed evidence for80754db; root inspected actual files and results. Not real model or full M6 acceptance.",
+  "model_calls": 0,
+  "git_actions_used": false,
+  "not_run": [
+    "Linux and macOS for this new delta",
+    "full current-source release matrix",
+    "real generated-code capture via adapter",
+    "owner-authorized proposal import",
+    "generated artifact isolated execution and verified completion"
+  ],
+  "limits": [
+    "Worker path list and source label are not authorization or model provenance",
+    "Historical replay returns old immutable context without renewed lease authority",
+    "No workspace writes, code evaluation, candidate queue or task transition"
+  ],
+  "formal_release": "BLOCKED",
+  "artifact_sha256": {
+    "agentsync_local-0.3.0a109-py3-none-any.whl": "40048dc938f5e6a1b72a7551f75a21d828f60374143a87da212685e778e74c2e",
+    "agentsync_local-0.3.0a109.tar.gz": "b8aadbc6648337b07d21794782b1490978a143f1ce99e780a8adebd2bbcc8790"
+  },
+  "evidence_sha256": {
+    "windows-source.log": "6e6e159fe65dec25c8604795762ffbb2e76b0bde2c9978e9cd405d84fb2dd843",
+    "windows-source.xml": "c28dd429c7e6427917ede237eeb055afa2b2cb5f5e2868a352cf49e595e6f8b2",
+    "traceability.log": "d0f4516ef29ba2587f8f3136fea0c8cfb1a96154b429235890ab655d0f9ab4e1",
+    "traceability.xml": "0cf010bc30e6e628f80fad6f99ba0a966831f5f6eee9248e24c3b32e3771bcf3",
+    "traceability-initial.log": "c521ce7922f0aa933881dd6f3e196849fb20ed318e2873794a722abdab8fda51",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "format.log": "8dfc593b9a063d4dcf136a2ee356b1c37271b11db5188b3a0c0253846b65b1b9",
+    "mypy.log": "a83a70edf408d123cd597d2aef487538650d1d33f5e9a95e4fc05d86733a72ec",
+    "windows-installed.log": "7676f9e87800ce5c7c8d9113ff92007b6a9b8d927d212a80021693e9bf7293eb",
+    "windows-installed.xml": "57b071a4f06dc7e0b10c72a2c9260f709d8b69acf08f63297a1c1cd83ab017b6",
+    "windows-origin.json": "73f5032dbd20df63eb839205508cd551432880e5a12ffc0143419ef4fef36bda",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-installed-initial.log": "6af0a4fb2b808fb1fa0781e4e19b005753b2639eaee59518027a66ef473d32b7",
+    "runtime-manifest.json": "bcc85942cb5a63f6e00dd5caedf9637e705cc236284f69a8329579d3f1683066",
+    "initial-results.json": "4f9048f6f3dd08305861713983b1570d0ea633f3c5b215e9f8f9486735cff0de"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "two_existing_RAT_M8_02_same_protocol_restart_cases",
+  "requirement": "RAT-M8-02",
+  "classification": "REQUIRED",
+  "execution": "NOT RUN",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "driver_sha256": "fb66e4403d23fb6d3be936441efc2be389c000c13cf59a1eef72f34936ab9c12",
+  "gap": "Existing HTTP terminate-to-SDK and MCP concurrency tests do not exercise forced exit followed by a new same-protocol service and exact request replay.",
+  "protocols": [
+    "MCP stdio initialize handshake2025-11-25 as supported by installed mcp2.3.0",
+    "HTTP127.0.0.1 with synthetic local token"
+  ],
+  "assertions": [
+    "Owned handle forcefully exits and old endpoint closes",
+    "Same database and distinct restarted server",
+    "Exact create/claim request replay",
+    "One task, unchanged ID/version/owner after replay",
+    "Authenticated second worker claim denied without mutation",
+    "Original lease continues task to running once",
+    "Installed wheel origin and package member bytes unchanged before/after"
+  ],
+  "review": {
+    "implementation_agent": "transport_recovery (requested gpt-6.1-sol high)",
+    "independent_agent": "astra_license_exit_review",
+    "reviewed_sha256": "46e193f78c1fbd00e0a65da25982ad3e98e004b9236c8867a6eb80c01ba84b87",
+    "finding": "HTTP fixture incorrectly imported dev-only httpx; switched to already installed runtime httpx2 after both reviewers inspected its used interfaces.",
+    "root_validation": "Full file read, Ruff and format pass; AST comparison allows only httpx2 import, UTC alias and import ordering relative to reviewed source.",
+    "runtime_result": "NOT RUN"
+  },
+  "execution_order": "After both current queues, use the exact fresh benchmark installed Python -I -B; benchmark performance success is not required for this independent recovery check. Follow existing Linux-before-owned-VM-shutdown-before-Windows ordering.",
+  "sensitive_artifacts": "Synthetic auth/DB/stdout responses stay private temporary data; public summary omits tokens and raw exceptions. No user workspaces or account state.",
+  "automatic_retry": false,
+  "real_agent_calls": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

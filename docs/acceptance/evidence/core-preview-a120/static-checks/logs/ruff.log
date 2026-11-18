@@ -1,0 +1,329 @@
+E731 Do not assign a `lambda` expression, use a `def`
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\claude\run.py:12:1
+   |
+10 | BINARY=Path('C:/Users/JayChan/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe')
+11 | PROBE=REPO/'tests/manual/probe_claude_host.py'
+12 | sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13 | expected='6f79755757385adb2ac771be782de42990250cf62702249f41509b9c339c6b61'
+14 | assert sha(PROBE)==expected
+   |
+help: Rewrite `sha` as a `def`
+   |
+11 | PROBE=REPO/'tests/manual/probe_claude_host.py'
+   - sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+12 + def sha(p):
+13 +     return hashlib.sha256(p.read_bytes()).hexdigest()
+14 | expected='6f79755757385adb2ac771be782de42990250cf62702249f41509b9c339c6b61'
+   |
+note: This is an unsafe fix and may change runtime behavior
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\claude\run.py:22:57
+   |
+20 | command=[str(PYTHON),'-I','-B',str(PROBE),'--claude-binary',str(BINARY),'--scratch-parent',str(BASE)]
+21 | record={'started_at':datetime.now(UTC).isoformat(),'command':command,'probe_sha256':expected,'runtime_members_before':97,'models_reque…
+22 | with (BASE/'start.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                         ^
+23 | with (BASE/'stdout.log').open('xb') as out,(BASE/'stderr.log').open('xb') as err:
+24 |     child=subprocess.run(command,cwd=BASE,stdout=out,stderr=err,creationflags=subprocess.CREATE_NO_WINDOW)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\claude\run.py:28:60
+   |
+26 | assert sha(PROBE)==expected
+27 | record.update(finished_at=datetime.now(UTC).isoformat(),exit_code=child.returncode,runtime_members_after=97,probe_unchanged=True)
+28 | with (BASE/'terminal.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                            ^
+29 | print(json.dumps(record))
+30 | raise SystemExit(child.returncode)
+   |
+
+E731 Do not assign a `lambda` expression, use a `def`
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\codex-initial\run.py:12:1
+   |
+10 | BINARY=Path('C:/Users/JayChan/AppData/Roaming/npm/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-win…
+11 | PROBE=REPO/'tests/manual/probe_codex_collaboration.py'
+12 | sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13 | expected='72a0c6c8b4532ebb1d9a02ed97aab146fc0ce93f15f249237560b1e4c767ac64'
+14 | assert sha(PROBE)==expected
+   |
+help: Rewrite `sha` as a `def`
+   |
+11 | PROBE=REPO/'tests/manual/probe_codex_collaboration.py'
+   - sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+12 + def sha(p):
+13 +     return hashlib.sha256(p.read_bytes()).hexdigest()
+14 | expected='72a0c6c8b4532ebb1d9a02ed97aab146fc0ce93f15f249237560b1e4c767ac64'
+   |
+note: This is an unsafe fix and may change runtime behavior
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\codex-initial\run.py:22:57
+   |
+20 | command=[str(PYTHON),'-I','-B',str(PROBE),'--codex-binary',str(BINARY),'--scratch-parent',str(BASE)]
+21 | record={'started_at':datetime.now(UTC).isoformat(),'command':command,'probe_sha256':expected,'runtime_members_before':97,'models_reque…
+22 | with (BASE/'start.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                         ^
+23 | with (BASE/'stdout.log').open('xb') as out,(BASE/'stderr.log').open('xb') as err:
+24 |     child=subprocess.run(command,cwd=BASE,stdout=out,stderr=err,creationflags=subprocess.CREATE_NO_WINDOW)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\codex-initial\run.py:28:60
+   |
+26 | assert sha(PROBE)==expected
+27 | record.update(finished_at=datetime.now(UTC).isoformat(),exit_code=child.returncode,runtime_members_after=97,probe_unchanged=True)
+28 | with (BASE/'terminal.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                            ^
+29 | print(json.dumps(record))
+30 | raise SystemExit(child.returncode)
+   |
+
+E731 Do not assign a `lambda` expression, use a `def`
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\codex\run.py:12:1
+   |
+10 | BINARY=Path('C:/Users/JayChan/AppData/Roaming/npm/node_modules/@openai/codex/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-win…
+11 | PROBE=REPO/'tests/manual/probe_codex_collaboration.py'
+12 | sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13 | expected='59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6'
+14 | assert sha(PROBE)==expected
+   |
+help: Rewrite `sha` as a `def`
+   |
+11 | PROBE=REPO/'tests/manual/probe_codex_collaboration.py'
+   - sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+12 + def sha(p):
+13 +     return hashlib.sha256(p.read_bytes()).hexdigest()
+14 | expected='59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6'
+   |
+note: This is an unsafe fix and may change runtime behavior
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\codex\run.py:22:57
+   |
+20 | command=[str(PYTHON),'-I','-B',str(PROBE),'--codex-binary',str(BINARY),'--scratch-parent',str(BASE)]
+21 | record={'started_at':datetime.now(UTC).isoformat(),'command':command,'probe_sha256':expected,'runtime_members_before':97,'models_reque…
+22 | with (BASE/'start.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                         ^
+23 | with (BASE/'stdout.log').open('xb') as out,(BASE/'stderr.log').open('xb') as err:
+24 |     child=subprocess.run(command,cwd=BASE,stdout=out,stderr=err,creationflags=subprocess.CREATE_NO_WINDOW)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\clients\codex\run.py:28:60
+   |
+26 | assert sha(PROBE)==expected
+27 | record.update(finished_at=datetime.now(UTC).isoformat(),exit_code=child.returncode,runtime_members_after=97,probe_unchanged=True)
+28 | with (BASE/'terminal.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                            ^
+29 | print(json.dumps(record))
+30 | raise SystemExit(child.returncode)
+   |
+
+F401 [*] `sys` imported but unused
+ --> docs\acceptance\evidence\recovery-preview-a118\continuation-verification\linux\run.py:7:8
+  |
+5 | import os
+6 | import subprocess
+7 | import sys
+  |        ^^^
+8 | import zipfile
+9 | from datetime import UTC, datetime
+  |
+help: Remove unused import: `sys`
+  |
+6 | import subprocess
+  - import sys
+7 | import zipfile
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> docs\acceptance\evidence\recovery-preview-a118\continuation-verification\windows\run-isolated-host-exit-r2.py:2:1
+   |
+ 2 | / from datetime import UTC, datetime
+ 3 | | from hashlib import sha256
+ 4 | | import json
+ 5 | | import os
+ 6 | | from pathlib import Path
+ 7 | | import stat
+ 8 | | import subprocess
+ 9 | | import sys
+10 | | from xml.etree import ElementTree as ET
+11 | | from zipfile import ZipFile
+   | |___________________________^
+12 |
+13 |   BASE = Path("D:/agentsync-debug/continuation-verified-20261116")
+   |
+help: Organize imports
+   |
+1  |
+   - from datetime import UTC, datetime
+   - from hashlib import sha256
+2  | import json
+3  | import os
+   - from pathlib import Path
+4  | import stat
+5  | import subprocess
+6  | import sys
+7  + from datetime import UTC, datetime
+8  + from hashlib import sha256
+9  + from pathlib import Path
+10 | from xml.etree import ElementTree as ET
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> docs\acceptance\evidence\recovery-preview-a118\continuation-verification\windows\run-isolated-host-exit.py:2:1
+   |
+ 2 | / from datetime import UTC, datetime
+ 3 | | from hashlib import sha256
+ 4 | | import json
+ 5 | | import os
+ 6 | | from pathlib import Path
+ 7 | | import stat
+ 8 | | import subprocess
+ 9 | | import sys
+10 | | from xml.etree import ElementTree as ET
+11 | | from zipfile import ZipFile
+   | |___________________________^
+12 |
+13 |   BASE = Path("D:/agentsync-debug/continuation-verified-20261116")
+   |
+help: Organize imports
+   |
+1  |
+   - from datetime import UTC, datetime
+   - from hashlib import sha256
+2  | import json
+3  | import os
+   - from pathlib import Path
+4  | import stat
+5  | import subprocess
+6  | import sys
+7  + from datetime import UTC, datetime
+8  + from hashlib import sha256
+9  + from pathlib import Path
+10 | from xml.etree import ElementTree as ET
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:1:1
+  |
+1 | / import hashlib
+2 | | import json
+3 | | import shlex
+4 | | from datetime import UTC, datetime
+5 | | from pathlib import Path
+6 | | import paramiko
+  | |_______________^
+7 |
+8 |   base=Path(__file__).resolve().parent
+  |
+help: Organize imports
+  |
+5 | from pathlib import Path
+6 +
+7 | import paramiko
+  |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:19:33
+   |
+17 | }
+18 | assert hashlib.sha256(files['run-preview.py'].read_bytes()).hexdigest()=='dc39e973274bf9f7ddc0e44e4cfb1081b896841a3e409db4a0eb184f8afa…
+19 | vm=Path('D:/agentsync-debug/vm');guest='/root/amadeus-m118l'
+   |                                 ^
+20 | client=paramiko.SSHClient();client.load_host_keys(str(vm/'known_hosts'));client.set_missing_host_key_policy(paramiko.RejectPolicy())
+21 | client.connect('127.0.0.1',port=22222,username='root',key_filename=str(vm/'debug_ed25519'),look_for_keys=False,allow_agent=False,timeo…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:20:28
+   |
+18 | assert hashlib.sha256(files['run-preview.py'].read_bytes()).hexdigest()=='dc39e973274bf9f7ddc0e44e4cfb1081b896841a3e409db4a0eb184f8afa…
+19 | vm=Path('D:/agentsync-debug/vm');guest='/root/amadeus-m118l'
+20 | client=paramiko.SSHClient();client.load_host_keys(str(vm/'known_hosts'));client.set_missing_host_key_policy(paramiko.RejectPolicy())
+   |                            ^
+21 | client.connect('127.0.0.1',port=22222,username='root',key_filename=str(vm/'debug_ed25519'),look_for_keys=False,allow_agent=False,timeo…
+22 | probe='''
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:20:73
+   |
+18 | assert hashlib.sha256(files['run-preview.py'].read_bytes()).hexdigest()=='dc39e973274bf9f7ddc0e44e4cfb1081b896841a3e409db4a0eb184f8afa…
+19 | vm=Path('D:/agentsync-debug/vm');guest='/root/amadeus-m118l'
+20 | client=paramiko.SSHClient();client.load_host_keys(str(vm/'known_hosts'));client.set_missing_host_key_policy(paramiko.RejectPolicy())
+   |                                                                         ^
+21 | client.connect('127.0.0.1',port=22222,username='root',key_filename=str(vm/'debug_ed25519'),look_for_keys=False,allow_agent=False,timeo…
+22 | probe='''
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:41:47
+   |
+39 | try:
+40 |  _,out,err=client.exec_command(shlex.join(['/root/jobs-env/bin/python','-I','-B','-c',probe]),timeout=30)
+41 |  stdout,stderr=out.read(65537),err.read(65537);code=out.channel.recv_exit_status()
+   |                                               ^
+42 |  assert code==0 and not stderr
+43 |  record={'observed_at':datetime.now(UTC).isoformat(),'preflight':json.loads(stdout),'files':[],'model_calls':0,'auth_copies':0,'candid…
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:47:26
+   |
+45 |   sftp.mkdir(guest,mode=0o700)
+46 |   for name,path in files.items():
+47 |    data=path.read_bytes();pin=hashlib.sha256(data).hexdigest()
+   |                          ^
+48 |    with sftp.open(guest+'/'+name,'wx') as f:f.write(data)
+49 |    sftp.chmod(guest+'/'+name,0o600)
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:48:44
+   |
+46 |   for name,path in files.items():
+47 |    data=path.read_bytes();pin=hashlib.sha256(data).hexdigest()
+48 |    with sftp.open(guest+'/'+name,'wx') as f:f.write(data)
+   |                                            ^
+49 |    sftp.chmod(guest+'/'+name,0o600)
+50 |    with sftp.open(guest+'/'+name,'rb') as f:actual=f.read()
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:50:44
+   |
+48 |    with sftp.open(guest+'/'+name,'wx') as f:f.write(data)
+49 |    sftp.chmod(guest+'/'+name,0o600)
+50 |    with sftp.open(guest+'/'+name,'rb') as f:actual=f.read()
+   |                                            ^
+51 |    assert actual==data
+52 |    record['files'].append({'path':name,'bytes':len(data),'sha256':pin})
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:53:59
+   |
+51 |    assert actual==data
+52 |    record['files'].append({'path':name,'bytes':len(data),'sha256':pin})
+53 |  with (base/'staged.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+   |                                                           ^
+54 |  print(json.dumps({'guest':guest,'files':len(files),'preflight':record['preflight']}))
+55 | finally:client.close()
+   |
+
+E701 Multiple statements on one line (colon)
+  --> docs\acceptance\evidence\recovery-preview-a118\linux\stage.py:55:8
+   |
+53 |  with (base/'staged.json').open('x',encoding='utf-8') as f:json.dump(record,f,indent=2)
+54 |  print(json.dumps({'guest':guest,'files':len(files),'preflight':record['preflight']}))
+55 | finally:client.close()
+   |        ^
+
+Found 22 errors.
+[*] 4 fixable with `--fix` (3 unsafe fixes available with `--fix --unsafe-fixes`).

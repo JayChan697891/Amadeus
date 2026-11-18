@@ -1,0 +1,12 @@
+{
+  "started_at": "2026-11-16T06:45:45.803510+00:00",
+  "guest_root": "/root/amadeus-interrupted-controller-checks-20261116T064545668166Z",
+  "input_sha256": {
+    "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+    "test_live.py": "d6007387339779c12a54b07ecf490b9e1309defaa7255f5124be13d404a1a030"
+  },
+  "command": "/root/amadeus-m117l/e/bin/python -I -B -c 'import os,sys,pytest; sys.path.insert(0,'\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064545668166Z'\"'\"'); os.environ.pop(\"PYTEST_ADDOPTS\",None); os.environ.pop(\"PYTEST_PLUGINS\",None); os.environ[\"PYTEST_DISABLE_PLUGIN_AUTOLOAD\"]=\"1\"; raise SystemExit(pytest.main(['\"'\"'-q'\"'\"', '\"'\"'-p'\"'\"', '\"'\"'no:cacheprovider'\"'\"', '\"'\"'-p'\"'\"', '\"'\"'pytest_asyncio.plugin'\"'\"', '\"'\"'-o'\"'\"', '\"'\"'addopts='\"'\"', '\"'\"'--basetemp=/root/amadeus-interrupted-controller-checks-20261116T064545668166Z/scratch'\"'\"', '\"'\"'--junitxml=/root/amadeus-interrupted-controller-checks-20261116T064545668166Z/junit.xml'\"'\"', '\"'\"'/root/amadeus-interrupted-controller-checks-20261116T064545668166Z/test_live.py'\"'\"']))'",
+  "model_calls": 0,
+  "real_model_auth_accessed": false,
+  "boot_id": "ad4636c1-6f52-452a-80f6-4a4585dc729a"
+}

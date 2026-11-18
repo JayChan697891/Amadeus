@@ -1,0 +1,32 @@
+[
+  {
+    "path": "attempt.json",
+    "bytes": 1477,
+    "sha256": "84a57ba6257049115421ab6eeade150f75ee6b2932877ebfc87cc5f823f923da"
+  },
+  {
+    "path": "pytest-start.json",
+    "bytes": 1177,
+    "sha256": "52fc62ba9515d953187383d5e38b9058a3b7a4b037bfea031513acf78b85f3a1"
+  },
+  {
+    "path": "logs/pytest.process.json",
+    "bytes": 758,
+    "sha256": "052c8ac87dcfc39b80eec54ff09b213b3ba9a3d92718d17d6cb02ce9d13edd3f"
+  },
+  {
+    "path": "logs/source_origin_before.log",
+    "bytes": 269,
+    "sha256": "44566428af2f680cefbba62b858ac5824374255afa945a32b783901e27eeb7f0"
+  },
+  {
+    "path": "logs/source_origin_before.process.json",
+    "bytes": 4584,
+    "sha256": "54d453e1eeb3becd8ca8a93abdbc995bd2c5100003cc7c2f7abc13a90f560960"
+  },
+  {
+    "path": "run-source.py.txt",
+    "bytes": 17063,
+    "sha256": "aa2db3bcf69381e2aac556b609cd33c47b85f66c3a82e63b56e7d56a56588bec"
+  }
+]

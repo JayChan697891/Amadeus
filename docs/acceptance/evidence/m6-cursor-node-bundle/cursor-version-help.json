@@ -1,0 +1,30 @@
+{
+  "package_version": "2026.11.11-b912975",
+  "observed_version": "2026.11.11-b912975",
+  "node_sha256": "d702daa815eabbff763c7d3808e235cf031cf2ca70211b56847bc72f51e240e5",
+  "entrypoint_sha256": "27b2c82da852545d63670b7705f363490a4c5335b1284982f6b1c9b5d457e817",
+  "observed": [
+    {
+      "name": "cursor-version",
+      "exit_code": 0,
+      "stdout_bytes": 19,
+      "stderr_bytes": 0
+    },
+    {
+      "name": "cursor-help",
+      "exit_code": 0,
+      "stdout_bytes": 5767,
+      "stderr_bytes": 0
+    }
+  ],
+  "flags": {
+    "--print": true,
+    "--output-format": true,
+    "--mode": true,
+    "--sandbox": true,
+    "--workspace": true
+  },
+  "model_requests": 0,
+  "credentials_copied": false,
+  "host_path_changed": false
+}

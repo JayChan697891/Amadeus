@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-11-15T12:57:31.561946+00:00",
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-demo-a117-sdist-r1/run.py",
+  "driver_sha256": "89c27121aa9b28f5fe23a193c2621955a9456287132db5d45948bb4f7abbd9d4",
+  "automatic_retry": false,
+  "model_calls": 0
+}

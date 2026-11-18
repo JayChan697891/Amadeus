@@ -1,0 +1,40 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "pip_check",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/jobs-env/bin/python",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "started_at": "2026-11-14T08:31:27.526580+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "pip_check",
+    "status": "pass",
+    "command": [
+      "/root/jobs-env/bin/python",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "exit_code": 0,
+    "started_at": "2026-11-14T08:31:27.526580+00:00",
+    "finished_at": "2026-11-14T08:31:27.902477+00:00",
+    "log": "logs/pip_check.log",
+    "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

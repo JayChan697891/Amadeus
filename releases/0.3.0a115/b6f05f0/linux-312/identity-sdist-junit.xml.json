@@ -1,0 +1,59 @@
+{
+  "check_id": "sdist_pytest",
+  "raw_sha256": "ef8897f594c9a56b49feae058ca396859829c9c1e1e8230e4ce00b5b410903cd",
+  "original_sha256": "aeac10c3fd7f19f16b7ce5777d9704d1b2e9ab29967b16693806eb1717a38d30",
+  "derived_sha256": "519727ea727a12b8a92c64f016c03971116be001995ac4be50898630bb926542",
+  "counts": {
+    "tests": 2482,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 6
+  },
+  "case_set_sha256": "00e5bd14c50cc31552a65b077e0c4235dafe9a6b243684499c1137d477df20f9",
+  "mapping": [
+    {
+      "ordinal": 2032,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[test_case[session_token=[REDACTED]]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[session-assignment]",
+      "raw_identity_sha256": "03a4ab9421e7f4595d99015dbc0f107779891f4baf3f9f790cf237c1bd1df770"
+    },
+    {
+      "ordinal": 2033,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[test_case[admin_token=[REDACTED]]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[quoted-admin-assignment]",
+      "raw_identity_sha256": "fa57b848ec9e8425232d146a1cdd7bbdf2976b91aa6e454fd33490841d06a280"
+    },
+    {
+      "ordinal": 2034,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[{\"password\": [REDACTED]}]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[json-password]",
+      "raw_identity_sha256": "4bd91e70f48e7671ca8932fb4dca1d212828dfb3fd9e5b9097f96f08b6231b75"
+    },
+    {
+      "ordinal": 2035,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[Authorization: [REDACTED] [REDACTED]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[bearer-header]",
+      "raw_identity_sha256": "dffd46aafc38aa191c724fd697ce2f6da28e74f4ae097c8863703c8cd39242e7"
+    },
+    {
+      "ordinal": 2036,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[api_key=[REDACTED]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[marker-attached-key]",
+      "raw_identity_sha256": "b279f23d855a04b7328c688437161db4891690b0909dcdabf05ff3b19d9d8eef"
+    },
+    {
+      "ordinal": 2037,
+      "classname": "tests.unit.test_release_acceptance",
+      "original_saved_name": "test_redaction_is_stable_when_evidence_is_processed_again[api_key=[REDACTED]]",
+      "recovered_name": "test_redaction_is_stable_when_evidence_is_processed_again[quoted-marker-attached-key]",
+      "raw_identity_sha256": "7d4110a20cfd2a4185d97afc116730251408f3f45143a3fc37c62d017553a0b6"
+    }
+  ],
+  "scope": "Only six proven parameter labels changed; all other XML nodes preserved",
+  "raw_storage": "Restricted local storage only; never upload"
+}

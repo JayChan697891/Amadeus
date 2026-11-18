@@ -1,0 +1,19 @@
+{
+  "checks": {
+    "auth_regular": true,
+    "auth_size_allowed": true,
+    "auth_and_parent_non_reparse": true,
+    "chatgpt_mode": true,
+    "api_key_absent": true
+  },
+  "guest_ahead_seconds_bounds": [
+    0.38001537322998047,
+    0.4814872741699219
+  ],
+  "round_trip_seconds": 0.1014719009399414,
+  "execute_entry_present": false,
+  "attempt_present": false,
+  "model_calls": 0,
+  "controller_retried": false,
+  "finding": "Guest timestamp can be ahead of host; strict nonnegative wall-clock freshness rejects it."
+}

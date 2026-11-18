@@ -1,0 +1,43 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-sdist-c262a29/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-c262a29/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-sdist-c262a29/source",
+    "started_at": "2026-11-13T06:38:54.533817+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "fail",
+    "command": [
+      "/root/amadeus-sdist-c262a29/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-sdist-c262a29/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-sdist-c262a29/source",
+    "exit_code": 1,
+    "started_at": "2026-11-13T06:38:54.533817+00:00",
+    "finished_at": "2026-11-13T07:16:52.025534+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "31dccd01c20256850722ea245a4c4ff196b90daef836f9af49605e09bdebc660",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

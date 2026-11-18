@@ -1,0 +1,49 @@
+"""Read-only independent observation of the actual pilot and pinned local daemon."""
+from datetime import UTC, datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+BASE=Path('/root/amadeus-linux-live-20261112')
+sys.path.insert(0,str(BASE))
+import pilot
+from agentsync.core.service import Core
+from agentsync.verification.candidate import OwnerCandidateExporter
+from agentsync.verification.docker import _trusted_cli
+
+os.umask(0o077)
+assert sys.argv[1:] in (['pre-completion'],['final'])
+final=sys.argv[1]=='final'
+config=pilot.runtime()
+pilot.clean_required()
+state=pilot.load('state.json')
+assert pilot.intact(state)
+core=Core(BASE/'core')
+task=next(item for item in core.execute('list_tasks',pilot.auth(state))['tasks'] if item['id']==state['task']['id'])
+assert task['status']==('completed' if final else 'review')
+assert task['task_verification']==('verified' if final else 'unverified')
+execution=pilot.load('execution.json')
+result=execution['execution']['result']
+assert execution['execution_assessment']=='passed'
+assert result['passed_case_count']==result['checked_case_count']==result['expected_case_count']==8
+assert len(result['isolation']['checks'])==19 and all(result['isolation']['checks'].values())
+assert result['cleanup_confirmed'] and result['candidate_exit_code']==0
+container_id=result['container_id']
+assert len(container_id)==64 and all(char in '0123456789abcdef' for char in container_id)
+cli=_trusted_cli()
+with tempfile.TemporaryDirectory(prefix='pilot-observe-',dir=BASE) as docker_config:
+    check=subprocess.run([cli,'--host','unix:///var/run/docker.sock','--config',docker_config,'container','ls','--all','--no-trunc','--format','{{.ID}}'],env={'PATH':'/usr/bin:/bin','HOME':docker_config,'LC_ALL':'C'},check=True,capture_output=True,text=True,timeout=15)
+assert container_id not in check.stdout.splitlines()
+staged=pilot.load('staged.json')
+exported=OwnerCandidateExporter(core).export(**state['owner'],candidate_id=staged['candidate_id'],expected_candidate_sha=staged['candidate_sha'])
+source_sha=hashlib.sha256(exported.snapshot.source).hexdigest()
+assert source_sha==result['source_sha256']==pilot.load('proposal-review.json')['files_sha256']['solution.py']
+assert state['reviewer']['session_id'] not in (state['producer']['session_id'],state['stager']['session_id'])
+assert state['reviewer']['agent_id'] not in (state['producer']['agent_id'],state['stager']['agent_id'])
+record={'timestamp':datetime.now(UTC).isoformat(),'observation':'read-only reopened Core and pinned local Docker daemon','product_sha':pilot.PRODUCT,'wheel_sha256':config['wheel_sha256'],'runtime_modules_matched':len(config['module_hashes']),'installed_origin':str(Path(pilot.agentsync.__file__).resolve()),'task':{key:task[key] for key in ('id','status','version','task_verification')},'container_id':container_id,'container_absent':True,'docker_host':'unix:///var/run/docker.sock','docker_cli':cli,'source_sha256':source_sha,'candidate_sha':staged['candidate_sha'],'source_and_producer_unchanged':True,'reviewer_distinct_from_producer_and_stager':True,'reviewer_kind':'host-mediated distinct Core identity, not a second model','auth_cleanup_confirmed':True,'formal_release':'BLOCKED'}
+pilot.save('final-observation.json' if final else 'pre-completion-observation.json',record)
+print(json.dumps(record))

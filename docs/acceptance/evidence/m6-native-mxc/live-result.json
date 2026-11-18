@@ -1,0 +1,60 @@
+{
+  "time_utc": "2026-11-12T05:52:47.479545+00:00",
+  "outcome": null,
+  "error_code": "relay_boundary",
+  "attempts": [
+    {
+      "leg": "first",
+      "state": "terminal_recorded",
+      "client": "codex",
+      "status": "unknown",
+      "exit_code": 0,
+      "timed_out": false,
+      "parent_ended": true,
+      "run_sha256": "2798d8c70438a52f66c5806dace71c918d180e40d484fd6571d8a78e0308b78a",
+      "session_sha256": "9f6e0dd4430abf466001f162ebe1a8aac3c50bed18c431e22760a8c3cef4cbcb",
+      "error_code": "protocol_invalid",
+      "admission": {
+        "state": "both_reservations_recorded",
+        "plan_sha256": "ae6ec471b56b0cd2233ee363350acc8a4da103e721051fdc6fc3c0bba1cf666f",
+        "execution_verified": false
+      },
+      "adapter_elapsed_ms": 31000,
+      "reported_input_tokens": null,
+      "reported_output_tokens": null,
+      "agent_sha256": "a778074a16df84a768d6a16adcdce8bb39f8225227699796bf318459fe971b29",
+      "declared_client_version": "0.167.0-alpha.3.2",
+      "protocol_session_sha256": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    },
+    {
+      "leg": "second",
+      "state": "not_dispatched",
+      "client": null,
+      "status": null,
+      "exit_code": null,
+      "timed_out": null,
+      "parent_ended": null,
+      "run_sha256": null,
+      "session_sha256": null,
+      "error_code": null,
+      "admission": null,
+      "adapter_elapsed_ms": null,
+      "reported_input_tokens": null,
+      "reported_output_tokens": null,
+      "agent_sha256": null,
+      "declared_client_version": null,
+      "protocol_session_sha256": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    }
+  ],
+  "source_fixture_unchanged": true,
+  "execution_worktree_unchanged": true,
+  "runtime_sources_unchanged": true,
+  "formal_release": "BLOCKED",
+  "independent_review": "pending"
+}

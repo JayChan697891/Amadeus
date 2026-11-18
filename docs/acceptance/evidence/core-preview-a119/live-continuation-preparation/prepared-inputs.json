@@ -1,0 +1,9 @@
+{
+  "prepare.py": "c6b3687986495c6ad62f442218bbad622cd7d1d2016cf9cdc1c34ec203b5e602",
+  "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+  "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+  "runtime-members.json": "545b490670bdbb0f73a74fb13dca77cf9b875c38f350d5a1b2f0f4fdb3b829a7",
+  "cleanup.py": "b01658a1dd44cf4f75fbb1dc167ea4b6c3235c650b9acddf770ea67c87e5947f",
+  "verify.py": "9034e515e276cbe5b39e91c58865e6ae5587409785342b557e38f752dda82153",
+  "reference-solution.py.txt": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44"
+}

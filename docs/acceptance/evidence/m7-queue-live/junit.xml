@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites><testsuite name="actual-owner-mediated-queued-proposal" tests="1" failures="0" errors="0" skipped="0"><testcase classname="actual_queued_codex_pipeline" name="one_real_proposal_to_same_core_verified_task" time="34.689"><system-out>Report-derived aggregate from actual single Codex queue dispatch, explicit staging, local Docker8/8 and distinct host-mediated Core completion; not a pytest run.</system-out></testcase></testsuite></testsuites>

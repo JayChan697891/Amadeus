@@ -1,0 +1,8 @@
+{
+  "scope": "After-run documentation-only link correction; no pytest repeated",
+  "path": "F:/syuc/amadeus-m6-single/docs/VERIFIED-TASK-EXAMPLE.md",
+  "before_sha256": "c17546af11b79e6f294b4254cb489ec3e027ad274569c053150b7bb604eb4dc9",
+  "after_sha256": "77b567f556ea6b28247faa559e3463c0697346d15121385867473ba0c389c3d5",
+  "change": "live-checkpoint-observation/summary.json -> live-checkpoint-observation/actual/summary.json",
+  "failure_source_preservation": "Old RED/selection/r2 working trees were not snapshotted. Exact hashes/commands/native logs/XML retained; exact old-source rerun unavailable."
+}

@@ -35,6 +35,8 @@ def git(root, *args):
             "gc.auto=0",
             "-c",
             "maintenance.auto=false",
+            # Match managed Git when hashed refs exceed Windows MAX_PATH.
+            *(["-c", "core.longpaths=true"] if os.name == "nt" else []),
             "-C",
             str(root),
             *args,
@@ -54,6 +56,30 @@ def test_fixture_git_disables_automatic_maintenance_even_with_repository_overrid
     # Query real Git's effective configuration, including the helper's overrides.
     assert git(tmp_path, "config", "--get", "gc.auto") == "0"
     assert git(tmp_path, "config", "--get", "maintenance.auto") == "false"
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows Git long-path fixture")
+def test_fixture_git_reads_long_windows_reference(tmp_path):
+    root = tmp_path / ("r" * max(1, 180 - len(str(tmp_path)) - 1))
+    root.mkdir()
+    git(root, "init", "--initial-branch=fixture-main")
+    git(
+        root,
+        "-c",
+        "user.name=Fixture",
+        "-c",
+        "user.email=fixture@example.invalid",
+        "commit",
+        "--allow-empty",
+        "-m",
+        "fixture base",
+    )
+    commit = git(root, "rev-parse", "HEAD")
+    ref = "refs/agentsync/deliveries/" + "a" * 64
+    assert len(str(root / ".git" / ref)) > 260
+    # Create the long ref explicitly, then exercise the helper's normal reader.
+    git(root, "-c", "core.longpaths=true", "update-ref", ref, commit)
+    assert git(root, "rev-parse", ref) == commit
 
 
 def call(core, actor, operation, **payload):

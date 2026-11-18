@@ -1,0 +1,16 @@
+{
+  "scope": "Complete Ruff/format/mypy supplement only; not a formal candidate matrix row",
+  "source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "tools": {
+    "ruff": "0.17.1",
+    "mypy": "2.4.0"
+  },
+  "started_at": "2026-11-17T02:22:41.350198+00:00",
+  "driver_sha256": "ceae0e9f7c732570e6a4dd132a72a0cc338b777766a484f0a02e582990f8f939",
+  "status": "unknown",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "checks": []
+}

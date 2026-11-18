@@ -1,0 +1,103 @@
+{
+  "scope": "Evidence redaction repair only; not a fresh full product or package run",
+  "cases": 267,
+  "pass": 267,
+  "fail": 0,
+  "skip": 0,
+  "source_hashes": {
+    "tools/release_acceptance.py": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+    "tests/unit/test_release_acceptance.py": "8cfcb47dbf2f95aafcf5a0921b7d1d772ecaab9025682e44d9ea28ee210fbf27"
+  },
+  "source_unchanged": true,
+  "checks": [
+    {
+      "name": "pytest",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/unit/test_release_acceptance.py",
+        "tests/unit/test_acceptance_traceability.py",
+        "tests/unit/test_release_review_evidence.py",
+        "--junitxml",
+        "D:\\agentsync-debug\\m115-redaction-20261113\\junit.xml",
+        "--basetemp",
+        "D:\\agentsync-debug\\m115-redaction-20261113\\pytest",
+        "-o",
+        "cache_dir=D:\\agentsync-debug\\m115-redaction-20261113\\cache"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "ruff",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "ruff",
+        "check",
+        "tools/release_acceptance.py",
+        "tests/unit/test_release_acceptance.py",
+        "--no-cache"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "format",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "tools/release_acceptance.py",
+        "tests/unit/test_release_acceptance.py",
+        "--no-cache"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "prior_source_replay": {
+    "redactions": 0,
+    "input_sha256": "83c240d5791dc5b1ac37f086ecd85e7906caf573c91b97ba5170e10363227862",
+    "output_sha256": "83c240d5791dc5b1ac37f086ecd85e7906caf573c91b97ba5170e10363227862",
+    "bytes_unchanged": true,
+    "case_ids": 2461
+  },
+  "artifacts": [
+    {
+      "path": "format.log",
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898",
+      "size": 27
+    },
+    {
+      "path": "junit.xml",
+      "sha256": "79fe27b0e058d4d4b9e04a4434059c293d5c537d2a0218d40b2def7e50489fbf",
+      "size": 41100
+    },
+    {
+      "path": "pytest.log",
+      "sha256": "faf823d697434cde5299beafe251282918e06e2f376d693f4cb94f380367c7c1",
+      "size": 1099
+    },
+    {
+      "path": "ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "size": 20
+    }
+  ],
+  "git_source_binding": [
+    {
+      "path": "tools/release_acceptance.py",
+      "binding": "byte_exact",
+      "git_blob_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd"
+    },
+    {
+      "path": "tests/unit/test_release_acceptance.py",
+      "binding": "byte_exact",
+      "git_blob_sha256": "8cfcb47dbf2f95aafcf5a0921b7d1d772ecaab9025682e44d9ea28ee210fbf27"
+    }
+  ]
+}

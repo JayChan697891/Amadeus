@@ -1,0 +1,1 @@
+{"original_status": "NOT_VERIFIED", "checkpoint_observed": true, "exact_byte_match": false, "source_actual_bytes": 150, "extra_byte_decimal": 10, "matched_prefix_bytes": 667, "seconds_progress_to_terminal_receipt": 16.85989260673523, "archive_sha256": "aeaec066ef0f0b215989f1ef605e2e84a2282d4cdd028dfb590fdaed1c031960", "model_calls_added": 0, "auth_absent": true}

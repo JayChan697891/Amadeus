@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="15" time="45.942" timestamp="2026-11-12T19:23:45.950596-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_proposal_handoff" name="test_handoff_waits_for_independent_completion" time="3.683" /><testcase classname="tests.integration.test_proposal_handoff" name="test_wait_checkpoint_has_no_downstream_task_or_secrets" time="2.072" /><testcase classname="tests.integration.test_proposal_handoff" name="test_saved_reference_survives_original_producer_expiry" time="3.587" /><testcase classname="tests.integration.test_proposal_handoff" name="test_uncached_expired_producer_is_not_impersonated" time="2.061" /><testcase classname="tests.integration.test_proposal_handoff" name="test_reopen_after_committed_preparation_is_idempotent[create_task]" time="3.721" /><testcase classname="tests.integration.test_proposal_handoff" name="test_reopen_after_committed_preparation_is_idempotent[create_worktree]" time="3.885" /><testcase classname="tests.integration.test_proposal_handoff" name="test_concurrent_and_repeated_triggers_launch_only_once" time="4.342" /><testcase classname="tests.integration.test_proposal_handoff" name="test_receiver_session_change_cannot_create_a_second_chain[False]" time="2.263" /><testcase classname="tests.integration.test_proposal_handoff" name="test_receiver_session_change_cannot_create_a_second_chain[True]" time="2.310" /><testcase classname="tests.integration.test_proposal_handoff" name="test_wait_budget_expires_without_creating_a_receiver_task" time="2.270"><failure message="agentsync.errors.AgentSyncError: The handoff execution budget expired.">handoff = (&lt;agentsync.core.service.Core object at 0x000001C6042989F0&gt;, &lt;agentsync.proposal_handoff.ProposalHandoff object at 0x0...ocals&gt;.build_receiver at 0x000001C604298250&gt;, &lt;function handoff.&lt;locals&gt;.complete_producer at 0x000001C604233CC0&gt;, ...)
+
+    async def test_wait_budget_expires_without_creating_a_receiver_task(handoff):
+        core, flow, request, admin, build, _, source, approvals, captures, _ = handoff
+        before = task_ids(core, request)
+        with pytest.raises(TimeoutError):
+&gt;           await flow.run(
+                request,
+                admin_token=[REDACTED],
+                build_receiver=build,
+                source_outcome=source,
+                wait_seconds=10,
+                poll_seconds=0.01,
+                budget=0.05,
+            )
+
+tests\integration\test_proposal_handoff.py:250: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\agentsync\proposal_handoff.py:265: in run
+    return await self._run(
+src\agentsync\proposal_handoff.py:320: in _run
+    self._check(deadline)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+deadline = 2064.7068944000002
+
+    @staticmethod
+    def _check(deadline: float) -&gt; None:
+        if asyncio.get_running_loop().time() &gt;= deadline:
+&gt;           raise AgentSyncError(
+                "relay_execution_limit", "The handoff execution budget expired.", 409
+            )
+E           agentsync.errors.AgentSyncError: The handoff execution budget expired.
+
+src\agentsync\proposal_handoff.py:143: AgentSyncError</failure></testcase><testcase classname="tests.integration.test_proposal_handoff" name="test_long_legal_paths_keep_bounded_configuration_and_bind_reentry" time="2.181" /><testcase classname="tests.integration.test_proposal_handoff" name="test_dispatch_intent_without_wave_never_retries" time="2.878" /><testcase classname="tests.integration.test_proposal_handoff" name="test_exact_launch_authority_denial_stays_fenced" time="3.240" /><testcase classname="tests.integration.test_proposal_handoff" name="test_cancellation_after_receiver_start_is_not_retry_permission" time="3.407" /><testcase classname="tests.integration.test_proposal_handoff" name="test_missing_source_proof_cannot_launch_receiver" time="2.997" /></testsuite></testsuites>

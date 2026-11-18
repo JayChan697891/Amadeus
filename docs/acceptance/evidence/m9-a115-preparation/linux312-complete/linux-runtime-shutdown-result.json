@@ -1,0 +1,33 @@
+{
+  "at": "2026-11-14T11:10:00.7049524Z",
+  "linux_vm_gracefully_exited": true,
+  "readonly_nbd_helper_stopped": true,
+  "original_vm_pid": 8600,
+  "original_nbd_pid": 2876,
+  "nbd_native_creation_utc": "2026-11-14T07:57:04.3691151Z",
+  "nbd_cim_creation_utc": "2026-11-14T07:57:04.3691150Z",
+  "initial_cleanup_guard": "Stopped before NBD termination because CIM omits the final native100ns tick; exact native handle time, executable path and full command line then rechecked",
+  "windows_processes": [
+    {
+      "ProcessId": 14600,
+      "ParentProcessId": 22764,
+      "CreationDate": "2026-11-14T00:12:22.850068-08:00",
+      "Name": "python.exe"
+    },
+    {
+      "ProcessId": 22928,
+      "ParentProcessId": 3652,
+      "CreationDate": "2026-11-14T02:38:36.225161-08:00",
+      "Name": "python.exe"
+    },
+    {
+      "ProcessId": 23732,
+      "ParentProcessId": 15288,
+      "CreationDate": "2026-11-14T02:38:38.853891-08:00",
+      "Name": "python.exe"
+    }
+  ],
+  "files_and_disks": "Preserved",
+  "scope": "Dedicated Linux debug runtime cleanup after all planned Linux checks",
+  "formal_release": "BLOCKED"
+}

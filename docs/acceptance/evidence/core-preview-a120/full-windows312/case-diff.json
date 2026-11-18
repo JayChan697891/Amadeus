@@ -1,0 +1,184 @@
+{
+  "baseline_cases": 2545,
+  "current_cases": 2587,
+  "removed": [],
+  "changed_outcomes": [],
+  "added_cases": {
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-cancel]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-resume]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-start]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[empty-dir-status]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-cancel]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-resume]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-start]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_requires_saved_database[missing-dir-status]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_durable_mock_workflow::test_durable_cli_status_reports_corrupt_database": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses0-connected-2]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses1-mcp_startup_timeout-2]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses2-mcp_not_connected-1]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses3-tool_discovery_error-1]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_host_report::test_native_mcp_polls_only_starting[statuses4-mcp_status_unavailable-1]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_declines_insecure_input[echo-warning]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_declines_insecure_input[redirected]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_passes_credentials_only_to_stdin_and_does_not_retry": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_relay_owner_status::test_recover_example_reads_real_owner_status": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[foreign_request-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[marker-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[mode-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[publisher-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[selection-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[terminal_launch-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[unknown_source-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[unknown_wave-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continuation_staging_rechecks_approved_binding[version-verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_proposal_without_solution_is_review_only": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]": {
+      "status": "skipped",
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    },
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-synthetic]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.integration.test_unfinished_continuation::test_host_exit_after_receiver_review_reconciles_existing_wave[verifiable_codex]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_existing_database_supports_explicit_write_and_env_read": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[empty-dir-argument]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[empty-dir-environment]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[missing-dir-argument]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_missing_database_does_not_create_state[missing-dir-environment]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.security.test_m5_owner_cli_inputs::test_owner_reports_corrupt_database": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_passes_valid_image_id_to_existing_demo": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[python:3.14]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]": {
+      "status": "passed",
+      "reason": null
+    },
+    "tests.unit.test_proposal_candidate_pilot_cli::test_pilot_rejects_invalid_image_id_before_setup[sha256:aaaaaaaaaaaa]": {
+      "status": "passed",
+      "reason": null
+    }
+  },
+  "new_skips": {
+    "tests.integration.test_unfinished_continuation::test_continued_task_completes_with_distinct_reviewer[verifiable_codex-docker]": {
+      "status": "skipped",
+      "reason": "Proposal execution requires an explicitly pinned local Linux Docker image"
+    }
+  },
+  "original_skip_count": 56,
+  "scope": "Case identity/outcome comparison only; skip message paths/timing are not compared. Historical acceptance remains pinned to its original runtime."
+}

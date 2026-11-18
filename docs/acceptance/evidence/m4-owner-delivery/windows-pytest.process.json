@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "owner_delivery_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m4-delivery-529df3b\\source",
+    "started_at": "2026-11-13T07:57:24.157466+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "owner_delivery_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m4-delivery-529df3b\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m4-delivery-529df3b\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:57:24.157466+00:00",
+    "finished_at": "2026-11-13T08:02:56.986207+00:00",
+    "log": "logs/owner_delivery_pytest.log",
+    "log_sha256": "c3c5494ea8834cdf78622e7760d961d5f43967a0f488b0e519e799369e2f6872",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

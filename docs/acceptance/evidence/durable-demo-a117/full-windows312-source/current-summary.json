@@ -1,0 +1,173 @@
+{
+  "observed_at": "2026-11-16T09:34:01.155366+00:00",
+  "status": "SCOPED PASS",
+  "scope": "Windows3.12 full editable-source supplement only",
+  "native_session_id": 44775,
+  "native_session_closed": true,
+  "native_exit_code": 0,
+  "started_at": "2026-11-16T08:47:52.446971+00:00",
+  "finished_at": "2026-11-16T09:32:36.359582+00:00",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "test_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "driver_sha256": "0b87ce5080087d91ce1d018f45685472b752b8cbdc3fd85b70d82cec1662770c",
+  "result_sha256": "82f53ecbb626f34a08a3bfbedefce631e9043ebb975146fc1f35047ed980042c",
+  "junit": {
+    "path": "junit.xml",
+    "sha256": "bd3c8940252d3f2ec5cc18fe6096de00225381c5796aaffd5426fdc0fd1f42a4",
+    "credential_redactions": 6,
+    "cases": 2545,
+    "failure": 0,
+    "error": 0,
+    "skipped": 56
+  },
+  "passed": 2489,
+  "skipped": 56,
+  "pytest_seconds": 2656.47,
+  "native_checks_passed": 8,
+  "unique_cases": 2545,
+  "identities_and_outcomes_equal_to_same_input_windows_wheel": true,
+  "source_origin": "Fresh editable installation, exact source import and direct_url checked before and after",
+  "frozen_inputs_unchanged": 2382,
+  "source_copy_files_unchanged": 2382,
+  "runtime_members_unchanged": 97,
+  "single_durable_smoke": {
+    "path": "durable-smoke.xml",
+    "sha256": "e0a24e402eb089066ed92a235004b2d6b531c20d75bb56f64e20098c56965e49",
+    "credential_redactions": 0,
+    "cases": 1,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "smoke_additional_coverage": false,
+  "source_manifest_reference": "../full-linux314/frozen-inputs.json",
+  "original_sdist_failure_preserved": true,
+  "later_cli_fix_3b43647_covered": false,
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "docker_on_windows": "NOT RUN",
+  "full_candidate_matrix_row": false,
+  "formal_release": "BLOCKED",
+  "copied_files": [
+    {
+      "path": "run/attempt.json",
+      "bytes": 781,
+      "sha256": "7dda0c991893ecb6e0f1fb88791ac8e0e2739e3fb4d36123b83931ae3444ca47"
+    },
+    {
+      "path": "run/durable-smoke.xml",
+      "bytes": 385,
+      "sha256": "e0a24e402eb089066ed92a235004b2d6b531c20d75bb56f64e20098c56965e49"
+    },
+    {
+      "path": "run/junit.xml",
+      "bytes": 401352,
+      "sha256": "bd3c8940252d3f2ec5cc18fe6096de00225381c5796aaffd5426fdc0fd1f42a4"
+    },
+    {
+      "path": "run/logs/pytest.log",
+      "bytes": 18123,
+      "sha256": "fc5388c7122644edce975762bfa498c4b5a1b0a70febb52dd615139f991c5523"
+    },
+    {
+      "path": "run/logs/pytest.process.json",
+      "bytes": 1666,
+      "sha256": "fd7a42287654fd9d665acf986d65bc1dc4123b686c72ac7a7e6af6da42d97385"
+    },
+    {
+      "path": "run/logs/source_durable_smoke.log",
+      "bytes": 697,
+      "sha256": "a3d82275dd158ab9c741e8198251873c3124bb01aa7281eb91e680bda5e44e16"
+    },
+    {
+      "path": "run/logs/source_durable_smoke.process.json",
+      "bytes": 1904,
+      "sha256": "9add5db147f91c0126129901658ac461a4bce9a28b3260fe0017dd718817e5d6"
+    },
+    {
+      "path": "run/logs/source_editable_install.log",
+      "bytes": 1140,
+      "sha256": "e849620c953e6a57ee4b47c6b5c373676ea603ec255465fbc486952bb14fb7a0"
+    },
+    {
+      "path": "run/logs/source_editable_install.process.json",
+      "bytes": 1733,
+      "sha256": "0518500e70617ccfa8764277976b391034c7c1a270618705685b5e02c30919d8"
+    },
+    {
+      "path": "run/logs/source_offline_dependencies.log",
+      "bytes": 7719,
+      "sha256": "1b1df756fda463408789a4f39776ca3036d7d87c208201eed6f7787a025e6c38"
+    },
+    {
+      "path": "run/logs/source_offline_dependencies.process.json",
+      "bytes": 2239,
+      "sha256": "5c1d1535a7915ae6df3ac28be94036e623ce2665b35f987197cbf5fbd8907d38"
+    },
+    {
+      "path": "run/logs/source_origin_after.log",
+      "bytes": 296,
+      "sha256": "cb5e506649a6c98a4c11fcf4c60deb8c98e015b43c05fd699e652168c5241957"
+    },
+    {
+      "path": "run/logs/source_origin_after.process.json",
+      "bytes": 4223,
+      "sha256": "8a2eb4f0f1c5d8e16aa0c4d5093d2e83686937829e3fad1065138248b12ac45f"
+    },
+    {
+      "path": "run/logs/source_origin_before.log",
+      "bytes": 296,
+      "sha256": "cb5e506649a6c98a4c11fcf4c60deb8c98e015b43c05fd699e652168c5241957"
+    },
+    {
+      "path": "run/logs/source_origin_before.process.json",
+      "bytes": 4226,
+      "sha256": "e368097160133aea774cd40c54f388842fb255ce10ea311d0b366097abb4ee14"
+    },
+    {
+      "path": "run/logs/source_pip_check.log",
+      "bytes": 32,
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a"
+    },
+    {
+      "path": "run/logs/source_pip_check.process.json",
+      "bytes": 1204,
+      "sha256": "07f3bde3339678a075d36eb59bfbf93e81788e074c92d2b61a19f1bf1168b348"
+    },
+    {
+      "path": "run/logs/source_venv.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "run/logs/source_venv.process.json",
+      "bytes": 1305,
+      "sha256": "39399dc8bc3e635d4b919b3e5cf66363c338ad0f93a0af41095daaf1cc608f7f"
+    },
+    {
+      "path": "run/offline-wheelhouse.json",
+      "bytes": 10131,
+      "sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1"
+    },
+    {
+      "path": "run/result.json",
+      "bytes": 11350,
+      "sha256": "82f53ecbb626f34a08a3bfbedefce631e9043ebb975146fc1f35047ed980042c"
+    },
+    {
+      "path": "execution-result.json",
+      "bytes": 289,
+      "sha256": "35f3ffa99d2a2bb3ad64eaceb6fb7b1298bd5ee69a9091661c2af32f9fc56987"
+    },
+    {
+      "path": "case-diff.json",
+      "bytes": 2988,
+      "sha256": "55f2b635c7ebb6d356678907ad15504e1a9eb7a4aa3f35db4dc1d11c7af699fe"
+    },
+    {
+      "path": "check-result.py.txt",
+      "bytes": 8396,
+      "sha256": "44c2f83e7dc7f9554f710eb09368855fc55000239a1c7f82626129098864d09b"
+    }
+  ]
+}

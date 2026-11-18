@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-c",
+    "import json\nimport site\nimport sys\nfrom pathlib import Path\n\nsite.addsitedir(\"D:/agentsync-debug/m120p/w/Lib/site-packages\")\nimport agentsync\nfrom agentsync.adapters import _host_process, launch_context\nimport pytest\n\nsource = Path(\"F:/syuc/amadeus-m6-single/src/agentsync\")\n\ndef verify(label):\n    modules = {\n        \"agentsync\": (agentsync, source / \"__init__.py\"),\n        \"_host_process\": (_host_process, source / \"adapters/_host_process.py\"),\n        \"launch_context\": (launch_context, source / \"adapters/launch_context.py\"),\n    }\n    for name, (module, expected) in modules.items():\n        assert Path(module.__file__).resolve() == expected, name\n    print(json.dumps({\"stage\": label, \"origins\": {name: str(Path(module.__file__).resolve())\n          for name, (module, expected) in modules.items()}}), flush=True)\n\nverify(\"before\")\nresult = pytest.main(sys.argv[1:])\nverify(\"after\")\nraise SystemExit(result)",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m121-host-deadline/context-green-final-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m121-host-deadline/context-green-final.xml",
+    "tests/unit/test_launch_context_deadline.py"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T06:07:43.1271279Z",
+  "environment": {
+    "TMP": "D:/agentsync-debug/m121-host-deadline/context-green-final-scratch",
+    "TEMP": "D:/agentsync-debug/m121-host-deadline/context-green-final-scratch",
+    "TMPDIR": "D:/agentsync-debug/m121-host-deadline/context-green-final-scratch",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src"
+  },
+  "source_sha256": {
+    "src/agentsync/__init__.py": "9dccc62c84f1c2c2c64c8fb5b503fb552d265b6e99009cebb185c7eacaa3a790",
+    "src/agentsync/adapters/_host_process.py": "76dfd26985a8b77d215be587fb06219b38e893ae2c37c4be30ac657922b60c9e",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b",
+    "src/agentsync/adapters/launch_context.py": "ea9897ee62bcf9c69cbc32a24bb5d02335ca432b09404b215539443aa81d9053",
+    "tests/unit/test_launch_context_deadline.py": "5d3bc2ffe5dfc74aa3e0efa5c677588cc3855b3a415c4346633414ee4fed892d",
+    "src/agentsync/adapters/approved_launch.py": "56595cbd6b0ddc76f4f53b7569a78600ba626a9add66d62e55bb5621a5e5ebca"
+  }
+}

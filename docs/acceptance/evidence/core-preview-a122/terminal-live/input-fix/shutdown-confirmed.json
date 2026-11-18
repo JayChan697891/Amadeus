@@ -1,0 +1,10 @@
+{
+  "qemu_pid": 14196,
+  "qemu_absent": true,
+  "local_ports_closed": {
+    "22222": true,
+    "22223": true
+  },
+  "normal_poweroff_exit": 0,
+  "vm_disk_preserved": true
+}

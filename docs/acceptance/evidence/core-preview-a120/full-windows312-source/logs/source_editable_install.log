@@ -1,0 +1,14 @@
+Looking in links: file:///D:/agentsync-debug/m120sourcew/t/offline-wheels, file:///D:/agentsync-debug/m120sourcew/t/offline-wheels
+Obtaining file:///D:/agentsync-debug/m120sourcew/s
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building editable for agentsync-local (pyproject.toml): started
+  Building editable for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a120-0.editable-py3-none-any.whl size=16988 sha256=62de0f01a560cbe90e9a40298ceaa291714ad49307d76ecbd213cb9657517534
+  Stored in directory: D:\agentsync-debug\m120sourcew\t\pip-ephem-wheel-cache-defl4rak\wheels\49\73\2d\fa7075590085531eb3a42077da02afb9f2cde5bcbff5ce3154
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a120

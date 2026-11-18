@@ -1,0 +1,8 @@
+{
+  "prior_process_absent": true,
+  "original_preserved": "D:\\agentsync-debug\\vm\\guest-before-growth-20261112.qcow2",
+  "new_virtual_bytes": 34359738368,
+  "original_virtual_bytes": 17179869184,
+  "inherited_acl": true,
+  "active_overlay": "D:\\agentsync-debug\\vm\\guest.qcow2"
+}

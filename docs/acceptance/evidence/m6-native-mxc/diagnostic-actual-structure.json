@@ -1,0 +1,72 @@
+{
+  "stdout_sha256": "3f90da570f9b2df44f5500eeb34ee0b3bffc5f03ba3e6890a93d4d297bceb8a9",
+  "stdout_bytes": 606,
+  "parser_error": "invalid_event_sequence",
+  "redacted_structure": [
+    {
+      "line": 1,
+      "type": "thread.started",
+      "keys": [
+        "thread_id",
+        "type"
+      ]
+    },
+    {
+      "line": 2,
+      "type": "item.completed",
+      "keys": [
+        "item",
+        "type"
+      ],
+      "item_type": "error",
+      "item_keys": [
+        "id",
+        "message",
+        "type"
+      ],
+      "item_id_sha256": "2f58b7d7725eac66c32ab446bb53a188688dc1d76fcc40cf31f5cf6509181ce8",
+      "text_matches_fixed_reply": false,
+      "text_length": null
+    },
+    {
+      "line": 3,
+      "type": "turn.started",
+      "keys": [
+        "type"
+      ]
+    },
+    {
+      "line": 4,
+      "type": "item.completed",
+      "keys": [
+        "item",
+        "type"
+      ],
+      "item_type": "agent_message",
+      "item_keys": [
+        "id",
+        "text",
+        "type"
+      ],
+      "item_id_sha256": "32012c4c32888ee2c4ba4331e3c77ece9acd811a4b3abb708363123591abfea2",
+      "text_matches_fixed_reply": true,
+      "text_length": 30
+    },
+    {
+      "line": 5,
+      "type": "turn.completed",
+      "keys": [
+        "type",
+        "usage"
+      ],
+      "usage_keys": [
+        "cache_write_input_tokens",
+        "cached_input_tokens",
+        "input_tokens",
+        "output_tokens",
+        "reasoning_output_tokens"
+      ]
+    }
+  ],
+  "raw_output_uploaded": false
+}

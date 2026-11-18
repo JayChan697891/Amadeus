@@ -3,12 +3,14 @@
 import json
 import os
 import sqlite3
+import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-from conftest import owner_grant
+from conftest import drop_mock_workflow_schema, owner_grant
 from test_candidate_execution import (
     JSON_LINES_CANDIDATE,
     actual_docker_image,
@@ -21,18 +23,19 @@ from test_candidate_execution import (
 from test_candidate_jobs import owner, profile
 from test_candidate_jobs import prepared as prepared
 from test_candidate_jobs import world as world
-from test_m4b_workspaces import source_fingerprint
+from test_m4b_workspaces import git, source_fingerprint
 
+import agentsync
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.sdk import AgentSyncClient
 from agentsync.storage import database
 from agentsync.storage.database import connect
-from agentsync.verification import candidate_executor, task_completion
-from agentsync.verification.candidate_delivery import OwnerCandidateDelivery
+from agentsync.verification import candidate_executor, candidate_jobs, task_completion
 from agentsync.verification.candidate_jobs import CandidateVerificationJobs, _dump, _hash
 from agentsync.verification.docker import DockerProfile, JsonCase
 from agentsync.verification.task_completion import OwnerVerifiedTaskCompletion
+from agentsync.workspaces.git import GitWorkspaceStore
 
 
 def submit_pair(prepared, world):
@@ -173,13 +176,8 @@ def test_atomic_completion_reopen_replay_and_immutable_old_receipts(ready):
         ]
 
 
-def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan(ready, world):
-    prepared, complete, args, _ = ready
+def approve_delivery(prepared, requester, completed):
     core, candidate = prepared[:2]
-    source = world[3]
-    original = source_fingerprint(source)
-    completed = complete.complete_once(**args)
-    requester = world[2][0]
     approval = core.execute(
         "request_approval",
         {
@@ -194,7 +192,7 @@ def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_
     payload = {
         **lookup,
         "expected_version": approval["version"],
-        "task_id": args["task_id"],
+        "task_id": completed["task_id"],
         "expected_task_version": completed["version"],
         "session_id": requester["session_id"],
         "session_token": requester["session_token"],
@@ -211,20 +209,77 @@ def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_
         **payload,
         plan_sha256=preview["plan_sha256"],
     )["data"]
-    before = client.owner_call("get_candidate_delivery_status", **lookup)["data"]
-    assert before == {"plan": plan, "approval_status": "approved", "effect": "not_attempted"}
     publish = {
         **payload,
         "expected_version": approved["approval"]["version"],
         "plan_sha256": preview["plan_sha256"],
     }
-    delivery = OwnerCandidateDelivery(core)
-    result = delivery.publish_once(**publish)
+    return lookup, plan, publish
+
+
+def test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan(
+    ready, world, monkeypatch
+):
+    prepared, complete, args, _ = ready
+    core, source = prepared[0], world[3]
+    (source / "left.txt").write_text("staged fixture change\n", encoding="utf-8")
+    git(source, "add", "left.txt")
+    (source / "right.txt").write_text("unstaged fixture change\n", encoding="utf-8")
+    (source / "private.txt").write_text("untracked fixture change\n", encoding="utf-8")
+    original = source_fingerprint(source)
+    completed = complete.complete_once(**args)
+    client = AgentSyncClient(core.data_dir)
+    operation = "publish_candidate_delivery"
+    lookup, plan, publish = approve_delivery(prepared, world[2][0], completed)
+    approved = {"plan": plan, "approval_status": "approved", "effect": "not_attempted"}
+    writes = []
+    original_git = GitWorkspaceStore._git
+
+    def record_git(store, cwd, *argv, **kwargs):
+        if argv[0] == "update-ref":
+            writes.append((cwd, argv))
+        return original_git(store, cwd, *argv, **kwargs)
+
+    monkeypatch.setattr(GitWorkspaceStore, "_git", record_git)
+    assert client.call(operation, **publish)["error"]["code"] == "unknown_operation"
+    assert (
+        client.owner_call(operation, **(publish | {"admin_token": "wrong"}))["error"]["code"]
+        == "unauthorized"
+    )
+    for changes in (
+        {"expected_version": publish["expected_version"] - 1},
+        {"expected_task_version": publish["expected_task_version"] - 1},
+        {"plan_sha256": "0" * 64},
+    ):
+        denied = client.owner_call(operation, **(publish | changes))
+        assert denied["error"]["code"] == "delivery_plan_changed"
+    with monkeypatch.context() as patch:
+        patch.setattr(candidate_jobs, "time", SimpleNamespace(time=lambda: plan["expires_at"]))
+        denied = client.owner_call(operation, **publish)
+        assert denied["error"]["code"] == "delivery_plan_changed"
+        assert client.owner_call("get_candidate_delivery_status", **lookup)["data"] == (
+            approved | {"approval_status": "expired"}
+        )
+    assert client.owner_call("get_candidate_delivery_status", **lookup)["data"] == approved
+    assert writes == []
+
+    result = client.owner_call(operation, **publish)["data"]
     assert result == {"plan": plan, "approval_status": "consumed", "effect": "exact"}
-    with pytest.raises(AgentSyncError):
-        delivery.publish_once(**publish)
+    (write,) = writes
+    repo, argv = write
+    assert repo.is_relative_to(core.data_dir)
+    assert argv == (
+        "update-ref",
+        "--no-deref",
+        plan["destination_ref"],
+        plan["candidate_sha"],
+        "0" * len(plan["candidate_sha"]),
+    )
+    assert git(repo, "rev-parse", plan["destination_ref"]) == plan["candidate_sha"]
+    assert client.owner_call(operation, **publish)["error"]["code"] == "delivery_plan_changed"
     reopened = AgentSyncClient(core.data_dir)
     assert reopened.owner_call("get_candidate_delivery_status", **lookup)["data"] == result
+    assert writes == [write]
     assert source_fingerprint(source) == original
 
 
@@ -483,6 +538,7 @@ def test_text_review_and_legacy_cached_response_remain_unverified(prepared, worl
 def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready, monkeypatch):
     prepared, _, _, _ = ready
     with connect(prepared[0].db_path) as db:
+        drop_mock_workflow_schema(db)
         db.execute("DROP TABLE project_usage")
         db.execute("DROP TABLE task_verification_requests")
         db.execute("DROP TABLE task_verifications")
@@ -519,6 +575,8 @@ def test_schema13_upgrade_preserves_history_and_atomic_migration_rollback(ready,
 
 
 def test_actual_linux_docker_to_independent_verified_completion(world):
+    from test_candidate_integration import approve, original_checkout, request
+
     policy = DockerProfile(actual_docker_image(), (JsonCase(None, "candidate"),))
     prepared = protocol_candidate(world, JSON_LINES_CANDIDATE)
     submit_pair(prepared, world)
@@ -535,6 +593,70 @@ def test_actual_linux_docker_to_independent_verified_completion(world):
         assert receipt["verification"] == current["verification"]
         assert receipt["verification"]["candidate_sha"] == receipts[0]["candidate_sha"]
         observation.update(receipt=receipt, current=current, execution=executed)
+        source = world[3]
+        original = source_fingerprint(source)
+        lookup, plan, publish = approve_delivery(prepared, world[2][0], receipt)
+        core = prepared[0]
+        cli = subprocess.run(
+            [
+                sys.executable,
+                "-s",
+                "-B",
+                "-m",
+                "agentsync",
+                "--data-dir",
+                str(core.data_dir),
+                "owner",
+                "publish_candidate_delivery",
+            ],
+            cwd=core.data_dir,
+            env=os.environ | {"PYTHONPATH": str(Path(agentsync.__file__).resolve().parents[1])},
+            input=json.dumps(publish),
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        for token in (publish["admin_token"], publish["session_token"]):
+            assert token not in cli.stdout and token not in cli.stderr
+        assert cli.returncode == 0, cli.stderr
+        delivered = {"plan": plan, "approval_status": "consumed", "effect": "exact"}
+        assert json.loads(cli.stdout) == {"ok": True, "data": delivered}
+        reopened = AgentSyncClient(core.data_dir)
+        assert reopened.owner_call("get_candidate_delivery_status", **lookup)["data"] == delivered
+        assert source_fingerprint(source) == original
+        observation["delivery"] = {
+            "owner_cli_exit_code": cli.returncode,
+            "result": delivered,
+            "reopened_status_matches": True,
+            "source_unchanged": True,
+        }
+        target = source.parent / "integration-target"
+        destination = source.parent / "integrated-candidate"
+        git(source, "clone", "--no-local", str(source), str(target))
+        baseline = original_checkout(target)
+        integration_lookup, integration_input = request(
+            prepared, world[2][0], receipt, target, destination
+        )
+        integration_plan, admission = approve(reopened, integration_input)
+        integrated = reopened.owner_call("integrate_candidate", **admission)
+        assert integrated == {
+            "ok": True,
+            "data": {"plan": integration_plan, "approval_status": "consumed", "effect": "exact"},
+        }
+        assert (
+            reopened.owner_call("get_candidate_integration_status", **integration_lookup)
+            == integrated
+        )
+        assert (destination / "solution.py").read_bytes() == JSON_LINES_CANDIDATE
+        assert git(destination, "rev-parse", "HEAD^{tree}") == receipt["verification"]["tree_sha"]
+        assert original_checkout(target) == baseline
+        assert source_fingerprint(source) == original
+        observation["integration"] = {
+            "result": integrated["data"],
+            "exact_verified_blob": True,
+            "original_checkout_unchanged": True,
+        }
     finally:
         with connect(prepared[0].db_path) as db:
             row = db.execute(

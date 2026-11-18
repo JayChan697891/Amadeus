@@ -1,0 +1,8 @@
+{
+  "at": "2026-11-15T13:07:44.578242+00:00",
+  "pid": 4800,
+  "creation_utc": "2026-11-15T12:54:49.353248Z",
+  "purpose": "Graceful completed local test VM shutdown",
+  "preconditions": "Both source-package and continuation regression terminal0; no other Python/Codex or Docker containers in actual post-run query",
+  "files_and_disks": "Preserved"
+}

@@ -1,0 +1,284 @@
+{
+  "observed_at": "2026-11-14T07:30:30.261462+00:00",
+  "owner_resumed": true,
+  "github_progress_sync_required": true,
+  "status": "RUNNING previously unrun sdist suite only",
+  "session_id": 73133,
+  "driver_pid": 10516,
+  "driver_creation_utc": "2026-11-14T07:26:03.221827Z",
+  "pytest_pid": 11944,
+  "pytest_creation_utc": "2026-11-14T07:26:19.986720Z",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "source_files_verified": 2083,
+  "archive_sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+  "scope": "Existing exact archive, original frozen sdist_checks; no source/wheel/build rerun",
+  "runtime_directory": "D:\\agentsync-debug\\m115-sdist-r1",
+  "scratch": "D:/agentsync-debug/t115v",
+  "helper": {
+    "path": "docs/acceptance/evidence/m9-a115-preparation/sdist-resume.py.txt",
+    "sha256": "887372c2bad0e45364f745dceb78176d845274ba73b66ba4b929277c576880e3",
+    "size": 5798
+  },
+  "attempt": {
+    "path": "docs/acceptance/evidence/m9-a115-preparation/sdist-resume-attempt.json",
+    "sha256": "0535a8634060f21608b0c95c748eaf88f19cf362aaa4c4104d4b6e2ae91f5fa9",
+    "size": 1287
+  },
+  "license_observation": {
+    "path": "docs/acceptance/evidence/m9-a115-preparation/b6-windows-license-observation.json",
+    "sha256": "553b557d974c3c4b9ee2735d5624c30ec74687b4e13d02c690a6a67ef23d87ed",
+    "size": 665
+  },
+  "original_run_artifacts": [
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/artifacts/agentsync_local-0.3.0a115-py3-none-any.whl",
+      "sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+      "size": 320001
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/junit.xml",
+      "sha256": "f6da0cb48bced7fd17a708294b21b1e789767a2e88000dc8678534dae6f5df70",
+      "size": 391409
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/build.log",
+      "sha256": "9b954273bf1d4c0f465af41319716b77169591489ed824616070adcebab8baad",
+      "size": 178219
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/build.process.json",
+      "sha256": "b9dae251775a89e04a97c2940706f733e1bc17e269f3268962d5df85ac74aa81",
+      "size": 1465
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/format.log",
+      "sha256": "1f05785aef86db6c9322ea84bc7b7049d761d2ac046740dbde5de302960a5da7",
+      "size": 29
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/format.process.json",
+      "sha256": "d21b21ce6e047896a685d72e76a95b2ed996597263e91000ecbe725554ee5074",
+      "size": 1248
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/mypy.log",
+      "sha256": "d2ecf161b250ccb8ffbf6c356c68aa4bfeeaff2d019d85df716f1db13415f171",
+      "size": 46
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/mypy.process.json",
+      "sha256": "f5ea163b64e6a8245ad0d0eef79aa46290c38ed0a7df2d41a11e65a150596e05",
+      "size": 1154
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/offline_build_tools.log",
+      "sha256": "3daa5624a241b1b7aa8ed0ed6d3eabf1ea3d437c0b56d037cc91ef037379b6fa",
+      "size": 1059
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/offline_build_tools.process.json",
+      "sha256": "cec7cf8d9d7e59ed2eee195be362f8ab32aaf2451829afa89befb70b5fb8fc87",
+      "size": 1909
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/offline_build_venv.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/offline_build_venv.process.json",
+      "sha256": "122ace53c3d5512d6ffd79d7dc84bbf97c503c400e7e59690d75f679196b3267",
+      "size": 1336
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pip_check.log",
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "size": 32
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pip_check.process.json",
+      "sha256": "56be4b74a62a2977f9f8d96a8c7bfee6f9b5ea5b88dd6108f4b91dd9e0106cbc",
+      "size": 1197
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pytest.log",
+      "sha256": "a9e921c38d624fd6442b5c2916d7cc1077dea693bed31fa752be76b3ac86827d",
+      "size": 17842
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pytest.process.json",
+      "sha256": "9ed9a45115e60772bcea1efd7a7c35f3d5d171c5101047e1c4ab1a02e4676bdd",
+      "size": 1532
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/ruff.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "size": 20
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/ruff.process.json",
+      "sha256": "210f152f9fcdea20ab857c3c5bff9803defc3e87d3b0dc00861ed4171e73cef6",
+      "size": 1206
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_cli.log",
+      "sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471",
+      "size": 1509
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_cli.process.json",
+      "sha256": "15c19b9d0053fc4a69938d4ae2d5340d362c72602e9f4537072f4f8b614d38fe",
+      "size": 1331
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_console_smoke.log",
+      "sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+      "size": 59
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_console_smoke.process.json",
+      "sha256": "22a8469d61418de871bd3c94100d6eee8d0525cfdaa07b32ac0086790e5dcfa8",
+      "size": 4815
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_install.log",
+      "sha256": "3da443b8ef8cda14f62f8e99ae368e2a32de97f3dbd96179f7df7ba81a326de9",
+      "size": 321
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_install.process.json",
+      "sha256": "f4b53fad68814c0c5f8708c8e6bff4e44baba2a6be084e29e6dfd06509cbdab6",
+      "size": 2095
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_license_inventory.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_license_inventory.process.json",
+      "sha256": "e9e029cd9a81cda87978301fadc63a28c2af837f1aef40c846e6bfa1cf81f2d3",
+      "size": 1517
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_offline_dependencies.log",
+      "sha256": "36ca48827eff93dddf0cc867a86cb445197fda09b48513bbd0d8eda79c850f3d",
+      "size": 8302
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_offline_dependencies.process.json",
+      "sha256": "243261e0ba02fca79dd041c2015f4465bc1006412d42f11130065db7e3ba9570",
+      "size": 2322
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_origin_sdk.log",
+      "sha256": "b3cf4393680c16b1f0898d07ee1987e75914ef6daed5e717274228377c98b84a",
+      "size": 136
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_origin_sdk.process.json",
+      "sha256": "d1d308eb5bcc1b65b0741c443b4096e7b905d00b78a3491acfc0f704f337311d",
+      "size": 4006
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_pip_check.log",
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "size": 32
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_pip_check.process.json",
+      "sha256": "be274a1344c17b15d42d424760f6565ccdf4d77780916b55bd0bfbe145ff5115",
+      "size": 1335
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_pytest.process.json",
+      "sha256": "48fa7d97f188a197c31866afcc0dabc34f10d71e0b077ce7aed1a2aef6880fb9",
+      "size": 848
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_venv.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/wheel_venv.process.json",
+      "sha256": "206ed264d17f81651a6d5fb134857f2d9ce81556bf9c2330cb2dff0e586a3dfd",
+      "size": 1314
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/offline-wheelhouse.json",
+      "sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+      "size": 10131
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/source-snapshot.json",
+      "sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+      "size": 391801
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/wheel-license-inventory.json",
+      "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+      "size": 23086
+    },
+    {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/working-tree.patch",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  ],
+  "pause_observation_artifacts": [
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/wheel-boundary-result.json",
+      "sha256": "49dabcb04287d6a633715817a52f824b5e6a11d371b222a2b1802f1efb03390c",
+      "size": 963
+    },
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/wheel-junit-sanitized.xml",
+      "sha256": "3abc285b6d0e078387b0608d7ae2fd5127c983053f062514be13daa32853c37a",
+      "size": 391468
+    },
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/wheel-log-sanitized.txt",
+      "sha256": "cdbbe8ab0fb4f0c92911cea97158a3dfe0684023ad6717f7fe55a07c6d249648",
+      "size": 18952
+    },
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/original-wheel-process-receipt.json",
+      "sha256": "48fa7d97f188a197c31866afcc0dabc34f10d71e0b077ce7aed1a2aef6880fb9",
+      "size": 848
+    },
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/collector-stopped.json",
+      "sha256": "4d86242dee27837942155eb9bc27d903b06d3c6163ebd544cfca3e892f554a28",
+      "size": 279
+    },
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/package-session-terminal.json",
+      "sha256": "0eb315e1fd0c657770dd9d1558ade45b8b65b1eac204fe11c74f96ea33d7e855",
+      "size": 933
+    },
+    {
+      "path": "docs/acceptance/evidence/m115-source-checks/case-identity/pause-wheel/final-preservation.json",
+      "sha256": "413f80a32ab46e5f5dfd88ebe2ab4ffd081560c537990057a6b2bf979d6d5474",
+      "size": 531
+    }
+  ],
+  "superseded_sessions": {
+    "75435": "terminal after owner safe pause; never restart",
+    "31525": "stopped idle by owner pause; never restart"
+  },
+  "current_wheel_status": "Independent actual exit0 2426pass56skip; original canonical receipt started/unknown. Strict wheel acceptance unverified, not NOT RUN.",
+  "remaining": [
+    "Wait on original session73133, inspect actual checks/receipts and preserve raw locally",
+    "Recover six known fixture identities in separate evidence without modifying originals",
+    "Build explicitly composite evidence preserving independent wheel provenance; original derive_report.py full-collector prerequisites remain false",
+    "Remaining platform rows and real-client/macOS/release gates incomplete"
+  ],
+  "linux_vm": "Stopped; no Linux queue running",
+  "formal_release": "BLOCKED"
+}

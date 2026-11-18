@@ -1,0 +1,54 @@
+{
+  "product_sha": "ee456900fad6bb4cfc09cad0eecdc9ce1371ab74",
+  "execution_head": "24b02febe4f9813ca66387f2fa2af6b24354e85e",
+  "plan_sha256": "ce6032da2c3624ef3aee259da404c2f15e82a1ef2d60681e730148f3976499b3",
+  "stdout_sha256": "222e350e0f35c72c4437585f64a5b43df519ccc7b69cb19a88b1ea0045a2751b",
+  "stderr_sha256": "85afddb61fd5392b50fd4fb608909aebf8ec669cbfa87fe5562bdf3387b87b66",
+  "stdout_bytes": 602,
+  "stderr_bytes": 476,
+  "protocol_state": "succeeded",
+  "expected_reply_matches": true,
+  "event_types": [
+    "thread.started",
+    "item.completed",
+    "turn.started",
+    "item.completed",
+    "turn.completed"
+  ],
+  "item_types": [
+    "error",
+    "agent_message"
+  ],
+  "tool_items_observed": false,
+  "reopened_observation": {
+    "state": "ready_for_review",
+    "verification": "unverified"
+  },
+  "task_status": "review",
+  "task_verification": "unverified",
+  "task_id_sha256": "6af4f5c54569675fbedb59260904cabee6dc9738a7d7a25fe291fc68a1fa1dd5",
+  "attempt_state": "terminal_recorded",
+  "attempt_status": "expected_reply",
+  "parent_ended": true,
+  "second_attempt": "not_dispatched",
+  "source_unchanged": true,
+  "worktree_unchanged": true,
+  "runtime_unchanged": true,
+  "raw_uploaded": false,
+  "stderr_classification": "Untrusted diagnostic stderr retained locally; not projected into task result",
+  "stderr_keyword_flags": {
+    "error": true,
+    "warn": false,
+    "retry": false,
+    "websocket": false,
+    "connection": false,
+    "tls": false,
+    "auth": false,
+    "timeout": false,
+    "failed": true,
+    "fallback": false,
+    "http": false,
+    "rate limit": false
+  },
+  "formal_release": "BLOCKED"
+}

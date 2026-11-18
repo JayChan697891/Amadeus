@@ -1,0 +1,94 @@
+"""Real Core/local Python checkpoint -> owned-parent interruption; never a model."""
+
+import asyncio
+import json
+import os
+import sys
+from dataclasses import replace
+from pathlib import Path
+
+import pytest
+from interrupt_parent import interrupt_owned_parent, saved_checkpoint
+
+# Reuse the already frozen fixture inputs; runtime imports remain installed wheel.
+SOURCE = Path("/root/amadeus-continuation-entry-a123-20261118/s")
+sys.path[:0] = [str(SOURCE / "tests"), str(SOURCE / "tests/integration")]
+from test_codex_proposal_capture import pilot as pilot  # noqa: E402
+from test_codex_proposal_relay_queue import cancel_fixture_load  # noqa: E402
+from test_codex_proposal_relay_queue import proposal_wave as proposal_wave  # noqa: E402
+from test_task_proposals import world as world  # noqa: E402
+
+from agentsync.adapters.approved_launch import prepare_launch_review  # noqa: E402
+from agentsync.continuation import OwnerContinuation  # noqa: E402
+from agentsync.relay_queue import RelayQueue  # noqa: E402
+
+
+@pytest.mark.asyncio
+async def test_actual_checkpoint_gate_kill_confirms_same_core_pin(pilot, world, proposal_wave):
+    core, owner, _, _, task, _, _, receipts, _ = pilot
+    relay, item, _, approvals, captures, started = proposal_wave
+    cancel_fixture_load(world)
+    item = replace(
+        item,
+        task=replace(
+            item.task,
+            allowed_paths=("review.md",),
+            instruction="Checkpoint fixture failed",
+            checkpoint_completed_proposal=True,
+        ),
+    )
+    queue = RelayQueue(relay)
+    request = "actual-checkpoint-interruption"
+    preview = queue.preview((item,), admin_token=owner["admin_token"])
+    adapter_task = relay._single_codex_task(
+        item.first, item.task, owner["admin_token"], wave_key=queue._key(item.first, request)
+    )
+    review = prepare_launch_review(item.first.profile, adapter_task, environment={})
+    boundary = receipts.parent / "interruption-boundary.json"
+
+    def save(value):
+        with boundary.open("x", encoding="utf-8") as stream:
+            json.dump(value, stream)
+            stream.flush()
+            os.fsync(stream.fileno())
+
+    running = asyncio.create_task(
+        queue.run_ready_once(
+            (item,),
+            request_id=request,
+            admin_token=owner["admin_token"],
+            expected_selection_sha256=preview.selection_sha256,
+        )
+    )
+    try:
+        await asyncio.wait_for(started.wait(), 5)
+        (capture,) = captures
+        interruption = await interrupt_owned_parent(
+            capture,
+            review,
+            deadline=asyncio.get_running_loop().time() + 5,
+            checkpoint_gate=lambda: saved_checkpoint(relay, item.first, review, capture),
+            save_boundary=save,
+        )
+    finally:
+        outcome = await asyncio.shield(running)
+    assert interruption == "kill_call_returned" and outcome.state == "incomplete"
+    exited = await capture.get_result()
+    assert exited.snapshot.parent_ended and exited.snapshot.exit_code == -9
+    confirmed = relay._confirmed_failure(owner["project_id"], task["id"])
+    assert confirmed is not None
+    observed = relay.owner_observe_codex_checkpoint(
+        owner["project_id"], task["id"], admin_token=owner["admin_token"]
+    )
+    pin = OwnerContinuation(core, relay._scratch, receipts).pin_failed_progress(
+        owner["project_id"],
+        task["id"],
+        context_id=observed["context_id"],
+        context_version=observed["context_version"],
+        content_sha256=observed["content_sha256"],
+        admin_token=owner["admin_token"],
+    )
+    saved = json.loads(boundary.read_bytes())["checkpoint"]
+    assert pin.content_sha256 == saved["content_sha256"]
+    assert pin.launch_sha256 == confirmed["launch_sha256"] == saved["launch_request_sha256"]
+    assert len(approvals) == len(captures) == 1

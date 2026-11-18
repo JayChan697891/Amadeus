@@ -1,0 +1,56 @@
+from dataclasses import asdict
+from pathlib import Path
+import json
+import pilot
+
+base = Path(__file__).resolve().parent
+state = json.loads((base / "state.json").read_text(encoding="utf-8"))
+core = pilot.Core(base / "core")
+actor = pilot.actor_for(state, pilot.deny)
+relay = pilot.ControlledRelay(core, base, base / "receipts")
+observation = asdict(relay.observe(actor, state["task"]["id"]))
+attempts = relay.inspect_attempts(actor, state["task"]["id"], admin_token=state["owner"]["admin_token"])
+project = core.execute("get_project_state", {"project_id": state["owner"]["project_id"], "session_id": state["member"]["session_id"], "session_token": state["member"]["session_token"]})
+task = next(t for t in project["tasks"] if t["id"] == state["task"]["id"])
+metadata = json.loads((base / "capture-metadata.json").read_text(encoding="utf-8"))
+event_types = []
+raw_path = base / "private-capture/stdout.bin"
+if metadata["saved"] and raw_path.stat().st_size <= 1024 * 1024:
+    for line in raw_path.read_bytes().split(b"\n"):
+        try:
+            event = json.loads(line)
+        except (ValueError, UnicodeError):
+            continue
+        if isinstance(event, dict) and event.get("type") in {"thread.started", "item.started", "item.updated", "item.completed", "turn.started", "turn.completed", "turn.failed", "error"}:
+            event_types.append(event["type"])
+result = json.loads((base / "result.json").read_text(encoding="utf-8"))
+a = attempts[0]
+record = {
+    "runtime_sha": "f74f29f73148d0e0e9a69ebb486eaffe6061d936",
+    "execution_head": "d73e04403794e612360fbfcd5ced11c8cdbca69e",
+    "reopened_observation": observation,
+    "task_status": task["status"],
+    "attempt_state": a.state,
+    "attempt_status": a.status,
+    "error_code": a.error_code,
+    "timed_out": a.timed_out,
+    "parent_ended": a.parent_ended,
+    "exit_code": a.exit_code,
+    "adapter_elapsed_ms": a.adapter_elapsed_ms,
+    "event_types": event_types,
+    "turn_started_observed": "turn.started" in event_types,
+    "turn_terminal_observed": bool({"turn.completed", "turn.failed", "error"}.intersection(event_types)),
+    "source_unchanged": result["source_fixture_unchanged"],
+    "worktree_unchanged": result["execution_worktree_unchanged"],
+    "runtime_unchanged": result["runtime_sources_unchanged"],
+    "second_leg": attempts[1].state,
+    "task_retried": False,
+    "server_cancellation": "UNVERIFIED",
+    "descendant_cleanup": "UNVERIFIED",
+    "raw_uploaded": False,
+    "formal_release": "BLOCKED",
+}
+with (base / "reopened-check.json").open("x", encoding="utf-8") as stream:
+    json.dump(record, stream, indent=2)
+    stream.write("\n")
+print(json.dumps(record, indent=2))

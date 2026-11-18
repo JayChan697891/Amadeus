@@ -115,7 +115,7 @@ def test_m4_mcp_explicit_tools_and_real_resource_workflow(tmp_path):
                 return result["data"]
 
             listing = await client.list_tools()
-            assert len(listing.tools) == 33
+            assert len(listing.tools) == 34
             tools = {tool.name: tool.input_schema for tool in listing.tools}
             for name in (
                 "inspect_path",

@@ -1,0 +1,134 @@
+{
+  "scope": "Linux 3.14, one full a117 editable-source suite with actual local Docker",
+  "editable_source": "/root/amadeus-m117ls/s",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "product_runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "fixture_snapshot_sha256": "ebe65d114544d84a97f98f121352e7bf1e4b6cd8458cc1ad5e34a05582089c50",
+  "driver_sha256": "1a4138f699d6043f970a16f213c7b2156ecf73e20aebc8569a5af4e98d4da94d",
+  "controller_pid": 2968,
+  "controller_python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "boot_id": "aeb75584-4609-40ae-86a8-6c8ddae313f8",
+  "required_docker_image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "model_calls": 0,
+  "started_at": "2026-11-16T08:01:16.127516+00:00",
+  "status": "fail",
+  "formal_release": "BLOCKED",
+  "automatic_retry": false,
+  "checks": [
+    {
+      "id": "source_venv",
+      "status": "pass",
+      "command": [
+        "/root/jobs-env/bin/python",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "/root/amadeus-m117ls/e"
+      ],
+      "cwd": "/root/amadeus-m117ls/run",
+      "exit_code": 0,
+      "started_at": "2026-11-16T08:01:19.035485+00:00",
+      "finished_at": "2026-11-16T08:01:21.921894+00:00",
+      "log": "logs/source_venv.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "source_offline_dependencies",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m117ls/e/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-index",
+        "--find-links",
+        "file:///root/amadeus-m117ls/t/offline-wheels",
+        "--no-cache-dir",
+        "--only-binary=:all:",
+        "setuptools==82.0.1",
+        "wheel==0.46.3",
+        "mcp==2.3.0",
+        "fastapi==0.147.0",
+        "uvicorn==0.54.0",
+        "pydantic==2.14.1",
+        "httpx==0.28.1",
+        "pytest==9.1.1",
+        "pytest-asyncio==1.4.0",
+        "ruff==0.17.1",
+        "mypy==2.4.0",
+        "build==1.6.1",
+        "pip-licenses==5.5.5"
+      ],
+      "cwd": "/root/amadeus-m117ls/run",
+      "exit_code": 0,
+      "started_at": "2026-11-16T08:01:21.924909+00:00",
+      "finished_at": "2026-11-16T08:01:29.691668+00:00",
+      "log": "logs/source_offline_dependencies.log",
+      "log_sha256": "ed3c66b791b0f65d3231e4e657e49787715e487303bad8aa95956f29a4083dab",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "source_editable_install",
+      "status": "pass",
+      "command": [
+        "/root/amadeus-m117ls/e/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-index",
+        "--find-links",
+        "file:///root/amadeus-m117ls/t/offline-wheels",
+        "--no-cache-dir",
+        "--no-build-isolation",
+        "--no-deps",
+        "-e",
+        "/root/amadeus-m117ls/s"
+      ],
+      "cwd": "/root/amadeus-m117ls/run",
+      "exit_code": 0,
+      "started_at": "2026-11-16T08:01:29.694598+00:00",
+      "finished_at": "2026-11-16T08:01:31.041179+00:00",
+      "log": "logs/source_editable_install.log",
+      "log_sha256": "11790433e28a09c4a3f0adc68277c5db0574c49857dbcf0c0a6ec965347757be",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "input_before": {
+    "frozen_files": 2382,
+    "expected_runtime_members": 97
+  },
+  "copy_before": {
+    "source_files": 2382,
+    "editable_metadata": {}
+  },
+  "docker_before": {
+    "containers": [],
+    "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+  },
+  "error_type": "ValueError",
+  "docker_after": {
+    "containers": []
+  },
+  "input_after": {
+    "frozen_files": 2382,
+    "expected_runtime_members": 97
+  },
+  "copy_after": {
+    "source_files": 2382,
+    "editable_metadata": {}
+  },
+  "finished_at": "2026-11-16T08:01:32.855568+00:00"
+}

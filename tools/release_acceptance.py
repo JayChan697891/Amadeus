@@ -39,7 +39,7 @@ MAX_WHEELHOUSE_BYTES = 4 * 1024**3
 PYTEST_CHECKS = frozenset({"pytest", "wheel_pytest", "sdist_pytest"})
 REDACTED = "[REDACTED]"
 _CREDENTIAL_VALUE = re.compile(
-    r"""(?P<prefix>(?<![\w])(?P<keyquote>['"]?)(?:session_token|admin_token|lease_token|access_token|refresh_token|api_key|openai_api_key|anthropic_api_key|agentsync_http_token|password|authorization)(?P=keyquote)\s*[:=]\s*)(?:"(?:\\.|[^"\\\r\n])*"|'(?:\\.|[^'\\\r\n])*'|[^\s,;}\]\)]+)""",
+    r"""(?P<prefix>(?<![\w])(?P<keyquote>['"]?)(?:session_token|admin_token|lease_token|access_token|refresh_token|api_key|openai_api_key|anthropic_api_key|agentsync_http_token|password|authorization)(?P=keyquote)\s*[:=]\s*)(?:\[REDACTED\][^\s,;}\]\)]*|"(?:\\.|[^"\\\r\n])*"|'(?:\\.|[^'\\\r\n])*'|[^\s,;}\]\)]+)""",
     re.IGNORECASE,
 )
 _BEARER = re.compile(r"(?i)(\bBearer[ \t]+)[A-Za-z0-9._~+/-]+=*")
@@ -189,7 +189,16 @@ def sha256(path: Path) -> str:
 def redact_credentials(text: str) -> tuple[str, int]:
     """Best-effort bounded-pattern redaction, not a general secret-discovery claim."""
     text, bearer_count = _BEARER.subn(lambda match: match[1] + REDACTED, text)
-    text, value_count = _CREDENTIAL_VALUE.subn(lambda match: match["prefix"] + REDACTED, text)
+    value_count = 0
+
+    def redact_value(match: re.Match[str]) -> str:
+        nonlocal value_count
+        replacement = match["prefix"] + REDACTED
+        if match[0] != replacement:
+            value_count += 1
+        return replacement
+
+    text = _CREDENTIAL_VALUE.sub(redact_value, text)
     text, key_count = _API_KEY.subn(REDACTED, text)
     return text, bearer_count + value_count + key_count
 

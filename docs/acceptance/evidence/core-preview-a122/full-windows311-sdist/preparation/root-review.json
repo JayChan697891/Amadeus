@@ -1,0 +1,31 @@
+{
+  "scope": "Windows3.11 a122 sdist preparation only",
+  "status": "INSTALL READY; BASELINE UNBOUND; DO NOT START",
+  "tests": "NOT RUN",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "root_review": "Actual driver diff, offline installation logs/receipts and 97 installed sdist members checked. Native 1c1082 exit0. Astra independently accepted preparation scope.",
+  "observer_correction": "918e4e KeyError from reading exit_code at receipt top level; corrected to result.exit_code after actual schema inspection; no setup/test was repeated.",
+  "depends_on": "Original wheel native session66521 must reach observed terminal and be reviewed. sdist also requires actual current311 XML size/hash binding.",
+  "formal_release": "BLOCKED",
+  "model_calls": 0,
+  "files_sha256": {
+    "preparation.json": "93e130d26bbf34e42e13d05958e9aa49bbdef12c95267563a6e9465948e76ad3",
+    "run-sdist.py.txt": "822187baefef30f1f324cdcaf2e208adc5cf9ff48be1ef8cc713995e45b01684",
+    "setup/attempt.json": "518ba6be829fbbdf7ce824351ad16992f9bb6550aaac9c28f99e8cbd3ff5933d",
+    "setup/logs/offline_dependencies.log": "72f1aa1935585de84062888e78175f96b8eb5bfc3b2f06418909612e9acdf3f1",
+    "setup/logs/offline_dependencies.process.json": "2583eb849ea411e83ed0e03d383640116b666ba254e2d0007cfc5062a45e57a2",
+    "setup/logs/origin.log": "70dc2e0af6dfcd163391a8be6c09a3d456eddc3885c04919d462fa1529f68440",
+    "setup/logs/origin.process.json": "b9c4fd9ae6d667ca1ba6f29c29a51a1d558a00c87de35e70f0ae3cce74e37bd5",
+    "setup/logs/package_inventory.log": "309f3bb6b980ec4b44083210b0db62ba6a8dbbb8012458abcb519019065e7563",
+    "setup/logs/package_inventory.process.json": "f837592c726f722913c0f5729b0d37e4999d27c0ad2876bdf9c3e621c9399e05",
+    "setup/logs/pip_check.log": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+    "setup/logs/pip_check.process.json": "8407d28b91ce4cb57aad7fa28e5d8a01bdfe09f5e69638d9ff0c7af6a80460ea",
+    "setup/logs/sdist_install.log": "7988e32cd99e58115b403eb8a3261d8b7c692e3b31fa2fae81f5b88e7f4760e9",
+    "setup/logs/sdist_install.process.json": "243d5b8a1ab280ea22581a5b224f720c1b79618df5a73e2198a97c8664283280",
+    "setup/logs/venv.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "setup/logs/venv.process.json": "3e78ae2144d9b054fee5ebcbc75b8eb772a145577a67ce91a2ff6eea03d078b1",
+    "setup/offline-wheelhouse.json": "4a2c5b245a9b98b19df4884864f6e5bbd55473c6aa3518236c965b4cd2769386",
+    "setup/result.json": "6a48e86fcd9965ac6b6106593803f422e94c0b16341346787ea07697d9bb03a3",
+    "setup.py.txt": "6ad854c62d5a653e5a3077b64fba4caa14b8a823eb9531611ba91216edfc6a6e"
+  }
+}

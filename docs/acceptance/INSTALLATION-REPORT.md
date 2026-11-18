@@ -1,6 +1,9 @@
 # Artifact installation acceptance checkpoint
 
-Issue13, runtime0.3.0a1 unchanged, baseM5A7479dfa. This changes validation tooling only.
+Historical Issue13 checkpoint: runtime0.3.0a1, baseM5A7479dfa; validation tooling only.
+For current frozen artifacts and executed installations, use the
+[Release Acceptance Report](RELEASE-ACCEPTANCE-REPORT.md). The records below retain
+their original versions and are not current-runtime acceptance.
 
 The collector can separately require wheel and sourcearchive installs. Each gets an
 independent freshvenv, isolatedPython, exactPEP610archiveURI/hash/noneditable proof,

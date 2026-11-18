@@ -1,0 +1,89 @@
+"""Export frozen tests/examples and bind an existing wheel; no build or pytest."""
+import hashlib
+import json
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+import zipfile
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+REPO = Path('F:/syuc/amadeus-m6-single')
+COMMIT = '6cd580752d3a4feaf0052c130235190f04168df8'
+RUNTIME = '7e160bbc7c282cd55f3dbbb44377d8456f8a8c66'
+WHEEL = REPO / 'releases/0.3.0a123/owner-checkpoint/agentsync_local-0.3.0a123-py3-none-any.whl'
+WHEEL_SHA = '0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c'
+EXPORT = ['src', 'tests', 'examples', 'tools', 'pyproject.toml', 'MANIFEST.in', 'README.md', 'README.zh-CN.md', 'LICENSE', 'requirements-lock.txt', 'requirements-dev-lock.txt', 'docs/VERIFIED-TASK-EXAMPLE.md']
+
+def sha(path):
+    with path.open('rb') as f:
+        return hashlib.file_digest(f, 'sha256').hexdigest()
+
+def save(name, value):
+    with (BASE / name).open('x', encoding='utf-8', newline='\n') as f:
+        json.dump(value, f, indent=2)
+        f.write('\n')
+
+assert sys.flags.isolated and sys.dont_write_bytecode
+assert sha(WHEEL) == WHEEL_SHA
+tree = subprocess.run(['git', '-C', str(REPO), 'ls-tree', '-r', '-z', COMMIT, '--', *EXPORT], check=True, capture_output=True).stdout
+entries = {}
+for row in tree.split(b'\0'):
+    if not row:
+        continue
+    header, name = row.split(b'\t', 1)
+    mode, kind, oid = header.split()
+    assert mode in (b'100644', b'100755') and kind == b'blob'
+    entries[name.decode()] = (mode.decode(), oid.decode())
+archive = BASE / 'source.zip'
+with archive.open('xb') as f:
+    subprocess.run(['git', '-C', str(REPO), 'archive', '--format=zip', COMMIT, '--', *EXPORT], stdout=f, check=True)
+manifest = {}
+with zipfile.ZipFile(archive) as z:
+    assert z.comment == COMMIT.encode()
+    names = [i.filename for i in z.infolist() if not i.is_dir()]
+    assert len(names) == len(set(names)) and set(names) == set(entries)
+    for name in names:
+        data = z.read(name)
+        mode, oid = entries[name]
+        assert hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest() == oid
+        manifest[name] = {'size': len(data), 'sha256': hashlib.sha256(data).hexdigest(), 'git_mode': mode}
+save('source-manifest.json', manifest)
+members = {name.removeprefix('src/'): row['sha256'] for name, row in manifest.items() if name.startswith('src/agentsync/')}
+assert len(members) == 97
+with zipfile.ZipFile(WHEEL) as z:
+    assert {name: hashlib.sha256(z.read(name)).hexdigest() for name in z.namelist() if name.startswith('agentsync/')} == members
+save('runtime-members.json', members)
+windows = Path('D:/agentsync-debug/m123-terminal-continuation/green-r3/junit.xml')
+expected = []
+for case in ET.parse(windows).iter('testcase'):
+    assert not any(case.find(tag) is not None for tag in ('error', 'failure', 'skipped'))
+    expected.append([case.get('classname'), case.get('name')])
+assert len(expected) == 18
+expected.extend([['tests.integration.test_verified_codex_terminal', 'test_real_hidden_terminal_input[' + mode + ']'] for mode in ('cancel', 'line', 'eof', 'overlong')])
+inputs = {path.name: {'size': path.stat().st_size, 'sha256': sha(path)} for path in (archive, BASE / 'source-manifest.json', BASE / 'runtime-members.json', WHEEL)}
+bundle = {'source_commit': COMMIT, 'runtime_commit': RUNTIME, 'version': '0.3.0a123', 'source_files': len(manifest), 'runtime_members': 97, 'inputs': inputs, 'expected_cases': expected, 'windows_junit_sha256': sha(windows)}
+save('bundle.json', bundle)
+driver = Path('D:/agentsync-debug/m123-live/linux-check.py').read_text(encoding='utf-8')
+driver = driver.replace('check seven affected files', 'check the bounded terminal continuation selection')
+driver = driver.replace('/root/amadeus-m123-live', '/root/amadeus-continuation-entry-a123-20261118')
+driver = driver.replace('a792b6e759aa1990391f8195ba97676a94713f85', COMMIT).replace('bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7', RUNTIME)
+start = driver.index('SELECTION = [')
+end = driver.index('\nORIGIN = ', start)
+selection = [
+    'tests/integration/test_continue_codex_terminal.py',
+    'tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph[checkpoint_codex]',
+    'tests/integration/test_verified_codex_terminal.py::test_terminal_uses_real_core_and_exact_decisions',
+    'tests/integration/test_verified_codex_terminal.py::test_real_hidden_terminal_input',
+]
+driver = driver[:start] + 'SELECTION = ' + repr(selection) + driver[end:]
+driver = driver.replace('Linux3.14 installed wheel, seven affected files; deterministic fixtures only', 'Linux installed wheel: 18 deterministic entry/Core checks and 4 native hidden-input PTY checks; no model E2E')
+driver = driver.replace('"candidate_execution": "NOT RUN"', '"candidate_execution": "No real candidate execution; synthetic verifier only"')
+needle = '                    result["junit"] = '
+assert needle in driver
+driver = driver.replace(needle, '                    assert set(cases) == {tuple(row) for row in bundle["expected_cases"]}\n' + needle)
+compile(driver, 'linux-check.py', 'exec')
+with (BASE / 'linux-check.py').open('x', encoding='utf-8', newline='\n') as f:
+    f.write(driver)
+save('preparation.json', {'status': 'prepared_not_run', 'guest_base': '/root/amadeus-continuation-entry-a123-20261118', 'bundle_sha256': sha(BASE / 'bundle.json'), 'driver_sha256': sha(BASE / 'linux-check.py'), 'source_files': len(manifest), 'runtime_members': 97, 'expected_cases': len(expected), 'selection': selection, 'model_calls': 0, 'candidate_execution': 'NOT RUN', 'inputs': inputs})
+print(json.dumps({'bundle_sha256': sha(BASE / 'bundle.json'), 'source_files': len(manifest), 'runtime_members': 97, 'expected_cases': len(expected)}))

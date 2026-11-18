@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-11-13T03:45:48.433744+00:00",
+  "source_result_sha256": "42aa520854d3307e215093b93abbffaa8c3b53e543c4504d0798dbfb9a5fce5f",
+  "source_reference_derived_from_saved_result": true,
+  "task_created_by_coordinator": true,
+  "worktree_created_by_coordinator": true,
+  "dispatch_intent_absent": true,
+  "attempts_not_dispatched": true,
+  "checkpoint": "exact_plan_review_before_dispatch",
+  "model_calls": 0
+}

@@ -1,0 +1,140 @@
+{
+  "observed_at": "2026-11-16T07:44:41.684052+00:00",
+  "scope": "Windows3.12 full installed-wheel supplement only",
+  "status": "SCOPED PASS",
+  "native_session_id": 35434,
+  "native_session_closed": true,
+  "native_exit_code": 0,
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "test_source_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "cases": 2545,
+  "passed": 2489,
+  "skipped": 56,
+  "failed": 0,
+  "errors": 0,
+  "pytest_seconds": 2536.07,
+  "junit_sha256": "8d78eb22f525d34326298b44cc81a40260f4483076c09ef5ea34db6eab17f5a4",
+  "junit_credential_redactions": 6,
+  "native_checks_passed": 7,
+  "frozen_files_unchanged": 2382,
+  "installed_runtime_members_unchanged": 97,
+  "source_manifest_reference": "../full-linux314/frozen-inputs.json",
+  "source_manifest_sha256": "635ba0600cedda71c47e2af65ee9c3f7dd96d711a2d71439e0614381ae6b6f91",
+  "case_identities_equal_to_old_windows_sdist_and_same_input_linux_wheel": true,
+  "only_old_windows_outcome_change": "Previously corrected traceability expectation: failure to passed in this new wheel run",
+  "original_windows_sdist_failure_preserved": true,
+  "later_cli_and_controller_tests_included": false,
+  "model_calls": 0,
+  "external_model_auth_copies": 0,
+  "docker_on_windows": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "original_full_queues_restarted": false,
+  "copied_files": [
+    {
+      "path": "execution-result.json",
+      "sha256": "d1ed1fa487243ff279d23fb16a736c12b8febc890de3bfea69110b896de72609",
+      "bytes": 315
+    },
+    {
+      "path": "case-diff.json",
+      "sha256": "b54a342fdd9a01e6a3a98f013da4ceed00923f2e27ae5eabbe61105087e48aaf",
+      "bytes": 1156
+    },
+    {
+      "path": "check-result.py.txt",
+      "sha256": "87d1e4455d7bbf8f9bb24169741622dcea88f0129a67b603837805896ecdb954",
+      "bytes": 6776
+    },
+    {
+      "path": "run/attempt.json",
+      "sha256": "19bf85d28e8bc1228749a6bcb40e2693e0afdea5dd0548c9ccb3d96951ce8cfa",
+      "bytes": 791
+    },
+    {
+      "path": "run/offline-wheelhouse.json",
+      "sha256": "022fd1927e49fb23d88cab56a44d1e893d73cab8fe4cff2fa49341382a6c88d1",
+      "bytes": 10131
+    },
+    {
+      "path": "run/result.json",
+      "sha256": "1c5825007783e18d912c7766f5148edb06d9d606f2e97bd1d2b22a9025f90240",
+      "bytes": 10273
+    },
+    {
+      "path": "run/wheel-junit.xml",
+      "sha256": "8d78eb22f525d34326298b44cc81a40260f4483076c09ef5ea34db6eab17f5a4",
+      "bytes": 401275
+    },
+    {
+      "path": "run/logs/wheel_venv.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "run/logs/wheel_venv.process.json",
+      "sha256": "a2794e0f09294ff45ff67c205e0f53530671df70546add692482aa425d174c04",
+      "bytes": 1302
+    },
+    {
+      "path": "run/logs/wheel_offline_dependencies.log",
+      "sha256": "a140784c5039f845c38a63d43e66fe51d0ed0be54f591d0584a7f9cb755fdd50",
+      "bytes": 7492
+    },
+    {
+      "path": "run/logs/wheel_offline_dependencies.process.json",
+      "sha256": "c439ab6e877dd5b3dd43e782f0c4223c40679ec5dfe50dd109f8f81fd62fa84c",
+      "bytes": 2134
+    },
+    {
+      "path": "run/logs/wheel_install.log",
+      "sha256": "e400c6eac0bb98b6aa03f2c6041f2d2c38cb97acd7032f34d9947bf0dbff900f",
+      "bytes": 305
+    },
+    {
+      "path": "run/logs/wheel_install.process.json",
+      "sha256": "d114eeae708dee4c3feddbebb8d8b236692ebe93056cb5dba169f158aa6aea8f",
+      "bytes": 1725
+    },
+    {
+      "path": "run/logs/wheel_pip_check.log",
+      "sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "bytes": 32
+    },
+    {
+      "path": "run/logs/wheel_pip_check.process.json",
+      "sha256": "0bd879d16897b55b4a32321d9d261844dbdaef566f11cf1b706e123c353f3bcd",
+      "bytes": 1201
+    },
+    {
+      "path": "run/logs/wheel_origin_before.log",
+      "sha256": "4e2e856e402d7e88b8f2070e1389d9bbc00d25a9d074c6972fc14e29342ad2b6",
+      "bytes": 301
+    },
+    {
+      "path": "run/logs/wheel_origin_before.process.json",
+      "sha256": "aa1b51852e12328d2a943b0f726e40b986900913d83bd6da30056a378d1b0943",
+      "bytes": 4579
+    },
+    {
+      "path": "run/logs/wheel_pytest.log",
+      "sha256": "d370a2fe47407c42437e4c7c283560aa49e3f8ad62898aea34e672f2254a9f08",
+      "bytes": 21014
+    },
+    {
+      "path": "run/logs/wheel_pytest.process.json",
+      "sha256": "39929b7c99805b34559f4404d9266b0ac7ab6c2c5bf392853e6d3409b5d5ffea",
+      "bytes": 1722
+    },
+    {
+      "path": "run/logs/wheel_origin_after.log",
+      "sha256": "4e2e856e402d7e88b8f2070e1389d9bbc00d25a9d074c6972fc14e29342ad2b6",
+      "bytes": 301
+    },
+    {
+      "path": "run/logs/wheel_origin_after.process.json",
+      "sha256": "09c1cf8d28c3af749e1c3811358c242b2f5b0c1500bbf30ff89bb9817c2f9b2b",
+      "bytes": 4576
+    }
+  ]
+}

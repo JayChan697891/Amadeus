@@ -1,0 +1,30 @@
+{
+  "scope": "Frozen a122 Windows3.11.15 editable-source full pytest only",
+  "status": "SCOPED PASS; Root and Astra independently reviewed actual artifacts",
+  "product_test_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session": 51949,
+  "terminal_chunk": "4669bf",
+  "exit_code": 0,
+  "finished_at": "2026-11-18T04:44:43.850816+00:00",
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "case_comparison": "All2596 unique case identities/outcomes match current Windows3.11 wheel;57 skips retained",
+  "original_inputs_unchanged": true,
+  "source_files_checked_each_copy": 3992,
+  "runtime_members_checked": 97,
+  "archived_originals": 20,
+  "process_receipts_checked": 7,
+  "root_inspection_native": "1a2a5c exit0",
+  "independent_review": "Astra independently checked actual XML,20 archive/source pairs,7 process receipts/logs,input pins,editable origin, both3992-file sources and97 runtime members; accepted only this scope",
+  "root_report_sha256": "985f8f3eaa799628729893bdd5a5352e8ce2507ef678971800c8b955cdac5aab",
+  "junit_sha256": "a1b447a07970bc93641a029be3abe5a2d6a0462319f8de755d3eb3450ee819bb",
+  "new_document_entry": "Separate targeted checks; not covered by this frozen source suite",
+  "sdist_suite": "NOT RUN; bound to actual311 wheel; preview delivery first",
+  "model_calls": 0,
+  "formal_release": "BLOCKED"
+}

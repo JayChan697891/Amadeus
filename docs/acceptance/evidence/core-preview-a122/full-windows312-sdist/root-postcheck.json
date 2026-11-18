@@ -1,0 +1,99 @@
+{
+  "scope": "Terminal authorized a122 Windows 3.12 sdist inspection; no test execution",
+  "status": "pass",
+  "observed_at": "2026-11-17T15:14:23.764612+00:00",
+  "native_session": 44933,
+  "native_terminal_chunk": "9d8ed4",
+  "native_exit_code": 0,
+  "finished_at": "2026-11-17T15:14:16.221917+00:00",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "driver_sha256": "5dce546c6a60f4c7bca04f2f0ba61f5cc003bc81d1e1d0fbb8ab7cf5b121d99e",
+  "process_states": {
+    "5136": "absent",
+    "23208": "absent",
+    "2272": "absent",
+    "13896": "absent"
+  },
+  "checks": [
+    {
+      "id": "sdist_origin_before",
+      "actual_exit_code": 0,
+      "receipt_outcome": "exited"
+    },
+    {
+      "id": "sdist_pytest",
+      "actual_exit_code": 0,
+      "receipt_outcome": "exited"
+    },
+    {
+      "id": "sdist_origin_after",
+      "actual_exit_code": 0,
+      "receipt_outcome": "exited"
+    }
+  ],
+  "inputs_rehashed": 5,
+  "source_files_rehashed": 3992,
+  "installed_members_rehashed": 97,
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "wheel_baseline_sha256": "96fac8fcc0d50f04c65124dede0ae9106453be4875e761e76b4350b490f43a27",
+  "matching_case_outcomes": 2596,
+  "all_case_outcomes_match": true,
+  "raw_evidence_accessed": false,
+  "copied_original_files": {
+    "attempt.json": {
+      "bytes": 1722,
+      "sha256": "d1fb22afa3a405b861db9e77909f5cf88be0dbdc847fb27712c31074a0fb5958"
+    },
+    "logs/sdist_origin_after.log": {
+      "bytes": 504,
+      "sha256": "e43975dc9519ff0598e634dbd68415e80f5dff8d7f93e5532c55757d62393322"
+    },
+    "logs/sdist_origin_after.process.json": {
+      "bytes": 4580,
+      "sha256": "d20b95892f21dd2cc35bfe40ac7825b181b0db5222050937415ef91c417216c1"
+    },
+    "logs/sdist_origin_before.log": {
+      "bytes": 504,
+      "sha256": "e43975dc9519ff0598e634dbd68415e80f5dff8d7f93e5532c55757d62393322"
+    },
+    "logs/sdist_origin_before.process.json": {
+      "bytes": 4583,
+      "sha256": "32c4dc12a62f276e1652d51c62c8bbeefad703adb42ac143c09d5c409eba5b9f"
+    },
+    "logs/sdist_pytest.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/sdist_pytest.process.json": {
+      "bytes": 1762,
+      "sha256": "0149741428c185ae213dd009673c62111209f1d61e3d4fdcdc3ec950a1d8b275"
+    },
+    "logs/sdist_pytest.stdout.log": {
+      "bytes": 19515,
+      "sha256": "668742d0ff7381da01b127357fcbf9b0e94c4139413725c7cc58577636a3b932"
+    },
+    "pytest-start.json": {
+      "bytes": 544,
+      "sha256": "9016b7ebb20e40110b6bd0ce86805a55ef54221816ed10df12f4a91e35a732e5"
+    },
+    "result.json": {
+      "bytes": 8464,
+      "sha256": "53380812bfa2a356e1e0fe7f5fb6673e3b23c5608f065825e6c5af1cb0f120bc"
+    },
+    "run-sdist.py.txt": {
+      "bytes": 14232,
+      "sha256": "5dce546c6a60f4c7bca04f2f0ba61f5cc003bc81d1e1d0fbb8ab7cf5b121d99e"
+    },
+    "sdist-junit.xml": {
+      "bytes": 409783,
+      "sha256": "a5a419615e6befd957481dc49df78ebb45c9456e668e4ffaa3d7c977287a4d71"
+    }
+  },
+  "formal_release": "BLOCKED"
+}

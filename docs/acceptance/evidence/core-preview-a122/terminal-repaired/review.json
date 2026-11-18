@@ -1,0 +1,42 @@
+{
+  "status": "PREPARATION ACCEPTED; FRESH OWNER AUTHORIZATION REQUIRED",
+  "source_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+  "ready_sha256": "dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1",
+  "plan_sha256": "72dc12e65a202465e47f90b95b30f542a3def0d011817e18430b3b0dc99008c6",
+  "native_preparation": "7ce781 exit0",
+  "native_root_inspection": "acd2b8 exit0; readonly database/Git/private modes",
+  "input_fix": "Windows original PTY892075 observed CRLF; Linux real PTY6e17a1 observed twoLF. New helper actual OSpipe a1151a maps one terminal line to one LF; spaces and EOF retained. No model involved.",
+  "static": "AST and project-config Ruff/format pass. Initial default-cwd Ruff7c174d reported four inherited diagnostics; original project config was selected, rules unchanged.",
+  "independent_review": "Root inspected actual files/results; Astra accepted exact frozen helpers and plan. Cleanup branches statically reviewed, not executed.",
+  "private_local_directory": "12f990: inheritance disabled, only current user and SYSTEM, empty",
+  "model_calls": 0,
+  "auth_copied": false,
+  "candidate_executions": 0,
+  "helper_mains_executed": false,
+  "fresh_permission_received": false,
+  "shutdown": {
+    "normal_poweroff_native": "06db86 exit0",
+    "qemu16412_absent": true,
+    "ports_closed": {
+      "22222": true,
+      "22223": true
+    }
+  },
+  "formal_release": "BLOCKED",
+  "files_sha256": {
+    "auth_home.py.txt": "d297e420f5cb9e2be82a36e8663a9e8654b4951e7674f3bc2fb20a00821eb716",
+    "execution-plan.md": "ef0cbddaea4488127985eb4490b6f8d0a2aa448fb7a2a55b3c3af17f1678736c",
+    "initializer-exit.json": "55973e5963d55ce3c960a7029f2f0e88bfc1f63a76b984a437911bd3f286e9ef",
+    "line-ending-probe.json": "d553764160126d2be0b44db7bac467b8894eae39ca2ad53f9dd9509f04cb80c5",
+    "plan.json": "72dc12e65a202465e47f90b95b30f542a3def0d011817e18430b3b0dc99008c6",
+    "pre-shutdown.json": "b59421c1a0582d794d677f6cec50da5b8ca5469c0d9b0952d26a9831034fe858",
+    "prepare-entry.json": "d4a780238d0a4af38161ef8b4da387309c7ab1aaeccff99eef3b1618529f0644",
+    "prepare-exit.json": "124fd50cb6d223cdd18fedc166d00af7254199b6e6dedf9be82f71db87af6d01",
+    "prepare.py.txt": "61adbb8ae7735abc75c838899e65af5cbb52747164c0aaa36d8cccb220480720",
+    "ready.json": "dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1",
+    "root-readiness-review.json": "910ed8b7720cdb68b0dbfe8fbc3a93fb1ec7368816bed22fc40ba330ca704273",
+    "setup_auth.py.txt": "5925f8e809e8a58d5d306b8d89dd809f5a64b676690c6a1637826c875243c02e",
+    "static-check.json": "0f52115fbd91556042450cd0a1cabd70913ddde5d5f71d7fb03e81e3603c3dc3",
+    "terminal_control.py.txt": "8999d28e2c3eab6fd8313a56e3bcc6cc40f6fb49d044401802fb7f3d9c92c083"
+  }
+}

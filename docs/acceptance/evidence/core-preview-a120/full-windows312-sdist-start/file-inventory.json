@@ -1,0 +1,17 @@
+[
+  {
+    "path": "attempt.json",
+    "bytes": 1154,
+    "sha256": "d35e9d2f5a63b3d72486309fd2a9152bbd17b7f5c2b8c8a2aa33ba6092d208fb"
+  },
+  {
+    "path": "sdist_pytest.process.json",
+    "bytes": 833,
+    "sha256": "4ed5040b44fd42df1477570e910fa87c27e40fab84eba754658c71298065ebf1"
+  },
+  {
+    "path": "run-sdist.py.txt",
+    "bytes": 10584,
+    "sha256": "49aae1f124873e4a6027eb38f03ced72461b39a4790421ed8923a13749c4effe"
+  }
+]

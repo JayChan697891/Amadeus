@@ -1,0 +1,16 @@
+{
+  "observed_at": "2026-11-16T06:47:15.617845+00:00",
+  "producer_plan_sha256": "b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928",
+  "model_calls": 0,
+  "external_model_auth_access": false,
+  "private_home_empty": true,
+  "live_authorization": "NOT GRANTED",
+  "live_execution": "NOT RUN",
+  "runtime_members": 97,
+  "source_attempts": "not_dispatched",
+  "new_helpers": {
+    "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+    "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343"
+  }
+}

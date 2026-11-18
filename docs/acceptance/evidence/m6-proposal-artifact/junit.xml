@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="owner-mediated-real-proposal-artifact" tests="1" failures="0" errors="0" skipped="0" time="0.7843066129999983" timestamp="2026-11-12T10:05:13.962559+00:00"><testcase classname="actual_linux_docker" name="proposal_to_genuine_candidate_to_verified_fixture" time="0.7843066129999983"><system-out>Report-derived aggregate: 8 checked inputs passed; 19 isolation predicates true; actual Docker exit 0 and cleanup confirmed. Not a pytest run; original producer task remains unverified.</system-out></testcase></testsuite>

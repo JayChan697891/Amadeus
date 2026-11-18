@@ -1,0 +1,21 @@
+{
+  "product_sha": "6a8ff4127166d6e029360c3d782b3bbd4e89cab2",
+  "exit_code": 0,
+  "wall_seconds": 13.968210119999995,
+  "model_requests": 0,
+  "scope": "Linux Python3.14 selected source adapter and Core pipeline cases",
+  "runtime_unchanged": true,
+  "formal_release": "BLOCKED",
+  "tests": {
+    "total": 51,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "skip_reasons": [
+    {
+      "case": "test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit",
+      "reason": "The opt-in MXC plan requires native Windows"
+    }
+  ]
+}

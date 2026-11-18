@@ -1,0 +1,243 @@
+"""Offline stage tests with temporary Core state and synthetic owner decisions."""
+
+import json
+from dataclasses import asdict
+from types import SimpleNamespace
+
+import live
+import pytest
+
+from agentsync.adapters.approved_launch import LaunchReview, digest
+from agentsync.adapters.base import AdapterTask
+from agentsync.adapters.codex_invocation import CodexInvocation
+from agentsync.continuation import _OPERATION, ContinuationRequest, OwnerContinuation
+from agentsync.controlled_relay import ContinuationPin
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+from agentsync.proposal_handoff import HandoffReceiver
+from agentsync.relay_queue import RelayQueueOutcome, RelayQueueResult
+from agentsync.storage.database import connect
+
+GRANT = "a" * 64
+PLAN = "b" * 64
+LAUNCH = "c" * 64
+LAUNCH_PLAN = "d" * 64
+INSTRUCTION = "Finish the fixed add(a, b) proposal without using tools."
+
+
+def authentication(state, who):
+    return {
+        "project_id": state["owner"]["project_id"],
+        "session_id": state[who]["session_id"],
+        "session_token": state[who]["session_token"],
+    }
+
+
+@pytest.fixture
+def records(tmp_path, monkeypatch):
+    def save(name, value):
+        with (tmp_path / name).open("x", encoding="utf-8") as stream:
+            json.dump(value, stream)
+
+    monkeypatch.setattr(live, "BASE", tmp_path)
+    monkeypatch.setattr(live, "RECEIPTS", tmp_path / "receipts")
+    # Synthetic records use the current OS user. Fixture ownership is tested by cleanup separately.
+    monkeypatch.setattr(live, "private_file", lambda path: path.stat())
+    monkeypatch.setattr(live, "cleanup", SimpleNamespace(save=save), raising=False)
+    monkeypatch.setattr(
+        live,
+        "prep",
+        SimpleNamespace(
+            auth=authentication,
+            CONTINUATION=INSTRUCTION,
+            PATHS=("add.py",),
+            TIMEOUT=90,
+            CLI_VERSION="0.167.0-alpha.3.2",
+        ),
+        raising=False,
+    )
+    return save
+
+
+@pytest.fixture
+def persisted(tmp_path, records, monkeypatch):
+    core = Core(tmp_path / "core")
+    source = tmp_path / "source"
+    source.mkdir()
+    live.RECEIPTS.mkdir()
+    owner = core.execute("create_project", {"name": "Offline fixture", "root_path": str(source)})
+    state = {"owner": owner, "task": {"id": "source-task"}}
+    for who in ("producer", "receiver"):
+        state[who] = core.execute("register_agent", {**owner, "name": who})
+    receiver = HandoffReceiver(
+        owner["project_id"],
+        state["receiver"]["agent_id"],
+        state["receiver"]["session_id"],
+        state["receiver"]["session_token"],
+    )
+    request = ContinuationRequest(
+        receiver,
+        ContinuationPin("source-task", 4, "context", 1, "e" * 64, LAUNCH, "f" * 64),
+        INSTRUCTION,
+        ("add.py",),
+        live.TITLE,
+        ("code",),
+        90,
+    )
+    relay = live.ControlledRelay(core, tmp_path, live.RECEIPTS)
+    for name in (f"launch-{LAUNCH}.json", f"consent-{'1' * 64}.json"):
+        relay._receipt_store.write(name, {"consent_sha256": "1" * 64})
+    records("continuation-private.json", asdict(request))
+    records(
+        "continuation-plan.json",
+        {
+            "authorization_sha256": GRANT,
+            "model_calls": 0,
+            "plan_sha256": PLAN,
+            "request_sha256": live.sha(tmp_path / "continuation-private.json"),
+            "source_receipt_sha256": live.source_receipts(relay, state, LAUNCH),
+        },
+    )
+    monkeypatch.setattr(live, "core_state", lambda: (core, state))
+    monkeypatch.setattr(live, "native_identity", lambda: {"pid": 123})
+    return core, relay, state, request
+
+
+def test_saved_continuation_request_must_match_its_original_bytes(persisted, tmp_path):
+    _, _, state, request = persisted
+    loaded, _ = live.load_continuation(state, GRANT)
+    assert loaded == request and type(loaded.allowed_paths) is tuple
+    path = tmp_path / "continuation-private.json"
+    path.write_bytes(path.read_bytes() + b"\n")
+    with pytest.raises(AssertionError):
+        live.load_continuation(state, GRANT)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("plan_matches", (True, False))
+async def test_replay_uses_saved_runtime_binding_and_handles_json_arrays(
+    persisted, records, monkeypatch, tmp_path, plan_matches
+):
+    core, relay, state, request = persisted
+    project = state["owner"]["project_id"]
+    runtime_plan = PLAN if plan_matches else "2" * 64
+    # Seed only the existing idempotency row and dispatch fence. No launch path is exercised.
+    with connect(core.db_path) as db:
+        db.execute(
+            "INSERT INTO owner_idempotency VALUES(?,?,?,?,?)",
+            (
+                project,
+                _OPERATION,
+                LAUNCH,
+                runtime_plan,
+                json.dumps(
+                    {
+                        "config_sha256": digest(OwnerContinuation._config(request)),
+                        "plan_sha256": runtime_plan,
+                    }
+                ),
+            ),
+        )
+    relay._receipt_store.write(f"continuation-{digest([project, LAUNCH])}-dispatch.json", {})
+    outcome = {
+        "state": "resolved",
+        "wave": asdict(
+            RelayQueueOutcome("resolved", (RelayQueueResult("target", "ready_for_review"),))
+        ),
+    }
+    observed = []
+
+    def status(_self, actual_project, actual_launch, *, admin_token):
+        observed.append((actual_project, actual_launch))
+        assert admin_token == state["owner"]["admin_token"]
+        return outcome
+
+    # The real run_once authenticates and binds the saved request before reaching cached status.
+    monkeypatch.setattr(OwnerContinuation, "status", status)
+    records("dispatch-observation.json", {"outcome": outcome})
+    records(
+        "continuation-result.json",
+        {
+            "status": "resolved",
+            "authorization_sha256": GRANT,
+            "plan_sha256": PLAN,
+            "identity": {"pid": 456},
+            "outcome": outcome,
+            "tasks": live.task_graph(core, state),
+        },
+    )
+    if not plan_matches:
+        with pytest.raises(AgentSyncError) as error:
+            await live.replay(GRANT)
+        assert error.value.code == "continuation_boundary"
+        assert observed == [] and not (tmp_path / "replay.json").exists()
+        return
+    assert type(outcome["wave"]["tasks"]) is tuple
+    assert await live.replay(GRANT) == 0 and observed == [(project, LAUNCH)]
+    replay = json.loads((tmp_path / "replay.json").read_bytes())
+    assert replay["outcome"] == json.loads(json.dumps(outcome))
+    assert replay["receiver_callbacks"] == replay["model_calls"] == 0
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("fault", (None, "stage", "plan", "digest", "expired"))
+async def test_receiver_decision_is_bound_and_expires(records, monkeypatch, tmp_path, fault):
+    now = 1000.0
+    monkeypatch.setattr(live, "time", SimpleNamespace(time=lambda: now, monotonic=lambda: now))
+    task = AdapterTask("project", "session", "target", "request", INSTRUCTION, 90)
+    plan = CodexInvocation(
+        "project",
+        "session",
+        "target",
+        "request",
+        ("unused",),
+        tmp_path,
+        INSTRUCTION,
+        (),
+        90,
+        1024 * 1024,
+        "0.167.0-alpha.3.2",
+        "3" * 64,
+    )
+    review = LaunchReview("codex", LAUNCH_PLAN, plan, task)
+    validations = []
+
+    def validate():
+        validations.append(True)
+        return {}, GRANT
+
+    def save_and_decide(name, value):
+        records(name, value)
+        if name != "receiver-request.json":
+            return
+        assert value["expires_at"] == now + 30 and value["continuation_plan_sha256"] == PLAN
+        decision = {
+            "stage": "receiver",
+            "plan_sha256": LAUNCH_PLAN,
+            "expires_at": now + 20,
+            "request_sha256": live.sha(tmp_path / name),
+        }
+        if fault is not None:
+            field, replacement = {
+                "stage": ("stage", "producer"),
+                "plan": ("plan_sha256", PLAN),
+                "digest": ("request_sha256", LAUNCH),
+                "expired": ("expires_at", now - 1),
+            }[fault]
+            decision[field] = replacement
+        records("receiver-decision.json", decision)
+
+    monkeypatch.setattr(live.cleanup, "save", save_and_decide)
+    monkeypatch.setattr(live.cleanup, "validate_authorization", validate, raising=False)
+    state = {
+        "owner": {"admin_token": "synthetic-owner-token"},
+        "producer": {"session_token": "synthetic-producer-token"},
+        "receiver": {"session_token": "synthetic-receiver-token"},
+    }
+    if fault is None:
+        assert await live.receiver_gate(None, state, review, PLAN, GRANT, now + 90) == now + 20
+        assert validations == [True] and (tmp_path / "receiver-accepted.json").is_file()
+    else:
+        with pytest.raises(AssertionError):
+            await live.receiver_gate(None, state, review, PLAN, GRANT, now + 90)
+        assert validations == [] and not (tmp_path / "receiver-accepted.json").exists()

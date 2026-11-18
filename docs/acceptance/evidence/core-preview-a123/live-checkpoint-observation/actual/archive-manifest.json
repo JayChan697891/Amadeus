@@ -1,0 +1,86 @@
+{
+  "auth-cleanup-result.json": {
+    "size": 711,
+    "sha256": "48081d41de1c5d01c1d3fe566171fbe6828414f8fb193bb97bf1b09bf7778818"
+  },
+  "auth-route.json": {
+    "size": 156,
+    "sha256": "529b6d16fee0e6a366c1fc0338d187b0f2e9bc9a80c094b0eac0b8c904fa5b91"
+  },
+  "capture-metadata.json": {
+    "size": 369,
+    "sha256": "531e5cae04a1e4d35774efefb33fb56f2e54d88c84765ba8cc74bb42024f0faf"
+  },
+  "exit-observation.json": {
+    "size": 578,
+    "sha256": "6b2dae5cf490b285b8408dc47d757c5ecdb76a1d93cc2220125735b6ca75a094"
+  },
+  "fixture-before.json": {
+    "size": 69,
+    "sha256": "6a06440cda53150e7b9f6b31f8d8f7267a55526c0c95f9fe3588e108e0e5b081"
+  },
+  "host-exit.json": {
+    "size": 1136,
+    "sha256": "f9fb3715d50b01b18d3072373aa26d0d1130df33dd87ae4231e9240590fa0d39"
+  },
+  "root-diagnosis.json": {
+    "size": 2046,
+    "sha256": "d6cfafa60fdba3e4a14119b6fa8bbf000cea77bcc10ca624363b7975f6a84898"
+  },
+  "root-postcheck.json": {
+    "size": 365,
+    "sha256": "d7e013baac7c2d99e729c2f51e5b2b20fb0570ca72945b14e705381b9132b449"
+  },
+  "terminal-run-result.json": {
+    "size": 3867,
+    "sha256": "2955df89e536710b51a75e365427254723a15d5d8192368c0aa22cd9b6d39b32"
+  },
+  "host/finish-intent.json": {
+    "size": 309,
+    "sha256": "c3a8ce9acfb4549a1720f9ea6679cccfb9ac1d45c6a9660062f919f16b4de0bf"
+  },
+  "host/finish-result.json": {
+    "size": 1075,
+    "sha256": "0db7ae5555c6a29af1fbab50b713ebae22dc810258bb5075470146ef6ff9ab8d"
+  },
+  "host/launch-intent.json": {
+    "size": 583,
+    "sha256": "d6a742864c4256d05c9fa5ea0c99278e1b4334fee636caf581396dd0f0322ca4"
+  },
+  "host/launch-result.json": {
+    "size": 666,
+    "sha256": "202226aea2c25a8f76170d2325f7cd60a5a94dddbc474647ebca97f84198f38f"
+  },
+  "host/pre-auth-readiness.json": {
+    "size": 325,
+    "sha256": "393cab24b496fd663bd0be64186ecf9a8b2a56ba03b3a6a70714f0bd0d538ee3"
+  },
+  "host/setup-intent.json": {
+    "size": 282,
+    "sha256": "845eeed99948acc7d77a7582f190fd0ed97c64604057a30d0577cba62296a956"
+  },
+  "host/setup-result.json": {
+    "size": 314,
+    "sha256": "48a9c68c7b98bdc47eaacf78f406f5def554415b9b24fdb59a829c8355bd8ad8"
+  },
+  "observation/first-dispatched.json": {
+    "size": 559,
+    "sha256": "af6c544b2c8f8f11617ef1699d0176c614a29ba6de5e220fe8d847505883c507"
+  },
+  "observation/first-observed.json": {
+    "size": 764,
+    "sha256": "dc2a40e569d5404800446eea26eb3d6f7359e08e064cbfca20c96ef234cb992f"
+  },
+  "observation/manifest.json": {
+    "size": 524,
+    "sha256": "7bdb4fec007c2e542ca54f0af5b12d672a4ecddc3e7dcb042870330b0059bdbd"
+  },
+  "observation/postcheck.json": {
+    "size": 1438,
+    "sha256": "330b8860987f14be4c5dd56d0d2a970b237fcdefdacbae8b473b4c7559a5f6ea"
+  },
+  "observation/proposal-progress.json": {
+    "size": 641,
+    "sha256": "afbde68e2145693457b29acc7d39508aa3c105a2bddf3dc6d71bcc60a162c8b8"
+  }
+}

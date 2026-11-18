@@ -1,0 +1,38 @@
+{
+  "status": "prepared",
+  "model_calls": 0,
+  "credential_access": 0,
+  "prepare_invoked": true,
+  "control": {
+    "mode": "timeout",
+    "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+    "plan_file_sha256": "9fde9ea8b7553e78b1c40682e4e3e18bd32b531c793afef745b508e6ee662f9e",
+    "boot_id": "ed2080a3-5d27-428e-b29e-19de29e93218",
+    "helper_sha256": {
+      "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+      "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+      "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+      "auth_home.py": "9278b085bb4b9c94710145a247b2a0d1c6efc0a8e2e4edd471577a4d90849b74",
+      "route.py": "8acabe28411025a72a1ef6ec5c9f0790b3787ef4222dc2c2a38fcb994017bfc7"
+    },
+    "max_model_calls": 1,
+    "max_candidate_executions": 0,
+    "subscription_only": true,
+    "model_calls": 0,
+    "credential_copy": false,
+    "owner_grant_sha256": "11e5596468a01dea4cd4776dbe68b2a4579648d92069f0ea6842d9f0dab86232",
+    "host_controller_sha256": "e12f56145a3e379e0ac49f2f6aaead943d92acbad1dada14bf4e1cb1985e02ec"
+  },
+  "prepared": {
+    "prepared": true,
+    "mode": "timeout",
+    "plan_sha256": "bc624d471c2a5257885c61f809ae34007df2f303e47366a3ef0bb514209373dc",
+    "plan_file_sha256": "9fde9ea8b7553e78b1c40682e4e3e18bd32b531c793afef745b508e6ee662f9e",
+    "model_calls": 0
+  },
+  "cancel_originals_unchanged": true,
+  "credential_copy": false,
+  "guest_grant_uploaded": false,
+  "expiry_seconds": 3600,
+  "finished_at": "2026-11-18T02:43:57.503187+00:00"
+}

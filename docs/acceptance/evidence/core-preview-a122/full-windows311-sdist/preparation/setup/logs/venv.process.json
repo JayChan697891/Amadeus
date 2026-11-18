@@ -1,0 +1,44 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "venv",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "venv",
+      "D:\\agentsync-debug\\m122win311\\d"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122win311-sdist-preparation\\setup",
+    "started_at": "2026-11-18T03:18:15.930655+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "venv",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py311-venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "venv",
+      "D:\\agentsync-debug\\m122win311\\d"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122win311-sdist-preparation\\setup",
+    "exit_code": 0,
+    "started_at": "2026-11-18T03:18:15.930655+00:00",
+    "finished_at": "2026-11-18T03:18:19.623968+00:00",
+    "log": "logs/venv.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

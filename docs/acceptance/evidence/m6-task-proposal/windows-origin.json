@@ -1,0 +1,9 @@
+{
+  "product_sha": "80754db2c8feb01cc046fed487de52fd324c58f2",
+  "scope": "Fresh offline wheel installation, Task-bound inert proposal parser, Core, HTTP, MCP and SDK regressions only",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_modules_matched_before_and_after": 85,
+  "source_shadowing": false,
+  "exit_code": 0,
+  "model_requests": 0
+}

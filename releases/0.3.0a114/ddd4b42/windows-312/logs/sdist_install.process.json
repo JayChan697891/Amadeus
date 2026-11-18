@@ -1,0 +1,62 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-o5l3614v\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba\\artifacts\\agentsync_local-0.3.0a114.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba",
+    "started_at": "2026-11-13T12:03:14.237155+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t114\\.scratch-fooatvmo\\sdist-o5l3614v\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba\\artifacts\\agentsync_local-0.3.0a114.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m114\\windows-312\\release-20261113T103651Z-f983bda709ba",
+    "exit_code": 0,
+    "started_at": "2026-11-13T12:03:14.237155+00:00",
+    "finished_at": "2026-11-13T12:03:17.453669+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "6a07b7eb38bd7d411c502a30fe6e9bfa3b7fe240cef06c21d5df37415c3c053a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

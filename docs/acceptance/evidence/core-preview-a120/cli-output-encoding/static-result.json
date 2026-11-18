@@ -1,0 +1,25 @@
+{
+  "ruff": {
+    "argv": [
+      "D:/agentsync-debug/m120p/w/Scripts/ruff.exe",
+      "check",
+      "--no-cache",
+      "src/agentsync/cli.py",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_handoff_recovery.py"
+    ],
+    "exit_code": 0
+  },
+  "format": {
+    "argv": [
+      "D:/agentsync-debug/m120p/w/Scripts/ruff.exe",
+      "format",
+      "--check",
+      "--no-cache",
+      "src/agentsync/cli.py",
+      "tests/integration/test_durable_demo.py",
+      "tests/integration/test_handoff_recovery.py"
+    ],
+    "exit_code": 0
+  }
+}

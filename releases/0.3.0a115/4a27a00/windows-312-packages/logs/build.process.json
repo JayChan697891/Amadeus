@@ -1,0 +1,46 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "build",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "D:\\agentsync-debug\\m115-resume-20261113\\reports\\release-20261113T234539Z-90510b71d108\\artifacts"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r2\\s",
+    "started_at": "2026-11-13T23:45:48.292670+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "build",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115resume\\.scratch-7r09tkmy\\offline-build\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--outdir",
+      "D:\\agentsync-debug\\m115-resume-20261113\\reports\\release-20261113T234539Z-90510b71d108\\artifacts"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-r2\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-13T23:45:48.292670+00:00",
+    "finished_at": "2026-11-13T23:45:54.220027+00:00",
+    "log": "logs/build.log",
+    "log_sha256": "671dfdfad826d24d2398e02ccd4a243d5136ddfbe4f5a4f2b027469879f225a8",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

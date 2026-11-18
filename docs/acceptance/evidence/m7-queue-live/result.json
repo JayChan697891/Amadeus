@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-11-12T13:30:58.814408+00:00",
+  "outcome": {
+    "reason": "no_ready_tasks",
+    "waves": [
+      {
+        "state": "resolved",
+        "tasks": [
+          {
+            "task_id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+            "state": "ready_for_review",
+            "failure_code": null
+          }
+        ],
+        "verification": "unverified"
+      }
+    ],
+    "verification": "unverified"
+  },
+  "error_code": null,
+  "attempts": [
+    {
+      "leg": "first",
+      "state": "terminal_recorded",
+      "client": "codex",
+      "status": "proposal_received",
+      "exit_code": 0,
+      "timed_out": false,
+      "parent_ended": true,
+      "run_sha256": "85c914aae71aab57ce6b387b5fb59f24933ac9a9da01160f528c7b59b7ef8255",
+      "session_sha256": "2b947073789f9de525cae9fe116108da3e85206a9db908c6cb29c64c98c238a6",
+      "error_code": null,
+      "admission": {
+        "state": "both_reservations_recorded",
+        "plan_sha256": "5934907c6d3b2b76bcb6cd46ec84e1c1feffc90bac74b6f4603a1a9c4ecf1aef",
+        "execution_verified": false
+      },
+      "adapter_elapsed_ms": 34689,
+      "reported_input_tokens": 8244,
+      "reported_output_tokens": 61,
+      "agent_sha256": "a611e01a42b90ecdc27b63f6928247ba0af7bf1bc4c2efac3173d2280b760140",
+      "declared_client_version": "0.167.0-alpha.3.2",
+      "protocol_session_sha256": "7bb5ddc405b1809c3edc3755f04ea49632d1dc6765b53d4416ff5f1985b116d7",
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    },
+    {
+      "leg": "second",
+      "state": "not_dispatched",
+      "client": null,
+      "status": null,
+      "exit_code": null,
+      "timed_out": null,
+      "parent_ended": null,
+      "run_sha256": null,
+      "session_sha256": null,
+      "error_code": null,
+      "admission": null,
+      "adapter_elapsed_ms": null,
+      "reported_input_tokens": null,
+      "reported_output_tokens": null,
+      "agent_sha256": null,
+      "declared_client_version": null,
+      "protocol_session_sha256": null,
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    }
+  ],
+  "source_and_producer_unchanged": true,
+  "review": {
+    "state": "submitted_for_review",
+    "context_id": "feecd0d0-8d45-4d37-92ca-44f64e2afa14",
+    "content_sha256": "17da5b6a8cc2860b55c907402d5be58d8d8726aa7e587bbfb5e1e7bcef2557d6",
+    "publication_task_version": 4,
+    "review_task_version": 5,
+    "verification": "unverified"
+  },
+  "proposal": {
+    "state": "proposal_stored",
+    "context_id": "feecd0d0-8d45-4d37-92ca-44f64e2afa14",
+    "context_version": 1,
+    "content_sha256": "17da5b6a8cc2860b55c907402d5be58d8d8726aa7e587bbfb5e1e7bcef2557d6",
+    "task_version": 4,
+    "verification": "unverified"
+  },
+  "queue": {
+    "state": "resolved",
+    "tasks": [
+      {
+        "task_id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+        "state": "ready_for_review",
+        "failure_code": null
+      }
+    ],
+    "verification": "unverified"
+  },
+  "queue_pending": false,
+  "captured_start_invoked": true,
+  "formal_release": "BLOCKED"
+}

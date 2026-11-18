@@ -1,0 +1,62 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115v/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-sdist-r1\\run\\artifacts\\agentsync_local-0.3.0a115.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "started_at": "2026-11-14T07:26:14.801433+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115v/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-sdist-r1\\run\\artifacts\\agentsync_local-0.3.0a115.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:14.801433+00:00",
+    "finished_at": "2026-11-14T07:26:18.078926+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "8d5d9640441152cd706a94eebf5e6a58d34a0a0abf94e0b62f81e5094415c34c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+cachedir: scratch\cache
+rootdir: D:\agentsync-debug\strategy-demo\interrupted-a117-controller
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 9 items
+
+test_interrupt_parent.py .........                                       [100%]
+
+- generated xml file: D:\agentsync-debug\strategy-demo\interrupted-a117-controller\scratch\junit.xml -
+============================== 9 passed in 0.20s ==============================

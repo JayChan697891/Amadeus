@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "status": "installed runtime metadata collection complete; license review pending",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "tool_source_commit": "d4273550359ffe767d0195445d1fccef6651cfc7",
+  "platform": "Windows CPython3.12.16",
+  "native_chunk": "f87a34",
+  "exit_code": 0,
+  "native_checks": 6,
+  "started_at": "2026-11-17T02:34:50.368966+00:00",
+  "finished_at": "2026-11-17T02:34:51.427744+00:00",
+  "installations": {
+    "wheel": "existing D:/agentsync-debug/m120p/w",
+    "sdist": "existing D:/agentsync-debug/m120p/d"
+  },
+  "distributions_per_install": 32,
+  "installed_license_files_rehashed_per_install": 43,
+  "runtime_members_unchanged_per_install": 97,
+  "inventories_byte_identical": true,
+  "inventory_sha256": "339bb5d3daa69645484637b7f8b911003ffb869a23cfa33c003e88d6875cced9",
+  "metadata_review_items": [],
+  "license_review": "pending",
+  "publication_authorized": false,
+  "root_review_chunk": "b41836",
+  "original_records": 16,
+  "original_bytes": 77781,
+  "no_rebuild_reinstall_or_test_rerun": true,
+  "formal_release": "BLOCKED",
+  "limits": [
+    "Declared installed metadata/file hashes are recorded, not a legal review or release authorization.",
+    "This is a correctly bounded supplement on existing preview installations; no current formal matrix row is inferred or old receipts rewritten.",
+    "Ruff/format failures and terminal fixture cleanup BLOCKED remain unresolved; user decisions are still pending."
+  ],
+  "next": "Collect the first Linux3.14 installed license inventories from the existing a120 wheel/sdist environments, checking no competing worker and preserving VM state. Not started."
+}

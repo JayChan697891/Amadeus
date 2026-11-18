@@ -1,0 +1,569 @@
+"""One-shot local RAT-M8-02 transport fixtures for the installed alpha116 wheel.
+
+Run after the original Linux queue using a separate exact-wheel installation.
+Use its python -I -B. No performance or real-client conclusion follows.
+"""
+
+import hashlib
+import json
+import os
+import queue
+import secrets
+import signal
+import socket
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import zipfile
+from contextlib import contextmanager
+from datetime import UTC, datetime
+from importlib import metadata, util
+from pathlib import Path
+
+VERSION = "0.3.0a116"
+COMMIT = "624b36c039a90feb9340559ac773f9df08ba86ad"
+MANIFEST_SHA = "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95"
+WHEEL_SHA = "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690"
+WINDOWS = os.name == "nt"
+ROOT = Path("D:/agentsync-debug/m116" if WINDOWS else "/root/amadeus-m116")
+BASE = Path(
+    "D:/agentsync-debug/m116-benchmark-r1" if WINDOWS else "/root/amadeus-m116-recovery-r1"
+)
+TIMEOUT = 15
+MAX_FRAME = 65536
+
+
+class CheckFailed(RuntimeError):
+    pass
+
+
+def require(condition, check):
+    if not condition:
+        raise CheckFailed(check)
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def installed_origin():
+    root = Path(sys.prefix).resolve(strict=True)
+    require(root == (BASE / "installed").resolve(strict=True), "benchmark_venv")
+    manifest_path = ROOT / "candidate-bootstrap.json"
+    require(sha(manifest_path) == MANIFEST_SHA, "candidate_manifest_hash")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    frozen = manifest["frozen"]
+    require(
+        (frozen["version"], frozen["commit_sha"]) == (VERSION, COMMIT), "frozen_source_identity"
+    )
+    artifact = next(entry for entry in manifest["artifacts"] if entry["kind"] == "wheel")
+    wheel = (ROOT / artifact["path"]).resolve(strict=True)
+    require(wheel.is_relative_to(ROOT.resolve()), "wheel_location")
+    require(wheel.stat().st_size == artifact["size"], "wheel_size")
+    require(sha(wheel) == artifact["sha256"] == WHEEL_SHA, "wheel_hash")
+
+    dist = metadata.distribution("agentsync-local")
+    require(dist.version == VERSION, "installed_version")
+    direct = json.loads(dist.read_text("direct_url.json"))
+    require(direct["url"] == wheel.as_uri(), "installed_direct_url")
+    require(direct["archive_info"]["hashes"]["sha256"] == WHEEL_SHA, "installed_direct_url_hash")
+    package = Path(dist.locate_file("agentsync")).resolve(strict=True)
+    spec = util.find_spec("agentsync")
+    require(
+        package.is_relative_to(root)
+        and spec is not None
+        and Path(spec.origin).resolve() == package / "__init__.py",
+        "installed_import_origin",
+    )
+    members = {}
+    with zipfile.ZipFile(wheel) as archive:
+        for name in archive.namelist():
+            if name.startswith("agentsync/") and not name.endswith("/"):
+                installed = Path(dist.locate_file(name)).resolve(strict=True)
+                require(installed.is_relative_to(package), "installed_member_location")
+                expected = hashlib.sha256(archive.read(name)).hexdigest()
+                require(sha(installed) == expected, "installed_member_hash")
+                members[name] = expected
+    require("agentsync/__init__.py" in members, "installed_members_found")
+    return {
+        "version": dist.version,
+        "import_origin": (package / "__init__.py").relative_to(root).as_posix(),
+        "wheel_direct_url_verified": True,
+        "members_verified": len(members),
+        "member_hashes_sha256": hashlib.sha256(
+            json.dumps(members, sort_keys=True).encode()
+        ).hexdigest(),
+    }
+
+
+class Stdio:
+    def __init__(self, process):
+        self.process = process
+        self.lines = queue.Queue(maxsize=16)
+        self.eof = threading.Event()
+        self.request_id = 0
+        self.reader = threading.Thread(target=self.read, daemon=True)
+        self.reader.start()
+
+    def read(self):
+        try:
+            with self.process.stdout as stream:
+                while line := stream.readline(MAX_FRAME + 1):
+                    self.lines.put_nowait(line)
+                    if len(line) > MAX_FRAME:
+                        return
+                self.eof.set()
+        except (OSError, queue.Full):
+            return
+
+    def send(self, message):
+        line = json.dumps({"jsonrpc": "2.0", **message}).encode() + b"\n"
+        require(len(line) <= 4096, "mcp_fixture_request_size")
+        self.process.stdin.write(line)
+        self.process.stdin.flush()
+
+    def request(self, method, params):
+        self.request_id += 1
+        self.send({"id": self.request_id, "method": method, "params": params})
+        try:
+            line = self.lines.get(timeout=TIMEOUT)
+        except queue.Empty:
+            raise CheckFailed("mcp_response_deadline") from None
+        require(len(line) <= MAX_FRAME and line.endswith(b"\n"), "mcp_response_frame")
+        response = json.loads(line)
+        require(
+            response.get("jsonrpc") == "2.0"
+            and response.get("id") == self.request_id
+            and "result" in response
+            and "error" not in response,
+            "mcp_response_matching_request",
+        )
+        return response["result"]
+
+    def initialize(self):
+        from mcp.types import LATEST_PROTOCOL_VERSION
+        from mcp.types.version import LATEST_HANDSHAKE_VERSION
+
+        # initialize is the handshake through 2025-11-25. The newer revision uses server/discover.
+        result = self.request(
+            "initialize",
+            {
+                "protocolVersion": LATEST_HANDSHAKE_VERSION,
+                "capabilities": {},
+                "clientInfo": {"name": "transport-recovery-fixture", "version": "1"},
+            },
+        )
+        require(
+            result["protocolVersion"] == LATEST_HANDSHAKE_VERSION
+            and result["serverInfo"]["name"] == "AgentSync"
+            and "tools" in result["capabilities"],
+            "mcp_initialize",
+        )
+        self.send({"method": "notifications/initialized"})
+        return {"negotiated": result["protocolVersion"], "sdk_latest": LATEST_PROTOCOL_VERSION}
+
+    def call(self, name, payload):
+        result = self.request("tools/call", {"name": name, "arguments": payload})
+        require(not result.get("isError"), "mcp_tool_transport_error")
+        if result.get("structuredContent") is not None:
+            return result["structuredContent"]
+        return json.loads(result["content"][0]["text"])
+
+
+def http_response(client, method, path, **kwargs):
+    with client.stream(method, path, **kwargs) as response:
+        body = bytearray()
+        for chunk in response.iter_bytes(chunk_size=MAX_FRAME):
+            require(len(body) + len(chunk) <= MAX_FRAME, "http_response_size")
+            body.extend(chunk)
+        return response.status_code, json.loads(body)
+
+
+def stop(process, record, *, forced=False):
+    record["termination"] = "forced_at_commit" if forced else "fixture_cleanup"
+    record["was_alive"] = process.poll() is None
+    if record["was_alive"]:
+        process.kill()
+    record["exit_code"] = process.wait(timeout=TIMEOUT)
+    if forced:
+        require(record["was_alive"], "server_live_at_kill")
+        require(record["exit_code"] == (1 if WINDOWS else -signal.SIGKILL), "native_forced_exit")
+
+
+def wait_for_closed(port):
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        try:
+            with socket.create_connection(("127.0.0.1", port), timeout=0.2):
+                pass
+        except ConnectionRefusedError:
+            return
+        time.sleep(0.05)
+    raise CheckFailed("old_http_listener_closed")
+
+
+@contextmanager
+def server(protocol, private, record, *, token):
+    mcp = protocol == "mcp_stdio"
+    env = {key: os.environ[key] for key in ("SystemRoot", "WINDIR") if key in os.environ}
+    env.update(
+        HOME=str(private),
+        USERPROFILE=str(private),
+        TEMP=str(private),
+        TMP=str(private),
+        TMPDIR=str(private),
+        LOCALAPPDATA=str(private),
+        APPDATA=str(private),
+    )
+    if mcp:
+        args = ["mcp"]
+    else:
+        with socket.socket() as reservation:
+            reservation.bind(("127.0.0.1", 0))
+            port = reservation.getsockname()[1]
+        args = ["serve", "--host", "127.0.0.1", "--port", str(port)]
+        record["loopback_port"] = port
+        env["AGENTSYNC_HTTP_TOKEN"] = token
+    process = subprocess.Popen(
+        [
+            sys.executable,
+            "-I",
+            "-B",
+            "-m",
+            "agentsync",
+            "--data-dir",
+            str(private / "state"),
+            *args,
+        ],
+        cwd=private,
+        env=env,
+        stdin=subprocess.PIPE if mcp else subprocess.DEVNULL,
+        stdout=subprocess.PIPE if mcp else subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+    wire = None
+    body_failed = False
+    try:
+        record["pid"] = process.pid
+
+        def kill_at_commit():
+            stop(process, record, forced=True)
+            if mcp:
+                require(wire.eof.wait(timeout=5), "old_mcp_stdio_eof")
+                record["old_endpoint_closed"] = "stdio_eof"
+            else:
+                wait_for_closed(port)
+                record["old_endpoint_closed"] = "tcp_connection_refused"
+
+        if mcp:
+            wire = Stdio(process)
+            record["handshake"] = wire.initialize()
+            yield wire.call, kill_at_commit
+        else:
+            import httpx2 as httpx
+
+            with httpx.Client(
+                base_url=f"http://127.0.0.1:{port}",
+                timeout=2,
+                trust_env=False,
+                headers={"Accept-Encoding": "identity"},
+            ) as client:
+                deadline = time.monotonic() + TIMEOUT
+                while time.monotonic() < deadline and process.poll() is None:
+                    try:
+                        status, health = http_response(client, "GET", "/health")
+                    except (httpx.ConnectError, httpx.TimeoutException):
+                        time.sleep(0.05)
+                        continue
+                    require(
+                        status == 200 and health == {"status": "ok", "version": VERSION},
+                        "http_health",
+                    )
+                    break
+                else:
+                    raise CheckFailed("http_readiness_deadline")
+
+                def call(name, payload):
+                    status, envelope = http_response(
+                        client,
+                        "POST",
+                        f"/v1/{name}",
+                        json=payload,
+                        headers={"Authorization": f"Bearer {token}"},
+                    )
+                    require(
+                        status == (200 if envelope.get("ok") is True else 409),
+                        "authenticated_http_operation_status",
+                    )
+                    return envelope
+
+                yield call, kill_at_commit
+    except BaseException:
+        body_failed = True
+        raise
+    finally:
+        try:
+            if process.returncode is None:
+                stop(process, record)
+            if mcp and wire is not None:
+                wire.reader.join(timeout=5)
+                require(
+                    not wire.reader.is_alive() and wire.eof.is_set(), "mcp_reader_reaped_at_eof"
+                )
+            if not mcp and "old_endpoint_closed" not in record:
+                wait_for_closed(port)
+            record["cleanup_verified"] = True
+        except Exception as error:
+            record["cleanup_failure"] = failure(error)
+            if not body_failed:
+                raise
+        finally:
+            if process.stdin is not None:
+                process.stdin.close()
+            if mcp and wire is None:
+                process.stdout.close()
+
+
+def data(envelope, check):
+    require(envelope.get("ok") is True, check)
+    return envelope["data"]
+
+
+def exercise(protocol, private, row):
+    from agentsync.sdk import AgentSyncClient
+
+    root = private / "project"
+    root.mkdir(parents=True, mode=0o700)
+    token = secrets.token_urlsafe(32) if protocol == "http_loopback" else None
+
+    first, second = row["original_process"], row["restarted_process"]
+    checks = row["assertions"]
+    with server(protocol, private, first, token=token) as (call, kill):
+        project = data(
+            call("create_project", {"name": protocol, "root_path": str(root)}),
+            "create_isolated_project",
+        )
+        auth = []
+        owner = AgentSyncClient(private / "state")
+        for name in ("A", "B"):
+            session = data(
+                call("register_agent", {**project, "name": name}), "register_fixture_agent"
+            )
+            members = data(
+                owner.owner_call("list_members", **project, limit=100, offset=0),
+                "owner_list_members",
+            )["members"]
+            member = next(item for item in members if item["agent_id"] == session["agent_id"])
+            grant = data(
+                owner.owner_call(
+                    "set_agent_roles",
+                    **project,
+                    agent_id=member["agent_id"],
+                    roles=["worker"],
+                    expected_version=member["version"],
+                    request_id=f"grant-{name}",
+                ),
+                "owner_grant_worker",
+            )
+            require(grant["roles"] == ["worker"], "worker_granted")
+            auth.append(
+                {
+                    "project_id": project["project_id"],
+                    "session_id": session["session_id"],
+                    "session_token": session["session_token"],
+                }
+            )
+        a, b = auth
+        require(a["session_id"] != b["session_id"], "distinct_fixture_sessions")
+        checks.append("two_explicit_worker_grants")
+        create = {**a, "title": "Survive server exit", "request_id": "recovery-create"}
+        created = call("create_task", create)
+        task = data(created, "create_task_committed")
+        require(
+            task["status"] == "pending"
+            and task["version"] == 1
+            and task["owner_session_id"] is None,
+            "initial_task_state",
+        )
+        claim = {
+            **a,
+            "task_id": task["id"],
+            "expected_version": task["version"],
+            "request_id": "recovery-claim",
+            "lease_seconds": 300,
+        }
+        claimed = call("claim_task", claim)
+        owned = data(claimed, "claim_task_committed")
+        public = {key: value for key, value in owned.items() if key != "lease_token"}
+        require(
+            owned["id"] == task["id"]
+            and owned["status"] == "claimed"
+            and owned["version"] == task["version"] + 1
+            and owned["owner_session_id"] == a["session_id"]
+            and bool(owned["lease_token"]),
+            "initial_claim_identity_version_owner",
+        )
+        require(
+            data(call("list_tasks", a), "list_before_kill")["tasks"] == [public],
+            "one_committed_claim_before_kill",
+        )
+        row["committed_task"] = {
+            "count": 1,
+            "status": "claimed",
+            "version": owned["version"],
+            "owner": "A",
+        }
+        checks.append("one_committed_claim_before_kill")
+        kill()
+
+    with server(protocol, private, second, token=token) as (call, _):
+        require(second["pid"] != first["pid"], "distinct_native_processes")
+        require(
+            data(call("list_tasks", a), "read_restarted_task")["tasks"] == [public],
+            "same_task_id_version_and_owner_after_restart",
+        )
+        checks.append("same_task_id_version_and_owner_after_restart")
+        require(call("create_task", create) == created, "exact_create_replay")
+        checks.append("exact_create_replay")
+        require(call("claim_task", claim) == claimed, "exact_claim_replay")
+        checks.append("exact_claim_replay")
+        require(
+            data(call("list_tasks", b), "authenticated_B_read")["tasks"] == [public],
+            "no_duplicate_or_mutated_task_after_replay",
+        )
+        checks.append("no_duplicate_or_mutated_task_after_replay")
+        rejected = call(
+            "claim_task",
+            {
+                **b,
+                "task_id": task["id"],
+                "expected_version": owned["version"],
+                "request_id": "competing-claim",
+            },
+        )
+        require(
+            rejected.get("ok") is False and rejected["error"]["code"] == "invalid_transition",
+            "authenticated_competing_claim_denied",
+        )
+        require(
+            data(call("list_tasks", b), "list_after_denial")["tasks"] == [public],
+            "no_task_change_after_competing_claim",
+        )
+        checks.append("authenticated_competing_claim_denied_without_task_change")
+
+        running = data(
+            call(
+                "update_task",
+                {
+                    **a,
+                    "task_id": task["id"],
+                    "lease_token": owned["lease_token"],
+                    "expected_version": owned["version"],
+                    "status": "running",
+                    "request_id": "recovery-continue",
+                },
+            ),
+            "continue_with_recovered_lease",
+        )
+        require(
+            running["id"] == task["id"]
+            and running["status"] == "running"
+            and running["version"] == owned["version"] + 1
+            and running["owner_session_id"] == a["session_id"]
+            and data(call("list_tasks", a), "list_continued_task")["tasks"] == [running],
+            "one_task_continued_by_original_owner",
+        )
+        checks.append("one_task_continued_by_original_owner")
+        row["continued_task"] = {
+            "count": 1,
+            "status": "running",
+            "version": running["version"],
+            "owner": "A",
+        }
+
+
+def failure(error):
+    result = {"type": type(error).__name__}
+    if isinstance(error, CheckFailed):
+        result["check"] = str(error)
+    return result
+
+
+def main():
+    require(sys.flags.isolated and sys.dont_write_bytecode, "run_with_python_-I_-B")
+    require(Path(sys.prefix).resolve() == (BASE / "installed").resolve(), "benchmark_venv")
+    out = BASE / "transport-recovery"
+    out.mkdir(mode=0o700)
+    summary = {
+        "status": "fail",
+        "scope": "Two scripted local same-protocol fixtures for RAT-M8-02",
+        "formal_acceptance": False,
+        "real_client_verified": False,
+        "automatic_retry": False,
+        "started_at": datetime.now(UTC).isoformat(),
+        "platform": sys.platform,
+        "python": sys.version.split()[0],
+        "source_commit": COMMIT,
+        "candidate_manifest_sha256": MANIFEST_SHA,
+        "wheel_sha256": WHEEL_SHA,
+        "driver_sha256": sha(Path(__file__)),
+        "cases": [
+            {
+                "protocol": protocol,
+                "status": "not_run",
+                "assertions": [],
+                "original_process": {},
+                "restarted_process": {},
+            }
+            for protocol in ("mcp_stdio", "http_loopback")
+        ],
+    }
+    try:
+        summary["origin_before"] = installed_origin()
+        try:
+            with tempfile.TemporaryDirectory(prefix="private-", dir=out) as directory:
+                private = Path(directory).resolve(strict=True)
+                require(private.parent == out.resolve(strict=True), "owned_private_directory")
+                for row in summary["cases"]:
+                    protocol = row["protocol"]
+                    row["status"] = "fail"
+                    try:
+                        exercise(protocol, private / protocol, row)
+                        row["status"] = "pass"
+                    except Exception as error:
+                        row["failure"] = failure(error)
+                        if any(
+                            "cleanup_failure" in row[key]
+                            for key in ("original_process", "restarted_process")
+                        ):
+                            break
+        finally:
+            summary["origin_after"] = installed_origin()
+            require(
+                summary["origin_before"] == summary["origin_after"], "installed_identity_unchanged"
+            )
+        if all(row["status"] == "pass" for row in summary["cases"]):
+            summary["status"] = "pass"
+    except (Exception, KeyboardInterrupt) as error:
+        summary["failure"] = failure(error)
+    summary["finished_at"] = datetime.now(UTC).isoformat()
+    result = out / "summary.json"
+    with result.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(summary, stream, indent=2, allow_nan=False)
+        stream.write("\n")
+    print(json.dumps({"status": summary["status"], "summary": str(result)}), flush=True)
+    return 0 if summary["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    try:
+        exit_code = main()
+    except (Exception, KeyboardInterrupt) as error:
+        print(
+            json.dumps({"status": "fail", "failure": failure(error)}), file=sys.stderr, flush=True
+        )
+        exit_code = 1
+    sys.exit(exit_code)

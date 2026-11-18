@@ -1,0 +1,35 @@
+"""Affected CLI regression against the existing installed a117 runtime."""
+import hashlib
+import json
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+repo = Path('F:/syuc/amadeus-m6-single')
+base = Path('D:/agentsync-debug/demo-imageid')
+run, scratch = base / 'run', base / 'scratch'
+run.mkdir()
+(run / 'logs').mkdir()
+scratch.mkdir()
+sys.path.insert(0, str(repo))
+from tools import release_acceptance as collector
+import agentsync
+
+names = ('tools/run_proposal_candidate_pilot.py', 'tests/unit/test_proposal_candidate_pilot_cli.py')
+before = {name: hashlib.sha256((repo / name).read_bytes()).hexdigest() for name in names}
+command = [sys.executable, '-I', '-B', '-m', 'pytest', str(repo / names[1]),
+           '--junitxml', str(scratch / 'junit.xml'), '--basetemp', str(scratch / 'pytest'),
+           '-o', f'cache_dir={scratch / "cache"}']
+check = collector.execute('pilot_cli_pytest', command, repo, run, scratch)
+redactions = collector.persist_junit(scratch / 'junit.xml', run / 'junit.xml')
+counts = collector.junit_counts(run / 'junit.xml')
+assert before == {name: hashlib.sha256((repo / name).read_bytes()).hexdigest() for name in names}
+result = {'observed_at': datetime.now(UTC).isoformat(), 'check': check, 'counts': counts,
+          'input_hashes': before, 'input_unchanged': True, 'junit_redactions': redactions,
+          'python': sys.version, 'runtime_origin': agentsync.__file__, 'version': agentsync.__version__,
+          'scope': 'CLI validation only; no Docker or model execution', 'formal_release': 'BLOCKED'}
+with (run / 'result.json').open('x', encoding='utf-8') as stream:
+    json.dump(result, stream, indent=2)
+    stream.write('\n')
+print(json.dumps(result))
+raise SystemExit(0 if check['status'] == 'pass' else 1)

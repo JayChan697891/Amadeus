@@ -1,0 +1,202 @@
+"""Collect the first frozen a122 Linux wheel result after its terminal receipt."""
+
+import hashlib
+import json
+import stat
+from datetime import UTC, datetime
+from pathlib import Path, PurePosixPath
+
+import paramiko
+
+BASE = Path("D:/agentsync-debug/m122fulll")
+DEST = BASE / "harvest"
+SUMMARY = BASE / "transfer-summary.json"
+GUEST = "/root/amadeus-m122fulll"
+
+PROBE = r"""
+import hashlib, json, os, runpy, stat, subprocess, sys, xml.etree.ElementTree as ET
+from pathlib import Path
+
+base = Path('/root/amadeus-m122fulll')
+run = base / 'run'
+driver = base / 'run-wheel.py'
+boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+driver_sha = '11a3253b2e49fb4fcadf9a4d8c0d6f2164241854109a5efbe22193d7bd34b33f'
+commit = '5232e9e8bd33a949f7ffdc68410cd614a297af66'
+assert boot == '6ef0cfcd-3b1d-486c-9a81-0aae13dbc93a'
+assert run.resolve(strict=True) == run
+result_file = run / 'result.json'
+assert stat.S_ISREG(result_file.lstat().st_mode) and result_file.stat().st_size <= 1024**2
+result = json.loads(result_file.read_bytes())
+assert result['finished_at'] and result['status'] in ('pass', 'fail', 'unknown')
+assert result['boot_id'] == boot and result['driver_sha256'] == driver_sha
+assert result['test_source_commit'] == result['product_runtime_commit'] == commit
+assert result['formal_release'] == 'BLOCKED' and result['automatic_retry'] is False
+active = []
+for proc in Path('/proc').iterdir():
+    if not proc.name.isdecimal() or int(proc.name) == os.getpid():
+        continue
+    try:
+        name = (proc / 'comm').read_text().strip()
+        command = (proc / 'cmdline').read_bytes()
+        if ('python' in name or 'codex' in name) and any(
+            marker in command for marker in (b'/root/amadeus-', b'/root/agentsync-')
+        ):
+            active.append({'pid': int(proc.name), 'name': name})
+    except (OSError, ProcessLookupError):
+        pass
+assert not any(worker['pid'] == result['controller_pid'] for worker in active)
+assert not active, 'A project worker is still live; defer collection.'
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+assert sha(driver) == driver_sha
+pins = runpy.run_path(str(driver))
+assert pins['BASE'] == base and result['version'] == pins['VERSION']
+expected_inputs = pins['PINNED']
+input_checks = {
+    path.name: path.is_file() and path.resolve() == path
+    and (path.stat().st_size, sha(path)) == expected
+    for path, expected in expected_inputs.items()
+}
+source = pins['SOURCE']
+source_count = 0
+if input_checks[pins['MANIFEST'].name] and source.is_dir():
+    manifest = json.loads(pins['MANIFEST'].read_bytes())
+    try:
+        pins['verify_source'](manifest)
+        source_count = len(manifest)
+    except (OSError, AssertionError, KeyError):
+        pass
+site = pins['INSTALL'] / 'lib/python3.14/site-packages'
+installed = {
+    path.relative_to(site).as_posix(): sha(path)
+    for path in (site / 'agentsync').rglob('*')
+    if path.is_file() and '__pycache__' not in path.parts and path.resolve() == path
+}
+members_ok = (
+    input_checks[pins['MEMBERS'].name] and len(installed) == 97
+    and installed == json.loads(pins['MEMBERS'].read_bytes())
+)
+direct_url = site / 'agentsync_local-0.3.0a122.dist-info/direct_url.json'
+direct = json.loads(direct_url.read_bytes()) if direct_url.is_file() else {}
+origin_ok = (
+    direct.get('url') == pins['WHEEL'].as_uri() and 'dir_info' not in direct
+    and direct.get('archive_info', {}).get('hashes', {}).get('sha256') == pins['WHEEL_SHA']
+)
+docker = ['/usr/bin/docker', '--host', 'unix:///var/run/docker.sock', '--config', str(base / 'home/.docker')]
+containers = subprocess.check_output(docker + ['ps', '-aq', '--no-trunc'], text=True, timeout=30).split()
+image = subprocess.check_output(
+    docker + ['image', 'inspect', '--format', '{{.Id}}', pins['DOCKER_IMAGE']], text=True, timeout=30
+).strip()
+
+collector_path = pins['INSTALL'].parent / 's/tools/release_acceptance.py'
+assert sha(collector_path) == pins['COLLECTOR_SHA']
+assert collector_path.resolve() == collector_path
+sys.path.insert(0, str(collector_path.parents[1]))
+from tools.release_acceptance import redact_credentials
+
+names = ['result.json', 'attempt.json', 'pytest-start.json', 'wheel-junit.xml', 'logs/wheel_pytest.stdout.log']
+for check in ('wheel_origin_before', 'wheel_pytest', 'wheel_origin_after'):
+    names.extend((f'logs/{check}.log', f'logs/{check}.process.json'))
+observations = {}
+for name, limit in pins['EVIDENCE_GROUPS'].items():
+    directory = run / 'observations' / name.lower()
+    paths = sorted(directory.rglob('*.json'))
+    assert len(paths) <= limit
+    observations[name] = len(paths)
+    names.extend(path.relative_to(run).as_posix() for path in paths)
+
+inventory = {}
+for name in names:
+    path = run / name
+    if not path.exists():
+        continue
+    info = path.lstat()
+    assert stat.S_ISREG(info.st_mode) and path.resolve() == path and info.st_size <= 20 * 1024**2
+    if path.suffix == '.xml':
+        for node in ET.parse(path).iter():
+            for value in (*node.attrib.values(), node.text or '', node.tail or ''):
+                assert redact_credentials(value)[1] == 0, name
+    else:
+        assert redact_credentials(path.read_text(encoding='utf-8'))[1] == 0, name
+    inventory[name] = {'path': name, 'bytes': info.st_size, 'sha256': sha(path)}
+assert 'result.json' in inventory and 'attempt.json' in inventory
+assert sum(row['bytes'] for row in inventory.values()) <= 64 * 1024**2
+for check in result['checks']:
+    assert inventory[check['log']]['sha256'] == check['log_sha256']
+for key in ('junit', 'pytest_stdout'):
+    if key in result:
+        receipt = result[key]
+        assert inventory[receipt['path']]['sha256'] == receipt['sha256']
+if result['status'] == 'pass':
+    assert all(input_checks.values()) and members_ok and origin_ok and source_count == 3992
+    assert not containers and image == pins['DOCKER_IMAGE']
+    assert observations == pins['EVIDENCE_GROUPS'] and set(inventory) == set(names)
+    expected_observations = {key: row['sha256'] for key, row in inventory.items() if key.startswith('observations/')}
+    assert expected_observations == result['fixture_observations_sha256']
+print(json.dumps({
+    'run_status': result['status'], 'finished_at': result['finished_at'], 'boot_id': boot,
+    'driver_sha256': driver_sha, 'source_commit': commit, 'input_matches': input_checks,
+    'source_files_rehashed': source_count, 'runtime_member_count': len(installed),
+    'runtime_members_match': members_ok, 'installed_wheel_origin_match': origin_ok,
+    'workers': active, 'containers': containers, 'docker_image_id': image,
+    'observation_groups': observations, 'raw_evidence_accessed': False,
+    'files': list(inventory.values()),
+}))
+"""
+
+
+def main():
+    if not __debug__ or DEST.exists() or SUMMARY.exists():
+        raise SystemExit("Use fresh collection paths with assertions enabled.")
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    try:
+        client.connect(
+            "127.0.0.1", port=22222, username="root", timeout=15,
+            key_filename="D:/agentsync-debug/vm/debug_ed25519", look_for_keys=False, allow_agent=False,
+        )
+        stdin, stdout, stderr = client.exec_command("/root/jobs-env/bin/python -I -B -", timeout=180)
+        stdin.write(PROBE)
+        stdin.flush()
+        stdin.channel.shutdown_write()
+        output, errors = stdout.read(), stderr.read()
+        assert stdout.channel.recv_exit_status() == 0 and not errors, "Guest terminal check refused collection."
+        record = json.loads(output)
+        DEST.mkdir()
+        with client.open_sftp() as sftp:
+            for entry in record["files"]:
+                name = PurePosixPath(entry["path"])
+                assert not name.is_absolute() and ".." not in name.parts
+                assert "\\" not in entry["path"] and ":" not in entry["path"]
+                remote = f"{GUEST}/run/{name.as_posix()}"
+                info = sftp.lstat(remote)
+                assert stat.S_ISREG(info.st_mode) and info.st_size == entry["bytes"]
+                path = DEST.joinpath(*name.parts)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                digest = hashlib.sha256()
+                size = 0
+                with sftp.open(remote, "rb") as source, path.open("xb") as destination:
+                    while chunk := source.read(1024 * 1024):
+                        size += len(chunk)
+                        digest.update(chunk)
+                        destination.write(chunk)
+                assert (size, digest.hexdigest()) == (entry["bytes"], entry["sha256"])
+        record["collected_at"] = datetime.now(UTC).isoformat()
+        with SUMMARY.open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(record, stream, indent=2)
+            stream.write("\n")
+        print(json.dumps({
+            "run_status": record["run_status"], "files": len(record["files"]),
+            "bytes": sum(entry["bytes"] for entry in record["files"]), "summary": str(SUMMARY),
+        }))
+    finally:
+        client.close()
+
+
+if __name__ == "__main__":
+    main()

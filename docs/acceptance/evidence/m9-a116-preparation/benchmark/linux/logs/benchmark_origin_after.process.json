@@ -1,0 +1,46 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "benchmark_origin_after",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m116-benchmark-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,zipfile\nimport agentsync\nwheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert Path(agentsync.__file__).resolve().is_relative_to(root)\nassert d.version=='0.3.0a116'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==wheel.as_uri()\nassert direct['archive_info']['hashes']['sha256']==sys.argv[2]\nmembers=[]\nwith zipfile.ZipFile(wheel) as z:\n for name in z.namelist():\n  if name.startswith('agentsync/') and not name.endswith('/'):\n   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected\n   members.append({'path':name,'sha256':expected})\nassert members\nprint(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))\n",
+      "/root/amadeus-m116/windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl",
+      "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690"
+    ],
+    "cwd": "/root/amadeus-m116-benchmark-r1",
+    "started_at": "2026-11-15T12:30:09.055559+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "benchmark_origin_after",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m116-benchmark-r1/installed/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "from pathlib import Path\nimport hashlib,importlib.metadata as md,json,sys,zipfile\nimport agentsync\nwheel=Path(sys.argv[1]);root=Path(sys.prefix).resolve();d=md.distribution('agentsync-local')\nassert Path(agentsync.__file__).resolve().is_relative_to(root)\nassert d.version=='0.3.0a116'\ndirect=json.loads(d.read_text('direct_url.json'))\nassert direct['url']==wheel.as_uri()\nassert direct['archive_info']['hashes']['sha256']==sys.argv[2]\nmembers=[]\nwith zipfile.ZipFile(wheel) as z:\n for name in z.namelist():\n  if name.startswith('agentsync/') and not name.endswith('/'):\n   p=Path(d.locate_file(name)).resolve();assert p.is_relative_to(root)\n   expected=hashlib.sha256(z.read(name)).hexdigest();assert hashlib.sha256(p.read_bytes()).hexdigest()==expected\n   members.append({'path':name,'sha256':expected})\nassert members\nprint(json.dumps({'version':d.version,'origin':agentsync.__file__,'direct_url':direct,'members':members,'dependencies':sorted((x.metadata['Name'],x.version) for x in md.distributions())}))\n",
+      "/root/amadeus-m116/windows-312/reports/release-20261115T051200Z-ca70d702c8f4/artifacts/agentsync_local-0.3.0a116-py3-none-any.whl",
+      "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690"
+    ],
+    "cwd": "/root/amadeus-m116-benchmark-r1",
+    "exit_code": 0,
+    "started_at": "2026-11-15T12:30:09.055559+00:00",
+    "finished_at": "2026-11-15T12:30:09.180932+00:00",
+    "log": "logs/benchmark_origin_after.log",
+    "log_sha256": "857f3cdb7f688d53a50c317193a0ba5eae67e4760b3d3a09d3ac509c7097877c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

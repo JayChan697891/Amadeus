@@ -1,0 +1,45 @@
+{
+  "scope": "completed_installed_wheel_component_only_full_row_pending",
+  "observed_at": "2026-11-15T06:44:57.186709+00:00",
+  "version": "0.3.0a116",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "native_finished_at": "2026-11-15T06:42:44.889682+00:00",
+  "native_exit_code": 0,
+  "junit": {
+    "tests": 2533,
+    "passed": 2477,
+    "skipped": 56,
+    "failures": 0,
+    "errors": 0,
+    "unique_identities": 2533
+  },
+  "case_identities_and_outcomes_equal_source": true,
+  "wheel_sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+  "installed_environment": "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-nzihuh7a",
+  "installed_product_members_verified_after_tests": 96,
+  "installed_product_member_set_sha256": "3ee7d3b2dfd232bdf4a947380af863f361e3c7a6ffe2c48d2c4c6d19ffc47b67",
+  "member_digest_format": "JSON sorted keys, compact separators, UTF-8; ordered by wheel member path; each row has path, sha256, size; agentsync/ only, excluding directories.",
+  "noneditable_direct_url_archive_binding_verified": true,
+  "prior_archived_source_members_unchanged": 4,
+  "archived_members_directory": "releases/0.3.0a116/624b36c/windows-312/reports/release-20261115T051200Z-ca70d702c8f4",
+  "artifacts": [
+    {
+      "path": "wheel-junit.xml",
+      "sha256": "0fca9e56256c3efe3f164113a65342cfd14566e5236ce2fba174927acf459de8",
+      "size": 399585
+    },
+    {
+      "path": "logs/wheel_pytest.log",
+      "sha256": "055975685c590ab9706ea52f0591d1e6a83820d4422bc70939de779f56552118",
+      "size": 20344
+    },
+    {
+      "path": "logs/wheel_pytest.process.json",
+      "sha256": "cc0595eda0a3e5cdb1a8606745d0195e942a342235749a9133757b4525f8f174",
+      "size": 1820
+    }
+  ],
+  "full_row": "RUNNING: sdist suite",
+  "formal_release": "BLOCKED",
+  "copy_policy": "Verify existing source and wheel members byte-for-byte and append remaining canonical members after row completion."
+}

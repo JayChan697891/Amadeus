@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m120-demo-encoding/red-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m120-demo-encoding/red.xml",
+    "tests/integration/test_durable_demo.py::test_durable_demo_reports_unicode_directory_with_legacy_stdout",
+    "tests/integration/test_handoff_recovery.py::test_owner_recovery_reports_unicode_reason_with_legacy_stdout"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T04:50:55.5974230Z",
+  "environment": {
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "TEMP": "D:/agentsync-debug/m120-demo-encoding/red-scratch",
+    "TMP": "D:/agentsync-debug/m120-demo-encoding/red-scratch",
+    "TMPDIR": "D:/agentsync-debug/m120-demo-encoding/red-scratch"
+  },
+  "source_sha256": {
+    "src/agentsync/cli.py": "2f05704f43039906759229be96b9ca576f888801dc582c8ee5b41bd193265b95",
+    "tests/integration/test_durable_demo.py": "949b0ead18b5c74a6ecfdc6f54b9b43d53b3e1d9ba3086cf2cd6462a42ecce05",
+    "tests/integration/test_handoff_recovery.py": "5ea791f8968133296a3e4854aae7540abe19803798c762f22f9d6ff539bfaca5"
+  }
+}

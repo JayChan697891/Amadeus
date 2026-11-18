@@ -1,0 +1,44 @@
+{
+  "scope": "Current code preparation; supersedes r3 preparation-review.json for startup-warning compatibility only",
+  "review": "Root and Astra identified blanket startup-warning rejection; Root inspected the narrow turn-start-aware scan and added positive test. Existing strict parser, turn errors, terminal/tool/partial/truncated prefix refusal remain unchanged.",
+  "source_files": 282,
+  "runtime_files": 97,
+  "root_hash_and_receipt_check": "4c3a9e exit0: every frozen/working source and installed runtime member matched; three installation logs and terminal process receipts matched",
+  "mypy": {
+    "native": "3fd46f",
+    "exit_code": 0,
+    "stdout": "Success: no issues found in 96 source files",
+    "command": [
+      "D:/agentsync-debug/m123-progress/venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "mypy",
+      "--cache-dir",
+      "D:/agentsync-debug/m123-progress/mypy-cache",
+      "src/agentsync"
+    ]
+  },
+  "checks": [
+    {
+      "id": "install",
+      "status": "pass",
+      "exit_code": 0
+    },
+    {
+      "id": "pip_check",
+      "status": "pass",
+      "exit_code": 0
+    },
+    {
+      "id": "installed_origin",
+      "status": "pass",
+      "exit_code": 0
+    }
+  ],
+  "new_cases": 17,
+  "pytest": "NOT RUN; preserve original full suite 6844",
+  "real_client": "NOT VERIFIED; no model call performed",
+  "formal_release": "BLOCKED",
+  "published_package": "a122/r5 unchanged; this is development a123 only"
+}

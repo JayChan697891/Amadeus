@@ -1,0 +1,5 @@
+{
+  "pyproject.toml": "00f09feb161787329da51dc1e4485e9c2c5bc6a53ef109942761dfbff806feea",
+  "tests/conftest.py": "1a974db60ab904e10456203464d64ecfa51688954062a1b3bd2885e73aa4ff78",
+  "tests/unit/test_proposals.py": "f417224f45803ab245b202cbb9725a426acf45fa29fd287eb5415da1d292a799"
+}

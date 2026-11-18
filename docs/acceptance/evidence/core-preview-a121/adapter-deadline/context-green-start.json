@@ -1,0 +1,39 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m121-host-deadline/context-green-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m121-host-deadline/context-green.xml",
+    "tests/unit/test_launch_context_deadline.py",
+    "tests/unit/test_codex_process.py::test_stopped_threaded_preparation_never_enters_capture",
+    "tests/unit/test_claude_process.py::test_cancelled_threaded_preparation_never_starts_and_keeps_unknown_slot",
+    "tests/unit/test_relay_execution_budget.py::test_expired_relay_budget_prevents_launch_preparation_and_reservation",
+    "tests/integration/test_proposal_handoff.py::test_exact_launch_authority_denial_stays_fenced"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T06:04:31.0664228Z",
+  "environment": {
+    "TEMP": "D:/agentsync-debug/m121-host-deadline/context-green-scratch",
+    "TMP": "D:/agentsync-debug/m121-host-deadline/context-green-scratch",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "D:/agentsync-debug/m121-host-deadline/context-green-scratch"
+  },
+  "source_sha256": {
+    "src/agentsync/adapters/_host_process.py": "76dfd26985a8b77d215be587fb06219b38e893ae2c37c4be30ac657922b60c9e",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b",
+    "src/agentsync/adapters/launch_context.py": "ea9897ee62bcf9c69cbc32a24bb5d02335ca432b09404b215539443aa81d9053",
+    "tests/unit/test_launch_context_deadline.py": "21e8c4e0bc3b7839e7d8fd727cb83e1a217089ff9a3661c4246532e957215ebb",
+    "src/agentsync/adapters/approved_launch.py": "56595cbd6b0ddc76f4f53b7569a78600ba626a9add66d62e55bb5621a5e5ebca"
+  }
+}

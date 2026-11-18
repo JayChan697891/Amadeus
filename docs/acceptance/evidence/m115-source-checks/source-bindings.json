@@ -1,0 +1,1370 @@
+[
+  {
+    "path": "pyproject.toml",
+    "runtime_sha256": "e8607109249924cbd6779949ea4d1940b4789a3d01a7c8d0fea29312d56dee5d",
+    "git_sha256": "e8607109249924cbd6779949ea4d1940b4789a3d01a7c8d0fea29312d56dee5d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/__init__.py",
+    "runtime_sha256": "8cba17181a766aa8fac362f6ae423d0e6696b381119834e2caf0c190c89f9d52",
+    "git_sha256": "8cba17181a766aa8fac362f6ae423d0e6696b381119834e2caf0c190c89f9d52",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/__main__.py",
+    "runtime_sha256": "0aaaa36d3b4bab615b53037b2a497d77524f9643eef04cb30de3c9950c409df6",
+    "git_sha256": "0aaaa36d3b4bab615b53037b2a497d77524f9643eef04cb30de3c9950c409df6",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/__init__.py",
+    "runtime_sha256": "deb7cbedf2886d2903a81be07f41fee5c330841a8a62a47957f91b3bdc6029c3",
+    "git_sha256": "deb7cbedf2886d2903a81be07f41fee5c330841a8a62a47957f91b3bdc6029c3",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/_host_process.py",
+    "runtime_sha256": "2bf09e225ec2a2e04151c39d602f13feafeac269343d847debeb929aefa59309",
+    "git_sha256": "2bf09e225ec2a2e04151c39d602f13feafeac269343d847debeb929aefa59309",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/approved_launch.py",
+    "runtime_sha256": "56595cbd6b0ddc76f4f53b7569a78600ba626a9add66d62e55bb5621a5e5ebca",
+    "git_sha256": "56595cbd6b0ddc76f4f53b7569a78600ba626a9add66d62e55bb5621a5e5ebca",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/base.py",
+    "runtime_sha256": "a42fc065e440d998ba9c640c98ad8c10f69dcfd15645e3839ef1e7c4c788ba7f",
+    "git_sha256": "a42fc065e440d998ba9c640c98ad8c10f69dcfd15645e3839ef1e7c4c788ba7f",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/claude.py",
+    "runtime_sha256": "3b0eef3fb2183e6a497687172fc0fc52b961832dce9916b64815bc4b912d45d1",
+    "git_sha256": "3b0eef3fb2183e6a497687172fc0fc52b961832dce9916b64815bc4b912d45d1",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/claude_events.py",
+    "runtime_sha256": "3f92b3e1ca993e80cc6edbe182afead7181f51116243cad8172e952b64d07b0c",
+    "git_sha256": "3f92b3e1ca993e80cc6edbe182afead7181f51116243cad8172e952b64d07b0c",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/claude_invocation.py",
+    "runtime_sha256": "dba25746da96924f2b094059d2553d79065e7abaec3959250b79f8cdd0122cef",
+    "git_sha256": "dba25746da96924f2b094059d2553d79065e7abaec3959250b79f8cdd0122cef",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/claude_process.py",
+    "runtime_sha256": "fbdc9686e16085c9e2a03dbb74fa8e8b502890213abdfee8652df0789e33daea",
+    "git_sha256": "fbdc9686e16085c9e2a03dbb74fa8e8b502890213abdfee8652df0789e33daea",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/codex.py",
+    "runtime_sha256": "c76e9f2e178f68253d9306e096fd9d93cfbaf7a46ec0c91788d39f046dbd6d90",
+    "git_sha256": "c76e9f2e178f68253d9306e096fd9d93cfbaf7a46ec0c91788d39f046dbd6d90",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/codex_events.py",
+    "runtime_sha256": "68c5b7d12c1d83a4d1dd07fc8963b706cfd44141c6744ea7ead871600b70801d",
+    "git_sha256": "68c5b7d12c1d83a4d1dd07fc8963b706cfd44141c6744ea7ead871600b70801d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/codex_invocation.py",
+    "runtime_sha256": "e2ec11eb9d93a2aaf77d0269a58b3a015015a334c0bf9d32e50010e2ca198229",
+    "git_sha256": "e2ec11eb9d93a2aaf77d0269a58b3a015015a334c0bf9d32e50010e2ca198229",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/codex_process.py",
+    "runtime_sha256": "daca68ff410b3fef136057a61b77ff211110da652926c60fd784bb2b64c4775f",
+    "git_sha256": "daca68ff410b3fef136057a61b77ff211110da652926c60fd784bb2b64c4775f",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/cursor.py",
+    "runtime_sha256": "11af290ab5f5a692d14d7a998530c7d6502c46130408b57b5ac5a3375455530b",
+    "git_sha256": "11af290ab5f5a692d14d7a998530c7d6502c46130408b57b5ac5a3375455530b",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/cursor_events.py",
+    "runtime_sha256": "bac8f3b77d1509353553ad397bc0039271c3c8eb3771999e05b6d1c883949edc",
+    "git_sha256": "bac8f3b77d1509353553ad397bc0039271c3c8eb3771999e05b6d1c883949edc",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/cursor_invocation.py",
+    "runtime_sha256": "3833845b735067e5495ffd694d1402f4501db536a4a139c08f36338f939c3a46",
+    "git_sha256": "3833845b735067e5495ffd694d1402f4501db536a4a139c08f36338f939c3a46",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/cursor_process.py",
+    "runtime_sha256": "6338d535b66fca7107965a66b5b27d5bfc7b9bf98935d990772941a8dc5396da",
+    "git_sha256": "6338d535b66fca7107965a66b5b27d5bfc7b9bf98935d990772941a8dc5396da",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/host_receipts.py",
+    "runtime_sha256": "4c7e2ad69858fdb380936a877aa9ff402ef71c40c64061862018fb67cb6dd12f",
+    "git_sha256": "4c7e2ad69858fdb380936a877aa9ff402ef71c40c64061862018fb67cb6dd12f",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/launch_context.py",
+    "runtime_sha256": "0d0e5a4bd12fad7cec94d558f4621061cd23677a1b1bb0a08835f906ea7dc94d",
+    "git_sha256": "0d0e5a4bd12fad7cec94d558f4621061cd23677a1b1bb0a08835f906ea7dc94d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/manager.py",
+    "runtime_sha256": "e7bbd7e5e9ddb4841babf64f515f29162c07f7693cfc11236ac20f5718a632dc",
+    "git_sha256": "e7bbd7e5e9ddb4841babf64f515f29162c07f7693cfc11236ac20f5718a632dc",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/mock.py",
+    "runtime_sha256": "cace721717e7e4872537f2a0699af226e9e0cf0b2068116daa1196e1abb03aa9",
+    "git_sha256": "cace721717e7e4872537f2a0699af226e9e0cf0b2068116daa1196e1abb03aa9",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/adapters/process_capture.py",
+    "runtime_sha256": "c74d439f58cb47abf1246c41421cec163dd34408e01172d832bb94e178838f68",
+    "git_sha256": "c74d439f58cb47abf1246c41421cec163dd34408e01172d832bb94e178838f68",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/cli.py",
+    "runtime_sha256": "a560458e6bd5326175cae760668f879fc72d5bc20e1987d7c1b1c9b9d198be9b",
+    "git_sha256": "a560458e6bd5326175cae760668f879fc72d5bc20e1987d7c1b1c9b9d198be9b",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/config.py",
+    "runtime_sha256": "021c7b04607df00cf75f9f688d80f04c7140be3c99250d5133eadb5352163af8",
+    "git_sha256": "021c7b04607df00cf75f9f688d80f04c7140be3c99250d5133eadb5352163af8",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/continuation.py",
+    "runtime_sha256": "0fe9d2af1df549fedcb1979fd94fcf06e252cfc2732fabde05e278b569b30ac8",
+    "git_sha256": "0fe9d2af1df549fedcb1979fd94fcf06e252cfc2732fabde05e278b569b30ac8",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/controlled_relay.py",
+    "runtime_sha256": "00e457a31ac7f8eeee3882a06dc509f594fb782267a34665a1f4c7eaa896ad11",
+    "git_sha256": "00e457a31ac7f8eeee3882a06dc509f594fb782267a34665a1f4c7eaa896ad11",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/__init__.py",
+    "runtime_sha256": "d93e8a4d3b48ba182d840e7d76eec69300ec955dd8f9b098e4544d5d8e1ef6de",
+    "git_sha256": "d93e8a4d3b48ba182d840e7d76eec69300ec955dd8f9b098e4544d5d8e1ef6de",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/collaboration.py",
+    "runtime_sha256": "4cd2f3c7ea97b5747076e1fb3f61b04c63e9a5331f98f6c4ad70c39e579900ab",
+    "git_sha256": "4cd2f3c7ea97b5747076e1fb3f61b04c63e9a5331f98f6c4ad70c39e579900ab",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/permissions.py",
+    "runtime_sha256": "dbcd4837a7d49c563ccc143c074318a7cc1333d7e81c52b679c2c20a83482b7c",
+    "git_sha256": "dbcd4837a7d49c563ccc143c074318a7cc1333d7e81c52b679c2c20a83482b7c",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/resources.py",
+    "runtime_sha256": "e0b3a6fceb43c123e3e37141b392c84ad0385e53973ab09a72fa7db7a78763cf",
+    "git_sha256": "e0b3a6fceb43c123e3e37141b392c84ad0385e53973ab09a72fa7db7a78763cf",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/service.py",
+    "runtime_sha256": "ebf36798f427ed613db0a877ca2fb69b052da9db1f0d215768e2cefdf486a9e5",
+    "git_sha256": "ebf36798f427ed613db0a877ca2fb69b052da9db1f0d215768e2cefdf486a9e5",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/usage.py",
+    "runtime_sha256": "9e64f444a11a5e69531a64f6e0f672d1c41d002c82d4303ec47db23347d22cbf",
+    "git_sha256": "9e64f444a11a5e69531a64f6e0f672d1c41d002c82d4303ec47db23347d22cbf",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/core/workspaces.py",
+    "runtime_sha256": "ccb57faf10371ac9fcb0782bcdb7a2feaecd99455e88739e5de8c730bd286ff5",
+    "git_sha256": "ccb57faf10371ac9fcb0782bcdb7a2feaecd99455e88739e5de8c730bd286ff5",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/dispatch_planning.py",
+    "runtime_sha256": "9fbdafdd817c32e3942ec2a6a6c2c49c7f88d46e209cdd2fdd04197f50ae8ea6",
+    "git_sha256": "9fbdafdd817c32e3942ec2a6a6c2c49c7f88d46e209cdd2fdd04197f50ae8ea6",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/durable_mock_workflow.py",
+    "runtime_sha256": "7f385987732687878f0f2212030295eaba91c81b7f8d6e015a31aeea49417277",
+    "git_sha256": "7f385987732687878f0f2212030295eaba91c81b7f8d6e015a31aeea49417277",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/errors.py",
+    "runtime_sha256": "2e80e6ed40fda368ed76ae996fd2d563d455141e53cf4f50128674616b45666e",
+    "git_sha256": "2e80e6ed40fda368ed76ae996fd2d563d455141e53cf4f50128674616b45666e",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/integrations/__init__.py",
+    "runtime_sha256": "9bade86abee7d5f2610d378801dc386007fb30f5aea7e7b5adfd3695e99e675a",
+    "git_sha256": "9bade86abee7d5f2610d378801dc386007fb30f5aea7e7b5adfd3695e99e675a",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/integrations/http.py",
+    "runtime_sha256": "24cbe8c342f3207fc37e281acf57f21d54a935b93125bfa3871c3c6d72db0428",
+    "git_sha256": "24cbe8c342f3207fc37e281acf57f21d54a935b93125bfa3871c3c6d72db0428",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/integrations/mcp.py",
+    "runtime_sha256": "5ee0222193459294ddf1e04be10d1235f2dc0487167bc4a557073e5bd61b44de",
+    "git_sha256": "5ee0222193459294ddf1e04be10d1235f2dc0487167bc4a557073e5bd61b44de",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/mock_run_manager.py",
+    "runtime_sha256": "74baad510d2f8a4092945e35f7b7c7839a64037561fb2ade722d6672198e3cf8",
+    "git_sha256": "74baad510d2f8a4092945e35f7b7c7839a64037561fb2ade722d6672198e3cf8",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/mock_workflow.py",
+    "runtime_sha256": "c8a2fb984cb11acda78f3e82819cb2c40201f9dffefad1722fe5abce6fe69d3b",
+    "git_sha256": "c8a2fb984cb11acda78f3e82819cb2c40201f9dffefad1722fe5abce6fe69d3b",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/mock_workflow_cli.py",
+    "runtime_sha256": "d92780116b1901cd5f5357a4d4b1382f496f532bb1c5efacbbccea5406b1bdfa",
+    "git_sha256": "d92780116b1901cd5f5357a4d4b1382f496f532bb1c5efacbbccea5406b1bdfa",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/model_usage.py",
+    "runtime_sha256": "2c3e3578818ee5b69c19467261f3588c7a1bc823c3696c077f72bb07222e5719",
+    "git_sha256": "2c3e3578818ee5b69c19467261f3588c7a1bc823c3696c077f72bb07222e5719",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/model_usage_checkpoint.py",
+    "runtime_sha256": "f01c3e35d3fa30886ca34137f3fb7869444a02aaa93fb9ae00b6d4dd9c6a634c",
+    "git_sha256": "f01c3e35d3fa30886ca34137f3fb7869444a02aaa93fb9ae00b6d4dd9c6a634c",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/models.py",
+    "runtime_sha256": "aa1d6c1c2d1bb31b38d902ca60454747a65e23c67e95d067939514e0136b2e53",
+    "git_sha256": "aa1d6c1c2d1bb31b38d902ca60454747a65e23c67e95d067939514e0136b2e53",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/planning_cli.py",
+    "runtime_sha256": "cbb7feb0524c049cb9763d3fd926e627f5d8d4511a36aef1ca0e214a44ec2342",
+    "git_sha256": "cbb7feb0524c049cb9763d3fd926e627f5d8d4511a36aef1ca0e214a44ec2342",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/proposal_handoff.py",
+    "runtime_sha256": "7f0c06b13b96bf265622cbf8012fb77fd60424e9a96235f4fedfdf6b0e363988",
+    "git_sha256": "7f0c06b13b96bf265622cbf8012fb77fd60424e9a96235f4fedfdf6b0e363988",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/proposals.py",
+    "runtime_sha256": "bd226a670472994a65b8455583096545ff90f12ddc3ea3683d70f58f4fc26d84",
+    "git_sha256": "bd226a670472994a65b8455583096545ff90f12ddc3ea3683d70f58f4fc26d84",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/provider_usage.py",
+    "runtime_sha256": "a747686cda70f531d1e43ec4f687f9660952de250aa18140f86ab485f77f6bb0",
+    "git_sha256": "a747686cda70f531d1e43ec4f687f9660952de250aa18140f86ab485f77f6bb0",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/providers/__init__.py",
+    "runtime_sha256": "ebcc828a3688bbb3183953bb6f57cff1cf1596dbf7d81168fb12a82580633f64",
+    "git_sha256": "ebcc828a3688bbb3183953bb6f57cff1cf1596dbf7d81168fb12a82580633f64",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/providers/_transport.py",
+    "runtime_sha256": "b8f9b066c796b19d5d2c47d11b6afbe81a925432dd7afac77f86a3d0bab4e59d",
+    "git_sha256": "b8f9b066c796b19d5d2c47d11b6afbe81a925432dd7afac77f86a3d0bab4e59d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/providers/advice.py",
+    "runtime_sha256": "475e72c9dabc416236f6f0d52591432da1e8905355c4c6bcf4ae724a410fa105",
+    "git_sha256": "475e72c9dabc416236f6f0d52591432da1e8905355c4c6bcf4ae724a410fa105",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/providers/base.py",
+    "runtime_sha256": "4cc7dae85f6f70eca7ba62814b3b6931a2d02b448db46e3447d5ccdf2b08dd48",
+    "git_sha256": "4cc7dae85f6f70eca7ba62814b3b6931a2d02b448db46e3447d5ccdf2b08dd48",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/providers/http.py",
+    "runtime_sha256": "04e1396f34e43e07ffb46df6916c9a25a3f45dd088bbd17db3fc3dc98d90950f",
+    "git_sha256": "04e1396f34e43e07ffb46df6916c9a25a3f45dd088bbd17db3fc3dc98d90950f",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/providers/retry.py",
+    "runtime_sha256": "de7ab85b8f70e23486674818cb221031a0a9504f47d46036d94a5b8f25541121",
+    "git_sha256": "de7ab85b8f70e23486674818cb221031a0a9504f47d46036d94a5b8f25541121",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/py.typed",
+    "runtime_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "git_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/relay_queue.py",
+    "runtime_sha256": "f93568cb16146a2ea5fec5ae40aab659ffd1f8f2fa67eea3a2750c25c3a28971",
+    "git_sha256": "f93568cb16146a2ea5fec5ae40aab659ffd1f8f2fa67eea3a2750c25c3a28971",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/relay_status_cli.py",
+    "runtime_sha256": "7d86d30b3fbe92818d30bef68cfb6db9af9be01f952dce50750a804bcc393f10",
+    "git_sha256": "7d86d30b3fbe92818d30bef68cfb6db9af9be01f952dce50750a804bcc393f10",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/relay_usage.py",
+    "runtime_sha256": "5f72721738b8e91f8c1ed63637b3107caf816dfb583a46681ba4abe105f81dba",
+    "git_sha256": "5f72721738b8e91f8c1ed63637b3107caf816dfb583a46681ba4abe105f81dba",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/relay_wave_journal.py",
+    "runtime_sha256": "b1cc0667221e5cf9b9d95f4b351cade6046d2a41c3585cab21d19b11f3950549",
+    "git_sha256": "b1cc0667221e5cf9b9d95f4b351cade6046d2a41c3585cab21d19b11f3950549",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/resources/__init__.py",
+    "runtime_sha256": "7b960fd421a27a3147fc050f4149f8665aeae184ad2d2b8108919289215023bb",
+    "git_sha256": "7b960fd421a27a3147fc050f4149f8665aeae184ad2d2b8108919289215023bb",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/resources/paths.py",
+    "runtime_sha256": "3c913b3ea3778b1fb402c90eaf4f5d4090e01a8f3d4dfba8cf8d1243d6dbc0d0",
+    "git_sha256": "3c913b3ea3778b1fb402c90eaf4f5d4090e01a8f3d4dfba8cf8d1243d6dbc0d0",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/retry_planning.py",
+    "runtime_sha256": "05a40fb13e2f4b8c35de1805d378c63f3ed582e719bb39b36b7be5f55ea53291",
+    "git_sha256": "05a40fb13e2f4b8c35de1805d378c63f3ed582e719bb39b36b7be5f55ea53291",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/scheduling.py",
+    "runtime_sha256": "155fcaabd04341911228b1bfa5b28dee87c1b34c7fc94e57a532f4e12da0a377",
+    "git_sha256": "155fcaabd04341911228b1bfa5b28dee87c1b34c7fc94e57a532f4e12da0a377",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/sdk/__init__.py",
+    "runtime_sha256": "a41bce6360364cd98d0286e79444b961483bd59cd53d9e613ebbf18daacccd8d",
+    "git_sha256": "a41bce6360364cd98d0286e79444b961483bd59cd53d9e613ebbf18daacccd8d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/sdk/client.py",
+    "runtime_sha256": "c893e5808ff878fbd87d6c5b8fd04bb63829353de26d532c79a4cb7083fb955c",
+    "git_sha256": "c893e5808ff878fbd87d6c5b8fd04bb63829353de26d532c79a4cb7083fb955c",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/storage/__init__.py",
+    "runtime_sha256": "3b6e52f3471d060ba746973631b0a19a85e6bc8cdafbad14d8cd6ef96e23e285",
+    "git_sha256": "3b6e52f3471d060ba746973631b0a19a85e6bc8cdafbad14d8cd6ef96e23e285",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/storage/admission.py",
+    "runtime_sha256": "b98530854d8d4aed5d46983577ed885affe2a080c03fdd9647f5cb9ed546773a",
+    "git_sha256": "b98530854d8d4aed5d46983577ed885affe2a080c03fdd9647f5cb9ed546773a",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/storage/database.py",
+    "runtime_sha256": "5171c92efd074f0f639dd1b95a867bf5a6248b850fbbecf0c23c1692def26962",
+    "git_sha256": "5171c92efd074f0f639dd1b95a867bf5a6248b850fbbecf0c23c1692def26962",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/usage.py",
+    "runtime_sha256": "571ca9881329402d1d10adf7f38fcf832b5db80e443048e474b7d06739e23b22",
+    "git_sha256": "571ca9881329402d1d10adf7f38fcf832b5db80e443048e474b7d06739e23b22",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/usage_cli.py",
+    "runtime_sha256": "b188aca9c144d5fd034df65b788c95ca83693a0e4b5589b5905959c4f7ba7fc1",
+    "git_sha256": "b188aca9c144d5fd034df65b788c95ca83693a0e4b5589b5905959c4f7ba7fc1",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/usage_storage.py",
+    "runtime_sha256": "bac79da32b5df4212bb781a21e2ed74ea1007961b6cab5f8da7604c3632899e6",
+    "git_sha256": "bac79da32b5df4212bb781a21e2ed74ea1007961b6cab5f8da7604c3632899e6",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/__init__.py",
+    "runtime_sha256": "e8d69239fd834f7f3f8e29614dfaaa24ed854f0b18304f67826933c16e989053",
+    "git_sha256": "e8d69239fd834f7f3f8e29614dfaaa24ed854f0b18304f67826933c16e989053",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/binding.py",
+    "runtime_sha256": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961",
+    "git_sha256": "216fd02d9eeeaf7334392fdc5895d3da1479bc2c10aa67d8451da8952f9c6961",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate.py",
+    "runtime_sha256": "7c2bd05600407d85ae0e8125bdb18fdd4f29ef730331e3c1cf11a23dea060ec7",
+    "git_sha256": "7c2bd05600407d85ae0e8125bdb18fdd4f29ef730331e3c1cf11a23dea060ec7",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_claims.py",
+    "runtime_sha256": "8e627526588da078b3d3ec4a051adc7e30b154ba67b300560e6d2f2ef09cc5a5",
+    "git_sha256": "8e627526588da078b3d3ec4a051adc7e30b154ba67b300560e6d2f2ef09cc5a5",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_delivery.py",
+    "runtime_sha256": "3ffd92bb8f58fdc43eb45cde5c8356f2110aa6d74f6b296f43c7d07ae00e3c4d",
+    "git_sha256": "3ffd92bb8f58fdc43eb45cde5c8356f2110aa6d74f6b296f43c7d07ae00e3c4d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_execution_state.py",
+    "runtime_sha256": "c4a428c0e1cd25bf11179f96fd92d0a384f863a5a027a015cf1f04a8290087fc",
+    "git_sha256": "c4a428c0e1cd25bf11179f96fd92d0a384f863a5a027a015cf1f04a8290087fc",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_executor.py",
+    "runtime_sha256": "4519f7164f8f47f17234f5b8ea79a5cb25b3ab1111454dbcbaa8e7fc2edd8c4d",
+    "git_sha256": "4519f7164f8f47f17234f5b8ea79a5cb25b3ab1111454dbcbaa8e7fc2edd8c4d",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_integration.py",
+    "runtime_sha256": "acd34bd1a328c3724ef8173fac450160345700d5198c35ffa8f2083acfd87a79",
+    "git_sha256": "acd34bd1a328c3724ef8173fac450160345700d5198c35ffa8f2083acfd87a79",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_intents.py",
+    "runtime_sha256": "271174a4d929c42639e435245bb07f213ec3e7da584b962750d7cc27fc2e49e5",
+    "git_sha256": "271174a4d929c42639e435245bb07f213ec3e7da584b962750d7cc27fc2e49e5",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/candidate_jobs.py",
+    "runtime_sha256": "9c080aa830a355f3fe536c9e2004347117a8e74504579b11feda6afacf86c0af",
+    "git_sha256": "9c080aa830a355f3fe536c9e2004347117a8e74504579b11feda6afacf86c0af",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/docker.py",
+    "runtime_sha256": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+    "git_sha256": "6c8aca5080d6a7db08b6137cf3b2014cdab1e88dc4e10fef76e29373d3170721",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/executor.py",
+    "runtime_sha256": "73bdc926b3ed65c25777f79ad0a9cfe50ceec838cc1226b954494dbc54cc02c8",
+    "git_sha256": "73bdc926b3ed65c25777f79ad0a9cfe50ceec838cc1226b954494dbc54cc02c8",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/jobs.py",
+    "runtime_sha256": "99531f4974ddd23c1d981c1223b0cc0a759562418e674c0fb3eb42cb5ae88bdb",
+    "git_sha256": "99531f4974ddd23c1d981c1223b0cc0a759562418e674c0fb3eb42cb5ae88bdb",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/owner_flow.py",
+    "runtime_sha256": "869eea301a4b308549a270e9bad8a44ab9ea71ad56e11059eb4c40b99d1d2f47",
+    "git_sha256": "869eea301a4b308549a270e9bad8a44ab9ea71ad56e11059eb4c40b99d1d2f47",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/proposal_staging.py",
+    "runtime_sha256": "27d9119dabb164ce1559733fe417bd24e90cec0e5d71524451e890cf47e7a1a1",
+    "git_sha256": "27d9119dabb164ce1559733fe417bd24e90cec0e5d71524451e890cf47e7a1a1",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/reconciliation.py",
+    "runtime_sha256": "27cad856d82ded185aef99b58c182281cf772d5eafc3c04715c27ceafc3f86cd",
+    "git_sha256": "27cad856d82ded185aef99b58c182281cf772d5eafc3c04715c27ceafc3f86cd",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/snapshot.py",
+    "runtime_sha256": "bef70ed60b5b979da3dc69fadbedbf0a8131bb3acdf4c07c30413401eda265c6",
+    "git_sha256": "bef70ed60b5b979da3dc69fadbedbf0a8131bb3acdf4c07c30413401eda265c6",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verification/task_completion.py",
+    "runtime_sha256": "91d1ad908e94798a61271139119dc88565cba762c307ced300b7ed3b8230e6b2",
+    "git_sha256": "91d1ad908e94798a61271139119dc88565cba762c307ced300b7ed3b8230e6b2",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/verified_proposal_flow.py",
+    "runtime_sha256": "16d8054dbee3db302f264724e482bca627a04b34bb99ee40b6744d4e5c745e59",
+    "git_sha256": "16d8054dbee3db302f264724e482bca627a04b34bb99ee40b6744d4e5c745e59",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/workspaces/__init__.py",
+    "runtime_sha256": "5316aad3121721c4e02786265356c71306aca69b6fdae596fa5a499d9ace76b2",
+    "git_sha256": "5316aad3121721c4e02786265356c71306aca69b6fdae596fa5a499d9ace76b2",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/workspaces/git.py",
+    "runtime_sha256": "7ad776f6e9d6f34f65cfd7ab4b372c03c02b78b008b629dd0f7ba46783238809",
+    "git_sha256": "7ad776f6e9d6f34f65cfd7ab4b372c03c02b78b008b629dd0f7ba46783238809",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/workspaces/integration.py",
+    "runtime_sha256": "17454692e0bca880bc0442d4ac5fc0a074f958f2f2dbd47eb32b324f49eaa781",
+    "git_sha256": "17454692e0bca880bc0442d4ac5fc0a074f958f2f2dbd47eb32b324f49eaa781",
+    "binding": "exact"
+  },
+  {
+    "path": "src/agentsync/workspaces/proposal.py",
+    "runtime_sha256": "e03d038ded1a8cc1e8f3152446ee9955337f56c07a1b5b10fdf90196e5d9593d",
+    "git_sha256": "e03d038ded1a8cc1e8f3152446ee9955337f56c07a1b5b10fdf90196e5d9593d",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/concurrency/test_claims.py",
+    "runtime_sha256": "b459bdff965610b2cb7b904e06c997c4744749b91ae7fc9d76c0076c5ff7ec61",
+    "git_sha256": "b459bdff965610b2cb7b904e06c997c4744749b91ae7fc9d76c0076c5ff7ec61",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/concurrency/test_file_lock_races.py",
+    "runtime_sha256": "126dba141bcdf069aca0c6f793b6dee4bcec9f4597209eec997a97662a00c370",
+    "git_sha256": "126dba141bcdf069aca0c6f793b6dee4bcec9f4597209eec997a97662a00c370",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/concurrency/test_m3_races.py",
+    "runtime_sha256": "fb77ade4a32fa967864d5bbbdbf445ae32b8e6c9cbde39d5aee80281d6efcea3",
+    "git_sha256": "fb77ade4a32fa967864d5bbbdbf445ae32b8e6c9cbde39d5aee80281d6efcea3",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/concurrency/test_m5_approval_races.py",
+    "runtime_sha256": "3c14f5a86caf784db199cf8b500d8daae955a73b7234b2a556fb5655ed51e0d3",
+    "git_sha256": "3c14f5a86caf784db199cf8b500d8daae955a73b7234b2a556fb5655ed51e0d3",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/conftest.py",
+    "runtime_sha256": "1a974db60ab904e10456203464d64ecfa51688954062a1b3bd2885e73aa4ff78",
+    "git_sha256": "1a974db60ab904e10456203464d64ecfa51688954062a1b3bd2885e73aa4ff78",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_acceptance.py",
+    "runtime_sha256": "8ae47e0ea06f3f8ee67e7ed2868c4a4385de8e18bf0b7427c3bacae29d968162",
+    "git_sha256": "8ae47e0ea06f3f8ee67e7ed2868c4a4385de8e18bf0b7427c3bacae29d968162",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_adapter_manager_core_boundary.py",
+    "runtime_sha256": "9840469029cb4e69451b30cb84423c8e92fe6ea33ba99c5b474d5be10c82eccb",
+    "git_sha256": "9840469029cb4e69451b30cb84423c8e92fe6ea33ba99c5b474d5be10c82eccb",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_binding_transaction.py",
+    "runtime_sha256": "7a9bf6117090f4bc10e272c78c916730d8b39e164860323f520253c584b52c7e",
+    "git_sha256": "7a9bf6117090f4bc10e272c78c916730d8b39e164860323f520253c584b52c7e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_binding_git_records.py",
+    "runtime_sha256": "562c87ea19b292a19ae7cc23b4bda5fc9903f8a24857d05d1d1124ffb92714d3",
+    "git_sha256": "562c87ea19b292a19ae7cc23b4bda5fc9903f8a24857d05d1d1124ffb92714d3",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_claim_migration.py",
+    "runtime_sha256": "ab719fa410ad566bb1a3106062683855a710b36a0e40f8ed81a393a63edad9a2",
+    "git_sha256": "ab719fa410ad566bb1a3106062683855a710b36a0e40f8ed81a393a63edad9a2",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_claims.py",
+    "runtime_sha256": "874cee80f1c8ac3615c66c486fdaf23b363599879303f26d75ffbc7e421a86df",
+    "git_sha256": "874cee80f1c8ac3615c66c486fdaf23b363599879303f26d75ffbc7e421a86df",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_execution.py",
+    "runtime_sha256": "3ee67b0f2630ca102de0b5215d0b69ce916d9500255a9e7aadc367661982fae9",
+    "git_sha256": "3ee67b0f2630ca102de0b5215d0b69ce916d9500255a9e7aadc367661982fae9",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_export.py",
+    "runtime_sha256": "0bb23ff3fd513d84668cb67b353cfea54b097eb9f3a6247cb427ec397096c8d8",
+    "git_sha256": "0bb23ff3fd513d84668cb67b353cfea54b097eb9f3a6247cb427ec397096c8d8",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_export_security.py",
+    "runtime_sha256": "7f3a75402415587d28515fbcbe5c62ac38aaee37349a1f17e919b58f01e770ea",
+    "git_sha256": "7f3a75402415587d28515fbcbe5c62ac38aaee37349a1f17e919b58f01e770ea",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_integration.py",
+    "runtime_sha256": "7792ca2c4981d2378c5d0c1098efe95052c7b9e1302893fb7df88ca1eddf6110",
+    "git_sha256": "7792ca2c4981d2378c5d0c1098efe95052c7b9e1302893fb7df88ca1eddf6110",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_intent_migration.py",
+    "runtime_sha256": "c9116b125a239748ad215a70f91a6ce511a0fba4aeae7a519614b1da72610cff",
+    "git_sha256": "c9116b125a239748ad215a70f91a6ce511a0fba4aeae7a519614b1da72610cff",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_intent_security.py",
+    "runtime_sha256": "2bcfabaae7c4b37caca54586dab253a7812188d29945d61f3432163aee6bdf69",
+    "git_sha256": "2bcfabaae7c4b37caca54586dab253a7812188d29945d61f3432163aee6bdf69",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_intents.py",
+    "runtime_sha256": "344655700383578dc609d79f6ccd66049a77b9b6ae50ed62a806ec27ad2bd21c",
+    "git_sha256": "344655700383578dc609d79f6ccd66049a77b9b6ae50ed62a806ec27ad2bd21c",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_jobs.py",
+    "runtime_sha256": "78e456f1bdd08eadb75cb1ec8d49bb8d00b6f40b29982da4b8219c142fbd22e0",
+    "git_sha256": "78e456f1bdd08eadb75cb1ec8d49bb8d00b6f40b29982da4b8219c142fbd22e0",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_candidate_queue_security.py",
+    "runtime_sha256": "9379163fafea27ac260df95f1a36e4de473f7564fb56a8003af4379c9a0788ee",
+    "git_sha256": "9379163fafea27ac260df95f1a36e4de473f7564fb56a8003af4379c9a0788ee",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_capability_planning_core_boundary.py",
+    "runtime_sha256": "0f2f2ca0138171ca55755c10b8ac7a55fe5aa77b153de13a75d4fc08d985ef0f",
+    "git_sha256": "0f2f2ca0138171ca55755c10b8ac7a55fe5aa77b153de13a75d4fc08d985ef0f",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_claude_adapter_core_boundary.py",
+    "runtime_sha256": "9502b30ea7ade7f291da2c6ad57dcc152456a7614e66ea09c83607663ac6f695",
+    "git_sha256": "9502b30ea7ade7f291da2c6ad57dcc152456a7614e66ea09c83607663ac6f695",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_codex_adapter_core_boundary.py",
+    "runtime_sha256": "a71168dfb7ef75edb0e98e31db7badd122cca9053c1214071fc3819dfcdf7904",
+    "git_sha256": "a71168dfb7ef75edb0e98e31db7badd122cca9053c1214071fc3819dfcdf7904",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_codex_invocation_process.py",
+    "runtime_sha256": "c6e2517ec7d5e729a03796054ec253f75001aebe6c43c4bb5e9d93b3899a834a",
+    "git_sha256": "c6e2517ec7d5e729a03796054ec253f75001aebe6c43c4bb5e9d93b3899a834a",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_codex_proposal_capture.py",
+    "runtime_sha256": "7531931be659f5bfd90250a668e6cb9631609b6db0c516cc66c8c6fe47dfef91",
+    "git_sha256": "7531931be659f5bfd90250a668e6cb9631609b6db0c516cc66c8c6fe47dfef91",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_codex_proposal_relay_queue.py",
+    "runtime_sha256": "d4b8bd3f1e551a34fcb61a011c0c6ce3fb2bc00db7587aaafc4d320eda5d79ff",
+    "git_sha256": "d4b8bd3f1e551a34fcb61a011c0c6ce3fb2bc00db7587aaafc4d320eda5d79ff",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_codex_proposal_review.py",
+    "runtime_sha256": "b186c2535b6eb836e0efffbfeb247e4c68ba6e50ff806248229eec5c0012076e",
+    "git_sha256": "b186c2535b6eb836e0efffbfeb247e4c68ba6e50ff806248229eec5c0012076e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_controlled_relay_pipeline.py",
+    "runtime_sha256": "40e83a9ef4cf83bf1e40c9358004e7a408143da0e57aaa191afc03badfcc115d",
+    "git_sha256": "b7abeffbb07d4ad2bb002b9e17283959b10f7735534a4145e7dcfefe5ce3518c",
+    "binding": "lf_normalization_only"
+  },
+  {
+    "path": "tests/integration/test_cursor_adapter_core_boundary.py",
+    "runtime_sha256": "6f8097f8007d25e52eba380c86d6bc8e470e7706b36b8a41aea0e4f770658bf7",
+    "git_sha256": "6f8097f8007d25e52eba380c86d6bc8e470e7706b36b8a41aea0e4f770658bf7",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_dispatch_planning_core_boundary.py",
+    "runtime_sha256": "554d8be31bf5110fd25dab14134493ba55a6b19cd462b69c3ac1f8ee8805fe8d",
+    "git_sha256": "554d8be31bf5110fd25dab14134493ba55a6b19cd462b69c3ac1f8ee8805fe8d",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_docker_verifier.py",
+    "runtime_sha256": "604506923ba221db2fc2a67aca0b43907d203564bbeb78cba89cc1b634125930",
+    "git_sha256": "604506923ba221db2fc2a67aca0b43907d203564bbeb78cba89cc1b634125930",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_durable_mock_workflow.py",
+    "runtime_sha256": "09530494ac1d38f90c9862f30807b8a191b09dcf5c6829c4dc9f8040549ab9e4",
+    "git_sha256": "09530494ac1d38f90c9862f30807b8a191b09dcf5c6829c4dc9f8040549ab9e4",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_execution_reconciliation.py",
+    "runtime_sha256": "ca39a2038da7a67a7c42865bc62f0856b97ad012aa7deb783267ee07b0ed6d3e",
+    "git_sha256": "ca39a2038da7a67a7c42865bc62f0856b97ad012aa7deb783267ee07b0ed6d3e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_handoff_recovery.py",
+    "runtime_sha256": "75c2aaf1020264e1c3a3cbbfedf830fedcdef9263f17f8bc3e1c8c11bfa2bc6a",
+    "git_sha256": "75c2aaf1020264e1c3a3cbbfedf830fedcdef9263f17f8bc3e1c8c11bfa2bc6a",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_host_report.py",
+    "runtime_sha256": "037b14da949b4bca971fc23e679021e2a0fc750b233996f663cbec666d2537bc",
+    "git_sha256": "037b14da949b4bca971fc23e679021e2a0fc750b233996f663cbec666d2537bc",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_live_http.py",
+    "runtime_sha256": "66f7ede289c9a8ec8b3d3e1b697da552fb17b91ad4f29b12d63e976b8acd06fd",
+    "git_sha256": "66f7ede289c9a8ec8b3d3e1b697da552fb17b91ad4f29b12d63e976b8acd06fd",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m3_migration.py",
+    "runtime_sha256": "000919cdec551f2d4cd3ac172233778ff0a5d3a0cb9a8b97f74c142169505cfc",
+    "git_sha256": "000919cdec551f2d4cd3ac172233778ff0a5d3a0cb9a8b97f74c142169505cfc",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m3_transports.py",
+    "runtime_sha256": "d0010c872a20a36e923d8f27e785527a5c93e12ea9fcae95d66d6cabb03553af",
+    "git_sha256": "3a8d4a21cd302bc7136b8633db46bb2bf13ce460ef59bfde0e31974dcf916093",
+    "binding": "lf_normalization_only"
+  },
+  {
+    "path": "tests/integration/test_m4_migration.py",
+    "runtime_sha256": "a4af11ebbe3ee7f4283163934752e6c41080743705e7cd33df1598048f0ffb5d",
+    "git_sha256": "a4af11ebbe3ee7f4283163934752e6c41080743705e7cd33df1598048f0ffb5d",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m4_transports.py",
+    "runtime_sha256": "452267b3e627574f12f56565c7bb6ba6233de2b1fbd6dcaa5dfc11d751c5cbc2",
+    "git_sha256": "b32eb4b8e844c97460fc55bee6dd8e7a828fb8f4e1aaab74b6ec5f3db2932e82",
+    "binding": "lf_normalization_only"
+  },
+  {
+    "path": "tests/integration/test_m4b_migration.py",
+    "runtime_sha256": "483dc382c6dbc7b0fd1c3f267d1f464c3d945337549ccc8cd9349ab352e775b9",
+    "git_sha256": "483dc382c6dbc7b0fd1c3f267d1f464c3d945337549ccc8cd9349ab352e775b9",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m4b_transports.py",
+    "runtime_sha256": "7195b17b7fb4d5a8fb4a62b8280bf5d2839aadf812fe860260d51508b851c2e2",
+    "git_sha256": "d5005810332a1f394fc7c73b981166323233d03be81575bb83d419d27eb303fe",
+    "binding": "lf_normalization_only"
+  },
+  {
+    "path": "tests/integration/test_m4b_workspaces.py",
+    "runtime_sha256": "6bb0872178d0a1253afcad6e89ce676733795d613f9df0bf9577aa16ed62efcb",
+    "git_sha256": "6bb0872178d0a1253afcad6e89ce676733795d613f9df0bf9577aa16ed62efcb",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m5_governance.py",
+    "runtime_sha256": "37ae94dfe8e26e3c9e4bc8ed09ddfd8eb0c9fadb7b103b780b92ae14ecfd7969",
+    "git_sha256": "37ae94dfe8e26e3c9e4bc8ed09ddfd8eb0c9fadb7b103b780b92ae14ecfd7969",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m5_migration.py",
+    "runtime_sha256": "f17a0e793e852d1205bc10e77030852d26fc830e9098cef3e67e28e36426e4f0",
+    "git_sha256": "f17a0e793e852d1205bc10e77030852d26fc830e9098cef3e67e28e36426e4f0",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_m5_transports.py",
+    "runtime_sha256": "9468317ed5c761c048240cc0d35fff65f7742760097766866544960f1eb716b4",
+    "git_sha256": "aa376e5b6ea20d50d76357f780e5ea8966058d3a8106f676117b7acdcf9d8aa2",
+    "binding": "lf_normalization_only"
+  },
+  {
+    "path": "tests/integration/test_mcp_install.py",
+    "runtime_sha256": "3042e946d3c09e0f8fd7909937bbe5234dfd6538ede57b28f51ffb96f6d090f7",
+    "git_sha256": "3042e946d3c09e0f8fd7909937bbe5234dfd6538ede57b28f51ffb96f6d090f7",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_mock_adapter_core_boundary.py",
+    "runtime_sha256": "88ec940cf0a7d9a8ce35c4b24986c2311335ba110e6e7ede24821ac5aba097d5",
+    "git_sha256": "88ec940cf0a7d9a8ce35c4b24986c2311335ba110e6e7ede24821ac5aba097d5",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_mock_run_manager_core_boundary.py",
+    "runtime_sha256": "94c395cd3bdd80775bd4fdb92d2812e1bfd88b5eaccd3e2080c89e06b14d229f",
+    "git_sha256": "94c395cd3bdd80775bd4fdb92d2812e1bfd88b5eaccd3e2080c89e06b14d229f",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_mock_workflow.py",
+    "runtime_sha256": "067b1be0faf50a89926c3f58b1ad1e81fbcc84da30952ac50600d8cfc1ad3d84",
+    "git_sha256": "067b1be0faf50a89926c3f58b1ad1e81fbcc84da30952ac50600d8cfc1ad3d84",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_owner_execution.py",
+    "runtime_sha256": "b320ed26f1bdf6929e2c0e40deacf648a3ec3072cdf4dc91301e1b7536998f99",
+    "git_sha256": "b320ed26f1bdf6929e2c0e40deacf648a3ec3072cdf4dc91301e1b7536998f99",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_project_provider_usage.py",
+    "runtime_sha256": "d0f2068c4f63a9c14c5ac282dd267fb1894704c40ebda077b0d1bc3026d76662",
+    "git_sha256": "d0f2068c4f63a9c14c5ac282dd267fb1894704c40ebda077b0d1bc3026d76662",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_proposal_docker_pipeline.py",
+    "runtime_sha256": "160e091c1d23b65ec06d3d725634f1e241b9ece13428489a205eeb6c4c60b112",
+    "git_sha256": "160e091c1d23b65ec06d3d725634f1e241b9ece13428489a205eeb6c4c60b112",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_proposal_handoff.py",
+    "runtime_sha256": "5e747b9d8179bdbd09b9b9b509dcbc8c3022eb1c72d0832d722ca1434e36765b",
+    "git_sha256": "5e747b9d8179bdbd09b9b9b509dcbc8c3022eb1c72d0832d722ca1434e36765b",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_proposal_staging.py",
+    "runtime_sha256": "5c91fcdba5a968648bc38c1a856b61737f33e4586f07c39436b2cacf1e8e572d",
+    "git_sha256": "5c91fcdba5a968648bc38c1a856b61737f33e4586f07c39436b2cacf1e8e572d",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_provider_loopback_transport.py",
+    "runtime_sha256": "71fdca15cb7c55141f67977150287fd50698c632b1809bc0697bbdfdb4a73f0e",
+    "git_sha256": "71fdca15cb7c55141f67977150287fd50698c632b1809bc0697bbdfdb4a73f0e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_relay_owner_status.py",
+    "runtime_sha256": "67e75ceb585acbb97892e5ddf0deadb1f90d744199911edbb101427d2d82e528",
+    "git_sha256": "67e75ceb585acbb97892e5ddf0deadb1f90d744199911edbb101427d2d82e528",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_relay_usage.py",
+    "runtime_sha256": "c2b9d84bf146e4c5b3bd086097708259841a2c88f567b615268bb8308d943a48",
+    "git_sha256": "c2b9d84bf146e4c5b3bd086097708259841a2c88f567b615268bb8308d943a48",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_relay_wave_journal.py",
+    "runtime_sha256": "d854afd7ff1a62f7b47c7a643750320b6d50819663b59e2f84e1d20bb3c91e90",
+    "git_sha256": "d854afd7ff1a62f7b47c7a643750320b6d50819663b59e2f84e1d20bb3c91e90",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_scheduling_core_boundary.py",
+    "runtime_sha256": "77c08841de44b50acb90408b7e57a4f56abdaebb03e374f50de11e6263f7731b",
+    "git_sha256": "77c08841de44b50acb90408b7e57a4f56abdaebb03e374f50de11e6263f7731b",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_task_proposals.py",
+    "runtime_sha256": "3aba1d4efaf24c73563b97bbd12849d76404edf6f700524b882170c9bc24dd1c",
+    "git_sha256": "3aba1d4efaf24c73563b97bbd12849d76404edf6f700524b882170c9bc24dd1c",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_transports.py",
+    "runtime_sha256": "3ad960bcc7de7648e6458651a37cf3e3c8534d4772d6f06b8d70994bbb30ec70",
+    "git_sha256": "3ad960bcc7de7648e6458651a37cf3e3c8534d4772d6f06b8d70994bbb30ec70",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_unfinished_continuation.py",
+    "runtime_sha256": "f153455512eee8fd4d9d8876a86f37f4317695539841c9680279037b832e0961",
+    "git_sha256": "f153455512eee8fd4d9d8876a86f37f4317695539841c9680279037b832e0961",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_verified_proposal_flow.py",
+    "runtime_sha256": "d268e5e2dd1dd0a6f94608c19c48835ddf0d959bf547d74ab1914722ed312763",
+    "git_sha256": "d268e5e2dd1dd0a6f94608c19c48835ddf0d959bf547d74ab1914722ed312763",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/test_verified_task_completion.py",
+    "runtime_sha256": "94f8c545295df6480a0ef4aaf9e642dfc7650bedcb3ea397b928363bdaf703f5",
+    "git_sha256": "94f8c545295df6480a0ef4aaf9e642dfc7650bedcb3ea397b928363bdaf703f5",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/integration/verified_flow_process_fixture.py",
+    "runtime_sha256": "5a657ea9e61773e9791bc5a382b2fef2fc9fe16c323ec274e6872d6b4d8a3c8a",
+    "git_sha256": "5a657ea9e61773e9791bc5a382b2fef2fc9fe16c323ec274e6872d6b4d8a3c8a",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/manual/probe_claude_host.py",
+    "runtime_sha256": "81a886c797fcb4b35d5c7dfc22fd179e7f1efcf3d60303411919acf92f17f779",
+    "git_sha256": "81a886c797fcb4b35d5c7dfc22fd179e7f1efcf3d60303411919acf92f17f779",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/manual/probe_codex_collaboration.py",
+    "runtime_sha256": "722fa107967fc4d94b58d1e634528ce7d1d9c8cd652fc2196a944e9cfe3347c5",
+    "git_sha256": "722fa107967fc4d94b58d1e634528ce7d1d9c8cd652fc2196a944e9cfe3347c5",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/manual/probe_codex_host.py",
+    "runtime_sha256": "f5b93c9bcfb6840d6d9fad904f655d39caa6b1bb82a1a874310b5b82901d4083",
+    "git_sha256": "f5b93c9bcfb6840d6d9fad904f655d39caa6b1bb82a1a874310b5b82901d4083",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/manual/probe_registered_codex.py",
+    "runtime_sha256": "f9475ecee0ad99daab079ed201f570ddba1b693300cdad8be18728a0192602a4",
+    "git_sha256": "f9475ecee0ad99daab079ed201f570ddba1b693300cdad8be18728a0192602a4",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/recovery/test_process_recovery.py",
+    "runtime_sha256": "437aa5f78eb8836d8d8b223389ab6eaebcc6b3efc526f4869bf746084848cba7",
+    "git_sha256": "437aa5f78eb8836d8d8b223389ab6eaebcc6b3efc526f4869bf746084848cba7",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_core_security.py",
+    "runtime_sha256": "7718f5185a85b763483478562a4360ba98e132168e9b3d98575e0fe296ef0bc9",
+    "git_sha256": "7718f5185a85b763483478562a4360ba98e132168e9b3d98575e0fe296ef0bc9",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_file_locks.py",
+    "runtime_sha256": "ab33eea1fde1b65e72475a586e9ad4451b11d98a96193249434828c13f42d3cb",
+    "git_sha256": "ab33eea1fde1b65e72475a586e9ad4451b11d98a96193249434828c13f42d3cb",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_http_boundary.py",
+    "runtime_sha256": "045738af504fde084b554c156194f742648cb38255144b6ec8d6946ad41b5603",
+    "git_sha256": "045738af504fde084b554c156194f742648cb38255144b6ec8d6946ad41b5603",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_m3_security.py",
+    "runtime_sha256": "7206bb47585384ec5c6c1a5f81f839b30f3b368d23ec81d7514ac78c028597e2",
+    "git_sha256": "7206bb47585384ec5c6c1a5f81f839b30f3b368d23ec81d7514ac78c028597e2",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_m5_audit_transactions.py",
+    "runtime_sha256": "fe25744783886dcec20271c01536d1c282968dcb065c9cc3891fcff4bce96724",
+    "git_sha256": "fe25744783886dcec20271c01536d1c282968dcb065c9cc3891fcff4bce96724",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_m5_owner_cli_inputs.py",
+    "runtime_sha256": "2829e4cfb9253272ceedd3b4fbf7a9e83c1201ddb967cbc56993e9731bd5c30c",
+    "git_sha256": "2829e4cfb9253272ceedd3b4fbf7a9e83c1201ddb967cbc56993e9731bd5c30c",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_m5_permissions.py",
+    "runtime_sha256": "7aec3118d75d80fee8b2c14e39ec4594e332e8161027e080de697e46163c0ccf",
+    "git_sha256": "7aec3118d75d80fee8b2c14e39ec4594e332e8161027e080de697e46163c0ccf",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/security/test_resource_paths.py",
+    "runtime_sha256": "7dcd1a06d62cd5e9421c42f8bb6cf86c9cb27da75d42829d508d3395a095ade4",
+    "git_sha256": "7dcd1a06d62cd5e9421c42f8bb6cf86c9cb27da75d42829d508d3395a095ade4",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_acceptance_traceability.py",
+    "runtime_sha256": "a2fe7f25f8b1c4de8db7752cc859fc8fda1df5db6630def9b6b487a3315ea7fe",
+    "git_sha256": "e82ebab8e731af387f406063ca439404428cc6ecd0b7d224f6ead71eeb9365b3",
+    "binding": "lf_normalization_only"
+  },
+  {
+    "path": "tests/unit/test_adapter_run_manager.py",
+    "runtime_sha256": "7dbd5bba341d822b5773acad917dfb30370d54c67276877c5d2df12e28b22ada",
+    "git_sha256": "7dbd5bba341d822b5773acad917dfb30370d54c67276877c5d2df12e28b22ada",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_adapters.py",
+    "runtime_sha256": "5e4d78fc7ef90469a3c2b6211468c98da514c1a8780d3f158c7fbc8edcfb6bc5",
+    "git_sha256": "5e4d78fc7ef90469a3c2b6211468c98da514c1a8780d3f158c7fbc8edcfb6bc5",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_candidate_binding.py",
+    "runtime_sha256": "adc863b348760b227f0ef51ff08370ed22c06ca89238dd7d996de745335877cd",
+    "git_sha256": "adc863b348760b227f0ef51ff08370ed22c06ca89238dd7d996de745335877cd",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_candidate_intent_relations.py",
+    "runtime_sha256": "7e884631ba652e6e6be218eff17bfd0ba6d599662c637f2296d2769b860c8804",
+    "git_sha256": "7e884631ba652e6e6be218eff17bfd0ba6d599662c637f2296d2769b860c8804",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_candidate_queue_migration.py",
+    "runtime_sha256": "b841c2f28e4a48788eb2ccb02b0bbb6dbce5682d12ef81d2e83dd29a84542ea0",
+    "git_sha256": "b841c2f28e4a48788eb2ccb02b0bbb6dbce5682d12ef81d2e83dd29a84542ea0",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_capture_creation_fence.py",
+    "runtime_sha256": "18a6335061f8dec0d3a3120328cbc46f8ce7e59f54b3a8b26b6ca8ffb72a7e5b",
+    "git_sha256": "18a6335061f8dec0d3a3120328cbc46f8ce7e59f54b3a8b26b6ca8ffb72a7e5b",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_claude_adapter.py",
+    "runtime_sha256": "0e604ad0460ebc45288458f60695b7084770ac750f87856add9eabf7a0fb7116",
+    "git_sha256": "0e604ad0460ebc45288458f60695b7084770ac750f87856add9eabf7a0fb7116",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_claude_events.py",
+    "runtime_sha256": "8e7d77d6bd9d785a333a3ed9f0bfc77eec4a8a03bec4daddbb3a2f2b1662a27e",
+    "git_sha256": "8e7d77d6bd9d785a333a3ed9f0bfc77eec4a8a03bec4daddbb3a2f2b1662a27e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_claude_invocation.py",
+    "runtime_sha256": "e24c82870e6610ff97a84cb6c7d14a7a7fc175a087c0c37a4f5e15f288005b59",
+    "git_sha256": "e24c82870e6610ff97a84cb6c7d14a7a7fc175a087c0c37a4f5e15f288005b59",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_claude_process.py",
+    "runtime_sha256": "782a640b029844d1afbecf2b7df8030b88b6909afb0d119ce9bf0e6c3cbb3c64",
+    "git_sha256": "782a640b029844d1afbecf2b7df8030b88b6909afb0d119ce9bf0e6c3cbb3c64",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_codex_adapter.py",
+    "runtime_sha256": "fc4c0540b402537c7d0a6a98e61dd31239ea54fe3abd2db9e1663947e7427a32",
+    "git_sha256": "fc4c0540b402537c7d0a6a98e61dd31239ea54fe3abd2db9e1663947e7427a32",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_codex_events.py",
+    "runtime_sha256": "6574ef9ede53cc9563f53eca0b3a9c12bc9173685d17933a7de0d912a2f820ee",
+    "git_sha256": "6574ef9ede53cc9563f53eca0b3a9c12bc9173685d17933a7de0d912a2f820ee",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_codex_invocation.py",
+    "runtime_sha256": "8b36d9148e7b0f50571c97b73cd54749864cded4c11b95d4b8fec0ca008fa27c",
+    "git_sha256": "8b36d9148e7b0f50571c97b73cd54749864cded4c11b95d4b8fec0ca008fa27c",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_codex_process.py",
+    "runtime_sha256": "f2984d2292ee42dc2c6b70d83058486e1d5364bdb8258b77d705f801ab941b87",
+    "git_sha256": "f2984d2292ee42dc2c6b70d83058486e1d5364bdb8258b77d705f801ab941b87",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_context.py",
+    "runtime_sha256": "b98d2b409411603a727abc2ccebffd4f967a529a5bfda3baa9e00de520be7584",
+    "git_sha256": "b98d2b409411603a727abc2ccebffd4f967a529a5bfda3baa9e00de520be7584",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_coordination_benchmark.py",
+    "runtime_sha256": "db2f345dcdc13821b00122c2935b4bb8d40800166e6bb8a7da80a8f38197cb12",
+    "git_sha256": "db2f345dcdc13821b00122c2935b4bb8d40800166e6bb8a7da80a8f38197cb12",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_core.py",
+    "runtime_sha256": "5dc8628b9a00f4b62ea34c546b54828bf05b6947bc998cc221dd4ea1c575d9ae",
+    "git_sha256": "5dc8628b9a00f4b62ea34c546b54828bf05b6947bc998cc221dd4ea1c575d9ae",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_core_admission.py",
+    "runtime_sha256": "e33fe6c3c1afde0f8d17c4a5904269feab001c056b05da73642159f74d2069cf",
+    "git_sha256": "e33fe6c3c1afde0f8d17c4a5904269feab001c056b05da73642159f74d2069cf",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_core_startup_diagnostic.py",
+    "runtime_sha256": "97b980807685768da867b6f293fe9b888cdeadcf020d217505c3611c10a9dd53",
+    "git_sha256": "97b980807685768da867b6f293fe9b888cdeadcf020d217505c3611c10a9dd53",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_cursor_adapter.py",
+    "runtime_sha256": "981181e4155bebc4baf0ee2eaa5cd02118e60eab929c3791b95ddbd3d4f53bad",
+    "git_sha256": "981181e4155bebc4baf0ee2eaa5cd02118e60eab929c3791b95ddbd3d4f53bad",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_cursor_events.py",
+    "runtime_sha256": "26d7924c69eb91882ce2043f92cca58550ebda8f7b93f189c5d70bb7a81f47f1",
+    "git_sha256": "26d7924c69eb91882ce2043f92cca58550ebda8f7b93f189c5d70bb7a81f47f1",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_cursor_invocation.py",
+    "runtime_sha256": "1916fd20aa09c33095a07bc54784a657c220020cc47a61510f514662e43bba57",
+    "git_sha256": "1916fd20aa09c33095a07bc54784a657c220020cc47a61510f514662e43bba57",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_cursor_node_bundle.py",
+    "runtime_sha256": "9b27fe736707361174ee7f90d3f0c69c6b4a0a100775f145bc7d717d2ddf7560",
+    "git_sha256": "9b27fe736707361174ee7f90d3f0c69c6b4a0a100775f145bc7d717d2ddf7560",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_data_path.py",
+    "runtime_sha256": "2808a06e47f89f8668675fe54a505fd29f790796bbcbfc44972e573e1251b127",
+    "git_sha256": "2808a06e47f89f8668675fe54a505fd29f790796bbcbfc44972e573e1251b127",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_dispatch_planning.py",
+    "runtime_sha256": "0f81443bbbbc129453ea3f68676fc3c0a784e56b2901e6648944d0819fe5fdb7",
+    "git_sha256": "0f81443bbbbc129453ea3f68676fc3c0a784e56b2901e6648944d0819fe5fdb7",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_http_providers.py",
+    "runtime_sha256": "ca4f546448001ce07dbca62cbc3137320dd89616eaa4fa6435fc850d64b08cb7",
+    "git_sha256": "ca4f546448001ce07dbca62cbc3137320dd89616eaa4fa6435fc850d64b08cb7",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_inspect_claude_events.py",
+    "runtime_sha256": "2a343864152b390b00507e20180e25b86ee91e9b73b098cae44e5146a5fcb1c8",
+    "git_sha256": "2a343864152b390b00507e20180e25b86ee91e9b73b098cae44e5146a5fcb1c8",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_inspect_codex_events.py",
+    "runtime_sha256": "7fa63eff5dd769980a4ce336f859bebeb299a369e4f542c69e147efa19136d2d",
+    "git_sha256": "7fa63eff5dd769980a4ce336f859bebeb299a369e4f542c69e147efa19136d2d",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_inspect_local_attempts.py",
+    "runtime_sha256": "d8aa6bfd17f3c40016b0eea4509d122280d86497b96bca8990c25cf7671f3f00",
+    "git_sha256": "d8aa6bfd17f3c40016b0eea4509d122280d86497b96bca8990c25cf7671f3f00",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_mock_run_manager.py",
+    "runtime_sha256": "eccc0f894e6b30ca65d2df577fa8799d59497dacf796dd933b2988c1cab31f36",
+    "git_sha256": "eccc0f894e6b30ca65d2df577fa8799d59497dacf796dd933b2988c1cab31f36",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_owned_process_cleanup.py",
+    "runtime_sha256": "935389d0d03081b5f227e73b2b1f596202329a0af50374006e5b736fb573597c",
+    "git_sha256": "935389d0d03081b5f227e73b2b1f596202329a0af50374006e5b736fb573597c",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_planning_cli.py",
+    "runtime_sha256": "bb250405a846518a58eb547fc7b379ed692833e5bc9b61cc68fa2474384fd49e",
+    "git_sha256": "bb250405a846518a58eb547fc7b379ed692833e5bc9b61cc68fa2474384fd49e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_process_capture.py",
+    "runtime_sha256": "05d5a98029d3ea045929cf8ab3b3b47a24805c47be30f59734ce3405f6f4a714",
+    "git_sha256": "05d5a98029d3ea045929cf8ab3b3b47a24805c47be30f59734ce3405f6f4a714",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_process_capture_start_cancel.py",
+    "runtime_sha256": "cda822141d7cb42e00bf048119b8b18c9e05aa9c18cd1b85ddf72509186feb49",
+    "git_sha256": "cda822141d7cb42e00bf048119b8b18c9e05aa9c18cd1b85ddf72509186feb49",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_proposals.py",
+    "runtime_sha256": "471fb8c205258442d79bbfe0dc4cd4a7f040360ee5026638fd679e4e1d44f09a",
+    "git_sha256": "471fb8c205258442d79bbfe0dc4cd4a7f040360ee5026638fd679e4e1d44f09a",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_provider_usage_and_budget.py",
+    "runtime_sha256": "359d0b35dc42294008694700331f2946b8f0c8622073d38d1539c961d18454bb",
+    "git_sha256": "359d0b35dc42294008694700331f2946b8f0c8622073d38d1539c961d18454bb",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_pytest_case_journal.py",
+    "runtime_sha256": "2b94f075864c97cb67d2727836b81f5762b45f3af2802ec901e22e31dfbf1e3e",
+    "git_sha256": "2b94f075864c97cb67d2727836b81f5762b45f3af2802ec901e22e31dfbf1e3e",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_relay_execution_budget.py",
+    "runtime_sha256": "ef80804339338876b9affd6515e3dd075ae08076229cdc6f82b809329dcfe2bd",
+    "git_sha256": "ef80804339338876b9affd6515e3dd075ae08076229cdc6f82b809329dcfe2bd",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_release_acceptance.py",
+    "runtime_sha256": "1d2425c3f4ed06fe0ff9d74b3e91c03b4e79704610726a32bbc704c92f15de3b",
+    "git_sha256": "1d2425c3f4ed06fe0ff9d74b3e91c03b4e79704610726a32bbc704c92f15de3b",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_release_review_evidence.py",
+    "runtime_sha256": "7a3846db34e2807e64769e92e4cffaf411aabf90c02fc3c07d2ca0ac9ab073cc",
+    "git_sha256": "7a3846db34e2807e64769e92e4cffaf411aabf90c02fc3c07d2ca0ac9ab073cc",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_retry_planning.py",
+    "runtime_sha256": "22cbcc109b38eacf8412108f71e43936be6268f675ad4299883d1ced39f4841b",
+    "git_sha256": "22cbcc109b38eacf8412108f71e43936be6268f675ad4299883d1ced39f4841b",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_scheduling.py",
+    "runtime_sha256": "c1b360b1ae47d70061869caf2497d3a610a3223532e85d4ca9d747b9e0f42442",
+    "git_sha256": "c1b360b1ae47d70061869caf2497d3a610a3223532e85d4ca9d747b9e0f42442",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_unstarted_capture_adapter.py",
+    "runtime_sha256": "669513ba8bbae967a52b11e0023c62551152d0c91649f2f3ac80894146121fbf",
+    "git_sha256": "669513ba8bbae967a52b11e0023c62551152d0c91649f2f3ac80894146121fbf",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_usage.py",
+    "runtime_sha256": "e58d474c602c7046a54bed2a1ae9acd978e2b4cccbebd47766b3b5c7ef569fb1",
+    "git_sha256": "e58d474c602c7046a54bed2a1ae9acd978e2b4cccbebd47766b3b5c7ef569fb1",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_usage_checkpoint_storage.py",
+    "runtime_sha256": "f086e160eceda839ce1607c5247315c5b7cffd2d7368080c2944f9c3a2cc5330",
+    "git_sha256": "f086e160eceda839ce1607c5247315c5b7cffd2d7368080c2944f9c3a2cc5330",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_usage_cli.py",
+    "runtime_sha256": "18a72ca0b951fb8ab0fc5e6c9878bc2974567dda9bf54e129b027f5a128ed636",
+    "git_sha256": "18a72ca0b951fb8ab0fc5e6c9878bc2974567dda9bf54e129b027f5a128ed636",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_verification_docker.py",
+    "runtime_sha256": "1890169a914d4ffdeb8ec6b77b7c48e7280dd181f6639356f94317751d40376b",
+    "git_sha256": "1890169a914d4ffdeb8ec6b77b7c48e7280dd181f6639356f94317751d40376b",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_verification_executor.py",
+    "runtime_sha256": "82096d9f50a639576d5edb9df87b029d47d73e2ec0144172c861d67ac4541eb5",
+    "git_sha256": "82096d9f50a639576d5edb9df87b029d47d73e2ec0144172c861d67ac4541eb5",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_verification_jobs.py",
+    "runtime_sha256": "9249bf3e4f8abb455c13c47810519689b8569d700cfb69a28c963f455c022d21",
+    "git_sha256": "9249bf3e4f8abb455c13c47810519689b8569d700cfb69a28c963f455c022d21",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_verification_reconciliation.py",
+    "runtime_sha256": "85a796af48baef10c4d9c0f36196cbbf930e64cfd808635b16a52ada3ade0634",
+    "git_sha256": "85a796af48baef10c4d9c0f36196cbbf930e64cfd808635b16a52ada3ade0634",
+    "binding": "exact"
+  },
+  {
+    "path": "tests/unit/test_verification_snapshot.py",
+    "runtime_sha256": "0e893e5b89d36ec845b1f33b652073fd0e34419a8034701820373333ecd17370",
+    "git_sha256": "0e893e5b89d36ec845b1f33b652073fd0e34419a8034701820373333ecd17370",
+    "binding": "exact"
+  }
+]

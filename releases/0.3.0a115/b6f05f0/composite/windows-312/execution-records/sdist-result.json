@@ -1,0 +1,47 @@
+{
+  "finished_at": "2026-11-14T08:08:36.374332+00:00",
+  "exit_code": 0,
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "archive_sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+  "source_unchanged": true,
+  "checks": [
+    {
+      "id": "sdist_venv",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_offline_dependencies",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_install",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_pip_check",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_cli",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_origin_sdk",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_console_smoke",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_license_inventory",
+      "status": "pass"
+    },
+    {
+      "id": "sdist_pytest",
+      "status": "pass"
+    }
+  ],
+  "scope": "Sdist component execution only; identity and composite evidence validation remain separate",
+  "formal_release": "BLOCKED"
+}

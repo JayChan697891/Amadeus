@@ -1,0 +1,30 @@
+{
+  "tool_commit": "5b433f4f3864554ac1af399a73db743c56c1e9f7",
+  "tool_sha256": "3c0c4add8bd9509302aea028f25ffbaccdfd16ee215e6fbd67dd4446c389fec0",
+  "runtime_wheel_sha256": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9",
+  "cli_tests": {
+    "passed": 5,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "argument validation and dedicated Linux path gate only"
+  },
+  "ruff": "PASS",
+  "format": "PASS",
+  "independent_review": "bounded Astra read-only diff/schema review and root inspection; no blocking defect found",
+  "actual_fixed_docker_demo": "NOT RUN; wait for original Linux queue completion",
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "pilot-cli.xml",
+      "size": 1044,
+      "sha256": "d58d6469f66d3a1e5203e9afa42700fb3dd82e70e796e1675289a9f023ca3e17"
+    },
+    {
+      "path": "pilot-cli.log",
+      "size": 649,
+      "sha256": "941de488e2f71a20b29d3f594f70d855d294d2a2be1222a4aab010430bf533d4"
+    }
+  ]
+}

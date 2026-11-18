@@ -1,0 +1,78 @@
+{
+  "product_sha": "8a4ba72ac171871c16014b2a4b14f1b056580873",
+  "requirements": [
+    "M7-01",
+    "M7-02"
+  ],
+  "scope": "Reject deterministic invalid pinned proposal input before reserving a wave; retain post-admission source revalidation and incomplete-wave fence",
+  "source": {
+    "passed": 23,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 59.29
+  },
+  "fresh_windows_wheel": {
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "total": 86,
+    "passed": 86,
+    "elapsed_seconds": 190.11
+  },
+  "fresh_linux_wheel": {
+    "failure": 0,
+    "error": 0,
+    "skipped": 0,
+    "total": 86,
+    "passed": 86,
+    "elapsed_seconds": 73.32
+  },
+  "runtime_package_members_matched_before_after": 88,
+  "runtime_python_modules": 87,
+  "source_shadowing": false,
+  "pip_checks": "pass",
+  "static_checks": {
+    "ruff_and_format_changed_files": 2,
+    "mypy_source_modules": 87,
+    "status": "pass"
+  },
+  "independent_source_review": "No blocking finding: precheck follows owner/worker/selection validation, reads only, checks deadline, keeps no-pin behavior and post-admission source-change fence.",
+  "independent_package_review": "Accepted scoped package regression: both86case JUnit files, origins, pip checks, all88wheel runtime members and771tracked sdist files match frozen Git8a4ba72.16test evidence digests and2artifacts matched. Root additionally verified2idle/shutdown records; no expansion to full matrix, sdist installation or real model execution.",
+  "model_calls": 0,
+  "candidate_execution": false,
+  "real_model_evidence": "Previous6017005 producer to2ac4557 receiver evidence remains independently accepted at its exact versions; not rerun or upgraded to8a4ba72.",
+  "new_full_matrix": "NOT RUN; current change uses affected regression only",
+  "sdist_install": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "sanitization": {
+    "source_log_redactions": 0,
+    "source_xml_redactions": 0,
+    "source_log_original_private_sha256": "f4aa53d3e493465a88257fa584e2ad8bad16417cb01bb9d47c3360c7cadb9bc3"
+  },
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m7-admission-8a4ba72/agentsync_local-0.3.0a109-py3-none-any.whl": "dfe80522e06f0d8a3742929d52441d5cb627f0248bc705aeac19d15862eed513",
+    "releases/0.3.0a109/m7-admission-8a4ba72/agentsync_local-0.3.0a109.tar.gz": "86767218655a7c220bb845be80de967d98722256cd469ce726e5732e5521457f"
+  },
+  "evidence_sha256": {
+    "build-package.py.txt": "a376116897ec49ed9eaa7fc917866168eb7fc89fd004d07eab08a138f03c40cc",
+    "build.log": "dd9a931ce907a034def10b6d45929e3c63fe9297b9ccf87fa6ae160653dffc8e",
+    "config.json": "f6968072c108619f28b00b6b64160a8fe91788417cb59c157fb590e4d73f6c97",
+    "install.log": "5b34978662d3c8ac893e7b0db09e189517ab8df0b25d610577769bb40c1d3c0b",
+    "installed.log": "5874fd8f74431c1f481cc977049222dfcbc7f55196df81b6d0a8c0642f5d3b6e",
+    "installed.xml": "deb2967abf6c1808b41f46f306e6df02c1ef5f44fb0fa2ba84503855ae675c29",
+    "linux-installed.log": "021bcc950f80e54e7a062f2f3dfc1ec3a2fed442183e962860b707e405040946",
+    "linux-installed.xml": "81987506657ad67bcd87d735a0b49787160eee1344651c07628c96d2859f7767",
+    "linux-origin.json": "3011173de6636f2409fbfb96d168b7417d00ce85d689a6ba1965f9ca0cec892f",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "origin.json": "5715c79a602c4cfa5698b58f28c4310689990e0aa272d27474fd61dc942cda0b",
+    "pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "run-linux.sh.txt": "a89e5486b5f217a014dfd1bc9d60f0ff3cf4e0da49e48f529e0a7454493ce576",
+    "source.log": "295a7acbe294d253fa768096612edc209c9f7b63f69fe5f796d53e893be65502",
+    "source.xml": "fa3a81424f713f17028b2b3128542dd182265d6fd0edccc302dc88e05216cd79",
+    "test-installed.py.txt": "3ec42b69aee60ca98ea7e0685130dbb955cdbcb53780472cc40e973021667978",
+    "docker-idle.log": "633696ffb98a94ff3b0304cdeda8ca799f784ca965a1de8290ea82e303464c17",
+    "vm-stop.log": "5a3fa9f240d13eadfea07e4ea90a643807c107ff1214a71f98e28f9a92cc67ca"
+  },
+  "dedicated_docker_containers_remaining": 0,
+  "owned_vm_stopped": true
+}

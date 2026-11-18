@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-15T12:33:34.563875+00:00",
+  "pid": 4048,
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "wheel_sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+  "benchmark_tool_sha256": "3baaf2443e63a22f03114f9573804c99dd394903306a813961a0195f9878c222",
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "driver_sha256": "b5b3d523a22078077aa4b036ccfefb37ff958c3f7206f18a09378346b64175eb",
+  "queue_result_sha256": "35814d6a4f7519ec80a184f47221e93a09ab188d5d0414a45b7813fcc19a7032",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED"
+}

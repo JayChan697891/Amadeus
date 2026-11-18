@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "ruff",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "."
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "started_at": "2026-11-14T09:27:57.845638+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "ruff",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "."
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "exit_code": 0,
+    "started_at": "2026-11-14T09:27:57.845638+00:00",
+    "finished_at": "2026-11-14T09:27:58.171338+00:00",
+    "log": "logs/ruff.log",
+    "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

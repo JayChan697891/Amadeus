@@ -1,0 +1,116 @@
+{
+  "source_commit": "6cd580752d3a4feaf0052c130235190f04168df8",
+  "runtime_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "version": "0.3.0a123",
+  "source_files": 284,
+  "runtime_members": 97,
+  "inputs": {
+    "source.zip": {
+      "size": 917442,
+      "sha256": "5bf96e7ea27e37ed7675de6359edd35341150dd732f4722430e28ba8430089b5"
+    },
+    "source-manifest.json": {
+      "size": 49703,
+      "sha256": "1c54de277e62fce7556f390843a380d086153cbbd97c1bef3a334a3b52c0206f"
+    },
+    "runtime-members.json": {
+      "size": 10144,
+      "sha256": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff"
+    },
+    "agentsync_local-0.3.0a123-py3-none-any.whl": {
+      "size": 333137,
+      "sha256": "0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c"
+    }
+  },
+  "expected_cases": [
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_continues_saved_live_checkpoint[None-checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_continues_saved_live_checkpoint[receiver-checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_continues_saved_live_checkpoint[continuation-checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_continues_saved_live_checkpoint[launch-checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_continues_saved_live_checkpoint[fee-checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_continues_saved_live_checkpoint[secret-checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_rejects_ineligible_source_before_receiver[pending]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_rejects_ineligible_source_before_receiver[normal-review]"
+    ],
+    [
+      "tests.integration.test_continue_codex_terminal",
+      "test_terminal_rejects_ineligible_source_before_receiver[no-checkpoint]"
+    ],
+    [
+      "tests.integration.test_unfinished_continuation",
+      "test_confirmed_failure_continues_real_progress_and_transfers_graph[checkpoint_codex]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[None]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[checkpoint]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[launch]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[staging]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[execution]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[completion]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[receiver-launch]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_terminal_uses_real_core_and_exact_decisions[receiver-failed]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_real_hidden_terminal_input[cancel]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_real_hidden_terminal_input[line]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_real_hidden_terminal_input[eof]"
+    ],
+    [
+      "tests.integration.test_verified_codex_terminal",
+      "test_real_hidden_terminal_input[overlong]"
+    ]
+  ],
+  "windows_junit_sha256": "14972bc7b268e55764720d04fe2a980bf3b64d0e62c70512d0537ecb12ecd074"
+}

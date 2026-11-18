@@ -1,0 +1,65 @@
+import hashlib
+import json
+import sys
+from pathlib import Path, PurePosixPath
+from datetime import datetime, timezone
+import paramiko
+
+base=Path('D:/agentsync-debug/m122licenses-linux')
+repo=Path('F:/syuc/amadeus-m6-single')
+sys.path.insert(0,'D:/agentsync-debug/m122p/s')
+from tools.release_acceptance import redact_credentials
+client=paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+sftp=client.open_sftp()
+def read(path):
+ with sftp.open(str(path),'rb') as f:return f.read()
+guest=PurePosixPath('/root/amadeus-m122licenses/run')
+result=json.loads(read(guest/'result.json'))
+assert len(result['checks'])==6 and all(c['status']=='pass' and c['exit_code']==0 for c in result['checks'])
+assert result['driver_sha256']==hashlib.sha256((base/'collect.py').read_bytes()).hexdigest()
+counts={}
+inventories={}
+for kind,env in [('wheel','w'),('sdist','d')]:
+ data=read(guest/f'{kind}-inventory.json');inventories[kind]=data
+ assert hashlib.sha256(data).hexdigest()==result['inventories'][kind]['sha256']
+ inventory=json.loads(data)
+ assert inventory['license_review']=='pending' and inventory['publication_authorized'] is False and not inventory['review_items']
+ site=PurePosixPath('/root/amadeus-m122l')/env/'lib/python3.14/site-packages'
+ count=0
+ for declaration in inventory['distributions'].values():
+  for entry in declaration['license_files']:
+   relative=PurePosixPath(entry['member'])
+   assert not relative.is_absolute() and '..' not in relative.parts and entry['status']=='recorded'
+   actual=read(site/relative)
+   assert len(actual)==entry['bytes'] and hashlib.sha256(actual).hexdigest()==entry['sha256']
+   count+=1
+ members=json.loads(read('/root/amadeus-m122l/runtime-members.json'))
+ assert len(members)==97
+ for name,digest in members.items():assert hashlib.sha256(read(site/name)).hexdigest()==digest
+ counts[kind]={'distributions':len(inventory['distributions']),'license_files_rehashed':count,'runtime_members':len(members)}
+assert inventories['wheel']==inventories['sdist']
+_,stdout,stderr=client.exec_command("/root/amadeus-m122l/w/bin/python -I -B -c \"import json,pathlib; print(json.dumps([int(p.name) for p in pathlib.Path('/proc').glob('[0-9]*') if (p/'comm').exists() and (p/'comm').read_text().strip().startswith(('pytest','codex'))]))\"; docker ps -aq",timeout=20)
+post=stdout.read().decode();err=stderr.read().decode();assert stdout.channel.recv_exit_status()==0 and post.strip()=='[]' and not err
+allowed={'attempt.json','result.json','wheel-inventory.json','sdist-inventory.json','logs'}
+assert set(sftp.listdir(str(guest)))==allowed
+files={}
+for name in sorted(allowed-{'logs'}):files[name]=read(guest/name)
+for name in sftp.listdir(str(guest/'logs')):
+ assert '/' not in name and '\\' not in name and name.endswith(('.log','.json'))
+ files['logs/'+name]=read(guest/'logs'/name)
+for name,data in files.items():assert redact_credentials(data.decode('utf8'))[1]==0,name
+dest=repo/'docs/acceptance/evidence/core-preview-a122/linux-licenses'
+dest.mkdir()
+for name,data in files.items():
+ target=dest/name;target.parent.mkdir(parents=True,exist_ok=True)
+ with target.open('xb') as f:f.write(data)
+ assert target.read_bytes()==data
+for name in ['collect.py','harvest.py','execution-start.json','execution-result.json','preflight.json']:
+ with (dest/(name+'.txt' if name.endswith('.py') else name)).open('xb') as f:f.write((base/name).read_bytes())
+review={'observed_at':datetime.now(timezone.utc).isoformat(),'scope':'Linux3.14 a122 existing wheel/sdist license metadata only','native_collection_chunk':'f6a743','native_exit_code':0,'checks':6,'source_commit':result['runtime_commit'],'installs':counts,'inventories_identical':True,'license_review':'pending','publication_authorized':False,'formal_release':'BLOCKED','postcheck':post.strip(),'files':{name:hashlib.sha256(data).hexdigest() for name,data in files.items()}}
+with (dest/'root-review.json').open('x',encoding='utf8') as f:json.dump(review,f,indent=2)
+print(json.dumps({'counts':counts,'original_files':len(files),'original_bytes':sum(map(len,files.values()))}))
+client.close()

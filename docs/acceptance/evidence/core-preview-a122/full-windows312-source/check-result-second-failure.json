@@ -1,0 +1,9 @@
+{
+  "scope": "Post-run checker serialization difference; no test/product execution",
+  "native_chunk": "2ca108",
+  "native_exit_code": 1,
+  "checker_sha256": "1b4b6b327fc582060f6b5acbdb17767b73c33c90c93582e893cb625a8d8aed7d",
+  "error_type": "AssertionError",
+  "assertion": "BytesIO XML serialization equality with Windows file serialization",
+  "correction": "Use unchanged collector.persist_junit on a new local scratch target, compare actual output bytes"
+}

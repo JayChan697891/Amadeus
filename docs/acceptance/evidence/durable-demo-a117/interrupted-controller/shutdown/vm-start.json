@@ -1,0 +1,6 @@
+{
+  "pid": 21524,
+  "created_utc": "2026-11-16T06:35:56.8871090Z",
+  "executable": "D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe",
+  "purpose": "Linux-only controller lifecycle-lock tests; no real models or auth"
+}

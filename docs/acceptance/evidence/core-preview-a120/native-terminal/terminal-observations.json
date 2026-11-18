@@ -1,0 +1,152 @@
+{
+  "source_commit": "821c227d0ff8782400309cca7b47fc0bf7eb74ef",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "helper_sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9",
+  "scope": "Native Windows terminal output chunks, real getpass and installed CLI; deterministic admitted-wave fixture; no Agent/model execution",
+  "fixture": {
+    "project_id": "02a5bf48-3fdd-4e6b-971b-6269c9292209",
+    "task_id": "2b059984-63b6-4b31-acff-2604385f1880",
+    "wave_id": "cc6e66f85a788706be31fec2373a3694a6309c8380152784e800243278c79fd4",
+    "task_status": "pending",
+    "task_version": 1,
+    "receipt_state": "admitted",
+    "data_dir": "D:\\agentsync-debug\\m120terminal\\scratch\\core",
+    "scratch_root": "D:\\agentsync-debug\\m120terminal\\scratch",
+    "receipts": "D:\\agentsync-debug\\m120terminal\\scratch\\receipts",
+    "expected_reconcile_state": "incomplete",
+    "expected_verification": "unverified"
+  },
+  "fixture_preparation": {
+    "chunk_id": "4c1512",
+    "wall_time_seconds": 0.4343,
+    "exit_code": 0,
+    "original_token_count": 134,
+    "output": "{\"project_id\": \"02a5bf48-3fdd-4e6b-971b-6269c9292209\", \"task_id\": \"2b059984-63b6-4b31-acff-2604385f1880\", \"wave_id\": \"cc6e66f85a788706be31fec2373a3694a6309c8380152784e800243278c79fd4\", \"task_status\": \"pending\", \"task_version\": 1, \"receipt_state\": \"admitted\", \"data_dir\": \"D:\\\\agentsync-debug\\\\m120terminal\\\\scratch\\\\core\", \"scratch_root\": \"D:\\\\agentsync-debug\\\\m120terminal\\\\scratch\", \"receipts\": \"D:\\\\agentsync-debug\\\\m120terminal\\\\scratch\\\\receipts\", \"expected_reconcile_state\": \"incomplete\", \"expected_verification\": \"unverified\"}\r\n"
+  },
+  "operations": [
+    {
+      "name": "status_before",
+      "command": "& 'D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe' -I -B 'F:\\syuc\\amadeus-m6-single\\examples\\recover_relay.py' '--data-dir' 'D:\\agentsync-debug\\m120terminal\\scratch\\core' '--scratch-root' 'D:\\agentsync-debug\\m120terminal\\scratch' '--receipts' 'D:\\agentsync-debug\\m120terminal\\scratch\\receipts' '--project-id' '02a5bf48-3fdd-4e6b-971b-6269c9292209' 'status'\nexit $LASTEXITCODE",
+      "steps": [
+        {
+          "chunk_id": "c9a7bc",
+          "wall_time_seconds": 10.0029629,
+          "session_id": 55289,
+          "original_token_count": 41,
+          "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[HP\u001b]0;C:\\Users\\JayChan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\u0007\u001b[?25hroject owner token: "
+        },
+        {
+          "chunk_id": "df40ec",
+          "wall_time_seconds": 0.2311121,
+          "exit_code": 0,
+          "original_token_count": 85,
+          "output": "\u001b[?25l\u001b[H\u001b[?25h\r\n{\"ok\": true, \"data\": {\"wave_id\": \"cc6e66f85a788706be31fec2373a3694a6309c8380152784e800243278c79fd4\", \"receipt_state\": \"admitted\", \"outcome\": {\"state\": \"incomplete\", \"tasks\": [{\"task_id\": \"2b059984-63b6-4b31-acff-2604385f1880\", \"state\": \"incomplete\", \"failure_code\": null}], \"verification\": \"unverified\"}}}\r\n\u001b[?9001l\u001b[?1004l",
+          "credential_echo_fields": []
+        }
+      ]
+    },
+    {
+      "name": "history",
+      "command": "& 'D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe' -I -B 'F:\\syuc\\amadeus-m6-single\\examples\\recover_relay.py' '--data-dir' 'D:\\agentsync-debug\\m120terminal\\scratch\\core' '--scratch-root' 'D:\\agentsync-debug\\m120terminal\\scratch' '--receipts' 'D:\\agentsync-debug\\m120terminal\\scratch\\receipts' '--project-id' '02a5bf48-3fdd-4e6b-971b-6269c9292209' 'history'\nexit $LASTEXITCODE",
+      "steps": [
+        {
+          "chunk_id": "09382f",
+          "wall_time_seconds": 10.0151579,
+          "session_id": 23745,
+          "original_token_count": 41,
+          "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[HP\u001b]0;C:\\Users\\JayChan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\u0007\u001b[?25hroject owner token: ",
+          "credential_echo_fields": []
+        },
+        {
+          "chunk_id": "31772c",
+          "wall_time_seconds": 0.2505761,
+          "exit_code": 0,
+          "original_token_count": 94,
+          "output": "\u001b[?25l\u001b[H\u001b[?25h\r\n{\"ok\": true, \"data\": {\"waves\": [{\"wave_id\": \"cc6e66f85a788706be31fec2373a3694a6309c8380152784e800243278c79fd4\", \"journal_state\": \"admitted\", \"outcome\": {\"state\": \"incomplete\", \"tasks\": [{\"task_id\": \"2b059984-63b6-4b31-acff-2604385f1880\", \"state\": \"incomplete\", \"failure_code\": null}], \"verification\": \"unverified\"}}], \"next_before\": null}}\r\n\u001b[?9001l\u001b[?1004l",
+          "credential_echo_fields": []
+        }
+      ]
+    },
+    {
+      "name": "task",
+      "command": "& 'D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe' -I -B 'F:\\syuc\\amadeus-m6-single\\examples\\recover_relay.py' '--data-dir' 'D:\\agentsync-debug\\m120terminal\\scratch\\core' '--scratch-root' 'D:\\agentsync-debug\\m120terminal\\scratch' '--receipts' 'D:\\agentsync-debug\\m120terminal\\scratch\\receipts' '--project-id' '02a5bf48-3fdd-4e6b-971b-6269c9292209' 'task' '2b059984-63b6-4b31-acff-2604385f1880'\nexit $LASTEXITCODE",
+      "steps": [
+        {
+          "chunk_id": "384428",
+          "wall_time_seconds": 10.0055835,
+          "session_id": 37685,
+          "original_token_count": 41,
+          "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[HP\u001b]0;C:\\Users\\JayChan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\u0007\u001b[?25hroject owner token: ",
+          "credential_echo_fields": []
+        },
+        {
+          "chunk_id": "6e5099",
+          "wall_time_seconds": 0.2492474,
+          "exit_code": 0,
+          "original_token_count": 355,
+          "output": "\u001b[?25l\u001b[H\u001b[?25h\r\n{\"ok\": true, \"data\": {\"task_id\": \"2b059984-63b6-4b31-acff-2604385f1880\", \"attempts\": [{\"leg\": \"first\", \"state\": \"not_dispatched\", \"client\": null, \"status\": null, \"exit_code\": null, \"timed_out\": null, \"parent_ended\": null, \"run_sha256\": null, \"session_sha256\": null, \"error_code\": null, \"admission\": null, \"adapter_elapsed_ms\": null, \"reported_input_tokens\": null, \"reported_output_tokens\": null, \"agent_sha256\": null, \"declared_client_version\": null, \"protocol_session_sha256\": null, \"protocol_error_reason\": null, \"stdout_bytes\": null, \"stderr_bytes\": null, \"stdout_sha256\": null, \"stderr_sha256\": null, \"stdout_truncated\": null, \"stderr_truncated\": null, \"billing_verified\": false, \"cost_usd\": null, \"verification\": \"unverified\"}, {\"leg\": \"second\", \"state\": \"not_dispatched\", \"client\": null, \"status\": null, \"exit_code\": null, \"timed_out\": null, \"parent_ended\": null, \"run_sha256\": null, \"session_sha256\": null, \"error_code\": null, \"admission\": null, \"adapter_elapsed_ms\": null, \"reported_input_tokens\": null, \"reported_output_tokens\": null, \"agent_sha256\": null, \"declared_client_version\": null, \"protocol_session_sha256\": null, \"protocol_error_reason\": null, \"stdout_bytes\": null, \"stderr_bytes\": null, \"stdout_sha256\": null, \"stderr_sha256\": null, \"stdout_truncated\": null, \"stderr_truncated\": null, \"billing_verified\": false, \"cost_usd\": null, \"verification\": \"unverified\"}]}}\r\n\u001b[?9001l\u001b[?1004l",
+          "credential_echo_fields": []
+        }
+      ]
+    },
+    {
+      "name": "reconcile",
+      "command": "& 'D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe' -I -B 'F:\\syuc\\amadeus-m6-single\\examples\\recover_relay.py' '--data-dir' 'D:\\agentsync-debug\\m120terminal\\scratch\\core' '--scratch-root' 'D:\\agentsync-debug\\m120terminal\\scratch' '--receipts' 'D:\\agentsync-debug\\m120terminal\\scratch\\receipts' '--project-id' '02a5bf48-3fdd-4e6b-971b-6269c9292209' 'reconcile' 'cc6e66f85a788706be31fec2373a3694a6309c8380152784e800243278c79fd4'\nexit $LASTEXITCODE",
+      "steps": [
+        {
+          "chunk_id": "867c21",
+          "wall_time_seconds": 10.0035055,
+          "session_id": 65097,
+          "original_token_count": 41,
+          "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[HP\u001b]0;C:\\Users\\JayChan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\u0007\u001b[?25hroject owner token: ",
+          "credential_echo_fields": []
+        },
+        {
+          "chunk_id": "f2e22f",
+          "wall_time_seconds": 1.0034767,
+          "session_id": 65097,
+          "original_token_count": 10,
+          "output": "\u001b[?25l\u001b[H\u001b[?25h\r\nProject session ID: ",
+          "credential_echo_fields": []
+        },
+        {
+          "chunk_id": "d7d0ce",
+          "wall_time_seconds": 1.0137378,
+          "session_id": 65097,
+          "original_token_count": 7,
+          "output": "\r\nProject session token: ",
+          "credential_echo_fields": []
+        },
+        {
+          "chunk_id": "1beeb4",
+          "wall_time_seconds": 0.2472642,
+          "exit_code": 0,
+          "original_token_count": 27,
+          "output": "\r\n{\"ok\": true, \"data\": {\"state\": \"incomplete\", \"tasks\": [], \"verification\": \"unverified\"}}\r\n\u001b[?9001l\u001b[?1004l",
+          "credential_echo_fields": []
+        }
+      ]
+    },
+    {
+      "name": "status_after",
+      "command": "& 'D:\\agentsync-debug\\m120p\\w\\Scripts\\python.exe' -I -B 'F:\\syuc\\amadeus-m6-single\\examples\\recover_relay.py' '--data-dir' 'D:\\agentsync-debug\\m120terminal\\scratch\\core' '--scratch-root' 'D:\\agentsync-debug\\m120terminal\\scratch' '--receipts' 'D:\\agentsync-debug\\m120terminal\\scratch\\receipts' '--project-id' '02a5bf48-3fdd-4e6b-971b-6269c9292209' 'status'\nexit $LASTEXITCODE",
+      "steps": [
+        {
+          "chunk_id": "486d38",
+          "wall_time_seconds": 10.0093798,
+          "session_id": 32190,
+          "original_token_count": 41,
+          "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[HP\u001b]0;C:\\Users\\JayChan\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\u0007\u001b[?25hroject owner token: "
+        },
+        {
+          "chunk_id": "0725ee",
+          "wall_time_seconds": 0.2631801,
+          "exit_code": 0,
+          "original_token_count": 82,
+          "output": "\r\n{\"ok\": true, \"data\": {\"wave_id\": \"cc6e66f85a788706be31fec2373a3694a6309c8380152784e800243278c79fd4\", \"receipt_state\": \"admitted\", \"outcome\": {\"state\": \"incomplete\", \"tasks\": [{\"task_id\": \"2b059984-63b6-4b31-acff-2604385f1880\", \"state\": \"incomplete\", \"failure_code\": null}], \"verification\": \"unverified\"}}}\r\n\u001b[?9001l\u001b[?1004l",
+          "credential_echo_fields": []
+        }
+      ]
+    }
+  ]
+}

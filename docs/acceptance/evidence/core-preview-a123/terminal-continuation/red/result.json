@@ -1,0 +1,10 @@
+{
+  "exit_code": 1,
+  "time": "2026-11-18T08:07:32.818450+00:00",
+  "source_sha256": {
+    "examples/verified_codex_task.py": "746ef87a7c3f1c506e789b72edb29b9b8c5f8d95f3692bb9eff6cafb0aa6d515",
+    "tests/integration/test_continue_codex_terminal.py": "dc31420bde4b7788cc94e8a55e13f6f5620b637609a71b53bbb64dbee6465003",
+    "tests/integration/test_unfinished_continuation.py": "7fe98fdbc182a9f2f08441e1a0d3647ed64d94eaf71dfcd58b4ec788664c5e4f"
+  },
+  "source_unchanged": true
+}

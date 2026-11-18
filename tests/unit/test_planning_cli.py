@@ -114,7 +114,7 @@ def test_invalid_planning_input_is_bounded_strict_and_never_echoed(monkeypatch, 
         }
 
 
-def test_plan_is_standalone_and_does_not_intercept_owner_operation(monkeypatch, capsys):
+def test_plan_is_standalone_and_does_not_intercept_owner_operation(monkeypatch, capsys, tmp_path):
     for arguments in (
         ["plan", "--data-dir", "private-path"],
         ["--data-dir", "private-path", "plan"],
@@ -130,6 +130,8 @@ def test_plan_is_standalone_and_does_not_intercept_owner_operation(monkeypatch, 
             assert operation == "plan"
             return {"ok": False, "error": {"code": "unknown_operation"}}
 
+    cli.AgentSyncClient(tmp_path)
+    monkeypatch.setenv("AGENTSYNC_DATA_DIR", str(tmp_path))
     monkeypatch.setattr(cli, "AgentSyncClient", OwnerClient)
     monkeypatch.setattr(sys, "stdin", io.StringIO("{}"))
     assert cli.main(["owner", "plan"]) == 1

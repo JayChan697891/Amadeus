@@ -1,0 +1,64 @@
+"""Retest only the unchanged-input parameter label repair against installed a123."""
+import json
+import runpy
+import sys
+from pathlib import Path
+
+BASE = Path(__file__).parent
+H = runpy.run_path(str(BASE/'prepare_install_r3.py'))
+sha, save = H['sha'], H['save']
+
+def main():
+    root = BASE/'label-fix'
+    root.mkdir(exist_ok=False)
+    run, source, temp, home = (root/n for n in ('run','source','t','home'))
+    for p in (run,source,temp,home): p.mkdir()
+    (run/'logs').mkdir()
+    assert Path(sys.executable).resolve() == H['PYTHON'].resolve()
+    H['isolate'](home,temp)
+    files = {}
+    for name in ('pyproject.toml','tests/conftest.py','tests/__init__.py','tests/unit/__init__.py','tests/unit/conftest.py','tests/unit/test_proposals.py'):
+        original = H['REPO']/name if name == 'tests/unit/test_proposals.py' else H['SOURCE']/name
+        if not original.is_file():
+            assert name not in ('pyproject.toml','tests/conftest.py','tests/unit/test_proposals.py')
+            continue
+        target = source/name
+        target.parent.mkdir(parents=True,exist_ok=True)
+        with target.open('xb') as stream: stream.write(original.read_bytes())
+        files[name] = sha(target)
+    assert files['tests/unit/test_proposals.py']=='f417224f45803ab245b202cbb9725a426acf45fa29fd287eb5415da1d292a799'
+    save(run/'input-files.json',files)
+    tool=H['collector']()
+    python=str(H['PYTHON'])
+    probe=[python,'-I','-B','-c',H['PROBE'],str(BASE/'venv'),str(H['SOURCE']),str(BASE/'runtime-members-r3.json')]
+    command=[python,'-I','-B','-m','pytest','tests/unit/test_proposals.py','-p','no:cacheprovider','--tb=short','--basetemp',str(temp/'pytest'),'--junitxml',str(temp/'raw.xml')]
+    result={'status':'fail','scope':'One affected test file; parameter IDs only changed','runtime_commit':'bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7','tests_input_sha256':files['tests/unit/test_proposals.py'],'driver_sha256':sha(Path(__file__)),'checks':[],'model_calls':0,'full_suite':'NOT RUN','formal_release':'BLOCKED'}
+    def check(name,argv,stdout=None):
+        item=tool.execute(name,argv,source,run,temp,capture_stdout=stdout)
+        result['checks'].append(item)
+        return item['exit_code']==0 and item['status']=='pass' and not item['log_truncated']
+    try:
+        assert check('origin_before',probe)
+        assert check('label_pytest',command,temp/'stdout.private')
+        result['status']='pass'
+    finally:
+        if not check('origin_after',probe): result['status']='fail'
+        for name,value in files.items(): assert sha(source/name)==value
+        raw=temp/'stdout.private'
+        if raw.exists():
+            data=raw.read_bytes()
+            assert len(data)<=tool.MAX_LOG_BYTES
+            clean,n=tool.redact_credentials(data.decode('utf8',errors='replace'))
+            with (run/'stdout.log').open('x',encoding='utf8',newline='\n') as stream: stream.write(clean)
+            result['stdout']={'raw_private_sha256':sha(raw),'public_sha256':sha(run/'stdout.log'),'redactions':n}
+        if (temp/'raw.xml').exists():
+            n=tool.persist_junit(temp/'raw.xml',run/'junit.xml')
+            result['junit']={'raw_private_sha256':sha(temp/'raw.xml'),'public_sha256':sha(run/'junit.xml'),'redactions':n}
+        else:
+            result['status']='fail'
+        save(run/'result.json',result)
+    print(json.dumps({'status':result['status'],'result':str(run/'result.json')}))
+    return 0 if result['status']=='pass' else 1
+
+if __name__=='__main__':
+    raise SystemExit(main())

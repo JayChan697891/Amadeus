@@ -1,0 +1,35 @@
+from pathlib import Path
+from dataclasses import asdict
+import hashlib
+import json
+import sys
+
+BASE = Path('D:/agentsync-debug/m6-codex-proposal-live-20261112')
+OUT = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE))
+import pilot
+
+state = json.loads((BASE / 'state.json').read_text(encoding='utf-8'))
+core = pilot.Core(BASE / 'core')
+actor = pilot.actor_for(state, pilot.deny)
+relay = pilot.ControlledRelay(core, BASE, BASE / 'receipts')
+observation = relay.observe_codex_proposal(actor, state['task']['id'])
+assert observation.state == 'proposal_stored'
+assert observation.content_sha256 == '42b9b483667af196eb93db7b263ae0036a0741523e5e6fe963c5b0d3af9b0b8f'
+auth = {'project_id': state['owner']['project_id'], 'session_id': state['member']['session_id'], 'session_token': state['member']['session_token']}
+context = core.execute('get_context', {**auth, 'context_id': observation.context_id, 'version': observation.context_version})
+assert hashlib.sha256(context['content'].encode('utf-8')).hexdigest() == observation.content_sha256
+files = json.loads(context['content'])['files']
+assert len(files) == 1 and files[0]['path'] == 'add.py'
+source = files[0]['content'].encode('utf-8')
+source_sha = hashlib.sha256(source).hexdigest()
+assert len(source) == 63 and source_sha == '0049214146c09e015865e54237ecc4d15c9e043886cb20d1d9c68659bf744bc9'
+payload = json.dumps({'files': files}, sort_keys=True, separators=(',', ':')).encode('utf-8')
+with (OUT / 'proposal.json').open('xb') as stream:
+    stream.write(payload)
+task = next(row for row in core.execute('get_project_state', auth)['tasks'] if row['id'] == state['task']['id'])
+assert task['status'] == 'running' and task['version'] == observation.task_version
+origin = {'runtime_sha': 'bf54d44cd2e9550e902ca3d5d18ab6c7e296862b', 'plan_sha256': state['plan_sha256'], 'context_id': observation.context_id, 'context_version': observation.context_version, 'context_sha256': observation.content_sha256, 'proposal_file_sha256': source_sha, 'proposal_json_sha256': hashlib.sha256(payload).hexdigest(), 'original_task_id': task['id'], 'original_task_version': task['version'], 'original_task_status': task['status'], 'original_verification': 'unverified', 'origin_kind': 'owner-reviewed export from observed immutable actual Codex proposal; not cross-Core native authentication', 'model_calls': 0}
+with (OUT / 'origin.json').open('x', encoding='utf-8') as stream:
+    json.dump(origin, stream, indent=2)
+print(json.dumps(origin))

@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-11-14T11:04:26.514321+00:00",
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m115-r3/m115-benchmark-current.py",
+  "driver_sha256": "58d2b7e854958037865472f3ad423e02762ff9bbfd2082b955f18c03e4c1f752",
+  "automatic_retry": false,
+  "concurrent_physical_host_workload": "Existing Windows3.14 source collector remains active; Linux VM queue is complete",
+  "formal_release": "BLOCKED"
+}

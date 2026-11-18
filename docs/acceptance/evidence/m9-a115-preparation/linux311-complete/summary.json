@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-14T10:10:14.727433+00:00",
+  "frozen_candidate": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "scope": "Complete Linux/Python3.11 local component row; not full matrix or Release acceptance",
+  "report": "releases/0.3.0a115/b6f05f0/linux-311/report.json",
+  "report_sha256": "7012930595aad28df86feddd6355e03d43e57b68d2755f0b04b893f8737edeac",
+  "transfer_summary_sha256": "2505da572982e4d35f077e9b6543247bbf42c1c68ba0f08c8fba1dd4cb283a62",
+  "actual_checks_passed": 26,
+  "suites": {
+    "pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    "wheel_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    "sdist_pytest": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    }
+  },
+  "source_files_verified": 2083,
+  "installed_archive_sha256": {
+    "wheel": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+    "sdist": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56"
+  },
+  "unique_case_ids_per_suite": 2482,
+  "originals_preserved": true,
+  "derived_label_changes_per_suite": 6,
+  "report_manifest_artifacts": 72,
+  "transferred_files_verified": 182,
+  "docker_observation_files": 105,
+  "docker_scope": "105 separately transfer-manifest-pinned observation files, including expected failures and non-started cases; not 105 successful executions and not all semantically validated by the original 72-artifact report verifier. No real models.",
+  "verifier_outcomes_per_suite": {
+    "records": 14,
+    "passed": 5,
+    "expected_failed": 9,
+    "all_cleanup_confirmed": true
+  },
+  "delta_review": {
+    "mode": "Direct file and delta inspection in this task; no additional full independent review claimed",
+    "reference_report_sha256": "7a567299da505c86ddccaa6434adf0a1f72a97817cc0ad7d4fbc981565d7537c",
+    "source_git_audit_and_installed_archive_pins_match": true,
+    "all_2482_case_identity_status_pairs_match_in_each_suite": true,
+    "prior_independent_review_scope": "The Linux3.14 row and existing evidence policy; no formal Release approval"
+  },
+  "row_terminal": "2026-11-14T10:06:05.091606+00:00",
+  "queue_terminal": "2026-11-14T10:06:06.233245+00:00",
+  "row_exit_code": 0,
+  "containers_after": [],
+  "raw_xml_uploaded": false,
+  "helper_reference": "../linux314-complete/harvest.py.txt",
+  "helper_sha256": "0f2a533babb011129ca3fd9ab4a505607fbfa1b072c590c60439d90169090b2e",
+  "next": {
+    "linux": "linux-312 actual row PID15604 started10:06:07 UTC; source PID15656 started10:06:08 UTC",
+    "windows": "windows-311 sdist PID24052 running; windows-314 queued; canonical windows312 wheel-only followup NOT RUN until queue succeeds"
+  },
+  "matrix_snapshot": "releases/0.3.0a115/b6f05f0/matrix-after-linux311.json",
+  "remaining_os_python_combinations": 7,
+  "local_matrix": "incomplete",
+  "formal_release": "BLOCKED"
+}

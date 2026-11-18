@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="5.009" timestamp="2026-11-16T20:50:55.943747-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_durable_demo" name="test_durable_demo_reports_unicode_directory_with_legacy_stdout" time="4.250"><failure message="AssertionError: Traceback (most recent call last):&#13;&#10;    File &quot;&lt;frozen runpy&gt;&quot;, line 198, in _run_module_as_main&#13;&#10;    File &quot;&lt;frozen runpy&gt;&quot;, line 88, in _run_code&#13;&#10;    File &quot;F:\syuc\amadeus-m6-single\src\agentsync\__main__.py&quot;, line 4, in &lt;module&gt;&#13;&#10;      raise SystemExit(main())&#13;&#10;                       ^^^^^^&#13;&#10;    File &quot;F:\syuc\amadeus-m6-single\src\agentsync\cli.py&quot;, line 348, in main&#13;&#10;      print(json.dumps(result, ensure_ascii=False))&#13;&#10;    File &quot;C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\encodings\cp1252.py&quot;, line 19, in encode&#13;&#10;      return codecs.charmap_encode(input,self.errors,encoding_table)[0]&#13;&#10;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#13;&#10;  UnicodeEncodeError: 'charmap' codec can't encode characters in position 118-121: character maps to &lt;undefined&gt;&#13;&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe', '-s', '-B', '-m', '...UnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 118-121: character maps to &lt;undefined&gt;\r\n').returncode">tmp_path = WindowsPath('D:/agentsync-debug/m120-demo-encoding/red-tmp/test_durable_demo_reports_unic0')
+
+    def test_durable_demo_reports_unicode_directory_with_legacy_stdout(tmp_path):
+        directory = tmp_path.resolve() / "持久协作"
+        source = Path(durable_demo.__file__).resolve().parents[1]
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-s",
+                "-B",
+                "-m",
+                "agentsync",
+                "--data-dir",
+                str(directory),
+                "demo",
+                "--durable",
+            ],
+            env=os.environ | {"PYTHONIOENCODING": "cp1252", "PYTHONPATH": str(source)},
+            capture_output=True,
+            timeout=90,
+            check=False,
+        )
+    
+        assert (directory / "agentsync.db").is_file()
+&gt;       assert process.returncode == 0, process.stderr.decode("ascii", errors="replace")
+E       AssertionError: Traceback (most recent call last):
+E           File "&lt;frozen runpy&gt;", line 198, in _run_module_as_main
+E           File "&lt;frozen runpy&gt;", line 88, in _run_code
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\__main__.py", line 4, in &lt;module&gt;
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\cli.py", line 348, in main
+E             print(json.dumps(result, ensure_ascii=False))
+E           File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+E             return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         UnicodeEncodeError: 'charmap' codec can't encode characters in position 118-121: character maps to &lt;undefined&gt;
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe', '-s', '-B', '-m', '...UnicodeEncodeError: \'charmap\' codec can\'t encode characters in position 118-121: character maps to &lt;undefined&gt;\r\n').returncode
+
+tests\integration\test_durable_demo.py:101: AssertionError</failure></testcase><testcase classname="tests.integration.test_handoff_recovery" name="test_owner_recovery_reports_unicode_reason_with_legacy_stdout" time="0.435"><failure message="AssertionError: Traceback (most recent call last):&#13;&#10;    File &quot;&lt;frozen runpy&gt;&quot;, line 198, in _run_module_as_main&#13;&#10;    File &quot;&lt;frozen runpy&gt;&quot;, line 88, in _run_code&#13;&#10;    File &quot;F:\syuc\amadeus-m6-single\src\agentsync\__main__.py&quot;, line 4, in &lt;module&gt;&#13;&#10;      raise SystemExit(main())&#13;&#10;                       ^^^^^^&#13;&#10;    File &quot;F:\syuc\amadeus-m6-single\src\agentsync\cli.py&quot;, line 328, in main&#13;&#10;      print(json.dumps(response, ensure_ascii=False))&#13;&#10;    File &quot;C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\encodings\cp1252.py&quot;, line 19, in encode&#13;&#10;      return codecs.charmap_encode(input,self.errors,encoding_table)[0]&#13;&#10;             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#13;&#10;  UnicodeEncodeError: 'charmap' codec can't encode characters in position 1084-1089: character maps to &lt;undefined&gt;&#13;&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe', '-s', '-B', '-m', '...icodeEncodeError: \'charmap\' codec can\'t encode characters in position 1084-1089: character maps to &lt;undefined&gt;\r\n').returncode">abandoned = (&lt;agentsync.core.service.Core object at 0x00000205DA50BE90&gt;, {'project_id': '0fb4def1-002c-4ed6-bf0b-05e81988d9e2', 'a...8', 'task_id': 'bf5b5861-723d-4df2-9bcb-c9bebeeec564', 'handoff_id': '132bd7db-8c03-4cd7-87a3-a896aee1d4b7', ...}, ...)
+
+    def test_owner_recovery_reports_unicode_reason_with_legacy_stdout(abandoned):
+        core, _, _, _, original, request, _ = abandoned
+        reason = "原会话已结束"
+        source = Path(agentsync.__file__).resolve().parents[1]
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-s",
+                "-B",
+                "-m",
+                "agentsync",
+                "--data-dir",
+                str(core.data_dir),
+                "owner",
+                "recover_handoff",
+            ],
+            input=json.dumps(request | {"reason": reason}).encode("ascii"),
+            env=os.environ | {"PYTHONIOENCODING": "cp1252", "PYTHONPATH": str(source)},
+            capture_output=True,
+            timeout=20,
+            check=False,
+        )
+    
+&gt;       assert process.returncode == 0, process.stderr.decode("ascii", errors="replace")
+E       AssertionError: Traceback (most recent call last):
+E           File "&lt;frozen runpy&gt;", line 198, in _run_module_as_main
+E           File "&lt;frozen runpy&gt;", line 88, in _run_code
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\__main__.py", line 4, in &lt;module&gt;
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "F:\syuc\amadeus-m6-single\src\agentsync\cli.py", line 328, in main
+E             print(json.dumps(response, ensure_ascii=False))
+E           File "C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+E             return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         UnicodeEncodeError: 'charmap' codec can't encode characters in position 1084-1089: character maps to &lt;undefined&gt;
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['D:\\agentsync-debug\\m120-demo-encoding\\source-env\\Scripts\\python.exe', '-s', '-B', '-m', '...icodeEncodeError: \'charmap\' codec can\'t encode characters in position 1084-1089: character maps to &lt;undefined&gt;\r\n').returncode
+
+tests\integration\test_handoff_recovery.py:103: AssertionError</failure></testcase></testsuite></testsuites>

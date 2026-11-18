@@ -1,0 +1,101 @@
+"""Stage the reviewed no-model fixture and retain its public plan once."""
+import hashlib
+import json
+import stat
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path('D:/agentsync-debug/strategy-demo/cancel-a117-preparation')
+REMOTE = '/root/amadeus-cancel-a117-20261115'
+PYTHON = '/root/amadeus-demo-a117-sdist-r1/installed/bin/python'
+EXPECTED = {
+    'pilot.py': '0750f56b490ce2a3dcb4981ecf33444eda9f1ed34bb2ad58967a248d99d64b37',
+    'private_capture.py': 'd9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7',
+    'credential_home.py': '38b34a5deb4bf49ea910052e85a9820c7aff957ea8ae52a077433138a4ec4bb5',
+    'runtime-members.json': 'f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a',
+    'run-once.py': 'b16755b4f77bbcc677f866c0bfe3d900235261b463ccd25bd6134620377cb91a',
+}
+
+def save(name, document):
+    with (BASE/name).open('x', encoding='utf-8') as f:
+        json.dump(document, f, indent=2)
+        f.write('\n')
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+def main():
+    for name, expected in EXPECTED.items():
+        assert sha((BASE/name).read_bytes()) == expected
+    client = paramiko.SSHClient()
+    client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    client.connect('127.0.0.1', port=22222, username='root',
+                   key_filename='D:/agentsync-debug/vm/debug_ed25519',
+                   look_for_keys=False, allow_agent=False, timeout=10, auth_timeout=15)
+    try:
+        with client.open_sftp() as sftp:
+            assert REMOTE.rsplit('/',1)[1] not in sftp.listdir('/root')
+            sftp.mkdir(REMOTE, mode=0o700)
+            for name, expected in EXPECTED.items():
+                if name == 'run-once.py':
+                    continue
+                destination = REMOTE+'/'+name
+                with sftp.open(destination, 'x+b') as f:
+                    sftp.chmod(destination, 0o600)
+                    f.write((BASE/name).read_bytes())
+                    f.flush()
+                with sftp.open(destination, 'rb') as f:
+                    assert sha(f.read(65536)) == expected
+            with sftp.open('/proc/sys/kernel/random/boot_id', 'rb') as f:
+                boot = f.read(100).decode().strip()
+        command = f'{PYTHON} -I -B {REMOTE}/pilot.py prepare'
+        save('prepare-attempt.json', {'started_at':datetime.now(UTC).isoformat(),
+            'command':command,'boot_id':boot,'helper_sha256':EXPECTED,
+            'model_calls':0,'external_credentials_read':False,'retry_allowed':False})
+        channel = client.get_transport().open_session(timeout=10)
+        channel.set_combine_stderr(True)
+        channel.exec_command(command)
+        output = bytearray()
+        deadline = time.monotonic()+60
+        try:
+            while True:
+                while channel.recv_ready():
+                    output.extend(channel.recv(4096))
+                    assert len(output) <= 65536
+                if channel.exit_status_ready() and not channel.recv_ready():
+                    code = channel.recv_exit_status()
+                    break
+                assert time.monotonic() < deadline, 'Preparation terminal state unknown; do not repeat'
+                time.sleep(0.1)
+        finally:
+            channel.close()
+        with (BASE/'prepare.log').open('xb') as f:
+            f.write(output)
+        save('prepare-result.json', {'finished_at':datetime.now(UTC).isoformat(),
+            'exit_code':code,'output_sha256':sha(output),'output_bytes':len(output),
+            'model_calls':0,'external_credentials_read':False,'retry_allowed':False})
+        assert code == 0
+        with client.open_sftp() as sftp:
+            public = REMOTE+'/plan.json'
+            info = sftp.lstat(public)
+            assert stat.S_ISREG(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o600
+            assert 0 < info.st_size <= 65536
+            with sftp.open(public, 'rb') as f:
+                payload = f.read(65536)
+            plan = json.loads(payload)
+            assert plan['model_calls'] == 0 and plan['credential_copy'] is False
+            assert not sftp.listdir(REMOTE+'/private-home')
+            assert not {'attempt.json','execute-entry.json','credential-home.json'} & set(sftp.listdir(REMOTE))
+            with (BASE/'plan.json').open('xb') as f:
+                f.write(payload)
+        print(json.dumps({'prepared':True,'plan_sha256':plan['producer_plan']['plan_sha256'],
+                          'model_calls':0,'external_credentials_read':False}))
+    finally:
+        client.close()
+
+if __name__ == '__main__':
+    main()

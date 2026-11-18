@@ -1,0 +1,14 @@
+set -eu
+umask 077
+/root/amadeus-continuation-entry-a123-20261118/w/bin/python -I -B - <<'PY'
+import hashlib,json,subprocess,sys
+from pathlib import Path
+base=Path('/root/amadeus-document-continuation-a123-20261118')
+inputs=Path('/root/amadeus-document-continuation-offline-a123-20261118/inputs')
+assert not base.exists()
+expected={'pilot.py': 'ce66f1c454824c37e2d38adbebb86e804848e399f26e36c85528ec6d802cca2c', 'auth_home.py': '0554cad5e8c7f885c839c91296b359b40fca39a800c59cdd6e15301dfd8cc0be', 'private_capture.py': 'd9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7', 'initialize_terminal_project.py': 'da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d', 'runtime-members.json': 'bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff', 'interrupt_parent.py': '70057327b4a287dc99bdae6f3a0b23b4cdabac59ecb85f826e808322f243f074', 'continue_codex_task.py': '12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c', 'verified_codex_task.py': '261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710'}
+assert all(hashlib.sha256((inputs/name).read_bytes()).hexdigest()==value for name,value in expected.items())
+proc=subprocess.run([sys.executable,'-I','-B',str(inputs/'pilot.py'),'prepare'],capture_output=True,text=True,env={'PATH':'/usr/bin:/bin','HOME':str(inputs),'PYTHONDONTWRITEBYTECODE':'1','PYTHONNOUSERSITE':'1'},check=False)
+print(json.dumps({'exit_code':proc.returncode,'stdout':proc.stdout,'stderr':proc.stderr,'model_calls':0,'auth_copies':0}))
+raise SystemExit(proc.returncode)
+PY

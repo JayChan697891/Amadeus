@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "observation": {
+    "error_type": "AssertionError",
+    "filename": "/root/amadeus-r2-proposal-verification-20261116/run-once.py",
+    "line": 60,
+    "candidate_executed": false
+  },
+  "stderr_bytes": 0,
+  "scope": "Read-only call to pure proposal binding; no main, launch, retry or writes"
+}

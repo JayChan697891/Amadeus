@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-11-18T01:04:57.556630+00:00",
+  "status": "pass",
+  "scope": "AST of three helpers and remote prelude; actual local OS pipe CRLF line forwarding only; no helper main executed",
+  "ready_sha256": "dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1",
+  "files": {
+    "terminal_control.py": "8999d28e2c3eab6fd8313a56e3bcc6cc40f6fb49d044401802fb7f3d9c92c083",
+    "setup_auth.py": "5925f8e809e8a58d5d306b8d89dd809f5a64b676690c6a1637826c875243c02e",
+    "auth_home.py": "d297e420f5cb9e2be82a36e8663a9e8654b4951e7674f3bc2fb20a00821eb716"
+  },
+  "original_helpers_unchanged": {
+    "terminal_control_fixed.py": "0b4f84738db076b4a57ed2e26807435a6a113ba682d2a0a1ef93d7a62132c557",
+    "setup_auth.py": "bdabee1f8e6e0ddacaab7de0100223f3f78a0881724f9c82e1566058ead78407",
+    "auth_home.py": "edcd90bb1dfb1e3b5095bb9ebe2ceafff6369a4a47acee5cf03b7d0c68f40e05"
+  },
+  "pipe_input_hex": "434f4e4649524d0d0a2078200d0a",
+  "pipe_output_hex": [
+    "434f4e4649524d0a",
+    "2078200a"
+  ],
+  "eof_observed": true,
+  "helper_executions": 0,
+  "ssh_connections": 0,
+  "auth_reads": 0,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "ruff_config": "F:/syuc/amadeus-m6-single/pyproject.toml",
+  "ruff_check_exit": 0,
+  "pending": "Root/Astra review and fresh owner grant; cleanup branches not executed"
+}

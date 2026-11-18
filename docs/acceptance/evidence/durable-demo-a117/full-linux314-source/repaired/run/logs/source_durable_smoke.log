@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-9.1.1, pluggy-1.7.0
+cachedir: /root/amadeus-m117ls2/t/smoke-cache
+rootdir: /root/amadeus-m117ls2/s
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 1 item
+
+../s/tests/integration/test_durable_demo.py .                            [100%]
+
+-------- generated xml file: /root/amadeus-m117ls2/t/durable-smoke.xml ---------
+============================== 1 passed in 4.54s ===============================

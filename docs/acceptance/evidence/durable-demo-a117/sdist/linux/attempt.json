@@ -1,0 +1,11 @@
+{
+  "started_at": "2026-11-15T12:57:30.743918+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "archive_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "driver_sha256": "89c27121aa9b28f5fe23a193c2621955a9456287132db5d45948bb4f7abbd9d4",
+  "boot_id": "92b715e8-93e2-4d4e-82fb-ba211307080e",
+  "automatic_retry": false,
+  "model_calls": 0,
+  "formal_release": "BLOCKED"
+}

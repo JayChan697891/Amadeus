@@ -1,0 +1,15 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m117w-traceability-r1\cache
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 92 items
+
+F:\syuc\amadeus-m6-single\tests\unit\test_acceptance_traceability.py ... [  3%]
+........................................................................ [ 81%]
+.................                                                        [100%]
+
+--- generated xml file: D:\agentsync-debug\m117w-traceability-r1\junit.xml ----
+============================= 92 passed in 0.96s ==============================

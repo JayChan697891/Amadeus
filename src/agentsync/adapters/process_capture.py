@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from itertools import count
 from pathlib import Path
 from threading import Lock
+from time import get_clock_info
 from typing import Literal, TypedDict, cast
 
 from agentsync.errors import AgentSyncError
@@ -178,6 +179,7 @@ class CapturedProcess:
         self._truncated: set[int] = set()
         self._reason: CaptureState | None = None
         self._error: str | None = None
+        self._progress_cache: CaptureResult | None = None
         self._capture_broken = False
         self._timer: asyncio.TimerHandle | None = None
         self._grace: asyncio.TimerHandle | None = None
@@ -211,7 +213,7 @@ class CapturedProcess:
         owner = cls()
         owner._deadline = owner._started + timeout_seconds
         owner._limit = output_limit
-        owner._timer = owner._loop.call_later(timeout_seconds, owner._stop, "timed_out")
+        owner._timer = owner._loop.call_at(owner._deadline, owner._on_deadline)
         owner._spawn_task = asyncio.create_task(owner._spawn(argv, cwd, encoded_stdin, environment))
         try:
             await asyncio.shield(owner._spawn_task)
@@ -278,6 +280,20 @@ class CapturedProcess:
                 0.25, self._finish, "capture_incomplete", "capture_incomplete"
             )
 
+    def _on_deadline(self) -> None:
+        if self._done.done() or self._reason is not None:
+            return
+        remaining = self._deadline - self._loop.time()
+        if remaining > 0:
+            # asyncio timers may fire one clock-resolution early. Recheck the
+            # actual monotonic deadline before terminating the owned parent.
+            # Waiting at least one resolution avoids spinning on a coarse clock.
+            self._timer = self._loop.call_later(
+                max(remaining, get_clock_info("monotonic").resolution), self._on_deadline
+            )
+            return
+        self._stop("timed_out")
+
     def _stop(self, reason: CaptureState) -> None:
         if self._done.done():
             return
@@ -310,6 +326,7 @@ class CapturedProcess:
         if self._done.done():
             return
         self._state, self._error = state, error
+        self._progress_cache = None
         self._finished = self._loop.time()
         for timer in (self._timer, self._grace, self._kill_confirmation):
             if timer is not None:
@@ -343,6 +360,43 @@ class CapturedProcess:
 
     async def snapshot(self) -> CaptureSnapshot:
         return self._view()
+
+    def progress_snapshot(self) -> CaptureResult | None:
+        """Copy bounded private buffers while the owned parent is observed running.
+
+        Same-loop observation only; it proves neither model success nor future
+        liveness. A stop request, expired deadline or observed exit is ineligible.
+        """
+        if asyncio.get_running_loop() is not self._loop:
+            raise AgentSyncError("validation_error", "Capture belongs to another event loop.")
+        snapshot = self._view()
+        if (
+            self._transport is None
+            or self._reason is not None
+            or self._capture_broken
+            or snapshot.state != "running"
+            or snapshot.exit_code is not None
+            or snapshot.parent_ended
+            or snapshot.error_code is not None
+            or snapshot.stdout_truncated
+            or snapshot.stderr_truncated
+            or self._loop.time() >= snapshot.deadline_at
+        ):
+            return None
+        cached = self._progress_cache
+        if cached is not None and cached.snapshot == snapshot:
+            return cached
+        result = CaptureResult(
+            snapshot,
+            cached.stdout
+            if cached and len(cached.stdout) == len(self._stdout)
+            else bytes(self._stdout),
+            cached.stderr
+            if cached and len(cached.stderr) == len(self._stderr)
+            else bytes(self._stderr),
+        )
+        self._progress_cache = result
+        return result
 
     async def wait(self) -> CaptureSnapshot:
         return await asyncio.shield(self._done)

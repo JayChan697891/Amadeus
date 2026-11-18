@@ -1,0 +1,48 @@
+{
+  "finished_at": "2026-11-15T04:35:09.651126+00:00",
+  "exit_code": 1,
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "source_unchanged": true,
+  "wheel_sha256": "56dda6fb6c34b53d25e1d56fd31494d849078bedf762df8b3d3c05adb906127a",
+  "checks": [
+    {
+      "id": "wheel_venv",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_offline_dependencies",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_install",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_pip_check",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_cli",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_origin_sdk",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_console_smoke",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_license_inventory",
+      "status": "pass"
+    },
+    {
+      "id": "wheel_pytest",
+      "status": "fail"
+    }
+  ],
+  "identity_recovery": "PENDING; original sanitized fixture collision may remain",
+  "scope": "New wheel component execution only; original unknown receipt remains unchanged",
+  "formal_release": "BLOCKED"
+}

@@ -1,0 +1,49 @@
+import hashlib
+import json
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+base = Path('D:/agentsync-debug/m120-demo-encoding')
+repo = Path('F:/syuc/amadeus-m6-single')
+sys.path.insert(0, 'D:/agentsync-debug/m120fullw/s')
+from tools.release_acceptance import redact_credentials
+
+def read(name):
+    return json.loads((base / name).read_text(encoding='utf-8-sig'))
+
+origin = read('origin.json')
+for row in origin.values():
+    assert row['exit_code'] == 0
+    assert Path(row['prefix']) == base / 'source-env'
+    assert Path(row['agentsync']) == repo / 'src/agentsync/__init__.py'
+    assert Path(row['cli']) == repo / 'src/agentsync/cli.py'
+red, green = read('red-start.json'), read('green-start.json')
+assert red['source_sha256'].keys() == green['source_sha256'].keys()
+assert red['source_sha256']['src/agentsync/cli.py'] == '2f05704f43039906759229be96b9ca576f888801dc582c8ee5b41bd193265b95'
+for name, digest in green['source_sha256'].items():
+    assert hashlib.sha256((repo / name).read_bytes()).hexdigest() == digest
+    if name != 'src/agentsync/cli.py':
+        assert red['source_sha256'][name] == digest
+assert (base / 'red.exit').read_text(encoding='utf-8-sig').strip() == '1'
+assert (base / 'green.exit').read_text(encoding='utf-8-sig').strip() == '0'
+results = {}
+for name, total, failures in (('red', 2, 2), ('green', 19, 0)):
+    cases = list(ET.parse(base / f'{name}.xml').iter('testcase'))
+    identities = [(case.get('classname'), case.get('name')) for case in cases]
+    assert len(cases) == len(set(identities)) == total
+    assert sum(case.find('failure') is not None for case in cases) == failures
+    assert not any(case.find('error') is not None or case.find('skipped') is not None for case in cases)
+    if failures:
+        assert all('UnicodeEncodeError' in case.find('failure').text for case in cases)
+    results[name] = {'unique_cases': total, 'passed': total - failures, 'failures': failures, 'errors': 0, 'skipped': 0, 'identities': identities}
+assert set(map(tuple, results['red']['identities'])) <= set(map(tuple, results['green']['identities']))
+assert all(row['exit_code'] == 0 for row in read('static-result.json').values())
+names = ['origin.json', 'red-start.json', 'red.log', 'red.xml', 'red.exit', 'green-start.json', 'green.log', 'green.xml', 'green.exit', 'static-result.json', 'ruff.log', 'format.log']
+for name in names:
+    assert redact_credentials((base / name).read_text(encoding='utf-8-sig'))[1] == 0, name
+result = {'source_sha256': green['source_sha256'], 'source_origin_checked': True, 'results': results, 'static_checks': read('static-result.json'), 'public_records_credential_matches': 0, 'original_records': len(names), 'original_bytes': sum((base / name).stat().st_size for name in names), 'scope': 'Two real local CLI encoding regressions and related demo/owner cases; no model or installed-package/full-suite claim.'}
+with (base / 'root-review.json').open('x', encoding='utf-8') as stream:
+    json.dump(result, stream, indent=2)
+    stream.write('\n')
+print(json.dumps({'results': {key: {k: v for k, v in value.items() if k != 'identities'} for key, value in results.items()}, 'original_records': len(names), 'original_bytes': result['original_bytes'], 'source_hashes_match': True, 'credential_matches': 0}))

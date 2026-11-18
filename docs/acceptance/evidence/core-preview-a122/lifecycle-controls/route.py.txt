@@ -1,0 +1,46 @@
+"""Check the approved child environment login route without model inference."""
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+(mode,) = sys.argv[1:]
+assert mode in ("cancel", "timeout")
+root = Path("/root/amadeus-lifecycle-a122-" + mode)
+plan = json.loads((root / "plan.json").read_bytes())
+home = str(root / "private-home")
+environment = {
+    "PATH": "/usr/bin:/bin",
+    "HOME": home,
+    "CODEX_HOME": home,
+    "TMP": home,
+    "TEMP": home,
+}
+assert plan["environment"] == environment
+binary = "/root/amadeus-codex-linux-0167/bin/codex"
+assert plan["argv"][0] == binary
+observed = subprocess.run(
+    [binary, "login", "status"],
+    env=environment,
+    capture_output=True,
+    timeout=15,
+    check=False,
+)
+recognized = (
+    observed.returncode == 0
+    and (observed.stdout + observed.stderr).decode(errors="replace").strip()
+    == "Logged in using ChatGPT"
+)
+value = {
+    "login_status_exit_code": observed.returncode,
+    "chatgpt_route_recognized": recognized,
+    "model_calls": 0,
+    "billing": "Owner confirmed existing subscription/zero credits/no auto recharge; not an independently inspected bill",
+}
+os.umask(0o077)
+with (root / "auth-route.json").open("x", encoding="utf8") as f:
+    json.dump(value, f, indent=2)
+print(json.dumps(value))
+raise SystemExit(0 if recognized else 1)

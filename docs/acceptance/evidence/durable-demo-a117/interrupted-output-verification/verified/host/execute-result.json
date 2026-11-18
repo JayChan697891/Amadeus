@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-11-16T09:40:13.243552+00:00",
+  "mode": "execute",
+  "status": "terminal",
+  "exit_code": 0,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "automatic_retry": false,
+  "command": [
+    "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-r2-proposal-verification-r2-20261116/run-once.py"
+  ],
+  "finished_at": "2026-11-16T09:40:19.998896+00:00"
+}

@@ -1,0 +1,33 @@
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+import subprocess
+import sys
+
+base = Path(__file__).resolve().parent
+source = base / 'source'
+python = Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe')
+env = dict(os.environ)
+for name in tuple(env):
+    if name.upper().startswith(('OPENAI_', 'ANTHROPIC_', 'CLAUDE_', 'CURSOR_', 'CODEX_', 'AGENTSYNC_', 'PYTEST_', 'PYTHON', 'GIT_', 'PIP_')) or name.upper().endswith(('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        env.pop(name, None)
+env.update(HOME=str(base/'home'), USERPROFILE=str(base/'home'), TEMP=str(base/'tmp'), TMP=str(base/'tmp'), TMPDIR=str(base/'tmp'), PYTHONDONTWRITEBYTECODE='1', GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, PIP_NO_INDEX='1')
+mode = sys.argv[1]
+imports = Path('D:/agentsync-debug/m115-r2/s/src') if mode.startswith('baseline') else source/'src'
+selected = ['tests/unit/test_process_capture_deadline.py']
+if mode.startswith('fixed'):
+    selected += ['tests/unit/test_process_capture.py', 'tests/unit/test_process_capture_start_cancel.py', 'tests/unit/test_unstarted_capture_adapter.py']
+elif mode == 'adapters':
+    selected = ['tests/unit/test_capture_creation_fence.py', 'tests/unit/test_codex_adapter.py', 'tests/unit/test_codex_process.py', 'tests/unit/test_claude_adapter.py', 'tests/unit/test_claude_process.py', 'tests/unit/test_cursor_adapter.py']
+args = ['-p', 'no:cacheprovider', '--junitxml', str(base/(mode+'-junit.xml')), '--basetemp', str(base/(mode+'-tmp')), *selected]
+code = 'import sys;sys.path.insert(0,' + repr(str(imports)) + ');import agentsync,pytest;print("IMPORTED",agentsync.__file__,flush=True);raise SystemExit(pytest.main(' + repr(args) + '))'
+command = [str(python), '-I', '-B', '-c', code]
+record = {'started_at':datetime.now(timezone.utc).isoformat(),'command':command,'cwd':str(source),'scope':'Local known process fixtures; no actual Agent client'}
+with (base/(mode+'.log')).open('xb') as stream:
+    run = subprocess.run(command, cwd=source, env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=180)
+record.update(exit_code=run.returncode, finished_at=datetime.now(timezone.utc).isoformat(), log_sha256=hashlib.sha256((base/(mode+'.log')).read_bytes()).hexdigest())
+(base/(mode+'-process.json')).write_text(json.dumps(record,indent=2),encoding='utf-8')
+print(json.dumps(record),flush=True)
+raise SystemExit(run.returncode)

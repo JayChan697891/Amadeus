@@ -1,0 +1,16 @@
+set -eu
+umask 077
+cd /root/amadeus-proposal-tools-20261112
+test ! -e attempt-started
+date -u +%Y-%m-%dT%H:%M:%SZ > attempt-started
+venv/bin/python -I -B package_identity.py > identity-before.json
+sha256sum pilot.py > tool.sha256
+set +e
+venv/bin/python -I -B pilot.py --root /root/amadeus-proposal-pilot-20261112 --proposal proposal.json --proposal-sha256 ef6850f24774b039c54d8145e27ce19423a636a506b91877e5afeaa57b2a8705 --origin origin.json --image-id sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258 > pilot.log 2>&1
+result=$?
+set -e
+printf '%s\n' "$result" > exit-code
+venv/bin/python -I -B package_identity.py > identity-after.json
+cmp identity-before.json identity-after.json
+cat pilot.log
+exit "$result"

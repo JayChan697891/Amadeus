@@ -1,0 +1,24 @@
+{
+  "scope": "installed_linux314_wheel_inventory_delta_only",
+  "observed_at": "2026-11-15T08:18:12.458618+00:00",
+  "old_inventory_sha256": "bdc5ea5c0cfad24c16fdab91ba39a163fb788cdcb939b231a673d695140abe91",
+  "new_inventory_sha256": "542a8ab65cdb3996ac3dbe3cfb688fa7c7a16a0d12843ba0ce6dfa3285443845",
+  "external_distribution_count": 30,
+  "external_records_equal": true,
+  "other_top_level_fields_equal": true,
+  "project_delta": "Version 0.3.0a115 to0.3.0a116 and corresponding dist-info license member path only.",
+  "project_license": {
+    "expression": "MIT",
+    "bytes": 1079,
+    "sha256": "a34848c085a0b1a5b161e4a1122002e054ff35970f92fb78c0a33e6fd385c1f3"
+  },
+  "original_license_review": "pending",
+  "original_publication_authorized": false,
+  "review": "Independent Astra bounded read-only comparison and lead direct JSON/hash comparison agree.",
+  "limits": [
+    "Saved inventory records only; individual installed license files were not re-read in this comparison.",
+    "Full wheel suite and complete Linux row were still running.",
+    "No new legal, bundled-dependency, publication or formal Release approval."
+  ],
+  "formal_release": "BLOCKED"
+}

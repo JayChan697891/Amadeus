@@ -131,7 +131,7 @@ def test_real_mcp_permissions_approval_tools_and_no_owner_discovery(tmp_path):
 
             listing = await client.list_tools()
             names = {tool.name for tool in listing.tools}
-            assert len(names) == 33
+            assert len(names) == 34
             assert {"request_approval", "get_approval", "list_approvals", "list_audit"} <= names
             assert names.isdisjoint(
                 {"set_agent_roles", "list_members", "decide_approval", "revoke_approval"}

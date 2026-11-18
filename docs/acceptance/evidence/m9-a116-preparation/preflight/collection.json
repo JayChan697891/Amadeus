@@ -1,0 +1,8 @@
+{
+  "scope": "collection_only_not_test_execution",
+  "exit_code": 0,
+  "collected": 2533,
+  "unique_original": 2533,
+  "unique_sanitized": 2533,
+  "sanitized_ids_sha256": "9502c85472056f1b635a2e40ccddbc6db90c736626c2619a81aa9031d3eef38c"
+}

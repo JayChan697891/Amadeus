@@ -11,11 +11,18 @@ ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = json.loads((ROOT / "docs/acceptance/requirements.json").read_text(encoding="utf-8"))
 REQUIREMENTS = MANIFEST["requirements"]
 CODEX_COMPONENT_PATHS = {
+    "tests/integration/test_proposal_docker_pipeline.py",
+    "tests/integration/test_codex_proposal_review.py",
+    "tests/integration/test_proposal_staging.py",
+    "tests/integration/test_codex_proposal_capture.py",
+    "tests/unit/test_proposals.py",
+    "tests/integration/test_task_proposals.py",
     "tests/unit/test_codex_events.py",
     "tests/unit/test_codex_adapter.py",
     "tests/integration/test_codex_adapter_core_boundary.py",
 }
 CURSOR_COMPONENT_SELECTORS = {
+    "tests/unit/test_cursor_node_bundle.py",
     "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
     "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
     "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
@@ -103,6 +110,14 @@ def test_codex_protocol_parser_is_partial_and_keeps_real_start_requirements():
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
     assert set(item["existing_tests"]) == {
+        "tests/integration/test_proposal_docker_pipeline.py::test_same_core_proposal_to_independent_docker_acceptance",
+        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging",
+        "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
+        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
+        "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
+        "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
+        "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
+        "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
         "tests/unit/test_codex_events.py::test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope",
         "tests/unit/test_codex_events.py::test_exit_observation_prevents_protocol_only_success",
         "tests/unit/test_codex_events.py::test_upstream_errors_are_static_failed_observations",
@@ -153,7 +168,7 @@ def test_codex_host_factory_components_keep_actual_client_acceptance_unverified(
     item = next(item for item in REQUIREMENTS if item["id"] == "M6-03")
     assert item["coverage"] == "partial"
     assert item["execution_status"] == "not_run"
-    assert len(item["existing_tests"]) == 8
+    assert len(item["existing_tests"]) == 16
     assert {
         "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
         "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
@@ -237,14 +252,42 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
             "tests/integration/test_capability_planning_core_boundary.py",
         },
     }
+    verified_flow = (
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
+    )
+    handoff_components = {
+        "M7-01": {
+            "tests/integration/test_proposal_handoff.py::test_concurrent_and_repeated_triggers_launch_only_once",
+            "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent",
+            verified_flow,
+        },
+        "M7-02": {
+            "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
+            "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
+            "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph",
+            "tests/integration/test_unfinished_continuation.py::test_untrusted_or_uncertain_source_cannot_dispatch",
+            "tests/integration/test_unfinished_continuation.py::test_dispatch_intent_without_wave_remains_unknown",
+            "tests/integration/test_unfinished_continuation.py::test_exact_plan_and_approval_time_source_recheck",
+            "tests/integration/test_unfinished_continuation.py::test_concurrent_requests_consume_one_new_dispatch",
+            "tests/integration/test_unfinished_continuation.py::test_continuation_keeps_known_tool_event_rejection",
+            "tests/integration/test_unfinished_continuation.py::test_changed_graph_rejects_previously_approved_plan",
+            "tests/integration/test_unfinished_continuation.py::test_preparation_checkpoint_resumes_without_second_source_attempt",
+            "tests/integration/test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery",
+            "tests/integration/test_unfinished_continuation.py::test_host_exit_after_receiver_review_reconciles_existing_wave",
+            "tests/integration/test_unfinished_continuation.py::test_old_failed_receipt_cannot_cancel_reclaimed_same_session",
+            verified_flow,
+        },
+    }
     for requirement_id, allowed_paths in paths.items():
         item = by_id[requirement_id]
         assert item["coverage"] == "partial"
-        assert item["existing_tests"]
-        assert all(
-            "::" in selector and selector.split("::")[0] in allowed_paths
-            for selector in item["existing_tests"]
-        )
+        selectors = set(item["existing_tests"])
+        assert all("::" in selector for selector in selectors)
+        planning_components = {
+            selector for selector in selectors if selector.split("::", 1)[0] in allowed_paths
+        }
+        assert planning_components
+        assert selectors - planning_components == handoff_components[requirement_id]
         assert item["execution_status"] == "not_run" and item["original_scenarios"] == []
     assert "real authorized agents" in by_id["M7-02"]["acceptance"]
     assert by_id["M6-03"]["coverage"] == "partial"
@@ -258,8 +301,14 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
     assert by_id["M6-05"]["coverage"] == "partial"
     assert set(by_id["M6-05"]["existing_tests"]) == CURSOR_COMPONENT_SELECTORS
     assert by_id["M6-05"]["execution_status"] == "not_run"
-    assert by_id["M7-03"]["coverage"] == "missing"
-    assert by_id["M7-03"]["existing_tests"] == []
+    assert by_id["M7-03"]["coverage"] == "partial"
+    assert set(by_id["M7-03"]["existing_tests"]) == {
+        "tests/unit/test_http_providers.py",
+        "tests/integration/test_provider_loopback_transport.py",
+        "tests/unit/test_provider_usage_and_budget.py",
+    }
+    assert by_id["M7-03"]["execution_status"] == "not_run"
+    assert "separate cost authorization" in by_id["M7-03"]["method"]
     assert by_id["M7-04"]["coverage"] == "partial"
     assert set(by_id["M7-04"]["existing_tests"]) == {
         "tests/unit/test_retry_planning.py::test_exponential_backoff_caps_and_retry_after_remains_an_uncapped_floor",
@@ -272,5 +321,6 @@ def test_planning_foundations_remain_partial_without_real_relay_or_execution_cla
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io",
+        "tests/integration/test_durable_mock_workflow.py",
     }
     assert by_id["M7-04"]["execution_status"] == "not_run"

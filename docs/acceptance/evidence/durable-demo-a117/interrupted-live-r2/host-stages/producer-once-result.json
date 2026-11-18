@@ -1,0 +1,16 @@
+{
+  "stage": "producer-once",
+  "started_at": "2026-11-16T08:35:36.754990+00:00",
+  "observer_pid": 23100,
+  "command": "/root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-interrupted-a117-r2-20261116/live.py producer-once b78f84c53cbdef2eb055719b53f4a7d163bded339ada208745136c2f05d4b00d",
+  "automatic_retry": false,
+  "remote_exec_requested": true,
+  "log_bytes": {
+    "stdout": 83,
+    "stderr": 0
+  },
+  "log_truncated": false,
+  "status": "terminal",
+  "exit_code": 0,
+  "finished_at": "2026-11-16T08:35:54.253872+00:00"
+}

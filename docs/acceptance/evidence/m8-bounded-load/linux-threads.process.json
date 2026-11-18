@@ -1,0 +1,56 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "threads",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-sdist-repair-9fb36a1/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-providers-2af7ccc/source/tools/benchmark_coordination.py",
+      "--scratch-parent",
+      "/root/amadeus-load-2af7ccc/scratch",
+      "--workers",
+      "4",
+      "--rounds",
+      "20",
+      "--p95-budget-ms",
+      "1000"
+    ],
+    "cwd": "/root/amadeus-load-2af7ccc",
+    "started_at": "2026-11-13T07:38:52.942848+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "threads",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-sdist-repair-9fb36a1/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-providers-2af7ccc/source/tools/benchmark_coordination.py",
+      "--scratch-parent",
+      "/root/amadeus-load-2af7ccc/scratch",
+      "--workers",
+      "4",
+      "--rounds",
+      "20",
+      "--p95-budget-ms",
+      "1000"
+    ],
+    "cwd": "/root/amadeus-load-2af7ccc",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:38:52.942848+00:00",
+    "finished_at": "2026-11-13T07:38:58.802512+00:00",
+    "log": "logs/threads.log",
+    "log_sha256": "7808d483b71530f0cd5a58de2fe979abd97c506d95dfeb4e3877b4f8b19ab91e",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

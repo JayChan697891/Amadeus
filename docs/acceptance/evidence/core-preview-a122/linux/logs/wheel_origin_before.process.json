@@ -1,0 +1,52 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m122l/w/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys, sysconfig\nfrom pathlib import Path\nimport agentsync, agentsync.cli\nfrom agentsync.sdk import AgentSyncClient\n\nenv, archive, members = map(Path, sys.argv[1:4])\ndigest, version = sys.argv[4:]\nassert Path(sys.prefix).resolve() == env.resolve() and sys.version_info[:3] == (3, 14, 7)\nsite = Path(sysconfig.get_path(\"purelib\")).resolve()\nassert site.is_relative_to(env.resolve())\nassert Path(agentsync.__file__).resolve() == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\nassert AgentSyncClient.__module__ == \"agentsync.sdk\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve().as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == digest\nactual = {\n    path.relative_to(site).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()\n    for path in (site / \"agentsync\").rglob(\"*\") if path.is_file() and \"__pycache__\" not in path.parts\n}\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"origin\": str(Path(agentsync.__file__).resolve()), \"version\": version,\n                  \"python\": sys.version, \"direct_url\": direct, \"runtime_members\": len(actual)}))\n",
+      "/root/amadeus-m122l/w",
+      "/root/amadeus-m122l/agentsync_local-0.3.0a122-py3-none-any.whl",
+      "/root/amadeus-m122l/runtime-members.json",
+      "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+      "0.3.0a122"
+    ],
+    "cwd": "/root/amadeus-m122l/run",
+    "started_at": "2026-11-17T06:26:17.547600+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_origin_before",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m122l/w/bin/python",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys, sysconfig\nfrom pathlib import Path\nimport agentsync, agentsync.cli\nfrom agentsync.sdk import AgentSyncClient\n\nenv, archive, members = map(Path, sys.argv[1:4])\ndigest, version = sys.argv[4:]\nassert Path(sys.prefix).resolve() == env.resolve() and sys.version_info[:3] == (3, 14, 7)\nsite = Path(sysconfig.get_path(\"purelib\")).resolve()\nassert site.is_relative_to(env.resolve())\nassert Path(agentsync.__file__).resolve() == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\nassert AgentSyncClient.__module__ == \"agentsync.sdk\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve().as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == digest\nactual = {\n    path.relative_to(site).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()\n    for path in (site / \"agentsync\").rglob(\"*\") if path.is_file() and \"__pycache__\" not in path.parts\n}\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"origin\": str(Path(agentsync.__file__).resolve()), \"version\": version,\n                  \"python\": sys.version, \"direct_url\": direct, \"runtime_members\": len(actual)}))\n",
+      "/root/amadeus-m122l/w",
+      "/root/amadeus-m122l/agentsync_local-0.3.0a122-py3-none-any.whl",
+      "/root/amadeus-m122l/runtime-members.json",
+      "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+      "0.3.0a122"
+    ],
+    "cwd": "/root/amadeus-m122l/run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T06:26:17.547600+00:00",
+    "finished_at": "2026-11-17T06:26:17.928035+00:00",
+    "log": "logs/wheel_origin_before.log",
+    "log_sha256": "f816489ba6fbb669e95ac82c448fe6242e02d402385110e248d465883f5e0729",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

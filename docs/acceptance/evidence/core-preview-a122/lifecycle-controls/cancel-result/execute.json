@@ -1,0 +1,6 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/pilot.py run cancel 7eeb9435214ffd464d63b9a304e3352661a937bec7711b18346dfa0953becc11",
+  "exit_code": 0,
+  "stdout_sha256": "c18f9fcc6191813188a8a51a1bc0d76c5a78253432c61b68eff605e355194753",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

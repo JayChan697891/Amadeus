@@ -1,0 +1,18 @@
+{
+  "version": "0.3.0a122",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "status": "development preview stored on branch; formal Release BLOCKED",
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a122-py3-none-any.whl",
+      "size": 328435,
+      "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a122.tar.gz",
+      "size": 6735308,
+      "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+    }
+  },
+  "validation": "Windows 3.12: 19 native build/install checks; wheel and sdist each pass 97 targeted cases. Cross-platform, full-matrix and real-client checks are outside this Windows record."
+}

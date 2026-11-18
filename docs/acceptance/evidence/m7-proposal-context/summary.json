@@ -1,0 +1,104 @@
+{
+  "product_sha": "2ac45578b40669908213b8f0921f5fa25d6bbce1",
+  "requirements": [
+    "M7-01",
+    "M7-02"
+  ],
+  "scope": "Optional authenticated immutable producer-proposal input for a distinct receiving actor; read only direct source proof without recursively loading ancestors",
+  "implemented": [
+    "Exact producer task/context version/content hash bound into launch contract, queue selection and receipt",
+    "Receiver authenticates its own Core read and must differ from direct Core author, including same-agent different-session rejection",
+    "Full producer capture/publication/submission chain required; expired producer session can have historical evidence read by valid receiver",
+    "Whole rendered input still limited to16000 UTF-8 bytes before claim/launch; no truncation",
+    "Pin mutation/removal invalidates saved launch and reconciliation; no-pin contract/selection remains compatible",
+    "A-to-B-to-C fixture reads B only and rejects corrupted B ancestor pin without reading A",
+    "Review output remains inert and unverified; no automatic Core approval, staging, execution or source apply"
+  ],
+  "first_source_run": {
+    "passed": 21,
+    "errors": 1,
+    "status": "original fixture setup failure retained",
+    "classification": "Oversized controlled protocol-echo transport produced incomplete producer setup. Fixture transport changed to compressed stdin for trusted Python echo; product limits remain unchanged."
+  },
+  "final_source": {
+    "passed": 85,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 177.0
+  },
+  "fresh_windows_wheel": {
+    "python": "3.12.16",
+    "passed": 85,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 180.31
+  },
+  "fresh_linux_wheel": {
+    "python": "3.14.7",
+    "passed": 85,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 70.44
+  },
+  "runtime_package_members_matched_before_after": 88,
+  "runtime_python_modules": 87,
+  "source_shadowing": false,
+  "pip_checks": "pass",
+  "root_static_checks": {
+    "ruff_changed_files": 3,
+    "format_changed_files": 3,
+    "mypy_source_modules": 87,
+    "status": "pass"
+  },
+  "independent_source_review": "Accepted limited source/fixture scope after inspection of exact input proof, nonrecursive chain, legacy digests, observer/reconciliation/staging boundaries and85case XML; no blocking finding",
+  "independent_package_review": "Accepted: per-platform85case XML/origin/pip checks; all88wheel runtime members match frozen Git source;735tracked sdist members match frozen commit byte for byte.",
+  "model_calls": 0,
+  "candidate_execution": false,
+  "real_second_model_relay": "NOT RUN",
+  "new_full_matrix": "NOT RUN; retained6017005 runtime/74e1527 test-source full matrix remains historical",
+  "sdist_install": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m7-context-2ac4557/agentsync_local-0.3.0a109-py3-none-any.whl": "8ee293462b99cc9759dbc8540f1616f67516587e997dc4d5d79d90e5c954f299",
+    "releases/0.3.0a109/m7-context-2ac4557/agentsync_local-0.3.0a109.tar.gz": "545acab5e6425510f3631699ccab420848b3f26e9f639ce1f0b4fd5dd60b5075"
+  },
+  "sanitization": {
+    "m7-pinned-proposal-first.log": {
+      "redactions": 2,
+      "original_private_sha256": "e0ffc4367cf9058f28cc4f79ccae5bfa64d837cc5dd5fb7c3b6e08346e1a44ec",
+      "normalization": "UTF-8 LF; original local bytes retained"
+    },
+    "m7-pinned-proposal-first.xml": {
+      "redactions": 2
+    },
+    "m7-pinned-proposal-focused.log": {
+      "redactions": 0,
+      "original_private_sha256": "e37122fe503b76c8ca66a76f7c33dba18f650f135c914b493d0dbec9aeef33e2",
+      "normalization": "UTF-8 LF; original local bytes retained"
+    },
+    "m7-pinned-proposal-focused.xml": {
+      "redactions": 0
+    }
+  },
+  "evidence_sha256": {
+    "build-package.py.txt": "f00509b115b49db6aa652bf01491d93e86ece54e59f85e5aec68d5ca11a9b399",
+    "build.log": "53bf827f316bb3d99d4b0c92486a2e2b092b35d0b9ef3b23bc3c33c39d2d3605",
+    "config.json": "c2e913a2489dff13203b094248f51834c600df219827fec597a519b2c8ccbe07",
+    "install.log": "5b34978662d3c8ac893e7b0db09e189517ab8df0b25d610577769bb40c1d3c0b",
+    "installed.log": "cd4e6146fd0c883282dbc335e4efb677ee3d541a7ef0ecbe6a6279315e09a60e",
+    "installed.xml": "594c79b7161763ed8296c298fc8c2459fb5b5e22946ef35b542698d8d0790585",
+    "linux-installed.log": "d5e247a227022995b96c9e4664349852a699ddb607d04b520a113636bb389fbd",
+    "linux-installed.xml": "d0239ed0ed5c0637039bdc93e241b02b569485cd9146dfc319f456565081b5bd",
+    "linux-origin.json": "2675e54d0366c247db3ca12eb6b775ed185354b5991cab14a62825a1e38fdf1a",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "m7-pinned-proposal-first.log": "a8b95b4b45a8fb1ef9c9d9ca3af47150dd1daef3f05db64179a17c04016a9d1a",
+    "m7-pinned-proposal-first.xml": "e76dfa10b158f89bbf04e36e5a7a581517b70e28990f0d46cd7567e2f25a3ac0",
+    "m7-pinned-proposal-focused.log": "4fcd6940928b45078b6dda9ded695ff9145e984e24679a7608801e67a4b091ec",
+    "m7-pinned-proposal-focused.xml": "d12a804a9d72a69a4a61494ab2df56d93d8855b34534fec462a57c0c1a606f8d",
+    "origin.json": "25ff1c6eeaa993c194a18baf88d81fca86ffa334971505b588668cf2574f864e",
+    "pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "run-linux.sh.txt": "d4b71432f4a03adb8c60d80b9d7bda5d047c505eb1125d320dba8f3e7e39193f",
+    "test-installed.py.txt": "3ec42b69aee60ca98ea7e0685130dbb955cdbcb53780472cc40e973021667978"
+  },
+  "sdist_tracked_members_matched": 735
+}

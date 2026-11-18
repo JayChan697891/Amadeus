@@ -66,7 +66,11 @@ def run_relay_cli(
         result: dict[str, Any] | None
         if task_id is not None:
             attempts = relay.owner_inspect_attempts(task_id=task_id, **credentials)
-            result = {"task_id": task_id, "attempts": [asdict(attempt) for attempt in attempts]}
+            result = {
+                "task_id": task_id,
+                "attempts": [asdict(attempt) for attempt in attempts],
+                "checkpoint": relay.owner_observe_codex_checkpoint(task_id=task_id, **credentials),
+            }
         else:
             queue = RelayQueue(relay)
             if wave_id is not None:

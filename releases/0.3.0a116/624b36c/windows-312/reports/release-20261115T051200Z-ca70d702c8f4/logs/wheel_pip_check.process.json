@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_pip_check",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-nzihuh7a\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4",
+    "started_at": "2026-11-15T05:57:06.703857+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_pip_check",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m116\\tmp\\.scratch-wsarrheq\\wheel-nzihuh7a\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4",
+    "exit_code": 0,
+    "started_at": "2026-11-15T05:57:06.703857+00:00",
+    "finished_at": "2026-11-15T05:57:07.041528+00:00",
+    "log": "logs/wheel_pip_check.log",
+    "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

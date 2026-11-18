@@ -1,0 +1,79 @@
+"""Execute one complete existing collector row against the bootstrap candidate."""
+import argparse
+from datetime import UTC, datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+parser=argparse.ArgumentParser()
+parser.add_argument('--base',type=Path,required=True)
+parser.add_argument('--row',choices=('windows-311','windows-314','linux-311','linux-312','linux-314'),required=True)
+parser.add_argument('--commit',required=True)
+parser.add_argument('--manifest-sha256',required=True)
+parser.add_argument('--wheelhouse',type=Path,required=True)
+args=parser.parse_args()
+base=args.base.resolve(strict=True);source=base/'s';row=base/args.row
+assert len(args.commit)==40 and all(c in '0123456789abcdef' for c in args.commit)
+assert len(args.manifest_sha256)==64 and all(c in '0123456789abcdef' for c in args.manifest_sha256)
+assert args.row.startswith('windows')==(os.name=='nt')
+assert ''.join(map(str,sys.version_info[:2]))==args.row.rsplit('-',1)[1]
+assert row.parent==base and not row.exists()
+manifest=base/'candidate-bootstrap.json'
+assert hashlib.sha256(manifest.read_bytes()).hexdigest()==args.manifest_sha256
+for key in tuple(os.environ):
+    if key.upper().startswith(('OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AGENTSYNC_','CODEX_','GIT_','PYTEST_','PIP_','GOOGLE_','GEMINI_','DEEPSEEK_')) or key.upper() in ('PYTHONPATH','PYTHONHOME') or key.upper().endswith(('API_KEY','ACCESS_TOKEN','REFRESH_TOKEN')):
+        os.environ.pop(key,None)
+row.mkdir();(row/'home').mkdir()
+os.environ.update(HOME=str(row/'home'),USERPROFILE=str(row/'home'),CODEX_HOME=str(row/'home'),
+                  GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,GIT_TERMINAL_PROMPT='0',
+                  PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1',PYTHONUNBUFFERED='1',
+                  PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,PIP_DISABLE_PIP_VERSION_CHECK='1')
+def git(*arguments):return subprocess.check_output(['git','-C',str(source),*arguments],timeout=30).decode().strip()
+assert git('rev-parse','HEAD')==args.commit and not git('status','--porcelain')
+sys.dont_write_bytecode=True;sys.path.insert(0,str(source))
+from tools import release_acceptance as collector
+from tools.release_manifest import verify_manifest
+verified=verify_manifest(manifest,base,manifest_sha256=args.manifest_sha256,source_repo=source)
+assert verified['frozen']['commit_sha']==args.commit
+docker_image='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'
+def docker(*arguments):return subprocess.check_output(['docker',*arguments],timeout=30).decode().strip()
+if os.name!='nt':
+    assert not docker('ps','-aq')
+    assert json.loads(docker('image','inspect',docker_image))[0]['Id']==docker_image
+    os.environ.update(AGENTSYNC_DOCKER_TEST_IMAGE=docker_image,AGENTSYNC_REQUIRE_DOCKER_TESTS='1')
+    original=collector.execute
+    evidence_variables=('AGENTSYNC_VERIFIER_EVIDENCE_DIR','AGENTSYNC_OWNER_EXECUTOR_EVIDENCE_DIR',
+                        'AGENTSYNC_RECONCILIATION_EVIDENCE_DIR','AGENTSYNC_CANDIDATE_EXECUTOR_EVIDENCE_DIR',
+                        'AGENTSYNC_TASK_COMPLETION_EVIDENCE_DIR','AGENTSYNC_VERIFIED_REVIEW_EVIDENCE_DIR',
+                        'AGENTSYNC_PROPOSAL_PIPELINE_EVIDENCE_DIR')
+    def execute(check_id,*positional,**keywords):
+        if check_id not in collector.PYTEST_CHECKS:return original(check_id,*positional,**keywords)
+        for key in evidence_variables:
+            target=row/'observations'/check_id/key.lower()
+            target.mkdir(parents=True)
+            os.environ[key]=str(target)
+        try:return original(check_id,*positional,**keywords)
+        finally:
+            for key in evidence_variables:os.environ.pop(key,None)
+    collector.execute=execute
+state={'phase':'started','pid':os.getpid(),'python':sys.version,'commit_sha':args.commit,
+       'candidate_manifest_sha256':args.manifest_sha256,'started_at':datetime.now(UTC).isoformat(),
+       'real_models':'NOT RUN','formal_release':'BLOCKED'}
+with (row/'attempt.json').open('x',encoding='utf-8') as stream:json.dump(state,stream,indent=2)
+print(json.dumps(state),flush=True)
+scratch=Path('D:/agentsync-debug/t114') if os.name=='nt' else base/'t'
+run=collector.collect(source,row/'reports',run_checks=True,package_install=True,sdist_install=True,
+                      scratch_root=scratch,pytest_timeout=3600,offline_wheelhouse=args.wheelhouse.resolve(strict=True),
+                      license_inventory=True,candidate=(manifest,base,args.manifest_sha256))
+report=json.loads((run/'report.json').read_text(encoding='utf-8'))
+state.update(phase='finished',finished_at=datetime.now(UTC).isoformat(),report=str(run/'report.json'),
+             source_clean=not git('status','--porcelain'),
+             unsuccessful_checks=[{'id':c['id'],'status':c['status']} for c in report['checks'] if c['status']!='pass'])
+if os.name!='nt':state['docker_containers_after']=docker('ps','-aq').splitlines()
+state['local_checks_passed']=not state['unsuccessful_checks'] and state['source_clean'] and not state.get('docker_containers_after')
+(row/'result.json').write_text(json.dumps(state,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(state),flush=True)
+raise SystemExit(0 if state['local_checks_passed'] else 1)

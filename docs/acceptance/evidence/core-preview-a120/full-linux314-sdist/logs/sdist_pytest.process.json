@@ -1,0 +1,57 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m120l/d/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-m120full/s/tests",
+      "--junitxml",
+      "/root/amadeus-m120fullsdist/t/sdist-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m120fullsdist/t/p",
+      "-o",
+      "cache_dir=/root/amadeus-m120fullsdist/t/pytest-cache"
+    ],
+    "cwd": "/root/amadeus-m120fullsdist/run",
+    "started_at": "2026-11-17T02:49:49.954187+00:00",
+    "timeout_seconds": 7200
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m120l/d/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-m120full/s/tests",
+      "--junitxml",
+      "/root/amadeus-m120fullsdist/t/sdist-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m120fullsdist/t/p",
+      "-o",
+      "cache_dir=/root/amadeus-m120fullsdist/t/pytest-cache"
+    ],
+    "cwd": "/root/amadeus-m120fullsdist/run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T02:49:49.954187+00:00",
+    "finished_at": "2026-11-17T03:08:40.894138+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "57dde9bb7d674bd2d5163dc25764cb3f27aa1bc57713a3fde0d1330cbc7ac2c3",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 7200
+  }
+}

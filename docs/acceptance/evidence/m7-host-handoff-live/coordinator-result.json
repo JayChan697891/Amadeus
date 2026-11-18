@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-11-13T03:47:27.341203+00:00",
+  "outcome": {
+    "state": "resolved",
+    "pin": {
+      "producer_task_id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+      "context_id": "feecd0d0-8d45-4d37-92ca-44f64e2afa14",
+      "context_version": 1,
+      "content_sha256": "17da5b6a8cc2860b55c907402d5be58d8d8726aa7e587bbfb5e1e7bcef2557d6"
+    },
+    "task_id": "594bc9b3-79d1-43e1-883e-8fbaa4b89fb2",
+    "worktree_id": "768ca978-b5fb-583b-be10-0b90b868dfbf",
+    "wave": {
+      "state": "resolved",
+      "tasks": [
+        {
+          "task_id": "594bc9b3-79d1-43e1-883e-8fbaa4b89fb2",
+          "state": "ready_for_review",
+          "failure_code": null
+        }
+      ],
+      "verification": "unverified"
+    },
+    "verification": "unverified"
+  },
+  "resumed_from_saved_reference": true,
+  "exact_plan_authorizations": 1,
+  "source_result_sha256": "42aa520854d3307e215093b93abbffaa8c3b53e543c4504d0798dbfb9a5fce5f",
+  "verification": "unverified"
+}

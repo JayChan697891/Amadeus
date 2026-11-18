@@ -1,0 +1,9 @@
+{
+  "status": "cleaned",
+  "mode": "observed_prelaunch_timeout",
+  "temporary_auth_absent": true,
+  "home_unmounted": true,
+  "private_home_empty": true,
+  "unknown_result_preserved": true,
+  "retry_allowed": false
+}

@@ -1,0 +1,42 @@
+{
+  "scope": "Code preparation only; runtime and real-client validation NOT RUN",
+  "version": "0.3.0a123",
+  "base_commit": "be7da273940bb345b3359b9d8831fab022754232",
+  "static_native": "1ca75f exit0",
+  "mypy": {
+    "native": "94033a",
+    "exit_code": 0,
+    "command": [
+      "D:/agentsync-debug/m123-progress/venv/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "mypy",
+      "--cache-dir",
+      "D:/agentsync-debug/m123-progress/mypy-cache",
+      "src/agentsync"
+    ],
+    "stdout": "Success: no issues found in 96 source files"
+  },
+  "review": "Root inspected actual runtime/test diff and static receipts. Astra accepted code preparation after checking 12 file hashes, opt-in launch reconstruction, final pre-publication guard, LF parsing and default compatibility.",
+  "guide_followup": {
+    "sha256": "3216975ecb6edde2b2174024fe120f02221c0f79bb1f6b216894b1ea8b918957",
+    "change": "Clarifies local observation before Core call versus actual database commit timing; published a122 scope explicit."
+  },
+  "limits": [
+    "No guarantee database commit precedes OS exit or deadline",
+    "One complete valid proposal only; no partial drafts",
+    "Default off; no relaxed approval/lease/unknown/timeout rules",
+    "16 new deterministic test cases NOT RUN",
+    "Real Codex checkpoint window NOT VERIFIED",
+    "No model/candidate/VM calls",
+    "Formal Release BLOCKED"
+  ],
+  "preserved_full_suite": {
+    "session": 6844,
+    "last_poll": "356741",
+    "state": "RUNNING",
+    "result": "NOT ACCEPTED"
+  },
+  "next": "Finish and inspect original 6844; run prepared a123 affected checks once in D:/agentsync-debug/m123-progress; repair genuine failures, then plan bounded real-client observation."
+}

@@ -1,0 +1,121 @@
+{
+  "status": "NOT_VERIFIED",
+  "model_calls_max": 1,
+  "candidate_executions": 0,
+  "verification": "unverified",
+  "wave": {
+    "state": "resolved",
+    "tasks": [
+      {
+        "task_id": "7d734315-5848-4bdb-8911-f445e190b7f6",
+        "state": "ready_for_review",
+        "failure_code": null
+      }
+    ],
+    "verification": "unverified"
+  },
+  "checkpoint": {
+    "state": "saved",
+    "checkpoint_observed": true,
+    "scope": "receipt_observation",
+    "verification": "unverified",
+    "checkpoint_protocol": "amadeus-proposal-checkpoint-v1",
+    "context_id": "3ead32d5-5500-468b-a601-8a774f2f3f2c",
+    "context_version": 1,
+    "content_sha256": "3ee5d90e2d38518a2c8bd0f005638a4c912dc3c9e8f9c4266e4d9748f041c672",
+    "task_version": 4
+  },
+  "proposal_review": {
+    "state": "submitted_for_review",
+    "context_id": "c546db21-a18f-4058-81c5-ecb591505fd4",
+    "content_sha256": "3ee5d90e2d38518a2c8bd0f005638a4c912dc3c9e8f9c4266e4d9748f041c672",
+    "publication_task_version": 4,
+    "review_task_version": 5,
+    "verification": "unverified"
+  },
+  "task": {
+    "id": "7d734315-5848-4bdb-8911-f445e190b7f6",
+    "version": 5,
+    "status": "review",
+    "task_verification": "unverified"
+  },
+  "error_type": "AssertionError",
+  "capture": {
+    "scope": "Private bounded raw capture; never automatically upload",
+    "saved": true,
+    "stdout_bytes": 1153,
+    "stderr_bytes": 476,
+    "stdout_sha256": "8df353886d4e69205382703b54215bd24b313a14ae70cfe73cacb2758119a1cc",
+    "stderr_sha256": "84f8879dce1155cafea8e3017ec39ee2d18b594598b55ac9afb859d320248265",
+    "stdout_truncated": false,
+    "stderr_truncated": false
+  },
+  "attempts": [
+    {
+      "leg": "first",
+      "state": "terminal_recorded",
+      "client": "codex",
+      "status": "proposal_received",
+      "exit_code": 0,
+      "timed_out": false,
+      "parent_ended": true,
+      "run_sha256": "202ee9e6c831277b16ffbd74582f9a9e2394ac9452408be6a90a2b7f9239f091",
+      "session_sha256": "2b3e94b77bbc39d6dce8822f608d4a283b2a34369655f0e288fc0d2b760772cc",
+      "error_code": null,
+      "admission": {
+        "state": "both_reservations_recorded",
+        "plan_sha256": "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4",
+        "execution_verified": false
+      },
+      "adapter_elapsed_ms": 84313,
+      "reported_input_tokens": 8331,
+      "reported_output_tokens": 281,
+      "agent_sha256": "af23d0857f2f78fed167817786c1643c7f449618145f98216df8ab42fba161be",
+      "declared_client_version": "0.167.0-alpha.3.2",
+      "protocol_session_sha256": "fbf203e0519b6c4a073c370ed9d510e5fc4677c95fed8eaad6b056cd43b4d49b",
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    },
+    {
+      "leg": "second",
+      "state": "not_dispatched",
+      "client": null,
+      "status": null,
+      "exit_code": null,
+      "timed_out": null,
+      "parent_ended": null,
+      "run_sha256": null,
+      "session_sha256": null,
+      "error_code": null,
+      "admission": null,
+      "adapter_elapsed_ms": null,
+      "reported_input_tokens": null,
+      "reported_output_tokens": null,
+      "agent_sha256": null,
+      "declared_client_version": null,
+      "protocol_session_sha256": null,
+      "protocol_error_reason": null,
+      "stdout_bytes": null,
+      "stderr_bytes": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null,
+      "stdout_truncated": null,
+      "stderr_truncated": null,
+      "billing_verified": false,
+      "cost_usd": null,
+      "verification": "unverified"
+    }
+  ],
+  "fixture_after": {
+    "source_unchanged": true,
+    "managed_worktree_unchanged": true
+  }
+}

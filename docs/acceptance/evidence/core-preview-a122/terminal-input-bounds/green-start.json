@@ -1,0 +1,30 @@
+{
+  "started_at": "2026-11-18T02:54:37.509960+00:00",
+  "argv": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_verified_codex_terminal.py",
+    "--basetemp",
+    "D:\\agentsync-debug\\m122-terminal-input-bounds\\green-t",
+    "-o",
+    "cache_dir=D:\\agentsync-debug\\m122-terminal-input-bounds\\cache",
+    "--junitxml=D:\\agentsync-debug\\m122-terminal-input-bounds\\green.xml"
+  ],
+  "source_sha256": {
+    "F:\\syuc\\amadeus-m6-single\\examples\\verified_codex_task.py": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d",
+    "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_verified_codex_terminal.py": "a09eab2978ad410ec82c6e55faa94439f2ce5f59a0e1c97678e6e8ce95099bc9"
+  },
+  "installed_runtime97_before_exact": true,
+  "red_native_chunk": "1aeee9",
+  "red_native_exit": 1,
+  "red_cases_failed": 2,
+  "static_final_chunk": "249cb3",
+  "static_exit": 0,
+  "static_initial_wrong_cwd_chunk": "7780e1",
+  "static_initial_wrong_cwd_exit": 1,
+  "model_calls": 0,
+  "real_candidate_executions": 0
+}

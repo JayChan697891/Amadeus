@@ -1,0 +1,6 @@
+{
+  "test_commit_sha": "6e2975e9f27ae25c195739faf089b0d527a7155b",
+  "runtime_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "source_zip_sha256": "7c0b0abc4cad319d286c9590c94079cde2b7feccd096e8983f9915a36ddb1abf",
+  "scope": "tests/tools/requirements/pyproject only, no source runtime"
+}

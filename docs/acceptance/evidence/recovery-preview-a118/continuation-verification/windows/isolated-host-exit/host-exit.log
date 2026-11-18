@@ -1,0 +1,41 @@
+ERROR: found no collectors for D:\agentsync-debug\continuation-verified-20261116\frozen-src\tests\integration\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery
+
+ERROR: found no collectors for D:\agentsync-debug\continuation-verified-20261116\frozen-src\tests\integration\test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery
+
+
+=================================== ERRORS ====================================
+_____ ERROR collecting tests/integration/test_unfinished_continuation.py ______
+ImportError while importing test module 'D:\agentsync-debug\continuation-verified-20261116\frozen-src\tests\integration\test_unfinished_continuation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\JayChan\AppData\Roaming\uv\python\cpython-3.12.16-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\frozen-src\tests\integration\test_unfinished_continuation.py:16: in <module>
+    from test_codex_proposal_capture import pilot as pilot
+..\frozen-src\tests\integration\test_codex_proposal_capture.py:13: in <module>
+    from test_task_proposals import counts
+..\frozen-src\tests\integration\test_task_proposals.py:13: in <module>
+    from mcp import Client
+..\..\m118p\w\Lib\site-packages\mcp\__init__.py:64: in <module>
+    from .client._input_required import InputRequiredRoundsExceededError
+..\..\m118p\w\Lib\site-packages\mcp\client\__init__.py:13: in <module>
+    from mcp.client.client import Client
+..\..\m118p\w\Lib\site-packages\mcp\client\client.py:48: in <module>
+    from mcp.client._memory import InMemoryTransport
+..\..\m118p\w\Lib\site-packages\mcp\client\_memory.py:13: in <module>
+    from mcp.server import Server
+..\..\m118p\w\Lib\site-packages\mcp\server\__init__.py:4: in <module>
+    from .mcpserver import MCPServer
+..\..\m118p\w\Lib\site-packages\mcp\server\mcpserver\__init__.py:28: in <module>
+    from .server import MCPServer, require_client_extension
+..\..\m118p\w\Lib\site-packages\mcp\server\mcpserver\server.py:94: in <module>
+    from mcp.server.stdio import stdio_server
+..\..\m118p\w\Lib\site-packages\mcp\server\stdio.py:27: in <module>
+    from mcp.os.win32.utilities import rebind_std_handle_to_fd
+..\..\m118p\w\Lib\site-packages\mcp\os\win32\utilities.py:22: in <module>
+    import pywintypes
+E   ModuleNotFoundError: No module named 'pywintypes'
+=========================== short test summary info ===========================
+ERROR ..\frozen-src\tests\integration\test_unfinished_continuation.py
+1 error in 1.15s

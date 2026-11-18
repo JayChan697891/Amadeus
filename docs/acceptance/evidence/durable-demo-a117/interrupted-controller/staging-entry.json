@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-11-16T06:47:13.252670+00:00",
+  "files": {
+    "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+    "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343"
+  },
+  "model_calls": 0,
+  "external_model_auth_access": false
+}

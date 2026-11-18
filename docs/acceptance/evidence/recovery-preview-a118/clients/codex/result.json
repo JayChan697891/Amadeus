@@ -1,0 +1,217 @@
+{
+  "status": "passed_scoped",
+  "amadeus_version": "0.3.0a118",
+  "inference_turns": 0,
+  "desktop_ui_tested": false,
+  "global_configuration_modified": false,
+  "codex_binary_sha256": "dce685d569526ef4712fa82d20ff20e1309baad5fcd34215e1126698f611242f",
+  "probe_sha256": "59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6",
+  "task_observations": [
+    {
+      "task_verification": "unverified",
+      "stage": "created",
+      "status": "pending",
+      "version": 1,
+      "owner": null,
+      "result_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": null
+    },
+    {
+      "task_verification": "unverified",
+      "stage": "claimed",
+      "status": "claimed",
+      "version": 2,
+      "owner": "A",
+      "result_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": null
+    },
+    {
+      "task_verification": "unverified",
+      "stage": "running",
+      "status": "running",
+      "version": 3,
+      "owner": "A",
+      "result_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "review": null
+    },
+    {
+      "task_verification": "unverified",
+      "stage": "submitted",
+      "status": "review",
+      "version": 4,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": null
+    },
+    {
+      "task_verification": "unverified",
+      "stage": "accepted",
+      "status": "completed",
+      "version": 5,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": {
+        "reviewer": "B",
+        "accept": true,
+        "evidence": "Native host B read the exact submitted result and accepted version 4.",
+        "version": 5
+      }
+    },
+    {
+      "task_verification": "unverified",
+      "stage": "after_host_restart",
+      "status": "completed",
+      "version": 5,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": {
+        "reviewer": "B",
+        "accept": true,
+        "evidence": "Native host B read the exact submitted result and accepted version 4.",
+        "version": 5
+      }
+    },
+    {
+      "task_verification": "unverified",
+      "stage": "fresh_core",
+      "status": "completed",
+      "version": 5,
+      "owner": "A",
+      "result_sha256": "27235c17783f92752556942047f801b1ad9b15c779fa76a13acdba5b2655eca9",
+      "review": {
+        "reviewer": "B",
+        "accept": true,
+        "evidence": "Native host B read the exact submitted result and accepted version 4.",
+        "version": 5
+      }
+    }
+  ],
+  "completed_stages": [
+    "thread_a_connected",
+    "thread_b_connected",
+    "public_tool_catalog_verified",
+    "distinct_identities_authorized",
+    "context_published_and_read",
+    "distinct_text_review_recorded",
+    "initial_host_and_mcp_children_exited",
+    "restarted_thread_connected",
+    "task_and_context_reopened",
+    "restarted_host_and_mcp_children_exited",
+    "task_and_context_read_from_fresh_core"
+  ],
+  "mcp_status_checks": {
+    "thread_a": [
+      {
+        "runtime_status": "connected",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      }
+    ],
+    "thread_b": [
+      {
+        "runtime_status": "starting",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      },
+      {
+        "runtime_status": "connected",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      }
+    ],
+    "restarted_thread": [
+      {
+        "runtime_status": "connected",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      }
+    ]
+  },
+  "owner_granted_roles": {
+    "A": [
+      "worker"
+    ],
+    "B": [
+      "worker",
+      "reviewer"
+    ]
+  },
+  "context": {
+    "publisher": "A",
+    "reader": "B",
+    "version": 1,
+    "content_sha256": "976a6d6857dfd09cb07036934196e78f6fe3e0685acb7c5b24d613fae275532c",
+    "read_after_host_restart": true,
+    "read_from_fresh_core": true
+  },
+  "duplicate_claim": {
+    "ok": false,
+    "code": "invalid_transition",
+    "observed_version": 2
+  },
+  "review_verification": "unverified",
+  "native_hosts": [
+    {
+      "pid": 9020,
+      "exit_code": 0,
+      "close_mode": "stdin_eof",
+      "mcp_children_ended": 5
+    },
+    {
+      "pid": 28168,
+      "exit_code": 0,
+      "close_mode": "stdin_eof",
+      "mcp_children_ended": 2
+    }
+  ],
+  "host": "installed Codex public app-server",
+  "ephemeral": true,
+  "host_threads": 2,
+  "runtime_statuses": [
+    "connected",
+    "connected",
+    "connected"
+  ],
+  "tools": [
+    "acquire_file_lock",
+    "capture_repository",
+    "claim_task",
+    "compare_worktrees",
+    "create_project",
+    "create_task",
+    "create_worktree",
+    "get_approval",
+    "get_context",
+    "get_handoff",
+    "get_project_state",
+    "heartbeat",
+    "inspect_path",
+    "inspect_worktree",
+    "list_approvals",
+    "list_audit",
+    "list_file_locks",
+    "list_tasks",
+    "prepare_merge_candidate",
+    "publish_context",
+    "publish_task_proposal",
+    "reclaim_expired",
+    "register_agent",
+    "release_file_lock",
+    "renew_file_lock",
+    "renew_lease",
+    "request_approval",
+    "resolve_handoff",
+    "review_task",
+    "search_context",
+    "submit_handoff",
+    "update_task",
+    "verify_file_version",
+    "withdraw_handoff"
+  ],
+  "client": "agentsync-collaboration-acceptance/0.162.0 (Windows 10.0.26200; x86_64) unknown (agentsync-collaboration-acceptance; 0.1.0)",
+  "limitations": "Isolated native backend, deterministic tool calls and text review."
+}

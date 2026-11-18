@@ -1,0 +1,60 @@
+{
+  "observed_at": "2026-11-15T15:09:50.710095+00:00",
+  "files": {
+    "auth-cleanup.json": {
+      "bytes": 143,
+      "sha256": "1d1e849e26f35ade4b936908043758a791dd5a474dd0570d35328f1b8d604f3e"
+    },
+    "auth-route.json": {
+      "bytes": 77,
+      "sha256": "aecf8bb73d35dd60396ec1d74a5fe2f3cd946ebb52abba638c53558b77552f6e"
+    },
+    "attempt.json": {
+      "bytes": 229,
+      "sha256": "7333a799fb8972d7539ee83303855516455d90f6abd1196892b40789890cd5e4"
+    },
+    "cancellation-request.json": {
+      "bytes": 238,
+      "sha256": "f6c41857b121efe3bbf2ee1e8c9bede6a307dc261244e4bee8a561175dd07133"
+    },
+    "cancellation.json": {
+      "bytes": 282,
+      "sha256": "b2b2e12b2216d58dc87bb09e1b569945174ab49b9b4a2c2a89ac6f4df8ef0414"
+    },
+    "capture.json": {
+      "bytes": 368,
+      "sha256": "eeabc855d380819f8204ff33e21fb1987327591acbb5390cc73bc7877e9c4901"
+    },
+    "capture-metadata.json": {
+      "bytes": 368,
+      "sha256": "eeabc855d380819f8204ff33e21fb1987327591acbb5390cc73bc7877e9c4901"
+    },
+    "dispatch-observation.json": {
+      "bytes": 2497,
+      "sha256": "ee30bedd5a86302e5e007300ae704bdfee6b0755951ab54b0d2ee504e3c4ea79"
+    },
+    "execute-entry.json": {
+      "bytes": 165,
+      "sha256": "735ace8874fd52d870e8b78bf51e8bd80dec2aadbab1851306a49aaad80b5526"
+    },
+    "readiness-entry.json": {
+      "bytes": 74,
+      "sha256": "443740e8fe480e1dc5321f310ae6bbdea1433e00662e0f9fc85329ffbad49209"
+    },
+    "readiness.json": {
+      "bytes": 274,
+      "sha256": "962dd0af32719aa63be15cc45f2b9818f6453cc249aa16d42f866b2ae99d9de6"
+    },
+    "result.json": {
+      "bytes": 2859,
+      "sha256": "5dc86cac9bac9feb8a182d900ba80733272b98655d6f57a314aedc28b49d3f02"
+    },
+    "credential-home.json": {
+      "bytes": 135,
+      "sha256": "85fcae6cb7d1bcff8e2704d0e034e54966bc2d56e0977729343667b7ed141b95"
+    }
+  },
+  "native_session": 2878,
+  "observed_native_exit_code": 0,
+  "native_session_closed": true
+}

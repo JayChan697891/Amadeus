@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-11-15T09:22:25.925869+00:00",
+  "scope": "Synthetic finite three-second Windows Python3.12 venv launcher only; not product transport recovery",
+  "python": "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+  "child_arguments": ["-I", "-S", "-c", "import os,time;print(os.getpid(),flush=True);time.sleep(3)"],
+  "method": "Read owned worker PID, open its native process handle, kill and wait for launcher, observe worker handle, close all owned handles",
+  "launcher_pid": 25364,
+  "worker_pid": 18992,
+  "parent_exit_code": 1,
+  "worker_exited_within_500ms": true,
+  "worker_exit_observed_without_explicit_child_terminate": true,
+  "elapsed_seconds": 0.003,
+  "all_owned_processes_exited": true
+}

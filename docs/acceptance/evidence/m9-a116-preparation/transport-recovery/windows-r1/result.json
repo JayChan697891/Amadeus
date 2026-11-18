@@ -1,0 +1,60 @@
+{
+  "finished_at": "2026-11-15T10:50:06.341005+00:00",
+  "status": "fail",
+  "checks": [
+    {
+      "id": "venv",
+      "exit_code": 0,
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "D:\\agentsync-debug\\m116-recovery-r1\\installed"
+      ]
+    },
+    {
+      "id": "install",
+      "exit_code": 0,
+      "command": [
+        "D:\\agentsync-debug\\m116-recovery-r1\\installed\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-cache-dir",
+        "--find-links",
+        "D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse",
+        "D:\\agentsync-debug\\m116\\windows-312\\reports\\release-20261115T051200Z-ca70d702c8f4\\artifacts\\agentsync_local-0.3.0a116-py3-none-any.whl"
+      ]
+    },
+    {
+      "id": "dependencies",
+      "exit_code": 0,
+      "command": [
+        "D:\\agentsync-debug\\m116-recovery-r1\\installed\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "check"
+      ]
+    },
+    {
+      "id": "recovery",
+      "exit_code": 1,
+      "command": [
+        "D:\\agentsync-debug\\m116-recovery-r1\\installed\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\m116\\transport-recovery-windows-priority.py"
+      ]
+    }
+  ],
+  "formal_release": "BLOCKED",
+  "real_models": "NOT RUN",
+  "automatic_retry": false
+}

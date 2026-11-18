@@ -1,0 +1,38 @@
+{
+  "scope": "Manual independent accept/reject of a pinned receiver review.md using the existing Core",
+  "status": "SCOPED PASS; Root and Astra independently reviewed code and actual local results",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_sha256": {
+    "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+    "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21"
+  },
+  "native_terminal_chunk": "aedc41",
+  "native_exit_code": 0,
+  "root_inspection_native": "e353dd exit0",
+  "counts": {
+    "tests": 8,
+    "passed": 8,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "checks": [
+    "independent accept and reject",
+    "code/hash/project refusal",
+    "confirmation mismatch",
+    "concurrent task change",
+    "fixed context v1 despite newer revision"
+  ],
+  "changed_file_static_checks": {
+    "ast_and_ruff": "3d9ae1 exit0",
+    "format": "62be68 exit0"
+  },
+  "independent_review": "Astra inspected actual8 XML cases,3 process receipts/logs and source hashes; installed origins unchanged, accepted limited scope",
+  "document_verification": "unverified; document acceptance is not code execution proof",
+  "native_tty": "NOT RUN",
+  "new_linux_run": "NOT RUN",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED"
+}

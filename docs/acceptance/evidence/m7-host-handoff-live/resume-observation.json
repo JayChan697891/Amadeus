@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-11-13T03:48:53.979952+00:00",
+  "state": "resolved",
+  "task_id": "594bc9b3-79d1-43e1-883e-8fbaa4b89fb2",
+  "same_result": true,
+  "same_tasks": true,
+  "same_attempts": true,
+  "same_queue_history": true,
+  "launch_authority_calls": 0,
+  "auth_absent": true,
+  "source_and_worktrees_unchanged": true,
+  "verification": "unverified",
+  "product_sha": "b455d9b028b02d75b2ed06f611e0556237bc1e72"
+}

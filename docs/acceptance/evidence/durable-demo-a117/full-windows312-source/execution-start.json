@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-11-16T08:48:54.3801582Z",
+  "native_session_id": 44775,
+  "status": "running",
+  "controller_pid": 23376,
+  "started_at": "2026-11-16T00:47:52.446971-08:00",
+  "driver_sha256": "0b87ce5080087d91ce1d018f45685472b752b8cbdc3fd85b70d82cec1662770c",
+  "processes": [
+    {
+      "pid": 23224,
+      "parent_pid": 25356,
+      "created_utc": "2026-11-16T08:47:52.3791350Z",
+      "executable": "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe"
+    },
+    {
+      "pid": 23376,
+      "parent_pid": 23224,
+      "created_utc": "2026-11-16T08:47:52.3874500Z",
+      "executable": "C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe"
+    }
+  ],
+  "model_calls": 0,
+  "vm_running": false,
+  "automatic_retry": false
+}

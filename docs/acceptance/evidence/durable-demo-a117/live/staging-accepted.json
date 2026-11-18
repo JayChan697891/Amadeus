@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-11-15T12:06:22.929140+00:00",
+  "stage": "staging",
+  "decision_sha256": "d517d017c2df8af09e609f9b94dd065afaf03f897d95a161f3969cf129fc13b8",
+  "request_sha256": "c877221ab7a8bab396595ce1d42d22671fc9e086449453192cebf6f12d9ccb9c",
+  "expires_at": 1794744430.4245293
+}

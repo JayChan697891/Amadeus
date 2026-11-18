@@ -1,0 +1,98 @@
+"""One offline Windows row from the corrected frozen source; never retry."""
+from datetime import UTC, datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+source = Path('D:/agentsync-debug/m116/s')
+base = source.parent
+row = base/'windows-312'
+commit = '624b36c039a90feb9340559ac773f9df08ba86ad'
+tree = 'bbf15d9550443fe7af03c4a36c17859b0f7a21d9'
+assert os.name == 'nt' and sys.version_info[:2] == (3, 12)
+assert not row.exists(), 'Preserve any previous attempt; do not retry.'
+for name in list(os.environ):
+    upper = name.upper()
+    if upper.startswith(('OPENAI_', 'ANTHROPIC_', 'CODEX_', 'AGENTSYNC_', 'CLAUDE_',
+                         'CURSOR_', 'GIT_', 'PIP_', 'PYTEST_', 'GOOGLE_', 'GEMINI_',
+                         'DEEPSEEK_')) or upper in ('PYTHONPATH', 'PYTHONHOME') or upper.endswith(
+                             ('API_KEY', 'ACCESS_TOKEN', 'REFRESH_TOKEN')):
+        os.environ.pop(name, None)
+row.mkdir()
+for child in ('home', 'tmp'):
+    (row/child).mkdir()
+os.environ.update(HOME=str(row/'home'), USERPROFILE=str(row/'home'),
+                  CODEX_HOME=str(row/'home'), PYTHONDONTWRITEBYTECODE='1',
+                  PYTHONNOUSERSITE='1', PYTHONUNBUFFERED='1',
+                  GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull,
+                  GIT_TERMINAL_PROMPT='0', PIP_NO_INDEX='1',
+                  PIP_CONFIG_FILE=os.devnull, PIP_DISABLE_PIP_VERSION_CHECK='1',
+                  RUFF_CACHE_DIR=str(row/'tmp/ruff'), MYPY_CACHE_DIR=str(row/'tmp/mypy'),
+                  TEMP=str(row/'tmp'), TMP=str(row/'tmp'), TMPDIR=str(row/'tmp'))
+
+def git(*args):
+    return subprocess.check_output(['git', '-C', str(source), *args], timeout=30).decode().strip()
+
+def write(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+assert git('rev-parse', 'HEAD') == commit
+assert git('rev-parse', 'HEAD^{tree}') == tree
+assert not git('status', '--porcelain')
+sys.path.insert(0, str(source))
+from tools import release_acceptance as collector
+from tools.acceptance_git_source import verify_git_source
+from tools.acceptance_matrix import summarize
+from tools.release_manifest import build_manifest, verify_manifest
+
+snapshot = collector.source_snapshot(source)
+audit = verify_git_source(source, commit, tree, snapshot)
+state = {'phase': 'started', 'pid': os.getpid(), 'started_at': datetime.now(UTC).isoformat(),
+         'commit_sha': commit, 'tree_sha': tree, 'version': '0.3.0a116',
+         'python': sys.version, 'source_audit': audit,
+         'source_snapshot_sha256': hashlib.sha256(json.dumps(snapshot, indent=2).encode()).hexdigest(),
+         'driver_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+         'formal_release': 'BLOCKED', 'real_model_calls': 'NOT RUN', 'automatic_retry': False}
+write(row/'attempt.json', state)
+print(json.dumps(state), flush=True)
+try:
+    report_dir = collector.collect(
+        source, row/'reports', run_checks=True, package_install=True, sdist_install=True,
+        scratch_root=base/'tmp', pytest_timeout=3600,
+        offline_wheelhouse=Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse'),
+        license_inventory=True)
+    report = json.loads((report_dir/'report.json').read_text(encoding='utf-8'))
+    state.update(report=str(report_dir/'report.json'),
+                 unsuccessful_checks=[{'id': check['id'], 'status': check['status']}
+                                      for check in report['checks'] if check['status'] != 'pass'],
+                 source_clean=not git('status', '--porcelain'),
+                 source_unchanged=snapshot == collector.source_snapshot(source))
+    state['local_checks_passed'] = (not state['unsuccessful_checks']
+                                    and state['source_clean'] and state['source_unchanged'])
+    if state['local_checks_passed']:
+        matrix = summarize([report_dir/'report.json'], commit, verify_artifacts=True,
+                           require_license_inventory=True, python_minors=('3.11', '3.12', '3.14'),
+                           source_repo=source)
+        write(base/'matrix-after-windows312.json', matrix)
+        assert matrix['local_matrix'] == 'incomplete'
+        assert matrix['observations'][0]['artifact_audit']['junit_case_sets_match']
+        manifest = build_manifest(base, (report_dir/'report.json').relative_to(base).as_posix(),
+                                  [], commit, source_repo=source)
+        manifest_path = base/'candidate-bootstrap.json'
+        write(manifest_path, manifest)
+        digest = collector.sha256(manifest_path)
+        verified = verify_manifest(manifest_path, base, manifest_sha256=digest, source_repo=source)
+        write(base/'candidate-verification.json', verified)
+        state.update(candidate_manifest_sha256=digest, strict_evidence_verified=True)
+except Exception as exc:
+    state.update(local_checks_passed=False, error_type=type(exc).__name__,
+                 error=collector.redact_credentials(str(exc))[0])
+state.update(phase='finished', finished_at=datetime.now(UTC).isoformat())
+write(row/'result.json', state)
+print(json.dumps(state), flush=True)
+raise SystemExit(0 if state.get('local_checks_passed') and state.get('strict_evidence_verified') else 1)

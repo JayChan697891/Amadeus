@@ -122,6 +122,12 @@ def prepare_launch_review(
                 plan.output_limit,
                 plan.expected_cli_version,
                 plan.binary_sha256,
+                *(
+                    [["cursor-node-bundle-v1", plan.bundle_sha256]]
+                    if isinstance(plan, cursor_invocation.CursorInvocation)
+                    and plan.bundle_sha256 is not None
+                    else []
+                ),
             ]
         ),
         plan,
@@ -151,11 +157,21 @@ def _observe_admission(
     request_key: str,
     client: str,
 ) -> LaunchAdmissionObservation:
+    return _admission_receipts(store, request_key, client)[0]
+
+
+def _admission_receipts(
+    store: _ReceiptDirectory,
+    request_key: str,
+    client: str,
+    *,
+    durable: bool = False,
+) -> tuple[LaunchAdmissionObservation, str | None]:
     if not _valid_digest(request_key):
-        return LaunchAdmissionObservation("unknown")
-    launch = store.read(f"launch-{request_key}.json")
+        return LaunchAdmissionObservation("unknown"), None
+    launch = store.read(f"launch-{request_key}.json", durable=durable)
     if launch is None:
-        return LaunchAdmissionObservation("not_recorded")
+        return LaunchAdmissionObservation("not_recorded"), None
     plan = launch.get("plan_sha256")
     consent_key = launch.get("consent_sha256")
     if (
@@ -164,14 +180,18 @@ def _observe_admission(
         or launch.get("client") != client
         or launch.get("request_sha256") != request_key
         or not _valid_digest(consent_key)
+        or (
+            durable and set(launch) != {"plan_sha256", "client", "request_sha256", "consent_sha256"}
+        )
     ):
-        return LaunchAdmissionObservation("unknown")
-    consent = store.read(f"consent-{consent_key}.json")
+        return LaunchAdmissionObservation("unknown"), None
+    consent = store.read(f"consent-{consent_key}.json", durable=durable)
     if consent is None:
-        return LaunchAdmissionObservation("request_reserved", plan)
+        return LaunchAdmissionObservation("request_reserved", plan), None
     if consent != launch:
-        return LaunchAdmissionObservation("unknown")
-    return LaunchAdmissionObservation("both_reservations_recorded", plan)
+        return LaunchAdmissionObservation("unknown"), None
+    assert isinstance(consent_key, str)
+    return LaunchAdmissionObservation("both_reservations_recorded", plan), consent_key
 
 
 class ApprovedLaunchFactory:

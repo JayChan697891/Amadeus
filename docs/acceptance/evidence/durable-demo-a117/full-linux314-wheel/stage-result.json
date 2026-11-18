@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-11-16T05:56:22.888977+00:00",
+  "files": {
+    "run-wheel.py": "5314c9364eb75ee17fde90273e8e133049172b87ba4dc88d37fbf5de4b8a7c77",
+    "agentsync_local-0.3.0a117-py3-none-any.whl": "300c72e1e20f73e6f8be6cb1e86284cd02cc64b1bc9719ef111075ceaa9d51c9"
+  },
+  "guest_directory": "/root/amadeus-m117lw",
+  "preflight": {
+    "active_python_codex": [],
+    "containers": []
+  },
+  "execution_started": false
+}

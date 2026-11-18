@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "status": "bounded Windows example checks passed",
+  "source_base_commit": "d952054af90cb5ec735be00a6386780f71ae31ce",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "example_sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9",
+  "test_sha256": "8098d9a18bca05f8551457d9af2a34dae22a58d3e70132ab0db9ce32d7ba7883",
+  "native_pytest": {
+    "chunk": "7220ac",
+    "exit_code": 0,
+    "passed": 4,
+    "deselected": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit": "junit.xml"
+  },
+  "static_checks": {
+    "native_chunk": "5e306b",
+    "ruff_check": "passed",
+    "ruff_format_check": "passed"
+  },
+  "root_review": {
+    "actual_code_and_test_diff_read": true,
+    "original_log_xml_and_source_hashes_checked": true,
+    "installed_members_unchanged": 97,
+    "help_native_chunk": "f554d8",
+    "help_exit_code": 0
+  },
+  "scope": [
+    "The new checkout example delegates to existing installed a120 relay-status/relay-reconcile CLI; runtime and packages unchanged.",
+    "One actual Core/database and actual CLI subprocess pending-wave inspection with injected prompt input.",
+    "Other tests inject timeout/terminal warnings to inspect credential stdin transport, zero retries and no launch on unsafe input.",
+    "Actual interactive terminal echo behavior, Linux/macOS example execution, a full suite and new live models NOT RUN.",
+    "No synthetic test result is real-client validation; no candidate, model credentials, VM, Actions, main merge or public release."
+  ],
+  "formal_release": "BLOCKED",
+  "files": [
+    {
+      "path": "start.json",
+      "bytes": 1055,
+      "sha256": "26b2f13b3b3ad44c675ea00ff8177dd99d32989cd8e082c01ac85c5937b11ac0"
+    },
+    {
+      "path": "origin.log",
+      "bytes": 68,
+      "sha256": "5fdf8b0e54bde22a058dba9085a5d01d68efb75ac06b07a4ffd75fa5daa2efc5"
+    },
+    {
+      "path": "format.log",
+      "bytes": 21,
+      "sha256": "aa1d1e99257f1375564760254c0c0b8eae0c7cc96ff1eb94a2064d5ff7601cea"
+    },
+    {
+      "path": "pytest.log",
+      "bytes": 114,
+      "sha256": "038f4884c25a50fce019765c166aa7490853f7b4670a0bd146c42c5e02b59471"
+    },
+    {
+      "path": "junit.xml",
+      "bytes": 829,
+      "sha256": "2671345423aae4c9fba7d1c250514ae8c78d887ed98df9682318eb76124770ef"
+    },
+    {
+      "path": "native.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "ruff-check.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "ruff-format.log",
+      "bytes": 27,
+      "sha256": "97d85b4b6c185a05396e2d09a3c304ff0f7cc77f8b7b7bb7989ec6cd875b3898"
+    }
+  ]
+}

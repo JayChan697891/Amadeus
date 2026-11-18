@@ -1,0 +1,60 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "source_editable_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\w122311s\\e\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/w122311s/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "-e",
+      "D:\\agentsync-debug\\w122311s\\s"
+    ],
+    "cwd": "D:\\agentsync-debug\\w122311s\\run",
+    "started_at": "2026-11-18T03:59:57.709212+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "source_editable_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\w122311s\\e\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/w122311s/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "-e",
+      "D:\\agentsync-debug\\w122311s\\s"
+    ],
+    "cwd": "D:\\agentsync-debug\\w122311s\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-18T03:59:57.709212+00:00",
+    "finished_at": "2026-11-18T04:00:05.808509+00:00",
+    "log": "logs/source_editable_install.log",
+    "log_sha256": "4e12d47a92c206bd03b51c99b6037a792593b35115c3f913573f91e84075c842",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

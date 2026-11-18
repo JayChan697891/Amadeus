@@ -19,7 +19,7 @@ from pydantic import Field
 
 from agentsync.errors import AgentSyncError
 from agentsync.verification.binding import OwnerCandidateBindings, _receipt
-from agentsync.verification.candidate import OwnerCandidateExporter
+from agentsync.verification.candidate import CandidateInput, OwnerCandidateExporter
 from agentsync.verification.candidate_jobs import (
     CandidateVerificationJobs,
     _dump,
@@ -127,6 +127,12 @@ class OwnerCandidateDelivery:
     def _plan(
         self, db: sqlite3.Connection, p: dict[str, Any], now: float, state: str
     ) -> tuple[dict[str, Any], dict[str, Any]]:
+        plan, exported = self._candidate_plan(db, p, now, state)
+        return plan, _load(exported.binding.receipts[0], 16384)
+
+    def _candidate_plan(
+        self, db: sqlite3.Connection, p: dict[str, Any], now: float, state: str
+    ) -> tuple[dict[str, Any], CandidateInput]:
         approval = self._approval(db, p, now, state)
         task = self._core._task(db, p)
         if task["version"] != p["expected_task_version"] or task["status"] != "completed":
@@ -182,7 +188,7 @@ class OwnerCandidateDelivery:
             "destination_ref": _ref(job["candidate_id"]),
             "expires_at": approval["expires_at"],
         }
-        return plan, _load(binding.receipts[0], 16384)
+        return plan, exported
 
     @staticmethod
     def _now(earliest: float) -> float:

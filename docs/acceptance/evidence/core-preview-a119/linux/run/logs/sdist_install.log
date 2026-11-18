@@ -1,0 +1,12 @@
+Looking in links: file:///root/amadeus-m119l/t/offline-wheels, file:///root/amadeus-m119l/t/offline-wheels
+Processing /root/amadeus-m119l/agentsync_local-0.3.0a119.tar.gz
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building wheel for agentsync-local (pyproject.toml): started
+  Building wheel for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a119-py3-none-any.whl size=326485 sha256=f36ac695c73bd2a1e4a501366dc8a01cd5cd2aed683fc06d75475bf2d0f0bdc9
+  Stored in directory: /root/amadeus-m119l/t/pip-ephem-wheel-cache-qga_5xxt/wheels/04/35/e5/110713b236ba0e3736577df8759cf2cc64f03c670d49fc4abc
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a119

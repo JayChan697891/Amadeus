@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-11-15T09:30:25.860945+00:00",
+  "scope": "Linux311 installed wheel component only; whole row incomplete",
+  "commit_sha": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "report_directory": "/root/amadeus-m116/linux-311/reports/release-20261115T084949Z-9b5a47fdd70f",
+  "counts": {
+    "passed": 2526,
+    "skipped": 7,
+    "failed": 0,
+    "error": 0
+  },
+  "unique_cases": 2533,
+  "identities_outcomes_equal_source_and_linux314_wheel": true,
+  "native_exit_code": 0,
+  "finished_at": "2026-11-15T09:28:52.335579+00:00",
+  "junit_sha256": "715158142829229f9a8ad4decb0a015dae177f35bf879c59f5de49453d39534b",
+  "receipt_sha256": "3e3f73f0f003d9576e5f8d6de852e16e21a371fcdb239f8c8d9cb5b7b4ed28fd",
+  "formal_release": "BLOCKED"
+}

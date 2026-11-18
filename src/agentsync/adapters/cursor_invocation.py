@@ -11,6 +11,7 @@ Path checks can become stale before any later launch.
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import stat
@@ -22,10 +23,28 @@ from agentsync.adapters.base import AdapterTask, _bounded_text, _identifier
 from agentsync.errors import AgentSyncError
 
 MAX_BINARY_BYTES = 512 * 1024 * 1024
+MAX_BUNDLE_ENTRIES = 2048
+MAX_BUNDLE_DEPTH = 32
 _MAX_ARGUMENT_BYTES = 4096  # Shared capture's per-argument limit.
 _SHA256 = re.compile(r"[0-9a-fA-F]{64}")
 _TOKEN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,99}")
-_ENV_KEYS = frozenset({"LANG", "LC_ALL", "PATH", "SYSTEMROOT", "WINDIR", "TEMP", "TMP", "TMPDIR"})
+_ENV_KEYS = frozenset(
+    {
+        "LANG",
+        "LC_ALL",
+        "PATH",
+        "SYSTEMROOT",
+        "WINDIR",
+        "TEMP",
+        "TMP",
+        "TMPDIR",
+        "HOME",
+        "USERPROFILE",
+        "APPDATA",
+        "LOCALAPPDATA",
+        "CURSOR_CONFIG_DIR",
+    }
+)
 
 
 def _invalid(code: str = "validation_error") -> NoReturn:
@@ -58,12 +77,27 @@ class CursorHostProfile:
     model: str | None = None
     max_timeout_seconds: float = 300.0
     output_limit: int = 1024 * 1024
+    node_entrypoint: Path | None = field(default=None, repr=False)
+    expected_bundle_sha256: str | None = None
 
     def __post_init__(self) -> None:
         _identifier(self.project_id)
         _identifier(self.session_id)
         _path(self.executable)
         _path(self.root)
+        if (self.node_entrypoint is None) != (self.expected_bundle_sha256 is None):
+            _invalid()
+        if self.node_entrypoint is not None:
+            _path(self.node_entrypoint)
+            node_name = "node.exe" if type(self.executable) is WindowsPath else "node"
+            if (
+                self.executable.name != node_name
+                or self.node_entrypoint.name != "index.js"
+                or self.node_entrypoint.parent != self.executable.parent
+                or type(self.expected_bundle_sha256) is not str
+                or _SHA256.fullmatch(self.expected_bundle_sha256) is None
+            ):
+                _invalid()
         # A native Windows executable avoids the OS's batch-file shell handling.
         if type(self.executable) is WindowsPath and self.executable.suffix.lower() != ".exe":
             _invalid()
@@ -99,6 +133,7 @@ class CursorInvocation:
     output_limit: int
     expected_cli_version: str
     binary_sha256: str
+    bundle_sha256: str | None = None
     stdin_text: str = field(default="", init=False, repr=False)
     scope: Literal["cursor_ask_cli_plan"] = field(default="cursor_ask_cli_plan", init=False)
     executes: Literal[False] = field(default=False, init=False)
@@ -146,6 +181,92 @@ def _inspect_path(path: Path, *, directory: bool) -> os.stat_result:
 
 def _file_identity(info: os.stat_result) -> tuple[int, int, int, int]:
     return info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns
+
+
+def _bundle_inventory(root: Path) -> dict[str, tuple[bool, tuple[int, int, int, int]]]:
+    """Bound traversal before collecting or reading the package's file contents."""
+    root_info = _inspect_path(root, directory=True)
+    inventory = {"": (True, _file_identity(root_info))}
+    pending = [(root, 0)]
+    total_bytes = 0
+    while pending:
+        directory, depth = pending.pop()
+        relative_directory = directory.relative_to(root).as_posix() if directory != root else ""
+        if (
+            _file_identity(_inspect_path(directory, directory=True))
+            != inventory[relative_directory][1]
+        ):
+            _invalid("bundle_changed")
+        with os.scandir(directory) as entries:
+            for entry in entries:
+                if len(inventory) >= MAX_BUNDLE_ENTRIES or depth >= MAX_BUNDLE_DEPTH:
+                    _invalid("bundle_too_large")
+                path = Path(entry.path)
+                _path(path)
+                info = path.lstat()
+                is_dir = _ordinary(info, directory=True)
+                if not is_dir and not _ordinary(info, directory=False):
+                    _invalid("host_path_invalid")
+                relative = path.relative_to(root).as_posix()
+                inventory[relative] = (is_dir, _file_identity(info))
+                if is_dir:
+                    pending.append((path, depth + 1))
+                else:
+                    total_bytes += info.st_size
+                    if total_bytes > MAX_BINARY_BYTES:
+                        _invalid("bundle_too_large")
+    return inventory
+
+
+def _bundle_fingerprint(root: Path) -> tuple[str, dict[str, str]]:
+    try:
+        _path(root)
+        before = _bundle_inventory(root)
+        manifest: list[list[str | int]] = []
+        file_hashes = {}
+        flags = getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+        for relative, (is_dir, identity) in sorted(before.items()):
+            if is_dir:
+                manifest.append(["directory", relative])
+                continue
+            path = root / relative
+            if _file_identity(_inspect_path(path, directory=False)) != identity:
+                _invalid("bundle_changed")
+            value = hashlib.sha256()
+            with open(
+                path, "rb", buffering=0, opener=lambda name, mode: os.open(name, mode | flags)
+            ) as stream:
+                info = os.fstat(stream.fileno())
+                if not _ordinary(info, directory=False) or _file_identity(info) != identity:
+                    _invalid("bundle_changed")
+                remaining = info.st_size
+                while remaining:
+                    data = stream.read(min(1024 * 1024, remaining))
+                    if not data:
+                        _invalid("bundle_changed")
+                    value.update(data)
+                    remaining -= len(data)
+                if _file_identity(os.fstat(stream.fileno())) != identity:
+                    _invalid("bundle_changed")
+            file_hashes[relative] = value.hexdigest()
+            manifest.append(["file", relative, identity[2], value.hexdigest()])
+        if _bundle_inventory(root) != before:
+            _invalid("bundle_changed")
+    except (OSError, ValueError):
+        _invalid("host_path_unavailable")
+    framed = json.dumps(
+        ["cursor-node-bundle-v1", manifest], ensure_ascii=True, separators=(",", ":")
+    )
+    return hashlib.sha256(framed.encode("ascii")).hexdigest(), file_hashes
+
+
+def inspect_node_bundle(root: Path) -> str:
+    """Hash an explicitly supplied ordinary package tree, without launching it.
+
+    This pins package contents, not Node's complete module/DLL search scope or
+    later immutable execution. Authentication and isolation remain unverified.
+    """
+    return _bundle_fingerprint(root)[0]
 
 
 def _binary_hash(profile: CursorHostProfile) -> str:
@@ -214,9 +335,19 @@ def prepare_invocation(
     _bounded_text(prompt, _MAX_ARGUMENT_BYTES)
     selected_environment = _environment(environment)
     binary_sha256 = _binary_hash(profile)
+    bundle_sha256 = None
+    if profile.node_entrypoint is not None:
+        bundle_sha256, files = _bundle_fingerprint(profile.node_entrypoint.parent)
+        if (
+            bundle_sha256 != str(profile.expected_bundle_sha256).lower()
+            or files.get(profile.executable.name) != binary_sha256
+            or "index.js" not in files
+        ):
+            _invalid("bundle_pin_mismatch")
     model_args = ("--model", profile.model) if profile.model is not None else ()
     argv = (
         str(profile.executable),
+        *((str(profile.node_entrypoint),) if profile.node_entrypoint is not None else ()),
         "--print",
         "--output-format",
         "json",
@@ -239,4 +370,5 @@ def prepare_invocation(
         profile.output_limit,
         profile.expected_cli_version,
         binary_sha256,
+        bundle_sha256,
     )

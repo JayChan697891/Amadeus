@@ -1,0 +1,120 @@
+{
+  "observed_at": "2026-11-14T04:42:33.002062+00:00",
+  "source_commit": "b6f05f0473591dc568be25591047fdea963ef86c",
+  "source_run": {
+    "finished_at": "2026-11-14T04:34:55.571873+00:00",
+    "exit_code": 0,
+    "passed": 2426,
+    "skipped": 56,
+    "failed": 0,
+    "errors": 0,
+    "raw_unique_cases": 2482,
+    "persisted_unique_cases": 2481,
+    "source_snapshot_files_unchanged": 2083
+  },
+  "issue": "Two fixture parameter values coalesce after credential redaction; original persisted identity gate remains blocked",
+  "repair": "Only six explicit safe parameter labels added; AST including all other tests is identical",
+  "validation": {
+    "affected_cases_passed": 6,
+    "safe_unique_ids_after_redaction": 6,
+    "ruff": "pass",
+    "format_check": "pass"
+  },
+  "original_artifacts": {
+    "junit.xml": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/junit.xml",
+      "sha256": "f6da0cb48bced7fd17a708294b21b1e789767a2e88000dc8678534dae6f5df70",
+      "size": 391409
+    },
+    "logs/pytest.log": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pytest.log",
+      "sha256": "a9e921c38d624fd6442b5c2916d7cc1077dea693bed31fa752be76b3ac86827d",
+      "size": 17842
+    },
+    "logs/pytest.process.json": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/logs/pytest.process.json",
+      "sha256": "9ed9a45115e60772bcea1efd7a7c35f3d5d171c5101047e1c4ab1a02e4676bdd",
+      "size": 1532
+    },
+    "source-snapshot.json": {
+      "path": "releases/0.3.0a115/b6f05f0/windows-312/source-snapshot.json",
+      "sha256": "f3b5cc91fa45ecd70c8b9a95f1649b29a227bfb4ec427671d35b4b78f6619ce4",
+      "size": 391801
+    }
+  },
+  "artifacts": {
+    "fixed.log": {
+      "sha256": "17c28b0de14bd689fdd2e3a6fe3af516159fbb5a525165f261eceda1d126833a",
+      "size": 642
+    },
+    "fixed-junit.xml": {
+      "sha256": "358aed0b9ef25ece9fcd2ddc6fec6e15f59b2a37464247c584d89c8a4affa69f",
+      "size": 1197
+    },
+    "fixed-process.json": {
+      "sha256": "653c4bb0a2d13e0aee10f24465dd8d552cab0d7640c435bb632371bab3caa038",
+      "size": 1140
+    },
+    "fixed-redacted-junit.xml": {
+      "sha256": "ed6c90fc76cbfd0b8ebdc2ce792b89895d7d09c92d8680688ac00b7ecf3e37f0",
+      "size": 1199
+    },
+    "source-proof.json": {
+      "sha256": "72ca5461edf17c6482256d526da168132168f6a31caa303a470b82f5d4b642b5",
+      "size": 3973
+    },
+    "source-recovered-junit.xml": {
+      "sha256": "95204cbf95417899441d301df0bec97c24d02f1280d54e789880fdbb678df077",
+      "size": 391347
+    },
+    "recover-identity.py.txt": {
+      "sha256": "ef21d1fea43d5d0c082d892e1c396a3ef23502392ed56985ae664f962d5accb6",
+      "size": 5887
+    },
+    "tested-fixture.py.txt": {
+      "sha256": "41e73fb79d993b483021651fe3f832670625710ac1e3a40ef1a203d836fd96df",
+      "size": 86119
+    },
+    "recover-identity-packages.py.txt": {
+      "sha256": "6a4d10f309bf2d402231047f5633aba24351ae47690bb717a7aa468f6349bcde",
+      "size": 6073
+    },
+    "observe-packages.py.txt": {
+      "sha256": "3bb81853eb9aefca804f840805aca6e27ade36ca9c4376f8b4151556090e15c6",
+      "size": 6221
+    },
+    "observer-attempt.json": {
+      "sha256": "9c9755c6b70cf9e7cd8388b9ab6f262c4f7a0c7a2a0a9ea4150fe95aa02c2c12",
+      "size": 765
+    },
+    "observer-preflight-failure.json": {
+      "sha256": "fd420987d491301462db683ebe72fb6dbbb0e9ecbc803c147e9218627562790b",
+      "size": 350
+    },
+    "derive-report.py.txt": {
+      "sha256": "8c58a687807e1ea0008c85931b949f88c8f03cb9f4dc78a628094dc41bde44da",
+      "size": 10040
+    },
+    "stage-derived.py.txt": {
+      "sha256": "7e9837e876fc3cbb0f17e9a40bda8b83ba28689df18f66cc282eca6108601ee6",
+      "size": 4620
+    }
+  },
+  "remaining": "Wheel RUNNING, sdist NOT RUN. Observe sessions75435/31525. No manual duplicate helper invocation while observer is active. Original identity gate remains blocked. Only after every suite has proved derived identity and unchanged strict validation may exact b6 packages proceed; do not relabel as new HEAD acceptance.",
+  "observer": {
+    "session_id": 31525,
+    "pid": 20160,
+    "creation_utc": "2026-11-14T04:45:08.882126Z",
+    "role": "Preserve raw package XML locally with read/write/delete-sharing handles; derive identities only after terminal success. Never launches tests.",
+    "helper_sha256": "6a4d10f309bf2d402231047f5633aba24351ae47690bb717a7aa468f6349bcde",
+    "independent_review": "Source proof accepted as supplemental evidence; package observer fail-closed safety reviewed, no completed package capture yet.",
+    "known_limit": "Helper selects its raw path once. Cleanup after selection can fail derivation despite captured private raw. Keep helper pin unchanged while active. If it fails, inspect saved private capture and derive separately; never rerun tests for this evidence-only race."
+  },
+  "prepared_continuation": {
+    "derive_report": "D:/agentsync-debug/m115-case-identity/derive_report.py",
+    "stage_linux": "D:/agentsync-debug/m115-case-identity/stage_derived.py",
+    "execution": "NOT RUN; requires successful original collector and all three independently verified identity proofs",
+    "review": "Derived-report logic independently reviewed; script and safe fixture will be pinned inside derived artifacts. Strict validators unchanged. Stager reuses original declared-artifact-only transfer after strict manifest validation.",
+    "archive": "Keep full original run separately. identity-original/report.json is only a byte snapshot with original relative references, not a standalone report tree."
+  }
+}

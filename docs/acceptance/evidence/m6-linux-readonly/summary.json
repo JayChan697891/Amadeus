@@ -1,0 +1,121 @@
+{
+  "product_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "scope": "Explicit Linux 0.167 single-task opt-in; legacy/default/MXC plan compatibility, installed packages, actual native CLI configuration and bounded local command probes. No model turn.",
+  "source": {
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "windows_installed": {
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "linux_installed": {
+    "tests": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "linux_skip": "One Windows-native MXC-only case; same case passes in Windows suite.",
+  "runtime_modules_matched_before_after": 87,
+  "native_probe_scope": "Exact Git source modules; equivalent final installed runtime hashes verified separately. Not a claim that the native probe used the final wheel interpreter.",
+  "native_cli": {
+    "version": "0.167.0-alpha.3.2",
+    "target": "x86_64-unknown-linux-musl",
+    "archive_sha256": "e5d9533df7e949cb145b8dc3f40c2f86bba5408cdf07301f9188f273df3409a1",
+    "binary_sha256": "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0",
+    "official_digest_matched": true
+  },
+  "native_observations": {
+    "strict_config_accepted": true,
+    "plan_argument_count": 45,
+    "requested_features_false": 19,
+    "effective_unified_exec": true,
+    "other_requested_features_effectively_false": 18,
+    "projection_tools": [
+      "exec",
+      "request_user_input",
+      "request_user_input_async",
+      "sleep",
+      "wait"
+    ],
+    "nested_tool_headings": [
+      "apply_patch",
+      "clock__curr_time",
+      "list_mcp_resource_templates",
+      "list_mcp_resources",
+      "read_mcp_resource"
+    ],
+    "project_read_allowed": true,
+    "write_denied": true,
+    "outside_synthetic_canary_read_denied": true,
+    "loopback_control_connected": true,
+    "isolated_socket_denied_errno": 1,
+    "external_targets": 0
+  },
+  "not_proven": [
+    "whole CLI process containment",
+    "all tools absent",
+    "real client task on Linux",
+    "real same-Core generated proposal pipeline",
+    "current full platform matrix",
+    "formal Release"
+  ],
+  "development_history": [
+    "Initial official package download ended early; resumed only after terminal transfer failure, then full publisher SHA256 matched before extraction/execution.",
+    "Wrong sandbox help form treated linux as a command and failed; actual help sandbox documented positional command and required permission profile.",
+    "strict-config is unsupported on features; supported app-server print-startup-config validates strict settings without starting a model turn.",
+    "First source pytest selector named a nonexistent process_factory test; no tests ran. Correct existing selectors used for all reported results.",
+    "02eb18e native file probe did not run because sandbox required an explicit profile; 7ebc4e3 named profile then exposed a portable CLI re-exec read-path omission.",
+    "a2634ec adds only exact pinned executable read access; actual file probe succeeds with writes denied. Earlier portable probe failures are not counted as passes.",
+    "Initial loopback helper failed its process return-code assertion; helper was changed to catch socket creation errors as well as connection errors. Corrected local probe observed errno1 and only the control connection.",
+    "VM had about660MiB free. New32GiB overlay preserves complete old16GiB disk; existing cloud-init expanded partition/filesystem during boot. Manual growth script stopped at its old-size guard before any growth command. About15GiB available afterward."
+  ],
+  "independent_review": "Existing Astra reviewer accepted final minimal permission change, scoped native observations and exact source/Windows/Linux package results; formal Work acceptance separate.",
+  "model_calls": 0,
+  "credential_copy": false,
+  "default_account_config_changed": false,
+  "cross_client": "NOT RUN: no Claude/Cursor subscription",
+  "formal_release": "BLOCKED",
+  "next": "Prepare a bounded one-shot real Codex proposal task on this same Linux Core/Docker host, with explicit fee/authentication gates and temporary-credential cleanup before candidate verification. No such run started in this checkpoint.",
+  "official_sources": [
+    "https://learn.chatgpt.com/docs/codex/cli",
+    "https://learn.chatgpt.com/docs/auth"
+  ],
+  "evidence_sha256": {
+    "boundary-probe.json": "8ec5cf1ca0f2abd58eff53790e48dff6c2527f6c1268108236f312f6fbf38bf6",
+    "boundary-probe.py.txt": "f39b1bae9e6241721f2c0e0c910fba42d238573e9e7461e51aba626a9a1c58a2",
+    "codex-package.json": "334ff36c698c163bcc16a4d0c55e01c5e2190e4ca3787b9101d9b573dc832082",
+    "disk-verified.log": "512b22a6da7b2ba27656bfdfde0778dfaeab505733c6beedb64932d26a1697f0",
+    "format.log": "01f1b6425f37ad44b469d7f1faaf1ef3a45596832e5586dcf7d4bf2ffb236fbe",
+    "linux-installed.log": "306ee49e0ca7d21a5575d1e6953f424bcc3b6cfeb25d23407afc7c8a2b2a6109",
+    "linux-installed.xml": "97a5456ac12d6a9213750a60f8c1d7d53f957949d644508db1db5d3a5c896146",
+    "linux-origin.json": "0405b173fa7ddd7e441997238d335061165b7c99c77593198a4d8fdec5d26e99",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-test.py.txt": "baeb36efe1a61323059cd2379a4679fad7b37b6e251d63928db5b9b3c67f0fa5",
+    "mypy.log": "e5e2f5ad00c77c77911b70e177d9653cd94b6f1b3f5cf2ec0ef3ae641b33f7f0",
+    "native-probe.py.txt": "c8afb4891f73de49605af60d1d2f335e7adb41217281364b6e26fb8cf88d044b",
+    "native-source-probe.json": "5677d446e9a2a03cc0c4befaa9f21a2c6d79b59d36df6c988c41feaca34e4566",
+    "official-asset.json": "90aa9c598feffefdee63b6c40004c27d54ed41c1c96a9402adb610b9d877b666",
+    "overlay-growth.json": "b3f38be20495706839a0654b582aa607db5c7265b525ae30963db6d11881e138",
+    "package-build.py.txt": "cfbfc13c3d53e378669b06723af77540bbc77c7777c893496c1ffa844d081d46",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "runtime-files.json": "f87f343a5a6d0b3576bceb14347fe48c45ad0efe8e88c77c85068ba3d724ef29",
+    "source-probe-prepare.py.txt": "5dcca870d2f5619a99187a9d74e1423a08b0cf900ff058e0b31c28cfc12be419",
+    "source.log": "3372d7149db0ea8bb162e96eea4bc11955761b81e942a0bba82369d01fa26a11",
+    "source.xml": "f446315cac923623fd01186f4183e4783c4f519c5ee8f979fba56931e6b74113",
+    "vm-stop.log": "49874f950396619ef6e979a4042ab1fcb43469fd073f9237f0c39e1365a81053",
+    "windows-installed.log": "64addcd7627a90fae8b07ecb12f8985b14f4881c52e8d82332a42165b2be749f",
+    "windows-installed.xml": "bb609e31a04b521a75f875588d74829f793a1adc7dc4ce0a5ce63d62ef59d4f0",
+    "windows-origin.json": "de7957a4803064a324ea5dab74397b6700d9e1ea6a224562a1f01a866d6e7e3e",
+    "windows-pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "windows-test.py.txt": "32ffb058944267aaba092c583bed2b1a465703c10a13001cdcf1f917a7ec82b5"
+  },
+  "artifacts_sha256": {
+    "releases/0.3.0a109/m6-linux-a2634ec/agentsync_local-0.3.0a109-py3-none-any.whl": "bdd8fc4e98de6824d3a6f5a6be7fa2a477df7acfe9bb06f061d8479f50ee1b33",
+    "releases/0.3.0a109/m6-linux-a2634ec/agentsync_local-0.3.0a109.tar.gz": "d882e6c8d06372e3b5465b3974b45e147e3760b68e3e34e994ffade5814c3dff"
+  }
+}

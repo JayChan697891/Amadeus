@@ -1,5 +1,6 @@
 """Exercise Core and Git with local protocol fixtures, never with real clients."""
 
+import asyncio
 import hashlib
 import io
 import json
@@ -18,10 +19,18 @@ from agentsync.adapters.codex_invocation import CodexHostProfile
 from agentsync.adapters.cursor_invocation import CursorHostProfile
 from agentsync.adapters.process_capture import CapturedProcess
 from agentsync.cli import main
-from agentsync.controlled_relay import ControlledRelay, RelayActor, RelayInput, RelayReviewer
+from agentsync.controlled_relay import (
+    ControlledRelay,
+    RelayActor,
+    RelayInput,
+    RelayReviewer,
+    SingleCodexInput,
+)
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.relay_queue import RelayQueue, RelayQueueItem
+from agentsync.sdk import AgentSyncClient
+from agentsync.storage.database import connect
 
 
 @pytest.mark.parametrize(
@@ -33,6 +42,14 @@ from agentsync.relay_queue import RelayQueue, RelayQueueItem
         "viewer-before-admission",
         "swapped-worktrees",
         "unmet-dependency",
+        "single-codex-success",
+        "single-codex-startup-warning",
+        "single-codex-mismatch",
+        "single-codex-denied",
+        "single-codex-cancelled",
+        "single-codex-timeout",
+        "single-codex-exit-failure",
+        "single-codex-invalid-protocol",
     ],
 )
 async def test_controlled_relay_with_disposable_core_and_git(
@@ -116,9 +133,13 @@ async def test_controlled_relay_with_disposable_core_and_git(
     receipts.mkdir()
     approvals = []
     launches = []
+    captures = []
+    capture_started = asyncio.Event()
 
     async def allow_fixture(review):
         approvals.append(review)
+        if scenario == "single-codex-denied":
+            return None
         return LaunchConsent(
             f"fixture-approval-{len(approvals)}",
             review.plan_sha256,
@@ -168,16 +189,38 @@ async def test_controlled_relay_with_disposable_core_and_git(
                     "result": "SECOND_FIXTURE",
                 }
             ]
+        if scenario == "single-codex-startup-warning":
+            events.insert(
+                1,
+                {
+                    "type": "item.completed",
+                    "item": {
+                        "id": "fixture-warning",
+                        "type": "error",
+                        "message": "private fixture warning",
+                    },
+                },
+            )
         stream = "\n".join(json.dumps(event) for event in events)
+        if scenario == "single-codex-invalid-protocol":
+            stream = "private malformed protocol fixture"
         helper_env = {"SYSTEMROOT": os.environ["SYSTEMROOT"]} if "SYSTEMROOT" in os.environ else {}
-        return await real_capture(
-            (sys.executable, "-I", "-u", "-c", f"print({stream!r})"),
+        script = f"print({stream!r})"
+        if scenario in {"single-codex-cancelled", "single-codex-timeout"}:
+            script = "import time; time.sleep(60)"
+        elif scenario == "single-codex-exit-failure":
+            script = "raise SystemExit(3)"
+        capture = await real_capture(
+            (sys.executable, "-I", "-u", "-c", script),
             cwd=cwd,
             stdin_text="",
             timeout_seconds=timeout_seconds,
             output_limit=output_limit,
             env=helper_env,
         )
+        captures.append(capture)
+        capture_started.set()
+        return capture
 
     monkeypatch.setattr(CapturedProcess, "start", classmethod(launch_fixture))
     first_profile = CodexHostProfile(
@@ -230,6 +273,147 @@ async def test_controlled_relay_with_disposable_core_and_git(
     items = (RelayQueueItem(*prepared, request),)
     request_id = "fixture-wave"
     token = owner["admin_token"]
+    if scenario.startswith("single-codex-"):
+        owner_grant(core, owner, second, ("viewer",))
+        actor = prepared[0]
+        pilot = SingleCodexInput(
+            task["id"],
+            task["version"],
+            "Return the first fixture value",
+            "WRONG_REPLY" if scenario == "single-codex-mismatch" else "FIRST_FIXTURE",
+            timeout_seconds=1 if scenario == "single-codex-timeout" else 10,
+        )
+        preview = relay.preview_codex(actor, pilot, admin_token=token)
+        alternative = relay.preview_codex(
+            actor, replace(pilot, expected_reply="OTHER_FIXTURE"), admin_token=token
+        )
+        assert preview.plan_sha256 != alternative.plan_sha256
+        assert not approvals and not launches
+        assert list(receipts.iterdir()) == []
+        if scenario in {"single-codex-success", "single-codex-startup-warning"}:
+            outcome = await relay.run_codex_once(actor, pilot, admin_token=token)
+            assert outcome.state == "ready_for_review"
+            assert outcome.verification == "unverified"
+        elif scenario == "single-codex-cancelled":
+            execution = asyncio.create_task(relay.run_codex_once(actor, pilot, admin_token=token))
+            try:
+                async with asyncio.timeout(5):
+                    await capture_started.wait()
+                execution.cancel()
+                with pytest.raises(asyncio.CancelledError):
+                    await execution
+                assert (await captures[0].snapshot()).parent_ended is True
+            finally:
+                if not execution.done():
+                    execution.cancel()
+                await asyncio.gather(execution, return_exceptions=True)
+                for capture in captures:
+                    await capture.cancel()
+        else:
+            with pytest.raises(AgentSyncError):
+                await relay.run_codex_once(actor, pilot, admin_token=token)
+        assert [approval.plan_sha256 for approval in approvals] == [preview.plan_sha256]
+        assert launches == ([] if scenario == "single-codex-denied" else [actor.profile.root])
+        reopened = ControlledRelay(Core(core.data_dir), scratch, receipts)
+        state = reopened.observe(actor, task["id"])
+        assert state.state == (
+            "ready_for_review"
+            if scenario in {"single-codex-success", "single-codex-startup-warning"}
+            else "incomplete"
+        )
+        current = call(first, "get_project_state")["tasks"][0]
+        if scenario == "single-codex-invalid-protocol":
+            observed, unused = reopened.inspect_attempts(actor, task["id"], admin_token=token)
+            assert observed.protocol_error_reason == "validation_error"
+            assert observed.error_code == "protocol_invalid" and observed.status == "unknown"
+            assert observed.parent_ended is True and observed.exit_code == 0
+            captured = (
+                b"private malformed protocol fixture\r\n"
+                if os.name == "nt"
+                else b"private malformed protocol fixture\n"
+            )
+            assert observed.stdout_bytes == len(captured)
+            assert observed.stdout_sha256 == hashlib.sha256(captured).hexdigest()
+            assert observed.stderr_bytes == 0
+            assert observed.stdout_truncated is False
+            assert "private malformed" not in repr(observed)
+            assert unused.state == "not_dispatched"
+        if scenario in {
+            "single-codex-cancelled",
+            "single-codex-timeout",
+            "single-codex-exit-failure",
+        }:
+            observed, unused = reopened.inspect_attempts(actor, task["id"], admin_token=token)
+            assert observed.state == "terminal_recorded"
+            assert observed.parent_ended is True
+            assert observed.status != "expected_reply"
+            assert unused.state == "not_dispatched"
+            assert observed.timed_out is (scenario == "single-codex-timeout")
+            if scenario == "single-codex-exit-failure":
+                assert observed.status == "failed"
+                assert observed.exit_code == 3
+            assert observed.error_code is not None
+        assert current["status"] == ("review" if state.state == "ready_for_review" else "running")
+        assert current["task_verification"] == "unverified"
+        assert "FIRST_FIXTURE" not in (current["result"] or "")
+        if scenario in {
+            "single-codex-timeout",
+            "single-codex-invalid-protocol",
+            "single-codex-exit-failure",
+            "single-codex-denied",
+        }:
+            client = AgentSyncClient(core.data_dir)
+            result = client.owner_call(
+                "sync_relay_usage",
+                **owner,
+                task_id=task["id"],
+                scratch_root=str(scratch),
+                receipts=str(receipts),
+            )
+            assert result["ok"], result
+            first_attempt = result["data"]["attempts"][0]
+            usage_source = "controlled_relay_receipts"
+            summary = client.owner_call("get_usage_summary", **owner)["data"][usage_source]
+            if scenario == "single-codex-denied":
+                assert first_attempt["state"] == "not_recorded" and summary["total_records"] == 0
+            else:
+                status = {
+                    "single-codex-timeout": "timed_out",
+                    "single-codex-invalid-protocol": "unknown",
+                    "single-codex-exit-failure": "failed",
+                }[scenario]
+                observation = client.owner_call(
+                    "get_usage_run",
+                    **owner,
+                    provenance=usage_source,
+                    kind="codex",
+                    run_id=first_attempt["run_id"],
+                )["data"]
+                assert observation["status"] == status and observation["terminal_recorded"]
+                assert observation["input_tokens"] is None and observation["output_tokens"] is None
+                assert summary["statuses"][status] == 1 and summary["total_records"] == 1
+                assert summary["failure_rate"] == (None if status == "unknown" else 1.0)
+        with pytest.raises(AgentSyncError):
+            await reopened.run_codex_once(
+                actor, replace(pilot, expected_version=current["version"]), admin_token=token
+            )
+        assert len(approvals) == 1
+        if scenario in {"single-codex-success", "single-codex-startup-warning"}:
+            review = {
+                "task_id": task["id"],
+                "expected_version": current["version"],
+                "accept": True,
+                "evidence": "Fixture result observed by independent reviewer",
+                "request_id": "single-fixture-review",
+            }
+            with pytest.raises(AgentSyncError) as denied:
+                call(first, "review_task", **review)
+            assert denied.value.code == "separate_reviewer_required"
+            completed = call(reviewer, "review_task", **review)
+            assert completed["status"] == "completed"
+            assert completed["task_verification"] == "unverified"
+        assert source_fingerprint(source) == original
+        return
     if scenario == "unmet-dependency":
         assert queue.preview(items, admin_token=token).state == "no_ready_tasks"
         with pytest.raises(AgentSyncError) as denied:
@@ -375,3 +559,49 @@ async def test_controlled_relay_with_disposable_core_and_git(
     )
     assert checked["status"] == "completed"
     assert checked["latest_review"]["reviewer_agent_id"] == reviewer["agent_id"]
+    if scenario == "handoff-and-review":
+        with connect(core.db_path) as db:
+            db.execute("UPDATE sessions SET expires_at=0 WHERE project_id=?", (project_id,))
+        payload = {
+            **owner,
+            "task_id": task["id"],
+            "scratch_root": str(scratch),
+            "receipts": str(receipts),
+        }
+        monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(payload)))
+        assert main(["--data-dir", str(core.data_dir), "owner", "sync_relay_usage"]) == 0
+        output = capsys.readouterr().out
+        assert all(value not in output for value in (token, "fixture-thread", "FIRST_FIXTURE"))
+        reconciled = json.loads(output)["data"]["attempts"]
+        assert [attempt["state"] for attempt in reconciled] == ["added", "added"]
+        client = AgentSyncClient(core.data_dir)
+        usage_source = "controlled_relay_receipts"
+        readings = [
+            client.owner_call(
+                "get_usage_run",
+                **owner,
+                provenance=usage_source,
+                kind=attempt["kind"],
+                run_id=attempt["run_id"],
+            )["data"]
+            for attempt in reconciled
+        ]
+        assert [item["input_tokens"] for item in readings] == [2, None]
+        assert [item["output_tokens"] for item in readings] == [1, None]
+        assert [item["adapter_elapsed_ms"] for item in readings] == [
+            attempt.adapter_elapsed_ms for attempt in attempts
+        ]
+        assert all(item["started_at"] is None and item["finished_at"] is None for item in readings)
+        summary = client.owner_call("get_usage_summary", **owner)["data"]
+        assert summary["total_records"] == 0 and summary[usage_source]["total_records"] == 2
+        assert summary[usage_source]["failure_rate"] == 0.0
+        assert summary[usage_source]["input_tokens"] == {
+            "value": None,
+            "known_sum": 2,
+            "reported_runs": 1,
+            "unknown_runs": 1,
+        }
+        assert summary[usage_source]["billing_verified"] is False
+        again = client.owner_call("sync_relay_usage", **payload)["data"]["attempts"]
+        assert again == [dict(attempt, state="unchanged") for attempt in reconciled]
+        assert len(launches) == len(approvals) == 2

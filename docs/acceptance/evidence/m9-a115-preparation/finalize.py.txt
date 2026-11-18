@@ -1,0 +1,147 @@
+"""Inspect the terminal original collector, then pin or stage its exact evidence."""
+import argparse
+from datetime import UTC, datetime
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+import sys
+import xml.etree.ElementTree as ET
+
+BASE = Path('D:/agentsync-debug/m115-candidate')
+RUN = BASE/'windows-312/release-20261113T132425Z-8c123f11a31b'
+SOURCE = BASE/'s'
+parser = argparse.ArgumentParser()
+parser.add_argument('action', choices=('finalize', 'stage-linux'))
+args = parser.parse_args()
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(SOURCE))
+from tools.release_manifest import build_manifest, verify_manifest
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def save_new(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        stream.write(json.dumps(value, indent=2, sort_keys=True)+'\n')
+
+def cases(path):
+    result = {}
+    for case in ET.parse(path).getroot().iter('testcase'):
+        key = (case.get('classname'), case.get('name'))
+        if key in result:
+            raise ValueError('Duplicate JUnit case identity')
+        outcomes = [tag for tag in ('failure', 'error', 'skipped') if case.find(tag) is not None]
+        if len(outcomes)>1:
+            raise ValueError('Conflicting JUnit outcome')
+        result[key] = outcomes[0] if outcomes else 'pass'
+    if not result:
+        raise ValueError('Empty JUnit')
+    return result
+
+config = json.loads((BASE/'bootstrap-config.json').read_text())
+terminal = json.loads((BASE/'bootstrap-result.json').read_text())
+assert terminal['phase']=='finished' and terminal['exit_code']==0
+assert terminal['commit_sha']==config['commit_sha']
+report = json.loads((RUN/'report.json').read_text(encoding='utf-8'))
+assert report['commit_sha']==config['commit_sha'] and report['tree_sha']==config['tree_sha']
+assert not report['working_tree_status'] and not report['source_changed_during_execution']
+assert report['requirements_manifest_error'] is None
+failed = [{'id':item['id'], 'status':item['status']} for item in report['checks'] if item['status']!='pass']
+assert not failed, failed
+observations = {}
+baseline = None
+for name in ('junit.xml', 'wheel-junit.xml', 'sdist-junit.xml'):
+    observed = cases(RUN/name)
+    assert not ({'failure','error'} & set(observed.values()))
+    if baseline is None:
+        baseline = observed
+    else:
+        assert observed==baseline, 'Suite case identity or outcome drift'
+    observations[name] = {'sha256':digest(RUN/name), 'unique_cases':len(observed),
+                          'passed':sum(v=='pass' for v in observed.values()),
+                          'skipped':sum(v=='skipped' for v in observed.values())}
+
+manifest = BASE/'candidate-bootstrap.json'
+if args.action=='finalize':
+    assert not manifest.exists()
+    candidate = build_manifest(BASE, (RUN/'report.json').relative_to(BASE).as_posix(), [],
+                               config['commit_sha'], source_repo=SOURCE)
+    save_new(manifest, candidate)
+    verified = verify_manifest(manifest, BASE, manifest_sha256=digest(manifest), source_repo=SOURCE)
+    audit = {'timestamp':datetime.now(UTC).isoformat(), 'report_sha256':digest(RUN/'report.json'),
+             'source_commit':config['commit_sha'], 'checks':len(report['checks']),
+             'junit':observations, 'same_case_identities_and_outcomes':True,
+             'manifest_verification':verified, 'formal_release':'BLOCKED'}
+    save_new(BASE/'bootstrap-audit.json', audit)
+    print(json.dumps(audit, indent=2))
+    raise SystemExit(0)
+
+verified = verify_manifest(manifest, BASE, manifest_sha256=digest(manifest), source_repo=SOURCE)
+# Transfer only the collector's declared durable artifacts, original report and manifest.
+# Runtime scratch directories, account homes, keys and the VM disk are never traversed.
+files = {manifest.relative_to(BASE).as_posix():manifest,
+         (RUN/'report.json').relative_to(BASE).as_posix():RUN/'report.json'}
+for pin in report['artifacts']:
+    parts = PurePosixPath(pin['path'])
+    assert not parts.is_absolute() and '..' not in parts.parts and '\\' not in pin['path']
+    path = RUN.joinpath(*parts.parts)
+    assert path.resolve().is_relative_to(RUN.resolve()) and not path.is_symlink()
+    assert path.stat().st_size==pin['size'] and digest(path)==pin['sha256']
+    files[path.relative_to(BASE).as_posix()] = path
+pins = {name:{'size':path.stat().st_size, 'sha256':digest(path)} for name,path in files.items()}
+
+import paramiko
+root = BASE.parent
+guest = '/root/amadeus-m115'
+client = paramiko.SSHClient()
+client.load_host_keys(str(root/'vm/known_hosts'))
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename=str(root/'vm/debug_ed25519'), look_for_keys=False,
+               allow_agent=False, timeout=10)
+try:
+    with client.open_sftp() as sftp:
+        # Fail before writing if a previous staging attempt left any destination.
+        for name in files:
+            try:
+                sftp.lstat(guest+'/'+name)
+            except FileNotFoundError:
+                continue
+            raise RuntimeError('Existing destination requires inspection; staging is not retried')
+        directories = sorted({str(PurePosixPath(name).parent) for name in files if '/' in name})
+        for directory in directories:
+            current = guest
+            for part in PurePosixPath(directory).parts:
+                current += '/'+part
+                try:
+                    sftp.stat(current)
+                except FileNotFoundError:
+                    sftp.mkdir(current, 0o700)
+        for name, path in files.items():
+            with sftp.open(guest+'/'+name, 'wx') as stream:
+                stream.write(path.read_bytes())
+    script = '''import hashlib,json,pathlib,sys
+base=pathlib.Path(%r);pins=%r
+for name,pin in pins.items():
+ p=base/name
+ assert p.stat().st_size==pin['size'] and hashlib.sha256(p.read_bytes()).hexdigest()==pin['sha256']
+sys.dont_write_bytecode=True;sys.path.insert(0,str(base/'s'))
+from tools.release_manifest import verify_manifest
+result=verify_manifest(base/'candidate-bootstrap.json',base,manifest_sha256=%r,source_repo=base/'s')
+print(json.dumps({'files_verified':len(pins),'manifest_verification':result}),flush=True)
+''' % (guest, pins, digest(manifest))
+    channel = client.get_transport().open_session(timeout=10)
+    channel.settimeout(180)
+    channel.exec_command('/root/jobs-env/bin/python -I -B -')
+    channel.sendall(script.encode())
+    channel.shutdown_write()
+    stdout = channel.makefile('rb').read(32768)
+    stderr = channel.makefile_stderr('rb').read(32768)
+    code = channel.recv_exit_status()
+finally:
+    client.close()
+result = {'exit_code':code, 'output':stdout.decode(), 'error':stderr.decode(),
+          'guest':guest, 'transferred_files':pins, 'tests_started':False}
+save_new(BASE/'linux-candidate-staging.json',result)
+print(json.dumps({key:value for key,value in result.items() if key!='transferred_files'},indent=2))
+raise SystemExit(code)

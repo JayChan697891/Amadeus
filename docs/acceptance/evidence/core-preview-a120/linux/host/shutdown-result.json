@@ -1,0 +1,10 @@
+{
+  "observed_at": "2026-11-16T23:52:41.4677186Z",
+  "pid": 4028,
+  "process_absent": true,
+  "loopback_ports_closed": true,
+  "method": "QMP system_powerdown",
+  "disk_preserved": true,
+  "native_shutdown_request": "88a38d",
+  "exit_code": 0
+}

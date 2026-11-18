@@ -1,0 +1,189 @@
+unformatted: File would be reformatted
+   --> tests\integration\test_proposal_staging.py:314:16
+    |
+313 |     }
+    -     history = {
+    -         key: initial[key] for key in ("publication_session_id", "publication_request_id")
+    -     }
+314 +     history = {key: initial[key] for key in ("publication_session_id", "publication_request_id")}
+315 |     original = {
+--------------------------------------------------------------------------------
+328 |         credentials[operation] = {key: actor[key] for key in ("session_id", "session_token")}
+    -     tool = runpy.run_path(str(Path(__file__).resolve().parents[2] / "tools/resume_live_solution_verification.py"))
+329 +     tool = runpy.run_path(
+330 +         str(Path(__file__).resolve().parents[2] / "tools/resume_live_solution_verification.py")
+331 +     )
+332 |     actors = tool["actor_binding"](core, owner, original, credentials)
+--------------------------------------------------------------------------------
+359 |         preview(service, owner, old, history, credentials["stager"], actors["stager"])
+    -     assert observe(service, owner | {"task_id": old["binding"]["task_id"]})["state"] == "not_started"
+360 +     assert (
+361 +         observe(service, owner | {"task_id": old["binding"]["task_id"]})["state"] == "not_started"
+362 +     )
+363 |
+    |
+
+unformatted: File would be reformatted
+   --> tools\resume_live_solution_verification.py:32:17
+    |
+31  |     assert set(credentials) == {"stager", "reviewer"}
+    -     existing = {original[role]["agent_id"] for role in ("producer", "receiver", "stager", "reviewer")}
+32  +     existing = {
+33  +         original[role]["agent_id"] for role in ("producer", "receiver", "stager", "reviewer")
+34  +     }
+35  |     actors = {}
+--------------------------------------------------------------------------------
+87  |     assert recovery.approval_binding(live, born) == {
+    -         key: binding[key] for key in ("controller_exit_checkpoint_sha256", "controller_reconcile_sha256")
+88  +         key: binding[key]
+89  +         for key in ("controller_exit_checkpoint_sha256", "controller_reconcile_sha256")
+90  |     }
+--------------------------------------------------------------------------------
+110 |         "get_context",
+    -         {**reader, "context_id": publication["context_id"], "version": publication["context_version"]},
+111 +         {
+112 +             **reader,
+113 +             "context_id": publication["context_id"],
+114 +             "version": publication["context_version"],
+115 +         },
+116 |     )
+--------------------------------------------------------------------------------
+144 |         row["id"]: {
+    -             key: row[key] for key in ("id", "status", "version", "dependencies", "task_verification")
+145 +             key: row[key]
+146 +             for key in ("id", "status", "version", "dependencies", "task_verification")
+147 |         }
+--------------------------------------------------------------------------------
+157 |     owner, task_id = state["owner"], binding["task_id"]
+    -     profile = DockerProfile(verify.IMAGE, tuple(JsonCase(values, total) for values, total in verify.CASES))
+158 +     profile = DockerProfile(
+159 +         verify.IMAGE, tuple(JsonCase(values, total) for values, total in verify.CASES)
+160 +     )
+161 |     policy = {"profile_sha256": profile.sha256, "image_id": verify.IMAGE, "cases": verify.CASES}
+--------------------------------------------------------------------------------
+171 |         plan = {
+    -             "action": "stage-and-enqueue-once", "binding": binding, "staging": stage, "policy": policy,
+172 +             "action": "stage-and-enqueue-once",
+173 +             "binding": binding,
+174 +             "staging": stage,
+175 +             "policy": policy,
+176 |         }
+--------------------------------------------------------------------------------
+186 |         candidate = {
+    -             "candidate_id": staged["candidate_id"], "expected_candidate_sha": staged["candidate_sha"],
+187 +             "candidate_id": staged["candidate_id"],
+188 +             "expected_candidate_sha": staged["candidate_sha"],
+189 |         }
+--------------------------------------------------------------------------------
+197 |         verify.publish_plan(
+    -             live, state, "resume-execution-plan.json",
+    -             {"action": "execute-once", "binding": binding, "policy": policy, "job": job,
+    -              "stage_approval_sha256": expected},
+198 +             live,
+199 +             state,
+200 +             "resume-execution-plan.json",
+201 +             {
+202 +                 "action": "execute-once",
+203 +                 "binding": binding,
+204 +                 "policy": policy,
+205 +                 "job": job,
+206 +                 "stage_approval_sha256": expected,
+207 +             },
+208 |         )
+--------------------------------------------------------------------------------
+213 |     assert live.read("resume-stage-entry.json") == {
+    -         "action": "resume-stage", "plan_sha256": live.sha(BASE / "resume-stage-plan.json"),
+214 +         "action": "resume-stage",
+215 +         "plan_sha256": live.sha(BASE / "resume-stage-plan.json"),
+216 |     }
+    -     assert execution_plan["stage_approval_sha256"] == live.read("resume-stage-entry.json")["plan_sha256"]
+217 +     assert (
+218 +         execution_plan["stage_approval_sha256"]
+219 +         == live.read("resume-stage-entry.json")["plan_sha256"]
+220 +     )
+221 |     job = jobs.get(**owner, job_id=execution_plan["job"]["id"])
+--------------------------------------------------------------------------------
+225 |         execution = flow.start_once(
+    -             **owner, job_id=job["id"], expected_job_version=job["version"],
+    -             expected_metadata_sha256=job["metadata_sha256"], profile=profile,
+226 +             **owner,
+227 +             job_id=job["id"],
+228 +             expected_job_version=job["version"],
+229 +             expected_metadata_sha256=job["metadata_sha256"],
+230 +             profile=profile,
+231 |         )
+232 |         live.write("resume-execution-result.json", execution, state)
+233 |     else:
+234 |         assert live.read("resume-execution-entry.json") == {
+    -             "action": "resume-execution", "plan_sha256": live.sha(BASE / "resume-execution-plan.json"),
+235 +             "action": "resume-execution",
+236 +             "plan_sha256": live.sha(BASE / "resume-execution-plan.json"),
+237 |         }
+--------------------------------------------------------------------------------
+241 |     plan = {
+    -         "action": "complete-once", "binding": binding, "policy": policy, "job_id": job["id"],
+242 +         "action": "complete-once",
+243 +         "binding": binding,
+244 +         "policy": policy,
+245 +         "job_id": job["id"],
+246 |         "execution_approval_sha256": live.sha(BASE / "resume-execution-plan.json"),
+247 |         "execution_result_sha256": live.sha(BASE / "resume-execution-result.json"),
+    -         "execution_id": execution["execution_id"], "execution_revision": execution["execution"]["revision"],
+    -         "container_id": result["container_id"], "request_id": COMPLETION_REQUEST,
+248 +         "execution_id": execution["execution_id"],
+249 +         "execution_revision": execution["execution"]["revision"],
+250 +         "container_id": result["container_id"],
+251 +         "request_id": COMPLETION_REQUEST,
+252 |     }
+--------------------------------------------------------------------------------
+258 |     response = flow.complete_once(
+    -         **owner, **credentials["reviewer"], task_id=task_id,
+    -         expected_version=binding["review_task_version"], job_id=job["id"],
+    -         execution_id=plan["execution_id"], expected_execution_revision=plan["execution_revision"],
+    -         request_id=COMPLETION_REQUEST, profile=profile,
+259 +         **owner,
+260 +         **credentials["reviewer"],
+261 +         task_id=task_id,
+262 +         expected_version=binding["review_task_version"],
+263 +         job_id=job["id"],
+264 +         execution_id=plan["execution_id"],
+265 +         expected_execution_revision=plan["execution_revision"],
+266 +         request_id=COMPLETION_REQUEST,
+267 +         profile=profile,
+268 |     )
+--------------------------------------------------------------------------------
+272 |     assert current == graph | {
+    -         task_id: graph[task_id] | {
+    -             "status": "completed", "task_verification": "verified", "version": response["version"],
+273 +         task_id: graph[task_id]
+274 +         | {
+275 +             "status": "completed",
+276 +             "task_verification": "verified",
+277 +             "version": response["version"],
+278 |         }
+--------------------------------------------------------------------------------
+292 |     if (
+    -         sys.platform != "linux" or os.geteuid() != 0 or not sys.flags.isolated
+    -         or not sys.dont_write_bytecode or not __debug__ or Path(__file__).resolve().parent != BASE
+293 +         sys.platform != "linux"
+294 +         or os.geteuid() != 0
+295 +         or not sys.flags.isolated
+296 +         or not sys.dont_write_bytecode
+297 +         or not __debug__
+298 +         or Path(__file__).resolve().parent != BASE
+299 |     ):
+--------------------------------------------------------------------------------
+320 |         drive(
+    -             live, verify, recovery, grant, args.action,
+    -             getattr(args, "expected_plan_sha256", None), credentials,
+321 +             live,
+322 +             verify,
+323 +             recovery,
+324 +             grant,
+325 +             args.action,
+326 +             getattr(args, "expected_plan_sha256", None),
+327 +             credentials,
+328 |         )
+    |
+
+2 files would be reformatted

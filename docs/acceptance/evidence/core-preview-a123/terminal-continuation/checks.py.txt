@@ -1,0 +1,34 @@
+"""Bounded local deterministic pytest receipts; no client or candidate launch."""
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+REPO = Path('F:/syuc/amadeus-m6-single')
+label, *selection = sys.argv[1:]
+out = BASE / label
+out.mkdir()
+env = {k: v for k, v in os.environ.items() if not k.startswith(('PYTHON', 'PYTEST', 'AGENTSYNC_'))}
+env.update(PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTHONIOENCODING='utf-8', TMP=str(out), TEMP=str(out))
+args = [sys.executable, '-I', '-B', '-m', 'pytest', '-p', 'no:cacheprovider', '--tb=short', '--basetemp', str(out / 't'), '--junitxml', str(out / 'junit.xml'), *selection]
+files = ['examples/verified_codex_task.py', 'examples/continue_codex_task.py', 'tests/integration/test_continue_codex_terminal.py', 'tests/integration/test_unfinished_continuation.py']
+def hashes():
+    return {p: hashlib.sha256((REPO / p).read_bytes()).hexdigest() for p in files if (REPO / p).exists()}
+def save(name, value):
+    with (out / name).open('x', encoding='utf-8') as f:
+        json.dump(value, f, indent=2)
+        f.write('\n')
+import agentsync
+start = {'argv': args, 'cwd': str(REPO), 'environment': {k: env[k] for k in ('PYTHONDONTWRITEBYTECODE','PYTHONNOUSERSITE','PYTHONIOENCODING','TMP','TEMP')}, 'origin': agentsync.__file__, 'prefix': sys.prefix, 'time': datetime.now(UTC).isoformat(), 'source_sha256': hashes()}
+save('start.json', start)
+with (out / 'stdout.log').open('xb') as stdout, (out / 'stderr.log').open('xb') as stderr:
+    child = subprocess.Popen(args, cwd=REPO, env=env, stdout=stdout, stderr=stderr)
+    save('process.json', {'pid': child.pid, 'argv': args})
+    code = child.wait()
+save('result.json', {'exit_code': code, 'time': datetime.now(UTC).isoformat(), 'source_sha256': hashes(), 'source_unchanged': hashes() == start['source_sha256']})
+print(json.dumps({'label':label,'exit_code':code,'result':str(out / 'result.json')}))
+raise SystemExit(code)

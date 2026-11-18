@@ -1,0 +1,23 @@
+{
+  "command": [
+    "D:/agentsync-debug/venv/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "pytest_asyncio.plugin",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=D:/agentsync-debug/m7-durable-a112-sol/supplement-temp",
+    "--junitxml=D:/agentsync-debug/m7-durable-a112-sol/supplement.xml",
+    "tests/integration/test_durable_mock_workflow.py",
+    "-k",
+    "dispatch_intent or rotates_only or hands_off"
+  ],
+  "start": "2026-11-13T09:02:31.4940550Z",
+  "finished": "2026-11-13T09:02:39.5499883Z",
+  "exit_code": 0,
+  "source": "working tree; source-members-final.json"
+}

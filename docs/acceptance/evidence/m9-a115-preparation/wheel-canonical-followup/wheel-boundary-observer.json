@@ -1,0 +1,10 @@
+{
+  "pid": 11540,
+  "started_at": "2026-11-14T05:01:29.682369+00:00",
+  "observed_process": {
+    "ProcessId": 14416,
+    "CreationUtc": "2026-11-14T04:35:22.1782290Z",
+    "CommandLine": "\"C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe\" -I -m pytest D:\\agentsync-debug\\m115-r3\\s\\tests --junitxml D:\\agentsync-debug\\t115u\\.scratch-u_ak32ml\\wheel-junit.xml --basetemp D:\\agentsync-debug\\t115u\\.scratch-u_ak32ml\\wheel-pytest"
+  },
+  "role": "Wait for existing test to finish; no new task dispatch"
+}

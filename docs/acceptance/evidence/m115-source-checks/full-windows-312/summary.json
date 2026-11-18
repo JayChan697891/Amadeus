@@ -1,0 +1,62 @@
+{
+  "schema": "amadeus.independent-source-observation.v1",
+  "recorded_at": "2026-11-13T23:47:27.684258+00:00",
+  "commit_sha": "4a27a00a7ef5e055c99b0724374506a867ae62e8",
+  "tree_sha": "488cc352dde12ed170b100955b9ebca7525ef90d",
+  "source_process": "naturally exited 0; original handle observed during owner-requested safe pause",
+  "source_cases": {
+    "unique": 2461,
+    "pass": 2405,
+    "skip": 56,
+    "fail": 0,
+    "error": 0
+  },
+  "source_snapshot_count": 1963,
+  "source_snapshot_unchanged": true,
+  "original_canonical_collector_receipt": "started/unknown; never rewritten as finished",
+  "scope": "Complete Windows 3.12 source suite only. Not a complete collector or package/matrix acceptance.",
+  "formal_release": "BLOCKED",
+  "package_continuation": {
+    "scope": "Remaining checks only; original source explicitly NOT RUN in new collector invocation",
+    "local_base": "D:/agentsync-debug/m115-resume-20261113",
+    "session": 49009,
+    "status": "RUNNING; wheel full suite not terminal"
+  },
+  "artifacts": [
+    {
+      "path": "observe-current-test.py.txt",
+      "size": 5220,
+      "sha256": "a4d007fd175999ec6969964c3f67d43996dc3a3b2dc206cf246a37a474e75c88"
+    },
+    {
+      "path": "original-collector-source-attempt.json",
+      "size": 722,
+      "sha256": "f0203ea406bbc509ffa4a3e8945f0a250a6f0895c1870800a7fedd62b23ab599"
+    },
+    {
+      "path": "pytest-evidence.json",
+      "size": 821,
+      "sha256": "b6f3f6fc44df25800e4574d12aadf23edcf200421cbf8b41542a880663c4049a"
+    },
+    {
+      "path": "pytest-observed.junit.xml",
+      "size": 388254,
+      "sha256": "83c240d5791dc5b1ac37f086ecd85e7906caf573c91b97ba5170e10363227862"
+    },
+    {
+      "path": "pytest-observed.log",
+      "size": 17760,
+      "sha256": "9737ae6be96fb5641e9ce1a055d86511b0fc018a51d9220e50fa1b712d9a43a9"
+    },
+    {
+      "path": "pytest-terminal-observation.json",
+      "size": 430,
+      "sha256": "81cc3e516e1130827083aa9a237c7b07d1a0e199e86f0ad5417e22ebb26d7261"
+    },
+    {
+      "path": "source-snapshot.json",
+      "size": 367706,
+      "sha256": "bdcb7d15bf37d23b01d70d7a3156eb3283283b8497ab137fb2a14d1453d78fa6"
+    }
+  ]
+}

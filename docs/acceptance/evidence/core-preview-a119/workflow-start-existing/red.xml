@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.101" timestamp="2026-11-16T07:07:03.053252-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_durable_mock_workflow" name="test_durable_cli_requires_saved_database[missing-dir-start]" time="0.369"><failure message="AssertionError: assert not True&#10; +  where True = exists()&#10; +    where exists = WindowsPath('D:/agentsync-debug/p1-onboarding-20261116/red-tmp/test_durable_cli_requires_save0/wrong-project').exists">tests\integration\test_durable_mock_workflow.py:119: in test_durable_cli_requires_saved_database
+    assert not directory.exists()
+E   AssertionError: assert not True
+E    +  where True = exists()
+E    +    where exists = WindowsPath('D:/agentsync-debug/p1-onboarding-20261116/red-tmp/test_durable_cli_requires_save0/wrong-project').exists</failure></testcase><testcase classname="tests.integration.test_durable_mock_workflow" name="test_durable_cli_requires_saved_database[empty-dir-start]" time="0.366"><failure message="AssertionError: assert [WindowsPath(...gentsync.db')] == []&#10;  &#10;  Left contains one more item: WindowsPath('D:/agentsync-debug/p1-onboarding-20261116/red-tmp/test_durable_cli_requires_save1/wrong-project/agentsync.db')&#10;  Use -v to get more diff">tests\integration\test_durable_mock_workflow.py:117: in test_durable_cli_requires_saved_database
+    assert list(directory.iterdir()) == []
+E   AssertionError: assert [WindowsPath(...gentsync.db')] == []
+E     
+E     Left contains one more item: WindowsPath('D:/agentsync-debug/p1-onboarding-20261116/red-tmp/test_durable_cli_requires_save1/wrong-project/agentsync.db')
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

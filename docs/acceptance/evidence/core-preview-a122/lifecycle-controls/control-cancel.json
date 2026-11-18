@@ -1,0 +1,20 @@
+{
+  "mode": "cancel",
+  "plan_sha256": "7eeb9435214ffd464d63b9a304e3352661a937bec7711b18346dfa0953becc11",
+  "plan_file_sha256": "dd530de1a9694bb3ccd1cb397f07961bde52a0d197fab736ad3f3a7b53691e3a",
+  "boot_id": "ed2080a3-5d27-428e-b29e-19de29e93218",
+  "helper_sha256": {
+    "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "auth_home.py": "9278b085bb4b9c94710145a247b2a0d1c6efc0a8e2e4edd471577a4d90849b74",
+    "route.py": "8acabe28411025a72a1ef6ec5c9f0790b3787ef4222dc2c2a38fcb994017bfc7"
+  },
+  "max_model_calls": 1,
+  "max_candidate_executions": 0,
+  "subscription_only": true,
+  "model_calls": 0,
+  "credential_copy": false,
+  "owner_grant_sha256": "0b8c778c1ea676ef4d5109bd218b339eafc8b03cc34007d5ec14ad949214176a",
+  "host_controller_sha256": "e12f56145a3e379e0ac49f2f6aaead943d92acbad1dada14bf4e1cb1985e02ec"
+}

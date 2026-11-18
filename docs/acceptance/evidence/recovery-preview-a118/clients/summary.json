@@ -1,0 +1,147 @@
+{
+  "observed_at": "2026-11-16T10:40:23.837728+00:00",
+  "status": "SCOPED PASS",
+  "requirement": "M2-05 native backend compatibility supplement",
+  "package_version": "0.3.0a118",
+  "product_source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+  "runtime_members_unchanged": 97,
+  "artifact_reference": "../summary.json",
+  "codex_client": "0.162.0",
+  "codex_native_chunk": "568e47",
+  "codex_exit_code": 0,
+  "codex_tools": 34,
+  "independent_deterministic_identities": 2,
+  "task_final_status": "completed",
+  "task_verification": "unverified",
+  "codex_context_version": 1,
+  "host_reopen_and_fresh_core": true,
+  "duplicate_claim_rejected": true,
+  "codex_observed_starting_to_connected": true,
+  "initial_failure_preserved": true,
+  "initial_failure_reason": "Generic local_mcp_unavailable; runtime state not captured, so the original cause is not proven.",
+  "claude_client": "2.1.295",
+  "claude_native_chunk": "cfd229",
+  "claude_exit_code": 0,
+  "claude_mcp_health_connected": true,
+  "claude_tool_calls": "NOT RUN",
+  "static_initial_tests_passed": 9,
+  "static_repaired_tests_passed": 14,
+  "native_junit": "Report-derived one case per actual native run, separate original failure retained; not pytest/model evidence.",
+  "model_calls": 0,
+  "auth_copies": 0,
+  "desktop_ui": "NOT RUN",
+  "model_driven_cross_vendor_collaboration": "NOT RUN",
+  "cursor": "NOT RUN; desktop installed, no confirmed standalone zero-inference MCP health interface found",
+  "formal_release": "BLOCKED",
+  "copied_files": [
+    {
+      "path": "codex-initial/run.py",
+      "bytes": 1728,
+      "sha256": "192920b3e21d42da4e98a37b3aa1ace64eb0f566c96804f6b1e7ae99026b506c"
+    },
+    {
+      "path": "codex-initial/start.json",
+      "bytes": 665,
+      "sha256": "c46921bf0578dc289887387815a23aef1f024d999ab42a78de965ff631fbe848"
+    },
+    {
+      "path": "codex-initial/terminal.json",
+      "bytes": 798,
+      "sha256": "e0349de94bd9fb04439b0ecf52206fd1500a57917e74646c980dc6ac914d27fa"
+    },
+    {
+      "path": "codex-initial/result.json",
+      "bytes": 436,
+      "sha256": "d98fd22493a7c3b40169f7329ce18b32a33a9402981c6e841de6252407170c91"
+    },
+    {
+      "path": "codex/run.py",
+      "bytes": 1758,
+      "sha256": "28a7f9731bcf336ba9562bad136e28426c4daab57c0ec3d4d3915e0041d71b70"
+    },
+    {
+      "path": "codex/start.json",
+      "bytes": 668,
+      "sha256": "f9a65f06f12d640f41c671b2f35cb4c75fbc3532a2aa161992418f65aa9470c1"
+    },
+    {
+      "path": "codex/terminal.json",
+      "bytes": 801,
+      "sha256": "61e20a29c589267c6d1c539e6c42768846d43a07383ac768fce144483a573cec"
+    },
+    {
+      "path": "codex/result.json",
+      "bytes": 5799,
+      "sha256": "53dd35720a6106722842c0337f1e767ee88ba62437fe6f2b011f7bfd8984cd61"
+    },
+    {
+      "path": "claude/run.py",
+      "bytes": 1697,
+      "sha256": "a9177ab1182891cec98c96952f239f05768eb04ea522210412d38124c52efd8f"
+    },
+    {
+      "path": "claude/start.json",
+      "bytes": 600,
+      "sha256": "2a94713b2bab4bc76a761ccdef4fb642e594a90a737b18fc95b01921c7b778f5"
+    },
+    {
+      "path": "claude/terminal.json",
+      "bytes": 733,
+      "sha256": "21f2c9cfc7d5bc41f50fe9a81acb51682dfebbfae53d78c0f2a9141cce7e4b62"
+    },
+    {
+      "path": "claude/result.json",
+      "bytes": 801,
+      "sha256": "bd874e51c4f890a574951b7d2a58c571c8c84f2551afd3448677bf993cc129f2"
+    },
+    {
+      "path": "process-postcheck.json",
+      "bytes": 184,
+      "sha256": "f9fdaab9a3b1a8e99b66f55f191326edcf68a96964573fc7a38ae1312ec82e13"
+    },
+    {
+      "path": "codex/executed-probe.py",
+      "bytes": 26848,
+      "sha256": "59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6"
+    },
+    {
+      "path": "claude/executed-probe.py",
+      "bytes": 5052,
+      "sha256": "6f79755757385adb2ac771be782de42990250cf62702249f41509b9c339c6b61"
+    },
+    {
+      "path": "static/initial.xml",
+      "bytes": 1445,
+      "sha256": "1af1ee7187118e6d0416869e7d0a4c34bba64cf2e368d1d306bc7f0fe3d7f5ab"
+    },
+    {
+      "path": "static/initial.log",
+      "bytes": 100,
+      "sha256": "f5819501fcd4acb7045b5a20d944b713e1e37bd63978646949b05211537a2b77"
+    },
+    {
+      "path": "static/repaired.xml",
+      "bytes": 2178,
+      "sha256": "31ece81a986ad5a38ea1d958ea7ece26e5225cbe430716b1e4d70d5b726cb82a"
+    },
+    {
+      "path": "static/repaired.log",
+      "bytes": 101,
+      "sha256": "1022a07401c192132a0c7f5eeed4ba640aa7c18632a8ee43d211102a8668d0bc"
+    },
+    {
+      "path": "schema/ListMcpServerStatusResponse.json",
+      "bytes": 6283,
+      "sha256": "00c56c0faacbd4950b7f446f20b11b8a95456c5108de2f1e7366a1b2e60db8c6"
+    },
+    {
+      "path": "codex-initial/reconstructed-probe.py",
+      "bytes": 23790,
+      "sha256": "72a0c6c8b4532ebb1d9a02ed97aab146fc0ce93f15f249237560b1e4c767ac64"
+    }
+  ],
+  "copied_bytes": 82465,
+  "initial_probe_reconstruction": "Post-run reconstruction from exact historical edits, independently hash-matched to original terminal receipt; not a pre-run sealed copy.",
+  "shared_configuration_evidence": "Code/config isolation and actual fixture settings inspected; no full before/after hash inventory of shared configuration.",
+  "tool_catalog_scope": "34 discovered; only the recorded deterministic operations invoked; structured handoff API not part of this probe."
+}

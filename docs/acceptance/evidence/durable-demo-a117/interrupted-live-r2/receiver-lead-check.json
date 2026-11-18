@@ -1,0 +1,16 @@
+{
+  "raw_hashes_match": true,
+  "raw_uploaded": false,
+  "item_types": [
+    "agent_message",
+    "error"
+  ],
+  "message_count": 1,
+  "proposal_matches_core_context": true,
+  "proposal_sha256": "ba1a531f581d2e6094e978ed6f7aca7a8d92eeb62c6e7ad73ee692f7f18bc772",
+  "proposal_bytes": 32,
+  "stdout_bytes": 664,
+  "stderr_bytes": 238,
+  "verification": "unverified",
+  "candidate_executed": false
+}

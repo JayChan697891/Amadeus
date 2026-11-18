@@ -1,0 +1,18 @@
+{
+  "frozen_product_sha": "7fa459758e42c94e70bb0d4829d54a8b07db3a6d",
+  "final_manifest_members_match_frozen_package": 25,
+  "files_changed_between_main_and_supplements": [
+    "tests/integration/test_durable_mock_workflow.py"
+  ],
+  "main_source": {
+    "passed": 325,
+    "skipped": 6,
+    "failed": 0,
+    "errors": 0
+  },
+  "supplements": "3 then 1 strengthened prior case IDs, not extra unique tests",
+  "separate_traceability_collector": {
+    "passed": 246
+  },
+  "scope": "Windows source evidence only; not fresh package or Linux execution of the slow verifier modules"
+}

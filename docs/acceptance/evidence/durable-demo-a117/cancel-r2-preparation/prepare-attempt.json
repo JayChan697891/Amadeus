@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-15T15:05:18.825573+00:00",
+  "command": "/usr/bin/env -i PATH=/usr/bin:/bin HOME=/root/amadeus-cancel-a117-r2-20261115 PYTHONDONTWRITEBYTECODE=1 GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 /root/amadeus-demo-a117-sdist-r1/installed/bin/python -I -B /root/amadeus-cancel-a117-r2-20261115/pilot.py prepare",
+  "purpose": "Local Core/Git plan only; no model, authentication copy, readiness, mount or execution",
+  "files": {
+    "pilot.py": "caa79b19820b7d60f4c200b83e6f13cf7c20807f48ffee696c5dfa9fdf228251",
+    "credential_home.py": "671359c80050a46acc852bffb56303cc1aaa8e0d154d1894647915a279d53f11",
+    "run-once.py": "50d13be865228595dccad0c6fe7deda0d50fbc032cacfd59accb98afb5313926",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+  },
+  "linux_full_regression_already_terminal": true
+}

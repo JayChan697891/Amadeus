@@ -1,0 +1,5 @@
+{
+  "utc": "2026-11-17T07:16:21.547340+00:00",
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-m122-composed-recovery/verify.py preview",
+  "candidate_execution_authorized": false
+}

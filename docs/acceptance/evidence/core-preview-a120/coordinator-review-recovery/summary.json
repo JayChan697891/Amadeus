@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "test_source_commit": "27594dc7c627394f1ac938967cc0f59ae4991f00",
+  "runtime_commit": "859775bf3f1a1492153ba550d36f4ad2b146c58f",
+  "runtime": "original a120 Windows3.12 wheel installation",
+  "source_baseline_commit": "968b1710f06f6cc5853c9184592f23e582a74cc9",
+  "status": "bounded native coordinator-process recovery passed",
+  "formal_release": "BLOCKED",
+  "requirements": [
+    "M7-02",
+    "M8-02"
+  ],
+  "formal_requirement_states_changed": false,
+  "product_code_changed": false,
+  "packages_rebuilt": false,
+  "native": {
+    "chunk": "6dda68",
+    "exit_code": 0,
+    "passed": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "evidence": "native/pytest.log",
+    "junit": "native/junit.xml"
+  },
+  "traceability": {
+    "chunk": "a55030",
+    "exit_code": 0,
+    "passed": 92,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "evidence": "traceability/pytest.log",
+    "junit": "traceability/junit.xml"
+  },
+  "observed": {
+    "protocol_fixture": true,
+    "checkpoint_exit_code": 73,
+    "checkpoint": {
+      "pid": 4252,
+      "worktree": [
+        "b734047d-08ee-4c57-85e0-4b3aac81db2c",
+        "5ffb4a53-9e87-5397-908d-116f8deb4722",
+        "608357ac5fd1378e8e088fcc682e50ca09b8912a"
+      ],
+      "wave_id": "8b51bedd0ef2063b4e7f936305440fdc2c1ebddfb3206f47c3fff35dd1dd0a41",
+      "approvals": 1,
+      "launches": 1,
+      "receiver_terminal": {
+        "state": "terminal_recorded",
+        "status": "continuation_proposal_received",
+        "parent_ended": true,
+        "exit_code": 0
+      }
+    },
+    "before_reconcile": {
+      "pid": 23060,
+      "approvals": 0,
+      "launches": 0
+    },
+    "reconcile_exit_code": 0,
+    "reconciled_wave": {
+      "state": "resolved",
+      "tasks": [
+        {
+          "task_id": "b734047d-08ee-4c57-85e0-4b3aac81db2c",
+          "state": "ready_for_review",
+          "failure_code": null
+        }
+      ],
+      "verification": "unverified"
+    },
+    "staging_preview_task_id": "b734047d-08ee-4c57-85e0-4b3aac81db2c",
+    "replay": {
+      "pid": 532,
+      "approvals": 0,
+      "launches": 0
+    },
+    "source_task_status": "failed",
+    "dependent_task_id": "d428b984-97d3-42c5-94de-6d7c52f50747",
+    "dependent_version": 2,
+    "receipts_unchanged": true
+  },
+  "bindings": {
+    "tested_integration_sha256": "a8fe1da121fe79986377c30aaae18e21be9b297fbc73a8f073f581cbe59f3e50",
+    "git_blob_sha256": {
+      "tests/integration/test_unfinished_continuation.py": "a8fe1da121fe79986377c30aaae18e21be9b297fbc73a8f073f581cbe59f3e50",
+      "docs/acceptance/requirements.json": "92039aebeea4be2baee9ececc59355ef0c962a0acc2c9621dc744164ca8b0221",
+      "tests/unit/test_acceptance_traceability.py": "849d0feb5feec29fb3727363029aece751bc21579c5e5294ccd17f2c692c420b"
+    },
+    "installed_members_unchanged": 97
+  },
+  "review": "Root inspected actual helper/parent-test diff and native output/JUnit, verified tested hashes and97 installed members, separately ran existing mapping checks. Existing early checkpoint node IDs and default answer.py behavior retained. Only the new native node executed.",
+  "scope_notes": [
+    "The coordinator process truly exits73 after the local deterministic protocol child naturally exits0 and terminal/review receipts persist, before its wave result is saved.",
+    "A fresh CLI reconciles the exact wave; same task/context/version regains staging-preview eligibility. It does not stage, execute or complete the candidate.",
+    "Before/after reopen performs no additional launch or launch-consent callback. Separate staging-worker role setup is part of the isolated fixture.",
+    "Source remains failed; dependency and original receipts unchanged.",
+    "Original M8-02 calls for isolated process recovery; whole-host power loss is not added as a new formal requirement.",
+    "No real Codex inference, model credentials, Docker, VM restart, macOS or full current matrix. Real-client recovery at this exact new coordinator boundary remains NOT RUN."
+  ],
+  "files": [
+    {
+      "path": "native/format.log",
+      "bytes": 20,
+      "sha256": "d9d79976036ac55b771b47f6cecaa66a30fe59749dba207bd67b2104ca5c29d7"
+    },
+    {
+      "path": "native/junit.xml",
+      "bytes": 422,
+      "sha256": "18ff2b4170c7a11d1fda806bff0ec5f927d07088b1e697f219009a0f2a10c97c"
+    },
+    {
+      "path": "native/native.exit",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "native/origin.log",
+      "bytes": 68,
+      "sha256": "5fdf8b0e54bde22a058dba9085a5d01d68efb75ac06b07a4ffd75fa5daa2efc5"
+    },
+    {
+      "path": "native/pytest.log",
+      "bytes": 1037,
+      "sha256": "d2be00dd71391d575b229593d06d80f90650fd99bcc85c83658892bd2c9afcf4"
+    },
+    {
+      "path": "native/result.json",
+      "bytes": 2769,
+      "sha256": "c0fee2579f39cf7604703a9132692d91b1bad94d40eac257f5256fdea6da8747"
+    },
+    {
+      "path": "native/ruff-check.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "native/ruff-format.log",
+      "bytes": 26,
+      "sha256": "7688ae71c60af2e4266827abb3678cc2145655f587daf33dfa649dbac2c619c3"
+    },
+    {
+      "path": "native/start.json",
+      "bytes": 1043,
+      "sha256": "5a2720b60dede80e90ef2235a6252e851527dc868210b86971c80ec497fe5b5a"
+    },
+    {
+      "path": "traceability/exit.txt",
+      "bytes": 3,
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "traceability/junit.xml",
+      "bytes": 13940,
+      "sha256": "49ec57f5368cd350233d80d01b6f03036817e9e93839d10315f0c33bcdd00ac2"
+    },
+    {
+      "path": "traceability/pytest.log",
+      "bytes": 182,
+      "sha256": "31c00084d02e829b0974789ce0c0f89546495850796f3757d09759c079b2d26c"
+    },
+    {
+      "path": "traceability/ruff-check.log",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "traceability/ruff-format.log",
+      "bytes": 26,
+      "sha256": "7688ae71c60af2e4266827abb3678cc2145655f587daf33dfa649dbac2c619c3"
+    },
+    {
+      "path": "traceability/start.json",
+      "bytes": 892,
+      "sha256": "7d3c37766c506b09cd6d6b37b6a1558d108ebbac767fa2704be411a86d672114"
+    }
+  ]
+}

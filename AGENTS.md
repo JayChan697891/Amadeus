@@ -1,5 +1,17 @@
 # Current continuation entry (2026-11-11)
 
+Owner update, 2026-11-16: bounded subscription-only live validations of the same
+kind are authorized without repeatedly asking. Each experiment still needs an
+exact reviewed plan, at most two calls, no paid API/extra fees, isolated temporary
+login copy and confirmed cleanup, unchanged original credentials, and no retry
+following a failed/unknown model outcome or missed interruption window. Expired
+unused fixtures may be replaced through normal registration in a fresh isolated
+project; preserve the original and rebind its plan. This does not authorize
+workspace application, main merge, public release, altered gates or broader use.
+See docs/acceptance/evidence/durable-demo-a117/interrupted-controller/owner-grant-20261116.json.
+Historical single-use grants below remain consumed; this newer standing grant
+applies only within these bounds.
+
 The owner authorized continuous implementation, local tests, fixes and retests.
 After each checkpoint, take the next authorized item in WORKFLOW.md without
 waiting for another prompt. Record unrun validation as NOT RUN. Existing safety
@@ -8,9 +20,18 @@ See docs/PROGRESS.md for the recovery entry point.
 
 Alpha29 exact desktop declaration is frozen at05a811a; see current PROGRESS and
 acceptance/evidence/alpha29-local-summary.json. Four selected Windows source/
-installed suites each184pass; full suites and real models NOT RUN. One newly
-authorized conditional subscription task is unconsumed, blocked before model
-request on cost/tool-isolation evidence. Do not treat permission as clearing gates.
+installed suites each184pass; full suites and real models NOT RUN. The once-authorized subscription task and temporary credential-copy permissions
+were consumed at6a8ff41. The authenticated CLI exited0 but protocol_invalid left
+an unknown/incomplete result. Temp auth removed, original unchanged; no retry.
+080722e preserves sanitized parser diagnostics without changing acceptance.
+The subsequent authorized diagnostic at080722e is also consumed. Its private
+capture localized pre-turn completed warning items; ee45690 repairs their parsing.
+101 source tests and17 fresh installed tests passed; private replay is not real
+Core acceptance. A subsequently authorized real run succeeded through Core review
+and a distinct host-mediated reviewer; see live-repaired-summary.json. It is scoped
+single-client acceptance, not full M6/Release. The owner now directs first-choice
+approvals within existing no-extra-fee/safety constraints; do not fabricate missing
+account access or reinterpret old consumed attempts as retried.
 PR33 Linux supplement at8671c2d has limited Work acceptance; alpha29 awaits review.
 
 Read docs/acceptance/CANCELLATION-REPAIR-20261105.md for current security-repair

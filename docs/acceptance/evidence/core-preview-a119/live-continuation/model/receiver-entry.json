@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-11-16T14:39:57.741193+00:00",
+  "authorization_sha256": "31c724c900bd6e34f80af81576c3633876d0d894ee8dbaa8d09b8167e5cb41c0",
+  "plan_sha256": "6fedbece3fa70fa4b5a00d1b289022a66f0048a5a7acbb2f669d53e67e71a30e",
+  "task_id": null,
+  "project_id": "86d0852c-e0f7-4c74-b754-6aa67728e93b",
+  "agent_sha256": "2e385e3e3f6681898ca380a6dbe302d67600114eaf130ee25a64aef69cded49b",
+  "session_sha256": "cc966d4d30a993451f5d969a7d275dd3b282718bee8e3629b894aad918fd6abe",
+  "launch_request_sha256": null,
+  "pid": 3081,
+  "boot_id": "ac59580e-d6f5-4877-974e-b754ba7fbceb",
+  "started_ticks": 20201,
+  "retry_allowed": false
+}

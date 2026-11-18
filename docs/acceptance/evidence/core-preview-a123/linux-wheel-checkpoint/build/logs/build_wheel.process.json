@@ -1,0 +1,52 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "build_wheel",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--wheel",
+      "--outdir",
+      "D:\\agentsync-debug\\m123-live\\build-r2\\dist",
+      "D:\\agentsync-debug\\m123-live\\build-r2\\s"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-live\\build-r2\\s",
+    "started_at": "2026-11-18T06:22:25.708819+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "build_wheel",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "build",
+      "--no-isolation",
+      "--wheel",
+      "--outdir",
+      "D:\\agentsync-debug\\m123-live\\build-r2\\dist",
+      "D:\\agentsync-debug\\m123-live\\build-r2\\s"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-live\\build-r2\\s",
+    "exit_code": 0,
+    "started_at": "2026-11-18T06:22:25.708819+00:00",
+    "finished_at": "2026-11-18T06:22:26.844216+00:00",
+    "log": "logs/build_wheel.log",
+    "log_sha256": "944e1cdb387253501cdfdc05c9cfd5c3a5bbe712d0ee5f1ee26f88c3c3f2b582",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

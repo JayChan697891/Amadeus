@@ -1,0 +1,20 @@
+{
+  "pid": 24620,
+  "argv": [
+    "D:\\agentsync-debug\\m123-terminal-continuation\\source-env\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\green-r3\\t",
+    "--junitxml",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\green-r3\\junit.xml",
+    "tests/integration/test_continue_codex_terminal.py",
+    "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph[checkpoint_codex]",
+    "tests/integration/test_verified_codex_terminal.py::test_terminal_uses_real_core_and_exact_decisions"
+  ]
+}

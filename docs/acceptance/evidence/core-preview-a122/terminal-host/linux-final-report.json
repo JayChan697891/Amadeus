@@ -1,0 +1,28 @@
+{
+  "exit_code": 1,
+  "argv": [
+    "/root/amadeus-m122l/w/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "/root/amadeus-terminal-final-20261117/tmp",
+    "--junitxml",
+    "/root/amadeus-terminal-final-20261117/linux-final-junit.xml",
+    "/root/amadeus-terminal-final-20261117/tests/integration/test_verified_codex_terminal.py",
+    "-k",
+    "None or receiver"
+  ],
+  "runtime_members_unchanged": 97,
+  "source_sha256": {
+    "examples/verified_codex_task.py": "c4540ffda772877e4516b12b7673e256b70d4f9f90c6b39dc5638efcc5673ae9",
+    "tests/integration/test_verified_codex_terminal.py": "849c8b38a82cd38f6c3253a8c4316c55598c32ca7a5c8b5ebeae37236074c81d"
+  },
+  "real_model_calls": 0,
+  "real_candidate_executions": 0
+}

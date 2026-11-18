@@ -1,0 +1,56 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "threads",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-providers-2af7ccc\\source\\tools\\benchmark_coordination.py",
+      "--scratch-parent",
+      "D:\\agentsync-debug\\m8-load-2af7ccc\\scratch",
+      "--workers",
+      "4",
+      "--rounds",
+      "20",
+      "--p95-budget-ms",
+      "1000"
+    ],
+    "cwd": "D:\\agentsync-debug\\m8-load-2af7ccc",
+    "started_at": "2026-11-13T07:38:21.368856+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "threads",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-providers-2af7ccc\\source\\tools\\benchmark_coordination.py",
+      "--scratch-parent",
+      "D:\\agentsync-debug\\m8-load-2af7ccc\\scratch",
+      "--workers",
+      "4",
+      "--rounds",
+      "20",
+      "--p95-budget-ms",
+      "1000"
+    ],
+    "cwd": "D:\\agentsync-debug\\m8-load-2af7ccc",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:38:21.368856+00:00",
+    "finished_at": "2026-11-13T07:38:22.150556+00:00",
+    "log": "logs/threads.log",
+    "log_sha256": "584d84ee19054370ef5ae4541623cb4e5e615fba79725c9dbce5cfaf1c45ab1f",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

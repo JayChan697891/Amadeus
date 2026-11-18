@@ -1,0 +1,24 @@
+{
+  "utc": "2026-11-17T02:12:33.928008+00:00",
+  "status": "scoped native Windows terminal pass",
+  "operations": 5,
+  "credential_echoes": 0,
+  "helper_unchanged": true,
+  "runtime_members_unchanged": 97,
+  "pending_wave_unchanged": true,
+  "task_status": "pending",
+  "task_version": 1,
+  "task_verification": "unverified",
+  "attempts": [
+    "not_dispatched",
+    "not_dispatched"
+  ],
+  "reconcile": {
+    "state": "incomplete",
+    "tasks": [],
+    "verification": "unverified"
+  },
+  "model_calls": 0,
+  "candidate_execution": false,
+  "formal_release": "BLOCKED"
+}

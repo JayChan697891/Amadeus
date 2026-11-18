@@ -1,0 +1,47 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+      "-m",
+      "pytest",
+      "--junitxml",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/junit.xml",
+      "--basetemp",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/pytest"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "started_at": "2026-11-14T09:09:04.292912+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-minor-volume/work/venv-3.11/bin/python",
+      "-m",
+      "pytest",
+      "--junitxml",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/junit.xml",
+      "--basetemp",
+      "/root/amadeus-m115-r3/t/.scratch-gpst8v5m/pytest"
+    ],
+    "cwd": "/root/amadeus-m115-r3/s",
+    "exit_code": 0,
+    "started_at": "2026-11-14T09:09:04.292912+00:00",
+    "finished_at": "2026-11-14T09:27:57.813188+00:00",
+    "log": "logs/pytest.log",
+    "log_sha256": "7d9b85341e8cddf27f21ce053b62f274ea51c70a67f84a90f3e71d6e7811ac8a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

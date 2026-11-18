@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:/agentsync-debug/terminal-stdin-regression-20261118/tmp",
+    "--junitxml",
+    "D:/agentsync-debug/terminal-stdin-regression-20261118/junit.xml",
+    "D:/agentsync-debug/terminal-stdin-regression-20261118/test_stdin_exit.py"
+  ],
+  "cwd": "D:/agentsync-debug/terminal-stdin-regression-20261118"
+}

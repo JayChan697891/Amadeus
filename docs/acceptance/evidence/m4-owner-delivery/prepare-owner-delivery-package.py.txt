@@ -1,0 +1,54 @@
+"""Build wheel/sdist from a clean frozen commit, using only the offline builder."""
+import argparse,hashlib,json,os,subprocess,tarfile,zipfile
+from pathlib import Path
+
+parser=argparse.ArgumentParser()
+parser.add_argument('commit')
+parser.add_argument('base',type=Path)
+args=parser.parse_args()
+repo=Path('F:/syuc/amadeus-m6-single')
+commit=subprocess.check_output(['git','-C',str(repo),'rev-parse',args.commit]).decode().strip()
+assert not subprocess.check_output(['git','-C',str(repo),'status','--porcelain'])
+base=args.base.resolve()
+assert base.is_relative_to(Path('D:/agentsync-debug'))
+base.mkdir()
+roots=subprocess.check_output(['git','-C',str(repo),'ls-tree','--name-only',commit]).decode().splitlines()
+roots=[n for n in roots if n not in ('releases','archive')]
+with (base/'build-input.zip').open('xb') as stream:
+    subprocess.run(['git','-C',str(repo),'archive','--format=zip',commit,'--',*roots],stdout=stream,check=True)
+source=base/'build-input';source.mkdir()
+with zipfile.ZipFile(base/'build-input.zip') as archive:
+    assert all((source/n).resolve().is_relative_to(source) for n in archive.namelist())
+    archive.extractall(source)
+env={k:v for k,v in os.environ.items() if not k.upper().startswith(('OPENAI_','ANTHROPIC_','GEMINI_','GOOGLE_','DEEPSEEK_','GIT_','PYTEST_','AGENTSYNC_','CODEX_')) and k.upper() not in {'PYTHONPATH','PYTHONHOME'}}
+for name in ('build-home','build-tmp'):(base/name).mkdir()
+env.update(HOME=str(base/'build-home'),USERPROFILE=str(base/'build-home'),TEMP=str(base/'build-tmp'),TMP=str(base/'build-tmp'),
+           PIP_NO_INDEX='1',PIP_CONFIG_FILE=os.devnull,PIP_DISABLE_PIP_VERSION_CHECK='1',PYTHONDONTWRITEBYTECODE='1',
+           GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull)
+with (base/'build.log').open('xb') as log:
+    subprocess.run(['D:/agentsync-debug/m6-package-6a8ff41/builder/Scripts/python.exe','-I','-B','-m','build','--wheel','--sdist','--no-isolation','--outdir',str(base)],
+                   cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=120)
+sdist=next(base.glob('*.tar.gz'));wheel=next(base.glob('*.whl'))
+with tarfile.open(sdist) as archive:
+    assert all(m.isfile() or m.isdir() for m in archive.getmembers())
+    assert all((base/'unpacked'/m.name).resolve().is_relative_to(base/'unpacked') for m in archive.getmembers())
+    archive.extractall(base/'unpacked',filter='data')
+next((base/'unpacked').iterdir()).rename(base/'source')
+manifest={}
+for path in (base/'source').rglob('*'):
+    if not path.is_file():continue
+    name=path.relative_to(base/'source').as_posix()
+    if (source/name).is_file() and '.egg-info/' not in name and name!='PKG-INFO':
+        assert path.read_bytes()==(source/name).read_bytes()
+        manifest[name]=hashlib.sha256(path.read_bytes()).hexdigest()
+runtime={n.removeprefix('src/'):h for n,h in manifest.items() if n.startswith('src/agentsync/')}
+with zipfile.ZipFile(wheel) as archive:
+    packaged={n:hashlib.sha256(archive.read(n)).hexdigest() for n in archive.namelist() if n.startswith('agentsync/') and not n.endswith('/')}
+    assert packaged==runtime
+required={p.relative_to(source).as_posix() for p in (source/'tests').rglob('*.py')}
+assert required<=manifest.keys()
+identity={'product_sha':commit,'test_source_sha':commit,'runtime_members':runtime,'sdist_source_members':manifest,
+          'artifacts':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (wheel,sdist)},
+          'scope':'Current public owner delivery route; affected installed package regression, not full Release acceptance'}
+(base/'identity.json').write_text(json.dumps(identity,indent=2)+'\n',encoding='utf-8',newline='\n')
+print(json.dumps({'source_sha':commit,'runtime_members':len(runtime),'packaged_source_files':len(manifest),'artifacts':identity['artifacts']}))

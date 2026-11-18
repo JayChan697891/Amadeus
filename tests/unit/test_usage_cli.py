@@ -138,7 +138,7 @@ def test_actual_usage_errors_are_fixed_for_private_malformed_foreign_duplicate_a
 
 
 def test_usage_arguments_are_exact_and_owner_operation_named_usage_is_unchanged(
-    invoke, monkeypatch, capsys
+    invoke, monkeypatch, capsys, tmp_path
 ):
     for arguments in (
         ["usage"],
@@ -160,6 +160,8 @@ def test_usage_arguments_are_exact_and_owner_operation_named_usage_is_unchanged(
             assert operation == "usage"
             return {"ok": False, "error": {"code": "unknown_operation"}}
 
+    cli.AgentSyncClient(tmp_path)
+    monkeypatch.setenv("AGENTSYNC_DATA_DIR", str(tmp_path))
     monkeypatch.setattr(cli, "AgentSyncClient", OwnerClient)
     monkeypatch.setattr(sys, "stdin", io.StringIO("{}"))
     assert cli.main(["owner", "usage"]) == 1

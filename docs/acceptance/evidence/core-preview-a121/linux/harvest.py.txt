@@ -1,0 +1,106 @@
+import hashlib
+import json
+import stat
+from datetime import UTC, datetime
+from pathlib import Path, PurePosixPath
+
+import paramiko
+
+base = Path('D:/agentsync-debug/m121l')
+dest = base / 'harvest'
+assert not dest.exists()
+client = paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root', key_filename='D:/agentsync-debug/vm/debug_ed25519', look_for_keys=False, allow_agent=False, timeout=15)
+probe = r'''
+import hashlib,json,os,stat,subprocess,sys,xml.etree.ElementTree as ET
+from pathlib import Path
+base=Path('/root/amadeus-m121l');run=base/'run';source=base/'s'
+boot=Path('/proc/sys/kernel/random/boot_id').read_text().strip()
+assert boot=='5f25ab37-e86d-4646-bfca-b26aaa41bc45'
+result=json.loads((run/'result.json').read_bytes());assert result['finished_at']
+active=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+ try:
+  comm=(p/'comm').read_text().strip();cmd=(p/'cmdline').read_bytes()
+  if ('python' in comm or 'codex' in comm) and any(t in cmd for t in (b'/root/amadeus-',b'/root/agentsync-')):active.append({'pid':int(p.name),'name':comm})
+ except (OSError,ProcessLookupError):pass
+assert not active
+containers=subprocess.check_output(['/usr/bin/docker','ps','-aq','--no-trunc'],text=True,timeout=30).split();assert not containers
+def sha(p):
+ with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+manifest_path=base/'source-manifest.json'
+assert sha(manifest_path)=='b26b7ac9a82dff16e39df0e0b5a67f647858e80848e6dd442455bca8808212d8'
+manifest=json.loads(manifest_path.read_bytes());assert len(manifest)==3809
+assert {p.relative_to(source).as_posix() for p in source.rglob('*') if p.is_file()}==manifest.keys()
+for name,item in manifest.items():
+ p=source/name;assert p.resolve()==p and p.stat().st_size==item['bytes'] and sha(p)==item['sha256']
+members=json.loads((base/'runtime-members.json').read_bytes());assert len(members)==97
+sys.path.insert(0,str(source))
+from tools.release_acceptance import redact_credentials
+installs={}
+for kind,folder in (('wheel','w'),('sdist','d')):
+ site=base/folder/'lib/python3.14/site-packages'
+ actual={p.relative_to(site).as_posix():sha(p) for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+ assert actual==members
+ metadata=list(site.glob('agentsync_local-*.dist-info'));assert len(metadata)==1
+ direct=json.loads((metadata[0]/'direct_url.json').read_bytes());assert 'dir_info' not in direct
+ artifact=result['artifacts'][kind];archive=base/artifact['filename']
+ assert sha(archive)==artifact['sha256'] and archive.stat().st_size==artifact['size']
+ assert direct['url']==archive.as_uri() and direct['archive_info']['hashes']['sha256']==artifact['sha256']
+ raw=list(ET.parse(base/'t'/f'{kind}-focused.xml').iter());public=list(ET.parse(run/f'{kind}-focused.xml').iter());assert len(raw)==len(public)
+ redactions=0
+ for left,right in zip(raw,public):
+  assert left.tag==right.tag and left.attrib.keys()==right.attrib.keys()
+  for k,v in left.attrib.items():
+   clean,n=redact_credentials(v);redactions+=n;assert clean==right.attrib[k]
+  for field in ('text','tail'):
+   v=getattr(left,field)
+   if v is None:assert getattr(right,field) is None
+   else:
+    clean,n=redact_credentials(v);redactions+=n;assert clean==getattr(right,field)
+ assert redactions==result['junit'][kind]['credential_redactions']==0
+ installs[kind]={'runtime_members_rehashed':97,'direct_url':direct,'xml_redactions':redactions}
+files=[]
+for p in sorted(run.rglob('*')):
+ assert p.resolve()==p
+ if p.is_file():
+  assert stat.S_ISREG(p.lstat().st_mode) and p.suffix in ('.json','.xml','.log')
+  assert p.stat().st_size<=20*1024**2
+  assert not redact_credentials(p.read_text(encoding='utf-8'))[1]
+  files.append({'path':p.relative_to(run).as_posix(),'bytes':p.stat().st_size,'sha256':sha(p)})
+assert sum(row['bytes'] for row in files)<=64*1024**2
+print(json.dumps({'run_status':result['status'],'boot_id':boot,'source_files_rehashed':3809,'installs':installs,'raw_to_public_checked':True,'workers':active,'containers':containers,'files':files}))
+'''
+try:
+    stdin, stdout, stderr = client.exec_command('/root/jobs-env/bin/python -I -B -', timeout=180)
+    stdin.write(probe)
+    stdin.flush()
+    stdin.channel.shutdown_write()
+    out, err = stdout.read(), stderr.read()
+    code = stdout.channel.recv_exit_status()
+    assert code == 0 and not err, (code, err.decode('utf-8', errors='replace'))
+    record = json.loads(out)
+    dest.mkdir()
+    with client.open_sftp() as sftp:
+        for row in record['files']:
+            name = PurePosixPath(row['path'])
+            assert not name.is_absolute() and '..' not in name.parts
+            remote = '/root/amadeus-m121l/run/' + name.as_posix()
+            assert stat.S_ISREG(sftp.lstat(remote).st_mode)
+            target = dest.joinpath(*name.parts)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with sftp.open(remote, 'rb') as source, target.open('xb') as output:
+                data = source.read()
+                assert len(data) == row['bytes'] and hashlib.sha256(data).hexdigest() == row['sha256']
+                output.write(data)
+    record['collected_at'] = datetime.now(UTC).isoformat()
+    with (base / 'host/transfer-summary.json').open('x', encoding='utf-8') as stream:
+        json.dump(record, stream, indent=2)
+        stream.write('\n')
+    print(json.dumps({key: value for key, value in record.items() if key != 'files'}))
+    print(json.dumps({'files': len(record['files']), 'bytes': sum(row['bytes'] for row in record['files'])}))
+finally:
+    client.close()

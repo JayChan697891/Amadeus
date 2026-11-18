@@ -1,0 +1,91 @@
+{
+  "scope": "Root inspection of original Windows3.11 wheel full suite; independent review remains separate",
+  "observed_at": "2026-11-18T03:59:08.396399+00:00",
+  "native_session": 66521,
+  "native_terminal_chunk": "6d442e",
+  "native_exit_code": 0,
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "started_at": "2026-11-18T03:14:29.461463+00:00",
+  "finished_at": "2026-11-18T03:58:59.413638+00:00",
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "baseline_windows312_sha256": "96fac8fcc0d50f04c65124dede0ae9106453be4875e761e76b4350b490f43a27",
+  "outcome_differences": {},
+  "skip_reasons": {
+    "Requires separately controlled local Linux Docker and preloaded immutable image": 6,
+    "POSIX FIFO metadata fixture requires Linux": 1,
+    "Real Linux Docker/image not configured; policy tests are a separate tier": 14,
+    "Actual reconciliation requires an explicitly configured local Linux image": 5,
+    "Actual owner execution requires an explicitly configured local Linux Docker image": 7,
+    "Proposal execution requires an explicitly pinned local Linux Docker image": 14,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\w122311\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\actual' -> 'D:\\\\agentsync-debug\\\\w122311\\\\t\\\\p\\\\test_explicit_project_symlink_0\\\\selected'": 1,
+    "Creating symlinks is unavailable on this host: [WinError 1314] \u5ba2\u6237\u7aef\u6ca1\u6709\u6240\u9700\u7684\u7279\u6743\u3002: 'D:\\\\agentsync-debug\\\\w122311\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\outside' -> 'D:\\\\agentsync-debug\\\\w122311\\\\t\\\\p\\\\test_symlink_and_nonexistent_t0\\\\resources\\\\link'": 1,
+    "Requires Linux/POSIX fork": 1,
+    "This host cannot create the actual symlink fixture": 2,
+    "FIFO fixture requires os.mkfifo": 1,
+    "Local symlink creation unavailable": 2,
+    "Local FIFO creation unavailable": 1,
+    "Creating directory symlinks requires unavailable host privileges": 1
+  },
+  "source_files_rechecked": 3992,
+  "runtime_members_rechecked": 97,
+  "original_inputs_rechecked": true,
+  "copied_original_files": {
+    "attempt.json": {
+      "bytes": 1558,
+      "sha256": "48ecc4669b46aa753d3e7445ec8a79a9aa0f0159d9b32563bbcb3f0ddb2dd4fa"
+    },
+    "logs/wheel_origin_after.log": {
+      "bytes": 519,
+      "sha256": "659cbbecce43e1279349d62a9953ca671c0322b00386170a8e50184cee42d07b"
+    },
+    "logs/wheel_origin_after.process.json": {
+      "bytes": 4598,
+      "sha256": "59e0123700dfb304195c524f06d0a6aa956b89a371984df8ff41d0257fd000d1"
+    },
+    "logs/wheel_origin_before.log": {
+      "bytes": 519,
+      "sha256": "659cbbecce43e1279349d62a9953ca671c0322b00386170a8e50184cee42d07b"
+    },
+    "logs/wheel_origin_before.process.json": {
+      "bytes": 4601,
+      "sha256": "77ff4297d2b80f3d6b15ace6c0ab4ffb27cb146ff8fc94d38fe64411b344ecae"
+    },
+    "logs/wheel_pytest.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/wheel_pytest.process.json": {
+      "bytes": 1742,
+      "sha256": "d1bf63ac261da010f864df883fbfef6fa533a072bbdcf18cbe66a29f07d5b85f"
+    },
+    "logs/wheel_pytest.stdout.log": {
+      "bytes": 19497,
+      "sha256": "ff0eb88f010f2e149b287029196e887fbab58f6ddd2b978c0cf1f8d29c75bc19"
+    },
+    "pytest-start.json": {
+      "bytes": 534,
+      "sha256": "99d740dd08ed7aa2f83d89699568df8f702e4a8b8cb57d541ad4d45d207451ab"
+    },
+    "result.json": {
+      "bytes": 8132,
+      "sha256": "92e6a65c5f9b9a115a020404781181fd8b0a30bd92d8f3602b7f0d6d6a97eaa6"
+    },
+    "wheel-junit.xml": {
+      "bytes": 409565,
+      "sha256": "cbf0e565d1f7329085c5d8482facc249702c1c85ea1ec29c5f18bc5830a84820"
+    }
+  },
+  "raw_local_only": [
+    "t/wheel-junit.xml",
+    "t/wheel-pytest-stdout.raw.log"
+  ],
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN in this suite",
+  "status": "ROOT SCOPED CHECKS PASS; INDEPENDENT REVIEW PENDING"
+}

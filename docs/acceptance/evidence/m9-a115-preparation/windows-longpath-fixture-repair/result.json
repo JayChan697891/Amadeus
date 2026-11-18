@@ -1,0 +1,37 @@
+{
+  "finished_at": "2026-11-15T04:49:49.503154+00:00",
+  "check": {
+    "id": "longpath_regression",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m115-wheel-canonical-r1\\scratch\\wheel-yu9zi1ra\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_m4b_workspaces.py",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_verified_task_completion.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\m115-longpath-repair-r1\\private-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m115-longpath-repair-r1\\pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-longpath-repair-r1",
+    "exit_code": 0,
+    "started_at": "2026-11-15T04:43:58.694953+00:00",
+    "finished_at": "2026-11-15T04:49:49.499973+00:00",
+    "log": "logs/longpath_regression.log",
+    "log_sha256": "8fa5415556e1527dbfa58148b594242ad9490b3815ede0f16f6a2db776c00e9d",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "junit": {
+    "tests": 61,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "scope": "Affected helper and task-completion integration modules against unchanged installed b6 product; corrected test source is separate, not a b6 full-suite pass",
+  "formal_release": "BLOCKED"
+}

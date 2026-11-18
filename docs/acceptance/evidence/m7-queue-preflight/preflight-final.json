@@ -1,0 +1,11 @@
+{
+  "cleanup_predicate_checks_passed": 8,
+  "model_calls": 0,
+  "credentials_copied": false,
+  "helper_hashes": {
+    "pilot.py": "87d1c2268bf2fcb1ceb37bbd4d8856f8216907a5f17675845cd6307b8ced5fef",
+    "private_capture.py": "e142e6ee7b4d41a4d4ea794294b549fce8e5938943716f825dc93911fd12517c",
+    "credential_home.py": "32d898509b9e0941f24cbed346d316755a9c530f7780a0a4615f6907c1f56ca3",
+    "observe.py": "e09c748cfb5f44761791443e7c12459b2745c677e368ce964bcaa56aa4cf02dc"
+  }
+}

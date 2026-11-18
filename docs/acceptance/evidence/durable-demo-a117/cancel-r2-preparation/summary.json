@@ -1,0 +1,93 @@
+{
+  "recorded_at": "2026-11-15T15:06:23.542476+00:00",
+  "status": "PREPARED AND REVIEWED; LIVE NOT RUN",
+  "scope": "Fresh isolated fixture for repaired cancellation driver, requiring a new explicit single-use authorization",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "plan_sha256": "dd41631c2e2bab21f6f272b9402af9f922ef73556910a3969fc0ac8adbc63fd9",
+  "plan_file_sha256": "da331d3f6b0ad399e41339339ddf6434b6c06b252f8232a024e1735282bdcc9f",
+  "previous_consumed_attempt": "../cancel-live/summary.json",
+  "verified_driver_repair": "../cancel-repair/summary.json",
+  "change_scope": "Only six host/guest path and tmpfs-label references; strict27 fields, capture-before-diagnostics and terminal cleanup checks unchanged",
+  "preparation": {
+    "finished_at": "2026-11-15T15:05:22.117354+00:00",
+    "native_exit_code": 0,
+    "action": "Local Core/Git fixture and exact plan only",
+    "model_calls": 0,
+    "external_auth_copies": 0,
+    "private_home_empty": true,
+    "mount_or_ready_or_execute_started": false
+  },
+  "review": {
+    "root": "Read actual six-reference diff, helper hashes, generated argv/environment, native preparation result and empty private-home. Original failed fixture and repaired-source evidence retained.",
+    "native_astra": "Reviewed exact helper changes and generated plan; no blocking findings for preparation or requesting new authorization. No real execution performed."
+  },
+  "proposed_live_scope": {
+    "max_model_calls": 1,
+    "billing_route": "Existing ChatGPT subscription only; require owner confirmation of zero credits/auto recharge off and no extra fee",
+    "fixed_reply": "AMADEUS_CANCEL_CHECK_OK",
+    "timeout_seconds": 90,
+    "raw_output_limit_bytes": 1048576,
+    "raw_output_destination": "Restricted local directory only, never upload",
+    "cancel_scope": "owned_parent_only",
+    "temporary_source": "C:\\Users\\JayChan\\.codex\\auth.json",
+    "temporary_destination": "/root/amadeus-cancel-a117-r2-20261115/private-home/auth.json",
+    "temporary_storage": "Dedicated tmpfs only after new authorization",
+    "cleanup": "Confirm owned process terminal, remove only authorized temporary auth and normally unmount; original auth unchanged",
+    "retry_on_failure_unknown_or_missed_window": false
+  },
+  "host_workspace": "D:\\agentsync-debug\\strategy-demo\\cancel-a117-r2-preparation",
+  "guest_workspace": "/root/amadeus-cancel-a117-r2-20261115",
+  "authorization": "NOT GRANTED for this new fixture. Previous single-use grant consumed; no implicit reuse.",
+  "real_cancellation": "NOT VERIFIED",
+  "formal_release": "BLOCKED",
+  "resume": "Wait for fresh explicit authorization. Then recheck current process/runtime/plan and one-use markers before mount/readiness/copy/controller. Otherwise leave this prepared fixture untouched.",
+  "excluded": [
+    "Core database and synthetic local owner/session tokens",
+    "External account credentials",
+    "Raw model output",
+    "VM image and SSH key"
+  ],
+  "artifacts": {
+    "pilot.py.txt": {
+      "sha256": "caa79b19820b7d60f4c200b83e6f13cf7c20807f48ffee696c5dfa9fdf228251",
+      "bytes": 18572
+    },
+    "credential_home.py.txt": {
+      "sha256": "671359c80050a46acc852bffb56303cc1aaa8e0d154d1894647915a279d53f11",
+      "bytes": 5207
+    },
+    "run-once.py.txt": {
+      "sha256": "50d13be865228595dccad0c6fe7deda0d50fbc032cacfd59accb98afb5313926",
+      "bytes": 8634
+    },
+    "private_capture.py.txt": {
+      "sha256": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+      "bytes": 3377
+    },
+    "runtime-members.json": {
+      "sha256": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a",
+      "bytes": 10243
+    },
+    "adaptation.diff": {
+      "sha256": "5ec6cc824f09b4840a02ce5a0ce37aca3c34769268b566e59ea9b00ecdc0e009",
+      "bytes": 2133
+    },
+    "sha256.json": {
+      "sha256": "6319e688e37b7686af1eff4af8493096149d6feb68579ab52793adc21e4d68dc",
+      "bytes": 1550
+    },
+    "prepare-attempt.json": {
+      "sha256": "c2a5afa9d9abd9168c320c960fc9ef7f20125540887fbf80cff1374a6ce05f7a",
+      "bytes": 976
+    },
+    "prepare-result.json": {
+      "sha256": "f13ee1756c9c2597d76a1186dbb9b4ce26a58c41eed8a2823ff104b8839754b4",
+      "bytes": 325
+    },
+    "plan.json": {
+      "sha256": "da331d3f6b0ad399e41339339ddf6434b6c06b252f8232a024e1735282bdcc9f",
+      "bytes": 3327
+    }
+  }
+}

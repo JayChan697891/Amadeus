@@ -1,0 +1,57 @@
+"""Focused local evidence only; existing installations stay read-only dependencies."""
+import hashlib
+import json
+import os
+import sys
+from pathlib import Path
+
+BASE = Path(__file__).parent
+ROOT = Path("F:/syuc/amadeus-m6-single")
+PYTHON = BASE / "source-env/Scripts/python.exe"
+STAGE = sys.argv[1]
+assert STAGE in ("red", "green") and Path(sys.executable).resolve() == PYTHON.resolve()
+RUN, TEMP, HOME = (BASE / (STAGE + suffix) for suffix in ("", "-t", "-home"))
+for path in (RUN, TEMP, HOME): path.mkdir(exist_ok=False)
+(RUN / "logs").mkdir()
+for key in tuple(os.environ):
+    if key.upper().startswith(("PYTHON", "PYTEST_", "PIP_", "AGENTSYNC_", "OPENAI_", "ANTHROPIC_", "CODEX_", "CLAUDE_", "GIT_", "GITHUB_")):
+        os.environ.pop(key)
+os.environ.update(HOME=str(HOME), USERPROFILE=str(HOME), APPDATA=str(HOME), LOCALAPPDATA=str(HOME),
+                  TEMP=str(TEMP), TMP=str(TEMP), TMPDIR=str(TEMP), PYTHONDONTWRITEBYTECODE="1",
+                  GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0")
+import agentsync
+import agentsync.controlled_relay as relay
+assert Path(agentsync.__file__).resolve() == ROOT / "src/agentsync/__init__.py"
+assert Path(relay.__file__).resolve() == ROOT / "src/agentsync/controlled_relay.py"
+sys.path.insert(0, str(ROOT))
+from tools import release_acceptance as collector
+
+files = ["src/agentsync/controlled_relay.py", "src/agentsync/relay_status_cli.py",
+         "tests/integration/test_relay_owner_status.py", "docs/RELAY-RECOVERY.md"]
+def hashes(): return {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in files}
+def save(name, value):
+    with (RUN/name).open("x",encoding="utf8") as stream: json.dump(value,stream,indent=2)
+selection = ["tests/integration/test_relay_owner_status.py::test_owner_inspects_checkpoint_after_producer_session_expiry[saved]"] if STAGE=="red" else [
+    "tests/integration/test_relay_owner_status.py",
+    "tests/integration/test_codex_proposal_relay_queue.py::test_live_completed_proposal_checkpoint",
+    "tests/integration/test_codex_proposal_relay_queue.py::test_checkpoint_protocol_final_messages[valid-batch]",
+]
+raw = TEMP/"junit-raw.xml"
+argv = [str(PYTHON),"-I","-B","-m","pytest","-q","-p","no:cacheprovider","--tb=short",
+        "--basetemp",str(TEMP/"pytest"),"--junitxml",str(raw),*selection]
+start = {"origin":agentsync.__file__,"relay_origin":relay.__file__,"prefix":sys.prefix,"python":sys.version,
+         "source_sha256":hashes(),"argv":argv,"model_calls":0,"candidate_execution":"NOT RUN","stage":STAGE}
+save("start.json",start)
+check=collector.execute("owner_"+STAGE,argv,ROOT,RUN,TEMP,capture_stdout=RUN/"stdout.private")
+result={**start,"check":check,"source_unchanged_during_run":hashes()==start["source_sha256"]}
+with (RUN/"stdout.private").open("rb") as stream: data=stream.read(collector.MAX_LOG_BYTES+1)
+clean,redactions=collector.redact_credentials(data[:collector.MAX_LOG_BYTES].decode("utf8",errors="replace"))
+with (RUN/"stdout.log").open("x",encoding="utf8") as stream: stream.write(clean)
+result.update(stdout_credential_redactions=redactions,stdout_truncated=len(data)>collector.MAX_LOG_BYTES)
+if raw.is_file():
+    result["junit_redactions"]=collector.persist_junit(raw,RUN/"junit.xml")
+    result["junit_path"]=str(RUN/"junit.xml")
+    result["junit_sha256"]=hashlib.sha256((RUN/"junit.xml").read_bytes()).hexdigest()
+save("result.json",result)
+print(json.dumps({"exit_code":check["exit_code"],"result":str(RUN/"result.json")}))
+raise SystemExit(check["exit_code"] if check["exit_code"] is not None else 1)

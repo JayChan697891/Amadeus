@@ -1,0 +1,60 @@
+{
+  "observed_at": "2026-11-15T12:36:17.359825+00:00",
+  "scope": "Actual bounded local diagnostics after the immutable a116 Windows/Linux queues",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "driver_sha256": "b5b3d523a22078077aa4b036ccfefb37ff958c3f7206f18a09378346b64175eb",
+  "execution_order": [
+    "both original queues complete",
+    "Linux benchmark",
+    "graceful owned VM shutdown and readonly helper cleanup",
+    "Windows benchmark"
+  ],
+  "platforms": [
+    {
+      "system": "linux",
+      "review_path": "linux/lead-review.json",
+      "review_sha256": "75c5bb4ae838e2cc13d750276645c472a4ba04f6245260fc6ae1689746b7296f",
+      "metrics": [
+        {
+          "mode": "threads",
+          "claims": 80,
+          "p95_ms": 25.983628998801578,
+          "p95_budget_ms": 1000
+        },
+        {
+          "mode": "process-http",
+          "claims": 40,
+          "p95_ms": 41.99913199772709,
+          "p95_budget_ms": 1000
+        }
+      ]
+    },
+    {
+      "system": "windows",
+      "review_path": "windows/lead-review.json",
+      "review_sha256": "07e288af10208c91377b7eb780631c83b984b45e335d5aeb38f5585076f1f6e9",
+      "metrics": [
+        {
+          "mode": "threads",
+          "claims": 80,
+          "p95_ms": 16.27310000185389,
+          "p95_budget_ms": 1000
+        },
+        {
+          "mode": "process-http",
+          "claims": 40,
+          "p95_ms": 25.119400001130998,
+          "p95_budget_ms": 1000
+        }
+      ]
+    }
+  ],
+  "preparation_preserved": true,
+  "formal_release": "BLOCKED",
+  "independent_review": {
+    "agent": "astra_license_exit_review",
+    "kind": "bounded_read_only_delta_of_actual_receipts_reports_and_license_records",
+    "finding": "No blocker for six completed local matrix rows and four bounded benchmark profiles; no tests repeated",
+    "formal_release_approved": false
+  }
+}

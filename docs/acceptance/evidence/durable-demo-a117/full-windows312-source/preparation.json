@@ -1,0 +1,22 @@
+{
+  "status": "NOT RUN",
+  "scope": "Windows 3.12 editable-source supplement only",
+  "driver_sha256": "0b87ce5080087d91ce1d018f45685472b752b8cbdc3fd85b70d82cec1662770c",
+  "host_directory": "D:\\agentsync-debug\\m117ws",
+  "command": [
+    "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\m117ws\\run-source.py"
+  ],
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "test_commit": "33ffbc329cc369643cbaa06077da29fb63f8c189",
+  "input_manifest": "../full-linux314/frozen-inputs.json",
+  "review": "Root diff inspection and independent Astra static delta review accepted preparation; no execution",
+  "source_files_expected": 2382,
+  "runtime_members_expected": 97,
+  "completion_checks": "8 native checks including 1 durable smoke; full case identities and platform skip comparison after terminal exit",
+  "scheduling": "Run after current Linux suite ends and owned VM is safely stopped; do not compete with it",
+  "model_calls": 0,
+  "formal_release": "BLOCKED"
+}

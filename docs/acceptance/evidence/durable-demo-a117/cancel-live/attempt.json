@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-11-15T13:29:12.587138+00:00",
+  "plan_sha256": "c0444c9f26f5f64f702d9442c23de4fd0273a3790711d38920419113360a3e41",
+  "max_model_calls": 1,
+  "single_flow_attempt_consumed": true,
+  "retry_allowed": false
+}

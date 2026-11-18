@@ -1,0 +1,34 @@
+{
+  "status": "passed_scoped",
+  "host": "installed Claude Code CLI",
+  "amadeus_version": "0.3.0a118",
+  "client_sha256": "a30012741c3d0b55e2a6c252dab3781134b75be95896ae89d40a93e10f83bcd6",
+  "probe_sha256": "6f79755757385adb2ac771be782de42990250cf62702249f41509b9c339c6b61",
+  "model_prompts": 0,
+  "isolated_config": true,
+  "credentials_provided": false,
+  "shared_config_modified": false,
+  "tool_calls_tested": false,
+  "desktop_ui_tested": false,
+  "health_check_connected": true,
+  "checks": [
+    {
+      "name": "version",
+      "exit_code": 0
+    },
+    {
+      "name": "mcp_help",
+      "exit_code": 0
+    },
+    {
+      "name": "add",
+      "exit_code": 0
+    },
+    {
+      "name": "list",
+      "exit_code": 0
+    }
+  ],
+  "phase": "list",
+  "client_version": "2.1.295 (Claude Code)"
+}

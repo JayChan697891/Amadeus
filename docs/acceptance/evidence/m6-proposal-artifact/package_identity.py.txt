@@ -1,0 +1,21 @@
+from pathlib import Path
+import hashlib
+import json
+import sys
+import zipfile
+import agentsync
+
+wheel = Path('/root/agentsync_local-0.3.0a109-py3-none-any.whl')
+expected = '9e4b64bf82c4ce8c9e3d1d43a00a25c19a142f7f094f41292023f234f7eacaa5'
+assert hashlib.sha256(wheel.read_bytes()).hexdigest() == expected
+base = Path(agentsync.__file__).resolve().parent.parent
+assert base.is_relative_to(Path(sys.prefix).resolve())
+files = {}
+with zipfile.ZipFile(wheel) as archive:
+    for name in archive.namelist():
+        if name.startswith('agentsync/') and name.endswith(('.py', '.sql')):
+            digest = hashlib.sha256(archive.read(name)).hexdigest()
+            assert hashlib.sha256((base / name).read_bytes()).hexdigest() == digest
+            files[name] = digest
+assert len([name for name in files if name.endswith('.py')]) == 85
+print(json.dumps({'wheel_sha256': expected, 'python': sys.version.split()[0], 'module_count': 85, 'all_module_and_migration_hashes_match': True, 'files': files}, indent=2))

@@ -1,0 +1,40 @@
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+import paramiko
+
+base=Path('D:/agentsync-debug/m122-composed-recovery')
+name=sys.argv[1]
+assert name in ('resume-stage-plan.json','resume-execution-plan.json','resume-completion-plan.json')
+client=paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+try:
+    with client.open_sftp() as sftp:
+        with sftp.open('/root/amadeus-m122-composed-recovery/'+name,'rb') as stream:
+            data=stream.read(262145)
+    assert 0<len(data)<=262144
+    plan=json.loads(data)
+    old=json.loads((base/'stage-plan.json').read_bytes())
+    binding=plan['binding']
+    assert {key:binding[key] for key in old['binding']}==old['binding']
+    assert binding['original_stage_plan_sha256']==hashlib.sha256((base/'stage-plan.json').read_bytes()).hexdigest()
+    assert binding['resume_driver_sha256']=='80c41ab2b202b3ffa0c765e853283478e22d8ec9f6e629e63145f06d7a2da606'
+    assert binding['actors']=={
+        'stager':{'agent_id':'80f7a3d4-2d12-4e64-b23f-33dd55718fb9','session_id':'46b0706f-8331-4275-834d-503576a7fd38'},
+        'reviewer':{'agent_id':'13110b64-88f9-48ca-ad18-636c32db601f','session_id':'c59b0fa9-6c38-46ed-8f1b-d14eb3b62602'},
+    }
+    assert plan['policy']==old['policy']
+    if name=='resume-stage-plan.json':
+        assert plan['staging']['plan']==old['staging']['plan']|{
+            'staging_session_id':binding['actors']['stager']['session_id'],
+            'staging_agent_id':binding['actors']['stager']['agent_id'],
+        }
+    target=base/'verification-host'/name
+    with target.open('xb') as stream:stream.write(data)
+    print(json.dumps({'name':name,'sha256':hashlib.sha256(data).hexdigest(),'binding_and_policy_match':True,'plan':plan},indent=2))
+finally:
+    client.close()

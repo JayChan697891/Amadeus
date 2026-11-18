@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-11-12T14:21:27.087034+00:00",
+  "plan_sha256": "65dd408aa937f4d30b4017dce4ec03f0d16af6021596a0684293f7c5cf63823b",
+  "wave_id": "09a3f82c9e06c281b08dce1793290d9dfca8aeb30871aab15d61a18688565ba5",
+  "queue": {
+    "state": "resolved",
+    "tasks": [
+      {
+        "task_id": "5a6028b1-48bd-4f15-a8ba-d632d12ce9f1",
+        "state": "ready_for_review",
+        "failure_code": null
+      }
+    ],
+    "verification": "unverified"
+  },
+  "queue_pending": false,
+  "review": {
+    "state": "submitted_for_review",
+    "context_id": "7001aa4d-972c-46c2-a67b-ae3528a9a367",
+    "content_sha256": "b28b4b2e257109315fe899e5f2b564656e9b60579adac1e3512c6c955ecdd774",
+    "publication_task_version": 4,
+    "review_task_version": 5,
+    "verification": "unverified"
+  },
+  "captured_start_invoked": true,
+  "error_code": null,
+  "verification": "unverified"
+}

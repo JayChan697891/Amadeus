@@ -1,0 +1,80 @@
+{
+  "unique_cases": 2587,
+  "counts": {
+    "passed": 2580,
+    "skipped": 7,
+    "failure": 0,
+    "error": 0
+  },
+  "wheel_case_identity_equal": true,
+  "removed_cases": [],
+  "added_cases": [],
+  "outcome_differences": {},
+  "skips": {
+    "tests.integration.test_candidate_execution::test_unavailable_isolation_is_unsupported_without_host_execution": {
+      "outcome": "skipped",
+      "message": "Actual Linux backend belongs to the separately controlled Docker fixture"
+    },
+    "tests.integration.test_m4b_workspaces::test_fixture_git_reads_long_windows_reference": {
+      "outcome": "skipped",
+      "message": "Windows Git long-path fixture"
+    },
+    "tests.integration.test_m4b_workspaces::test_managed_git_creates_private_ref_beyond_win32_path_limit": {
+      "outcome": "skipped",
+      "message": "Git for Windows path-length regression"
+    },
+    "tests.security.test_file_locks::test_windows_case_and_separator_aliases_conflict": {
+      "outcome": "skipped",
+      "message": "Windows conflict keys case-fold"
+    },
+    "tests.security.test_resource_paths::test_new_ancestor_junction_rejects_even_identical_physical_root": {
+      "outcome": "skipped",
+      "message": "Windows junction-specific ancestor boundary"
+    },
+    "tests.security.test_resource_paths::test_junction_is_denied": {
+      "outcome": "skipped",
+      "message": "Windows junction-specific boundary"
+    },
+    "tests.unit.test_codex_invocation::test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit": {
+      "outcome": "skipped",
+      "message": "The opt-in MXC plan requires native Windows"
+    }
+  },
+  "checks": [
+    {
+      "check": "source_venv",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "check": "source_offline_dependencies",
+      "exit_code": 0,
+      "log_sha256": "9709da38e361552f74317691e7bb40f6ca81d54777cfd3de1a2baa56a349f81f"
+    },
+    {
+      "check": "source_editable_install",
+      "exit_code": 0,
+      "log_sha256": "4ff345060d1e2a3c9f85dc49c6f728bf7cbfa32dba92ed0df879967219b164d7"
+    },
+    {
+      "check": "source_pip_check",
+      "exit_code": 0,
+      "log_sha256": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09"
+    },
+    {
+      "check": "source_origin_before",
+      "exit_code": 0,
+      "log_sha256": "44566428af2f680cefbba62b858ac5824374255afa945a32b783901e27eeb7f0"
+    },
+    {
+      "check": "pytest",
+      "exit_code": 0,
+      "log_sha256": "3dc5d4515aebf36e04feaa5ae6218734177db9cf4c476faea020d8b128ebe344"
+    },
+    {
+      "check": "source_origin_after",
+      "exit_code": 0,
+      "log_sha256": "44566428af2f680cefbba62b858ac5824374255afa945a32b783901e27eeb7f0"
+    }
+  ]
+}

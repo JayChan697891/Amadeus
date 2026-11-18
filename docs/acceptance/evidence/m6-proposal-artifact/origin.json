@@ -1,0 +1,15 @@
+{
+  "runtime_sha": "bf54d44cd2e9550e902ca3d5d18ab6c7e296862b",
+  "plan_sha256": "af02675e6a76360065885aff1a4e54c520252e5daf02b4a378b05bc98e7ce52b",
+  "context_id": "b54a167b-96ba-446e-96ab-477f6e25c748",
+  "context_version": 1,
+  "context_sha256": "42b9b483667af196eb93db7b263ae0036a0741523e5e6fe963c5b0d3af9b0b8f",
+  "proposal_file_sha256": "0049214146c09e015865e54237ecc4d15c9e043886cb20d1d9c68659bf744bc9",
+  "proposal_json_sha256": "ef6850f24774b039c54d8145e27ce19423a636a506b91877e5afeaa57b2a8705",
+  "original_task_id": "e47e71c5-9e3d-420b-b83a-5afc43ee7a32",
+  "original_task_version": 4,
+  "original_task_status": "running",
+  "original_verification": "unverified",
+  "origin_kind": "owner-reviewed export from observed immutable actual Codex proposal; not cross-Core native authentication",
+  "model_calls": 0
+}

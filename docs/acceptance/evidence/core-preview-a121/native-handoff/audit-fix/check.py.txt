@@ -1,0 +1,77 @@
+"""Check the native probe's audit input defaults with one real local Core write."""
+
+import ast
+import json
+import runpy
+from pathlib import Path
+
+from agentsync.core.service import Core
+from agentsync.models import OPERATIONS
+
+work = Path(__file__).resolve().parent
+probe_path = Path("F:/syuc/amadeus-m6-single/tests/manual/probe_codex_handoff.py")
+probe = runpy.run_path(str(probe_path))
+runtime = probe["verify_runtime"]()
+checks = {}
+for node in ast.walk(ast.parse(probe_path.read_bytes())):
+    if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Name) or node.func.id != "call":
+        continue
+    fields = {field.arg: field.value for field in node.keywords}
+    if "request" not in fields:
+        continue
+    operation = ast.literal_eval(node.args[1])
+    schema = OPERATIONS[operation].model_fields
+    pre = ast.literal_eval(fields["expected_version"]) if "expected_version" in fields else None
+    assert ("expected_version" in fields) == ("expected_version" in schema), operation
+    request = fields["request"]
+    if isinstance(request, ast.JoinedStr):
+        assert len(request.values) == 2 and request.values[1].value.id == "actor"
+        requests = [request.values[0].value + actor for actor in ("A", "B")]
+    else:
+        requests = [ast.literal_eval(request)]
+    for request_id in requests:
+        assert request_id not in checks
+        checks[request_id] = {"operation": operation, "pre_version": pre,
+                             "denied": ast.literal_eval(fields["denied"]) if "denied" in fields else None}
+assert len(checks) == 18
+assert checks["context-v1"]["pre_version"] == OPERATIONS["publish_context"].model_fields["expected_version"].default == 0
+
+data = work / "data"
+data.mkdir()
+core = Core(data)
+owner = core.execute("create_project", {"name": "Audit reproduction", "root_path": str(work)})
+session = core.execute("register_agent", {**owner, "name": "Publisher"})
+core.execute_owner("set_agent_roles", {
+    **owner, "agent_id": session["agent_id"], "roles": ["worker"], "expected_version": 1,
+    "request_id": "fixture-worker",
+})
+auth = {key: session[key] for key in ("session_id", "session_token")}
+request_id = "publish-context-default-version"
+# Keep the version omitted here to reproduce the original Core normalization.
+context = core.execute("publish_context", {
+    **auth, "project_id": owner["project_id"], "kind": "progress", "title": "Audit fixture",
+    "content": "Deterministic context", "request_id": request_id,
+})
+fields = {"actor_id": session["agent_id"], "operation": "publish_context", "outcome": "success",
+          "code": "ok", "target_id": context["id"], "pre_version": None, "post_version": 1}
+secrets = {owner["admin_token"], session["session_token"]}
+try:
+    probe["audit_observations"](core, owner, {request_id: ("A", fields)}, secrets)
+except AssertionError:
+    pass
+else:
+    raise AssertionError("The old None expectation unexpectedly matched the actual audit")
+fields["pre_version"] = checks["context-v1"]["pre_version"]
+(observation,) = probe["audit_observations"](core, owner, {request_id: ("A", fields)}, secrets)
+assert observation["pre_version"] == 0 and observation["post_version"] == 1
+result = {
+    "status": "pass", "scope": "local Core audit only; Codex host not run",
+    "probe_sha256": probe["sha"](probe_path), "installed_runtime": runtime,
+    "old_none_rejected": True, "correct_zero_accepted": True,
+    "observed_pre_version": observation["pre_version"], "observed_post_version": observation["post_version"],
+    "probe_audit_requests_checked": len(checks), "probe_request_schema_review": checks,
+}
+with (work / "result.json").open("x", encoding="utf-8", newline="\n") as stream:
+    json.dump(result, stream, indent=2)
+    stream.write("\n")
+print("PASS: real Core audit omitted version -> 0; None rejected, zero accepted; 18 probe-tracked requests checked")

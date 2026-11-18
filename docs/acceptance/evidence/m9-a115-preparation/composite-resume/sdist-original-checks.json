@@ -1,0 +1,285 @@
+[
+  {
+    "id": "sdist_venv",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\continuation-cc30ed21\\windows-py312-venv\\Scripts\\python.exe",
+      "-m",
+      "venv",
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:04.335591+00:00",
+    "finished_at": "2026-11-14T07:26:06.618010+00:00",
+    "log": "logs/sdist_venv.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_offline_dependencies",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115v/offline-wheels",
+      "--no-cache-dir",
+      "--only-binary=:all:",
+      "setuptools==82.0.1",
+      "wheel==0.46.3",
+      "mcp==2.3.0",
+      "fastapi==0.147.0",
+      "uvicorn==0.54.0",
+      "pydantic==2.14.1",
+      "httpx==0.28.1",
+      "pytest==9.1.1",
+      "pytest-asyncio==1.4.0",
+      "ruff==0.17.1",
+      "mypy==2.4.0",
+      "build==1.6.1",
+      "pip-licenses==5.5.5"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:06.619502+00:00",
+    "finished_at": "2026-11-14T07:26:14.799439+00:00",
+    "log": "logs/sdist_offline_dependencies.log",
+    "log_sha256": "06e5e3601e586d6cfb01fe097e0b37c1d353b2f3bfd39fed5855a7b36b4e199a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/t115v/offline-wheels",
+      "--no-cache-dir",
+      "--no-build-isolation",
+      "--no-deps",
+      "--force-reinstall",
+      "--",
+      "D:\\agentsync-debug\\m115-sdist-r1\\run\\artifacts\\agentsync_local-0.3.0a115.tar.gz"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:14.801433+00:00",
+    "finished_at": "2026-11-14T07:26:18.078926+00:00",
+    "log": "logs/sdist_install.log",
+    "log_sha256": "8d5d9640441152cd706a94eebf5e6a58d34a0a0abf94e0b62f81e5094415c34c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_pip_check",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "check"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:18.081111+00:00",
+    "finished_at": "2026-11-14T07:26:18.402976+00:00",
+    "log": "logs/sdist_pip_check.log",
+    "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_cli",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "agentsync",
+      "--help"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:18.406410+00:00",
+    "finished_at": "2026-11-14T07:26:18.687734+00:00",
+    "log": "logs/sdist_cli.log",
+    "log_sha256": "187505fb8b5f1090de7e2854153bdf032b637f50f68f8125db02b8f40924a471",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_origin_sdk",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import agentsync, importlib.metadata, json, pathlib, tempfile; from agentsync.sdk import AgentSyncClient; origin = pathlib.Path(agentsync.__file__).resolve(); assert origin.is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\t115v\\\\sdist-f5_v8e32').resolve()); assert not origin.is_relative_to(pathlib.Path('D:\\\\agentsync-debug\\\\m115-r3\\\\s').resolve()); assert importlib.metadata.version('agentsync-local') == '0.3.0a115'; direct = json.loads(importlib.metadata.distribution('agentsync-local').read_text('direct_url.json')); assert direct['url'] == 'file:///D:/agentsync-debug/m115-sdist-r1/run/artifacts/agentsync_local-0.3.0a115.tar.gz'; assert (direct['archive_info'].get('hashes', {}).get('sha256') or direct['archive_info'].get('hash', '').removeprefix('sha256=')) == '407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56'; assert not direct.get('dir_info', {}).get('editable', False); print('installed sdist origin:', origin); temporary = tempfile.TemporaryDirectory(); root = pathlib.Path(temporary.name) / 'project'; root.mkdir(); client = AgentSyncClient(pathlib.Path(temporary.name) / 'data'); result = client.call('create_project', name='isolated sdist smoke', root_path=str(root)); assert result['ok'], result; print('sdist SDK smoke: pass'); temporary.cleanup()"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:18.689730+00:00",
+    "finished_at": "2026-11-14T07:26:18.988923+00:00",
+    "log": "logs/sdist_origin_sdk.log",
+    "log_sha256": "21d54b30c1b488f2fc03136051c2559fcc4f3e940439747120f0af39d6bf7f38",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_console_smoke",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "\nimport json, os, subprocess, sys\nfrom pathlib import Path\n\ndef check():\n    scripts = Path(sys.executable).parent\n    scratch = Path(sys.argv[1])\n    suffix = \".exe\" if os.name == \"nt\" else \"\"\n    env = {name: value for name, value in os.environ.items()\n           if not name.upper().startswith((\"AGENTSYNC_\", \"PYTHON\"))}\n    env.update(PYTHONSAFEPATH=\"1\", PYTHONNOUSERSITE=\"1\")\n    legacy = subprocess.run([str(scripts / (\"agentsync\" + suffix)), \"--help\"], cwd=scratch,\n                            env=env, timeout=30, capture_output=True, check=False)\n    if legacy.returncode != 0 or not legacy.stdout.startswith(b\"usage: agentsync \"):\n        return False\n    result = subprocess.run([str(scripts / (\"amadeus\" + suffix)), \"demo\", \"--data-dir\", str(scratch / \"data\")],\n                            cwd=scratch, env=env, timeout=30, capture_output=True, check=False)\n    if result.returncode != 0 or len(result.stdout) > 16384:\n        return False\n    document = json.loads(result.stdout)\n    data = document.get(\"data\", {})\n    return (document.get(\"ok\") is True and data.get(\"status\") == \"completed\"\n            and data.get(\"agents\") == 2 and data.get(\"duplicate_claim_rejected\") is True\n            and data.get(\"persistence_verified\") is True\n            and data.get(\"scope\") == \"local mock workflow; no desktop host compatibility verified\")\n\ntry:\n    passed = check()\nexcept (AttributeError, OSError, ValueError, subprocess.SubprocessError):\n    passed = False\nprint(\"Installed console scripts and disposable Mock demo: \" + (\"pass\" if passed else \"failed\"))\nraise SystemExit(0 if passed else 1)\n",
+      "D:\\agentsync-debug\\t115v\\sdist-console-probe"
+    ],
+    "cwd": "D:\\agentsync-debug\\t115v\\sdist-console-probe",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:18.990923+00:00",
+    "finished_at": "2026-11-14T07:26:19.658038+00:00",
+    "log": "logs/sdist_console_smoke.log",
+    "log_sha256": "c03e10d8ab053baaadb8c9e2d1530b1f9d8d6117c00a09ae8d6e4ac492d5717b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    }
+  },
+  {
+    "id": "sdist_license_inventory",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "D:\\agentsync-debug\\m115-r3\\s\\tools\\license_inventory.py",
+      "--distribution",
+      "agentsync-local"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:19.659034+00:00",
+    "finished_at": "2026-11-14T07:26:19.966148+00:00",
+    "log": "logs/sdist_license_inventory.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    },
+    "inventory": {
+      "path": "sdist-license-inventory.json",
+      "sha256": "fcbe3be95429a6365d0b75a643be2d1359a20eda689c342043afcd85cb9aed0b",
+      "size": 23086,
+      "scope": "installed_runtime_dependency_metadata",
+      "review_item_count": 0,
+      "license_review": "pending",
+      "publication_authorized": false,
+      "installed_origin_check": "sdist_origin_sdk"
+    }
+  },
+  {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\t115v\\sdist-f5_v8e32\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pytest",
+      "D:\\agentsync-debug\\m115-r3\\s\\tests",
+      "--junitxml",
+      "D:\\agentsync-debug\\t115v\\sdist-junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\t115v\\sdist-pytest"
+    ],
+    "cwd": "D:\\agentsync-debug\\m115-sdist-r1\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-14T07:26:19.977169+00:00",
+    "finished_at": "2026-11-14T08:08:36.066819+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "2bd27e88614ecc70ba3ee4b15850a5040089548cd2848db0e43708f7d0d5227b",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600,
+    "artifact": {
+      "path": "artifacts/agentsync_local-0.3.0a115.tar.gz",
+      "sha256": "407ab42221a5b07d8638d91382c3ec49cac139bb1c21e3c1eea0b0ddce061f56",
+      "size": 2926414,
+      "kind": "sdist"
+    },
+    "junit_credential_redactions": 13,
+    "junit": {
+      "tests": 2482,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 56
+    }
+  }
+]

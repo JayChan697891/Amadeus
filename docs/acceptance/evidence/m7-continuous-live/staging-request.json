@@ -1,0 +1,54 @@
+{
+  "stage": "staging",
+  "decision_sha256": "ffc01b555336d276a31cb770f995d26ab08782415e62d3733a122d226dcc2774",
+  "timestamp": "2026-11-13T06:16:05.885103+00:00",
+  "expires_at": 1794550655.8851352,
+  "payload": {
+    "preview": {
+      "plan": {
+        "schema": "amadeus.owner-proposal-stage.v1",
+        "project_id": "3c3819ba-9f74-403a-bf47-283642e90f65",
+        "task_id": "48de88f9-f4c5-4415-96ea-26c45621e47e",
+        "task_version": 5,
+        "context_id": "5eb50584-8e1d-4dac-ae4b-ef6883521197",
+        "context_version": 1,
+        "content_sha256": "3803168e2077c0c9a7652b0c926236387a5c07ae0c80be7db2c3385e222c06b9",
+        "publication_session_id": "febd1eab-fdac-4888-883f-1eee90d1543f",
+        "publication_request_sha256": "731c028b2b8c342c7ece3d812a3658e8397f78c4e6a925063169ad3a448dbd6c",
+        "publication_response_sha256": "532ff637a11b0071d8ff671ff3d8d3d35a8f11943c80109407b132f0da1e0df5",
+        "publication_task_version": 4,
+        "staging_session_id": "e755750c-d00a-41b4-8baa-3cb95d5a4752",
+        "staging_agent_id": "8428c0ab-1f41-4ffc-8e88-4110c28c192b",
+        "snapshot_id": "6d9a4f4c-7ed9-555a-8f9c-acc504845bf7",
+        "snapshot_sha256": "4bacfb74ed5fe6c037c7ce835e39d4b4de542d07ccaab2813441dce76fd07d13",
+        "original_worktree_id": "811a0634-414e-53c4-b1de-c51c180239c0",
+        "original_receipt_sha256": "2b1e9cc4369511571ea328cc49c8e7f5d01dabd94e9d7f5eab203b66274302d9",
+        "base_head": "88eade9603da61bddabf981c3082e0f90ee6bd76",
+        "staging_worktree_id": "3e4b4be7-1a98-5e80-b4d1-356c809ef827",
+        "candidate_id": "68353454-918d-5032-8ead-985a1853b906",
+        "files": [
+          {
+            "path": "solution.py",
+            "sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+            "utf8_bytes": 153,
+            "mode": "100644"
+          }
+        ],
+        "model_provenance": "unverified",
+        "task_verification": "unverified"
+      },
+      "plan_sha256": "ffc01b555336d276a31cb770f995d26ab08782415e62d3733a122d226dcc2774"
+    },
+    "source_sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+    "source_utf8_bytes": 153,
+    "source": "import json\nimport sys\n\nfor line in sys.stdin:\n    values = json.loads(line)\n    sys.stdout.write(json.dumps(sum(values)) + \"\\n\")\n    sys.stdout.flush()\n",
+    "proposal": {
+      "state": "proposal_stored",
+      "context_id": "5eb50584-8e1d-4dac-ae4b-ef6883521197",
+      "context_version": 1,
+      "content_sha256": "3803168e2077c0c9a7652b0c926236387a5c07ae0c80be7db2c3385e222c06b9",
+      "task_version": 4,
+      "verification": "unverified"
+    }
+  }
+}

@@ -1,0 +1,437 @@
+"""Coordinate this one Linux fixture and clean only its reviewed temporary auth home."""
+
+import argparse
+import importlib.util
+import json
+import math
+import os
+import stat
+import subprocess
+import sys
+import time
+from contextlib import contextmanager
+from dataclasses import asdict, fields
+from pathlib import Path
+
+from agentsync.adapters.approved_launch import digest
+from agentsync.continuation import OwnerContinuation
+from agentsync.controlled_relay import ControlledRelay, RelayAttemptObservation
+from agentsync.core.service import Core
+from agentsync.errors import AgentSyncError
+
+BASE = Path("/root/amadeus-interrupted-a117-r2-20261116")
+PRIVATE_HOME = BASE / "private-home"
+LABEL = "amadeus-interrupted-a117-r2-auth"
+FILES = frozenset(
+    (
+        "prepare.py",
+        "private_capture.py",
+        "runtime-members.json",
+        "plan.json",
+        "readiness.json",
+        "interrupt_parent.py",
+        "live.py",
+        "cleanup.py",
+    )
+)
+AUTH_KEYS = frozenset(
+    (
+        "schema_version",
+        "producer_plan_sha256",
+        "files",
+        "expires_at",
+        "max_model_calls",
+        "existing_subscription_only",
+        "owner_confirmed_zero_credits_and_auto_recharge_off",
+        "api_key_allowed",
+        "producer_owned_parent_interruption_allowed",
+        "retry_allowed",
+        "temporary_auth_destination",
+    )
+)
+ATTEMPT_FIELDS = frozenset(field.name for field in fields(RelayAttemptObservation))
+NOT_DISPATCHED_KEYS = frozenset(("leg", "state", "billing_verified", "cost_usd", "verification"))
+
+
+def sha(path):
+    import hashlib
+
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def private_directory(path):
+    info = path.lstat()
+    assert path.resolve(strict=True) == path
+    assert stat.S_ISDIR(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o700
+
+
+def load(name):
+    path = BASE / name
+    info = path.lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+    assert info.st_nlink == 1 and 0 < info.st_size <= 262144
+    return json.loads(path.read_bytes())
+
+
+def save(name, value):
+    """Durable exclusive record, used while the lifecycle lock is held."""
+    descriptor = os.open(
+        BASE / name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC, 0o600
+    )
+    with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    descriptor = os.open(BASE, os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+@contextmanager
+def stage_lock(*, allow_closing=False):
+    import fcntl
+
+    private_directory(BASE)
+    descriptor = os.open(
+        BASE / "lifecycle.lock",
+        os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_CLOEXEC,
+        0o600,
+    )
+    try:
+        info = os.fstat(descriptor)
+        assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and info.st_nlink == 1
+        assert stat.S_IMODE(info.st_mode) == 0o600
+        fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if not allow_closing and any(
+            os.path.lexists(BASE / name) for name in ("closing.json", "auth-cleanup.json")
+        ):
+            raise RuntimeError("Fixture closed to further stages.")
+        yield
+    finally:
+        os.close(descriptor)
+
+
+def validate_authorization(*, allow_expired=False):
+    record = load("live-authorization.json")
+    assert type(record) is dict and set(record) == AUTH_KEYS
+    assert type(record["schema_version"]) is int and record["schema_version"] == 1
+    assert type(record["max_model_calls"]) is int and record["max_model_calls"] == 2
+    for key in (
+        "existing_subscription_only",
+        "owner_confirmed_zero_credits_and_auto_recharge_off",
+        "producer_owned_parent_interruption_allowed",
+    ):
+        assert record[key] is True
+    for key in ("api_key_allowed", "retry_allowed"):
+        assert record[key] is False
+    expires = record["expires_at"]
+    assert type(expires) in (int, float) and math.isfinite(expires) and expires > 0
+    assert allow_expired or time.time() < expires
+    assert record["temporary_auth_destination"] == str(PRIVATE_HOME / "auth.json")
+    assert type(record["files"]) is dict and set(record["files"]) == FILES
+    for name, expected in record["files"].items():
+        info = (BASE / name).lstat()
+        assert (
+            stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+        )
+        assert sha(BASE / name) == expected
+    assert record["producer_plan_sha256"] == load("plan.json")["producer_plan"]["plan_sha256"]
+    spec = importlib.util.spec_from_file_location(
+        "_checked_interrupted_preparation", BASE / "prepare.py"
+    )
+    assert spec is not None and spec.loader is not None
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    assert fixture.BASE == BASE
+    assert all(record["files"][name] == value for name, value in fixture.runtime().items())
+    return record, sha(BASE / "live-authorization.json")
+
+
+def mounts():
+    return [
+        row.split()
+        for row in Path("/proc/mounts").read_text().splitlines()
+        if len(row.split()) >= 4 and row.split()[1] == str(PRIVATE_HOME)
+    ]
+
+
+def require_mount():
+    private_directory(BASE)
+    private_directory(PRIVATE_HOME)
+    table = mounts()
+    assert len(table) == 1 and table[0][0] == LABEL and table[0][2] == "tmpfs"
+    assert {"rw", "nosuid", "nodev", "mode=700"} <= set(table[0][3].split(","))
+
+
+def validate_attempts(attempts):
+    assert type(attempts) is list and len(attempts) == 2
+    for leg, value in zip(("first", "second"), attempts, strict=True):
+        assert type(value) is dict and set(value) == ATTEMPT_FIELDS
+        assert value["leg"] == leg and value["billing_verified"] is False
+        assert value["cost_usd"] is None and value["verification"] == "unverified"
+        assert value["state"] in {
+            "not_dispatched",
+            "outcome_unknown",
+            "terminal_recorded",
+        }
+        if value["state"] == "not_dispatched":
+            assert all(
+                item is None for key, item in value.items() if key not in NOT_DISPATCHED_KEYS
+            )
+    return attempts
+
+
+def validate_actor(
+    actor,
+    current,
+    *,
+    task_id,
+    project_id,
+    agent_sha256,
+    session_sha256,
+    authorization_sha256,
+    entry_sha256,
+    launch_plan_sha256,
+):
+    """Require a current receipt and its own stage record, never a stale aggregate."""
+    assert actor["task_id"] == task_id and actor["project_id"] == project_id
+    assert actor["agent_sha256"] == agent_sha256 and actor["session_sha256"] == session_sha256
+    assert actor["authorization_sha256"] == authorization_sha256
+    assert actor["entry_sha256"] == entry_sha256 and actor["attempts"] == current
+    assert type(actor["captured_start_invoked"]) is bool
+    assert type(actor["exact_authorizations"]) is int and actor["exact_authorizations"] in (0, 1)
+    if task_id is None:
+        assert current == [] and actor["captured_start_invoked"] is False
+        assert actor["exact_authorizations"] == 0 and actor["launch_plan_sha256"] is None
+        return
+    first, second = validate_attempts(current)
+    assert second["state"] == "not_dispatched"
+    if first["state"] == "not_dispatched":
+        assert actor["captured_start_invoked"] is False and actor["exact_authorizations"] == 0
+        return
+    assert first["state"] == "terminal_recorded" and first["parent_ended"] is True
+    assert type(first["exit_code"]) is int and first["client"] == "codex"
+    assert first["agent_sha256"] == agent_sha256 and first["session_sha256"] == session_sha256
+    assert first["admission"]["plan_sha256"] == actor["launch_plan_sha256"] == launch_plan_sha256
+    assert first["admission"]["state"] == "both_reservations_recorded"
+    assert first["admission"]["execution_verified"] is False
+    assert actor["captured_start_invoked"] is True and actor["exact_authorizations"] == 1
+
+
+def require_stopped(authorization_sha256):
+    state = load("state.json")
+    owner = state["owner"]
+    core = Core(BASE / "core")
+    relay = ControlledRelay(core, BASE, BASE / "receipts")
+    project = owner["project_id"]
+
+    def current(task_id):
+        return [
+            asdict(value)
+            for value in relay.owner_inspect_attempts(
+                project, task_id, admin_token=owner["admin_token"]
+            )
+        ]
+
+    source_id = state["task"]["id"]
+    source_attempts = current(source_id)
+    entry_path = BASE / "producer-entry.json"
+    if not entry_path.exists():
+        assert all(a["state"] == "not_dispatched" for a in validate_attempts(source_attempts))
+        assert not any(
+            (BASE / name).exists()
+            for name in (
+                "producer-dispatch-observation.json",
+                "receiver-entry.json",
+                "receiver-dispatch-observation.json",
+                "receiver-request.json",
+                "continuation-private.json",
+                "continuation-plan.json",
+            )
+        )
+        return {"producer": "not_dispatched", "receiver": "not_created"}
+    producer_entry = load("producer-entry.json")
+    assert producer_entry["authorization_sha256"] == authorization_sha256
+    assert producer_entry["project_id"] == project and producer_entry["task_id"] == source_id
+    expected_plan = load("plan.json")["producer_plan"]["plan_sha256"]
+    assert producer_entry["plan_sha256"] == expected_plan
+    source = load("producer-dispatch-observation.json")["actors"]["producer"]
+    validate_actor(
+        source,
+        source_attempts,
+        task_id=source_id,
+        project_id=project,
+        agent_sha256=digest(state["producer"]["agent_id"]),
+        session_sha256=digest(state["producer"]["session_id"]),
+        authorization_sha256=authorization_sha256,
+        entry_sha256=sha(entry_path),
+        launch_plan_sha256=expected_plan,
+    )
+    key = relay._task_receipt_key(project, source_id)
+    dispatched = relay._read_receipt(key, "first-dispatched", durable=True)
+    if dispatched is not None:
+        assert dispatched["launch_request_sha256"] == producer_entry["launch_request_sha256"]
+    status = OwnerContinuation(core, BASE, BASE / "receipts").status(
+        project,
+        producer_entry["launch_request_sha256"],
+        admin_token=owner["admin_token"],
+    )
+    receiver_id = status.get("task_id")
+    if receiver_id is None:
+        assert status["state"] == "not_prepared"
+        assert not (BASE / "receiver-request.json").exists()
+        if (BASE / "receiver-entry.json").exists():
+            entry = load("receiver-entry.json")
+            assert (
+                entry["authorization_sha256"] == authorization_sha256
+                and entry["project_id"] == project
+            )
+            actor = load("receiver-dispatch-observation.json")["actors"]["receiver"]
+            validate_actor(
+                actor,
+                [],
+                task_id=None,
+                project_id=project,
+                agent_sha256=digest(state["receiver"]["agent_id"]),
+                session_sha256=digest(state["receiver"]["session_id"]),
+                authorization_sha256=authorization_sha256,
+                entry_sha256=sha(BASE / "receiver-entry.json"),
+                launch_plan_sha256=None,
+            )
+        else:
+            assert not (BASE / "receiver-dispatch-observation.json").exists()
+        return {"producer": source_attempts[0]["state"], "receiver": "not_created"}
+    receiver_entry = load("receiver-entry.json")
+    assert receiver_entry["authorization_sha256"] == authorization_sha256
+    assert receiver_entry["project_id"] == project
+    actor = load("receiver-dispatch-observation.json")["actors"]["receiver"]
+    attempts = current(receiver_id)
+    launch_plan = None
+    if (BASE / "receiver-request.json").exists():
+        launch_plan = load("receiver-request.json")["payload"]["plan_sha256"]
+    validate_actor(
+        actor,
+        attempts,
+        task_id=receiver_id,
+        project_id=project,
+        agent_sha256=digest(state["receiver"]["agent_id"]),
+        session_sha256=digest(state["receiver"]["session_id"]),
+        authorization_sha256=authorization_sha256,
+        entry_sha256=sha(BASE / "receiver-entry.json"),
+        launch_plan_sha256=launch_plan,
+    )
+    return {"producer": source_attempts[0]["state"], "receiver": attempts[0]["state"]}
+
+
+def mount_home():
+    with stage_lock():
+        validate_authorization()
+        private_directory(PRIVATE_HOME)
+        assert not mounts() and not any(PRIVATE_HOME.iterdir())
+        assert not any(
+            (BASE / name).exists()
+            for name in (
+                "credential-home.json",
+                "producer-entry.json",
+                "receiver-entry.json",
+            )
+        )
+        subprocess.run(
+            [
+                "/bin/mount",
+                "-t",
+                "tmpfs",
+                "-o",
+                "size=64m,mode=700,nodev,nosuid",
+                LABEL,
+                str(PRIVATE_HOME),
+            ],
+            check=True,
+            capture_output=True,
+            timeout=10,
+        )
+        require_mount()
+        save(
+            "credential-home.json",
+            {"temporary_storage": "tmpfs", "mode": "0700", "credentials_copied": False},
+        )
+
+
+def cleanup_home():
+    with stage_lock(allow_closing=True):
+        _, authority_sha = validate_authorization(allow_expired=True)
+        closed = {
+            "authorization_sha256": authority_sha,
+            "further_launches_allowed": False,
+        }
+        if (BASE / "closing.json").exists():
+            assert load("closing.json") == closed
+        else:
+            save("closing.json", closed)
+        assert not (BASE / "auth-cleanup.json").exists()
+        stopped = require_stopped(authority_sha)
+        require_mount()
+        auth_file = PRIVATE_HOME / "auth.json"
+        if os.path.lexists(auth_file):
+            info = auth_file.lstat()
+            assert (
+                stat.S_ISREG(info.st_mode)
+                and info.st_uid == 0
+                and stat.S_IMODE(info.st_mode) == 0o600
+            )
+            assert info.st_nlink == 1
+            auth_file.unlink()
+        assert not os.path.lexists(auth_file)
+        subprocess.run(
+            ["/bin/umount", str(PRIVATE_HOME)],
+            check=True,
+            capture_output=True,
+            timeout=10,
+        )
+        assert not mounts() and not any(PRIVATE_HOME.iterdir())
+        save(
+            "auth-cleanup.json",
+            {
+                "temporary_auth_absent": True,
+                "home_unmounted": True,
+                "private_home_empty": True,
+                "current_attempts": stopped,
+                "further_launches_allowed": False,
+            },
+        )
+
+
+def main():
+    assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+    assert sys.flags.isolated and sys.dont_write_bytecode
+    assert Path(__file__).resolve() == BASE / "cleanup.py"
+    os.umask(0o077)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("action", choices=("mount", "cleanup"))
+    if parser.parse_args().action == "mount":
+        mount_home()
+    else:
+        cleanup_home()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (
+        AssertionError,
+        OSError,
+        ValueError,
+        RuntimeError,
+        LookupError,
+        TypeError,
+        ImportError,
+        AgentSyncError,
+        subprocess.SubprocessError,
+    ):
+        raise SystemExit(
+            "Fixture cleanup stopped; preserve evidence and do not restart model stages."
+        ) from None

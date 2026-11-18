@@ -1,0 +1,17 @@
+{
+  "status": "fail",
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "version": "0.3.0a123",
+  "controller_pid": 23812,
+  "started_at": "2026-11-18T06:16:37.510540+00:00",
+  "driver_sha256": "93673a5d90b741cc73b471c8a1c61272cffd5cd6eb1e96ac5051c209cd777124",
+  "scope": "Offline pure wheel only",
+  "installation": "NOT RUN",
+  "pytest": "NOT RUN",
+  "model_calls": 0,
+  "candidate_execution": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "checks": [],
+  "error_type": "AssertionError"
+}

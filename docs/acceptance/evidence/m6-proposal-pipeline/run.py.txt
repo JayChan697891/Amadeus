@@ -1,0 +1,23 @@
+from pathlib import Path
+import hashlib,json,sys,os
+import agentsync,pytest
+root=Path(__file__).resolve().parent
+package=Path('/root/amadeus-proposal-review-d4c7cf9')
+manifest=json.loads((root/'manifest.json').read_text())
+config=json.loads((package/'linux-config.json').read_text())
+site=Path(agentsync.__file__).resolve().parent.parent
+assert site.is_relative_to(package/'venv')
+assert config['product_sha']==manifest['runtime_product_sha']
+for name,expected in manifest['test_files'].items():assert hashlib.sha256((root/'source'/name).read_bytes()).hexdigest()==expected
+def verify():
+ for name,expected in config['module_hashes'].items():assert hashlib.sha256((site/name).read_bytes()).hexdigest()==expected
+ for name,module in tuple(sys.modules.items()):
+  if name=='agentsync' or name.startswith('agentsync.'):assert Path(module.__file__).resolve().is_relative_to(site/'agentsync')
+verify()
+os.environ['AGENTSYNC_REQUIRE_DOCKER_TESTS']='1'
+os.environ['AGENTSYNC_DOCKER_TEST_IMAGE']='sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258'
+os.environ['AGENTSYNC_PROPOSAL_PIPELINE_EVIDENCE_DIR']=str(root/'safe-evidence')
+code=pytest.main([str(root/'source/tests/integration/test_proposal_docker_pipeline.py'),'-q','--tb=short','-p','no:cacheprovider','--basetemp='+str(root/'test-tmp'),'--junitxml='+str(root/'installed.xml')])
+verify()
+(root/'origin.json').write_text(json.dumps({'test_source_sha':manifest['test_source_sha'],'runtime_product_sha':config['product_sha'],'wheel_sha256':config['wheel_sha256'],'runtime_modules_matched_before_after':len(config['module_hashes']),'source_shadowing':False,'model_calls':0,'candidate_execution_backend':'actual local Linux Docker','exit_code':code},indent=2))
+raise SystemExit(code)

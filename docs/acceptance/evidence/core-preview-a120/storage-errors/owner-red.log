@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____________________ test_owner_reports_corrupt_database _____________________
+tests\security\test_m5_owner_cli_inputs.py:93: in test_owner_reports_corrupt_database
+    assert not process.stderr
+E   assert not 'Traceback (most recent call last):\n  File "<frozen runpy>", line 198, in _run_module_as_main\n  File "<frozen runpy>..., line 610, in _enable_wal\n    db.execute("PRAGMA journal_mode=WAL")\nsqlite3.DatabaseError: file is not a database\n'
+E    +  where 'Traceback (most recent call last):\n  File "<frozen runpy>", line 198, in _run_module_as_main\n  File "<frozen runpy>..., line 610, in _enable_wal\n    db.execute("PRAGMA journal_mode=WAL")\nsqlite3.DatabaseError: file is not a database\n' = CompletedProcess(args=['D:\\agentsync-debug\\m119p\\w\\Scripts\\python.exe', '-B', '-m', 'agentsync', '--data-dir', 'D... line 610, in _enable_wal\n    db.execute("PRAGMA journal_mode=WAL")\nsqlite3.DatabaseError: file is not a database\n').stderr
+=========================== short test summary info ===========================
+FAILED tests/security/test_m5_owner_cli_inputs.py::test_owner_reports_corrupt_database
+1 failed in 0.67s

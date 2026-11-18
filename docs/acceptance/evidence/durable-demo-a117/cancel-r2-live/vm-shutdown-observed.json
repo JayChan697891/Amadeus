@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-11-15T15:14:35.1199513Z",
+  "vm_pid": 24664,
+  "normal_poweroff": true,
+  "process_absent": true,
+  "force_kill_used": false,
+  "disks_and_workspaces_preserved": true,
+  "other_user_apps_terminated": false
+}

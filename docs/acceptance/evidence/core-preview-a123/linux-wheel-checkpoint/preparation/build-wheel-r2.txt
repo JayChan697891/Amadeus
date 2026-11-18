@@ -1,0 +1,141 @@
+"""One offline pure-wheel build from the reviewed Git input; no tests or clients."""
+import hashlib
+import io
+import json
+import os
+import stat
+import subprocess
+import sys
+import tomllib
+import zipfile
+from datetime import UTC, datetime
+from email.parser import BytesHeaderParser
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent / "build-r2"
+REPO = Path("F:/syuc/amadeus-m6-single")
+PYTHON = Path("D:/agentsync-debug/m123-progress/venv/Scripts/python.exe")
+WHEELHOUSE = Path("D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse")
+COMMIT = "a792b6e759aa1990391f8195ba97676a94713f85"
+RUNTIME = "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7"
+VERSION = "0.3.0a123"
+SOURCE, RUN, TEMP, HOME, DIST = (BASE / name for name in ("s", "build", "t", "home", "dist"))
+EXPORT = ["src", "tests", "examples", "tools", "pyproject.toml", "MANIFEST.in",
+          "README.md", "README.zh-CN.md", "LICENSE", "requirements-lock.txt",
+          "requirements-dev-lock.txt", "docs/VERIFIED-TASK-EXAMPLE.md"]
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+def save(path, value):
+    with path.open("x", encoding="utf8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+def main():
+    assert Path(sys.executable).resolve() == PYTHON.resolve()
+    assert sys.version_info[:3] == (3, 12, 16) and sys.flags.isolated and sys.dont_write_bytecode
+    BASE.mkdir(exist_ok=False)
+    for path in (RUN, TEMP, HOME, DIST): path.mkdir(exist_ok=False)
+    (RUN / "logs").mkdir()
+    for key in tuple(os.environ):
+        if key.upper().startswith(("PYTHON", "PYTEST_", "PIP_", "UV_", "AGENTSYNC_", "OPENAI_",
+                                   "ANTHROPIC_", "CODEX_", "CLAUDE_", "CURSOR_", "GIT_", "GITHUB_")):
+            os.environ.pop(key)
+    os.environ.update(HOME=str(HOME), USERPROFILE=str(HOME), APPDATA=str(HOME), LOCALAPPDATA=str(HOME),
+                      TMP=str(TEMP), TEMP=str(TEMP), TMPDIR=str(TEMP), PYTHONDONTWRITEBYTECODE="1",
+                      PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1", PIP_NO_CACHE_DIR="1",
+                      PIP_DISABLE_PIP_VERSION_CHECK="1", GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+    result = {"status": "fail", "source_commit": COMMIT, "runtime_commit": RUNTIME,
+              "version": VERSION, "controller_pid": os.getpid(), "started_at": datetime.now(UTC).isoformat(),
+              "driver_sha256": sha(Path(__file__)), "scope": "Offline pure wheel only",
+              "installation": "NOT RUN", "pytest": "NOT RUN", "model_calls": 0,
+              "candidate_execution": "NOT RUN", "formal_release": "BLOCKED", "checks": []}
+    save(RUN / "start.json", result)
+    try:
+        archive = BASE / "source.zip"
+        with archive.open("xb") as stream:
+            subprocess.run(["git", "-C", str(REPO), "archive", "--format=zip", COMMIT, "--", *EXPORT],
+                           stdout=stream, check=True, timeout=90)
+        SOURCE.mkdir(exist_ok=False)
+        manifest = {}
+        raw_tree = subprocess.run(
+            ["git", "-C", str(REPO), "ls-tree", "-r", "-z", COMMIT, "--", *EXPORT],
+            capture_output=True, check=True, timeout=90,
+        ).stdout
+        modes = {}
+        for row in raw_tree.split(b"\0"):
+            if not row: continue
+            header, name = row.split(b"\t", 1)
+            mode, kind, _ = header.split()
+            assert mode in (b"100644", b"100755") and kind == b"blob"
+            modes[name.decode("utf8")] = mode.decode("ascii")
+        with zipfile.ZipFile(archive) as tree:
+            assert tree.comment == COMMIT.encode()
+            names = [item.filename for item in tree.infolist() if not item.is_dir()]
+            assert len(names) == len(set(names)) and set(names) == set(modes)
+            for item in tree.infolist():
+                name = item.filename
+                assert not name.startswith("/") and ".." not in Path(name).parts and ":" not in name and "\\" not in name
+                if item.is_dir(): continue
+                mode = item.external_attr >> 16
+                assert stat.S_ISREG(mode) or (item.create_system == 0 and item.external_attr == 0 and modes[name] in ("100644", "100755"))
+                target = SOURCE / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                with tree.open(item) as incoming, target.open("xb") as outgoing:
+                    while data := incoming.read(1024 * 1024): outgoing.write(data)
+                manifest[name] = {"size": target.stat().st_size, "sha256": sha(target), "git_mode": modes[name]}
+        save(BASE / "source-manifest.json", manifest)
+        members = {name.removeprefix("src/"): row["sha256"] for name, row in manifest.items()
+                   if name.startswith("src/agentsync/")}
+        prior = subprocess.run(["git", "-C", str(REPO), "archive", "--format=zip", RUNTIME, "src"],
+                               capture_output=True, check=True, timeout=90).stdout
+        with zipfile.ZipFile(io.BytesIO(prior)) as tree:
+            baseline = {name.removeprefix("src/"): hashlib.sha256(tree.read(name)).hexdigest()
+                        for name in tree.namelist() if name.startswith("src/agentsync/") and not name.endswith("/")}
+        assert members == baseline and len(members) == 97
+        save(BASE / "runtime-members.json", members)
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+        project = tomllib.loads((SOURCE / "pyproject.toml").read_text("utf8"))
+        assert project["project"]["version"] == VERSION
+        requirements = project["build-system"]["requires"] + [
+            value for value in project["project"]["optional-dependencies"]["dev"] if value.startswith("build==")
+        ]
+        expected = dict(value.split("==", 1) for value in requirements)
+        probe = "import importlib.metadata as m,json,sys; expected=json.loads(sys.argv[1]); actual={n:m.version(n) for n in expected}; assert actual==expected; print(json.dumps(actual))"
+        result["checks"].append(collector.execute(
+            "build_dependencies", [str(PYTHON), "-I", "-B", "-c", probe, json.dumps(expected)],
+            RUN, RUN, TEMP, offline_wheelhouse=WHEELHOUSE,
+        ))
+        assert result["checks"][-1]["status"] == "pass"
+        command = [str(PYTHON), "-I", "-B", "-m", "build", "--no-isolation", "--wheel", "--outdir", str(DIST), str(SOURCE)]
+        check = collector.execute("build_wheel", command, SOURCE, RUN, TEMP, offline_wheelhouse=WHEELHOUSE)
+        result["checks"].append(check)
+        assert all(item["status"] == "pass" and item["exit_code"] == 0 and not item["log_truncated"] for item in result["checks"])
+        wheel = DIST / f"agentsync_local-{VERSION}-py3-none-any.whl"
+        assert list(DIST.iterdir()) == [wheel]
+        with zipfile.ZipFile(wheel) as package:
+            names = [name for name in package.namelist() if not name.endswith("/")]
+            info = f"agentsync_local-{VERSION}.dist-info/"
+            assert len(names) == len(set(names)) and all(name in members or name.startswith(info) for name in names)
+            assert {name: hashlib.sha256(package.read(name)).hexdigest() for name in names if name in members} == members
+            assert BytesHeaderParser().parsebytes(package.read(info + "METADATA"))["Version"] == VERSION
+        assert all((SOURCE / name).stat().st_size == row["size"] and sha(SOURCE / name) == row["sha256"] for name, row in manifest.items())
+        inputs = {path.name: {"size": path.stat().st_size, "sha256": sha(path)}
+                  for path in (archive, BASE / "source-manifest.json", BASE / "runtime-members.json", wheel)}
+        bundle = {"source_commit": COMMIT, "runtime_commit": RUNTIME, "version": VERSION,
+                  "source_files": len(manifest), "runtime_members": 97, "inputs": inputs}
+        save(BASE / "bundle.json", bundle)
+        result.update(status="pass", bundle_sha256=sha(BASE / "bundle.json"), inputs=inputs,
+                      source_files=len(manifest), runtime_members=97)
+    except Exception as error:
+        result["error_type"] = type(error).__name__
+        raise
+    finally:
+        save(RUN / "result.json", result)
+    print(json.dumps({"status": result["status"], "bundle_sha256": result["bundle_sha256"], "pytest": "NOT RUN"}))
+
+if __name__ == "__main__":
+    main()

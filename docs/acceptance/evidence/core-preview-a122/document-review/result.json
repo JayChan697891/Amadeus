@@ -1,0 +1,97 @@
+{
+  "scope": "Eight new real Core document decisions; deterministic confirmation only",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "changed_files_sha256": {
+    "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+    "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21"
+  },
+  "driver_sha256": "c86b668e9fff7237ad409dee37f196db5bef5edc8124d0853b7033016c381406",
+  "status": "pass",
+  "checks": [
+    {
+      "id": "origin_before",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync\nassert sys.version_info[:3] == (3,12,16)\nsite=Path('D:/agentsync-debug/m122p/w/Lib/site-packages')\nassert Path(agentsync.__file__).resolve() == site/'agentsync/__init__.py'\nassert md.version('agentsync-local') == agentsync.__version__ == '0.3.0a122'\nmembers=json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual == members and len(actual) == 97\nprint(json.dumps({'python':sys.version,'origin':str(agentsync.__file__),'version':agentsync.__version__,'members':len(actual)}))\n"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-18T04:45:09.966511+00:00",
+      "finished_at": "2026-11-18T04:45:10.076260+00:00",
+      "log": "logs/origin_before.log",
+      "log_sha256": "e30d4594544f2444840356476b384c7ba8bbfb9c8d8c4eb2c54a7debd2495447",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "pytest_document_review",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_review_relay_document.py",
+        "--junitxml",
+        "D:\\agentsync-debug\\m122docreview\\t\\junit.xml",
+        "--basetemp",
+        "D:\\agentsync-debug\\m122docreview\\t\\p",
+        "-o",
+        "cache_dir=D:\\agentsync-debug\\m122docreview\\t\\pytest-cache"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-18T04:45:10.077602+00:00",
+      "finished_at": "2026-11-18T04:45:19.312211+00:00",
+      "log": "logs/pytest_document_review.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "origin_after",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync\nassert sys.version_info[:3] == (3,12,16)\nsite=Path('D:/agentsync-debug/m122p/w/Lib/site-packages')\nassert Path(agentsync.__file__).resolve() == site/'agentsync/__init__.py'\nassert md.version('agentsync-local') == agentsync.__version__ == '0.3.0a122'\nmembers=json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual == members and len(actual) == 97\nprint(json.dumps({'python':sys.version,'origin':str(agentsync.__file__),'version':agentsync.__version__,'members':len(actual)}))\n"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-18T04:45:19.313219+00:00",
+      "finished_at": "2026-11-18T04:45:19.420567+00:00",
+      "log": "logs/origin_after.log",
+      "log_sha256": "e30d4594544f2444840356476b384c7ba8bbfb9c8d8c4eb2c54a7debd2495447",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "native_terminal_interaction": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "junit": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "sha256": "7b6678e308c61aefdfe8ad5b7af6479e38a772a9426ab71cd8e49ed139a5d2d9",
+    "redactions": 0
+  },
+  "stdout": {
+    "sha256": "0aed446c6110cccc26dc2e48bb800c7a526097bbe58bc5d570ee6c71c6b6c9bb",
+    "redactions": 0
+  },
+  "changed_files_unchanged": true
+}

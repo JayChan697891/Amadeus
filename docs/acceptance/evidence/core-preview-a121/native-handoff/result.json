@@ -1,0 +1,219 @@
+{
+  "status": "blocked",
+  "phase": "owner_audit",
+  "desktop_ui_tested": false,
+  "global_configuration_modified": false,
+  "inference_requests": 0,
+  "inference_turns": null,
+  "rpc_method_allowlist": [
+    "initialize",
+    "initialized",
+    "mcpServer/tool/call",
+    "mcpServerStatus/list",
+    "thread/start"
+  ],
+  "model_or_candidate_execution_requested": false,
+  "scope": "Native Codex MCP structured handoff and metadata locks, review remains unverified",
+  "probe_sha256": "040bece7b966aa2460e9b3d3c41aabf1ec3305620dc1f40548820a34ffe46f13",
+  "native_hosts": [
+    {
+      "role": "initial",
+      "pid": 560,
+      "exit_code": 0,
+      "close_mode": "stdin_eof",
+      "unexpected_turn": false,
+      "mcp_child_pids": [
+        15588,
+        19864,
+        22440,
+        24744,
+        25532
+      ],
+      "mcp_children_ended": 5
+    },
+    {
+      "role": "reopened",
+      "pid": 21652,
+      "exit_code": 0,
+      "close_mode": "stdin_eof",
+      "unexpected_turn": false,
+      "mcp_child_pids": [
+        12008,
+        24844
+      ],
+      "mcp_children_ended": 2
+    }
+  ],
+  "mcp_status_checks": {
+    "A": [
+      {
+        "runtime_status": "starting",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      },
+      {
+        "runtime_status": "connected",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      }
+    ],
+    "B": [
+      {
+        "runtime_status": "connected",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      }
+    ],
+    "reopened_B": [
+      {
+        "runtime_status": "connected",
+        "auth_status": "unsupported",
+        "tools_error_present": false,
+        "tool_count": 34
+      }
+    ]
+  },
+  "task_observations": [
+    {
+      "stage": "created",
+      "status": "pending",
+      "version": 1,
+      "owner": null,
+      "verification": "unverified"
+    },
+    {
+      "stage": "sender_claimed",
+      "status": "claimed",
+      "version": 2,
+      "owner": "A",
+      "verification": "unverified"
+    },
+    {
+      "stage": "sender_running",
+      "status": "running",
+      "version": 3,
+      "owner": "A",
+      "verification": "unverified"
+    },
+    {
+      "stage": "handoff_submitted",
+      "status": "handoff",
+      "version": 4,
+      "owner": null,
+      "verification": "unverified"
+    },
+    {
+      "stage": "recipient_reserved",
+      "status": "pending",
+      "version": 5,
+      "owner": null,
+      "verification": "unverified"
+    },
+    {
+      "stage": "recipient_claimed",
+      "status": "claimed",
+      "version": 6,
+      "owner": "B",
+      "verification": "unverified"
+    },
+    {
+      "stage": "recipient_running",
+      "status": "running",
+      "version": 7,
+      "owner": "B",
+      "verification": "unverified"
+    },
+    {
+      "stage": "recipient_submitted",
+      "status": "review",
+      "version": 8,
+      "owner": "B",
+      "verification": "unverified"
+    },
+    {
+      "stage": "reopened",
+      "status": "review",
+      "version": 8,
+      "owner": "B",
+      "verification": "unverified"
+    }
+  ],
+  "denials": {
+    "old-sender-lease": "lease_denied",
+    "nonrecipient-resolve": "handoff_denied",
+    "nonrecipient-claim": "assignment_denied",
+    "lock-contended": "lock_busy"
+  },
+  "lock_observations": [
+    {
+      "actor": "A",
+      "lock_id": "727595ba-e11f-48fc-bf3c-0ed6b6369aa9",
+      "status": "active",
+      "version": 1
+    },
+    {
+      "actor": "A",
+      "lock_id": "727595ba-e11f-48fc-bf3c-0ed6b6369aa9",
+      "status": "released",
+      "version": 2
+    },
+    {
+      "actor": "B",
+      "lock_id": "70f82c1b-4362-4467-8bd2-ea4c6e3710ce",
+      "status": "active",
+      "version": 1
+    },
+    {
+      "actor": "B",
+      "lock_id": "70f82c1b-4362-4467-8bd2-ea4c6e3710ce",
+      "status": "released",
+      "version": 2
+    }
+  ],
+  "installed_runtime": {
+    "version": "0.3.0a121",
+    "commit": "4b824949e60492e11756586c3a6ecd5a5f7811d8",
+    "runtime_members": 97,
+    "wheel_sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71",
+    "runtime_members_sha256": "d51bb40232073acf69b4c9748eac2ffd674404c767dcbee8ab67ab237d88dea6"
+  },
+  "codex_binary_sha256": "dce685d569526ef4712fa82d20ff20e1309baad5fcd34215e1126698f611242f",
+  "native_helper_sha256": "59182e9f6ec9b61b10830be934df355e9c44baa9a89567d2574a2c5796db61e6",
+  "project_id": "466d0e3a-7d56-414d-be51-31a0aaaee501",
+  "distinct_identities": true,
+  "initial_threads": 2,
+  "owner_granted_roles": {
+    "A": [
+      "worker"
+    ],
+    "B": [
+      "worker"
+    ]
+  },
+  "task_id": "8dbded96-3aca-48c5-b386-30f322a99099",
+  "handoff_id": "05e3521e-cfbd-43e8-a9d8-7336083243d3",
+  "context": {
+    "context_id": "119e4d9f-a4e7-46a1-98f8-c91918e127b0",
+    "version": 1,
+    "pinned_sha256": "72011b84fcb7ed214ca8c33756438a9bb3dea38d470247284586a2fb42472a87",
+    "latest_version": 2,
+    "latest_sha256": "b02c96b2b2c20a11a570c4f99d8fc7f3769dd8a21ddeab1bcd651b81335ad38f"
+  },
+  "handoff": {
+    "status": "accepted",
+    "sender": "A",
+    "recipient": "B",
+    "submitted_task_version": 4,
+    "accepted_task_version": 5
+  },
+  "recipient_new_lease": true,
+  "result_sha256": "b49dd32dc8930152a70d5b558592dce5d71b23db99aa8fbddcd2f3902f271180",
+  "lock_scope": "file metadata only",
+  "lock_path": "lock-fixture.txt",
+  "lock_file_unchanged": true,
+  "installed_runtime_unchanged": true,
+  "error_type": "AssertionError"
+}

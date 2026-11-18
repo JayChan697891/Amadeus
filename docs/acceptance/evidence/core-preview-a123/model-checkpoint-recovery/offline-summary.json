@@ -1,0 +1,50 @@
+{
+  "status": "pass",
+  "scope": "Offline preparation checks only; no live fixture/model/auth/candidate",
+  "native_terminal_chunk": "257853",
+  "native_exit_code": 0,
+  "checks": 23,
+  "original_observer": 9,
+  "new_observer": 5,
+  "cleanup_mock": 8,
+  "real_core_owned_python_gate": 1,
+  "public_files": {
+    "junit.xml": {
+      "size": 2631,
+      "sha256": "b7a30f24ea31c548ab7025ddc5b2af9b5dbeb25bb101bff9befe833d14f05ca2"
+    },
+    "result.json": {
+      "size": 2100,
+      "sha256": "cd6b44a29fd84826ab10165f8df39486030b09597cc985914ddc8f23f345f470"
+    },
+    "start.json": {
+      "size": 532,
+      "sha256": "bd4b1f87ebb7f3a53ff088a11d24e5dc66c3655ab678320d8dfdaccb75e19d24"
+    },
+    "stdout.log": {
+      "size": 99,
+      "sha256": "40ebc2f045c4f95ad443fec6f8c250aebd1a83ef6e00959431e4069e8b0504cc"
+    },
+    "logs/offline_helpers.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/offline_helpers.process.json": {
+      "size": 2553,
+      "sha256": "b75231cea8d7a0ef3f78b6ae351061ad12c7cf9ee18c21e199ee3e50dc85aeb2"
+    }
+  },
+  "helper_sha256": {
+    "pilot.py": "ce66f1c454824c37e2d38adbebb86e804848e399f26e36c85528ec6d802cca2c",
+    "auth_home.py": "0554cad5e8c7f885c839c91296b359b40fca39a800c59cdd6e15301dfd8cc0be",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff",
+    "interrupt_parent.py": "70057327b4a287dc99bdae6f3a0b23b4cdabac59ecb85f826e808322f243f074",
+    "continue_codex_task.py": "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c",
+    "verified_codex_task.py": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710"
+  },
+  "real_prepare": "NOT RUN",
+  "real_model": "NOT RUN",
+  "candidate_execution": "NOT RUN"
+}

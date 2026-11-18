@@ -1,0 +1,74 @@
+"""Archive only declared, completed Windows row evidence; never private XML."""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--row', choices=('windows-311', 'windows-314'), required=True)
+args = parser.parse_args()
+base = Path('D:/agentsync-debug/m116')
+row = base/args.row
+destination = base/'harvest'/args.row
+verifier_sha = '6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c'
+assert not destination.exists()
+assert hashlib.sha256((base/'s/tools/acceptance_evidence.py').read_bytes()).hexdigest() == verifier_sha
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(base / "s"))
+from tools.acceptance_evidence import _member_parts, read_json, verify_report_evidence
+
+result_bytes = (row/'result.json').read_bytes()
+result = read_json(result_bytes)
+assert result['phase'] == 'finished' and result['local_checks_passed'] is True
+assert result['strict_evidence_verified'] is True and result['source_clean'] is True
+assert result['commit_sha'] == '624b36c039a90feb9340559ac773f9df08ba86ad'
+assert result["candidate_manifest_sha256"] == "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95"
+assert result['driver_sha256'] == 'd531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643'
+source = Path(result['report']).resolve(strict=True).parent
+assert source.is_relative_to((row/'reports').resolve(strict=True))
+assert Path(result['report']).resolve() == (source/'report.json').resolve()
+report_bytes = (source/'report.json').read_bytes()
+report = read_json(report_bytes)
+assert all(check['status'] == 'pass' and check['exit_code'] == 0 for check in report['checks'])
+terminal_path = base/'remaining-windows-queue'/(args.row+'-terminal.json')
+terminal_bytes = terminal_path.read_bytes()
+terminal = read_json(terminal_bytes)
+assert terminal['row'] == args.row and terminal['exit_code'] == 0 and terminal['local_checks_passed'] is True
+assert terminal['strict_evidence_verified'] is True
+destination.mkdir(parents=True)
+copied = []
+total = 0
+
+
+def save(name, data):
+    global total
+    parts = _member_parts(name)
+    assert 'private-junit' not in parts
+    total += len(data)
+    assert total <= 100*1024*1024
+    p = destination.joinpath(*parts)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open('xb') as stream:
+        stream.write(data)
+    copied.append({'path': name, 'size': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+
+
+save('report.json', report_bytes)
+for entry in report['artifacts']:
+    parts = _member_parts(entry['path'])
+    path = source.joinpath(*parts)
+    assert path.resolve().is_relative_to(source.resolve()) and not path.is_symlink()
+    data = path.read_bytes()
+    assert len(data) == entry['size'] and hashlib.sha256(data).hexdigest() == entry['sha256']
+    save(entry['path'], data)
+save('execution/result.json', result_bytes)
+save('execution/attempt.json', (row/'attempt.json').read_bytes())
+save('execution/queue-terminal.json', terminal_bytes)
+audit = verify_report_evidence(destination/'report.json', report, source_repo=base/'s')
+assert audit['junit_case_sets_match'] is True
+save('transfer-audit.json', (json.dumps(audit, indent=2)+'\n').encode())
+with (destination/'transfer-summary.json').open('x', encoding='utf-8') as stream:
+    json.dump({'at': datetime.now(timezone.utc).isoformat(), 'source': str(source), 'row': args.row, 'files': copied, 'copied_bytes': total, 'scope': 'Exact completed local Windows row copy and strict evidence verification; not formal release', 'raw_xml_uploaded': False, 'formal_release': 'BLOCKED'}, stream, indent=2)
+print(json.dumps({'row': args.row, 'files_verified': len(copied), 'bytes': total, 'junit_case_sets_match': True, 'formal_release': 'BLOCKED'}))

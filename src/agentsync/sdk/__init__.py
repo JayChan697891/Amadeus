@@ -1,10 +1,16 @@
 """In-process SDK; every operation is dispatched through the shared Core."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+
+if TYPE_CHECKING:
+    from agentsync.model_usage import FlatRate
+    from agentsync.providers import AdviceRequest, HTTPProvider, MockProvider, OwnerAuthorization
 
 
 def error_envelope(error: AgentSyncError) -> dict[str, Any]:
@@ -21,13 +27,81 @@ class AgentSyncClient:
         except AgentSyncError as error:
             return error_envelope(error)
 
+    async def request_model_advice(
+        self,
+        *,
+        project_id: str,
+        admin_token: str,
+        request_id: str,
+        provider: HTTPProvider | MockProvider,
+        request: AdviceRequest,
+        authorization: OwnerAuthorization | None = None,
+        rate: FlatRate | None = None,
+    ) -> dict[str, Any]:
+        """Make one local owner-authorized advisory call and persist its usage observation."""
+        from agentsync.provider_usage import OwnerProviderUsage
+
+        try:
+            return {
+                "ok": True,
+                "data": await OwnerProviderUsage(self.core).request_advice(
+                    project_id=project_id,
+                    admin_token=admin_token,
+                    request_id=request_id,
+                    provider=provider,
+                    request=request,
+                    authorization=authorization,
+                    rate=rate,
+                ),
+            }
+        except AgentSyncError as error:
+            return error_envelope(error)
+
     def owner_call(self, operation: str, **payload: Any) -> dict[str, Any]:
         """Use the separate project-owner authority; never expose this as an MCP tool."""
         try:
+            if operation == "get_provider_usage_call":
+                from agentsync.provider_usage import OwnerProviderUsage
+
+                return {"ok": True, "data": OwnerProviderUsage(self.core).get(**payload)}
+            if operation in {
+                "preview_candidate_integration",
+                "approve_candidate_integration",
+                "integrate_candidate",
+                "get_candidate_integration_status",
+            }:
+                from agentsync.verification.candidate_integration import OwnerCandidateIntegration
+
+                integration = OwnerCandidateIntegration(self.core)
+                handlers = {
+                    "preview_candidate_integration": integration.preview,
+                    "approve_candidate_integration": integration.approve,
+                    "integrate_candidate": integration.integrate_once,
+                    "get_candidate_integration_status": integration.status,
+                }
+                return {"ok": True, "data": handlers[operation](**payload)}
+            if operation == "sync_relay_usage":
+                from agentsync.relay_usage import sync_relay_usage
+
+                return {"ok": True, "data": sync_relay_usage(self.core, payload)}
+            if operation in {
+                "start_mock_workflow",
+                "resume_mock_workflow",
+                "status_mock_workflow",
+                "cancel_mock_workflow",
+            }:
+                from agentsync.durable_mock_workflow import OwnerMockWorkflow
+
+                workflow = OwnerMockWorkflow(self.core)
+                return {
+                    "ok": True,
+                    "data": getattr(workflow, operation.removesuffix("_mock_workflow"))(**payload),
+                }
             if operation in (
                 "preview_candidate_delivery",
                 "get_candidate_delivery_status",
                 "approve_candidate_delivery",
+                "publish_candidate_delivery",
             ):
                 from agentsync.verification.candidate_delivery import OwnerCandidateDelivery
 
@@ -36,6 +110,8 @@ class AgentSyncClient:
                     return {"ok": True, "data": service.preview(**payload)}
                 if operation == "get_candidate_delivery_status":
                     return {"ok": True, "data": service.status(**payload)}
+                if operation == "publish_candidate_delivery":
+                    return {"ok": True, "data": service.publish_once(**payload)}
                 return {"ok": True, "data": service.approve(**payload)}
             return {"ok": True, "data": self.core.execute_owner(operation, payload)}
         except AgentSyncError as error:

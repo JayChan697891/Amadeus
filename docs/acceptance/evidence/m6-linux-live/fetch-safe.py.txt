@@ -1,0 +1,27 @@
+"""Fetch only explicitly named safe pilot evidence, never credentials or raw capture."""
+import json
+from pathlib import Path
+import sys
+import paramiko
+
+BASE=Path('D:/agentsync-debug/m6-linux-live-20261112')
+REMOTE='/root/amadeus-linux-live-20261112'
+ALLOWED={'result.json','attempt.json','auth-route.json','capture-metadata.json','auth-cleanup.json','stage-preview.json','proposal-review.json','staged.json','verification-entry.json','job.json','execution.json','completion.json','final-observation.json'}
+names=sys.argv[1:]
+assert names and set(names)<=ALLOWED
+client=paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=10)
+try:
+    with client.open_sftp() as sftp:
+        for name in names:
+            assert not (BASE/name).exists()
+            with sftp.open(REMOTE+'/'+name,'rb') as source:
+                data=source.read(1024*1024+1)
+            assert len(data)<=1024*1024
+            value=json.loads(data)
+            with (BASE/name).open('xb') as dest:dest.write(data)
+            print(json.dumps({'file':name,'bytes':len(data)}))
+finally:
+    client.close()

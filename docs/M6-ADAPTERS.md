@@ -1,5 +1,150 @@
 # M6 host-factory adapter prototype
 
+## Scheduling prepared Codex proposals
+
+The existing `RelayQueue` also accepts
+`CodexProposalQueueItem(first=actor, task=proposal, first_capabilities=(...))`.
+The `CodexProposalInput` must explicitly set `submit_for_review=True`. A queue
+may contain both single-producer proposals and existing two-client relay items.
+Its dependency, priority, active-load, capability and disjoint participant/root
+selection rules apply to both. The existing pair preview fields, selection pins
+and durable journal format remain compatible.
+
+`preview` pins the selected tasks, not their execution permission. Every launch
+still calls the actor's authority with its exact plan; a proposal wave is included
+in that plan's host contract. A standalone proposal preview is therefore not the
+approval for a queued launch. `run_ready_once` and `drain_ready` retain their
+bounded admission/execution budgets. A proposal counts as `ready_for_review` only
+when its captured immutable context and complete same-wave submission receipts
+match Core state. Storage alone, cancellation, unknown output or corrupted receipts
+leave the wave incomplete. No automatic retry, staging, candidate execution or
+verified completion is introduced.
+
+The host maintains each participant's Core session during planning and review.
+An online preview records eligibility at that moment. The queue checks current
+online status again at admission. When the last heartbeat is more than 120
+seconds old, the host can refresh a still-valid session through Core `heartbeat`,
+then check the selection again. An expired session requires new enrollment.
+Exact launch consent is still required after a heartbeat.
+
+For a separate review task, the host can supply
+`CodexProposalInput(..., input_context=ProposalContextPin(producer_task_id,
+context_id, context_version, content_sha256))`. The receiving worker reads that
+exact Core revision using its own session. The relay checks the direct producer's
+capture, publication and submission receipts and requires a different Core agent.
+The exact launch plan includes the proposal as untrusted text. The relay rejects
+inputs that exceed the existing adapter limit and reads only the direct producer
+artifact. A prepared review task can return `review.md` as an unverified proposal.
+Dependency readiness still requires `completed`. A model response does not record
+a Core review or start candidate staging or verification.
+
+Existing owner/session reconciliation can recognize a historical submitted
+proposal after restart, including after the original producer session expires.
+The observing session must be currently authenticated; the immutable author,
+launch/wave, content and review bindings are still checked. A later independent
+ordinary review may explain the next task version, but it is not proof of verified
+artifact execution. Results remain `unverified`. Local protocol-fixture tests of
+this queue are separate from real-client and unattended relay acceptance.
+
+## Controlled proposal submission and staging bridge
+
+`CodexProposalInput(..., submit_for_review=True)` opts into lease-controlled
+submission after inert publication. The flag is included in the launch contract
+and approval digest; its default `False` preserves existing launch plans and the
+running-task/storage-only behavior. The controller records review intent before
+`update_task`, then a distinct submission receipt afterward. Missing final receipt,
+expired lease, changed task/version/worktree or corrupted bindings remain incomplete;
+publication can still be observed historically without implying submission success.
+
+`run_codex_proposal_once` continues to return the historical storage outcome.
+Use `observe_codex_proposal_review(actor, task_id)` to inspect the current exact
+`submitted_for_review` state and its separate publication/review task revisions.
+No task completion, ordinary fixed-reply relay success or execution authority is
+inferred from this state. A completed/changed task no longer matches this observer.
+
+The owner can call `preview_codex_proposal_staging(actor, task_id, admin_token=...,
+staging_session_id=..., staging_session_token=...)`, inspect the returned plan,
+then pass its hash as `expected_plan_sha256` to `stage_codex_proposal_once` with
+the same explicit credentials. The controller requires current producer identity
+and complete proposal/submission evidence; the staging service independently checks
+owner/stager authority and all current pins. The helper never previews and approves
+on the caller's behalf. If the producer session has expired, this convenience bridge
+cannot reconstruct its authority; the separate owner service below remains its own
+explicit publication-adoption boundary, not automatic model-provenance recovery.
+
+After staging, feed the returned `candidate_id`/`candidate_sha` into the existing
+owner `CandidateVerificationJobs.enqueue` with a trusted `DockerProfile`, then
+review its exact job version/metadata digest before `OwnerCandidateFlow.start_once`.
+Verified completion still requires a different reviewer via `complete_once`.
+The controller does not enqueue or execute automatically, and it never restarts a
+model or retries a staging effect to close an interrupted receipt gap.
+
+For a Codex proposal produced by `OwnerContinuation`, use the explicit
+`observe_continuation_proposal_review(actor, task_id, continuation=request,
+admin_token=...)` entry. Supply the original `ContinuationRequest` and the saved
+receiver actor/task, not the failed source task. This checks the original request,
+confirmed failed source, checkpoint, durable dispatch/wave, receiver publication
+and continuation-specific review marker. It does not launch a client or mark the
+task verified. Unknown or mismatched evidence cannot proceed to staging.
+
+Use `preview_continuation_proposal_staging` and `stage_continuation_proposal_once`
+with those same arguments plus the stager credentials shown above. Review the
+exact preview before passing `expected_plan_sha256` to staging. Then use the
+existing candidate job, execution approval and different reviewer's completion
+operations on that same receiver task. The normal Codex proposal methods retain
+their original mode restriction. A successful continuation alone still leaves
+its result unverified; staging does not execute code. Repeated staging rejects;
+after completion, read saved status or replay the exact completion request instead
+of staging/executing again.
+
+The existing verifier accepts root `solution.py` with its fixed JSON-lines
+protocol. Define that format in the original task when independent execution is
+required. A different output such as the historical R2 `add.py` is not silently
+rewritten to fit it. The new bridge does not modify or certify that old fixture.
+
+## Owner-reviewed proposal staging
+
+`agentsync.verification.proposal_staging.OwnerProposalStaging(core)` now exposes
+`preview`, `stage_once` and `status` to trusted owner-side Python hosts. There is
+no worker/MCP/HTTP staging operation. Supply project owner credentials plus an
+active worker session for staging attribution. The original producer may have
+expired; a different independent reviewer is still required for later completion.
+
+Preview arguments are `project_id`, `admin_token`, `session_id`, `session_token`,
+`task_id`, `expected_task_version`, `context_id`, `expected_content_sha256`,
+`publication_session_id` and `publication_request_id`. The task must already be
+in `review` through the existing producer lease-controlled submission operation.
+The immutable first context revision, real `publish_task_proposal` response and
+successful audit event must agree. A copied context source label is insufficient.
+This authenticates publication, not model authorship; preserve separate real-client
+capture evidence when making that claim.
+
+Review `preview(**arguments)["plan"]` and its exact file hashes, producer baseline,
+task revision and new destination IDs. Pass its `plan_sha256` as
+`expected_plan_sha256` to `stage_once(**arguments, ...)`. That call commits a
+permanent task-wide intent before Git and rechecks all pins. It creates a genuine
+new managed worktree and candidate, paired with the untouched original worktree
+on the same task/snapshot. Exact UTF-8 blobs are staged without content filters;
+no generated code is executed and no task status is changed. Nothing is applied
+to the registered source checkout or an existing actor worktree.
+
+Use `status(project_id=..., admin_token=..., task_id=...)` after interruption.
+`incomplete` retains both the intent and any partial private files; it does not
+retry or repair them. `staged` is historical metadata, never fresh verification
+or application authority. Every repeat mutation for that task is rejected.
+Normal candidate export, owner queue/execution and independent completion gates
+remain separate. In particular the current Docker profile still requires root
+`solution.py` implementing its fixed JSON-lines interface; arbitrary proposals
+are not silently wrapped, executed or called verified.
+
+Supported staging trees exclude `.gitattributes` and `.gitmodules` in either the
+snapshot/head or proposal, executable Git filters/drivers, links/reparse points,
+path aliases and file/directory collisions. Existing executable file modes are
+preserved; new files are mode100644. Git metadata/indirection/receipt checks run
+before effects. The service and private managed storage are trusted; the checks
+do not claim atomic protection against a malicious administrator replacing paths
+between operating-system calls. Full M5/Release gates remain unchanged.
+
 `agentsync.adapters.codex.CodexAdapter` implements the six generic `AgentAdapter`
 methods. It composes `CapturedProcess` and the bounded Codex JSONL parser. The
 default adapter has no launcher. The explicit trusted-host helper described below
@@ -113,14 +258,20 @@ ordinary review. Verified completion still uses its independent evidence gate.
 Keep the same private receipt directory on restart. An unfinished fence remains
 incomplete and prevents another launch for the task through this pilot. Existing
 Core lease recovery is separate. Filesystem receipts and Core changes are separate
-transactions, so a crash between them can require human reconciliation. Runtime
-validation of the relay and its operating-system isolation is pending.
+transactions, so a crash between them can require human reconciliation. Two actual
+Codex sessions have now completed a fixed-text sequential relay at ee45690 with
+structured handoff, pinned context and a distinct reviewer. Broader operating-system
+isolation, cross-client compatibility and full M7 remain unverified.
 
-Offline tests use known local Python helpers and hand-authored JSONL. One separately
-authorized actual installed-wheel adapter+plan+explicit-env run returned a synthetic
-inline token successfully; it did not use tools or complete a Core task. Permissions,
-server cancellation, real timeout, Claude, Cursor and autonomous relay remain
-NOT RUN/UNVERIFIED. See RELEASE-ACCEPTANCE-REPORT.md for exact evidence.
+Offline tests use known local Python helpers and hand-authored JSONL; their results
+are separate from actual-client evidence. A repaired real single-Codex run and the
+same-client relay reached ordinary Core review/completion at ee45690, with artifact
+verification still unverified. At f74f29f, actual local cancellation and a15-second
+deadline preserved unknown/incomplete state after parent termination. The deadline
+capture also contains a completed turn, so timeout during active generation is not
+verified. Permissions, server cancellation, descendant cleanup, Claude/Cursor and
+full autonomous collaboration remain unverified. See RELEASE-ACCEPTANCE-REPORT.md
+for the exact SHA-bound evidence and limits.
 
 ## Optional pure host invocation preparation
 
@@ -258,11 +409,25 @@ prototype requires separately approved synthetic instructions without secrets.
 It uses a caller-supplied system environment allowlist. Actual auth, billing,
 tool restrictions, isolation and CLI/OS compatibility remain unverified.
 
+The official Windows package2026.11.11-b912975 invokes its sibling `node.exe`
+and `index.js`. Optional `node_entrypoint` and `expected_bundle_sha256` must be
+supplied together. `inspect_node_bundle(explicit_package_directory)` computes a
+bounded versioned relative-path/content digest; it launches nothing. Preparation
+rejects changed/missing/added dependencies, reparse/symlink entries and changed
+queued directories, then inserts the entrypoint before the fixed Cursor flags.
+The package hash is included in approval binding only for this mode, preserving
+legacy plan hashes. HOME/USERPROFILE/APPDATA/LOCALAPPDATA/CURSOR_CONFIG_DIR can be
+explicitly supplied for a private environment; Node injection and API variables
+remain rejected. Package pinning does not prove Node's full external resolution
+scope or eliminate filesystem races. Live authentication, cost and isolation gates
+remain required. See [version-bound local checks](acceptance/evidence/m6-cursor-node-bundle/summary.json).
+
 The supported schema is based on the official
 [Cursor output format](https://cursor.com/docs/cli/reference/output-format).
 Invocation flags are based on [Cursor CLI parameters](https://cursor.com/docs/cli/reference/parameters).
-Only synthetic known-Python fixtures have been exercised. Actual Cursor, CLI/OS
-compatibility, permissions, server cancellation and autonomous relay are NOT RUN.
+A real downloaded Cursor package passed version/help and native-bundle preparation
+without model requests. Lifecycle fixtures remain synthetic; actual Cursor task,
+permissions, server cancellation and cross-client relay are NOT RUN.
 
 ## Claude restricted invocation preparation
 
@@ -307,3 +472,160 @@ may reject strict configuration, and home/config may supply credentials/provider
 Authentication, billing, tool restrictions, sandboxing and real-client compatibility
 remain unverified. Start spies and synthetic Claude JSONL from known Python
 helpers establish wiring and local lifecycle only; no actual Claude call was made.
+
+## Task-bound inert source proposals
+
+`publish_task_proposal` is available through Core, SDK, loopback HTTP and MCP.
+It checks an authenticated worker, a running task at the exact version, the live
+lease and that worker's task-bound managed worktree at a clean expected Git head.
+After Git inspection it checks lease expiry again. A new context revision, the
+request's idempotency record and audit commit in one transaction. It leaves the
+task running and returns only the context reference, binding and content SHA256.
+An authenticated replay returns the original historical revision, even if the task
+later advances or its lease expires; it never republishes or renews authority.
+
+`proposal_json` is exactly `{"files":[{"path":"answer.py","content":"..."}]}`.
+It must contain every caller-declared allowed path exactly once: at most8 files,
+8192 UTF-8 bytes per content and32768 bytes per JSON envelope. Canonical context
+is additionally limited to65536 bytes. Duplicate JSON keys, extra fields, Markdown
+wrappers, aliases, path traversal and overlapping file/directory labels are rejected.
+The data is never imported as Python, executed or written into a worktree.
+
+This is authenticated publication of unverified data, not proof of a model run.
+Worker-supplied allowed paths and the context source label are not authorization;
+ordinary context publication can imitate labels. A later host importer must verify
+its own approved contract, actual publication receipt/audit, pinned immutable context
+revision and current source baseline. It must create a genuine managed candidate
+before entering existing owner-only verification gates. Import, isolated artifact execution and verified completion remain outstanding.
+The opt-in capture path below does not authorize those stages.
+
+## Opt-in Codex proposal capture
+
+`CodexProposalInput` declares a task revision, bounded instruction and exact file
+labels. `preview_codex_proposal` binds the visible JSON contract, paths, task
+revision, worktree and Git head into the existing exact launch approval. The host
+still supplies an explicitly authorized private environment; preview never starts
+a model. Existing fixed-text plans and scheduler/reviewer rules are unchanged.
+
+`run_codex_proposal_once` shares the task-global attempt fence and lifecycle path.
+Only a complete successful Codex result, owned parent exit0, no timeout and exactly
+one strict final message can reach `publish_task_proposal`. The task stays running;
+no code is written, evaluated or imported. Internal source and lease data are
+excluded from object representations and private receipt contents.
+
+`observe_codex_proposal` authenticates before reading receipts and returns historical
+`proposal_stored` only when the observed canonical-files digest, final context hash,
+exact immutable context revision, producer/task/worktree/head and launch bindings
+match. It never equates this with `ready_for_review` or verified completion. Later
+task or context revisions do not rewrite the historical proposal. A crash between
+Core publication and final receipt leaves the attempt incomplete; the context/audit
+may exist, but there is no automatic relaunch or fabricated successful recovery.
+
+Local Python protocol fixtures test this integration separately from real-client
+acceptance. Actual model-generated proposals and independent artifact execution
+require their own recorded authorized execution; consult the current progress and
+Release Acceptance Report instead of treating this API as an acceptance certificate.
+
+## Explicit Linux single-task profile
+
+For the pinned `0.167.0-alpha.3.2` CLI on Linux, a trusted host may select
+`CodexHostProfile(..., linux_readonly=True)`. This is an opt-in plan, mutually
+exclusive with `windows_mxc`; default and earlier-version plans remain unchanged.
+It selects a named minimal/project read-only permission profile with network
+disabled. The exact pinned executable also has read access so a portable Linux
+CLI can re-execute inside its filesystem boundary; its parent directory is not
+added. It requests the same restricted feature set as the native
+Windows single-task plan, browser/computer default denial, no project instruction
+loading and no collaboration-agent registration. The compact inline feature table
+keeps the existing64-argument limit. A different plan requires its own consent.
+
+Requested settings do not prove effective features or absent tools. The host must
+check the actual pinned Linux CLI's configuration and tool projection before a
+live run. Plan flags do not authorize credential copying, attest billing, contain
+the whole CLI, or establish real-client/Release acceptance.
+
+## Automatic host-side proposal handoff
+
+`agentsync.proposal_handoff.ProposalHandoff(core, scratch, receipts)` composes
+the existing Core and relay APIs for one producer-to-receiver handoff. Supply a
+`ProposalHandoffRequest` with the producer task, a distinct `HandoffReceiver`,
+stable request ID, bounded instruction and output paths. The receiver's credentials
+remain in memory. An owner-authored `build_receiver(receiver, workspace)` callback
+returns a `RelayActor` for the actual dependent task/worktree; its identity,
+worktree, root and head are checked. Its authority still decides each exact launch.
+
+Pass the `CodexProposalOutcome` returned by the producer as `source_outcome`.
+Alternatively supply its original `source_actor` while that session remains valid.
+The coordinator derives and saves the exact context pin before waiting for a
+current independent accepted Core review. It does not accept the producer itself
+or require document-review tasks to have code-execution verification. An expired
+producer may be consumed using an already saved reference and a valid receiver;
+an absent reference is not reconstructed by impersonating a new producer session.
+
+```python
+handoff = ProposalHandoff(core, scratch, receipts)
+result = await handoff.run(
+    request,
+    admin_token=owner_token,
+    build_receiver=owner_receiver_factory,
+    source_outcome=producer_outcome,
+    wait_seconds=60,
+    budget=180,
+)
+```
+
+On restart, reuse the same request, receiver session, Core and receipt directory;
+omit the source arguments when its reference was saved. Fixed Core requests can
+recover interrupted task/worktree preparation. Configuration changes are rejected.
+Only the call that creates the exclusive dispatch intent may start the queue.
+After that, reentry observes or reconciles its existing wave, never launches again.
+An intent without an observable wave is `unknown`, including a crash immediately
+before dispatch. Timeout/cancellation retains fences and does not prove client exit.
+
+The source is revalidated by the receiving relay, selection is pinned, and the
+receiver's result stops at ordinary review/unverified. No automatic task acceptance,
+candidate staging/execution, source application or paid-provider configuration is
+introduced. Local protocol-fixture tests are separate from real-client acceptance.
+## Verified proposal flow (trusted host API)
+
+`agentsync.verified_proposal_flow.VerifiedProposalFlow` composes the existing
+producer capture, source-reference checkpoint, candidate staging, independent
+Docker verification and dependent `ProposalHandoff`. It is a host API, not an
+Agent-facing permission grant or automatic candidate application.
+
+Call `run_once(producer, proposal, handoff_request, ...)` with the owner token,
+separate staging and reviewer `RelayReviewer` identities, a trusted `DockerProfile`,
+the receiver factory and three async host decisions:
+
+- `approve_staging(preview)` returns the reviewed `plan_sha256`.
+- `approve_execution(job)` returns the reviewed `metadata_sha256`.
+- `approve_completion(decision)` returns the reviewed `decision_sha256` only after
+  inspecting the exact execution and independent reviewer binding.
+
+Missing or mismatched decisions stop the corresponding step. Callback inputs are
+copies; the actual services revalidate their exact pins and existing permissions.
+The completion service still requires the actual passed verifier proof and a
+different reviewer. A model's PASS text is never sufficient. The returned flow
+and receiver outcome remain `unverified`; only the producer's Core task can gain
+the existing independent `verified` proof. Non-passing execution keeps its exact
+`execution_assessment`, including unknown/unverified states.
+
+`run_once` is deliberately single-use. A partial or unknown producer, staging or
+candidate execution must be inspected through the existing owner services, never
+retried by this wrapper. Once the producer is currently completed/verified,
+`resume_receiver(request, admin_token=..., build_receiver=...)` can use the saved
+handoff reference without rerunning those steps. An expired/missing receiver or
+lost/changed receipts remain errors. Existing dispatch intent prevents relaunch.
+
+The total budget is checked between synchronous steps and forwarded to producer
+and receiver dispatch. Docker execution/cleanup retain their own bounded policy;
+they are not detached into an unobserved background thread. Exceeding the outer
+budget during synchronous work prevents later approval, completion and dispatch,
+but is not a claim that Python can interrupt that synchronous work immediately.
+
+The local integration fixtures emit protocol data from owned Python processes;
+only the dedicated Linux Docker verifier executes proposal bytes. These fixtures
+do not establish a continuous real-model chain or extend historical client evidence.
+A separate [actual continuous Codex run](acceptance/evidence/m7-continuous-live/summary.json)
+now covers installed09425da with four explicit host gates. Its two real calls,
+independent Docker/Core proof and document acceptance remain distinct from fixtures.

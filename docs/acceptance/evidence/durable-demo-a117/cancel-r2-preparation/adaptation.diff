@@ -1,0 +1,48 @@
+--- cancel-a117-repair/pilot.py
++++ cancel-a117-r2-preparation/pilot.py
+@@ -20,7 +20,7 @@
+ from agentsync.core.service import Core
+ from agentsync.errors import AgentSyncError
+ 
+-BASE = Path('/root/amadeus-cancel-a117-20261115')
++BASE = Path('/root/amadeus-cancel-a117-r2-20261115')
+ sys.path.insert(0, str(BASE))
+ from credential_home import require_mount, validate_attempts
+ from private_capture import PrivateCapture
+--- cancel-a117-repair/credential_home.py
++++ cancel-a117-r2-preparation/credential_home.py
+@@ -8,9 +8,9 @@
+ from datetime import UTC, datetime
+ from pathlib import Path
+ 
+-BASE = Path('/root/amadeus-cancel-a117-20261115')
++BASE = Path('/root/amadeus-cancel-a117-r2-20261115')
+ HOME = BASE / 'private-home'
+-LABEL = 'amadeus-cancel-a117-auth'
++LABEL = 'amadeus-cancel-a117-r2-auth'
+ ATTEMPT_FIELDS = (
+     'leg', 'state', 'client', 'status', 'exit_code', 'timed_out', 'parent_ended', 'run_sha256',
+     'session_sha256', 'error_code', 'admission', 'adapter_elapsed_ms', 'reported_input_tokens',
+--- cancel-a117-repair/run-once.py
++++ cancel-a117-r2-preparation/run-once.py
+@@ -11,9 +11,9 @@
+ 
+ import paramiko
+ 
+-BASE = Path('D:/agentsync-debug/strategy-demo/cancel-a117-preparation')
++BASE = Path('D:/agentsync-debug/strategy-demo/cancel-a117-r2-preparation')
+ AUTH = Path('C:/Users/JayChan/.codex/auth.json')
+-REMOTE = '/root/amadeus-cancel-a117-20261115'
++REMOTE = '/root/amadeus-cancel-a117-r2-20261115'
+ HOME = REMOTE + '/private-home'
+ PYTHON = '/root/amadeus-demo-a117-sdist-r1/installed/bin/python'
+ PRODUCT = 'fc27f15f47fa92ed5edcd764a573c1d84a68c107'
+@@ -54,7 +54,7 @@
+     with sftp.open('/proc/mounts', 'rb') as mounts_file:
+         table = [line.split() for line in mounts_file.read(65536).decode('utf-8').splitlines()]
+     matches = [row for row in table if len(row) >= 4 and row[1] == HOME]
+-    assert len(matches) == 1 and matches[0][0] == 'amadeus-cancel-a117-auth' and matches[0][2] == 'tmpfs'
++    assert len(matches) == 1 and matches[0][0] == 'amadeus-cancel-a117-r2-auth' and matches[0][2] == 'tmpfs'
+     assert {'rw', 'nosuid', 'nodev', 'mode=700'} <= set(matches[0][3].split(','))
+ 
+ 

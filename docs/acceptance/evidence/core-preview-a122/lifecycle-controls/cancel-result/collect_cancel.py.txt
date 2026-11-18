@@ -1,0 +1,75 @@
+"""Read original cancel receipts and bounded private capture metadata; never export streams."""
+import hashlib,json
+from pathlib import Path
+import paramiko
+
+base=Path(__file__).parent
+out=base/'cancel-public';out.mkdir(exist_ok=False)
+control=json.loads((base/'control-cancel.json').read_bytes())
+host=json.loads((base/'cancel-attempt/controller-result.json').read_bytes())
+assert host['execution_host_terminal'] and host['execution_exit_code']==host['cleanup_exit_code']==0 and host['original_auth_unchanged']
+c=paramiko.SSHClient();c.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+c.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+program=r'''
+import hashlib,json,os,sys
+from pathlib import Path
+sys.path.insert(0,'/root/amadeus-lifecycle-a122-helpers')
+import pilot
+r=Path('/root/amadeus-lifecycle-a122-cancel')
+pilot.runtime()
+plan=pilot.load(r,'plan.json')
+fixture=pilot.fixture(r,plan)
+names=['attempt.json','fixture-before.json','run-start.json','launch-approved.json','parent-running.json','cancel-boundary.json','cancel-return.json','exit-observation.json','result.json','capture-metadata.json','auth-route.json','auth-mount-intent.json','auth-mount.json','host-terminal.json','auth-cleanup.json']
+records={n:pilot.load(r,n) for n in names}
+observation=records['exit-observation.json'];run=observation['run'];snapshot=observation['snapshot']
+assert records['result.json']['status']=='SCOPED_PASS'
+assert records['result.json']['exit_observation_sha256']==pilot.sha(r/'exit-observation.json')
+assert observation['observation']['cancel_method_called'] is True and observation['exact_authorizations']==1
+assert run['capture_id']==snapshot['capture_id']==records['cancel-boundary.json']['capture_id']
+assert run['run_id']==records['run-start.json']['run_id']==records['cancel-boundary.json']['run_id']==records['cancel-return.json']['run_id']
+assert run['parent_ended'] and snapshot['parent_ended'] and run['exit_code']==snapshot['exit_code']
+assert run['status']=='unknown' and run['error_code']=='local_cancel_requested' and not run['timed_out']
+assert records['cancel-boundary.json']['boundary']=={'valid':True,'started':True,'terminal':False,'tools':0}
+assert not records['cancel-boundary.json']['snapshot']['parent_ended']
+assert run['task_id']==plan['task']['task_id'] and run['project_id']==plan['task']['project_id']
+receipt_files=sorted((r/'receipts').glob('*.json'))
+assert len(receipt_files)==2 and {p.name.split('-')[0] for p in receipt_files}=={'launch','consent'}
+for p in receipt_files:
+    record=json.loads(p.read_bytes());assert record['plan_sha256']==plan['plan_sha256']
+    records['receipts/'+p.name]=record
+meta=records['capture-metadata.json'];assert meta['saved']
+raws={}
+for stream in ('stdout','stderr'):
+    p=r/'private-capture'/f'{stream}.bin'
+    raw=p.read_bytes();assert len(raw)==meta[stream+'_bytes'] and hashlib.sha256(raw).hexdigest()==meta[stream+'_sha256']
+    raws[stream]=raw
+assert sum(map(len,raws.values()))<=1048576
+events=[json.loads(line) for line in raws['stdout'].splitlines()]
+counts={kind:sum(e.get('type')==kind for e in events) for kind in ('thread.started','turn.started','turn.completed','turn.failed','error')}
+assert counts['turn.started']==1 and counts['turn.completed']==counts['turn.failed']==counts['error']==0
+assert not any(isinstance(e.get('item'),dict) and e['item'].get('type') in ('command_execution','file_change','mcp_tool_call','web_search') for e in events)
+assert not any((r/'private-home').iterdir())
+assert not any(str(r/'private-home') in line for line in Path('/proc/mounts').read_text().splitlines())
+active=[]
+for p in Path('/proc').iterdir():
+    if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+    try:
+        comm=(p/'comm').read_text().strip();argv=(p/'cmdline').read_bytes()
+        if ('python' in comm or 'codex' in comm) and any(s in argv for s in (str(r).encode(),b'/amadeus-lifecycle-a122-helpers/pilot.py',b'/amadeus-codex-linux-0167/bin/codex')):active.append(int(p.name))
+    except FileNotFoundError:pass
+assert not active
+result={'runtime_members_unchanged':97,'fixture_after':fixture,'raw_capture_hashes_independently_matched':True,'stdout_event_counts':counts,'raw_bytes':sum(map(len,raws.values())),'raw_exported':False,'related_processes':active,'private_home_empty':True,'private_home_unmounted':True,'records':records,'source_files':{n:{'sha256':pilot.sha(r/n),'bytes':(r/n).stat().st_size} for n in records}}
+print(json.dumps(result))
+'''
+_,stdout,stderr=c.exec_command("/root/amadeus-m122l/w/bin/python -I -B - <<'PY'\n"+program+'\nPY',timeout=30)
+raw,error=stdout.read(),stderr.read();code=stdout.channel.recv_exit_status();c.close()
+assert code==0,error.decode(errors='replace')
+value=json.loads(raw)
+with (out/'observed.json').open('x',encoding='utf8') as f:json.dump(value,f,indent=2)
+for p in (base/'cancel-attempt').iterdir():
+    assert p.is_file() and p.suffix in ('.json','.log')
+    with (out/p.name).open('xb') as f:f.write(p.read_bytes())
+manifest={p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in out.iterdir()}
+with (out/'manifest.json').open('x',encoding='utf8') as f:json.dump(manifest,f,indent=2)
+run=value['records']['exit-observation.json']['run']
+print(json.dumps({'status':'SCOPED_PASS','run_id':run['run_id'],'actual_status':run['status'],'error_code':run['error_code'],'parent_ended':run['parent_ended'],'exit_code':run['exit_code'],'events':value['stdout_event_counts'],'raw_bytes':value['raw_bytes'],'private_home_unmounted':True,'related_processes':value['related_processes'],'public_files':len(manifest)}))

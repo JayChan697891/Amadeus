@@ -1,0 +1,21 @@
+{
+  "scope": "existing_completed_row_transfer_helpers_rebound_to_a116",
+  "execution": "NOT RUN",
+  "helpers": [
+    {
+      "platform": "linux",
+      "driver": "D:\\agentsync-debug\\m116\\harvest-linux-row.py",
+      "sha256": "a5c63ef4935f8d1e63ed29d9ba8be821cf979a40bcedd7d7a9be1eb6cfa95d68"
+    },
+    {
+      "platform": "windows",
+      "driver": "D:\\agentsync-debug\\m116\\harvest-windows-row.py",
+      "sha256": "139548ec7ff5523b58c2e4c1437eddd07172cc9e1b4b04f4c2be1cf62a5beeee"
+    }
+  ],
+  "source_verifier": "Frozen a116 source; same existing verifier SHA256 6abb5a549566a6c9c90279e9474814336fdc0a166b5641d609d0f92e4883187c",
+  "review": "Lead inspected exact source differences and parsed Python syntax; no execution or test-result claim.",
+  "delta": "New root/commit/driver/manifest identities; original report paths replace old label-derived paths; require successful native queue terminal. Existing byte, size, path, no-overwrite, credential-key and Docker observation checks preserved.",
+  "private_junit_copy": false,
+  "formal_release": "BLOCKED"
+}

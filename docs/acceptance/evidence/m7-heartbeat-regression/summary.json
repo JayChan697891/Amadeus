@@ -1,0 +1,15 @@
+{
+  "test_source_sha": "74e1527b93a70a18120de80b151561c836af14a7",
+  "runtime_product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "scope": "One added proposal-queue lifecycle regression plus reused expiry/online checks; no runtime edits",
+  "passed": 13,
+  "failed": 0,
+  "skipped": 0,
+  "model_calls": 0,
+  "independent_review": "Reviewed actual diff and JUnit: stale heartbeat refuses admission without capture; existing authenticated heartbeat restores exact selection/plan; expired session remains rejected.",
+  "formal_release": "BLOCKED",
+  "evidence_sha256": {
+    "m7-proposal-heartbeat.log": "0baa6244e83400be6b45a812228155b9b8d088849d18f7fc2901f7b36cf56f78",
+    "m7-proposal-heartbeat.xml": "cbcdc80094c33de20b76c13eef9b2ee7272b11f81083dc542a35ea8242073e97"
+  }
+}

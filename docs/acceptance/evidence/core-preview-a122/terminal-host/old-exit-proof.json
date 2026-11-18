@@ -1,0 +1,37 @@
+{
+  "producer_task_id": "0edb3c38-1a05-443f-b036-300bc95c2702",
+  "receiver_task_id": "f3497668-bece-4a3d-b49d-3fd038974e5a",
+  "wave": {
+    "state": "resolved",
+    "tasks": [
+      {
+        "task_id": "f3497668-bece-4a3d-b49d-3fd038974e5a",
+        "state": "confirmed_failed",
+        "failure_code": null
+      }
+    ],
+    "verification": "unverified"
+  },
+  "tasks": [
+    {
+      "id": "8f1aa13e-73fc-48c4-beb0-b601a30d1fd6",
+      "status": "cancelled",
+      "version": 4,
+      "task_verification": "unverified"
+    },
+    {
+      "id": "0edb3c38-1a05-443f-b036-300bc95c2702",
+      "status": "completed",
+      "version": 6,
+      "task_verification": "verified"
+    },
+    {
+      "id": "f3497668-bece-4a3d-b49d-3fd038974e5a",
+      "status": "running",
+      "version": 4,
+      "task_verification": "unverified"
+    }
+  ],
+  "old_host_exit": 0,
+  "expected_exit": 1
+}

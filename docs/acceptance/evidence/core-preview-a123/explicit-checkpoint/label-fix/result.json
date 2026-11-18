@@ -1,0 +1,96 @@
+{
+  "status": "pass",
+  "scope": "One affected test file; parameter IDs only changed",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "tests_input_sha256": "f417224f45803ab245b202cbb9725a426acf45fa29fd287eb5415da1d292a799",
+  "driver_sha256": "458773b7d76b90536911ac3695449e0167387206313f11480b245b43cd92b8f0",
+  "checks": [
+    {
+      "id": "origin_before",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib,importlib.metadata as m,json,sys\nfrom pathlib import Path\nimport agentsync,agentsync.cli\nenv,source,members=map(Path,sys.argv[1:])\nsite=env/'Lib/site-packages'\nassert Path(sys.prefix).resolve()==env.resolve()\nassert Path(agentsync.__file__).resolve()==(site/'agentsync/__init__.py').resolve()\nassert Path(agentsync.cli.__file__).resolve()==(site/'agentsync/cli.py').resolve()\ndist=m.distribution('agentsync-local')\nassert dist.version=='0.3.0a123'\ndirect=json.loads(dist.read_text('direct_url.json'))\nassert direct['url']==source.resolve().as_uri() and not direct['dir_info'].get('editable',False)\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()\n        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual==json.loads(members.read_bytes()) and len(actual)==97\nprint(json.dumps({'origin':str(Path(agentsync.__file__).resolve()),'cli_origin':str(Path(agentsync.cli.__file__).resolve()),\n                  'version':dist.version,'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))\n",
+        "D:\\agentsync-debug\\m123-progress\\venv",
+        "D:\\agentsync-debug\\m123-progress\\frozen-r3",
+        "D:\\agentsync-debug\\m123-progress\\runtime-members-r3.json"
+      ],
+      "cwd": "D:\\agentsync-debug\\m123-progress\\label-fix\\source",
+      "exit_code": 0,
+      "started_at": "2026-11-18T06:04:28.169994+00:00",
+      "finished_at": "2026-11-18T06:04:28.450598+00:00",
+      "log": "logs/origin_before.log",
+      "log_sha256": "5960a8b41ac6a516db6af03f61ce1617b8f9ec9b79a4d5e7d1c8885fb43097e4",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "label_pytest",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "tests/unit/test_proposals.py",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "--basetemp",
+        "D:\\agentsync-debug\\m123-progress\\label-fix\\t\\pytest",
+        "--junitxml",
+        "D:\\agentsync-debug\\m123-progress\\label-fix\\t\\raw.xml"
+      ],
+      "cwd": "D:\\agentsync-debug\\m123-progress\\label-fix\\source",
+      "exit_code": 0,
+      "started_at": "2026-11-18T06:04:28.452509+00:00",
+      "finished_at": "2026-11-18T06:04:28.929524+00:00",
+      "log": "logs/label_pytest.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "origin_after",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib,importlib.metadata as m,json,sys\nfrom pathlib import Path\nimport agentsync,agentsync.cli\nenv,source,members=map(Path,sys.argv[1:])\nsite=env/'Lib/site-packages'\nassert Path(sys.prefix).resolve()==env.resolve()\nassert Path(agentsync.__file__).resolve()==(site/'agentsync/__init__.py').resolve()\nassert Path(agentsync.cli.__file__).resolve()==(site/'agentsync/cli.py').resolve()\ndist=m.distribution('agentsync-local')\nassert dist.version=='0.3.0a123'\ndirect=json.loads(dist.read_text('direct_url.json'))\nassert direct['url']==source.resolve().as_uri() and not direct['dir_info'].get('editable',False)\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()\n        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual==json.loads(members.read_bytes()) and len(actual)==97\nprint(json.dumps({'origin':str(Path(agentsync.__file__).resolve()),'cli_origin':str(Path(agentsync.cli.__file__).resolve()),\n                  'version':dist.version,'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))\n",
+        "D:\\agentsync-debug\\m123-progress\\venv",
+        "D:\\agentsync-debug\\m123-progress\\frozen-r3",
+        "D:\\agentsync-debug\\m123-progress\\runtime-members-r3.json"
+      ],
+      "cwd": "D:\\agentsync-debug\\m123-progress\\label-fix\\source",
+      "exit_code": 0,
+      "started_at": "2026-11-18T06:04:28.931534+00:00",
+      "finished_at": "2026-11-18T06:04:29.214864+00:00",
+      "log": "logs/origin_after.log",
+      "log_sha256": "5960a8b41ac6a516db6af03f61ce1617b8f9ec9b79a4d5e7d1c8885fb43097e4",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "model_calls": 0,
+  "full_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "stdout": {
+    "raw_private_sha256": "603b55783b87c045d251116a1353773e1bb3d9b855647c0b9acd9da6102c247d",
+    "public_sha256": "603b55783b87c045d251116a1353773e1bb3d9b855647c0b9acd9da6102c247d",
+    "redactions": 0
+  },
+  "junit": {
+    "raw_private_sha256": "815ca6cc0f06253a9cfa6b3d7ad24d6703b178af663575331c4fecdd073472c5",
+    "public_sha256": "65cf26758cdefe0de5a8c1f9e498a92534d994f4431936a1950c3e9e80d01830",
+    "redactions": 0
+  }
+}

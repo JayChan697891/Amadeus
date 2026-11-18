@@ -1,0 +1,31 @@
+{
+  "status": "PREPARED - Root and Astra accepted; live NOT RUN",
+  "native_prepare": "e91bbb exit0",
+  "native_grant_upload": "e998dd exit0",
+  "review": "Actual plan/grant/controller and five helper hashes matched; three prepare commands exit0; new fixture, fixed boot, cancel cleanup and 97 runtime members checked. Root uploaded same grant bytes create-only.",
+  "max_calls": 1,
+  "candidate_executions": 0,
+  "timeout_seconds": 15,
+  "retry_allowed": false,
+  "source_commit": "f1f6c7b3e7bef996e9469403d4be7f058be2a287",
+  "files_sha256": {
+    "collect_timeout.py.txt": "758cbd7453aa0170a48fb4879404cb278d03bcee445a60a2c732b8c6cf5cc408",
+    "control-timeout.json": "0c054875e56cc53f324ba5d2559f8c7f0855d7753769a80e1456dc968dbd449b",
+    "owner-grant-timeout.json": "11e5596468a01dea4cd4776dbe68b2a4579648d92069f0ea6842d9f0dab86232",
+    "plan-timeout.json": "9fde9ea8b7553e78b1c40682e4e3e18bd32b531c793afef745b508e6ee662f9e",
+    "prepare_timeout.py.txt": "a47c79cd2f1bc67207127b5aa56ed200c09b6ba8a79c427d8f44bd58a715e33a",
+    "prepare-timeout-attempt.json": "645f13a9b2879f70ac33dcc4b9f47c2d15ddb7033cfa560d4cafcf319b75aa8b",
+    "prepare-timeout-result.json": "3f632023078c81d25e3633bb80edfb5b531b2e09e5b8b4902e168cbd01e32f44",
+    "prepare-timeout.json": "46ee290d8a23286cdd7b6f8aa84dbff0ccac7921eb7aa4c0a2ffc6cc500c4664",
+    "prepare-timeout.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "prepare-timeout.stdout.log": "136df71be5728f7d47faca39fe57de7eaa801432dafd114de6806e428fd78317",
+    "timeout-grant-upload.json": "eaae664fe0c5656c914b2d2241b4d39dcba5244b5ee7c92c49c42c938c0a6752",
+    "timeout-preflight-after.json": "76cbafbe4e259eb4b19c156377dcca316979a7cd9dddba6a7ae7e38cb0451a1a",
+    "timeout-preflight-after.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "timeout-preflight-after.stdout.log": "32a25ecf17c2643ccf9b47e96994f8b33080a3f52742f97d7ad3c2279171f71c",
+    "timeout-preflight-before.json": "a1d1016c219934fc4c87142db1b871fd800b254fd9bfe93a48946d24ab44e265",
+    "timeout-preflight-before.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "timeout-preflight-before.stdout.log": "75c3bafe51c4959c27e5e6a0e1dc9a77e5553fc5fb5c40e95f9dfde1c8aa00cc",
+    "upload_timeout_grant.py.txt": "84248870689f86cb0745b59f4d01aafe4dfd995ef1ab26da16e30697567984d9"
+  }
+}

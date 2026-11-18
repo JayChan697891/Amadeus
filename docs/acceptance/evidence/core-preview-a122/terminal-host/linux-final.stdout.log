@@ -1,0 +1,11 @@
+..F                                                                      [100%]
+=================================== FAILURES ===================================
+______ test_terminal_uses_real_core_and_exact_decisions[receiver-failed] _______
+tests/integration/test_verified_codex_terminal.py:139: in test_terminal_uses_real_core_and_exact_decisions
+    assert handed["wave"]["tasks"] == [
+E   AssertionError: assert ({'task_id': ...code': None},) == [{'task_id': ..._code': None}]
+E     
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED tests/integration/test_verified_codex_terminal.py::test_terminal_uses_real_core_and_exact_decisions[receiver-failed]
+1 failed, 2 passed, 5 deselected in 16.06s

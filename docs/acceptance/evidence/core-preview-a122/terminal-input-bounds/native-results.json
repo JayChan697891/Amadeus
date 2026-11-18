@@ -1,0 +1,68 @@
+{
+  "scope": "Windows3.12.16 affected terminal-entry checks only; known local Python protocol and synthetic verifier fixtures, not real-client/Core formal acceptance",
+  "red": {
+    "native_chunk": "1aeee9",
+    "exit_code": 1,
+    "cases": 2,
+    "failed": 2,
+    "failure": "Each oversized real1MiB file was read with size=-1 rather than1001/32769",
+    "log_sha256": "4bc1c3f9c124420f42ba265978499904992883bcb5eb150ed0029c46d9d0080f",
+    "junit_sha256": "af01f22ab4d9cf7e6c28a844af42566d3b38de564e48499c9b8e3acc7236a42b"
+  },
+  "green": {
+    "native_session": 23739,
+    "initial_chunk": "359f49",
+    "terminal_chunk": "3ef550",
+    "exit_code": 0,
+    "cases": 18,
+    "passed": 14,
+    "skipped": 4,
+    "skip_scope": "Real Linux terminal input; Linux not run in this change",
+    "failures": 0,
+    "errors": 0,
+    "reported_seconds": 59.92,
+    "argv": [
+      "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_verified_codex_terminal.py",
+      "--basetemp",
+      "D:\\agentsync-debug\\m122-terminal-input-bounds\\green-t",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m122-terminal-input-bounds\\cache",
+      "--junitxml=D:\\agentsync-debug\\m122-terminal-input-bounds\\green.xml"
+    ],
+    "log_sha256": "7189ac6bce40fdc013245d2c0621a175241512d77a5fdd5acb4dece839749e7d",
+    "junit_sha256": "dd646af004d9a3dbf6f869e714dd25afcf82869f6b60c74c08d6950eb83c05e0"
+  },
+  "static": {
+    "native_chunk": "249cb3",
+    "exit_code": 0,
+    "cwd": "F:/syuc/amadeus-m6-single",
+    "commands": [
+      "D:/agentsync-debug/m122p/w/Scripts/ruff.exe check --no-cache examples/verified_codex_task.py tests/integration/test_verified_codex_terminal.py",
+      "D:/agentsync-debug/m122p/w/Scripts/ruff.exe format --check --no-cache examples/verified_codex_task.py tests/integration/test_verified_codex_terminal.py"
+    ],
+    "earlier_wrong_cwd_diagnostic": {
+      "chunk": "7780e1",
+      "exit_code": 1,
+      "scope": "Existing import grouping differs outside project cwd; no source reordering performed"
+    }
+  },
+  "original_example_sha256": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+  "final_source_sha256": {
+    "F:\\syuc\\amadeus-m6-single\\examples\\verified_codex_task.py": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d",
+    "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_verified_codex_terminal.py": "a09eab2978ad410ec82c6e55faa94439f2ce5f59a0e1c97678e6e8ce95099bc9"
+  },
+  "source_unchanged_after_green": true,
+  "agentsync_origin": "D:\\agentsync-debug\\m122p\\w\\Lib\\site-packages\\agentsync\\__init__.py",
+  "installed_runtime_version": "0.3.0a122",
+  "installed_runtime97_before_after_exact": true,
+  "model_calls": 0,
+  "real_candidate_executions": 0,
+  "vm_started": false,
+  "historical_live_entry_scope": "Existing real evidence remains bound to the old7085ec0/ec08 entry; not revalidated here",
+  "formal_release": "BLOCKED"
+}

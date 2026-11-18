@@ -1,0 +1,43 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "sdist_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m7-sdist-6017005\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-full-74e1527\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-full-74e1527\\source",
+    "started_at": "2026-11-12T12:49:18.565866+00:00",
+    "timeout_seconds": 3600
+  },
+  "error_type": null,
+  "result": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m7-sdist-6017005\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-full-74e1527\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-full-74e1527\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-12T12:49:18.565866+00:00",
+    "finished_at": "2026-11-12T13:20:50.359991+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "36158f1df51fd78891f13efedf4ab22eee2ba43c5472626c4d11a909d6b985bd",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "runtime_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "version": "0.3.0a123",
+  "source_files": 283,
+  "runtime_members": 97,
+  "inputs": {
+    "source.zip": {
+      "size": 912396,
+      "sha256": "69dfd4485066259b3f0294e46e58857cd9e5378d3e93dd372e4b3f228f8a7107"
+    },
+    "source-manifest.json": {
+      "size": 49506,
+      "sha256": "f5fc76f1f978f46c75dc184eabb74c6661c792354109e0e475f6d649fe5aaf12"
+    },
+    "runtime-members.json": {
+      "size": 10144,
+      "sha256": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff"
+    },
+    "agentsync_local-0.3.0a123-py3-none-any.whl": {
+      "size": 333137,
+      "sha256": "0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c"
+    }
+  }
+}

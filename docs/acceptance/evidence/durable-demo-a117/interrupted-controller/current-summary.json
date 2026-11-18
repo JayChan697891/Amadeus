@@ -1,0 +1,280 @@
+{
+  "observed_at": "2026-11-16T06:51:04.952139+00:00",
+  "scope": "Complete experimental controller with offline validation only",
+  "controller_status": "IMPLEMENTED / SCOPED OFFLINE PASS",
+  "runtime_commit": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "version": "0.3.0a117",
+  "product_code_changed": false,
+  "producer_plan_sha256": "b8efeeca180296d41322a4dc332b89ce1b3c057998a63a594fc4e3f838423928",
+  "hashes": {
+    "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+    "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+    "test_live.py": "3444029fd542e455da6e74b737fc7ac1f98fb7da99a69dd247fa9872719013ef",
+    "test_cleanup.py": "8bf55ba27ad1bb02057ecb938f72e13ad860ebe2565c9dc194895abf220a900f"
+  },
+  "runs": [
+    {
+      "name": "cleanup-original",
+      "cases": 14,
+      "passed": 12,
+      "failed": 2,
+      "skipped": 0,
+      "errors": 0,
+      "native_exit_code": 1,
+      "input_sha256": {
+        "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+        "test_cleanup.py": "f3a604cd1221d6d04a74183c8322abf5c9f1981860c662a9a10006181795b9a5"
+      }
+    },
+    {
+      "name": "cleanup-current",
+      "cases": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "native_exit_code": 0,
+      "input_sha256": {
+        "cleanup.py": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a",
+        "test_cleanup.py": "8bf55ba27ad1bb02057ecb938f72e13ad860ebe2565c9dc194895abf220a900f"
+      }
+    },
+    {
+      "name": "live-before-import-sort",
+      "cases": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "native_exit_code": 0,
+      "input_sha256": {
+        "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+        "test_live.py": "d6007387339779c12a54b07ecf490b9e1309defaa7255f5124be13d404a1a030"
+      }
+    },
+    {
+      "name": "live-current",
+      "cases": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "native_exit_code": 0,
+      "input_sha256": {
+        "live.py": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48",
+        "test_live.py": "3444029fd542e455da6e74b737fc7ac1f98fb7da99a69dd247fa9872719013ef"
+      }
+    }
+  ],
+  "current_unique_cases": 22,
+  "repeated_import_only_live_cases_not_additional_coverage": 8,
+  "old_observer_cases_reused_without_rerun": 9,
+  "runtime_members": 97,
+  "runtime_identity_scope": "Before/after both live-helper runs; after the cleanup run. No earlier cleanup-before check is claimed.",
+  "native_lock_test": "Actual Linux flock exclusion with an inert Python child",
+  "replay_test": "Real run_once binding; synthetic cached status; no live client",
+  "auth_cleanup_test": "Harmless fixture text; unmount substituted; no real model auth",
+  "full_pipeline_execution": "NOT RUN",
+  "real_client_interruption": "NOT RUN",
+  "real_client_continuation": "NOT RUN",
+  "real_auth_lifecycle": "NOT RUN",
+  "model_calls": 0,
+  "external_model_auth_copies": 0,
+  "live_authorization": "NOT GRANTED",
+  "host_checkpoint_is_model_authored": false,
+  "receiver_verification": "unverified",
+  "retry_allowed": false,
+  "formal_release": "BLOCKED",
+  "preserved_failures": [
+    "Input transfer stopped before tests: Paramiko xb lacked write mode; new exclusive path used after wxb correction.",
+    "Original cleanup fixture 12 passed / 2 failed: constructor received init=False fields; corrected fixture only.",
+    "Root Ruff reported live-test import grouping; import-only correction followed by eight affected tests."
+  ],
+  "review_corrections": [
+    "Fixed one mistyped plan digest without touching plan bytes.",
+    "Approval window30s shares adapter90s with route<=20s and execution.",
+    "Cleanup requires current actor receipts under a shared lifecycle lock."
+  ],
+  "artifacts": [
+    {
+      "path": "live.py.txt",
+      "bytes": 37744,
+      "sha256": "6268f18dda1e647cb91b136df1eb733b8a69d4fcf0c91875bb689bc3a594ce48"
+    },
+    {
+      "path": "cleanup.py.txt",
+      "bytes": 15912,
+      "sha256": "ee2f5a869edf9558cde02dc06bac66b06b67d2d75f40638362c49977c792fd0a"
+    },
+    {
+      "path": "test_live.py.txt",
+      "bytes": 9061,
+      "sha256": "3444029fd542e455da6e74b737fc7ac1f98fb7da99a69dd247fa9872719013ef"
+    },
+    {
+      "path": "test_cleanup.py.txt",
+      "bytes": 12084,
+      "sha256": "8bf55ba27ad1bb02057ecb938f72e13ad860ebe2565c9dc194895abf220a900f"
+    },
+    {
+      "path": "stage-controller.py.txt",
+      "bytes": 4508,
+      "sha256": "de867fa14df9b7c13a273d5e82c75794438824b8306104613071f6438afc37bc"
+    },
+    {
+      "path": "staging-entry.json",
+      "bytes": 403,
+      "sha256": "b685277b0f0dff48fcf63846bf071fd5ca47111d47bf21b88d1077cf1757cecb"
+    },
+    {
+      "path": "staging-result.json",
+      "bytes": 2664,
+      "sha256": "dc7bf139e3e6ef8461adfae4b6360592be2149645e9f059d61fe52a1d59aa71b"
+    },
+    {
+      "path": "controller-readiness.json",
+      "bytes": 660,
+      "sha256": "51b8890c9ce046e261c27f21d9ad83db64e50863eb9291d19835ca6121237658"
+    },
+    {
+      "path": "run_checks.py.txt",
+      "bytes": 5443,
+      "sha256": "8f7749c853c7b5e4d4ad307c14d86e7c22b61638bf085793c9e71b80d0b49df1"
+    },
+    {
+      "path": "checks/transfer-failure.json",
+      "bytes": 240,
+      "sha256": "f4acde6c12cd2a835cb3058f4bcc4e913c28d81621ef5b70277b74fb50e3e069"
+    },
+    {
+      "path": "checks/cleanup-original/start.json",
+      "bytes": 1227,
+      "sha256": "7d4e4b831a4f965a00243af26f7b534ff7ff13597bbfc02468a57e02129aeaf9"
+    },
+    {
+      "path": "checks/cleanup-original/result.json",
+      "bytes": 1630,
+      "sha256": "39a8c95f6f0ba4a994c6afb27f53068ef29d7e3d403f8aefc2ec5b424c1c8f1e"
+    },
+    {
+      "path": "checks/cleanup-original/stdout.log",
+      "bytes": 5576,
+      "sha256": "17d71211454ff8497b041ad99f0e5ab3b2e30878c2151577e553e982912fc1b3"
+    },
+    {
+      "path": "checks/cleanup-original/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/cleanup-original/junit.xml",
+      "bytes": 8021,
+      "sha256": "77c33b0d7236da156cb04a934400cfa929608933f682a4858185398b40c734eb"
+    },
+    {
+      "path": "checks/cleanup-current/start.json",
+      "bytes": 1227,
+      "sha256": "c403c577948df3a783a56c3de21c7fa570d1652450bb6a8894049740110cd0d1"
+    },
+    {
+      "path": "checks/cleanup-current/result.json",
+      "bytes": 1630,
+      "sha256": "e8ccec2829d0561dc13e3dce963248b56d0ed4528f447f0a80239bb2b09bc9bf"
+    },
+    {
+      "path": "checks/cleanup-current/stdout.log",
+      "bytes": 99,
+      "sha256": "e80676a1768fca05d6d6ec6a557b56328e1de7224753cf44ca822fa77f581d09"
+    },
+    {
+      "path": "checks/cleanup-current/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/cleanup-current/junit.xml",
+      "bytes": 2926,
+      "sha256": "fc9fbd12c987ea7fa5f73794efc38d0b2713ad192f07ef545743aa0abddbdaac"
+    },
+    {
+      "path": "checks/live-before-import-sort/start.json",
+      "bytes": 1273,
+      "sha256": "d5429fb463c86379c8a6cb9c8c7cd0377958bd5bfd0741b9d4b160cd4d5a7f17"
+    },
+    {
+      "path": "checks/live-before-import-sort/result.json",
+      "bytes": 2485,
+      "sha256": "31398031b921baa1dd14972b7c91aabf765414661009e51a0e89f773e77c6301"
+    },
+    {
+      "path": "checks/live-before-import-sort/stdout.log",
+      "bytes": 98,
+      "sha256": "00e0febc00086b05a69b0b07e5455e77953e9d9bfe6bd15788c0fc02eb42e059"
+    },
+    {
+      "path": "checks/live-before-import-sort/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/live-before-import-sort/junit.xml",
+      "bytes": 1628,
+      "sha256": "cafd0ab1fe5a6543ca4522ec7f8b9b2faaff54db3cad5a1348cb79831c0bf5e7"
+    },
+    {
+      "path": "checks/live-before-import-sort/runtime-before.json",
+      "bytes": 343,
+      "sha256": "0e3f23cab172211445dee13efafa015ca5b0dd7bad4abfdd23020c8c57370982"
+    },
+    {
+      "path": "checks/live-before-import-sort/runtime-after.json",
+      "bytes": 343,
+      "sha256": "0e3f23cab172211445dee13efafa015ca5b0dd7bad4abfdd23020c8c57370982"
+    },
+    {
+      "path": "checks/live-current/start.json",
+      "bytes": 1273,
+      "sha256": "1c2ee3d62665136ef1d2259f28f0179f1f49eeb878dd44d0f6a117fb25761f68"
+    },
+    {
+      "path": "checks/live-current/result.json",
+      "bytes": 2485,
+      "sha256": "989bec05f65941a0e93db80393b80df32373ed7483bc8faf82722c6606d339a0"
+    },
+    {
+      "path": "checks/live-current/stdout.log",
+      "bytes": 98,
+      "sha256": "7862e3e2f519df663d4f8d010e2b25ffd60fd52e8ea7bd5f1e40a5e19c619593"
+    },
+    {
+      "path": "checks/live-current/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/live-current/junit.xml",
+      "bytes": 1628,
+      "sha256": "3eee3c309614505f781fb94d83c63d096a60ce7435232caa1200d36fccf61b6b"
+    },
+    {
+      "path": "checks/live-current/runtime-before.json",
+      "bytes": 343,
+      "sha256": "0e3f23cab172211445dee13efafa015ca5b0dd7bad4abfdd23020c8c57370982"
+    },
+    {
+      "path": "checks/live-current/runtime-after.json",
+      "bytes": 343,
+      "sha256": "0e3f23cab172211445dee13efafa015ca5b0dd7bad4abfdd23020c8c57370982"
+    },
+    {
+      "path": "checks/cleanup-original/test_cleanup.py.txt",
+      "bytes": 11887,
+      "sha256": "f3a604cd1221d6d04a74183c8322abf5c9f1981860c662a9a10006181795b9a5"
+    },
+    {
+      "path": "checks/live-before-import-sort/test_live.py.txt",
+      "bytes": 9061,
+      "sha256": "d6007387339779c12a54b07ecf490b9e1309defaa7255f5124be13d404a1a030"
+    }
+  ]
+}

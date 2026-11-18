@@ -1,0 +1,17 @@
+{
+  "started_at": "2026-11-16T10:33:37.053269+00:00",
+  "command": [
+    "D:\\agentsync-debug\\m118p\\w\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "F:\\syuc\\amadeus-m6-single\\tests\\manual\\probe_claude_host.py",
+    "--claude-binary",
+    "C:\\Users\\JayChan\\AppData\\Roaming\\npm\\node_modules\\@anthropic-ai\\claude-code\\bin\\claude.exe",
+    "--scratch-parent",
+    "D:\\agentsync-debug\\m2-a118-claude"
+  ],
+  "probe_sha256": "6f79755757385adb2ac771be782de42990250cf62702249f41509b9c339c6b61",
+  "runtime_members_before": 97,
+  "models_requested": 0,
+  "auth_copies": 0
+}

@@ -68,6 +68,7 @@ def _new_result(
     messages: tuple[str, ...],
     metadata: CursorReportedMetadata | None,
     client_id: str | None,
+    _tool_block_count: int | None,
 ) -> CursorResult:
     return CursorResult(run, messages[0] if messages else "", metadata, client_id)
 

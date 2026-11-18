@@ -1,0 +1,12 @@
+{
+  "outcome": "RUNNING",
+  "scope": "Verified running only; no final acceptance result",
+  "worker_parent_pid": 18216,
+  "worker_created_utc": "2026-11-15T13:51:30.6645450Z",
+  "native_session_id": 45808,
+  "observed_at": "2026-11-15T13:53:27.2629567Z",
+  "worker_command": "\"C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe\" -I -B -m pytest D:\\agentsync-debug\\m117w\\s\\tests --junitxml D:\\agentsync-debug\\m117w\\t\\sdist-junit.xml --basetemp D:\\agentsync-debug\\m117w\\t\\p -o cache_dir=D:\\agentsync-debug\\m117w\\t\\pytest-cache",
+  "worker_executable": "C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe",
+  "worker_pid": 6852,
+  "restart_allowed": false
+}

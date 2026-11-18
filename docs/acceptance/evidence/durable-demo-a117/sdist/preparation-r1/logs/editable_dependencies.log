@@ -1,0 +1,12 @@
+Looking in links: file:///D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse, d:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\setuptools-82.0.1-py3-none-any.whl
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\wheel-0.46.3-py3-none-any.whl
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\pytest-9.1.1-py3-none-any.whl
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\pytest_asyncio-1.4.0-py3-none-any.whl
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\httpx-0.28.1-py3-none-any.whl
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\annotated_doc-0.0.5-py3-none-any.whl (from -r D:\agentsync-debug\strategy-demo\a117-sdist-r1\source\requirements-lock.txt (line 4))
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\annotated_types-0.8.0-py3-none-any.whl (from -r D:\agentsync-debug\strategy-demo\a117-sdist-r1\source\requirements-lock.txt (line 5))
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\anyio-4.15.1-py3-none-any.whl (from -r D:\agentsync-debug\strategy-demo\a117-sdist-r1\source\requirements-lock.txt (line 6))
+Processing D:\agentsync-debug\continuation-cc30ed21\windows-py312-wheelhouse\attrs-26.1.0-py3-none-any.whl (from -r D:\agentsync-debug\strategy-demo\a117-sdist-r1\source\requirements-lock.txt (line 7))
+ERROR: Could not find a version that satisfies the requirement cffi==2.1.1 (from versions: none)
+ERROR: No matching distribution found for cffi==2.1.1

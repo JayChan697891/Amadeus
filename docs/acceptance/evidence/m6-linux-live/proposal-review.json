@@ -1,0 +1,14 @@
+{
+  "context_id": "ab09535b-9af5-4275-9ee7-01614f0b02bf",
+  "context_sha256": "6686d1a81861fb9f2031074b3738e93fd05d74c59747e0acf1e5cefafa5a99cf",
+  "files": [
+    {
+      "path": "solution.py",
+      "content": "import json\nimport sys\n\nfor line in sys.stdin:\n    values = json.loads(line)\n    sys.stdout.write(json.dumps(sum(values)) + \"\\n\")\n    sys.stdout.flush()\n"
+    }
+  ],
+  "files_sha256": {
+    "solution.py": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83"
+  },
+  "plan_sha256": "3ce510b7b791c0c1a6b1a43de197d27556b19e490f094a08cfac677523ab70c8"
+}

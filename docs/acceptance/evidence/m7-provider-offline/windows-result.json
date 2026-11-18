@@ -1,0 +1,57 @@
+{
+  "product_sha": "09425dafd00a6c73bac29a0a2f8329e22659e630",
+  "test_source_sha": "2af7ccc45892a0387833e31f945897c47d50fe71",
+  "source_zip_sha256": "3130e337f76dbe8ddbc815fd18242eda6c8a84cfaffe1ffc094a7325cfc5783f",
+  "installed_sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c",
+  "scope": "Frozen current provider and acceptance tests against unchanged installed094 runtime; owned loopback and synthetic responses only",
+  "platform": "win32",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "started_at": "2026-11-13T07:34:44.991219+00:00",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "provider_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m7-providers-2af7ccc\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m7-providers-2af7ccc\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T07:34:44.991219+00:00",
+    "finished_at": "2026-11-13T07:34:48.380342+00:00",
+    "log": "logs/provider_pytest.log",
+    "log_sha256": "65d5622f1214bdfd5c62afd789491fd343a7ace508316ab7c7e226b859aa3b3e",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  },
+  "source_unchanged": true,
+  "installed_identity": {
+    "origin": "D:\\agentsync-debug\\m9-sdist-repair-9fb36a1\\installed\\Lib\\site-packages\\agentsync",
+    "runtime_members_matched": 90,
+    "source_shadowing": false,
+    "installed_sdist_sha256": "068fe0ba1ed8f7b799d6a6c00ca3f3835aaec35f4d437241da420c7f19b3dc2c"
+  },
+  "selectors": [
+    "tests/unit/test_http_providers.py",
+    "tests/integration/test_provider_loopback_transport.py",
+    "tests/unit/test_provider_usage_and_budget.py",
+    "tests/unit/test_acceptance_traceability.py",
+    "tests/unit/test_release_acceptance.py"
+  ],
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 269,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "skip_reasons": {},
+  "finished_at": "2026-11-13T07:34:48.514697+00:00"
+}

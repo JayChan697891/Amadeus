@@ -1,0 +1,105 @@
+"""Observe the already-running pytest; never start or resume development work."""
+import ctypes
+from ctypes import wintypes as w
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import runpy
+import time
+import xml.etree.ElementTree as ET
+
+HERE = Path(__file__).resolve().parent
+SCRATCH = Path('D:/agentsync-debug/t115s/.scratch-srflbp1f')
+K = ctypes.WinDLL('kernel32', use_last_error=True)
+K.OpenProcess.argtypes = [w.DWORD, w.BOOL, w.DWORD]
+K.OpenProcess.restype = w.HANDLE
+K.CloseHandle.argtypes = [w.HANDLE]
+K.GetProcessTimes.argtypes = [w.HANDLE] + [ctypes.POINTER(w.FILETIME)] * 4
+K.WaitForSingleObject.argtypes = [w.HANDLE, w.DWORD]
+K.WaitForSingleObject.restype = w.DWORD
+K.GetExitCodeProcess.argtypes = [w.HANDLE, ctypes.POINTER(w.DWORD)]
+K.CreateFileW.argtypes = [w.LPCWSTR, w.DWORD, w.DWORD, w.LPVOID, w.DWORD, w.DWORD, w.HANDLE]
+K.CreateFileW.restype = w.HANDLE
+K.GetFileSizeEx.argtypes = [w.HANDLE, ctypes.POINTER(ctypes.c_longlong)]
+K.ReadFile.argtypes = [w.HANDLE, w.LPVOID, w.DWORD, ctypes.POINTER(w.DWORD), w.LPVOID]
+
+def now():
+    return datetime.now(timezone.utc).isoformat()
+
+def save(name, data):
+    with (HERE / name).open('x', encoding='utf-8') as stream:
+        json.dump(data, stream, indent=2)
+        stream.write('\n')
+
+def shared_read(path, limit):
+    handle = K.CreateFileW(str(path), 0x80000000, 1 | 2 | 4, None, 3, 0x80, None)
+    if handle == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        size = ctypes.c_longlong()
+        if not K.GetFileSizeEx(handle, ctypes.byref(size)):
+            raise ctypes.WinError(ctypes.get_last_error())
+        if size.value > limit:
+            raise ValueError('Output exceeds bounded capture limit; preserve original')
+        buffer = ctypes.create_string_buffer(size.value + 1)
+        read = w.DWORD()
+        if not K.ReadFile(handle, buffer, size.value, ctypes.byref(read), None):
+            raise ctypes.WinError(ctypes.get_last_error())
+        if read.value != size.value:
+            raise ValueError('Output changed during read')
+        return buffer.raw[:read.value]
+    finally:
+        K.CloseHandle(handle)
+
+handle = K.OpenProcess(0x100000 | 0x1000, False, 228)
+if not handle:
+    raise ctypes.WinError(ctypes.get_last_error())
+try:
+    times = [w.FILETIME() for _ in range(4)]
+    if not K.GetProcessTimes(handle, *(ctypes.byref(t) for t in times)):
+        raise ctypes.WinError(ctypes.get_last_error())
+    ticks = (times[0].dwHighDateTime << 32) | times[0].dwLowDateTime
+    creation_ms = (ticks - 116444736000000000) // 10000
+    assert creation_ms == 1794579976651, 'Original pytest identity mismatch'
+    save('test-observer-start.json', {'at': now(), 'pid': 228, 'creation_epoch_ms': creation_ms,
+         'scope': 'Existing test observation only; no restart, no collector resume'})
+    print('Holding original pytest process handle; waiting for natural completion.', flush=True)
+    while True:
+        result = K.WaitForSingleObject(handle, 1000)
+        if result == 0:
+            break
+        if result != 258:
+            raise ctypes.WinError(ctypes.get_last_error())
+    code = w.DWORD()
+    if not K.GetExitCodeProcess(handle, ctypes.byref(code)):
+        raise ctypes.WinError(ctypes.get_last_error())
+    receipt = {'at': now(), 'pid': 228, 'creation_epoch_ms': creation_ms,
+        'exit_code': code.value, 'termination': 'natural; observed through held original handle',
+        'candidate_sha': '4a27a00a7ef5e055c99b0724374506a867ae62e8',
+        'collector_finalization': 'NOT RUN: collector suspended for user-requested pause',
+        'wheel_tests': 'NOT RUN', 'sdist_tests': 'NOT RUN', 'formal_acceptance': False}
+    save('pytest-terminal-observation.json', receipt)
+    helpers = runpy.run_path('D:/agentsync-debug/m115-r2/s/tools/release_acceptance.py')
+    raw = shared_read(SCRATCH / 'tmprj49ebzx', helpers['MAX_LOG_BYTES'])
+    clean, redactions = helpers['redact_credentials'](raw.decode('utf-8', errors='replace'))
+    with (HERE / 'pytest-observed.log').open('x', encoding='utf-8') as stream:
+        stream.write(clean)
+    junit_target = HERE / 'pytest-observed.junit.xml'
+    assert not junit_target.exists()
+    junit_redactions = helpers['persist_junit'](SCRATCH / 'junit.xml', junit_target)
+    root = ET.parse(junit_target).getroot()
+    cases = root.findall('.//testcase')
+    failures = sum(case.find('failure') is not None for case in cases)
+    errors = sum(case.find('error') is not None for case in cases)
+    skips = sum(case.find('skipped') is not None for case in cases)
+    ids = [(case.get('classname'), case.get('name')) for case in cases]
+    evidence = receipt | {'case_count': len(cases), 'unique_case_count': len(set(ids)),
+        'passed': len(cases)-failures-errors-skips, 'failures': failures, 'errors': errors,
+        'skipped': skips, 'log_redactions': redactions, 'junit_redactions': junit_redactions,
+        'files': {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in (HERE / 'pytest-observed.log', junit_target)}}
+    save('pytest-evidence.json', evidence)
+    print(json.dumps(evidence), flush=True)
+finally:
+    K.CloseHandle(handle)

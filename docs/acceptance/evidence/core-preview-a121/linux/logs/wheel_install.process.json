@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m121l/w/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m121l/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--",
+      "/root/amadeus-m121l/agentsync_local-0.3.0a121-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m121l/run",
+    "started_at": "2026-11-17T05:08:51.657368+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m121l/w/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///root/amadeus-m121l/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--",
+      "/root/amadeus-m121l/agentsync_local-0.3.0a121-py3-none-any.whl"
+    ],
+    "cwd": "/root/amadeus-m121l/run",
+    "exit_code": 0,
+    "started_at": "2026-11-17T05:08:51.657368+00:00",
+    "finished_at": "2026-11-17T05:08:52.341240+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "93502005f005cedca4a0e505fe3601817b269e1d8d646e84b0f7d51a5c12e93c",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

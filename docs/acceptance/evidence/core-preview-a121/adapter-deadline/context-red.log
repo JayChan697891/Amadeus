@@ -1,0 +1,53 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________ test_early_timer_preserves_one_launch_wait[deadline] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002593630B2F0>
+outcome = 'deadline'
+
+    @pytest.mark.parametrize("outcome", ["deadline", "external-cancel", "swallowed-cancel"])
+    async def test_early_timer_preserves_one_launch_wait(monkeypatch, outcome):
+        loop = asyncio.get_running_loop()
+        clock = ClockLoop(loop)
+        monkeypatch.setattr(loop, "time", clock.time)
+        monkeypatch.setattr(
+            loop,
+            "call_at",
+            lambda when, callback, *args, context=None: clock.call_at(when, callback, *args),
+        )
+        monkeypatch.setattr(
+            launch_context, "get_clock_info", lambda _: SimpleNamespace(resolution=0.025), raising=False
+        )
+        task = AdapterTask("p", "s", "t", "r")
+        deadline = clock.now + 1
+        context = launch_context._new_launch_context(task, loop, deadline, lambda: False)
+        started = cancelled = 0
+    
+        async def wait():
+            nonlocal started, cancelled
+            started += 1
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                cancelled += 1
+                if outcome == "swallowed-cancel":
+                    return "late grant"
+                raise
+    
+        job = asyncio.create_task(context.wait_before_start(task, wait))
+        try:
+            await asyncio.sleep(0)
+            assert started == 1 and len(clock.timers) == 1
+            timer = clock.timers[0]
+            assert timer.when == deadline
+            clock.fire(timer, deadline - 0.006)
+            await asyncio.sleep(0)
+>           assert not job.done() and cancelled == 0
+E           AssertionError: assert (not True)
+E            +  where True = <built-in method done of _asyncio.Task object at 0x0000025936767F40>()
+E            +    where <built-in method done of _asyncio.Task object at 0x0000025936767F40> = <Task finished name='Task-2' coro=<LaunchContext.wait_before_start() done, defined at F:\syuc\amadeus-m6-single\src\agentsync\adapters\launch_context.py:62> exception=_LaunchBlocked('Local launch observation prevents this attempt.')>.done
+
+tests\unit\test_launch_context_deadline.py:51: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_launch_context_deadline.py::test_early_timer_preserves_one_launch_wait[deadline]
+1 failed in 0.14s

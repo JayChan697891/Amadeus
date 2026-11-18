@@ -1,0 +1,67 @@
+import hashlib
+import json
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+base = Path('D:/agentsync-debug/m122l')
+run = base / 'harvest'
+windows = Path('D:/agentsync-debug/m122p/run')
+result = json.loads((run / 'result.json').read_bytes())
+win = json.loads((windows / 'result.json').read_bytes())
+transfer = json.loads((base / 'host/transfer-summary.json').read_bytes())
+execution = json.loads((base / 'host/execution-result.json').read_bytes())
+assert result['status'] == 'pass' and execution['exit_code'] == 0
+assert result['product_source_commit'] == win['product_source_commit'] == '5232e9e8bd33a949f7ffdc68410cd614a297af66'
+assert result['version'] == '0.3.0a122' and result['artifacts'] == win['artifacts']
+assert result['boot_id'] == transfer['boot_id'] == 'e72dc8f6-8e84-40ea-9ba2-3ccd1b33fb76'
+assert result['input_hashes_unchanged'] and result['source_copy_unchanged']
+assert transfer['source_files_rehashed'] == 3992 and not transfer['workers'] and not transfer['containers']
+assert len(result['checks']) == len(result['native_receipt_sha256']) == 16
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+for row in transfer['files']:
+    path = run / row['path']
+    assert path.stat().st_size == row['bytes'] and sha(path) == row['sha256']
+for check in result['checks']:
+    receipt_path = run / 'logs' / (check['id'] + '.process.json')
+    receipt = json.loads(receipt_path.read_bytes())
+    assert receipt['phase'] == 'finished' and receipt['outcome'] == 'exited'
+    assert receipt['result'] == check and check['exit_code'] == 0 and check['status'] == 'pass'
+    assert not check['log_truncated'] and sha(run / check['log']) == check['log_sha256']
+    assert sha(receipt_path) == result['native_receipt_sha256'][receipt_path.name]
+
+def cases(path):
+    rows = {}
+    for node in ET.parse(path).iter('testcase'):
+        key = (node.get('classname'), node.get('name'))
+        assert all(key) and key not in rows
+        rows[key] = next((k for k in ('failure', 'error', 'skipped') if node.find(k) is not None), 'passed')
+    return rows
+
+observed = {}
+for kind in ('wheel', 'sdist'):
+    current = cases(run / (kind + '-focused.xml'))
+    original = cases(windows / (kind + '-focused.xml'))
+    assert current == original and len(current) == 97 and set(current.values()) == {'passed'}
+    assert sha(run / (kind + '-focused.xml')) == result['junit'][kind]['sha256']
+    identities = json.dumps(sorted(current), ensure_ascii=True, separators=(',', ':'))
+    assert hashlib.sha256(identities.encode('ascii')).hexdigest() == result['junit'][kind]['case_identities_sha256']
+    assert result['junit'][kind]['credential_redactions'] == transfer['installs'][kind]['xml_redactions'] == 0
+    assert transfer['installs'][kind]['runtime_members_rehashed'] == 97
+    assert (run / 'logs' / (kind + '_origin_before.log')).read_bytes() == (run / 'logs' / (kind + '_origin_after.log')).read_bytes()
+    observed[kind] = {'unique_cases': 97, 'passed': 97, 'identical_windows_identities_and_outcomes': True}
+
+review = {
+    'checks': 16, 'package_cases': observed, 'source_files_rehashed': 3992,
+    'runtime_members_per_install': 97, 'original_records': len(transfer['files']),
+    'original_bytes': sum(row['bytes'] for row in transfer['files']),
+    'same_windows_archives': True, 'raw_to_public_verified': transfer['raw_to_public_checked'],
+    'workers': transfer['workers'], 'containers': transfer['containers'],
+    'formal_release': 'BLOCKED', 'real_clients': 'NOT RUN', 'full_regression': 'NOT RUN',
+}
+with (base / 'root-review.json').open('x', encoding='utf-8') as stream:
+    json.dump(review, stream, indent=2)
+    stream.write('\n')
+print(json.dumps(review))

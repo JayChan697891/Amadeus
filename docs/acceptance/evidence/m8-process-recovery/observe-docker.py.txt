@@ -1,0 +1,46 @@
+"""Read-only post-run inspection of isolated test databases and the local daemon."""
+import json
+import os
+import sqlite3
+import subprocess
+from pathlib import Path
+
+base = Path('/root/amadeus-process-recovery-07aba94')
+rows = []
+proofs = 0
+for database in sorted((base / 'test-tmp').glob('*/core/agentsync.db')):
+    if database.parent.parent.is_symlink():
+        continue
+    with sqlite3.connect(database.as_uri() + '?mode=ro', uri=True) as connection:
+        proofs += connection.execute('SELECT COUNT(*) FROM task_verifications').fetchone()[0]
+        for execution_id, phase, assessment, raw in connection.execute(
+                'SELECT id,phase,assessment,result_json FROM candidate_executions'):
+            result = json.loads(raw)
+            selected = {key: result[key] for key in (
+                'backend', 'source_sha256', 'container_id', 'cleanup_confirmed',
+                'passed_case_count', 'expected_case_count')}
+            selected['isolation_checks'] = result['isolation']['checks']
+            rows.append({'fixture': database.parent.parent.name, 'execution_id': execution_id,
+                'phase': phase, 'assessment': assessment, **selected})
+assert len(rows) == 7 and proofs == 5
+assert sum(row['assessment'] == 'passed' for row in rows) == 6
+assert sum(row['assessment'] == 'failed' for row in rows) == 1
+assert all(row['phase'] == 'finished' and row['backend'] == 'local-linux-docker'
+    and row['cleanup_confirmed'] is True and row['isolation_checks']
+    and all(row['isolation_checks'].values()) for row in rows)
+config = base / 'docker-observer-config'
+config.mkdir(mode=0o700)
+from agentsync.verification.docker import _trusted_cli
+observed = subprocess.run([_trusted_cli(), '--host', 'unix:///var/run/docker.sock',
+    '--config', str(config), 'container', 'ls', '--all', '--no-trunc', '--format', '{{.ID}}'],
+    env={'PATH': '/usr/bin:/bin', 'HOME': str(config), 'LC_ALL': 'C'},
+    capture_output=True, text=True, check=True, timeout=15)
+assert all(row['container_id'] not in observed.stdout.splitlines() for row in rows)
+os.umask(0o077)
+with (base / 'docker-observation.json').open('x', encoding='utf-8') as out:
+    json.dump({'product_sha': '09425dafd00a6c73bac29a0a2f8329e22659e630',
+        'method': 'Read-only post-run isolated fixture SQLite inspection plus local Docker container listing',
+        'model_calls': 0, 'executions': rows, 'verified_task_proofs': proofs,
+        'all_recorded_containers_absent': True}, out, indent=2)
+    out.write('\n')
+print(json.dumps({'executions': len(rows), 'verified_task_proofs': proofs, 'all_recorded_containers_absent': True}))

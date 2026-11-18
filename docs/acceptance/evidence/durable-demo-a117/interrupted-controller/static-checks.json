@@ -1,0 +1,37 @@
+[
+  {
+    "argv": [
+      "D:/agentsync-debug/m117w/e/Scripts/python.exe",
+      "-m",
+      "ruff",
+      "check",
+      "--config",
+      "F:\\syuc\\amadeus-m6-single\\pyproject.toml",
+      "live.py",
+      "cleanup.py",
+      "test_live.py",
+      "test_cleanup.py"
+    ],
+    "exit_code": 0,
+    "stdout": "All checks passed!\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "D:/agentsync-debug/m117w/e/Scripts/python.exe",
+      "-m",
+      "ruff",
+      "format",
+      "--config",
+      "F:\\syuc\\amadeus-m6-single\\pyproject.toml",
+      "--check",
+      "live.py",
+      "cleanup.py",
+      "test_live.py",
+      "test_cleanup.py"
+    ],
+    "exit_code": 0,
+    "stdout": "4 files already formatted\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "observed_at": "2026-11-16T10:00:10.5434476Z",
+  "native_session_id": 62523,
+  "controller_pid": 26492,
+  "controller_created_utc": "2026-11-16T09:59:15.7431570Z",
+  "controller_executable": "C:\\Users\\JayChan\\AppData\\Roaming\\uv\\python\\cpython-3.12.16-windows-x86_64-none\\python.exe",
+  "driver_sha256": "2a078a8af0a525a23f53dbf48c13d0ffd7fb6556a81b0e60376fae2c0a823a9d",
+  "source_commit": "7f0ba0a4ffbc55262d8a01d6203d7cb7b5cf3ab5",
+  "scope": "Windows 3.12 development preview, wheel and sdist affected-install checks"
+}

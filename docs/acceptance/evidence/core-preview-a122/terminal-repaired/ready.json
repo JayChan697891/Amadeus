@@ -1,0 +1,79 @@
+{
+  "created_at": "2026-11-18T00:59:20.780766+00:00",
+  "fixture": "/root/amadeus-terminal-repaired-a122-20261118",
+  "project_id": "4b3c5f79-537a-4673-b3d5-325744f988b3",
+  "private_owner_file": "/root/amadeus-terminal-repaired-a122-20261118/private-owner.json",
+  "command": [
+    "/root/amadeus-m122l/w/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-terminal-repaired-a122-20261118/verified_codex_task.py",
+    "--root",
+    "/root/amadeus-terminal-repaired-a122-20261118",
+    "--project-id",
+    "4b3c5f79-537a-4673-b3d5-325744f988b3",
+    "--task",
+    "/root/amadeus-terminal-repaired-a122-20261118/task.txt",
+    "--cases",
+    "/root/amadeus-terminal-repaired-a122-20261118/cases.json",
+    "--codex",
+    "/root/amadeus-codex-linux-0167/bin/codex",
+    "--codex-sha256",
+    "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0",
+    "--codex-version",
+    "0.167.0-alpha.3.2",
+    "--codex-home",
+    "/root/amadeus-terminal-repaired-a122-20261118/private-home",
+    "--image-id",
+    "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+  ],
+  "example_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+  "initializer_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+  "example_sha256": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "installed_members": 97,
+  "binary_sha256": "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0",
+  "cli_version": "codex-cli 0.167.0-alpha.3.2",
+  "image_id": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "candidate_sha256": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44",
+  "candidate_bytes": 149,
+  "cases": [
+    {
+      "input": [
+        2,
+        3
+      ],
+      "expected": 5
+    },
+    {
+      "input": [
+        -4,
+        1
+      ],
+      "expected": -3
+    }
+  ],
+  "files_sha256": {
+    "verified_codex_task.py": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "candidate-source.json": "3467118a6014942484422ccbca740eff02ef82caf702fe40e08f0a96ec8d045f",
+    "task.txt": "587059dcead676f6a79a3723d648e07ba784696ce2ad675890b261978e75bc0b",
+    "cases.json": "51c503c8b452f08c4224b1f4ebcff859cf5f6daa734abe742923926d73c7ab90"
+  },
+  "prepare_sha256": "61adbb8ae7735abc75c838899e65af5cbb52747164c0aaa36d8cccb220480720",
+  "initializer_result": {
+    "project_id": "4b3c5f79-537a-4673-b3d5-325744f988b3",
+    "root": "/root/amadeus-terminal-repaired-a122-20261118",
+    "private_owner_file": "/root/amadeus-terminal-repaired-a122-20261118/private-owner.json"
+  },
+  "max_model_calls": 2,
+  "max_candidate_executions": 1,
+  "retry_allowed": false,
+  "model_calls": 0,
+  "auth_copied": false,
+  "candidate_executions": 0,
+  "fresh_authorization_required": true,
+  "candidate_execution_authorized": false,
+  "formal_release": "BLOCKED"
+}

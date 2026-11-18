@@ -1,0 +1,215 @@
+{
+  "package_version": "0.3.0a116",
+  "scope": "local_core_claim_contention",
+  "diagnostic_only": true,
+  "formal_acceptance": false,
+  "real_client_verified": false,
+  "workload": {
+    "workers": 2,
+    "rounds": 20,
+    "claims": 40,
+    "timing_scope": "claims_after_barrier_excluding_setup_verification_cleanup",
+    "throughput_denominator": "sum_of_parent_round_spans_including_process_dispatch",
+    "worker_mode": "spawned_processes",
+    "requested_transports": [
+      "core",
+      "loopback_http"
+    ]
+  },
+  "claim_latency_ms": {
+    "p50": 6.389900001522619,
+    "p95": 25.119400001130998,
+    "p99": 30.03500000340864
+  },
+  "timed_workload_seconds": 0.6844019999989541,
+  "throughput_claim_attempts_per_second": 58.445182802009825,
+  "declared_p95_budget_ms": 1000.0,
+  "p95_budget_passed": true,
+  "round_observations": [
+    {
+      "round": 1,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 2,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 3,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 4,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 5,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 6,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 7,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 8,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 9,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 10,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 11,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 12,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 13,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 14,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 15,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 16,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 17,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 18,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 19,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    },
+    {
+      "round": 20,
+      "winners": 1,
+      "expected_version_conflicts": 1,
+      "unexpected_errors": 0,
+      "winner_transport": "core",
+      "http_observed_claims": 1
+    }
+  ],
+  "unexpected_errors": {},
+  "claim_audit": {
+    "expected": 40,
+    "observed": 40,
+    "success": 20,
+    "denied": 20,
+    "missing": 0,
+    "duplicate": 0,
+    "unexpected": 0,
+    "mismatch": 0
+  },
+  "functional_checks": {
+    "persisted_winners": true,
+    "cancelled_status_versions": true,
+    "persisted_task_count": true,
+    "sqlite_integrity": true,
+    "foreign_keys": true,
+    "claim_audit_complete": true,
+    "rounds_completed": true,
+    "claims_measured": true,
+    "single_winner_each_round": true,
+    "expected_conflicts": true,
+    "valid_timing": true
+  },
+  "passed": true
+}

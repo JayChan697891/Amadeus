@@ -1,0 +1,27 @@
+{
+  "phase": "after",
+  "argv": [
+    "/root/amadeus-m122l/w/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "/root/amadeus-terminal-input-20261118-after/tmp",
+    "--junitxml",
+    "/root/amadeus-terminal-input-20261118-after/junit.xml",
+    "/root/amadeus-terminal-input-20261118-after/tests/integration/test_verified_codex_terminal.py"
+  ],
+  "exit_code": 0,
+  "inputs": {
+    "examples/verified_codex_task.py": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233",
+    "tests/integration/test_verified_codex_terminal.py": "89a148dd33324440e1e8da35256d4ea17d16377a0c07b783920383144627a5fe"
+  },
+  "runtime_members_unchanged": 97,
+  "real_model_calls": 0,
+  "real_candidate_executions": 0
+}

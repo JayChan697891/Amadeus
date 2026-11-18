@@ -1,0 +1,45 @@
+from pathlib import Path
+from datetime import datetime,timezone
+import hashlib,json,socket,subprocess,sys,threading
+sys.path.insert(0,'/root/amadeus-linux-readonly-source-a2634ec/source')
+from agentsync.adapters.base import AdapterTask
+from agentsync.adapters.codex_invocation import CodexHostProfile,prepare_invocation
+base=Path('/root/amadeus-codex-linux-preflight/portable-a2634ec')
+root=base/'single-task-workspace';home=base/'single-task-home'
+binary=Path('/root/amadeus-codex-linux-0167/bin/codex')
+with binary.open('rb') as stream:binary_sha=hashlib.file_digest(stream,'sha256').hexdigest()
+profile=CodexHostProfile('fixture-project','fixture-session',binary,root,binary_sha,expected_cli_version='0.167.0-alpha.3.2',linux_readonly=True)
+plan=prepare_invocation(profile,AdapterTask('fixture-project','fixture-session','boundary','boundary','No model request',30),environment={'PATH':'/usr/bin:/bin','HOME':str(home),'CODEX_HOME':str(home),'TEMP':str(home),'TMP':str(home)})
+configs=[value for i,arg in enumerate(plan.argv) if arg=='-c' for value in ('-c',plan.argv[i+1])]
+boundary=[str(binary),*configs,'sandbox','--permission-profile','amadeus_readonly','-C',str(root),'--']
+canary=base/'outside-read-canary.txt'
+assert canary.read_text()=='Known synthetic fixture; not a credential.\n'
+def run(command):return subprocess.run(command,cwd=root,env=plan.child_env(),capture_output=True,timeout=20)
+outside=run([*boundary,'/bin/sh','-c',f'test -r baseline.txt || exit 40; test ! -r {canary} || exit 41; printf AMADEUS_OUTSIDE_READ_DENIED'])
+assert outside.returncode==0 and outside.stdout==b'AMADEUS_OUTSIDE_READ_DENIED',outside.stderr.decode()
+accepted=[]
+with socket.socket() as listener:
+ listener.bind(('127.0.0.1',0));listener.listen(2);listener.settimeout(3)
+ port=listener.getsockname()[1]
+ def serve():
+  try:
+   while True:
+    connection,_=listener.accept()
+    with connection:accepted.append(True)
+  except TimeoutError:pass
+ worker=threading.Thread(target=serve);worker.start()
+ program="import socket,json\ns=None\ntry:\n s=socket.socket();s.settimeout(2);s.connect(('127.0.0.1',"+str(port)+"));print(json.dumps({'started':True,'connected':True}))\nexcept OSError as e:\n print(json.dumps({'started':True,'connected':False,'errno':e.errno}))\nfinally:\n if s is not None:s.close()"
+ command=['/usr/bin/python3','-I','-c',program]
+ control=run(command)
+ isolated=run([*boundary,*command])
+ worker.join(5)
+ assert not worker.is_alive()
+assert control.returncode==0 and isolated.returncode==0,(control.stderr.decode(),isolated.stderr.decode())
+control_result=json.loads(control.stdout);isolated_result=json.loads(isolated.stdout)
+assert control_result=={'started':True,'connected':True}
+assert isolated_result['started'] and not isolated_result['connected'] and isolated_result['errno']==1
+assert len(accepted)==1
+assert not (home/'auth.json').exists()
+result={'product_sha':'a2634ecb9a65b666f617942fb3deb9f67fdd2a76','timestamp':datetime.now(timezone.utc).isoformat(),'scope':'Same adapter-generated named profile; known local commands in dedicated fixtures','outside_fixture_read_denied':True,'project_baseline_readable':True,'network_control':control_result,'network_isolated':isolated_result,'listener_connections':len(accepted),'external_targets':0,'model_calls':0,'credentials_present':False,'formal_release':'BLOCKED'}
+with (base/'boundary-probe.json').open('x') as out:json.dump(result,out,indent=2)
+print(json.dumps(result))

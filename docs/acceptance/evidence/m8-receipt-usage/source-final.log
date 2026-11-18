@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m8-receipt-usage-a113-sol\pytest-cache
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 80 items
+
+tests\integration\test_relay_usage.py ...............                    [ 18%]
+tests\integration\test_controlled_relay_pipeline.py ..............       [ 36%]
+tests\integration\test_relay_owner_status.py .                           [ 37%]
+tests\integration\test_relay_wave_journal.py .                           [ 38%]
+tests\integration\test_codex_proposal_relay_queue.py ................... [ 62%]
+....                                                                     [ 67%]
+tests\unit\test_usage.py ...............                                 [ 86%]
+tests\unit\test_usage_checkpoint_storage.py ..                           [ 88%]
+tests\unit\test_usage_cli.py ....                                        [ 93%]
+tests\unit\test_relay_execution_budget.py ..                             [ 96%]
+tests\integration\test_verified_proposal_flow.py ...                     [100%]
+
+- generated xml file: D:\agentsync-debug\m8-receipt-usage-a113-sol\source-final-junit.xml -
+======================= 80 passed in 140.95s (0:02:20) ========================

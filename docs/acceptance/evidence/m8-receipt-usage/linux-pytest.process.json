@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "receipt_usage_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-usage-95244e2/installed/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-usage-95244e2/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-usage-95244e2/source",
+    "started_at": "2026-11-13T09:44:06.264782+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "receipt_usage_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-usage-95244e2/installed/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-usage-95244e2/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-usage-95244e2/source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T09:44:06.264782+00:00",
+    "finished_at": "2026-11-13T09:48:48.277191+00:00",
+    "log": "logs/receipt_usage_pytest.log",
+    "log_sha256": "395253b3c718cb52d2c681ccdb663f8018d576cee6a6a7f7a4574d541cb8c07f",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

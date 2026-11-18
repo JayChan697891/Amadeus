@@ -1,0 +1,93 @@
+"""Finish unrun package checks; preserve the prior source run as separate evidence."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+
+BASE = Path(__file__).resolve().parent
+SOURCE = Path('D:/agentsync-debug/m115-r2/s')
+PRIOR = Path('F:/syuc/checkpoints/amadeus-safe-pause-20261113T144420Z')
+OLD_RUN = Path('D:/agentsync-debug/m115-r2/windows-312/release-20261113T142616Z-1eea95dd39a3')
+WHEELS = Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse')
+COMMIT = '4a27a00a7ef5e055c99b0724374506a867ae62e8'
+
+def save(name, data):
+    with (BASE/name).open('x', encoding='utf-8') as stream:
+        json.dump(data, stream, indent=2)
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def git(*args):
+    return subprocess.check_output(['git','-C',str(SOURCE),*args], timeout=30).decode().strip()
+
+assert sys.version_info[:2] == (3,12)
+assert git('rev-parse','HEAD') == COMMIT and not git('status','--porcelain')
+assert not (BASE/'attempt.json').exists()
+assert digest(SOURCE/'tools/release_acceptance.py') == '5f319a112ee7eefb50d3b3231f3135c142558106a1b0b595d43ec0774dc62df1'
+prior = json.loads((PRIOR/'pytest-evidence.json').read_text(encoding='utf-8'))
+assert prior['candidate_sha'] == COMMIT and prior['exit_code'] == 0
+assert prior['case_count'] == prior['unique_case_count'] == 2461
+assert prior['failures'] == prior['errors'] == 0
+for name, expected in prior['files'].items():
+    assert digest(PRIOR/name) == expected
+snapshot = json.loads((OLD_RUN/'source-snapshot.json').read_text(encoding='utf-8'))
+for item in snapshot:
+    assert digest(SOURCE/item['path']) == item['sha256'], item['path']
+assert json.loads((OLD_RUN.parent.parent/'bootstrap-result.json').read_text(encoding='utf-8'))['exit_code'] == 125
+
+for key in tuple(os.environ):
+    if key.upper().startswith(('OPENAI_','ANTHROPIC_','CLAUDE_','CURSOR_','AGENTSYNC_','CODEX_','GIT_','PYTEST_','PIP_','GOOGLE_','GEMINI_','DEEPSEEK_')) or key.upper() in ('PYTHONPATH','PYTHONHOME') or key.upper().endswith(('API_KEY','ACCESS_TOKEN','REFRESH_TOKEN')):
+        os.environ.pop(key,None)
+for name in ('home','tmp'):
+    (BASE/name).mkdir()
+os.environ.update(HOME=str(BASE/'home'), USERPROFILE=str(BASE/'home'), CODEX_HOME=str(BASE/'home'),
+    TEMP=str(BASE/'tmp'), TMP=str(BASE/'tmp'), TMPDIR=str(BASE/'tmp'),
+    GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT='0',
+    PYTHONDONTWRITEBYTECODE='1', PYTHONNOUSERSITE='1', PYTHONUNBUFFERED='1',
+    PIP_NO_INDEX='1', PIP_CONFIG_FILE=os.devnull, PIP_DISABLE_PIP_VERSION_CHECK='1')
+sys.dont_write_bytecode=True
+sys.path.insert(0,str(SOURCE))
+from tools import release_acceptance as collector
+
+original = collector._execute_check
+def execute_check(check_id, command, repo, run, scratch, pytest_timeout=900):
+    if check_id != 'pytest':
+        return original(check_id, command, repo, run, scratch, pytest_timeout)
+    assert repo == SOURCE.resolve()
+    # Do not manufacture a finished original collector receipt or claim a new run.
+    evidence = run/'prior-source-observation'
+    evidence.mkdir()
+    for name in ('pytest-evidence.json','pytest-terminal-observation.json','pytest-observed.log','pytest-observed.junit.xml','final-preservation-check.json'):
+        shutil.copyfile(PRIOR/name,evidence/name)
+    shutil.copyfile(OLD_RUN/'source-snapshot.json',evidence/'source-snapshot.json')
+    shutil.copyfile(PRIOR/'pytest-observed.junit.xml',scratch/'junit.xml')
+    return {'id':'pytest','status':'not_run',
+        'reason':'Not rerun during package continuation. Prior exact-source process passed; independent observation retained separately, not promoted to a canonical collector receipt.',
+        'prior_source_evidence':'prior-source-observation/pytest-evidence.json',
+        'prior_source_evidence_sha256':digest(evidence/'pytest-evidence.json')}
+
+collector._execute_check=execute_check
+state={'phase':'started','pid':os.getpid(),'started_at':datetime.now(timezone.utc).isoformat(),
+       'commit_sha':COMMIT,'scope':'Unrun build/static/package checks; prior source observation kept separate',
+       'source_tests_reexecuted':False,'formal_release':'BLOCKED','automatic_retry':False,
+       'helper_sha256':digest(Path(__file__))}
+save('attempt.json',state)
+print(json.dumps(state),flush=True)
+run=collector.collect(SOURCE,BASE/'reports',run_checks=True,package_install=True,sdist_install=True,
+    scratch_root=Path('D:/agentsync-debug/t115resume'),pytest_timeout=3600,
+    offline_wheelhouse=WHEELS,license_inventory=True)
+report=json.loads((run/'report.json').read_text(encoding='utf-8'))
+failures=[{'id':c['id'],'status':c['status']} for c in report['checks'] if c['id']!='pytest' and c['status']!='pass']
+assert next(c for c in report['checks'] if c['id']=='pytest')['status']=='not_run'
+assert report['release_gate']['formal_acceptance'] is False
+assert report['release_gate']['local_checks_passed'] is False
+state.update(phase='finished',finished_at=datetime.now(timezone.utc).isoformat(),report=str(run/'report.json'),
+             unsuccessful_remaining_checks=failures,source_clean=not git('status','--porcelain'))
+save('result.json',state)
+print(json.dumps(state),flush=True)
+raise SystemExit(1 if failures or not state['source_clean'] else 0)

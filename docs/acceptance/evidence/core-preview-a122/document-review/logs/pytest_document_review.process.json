@@ -1,0 +1,56 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "pytest_document_review",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_review_relay_document.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\m122docreview\\t\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m122docreview\\t\\p",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m122docreview\\t\\pytest-cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+    "started_at": "2026-11-18T04:45:10.077602+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "pytest_document_review",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_review_relay_document.py",
+      "--junitxml",
+      "D:\\agentsync-debug\\m122docreview\\t\\junit.xml",
+      "--basetemp",
+      "D:\\agentsync-debug\\m122docreview\\t\\p",
+      "-o",
+      "cache_dir=D:\\agentsync-debug\\m122docreview\\t\\pytest-cache"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-18T04:45:10.077602+00:00",
+    "finished_at": "2026-11-18T04:45:19.312211+00:00",
+    "log": "logs/pytest_document_review.log",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

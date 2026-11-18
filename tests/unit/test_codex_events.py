@@ -45,6 +45,113 @@ def test_complete_single_turn_requires_exit_zero_and_keeps_protocol_scope():
     assert report.verification == "unverified"
 
 
+def startup_warning():
+    return {
+        "type": "item.completed",
+        "item": {"id": "warning-1", "type": "error", "message": "private startup detail"},
+    }
+
+
+def test_completed_startup_warning_is_counted_without_exposing_its_message():
+    events = list(map(json.loads, complete().splitlines()))
+    events.insert(1, startup_warning())
+    report = parse_codex_jsonl(lines(*events), exit_code=0)
+    assert report.state == "succeeded"
+    assert report.agent_messages == ("Hello",)
+    assert (report.event_count, report.item_event_count, report.non_message_item_event_count) == (
+        5,
+        2,
+        1,
+    )
+    assert "private startup detail" not in repr(report)
+    assert report.real_client_verified is False
+    assert report.verification == "unverified"
+    assert report.tool_item_event_count == 0
+
+
+def test_reasoning_and_startup_warning_do_not_count_as_tool_events():
+    events = list(map(json.loads, complete().splitlines()))
+    events.insert(1, startup_warning())
+    events.insert(3, {"type": "item.completed", "item": {"id": "r1", "type": "reasoning"}})
+    report = parse_codex_jsonl(lines(*events), exit_code=0)
+    assert report.state == "succeeded"
+    assert report.agent_messages == ("Hello",)
+    assert report.non_message_item_event_count == 2
+    assert report.tool_item_event_count == 0
+
+
+@pytest.mark.parametrize("exit_code", [0, 7, None])
+def test_startup_warning_cannot_supply_a_missing_turn(exit_code):
+    report = parse_codex_jsonl(
+        lines({"type": "thread.started", "thread_id": "t"}, startup_warning()),
+        exit_code=exit_code,
+    )
+    assert report.state == ("failed" if exit_code == 7 else "incomplete")
+    assert report.agent_messages == ()
+    assert report.usage is None
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "missing_thread",
+        "started",
+        "updated",
+        "agent_message",
+        "command_execution",
+        "duplicate",
+        "reuse_in_turn",
+        "early_completion",
+        "missing_message",
+        "nonstring_message",
+    ],
+)
+def test_startup_warning_exception_preserves_order_and_shape_checks(change):
+    events = list(map(json.loads, complete().splitlines()))
+    warning = startup_warning()
+    events.insert(1, warning)
+    if change == "missing_thread":
+        events.pop(0)
+    elif change in {"started", "updated"}:
+        warning["type"] = f"item.{change}"
+    elif change in {"agent_message", "command_execution"}:
+        warning["item"]["type"] = change
+        warning["item"]["text"] = "Hello"
+    elif change == "duplicate":
+        events.insert(2, startup_warning())
+    elif change == "reuse_in_turn":
+        events[3]["item"]["id"] = "warning-1"
+    elif change == "early_completion":
+        events.pop(2)
+        events.pop(2)
+    elif change == "missing_message":
+        del warning["item"]["message"]
+    else:
+        warning["item"]["message"] = 3
+    with pytest.raises(AgentSyncError) as error:
+        parse_codex_jsonl(lines(*events), exit_code=0)
+    assert error.value.code == (
+        "validation_error"
+        if change in {"missing_message", "nonstring_message"}
+        else "invalid_event_sequence"
+    )
+
+
+@pytest.mark.parametrize("kind", ["error", "turn.failed"])
+def test_startup_warning_does_not_mask_fatal_errors(kind):
+    events = list(map(json.loads, complete().splitlines()))
+    events.insert(1, startup_warning())
+    events[-1] = (
+        {"type": "error", "message": "private fatal detail"}
+        if kind == "error"
+        else {"type": "turn.failed", "error": {"message": "private fatal detail"}}
+    )
+    report = parse_codex_jsonl(lines(*events), exit_code=0)
+    assert report.state == "failed"
+    assert report.error_code == "upstream_error"
+    assert "private" not in repr(report)
+
+
 @pytest.mark.parametrize("exit_code,state", [(7, "failed"), (None, "incomplete")])
 def test_exit_observation_prevents_protocol_only_success(exit_code, state):
     report = parse_codex_jsonl(complete(), exit_code=exit_code)
@@ -286,6 +393,7 @@ def test_documented_non_message_items_are_counted_without_content_projection():
     report = parse_codex_jsonl(lines(*events, {"type": "turn.completed"}), exit_code=0)
     assert report.state == "succeeded"
     assert report.non_message_item_event_count == 7
+    assert report.tool_item_event_count == 4
     assert report.agent_messages == ()
     assert "private tool content" not in repr(report)
 

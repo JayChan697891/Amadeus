@@ -1,0 +1,6 @@
+{
+  "at": "2026-11-14T08:12:33.480585+00:00",
+  "exit_code": 0,
+  "output": "{\"at\": \"2026-11-14T08:12:32.285995+00:00\", \"pid\": 3818, \"command\": [\"/root/jobs-env/bin/python\", \"-I\", \"-B\", \"/root/amadeus-m115-r3/m115-candidate-queue.py\", \"--base\", \"/root/amadeus-m115-r3\", \"--manifest-sha256\", \"88295116f718d3fffaabd219e592de841a216518c7b2f4eb18fc29c0d7f48a11\", \"--commit\", \"b6f05f0473591dc568be25591047fdea963ef86c\"], \"boot_id\": \"0b51437b-5bfb-46c4-a7fa-f7ffffc8cd96\", \"proc_stat\": \"3818 (python) R 3817 3818 3818 0 -1 4194304 408 0 0 0 0 0 0 0 20 0 1 0 91935 8417280 741 18446744073709551615 93908730130432 93908730130825 140735045825904 0 0 0 0 4 0 0 0 0 17 0 0 0 0 0 0 93908730142112 93908730142728 93908853755904 140735045832206 140735045832446 140735045832446 140735045832670 0\\n\", \"scope\": \"Actual remaining local matrix queue; no real models or paid APIs\", \"formal_release\": \"BLOCKED\"}\n",
+  "error": ""
+}

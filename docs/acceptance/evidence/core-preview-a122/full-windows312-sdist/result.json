@@ -1,0 +1,155 @@
+{
+  "scope": "Windows 3.12 full installed-sdist pytest suite on the original a122 environment",
+  "test_source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "product_runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "version": "0.3.0a122",
+  "inputs": {
+    "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122.tar.gz": {
+      "bytes": 6735308,
+      "sha256": "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"
+    },
+    "D:\\agentsync-debug\\m122fullw\\run\\wheel-junit.xml": {
+      "bytes": 409706,
+      "sha256": "96fac8fcc0d50f04c65124dede0ae9106453be4875e761e76b4350b490f43a27"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\source-manifest.json": {
+      "bytes": 762297,
+      "sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"
+    },
+    "D:\\agentsync-debug\\m122p\\source.zip": {
+      "bytes": 18232229,
+      "sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"
+    }
+  },
+  "driver_sha256": "5dce546c6a60f4c7bca04f2f0ba61f5cc003bc81d1e1d0fbb8ab7cf5b121d99e",
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "controller_pid": 23208,
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe",
+  "started_at": "2026-11-17T14:25:06.601802+00:00",
+  "status": "pass",
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_platform_matrix": "NOT RUN",
+  "phase": "full_suite_evidence",
+  "checks": [
+    {
+      "id": "sdist_origin_before",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, archive, members = map(Path, sys.argv[1:4])\narchive_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 12, 16)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = install.resolve() / \"Lib/site-packages\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == archive_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "D:\\agentsync-debug\\m122p\\d",
+        "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122.tar.gz",
+        "D:\\agentsync-debug\\m122p\\run\\runtime-members.json",
+        "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f",
+        "0.3.0a122"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122fullwd\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T14:25:10.255896+00:00",
+      "finished_at": "2026-11-17T14:25:10.678232+00:00",
+      "log": "logs/sdist_origin_before.log",
+      "log_sha256": "e43975dc9519ff0598e634dbd68415e80f5dff8d7f93e5532c55757d62393322",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "sdist_pytest",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pytest",
+        "D:\\agentsync-debug\\m122fullwd\\s\\tests",
+        "--junitxml",
+        "D:\\agentsync-debug\\m122fullwd\\t\\sdist-junit.xml",
+        "--basetemp",
+        "D:\\agentsync-debug\\m122fullwd\\t\\p",
+        "-o",
+        "cache_dir=D:\\agentsync-debug\\m122fullwd\\t\\pytest-cache"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122fullwd\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T14:25:10.678232+00:00",
+      "finished_at": "2026-11-17T15:14:13.118624+00:00",
+      "log": "logs/sdist_pytest.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process",
+      "timeout_seconds": 7200
+    },
+    {
+      "id": "sdist_origin_after",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122p\\d\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, archive, members = map(Path, sys.argv[1:4])\narchive_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 12, 16)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = install.resolve() / \"Lib/site-packages\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == archive.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == archive_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "D:\\agentsync-debug\\m122p\\d",
+        "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122.tar.gz",
+        "D:\\agentsync-debug\\m122p\\run\\runtime-members.json",
+        "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f",
+        "0.3.0a122"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122fullwd\\run",
+      "exit_code": 0,
+      "started_at": "2026-11-17T15:14:13.163534+00:00",
+      "finished_at": "2026-11-17T15:14:13.527432+00:00",
+      "log": "logs/sdist_origin_after.log",
+      "log_sha256": "e43975dc9519ff0598e634dbd68415e80f5dff8d7f93e5532c55757d62393322",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "source_files": 3992,
+  "runtime_members": 97,
+  "raw_junit_local": {
+    "bytes": 409813,
+    "sha256": "12bc3904b5cd0bd53fc1167154e9ee88576888b33b504ba5b60bcffe7961526d"
+  },
+  "junit": {
+    "path": "sdist-junit.xml",
+    "sha256": "a5a419615e6befd957481dc49df78ebb45c9456e668e4ffaa3d7c977287a4d71",
+    "credential_redactions": 6,
+    "tests": 2596,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 57
+  },
+  "raw_stdout_local": {
+    "bytes": 19299,
+    "sha256": "32bc8827b37392f27ac60c4cc31f54e70864ffa26149b21fde72b363d3628a9f"
+  },
+  "pytest_stdout": {
+    "path": "logs/sdist_pytest.stdout.log",
+    "sha256": "668742d0ff7381da01b127357fcbf9b0e94c4139413725c7cc58577636a3b932",
+    "credential_redactions": 0,
+    "truncated": false
+  },
+  "windows_wheel_comparison": {
+    "case_ids_match": true,
+    "same_outcomes": 2596,
+    "wheel_cases": 2596,
+    "sdist_cases": 2596,
+    "different_outcome_cases": []
+  },
+  "pinned_inputs_unchanged": true,
+  "frozen_source_unchanged": true,
+  "finished_at": "2026-11-17T15:14:16.221917+00:00"
+}

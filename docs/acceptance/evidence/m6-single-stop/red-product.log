@@ -1,0 +1,295 @@
+F..                                                                      [100%]
+================================== FAILURES ===================================
+_ test_controlled_relay_with_disposable_core_and_git[single-codex-cancelled] __
+
+tmp_path = WindowsPath('D:/agentsync-debug/m6-single-stop-9a65ed6/red-product-tmp/test_controlled_relay_with_dis0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C31634FB00>
+capsys = <_pytest.capture.CaptureFixture object at 0x000001C31634FC80>
+scenario = 'single-codex-cancelled'
+
+    @pytest.mark.parametrize(
+        "scenario",
+        [
+            "handoff-and-review",
+            "conflict-before-launch",
+            "restart-after-replies",
+            "viewer-before-admission",
+            "swapped-worktrees",
+            "unmet-dependency",
+            "single-codex-success",
+            "single-codex-mismatch",
+            "single-codex-denied",
+            "single-codex-cancelled",
+            "single-codex-timeout",
+            "single-codex-exit-failure",
+        ],
+    )
+    async def test_controlled_relay_with_disposable_core_and_git(
+        tmp_path, monkeypatch, capsys, scenario
+    ):
+        scratch = tmp_path.resolve()
+        source = scratch / "source"
+        source.mkdir()
+        git(source, "init", "--initial-branch=fixture-main")
+        git(source, "config", "user.name", "Relay fixture")
+        git(source, "config", "user.email", "fixture@example.invalid")
+        (source / "same.txt").write_text("original\n", encoding="utf-8")
+        git(source, "add", "same.txt")
+        git(source, "commit", "-m", "fixture baseline")
+        original = source_fingerprint(source)
+    
+        core = Core(scratch / "core")
+        owner = core.execute("create_project", {"name": "Fixture", "root_path": str(source)})
+        project_id = owner["project_id"]
+        actors = []
+        for name in ("First worker", "Second worker", "Independent reviewer"):
+            member = core.execute("register_agent", {**owner, "name": name})
+            owner_grant(core, owner, member)
+            actors.append(member)
+    
+        def call(member, operation, **payload):
+            return core.execute(
+                operation,
+                {
+                    "project_id": project_id,
+                    "session_id": member["session_id"],
+                    "session_token": member["session_token"],
+                    **payload,
+                },
+            )
+    
+        first, second, reviewer = actors
+        dependencies = []
+        if scenario == "unmet-dependency":
+            predecessor = call(
+                first, "create_task", title="Fixture predecessor", request_id="dependency"
+            )
+            dependencies.append(predecessor["id"])
+        task = call(
+            first,
+            "create_task",
+            title="Fixture relay",
+            request_id="task",
+            dependencies=dependencies,
+        )
+        snapshot = call(first, "capture_repository", request_id="snapshot")
+        context = call(
+            first,
+            "publish_context",
+            title="Fixture context",
+            kind="progress",
+            content="Pinned fixture context",
+            request_id="context",
+        )
+        trees = [
+            call(
+                actor,
+                "create_worktree",
+                snapshot_id=snapshot["snapshot_id"],
+                task_id=task["id"],
+                request_id=f"worktree-{index}",
+            )
+            for index, actor in enumerate((first, second))
+        ]
+        heads = [tree["head_sha"] for tree in trees]
+        if scenario == "conflict-before-launch":
+            heads = [
+                commit_edit(tree, "same.txt", f"fixture change {index}\n")
+                for index, tree in enumerate(trees)
+            ]
+    
+        binary = scratch / "fixture-client.exe"
+        binary.write_bytes(b"Non-executable test fixture")
+        checksum = hashlib.sha256(binary.read_bytes()).hexdigest()
+        receipts = scratch / "receipts"
+        receipts.mkdir()
+        approvals = []
+        launches = []
+        captures = []
+        capture_started = asyncio.Event()
+    
+        async def allow_fixture(review):
+            approvals.append(review)
+            if scenario == "single-codex-denied":
+                return None
+            return LaunchConsent(
+                f"fixture-approval-{len(approvals)}",
+                review.plan_sha256,
+                time.time() + 30,
+                True,
+                True,
+            )
+    
+        real_capture = CapturedProcess.start
+    
+        async def launch_fixture(_cls, argv, *, cwd, stdin_text, timeout_seconds, output_limit, env):
+            assert argv[0] == str(binary)
+            assert not env
+            launches.append(cwd)
+            if cwd == Path(trees[0]["path"]):
+                events = [
+                    {"type": "thread.started", "thread_id": "fixture-thread"},
+                    {"type": "turn.started"},
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "id": "fixture-message",
+                            "type": "agent_message",
+                            "text": "FIRST_FIXTURE",
+                        },
+                    },
+                    {
+                        "type": "turn.completed",
+                        "usage": {
+                            "input_tokens": 2,
+                            "cached_input_tokens": 0,
+                            "output_tokens": 1,
+                        },
+                    },
+                ]
+            else:
+                assert cwd == Path(trees[1]["path"])
+                assert "Pinned fixture context" in argv[-1]
+                events = [
+                    {
+                        "type": "result",
+                        "subtype": "success",
+                        "is_error": False,
+                        "duration_ms": 5,
+                        "duration_api_ms": 2,
+                        "session_id": "fixture-session",
+                        "result": "SECOND_FIXTURE",
+                    }
+                ]
+            stream = "\n".join(json.dumps(event) for event in events)
+            helper_env = {"SYSTEMROOT": os.environ["SYSTEMROOT"]} if "SYSTEMROOT" in os.environ else {}
+            script = f"print({stream!r})"
+            if scenario in {"single-codex-cancelled", "single-codex-timeout"}:
+                script = "import time; time.sleep(60)"
+            elif scenario == "single-codex-exit-failure":
+                script = "raise SystemExit(3)"
+            capture = await real_capture(
+                (sys.executable, "-I", "-u", "-c", script),
+                cwd=cwd,
+                stdin_text="",
+                timeout_seconds=timeout_seconds,
+                output_limit=output_limit,
+                env=helper_env,
+            )
+            captures.append(capture)
+            capture_started.set()
+            return capture
+    
+        monkeypatch.setattr(CapturedProcess, "start", classmethod(launch_fixture))
+        first_profile = CodexHostProfile(
+            project_id,
+            first["session_id"],
+            binary,
+            Path(trees[0]["path"]),
+            checksum,
+        )
+        second_profile = CursorHostProfile(
+            project_id,
+            second["session_id"],
+            binary,
+            Path(trees[1]["path"]),
+            checksum,
+            "fixture-version",
+        )
+        prepared = [
+            RelayActor(
+                member["agent_id"],
+                member["session_token"],
+                profile,
+                tree["worktree_id"],
+                head,
+                {},
+                allow_fixture,
+            )
+            for member, profile, tree, head in zip(
+                (first, second),
+                (first_profile, second_profile),
+                trees,
+                heads,
+                strict=True,
+            )
+        ]
+        request = RelayInput(
+            task["id"],
+            task["version"],
+            context["context_id"],
+            context["version"],
+            hashlib.sha256(context["content"].encode("utf-8")).hexdigest(),
+            "Return the first fixture value",
+            "Return the second fixture value",
+            "FIRST_FIXTURE",
+            "SECOND_FIXTURE",
+            timeout_seconds=10,
+        )
+        relay = ControlledRelay(core, scratch, receipts)
+        queue = RelayQueue(relay)
+        items = (RelayQueueItem(*prepared, request),)
+        request_id = "fixture-wave"
+        token = owner["admin_token"]
+        if scenario.startswith("single-codex-"):
+            owner_grant(core, owner, second, ("viewer",))
+            actor = prepared[0]
+            pilot = SingleCodexInput(
+                task["id"],
+                task["version"],
+                "Return the first fixture value",
+                "WRONG_REPLY" if scenario == "single-codex-mismatch" else "FIRST_FIXTURE",
+                timeout_seconds=1 if scenario == "single-codex-timeout" else 10,
+            )
+            preview = relay.preview_codex(actor, pilot, admin_token=token)
+            alternative = relay.preview_codex(
+                actor, replace(pilot, expected_reply="OTHER_FIXTURE"), admin_token=token
+            )
+            assert preview.plan_sha256 != alternative.plan_sha256
+            assert not approvals and not launches
+            assert list(receipts.iterdir()) == []
+            if scenario == "single-codex-success":
+                outcome = await relay.run_codex_once(actor, pilot, admin_token=token)
+                assert outcome.state == "ready_for_review"
+                assert outcome.verification == "unverified"
+            elif scenario == "single-codex-cancelled":
+                execution = asyncio.create_task(relay.run_codex_once(actor, pilot, admin_token=token))
+                try:
+                    async with asyncio.timeout(5):
+                        await capture_started.wait()
+                    execution.cancel()
+                    with pytest.raises(asyncio.CancelledError):
+                        await execution
+                finally:
+                    if not execution.done():
+                        execution.cancel()
+                    await asyncio.gather(execution, return_exceptions=True)
+                    for capture in captures:
+                        await capture.cancel()
+            else:
+                with pytest.raises(AgentSyncError):
+                    await relay.run_codex_once(actor, pilot, admin_token=token)
+            assert [approval.plan_sha256 for approval in approvals] == [preview.plan_sha256]
+            assert launches == ([] if scenario == "single-codex-denied" else [actor.profile.root])
+            reopened = ControlledRelay(Core(core.data_dir), scratch, receipts)
+            state = reopened.observe(actor, task["id"])
+            assert state.state == (
+                "ready_for_review" if scenario == "single-codex-success" else "incomplete"
+            )
+            current = call(first, "get_project_state")["tasks"][0]
+            if scenario in {
+                "single-codex-cancelled",
+                "single-codex-timeout",
+                "single-codex-exit-failure",
+            }:
+                observed, unused = reopened.inspect_attempts(actor, task["id"], admin_token=token)
+>               assert observed.state == "terminal_recorded"
+E               AssertionError: assert 'outcome_unknown' == 'terminal_recorded'
+E                 
+E                 - terminal_recorded
+E                 + outcome_unknown
+
+tests\integration\test_controlled_relay_pipeline.py:310: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_controlled_relay_pipeline.py::test_controlled_relay_with_disposable_core_and_git[single-codex-cancelled]
+1 failed, 2 passed, 9 deselected in 6.34s

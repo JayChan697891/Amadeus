@@ -1,0 +1,11 @@
+{
+  "boot_id": "5a55c0af-0e75-4d24-aaea-89327f3ed548",
+  "source_files_verified": 3992,
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_root": "/root/amadeus-m122fulll/s",
+  "docker_image": "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258",
+  "containers": [],
+  "model_calls": 0,
+  "status": "PREPARED_NOT_RUN",
+  "driver_sha256": "bd4a125ad3ded61cc596952b3e7ad69c2dd920f56c0e71852e24c9375a93e3cf"
+}

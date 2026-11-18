@@ -1,0 +1,49 @@
+{
+  "project_id": "30fc789f-c636-44dd-8e3b-63e9b7dd2735",
+  "producer": {
+    "agent_id": "d31487d9-05a5-4b40-9930-cbfea5b9e751",
+    "session_id": "98fc6b8d-8b19-4b93-b3b0-12ebd741c894"
+  },
+  "task": {
+    "id": "e5fafea3-9913-4ad9-994b-141be100d2b9",
+    "version": 1
+  },
+  "tree": {
+    "path": "/root/amadeus-document-continuation-a123-20261118/core/managed-git/worktrees/164d88ec-8949-5e89-af23-aef95cee311a",
+    "worktree_id": "164d88ec-8949-5e89-af23-aef95cee311a",
+    "head_sha": "c0dd634e4c7843b1e702e3f2498578dcb0a0bc30",
+    "snapshot_id": "169ee19f-e0d0-5d60-bf6b-cdac1144c7e5"
+  },
+  "helper_sha256": {
+    "pilot.py": "ce66f1c454824c37e2d38adbebb86e804848e399f26e36c85528ec6d802cca2c",
+    "auth_home.py": "0554cad5e8c7f885c839c91296b359b40fca39a800c59cdd6e15301dfd8cc0be",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff",
+    "interrupt_parent.py": "70057327b4a287dc99bdae6f3a0b23b4cdabac59ecb85f826e808322f243f074",
+    "continue_codex_task.py": "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c",
+    "verified_codex_task.py": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710"
+  },
+  "runtime_commit": "7e160bbc7c282cd55f3dbbb44377d8456f8a8c66",
+  "wheel_sha256": "0113065f0eef9b039a6b9cb78d111f0621a78683e17994d2154e7f08c352266c",
+  "source_head": "c0dd634e4c7843b1e702e3f2498578dcb0a0bc30",
+  "source_readme_sha256": "675fa2c7afcb01d0294450b774adbb6911270b8e2d408bfd9f3dd93e237f5315",
+  "max_subscription_calls": 2,
+  "max_candidate_executions": 0,
+  "retry_allowed": false,
+  "model_calls": 0,
+  "auth_copies": 0,
+  "scope": "Producer checkpoint interruption, then separately approved one receiver to review/unverified; no code verification",
+  "plan_sha256": "cd60e58deaf267a243da9350a3751e64ff100bd6236ccf8dc0a4270c036b0240",
+  "plan_file_sha256": "2e111b242553966e0098db8d0e09d5636c0abbe8e786126949549a9b706a6148",
+  "selection_sha256": "08ae0e318639ad773750688ed0ef79aef439854dfccde8c97ecca6e633881c24",
+  "wave_request_id": "document-checkpoint-a123-once",
+  "command_prefix": [
+    "/root/amadeus-continuation-entry-a123-20261118/w/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-document-continuation-a123-20261118/pilot.py",
+    "run"
+  ],
+  "continue_instruction_sha256": "44b6374cf6e1efa32867d7f74be18bbfa2c0389ad2d9b0e5262dff4444717fb1"
+}

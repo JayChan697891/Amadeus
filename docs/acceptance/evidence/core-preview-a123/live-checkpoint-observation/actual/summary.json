@@ -1,0 +1,58 @@
+{
+  "status": "NOT_VERIFIED",
+  "strict_fixture_match": "FAIL",
+  "failure_reason": "The real client returned the expected149-byte fixed source plus one LF in BOTH phase messages (150 bytes). The exact assertion failed; original result and exit1 retained. No normalizing, replacement, candidate execution or retry.",
+  "independent_review": {
+    "status": "accepted_evidence_and_limits",
+    "reviewer": "Astra /root/astra_recovery_scope",
+    "conclusion": "Original trial remains NOT_VERIFIED/exit1; only limited positive real checkpoint observation is supported. Exact150-byte expected-plus-LF hash, receipt bindings/order, parent exit0, no second dispatch and cleanup records inspected.",
+    "raw_prefix_scope": "667-byte private prefix verification was performed by Root locally in the guest; Astra did not read private raw output."
+  },
+  "native": {
+    "setup": "8ead82 exit0",
+    "model_host": "1034 / a81167 exit1",
+    "cleanup": "4ca31f exit0",
+    "readonly_diagnosis": "97b390 exit0",
+    "receipt_prefix_postcheck": "22673b exit0"
+  },
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "prepared_execution_commit": "8ddd560c6a5a5b4022a43d933ef7b96df1d12222",
+  "genuine_observations": {
+    "client": "Codex0.167.0-alpha.3.2 / gpt-6.1-sol",
+    "launches": 1,
+    "client_exit_code": 0,
+    "checkpoint": "saved",
+    "final_proposal": "submitted_for_review",
+    "task_status": "review",
+    "task_verification": "unverified",
+    "matched_progress_stdout_prefix_bytes": 667,
+    "complete_stdout_bytes": 1153,
+    "context_sha256": "3ee5d90e2d38518a2c8bd0f005638a4c912dc3c9e8f9c4266e4d9748f041c672",
+    "seconds_between_progress_and_terminal_receipts": 16.85989260673523,
+    "additional_calls": 0,
+    "second_agent": "not_dispatched"
+  },
+  "cleanup": {
+    "temporary_auth_absent": true,
+    "home_unmounted_and_empty": true,
+    "original_account_file_unchanged": true,
+    "no_codex_parent": true
+  },
+  "not_run": [
+    "candidate execution",
+    "independent task acceptance",
+    "interruption or continuation",
+    "cross-client relay",
+    "full a123 regression"
+  ],
+  "not_asserted": [
+    "DB commit atomicity before actual OS exit",
+    "independent billing verification",
+    "unattended recovery",
+    "formal Release acceptance"
+  ],
+  "raw_outputs": "Private model capture and host streams remain only in the D-drive local environment; no account credentials or raw streams uploaded.",
+  "formal_release": "BLOCKED",
+  "next": "Review the actual positive checkpoint evidence separately from the failed byte-exact fixture; do not rerun this live attempt or weaken its expected bytes. Continue independent product work."
+}

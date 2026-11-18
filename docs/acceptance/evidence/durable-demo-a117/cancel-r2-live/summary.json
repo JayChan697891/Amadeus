@@ -1,0 +1,229 @@
+{
+  "recorded_at": "2026-11-15T15:11:13.368321+00:00",
+  "status": "PASS - owned local parent cancellation boundary only",
+  "native_session": 2878,
+  "native_session_closed": true,
+  "native_exit_code": 0,
+  "completed_at": "2026-11-15T15:09:16.283427+00:00",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "sdist_sha256": "b78a748bea7bbc4885f1d4448ba02e15fa335e6b78e4f189a37b165d0326f672",
+  "plan_sha256": "dd41631c2e2bab21f6f272b9402af9f922ef73556910a3969fc0ac8adbc63fd9",
+  "preparation": "../cancel-r2-preparation/summary.json",
+  "retained_prior_failure": "../cancel-live/summary.json",
+  "retained_offline_repair": "../cancel-repair/summary.json",
+  "authorization": {
+    "fresh_explicit_confirmation": true,
+    "single_use_consumed": true,
+    "actual_launches": 1,
+    "additional_launches_allowed": 0,
+    "retried": false,
+    "billing_route_recognized": "ChatGPT",
+    "no_extra_fee": "Owner-confirmed; not an independently verified bill"
+  },
+  "cancellation": {
+    "turn_started_observed_before_cancel": true,
+    "parent_alive_before_cancel": true,
+    "terminal_event_before_or_after_cancel": false,
+    "request_propagated": true,
+    "owned_parent_exit_code": -9,
+    "owned_parent_ended": true,
+    "timed_out": false,
+    "persisted_status": "unknown",
+    "persisted_error": "local_cancel_requested",
+    "second_attempt": "not_dispatched"
+  },
+  "reopen": {
+    "new_Core_and_relay_objects_in_same_process": true,
+    "new_process_recovery_claimed": false,
+    "attempts_unchanged": true,
+    "outcome": "incomplete",
+    "task_status": "running",
+    "task_verification": "unverified",
+    "subsequent_new_process_observation": {
+      "native_exit_code": 0,
+      "pid": 21300,
+      "finished_at": "2026-11-15T15:12:49.534923+00:00",
+      "outcome": {
+        "state": "incomplete",
+        "verification": "unverified"
+      },
+      "tasks_audit_and_five_receipt_bytes_unchanged": true,
+      "model_calls": 0,
+      "authorization_calls": 0,
+      "external_auth_access": false,
+      "scope": "Read-only new-process persistence observation after cancellation, not recovery execution or injected host crash"
+    }
+  },
+  "identity": {
+    "runtime_members_unchanged": 97,
+    "source_and_worktree_unchanged": true
+  },
+  "private_capture": {
+    "bytes_stdout": 335,
+    "bytes_stderr": 238,
+    "truncated": false,
+    "hashes_independently_matched": true,
+    "stdout_json_events": 3,
+    "turn_started_events": 1,
+    "terminal_events": 0,
+    "listed_tool_item_events": 0,
+    "invalid_json_lines": 0,
+    "stderr_classification": "NOT CLASSIFIED; retained only in restricted local storage",
+    "raw_uploaded": false
+  },
+  "cleanup": {
+    "native_exit_code": 0,
+    "temporary_auth_absent": true,
+    "home_unmounted": true,
+    "private_home_empty": true,
+    "original_auth_unchanged": true,
+    "active_related_processes": [],
+    "postcheck_accessed_original_auth": false
+  },
+  "review": {
+    "root": "Inspected actual public receipts/results, private capture hashes and aggregate events, one-use scope and independent native process/mount/directory state",
+    "native_astra": "Independently checked13 public file hashes, actual plan/helper/receipts and scope; accepted owned_parent_only result. Raw/auth not read by reviewer; private stream counts based on root postcheck.",
+    "subsequent_native_astra": "Accepted exact new-process observer script/log/native receipt: persisted cancellation state readable with zero new dispatch. No actual host-crash or resumed-execution claim."
+  },
+  "unverified": [
+    "Server-side cancellation",
+    "General descendant/process-tree cleanup guarantees",
+    "Billing or final token consumption",
+    "Real model host-crash recovery",
+    "Cross-vendor and unattended collaboration",
+    "Full M6/B/current release matrix/formal Release"
+  ],
+  "formal_release": "BLOCKED",
+  "resume": "Grant consumed. Preserve original failed fixture and this separate successful bounded attempt. Do not restart session2878 or reuse this plan for another call. Continue ordinary authorized local work; any new real client task or credential copy needs fresh explicit authorization.",
+  "artifacts": {
+    "auth-cleanup.json": {
+      "sha256": "1d1e849e26f35ade4b936908043758a791dd5a474dd0570d35328f1b8d604f3e",
+      "bytes": 143
+    },
+    "auth-route.json": {
+      "sha256": "aecf8bb73d35dd60396ec1d74a5fe2f3cd946ebb52abba638c53558b77552f6e",
+      "bytes": 77
+    },
+    "attempt.json": {
+      "sha256": "7333a799fb8972d7539ee83303855516455d90f6abd1196892b40789890cd5e4",
+      "bytes": 229
+    },
+    "cancellation-request.json": {
+      "sha256": "f6c41857b121efe3bbf2ee1e8c9bede6a307dc261244e4bee8a561175dd07133",
+      "bytes": 238
+    },
+    "cancellation.json": {
+      "sha256": "b2b2e12b2216d58dc87bb09e1b569945174ab49b9b4a2c2a89ac6f4df8ef0414",
+      "bytes": 282
+    },
+    "capture.json": {
+      "sha256": "eeabc855d380819f8204ff33e21fb1987327591acbb5390cc73bc7877e9c4901",
+      "bytes": 368
+    },
+    "capture-metadata.json": {
+      "sha256": "eeabc855d380819f8204ff33e21fb1987327591acbb5390cc73bc7877e9c4901",
+      "bytes": 368
+    },
+    "dispatch-observation.json": {
+      "sha256": "ee30bedd5a86302e5e007300ae704bdfee6b0755951ab54b0d2ee504e3c4ea79",
+      "bytes": 2497
+    },
+    "execute-entry.json": {
+      "sha256": "735ace8874fd52d870e8b78bf51e8bd80dec2aadbab1851306a49aaad80b5526",
+      "bytes": 165
+    },
+    "readiness-entry.json": {
+      "sha256": "443740e8fe480e1dc5321f310ae6bbdea1433e00662e0f9fc85329ffbad49209",
+      "bytes": 74
+    },
+    "readiness.json": {
+      "sha256": "962dd0af32719aa63be15cc45f2b9818f6453cc249aa16d42f866b2ae99d9de6",
+      "bytes": 274
+    },
+    "result.json": {
+      "sha256": "5dc86cac9bac9feb8a182d900ba80733272b98655d6f57a314aedc28b49d3f02",
+      "bytes": 2859
+    },
+    "credential-home.json": {
+      "sha256": "85fcae6cb7d1bcff8e2704d0e034e54966bc2d56e0977729343667b7ed141b95",
+      "bytes": 135
+    },
+    "live-authorization.json": {
+      "sha256": "71f75d0187ef0569dac2956b28bcaeebb08f6e3b31bdcc0c61edded012e8b102",
+      "bytes": 721
+    },
+    "controller-entry.json": {
+      "sha256": "43ee530314c5223a66d115a2cf19cbcb6af58798b41556355fdb7cd65ca0258b",
+      "bytes": 251
+    },
+    "controller-result.json": {
+      "sha256": "9bffe0e2a01470965b192612c98324fcddc0da48660226435ab514a270737394",
+      "bytes": 263
+    },
+    "readiness-command.json": {
+      "sha256": "53891e5a7dc5b8d587e1ff5ca292f137e769ccf2f51a3c80515325c286ae606d",
+      "bytes": 46
+    },
+    "execution-host-command.json": {
+      "sha256": "f291f199cf08ceba9ae75d798a54624848f93065570badac66d0bc5b8a75e568",
+      "bytes": 47
+    },
+    "auth-cleanup-command.json": {
+      "sha256": "f291f199cf08ceba9ae75d798a54624848f93065570badac66d0bc5b8a75e568",
+      "bytes": 47
+    },
+    "mount-command.json": {
+      "sha256": "66ea4f69845175804d0a162fac74cd73d61a3ef8490484a84502beeb25294319",
+      "bytes": 322
+    },
+    "lead-postcheck.json": {
+      "sha256": "9b31c2ab2ccda819ca65d58c229b1a78f1e96336a58f0d13bfca87f908ab0c13",
+      "bytes": 596
+    },
+    "live-transfer.json": {
+      "sha256": "271e62bf943d61a95d0788f319e79b283eda73a0736b444399779e26a8e1e660",
+      "bytes": 2011
+    },
+    "observe-reopen.py.txt": {
+      "sha256": "2ebf8d4fe855e477642b74415ae0bca7e03d9c3e5dbe4fe2b85481f35c6da1a6",
+      "bytes": 3058
+    },
+    "reopen-attempt.json": {
+      "sha256": "a0efcef7d78c2537f81f1c74e700b1439336393f9131b46a9cbe105e5a15567a",
+      "bytes": 518
+    },
+    "reopen-result.json": {
+      "sha256": "b9a9d11128bbe3643376f5f1ebea78189883b935d31c22215a9698abf446dd0c",
+      "bytes": 767
+    },
+    "reopen.log": {
+      "sha256": "8443bc62676ff30594ba69eb926f3f4b9e8778f6f73a4f26bd3303dcbf3d6edb",
+      "bytes": 605
+    },
+    "reopen-stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "vm-shutdown-request.json": {
+      "sha256": "4a80729ea933acbbd520c011b16b4a501c333e1a1b81767928a263d872c1b2cf",
+      "bytes": 797
+    },
+    "vm-shutdown-command.json": {
+      "sha256": "9ddd9aec0796fd3ad12a0a88e4aec99cce5f2e4b8761cf9f38536e1c2e167e7f",
+      "bytes": 829
+    },
+    "vm-shutdown-observed.json": {
+      "sha256": "71d8c0d03e14279416d84ca35465dd105e5859bb6945a9422f5c009767074248",
+      "bytes": 242
+    }
+  },
+  "environment_end": {
+    "observed_at": "2026-11-15T15:14:35.1199513Z",
+    "vm_pid": 24664,
+    "normal_poweroff": true,
+    "process_absent": true,
+    "force_kill_used": false,
+    "disks_and_workspaces_preserved": true,
+    "other_user_apps_terminated": false
+  }
+}

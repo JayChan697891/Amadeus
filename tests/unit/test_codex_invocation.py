@@ -1,12 +1,15 @@
 """Pure plans using synthetic, non-executable fake binaries; never actual CLI tests."""
 
 import hashlib
+import os
+import tomllib
 from dataclasses import FrozenInstanceError, replace
 from pathlib import Path
 
 import pytest
 
 from agentsync.adapters import codex_invocation
+from agentsync.adapters.approved_launch import prepare_launch_review
 from agentsync.adapters.base import AdapterTask
 from agentsync.adapters.codex_invocation import CodexHostProfile, prepare_invocation
 from agentsync.errors import AgentSyncError
@@ -107,6 +110,86 @@ def test_read_only_invocation_uses_fixed_host_flags_and_never_claims_execution(t
     assert isinstance(plan.cwd, Path)
 
 
+def test_linux_opt_in_plan_is_explicit_bounded_and_preserves_legacy(tmp_path, monkeypatch):
+    profile = profile_for(tmp_path, expected_cli_version="0.167.0-alpha.3.2")
+    legacy = prepare_invocation(profile, task(), environment={})
+    assert (
+        prepare_invocation(replace(profile, linux_readonly=False), task(), environment={}) == legacy
+    )
+    monkeypatch.setattr(codex_invocation.sys, "platform", "linux")
+    selected = prepare_invocation(replace(profile, linux_readonly=True), task(), environment={})
+    settings = tomllib.loads(
+        "\n".join(selected.argv[i + 1] for i, value in enumerate(selected.argv) if value == "-c")
+    )
+    assert "--sandbox" not in selected.argv
+    assert settings["default_permissions"] == "amadeus_readonly"
+    assert settings["permissions"]["amadeus_readonly"] == {
+        "filesystem": {
+            ":minimal": "read",
+            profile.root.as_posix(): "read",
+            profile.executable.as_posix(): "read",
+        },
+        "network": {"enabled": False},
+    }
+    assert len(selected.argv) <= 64 and "--disable" not in selected.argv
+    assert settings["agents"]["enabled"] is False and settings["project_doc_max_bytes"] == 0
+    assert settings["browser_use"]["default_origin_policy"]["access"] == "deny"
+    assert settings["computer_use"]["default_app_access"] == "deny"
+    assert settings["features"] and all(value is False for value in settings["features"].values())
+    assert set(settings["features"]) >= {
+        "shell_tool",
+        "unified_exec",
+        "code_mode_host",
+        "code_mode",
+        "browser_use",
+        "computer_use",
+        "plugins",
+        "multi_agent",
+        "goals",
+        "image_generation",
+        "hooks",
+    }
+    assert selected.real_client_verified is selected.sandbox_verified is selected.executes is False
+    assert selected.argv != legacy.argv
+    assert (
+        prepare_launch_review(
+            replace(profile, linux_readonly=True), task(), environment={}
+        ).plan_sha256
+        != prepare_launch_review(profile, task(), environment={}).plan_sha256
+    )
+
+
+@pytest.mark.parametrize(
+    "platform,version",
+    [("win32", "0.167.0-alpha.3.2"), ("darwin", "0.167.0-alpha.3.2"), ("linux", "0.166.0-alpha.6")],
+)
+def test_linux_opt_in_rejects_other_hosts_and_unobserved_versions(
+    tmp_path, monkeypatch, platform, version
+):
+    monkeypatch.setattr(codex_invocation.sys, "platform", platform)
+    with pytest.raises(AgentSyncError) as caught:
+        prepare_invocation(
+            profile_for(tmp_path, linux_readonly=True, expected_cli_version=version),
+            task(),
+            environment={},
+        )
+    assert caught.value.code == "unsupported_linux_profile"
+
+
+@pytest.mark.parametrize(
+    "options",
+    [
+        {"linux_readonly": 1},
+        {"linux_readonly": "true"},
+        {"linux_readonly": None},
+        {"linux_readonly": True, "windows_mxc": True},
+    ],
+)
+def test_linux_opt_in_rejects_ambiguous_profile_flags(tmp_path, options):
+    with pytest.raises(AgentSyncError):
+        profile_for(tmp_path, **options)
+
+
 def test_task_text_cannot_choose_host_executable_model_root_or_provider(tmp_path):
     profile = profile_for(tmp_path, model="host-model.v1")
     instruction = "private-instruction --model other --sandbox bypass; OPENAI_API_KEY=dummy"
@@ -174,6 +257,9 @@ def test_explicit_environment_filters_dummy_secrets_and_copies_immutable_plan(tm
     source = {
         "Path": "fixture-bin",
         "SystemRoot": "fixture-system-root",
+        "SystemDrive": "C:",
+        "TEMP": "fixture-temp",
+        "TMP": "fixture-tmp",
         "https_proxy": "fixture-proxy",
         "SSL_CERT_FILE": "fixture-ca-file",
         "SSL_CERT_DIR": "fixture-ca-directory",
@@ -190,6 +276,9 @@ def test_explicit_environment_filters_dummy_secrets_and_copies_immutable_plan(tm
     expected = {
         "PATH": "fixture-bin",
         "SYSTEMROOT": "fixture-system-root",
+        "SYSTEMDRIVE": "C:",
+        "TEMP": "fixture-temp",
+        "TMP": "fixture-tmp",
         "HTTPS_PROXY": "fixture-proxy",
         "SSL_CERT_FILE": "fixture-ca-file",
         "SSL_CERT_DIR": "fixture-ca-directory",
@@ -220,6 +309,60 @@ def test_case_ambiguous_allowed_environment_is_rejected_not_arbitrarily_selected
         profile, task(), environment={"DUMMY_TOKEN": "one", "dummy_token": "two"}
     )
     assert plan.environment == ()
+
+
+@pytest.mark.skipif(os.name != "nt", reason="The opt-in MXC plan requires native Windows")
+def test_mxc_plan_pins_readonly_roots_and_disabled_action_routes_within_argv_limit(tmp_path):
+    profile = profile_for(tmp_path, windows_mxc=True, expected_cli_version="0.167.0-alpha.3.2")
+    environment = {
+        key: "explicit-fixture-value"
+        for key in (
+            "SYSTEMROOT",
+            "SYSTEMDRIVE",
+            "LOCALAPPDATA",
+            "USERPROFILE",
+            "CODEX_HOME",
+            "TEMP",
+            "TMP",
+        )
+    }
+    plan = prepare_invocation(profile, task(), environment=environment)
+    configs = [plan.argv[index + 1] for index, value in enumerate(plan.argv) if value == "-c"]
+    effective = tomllib.loads("\n".join(configs))
+    assert effective["windows"]["sandbox"] == "mxc"
+    assert effective["default_permissions"] == "amadeus_readonly"
+    assert effective["permissions"]["amadeus_readonly"] == {
+        "filesystem": {":minimal": "read", profile.root.as_posix(): "read"},
+        "network": {"enabled": False},
+    }
+    assert effective["browser_use"]["default_origin_policy"]["access"] == "deny"
+    assert effective["computer_use"]["default_app_access"] == "deny"
+    assert effective["features"]["image_generation"] is False
+    assert effective["features"]["goals"] is False
+    assert effective["agents"]["enabled"] is False
+    assert all(value is False for value in effective["features"].values())
+    assert effective["forced_login_method"] == "chatgpt"
+    assert effective["model_provider"] == "openai"
+    assert "--sandbox" not in plan.argv  # The legacy setting would override the named profile.
+    assert len(plan.argv) <= 64
+    assert plan.child_env() == environment
+    assert plan.sandbox_verified is plan.auth_verified is plan.billing_verified is False
+    native_review = prepare_launch_review(profile, task(), environment=environment)
+    legacy_review = prepare_launch_review(
+        replace(profile, windows_mxc=False), task(), environment=environment
+    )
+    assert native_review.plan_sha256 != legacy_review.plan_sha256
+    with pytest.raises(AgentSyncError) as missing_environment:
+        prepare_invocation(profile, task(), environment={})
+    assert missing_environment.value.code == "host_environment_unavailable"
+
+
+def test_mxc_plan_rejects_legacy_cli_before_binary_access(tmp_path):
+    profile = profile_for(tmp_path, windows_mxc=True)
+    profile.executable.unlink()
+    with pytest.raises(AgentSyncError) as rejected:
+        prepare_invocation(profile, task(), environment={})
+    assert rejected.value.code == "unsupported_mxc_profile"
 
 
 def test_environment_type_text_count_and_total_size_bounds_are_strict(tmp_path):

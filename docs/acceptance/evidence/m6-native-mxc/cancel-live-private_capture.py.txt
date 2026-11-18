@@ -1,0 +1,75 @@
+"""Local debug instrumentation: forward one real capture unchanged, retain privately."""
+import asyncio
+import hashlib
+import json
+
+from agentsync.adapters.process_capture import CapturedProcess
+
+
+class PrivateCapture:
+    def __init__(self, plan, directory):
+        self.plan = plan
+        self.directory = directory
+        self.process = None
+        self.entered = False
+        self.descriptor = CapturedProcess.__dict__['start']
+        self.start = CapturedProcess.start
+
+    def __enter__(self):
+        async def observed_start(cls, argv, **kwargs):
+            expected = {
+                'cwd': self.plan.cwd,
+                'stdin_text': self.plan.stdin_text,
+                'timeout_seconds': self.plan.timeout_seconds,
+                'output_limit': self.plan.output_limit,
+                'env': self.plan.child_env(),
+            }
+            if self.entered or tuple(argv) != self.plan.argv or kwargs != expected:
+                raise RuntimeError('Private capture does not match the approved plan.')
+            self.entered = True
+            # No process/result substitution: call the original method with all arguments.
+            self.process = await self.start(argv, **kwargs)
+            return self.process
+
+        CapturedProcess.start = classmethod(observed_start)
+        return self
+
+    def __exit__(self, *_exc):
+        CapturedProcess.start = self.descriptor
+
+    async def retain(self):
+        record = {'scope': 'Private bounded raw capture; never automatically upload', 'saved': False}
+        try:
+            if self.process is None:
+                record['reason'] = 'no_capture_returned'
+            else:
+                async with asyncio.timeout(2):
+                    result = await self.process.get_result()
+                if not result.snapshot.parent_ended:
+                    record['reason'] = 'parent_not_confirmed_ended'
+                elif len(result.stdout) + len(result.stderr) > self.plan.output_limit:
+                    record['reason'] = 'unexpected_capture_size'
+                else:
+                    self.directory.mkdir(exist_ok=False)
+                    for name, payload in [('stdout.bin', result.stdout), ('stderr.bin', result.stderr)]:
+                        with (self.directory / name).open('xb') as stream:
+                            stream.write(payload)
+                    record.update(
+                        saved=True,
+                        stdout_bytes=len(result.stdout),
+                        stderr_bytes=len(result.stderr),
+                        stdout_sha256=hashlib.sha256(result.stdout).hexdigest(),
+                        stderr_sha256=hashlib.sha256(result.stderr).hexdigest(),
+                        stdout_truncated=result.snapshot.stdout_truncated,
+                        stderr_truncated=result.snapshot.stderr_truncated,
+                    )
+        except Exception:
+            # Diagnostics never replace the original relay failure or expose exception text.
+            record['reason'] = 'private_capture_unavailable'
+        try:
+            with (self.directory.parent / 'capture-metadata.json').open('x', encoding='utf-8') as stream:
+                json.dump(record, stream, indent=2)
+                stream.write('\n')
+        except OSError:
+            pass  # Missing metadata is NOT RUN, never a success certificate.
+        return record

@@ -1,0 +1,43 @@
+{
+  "product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "sdist_sha256": "f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351",
+  "scope": "Fresh offline source-distribution installation and one existing queue integration smoke test per platform, using deterministic owned protocol fixtures",
+  "windows": {
+    "python": "3.12.16",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "pip_check": "pass"
+  },
+  "linux": {
+    "python": "3.14.7",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "pip_check": "pass"
+  },
+  "runtime_package_members_matched_before_after": 88,
+  "python_modules": 87,
+  "source_shadowing": false,
+  "model_calls": 0,
+  "candidate_execution": false,
+  "formal_release": "BLOCKED",
+  "independent_review": "Actual installation logs, per-platform JUnit1pass, origins and32 combined evidence-file hashes checked; limited installation scope accepted, no real-client/full-release claim.",
+  "evidence_sha256": {
+    "config.json": "bc5e0a25f093da6e5faf15393d30b3263ccb48b31433a63d280129f2913d23aa",
+    "install.log": "76b0332f41659a45b41d88f950919790a5fb7f83922319e8a82e8a3a5db7ccaf",
+    "pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "installed.log": "6ab24b5ed0605ebff6113c1779203069fe00c29570f91d2c25148f53e99386c3",
+    "installed.xml": "e1dfe481b5459c6812cd6b7cce083f7624994f5b39bb3791501a2d32d147a8ec",
+    "origin.json": "0d888817fd92cb1374030015f2ebbfc9fc49604918bc842bd4ce53061edb5b7d",
+    "linux-install.log": "3dad9770673a867fa781ca92e67ade6543e130ffe2f29be616545b167149ea4c",
+    "linux-pip-check.log": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "linux-installed.log": "a564a9c89571adfb9d8eed4fb5c6512d523ff8ba55f083b662b778276ae458b1",
+    "linux-installed.xml": "6029033ff18ef92d6dcc33aa02b796b161c5eb355baba53ee1ff06e66347913f",
+    "linux-origin.json": "4cb50ec41530abb24980905ea612831c546deaa20c00a677e9f90e1f79fc2d88",
+    "prepare.py.txt": "0b9edd3238597e034f211eae4a6824282f5d931e6fce4d88c5970ebfc8b72744",
+    "run-windows.py.txt": "a3c898c694ba32f873411a36009bba577ede91293040153f78af5dac1c7d4d29",
+    "run-linux.sh.txt": "37a85b4304e1d00d10ca43b5ae4fc87c04e9d164901b0e4a5e7d16521e8ae495",
+    "test-installed.py.txt": "c2ffbc98be22931937bc749f36c498e5597aef485bd512535eeb8ae8dcb69a39"
+  }
+}

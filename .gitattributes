@@ -10,6 +10,111 @@ docs/acceptance/evidence/cancellation-readable/** -text
 docs/acceptance/evidence/full-linux-readable/** -text
 
 docs/acceptance/evidence/alpha29-readable/** -text
+docs/acceptance/evidence/m6-single-stop/** -text whitespace=cr-at-eol
+# Preserve pytest traceback indentation in the original failing evidence.
+docs/acceptance/evidence/m6-single-stop/red-product.* -whitespace
+docs/acceptance/evidence/m6-native-mxc/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m7-real-codex-relay/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-cursor-node-bundle/** -text whitespace=cr-at-eol
+# Keep indentation in the unmodified failing pytest traceback evidence.
+docs/acceptance/evidence/m6-native-mxc/diagnostic-red.* -whitespace
 
 # Preserve the exact manifest bytes referenced by the saved candidate SHA-256.
 releases/0.3.0a109/checkpoints/candidate-4f08dc8.json -text whitespace=cr-at-eol
+
+docs/acceptance/evidence/m6-task-proposal/** -text whitespace=cr-at-eol
+
+docs/acceptance/evidence/m6-proposal-capture/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-proposal-artifact/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-proposal-staging/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-proposal-review/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-proposal-pipeline/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-linux-readonly/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-linux-live/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m7-proposal-queue/** -text whitespace=cr-at-eol
+docs/acceptance/evidence/m6-full-regression/** -text whitespace=cr-at-eol
+# Preserve original failed pytest traceback whitespace for the evidence digest.
+docs/acceptance/evidence/m6-full-regression/*full.log -whitespace
+docs/acceptance/evidence/m6-full-regression/*full.xml -whitespace
+docs/acceptance/evidence/m6-full-regression/windows-repair.log -whitespace
+# Preserve original evidence hashes from bounded local validation.
+docs/acceptance/evidence/m7-proposal-context/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Retain pytest's assertion-rendering whitespace in the original failed fixture report.
+docs/acceptance/evidence/m7-proposal-context/m7-pinned-proposal-first.log -whitespace
+docs/acceptance/evidence/m7-proposal-context/m7-pinned-proposal-first.xml -whitespace
+docs/acceptance/evidence/m7-queue-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m7-full-regression/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# The captured Windows full-run log retains CRCRLF bytes bound by its checksum.
+docs/acceptance/evidence/m7-full-regression/windows-sdist_pytest.log -whitespace
+docs/acceptance/evidence/m7-queue-preflight/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m7-sdist-install/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m7-heartbeat-regression/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+docs/acceptance/evidence/m7-model-review-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+docs/acceptance/evidence/m7-pinned-admission/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+docs/acceptance/evidence/m7-host-handoff/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve pytest's original traceback spacing in the failed assertion evidence.
+docs/acceptance/evidence/m7-host-handoff/source-budget-first.log -whitespace
+docs/acceptance/evidence/m7-host-handoff/source-budget-first.xml -whitespace
+docs/acceptance/evidence/m7-host-handoff-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m7-verified-handoff/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve pytest traceback whitespace in the transparently sanitized failed run.
+docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.log -whitespace
+docs/acceptance/evidence/m7-verified-handoff/linux-first-sanitized.xml -whitespace
+docs/acceptance/evidence/m7-continuous-live/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m8-process-recovery/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/acceptance/evidence/m9-sdist-regression/** -text -whitespace
+docs/acceptance/evidence/m7-provider-offline/** -text -whitespace
+docs/acceptance/evidence/m8-bounded-load/** -text -whitespace
+docs/acceptance/evidence/m4-owner-delivery/** -text -whitespace
+docs/acceptance/evidence/m7-dependent-review/** -text -whitespace
+docs/acceptance/evidence/m7-durable-workflow/** -text -whitespace
+docs/acceptance/evidence/m8-receipt-usage/** -text -whitespace
+
+docs/acceptance/evidence/m4-owner-integration/** -text -whitespace
+
+docs/acceptance/evidence/m9-a114-preparation/** -text -whitespace
+releases/0.3.0a114/ddd4b42/windows-312/** -text -whitespace
+docs/acceptance/evidence/m115-source-checks/** -text -whitespace
+docs/acceptance/evidence/m9-a115-preparation/** -text -whitespace
+releases/0.3.0a115/c56cbe2/windows-312-interrupted/** -text -whitespace
+releases/0.3.0a115/4a27a00/windows-312-packages/** -text -whitespace
+docs/acceptance/evidence/m115-source-checks/deadline-repair/** -text -whitespace
+
+releases/0.3.0a115/b6f05f0/windows-312/** -text -whitespace
+releases/0.3.0a115/b6f05f0/composite/** -text -whitespace
+releases/0.3.0a115/b6f05f0/candidate-bootstrap.json -text -whitespace
+releases/0.3.0a115/b6f05f0/composite-audit.json -text -whitespace
+
+releases/0.3.0a115/b6f05f0/linux-314/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-linux314.json -text -whitespace
+releases/0.3.0a115/b6f05f0/linux-311/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-linux311.json -text -whitespace
+
+releases/0.3.0a115/b6f05f0/windows-311/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-windows311.json -text -whitespace
+
+releases/0.3.0a115/b6f05f0/linux-312/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-linux312.json -text -whitespace
+
+releases/0.3.0a115/b6f05f0/windows-314/** -text -whitespace
+releases/0.3.0a115/b6f05f0/matrix-after-windows314.json -text -whitespace
+
+docs/acceptance/evidence/m9-a116-preparation/** -text -whitespace
+releases/0.3.0a116/** -text -whitespace
+
+# Keep original local demonstration output and the failed build traceback intact.
+docs/acceptance/evidence/durable-demo-a117/** -text -whitespace
+docs/acceptance/evidence/recovery-preview-a118/** -text -whitespace
+docs/acceptance/evidence/core-preview-a119/** -text -whitespace
+docs/acceptance/evidence/core-preview-a120/** -text -whitespace
+releases/0.3.0a120/** -text -whitespace
+docs/acceptance/evidence/core-preview-a121/** -text -whitespace
+releases/0.3.0a121/** -text -whitespace
+docs/acceptance/evidence/core-preview-a122/** -text -whitespace
+releases/0.3.0a122/** -text -whitespace
+
+# Keep the next candidate's recorded hashes stable across Windows checkouts.
+docs/acceptance/evidence/core-preview-a123/** -text

@@ -1,0 +1,21 @@
+{
+  "product_sha": "a2634ecb9a65b666f617942fb3deb9f67fdd2a76",
+  "timestamp": "2026-11-12T11:24:11.180251+00:00",
+  "scope": "Same adapter-generated named profile; known local commands in dedicated fixtures",
+  "outside_fixture_read_denied": true,
+  "project_baseline_readable": true,
+  "network_control": {
+    "started": true,
+    "connected": true
+  },
+  "network_isolated": {
+    "started": true,
+    "connected": false,
+    "errno": 1
+  },
+  "listener_connections": 1,
+  "external_targets": 0,
+  "model_calls": 0,
+  "credentials_present": false,
+  "formal_release": "BLOCKED"
+}

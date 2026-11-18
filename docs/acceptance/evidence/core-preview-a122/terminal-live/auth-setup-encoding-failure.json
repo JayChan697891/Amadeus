@@ -1,0 +1,13 @@
+{
+  "private_auth_record_exists": false,
+  "terminal_intent_exists": false,
+  "public_grant_default_encoding_error": {
+    "encoding": "charmap",
+    "start": 139,
+    "reason": "character maps to <undefined>"
+  },
+  "auth_present": false,
+  "mount_intent": false,
+  "mounted": false,
+  "terminal_run": false
+}

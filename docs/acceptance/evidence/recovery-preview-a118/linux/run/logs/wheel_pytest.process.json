@@ -1,0 +1,62 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m118l/w/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "/root/amadeus-m118l/s/tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+      "/root/amadeus-m118l/s/tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "/root/amadeus-m118l/s/tests/integration/test_durable_demo.py",
+      "--basetemp",
+      "/root/amadeus-m118l/t/wheel-p",
+      "--junitxml",
+      "/root/amadeus-m118l/t/wheel-focused.xml"
+    ],
+    "cwd": "/root/amadeus-m118l/run",
+    "started_at": "2026-11-16T10:19:58.648895+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m118l/w/bin/python",
+      "-I",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "/root/amadeus-m118l/s/tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+      "/root/amadeus-m118l/s/tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews",
+      "/root/amadeus-m118l/s/tests/integration/test_durable_demo.py",
+      "--basetemp",
+      "/root/amadeus-m118l/t/wheel-p",
+      "--junitxml",
+      "/root/amadeus-m118l/t/wheel-focused.xml"
+    ],
+    "cwd": "/root/amadeus-m118l/run",
+    "exit_code": 0,
+    "started_at": "2026-11-16T10:19:58.648895+00:00",
+    "finished_at": "2026-11-16T10:20:07.023772+00:00",
+    "log": "logs/wheel_pytest.log",
+    "log_sha256": "21ff5a7ec07167ebb0a57682338038c58879b099184afd1c8e02f7a4d85e35dc",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

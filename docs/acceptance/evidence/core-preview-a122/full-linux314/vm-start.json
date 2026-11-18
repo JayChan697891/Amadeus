@@ -1,0 +1,8 @@
+{
+  "pid": 3652,
+  "executable": "D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe",
+  "start_utc": "2026-11-17T13:48:29.2589748Z",
+  "start_ticks": 639305201092589748,
+  "observed_at": "2026-11-17T13:48:29.4102941Z",
+  "prior_logs": "D:\\agentsync-debug\\m122fulll\\resume-vm-before"
+}

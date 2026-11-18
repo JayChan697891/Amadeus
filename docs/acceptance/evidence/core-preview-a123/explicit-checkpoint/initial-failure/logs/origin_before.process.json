@@ -1,0 +1,48 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib,importlib.metadata as m,json,sys\nfrom pathlib import Path\nimport agentsync,agentsync.cli\nenv,source,members=map(Path,sys.argv[1:])\nsite=env/'Lib/site-packages'\nassert Path(sys.prefix).resolve()==env.resolve()\nassert Path(agentsync.__file__).resolve()==(site/'agentsync/__init__.py').resolve()\nassert Path(agentsync.cli.__file__).resolve()==(site/'agentsync/cli.py').resolve()\ndist=m.distribution('agentsync-local')\nassert dist.version=='0.3.0a123'\ndirect=json.loads(dist.read_text('direct_url.json'))\nassert direct['url']==source.resolve().as_uri() and not direct['dir_info'].get('editable',False)\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()\n        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual==json.loads(members.read_bytes()) and len(actual)==97\nprint(json.dumps({'origin':str(Path(agentsync.__file__).resolve()),'cli_origin':str(Path(agentsync.cli.__file__).resolve()),\n                  'version':dist.version,'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))\n",
+      "D:\\agentsync-debug\\m123-progress\\venv",
+      "D:\\agentsync-debug\\m123-progress\\frozen-r3",
+      "D:\\agentsync-debug\\m123-progress\\runtime-members-r3.json"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-progress\\frozen-r3",
+    "started_at": "2026-11-18T05:56:22.413210+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "origin_before",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib,importlib.metadata as m,json,sys\nfrom pathlib import Path\nimport agentsync,agentsync.cli\nenv,source,members=map(Path,sys.argv[1:])\nsite=env/'Lib/site-packages'\nassert Path(sys.prefix).resolve()==env.resolve()\nassert Path(agentsync.__file__).resolve()==(site/'agentsync/__init__.py').resolve()\nassert Path(agentsync.cli.__file__).resolve()==(site/'agentsync/cli.py').resolve()\ndist=m.distribution('agentsync-local')\nassert dist.version=='0.3.0a123'\ndirect=json.loads(dist.read_text('direct_url.json'))\nassert direct['url']==source.resolve().as_uri() and not direct['dir_info'].get('editable',False)\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()\n        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual==json.loads(members.read_bytes()) and len(actual)==97\nprint(json.dumps({'origin':str(Path(agentsync.__file__).resolve()),'cli_origin':str(Path(agentsync.cli.__file__).resolve()),\n                  'version':dist.version,'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))\n",
+      "D:\\agentsync-debug\\m123-progress\\venv",
+      "D:\\agentsync-debug\\m123-progress\\frozen-r3",
+      "D:\\agentsync-debug\\m123-progress\\runtime-members-r3.json"
+    ],
+    "cwd": "D:\\agentsync-debug\\m123-progress\\frozen-r3",
+    "exit_code": 0,
+    "started_at": "2026-11-18T05:56:22.413210+00:00",
+    "finished_at": "2026-11-18T05:56:22.704639+00:00",
+    "log": "logs/origin_before.log",
+    "log_sha256": "5960a8b41ac6a516db6af03f61ce1617b8f9ec9b79a4d5e7d1c8885fb43097e4",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

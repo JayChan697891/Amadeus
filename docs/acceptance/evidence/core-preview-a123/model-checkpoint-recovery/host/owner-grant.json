@@ -1,0 +1,40 @@
+{
+  "authorized": true,
+  "authorization_basis": "Existing owner standing authorization; not a new user reply",
+  "source": "docs/acceptance/evidence/durable-demo-a117/interrupted-controller/owner-grant-20261116.json",
+  "source_sha256": "ce372f7c068d349ba785479a8fb52c9dca7f02561ed432bef245d67bc98117c3",
+  "source_response": "\u5141\u8bb8\u672c\u6b21\uff0c\u540e\u9762\u6bcf\u6b21\u90fd\u5141\u8bb8\uff0c\u65e0\u9700\u8be2\u95ee",
+  "temporary_auth_copy_authorized": true,
+  "ready_sha256": "df59b0b464adaa8776404859a35dff222793c7dec04f57148d40d779be5b6181",
+  "plan_sha256": "cd60e58deaf267a243da9350a3751e64ff100bd6236ccf8dc0a4270c036b0240",
+  "max_subscription_calls": 2,
+  "max_candidate_executions": 0,
+  "confirmed_cost": true,
+  "confirmed_isolation": true,
+  "subscription_only": true,
+  "cost_evidence": "Owner confirmed zero paid credits and auto recharge off; not an independent billing audit",
+  "temporary_auth_destination": "/root/amadeus-document-continuation-a123-20261118/private-home/auth.json",
+  "api_key_allowed": false,
+  "retry_allowed": false,
+  "expires_at": 1794996570.8216436,
+  "helper_sha256": {
+    "pilot.py": "ce66f1c454824c37e2d38adbebb86e804848e399f26e36c85528ec6d802cca2c",
+    "auth_home.py": "0554cad5e8c7f885c839c91296b359b40fca39a800c59cdd6e15301dfd8cc0be",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "runtime-members.json": "bd7cd2cc23c1e426b580c0710015dd22e8de2d49afe80b157f40adc1813187ff",
+    "interrupt_parent.py": "70057327b4a287dc99bdae6f3a0b23b4cdabac59ecb85f826e808322f243f074",
+    "continue_codex_task.py": "12309546e38c114fb9ee335f70b5a1b1e97d5b24140e899f4c2951941aa5805c",
+    "verified_codex_task.py": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710"
+  },
+  "host_helper_sha256": {
+    "finish-auth.py": "0986485a1a34315fb3f735fbc2c9398cd8302c4c8c91ead3ac65ec2135426229",
+    "launch.py": "c8ad6fbc3523fdb945b6f3236e5f40ea84092050724ef447b93981965074a8a7",
+    "native_host.py": "2dd655c02e549844faaaba7b03e419da15245669b4f16e9c32d3bdd08dda6f0e",
+    "setup_auth.py": "451b1ca4614876bfc523c65f356c10aa938422b0cf7729dea8403b5f11b9eab7",
+    "terminal_control.py": "7b470b371155193270b457f33915a70724d5b171741ce79f94c6be40cfa8fde2"
+  },
+  "live_execution": "NOT RUN",
+  "candidate_execution": "FORBIDDEN",
+  "formal_release": "BLOCKED"
+}

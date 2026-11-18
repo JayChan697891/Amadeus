@@ -1,0 +1,8 @@
+{
+  "disk_preserved": true,
+  "pid": 21328,
+  "loopback_ports_closed": true,
+  "utc": "2026-11-17T04:28:28.2577296Z",
+  "process_absent": true,
+  "method": "QMP system_powerdown"
+}

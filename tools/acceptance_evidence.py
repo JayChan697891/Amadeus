@@ -216,7 +216,132 @@ def _junit(data: bytes) -> tuple[dict[str, int], str]:
     return counts, case_hash
 
 
+def _installation_directories(report: dict[str, Any], evidence: _Evidence) -> dict[str, str]:
+    """Bind separately collected installations without rewriting their process receipts.
+
+    This is an explicit composite, not a completed collector invocation. Source
+    declarations are integrity records, not authentication of the evidence producer.
+    Ordinary reports retain the original single-directory policy.
+    """
+    if "composite_execution" not in report:
+        return {}
+    composite = report["composite_execution"]
+    if (
+        type(composite) is not dict
+        or set(composite) != {"schema_version", "scope", "single_collector_completed", "sources"}
+        or type(composite["schema_version"]) is not int
+        or composite["schema_version"] != 1
+        or composite["scope"] != "separate_runs_same_frozen_source"
+        or composite["single_collector_completed"] is not False
+        or type(composite["sources"]) is not dict
+        or set(composite["sources"]) != {"wheel", "sdist"}
+    ):
+        raise ValueError("Invalid composite execution declaration.")
+    checks = {row["id"]: row for row in report["checks"]}
+    identities = (
+        "version",
+        "commit_sha",
+        "tree_sha",
+        "source_snapshot_sha256",
+        "platform",
+        "python",
+    )
+    path_type = PureWindowsPath if report["platform"].startswith("Windows") else PurePosixPath
+    directories: dict[str, str] = {}
+    for kind, reference in composite["sources"].items():
+        if type(reference) is not dict or set(reference) != {"path", "sha256", "size"}:
+            raise ValueError("Invalid composite source reference.")
+        name = reference["path"]
+        if name != f"composite/{kind}.json":
+            raise ValueError("Unexpected composite source member.")
+        evidence.require_digest(name, reference["sha256"])
+        if type(reference["size"]) is not int or reference["size"] != evidence.members[name].size:
+            raise ValueError("Composite source size does not match.")
+        source = read_json(evidence.check(name, retain=True))
+        if (
+            type(source) is not dict
+            or set(source) != {*identities, "evidence_directory", "artifact", "process_receipts"}
+            or any(source[field] != report[field] for field in identities)
+            or type(source["evidence_directory"]) is not str
+            or not path_type(source["evidence_directory"]).is_absolute()
+            or type(source["process_receipts"]) is not dict
+        ):
+            raise ValueError("Composite source differs from the frozen report identity.")
+        base = path_type(source["evidence_directory"])
+        install = checks.get(kind + "_install", {})
+        origin = checks.get(kind + "_origin_sdk", {})
+        if (
+            install.get("status") != "pass"
+            or origin.get("status") != "pass"
+            or source["artifact"] != install.get("artifact")
+        ):
+            raise ValueError(
+                "Composite installation requires successful install and origin receipts."
+            )
+        package_checks = {
+            name: row
+            for name, row in checks.items()
+            if name.startswith(kind + "_") and row.get("log") is not None
+        }
+        if set(source["process_receipts"]) != set(package_checks):
+            raise ValueError("Composite process mapping is missing or has extra checks.")
+        for check_id, row in package_checks.items():
+            receipt = source["process_receipts"][check_id]
+            expected = PurePosixPath(row["log"]).with_suffix(".process.json").as_posix()
+            if type(receipt) is not dict or set(receipt) != {"path", "sha256", "size"}:
+                raise ValueError("Invalid composite process reference.")
+            if receipt["path"] != expected:
+                raise ValueError("Composite process reference belongs to another check.")
+            evidence.require_digest(expected, receipt["sha256"])
+            if (
+                type(receipt["size"]) is not int
+                or receipt["size"] != evidence.members[expected].size
+            ):
+                raise ValueError("Composite process receipt size does not match.")
+            # verify_report_evidence has already compared each row with its
+            # unchanged terminal request/result. Do not turn an observer's
+            # independent exit record into a canonical successful receipt.
+            if "artifact" in row and row["artifact"] != source["artifact"]:
+                raise ValueError("Composite package check refers to a different archive.")
+            command = row.get("command")
+            if type(command) is not list or not command:
+                raise ValueError("Composite package command is missing.")
+            if check_id == kind + "_venv":
+                if (
+                    len(command) != 4
+                    or command[1:3] != ["-m", "venv"]
+                    or not path_type(command[0]).is_absolute()
+                    or not path_type(command[3]).is_absolute()
+                ):
+                    raise ValueError("Composite environment creation command is invalid.")
+                suffix = (
+                    ("Scripts", "python.exe") if path_type is PureWindowsPath else ("bin", "python")
+                )
+                if path_type(command[3]).joinpath(*suffix) != path_type(install["command"][0]):
+                    raise ValueError("Composite environment creation targets another installation.")
+            elif command[0] != install["command"][0]:
+                raise ValueError("Composite package check uses another installation environment.")
+            cwd = row.get("cwd")
+            if type(cwd) is not str:
+                raise ValueError("Composite package working directory is missing.")
+            if check_id == kind + "_console_smoke":
+                # The existing console probe deliberately uses a disposable
+                # scratch directory, also recorded as its last operand.
+                if not path_type(cwd).is_absolute() or path_type(cwd) != path_type(command[-1]):
+                    raise ValueError("Composite console probe directory does not match.")
+            elif check_id == "wheel_venv":
+                if path_type(cwd) != path_type(report["repo"]):
+                    raise ValueError(
+                        "Composite wheel environment was not created from the recorded source."
+                    )
+            elif path_type(cwd) != base:
+                raise ValueError("Composite directory differs from the process working directory.")
+        directories[kind] = source["evidence_directory"]
+    return directories
+
+
 def _bound_installations(report: dict[str, Any], evidence: _Evidence) -> dict[str, str]:
+    directories = _installation_directories(report, evidence)
     rows = report.get("distribution_installations")
     if type(rows) is not list or len(rows) > 2:
         raise ValueError("Invalid installation records.")
@@ -249,7 +374,7 @@ def _bound_installations(report: dict[str, Any], evidence: _Evidence) -> dict[st
         evidence.require_digest(name, artifact["sha256"])
         if type(artifact["size"]) is not int or evidence.members[name].size != artifact["size"]:
             raise ValueError("Installed artifact size does not match.")
-        _verify_install_operand(report, kind, checks, artifact, parts)
+        _verify_install_operand(report, kind, checks, artifact, parts, directories.get(kind))
         results[kind] = artifact["sha256"]
     for kind in ("wheel", "sdist"):
         if checks.get(kind + "_install", {}).get("status") == "pass" and kind not in results:
@@ -263,9 +388,12 @@ def _verify_install_operand(
     checks: dict[str, dict[str, Any]],
     artifact: dict[str, Any],
     parts: tuple[str, ...],
+    execution_directory: str | None = None,
 ) -> None:
     path_type = PureWindowsPath if report["platform"].startswith("Windows") else PurePosixPath
-    base = path_type(report["evidence_directory"])
+    base = path_type(
+        report["evidence_directory"] if execution_directory is None else execution_directory
+    )
     if not base.is_absolute():
         raise ValueError("Invalid original evidence location.")
     expected = base.joinpath(*parts)

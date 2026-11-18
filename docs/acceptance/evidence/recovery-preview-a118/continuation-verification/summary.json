@@ -1,0 +1,100 @@
+{
+  "recorded_at": "2026-11-16T13:33:49.772407+00:00",
+  "product_commit": "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1",
+  "scope": "P0 same-Core continuation receiver to independent verified completion; no new milestone",
+  "source_inputs": [
+    {
+      "path": "src/agentsync/controlled_relay.py",
+      "worktree_sha256": "ed9edaf5385a4591040139dc208183f19a6eb1b44fd38ca22c63152ff0690b53",
+      "git_blob": "7183f4ddea24d7d8941018b7bb8b670d61e4c62a"
+    },
+    {
+      "path": "src/agentsync/continuation.py",
+      "worktree_sha256": "221f7dd9f8be77b41daaa19cac2e65cd31f31833e76619632ccba8a9ca840714",
+      "git_blob": "03f795a1da3052ce7be196a8aa40429e3b91f104"
+    },
+    {
+      "path": "tests/integration/test_unfinished_continuation.py",
+      "worktree_sha256": "82d3cc398410a71fcaa60d4693aa781831aa2f063a509b9b1510cca253161eb9",
+      "git_blob": "67a41cd94cb71bed84fc05c1575f92827043412b"
+    }
+  ],
+  "windows": {
+    "native_session": 58049,
+    "original_exit": 1,
+    "original_result": {
+      "passed": 53,
+      "failed": 2,
+      "errors": 0,
+      "skipped": 0,
+      "docker_deselected": 1
+    },
+    "failure_reason": "The isolated child used the original a118 install instead of the PYTHONPATH source; import_origin assertion stopped before recovery operations.",
+    "first_source_environment": {
+      "exit": 4,
+      "target_tests_executed": 0,
+      "reason": "Plain .pth dependency paths did not process pywin32.pth; collection stopped on missing pywintypes."
+    },
+    "focused_recheck": {
+      "native_session": 10011,
+      "terminal_chunk": "1322e0",
+      "exit": 0,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 15.78,
+      "only_original_failures_rerun": true,
+      "source_origin": "D:\\agentsync-debug\\continuation-verified-20261116\\frozen-src\\src\\agentsync\\__init__.py",
+      "frozen_source_files_unchanged": 233,
+      "old_installed_members_unchanged": 97
+    },
+    "target_case_count_with_pass_evidence": 55,
+    "note": "Two runs on the same frozen product; the original report remains 53 pass / 2 fail. Eleven new Windows bridge cases are within the 53, not additional. The initial red/happy smoke used an earlier test draft and is not counted again."
+  },
+  "linux": {
+    "native_chunk": "05e4f2",
+    "exit": 0,
+    "python": "3.14.7",
+    "pytest_cases": 1,
+    "passed": 1,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 7.78,
+    "docker_cases_passed": 2,
+    "isolation_checks_passed": 19,
+    "source_files_unchanged": 233,
+    "old_installed_members_unchanged": 97,
+    "same_receiver_task_id": "81c21e83-96f2-4c47-b2f7-08140c3ff39a",
+    "receiver": "completed/verified v6",
+    "source": "failed",
+    "publication": "unverified",
+    "independent_reviewer": true,
+    "dependency_claim_after_completion": true,
+    "completion_replay_single_execution": true,
+    "owned_container_and_fixture_processes_absent": true,
+    "vm_normally_stopped": true
+  },
+  "static_checks": {
+    "native_chunk": "45843f",
+    "ruff_check": "passed",
+    "ruff_format": "three files already formatted",
+    "mypy": "two source files, no issues",
+    "diff_check": "passed"
+  },
+  "review": {
+    "root": "Inspected actual source, logs/XML, child import origins, candidate execution/proof bindings, hashes, post-run processes and normal VM shutdown.",
+    "independent_astra": "Accepted frozen source and limited Windows/Linux evidence after reading original files; no live-model or Release acceptance."
+  },
+  "limitations": [
+    "Model side is owned local Python protocol fixtures: zero actual inference/auth copies.",
+    "Real subscription interruption followed by same-Core verified completion still NOT RUN for this new bridge.",
+    "Codex continuation bridge only; arbitrary proposals must satisfy existing solution.py JSON-lines profile.",
+    "Original R2 add.py remains unchanged, review/unverified; no wrapper or imported verification relabelled as original-task acceptance.",
+    "New source is not in old frozen a118 packages; no full-suite or complete platform-matrix claim.",
+    "Claude/Cursor real control and macOS remain NOT RUN without available environments.",
+    "Formal Release BLOCKED; M5 frozen open scope not reopened; external Work review pending."
+  ],
+  "next_step": "Prepare one exact fresh subscription experiment using solution.py from task definition and the new bridge. Explicitly include staging, Docker execution and completion decisions; prior interrupted-run permission excluded candidate execution. No such model run has started."
+}

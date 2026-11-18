@@ -1,0 +1,127 @@
+"""Freeze this bounded development input and install offline; never run pytest."""
+import hashlib
+import importlib.util
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+BASE = Path(__file__).parent
+REPO = Path('F:/syuc/amadeus-m6-single')
+SOURCE = BASE / 'frozen-r2'
+PYTHON = BASE / 'venv/Scripts/python.exe'
+WHEELS = Path('D:/agentsync-debug/continuation-cc30ed21/windows-py312-wheelhouse')
+EXPORT = ['src', 'tests', 'examples', 'tools', 'pyproject.toml', 'MANIFEST.in',
+          'README.md', 'README.zh-CN.md', 'LICENSE', 'requirements-lock.txt',
+          'requirements-dev-lock.txt', 'docs/VERIFIED-TASK-EXAMPLE.md']
+PROBE = r'''
+import hashlib,importlib.metadata as m,json,sys
+from pathlib import Path
+import agentsync,agentsync.cli
+env,source,members=map(Path,sys.argv[1:])
+site=env/'Lib/site-packages'
+assert Path(sys.prefix).resolve()==env.resolve()
+assert Path(agentsync.__file__).resolve()==(site/'agentsync/__init__.py').resolve()
+assert Path(agentsync.cli.__file__).resolve()==(site/'agentsync/cli.py').resolve()
+dist=m.distribution('agentsync-local')
+assert dist.version=='0.3.0a123'
+direct=json.loads(dist.read_text('direct_url.json'))
+assert direct['url']==source.resolve().as_uri() and not direct['dir_info'].get('editable',False)
+actual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert actual==json.loads(members.read_bytes()) and len(actual)==97
+print(json.dumps({'origin':str(Path(agentsync.__file__).resolve()),'cli_origin':str(Path(agentsync.cli.__file__).resolve()),
+                  'version':dist.version,'prefix':sys.prefix,'direct_url':direct,'runtime_members':len(actual)}))
+'''
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+def save(path, value):
+    with path.open('x', encoding='utf8', newline='\n') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+
+def isolate(home, temp):
+    for key in tuple(os.environ):
+        if key.upper().startswith(('PYTHON','PYTEST_','PIP_','UV_','AGENTSYNC_','OPENAI_',
+                                   'ANTHROPIC_','CODEX_','CLAUDE_','CURSOR_','GIT_','GITHUB_')):
+            os.environ.pop(key)
+    os.environ.update(HOME=str(home), USERPROFILE=str(home), APPDATA=str(home), LOCALAPPDATA=str(home),
+                      TEMP=str(temp), TMP=str(temp), TMPDIR=str(temp), PYTHONDONTWRITEBYTECODE='1',
+                      PYTHONNOUSERSITE='1', PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX='1',
+                      PIP_NO_CACHE_DIR='1', PIP_DISABLE_PIP_VERSION_CHECK='1',
+                      GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT='0')
+
+def collector():
+    spec = importlib.util.spec_from_file_location('frozen_release_acceptance', SOURCE/'tools/release_acceptance.py')
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+def verify(manifest):
+    assert all((SOURCE/name).stat().st_size==row['size'] and sha(SOURCE/name)==row['sha256']
+               for name,row in manifest['files'].items())
+
+def main():
+    run, temp, home = (BASE/name for name in ('install-r2','install-tmp-r2','install-home-r2'))
+    for directory in (run, temp, home): directory.mkdir(exist_ok=False)
+    (run/'logs').mkdir()
+    isolate(home,temp)
+    assert sys.version_info[:3] == (3,12,16) and sys.flags.isolated and sys.dont_write_bytecode
+    site = BASE/'venv/Lib/site-packages'
+    old_members = json.loads((BASE/'runtime-members.json').read_bytes())
+    assert {p.relative_to(site).as_posix():sha(p) for p in (site/'agentsync').rglob('*')
+            if p.is_file() and '__pycache__' not in p.parts} == old_members
+    def git(*arguments):
+        return subprocess.run(['git','-C',str(REPO),*arguments],check=True,capture_output=True).stdout
+    head = git('rev-parse','HEAD').decode().strip()
+    diff = git('--no-pager','diff','--no-ext-diff','--binary','HEAD','--',*EXPORT)
+    names = git('ls-files','-z','--cached','--others','--exclude-standard','--',*EXPORT).decode().split('\0')
+    SOURCE.mkdir(exist_ok=False)
+    files = {}
+    for name in sorted(set(names)-{''}):
+        source,target = REPO/name,SOURCE/name
+        assert source.is_file() and not source.is_symlink() and '__pycache__' not in source.parts
+        target.parent.mkdir(parents=True,exist_ok=True)
+        with source.open('rb') as incoming, target.open('xb') as outgoing:
+            while data := incoming.read(1024*1024): outgoing.write(data)
+        files[name]={'size':target.stat().st_size,'sha256':sha(target)}
+        assert sha(source)==files[name]['sha256']
+    manifest={'baseline_head':head,'working_diff_sha256':hashlib.sha256(diff).hexdigest(),
+              'scope':'Current selected working tree input, not a Git commit or full release archive',
+              'files':files}
+    save(BASE/'source-manifest-r2.json',manifest)
+    members={name.removeprefix('src/'):row['sha256'] for name,row in files.items() if name.startswith('src/agentsync/')}
+    assert len(members)==97
+    save(BASE/'runtime-members-r2.json',members)
+    tool=collector()
+    checks=[]
+    result={'status':'fail','tests':'NOT RUN','model_calls':0,'source_files':len(files),
+            'baseline_head':head,'working_diff_sha256':manifest['working_diff_sha256'],'checks':checks}
+    try:
+        commands=[('install',[str(PYTHON),'-I','-B','-m','pip','install','--no-index','--no-deps','--no-build-isolation','--force-reinstall',str(SOURCE)]),
+                  ('pip_check',[str(PYTHON),'-I','-B','-m','pip','check']),
+                  ('installed_origin',[str(PYTHON),'-I','-B','-c',PROBE,str(BASE/'venv'),str(SOURCE),str(BASE/'runtime-members-r2.json')])]
+        for name,command in commands:
+            outcome=tool.execute(name,command,run,run,temp,offline_wheelhouse=WHEELS)
+            checks.append(outcome)
+            assert outcome['status']=='pass' and outcome['exit_code']==0 and not outcome['log_truncated']
+        verify(manifest)
+        result['generated_source_files']={p.relative_to(SOURCE).as_posix():sha(p) for p in SOURCE.rglob('*')
+                                          if p.is_file() and p.relative_to(SOURCE).as_posix() not in files}
+        result['source_manifest_sha256']=sha(BASE/'source-manifest-r2.json')
+        result['runtime_members_sha256']=sha(BASE/'runtime-members-r2.json')
+        result['status']='pass'
+    except Exception as error:
+        result['error_type']=type(error).__name__
+        raise
+    finally:
+        save(run/'result.json',result)
+    print(json.dumps({'status':result['status'],'source_files':len(files),'checks':len(checks),'tests':'NOT RUN'}))
+
+if __name__=='__main__':
+    main()

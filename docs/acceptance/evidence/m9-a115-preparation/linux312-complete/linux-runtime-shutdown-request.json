@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-14T11:09:02.705839+00:00",
+  "scope": "Graceful shutdown of completed dedicated local Linux debug VM only",
+  "boot_id": "0b51437b-5bfb-46c4-a7fa-f7ffffc8cd96",
+  "preconditions": "All three Linux rows and both benchmark profiles passed; no other Python processes, no Docker containers, scratch empty",
+  "host_exit_verification": "PENDING",
+  "windows_queue": "Do not stop",
+  "files_and_disks": "Preserved",
+  "ssh_exit_code": 0
+}

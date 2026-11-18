@@ -1,0 +1,39 @@
+{
+  "scope": "prepared_local_orchestration_not_execution",
+  "frozen_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "status": "NOT RUN",
+  "syntax_check": "parsed_not_executed",
+  "driver_sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
+  "driver_path": "D:/agentsync-debug/m116-remaining-windows.py",
+  "rows": [
+    "windows-311",
+    "windows-314"
+  ],
+  "prerequisite": "Finished original Windows3.12 row; all checks passed; strict original report/source/archive verification and trusted candidate manifest digest. Inspect result before launch.",
+  "automatic_retry": false,
+  "concurrency": "one collector at a time on Windows",
+  "pause_marker": "D:/agentsync-debug/m116/STOP_AFTER_CURRENT; checked before each next row",
+  "source_modification": false,
+  "real_model_calls": "NOT RUN",
+  "github_actions": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "artifacts": [
+    {
+      "path": "run.py.txt",
+      "sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
+      "size": 8173
+    }
+  ],
+  "independent_static_review": {
+    "reviewer": "native agent /root/astra_license_exit_review",
+    "reviewed_script_sha256": "d531d50cc9fd97d4504692e024cfd9dc9759d14fd6137d71397091b6d9a17643",
+    "outcome": "No concrete execution or evidence-integrity blocker found in the sequential queue entry.",
+    "scope": "Static inspection of script and frozen collector/matrix/manifest interfaces only; no scripts, tests, Git or process checks executed.",
+    "execution": "NOT RUN",
+    "limits": [
+      "Run through the queue entry without --row; no universal host process lock is claimed.",
+      "STOP_AFTER_CURRENT acts between complete rows, not as immediate interruption of a current suite."
+    ],
+    "formal_release_approval": false
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "source_sha256": {
+    "src/agentsync/cli.py": "73b2648b749c69c1eb11a19c2e0f3dd32a4099f9d418461adae1f5bb53064cd3",
+    "tests/integration/test_durable_demo.py": "949b0ead18b5c74a6ecfdc6f54b9b43d53b3e1d9ba3086cf2cd6462a42ecce05",
+    "tests/integration/test_handoff_recovery.py": "5ea791f8968133296a3e4854aae7540abe19803798c762f22f9d6ff539bfaca5"
+  },
+  "source_origin_checked": true,
+  "results": {
+    "red": {
+      "unique_cases": 2,
+      "passed": 0,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "identities": [
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_reports_unicode_directory_with_legacy_stdout"
+        ],
+        [
+          "tests.integration.test_handoff_recovery",
+          "test_owner_recovery_reports_unicode_reason_with_legacy_stdout"
+        ]
+      ]
+    },
+    "green": {
+      "unique_cases": 19,
+      "passed": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "identities": [
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_reopens_retry_and_records_handoff"
+        ],
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_refuses_existing_state"
+        ],
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_reports_unicode_directory_with_legacy_stdout"
+        ],
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments0-requires --data-dir]"
+        ],
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments1-must be absolute]"
+        ],
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_cli_requires_a_dedicated_mode_and_absolute_directory[arguments2-not allowed with argument]"
+        ],
+        [
+          "tests.integration.test_handoff_recovery",
+          "test_owner_recovery_reports_unicode_reason_with_legacy_stdout"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_stdin_invalid_shapes_return_safe_envelope_without_state[too-large]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_stdin_invalid_shapes_return_safe_envelope_without_state[too-deep]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_stdin_invalid_shapes_return_safe_envelope_without_state[reserved-operation]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_stdin_invalid_shapes_return_safe_envelope_without_state[reserved-self]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_stdin_invalid_shapes_return_safe_envelope_without_state[utf8-byte-limit]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_missing_database_does_not_create_state[missing-dir-argument]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_missing_database_does_not_create_state[missing-dir-environment]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_missing_database_does_not_create_state[empty-dir-argument]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_missing_database_does_not_create_state[empty-dir-environment]"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_reports_corrupt_database"
+        ],
+        [
+          "tests.security.test_m5_owner_cli_inputs",
+          "test_owner_existing_database_supports_explicit_write_and_env_read"
+        ],
+        [
+          "tests.integration.test_mock_workflow",
+          "test_cli_workflow_is_disposable_and_existing_demo_behavior_is_preserved"
+        ]
+      ]
+    }
+  },
+  "static_checks": {
+    "ruff": {
+      "argv": [
+        "D:/agentsync-debug/m120p/w/Scripts/ruff.exe",
+        "check",
+        "--no-cache",
+        "src/agentsync/cli.py",
+        "tests/integration/test_durable_demo.py",
+        "tests/integration/test_handoff_recovery.py"
+      ],
+      "exit_code": 0
+    },
+    "format": {
+      "argv": [
+        "D:/agentsync-debug/m120p/w/Scripts/ruff.exe",
+        "format",
+        "--check",
+        "--no-cache",
+        "src/agentsync/cli.py",
+        "tests/integration/test_durable_demo.py",
+        "tests/integration/test_handoff_recovery.py"
+      ],
+      "exit_code": 0
+    }
+  },
+  "public_records_credential_matches": 0,
+  "original_records": 12,
+  "original_bytes": 21520,
+  "scope": "Two real local CLI encoding regressions and related demo/owner cases; no model or installed-package/full-suite claim."
+}

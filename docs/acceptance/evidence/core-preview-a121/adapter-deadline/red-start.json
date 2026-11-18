@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m121-host-deadline/red-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m121-host-deadline/red.xml",
+    "tests/unit/test_host_process_deadline.py"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T05:56:03.1125230Z",
+  "environment": {
+    "TMPDIR": "D:/agentsync-debug/m121-host-deadline/red-scratch",
+    "PYTHONNOUSERSITE": "1",
+    "TMP": "D:/agentsync-debug/m121-host-deadline/red-scratch",
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TEMP": "D:/agentsync-debug/m121-host-deadline/red-scratch"
+  },
+  "source_sha256": {
+    "src/agentsync/adapters/_host_process.py": "2bf09e225ec2a2e04151c39d602f13feafeac269343d847debeb929aefa59309",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b"
+  }
+}

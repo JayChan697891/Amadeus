@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "D:/agentsync-debug/m120-demo-encoding/source-env/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/m121-host-deadline/green-tmp",
+    "--junitxml",
+    "D:/agentsync-debug/m121-host-deadline/green.xml",
+    "tests/unit/test_host_process_deadline.py",
+    "tests/unit/test_process_capture_deadline.py",
+    "tests/unit/test_unstarted_capture_adapter.py",
+    "tests/unit/test_codex_process.py::test_absolute_deadline_is_checked_before_delayed_timer_callback"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "started_utc": "2026-11-17T05:57:16.6808539Z",
+  "environment": {
+    "TMP": "D:/agentsync-debug/m121-host-deadline/green-scratch",
+    "PYTHONNOUSERSITE": "1",
+    "TMPDIR": "D:/agentsync-debug/m121-host-deadline/green-scratch",
+    "TEMP": "D:/agentsync-debug/m121-host-deadline/green-scratch",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "F:/syuc/amadeus-m6-single/src"
+  },
+  "source_sha256": {
+    "src/agentsync/adapters/_host_process.py": "76dfd26985a8b77d215be587fb06219b38e893ae2c37c4be30ac657922b60c9e",
+    "src/agentsync/adapters/process_capture.py": "ceff6b108be4994576f11b2f07bbd3aebef693fe216f979dc570ae568b1414cb",
+    "tests/unit/test_host_process_deadline.py": "b422ca7a165800bae2f2017f8d1c8b286e78abcf562955b3e7511bad2decb37b"
+  }
+}

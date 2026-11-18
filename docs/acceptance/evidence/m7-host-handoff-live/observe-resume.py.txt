@@ -1,0 +1,67 @@
+"""Reopen the actual completed handoff with no credentials or launch authorization."""
+import asyncio
+import json
+import os
+import sys
+from pathlib import Path
+
+BASE = Path('/root/amadeus-host-handoff-live-20261113')
+sys.path.insert(0, str(BASE))
+import pilot
+import observe
+from agentsync.relay_queue import RelayQueue
+
+
+async def main():
+    os.umask(0o077)
+    assert Path(__file__).resolve() == BASE / 'observe-resume.py'
+    core, state, task, final, _ = observe.inspect(final=True)
+    assert task['status'] == 'completed' and task['task_verification'] == 'unverified'
+    core2, runner = pilot.core_and_relay()
+    queue = RelayQueue(runner)
+    before = core2.execute('list_tasks', pilot.auth(state))
+    old_attempts = runner.owner_inspect_attempts(state['owner']['project_id'], task['id'],
+                                               admin_token=state['owner']['admin_token'])
+    old_history = queue.owner_history(state['owner']['project_id'], admin_token=state['owner']['admin_token'])
+    authorizations = 0
+
+    async def deny(_review):
+        nonlocal authorizations
+        authorizations += 1
+        return None
+
+    actor = pilot.actor_for(state, deny)
+
+    def build(receiver, workspace):
+        assert receiver == pilot.handoff_request(state).receiver
+        assert workspace.task_id == state['task']['id']
+        assert workspace.worktree_id == state['tree']['worktree_id']
+        return actor
+
+    result = await pilot.coordinator(core2).run(pilot.handoff_request(state),
+        admin_token=state['owner']['admin_token'], build_receiver=build, wait_seconds=0, budget=15)
+    assert result.state == 'resolved' and result.task_id == task['id']
+    expected = pilot.load('coordinator-result.json')['outcome']
+    assert json.loads(json.dumps(pilot.asdict(result))) == expected
+    assert authorizations == 0
+    assert core2.execute('list_tasks', pilot.auth(state)) == before
+    assert runner.owner_inspect_attempts(state['owner']['project_id'], task['id'],
+        admin_token=state['owner']['admin_token']) == old_attempts
+    assert queue.owner_history(state['owner']['project_id'],
+        admin_token=state['owner']['admin_token']) == old_history
+    observe.cleanup_observed()
+    pilot.pinned_state(core2)
+    pilot.save('resume-observation.json', {'timestamp': pilot.timestamp(), 'state': result.state,
+        'task_id': result.task_id, 'same_result': True, 'same_tasks': True, 'same_attempts': True,
+        'same_queue_history': True, 'launch_authority_calls': authorizations,
+        'auth_absent': True, 'source_and_worktrees_unchanged': True,
+        'verification': 'unverified', 'product_sha': pilot.RECEIVER_PRODUCT})
+    print(json.dumps({'reopened': True, 'same_result': True, 'launch_authority_calls': authorizations}))
+
+
+if __name__ == '__main__':
+    try:
+        asyncio.run(main())
+    except Exception as exc:
+        print(json.dumps({'error_code': pilot.error_code(exc)}))
+        raise SystemExit(1) from None

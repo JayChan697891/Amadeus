@@ -576,7 +576,8 @@
       "existing_tests": [
         "tests/integration/test_m3_transports.py::test_real_independent_mcp_client_process_handoff",
         "tests/concurrency/test_m3_races.py::test_resolve_withdraw_race_never_changes_completed_decision",
-        "tests/security/test_m3_security.py"
+        "tests/security/test_m3_security.py",
+        "tests/integration/test_handoff_recovery.py"
       ],
       "planned_cases": [
         {
@@ -735,7 +736,10 @@
         "integration"
       ],
       "existing_tests": [
-        "tests/integration/test_m4b_workspaces.py::test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable"
+        "tests/integration/test_m4b_workspaces.py::test_nonconflicting_candidate_awaits_approval_and_replay_is_immutable",
+        "tests/integration/test_verified_task_completion.py::test_verified_candidate_delivery_is_create_only_and_uses_the_exact_approved_plan",
+        "tests/integration/test_verified_task_completion.py::test_actual_linux_docker_to_independent_verified_completion",
+        "tests/integration/test_candidate_integration.py"
       ],
       "planned_cases": [
         {
@@ -903,7 +907,8 @@
         "tests/integration/test_candidate_claims.py",
         "tests/integration/test_candidate_claim_migration.py",
         "tests/integration/test_candidate_intents.py",
-        "tests/integration/test_candidate_intent_migration.py"
+        "tests/integration/test_candidate_intent_migration.py",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
       ],
       "planned_cases": [
         {
@@ -1066,7 +1071,15 @@
         "tests/unit/test_codex_adapter.py::test_default_capabilities_do_not_authorize_or_start_any_client",
         "tests/unit/test_codex_adapter.py::test_factory_capture_reuse_is_unknown_without_cancelling_first_owner",
         "tests/unit/test_codex_adapter.py::test_factory_deadline_late_handle_cleanup_does_not_rewrite_unknown",
-        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state"
+        "tests/integration/test_codex_adapter_core_boundary.py::test_codex_protocol_fixture_success_preserves_complete_core_and_reopened_state",
+        "tests/unit/test_proposals.py::test_malformed_or_out_of_scope_output_is_static_error",
+        "tests/integration/test_task_proposals.py::test_publication_survives_restart_without_task_or_workspace_mutation",
+        "tests/integration/test_task_proposals.py::test_concurrent_replay_publishes_once_and_revocation_precedes_replay",
+        "tests/integration/test_codex_proposal_capture.py::test_proposal_capture_with_actual_core_git_and_owned_fixture_process",
+        "tests/integration/test_proposal_staging.py::test_real_candidate_reopens_and_old_trees_tasks_are_unchanged",
+        "tests/integration/test_proposal_staging.py::test_foreign_git_indirection_rejected_before_consulting_it",
+        "tests/integration/test_codex_proposal_review.py::test_controlled_proposal_review_and_native_staging",
+        "tests/integration/test_proposal_docker_pipeline.py::test_same_core_proposal_to_independent_docker_acceptance"
       ],
       "planned_cases": [
         {
@@ -1139,6 +1152,7 @@
         "platform"
       ],
       "existing_tests": [
+        "tests/unit/test_cursor_node_bundle.py",
         "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
         "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
         "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
@@ -1183,7 +1197,10 @@
         "tests/unit/test_scheduling.py::test_cycles_duplicate_ids_and_oversized_snapshots_are_invalid",
         "tests/integration/test_scheduling_core_boundary.py::test_planning_uses_core_dependencies_and_priority_without_changing_tasks",
         "tests/integration/test_scheduling_core_boundary.py::test_core_rejects_stale_recommendation_after_another_worker_claims",
-        "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is"
+        "tests/integration/test_scheduling_core_boundary.py::test_in_flight_handoff_is_not_a_candidate_but_other_pending_work_is",
+        "tests/integration/test_proposal_handoff.py::test_concurrent_and_repeated_triggers_launch_only_once",
+        "tests/integration/test_proposal_handoff.py::test_reopen_after_committed_preparation_is_idempotent",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen"
       ],
       "planned_cases": [
         {
@@ -1220,7 +1237,21 @@
         "tests/integration/test_dispatch_planning_core_boundary.py::test_expired_lease_keeps_slot_until_explicit_core_reclamation",
         "tests/integration/test_dispatch_planning_core_boundary.py::test_offline_handoff_recipient_is_not_replaced_by_another_available_worker",
         "tests/unit/test_dispatch_planning.py::test_dispatch_capability_filter_prevents_more_than_100_mismatches_starving_worker",
-        "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role"
+        "tests/integration/test_capability_planning_core_boundary.py::test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
+        "tests/integration/test_proposal_handoff.py::test_handoff_waits_for_independent_completion",
+        "tests/integration/test_proposal_handoff.py::test_saved_reference_survives_original_producer_expiry",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen",
+        "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph",
+        "tests/integration/test_unfinished_continuation.py::test_untrusted_or_uncertain_source_cannot_dispatch",
+        "tests/integration/test_unfinished_continuation.py::test_dispatch_intent_without_wave_remains_unknown",
+        "tests/integration/test_unfinished_continuation.py::test_exact_plan_and_approval_time_source_recheck",
+        "tests/integration/test_unfinished_continuation.py::test_concurrent_requests_consume_one_new_dispatch",
+        "tests/integration/test_unfinished_continuation.py::test_continuation_keeps_known_tool_event_rejection",
+        "tests/integration/test_unfinished_continuation.py::test_changed_graph_rejects_previously_approved_plan",
+        "tests/integration/test_unfinished_continuation.py::test_preparation_checkpoint_resumes_without_second_source_attempt",
+        "tests/integration/test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery",
+        "tests/integration/test_unfinished_continuation.py::test_host_exit_after_receiver_review_reconciles_existing_wave",
+        "tests/integration/test_unfinished_continuation.py::test_old_failed_receipt_cannot_cancel_reclaimed_same_session"
       ],
       "planned_cases": [
         {
@@ -1242,13 +1273,17 @@
       "milestone": "M7",
       "title": "Optional BYOK multi-model providers",
       "acceptance": "No key required for core; provider configs isolated and secrets redacted; paid paths remain explicitly unexecuted without approval.",
-      "coverage": "missing",
+      "coverage": "partial",
       "layers": [
         "unit",
         "integration",
         "security"
       ],
-      "existing_tests": [],
+      "existing_tests": [
+        "tests/unit/test_http_providers.py",
+        "tests/integration/test_provider_loopback_transport.py",
+        "tests/unit/test_provider_usage_and_budget.py"
+      ],
       "planned_cases": [
         {
           "id": "RAT-M7-03",
@@ -1288,7 +1323,8 @@
         "tests/integration/test_mock_workflow.py::test_existing_parent_core_unchanged_and_no_credentials_or_private_child_returned",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_includes_core_setup_without_claims_or_starts",
         "tests/integration/test_mock_workflow.py::test_elapsed_budget_cancels_batch_and_blocks_later_admission",
-        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io"
+        "tests/integration/test_mock_workflow.py::test_elapsed_budget_strict_validation_precedes_filesystem_io",
+        "tests/integration/test_durable_mock_workflow.py"
       ],
       "planned_cases": [
         {
@@ -1324,7 +1360,9 @@
         "tests/unit/test_usage.py::test_mixed_protocol_and_simulated_records_keep_metrics_separate",
         "tests/unit/test_usage.py::test_empty_missing_and_reported_zero_are_distinct",
         "tests/unit/test_usage.py::test_cumulative_overflow_rejects_admission_atomically",
-        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core"
+        "tests/integration/test_cursor_adapter_core_boundary.py::test_cursor_fixture_through_manager_preserves_actual_core",
+        "tests/integration/test_relay_usage.py",
+        "tests/integration/test_project_provider_usage.py"
       ],
       "planned_cases": [
         {
@@ -1368,13 +1406,17 @@
         "tests/unit/test_usage.py::test_checkpoint_restore_preserves_replay_conflict_and_capacity",
         "tests/recovery/test_process_recovery.py::test_abrupt_process_exit_preserves_commits_and_rolls_back_transaction",
         "tests/recovery/test_process_recovery.py::test_crashed_running_owner_is_reclaimed_and_dependency_resumes_after_restart",
+        "tests/integration/test_verified_proposal_flow.py::test_verified_flow_gates_and_reopen",
+        "tests/integration/test_unfinished_continuation.py::test_host_exit_preserves_continuation_recovery",
+        "tests/integration/test_unfinished_continuation.py::test_host_exit_after_receiver_review_reconciles_existing_wave",
         "tests/concurrency/test_claims.py::test_only_one_concurrent_claim_wins",
         "tests/concurrency/test_claims.py::test_concurrent_first_process_migrations",
         "tests/unit/test_verification_jobs.py",
         "tests/unit/test_verification_executor.py",
         "tests/integration/test_owner_execution.py",
         "tests/unit/test_verification_reconciliation.py",
-        "tests/integration/test_execution_reconciliation.py"
+        "tests/integration/test_execution_reconciliation.py",
+        "tests/integration/test_durable_mock_workflow.py"
       ],
       "planned_cases": [
         {

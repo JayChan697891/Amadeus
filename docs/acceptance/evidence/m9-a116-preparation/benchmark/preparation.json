@@ -1,0 +1,32 @@
+{
+  "scope": "existing_M8_diagnostic_preparation_only",
+  "execution": "NOT RUN",
+  "candidate_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "driver_sha256": "b5b3d523a22078077aa4b036ccfefb37ff958c3f7206f18a09378346b64175eb",
+  "benchmark_tool_sha256": "3baaf2443e63a22f03114f9573804c99dd394903306a813961a0195f9878c222",
+  "collector_sha256": "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd",
+  "unchanged_workloads": [
+    {
+      "mode": "threads",
+      "workers": 4,
+      "rounds": 20
+    },
+    {
+      "mode": "process-http",
+      "workers": 2,
+      "rounds": 20
+    }
+  ],
+  "unchanged_p95_budget_ms": 1000,
+  "review": {
+    "agent": "astra_license_exit_review",
+    "kind": "bounded_static_delta_only",
+    "concrete_blocker_found": false,
+    "executed_tests": false
+  },
+  "execution_order": "Wait for both existing Windows and Linux queues to finish successfully. Then run Linux bounded diagnostic; stop the owned VM normally before the Windows diagnostic. The script itself enforces only same-host queue prerequisites.",
+  "automatic_retry": false,
+  "formal_acceptance": false,
+  "real_clients": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

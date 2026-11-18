@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "receipt_usage_pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m8-usage-95244e2\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m8-usage-95244e2\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m8-usage-95244e2\\source",
+    "started_at": "2026-11-13T09:42:39.933604+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "receipt_usage_pytest",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m8-usage-95244e2\\installed\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\m8-usage-95244e2\\driver.py",
+      "child"
+    ],
+    "cwd": "D:\\agentsync-debug\\m8-usage-95244e2\\source",
+    "exit_code": 0,
+    "started_at": "2026-11-13T09:42:39.933604+00:00",
+    "finished_at": "2026-11-13T09:45:13.010316+00:00",
+    "log": "logs/receipt_usage_pytest.log",
+    "log_sha256": "aa32269cf3b92ac58401456189007244772098b97f7df6db06e808140952f0bd",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

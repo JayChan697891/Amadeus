@@ -1,0 +1,145 @@
+"""Prepare only the authorized RAM login copy; never launch a model."""
+import hashlib
+import json
+import stat
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path('D:/agentsync-debug/m122-composed-recovery')
+AUTH = Path('C:/Users/JayChan/.codex/auth.json')
+REMOTE = '/root/amadeus-m122-composed-recovery'
+PYTHON = '/root/amadeus-m122l/w/bin/python'
+FILES = {
+    "prepare.py": "5a76e330141235414c58d451225a8a99f2248edd4f61d1613448445679e5aee8",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "plan.json": "63420a34eafed1fc9aa4a1d8119d31cdaf273a525ea692ac2e9ea80e35888f2a",
+    "readiness.json": "37c6095dc55f641eae94a2af9b263b16848592b4ede166afc61079e983998c80",
+    "interrupt_parent.py": "6b7af496d936d0cb66f92d986427540c3bae29ed2e8af051ddc05ccbff3e1343",
+    "live.py": "5b0bf77d0eb4753528bfa42bbae70424e6eb22faeef6ea83b42edca335bb9f7c",
+    "cleanup.py": "8f77714ad8596f4b66ed41d25ed44af66a5d6c891310e627127b5620f5446dba",
+    "verify.py": "cbd20d12f68990cf910e9dfabb47f8cfbaf52553c53cc68362b2fb58ff828470",
+    "recovery.py": "c25b1daf52d2cb528ecd374cfde23b021e11480c6588c6aec29913a8be4b2501"
+}
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def save(name, data):
+    with (BASE / name).open('x', encoding='utf-8') as stream:
+        json.dump(data, stream, indent=2)
+        stream.write('\n')
+
+
+def main():
+    assert __debug__
+    for name, expected in FILES.items():
+        assert sha((BASE / name).read_bytes()) == expected
+    grant = {
+        'schema_version': 1,
+        'producer_plan_sha256': '5e430549d0eaf9f27f5cccb1bdd797db8d82fbbd38537072952e005425c2745f',
+        'files': FILES, 'expires_at': time.time() + 1200, 'max_model_calls': 2,
+        'existing_subscription_only': True,
+        'owner_confirmed_zero_credits_and_auto_recharge_off': True,
+        'api_key_allowed': False, 'producer_owned_parent_interruption_allowed': True,
+        'retry_allowed': False, 'temporary_auth_destination': REMOTE + '/private-home/auth.json',
+    }
+    save('auth-setup-entry.json', {'recorded_at': datetime.now(UTC).isoformat(), 'model_calls': 0})
+    client = paramiko.SSHClient()
+    client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    mounted = copied = False
+    original = None
+    record = {'model_calls': 0, 'status': 'unknown'}
+    try:
+        client.connect('127.0.0.1', port=22222, username='root',
+                       key_filename='D:/agentsync-debug/vm/debug_ed25519',
+                       look_for_keys=False, allow_agent=False, timeout=15)
+        probe = '''import json,os,sys,time
+from pathlib import Path
+root=Path('/root/amadeus-m122-composed-recovery')
+assert Path('/proc/sys/kernel/random/boot_id').read_text().strip()=='573141a0-a4cc-4c28-a53f-79f0d15b5a5d'
+sys.path.insert(0,str(root))
+import cleanup,live,prepare
+live.prep=prepare;live.cleanup=cleanup
+grant=json.loads(sys.argv[1])
+with cleanup.stage_lock():
+ for name,digest in grant['files'].items():
+  live.private_file(root/name);assert live.sha(root/name)==digest
+ assert not any(live.present(n) for n in ('live-authorization.json','producer-entry.json','receiver-entry.json','credential-home.json'))
+ assert not cleanup.mounts() and not any(prepare.PRIVATE_HOME.iterdir())
+ workers=[]
+ for p in Path('/proc').iterdir():
+  if not p.name.isdigit() or int(p.name)==os.getpid():continue
+  try:
+   first=(p/'cmdline').read_bytes().split(b'\\0')[0]
+   if b'python' in first or b'codex' in first:workers.append(int(p.name))
+  except (FileNotFoundError,PermissionError,ProcessLookupError):pass
+ assert not workers
+ core,state=live.core_state();live.heartbeat(core,state,'producer','receiver')
+ assert prepare.producer_plan(core,state)==prepare.load('plan.json')['producer_plan']
+ prepare.require_fixtures(state)
+ snapshot=core.execute('get_project_state',prepare.auth(state,'producer'));sessions={s['id']:s for s in snapshot['sessions']}
+ for who in ('producer','receiver'):
+  s=sessions[state[who]['session_id']];assert s['online'] and s['expires_at']>time.time()+120
+ relay=live.ControlledRelay(core,root,root/'receipts');attempts,exact=live.public_attempts(relay,state,state['task']['id'])
+ assert exact and all(a['state']=='not_dispatched' for a in cleanup.validate_attempts(attempts))
+ cleanup.save('live-authorization.json',grant);cleanup.validate_authorization()
+cleanup.mount_home();cleanup.require_mount()
+print(json.dumps({'ready':True,'mounted':True,'runtime_members':97,'model_calls':0}))
+'''
+        import shlex
+        command = PYTHON + ' -I -B - ' + shlex.quote(json.dumps(grant))
+        stdin, stdout, stderr = client.exec_command(command, timeout=60)
+        stdin.write(probe); stdin.flush(); stdin.channel.shutdown_write()
+        output, errors = stdout.read(65537), stderr.read(65537)
+        code = stdout.channel.recv_exit_status()
+        save('auth-mount-command.json', {'exit_code': code, 'output_bytes': len(output), 'error_bytes': len(errors)})
+        assert code == 0 and json.loads(output)['mounted'] is True and not errors
+        mounted = True
+        with client.open_sftp() as sftp:
+            target = grant['temporary_auth_destination']
+            assert not sftp.listdir(REMOTE + '/private-home')
+            for path in (AUTH, AUTH.parent):
+                info = path.lstat()
+                assert not stat.S_ISLNK(info.st_mode) and not getattr(info, 'st_file_attributes', 0) & 0x400
+            assert AUTH.is_file() and 0 < AUTH.stat().st_size < 128 * 1024
+            raw = AUTH.read_bytes()
+            document = json.loads(raw)
+            assert document.get('auth_mode') == 'chatgpt' and not document.get('OPENAI_API_KEY')
+            original = sha(raw)
+            with sftp.open(target, 'x+b') as stream:
+                sftp.chmod(target, 0o600)
+                stream.write(raw); stream.flush()
+            copied = True
+            info = sftp.lstat(target)
+            assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+            with sftp.open(target, 'rb') as stream:
+                assert sha(stream.read(128 * 1024)) == original
+            del raw, document
+        with client.open_sftp() as sftp:
+            with sftp.open(REMOTE + '/live-authorization.json', 'rb') as stream:
+                exact_grant = stream.read(65537)
+        assert json.loads(exact_grant) == grant
+        with (BASE / 'live-authorization.json').open('xb') as stream:
+            stream.write(exact_grant)
+        record['status'] = 'ready'
+    except Exception as exc:
+        record['error_type'] = type(exc).__name__
+        raise SystemExit('Auth setup stopped; inspect safe records, no model retry.') from None
+    finally:
+        record.update(recorded_at=datetime.now(UTC).isoformat(), mounted=mounted, copied=copied,
+                      original_auth_sha256=original,
+                      original_auth_unchanged=None if original is None else sha(AUTH.read_bytes()) == original)
+        save('auth-setup-result.private.json', record)
+        client.close()
+    print('Reviewed RAM login copy is ready; no model has been called.')
+
+
+if __name__ == '__main__':
+    main()

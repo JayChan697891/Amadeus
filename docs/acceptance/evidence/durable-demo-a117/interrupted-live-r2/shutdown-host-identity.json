@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-11-16T08:46:05.1948104Z",
+  "pid": 26448,
+  "created_utc": "2026-11-16T07:51:18.5979130Z",
+  "executable": "D:\\agentsync-debug\\tools\\qemu\\qemu-system-x86_64.exe",
+  "disk": "D:\\agentsync-debug\\vm\\guest.qcow2",
+  "identity_matches": true
+}

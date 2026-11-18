@@ -1,0 +1,39 @@
+{
+  "scope": "First frozen a122 Linux3.14 editable-source full regression, not formal release acceptance",
+  "status": "SCOPED PASS - Root and Astra independently accepted",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session": 77417,
+  "native_terminal_chunk": "bb7e8d",
+  "native_exit_code": 0,
+  "started_at": "2026-11-18T01:27:26.654495+00:00",
+  "finished_at": "2026-11-18T01:47:17.464784+00:00",
+  "checks": 7,
+  "unique_cases": 2596,
+  "counts": {
+    "passed": 2589,
+    "skipped": 7,
+    "failure": 0,
+    "error": 0
+  },
+  "same_wheel_case_identity_and_outcomes": true,
+  "docker_observations": 36,
+  "selected_docker_outcomes_match_wheel": true,
+  "frozen_source_files_rehashed": 3992,
+  "editable_source_files_rehashed": 3992,
+  "runtime_members": 97,
+  "raw_to_public_junit_checked": true,
+  "credential_redactions": 6,
+  "workers_after": [],
+  "containers_after": [],
+  "vm_retained_for": "Separately owner-authorized repaired terminal experiment; no new test started",
+  "formal_release": "BLOCKED",
+  "independent_review": {
+    "reviewer": "/root/astra_recovery_scope",
+    "rehashed_files": 55,
+    "rehashed_bytes": 652823,
+    "unique_cases": 2596,
+    "native_exit_zero_receipts": 7,
+    "docker_observations": 36,
+    "finding": "No blocker within frozen Linux3.14 editable-source scope; does not cover Windows, live models or formal release"
+  }
+}

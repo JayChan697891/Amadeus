@@ -1,0 +1,11 @@
+{
+  "scope": "Post-run evidence-check assumption failure; no product/test execution",
+  "native_chunk": "60fbf7",
+  "native_exit_code": 1,
+  "checker_sha256": "7afb3d50bf80262264276f25654ccef5e656950f1129019fd140d623460f0e7e",
+  "error_type": "AssertionError",
+  "assertion": "raw/public testcase identity equality before redaction",
+  "correction": "Redaction may alter parameterized names; compare counts/outcomes and reproduce redacted XML byte-exactly",
+  "suite_native_session": 22428,
+  "suite_native_exit_code": 0
+}

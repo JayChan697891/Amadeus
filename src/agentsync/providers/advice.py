@@ -11,6 +11,7 @@ from agentsync.providers.base import (
     _MAX_TEXT_BYTES,
     ModelProvider,
     ModelRequest,
+    ModelResponse,
     OwnerAuthorization,
     ProviderKind,
     ProviderUsage,
@@ -258,6 +259,10 @@ async def get_advice(
         _invalid()
     request = replace(request)
     result = await provider.complete(request.model_request, authorization=authorization)
+    return _parse_advice(request, result)
+
+
+def _parse_advice(request: AdviceRequest, result: ModelResponse) -> AdviceResult:
     document = _json_object(_advice_text(result.text, _MAX_TEXT_BYTES))
     data: tuple[SuggestedTask, ...] | tuple[SuggestedRole, ...] | SuggestedHandoff
     if request.kind == "decomposition":

@@ -1,0 +1,28 @@
+{
+  "scope": "Real installed Cursor package preparation only, not actual Agent run",
+  "declared_and_observed_cli_version": "2026.11.11-b912975",
+  "node_sha256": "d702daa815eabbff763c7d3808e235cf031cf2ca70211b56847bc72f51e240e5",
+  "bundle_sha256": "c575393b2f600bef568793bdac3b8c3ed9923bbd67f3dd9bb6e5dc3dc2112f3d",
+  "plan_sha256": "9fa95d9e7317d78c0c307ca3660d7190b75d2c8cc6a4afa9913f3cffec28f8b7",
+  "argv_prefix": [
+    "D:\\agentsync-debug\\tools\\cursor-cli-20261111-b912975\\dist-package\\node.exe",
+    "D:\\agentsync-debug\\tools\\cursor-cli-20261111-b912975\\dist-package\\index.js",
+    "--print",
+    "--output-format",
+    "json",
+    "--mode",
+    "ask",
+    "--sandbox",
+    "enabled",
+    "Instruction:\nFixed preview only. Do not launch."
+  ],
+  "entrypoint_is_official_sibling": true,
+  "model_calls": 0,
+  "credentials_copied": false,
+  "auth_verified": false,
+  "sandbox_verified": false,
+  "complete_node_load_scope_verified": false,
+  "installed_runtime_sha": "f74f29f73148d0e0e9a69ebb486eaffe6061d936",
+  "installed_origin": "D:\\agentsync-debug\\m6-package-f74f29f\\installed\\Lib\\site-packages\\agentsync\\__init__.py",
+  "installed_plan_matches": true
+}

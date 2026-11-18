@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-11-16T09:36:25.205879+00:00",
+  "pid": 2927,
+  "automatic_retry": false,
+  "model_calls": 0,
+  "external_auth_copies": 0,
+  "formal_release": "BLOCKED",
+  "status": "preflight_failed",
+  "child_exit_code": null,
+  "error_type": "AssertionError",
+  "failed_phase": "proposal_binding",
+  "original_tree_before_sha256": "a32fdd757647ad991d0af4c53a6152473458effd415a3eb39e9f27d9370f2336",
+  "original_tree_after_sha256": "a32fdd757647ad991d0af4c53a6152473458effd415a3eb39e9f27d9370f2336",
+  "original_tree_unchanged": true,
+  "finished_at": "2026-11-16T09:36:25.338381+00:00"
+}

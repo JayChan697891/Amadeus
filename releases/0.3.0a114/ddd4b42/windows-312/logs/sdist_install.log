@@ -1,0 +1,12 @@
+Looking in links: file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels, file:///D:/agentsync-debug/t114/.scratch-fooatvmo/offline-wheels
+Processing .\artifacts\agentsync_local-0.3.0a114.tar.gz
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: agentsync-local
+  Building wheel for agentsync-local (pyproject.toml): started
+  Building wheel for agentsync-local (pyproject.toml): finished with status 'done'
+  Created wheel for agentsync-local: filename=agentsync_local-0.3.0a114-py3-none-any.whl size=302980 sha256=521e2a5f867c66a1efa724862451728a6350e7143cceb17758ea76ccb5ba62ee
+  Stored in directory: D:\agentsync-debug\t114\.scratch-fooatvmo\pip-ephem-wheel-cache-cpc3z7jc\wheels\38\3e\7c\fc1d8a51f2976e801933dbbb85f42baaa7ea19f99f5e154b38
+Successfully built agentsync-local
+Installing collected packages: agentsync-local
+Successfully installed agentsync-local-0.3.0a114

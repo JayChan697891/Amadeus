@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/root/amadeus-demo-a117-sdist-r1/installed/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-r2-proposal-verification-r2-20261116/run_proposal_candidate_pilot.py",
+    "--root",
+    "/root/amadeus-proposal-pilot-r2-output-20261116",
+    "--proposal",
+    "/root/amadeus-r2-proposal-verification-r2-20261116/proposal.json",
+    "--proposal-sha256",
+    "20e2fa257bad58a968bfa708f3952f5cd2326925c39f8ecfa970a64815512653",
+    "--origin",
+    "/root/amadeus-r2-proposal-verification-r2-20261116/origin.json",
+    "--image-id",
+    "sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258"
+  ],
+  "tool_sha256": "59099e5677f7453e799b50a33385917c25a0288e2be36eb89425c14f5fea4157",
+  "runtime_members": 97
+}

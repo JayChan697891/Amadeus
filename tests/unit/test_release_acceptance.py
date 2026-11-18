@@ -68,7 +68,7 @@ def test_rejected_candidate_records_no_executed_checks(repository, tmp_path, mon
 
 def assert_unobserved_manager_component(row):
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 8
+    assert len(row["component_evidence"]) == 9
     assert all(
         all(value == 0 for value in observation["counts"].values())
         for component in row["component_evidence"]
@@ -625,7 +625,7 @@ def test_synthetic_claude_adapter_junit_keeps_helpers_and_mock_unverified(
             for component in by_id[identity]["component_evidence"]
             for observation in component["observations"]
         )
-    assert len(by_id["M6-03"]["component_evidence"]) == 8
+    assert len(by_id["M6-03"]["component_evidence"]) == 16
     assert_unobserved_manager_component(by_id["M6-05"])
     assert by_id["M6-05"]["acceptance_evidence_status"] == "unverified"
     check = passing_check(tmp_path)
@@ -669,13 +669,18 @@ def test_synthetic_codex_factory_and_core_records_do_not_verify_real_client(tmp_
     by_id = {row["id"]: row for row in rows}
     row = by_id["M6-03"]
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 8
+    assert len(row["component_evidence"]) == 16
     counts = []
     for component in row["component_evidence"]:
         selector = component["selector"]
         expected = (
             0
-            if selector.startswith("tests/unit/test_codex_events.py::")
+            if not selector.startswith(
+                (
+                    "tests/unit/test_codex_adapter.py::",
+                    "tests/integration/test_codex_adapter_core_boundary.py::",
+                )
+            )
             else 2
             if selector.startswith("tests/integration/test_codex_adapter_core_boundary.py::")
             else 1
@@ -746,7 +751,7 @@ def test_protocol_only_codex_junit_cannot_promote_real_start_or_relay(tmp_path, 
     by_id = {row["id"]: row for row in rows}
     row = by_id["M6-03"]
     assert row["coverage"] == "partial"
-    assert len(row["component_evidence"]) == 8
+    assert len(row["component_evidence"]) == 16
     parser_components = [
         component
         for component in row["component_evidence"]
@@ -842,7 +847,7 @@ def test_mock_junit_observations_cannot_promote_real_clients_or_formal_acceptanc
         row = by_id[requirement_id]
         assert row["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:
-            assert len(row["component_evidence"]) == (11 if requirement_id == "M6-04" else 8)
+            assert len(row["component_evidence"]) == (11 if requirement_id == "M6-04" else 16)
             assert all(
                 all(value == 0 for value in observation["counts"].values())
                 for component in row["component_evidence"]
@@ -922,7 +927,9 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
             "tests.integration.test_capability_planning_core_boundary",
             "test_declared_capabilities_preserve_dependencies_and_grant_no_core_role",
         ),
-        # Ordinary neighboring names/classes are not the declared selectors.
+    ]
+    # Ordinary neighboring names/classes are not the declared selectors.
+    neighbors = [
         (
             "tests.unit.test_scheduling",
             "test_dependencies_require_completed_and_missing_is_never_completed_extra",
@@ -931,7 +938,9 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
     ]
     (tmp_path / junit_name).write_text(
         "<testsuites><testsuite>"
-        + "".join(f'<testcase classname="{module}" name="{name}"/>' for module, name in cases)
+        + "".join(
+            f'<testcase classname="{module}" name="{name}"/>' for module, name in cases + neighbors
+        )
         + "</testsuite></testsuites>",
         encoding="utf-8",
     )
@@ -940,28 +949,38 @@ def test_all_planning_component_observations_leave_relay_unverified_and_release_
     assert by_id["M7-02"]["acceptance_evidence_status"] == "unverified"
     assert by_id["M7-01"]["acceptance_evidence_status"] == "not_run"
     assert len(rows) == 42 and all(row["execution_status"] == "not_run" for row in rows)
+    declared = {item["id"]: item["existing_tests"] for item in manifest["requirements"]}
+    fixture_selectors = {f"{module.replace('.', '/')}.py::{name}" for module, name in cases}
+    observed_selectors = set()
     for requirement_id in ("M7-01", "M7-02"):
         row = by_id[requirement_id]
         assert row["coverage"] == "partial"
-        assert len(row["component_evidence"]) == (6 if requirement_id == "M7-01" else 8)
-        for component in row["component_evidence"]:
+        components = row["component_evidence"]
+        assert [component["selector"] for component in components] == declared[requirement_id]
+        for component in components:
+            selector = component["selector"]
+            # The fixture XML includes planning cases only. Missing handoff cases have zero counts.
+            expected = int(selector in fixture_selectors)
             assert component["observations"] == [
                 {
                     "junit": junit_name,
                     "counts": {
-                        "tests": 1,
-                        "passed": 1,
+                        "tests": expected,
+                        "passed": expected,
                         "failures": 0,
                         "errors": 0,
                         "skipped": 0,
                     },
                 }
-            ]
+            ], selector
+            if expected:
+                observed_selectors.add(selector)
+    assert observed_selectors == fixture_selectors
     for requirement_id in ("M6-03", "M6-04", "M6-05"):
         assert by_id[requirement_id]["coverage"] == "partial"
         if requirement_id in {"M6-03", "M6-04"}:
             assert len(by_id[requirement_id]["component_evidence"]) == (
-                11 if requirement_id == "M6-04" else 8
+                11 if requirement_id == "M6-04" else 16
             )
             assert all(
                 all(value == 0 for value in observation["counts"].values())
@@ -1147,6 +1166,50 @@ def test_redaction_handles_json_repr_assignment_and_bearer_forms(text):
     clean, count = runner.redact_credentials(text)
     assert "fixture-secret" not in clean
     assert "[REDACTED]" in clean and count > 0
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "test_case[session_token=fixture-secret]",
+        "test_case[admin_token='fixture-secret']",
+        '{"password": "fixture-secret"}',
+        "Authorization: Bearer fixture-secret",
+        "api_key=[REDACTED]fixture-secret",
+        "api_key='[REDACTED]fixture-secret'",
+    ],
+    ids=[
+        "session-assignment",
+        "quoted-admin-assignment",
+        "json-password",
+        "bearer-header",
+        "marker-attached-key",
+        "quoted-marker-attached-key",
+    ],
+)
+def test_redaction_is_stable_when_evidence_is_processed_again(text):
+    clean, count = runner.redact_credentials(text)
+    assert "fixture-secret" not in clean and count > 0
+    assert runner.redact_credentials(clean) == (clean, 0)
+
+
+@pytest.mark.parametrize("suffix", ["", "]", ")", ", next", "\n", ";", "}"])
+def test_existing_redaction_marker_keeps_parameter_boundaries(suffix):
+    text = "session_token=[REDACTED]" + suffix
+    assert runner.redact_credentials(text) == (text, 0)
+
+
+def test_junit_reprocessing_preserves_parameterized_case_identity(tmp_path):
+    raw, first, second = (tmp_path / name for name in ("raw.xml", "first.xml", "second.xml"))
+    raw.write_text(
+        '<testsuites><testsuite><testcase classname="suite" '
+        'name="case[session_token=fixture-secret]"/></testsuite></testsuites>',
+        encoding="utf-8",
+    )
+    assert runner.persist_junit(raw, first) == 1
+    assert runner.persist_junit(first, second) == 0
+    assert second.read_bytes() == first.read_bytes()
+    assert runner.junit_counts(second) == runner.junit_counts(raw)
 
 
 def test_junit_redacts_traceback_and_attributes_without_losing_counts(tmp_path):
@@ -1841,6 +1904,7 @@ def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
     manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     selectors = [
+        "tests/unit/test_cursor_node_bundle.py",
         "tests/unit/test_adapter_run_manager.py::test_cancelled_caller_concurrent_replay_and_independent_start",
         "tests/unit/test_adapter_run_manager.py::test_failed_dispatch_is_sanitized_and_permanently_consumes_capacity",
         "tests/unit/test_adapter_run_manager.py::test_dispatch_inspection_is_nonblocking_and_sanitized",
@@ -1854,9 +1918,18 @@ def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
     assert declared["existing_tests"] == selectors
     cases = []
     for selector in selectors:
-        path, name = selector.split("::")
+        path, *nodes = selector.split("::")
+        name = (
+            nodes[0]
+            if nodes
+            else "test_node_bundle_plan_pins_native_entrypoint_and_isolated_environment"
+        )
         module = path.removesuffix(".py").replace("/", ".")
-        cases.extend([(module, name + "_extra"), ("tests.unit.other", name)])
+        # A whole-module selector intentionally includes every testcase in that
+        # module. Only exact function selectors reject neighboring names.
+        cases.append(("tests.unit.other", name))
+        if nodes:
+            cases.append((module, name + "_extra"))
         if include_matches:
             cases.append((module, name + "[False]" if "inspection" in name else name))
     (tmp_path / "junit.xml").write_text(
@@ -1867,7 +1940,7 @@ def test_manager_selectors_only_map_local_components_without_cursor_acceptance(
     )
     rows = runner.requirement_results(manifest, tmp_path)
     row = next(item for item in rows if item["id"] == "M6-05")
-    assert row["coverage"] == "partial" and len(row["component_evidence"]) == 8
+    assert row["coverage"] == "partial" and len(row["component_evidence"]) == 9
     for component in row["component_evidence"]:
         counts = component["observations"][0]["counts"]
         assert counts == {
@@ -1890,7 +1963,7 @@ def test_mock_workflow_components_never_establish_formal_or_real_relay_acceptanc
     manifest_path = Path(__file__).resolve().parents[2] / "docs/acceptance/requirements.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     requirement = next(row for row in manifest["requirements"] if row["id"] == "M7-04")
-    assert requirement["coverage"] == "partial" and len(requirement["existing_tests"]) == 10
+    assert requirement["coverage"] == "partial" and len(requirement["existing_tests"]) == 11
     (tmp_path / "junit.xml").write_text(
         '<testsuites><testsuite><testcase classname="tests.integration.test_mock_workflow" '
         'name="test_fixed_diamond_retries_with_overlap_and_distinct_peer_reviews"/>'
@@ -1904,7 +1977,7 @@ def test_mock_workflow_components_never_establish_formal_or_real_relay_acceptanc
     counts = [
         component["observations"][0]["counts"]["passed"] for component in row["component_evidence"]
     ]
-    assert counts == [0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    assert counts == [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
     gate = runner.release_gate([passing_check(tmp_path)], tmp_path)
     assert gate["status"] == "blocked" and gate["formal_acceptance"] is False
     assert "autonomous_relay" in gate["blockers"]

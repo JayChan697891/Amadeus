@@ -11,7 +11,13 @@ debug runtime, dependencies, caches, fixtures and VM disks live in D:/agentsync-
 - Portable QEMU11.1.0, published Windows build20260811, SHA512 checked against the
   publisher; no system installer was run.
 - Official Alpine3.24.2 cloud-init VM image, SHA512 checked against Alpine's index.
-- A private QCOW2 overlay on D: was expanded to16GiB; the downloaded base is retained.
+- A private64GiB QCOW2 overlay now layers over the preserved32GiB image
+  `vm/guest-before-growth-20261117.qcow2`, then the preserved16GiB
+  `vm/guest-before-growth-20261112.qcow2` and downloaded base. Keep all four
+  images. The32GiB image hash was unchanged across creation; guest boot expanded
+  the partition/filesystem and31,108,015,104 free bytes were observed. Existing
+  a122 result hashes and both97-member installations match. No fixture was removed.
+  [Capacity evidence and observer limitations](acceptance/evidence/core-preview-a122/local-capacity/review.json).
 -3GiB guest RAM, one virtual CPU, WHPX acceleration with kernel-irqchip=off.
 - Linux6.18.54-0-virt, Python3.14.7, Docker29.8.2, cgroupv2 and builtin seccomp.
 - Only127.0.0.1 ports22222(SSH) and22223(QMP) are bound. No host directory is shared.
@@ -21,6 +27,17 @@ The explicit userspace interrupt controller and one vCPU configuration was then
 booted and used successfully for package installation, transfer and real tests.
 No WSL/Hyper-V Windows feature was enabled or host restart requested.
 These observations describe this machine, not universal Windows compatibility.
+
+The dedicated guest also contains the official Codex0.167.0-alpha.3.2 musl package
+at `/root/amadeus-codex-linux-0167`. Archive SHA256:
+`e5d9533df7e949cb145b8dc3f40c2f86bba5408cdf07301f9188f273df3409a1`.
+Initial setup used no-model version/configuration/tool/boundary probes; see
+`acceptance/evidence/m6-linux-readonly/summary.json`. Later separately authorized
+subscription experiments used isolated temporary login copies and recorded their
+cleanup. Current bounded interruption/continuation evidence is under
+`acceptance/evidence/durable-demo-a117/interrupted-live-r2/`; those consumed runs
+are not reusable authorization. The standing authorization and limits are recorded
+in AGENTS.md. Ordinary package checks need no model login or model call.
 
 ## Recreate and operate
 

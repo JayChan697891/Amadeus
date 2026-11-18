@@ -1,0 +1,12 @@
+{
+  "reopened_observation": {
+    "state": "incomplete",
+    "verification": "unverified"
+  },
+  "task_status": "running",
+  "task_verification": "unverified",
+  "task_version": 4,
+  "review_submission_present": false,
+  "temporary_auth_absent": true,
+  "real_retry_performed": false
+}

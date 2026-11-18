@@ -1,0 +1,36 @@
+{
+  "kind": "after-run reproduction recipe, not an original command receipt",
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "command": [
+    "D:/agentsync-debug/m118p/w/Scripts/python.exe",
+    "-s",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "D:/agentsync-debug/owner-existing-20261116/green-tmp",
+    "--junitxml=D:/agentsync-debug/owner-existing-20261116/green.xml",
+    "tests/security/test_m5_owner_cli_inputs.py",
+    "tests/unit/test_planning_cli.py",
+    "tests/unit/test_usage_cli.py",
+    "tests/integration/test_candidate_integration.py::test_exact_owner_cli_integration_materializes_verified_blob_bytes",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_requires_saved_database",
+    "tests/integration/test_durable_mock_workflow.py::test_durable_cli_decomposes_hands_off_and_independently_reviews"
+  ],
+  "environment_delta": {
+    "PYTHONPATH": "F:\\syuc\\amadeus-m6-single\\src",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TEMP": "D:/agentsync-debug/owner-existing-20261116",
+    "TMP": "D:/agentsync-debug/owner-existing-20261116",
+    "HOME": "D:/agentsync-debug/owner-existing-20261116/home",
+    "USERPROFILE": "D:/agentsync-debug/owner-existing-20261116/home",
+    "LOCALAPPDATA": "D:/agentsync-debug/owner-existing-20261116/home",
+    "GIT_CONFIG_GLOBAL": "NUL",
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "AGENTSYNC_DATA_DIR": null
+  },
+  "rerun_note": "Use a fresh evidence directory and basetemp; preserve these original results. Requires existing local test dependencies; no model credentials."
+}

@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "/root/amadeus-m122l/w/bin/python",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "/root/amadeus-terminal-init-20261118/tmp",
+    "--junitxml",
+    "/root/amadeus-terminal-init-20261118/junit.xml",
+    "/root/amadeus-terminal-init-20261118/tests/integration/test_initialize_terminal_project.py"
+  ],
+  "exit_code": 0,
+  "runtime_members_unchanged": 97,
+  "source_sha256": {
+    "examples/initialize_terminal_project.py": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d",
+    "tests/integration/test_initialize_terminal_project.py": "7fd5786b7bd949f483288fc8f4d023812dc14e7657e9d6b01f97a685d1c7801a"
+  },
+  "real_model_calls": 0,
+  "candidate_executions": 0
+}

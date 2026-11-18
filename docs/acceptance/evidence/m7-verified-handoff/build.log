@@ -1,0 +1,336 @@
+* Getting build dependencies for wheel...
+running egg_info
+creating src\agentsync_local.egg-info
+writing src\agentsync_local.egg-info\PKG-INFO
+writing dependency_links to src\agentsync_local.egg-info\dependency_links.txt
+writing entry points to src\agentsync_local.egg-info\entry_points.txt
+writing requirements to src\agentsync_local.egg-info\requires.txt
+writing top-level names to src\agentsync_local.egg-info\top_level.txt
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+reading manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build\lib\agentsync
+copying src\agentsync\cli.py -> build\lib\agentsync
+copying src\agentsync\config.py -> build\lib\agentsync
+copying src\agentsync\controlled_relay.py -> build\lib\agentsync
+copying src\agentsync\dispatch_planning.py -> build\lib\agentsync
+copying src\agentsync\errors.py -> build\lib\agentsync
+copying src\agentsync\mock_run_manager.py -> build\lib\agentsync
+copying src\agentsync\mock_workflow.py -> build\lib\agentsync
+copying src\agentsync\mock_workflow_cli.py -> build\lib\agentsync
+copying src\agentsync\models.py -> build\lib\agentsync
+copying src\agentsync\model_usage.py -> build\lib\agentsync
+copying src\agentsync\model_usage_checkpoint.py -> build\lib\agentsync
+copying src\agentsync\planning_cli.py -> build\lib\agentsync
+copying src\agentsync\proposals.py -> build\lib\agentsync
+copying src\agentsync\proposal_handoff.py -> build\lib\agentsync
+copying src\agentsync\relay_queue.py -> build\lib\agentsync
+copying src\agentsync\relay_status_cli.py -> build\lib\agentsync
+copying src\agentsync\relay_wave_journal.py -> build\lib\agentsync
+copying src\agentsync\retry_planning.py -> build\lib\agentsync
+copying src\agentsync\scheduling.py -> build\lib\agentsync
+copying src\agentsync\usage.py -> build\lib\agentsync
+copying src\agentsync\usage_cli.py -> build\lib\agentsync
+copying src\agentsync\usage_storage.py -> build\lib\agentsync
+copying src\agentsync\verified_proposal_flow.py -> build\lib\agentsync
+copying src\agentsync\__init__.py -> build\lib\agentsync
+copying src\agentsync\__main__.py -> build\lib\agentsync
+creating build\lib\agentsync\adapters
+copying src\agentsync\adapters\approved_launch.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\base.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude_events.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude_invocation.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\claude_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex_events.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex_invocation.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\codex_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\cursor.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\cursor_events.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\cursor_invocation.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\cursor_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\host_receipts.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\launch_context.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\manager.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\mock.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\process_capture.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\_host_process.py -> build\lib\agentsync\adapters
+copying src\agentsync\adapters\__init__.py -> build\lib\agentsync\adapters
+creating build\lib\agentsync\core
+copying src\agentsync\core\collaboration.py -> build\lib\agentsync\core
+copying src\agentsync\core\permissions.py -> build\lib\agentsync\core
+copying src\agentsync\core\resources.py -> build\lib\agentsync\core
+copying src\agentsync\core\service.py -> build\lib\agentsync\core
+copying src\agentsync\core\usage.py -> build\lib\agentsync\core
+copying src\agentsync\core\workspaces.py -> build\lib\agentsync\core
+copying src\agentsync\core\__init__.py -> build\lib\agentsync\core
+creating build\lib\agentsync\integrations
+copying src\agentsync\integrations\http.py -> build\lib\agentsync\integrations
+copying src\agentsync\integrations\mcp.py -> build\lib\agentsync\integrations
+copying src\agentsync\integrations\__init__.py -> build\lib\agentsync\integrations
+creating build\lib\agentsync\providers
+copying src\agentsync\providers\advice.py -> build\lib\agentsync\providers
+copying src\agentsync\providers\base.py -> build\lib\agentsync\providers
+copying src\agentsync\providers\http.py -> build\lib\agentsync\providers
+copying src\agentsync\providers\retry.py -> build\lib\agentsync\providers
+copying src\agentsync\providers\_transport.py -> build\lib\agentsync\providers
+copying src\agentsync\providers\__init__.py -> build\lib\agentsync\providers
+creating build\lib\agentsync\resources
+copying src\agentsync\resources\paths.py -> build\lib\agentsync\resources
+copying src\agentsync\resources\__init__.py -> build\lib\agentsync\resources
+creating build\lib\agentsync\sdk
+copying src\agentsync\sdk\client.py -> build\lib\agentsync\sdk
+copying src\agentsync\sdk\__init__.py -> build\lib\agentsync\sdk
+creating build\lib\agentsync\storage
+copying src\agentsync\storage\admission.py -> build\lib\agentsync\storage
+copying src\agentsync\storage\database.py -> build\lib\agentsync\storage
+copying src\agentsync\storage\__init__.py -> build\lib\agentsync\storage
+creating build\lib\agentsync\verification
+copying src\agentsync\verification\binding.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_claims.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_delivery.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_execution_state.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_executor.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_intents.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\candidate_jobs.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\docker.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\executor.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\jobs.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\owner_flow.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\proposal_staging.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\reconciliation.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\snapshot.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\task_completion.py -> build\lib\agentsync\verification
+copying src\agentsync\verification\__init__.py -> build\lib\agentsync\verification
+creating build\lib\agentsync\workspaces
+copying src\agentsync\workspaces\git.py -> build\lib\agentsync\workspaces
+copying src\agentsync\workspaces\proposal.py -> build\lib\agentsync\workspaces
+copying src\agentsync\workspaces\__init__.py -> build\lib\agentsync\workspaces
+running egg_info
+writing src\agentsync_local.egg-info\PKG-INFO
+writing dependency_links to src\agentsync_local.egg-info\dependency_links.txt
+writing entry points to src\agentsync_local.egg-info\entry_points.txt
+writing requirements to src\agentsync_local.egg-info\requires.txt
+writing top-level names to src\agentsync_local.egg-info\top_level.txt
+reading manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'src\agentsync_local.egg-info\SOURCES.txt'
+copying src\agentsync\py.typed -> build\lib\agentsync
+warning: build_py: byte-compiling is disabled, skipping.
+
+installing to build\bdist.win-amd64\wheel
+running install
+running install_lib
+creating build\bdist.win-amd64\wheel
+creating build\bdist.win-amd64\wheel\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\adapters
+copying build\lib\agentsync\adapters\approved_launch.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\base.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude_events.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude_invocation.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\claude_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex_events.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex_invocation.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\codex_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\cursor.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\cursor_events.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\cursor_invocation.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\cursor_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\host_receipts.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\launch_context.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\manager.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\mock.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\process_capture.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\_host_process.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\adapters\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\adapters
+copying build\lib\agentsync\cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\config.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\controlled_relay.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\core
+copying build\lib\agentsync\core\collaboration.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\permissions.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\resources.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\service.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\usage.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\workspaces.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\core\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\core
+copying build\lib\agentsync\dispatch_planning.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\errors.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\integrations
+copying build\lib\agentsync\integrations\http.py -> build\bdist.win-amd64\wheel\.\agentsync\integrations
+copying build\lib\agentsync\integrations\mcp.py -> build\bdist.win-amd64\wheel\.\agentsync\integrations
+copying build\lib\agentsync\integrations\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\integrations
+copying build\lib\agentsync\mock_run_manager.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\mock_workflow.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\mock_workflow_cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\models.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\model_usage.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\model_usage_checkpoint.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\planning_cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\proposals.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\proposal_handoff.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\providers
+copying build\lib\agentsync\providers\advice.py -> build\bdist.win-amd64\wheel\.\agentsync\providers
+copying build\lib\agentsync\providers\base.py -> build\bdist.win-amd64\wheel\.\agentsync\providers
+copying build\lib\agentsync\providers\http.py -> build\bdist.win-amd64\wheel\.\agentsync\providers
+copying build\lib\agentsync\providers\retry.py -> build\bdist.win-amd64\wheel\.\agentsync\providers
+copying build\lib\agentsync\providers\_transport.py -> build\bdist.win-amd64\wheel\.\agentsync\providers
+copying build\lib\agentsync\providers\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\providers
+copying build\lib\agentsync\py.typed -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\relay_queue.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\relay_status_cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\relay_wave_journal.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\resources
+copying build\lib\agentsync\resources\paths.py -> build\bdist.win-amd64\wheel\.\agentsync\resources
+copying build\lib\agentsync\resources\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\resources
+copying build\lib\agentsync\retry_planning.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\scheduling.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\sdk
+copying build\lib\agentsync\sdk\client.py -> build\bdist.win-amd64\wheel\.\agentsync\sdk
+copying build\lib\agentsync\sdk\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\sdk
+creating build\bdist.win-amd64\wheel\agentsync\storage
+copying build\lib\agentsync\storage\admission.py -> build\bdist.win-amd64\wheel\.\agentsync\storage
+copying build\lib\agentsync\storage\database.py -> build\bdist.win-amd64\wheel\.\agentsync\storage
+copying build\lib\agentsync\storage\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\storage
+copying build\lib\agentsync\usage.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\usage_cli.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\usage_storage.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\verification
+copying build\lib\agentsync\verification\binding.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_claims.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_delivery.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_execution_state.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_executor.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_intents.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\candidate_jobs.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\docker.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\executor.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\jobs.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\owner_flow.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\proposal_staging.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\reconciliation.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\snapshot.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\task_completion.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verification\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\verification
+copying build\lib\agentsync\verified_proposal_flow.py -> build\bdist.win-amd64\wheel\.\agentsync
+creating build\bdist.win-amd64\wheel\agentsync\workspaces
+copying build\lib\agentsync\workspaces\git.py -> build\bdist.win-amd64\wheel\.\agentsync\workspaces
+copying build\lib\agentsync\workspaces\proposal.py -> build\bdist.win-amd64\wheel\.\agentsync\workspaces
+copying build\lib\agentsync\workspaces\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync\workspaces
+copying build\lib\agentsync\__init__.py -> build\bdist.win-amd64\wheel\.\agentsync
+copying build\lib\agentsync\__main__.py -> build\bdist.win-amd64\wheel\.\agentsync
+warning: install_lib: byte-compiling is disabled, skipping.
+
+running install_egg_info
+Copying src\agentsync_local.egg-info to build\bdist.win-amd64\wheel\.\agentsync_local-0.3.0a109-py3.12.egg-info
+running install_scripts
+creating build\bdist.win-amd64\wheel\agentsync_local-0.3.0a109.dist-info\WHEEL
+creating 'D:\\agentsync-debug\\m7-verified-handoff-final\\dist\\.tmp-p6fhelbo\\agentsync_local-0.3.0a109-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+adding 'agentsync/__init__.py'
+adding 'agentsync/__main__.py'
+adding 'agentsync/cli.py'
+adding 'agentsync/config.py'
+adding 'agentsync/controlled_relay.py'
+adding 'agentsync/dispatch_planning.py'
+adding 'agentsync/errors.py'
+adding 'agentsync/mock_run_manager.py'
+adding 'agentsync/mock_workflow.py'
+adding 'agentsync/mock_workflow_cli.py'
+adding 'agentsync/model_usage.py'
+adding 'agentsync/model_usage_checkpoint.py'
+adding 'agentsync/models.py'
+adding 'agentsync/planning_cli.py'
+adding 'agentsync/proposal_handoff.py'
+adding 'agentsync/proposals.py'
+adding 'agentsync/py.typed'
+adding 'agentsync/relay_queue.py'
+adding 'agentsync/relay_status_cli.py'
+adding 'agentsync/relay_wave_journal.py'
+adding 'agentsync/retry_planning.py'
+adding 'agentsync/scheduling.py'
+adding 'agentsync/usage.py'
+adding 'agentsync/usage_cli.py'
+adding 'agentsync/usage_storage.py'
+adding 'agentsync/verified_proposal_flow.py'
+adding 'agentsync/adapters/__init__.py'
+adding 'agentsync/adapters/_host_process.py'
+adding 'agentsync/adapters/approved_launch.py'
+adding 'agentsync/adapters/base.py'
+adding 'agentsync/adapters/claude.py'
+adding 'agentsync/adapters/claude_events.py'
+adding 'agentsync/adapters/claude_invocation.py'
+adding 'agentsync/adapters/claude_process.py'
+adding 'agentsync/adapters/codex.py'
+adding 'agentsync/adapters/codex_events.py'
+adding 'agentsync/adapters/codex_invocation.py'
+adding 'agentsync/adapters/codex_process.py'
+adding 'agentsync/adapters/cursor.py'
+adding 'agentsync/adapters/cursor_events.py'
+adding 'agentsync/adapters/cursor_invocation.py'
+adding 'agentsync/adapters/cursor_process.py'
+adding 'agentsync/adapters/host_receipts.py'
+adding 'agentsync/adapters/launch_context.py'
+adding 'agentsync/adapters/manager.py'
+adding 'agentsync/adapters/mock.py'
+adding 'agentsync/adapters/process_capture.py'
+adding 'agentsync/core/__init__.py'
+adding 'agentsync/core/collaboration.py'
+adding 'agentsync/core/permissions.py'
+adding 'agentsync/core/resources.py'
+adding 'agentsync/core/service.py'
+adding 'agentsync/core/usage.py'
+adding 'agentsync/core/workspaces.py'
+adding 'agentsync/integrations/__init__.py'
+adding 'agentsync/integrations/http.py'
+adding 'agentsync/integrations/mcp.py'
+adding 'agentsync/providers/__init__.py'
+adding 'agentsync/providers/_transport.py'
+adding 'agentsync/providers/advice.py'
+adding 'agentsync/providers/base.py'
+adding 'agentsync/providers/http.py'
+adding 'agentsync/providers/retry.py'
+adding 'agentsync/resources/__init__.py'
+adding 'agentsync/resources/paths.py'
+adding 'agentsync/sdk/__init__.py'
+adding 'agentsync/sdk/client.py'
+adding 'agentsync/storage/__init__.py'
+adding 'agentsync/storage/admission.py'
+adding 'agentsync/storage/database.py'
+adding 'agentsync/verification/__init__.py'
+adding 'agentsync/verification/binding.py'
+adding 'agentsync/verification/candidate.py'
+adding 'agentsync/verification/candidate_claims.py'
+adding 'agentsync/verification/candidate_delivery.py'
+adding 'agentsync/verification/candidate_execution_state.py'
+adding 'agentsync/verification/candidate_executor.py'
+adding 'agentsync/verification/candidate_intents.py'
+adding 'agentsync/verification/candidate_jobs.py'
+adding 'agentsync/verification/docker.py'
+adding 'agentsync/verification/executor.py'
+adding 'agentsync/verification/jobs.py'
+adding 'agentsync/verification/owner_flow.py'
+adding 'agentsync/verification/proposal_staging.py'
+adding 'agentsync/verification/reconciliation.py'
+adding 'agentsync/verification/snapshot.py'
+adding 'agentsync/verification/task_completion.py'
+adding 'agentsync/workspaces/__init__.py'
+adding 'agentsync/workspaces/git.py'
+adding 'agentsync/workspaces/proposal.py'
+adding 'agentsync_local-0.3.0a109.dist-info/licenses/LICENSE'
+adding 'agentsync_local-0.3.0a109.dist-info/METADATA'
+adding 'agentsync_local-0.3.0a109.dist-info/WHEEL'
+adding 'agentsync_local-0.3.0a109.dist-info/entry_points.txt'
+adding 'agentsync_local-0.3.0a109.dist-info/top_level.txt'
+adding 'agentsync_local-0.3.0a109.dist-info/RECORD'
+removing build\bdist.win-amd64\wheel
+Successfully built agentsync_local-0.3.0a109-py3-none-any.whl

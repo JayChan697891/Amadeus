@@ -1,0 +1,19 @@
+{
+  "origin": "/root/amadeus-usage-95244e2/installed/lib/python3.14/site-packages/agentsync",
+  "version": "0.3.0a113",
+  "artifact": "agentsync_local-0.3.0a113.tar.gz",
+  "artifact_sha256": "fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be",
+  "runtime_members_matched": 92,
+  "source_shadowing": false,
+  "direct_archive": {
+    "archive_info": {
+      "hash": "sha256=fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be",
+      "hashes": {
+        "sha256": "fb0378fd6f8112f73376b2344d792d656c1534dd46f6ac390317d427d294d8be"
+      }
+    },
+    "url": "file:///root/amadeus-usage-95244e2/agentsync_local-0.3.0a113.tar.gz"
+  },
+  "verified_before_after": true,
+  "exit_code": 0
+}

@@ -1,0 +1,41 @@
+{
+  "observed_at": "2026-11-15T11:05:45.023919+00:00",
+  "source_commit": "624b36c039a90feb9340559ac773f9df08ba86ad",
+  "wheel_sha256": "7df63b4f3785083ab6ee43fd69a229536e43af74fc55e2797348ff1bb7ba4690",
+  "candidate_manifest_sha256": "23365b89c3c4c66acabf2c51d5f9d7d90de02a1dec7664598a9ebc32c0cf9b95",
+  "scope": "Four scripted same-protocol crash/restart cases on exact installed a116; no real Agent, performance or full M8/Release claim",
+  "status": "SCOPED PASS",
+  "cases": [
+    {
+      "platform": "linux",
+      "protocol": "mcp_stdio",
+      "status": "pass",
+      "source": "linux/summary.json",
+      "source_sha256": "f0c03941bd9463bcc0e2f2d8338ce1dce84b7b49e8734235458b8f8ac7f29999"
+    },
+    {
+      "platform": "linux",
+      "protocol": "http_loopback",
+      "status": "pass",
+      "source": "linux/summary.json",
+      "source_sha256": "f0c03941bd9463bcc0e2f2d8338ce1dce84b7b49e8734235458b8f8ac7f29999"
+    },
+    {
+      "platform": "windows",
+      "protocol": "mcp_stdio",
+      "status": "pass",
+      "source": "windows-r1/summary.json",
+      "source_sha256": "610f92c12da0948c4e71a315612256aa48ca012ade7ff3cab21e504e0f9fcd38"
+    },
+    {
+      "platform": "windows",
+      "protocol": "http_loopback",
+      "status": "pass",
+      "source": "windows-http-r2/summary.json",
+      "source_sha256": "34da96f704df484f115a27640b897044584c82e0d2a834da158bc737e99dbe41"
+    }
+  ],
+  "first_windows_overall_result": "FAIL preserved; only the failed HTTP scenario was corrected and rerun",
+  "benchmarks": "NOT RUN; wait original Windows queue then Linux benchmark, normal VM shutdown, Windows benchmark",
+  "formal_release": "BLOCKED"
+}

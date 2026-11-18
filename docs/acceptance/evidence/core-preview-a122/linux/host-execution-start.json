@@ -1,0 +1,13 @@
+{
+  "utc": "2026-11-17T06:26:05.529291+00:00",
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m122l/linux-run-preview.py",
+  "driver_sha256": "caabfd6c1ff2b072495f3b1d3e87e84cd9e394b6c2cf7a765fd44dacd6f33bf0",
+  "preflight": {
+    "utc": "2026-11-17T06:26:01.737568+00:00",
+    "boot_id": "e72dc8f6-8e84-40ea-9ba2-3ccd1b33fb76",
+    "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+    "workers": [],
+    "containers": [],
+    "free_bytes": 1558417408
+  }
+}

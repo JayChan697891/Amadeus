@@ -1,0 +1,124 @@
+{
+  "recorded_at": "2026-11-15T13:42:47.019348+00:00",
+  "status": "OFFLINE REPAIR VERIFIED; LIVE NOT VERIFIED",
+  "scope": "Evidence driver only, no product code change",
+  "product_sha": "fc27f15f47fa92ed5edcd764a573c1d84a68c107",
+  "base_evidence": "../cancel-preparation/summary.json",
+  "consumed_live_attempt": "../cancel-live/summary.json",
+  "changed": [
+    "Strict full 27-field observation schema with explicit immutable billing/verification values",
+    "Shared validation for execution/cleanup; no-dispatch results remain empty except fixed scope markers",
+    "Persist cancellation request and private capture before reading/validating attempt diagnostics"
+  ],
+  "unchanged_execution_files": {
+    "run-once.py": "b16755b4f77bbcc677f866c0bfe3d900235261b463ccd25bd6134620377cb91a",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a"
+  },
+  "root_validation": {
+    "finished_at": "2026-11-15T13:40:57.309528+00:00",
+    "native_exit_code": 0,
+    "method_cases": 4,
+    "subtests": 8,
+    "junit_counts": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "junit_counts_include_subtests": true,
+    "runtime_members_unchanged": 97,
+    "model_calls": 0,
+    "scope": "Exact finalizer block with injected inspect/schema failures; actual public dataclass and retained safe receipts. Deterministic doubles are not real clients."
+  },
+  "retained_failed_validation": {
+    "path": "failed-01",
+    "native_exit_code": 1,
+    "failure": "New test subclass omitted slots=True, so inherited init=False scope fields were absent during asdict; driver/product unchanged",
+    "repair": "Add slots=True only to the new test fixture dataclass",
+    "junit_counts": {
+      "tests": 12,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_sha256": "02cea8a86b61c57304bb5ee029092c7776b672202660069ba49c0acdadea2b07"
+  },
+  "independent_review": {
+    "model": "native Astra",
+    "pilot_sha256": "a41dfa82edfb53323470c6c9239e075b12f1e7e74ec0295bd8c1db3e7d963197",
+    "credential_home_sha256": "f29e0c562f549946a68886d79fffe8f4cf12b5609dee3be7050c78be56d60a46",
+    "blocking_findings": [],
+    "final_fault_injection_test": "Subsequently changed and executed by root; do not attribute this final test revision to earlier Astra review"
+  },
+  "future_execution": "NOT RUN; no new fixture, plan, authorization, authentication or model invocation was created by this repair",
+  "warning": "Fixed scripts retain the consumed fixture path. Source repair only; never deploy over the old fixture or rerun the consumed plan. A future live attempt needs a fresh isolated path, reviewed exact plan and fresh explicit single-use authorization.",
+  "reproduction": {
+    "local_root": "D:\\agentsync-debug\\strategy-demo\\cancel-a117-repair",
+    "test": "test_cancel_receipts.py",
+    "installed_python": "D:/agentsync-debug/strategy-demo/a117-sdist-r3/sdist-env/Scripts/python.exe",
+    "test_data": "Copy ../cancel-live/postmortem-observation.json to adjacent cancel-a117-preparation/postmortem-observation.json; this is the safe public projection, not Core or external credentials",
+    "unchanged_inputs": "Reuse exact files listed in unchanged_execution_files from ../cancel-preparation; executable copies of .py.txt use the .py suffix",
+    "native_command": "See lead-run-02/lead-attempt.json; tests only, never execute pilot.py/run-once.py"
+  },
+  "live_cancellation": "NOT VERIFIED",
+  "formal_release": "BLOCKED",
+  "artifacts": {
+    "pilot.py.txt": {
+      "sha256": "a41dfa82edfb53323470c6c9239e075b12f1e7e74ec0295bd8c1db3e7d963197",
+      "bytes": 18569
+    },
+    "credential_home.py.txt": {
+      "sha256": "f29e0c562f549946a68886d79fffe8f4cf12b5609dee3be7050c78be56d60a46",
+      "bytes": 5201
+    },
+    "test_cancel_receipts.py.txt": {
+      "sha256": "f12e553e425247454a74b69dfe6577db67a4b39631bd036e17aa5fe492fe41ac",
+      "bytes": 6895
+    },
+    "lead-check.py.txt": {
+      "sha256": "63440f8d691ebc8ca4b239079f95a098001db8ce818ef12eb413265e0c4a89ae",
+      "bytes": 3495
+    },
+    "lead-run-02/lead-attempt.json": {
+      "sha256": "db5111fe643e51a38bf9858facebe17547e6f89bafe29fdc660390f1f4c6210a",
+      "bytes": 11466
+    },
+    "lead-run-02/lead-result.json": {
+      "sha256": "6915cfbcc5f9a7b8a818890135ae7734f9a7bd579c4f5f49c2fb9c4b6fc96dde",
+      "bytes": 10888
+    },
+    "lead-run-02/lead-tests.log": {
+      "sha256": "537134659cbd89dd0d16118163da3f13098dd1e3983b0e8c4aecd75c1c92b5cf",
+      "bytes": 111
+    },
+    "lead-run-02/lead-junit.xml": {
+      "sha256": "b42ec698c5a8cf6cbad356de51812175248d2365484575cb14983bd9d2de3753",
+      "bytes": 736
+    },
+    "failed-01/test_cancel_receipts.py.txt": {
+      "sha256": "02cea8a86b61c57304bb5ee029092c7776b672202660069ba49c0acdadea2b07",
+      "bytes": 6729
+    },
+    "failed-01/lead-check.py.txt": {
+      "sha256": "19294f04ce81bcd0893bbd5b2c33d4405a4a9809619422b7134cc9b268f8756a",
+      "bytes": 3214
+    },
+    "failed-01/lead-attempt.json": {
+      "sha256": "de5e2f0b06c98e186ed44acab6cde62767b94ca7a93ad9e9aeb738b24ee36ff9",
+      "bytes": 11440
+    },
+    "failed-01/lead-result.json": {
+      "sha256": "d7670f1c7bb3605fb81266475835003c752daa0f140353125757554778d84f50",
+      "bytes": 10824
+    },
+    "failed-01/lead-tests.log": {
+      "sha256": "7d653c0db8e1b48f9a74071d7a6885db80477c081b4968cb6001afa539f650f7",
+      "bytes": 5154
+    },
+    "failed-01/lead-junit.xml": {
+      "sha256": "1f8f9188bb27bfd4b366a1e3d73cf44be1b761bed5abb00b3835db57af5ecc99",
+      "bytes": 5475
+    }
+  }
+}

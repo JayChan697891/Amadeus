@@ -1,0 +1,13 @@
+Filesystem           1024-blocks    Used Available Capacity Mounted on
+/dev/vda3             31339929  14257118  15738556  48% /
+2026-11-12 11:07:46,745 - handlers.py[DEBUG]: finish: init-network/config-growpart: SUCCESS: config-growpart ran successfully and took 0.328 seconds (duration: 0.328s)
+2026-11-12 11:07:46,745 - modules.py[DEBUG]: Running module resizefs (<module 'cloudinit.config.cc_resizefs' from '/usr/lib/python3.14/site-packages/cloudinit/config/cc_resizefs.py'>) with frequency always
+2026-11-12 11:07:46,746 - handlers.py[DEBUG]: start: init-network/config-resizefs: running config-resizefs with frequency always
+2026-11-12 11:07:46,746 - helpers.py[DEBUG]: Running config-resizefs using lock (<cloudinit.helpers.DummyLock object at 0x7f7f92330b90>)
+2026-11-12 11:07:46,746 - cc_resizefs.py[DEBUG]: resize_info: dev=/dev/vda3 mnt_point=/ path=/
+2026-11-12 11:07:46,746 - cc_resizefs.py[DEBUG]: Resizing / (ext4) using resize2fs /dev/vda3
+2026-11-12 11:07:46,746 - subp.py[DEBUG]: Running command ('resize2fs', '/dev/vda3') with allowed return codes [0] (shell=False, capture=True)
+2026-11-12 11:07:47,061 - performance.py[DEBUG]: Running ('resize2fs', '/dev/vda3') took 0.315 seconds
+2026-11-12 11:07:47,061 - cc_resizefs.py[DEBUG]: Resized root filesystem (type=ext4, val=True)
+2026-11-12 11:07:47,061 - handlers.py[DEBUG]: finish: init-network/config-resizefs: SUCCESS: config-resizefs ran successfully and took 0.315 seconds (duration: 0.315s)
+Original partition start preserved; guest expanded partition during boot.

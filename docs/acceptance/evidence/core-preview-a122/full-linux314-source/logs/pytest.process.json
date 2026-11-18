@@ -1,0 +1,55 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "pytest",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "/root/amadeus-m122source/e/bin/python",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-m122source/s/tests",
+      "--junitxml",
+      "/root/amadeus-m122source/t/source-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m122source/t/p",
+      "-o",
+      "cache_dir=/root/amadeus-m122source/t/pytest-cache"
+    ],
+    "cwd": "/root/amadeus-m122source/s",
+    "started_at": "2026-11-18T01:27:44.597871+00:00",
+    "timeout_seconds": 7200
+  },
+  "error_type": null,
+  "result": {
+    "id": "pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-m122source/e/bin/python",
+      "-B",
+      "-m",
+      "pytest",
+      "/root/amadeus-m122source/s/tests",
+      "--junitxml",
+      "/root/amadeus-m122source/t/source-junit.xml",
+      "--basetemp",
+      "/root/amadeus-m122source/t/p",
+      "-o",
+      "cache_dir=/root/amadeus-m122source/t/pytest-cache"
+    ],
+    "cwd": "/root/amadeus-m122source/s",
+    "exit_code": 0,
+    "started_at": "2026-11-18T01:27:44.597871+00:00",
+    "finished_at": "2026-11-18T01:47:14.626130+00:00",
+    "log": "logs/pytest.log",
+    "log_sha256": "35f562baa00d04be668fe5d207e93eefe7356d2cc8d969c240c5fae77b1c44d8",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 7200
+  }
+}

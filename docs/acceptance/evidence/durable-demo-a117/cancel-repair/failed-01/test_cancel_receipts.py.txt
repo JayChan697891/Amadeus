@@ -1,0 +1,154 @@
+"""Validate capture ordering and cleanup evidence without starting any process."""
+
+import ast
+import asyncio
+import importlib.util
+import json
+import unittest
+from copy import deepcopy
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import MagicMock, patch
+
+from agentsync.controlled_relay import RelayAttemptObservation
+
+ROOT = Path(__file__).resolve().parent
+SPEC = importlib.util.spec_from_file_location("cancel_credential_home", ROOT / "credential_home.py")
+assert SPEC is not None and SPEC.loader is not None
+home = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(home)
+OBSERVATIONS = json.loads(
+    (ROOT.parent / "cancel-a117-preparation" / "postmortem-observation.json").read_text(
+        encoding="utf-8"
+    )
+)["attempts"]
+
+
+class ReceiptValidation(unittest.TestCase):
+    def test_public_schema_and_retained_terminal_observation(self):
+        unused = [asdict(RelayAttemptObservation(leg, "not_dispatched")) for leg in ("first", "second")]
+        self.assertEqual(len(unused[0]), 27)
+        self.assertEqual(home.validate_attempts(unused), tuple(unused))
+        self.assertEqual(home.validate_attempts(OBSERVATIONS), tuple(OBSERVATIONS))
+        self.assertEqual(OBSERVATIONS[0]["error_code"], "local_cancel_requested")
+
+    def test_schema_constants_and_unstarted_payload_fail_closed(self):
+        for field, value in (
+            ("unexpected", None),
+            ("billing_verified", 0),
+            ("billing_verified", True),
+            ("cost_usd", 0),
+            ("verification", "verified"),
+            ("exit_code", 0),
+        ):
+            with self.subTest(field=field, value=value):
+                attempts = deepcopy(OBSERVATIONS)
+                attempts[1][field] = value
+                with self.assertRaises(AssertionError):
+                    home.validate_attempts(attempts)
+        attempts = deepcopy(OBSERVATIONS)
+        del attempts[1]["verification"]
+        with self.assertRaises(AssertionError):
+            home.validate_attempts(attempts)
+
+    def test_cleanup_needs_positive_owned_stop_or_no_dispatch(self):
+        def check(attempts, *, captured=True, authorizations=1):
+            path = MagicMock()
+            attempt_path, dispatch_path = MagicMock(), MagicMock()
+            path.__truediv__.side_effect = {
+                "attempt.json": attempt_path,
+                "dispatch-observation.json": dispatch_path,
+            }.__getitem__
+            attempt_path.exists.return_value = True
+            dispatch_path.read_text.return_value = json.dumps(
+                {"actors": {"worker": {"task_id": "fixture", "attempts": attempts,
+                                       "captured_start_invoked": captured,
+                                       "exact_authorizations": authorizations}}}
+            )
+            with patch.object(home, "BASE", path):
+                home.require_stopped()
+
+        check(OBSERVATIONS)
+        unused = [asdict(RelayAttemptObservation(leg, "not_dispatched")) for leg in ("first", "second")]
+        check(unused, captured=False, authorizations=0)
+        for first in (
+            dict(OBSERVATIONS[0], parent_ended=False),
+            dict(OBSERVATIONS[0], state="outcome_unknown"),
+        ):
+            with self.assertRaises(AssertionError):
+                check([first, OBSERVATIONS[1]])
+        with self.assertRaises(AssertionError):
+            check(OBSERVATIONS, captured=False, authorizations=0)
+        with self.assertRaises(AssertionError):
+            check(unused, captured=False, authorizations=1)
+
+    def test_capture_and_cancel_request_are_saved_before_attempt_diagnostics(self):
+        source = (ROOT / "pilot.py").read_text(encoding="utf-8")
+        execute = next(
+            node for node in ast.parse(source).body
+            if isinstance(node, ast.AsyncFunctionDef) and node.name == "execute_once"
+        )
+        guarded = next(node for node in execute.body if isinstance(node, ast.Try) and node.finalbody)
+        isolated = ast.parse("async def save_observations():\n    pass\n")
+        isolated.body[0].body = guarded.finalbody
+        code = compile(isolated, str(ROOT / "pilot.py"), "exec")
+
+        @dataclass(frozen=True)
+        class ExtendedAttempt(RelayAttemptObservation):
+            unexpected: str = "unknown field"
+
+        for failure in ("inspect", "schema"):
+            with self.subTest(failure=failure):
+                events, saved = [], {}
+                cancellation = {"requested": True, "propagated": True}
+                capture_metadata = {"saved": True, "stdout_bytes": 10}
+                inspect_error = RuntimeError("injected attempt observation failure")
+
+                def save(name, value):
+                    events.append(name)
+                    saved[name] = value
+
+                async def retain():
+                    events.append("capture_retain")
+                    return capture_metadata
+
+                def inspect_attempts(*_args, **_kwargs):
+                    events.append("inspect_attempts")
+                    if failure == "inspect":
+                        raise inspect_error
+                    return [
+                        RelayAttemptObservation("first", "not_dispatched"),
+                        ExtendedAttempt("second", "not_dispatched"),
+                    ]
+
+                namespace = {
+                    "asdict": asdict,
+                    "validate_attempts": home.validate_attempts,
+                    "save": save,
+                    "cancellation": cancellation,
+                    "capture": SimpleNamespace(retain=retain, entered=True),
+                    "relay": SimpleNamespace(inspect_attempts=inspect_attempts),
+                    "actor": object(),
+                    "task_id": "fixture",
+                    "owner": {"admin_token": "fixture"},
+                    "authorizations": 1,
+                }
+                exec(code, namespace)
+                error_type = RuntimeError if failure == "inspect" else AssertionError
+                with self.assertRaises(error_type) as raised:
+                    asyncio.run(namespace["save_observations"]())
+                if failure == "inspect":
+                    self.assertIs(raised.exception, inspect_error)
+                self.assertEqual(
+                    events,
+                    ["cancellation-request.json", "capture_retain", "capture.json", "inspect_attempts"],
+                )
+                self.assertEqual(
+                    saved,
+                    {"cancellation-request.json": cancellation, "capture.json": capture_metadata},
+                )
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

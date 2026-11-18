@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "scope": "8 actual Core document review tests on unchanged installed Windows3.12.16 a122; deterministic confirmation fixture",
+  "native_exit_code": 0,
+  "native_chunk": "aedc41",
+  "junit_path": "D:\\agentsync-debug\\m122docreview\\run\\junit.xml",
+  "junit_sha256": "7b6678e308c61aefdfe8ad5b7af6479e38a772a9426ab71cd8e49ed139a5d2d9",
+  "source_sha256": {
+    "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+    "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21"
+  },
+  "process_receipts_checked": 3,
+  "runtime_members_checked_before_and_after": 97,
+  "result_sha256": "d211419b57e7224bc9de82e18043853a0bff2a0fd4b3b46a9301955a183a3ab9",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "native_terminal_interaction": "NOT RUN",
+  "new_linux_run": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

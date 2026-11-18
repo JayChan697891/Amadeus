@@ -11,6 +11,7 @@ import stat
 import subprocess
 import tempfile
 import time
+from contextlib import nullcontext
 from pathlib import Path
 from typing import Any, NoReturn
 
@@ -50,6 +51,17 @@ def config_digest(repo: Path) -> str:
     if config.stat().st_size > MAX_OUTPUT:
         fail("repository_too_large", "Git configuration exceeds supported size.")
     return hashlib.sha256(config.read_bytes()).hexdigest()
+
+
+def _over_limit(path: Path) -> bool:
+    try:
+        return path.stat().st_size > MAX_REPOSITORY
+    except FileNotFoundError:
+        return False
+
+
+def _walk_error(_error: OSError) -> NoReturn:
+    fail("workspace_boundary", "Workspace paths could not be inspected.")
 
 
 class GitWorkspaceStore:
@@ -100,13 +112,29 @@ class GitWorkspaceStore:
         )
         return env
 
-    def _git(self, cwd: Path, *args: str, accepted: tuple[int, ...] = (0,)) -> tuple[int, bytes]:
+    def _git(
+        self,
+        cwd: Path,
+        *args: str,
+        accepted: tuple[int, ...] = (0,),
+        stdin: bytes | None = None,
+        bounded_file: Path | None = None,
+        fixed_attributes: bool = False,
+        local_only: bool = False,
+    ) -> tuple[int, bytes]:
         if physical(self.root) != self.root_identity:
             fail("workspace_boundary", "Managed root identity changed.")
         argv = [self.binary, "--no-pager"]
         if os.name == "nt":
             # Linked worktree metadata and hashed ref lock paths can exceed MAX_PATH.
             argv.extend(["-c", "core.longpaths=true"])
+        env = self._env()
+        if fixed_attributes:
+            env["GIT_ATTR_NOSYSTEM"] = "1"
+            argv.extend(["-c", f"core.attributesFile={os.devnull}"])
+        if local_only:
+            env.update(GIT_ALLOW_PROTOCOL="", GIT_NO_LAZY_FETCH="1")
+            argv.extend(["-c", "core.warnAmbiguousRefs=true", "-c", "fetch.fsckObjects=true"])
         for setting in (
             f"core.hooksPath={self.root / 'hooks'}",
             "core.fsmonitor=false",
@@ -129,12 +157,22 @@ class GitWorkspaceStore:
         ):
             argv += ["-c", setting]
         # File-backed output prevents a malicious repository from exhausting RAM.
-        with tempfile.TemporaryFile(dir=self.root) as output:
+        with (
+            tempfile.TemporaryFile(dir=self.root) as output,
+            (
+                tempfile.TemporaryFile(dir=self.root) if stdin is not None else nullcontext()
+            ) as input_file,
+        ):
+            if input_file is not None and stdin is not None:
+                if len(stdin) > MAX_OUTPUT:
+                    fail("repository_too_large", "Git input exceeds the supported limit.")
+                input_file.write(stdin)
+                input_file.seek(0)
             try:
                 process = subprocess.Popen(
                     [*argv, "-C", str(cwd), *args],
-                    env=self._env(),
-                    stdin=subprocess.DEVNULL,
+                    env=env,
+                    stdin=input_file if input_file is not None else subprocess.DEVNULL,
                     stdout=output,
                     stderr=subprocess.DEVNULL,
                 )
@@ -143,6 +181,7 @@ class GitWorkspaceStore:
                     if (
                         time.monotonic() > deadline
                         or os.fstat(output.fileno()).st_size > MAX_OUTPUT
+                        or (bounded_file is not None and _over_limit(bounded_file))
                     ):
                         process.kill()
                         process.wait()
@@ -151,7 +190,9 @@ class GitWorkspaceStore:
                 returncode = process.wait()
             except (OSError, subprocess.TimeoutExpired):
                 fail("git_failed", "Git operation failed or exceeded its time limit.")
-            if output.tell() > MAX_OUTPUT:
+            if output.tell() > MAX_OUTPUT or (
+                bounded_file is not None and _over_limit(bounded_file)
+            ):
                 fail("repository_too_large", "Git output exceeds the supported limit.")
             output.seek(0)
             data = output.read(MAX_OUTPUT + 1)
@@ -240,14 +281,18 @@ class GitWorkspaceStore:
         _, data = self._git(repo, "rev-parse", "--verify", "HEAD^{commit}")
         return valid_sha(data.decode("ascii").strip())
 
-    def _source_config(self, source: Path) -> None:
+    def _source_config(self, source: Path, *, config_file: Path | None = None) -> dict[str, bytes]:
         # This command reads config syntax only and does not run status, filters,
         # hooks or a pack subprocess. Includes are deliberately not expanded.
-        _, output = self._git(source, "config", "--local", "--no-includes", "--null", "--list")
+        cwd = source if config_file is None else self.root
+        location = ("--local",) if config_file is None else ("--file", str(config_file))
+        _, output = self._git(cwd, "config", *location, "--no-includes", "--null", "--list")
+        config = {}
         for item in output.split(b"\0"):
             if not item:
                 continue
-            key = item.split(b"\n", 1)[0].decode("utf-8", errors="strict").casefold()
+            raw_key, _, value = item.partition(b"\n")
+            key = raw_key.decode("utf-8", errors="strict").casefold()
             if key.startswith(
                 ("include.", "includeif.", "filter.", "uploadpack.", "diff.", "merge.")
             ) or key in {
@@ -260,6 +305,8 @@ class GitWorkspaceStore:
                     "unsupported",
                     "Executable filters, includes and external Git drivers are unsupported.",
                 )
+            config[key] = value
+        return config
 
     def _status(self, repo: Path) -> list[str]:
         _, data = self._git(
@@ -294,28 +341,7 @@ class GitWorkspaceStore:
         source = source.resolve()
         if self.root.is_relative_to(source) or source.is_relative_to(self.root):
             fail("workspace_boundary", "Source and managed repository storage must be disjoint.")
-        gitdir = source / ".git"
-        physical(gitdir)
-        if not gitdir.is_dir() or any(
-            (gitdir / part).exists()
-            for part in (
-                "commondir",
-                "config.worktree",
-                "objects/info/alternates",
-                "objects/info/http-alternates",
-            )
-        ):
-            fail("unsupported", "External Git directories and alternate objects are unsupported.")
-        size = 0
-        entries = 0
-        for directory, dirs, files in os.walk(gitdir, followlinks=False):
-            for name in [*dirs, *files]:
-                entry = Path(directory) / name
-                physical(entry)
-                entries += 1
-                size += entry.stat().st_size
-                if entries > 100000 or size > MAX_REPOSITORY:
-                    fail("repository_too_large", "Repository metadata exceeds supported size.")
+        self._ordinary_gitdir(source)
         self._source_config(source)
         _, top = self._git(source, "rev-parse", "--show-toplevel")
         if Path(top.decode("utf-8").strip()).resolve() != source:
@@ -370,6 +396,37 @@ class GitWorkspaceStore:
         }
         self._save(self._path("receipts", identity), receipt)
         return receipt
+
+    @staticmethod
+    def _ordinary_gitdir(source: Path) -> Path:
+        gitdir = source / ".git"
+        physical(gitdir)
+        if not gitdir.is_dir() or any(
+            (gitdir / part).exists()
+            for part in (
+                "commondir",
+                "config.worktree",
+                "objects/info/alternates",
+                "objects/info/http-alternates",
+            )
+        ):
+            fail("unsupported", "External Git directories and alternate objects are unsupported.")
+        size = 0
+        entries = 0
+        for directory, dirs, files in os.walk(gitdir, followlinks=False, onerror=_walk_error):
+            for name in [*dirs, *files]:
+                entry = Path(directory) / name
+                physical(entry)
+                info = entry.lstat()
+                if not stat.S_ISDIR(info.st_mode) and not stat.S_ISREG(info.st_mode):
+                    fail(
+                        "workspace_boundary", "Git metadata must be ordinary files or directories."
+                    )
+                entries += 1
+                size += info.st_size
+                if entries > 100000 or size > MAX_REPOSITORY:
+                    fail("repository_too_large", "Repository metadata exceeds supported size.")
+        return gitdir
 
     def verify_snapshot(self, snapshot: dict[str, Any]) -> None:
         repo = self._path("repositories", snapshot["id"])

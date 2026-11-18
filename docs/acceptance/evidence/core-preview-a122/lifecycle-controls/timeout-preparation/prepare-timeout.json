@@ -1,0 +1,6 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/pilot.py prepare timeout",
+  "exit_code": 0,
+  "stdout_sha256": "136df71be5728f7d47faca39fe57de7eaa801432dafd114de6806e428fd78317",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

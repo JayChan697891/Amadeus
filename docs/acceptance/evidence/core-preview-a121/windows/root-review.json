@@ -1,0 +1,77 @@
+{
+  "source_files_rehashed": 3809,
+  "source_archive_rehashed": true,
+  "native_checks": 19,
+  "artifacts": {
+    "wheel": {
+      "filename": "agentsync_local-0.3.0a121-py3-none-any.whl",
+      "size": 327800,
+      "sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71"
+    },
+    "sdist": {
+      "filename": "agentsync_local-0.3.0a121.tar.gz",
+      "size": 6391200,
+      "sha256": "d47e0e0d6a365639e4b6b231f6855390ee1143d4a71b8bcb4a565d207ff213a4"
+    }
+  },
+  "package_installs": {
+    "wheel": {
+      "unique_cases": 23,
+      "passed": 23,
+      "same_previous_cases": 21,
+      "added": [
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_reports_unicode_directory_with_legacy_stdout"
+        ],
+        [
+          "tests.integration.test_handoff_recovery",
+          "test_owner_recovery_reports_unicode_reason_with_legacy_stdout"
+        ]
+      ],
+      "runtime_members_rehashed": 97,
+      "direct_url": {
+        "archive_info": {
+          "hash": "sha256=84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71",
+          "hashes": {
+            "sha256": "84eebc0b5d32c4f58f6638711d145f5919abc55cbc26eba58ed9173fe2808d71"
+          }
+        },
+        "url": "file:///D:/agentsync-debug/m121p/dist/agentsync_local-0.3.0a121-py3-none-any.whl"
+      },
+      "xml_redactions": 0
+    },
+    "sdist": {
+      "unique_cases": 23,
+      "passed": 23,
+      "same_previous_cases": 21,
+      "added": [
+        [
+          "tests.integration.test_durable_demo",
+          "test_durable_demo_reports_unicode_directory_with_legacy_stdout"
+        ],
+        [
+          "tests.integration.test_handoff_recovery",
+          "test_owner_recovery_reports_unicode_reason_with_legacy_stdout"
+        ]
+      ],
+      "runtime_members_rehashed": 97,
+      "direct_url": {
+        "archive_info": {
+          "hash": "sha256=d47e0e0d6a365639e4b6b231f6855390ee1143d4a71b8bcb4a565d207ff213a4",
+          "hashes": {
+            "sha256": "d47e0e0d6a365639e4b6b231f6855390ee1143d4a71b8bcb4a565d207ff213a4"
+          }
+        },
+        "url": "file:///D:/agentsync-debug/m121p/dist/agentsync_local-0.3.0a121.tar.gz"
+      },
+      "xml_redactions": 0
+    }
+  },
+  "sdist_tracked_payload_rehashed": 2617,
+  "old_archives_rehashed": 4,
+  "original_records": 45,
+  "original_bytes": 1368589,
+  "credential_matches": 0,
+  "release": "BLOCKED"
+}

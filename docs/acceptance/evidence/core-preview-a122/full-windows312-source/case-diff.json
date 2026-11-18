@@ -1,0 +1,24 @@
+{
+  "scope": "Identities and outcomes only; no new test execution",
+  "unique_cases": 2596,
+  "outcomes": {
+    "passed": 2539,
+    "skipped": 57
+  },
+  "baselines": [
+    {
+      "path": "D:\\agentsync-debug\\m122fullw\\run\\wheel-junit.xml",
+      "sha256": "96fac8fcc0d50f04c65124dede0ae9106453be4875e761e76b4350b490f43a27",
+      "unique_cases": 2596,
+      "identity_differences": 0,
+      "outcome_differences": 0
+    },
+    {
+      "path": "D:\\agentsync-debug\\m122fullwd\\run\\sdist-junit.xml",
+      "sha256": "a5a419615e6befd957481dc49df78ebb45c9456e668e4ffaa3d7c977287a4d71",
+      "unique_cases": 2596,
+      "identity_differences": 0,
+      "outcome_differences": 0
+    }
+  ]
+}

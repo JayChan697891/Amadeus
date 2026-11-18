@@ -1,0 +1,22 @@
+{
+  "scope": "Preparation and exact conditional plan review only",
+  "preparation_native": "ffb894",
+  "pty_native": "aee8a1",
+  "project_id": "1328971c-cdf9-4c73-937b-c50504fa5fbb",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "auth_copied": false,
+  "candidate_authority": "PENDING OWNER",
+  "root_and_astra_plan_review": "No preparation blocker; manual exact reviews required before every effect",
+  "driver_static": "Syntax and Ruff check passed; full driver execution NOT RUN",
+  "preparation_helper_static": "One E701 on compact with statement in executed debug preparation helper; preserved original bytes. It is not packaged runtime and was not rerun or represented as fully style-clean.",
+  "new_terminal_e2e": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "files_sha256": {
+    "plan.json": "a2a06687c837665f10698e648a760d94f66961ae36609c2a1144af9b8bd3c0d6",
+    "prepare.py.txt": "84f600e08f4217ae03e956e2e37eb1195957ea415743fd0b9ceef8292e904cbd",
+    "pty-probe.json": "9ffecd0c9c3d9e9ec4f42e19b11e10b0c0a21f6b01b05336c8564c06a857ec8c",
+    "ready.json": "c68daf94483ae292749b2697ccf052747029ca05572f27b88caeff023b369f25",
+    "terminal_control.py.txt": "2bdc65f02a881aa068c5c0c381f4ea51b83fda1d6f5ae57822acc27d7a952c4f"
+  }
+}

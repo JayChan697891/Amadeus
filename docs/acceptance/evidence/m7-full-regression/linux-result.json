@@ -1,0 +1,62 @@
+{
+  "product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "test_source_sha": "74e1527b93a70a18120de80b151561c836af14a7",
+  "sdist_sha256": "f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351",
+  "source_zip_sha256": "b821ed3cbcc06cac7979bea37191f600d89eb537850def11b8f0a6c5c6e5cb6c",
+  "scope": "Complete existing suite, frozen test source74e1527, installed sdist runtime6017005, no actual clients",
+  "started_at": "2026-11-12T12:49:30.545705+00:00",
+  "python": "3.14.7 (main, Aug 15 2026, 07:18:27) [GCC 15.2.0]",
+  "platform": "linux",
+  "status": "pass",
+  "model_calls": 0,
+  "github_actions_used": false,
+  "formal_release": "BLOCKED",
+  "check": {
+    "id": "sdist_pytest",
+    "status": "pass",
+    "command": [
+      "/root/amadeus-sdist-6017005/venv/bin/python",
+      "-I",
+      "-B",
+      "/root/amadeus-full-74e1527/driver.py",
+      "child"
+    ],
+    "cwd": "/root/amadeus-full-74e1527/source",
+    "exit_code": 0,
+    "started_at": "2026-11-12T12:49:30.545887+00:00",
+    "finished_at": "2026-11-12T13:02:40.463930+00:00",
+    "log": "logs/sdist_pytest.log",
+    "log_sha256": "033a4701602a1fa5dcd05f6600d27f5943f21141d3789d520efc8fc60b9cbd7e",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process",
+    "timeout_seconds": 3600
+  },
+  "source_unchanged": true,
+  "source_files": 1222,
+  "source_fingerprint_sha256": "63c12e819d4c2204cf30bf4c19d7d3992ded89c692e78787cc4f72cf254bae5d",
+  "changed_source_paths": [],
+  "installed_identity": {
+    "origin": "/root/amadeus-sdist-6017005/venv/lib/python3.14/site-packages/agentsync",
+    "runtime_package_members_matched": 88,
+    "runtime_python_modules": 87,
+    "source_shadowing": false
+  },
+  "junit_redactions": 6,
+  "junit": {
+    "tests": 2296,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 6
+  },
+  "skip_reasons": {
+    "Actual Linux backend belongs to the separately controlled Docker fixture": 1,
+    "Git for Windows path-length regression": 1,
+    "Windows conflict keys case-fold": 1,
+    "Windows junction-specific ancestor boundary": 1,
+    "Windows junction-specific boundary": 1,
+    "The opt-in MXC plan requires native Windows": 1
+  },
+  "failed_cases": [],
+  "finished_at": "2026-11-12T13:02:40.830418+00:00"
+}

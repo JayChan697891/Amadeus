@@ -1,0 +1,161 @@
+{
+  "archive": "Amadeus-owner-preview-a122.zip",
+  "sha256": "ebb7cb04abaa1fdef9c0feda56bc11a58a1a6376be3d26f5be8eeb334eed5429",
+  "bytes": 337323,
+  "archive_members": 10,
+  "crc_and_exact_payload_match": true,
+  "original_wheel_unchanged": true,
+  "source_files_byte_identical": true,
+  "documentation_transform": "Replace absent evidence-relative links with original pinned GitHub URLs; new short quick start.",
+  "extracted_script_help": [
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\preview-bundle-20261118-r2\\Amadeus-preview-a122\\examples\\initialize_terminal_project.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "0276dda3007a89d480a6c51226521567bb84a6fd98624447ca67a6e7db0abc37"
+    },
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\preview-bundle-20261118-r2\\Amadeus-preview-a122\\examples\\verified_codex_task.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "aadad5137f79a0350c5711fb285d74733995f91959a4d43a77ed54861c14970c"
+    },
+    {
+      "argv": [
+        "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+        "-I",
+        "-B",
+        "D:\\agentsync-debug\\preview-bundle-20261118-r2\\Amadeus-preview-a122\\examples\\recover_relay.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "95dfdbc68946ec399a8c118098d9395ca43d7265713931f35927e41302d1c3d7"
+    }
+  ],
+  "help_results_reused_from": "owner-preview-7085ec0-r2/package-review.json",
+  "install_repeated": false,
+  "dependency_resolution": {
+    "status": "PASS",
+    "scope": "Offline resolver only; no installation or tests rerun",
+    "distributions": {
+      "agentsync-local": "0.3.0a122",
+      "fastapi": "0.147.0",
+      "mcp": "2.3.0",
+      "mcp-types": "2.3.0",
+      "pydantic": "2.14.1",
+      "pydantic-core": "2.50.1",
+      "uvicorn": "0.54.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "click": "8.5.0",
+      "h11": "0.16.0",
+      "httpx2": "2.15.1",
+      "httpcore2": "2.15.1",
+      "idna": "3.20",
+      "jsonschema": "4.26.0",
+      "attrs": "26.1.0",
+      "jsonschema-specifications": "2025.9.1",
+      "opentelemetry-api": "1.45.1",
+      "pyjwt": "2.15.1",
+      "cryptography": "50.0.2",
+      "cffi": "2.1.1",
+      "python-multipart": "0.0.32",
+      "pywin32": "312",
+      "referencing": "0.37.0",
+      "rpds-py": "2026.9.1",
+      "sse-starlette": "3.5.0",
+      "starlette": "1.9.0",
+      "truststore": "0.10.5",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4",
+      "pycparser": "3.11"
+    },
+    "matches_tested_runtime_inventory": true,
+    "inventory_sha256": "01684b8b4627b1306e01f371e7bc783b4f8012c3ce3cf9e3e7531c0797934387",
+    "constraints_sha256": "23ab8373bc4c65f971fa0b477ea083c0fec5667a51048c7535fca50c08e6a8b1",
+    "resolver_report_sha256": "ec94be03b9a79c7ff1c3e7ac8b652555d6964f54932aeea407d19fad29207d87",
+    "platform": "Windows CPython 3.12.16",
+    "formal_release": "BLOCKED",
+    "old_repository_constraints_retained": true,
+    "historical_constraint_differences": {
+      "httpcore2": {
+        "repository": "2.14.0",
+        "tested": "2.15.1"
+      },
+      "httpx2": {
+        "repository": "2.14.0",
+        "tested": "2.15.1"
+      }
+    }
+  },
+  "full_suites_repeated": false,
+  "real_model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "manifest": {
+    "version": "0.3.0a122",
+    "scope": "limited owner preview",
+    "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+    "entry_commit": "7085ec084b4d1213936b35d3f5c923b290ff6f90",
+    "documentation_commit": "6dcad6f45530be72c220e0b9e402cc690a1d6c9d",
+    "formal_release": "BLOCKED",
+    "default_demo": "simulation_only/unverified",
+    "files": {
+      "agentsync_local-0.3.0a122-py3-none-any.whl": {
+        "bytes": 328435,
+        "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+      },
+      "LICENSE": {
+        "bytes": 1079,
+        "sha256": "a34848c085a0b1a5b161e4a1122002e054ff35970f92fb78c0a33e6fd385c1f3"
+      },
+      "examples/initialize_terminal_project.py": {
+        "bytes": 4528,
+        "sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d"
+      },
+      "examples/verified_codex_task.py": {
+        "bytes": 15464,
+        "sha256": "ec08d88bc5c71403321a3995f5228aa971ad88bd2553debec34238403a8ea233"
+      },
+      "examples/recover_relay.py": {
+        "bytes": 2979,
+        "sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9"
+      },
+      "docs/VERIFIED-TASK-EXAMPLE.md": {
+        "bytes": 7370,
+        "sha256": "9b86524c4163ed9d966208a9a58441b69b28289cbc5306bfedd65b2b417b4fd3"
+      },
+      "constraints-windows312.txt": {
+        "bytes": 757,
+        "sha256": "23ab8373bc4c65f971fa0b477ea083c0fec5667a51048c7535fca50c08e6a8b1"
+      },
+      "README.md": {
+        "bytes": 2714,
+        "sha256": "655707291305fc5d176dac1dcae19e018c5a9f95d02ded506f425f2496070d7a"
+      }
+    }
+  },
+  "root_review": {
+    "archive_delta": "Only constraints-windows312.txt, README.md, manifest.json and SHA256SUMS differ from r2",
+    "all_original_runtime_and_examples_identical": true,
+    "archive_and_payload_sha256_checked": true,
+    "powershell_parse_chunk": "cc12b6",
+    "powershell_statements": 3,
+    "powershell_parse_errors": 0,
+    "resolver_native_chunk": "17ae9c",
+    "resolver_comparison_chunk": "0744f7",
+    "resolver_distributions": 32,
+    "independent_review": "Astra accepted Windows 3.12 dependency constraint revision only; no install or broader acceptance"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "source": "D:\\agentsync-debug\\vm\\guest.qcow2",
+  "utc": "2026-11-17T14:29:14.6054816Z",
+  "sha256": "0da111f3efcd4310869e462bef04f2b319f618ce6e6ce5634bc6c02c7bfe587f",
+  "bytes": 17690853376,
+  "preserved": "D:\\agentsync-debug\\vm\\guest-before-growth-20261117.qcow2",
+  "requested_virtual_bytes": 68719476736
+}

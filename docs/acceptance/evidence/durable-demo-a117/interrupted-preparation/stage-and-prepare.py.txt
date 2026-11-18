@@ -1,0 +1,94 @@
+"""One zero-model fixture preparation; never copies external authentication."""
+import hashlib
+import json
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path('D:/agentsync-debug/strategy-demo/interrupted-a117-preparation')
+REMOTE = '/root/amadeus-interrupted-a117-20261115'
+PYTHON = '/root/amadeus-demo-a117-sdist-r1/installed/bin/python'
+FILES = {
+    'prepare.py': 'a39f828a7e73c431fea13bcdfa5da1dec032c73093a25b6c4d7d8b50a2915d13',
+    'private_capture.py': 'd9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7',
+    'runtime-members.json': 'f76a68a40ee5f675d69dd903d6d8975ab19f71c5e5a4f6e129aa710964b1c06a',
+}
+
+def save(name, record):
+    with (BASE / name).open('x', encoding='utf-8') as stream:
+        json.dump(record, stream, indent=2)
+        stream.write('\n')
+
+for name, digest in FILES.items():
+    assert hashlib.sha256((BASE / name).read_bytes()).hexdigest() == digest
+save('preparation-entry.json', {'started_at': datetime.now(UTC).isoformat(),
+     'inputs': FILES, 'model_calls': 0, 'external_auth_access': False, 'automatic_retry': False})
+client = paramiko.SSHClient()
+client.load_host_keys(r'D:\agentsync-debug\vm\known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1', port=22222, username='root',
+               key_filename=r'D:\agentsync-debug\vm\debug_ed25519',
+               look_for_keys=False, allow_agent=False, timeout=15)
+try:
+    sftp = client.open_sftp()
+    sftp.mkdir(REMOTE, mode=0o700)
+    for name, digest in FILES.items():
+        target = REMOTE + '/' + name
+        with sftp.open(target, 'wx') as stream:
+            stream.write((BASE / name).read_bytes())
+        sftp.chmod(target, 0o600)
+        with sftp.open(target, 'rb') as stream:
+            assert hashlib.sha256(stream.read()).hexdigest() == digest
+
+    def command(stage, arguments):
+        cmd = PYTHON + ' -I -B ' + REMOTE + '/prepare.py ' + arguments
+        stdin, stdout, stderr = client.exec_command(cmd, timeout=60)
+        stdin.channel.shutdown_write()
+        output, error = stdout.read(), stderr.read()
+        code = stdout.channel.recv_exit_status()
+        record = {'observed_at': datetime.now(UTC).isoformat(), 'command': cmd,
+                  'exit_code': code, 'stdout': output.decode(), 'stderr': error.decode()}
+        save(stage + '-command.json', record)
+        assert code == 0, f'{stage} failed; preserve fixture and native record'
+        return json.loads(output)
+
+    prepared = command('prepare', 'prepare')
+    digest = prepared['producer_plan_sha256']
+    assert len(digest) == 64 and all(c in '0123456789abcdef' for c in digest)
+    ready = command('ready', 'ready ' + digest)
+    probe = '''import hashlib,json
+from pathlib import Path
+root=Path('/root/amadeus-interrupted-a117-20261115')
+state=json.loads((root/'state.json').read_bytes())
+tokens=[state['owner']['admin_token'],state['producer']['session_token'],state['receiver']['session_token']]
+artifacts={}
+for name in ('plan.json','readiness.json'):
+ raw=(root/name).read_bytes()
+ assert all(token.encode() not in raw for token in tokens)
+ artifacts[name]={'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw),'value':json.loads(raw)}
+assert not any((root/'private-home').iterdir())
+assert not any((root/name).exists() for name in ('producer-entry.json','receiver-entry.json','attempt.json'))
+print(json.dumps({'artifacts':artifacts,'fixture_tokens_checked':len(tokens),'private_home_empty':True,'live_execution_started':False}))
+'''
+    stdin, stdout, stderr = client.exec_command(PYTHON + ' -I -B -', timeout=30)
+    stdin.write(probe)
+    stdin.flush()
+    stdin.channel.shutdown_write()
+    output, errors = stdout.read(), stderr.read()
+    assert stdout.channel.recv_exit_status() == 0, errors.decode()
+    public = json.loads(output)
+    for name, artifact in public['artifacts'].items():
+        with sftp.open(REMOTE + '/' + name, 'rb') as stream:
+            data = stream.read()
+        assert len(data) == artifact['bytes'] and hashlib.sha256(data).hexdigest() == artifact['sha256']
+        with (BASE / name).open('xb') as stream:
+            stream.write(data)
+        artifact.pop('value')
+    save('preparation-result.json', {'finished_at': datetime.now(UTC).isoformat(),
+         'prepare': prepared, 'ready': ready, 'public_transfer': public, 'model_calls': 0,
+         'external_auth_copies': 0, 'live_execution': 'NOT IMPLEMENTED / NOT RUN',
+         'formal_release': 'BLOCKED'})
+    print(json.dumps({'prepared': prepared, 'ready': ready, 'live_execution': 'NOT RUN'}))
+finally:
+    client.close()

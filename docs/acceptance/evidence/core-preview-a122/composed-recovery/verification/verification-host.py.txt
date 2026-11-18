@@ -1,0 +1,121 @@
+import hashlib
+import json
+import shlex
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path('D:/agentsync-debug/m122-composed-recovery')
+OUT = BASE / 'verification-host'
+GUEST = '/root/amadeus-m122-composed-recovery'
+PYTHON = '/root/amadeus-m122l/w/bin/python'
+HELPER = Path('F:/syuc/amadeus-m6-single/tools/resume_live_solution_verification.py')
+PIN = '80c41ab2b202b3ffa0c765e853283478e22d8ec9f6e629e63145f06d7a2da606'
+OUT.mkdir(exist_ok=True)
+name = sys.argv[1]
+assert name in ('inspect','enroll','prepare','stage-once','execute-once','complete-once')
+assert not (OUT / (name+'-start.json')).exists(), 'Prior attempt exists; no retry'
+client = paramiko.SSHClient()
+client.load_host_keys('D:/agentsync-debug/vm/known_hosts')
+client.set_missing_host_key_policy(paramiko.RejectPolicy())
+client.connect('127.0.0.1',port=22222,username='root',key_filename='D:/agentsync-debug/vm/debug_ed25519',look_for_keys=False,allow_agent=False,timeout=15)
+common = '''import hashlib,json,os,shutil,subprocess,sys,time
+from pathlib import Path
+base=Path('/root/amadeus-m122-composed-recovery')
+os.umask(0o077)
+sys.path.insert(0,str(base))
+import prepare,cleanup,live,verify
+live.prep,live.cleanup=prepare,cleanup
+core,state=live.core_state()
+_,grant=cleanup.validate_authorization(allow_expired=True)
+verify.require_closed(cleanup,grant)
+'''
+try:
+    stdin_data = None
+    if name == 'inspect':
+        code = common + '''import sqlite3
+assert not any(live.present(n) for n in ('resume-stage-entry.json','resume-execution-entry.json','resume-completion-entry.json'))
+workers=[]
+for p in Path('/proc').iterdir():
+ if not p.name.isdecimal() or int(p.name)==os.getpid():continue
+ try:
+  comm=(p/'comm').read_text().strip();cmd=(p/'cmdline').read_bytes()
+  if ('python' in comm or 'codex' in comm) and any(t in cmd for t in (b'/root/amadeus-',b'/root/agentsync-')):workers.append(int(p.name))
+ except (OSError,ProcessLookupError):pass
+assert not workers
+assert not subprocess.check_output(['/usr/bin/docker','ps','-aq'],text=True,timeout=30).strip()
+assert subprocess.check_output(['/usr/bin/docker','image','inspect',verify.IMAGE,'--format','{{.Id}}'],text=True,timeout=30).strip()==verify.IMAGE
+free=shutil.disk_usage(base).free;assert free>500000000
+dbfile=core.db_path
+assert dbfile.is_file()
+before=hashlib.sha256(dbfile.read_bytes()).hexdigest()
+with sqlite3.connect(dbfile.as_uri()+'?mode=ro',uri=True) as db:
+ db.row_factory=sqlite3.Row
+ sessions=[dict(row) for row in db.execute('SELECT id,agent_id,expires_at FROM sessions')]
+ tasks=[dict(row) for row in db.execute('SELECT id,status,version FROM tasks ORDER BY id')]
+assert hashlib.sha256(dbfile.read_bytes()).hexdigest()==before
+print(json.dumps({'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'free_bytes':free,'workers':workers,'containers':[],'image':verify.IMAGE,'original_sessions':sessions,'tasks':tasks,'database_sha256':before,'time':time.time(),'runtime_members':97,'model_calls':0}))
+'''
+        command = PYTHON + ' -I -B -'
+        stdin_data = code.encode()
+    elif name == 'enroll':
+        code = common + '''assert not live.present('resume-enrollment.private.json') and not live.present('resume-enrollment-entry.json')
+with cleanup.stage_lock(allow_closing=True):
+ live.write('resume-enrollment-entry.json',{'scope':'Fresh owner-enrolled stager and independent reviewer for the original task; no model/candidate execution'},state)
+ credentials={};public={}
+ for who,role in (('stager','worker'),('reviewer','reviewer')):
+  actor=core.execute('register_agent',{**state['owner'],'name':'a122 resumed verification '+who})
+  cleanup.save('resume-'+who+'-enrollment.private.json',actor)
+  (member,)=core.execute_owner('list_selected_members',{**state['owner'],'agent_ids':[actor['agent_id']]})['members']
+  core.execute_owner('set_agent_roles',{**state['owner'],'agent_id':actor['agent_id'],'roles':[role],'expected_version':member['version'],'request_id':'a122-resume-grant-'+who})
+  credentials[who]={key:actor[key] for key in ('session_id','session_token')}
+  public[who]={key:actor[key] for key in ('agent_id','session_id','expires_at')}
+ cleanup.save('resume-enrollment.private.json',credentials)
+ live.write('resume-enrollment.json',{'actors':public,'model_calls':0,'candidate_executions':0},state)
+ print(json.dumps(public))
+'''
+        command = PYTHON + ' -I -B -'
+        stdin_data = code.encode()
+    elif name == 'prepare':
+        data = HELPER.read_bytes()
+        assert hashlib.sha256(data).hexdigest() == PIN
+        with client.open_sftp() as sftp:
+            with sftp.open(GUEST+'/resume_verify.py','wx') as remote:
+                remote.write(data)
+            sftp.chmod(GUEST+'/resume_verify.py',0o600)
+            with sftp.open(GUEST+'/resume_verify.py','rb') as remote:
+                assert remote.read() == data
+        code = '''import subprocess
+from pathlib import Path
+base=Path('/root/amadeus-m122-composed-recovery')
+payload=(base/'resume-enrollment.private.json').read_bytes()
+result=subprocess.run(['/root/amadeus-m122l/w/bin/python','-I','-B',str(base/'resume_verify.py'),'prepare'],input=payload,timeout=90,check=False)
+raise SystemExit(result.returncode)
+'''
+        command = PYTHON + ' -I -B -'
+        stdin_data = code.encode()
+    else:
+        import re
+        pin=sys.argv[2]
+        assert re.fullmatch('[0-9a-f]{64}',pin)
+        command=' '.join(shlex.quote(v) for v in (PYTHON,'-I','-B',GUEST+'/resume_verify.py',name,pin))
+    started={'utc':datetime.now(UTC).isoformat(),'command':command,'retry':False,'model_calls_authorized':0}
+    with (OUT/(name+'-start.json')).open('x',encoding='utf-8') as stream:
+        json.dump(started,stream,indent=2)
+    incoming,outgoing,errors=client.exec_command(command,timeout=120)
+    if stdin_data:
+        incoming.write(stdin_data);incoming.flush()
+    incoming.channel.shutdown_write()
+    out,err=outgoing.read(),errors.read()
+    exit_code=outgoing.channel.recv_exit_status()
+    for suffix,data in (('.stdout',out),('.stderr',err)):
+        with (OUT/(name+suffix)).open('xb') as stream:stream.write(data)
+    with (OUT/(name+'-result.json')).open('x',encoding='utf-8') as stream:
+        json.dump(started|{'finished_at':datetime.now(UTC).isoformat(),'exit_code':exit_code},stream,indent=2)
+    print(json.dumps({'action':name,'exit_code':exit_code,'stdout_bytes':len(out),'stderr_bytes':len(err)}))
+    if exit_code==0 and len(out)<10000 and not err:print(out.decode())
+    raise SystemExit(exit_code)
+finally:
+    client.close()

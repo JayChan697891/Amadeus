@@ -1,0 +1,8 @@
+{
+  "disk_preserved": true,
+  "ports_closed": true,
+  "method": "Normal QMP powerdown acknowledged",
+  "process_absent": true,
+  "observed_utc": "2026-11-17T14:23:09.5188327Z",
+  "vm_pid": 10644
+}

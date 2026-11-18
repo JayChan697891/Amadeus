@@ -1,0 +1,6 @@
+{
+  "time_utc": "2026-11-12T05:52:16.290724+00:00",
+  "plan_sha256": "ae6ec471b56b0cd2233ee363350acc8a4da103e721051fdc6fc3c0bba1cf666f",
+  "single_call_authorization": "consumed at first possible model start",
+  "retry_allowed": false
+}

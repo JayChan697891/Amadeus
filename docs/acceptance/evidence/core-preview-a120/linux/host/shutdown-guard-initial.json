@@ -1,0 +1,13 @@
+{
+  "native_chunk": "46b5b1",
+  "exit_code": 1,
+  "shutdown_request_executed": false,
+  "reason": "Datetime serialization compared an ISO string with a DateTime value; the original guard stopped before QMP.",
+  "diagnostic_chunk": "cf34be",
+  "pid": 4028,
+  "actual_start": "2026-11-16T23:47:35.9277920Z",
+  "parsed_expected_start": "2026-11-16T23:47:35.927792Z",
+  "same_utc_ticks": true,
+  "disk_executable_port_match": true,
+  "correction": "Compare UTC ticks while retaining PID, executable, disk and QMP port ownership checks."
+}

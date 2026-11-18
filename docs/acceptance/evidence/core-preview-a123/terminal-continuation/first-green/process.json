@@ -1,0 +1,21 @@
+{
+  "pid": 24956,
+  "argv": [
+    "D:\\agentsync-debug\\m123-terminal-continuation\\source-env\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\first-green\\t",
+    "--junitxml",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\first-green\\junit.xml",
+    "tests/integration/test_continue_codex_terminal.py",
+    "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph",
+    "-k",
+    "not claude and not cursor and not codex]"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "plan": {
+    "schema": "amadeus.owner-proposal-stage.v1",
+    "project_id": "4b08931f-93f0-459b-87ad-15d92b4147c0",
+    "task_id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+    "task_version": 5,
+    "context_id": "feecd0d0-8d45-4d37-92ca-44f64e2afa14",
+    "context_version": 1,
+    "content_sha256": "17da5b6a8cc2860b55c907402d5be58d8d8726aa7e587bbfb5e1e7bcef2557d6",
+    "publication_session_id": "defd4c83-0e21-41fb-9cee-7e6a01380ff8",
+    "publication_request_sha256": "50b7936948e62ddeaed20ad77681b2c4b7e7e60b4d060f04c636a142ce8361df",
+    "publication_response_sha256": "e4e762a21d457e85661374c5e8036f8b8cd6bd9ecd429384475d1037bf0779f1",
+    "publication_task_version": 4,
+    "staging_session_id": "b6aec207-b1f5-42fe-a00f-2d6e8eca822c",
+    "staging_agent_id": "ee65b2a4-3f6f-410d-8ce4-efec455f0cda",
+    "snapshot_id": "608ecb08-ea1a-5b56-a811-fbbf06f435f5",
+    "snapshot_sha256": "122a184ab98a37f7047f3c4acbbcd8c9b427313fce47be30e3502b1577aa322d",
+    "original_worktree_id": "ad1470a4-f6c8-599a-9231-42e7a3f98077",
+    "original_receipt_sha256": "ca2e090783c600030929a372e48a36a665f203238cccbf3b37b3e00570fc7d4d",
+    "base_head": "012dfe57938135bd69f87c2f0b7c27ea87b628a3",
+    "staging_worktree_id": "1d496883-d7e3-5471-9d00-15480d292331",
+    "candidate_id": "2be39bf0-e0f6-5cc4-8578-1e4eb2e318fc",
+    "files": [
+      {
+        "path": "solution.py",
+        "sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+        "utf8_bytes": 153,
+        "mode": "100644"
+      }
+    ],
+    "model_provenance": "unverified",
+    "task_verification": "unverified"
+  },
+  "plan_sha256": "85466edf4f6a113cabb7e1593a56d4712ead472e70b7fa5bef91a0883d013dea"
+}

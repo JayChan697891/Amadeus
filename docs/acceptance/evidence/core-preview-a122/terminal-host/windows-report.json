@@ -1,0 +1,59 @@
+{
+  "started_at": "2026-11-17T23:55:01.930594+00:00",
+  "python": "3.12.16 (main, Oct 26 2026, 14:10:56) [MSC v.1944 64 bit (AMD64)]",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "runtime_members": 97,
+  "scope": "terminal example only; protocol and verifier fixtures, not real client acceptance",
+  "source_sha256": {
+    "examples\\verified_codex_task.py": "1642d6c6fdcae740e1f12c626614c314edc3633b64bcb98b96ea92a3cf383fc9",
+    "tests\\integration\\test_verified_codex_terminal.py": "e8d7c0ad190ce1eb6666cf2e011e92ef98d7f78f8696b91d56017cd4cbb591f7"
+  },
+  "commands": [
+    {
+      "name": "help",
+      "argv": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "F:\\syuc\\amadeus-m6-single\\examples\\verified_codex_task.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "name": "refuse",
+      "argv": [
+        "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "F:\\syuc\\amadeus-m6-single\\examples\\verified_codex_task.py",
+        "--root",
+        "D:\\agentsync-debug\\verified-terminal-20261117\\never-created",
+        "--project-id",
+        "no-project",
+        "--task",
+        "D:\\agentsync-debug\\verified-terminal-20261117\\task.txt",
+        "--cases",
+        "D:\\agentsync-debug\\verified-terminal-20261117\\cases.json",
+        "--codex",
+        "D:\\agentsync-debug\\verified-terminal-20261117\\no-binary",
+        "--codex-sha256",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "--codex-version",
+        "0.167.0-alpha.3.2",
+        "--codex-home",
+        "D:\\agentsync-debug\\verified-terminal-20261117",
+        "--image-id",
+        "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      ],
+      "exit_code": 2,
+      "expected_exit_code": 2
+    }
+  ],
+  "finished_at": "2026-11-17T23:55:02.548270+00:00",
+  "runtime_unchanged": true,
+  "real_model_calls": 0,
+  "real_candidate_executions": 0,
+  "formal_release": "BLOCKED"
+}

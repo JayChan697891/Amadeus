@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-11-13T03:48:05.824144+00:00",
+  "producer_product_sha": "6017005203f22b472aea2a8f017c7df4af8b9e8a",
+  "receiver_product_sha": "b455d9b028b02d75b2ed06f611e0556237bc1e72",
+  "wheel_sha256": "f548a7b9b6ba802ad57e1d973cd9b9113b1aa05d1391f2cc52f7e0fb6ca62470",
+  "producer_task": {
+    "id": "ce027e2e-fdf6-4f98-9d21-fb0d72c221c7",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "verified"
+  },
+  "producer_context_id": "feecd0d0-8d45-4d37-92ca-44f64e2afa14",
+  "producer_context_sha256": "17da5b6a8cc2860b55c907402d5be58d8d8726aa7e587bbfb5e1e7bcef2557d6",
+  "source_sha256": "db7587d226e330830e268a8e7764434fe0a4a38d5208c6a24413cf7d8807fa83",
+  "source_utf8_bytes": 153,
+  "producer_task_unchanged": true,
+  "source_and_worktrees_unchanged": true,
+  "different_core_model_authors": true,
+  "host_reviewer_distinct_from_both": true,
+  "review_task": {
+    "id": "594bc9b3-79d1-43e1-883e-8fbaa4b89fb2",
+    "status": "completed",
+    "version": 6,
+    "task_verification": "unverified"
+  },
+  "review_context_id": "2d692338-6c53-4b04-bfd0-5cdffcc1665e",
+  "review_context_sha256": "00e8bc3da22073b655560ee700e7a1234747d1ef9c10c6cb7306e4ccd975fed7",
+  "review_note_sha256": "7af8c81445e1f194550072b981ea34656f80c9430597ba2ba1f7e7d0a9963b06",
+  "review_note_utf8_bytes": 372,
+  "review_verdict": "PASS",
+  "review_reasons_present": true,
+  "plan_sha256": "62f1ce932a4f3d668bed86068dd466443b8e96e224ebb38b87d29fdd1c2f1782",
+  "selection_sha256": "18c1110dd219ab85949d72d120ac5bb1a9ce8e483627242696509eb15ed7a56f",
+  "producer_wave_id": "edfa162d33339016db52effd322759473900f174fcb30eda3e88127d2746ef1f",
+  "review_wave_id": "704168878a4340cb9d322fab093d9451eced8592bef5dae457a47a1de53758a4",
+  "queue_pending": false,
+  "candidate_state_unchanged": true,
+  "auth_cleanup_confirmed": true,
+  "host_document_acceptance": true,
+  "billing_independently_verified": false,
+  "runtime_package_members_matched": 89,
+  "runtime_python_modules_matched": 88
+}

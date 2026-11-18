@@ -1,0 +1,26 @@
+{
+  "status": "FAIL retained; oversized-input test body NOT RUN",
+  "product_test_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "native_session": 19264,
+  "terminal_chunk": "59aa27",
+  "exit_code": 1,
+  "unique_cases": 218,
+  "outcomes": {
+    "pass": 212,
+    "skipped": 5,
+    "error": 1
+  },
+  "error_events": 2,
+  "cause": "pytest auto-generated a parameter ID from 32769 spaces; Windows PYTEST_CURRENT_TEST exceeded32767 characters at setup and teardown",
+  "fix_scope": "Short explicit IDs only; original input and assertions retained",
+  "source_files_unchanged": 282,
+  "runtime_members_unchanged": 97,
+  "process_exit_codes": [
+    0,
+    1,
+    0
+  ],
+  "raw_output": "D drive only",
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN"
+}

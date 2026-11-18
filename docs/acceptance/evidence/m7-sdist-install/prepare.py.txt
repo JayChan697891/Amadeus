@@ -1,0 +1,32 @@
+"""Prepare an offline, disposable installation of the frozen source distribution."""
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import tarfile
+import zipfile
+
+BASE=Path(__file__).resolve().parent
+OLD=Path('D:/agentsync-debug/m7-package-proposal-queue')
+ARCHIVE='agentsync_local-0.3.0a109.tar.gz'
+SOURCE=Path('F:/syuc/amadeus-m6-single/releases/0.3.0a109/m7-queue-6017005')/ARCHIVE
+assert hashlib.sha256(SOURCE.read_bytes()).hexdigest()=='f9d74d3936b71af37620c02339de97a8c2883cb7bb48134f4aa6f3ff0bcc3351'
+assert not (BASE/ARCHIVE).exists()
+shutil.copyfile(SOURCE,BASE/ARCHIVE)
+with tarfile.open(BASE/ARCHIVE) as archive:
+    for member in archive.getmembers():
+        assert member.isdir() or member.isfile()
+        assert (BASE/'source'/member.name).resolve().is_relative_to(BASE/'source')
+    archive.extractall(BASE/'source',filter='data')
+source=next((BASE/'source').iterdir())
+config=json.loads((OLD/'config.json').read_text())
+config['sdist_sha256']=hashlib.sha256(SOURCE.read_bytes()).hexdigest()
+config['test_root']='source/'+source.name
+config['selected']=['tests/integration/test_codex_proposal_relay_queue.py::test_proposal_queue_uses_load_capabilities_and_core_dependencies']
+(BASE/'config.json').write_text(json.dumps(config,indent=2))
+driver=(OLD/'test-installed.py').read_text().replace("BASE/'source'/name","BASE/config['test_root']/name").replace("'wheel_sha256':config['wheel_sha256']","'source_distribution_sha256':config['sdist_sha256']")
+(BASE/'test-installed.py').write_text(driver)
+with zipfile.ZipFile(BASE/'linux-bundle.zip','x',compression=zipfile.ZIP_DEFLATED) as bundle:
+    for path in (BASE/ARCHIVE,BASE/'config.json',BASE/'test-installed.py'):
+        bundle.write(path,path.name)
+print('Frozen source distribution and one existing queue installation smoke test prepared.')

@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m115-redaction-20261113\cache
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 267 items
+
+tests\unit\test_release_acceptance.py .................................. [ 12%]
+........................................................................ [ 39%]
+..............................................................           [ 62%]
+tests\unit\test_acceptance_traceability.py ............................. [ 73%]
+...............................................................          [ 97%]
+tests\unit\test_release_review_evidence.py .......                       [100%]
+
+-- generated xml file: D:\agentsync-debug\m115-redaction-20261113\junit.xml ---
+============================= 267 passed in 4.13s =============================

@@ -1,0 +1,8 @@
+src\agentsync\controlled_relay.py:236: error: Incompatible types in assignment (expression has type "int", variable has type "str")  [assignment]
+src\agentsync\controlled_relay.py:1389: error: "CodexProposalInput" has no attribute "continuation"  [attr-defined]
+src\agentsync\controlled_relay.py:1428: error: Argument 2 to "_continuation_source" of "ControlledRelay" has incompatible type "CodexProposalInput"; expected "ContinuationInput"  [arg-type]
+src\agentsync\controlled_relay.py:1661: error: "CodexProposalInput" has no attribute "continuation"  [attr-defined]
+src\agentsync\continuation.py:864: error: Argument 2 to "write" of "_ReceiptDirectory" has incompatible type "dict[str, str | None]"; expected "dict[str, object]"  [arg-type]
+src\agentsync\continuation.py:864: note: "dict" is invariant -- see https://mypy.readthedocs.io/en/stable/common_issues.html#variance
+src\agentsync\continuation.py:864: note: Consider using "Mapping" instead, which is covariant in the value type
+Found 5 errors in 2 files (checked 95 source files)

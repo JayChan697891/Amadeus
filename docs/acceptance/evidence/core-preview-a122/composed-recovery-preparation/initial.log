@@ -1,0 +1,8 @@
+.E                                                                       [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_checkpoint_reconciles_and_denies_replay[verifiable_codex] _
+'test_checkpoint_reconciles_and_denies_replay[verifiable_codex]' requested an async fixture 'unfinished', with no plugin or hook that handled it. This is an error, as pytest does not natively support it.
+See: https://docs.pytest.org/en/stable/deprecations.html#sync-test-depending-on-async-fixture
+=========================== short test summary info ===========================
+ERROR ::test_checkpoint_reconciles_and_denies_replay[verifiable_codex] - Fail...
+1 passed, 1 error in 3.24s

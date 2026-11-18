@@ -1,0 +1,13 @@
+{
+  "command": "/root/amadeus-m122l/w/bin/python -I -B /root/amadeus-lifecycle-a122-helpers/pilot.py prepare cancel",
+  "boot_id": "ed2080a3-5d27-428e-b29e-19de29e93218",
+  "helper_sha256": {
+    "pilot.py": "3910f6f6cac1e9bae824d44081e16cf4435400dbd109b94405d7acbb87179b3d",
+    "private_capture.py": "d9548ad05fab5c91ffb3f7f17ed86169881968af0d8b5a763f22af0ed18646d7",
+    "runtime-members.json": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c",
+    "auth_home.py": "9278b085bb4b9c94710145a247b2a0d1c6efc0a8e2e4edd471577a4d90849b74",
+    "route.py": "8acabe28411025a72a1ef6ec5c9f0790b3787ef4222dc2c2a38fcb994017bfc7"
+  },
+  "model_calls": 0,
+  "credential_access": 0
+}

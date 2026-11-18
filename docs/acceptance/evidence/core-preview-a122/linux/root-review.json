@@ -1,0 +1,26 @@
+{
+  "checks": 16,
+  "package_cases": {
+    "wheel": {
+      "unique_cases": 97,
+      "passed": 97,
+      "identical_windows_identities_and_outcomes": true
+    },
+    "sdist": {
+      "unique_cases": 97,
+      "passed": 97,
+      "identical_windows_identities_and_outcomes": true
+    }
+  },
+  "source_files_rehashed": 3992,
+  "runtime_members_per_install": 97,
+  "original_records": 37,
+  "original_bytes": 138321,
+  "same_windows_archives": true,
+  "raw_to_public_verified": true,
+  "workers": [],
+  "containers": [],
+  "formal_release": "BLOCKED",
+  "real_clients": "NOT RUN",
+  "full_regression": "NOT RUN"
+}

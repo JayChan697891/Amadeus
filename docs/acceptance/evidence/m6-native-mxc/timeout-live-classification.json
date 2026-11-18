@@ -1,0 +1,11 @@
+{
+  "classification": "Actual local deadline with captured turn completion; active-generation timeout NOT VERIFIED",
+  "fixed_reply_observed": true,
+  "turn_completed_observed": true,
+  "event_vs_deadline_order": "UNVERIFIED: raw stream has no trusted per-event local receipt timestamps",
+  "task_success_suppressed": true,
+  "timeout_verdict_basis": "Durable adapter_timeout with timed_out true and parent exit1; not elapsed time alone",
+  "no_retry": true,
+  "server_cancellation": "UNVERIFIED",
+  "descendant_cleanup": "UNVERIFIED"
+}

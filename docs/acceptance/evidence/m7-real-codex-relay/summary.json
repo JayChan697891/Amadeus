@@ -1,0 +1,45 @@
+{
+  "runtime_sha": "ee456900fad6bb4cfc09cad0eecdc9ce1371ab74",
+  "execution_head": "58d473c",
+  "time_utc": "2026-11-12T08:29:04.240240+00:00",
+  "time_local": "2026-11-12T00:29:04.240240-08:00 America/Tijuana",
+  "scope": "SCOPED ACCEPTED: two actual Codex sessions, automatic sequential handoff, fixed shared context, distinct host-mediated reviewer",
+  "client_types": [
+    "codex",
+    "codex"
+  ],
+  "max_launches": 2,
+  "actual_launches": 2,
+  "attempt_elapsed_ms": [
+    38108,
+    56125
+  ],
+  "both_exit_zero": true,
+  "both_expected_replies": true,
+  "same_runtime_as_prior_source_and_installed_tests": true,
+  "new_product_tests": 0,
+  "raw_output": "Local only; combined1674 bytes; no upload",
+  "credential_cleanup": "Two temporary copies removed; original unchanged",
+  "independent_review": "Astra reviewed harness (two fixes before launch) and actual sanitized evidence; root checked raw hashes privately and Core; third identity recorded review_once",
+  "task_status": "completed",
+  "task_verification": "unverified",
+  "not_established": [
+    "cross-client compatibility",
+    "full M7",
+    "code artifact verification",
+    "real relay failure recovery",
+    "billing verification",
+    "formal Release"
+  ],
+  "evidence_sha256": {
+    "plan.json": "eb3fb4a6c51318428c07d4cdee302c4c9e51287e6e6c6ec844c994e105c51f0c",
+    "result.json": "887fcfd96c596c8f6d19e4c0e8eab9ae36728d9c50a3d9003b9294ad56112b54",
+    "cleanup.json": "308fa3bb3bcb7b34d0cb738b6c56210977bd11384c450359d5e737b372167cc2",
+    "auth-route.json": "9fcef72f96b6a98196df92cfc4d33b08943b2846694c3d86de4a6bcdc99b7adf",
+    "reopened-check.json": "8d1515af35ccd81f0a1e667e6a04523343d5fedc3b8637c99f1f1e76f7539ba3",
+    "ownership-check.json": "ceb7e902b6097210e4f5295897cd2c419afd2464b1b8b0fcd5db6b1d9a87d509",
+    "independent-review.json": "45dabad1c7e5f6ef593370b29479d0b35a093b9c1e07c9a3ffd8ee618be60328",
+    "relay.py.txt": "c32360db1ae1815b2c142a2476d1c2d8d3b8946b26e86c77e1349ced4d1248ac",
+    "run-authorized.ps1": "24925d8e9ae5a19df29a429b3e68f17182aefa0e96461704f3c8e97f47bb9f6c"
+  }
+}

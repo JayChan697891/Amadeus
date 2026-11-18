@@ -1,0 +1,5 @@
+set -eu
+umask 077
+cd /root/amadeus-continuation-entry-a123-20261118
+printf '%s\n' '77f40ebf7d77efac581eaa3fa98e9377a5f802ac5098970906e77aafea3d1da1  linux-check.py' | sha256sum -c -
+exec /root/jobs-env/bin/python -I -B /root/amadeus-continuation-entry-a123-20261118/linux-check.py 5d64b7a34c8283d11d876e5069e673414d49edc04f13b28b26225bc37325af37

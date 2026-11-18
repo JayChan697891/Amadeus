@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-11-16T05:56:26.332896+00:00",
+  "observer_pid": 25064,
+  "command": "/root/jobs-env/bin/python -I -B /root/amadeus-m117lw/run-wheel.py",
+  "automatic_retry": false,
+  "model_calls": 0,
+  "status": "running"
+}

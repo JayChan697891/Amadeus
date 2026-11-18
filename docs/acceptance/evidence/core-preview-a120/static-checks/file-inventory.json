@@ -1,0 +1,57 @@
+[
+  {
+    "path": "archive-format-conflict.json",
+    "bytes": 4016,
+    "sha256": "60b38542def17e88d01b4236b58b28e02e34c9db165b52f89a04620cfdead6ba"
+  },
+  {
+    "path": "attempt.json",
+    "bytes": 615,
+    "sha256": "28af433591eaf2b6a5846bf6104139ed1b3afb4c550340a272d26e325ddc2896"
+  },
+  {
+    "path": "logs/format.log",
+    "bytes": 128642,
+    "sha256": "0dde145d6d17f0ea443640577c10ebc874255a3082d4b7ec9b69488144d9a858"
+  },
+  {
+    "path": "logs/format.process.json",
+    "bytes": 1186,
+    "sha256": "020892a5555ab9f6db1c1d5d724862c8e79b4c779edcbed420bf7a7dadf399b6"
+  },
+  {
+    "path": "logs/mypy.log",
+    "bytes": 46,
+    "sha256": "bf16e9f6f0937edd1b4149cf9e8961b9af066954336c3984589da8abc3183184"
+  },
+  {
+    "path": "logs/mypy.process.json",
+    "bytes": 1092,
+    "sha256": "5e5d7bc56ddf9a2e7783f40c5ee85c27a956d5ccaef8768d47f0cdf59a8779d2"
+  },
+  {
+    "path": "logs/ruff.log",
+    "bytes": 14655,
+    "sha256": "44efaea8e80393901ec0cb54306bc9b83092634df06b06b45b4508c4b6050c6c"
+  },
+  {
+    "path": "logs/ruff.process.json",
+    "bytes": 1144,
+    "sha256": "390b11989fe931d1162156d076b214a915f9abc47b22652f8a859bdfa16b8e6f"
+  },
+  {
+    "path": "result.json",
+    "bytes": 2620,
+    "sha256": "a1e64a4149917b0e374f222c763a919445d78d091ecf6720d5917e1c0a1fb516"
+  },
+  {
+    "path": "run-static.py.txt",
+    "bytes": 4037,
+    "sha256": "ceae0e9f7c732570e6a4dd132a72a0cc338b777766a484f0a02e582990f8f939"
+  },
+  {
+    "path": "summary.json",
+    "bytes": 2141,
+    "sha256": "3d0f4ab0e4529596995a86e300582b1e0913429839d2421ea8fc50a4821f34d3"
+  }
+]

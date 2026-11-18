@@ -1,0 +1,26 @@
+{
+  "reviewed_at": "2026-11-16T08:29:05.576235+00:00",
+  "scope": "a117 Linux3.14.7 editable-source full suite only",
+  "root_direct_file_review": true,
+  "independent_review": "Native Astra inspected actual logs/JUnit/receipts/hashes and accepted limited scope",
+  "native_session_id": 1116,
+  "native_exit_code": 0,
+  "files": 56,
+  "bytes": 638029,
+  "native_checks": 8,
+  "full_unique_cases": 2545,
+  "passed": 2538,
+  "skipped": 7,
+  "failure": 0,
+  "error": 0,
+  "pytest_seconds": 1117.76,
+  "warnings": 120,
+  "junit_sha256": "e038a4cdd7c65b1d6e9c541289bdf4dcb8cb51f8c92fe0ca1e986975d219fbef",
+  "original_setup_failure_preserved": true,
+  "not_claimed": [
+    "Complete candidate matrix",
+    "Real client recovery",
+    "Formal Release"
+  ],
+  "formal_release": "BLOCKED"
+}

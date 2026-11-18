@@ -1,0 +1,311 @@
+"""Verify the frozen a122 wheel and sdist in two fresh offline Linux environments."""
+
+import hashlib
+import json
+import os
+import re
+import stat
+import sys
+import tomllib
+import xml.etree.ElementTree as ET
+import zipfile
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("/root/amadeus-m122l")
+PYTHON = Path("/root/jobs-env/bin/python")
+WHEELHOUSE = Path("/root/intent-wheelhouse")
+SOURCE, RUN, SCRATCH, HOME = (BASE / name for name in ("s", "run", "t", "home"))
+COMMIT = "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+REPAIR = "6192b874f214097c0bf33f4f63b6e139566c252a"
+OWNER_REPAIR = "e1c2fd94f3de6b59324807f6b10e224886830f91"
+CONTINUATION_BRIDGE = "207e9781c4b7d44a4301cabac4120ddcf6ec6ac1"
+VERSION = "0.3.0a122"
+DEADLINE_REPAIR = "1700d1d8c79bab276ee3f3e3cefff7db23abf60d"
+ENCODING_REPAIR = "b095c5e8a8ac3eed67932543468c7b4ccafe48f1"
+ZIP = BASE / "source.zip"
+MANIFEST = BASE / "source-manifest.json"
+MEMBERS = BASE / "runtime-members.json"
+WHEEL = BASE / f"agentsync_local-{VERSION}-py3-none-any.whl"
+SDIST = BASE / f"agentsync_local-{VERSION}.tar.gz"
+# Bind these to the completed, reviewed Windows run before starting Linux.
+INPUTS = {
+    ZIP: (18232229, "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"),
+    MANIFEST: (762297, "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"),
+    MEMBERS: (10144, "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"),
+    WHEEL: (328435, "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"),
+    SDIST: (6735308, "c2607dfdf0bca5d6da324fd5550fddc734d97fddf4d6dee3d671333125397f5f"),
+}
+WINDOWS_CASES_SHA = "bc9799b328e8129de273933076ff7a06d664a3d637faff243338e6104102440e"
+CODEX_PROCESS_TEST = "tests/unit/test_codex_process.py"
+SELECTION = (
+    "tests/unit/test_host_process_deadline.py",
+    "tests/unit/test_process_capture_deadline.py",
+    "tests/unit/test_unstarted_capture_adapter.py",
+    CODEX_PROCESS_TEST + "::test_absolute_deadline_is_checked_before_delayed_timer_callback",
+    "tests/unit/test_codex_adapter.py",
+    "tests/unit/test_claude_adapter.py",
+    "tests/unit/test_cursor_adapter.py",
+    "tests/unit/test_launch_context_deadline.py",
+    CODEX_PROCESS_TEST + "::test_stopped_threaded_preparation_never_enters_capture",
+    "tests/unit/test_claude_process.py::test_cancelled_threaded_preparation_never_starts_and_keeps_unknown_slot",
+    "tests/unit/test_relay_execution_budget.py::test_expired_relay_budget_prevents_launch_preparation_and_reservation",
+    "tests/integration/test_proposal_handoff.py::test_exact_launch_authority_denial_stays_fenced",
+)
+FOCUSED_CASES = 97
+SOURCE_FILES = 3992
+
+
+ORIGIN = r"""
+import hashlib, importlib.metadata as md, json, sys, sysconfig
+from pathlib import Path
+import agentsync, agentsync.cli
+from agentsync.sdk import AgentSyncClient
+
+env, archive, members = map(Path, sys.argv[1:4])
+digest, version = sys.argv[4:]
+assert Path(sys.prefix).resolve() == env.resolve() and sys.version_info[:3] == (3, 14, 7)
+site = Path(sysconfig.get_path("purelib")).resolve()
+assert site.is_relative_to(env.resolve())
+assert Path(agentsync.__file__).resolve() == site / "agentsync/__init__.py"
+assert Path(agentsync.cli.__file__).resolve() == site / "agentsync/cli.py"
+assert AgentSyncClient.__module__ == "agentsync.sdk"
+dist = md.distribution("agentsync-local")
+assert dist.version == agentsync.__version__ == version
+direct = json.loads(dist.read_text("direct_url.json"))
+assert direct["url"] == archive.resolve().as_uri() and "dir_info" not in direct
+assert direct["archive_info"]["hashes"]["sha256"] == digest
+actual = {
+    path.relative_to(site).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+    for path in (site / "agentsync").rglob("*") if path.is_file() and "__pycache__" not in path.parts
+}
+assert actual == json.loads(members.read_bytes()) and len(actual) == 97
+print(json.dumps({"origin": str(Path(agentsync.__file__).resolve()), "version": version,
+                  "python": sys.version, "direct_url": direct, "runtime_members": len(actual)}))
+"""
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def verify_inputs():
+    for path, expected in INPUTS.items():
+        assert path.resolve(strict=True) == path and stat.S_ISREG(path.lstat().st_mode), path.name
+        assert (path.stat().st_size, sha(path)) == expected, path.name
+
+
+def verify_source(manifest):
+    names = set()
+    for path in SOURCE.rglob("*"):
+        assert path.resolve(strict=True) == path
+        info = path.lstat()
+        if stat.S_ISDIR(info.st_mode):
+            continue
+        assert stat.S_ISREG(info.st_mode)
+        name = path.relative_to(SOURCE).as_posix()
+        assert manifest[name] == {"sha256": sha(path), "bytes": info.st_size}, name
+        names.add(name)
+    assert names == manifest.keys() and len(names) == SOURCE_FILES
+
+
+def unpack(manifest):
+    with zipfile.ZipFile(ZIP) as archive:
+        assert archive.comment == COMMIT.encode("ascii")
+        files = [member for member in archive.infolist() if not member.is_dir()]
+        assert len(files) == SOURCE_FILES and {member.filename for member in files} == manifest.keys()
+        SOURCE.mkdir()
+        for member in files:
+            path = SOURCE / member.filename
+            assert path.resolve().is_relative_to(SOURCE) and not stat.S_ISLNK(member.external_attr >> 16)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("xb") as stream:
+                stream.write(archive.read(member))
+    verify_source(manifest)
+
+
+def isolate_environment():
+    for key in tuple(os.environ):
+        if key.upper().startswith((
+            "OPENAI_", "ANTHROPIC_", "CLAUDE_", "CURSOR_", "CODEX_", "GEMINI_", "GOOGLE_",
+            "DEEPSEEK_", "GITHUB_", "AGENTSYNC_", "GIT_", "PYTHON", "PYTEST_", "PIP_", "UV_", "DOCKER_",
+        )) or key.upper().endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(key)
+    os.environ.update(
+        HOME=str(HOME), XDG_CONFIG_HOME=str(HOME), XDG_DATA_HOME=str(HOME),
+        XDG_CACHE_HOME=str(HOME), TMP=str(SCRATCH), TEMP=str(SCRATCH), TMPDIR=str(SCRATCH),
+        PIP_CONFIG_FILE=os.devnull, PIP_NO_INDEX="1", PIP_DISABLE_PIP_VERSION_CHECK="1",
+        PIP_NO_CACHE_DIR="1", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+        GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0",
+    )
+
+
+def main():
+    if any(size <= 0 for size, _ in INPUTS.values()) or any(
+        re.fullmatch(r"[0-9a-f]{64}", digest) is None
+        for digest in (WINDOWS_CASES_SHA, *(digest for _, digest in INPUTS.values()))
+    ):
+        raise SystemExit("Pin all reviewed Windows artifacts and case identities first.")
+    if (
+        sys.platform != "linux" or sys.version_info[:3] != (3, 14, 7)
+        or Path(sys.executable) != PYTHON or Path(sys.prefix) != PYTHON.parent.parent
+        or not sys.flags.isolated or not sys.dont_write_bytecode or not __debug__
+    ):
+        raise SystemExit("Use the pinned Linux 3.14.7 interpreter with -I -B.")
+    assert BASE.resolve(strict=True) == BASE and Path(__file__).resolve().parent == BASE
+    assert {p.name for p in BASE.iterdir()} == {Path(__file__).name, *(p.name for p in INPUTS)}
+    RUN.mkdir()
+    (RUN / "logs").mkdir()
+    SCRATCH.mkdir()
+    HOME.mkdir()
+    isolate_environment()
+    checks, junit = [], {}
+    manifest = None
+    start = {
+        "started_at": datetime.now(UTC).isoformat(), "controller_pid": os.getpid(), "version": VERSION,
+        "boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+        "product_source_commit": COMMIT, "test_source_commit": COMMIT, "workflow_repair_commit": REPAIR,
+        "owner_repair_commit": OWNER_REPAIR, "continuation_bridge_commit": CONTINUATION_BRIDGE,
+        "cli_encoding_repair_commit": ENCODING_REPAIR, "host_deadline_repair_commit": DEADLINE_REPAIR,
+        "windows_focused_case_identities_sha256": WINDOWS_CASES_SHA,
+        "driver_sha256": sha(Path(__file__)), "python": sys.version, "python_executable": sys.executable,
+        "scope": "Linux 3.14 development preview, wheel and sdist affected-install checks only",
+        "full_regression": "NOT RUN", "platform_matrix": "NOT RUN", "docker": "NOT RUN",
+        "model_calls": 0, "real_clients": "NOT RUN", "formal_release": "BLOCKED", "automatic_retry": False,
+        "status": "unknown",
+    }
+    save(RUN / "start.json", start)
+    result = {**start, "status": "fail", "phase": "verify_inputs"}
+    try:
+        verify_inputs()
+        manifest = json.loads(MANIFEST.read_bytes())
+        members = json.loads(MEMBERS.read_bytes())
+        assert len(members) == 97 and members == {
+            name.removeprefix("src/"): row["sha256"]
+            for name, row in manifest.items() if name.startswith("src/agentsync/")
+        }
+        unpack(manifest)
+        archives = {"wheel": WHEEL, "sdist": SDIST}
+        artifacts = {
+            kind: {"filename": path.name, "size": INPUTS[path][0], "sha256": INPUTS[path][1]}
+            for kind, path in archives.items()
+        }
+        result.update(
+            frozen_source_sha256=INPUTS[ZIP][1], frozen_source_files=len(manifest), artifacts=artifacts,
+            source_manifest_sha256=INPUTS[MANIFEST][1], runtime_member_manifest_sha256=INPUTS[MEMBERS][1],
+            runtime_members=len(members), collector_sha256=manifest["tools/release_acceptance.py"]["sha256"],
+            test_file_sha256={name: manifest[name]["sha256"]
+                              for name in dict.fromkeys(selector.partition("::")[0] for selector in SELECTION)},
+        )
+
+        result["phase"] = "offline_inputs"
+        sys.path.insert(0, str(SOURCE))
+        from tools import release_acceptance as collector
+
+        project = tomllib.loads((SOURCE / "pyproject.toml").read_text(encoding="utf-8"))
+        assert project["project"]["version"] == VERSION
+        packages = collector._prepare_offline_packages(project, WHEELHOUSE, SCRATCH, RUN)
+        result.update(offline_wheelhouse_sha256=sha(RUN / "offline-wheelhouse.json"),
+                      backend=packages.backend, application=packages.application)
+
+        def require(outcome):
+            assert outcome["status"] == "pass" and outcome["exit_code"] == 0 and not outcome["log_truncated"]
+
+        def execute(name, command):
+            result["phase"] = name
+            outcome = collector.execute(
+                name, list(map(str, command)), RUN, RUN, SCRATCH, offline_wheelhouse=packages.wheelhouse,
+            )
+            checks.append(outcome)
+            return outcome
+
+        previous_cases = None
+        for kind, path in archives.items():
+            environment = BASE / ("w" if kind == "wheel" else "d")
+            python = str(environment / "bin/python")
+            require(execute(kind + "_venv", [str(PYTHON), "-I", "-B", "-m", "venv", environment]))
+            backend = packages.backend if kind == "sdist" else ()
+            require(execute(kind + "_offline_dependencies", collector._offline_install(
+                python, packages.wheelhouse, "--only-binary=:all:", *backend, *packages.application,
+            )))
+            install_flags = ["--no-build-isolation"] if kind == "sdist" else []
+            require(execute(kind + "_install", collector._offline_install(
+                python, packages.wheelhouse, "--no-deps", *install_flags, "--", str(path),
+            )))
+            require(execute(kind + "_pip_check", [python, "-I", "-B", "-m", "pip", "check"]))
+
+            artifact = artifacts[kind]
+            origin = [python, "-I", "-B", "-c", ORIGIN, environment, path, MEMBERS, artifact["sha256"], VERSION]
+            require(execute(kind + "_origin_before", origin))
+            result["phase"] = kind + "_console_smoke"
+            console = collector._installed_console_smoke(kind, python, RUN, SCRATCH, artifact)
+            console.pop("artifact")  # Keep the native receipt's result shape.
+            checks.append(console)
+            require(console)
+
+            raw = SCRATCH / f"{kind}-focused.xml"
+            output = RUN / raw.name
+            try:
+                tested = execute(kind + "_pytest", [
+                    python, "-I", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider",
+                    *(SOURCE / selector for selector in SELECTION), "--basetemp", SCRATCH / (kind + "-p"),
+                    "--junitxml", raw,
+                ])
+            finally:
+                if raw.is_file():
+                    redacted = collector.persist_junit(raw, output)
+                    junit[kind] = {"path": output.name, "sha256": sha(output), "credential_redactions": redacted,
+                                   **collector.junit_counts(output)}
+            require(execute(kind + "_origin_after", origin))
+            before, after = (RUN / "logs" / f"{kind}_origin_{part}.log" for part in ("before", "after"))
+            assert before.read_bytes() == after.read_bytes()
+            result["phase"] = kind + "_focused_evidence"
+            require(tested)
+            assert {k: junit[kind][k] for k in ("tests", "failures", "errors", "skipped")} == {
+                "tests": FOCUSED_CASES, "failures": 0, "errors": 0, "skipped": 0,
+            }
+            cases = {(row.get("classname"), row.get("name")) for row in ET.parse(output).iter("testcase")}
+            assert len(cases) == FOCUSED_CASES and all(all(case) for case in cases)
+            assert previous_cases is None or previous_cases == cases
+            identities = json.dumps(sorted(cases), ensure_ascii=True, separators=(",", ":"))
+            digest = hashlib.sha256(identities.encode("ascii")).hexdigest()
+            junit[kind]["case_identities_sha256"] = digest
+            assert digest == WINDOWS_CASES_SHA
+            previous_cases = cases
+
+        result["status"] = "pass"
+    except KeyboardInterrupt:
+        result.update(status="unknown", error_type="KeyboardInterrupt")
+    except Exception as exc:
+        result["error_type"] = type(exc).__name__
+    finally:
+        if any(item["exit_code"] is None for item in checks):
+            result["status"] = "unknown"
+        try:
+            verify_inputs()
+            result["input_hashes_unchanged"] = True
+            if manifest is not None and SOURCE.is_dir():
+                verify_source(manifest)
+                result["source_copy_unchanged"] = True
+        except Exception as exc:
+            if result["status"] == "pass":
+                result["status"] = "fail"
+            result["postcheck_error_type"] = type(exc).__name__
+        result.update(
+            finished_at=datetime.now(UTC).isoformat(), checks=checks, junit=junit, focused_selection=SELECTION,
+            native_receipt_sha256={p.name: sha(p) for p in sorted((RUN / "logs").glob("*.process.json"))},
+        )
+        save(RUN / "result.json", result)
+    print(f"{result['status']}: {RUN / 'result.json'}", flush=True)
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

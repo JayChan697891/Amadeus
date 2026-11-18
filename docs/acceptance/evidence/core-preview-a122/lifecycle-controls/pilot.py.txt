@@ -1,0 +1,495 @@
+"""One exact standalone Codex adapter lifecycle attempt, never Core completion."""
+
+import asyncio
+import hashlib
+import json
+import os
+import stat
+import subprocess
+import sys
+import time
+import uuid
+from dataclasses import asdict
+from importlib import metadata
+from pathlib import Path
+
+import agentsync
+from agentsync.adapters.approved_launch import (
+    ApprovedLaunchFactory,
+    LaunchConsent,
+    prepare_launch_review,
+)
+from agentsync.adapters.base import AdapterTask
+from agentsync.adapters.codex import CodexAdapter
+from agentsync.adapters.codex_invocation import CodexHostProfile
+
+HELPERS = Path(__file__).resolve().parent
+sys.path.insert(0, str(HELPERS))
+from private_capture import PrivateCapture  # noqa: E402 - standalone -I helper path is explicit
+
+INSTALL = Path("/root/amadeus-m122l/w")
+WHEEL = INSTALL.parent / "agentsync_local-0.3.0a122-py3-none-any.whl"
+EXE = Path("/root/amadeus-codex-linux-0167/bin/codex")
+BINARY_SHA = "c8242fc9e1bac7c6d661a228cecfaf50e6db74da219e4a9ca8912827e11607f0"
+WHEEL_SHA = "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+MEMBERS_SHA = "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+PRODUCT = "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+CLI_VERSION = "0.167.0-alpha.3.2"
+ROOTS = {mode: Path("/root/amadeus-lifecycle-a122-" + mode) for mode in ("cancel", "timeout")}
+BUDGETS = {"cancel": 90, "timeout": 15}
+INSTRUCTION = "Reply with exactly AMADEUS_LIFECYCLE_OK. Do not use tools, access files, start tasks or perform other actions."
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(root, name, value):
+    with (root / name).open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    descriptor = os.open(root, os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def load(root, name):
+    path = root / name
+    info = path.lstat()
+    assert path.resolve(strict=True) == path and stat.S_ISREG(info.st_mode)
+    assert info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600 and info.st_nlink == 1
+    assert 0 < info.st_size <= 65536
+    return json.loads(path.read_bytes())
+
+
+def runtime():
+    assert Path(sys.prefix).resolve() == INSTALL and sha(WHEEL) == WHEEL_SHA
+    assert sha(HELPERS / "runtime-members.json") == MEMBERS_SHA and sha(EXE) == BINARY_SHA
+    site = Path(agentsync.__file__).resolve().parent.parent
+    assert site.is_relative_to(INSTALL) and agentsync.__version__ == "0.3.0a122"
+    dist = metadata.distribution("agentsync-local")
+    assert dist.version == agentsync.__version__
+    direct = json.loads(dist.read_text("direct_url.json"))
+    assert (
+        direct["url"] == WHEEL.as_uri() and direct["archive_info"]["hashes"]["sha256"] == WHEEL_SHA
+    )
+    members = json.loads((HELPERS / "runtime-members.json").read_bytes())
+    actual = {
+        p.relative_to(site).as_posix(): sha(p)
+        for p in (site / "agentsync").rglob("*")
+        if p.is_file() and "__pycache__" not in p.parts
+    }
+    assert actual == members and len(actual) == 97
+
+
+def inputs(root, plan):
+    task = AdapterTask(**plan["task"])
+    env = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": str(root / "private-home"),
+        "CODEX_HOME": str(root / "private-home"),
+        "TMP": str(root / "private-home"),
+        "TEMP": str(root / "private-home"),
+    }
+    profile = CodexHostProfile(
+        task.project_id,
+        task.session_id,
+        EXE,
+        root / "repo",
+        BINARY_SHA,
+        expected_cli_version=CLI_VERSION,
+        max_timeout_seconds=task.timeout_seconds,
+        output_limit=524288,
+        linux_readonly=True,
+    )
+    return task, profile, env
+
+
+def helper_hashes():
+    return {
+        name: sha(HELPERS / name)
+        for name in ("pilot.py", "private_capture.py", "runtime-members.json")
+    }
+
+
+def git(root, *args):
+    env = {
+        "PATH": "/usr/bin:/bin",
+        "HOME": str(root),
+        "GIT_CONFIG_NOSYSTEM": "1",
+        "GIT_CONFIG_GLOBAL": "/dev/null",
+        "GIT_TERMINAL_PROMPT": "0",
+    }
+    return (
+        subprocess.run(
+            ["/usr/bin/git", "-C", str(root / "repo"), *args],
+            env=env,
+            check=True,
+            capture_output=True,
+            timeout=15,
+        )
+        .stdout.decode()
+        .strip()
+    )
+
+
+def fixture(root, plan):
+    assert sha(root / "repo/fixture.txt") == plan["fixture_sha256"]
+    assert git(root, "rev-parse", "HEAD") == plan["fixture_head"]
+    assert not git(root, "status", "--porcelain", "--untracked-files=all")
+    return {"head": plan["fixture_head"], "fixture_sha256": plan["fixture_sha256"], "clean": True}
+
+
+def prepare(root, mode):
+    root.mkdir(mode=0o700)
+    for name in ("repo", "private-home", "receipts", "empty-template", "empty-hooks"):
+        (root / name).mkdir(mode=0o700)
+    git(root, "init", "--initial-branch=fixture-main", "--template=" + str(root / "empty-template"))
+    (root / "repo/fixture.txt").write_text(
+        "Amadeus read-only lifecycle fixture\n", encoding="utf-8"
+    )
+    git(root, "add", "fixture.txt")
+    git(
+        root,
+        "-c",
+        "user.name=Amadeus fixture",
+        "-c",
+        "user.email=fixture@example.invalid",
+        "-c",
+        "commit.gpgsign=false",
+        "-c",
+        "core.hooksPath=" + str(root / "empty-hooks"),
+        "commit",
+        "-m",
+        "Isolated baseline",
+    )
+    plan = {
+        "mode": mode,
+        "product_commit": PRODUCT,
+        "model_calls": 0,
+        "max_model_calls": 1,
+        "candidate_executions": 0,
+        "scope": "standalone adapter/owned parent only; no Core task",
+        "helper_sha256": helper_hashes(),
+        "fixture_head": git(root, "rev-parse", "HEAD"),
+        "fixture_sha256": sha(root / "repo/fixture.txt"),
+        "retry_allowed": False,
+        "task": asdict(
+            AdapterTask(*(uuid.uuid4().hex for _ in range(4)), INSTRUCTION, BUDGETS[mode])
+        ),
+    }
+    task, profile, environment = inputs(root, plan)
+    review = prepare_launch_review(profile, task, environment=environment)
+    plan.update(
+        plan_sha256=review.plan_sha256,
+        argv=review.plan.argv,
+        cwd=str(review.plan.cwd),
+        stdin_text=review.plan.stdin_text,
+        environment=review.plan.child_env(),
+        timeout_seconds=review.plan.timeout_seconds,
+        output_limit=review.plan.output_limit,
+        cli_version=CLI_VERSION,
+        binary_sha256=BINARY_SHA,
+        wheel_sha256=WHEEL_SHA,
+        members_sha256=MEMBERS_SHA,
+        formal_release="BLOCKED",
+    )
+    save(root, "plan.json", plan)
+    print(
+        json.dumps(
+            {
+                "prepared": True,
+                "mode": mode,
+                "plan_sha256": review.plan_sha256,
+                "plan_file_sha256": sha(root / "plan.json"),
+                "model_calls": 0,
+            }
+        )
+    )
+
+
+def grant(root, mode, expected):
+    plan = load(root, "plan.json")
+    value = load(root, "owner-grant.json")
+    assert value["authorized"] is True and value["mode"] == mode == plan["mode"]
+    assert value["plan_sha256"] == expected == plan["plan_sha256"]
+    assert value["plan_file_sha256"] == sha(root / "plan.json")
+    assert value["max_subscription_calls"] == 1 and value["max_candidate_executions"] == 0
+    assert value["confirmed_cost"] is True and value["confirmed_isolation"] is True
+    assert time.time() < value["expires_at"]
+    assert plan["helper_sha256"] == helper_hashes()
+    return plan, value
+
+
+def flags(process):
+    events = []
+    for line in bytes(process._stdout).split(b"\n")[:-1]:
+        try:
+            value = json.loads(line)
+        except (ValueError, UnicodeError):
+            return {"valid": False, "started": False, "terminal": False, "tools": 0}
+        if not isinstance(value, dict):
+            return {"valid": False, "started": False, "terminal": False, "tools": 0}
+        events.append(value)
+    return {
+        "valid": True,
+        "started": any(e.get("type") == "turn.started" for e in events),
+        "terminal": any(
+            e.get("type") in ("turn.completed", "turn.failed", "error") for e in events
+        ),
+        "tools": sum(
+            isinstance(e.get("item"), dict)
+            and e["item"].get("type")
+            in {"command_execution", "file_change", "mcp_tool_call", "web_search"}
+            for e in events
+        ),
+    }
+
+
+async def observe(adapter, capture, run, task, mode, emit):
+    loop = asyncio.get_running_loop()
+    deadline = run.started_at + task.timeout_seconds
+    observed = {"cancel_method_called": False, "deadline_window_observed": False}
+    parent_saved = False
+    while True:
+        current = await adapter.get_status(run.run_id)
+        if current.status not in ("starting", "running"):
+            break
+        process = capture.process
+        if process is not None:
+            snapshot = await process.snapshot()
+            boundary = flags(process)
+            live = (
+                current.capture_id == snapshot.capture_id
+                and current.status == "running"
+                and snapshot.state == "running"
+                and not snapshot.parent_ended
+                and not snapshot.stdout_truncated
+                and not snapshot.stderr_truncated
+                and process._transport is not None
+                and process._transport.get_returncode() is None
+            )
+            record = {
+                "run_id": run.run_id,
+                "capture_id": snapshot.capture_id,
+                "parent_pid": process._transport.get_pid() if process._transport else None,
+                "observed_at_monotonic": loop.time(),
+                "absolute_deadline": deadline,
+                "snapshot": asdict(snapshot),
+                "boundary": boundary,
+            }
+            if live and not parent_saved:
+                emit("parent-running.json", record)
+                parent_saved = True
+            eligible = (
+                live
+                and boundary["valid"]
+                and boundary["started"]
+                and not boundary["terminal"]
+                and not boundary["tools"]
+            )
+            if mode == "cancel" and loop.time() < min(deadline, run.started_at + 60):
+                if eligible:
+                    emit(
+                        "cancel-boundary.json", record
+                    )  # Persist successfully BEFORE the only cancel call.
+                    observed["cancel_method_called"] = True
+                    cancelled = await adapter.cancel_task(run.run_id)
+                    emit("cancel-return.json", asdict(cancelled))
+                    break
+            elif (
+                mode == "timeout"
+                and eligible
+                and 0 < deadline - loop.time() <= 1
+                and not observed["deadline_window_observed"]
+            ):
+                emit("deadline-window.json", record)
+                observed["deadline_window_observed"] = True
+        await asyncio.sleep(0.01)
+    await adapter.wait_terminal(run.run_id, timeout_seconds=task.timeout_seconds + 3)
+    return observed
+
+
+async def execute(root, mode, expected):
+    plan, approved = grant(root, mode, expected)
+    require_mount(root, mode)
+    info = (root / "private-home/auth.json").lstat()
+    assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600
+    task, profile, environment = inputs(root, plan)
+    review = prepare_launch_review(profile, task, environment=environment)
+    assert review.plan_sha256 == expected
+    save(root, "fixture-before.json", fixture(root, plan))
+    save(
+        root,
+        "attempt.json",
+        {
+            "mode": mode,
+            "plan_sha256": expected,
+            "controller_pid": os.getpid(),
+            "max_subscription_calls": 1,
+            "retry_allowed": False,
+            "status": "unknown",
+        },
+    )
+    count = 0
+
+    async def authorize(actual):
+        nonlocal count
+        if actual.plan_sha256 != expected or count or time.time() >= approved["expires_at"]:
+            return None
+        count += 1
+        save(root, "launch-approved.json", {"plan_sha256": expected})
+        return LaunchConsent(
+            "lifecycle-" + mode,
+            expected,
+            min(time.time() + 120, approved["expires_at"]),
+            True,
+            True,
+        )
+
+    factory = ApprovedLaunchFactory(
+        profile,
+        environment=environment,
+        receipts=root / "receipts",
+        authority=authorize,
+        revalidate=lambda _: fixture(root, plan),
+    )
+    adapter = CodexAdapter(task.project_id, task.session_id, contextual_factory=factory, max_runs=1)
+    capture = PrivateCapture(review.plan, root / "private-capture")
+    record = {
+        "status": "NOT_VERIFIED",
+        "mode": mode,
+        "plan_sha256": expected,
+        "scope": "owned parent only; server cancellation/tree cleanup unverified",
+    }
+    run = None
+    try:
+        with capture:
+            run = await adapter.start_task(task)
+            save(root, "run-start.json", asdict(run))
+            record["observation"] = await observe(
+                adapter, capture, run, task, mode, lambda name, value: save(root, name, value)
+            )
+    except Exception as error:
+        record["error_type"] = type(error).__name__
+    finally:
+        if run is not None:
+            try:
+                terminal = await adapter.wait_terminal(
+                    run.run_id, timeout_seconds=task.timeout_seconds + 3
+                )
+                record["run"] = asdict(terminal)
+                # Never project CodexResult.agent_messages or raw protocol events.
+                answer = await adapter.get_result(run.run_id)
+                record["protocol_session_sha256"] = (
+                    hashlib.sha256(answer.client_thread_id.encode()).hexdigest()
+                    if answer.client_thread_id
+                    else None
+                )
+            except Exception as error:
+                record["terminal_error_type"] = type(error).__name__
+        record["capture"] = await capture.retain()
+        if capture.process is not None:
+            record["snapshot"] = asdict(await capture.process.snapshot())
+            record["final_boundary"] = flags(capture.process)
+        try:
+            runtime()
+            record["fixture_after"] = fixture(root, plan)
+        except Exception as error:
+            record["postcheck_error_type"] = type(error).__name__
+        record.update(exact_authorizations=count, captured_start_invoked=capture.entered)
+        save(root, "exit-observation.json", record)  # Raw observations precede all pass assertions.
+    terminal = record.get("run", {})
+    observation = record.get("observation", {})
+    safe = (
+        record["capture"].get("saved") is True
+        and terminal.get("parent_ended") is True
+        and type(terminal.get("exit_code")) is int
+        and count == 1
+        and not record.get("error_type")
+        and not record.get("terminal_error_type")
+        and not record.get("postcheck_error_type")
+        and record["final_boundary"]["valid"]
+        and record["final_boundary"]["started"]
+        and not record["final_boundary"]["terminal"]
+        and not record["final_boundary"]["tools"]
+        and not record["snapshot"]["stdout_truncated"]
+        and not record["snapshot"]["stderr_truncated"]
+    )
+    passed = (
+        safe
+        and terminal.get("status") == "unknown"
+        and (
+            (
+                mode == "cancel"
+                and observation.get("cancel_method_called") is True
+                and terminal.get("error_code") == "local_cancel_requested"
+                and not terminal.get("timed_out")
+            )
+            or (
+                mode == "timeout"
+                and observation.get("deadline_window_observed") is True
+                and not observation.get("cancel_method_called")
+                and terminal.get("error_code") == "adapter_timeout"
+                and terminal.get("timed_out") is True
+            )
+        )
+    )
+    result = {
+        "status": "SCOPED_PASS" if passed else "MISSED_OR_NOT_VERIFIED",
+        "mode": mode,
+        "exit_observation_sha256": sha(root / "exit-observation.json"),
+        "actual_error_code": terminal.get("error_code"),
+        "retry_allowed": False,
+        "server_cancel_verified": False,
+        "core_completion": False,
+        "formal_release": "BLOCKED",
+    }
+    save(root, "result.json", result)
+    print(json.dumps(result))
+    return 0 if passed else 1
+
+
+def require_mount(root, mode):
+    rows = [row.split() for row in Path("/proc/mounts").read_text().splitlines()]
+    rows = [row for row in rows if row[1] == str(root / "private-home")]
+    assert (
+        len(rows) == 1 and rows[0][0] == "amadeus-lifecycle-a122-" + mode and rows[0][2] == "tmpfs"
+    )
+    assert {"rw", "nosuid", "nodev", "mode=700"} <= set(rows[0][3].split(","))
+
+
+def main():
+    assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+    assert sys.flags.isolated and sys.dont_write_bytecode
+    stage, mode, *expected = sys.argv[1:]
+    assert mode in ROOTS and stage in ("prepare", "run")
+    os.umask(0o077)
+    runtime()
+    root = ROOTS[mode]
+    if stage == "prepare":
+        assert not expected
+        prepare(root, mode)
+        return 0
+    assert len(expected) == 1 and root.resolve(strict=True) == root
+    assert not any(
+        (root / name).exists() for name in ("attempt.json", "auth-cleanup.json", "closing.json")
+    )
+    return asyncio.run(execute(root, mode, expected[0]))
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as error:
+        print(
+            json.dumps(
+                {"status": "stopped", "error_type": type(error).__name__, "retry_allowed": False}
+            )
+        )
+        raise SystemExit(1) from None

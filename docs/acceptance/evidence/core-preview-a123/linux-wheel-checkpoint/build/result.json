@@ -1,0 +1,84 @@
+{
+  "status": "pass",
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "version": "0.3.0a123",
+  "controller_pid": 23640,
+  "started_at": "2026-11-18T06:22:17.628380+00:00",
+  "driver_sha256": "10b3b09734ab987e2684bbdcf3f669d2207443d6aef116829a25421656a0dbf2",
+  "scope": "Offline pure wheel only",
+  "installation": "NOT RUN",
+  "pytest": "NOT RUN",
+  "model_calls": 0,
+  "candidate_execution": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "checks": [
+    {
+      "id": "build_dependencies",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import importlib.metadata as m,json,sys; expected=json.loads(sys.argv[1]); actual={n:m.version(n) for n in expected}; assert actual==expected; print(json.dumps(actual))",
+        "{\"setuptools\": \"82.0.1\", \"wheel\": \"0.46.3\", \"build\": \"1.6.1\"}"
+      ],
+      "cwd": "D:\\agentsync-debug\\m123-live\\build-r2\\build",
+      "exit_code": 0,
+      "started_at": "2026-11-18T06:22:25.608519+00:00",
+      "finished_at": "2026-11-18T06:22:25.706809+00:00",
+      "log": "logs/build_dependencies.log",
+      "log_sha256": "9742b486a48a0e8d5ad5ad3f810dd84a5ecaf824379c475c415f2f814218d249",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "build_wheel",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m123-progress\\venv\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "build",
+        "--no-isolation",
+        "--wheel",
+        "--outdir",
+        "D:\\agentsync-debug\\m123-live\\build-r2\\dist",
+        "D:\\agentsync-debug\\m123-live\\build-r2\\s"
+      ],
+      "cwd": "D:\\agentsync-debug\\m123-live\\build-r2\\s",
+      "exit_code": 0,
+      "started_at": "2026-11-18T06:22:25.708819+00:00",
+      "finished_at": "2026-11-18T06:22:26.844216+00:00",
+      "log": "logs/build_wheel.log",
+      "log_sha256": "944e1cdb387253501cdfdc05c9cfd5c3a5bbe712d0ee5f1ee26f88c3c3f2b582",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "bundle_sha256": "2273ebe7b65bf831c64cc0e5fb8d313592ea90371996eb315fab07a01f481122",
+  "inputs": {
+    "source.zip": {
+      "size": 907867,
+      "sha256": "90676f6d4d3f2e1aa55833a27f86e9d7f5501b71925e9cc799ee7bc1e0ae4dcf"
+    },
+    "source-manifest.json": {
+      "size": 49345,
+      "sha256": "df83a84f7cc874be14b56b3ff2b90c7c8528efba65436cc3c858c7353e6fa53b"
+    },
+    "runtime-members.json": {
+      "size": 10144,
+      "sha256": "357c71a579758d397f05edb507ba755f090975ddc7bc0d599be981358ed874d4"
+    },
+    "agentsync_local-0.3.0a123-py3-none-any.whl": {
+      "size": 332991,
+      "sha256": "d1121821ed1f51714cab11f289fe6232c230ea31529331b3ab09274a511776c8"
+    }
+  },
+  "source_files": 282,
+  "runtime_members": 97
+}
