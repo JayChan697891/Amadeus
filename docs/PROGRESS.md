@@ -2,6 +2,17 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Owner explicitly authorized public repository visibility after the private
+prerelease. The repository is now PUBLIC, confirmed by authenticated settings
+and anonymous repository/release requests; anonymous ZIP download is341993 bytes
+with the same cf5c6125 hash. Actions remains disabled; main stays at68588d5016678a001ae9d199a9201669988d2b50.
+Native9fbf74 exit0 confirms this change; the earlier private-publication receipt
+below remains historical. [Visibility and anonymous-download check](../releases/0.3.0a122/owner-preview-document-review-r5/public-visibility.json).
+The read-only precheck covered7985 text blobs across8095 reachable Git blobs,
+with all31 remote branch heads represented; no high-confidence credential pattern
+or private credential filename was found.110 binary blobs were not content-scanned;
+this bounded check is not a guarantee of secret absence. No files/history were deleted.
+
 Owner-authorized GitHub preview publication completed2026-11-18T04:53:01Z:
 [v0.3.0a122-preview-r5](https://github.com/JayChan697891/Amadeus/releases/tag/v0.3.0a122-preview-r5),
 target f1676a12342f659b5644729ca83bbd9cb5a594c8. Draft=false, prerelease=true;
@@ -10,10 +21,14 @@ readback confirmed the final tag download URLs after publication. Repository
 remains private. Actions were disabled and read back before push/tag/publication;
 no hosted job was dispatched, main was not modified or merged. Formal Release
 remains BLOCKED. [Publication receipt](../releases/0.3.0a122/owner-preview-document-review-r5/publication.json).
-Next authorized local work: the already prepared311 sdist runner at
-D:/agentsync-debug/w122311d/run-sdist.py, using m122win311/d/Scripts/python.exe.
-It remains NOT RUN at this checkpoint; no full pytest is active. Preserve all
-completed suites and new-entry results; do not repeat them for this documentation.
+The already prepared311 sdist full suite has now started once, after preview
+delivery: original native6844/40f6e6, pytest request2026-11-18T04:55:36Z,
+controller11632 and pytest6848 observed live. Its pre-test installed origin check
+passed with97 unchanged members and original sdist provenance. This is RUNNING,
+NOT ACCEPTED; poll6844 and inspect D:/agentsync-debug/w122311d/run after observed
+terminal. Never restart because an observation times out. This is the sole full
+pytest; preserve completed suites and new-entry results without repeating them.
+[Actual launch](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/launch.json).
 
 P1 receiver-document closure,2026-11-18: the new manual accept/reject entry uses
 a fresh independent Core reviewer, a fixed context v1/hash and task version,
@@ -52,8 +67,8 @@ not restart51949. [Completed source result](acceptance/evidence/core-preview-a12
 [Actual source launch](acceptance/evidence/core-preview-a122/full-windows311-source/preparation/launch.json).
 The311 sdist environment is ready and its one comparison pin now binds the actual
 completed311 wheel XML409565B/cbf0e565; original unbound preparation is retained.
-Its full suite remains NOT RUN; finish the small document-review preview delivery
-before starting that already prepared runner. No full pytest is currently running.
+Its first full suite is now RUNNING in6844 following the completed r5 publication;
+final result is pending. The prepared runner was not repeated.
 [Exact binding](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/baseline-binding.json).
 
 The next original Windows3.14.6 combination is prepared for later sequential work:

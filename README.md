@@ -7,7 +7,7 @@ and follow its short README. It includes the original frozen wheel and reviewed
 terminal examples; Python 3.12 is required for the Windows quick start. The default
 demo uses simulated Agents, with no model calls. Its Windows dependency constraints
 match the tested environment. Formal Release remains BLOCKED.
-The repository is private; existing repository access is required for downloads.
+The repository and preview downloads are public; no GitHub login is required.
 
 R5 adds manual acceptance/rejection of the receiver's fixed `review.md` using a
 new independent Core reviewer. Eight local Core checks pass; document review

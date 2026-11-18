@@ -1,0 +1,16 @@
+{
+  "status": "RUNNING; NOT ACCEPTED",
+  "native_session": 6844,
+  "initial_chunk": "40f6e6",
+  "observed_live_chunk": "150124",
+  "controller_pid": 11632,
+  "pytest_pid": 6848,
+  "started_at": "2026-11-18T04:55:36.786730+00:00",
+  "driver_sha256": "5f0312ebae7d48c3592f0f118bb46eebb492785bed29626681ce917dc33f27d9",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "origin_before": "actual pass;97 members match original sdist installation",
+  "concurrency": "Only one full pytest; prior source51949 completed4669bfexit0",
+  "resume": "Poll original6844; read w122311d/run/result.json after observed terminal; never restart on observation timeout",
+  "formal_release": "BLOCKED"
+}

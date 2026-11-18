@@ -1,6 +1,6 @@
 # Amadeus 开发体验版 r5
 
-这是供试用和反馈的 **Pre-release**，提供本地任务协作与受控 Agent 工作流。正式 Release 验收仍为 **BLOCKED**。仓库当前为私有，下载需要已有仓库访问权限。
+这是供试用和反馈的 **Pre-release**，提供本地任务协作与受控 Agent 工作流。正式 Release 验收仍为 **BLOCKED**。仓库及体验包现已公开，无需 GitHub 登录即可访问和下载。
 
 ## 立即体验
 

@@ -5,7 +5,9 @@ eight actual local Core checks passing and Root/Astra scoped acceptance. The
 11-member package retains the frozen a122 runtime and six original r4 payloads;
 hashes/CRC and extracted helper help were checked. Native terminal interaction
 and a new Linux/model run for this helper are NOT RUN. The owner authorizes a
-GitHub prerelease, not formal acceptance or a repository visibility change.
+GitHub prerelease, not formal acceptance. The owner subsequently explicitly
+authorized public visibility; anonymous repository and exact ZIP download were
+verified. This does not change any product acceptance gate.
 [Bounded entry results](evidence/core-preview-a122/document-review/summary.json).
 Formal Release remains BLOCKED.
 
@@ -20,8 +22,8 @@ The independent311 source suite also completed in51949/4669bf exit0 at04:44:43Z:
 seven actual process receipts,20 originals, both3992-file source trees and97 runtime
 members. [Actual source result](evidence/core-preview-a122/full-windows311-source/summary.json).
 This makes eight completed selected suites, not eight complete formal matrix rows.
-311 sdist is bound to the real311 wheel baseline but NOT RUN. All Windows3.14
-forms are prepared, NOT RUN. No full suite is currently running.
+311 sdist is bound to the real311 wheel baseline and now RUNNING in original6844;
+its result is not accepted. All Windows3.14 forms are prepared, NOT RUN.
 Historical static FAIL, other platform/client gaps and formal Release BLOCKED remain.
 
 Current license-material disposition,2026-11-18: technical integrity/coverage

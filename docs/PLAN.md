@@ -4,17 +4,18 @@
 
 Owner-preview r5 is built and checked: unchanged frozen Core plus explicit
 receiver-document accept/reject, eight passing local Core checks and independent
-review. The owner authorized GitHub prerelease publication on2026-11-18; retain
-private repository visibility, disable hosted Actions before publication, and
-keep formal Release BLOCKED. Resume the prepared311 sdist matrix after delivery.
+review. The owner authorized GitHub prerelease publication on2026-11-18, then
+explicitly authorized making the repository public. Anonymous preview download
+is verified; hosted Actions stays disabled and formal Release stays BLOCKED.
+The prepared311 sdist matrix is now RUNNING in original native6844 after delivery.
 
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source
 suite has also completed once in51949/4669bf exit0 with identical case outcomes,
 seven successful process receipts and scoped Root/Astra acceptance. Sdist is
-prepared and bound to the real311 wheel XML, still NOT RUN. Deliver the new
-document-review preview first, then resume the matrix sequentially. Windows3.14.6 preparations are also
+prepared and bound to the real311 wheel XML, now RUNNING after the document-review
+preview delivery. Continue that original run without restart. Windows3.14.6 preparations are also
 ready for later work, with all full suites NOT RUN. Reuse frozen bytes and avoid
 repeating completed3.12-Windows/3.14-Linux suites. Selected pytest results do not
 complete formal matrix non-test gates. No model/VM is needed for this queue.
