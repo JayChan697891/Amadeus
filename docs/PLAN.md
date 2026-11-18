@@ -23,6 +23,16 @@ artifact, not a new public preview or full release decision. Other platforms,
 full suites and real-client validation are not inferred from it. See the
 [actual source evidence](acceptance/evidence/core-preview-a123/owner-checkpoint-inspection/summary.json).
 
+The P0 terminal continuation gap is now implemented using the existing SDK,
+without a Core rewrite or new phase. The new example requires an authentic
+saved checkpoint and confirmed ended failure, explicit receiver preparation,
+then separate continuation and launch approvals. Its18 affected Windows checks
+and independent review pass; raw model execution and candidate execution remain
+outside that result. Next validate this example pair on local Linux before a
+separate bounded real-document interruption/continuation experiment. This cannot
+reuse or relabel the previous successful-producer/failed-fixture attempt.
+See [the actual entry evidence](acceptance/evidence/core-preview-a123/terminal-continuation/summary.json).
+
 Current P0 increment: optional completed-proposal progress capture in the real
 producer path, bound to launch approval and the existing live Core lease. Its
 exit condition is affected regression plus an independently reviewed, bounded

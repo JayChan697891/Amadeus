@@ -87,8 +87,11 @@ first a commentary `{"phase":"checkpoint","files":[...]}` containing a complete
 draft, then, after its own checks without tools, a final
 `{"phase":"final","files":[...]}`. Both must satisfy the same declared paths and
 byte limits. Only the final files proceed to staging. The published a122/r5 ZIP
-and wheel do **not** contain this development feature; no real-Codex evidence yet
-proves that the supported CLI emits these messages at separately observable times.
+and wheel do **not** contain this development feature. One bounded a123 Codex
+observation saved the checkpoint receipt about16.86 seconds before terminal
+observation. Its exact149-byte fixture remained NOT_VERIFIED because both messages
+contained150 source bytes (an extra LF); no recovery or candidate execution ran.
+See the [limited actual observation](acceptance/evidence/core-preview-a123/live-checkpoint-observation/actual/summary.json).
 
 The host saves the checkpoint as unverified Core context only if the entire live,
 bounded UTF-8 JSONL prefix ends on a complete line, contains just the checkpoint
@@ -136,6 +139,55 @@ Use [recover_relay.py](../examples/recover_relay.py) for status/history with
 `--data-dir ROOT/core --scratch-root ROOT --receipts ROOT/terminal-run/receipts`
 and the original project ID. Inspect existing owner services before any recovery
 action. This example does not automatically resume a producer or verifier.
+
+## Continue a confirmed failed producer (development checkout)
+
+`examples/continue_codex_task.py` connects an authentic saved protocol checkpoint
+to the existing `OwnerContinuation` service. Keep it beside
+`verified_codex_task.py` from the same checkout: it reuses that file's hidden,
+cancellable terminal input and exact launch approval. This entry is not included
+in published a122/r5. It requires Linux, the supported read-only Codex profile
+`0.167.0-alpha.3.2`, and the original project, scratch root and receipt directory.
+
+First inspect the original task through `recover_relay.py task TASK_ID`.
+Only an observed `saved` checkpoint plus an authentic, dispatch-pinned, non-timeout
+failed capture with a positively ended parent can proceed. A pending task alone,
+unknown/cancelled/timed-out capture, missing checkpoint, or normal successful
+review is not eligible. In particular, the150-byte observation above is **not**
+a confirmed failed producer: a later fixture assertion cannot relabel its model
+result. Do not retry that experiment.
+
+Write your continuation instruction (at most1000 UTF-8 bytes) to a local file:
+
+```sh
+python -I -B /CHECKOUT/examples/continue_codex_task.py \
+  --root /ABSOLUTE/ROOT --project-id PROJECT --task-id FAILED_PRODUCER_TASK \
+  --receipts /ABSOLUTE/ROOT/terminal-run/receipts \
+  --instruction /ABSOLUTE/continue.txt --codex /ABSOLUTE/codex \
+  --codex-sha256 REVIEWED_BINARY_SHA256 --codex-version 0.167.0-alpha.3.2 \
+  --codex-home /ABSOLUTE/private-codex-home
+```
+
+Enter the existing owner token privately. The helper validates the checkpoint's
+Core publication and failure receipts **before** asking `PREPARE` to register one
+new independent receiver. It then shows the actual pinned draft and instruction
+with JSON escaping. Inspect them and the dependency-transfer plan before typing
+the exact continuation-plan SHA. The actual receiver launch separately requires
+`CONFIRM` for cost/isolation and its own exact launch SHA. No approval is inferred
+from checkpoint inspection, and no candidate/Docker execution occurs.
+
+Successful admission marks the source failed and transfers its pending
+dependents once; success ends with the new receiver in `review/unverified`, not
+verified code completion. This is at most one new model launch. Denial, expiry,
+failure or unknown outcome stops without another launch. After `PREPARE`, the
+exclusive `ROOT/continue-<project-and-task-digest>/entry.json` fences the attempt;
+rerunning the command reads owner status only, even if no receiver was dispatched.
+A stop after preparation does not automatically resume or recreate the receiver.
+Keep the marker and original receipts; inspect before any separately authorized
+action. Local launch plans may contain your instruction/draft and remain private;
+owner/session tokens and raw model streams are not saved. The owner retains its
+original credentials and remains responsible for parent-safe temporary-login
+cleanup. Deterministic local-process tests do not establish real-client recovery.
 
 ## Accept or reject the returned document
 

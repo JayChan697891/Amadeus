@@ -107,6 +107,39 @@ def emit(value):
     print(json.dumps(value, ensure_ascii=True, allow_nan=False), flush=True)
 
 
+async def approve_launch(review, save, request_id):
+    """Show the actual launch and require independent fee/isolation and exact consent."""
+    plan = review.plan
+    save(
+        request_id + "-plan.json",
+        {
+            "client": review.client,
+            "plan_sha256": review.plan_sha256,
+            "task": asdict(review.task),
+            "argv": plan.argv,
+            "cwd": str(plan.cwd),
+            "stdin_text": plan.stdin_text,
+            "client_version": plan.expected_cli_version,
+            "binary_sha256": plan.binary_sha256,
+            "timeout_seconds": plan.timeout_seconds,
+            "output_limit": plan.output_limit,
+            "environment_sha256": digest(sorted(plan.child_env().items())),
+            "owner_confirmation": "Independently confirm prepared login, subscription cost and isolation for this exact environment.",
+        },
+    )
+    if (
+        await prompt_async(
+            "Confirm subscription-only cost and effective isolation by typing CONFIRM: "
+        )
+        != "CONFIRM"
+    ):
+        return None
+    if await prompt_async("Approve this launch by typing its plan SHA-256: ") != review.plan_sha256:
+        return None
+    save(request_id + "-approved.json", {"plan_sha256": review.plan_sha256})
+    return LaunchConsent("terminal-" + request_id, review.plan_sha256, time.time() + 30, True, True)
+
+
 def inputs(args):
     with args.task.open("rb") as stream:
         instruction = stream.read(1001)
@@ -227,40 +260,7 @@ async def run(args, owner_token, goal, cases, profile):
         if launches >= 2:
             raise ValueError("model_call_limit")
         launches += 1
-        plan = review.plan
-        save(
-            f"launch-{launches}-plan.json",
-            {
-                "client": review.client,
-                "plan_sha256": review.plan_sha256,
-                "task": asdict(review.task),
-                "argv": plan.argv,
-                "cwd": str(plan.cwd),
-                "stdin_text": plan.stdin_text,
-                "client_version": plan.expected_cli_version,
-                "binary_sha256": plan.binary_sha256,
-                "timeout_seconds": plan.timeout_seconds,
-                "output_limit": plan.output_limit,
-                "environment_sha256": digest(sorted(plan.child_env().items())),
-                "owner_confirmation": "Independently confirm prepared login, subscription cost and isolation for this exact environment.",
-            },
-        )
-        if (
-            await prompt_async(
-                "Confirm subscription-only cost and effective isolation by typing CONFIRM: "
-            )
-            != "CONFIRM"
-        ):
-            return None
-        if (
-            await prompt_async("Approve this launch by typing its plan SHA-256: ")
-            != review.plan_sha256
-        ):
-            return None
-        save(f"launch-{launches}-approved.json", {"plan_sha256": review.plan_sha256})
-        return LaunchConsent(
-            "terminal-launch-" + str(launches), review.plan_sha256, time.time() + 30, True, True
-        )
+        return await approve_launch(review, save, "launch-" + str(launches))
 
     def actor(name, workspace):
         identity = identities[name]

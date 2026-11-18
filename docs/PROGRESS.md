@@ -2,6 +2,25 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Current P0 user entry is implemented: `examples/continue_codex_task.py` uses the
+existing confirmed-failure pin, owner preview and one-shot continuation service.
+After explicit receiver preparation, continuation and launch approvals, the new
+task ends at review/unverified; a repeat invocation only reads status. It never
+executes candidates or turns a successful producer into a failed one. The existing
+terminal's launch approval helper is shared without changing its consent IDs.
+Root/Astra accepted18 actual Windows deterministic Core/process checks:9 entry
+cases,1 complete protocol-checkpoint/failure/continuation case and8 existing
+terminal approval cases (43267/2eea00 exit0). Ruff/format passed; all97 runtime
+members are unchanged, so the pinned0113065f wheel needs no rebuild.
+[Exact source result and limits](acceptance/evidence/core-preview-a123/terminal-continuation/summary.json).
+Early missing-entry, selection and incorrect-test-expectation failures remain
+preserved. Their old working trees were not snapshotted, so exact old-source
+reruns are unavailable; final code/test bytes are bound to the saved hashes.
+Next check the frozen example pair on local Linux, then prepare a separate
+reviewed inert-document checkpoint/interruption/continuation plan. No new real
+model, credential copy or candidate execution has started. Native Linux terminal
+and real-model recovery remain NOT RUN; the149/150-byte experiment is not retried.
+
 The next bounded P1 improvement is complete in development source: project owners
 can inspect saved checkpoint metadata through `relay-status --task-id` and
 `owner_observe_codex_checkpoint` without a valid Agent session. The Agent entry
@@ -22,9 +41,9 @@ origins, both XML case sets and all9 actual build/install/test process receipts.
 and [pinned development artifact](../releases/0.3.0a123/owner-checkpoint/README.md).
 The public a122/r5 ZIP and earlier a123 wheel remain unchanged. The new wheel
 adds no full-suite, Linux/macOS or live-client acceptance. First upload of7e160
-failed with a GitHub TLS connection error; preserve the commits and inspect the
-remote before retrying storage publication. Continue bounded recovery usability
-work from this checked package without repeating the completed14-case runs.
+failed with a GitHub TLS connection error, then both commits uploaded successfully
+through e461888. Continue from this checked package without repeating the
+completed14-case runs.
 The original live checkpoint result below remains NOT_VERIFIED; do not retry it.
 
 a123 Linux wheel follow-up completed once in51503/642c29 exit0:217 pass,

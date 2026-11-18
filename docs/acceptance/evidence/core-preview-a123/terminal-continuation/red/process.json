@@ -1,0 +1,20 @@
+{
+  "pid": 12924,
+  "argv": [
+    "D:\\agentsync-debug\\m123-terminal-continuation\\source-env\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\red\\t",
+    "--junitxml",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\red\\junit.xml",
+    "tests/integration/test_continue_codex_terminal.py",
+    "-k",
+    "receiver"
+  ]
+}

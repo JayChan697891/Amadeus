@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.760" timestamp="2026-11-18T00:07:28.783909-08:00" hostname="DESKTOP-II6VS85"><testcase classname="tests.integration.test_continue_codex_terminal" name="test_terminal_continues_saved_live_checkpoint[receiver-checkpoint_codex]" time="2.254"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'F:\\syuc\\amadeus-m6-single\\examples\\continue_codex_task.py'">tests\integration\test_continue_codex_terminal.py:23: in test_terminal_continues_saved_live_checkpoint
+    host = runpy.run_path(
+&lt;frozen runpy&gt;:286: in run_path
+    ???
+&lt;frozen runpy&gt;:254: in _get_code_from_file
+    ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'F:\\syuc\\amadeus-m6-single\\examples\\continue_codex_task.py'</failure></testcase></testsuite></testsuites>

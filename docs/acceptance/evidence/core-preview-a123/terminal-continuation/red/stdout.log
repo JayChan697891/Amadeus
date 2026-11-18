@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 5 items / 4 deselected / 1 selected
+
+tests\integration\test_continue_codex_terminal.py F                      [100%]
+
+================================== FAILURES ===================================
+__ test_terminal_continues_saved_live_checkpoint[receiver-checkpoint_codex] ___
+tests\integration\test_continue_codex_terminal.py:23: in test_terminal_continues_saved_live_checkpoint
+    host = runpy.run_path(
+<frozen runpy>:286: in run_path
+    ???
+<frozen runpy>:254: in _get_code_from_file
+    ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'F:\\syuc\\amadeus-m6-single\\examples\\continue_codex_task.py'
+- generated xml file: D:\agentsync-debug\m123-terminal-continuation\red\junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/integration/test_continue_codex_terminal.py::test_terminal_continues_saved_live_checkpoint[receiver-checkpoint_codex]
+======================= 1 failed, 4 deselected in 3.81s =======================

@@ -56,8 +56,9 @@ for line in sys.stdin:
 @pytest.fixture
 async def unfinished(pilot, world, monkeypatch, request):
     selected = getattr(request, "param", "codex")
+    live_checkpoint = selected == "checkpoint_codex"
     verifiable = selected == "verifiable_codex"
-    if verifiable:
+    if verifiable or live_checkpoint:
         selected = "codex"
     client, fault = selected if isinstance(selected, tuple) else (selected, None)
     proposal_path = "solution.py" if verifiable else "answer.py"
@@ -84,6 +85,42 @@ async def unfinished(pilot, world, monkeypatch, request):
         calls.append(prompt)
         contract, _ = json.JSONDecoder().raw_decode(prompt.split("Host contract: ", 1)[1])
         if Path(cwd) == Path(tree["path"]):
+            if live_checkpoint:
+                # Owned Python emits a complete protocol draft before exiting;
+                # it is not a real client/model fixture.
+                events = [
+                    {"type": "thread.started", "thread_id": "live-unfinished-fixture"},
+                    {"type": "turn.started"},
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "id": "draft",
+                            "type": "agent_message",
+                            "text": json.dumps(
+                                {
+                                    "phase": "checkpoint",
+                                    "files": [{"path": proposal_path, "content": partial}],
+                                }
+                            ),
+                        },
+                    },
+                ]
+                process = await original_start(
+                    (
+                        sys.executable,
+                        "-I",
+                        "-B",
+                        "-c",
+                        "import sys,time;print(sys.stdin.read(),flush=True,end='');time.sleep(0.5);sys.exit(17)",
+                    ),
+                    cwd=cwd,
+                    stdin_text="\n".join(map(json.dumps, events)) + "\n",
+                    timeout_seconds=timeout_seconds,
+                    output_limit=output_limit,
+                    env=env,
+                )
+                captures.append(process)
+                return process
             current = next(
                 row for row in core.execute("list_tasks", auth)["tasks"] if row["id"] == task["id"]
             )
@@ -141,7 +178,13 @@ async def unfinished(pilot, world, monkeypatch, request):
     item = CodexProposalQueueItem(
         actor,
         CodexProposalInput(
-            task["id"], task["version"], "Continue the implementation.", (proposal_path,), 10, True
+            task["id"],
+            task["version"],
+            "Continue the implementation.",
+            (proposal_path,),
+            10,
+            True,
+            checkpoint_completed_proposal=live_checkpoint,
         ),
     )
     queue = RelayQueue(relay)
@@ -149,6 +192,8 @@ async def unfinished(pilot, world, monkeypatch, request):
         (item,), request_id="failed-source", admin_token=owner["admin_token"]
     )
     assert outcome.state == "incomplete"
+    if live_checkpoint:
+        published.append(relay._read_receipt(key, "proposal-progress", durable=True))
     observed = relay.owner_inspect_attempts(
         owner["project_id"], task["id"], admin_token=owner["admin_token"]
     )[0]
@@ -208,7 +253,9 @@ async def unfinished(pilot, world, monkeypatch, request):
             assert (await process.snapshot()).parent_ended is True
 
 
-@pytest.mark.parametrize("unfinished", ["codex", "claude", "cursor"], indirect=True)
+@pytest.mark.parametrize(
+    "unfinished", ["codex", "claude", "cursor", "checkpoint_codex"], indirect=True
+)
 async def test_confirmed_failure_continues_real_progress_and_transfers_graph(unfinished, pilot):
     flow, request, build, child, calls, approvals, progress, key = unfinished
     core, owner, _, auth, task, tree, source, receipts, _ = pilot

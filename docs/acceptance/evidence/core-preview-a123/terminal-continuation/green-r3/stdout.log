@@ -1,0 +1,14 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 18 items
+
+tests\integration\test_continue_codex_terminal.py .........              [ 50%]
+tests\integration\test_unfinished_continuation.py .                      [ 55%]
+tests\integration\test_verified_codex_terminal.py ........               [100%]
+
+- generated xml file: D:\agentsync-debug\m123-terminal-continuation\green-r3\junit.xml -
+======================= 18 passed in 110.80s (0:01:50) ========================

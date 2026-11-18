@@ -1,0 +1,37 @@
+{
+  "argv": [
+    "D:\\agentsync-debug\\m123-terminal-continuation\\source-env\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-m",
+    "pytest",
+    "-p",
+    "no:cacheprovider",
+    "--tb=short",
+    "--basetemp",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\first-green\\t",
+    "--junitxml",
+    "D:\\agentsync-debug\\m123-terminal-continuation\\first-green\\junit.xml",
+    "tests/integration/test_continue_codex_terminal.py",
+    "tests/integration/test_unfinished_continuation.py::test_confirmed_failure_continues_real_progress_and_transfers_graph",
+    "-k",
+    "not claude and not cursor and not codex]"
+  ],
+  "cwd": "F:\\syuc\\amadeus-m6-single",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONIOENCODING": "utf-8",
+    "TMP": "D:\\agentsync-debug\\m123-terminal-continuation\\first-green",
+    "TEMP": "D:\\agentsync-debug\\m123-terminal-continuation\\first-green"
+  },
+  "origin": "F:\\syuc/amadeus-m6-single/src\\agentsync\\__init__.py",
+  "prefix": "D:\\agentsync-debug\\m123-terminal-continuation\\source-env",
+  "time": "2026-11-18T08:09:53.226958+00:00",
+  "source_sha256": {
+    "examples/verified_codex_task.py": "261dc2f176f8052ebb300e326184588c7b4ed42c2348a7c3d08e2f4f17fdf710",
+    "examples/continue_codex_task.py": "215a70889385121a1d5c2657415812b85f2038a1a2f30e01a12b9e9882ab2667",
+    "tests/integration/test_continue_codex_terminal.py": "7ca896aa94a0d95ac75f153924cea5c8d79df65a907883021c4c4b68fc45c7e5",
+    "tests/integration/test_unfinished_continuation.py": "db2d3899c55975b17fcf42bb3e15bafcd861dbf9c584241588771ffc9040315c"
+  }
+}
