@@ -1,0 +1,111 @@
+"""Inspect and archive the original completed run; never starts a test."""
+
+import collections
+import hashlib
+import json
+import sys
+import xml.etree.ElementTree as ET
+from datetime import UTC, datetime
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/w122311")
+RUN = BASE / "run"
+REPO = Path("F:/syuc/amadeus-m6-single")
+DEST = REPO / "docs/acceptance/evidence/core-preview-a122/full-windows311-wheel"
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def cases(path):
+    outcomes = {}
+    skips = collections.Counter()
+    for node in ET.parse(path).iter("testcase"):
+        key = node.attrib["classname"] + "::" + node.attrib["name"]
+        assert key not in outcomes
+        outcome = next((k for k in ("failure", "error", "skipped") if node.find(k) is not None), "pass")
+        outcomes[key] = outcome
+        if outcome == "skipped":
+            skips[node.find("skipped").get("message", "")] += 1
+    return outcomes, skips
+
+
+def main():
+    if len(sys.argv) != 3 or sys.argv[2] != "0":
+        raise SystemExit("Supply the actually observed native terminal chunk and exit0; otherwise inspect failure manually.")
+    terminal = sys.argv[1]
+    assert len(terminal) == 6 and all(c in "0123456789abcdef" for c in terminal)
+    result = json.loads((RUN / "result.json").read_bytes())
+    assert result["status"] == "pass"
+    assert result["product_runtime_commit"] == "5232e9e8bd33a949f7ffdc68410cd614a297af66"
+    assert result["pinned_inputs_unchanged"] and result["frozen_source_unchanged"]
+    for name, pin in result["inputs"].items():
+        p = Path(name)
+        assert p.stat().st_size == pin["bytes"] and sha(p) == pin["sha256"]
+    assert sha(BASE / "run-wheel.py") == result["driver_sha256"]
+    assert sha(BASE / "s/tools/release_acceptance.py") == result["collector_sha256"]
+    assert [c["id"] for c in result["checks"]] == ["wheel_origin_before", "wheel_pytest", "wheel_origin_after"]
+    for check in result["checks"]:
+        assert check["status"] == "pass" and check["exit_code"] == 0 and not check["log_truncated"]
+        assert sha(RUN / check["log"]) == check["log_sha256"]
+        receipt = json.loads((RUN / f"logs/{check['id']}.process.json").read_bytes())
+        assert receipt["phase"] == "finished" and receipt["outcome"] == "exited"
+        assert receipt["result"] == check
+    for kind in ("junit", "pytest_stdout"):
+        assert sha(RUN / result[kind]["path"]) == result[kind]["sha256"]
+    assert not result["pytest_stdout"]["truncated"]
+    for kind, name in (("raw_junit_local", "wheel-junit.xml"), ("raw_stdout_local", "wheel-pytest-stdout.raw.log")):
+        path = BASE / "t" / name
+        assert path.stat().st_size == result[kind]["bytes"] and sha(path) == result[kind]["sha256"]
+    manifest = json.loads(Path("D:/agentsync-debug/m122p/run/source-manifest.json").read_bytes())
+    assert len(manifest) == 3992
+    actual_source = {p.relative_to(BASE / "s").as_posix(): sha(p) for p in (BASE / "s").rglob("*") if p.is_file()}
+    assert actual_source == {k: v["sha256"] for k, v in manifest.items()}
+    members = json.loads(Path("D:/agentsync-debug/m122p/run/runtime-members.json").read_bytes())
+    site = Path("D:/agentsync-debug/m122win311/w/Lib/site-packages")
+    actual_runtime = {p.relative_to(site).as_posix(): sha(p) for p in (site / "agentsync").rglob("*") if p.is_file() and "__pycache__" not in p.parts}
+    assert actual_runtime == members and len(members) == 97
+    current, skips = cases(RUN / "wheel-junit.xml")
+    baseline = REPO / "docs/acceptance/evidence/core-preview-a122/full-windows312/wheel-junit.xml"
+    previous, _ = cases(baseline)
+    assert current.keys() == previous.keys() and len(current) == 2596
+    counts = collections.Counter(current.values())
+    assert counts["failure"] == counts["error"] == 0
+    differences = {k: [previous[k], current[k]] for k in sorted(current) if previous[k] != current[k]}
+    inventory = {}
+    for path in sorted(RUN.rglob("*")):
+        if not path.is_file():
+            continue
+        rel = path.relative_to(RUN)
+        target = DEST / rel
+        assert not target.exists(), rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("xb") as stream:
+            stream.write(path.read_bytes())
+        assert sha(target) == sha(path)
+        inventory[rel.as_posix()] = {"bytes": path.stat().st_size, "sha256": sha(path)}
+    report = {
+        "scope": "Root inspection of original Windows3.11 wheel full suite; independent review remains separate",
+        "observed_at": datetime.now(UTC).isoformat(), "native_session": 66521,
+        "native_terminal_chunk": terminal, "native_exit_code": 0,
+        "runtime_commit": result["product_runtime_commit"],
+        "started_at": result["started_at"], "finished_at": result["finished_at"],
+        "counts": {"tests": len(current), "passed": counts["pass"], "skipped": counts["skipped"], "failures": 0, "errors": 0},
+        "baseline_windows312_sha256": sha(baseline), "outcome_differences": differences,
+        "skip_reasons": dict(skips), "source_files_rechecked": 3992, "runtime_members_rechecked": 97,
+        "original_inputs_rechecked": True, "copied_original_files": inventory,
+        "raw_local_only": ["t/wheel-junit.xml", "t/wheel-pytest-stdout.raw.log"],
+        "formal_release": "BLOCKED", "real_clients": "NOT RUN in this suite",
+        "status": "REVIEW REQUIRED" if differences else "ROOT SCOPED CHECKS PASS; INDEPENDENT REVIEW PENDING",
+    }
+    for path in (BASE / "root-postcheck.json", DEST / "root-postcheck.json"):
+        with path.open("x", encoding="utf-8", newline="\n") as stream:
+            json.dump(report, stream, indent=2)
+            stream.write("\n")
+    print(json.dumps({"counts": report["counts"], "differences": len(differences), "copied_files": len(inventory)}))
+
+
+if __name__ == "__main__":
+    main()

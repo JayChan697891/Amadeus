@@ -1,0 +1,15 @@
+{
+  "scope": "Bind original311 sdist comparison to actual completed311 wheel result",
+  "wheel_native_session": 66521,
+  "wheel_terminal_chunk": "6d442e",
+  "wheel_exit_code": 0,
+  "root_inspection": "16835f exit0;2596unique2539pass57skip0failure/error;matches312caseidentities/outcomes",
+  "baseline_path": "D:\\agentsync-debug\\w122311\\run\\wheel-junit.xml",
+  "baseline_bytes": 409565,
+  "baseline_sha256": "cbf0e565d1f7329085c5d8482facc249702c1c85ea1ec29c5f18bc5830a84820",
+  "driver_before_sha256": "822187baefef30f1f324cdcaf2e208adc5cf9ff48be1ef8cc713995e45b01684",
+  "driver_after_sha256": "5f0312ebae7d48c3592f0f118bb46eebb492785bed29626681ce917dc33f27d9",
+  "change": "Only replace one unbound INPUTS value with actual size/hash; original preparation copy retained",
+  "sdist_full_suite": "NOT RUN; wait for current source51949 terminal review",
+  "formal_release": "BLOCKED"
+}

@@ -2,13 +2,14 @@
 
 ## Owner-trial priority — 2026-11-17
 
-The next executable original C gap is Windows3.11 for the unchanged a122 runtime.
-The actual3.11.15 interpreter and offline dependencies are available; a fresh wheel
-installation passed six setup checks, and its first full suite has now started.
-Reuse the frozen source/package bytes and successful drivers. Complete source and
-sdist sequentially in separate environments after the wheel result is inspected;
-do not duplicate the six completed3.12-Windows/3.14-Linux suites or call these
-selected test results complete formal matrix rows. No model/VM is needed here.
+The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
+57 skip, zero failures/errors, with exact source/runtime provenance and matching
+Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source
+suite is actually RUNNING in51949; sdist is prepared and bound to the real311 wheel
+XML, still NOT RUN. Finish these sequentially. Windows3.14.6 preparations are also
+ready for later work, with all full suites NOT RUN. Reuse frozen bytes and avoid
+repeating completed3.12-Windows/3.14-Linux suites. Selected pytest results do not
+complete formal matrix non-test gates. No model/VM is needed for this queue.
 
 The existing M9 license-material technical check is now complete for the unchanged
 a122 own wheel/source distribution. Root/Astra matched actual license texts,

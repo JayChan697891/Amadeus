@@ -22,12 +22,14 @@ M5 phase or release exception. Each row needs its own exact driver/fixture hashe
 readiness review and observed exit before its status changes. Execution order is
 the table order among ready rows; an unavailable row does not block unrelated work.
 
-Current matrix clarification: a122 has six completed suites across only two
-OS/Python combinations (Windows3.12 and Linux3.14). Windows3.11/3.14 and
-Linux3.11/3.12 still need their own current-candidate evidence. The first
-Windows3.11 wheel suite is now running after fresh offline installation and
-Root/Astra readiness review; source/sdist are not started. See
-[actual launch](evidence/core-preview-a122/full-windows311-wheel/preparation/root-review.json).
+Current matrix clarification: six a122 suites are complete across Windows3.12
+and Linux3.14; the seventh, Windows3.11 wheel, has now completed with2539 pass/
+57 skip and zero failures/errors. Root checked2596 unique cases and exact matching
+Windows3.12 outcomes, original inputs and97 installed members; Root/Astra
+accepted this scope. Its source full suite is actually RUNNING, and sdist is prepared/bound
+but NOT RUN. Windows3.14 all forms are prepared but NOT RUN. Linux3.11/3.12 and
+macOS still lack their current-candidate complete evidence.
+[Actual311 wheel result](evidence/core-preview-a122/full-windows311-wheel/root-postcheck.json).
 These are the original three-Python-minor matrix requirements, not new gates.
 
 | Original requirements | Remaining bounded evidence | Readiness and stop conditions |

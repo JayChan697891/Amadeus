@@ -1,0 +1,32 @@
+{
+  "scope": "Frozen a122 Windows3.11.15 installed-wheel full pytest only",
+  "status": "SCOPED PASS; Root and Astra independently reviewed actual artifacts",
+  "product_test_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "native_session": 66521,
+  "terminal_chunk": "6d442e",
+  "exit_code": 0,
+  "started_at": "2026-11-18T03:14:29.461463+00:00",
+  "finished_at": "2026-11-18T03:58:59.413638+00:00",
+  "counts": {
+    "tests": 2596,
+    "passed": 2539,
+    "skipped": 57,
+    "failures": 0,
+    "errors": 0
+  },
+  "case_comparison": "All2596 unique identities/outcomes match current Windows3.12 wheel;57 platform skips are retained, not passes",
+  "original_inputs_unchanged": true,
+  "source_files_checked": 3992,
+  "runtime_members_checked": 97,
+  "archived_originals": 11,
+  "root_inspection_native": "16835f exit0",
+  "independent_review": "Astra checked actual XML,11 archive/source pairs,4inputs,3process receipts/logs,origin binding and source protection; accepted only this scope",
+  "root_report_sha256": "e75c2f3b0104c9022572a951565bd2fa63a517aee561ed13719599df23dfdcb2",
+  "junit_sha256": "cbf0e565d1f7329085c5d8482facc249702c1c85ea1ec29c5f18bc5830a84820",
+  "source_suite": "RUNNING in original native51949; not accepted",
+  "sdist_suite": "NOT RUN; actual311 baseline bound and independently reviewed, waits for source terminal review",
+  "model_calls": 0,
+  "formal_release": "BLOCKED",
+  "complete_platform_matrix": "NOT RUN",
+  "real_clients": "NOT RUN in this suite"
+}

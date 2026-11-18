@@ -2,32 +2,38 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
-Current original M9 matrix work: the first frozen a122 Windows3.11 wheel full
-suite is RUNNING in native session66521 (initial464e30). Actual pytest started
-2026-11-18T03:14:33.527884Z; controller12980 and pytest15116 were observed live.
-Fresh D:/agentsync-debug/m122win311/w uses Python3.11.15 and the original a122
-wheel,97 exact members. Six offline installation/origin/dependency checks pass;
-Root/Astra accepted readiness, not the unfinished suite. Original source3992 files
-and all input pins are preserved. [Preparation and live launch](acceptance/evidence/core-preview-a122/full-windows311-wheel/preparation/root-review.json).
-Resume by polling original session66521; inspect D:/agentsync-debug/w122311/run
-only after actual terminal status. A polling timeout is not a failed process and
-does not permit a restart. Source/sdist for this combination are not running;
-independent preparation is complete, with full suites later run sequentially.
-Source driver is ready after wheel terminal review; the separate sdist installation
-passed six offline checks, but its driver intentionally refuses until the actual
-Windows3.11 wheel XML is bound. Both full suites remain NOT RUN.
-[Source preparation](acceptance/evidence/core-preview-a122/full-windows311-source/preparation/root-review.json) / [sdist preparation](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/root-review.json).
-The next available original Windows3.14 combination now has an independently
-prepared3.14.6 wheel environment: six offline setup checks pass, exact97 members
-and original wheel provenance match. Root/Astra accepted preparation only; its
-full suite is NOT RUN and no parallel pytest was started.
-[Prepared later runner](acceptance/evidence/core-preview-a122/full-windows314-wheel/preparation/root-review.json).
-Its source driver and independent sdist installation are also prepared and
-reviewed; sdist has six passing offline setup checks, but its baseline must come
-from the future314 wheel result, never311/312. Both full suites remain NOT RUN.
-[Source](acceptance/evidence/core-preview-a122/full-windows314-source/preparation/root-review.json) / [sdist](acceptance/evidence/core-preview-a122/full-windows314-sdist/preparation/root-review.json).
-This is the existing minimum-Python matrix gap, not a new stage or repeat of the
-six completed Windows3.12/Linux3.14 suites. The r4 owner trial remains available.
+Current original M9 matrix work: the first a122 Windows3.11.15 wheel full
+suite completed once, native66521/6d442e exit0, at2026-11-18T03:58:59Z.
+Root inspected actual XML and all process receipts:2596 unique cases,2539 pass,
+57 platform skips, zero failures/errors. Every case identity/outcome matches the
+completed Windows3.12 wheel. Four original inputs,3992 source files and97 installed
+members remain unchanged. Root/Astra independently accept this scope; this is not
+a full formal matrix row or Release pass. [Actual result and independent review](acceptance/evidence/core-preview-a122/full-windows311-wheel/summary.json).
+
+The independent311 editable-source full suite then actually started in original
+native session51949 (initial259b6d), at2026-11-18T04:00:08.063850Z. Controller14848
+and pytest7568 were observed live with matching commands; original wheel PIDs had
+ended. Five real setup/origin checks pass. This source suite is RUNNING, NOT
+ACCEPTED. Resume by polling51949; inspect D:/agentsync-debug/w122311s/run only
+after observed terminal. An observation timeout never authorizes a restart.
+[Actual source launch](acceptance/evidence/core-preview-a122/full-windows311-source/preparation/launch.json).
+The311 sdist environment is ready and its one comparison pin now binds the actual
+completed311 wheel XML409565B/cbf0e565; original unbound preparation is retained.
+Its full suite remains NOT RUN, awaiting source terminal review.
+[Exact binding](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/baseline-binding.json).
+
+The next original Windows3.14.6 combination is prepared for later sequential work:
+wheel and independent sdist installations each passed six offline setup checks;
+97 members and original archive provenance match. Source driver is ready, with
+fresh editable installation deferred to its original seven-check runner. Root/Astra
+accepted preparation only; all three314 full suites are NOT RUN. Its sdist baseline
+must bind its own future314 wheel XML, never311/312.
+[Wheel](acceptance/evidence/core-preview-a122/full-windows314-wheel/preparation/root-review.json) /
+[source](acceptance/evidence/core-preview-a122/full-windows314-source/preparation/root-review.json) /
+[sdist](acceptance/evidence/core-preview-a122/full-windows314-sdist/preparation/root-review.json).
+No completed suite was repeated, no concurrent full pytest was started, and the
+r4 owner trial remains available. These are existing matrix requirements, not new
+M5 stages or added preview prerequisites. Formal Release stays BLOCKED.
 
 Original M9 license-material gap,2026-11-18: Root/Astra completed the technical
 check for the unchanged a122 own wheel/source archives. All43 recorded Windows

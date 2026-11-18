@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+Current Windows3.11.15 a122 wheel result has scoped Root/Astra acceptance:
+2539 pass/57 skip,2596 unique cases, zero failures/errors; all case identities and
+outcomes match the current Windows3.12 wheel. Original native66521 ended once at
+2026-11-18T03:58:59Z (6d442e exit0). Actual11 archived originals, three process
+receipts, four input pins,3992 source files and97 installed members were checked.
+No model calls, input changes or retry. [Actual result and review](evidence/core-preview-a122/full-windows311-wheel/summary.json).
+This makes seven completed selected suites, not seven complete formal matrix rows.
+The independent311 source suite is now actually RUNNING in51949; sdist is bound to
+the real311 wheel baseline but NOT RUN. All Windows3.14 forms are prepared, NOT RUN.
+Historical static FAIL, other platform/client gaps and formal Release BLOCKED remain.
+
 Current license-material disposition,2026-11-18: technical integrity/coverage
 checking is complete for frozen a122's own wheel/source archives. Root/Astra
 matched43 installed license files,31 table rows and the existing notices. Linux
