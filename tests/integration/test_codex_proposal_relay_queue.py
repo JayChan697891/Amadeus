@@ -30,6 +30,7 @@ from agentsync.controlled_relay import (
 )
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
+from agentsync.proposals import CHECKPOINT_PROTOCOL
 from agentsync.relay_queue import (
     CodexProposalPreviewTask,
     CodexProposalQueueItem,
@@ -87,6 +88,62 @@ async def proposal_wave(pilot, monkeypatch):
                 "usage": {"input_tokens": 1, "cached_input_tokens": 0, "output_tokens": 1},
             },
         ]
+        if contract.get("checkpoint_completed_proposal"):
+            assert contract["checkpoint_protocol"] == CHECKPOINT_PROTOCOL
+            events[2]["item"]["text"] = json.dumps(
+                {
+                    "phase": "checkpoint",
+                    "files": [
+                        {"path": path, "content": "# DRAFT_QUEUE_FIXTURE\n"}
+                        for path in contract["allowed_paths"]
+                    ],
+                }
+            )
+            events.insert(
+                3,
+                {
+                    "type": "item.completed",
+                    "item": {
+                        "id": "final-reply",
+                        "type": "agent_message",
+                        "text": json.dumps({"phase": "final", **proposal}),
+                    },
+                },
+            )
+            if "Protocol fixture " in stdin_text:
+                fault = stdin_text.split("Protocol fixture ", 1)[1].splitlines()[0]
+                messages = events[2:-1]
+                if fault == "missing-checkpoint":
+                    messages = messages[1:]
+                elif fault == "missing-final":
+                    messages = messages[:1]
+                elif fault == "reversed":
+                    messages.reverse()
+                elif fault == "extra":
+                    messages.append(
+                        {
+                            "type": "item.completed",
+                            "item": {
+                                **messages[1]["item"],
+                                "id": "extra-reply",
+                            },
+                        }
+                    )
+                elif fault == "wrong-phase":
+                    messages[0]["item"]["text"] = json.dumps({"phase": "final", **proposal})
+                elif fault == "tool":
+                    messages.insert(
+                        0,
+                        {
+                            "type": "item.completed",
+                            "item": {
+                                "id": "tool",
+                                "type": "command_execution",
+                                "command": "not executed",
+                            },
+                        },
+                    )
+                events = events[:2] + messages + events[-1:]
         output = "\n".join(json.dumps(event) for event in events) + "\n"
         payload = base64.b64encode(zlib.compress(output.encode("utf-8"))).decode("ascii")
         program = (
@@ -105,7 +162,7 @@ async def proposal_wave(pilot, monkeypatch):
                 + (
                     "sys.exit(17)"
                     if "failed" in stdin_text
-                    else "sys.stdout.buffer.write(lines[3]);sys.stdout.buffer.flush()"
+                    else "sys.stdout.buffer.write(b''.join(lines[3:]));sys.stdout.buffer.flush()"
                 )
             )
         capture = await original_start(
@@ -116,6 +173,10 @@ async def proposal_wave(pilot, monkeypatch):
             output_limit=output_limit,
             env=env,
         )
+        if "Protocol fixture " in stdin_text:
+            # All messages and terminal were emitted together. No live eligible
+            # window is manufactured after the capture has already ended.
+            await capture.wait()
         captures.append(capture)
         started.set()
         return capture
@@ -185,27 +246,78 @@ async def test_live_completed_proposal_checkpoint(pilot, world, proposal_wave, e
     key = relay._key(item.first, task["id"])
     checkpoint = relay._read_receipt(key, "proposal-progress", durable=True)
     assert (checkpoint is not None) is enabled
+    observed_checkpoint = relay.observe_codex_checkpoint(item.first, task["id"])
+    assert observed_checkpoint["state"] == ("saved" if enabled else "not_enabled")
+    assert observed_checkpoint["verification"] == "unverified"
     if enabled:
         context = core.execute(
             "get_context", {**auth, "context_id": checkpoint["context_id"], "version": 1}
         )
         assert json.loads(context["content"])["files"] == [
-            {"path": "answer.py", "content": "# INERT_QUEUE_FIXTURE\n"}
+            {"path": "answer.py", "content": "# DRAFT_QUEUE_FIXTURE\n"}
         ]
+        assert checkpoint["checkpoint_protocol"] == CHECKPOINT_PROTOCOL
         assert (
             hashlib.sha256(context["content"].encode()).hexdigest() == checkpoint["content_sha256"]
         )
         if failed:
             # Real preterminal publication, not post-failure stdout recovery.
-            pin = OwnerContinuation(core, source.parent, receipts).pin_failed_progress(
-                owner["project_id"],
-                task["id"],
-                context_id=checkpoint["context_id"],
-                context_version=1,
-                content_sha256=checkpoint["content_sha256"],
-                admin_token=owner["admin_token"],
-            )
+            def pin_checkpoint():
+                return OwnerContinuation(core, source.parent, receipts).pin_failed_progress(
+                    owner["project_id"],
+                    task["id"],
+                    context_id=checkpoint["context_id"],
+                    context_version=1,
+                    content_sha256=checkpoint["content_sha256"],
+                    admin_token=owner["admin_token"],
+                )
+
+            for stage, field, value in [
+                ("incomplete", "checkpoint_protocol", None),
+                ("incomplete", "checkpoint_protocol", "unknown-v2"),
+                ("proposal-progress", "checkpoint_protocol", "unknown-v2"),
+                ("proposal-progress", "run_sha256", "f" * 64),
+            ]:
+                path = receipts / relay._receipt_name(key, stage)
+                original = path.read_bytes()
+                changed = json.loads(original)
+                if value is None:
+                    changed.pop(field)
+                else:
+                    changed[field] = value
+                try:
+                    path.write_text(json.dumps(changed), encoding="utf8")
+                    with pytest.raises(AgentSyncError):
+                        pin_checkpoint()
+                finally:
+                    path.write_bytes(original)
+            progress_path = receipts / relay._receipt_name(key, "proposal-progress")
+            original = progress_path.read_bytes()
+            try:
+                progress_path.unlink()
+                assert relay.observe_codex_checkpoint(item.first, task["id"])["state"] == "unknown"
+                with pytest.raises(AgentSyncError):
+                    pin_checkpoint()
+            finally:
+                progress_path.write_bytes(original)
+            pin = pin_checkpoint()
             assert pin.source_task_id == task["id"]
+        else:
+            stored = relay.observe_codex_proposal(item.first, task["id"])
+            final = core.execute(
+                "get_context", {**auth, "context_id": stored.context_id, "version": 1}
+            )
+            assert json.loads(final["content"])["files"] == [
+                {"path": "answer.py", "content": "# INERT_QUEUE_FIXTURE\n"}
+            ]
+            assert final["id"] != checkpoint["context_id"]
+            progress_path = receipts / relay._receipt_name(key, "proposal-progress")
+            original = progress_path.read_bytes()
+            try:
+                progress_path.unlink()
+                assert relay.observe_codex_checkpoint(item.first, task["id"])["state"] == "unknown"
+            finally:
+                progress_path.write_bytes(original)
     assert len(approvals) == len(captures) == 1
     with pytest.raises(AgentSyncError) as replay:
         await queue.run_ready_once(
@@ -214,6 +326,58 @@ async def test_live_completed_proposal_checkpoint(pilot, world, proposal_wave, e
     assert replay.value.code == "attempt_already_reserved"
     assert len(approvals) == len(captures) == 1
     assert relay._read_receipt(key, "proposal-progress", durable=True) == checkpoint
+
+
+@pytest.mark.parametrize(
+    "fault",
+    [
+        "valid-batch",
+        "missing-checkpoint",
+        "missing-final",
+        "reversed",
+        "extra",
+        "wrong-phase",
+        "tool",
+    ],
+)
+async def test_checkpoint_protocol_final_messages(pilot, proposal_wave, fault):
+    core, owner, _, auth, task, _, _, receipts, _ = pilot
+    relay, item, _, approvals, captures, _ = proposal_wave
+    spec = replace(
+        item.task, instruction="Protocol fixture " + fault, checkpoint_completed_proposal=True
+    )
+    before = counts(core)
+    if fault == "valid-batch":
+        stored = await relay.run_codex_proposal_once(
+            item.first, spec, admin_token=owner["admin_token"]
+        )
+        assert stored.state == "proposal_stored"
+        observed = relay.observe_codex_checkpoint(item.first, task["id"])
+        assert observed["state"] == "not_observed" and observed["checkpoint_observed"] is False
+        context = core.execute(
+            "get_context", {**auth, "context_id": stored.context_id, "version": 1}
+        )
+        assert json.loads(context["content"])["files"] == [
+            {"path": "answer.py", "content": "# INERT_QUEUE_FIXTURE\n"}
+        ]
+        key = relay._key(item.first, task["id"])
+        admission = receipts / relay._receipt_name(key, "incomplete")
+        original = admission.read_bytes()
+        legacy = json.loads(original)
+        legacy.pop("checkpoint_protocol")
+        try:
+            admission.write_text(json.dumps(legacy), encoding="utf8")
+            assert relay.observe_codex_proposal(item.first, task["id"]).state == "incomplete"
+        finally:
+            admission.write_bytes(original)
+        assert relay.observe_codex_proposal(item.first, task["id"]).state == "proposal_stored"
+    else:
+        with pytest.raises(AgentSyncError):
+            await relay.run_codex_proposal_once(item.first, spec, admin_token=owner["admin_token"])
+        assert counts(core)["context_revisions"] == before["context_revisions"]
+    assert relay._read_receipt(relay._key(item.first, task["id"]), "proposal-progress") is None
+    assert len(approvals) == len(captures) == 1
+    assert (await captures[0].snapshot()).parent_ended
 
 
 async def test_live_checkpoint_rechecks_producer_lease(pilot, proposal_wave, monkeypatch):

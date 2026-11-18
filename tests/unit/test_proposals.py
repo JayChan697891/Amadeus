@@ -5,11 +5,36 @@ import json
 import pytest
 
 from agentsync.errors import AgentSyncError
-from agentsync.proposals import parse_proposal
+from agentsync.proposals import parse_checkpoint_message, parse_proposal
 
 
 def envelope(path="answer.py", content="raise RuntimeError('inert')\n"):
     return json.dumps({"files": [{"path": path, "content": content}]})
+
+
+@pytest.mark.parametrize("phase", ["checkpoint", "final"])
+def test_checkpoint_message_preserves_exact_phase_and_proposal_rules(phase):
+    raw = json.dumps({"phase": phase, "files": [{"path": "answer.py", "content": "界"}]})
+    assert parse_checkpoint_message(raw, ["answer.py"], phase=phase) == [
+        {"path": "answer.py", "content": "界"}
+    ]
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        '{"phase":"final","files":[{"path":"answer.py","content":"draft"}]}',
+        '{"phase":"checkpoint","phase":"checkpoint","files":[]}',
+        '{"phase":"checkpoint","files":[],"extra":true}',
+        '{"phase":"checkpoint","files":[{"path":"answer.py","content":"a","content":"b"}]}',
+        '{"phase":"checkpoint","files":[{"path":"other.py","content":"a"}]}',
+        " " * 32769,
+    ],
+)
+def test_checkpoint_message_rejects_phase_or_envelope_drift(raw):
+    with pytest.raises(AgentSyncError) as error:
+        parse_checkpoint_message(raw, ["answer.py"], phase="checkpoint")
+    assert error.value.code == "proposal_invalid"
 
 
 def test_exact_declared_files_are_canonical_data_not_evaluated():

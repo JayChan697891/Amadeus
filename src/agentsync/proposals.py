@@ -9,6 +9,8 @@ from typing import Any, NoReturn
 from agentsync.errors import AgentSyncError
 from agentsync.resources.paths import _relative_parts
 
+CHECKPOINT_PROTOCOL = "amadeus-proposal-checkpoint-v1"
+
 
 def _invalid() -> NoReturn:
     raise AgentSyncError("proposal_invalid", "Source proposal does not match its data contract.")
@@ -95,3 +97,25 @@ def parse_proposal(text: str, allowed_paths: list[str]) -> list[dict[str, str]]:
     if set(contents) != set(allowed):
         _invalid()
     return [{"path": path, "content": contents[path]} for path in sorted(contents)]
+
+
+def parse_checkpoint_message(
+    text: str, allowed_paths: list[str], *, phase: str
+) -> list[dict[str, str]]:
+    """Require one exact phase envelope, retaining the proposal's existing bounds."""
+    _text(text, 32768)
+    try:
+        value = json.loads(text, object_pairs_hook=_members, parse_constant=_constant)
+    except (ValueError, RecursionError):
+        _invalid()
+    if (
+        phase not in ("checkpoint", "final")
+        or type(value) is not dict
+        or set(value) != {"phase", "files"}
+        or value["phase"] != phase
+    ):
+        _invalid()
+    return parse_proposal(
+        json.dumps({"files": value["files"]}, ensure_ascii=False, separators=(",", ":")),
+        allowed_paths,
+    )

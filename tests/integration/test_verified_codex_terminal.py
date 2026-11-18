@@ -244,6 +244,45 @@ async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host,
             )
             failed_captures.append(captured)
             return captured
+        if contract.get("checkpoint_completed_proposal"):
+            assert contract["checkpoint_protocol"] == "amadeus-proposal-checkpoint-v1"
+            events = [
+                {"type": "thread.started", "thread_id": "terminal-checkpoint-fixture"},
+                {"type": "turn.started"},
+                *[
+                    {
+                        "type": "item.completed",
+                        "item": {
+                            "id": phase,
+                            "type": "agent_message",
+                            "text": json.dumps(
+                                {
+                                    "phase": phase,
+                                    "files": [{"path": path, "content": text}],
+                                }
+                            ),
+                        },
+                    }
+                    for phase, text in [("checkpoint", content + "# draft\n"), ("final", content)]
+                ],
+                {"type": "turn.completed"},
+            ]
+            captured = await original(
+                (
+                    sys.executable,
+                    "-I",
+                    "-B",
+                    "-c",
+                    "import sys;sys.stdout.buffer.write(sys.stdin.buffer.read())",
+                ),
+                cwd=options["cwd"],
+                stdin_text="\n".join(map(json.dumps, events)) + "\n",
+                timeout_seconds=options["timeout_seconds"],
+                output_limit=options["output_limit"],
+                env={},
+            )
+            await captured.wait()
+            return captured
         return await emit_proposal(
             original,
             path,
@@ -341,6 +380,11 @@ async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host,
         else:
             assert launched == ["solution.py", "review.md"]
             assert len(verifications) == 1
+            if checkpoint:
+                assert records[-1]["producer_checkpoint"]["state"] == "not_observed"
+                assert records[-1]["producer_checkpoint"]["checkpoint_observed"] is False
+            else:
+                assert "producer_checkpoint" not in records[-1]
             tasks = records[-1]["tasks"]
             assert any(
                 t["status"] == "completed" and t["task_verification"] == "verified" for t in tasks

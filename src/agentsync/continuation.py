@@ -36,7 +36,7 @@ from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.models import OPERATIONS
 from agentsync.proposal_handoff import HandoffReceiver, HandoffWorkspace
-from agentsync.proposals import parse_proposal, proposal_paths
+from agentsync.proposals import CHECKPOINT_PROTOCOL, parse_proposal, proposal_paths
 from agentsync.relay_queue import ContinuationQueueItem, RelayQueue, _selection_pin
 from agentsync.storage.database import connect
 
@@ -215,8 +215,31 @@ def _progress(
     if admission is None:
         _reject()
     checkpoint = admission.get("checkpoint_completed_proposal", False)
-    if type(checkpoint) is not bool or checkpoint and admission.get("mode") != "codex_proposal":
+    if (
+        type(checkpoint) is not bool
+        or checkpoint
+        and admission.get("mode") != "codex_proposal"
+        or checkpoint
+        and admission.get("checkpoint_protocol") != CHECKPOINT_PROTOCOL
+        or not checkpoint
+        and "checkpoint_protocol" in admission
+    ):
         _reject()
+    if checkpoint:
+        progress = relay._read_receipt(key, "proposal-progress", durable=True)
+        stopped = relay._read_receipt(key, "first-stopped", durable=True)
+        if (
+            progress is None
+            or stopped is None
+            or progress.get("checkpoint_protocol") != CHECKPOINT_PROTOCOL
+            or progress.get("context_id") != pin.context_id
+            or progress.get("context_version") != pin.context_version
+            or progress.get("content_sha256") != pin.content_sha256
+            or progress.get("task_version") != body["task_version"]
+            or progress.get("launch_request_sha256") != failed["launch_sha256"]
+            or progress.get("run_sha256") != stopped.get("run_sha256")
+        ):
+            _reject()
     try:
         source_pin = (
             ProposalContextPin(**admission["input_context"])

@@ -36,7 +36,12 @@ from pathlib import Path
 
 from agentsync.adapters.approved_launch import LaunchConsent, digest
 from agentsync.adapters.codex_invocation import CodexHostProfile
-from agentsync.controlled_relay import CodexProposalInput, RelayActor, RelayReviewer
+from agentsync.controlled_relay import (
+    CodexProposalInput,
+    ControlledRelay,
+    RelayActor,
+    RelayReviewer,
+)
 from agentsync.core.service import Core
 from agentsync.errors import AgentSyncError
 from agentsync.proposal_handoff import HandoffReceiver, ProposalHandoffRequest
@@ -319,6 +324,24 @@ async def run(args, owner_token, goal, cases, profile):
         "\nReturn solution.py as a Python JSON-lines program: read one JSON value per stdin line, "
         "write one JSON result per stdout line. No extra output. Do not use tools, run code, or change files."
     )
+
+    def checkpoint_fields():
+        if not args.checkpoint_completed_proposal:
+            return {}
+        try:
+            observation = ControlledRelay(core, root, receipts).observe_codex_checkpoint(
+                producer, task["id"]
+            )
+        except Exception:
+            observation = {
+                "state": "unknown",
+                "checkpoint_observed": None,
+                "scope": "receipt_observation",
+                "verification": "unverified",
+                "error_code": "checkpoint_observation_failed",
+            }
+        return {"producer_checkpoint": observation}
+
     try:
         result = await VerifiedProposalFlow(core, root, receipts).run_once(
             producer,
@@ -352,6 +375,7 @@ async def run(args, owner_token, goal, cases, profile):
                 "launch_approvals": launches,
                 "receipts": str(receipts),
                 "recovery": "Use examples/recover_relay.py with the existing owner credentials; inspect before another action.",
+                **checkpoint_fields(),
             },
         )
         states = {row["id"]: (row["status"], row["task_verification"]) for row in tasks}
@@ -375,6 +399,7 @@ async def run(args, owner_token, goal, cases, profile):
                 "outcome": "unknown; inspect receipts and owner APIs before acting",
                 "task_id": task["id"],
                 "automatic_retry": False,
+                **checkpoint_fields(),
             },
         )
         raise
@@ -389,7 +414,7 @@ def main():
     parser.add_argument(
         "--checkpoint-completed-proposal",
         action="store_true",
-        help="Save one complete eligible producer proposal before observed terminal; no partial drafts.",
+        help="Request checkpoint then final producer messages; save an eligible live draft, with no automatic resume.",
     )
     args = parser.parse_args()
     if sys.platform != "linux" or not __debug__:

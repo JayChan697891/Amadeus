@@ -36,6 +36,7 @@ from agentsync.controlled_relay import (
     RelayInput,
 )
 from agentsync.errors import AgentSyncError
+from agentsync.proposals import CHECKPOINT_PROTOCOL
 from agentsync.relay_wave_journal import JournalState, RelayWaveJournal
 from agentsync.scheduling import plan_tasks
 
@@ -304,7 +305,12 @@ def _selection_pin(selected: tuple[_QueueItem, ...]) -> str:
                     item.first_capabilities,
                     *([asdict(item.task.input_context)] if item.task.input_context else []),
                     *(
-                        [{"checkpoint_completed_proposal": True}]
+                        [
+                            {
+                                "checkpoint_completed_proposal": True,
+                                "checkpoint_protocol": CHECKPOINT_PROTOCOL,
+                            }
+                        ]
                         if item.task.checkpoint_completed_proposal
                         else []
                     ),

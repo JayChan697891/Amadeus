@@ -2,19 +2,20 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
-Current implementation adjustment: Root/Astra found the first a123 checkpoint
-contract still asks for only a final proposal. It can save an opportunistic
-pre-terminal result, but cannot demonstrate useful mid-task progress. Sol is
-completing the same opt-in feature with an explicit version-bound checkpoint /
-final two-message contract, keeping strict proposal validation and all existing
-failure/approval gates. The initial a123 source, static results and installed
-snapshot below remain preserved. Its prepared six-file test driver is superseded
-and NOT RUN; do not launch it. Review the final protocol, install that frozen
-revision once, then run its affected regression. Original6844 has now terminated
+Current a123 implementation: the explicit, version-bound checkpoint / final
+two-message contract is written and Root/Astra have accepted code preparation.
+It keeps strict proposal validation, default-off compatibility and all existing
+failure/approval gates. The final14 file hashes match; AST11/Ruff/format passed
+in98d0e9, and Root mypy passed96 source files in87d95b.32 new parameter cases are
+NOT RUN. Freeze/install this revision once and run seven affected test files,
+including test_proposals.py, before any real-client experiment.
+The earlier opportunistic a123 source, static results and installed snapshot
+below remain preserved. Its prepared six-file test driver is superseded and
+NOT RUN; do not launch it. Original6844 has now terminated
 normally (f90461 exit0); do not poll or restart it.
 No real-client experiment has been launched for a123.
 
-P0 next product increment is a123: an opt-in terminal/SDK producer checkpoint
+Earlier a123 preparation (superseded by the explicit protocol above): an opt-in terminal/SDK producer checkpoint
 for one complete valid proposal observed before process terminal. It keeps the
 same owner approval, exact launch binding, worktree and live lease checks; it
 does not recover partial drafts or promote timeout/unknown results. Runtime,

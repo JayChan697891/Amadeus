@@ -80,21 +80,34 @@ model launches also require a fresh cost/isolation confirmation. Inspect the
 actual candidate source before staging, the image and cases before execution,
 and the execution proof and reviewer before completion. There is no `--yes`.
 
-On the development branch, `--checkpoint-completed-proposal` optionally saves one
-complete producer proposal as unverified Core context while its owned Codex parent
-is still observed running, before any observed terminal event. The flag defaults
-to off and changes the exact launch approval. This requires the matching development
-runtime; it is **not included in the published a122/r5 ZIP or wheel** and has no new
-real-Codex validation yet. It saves neither partial drafts nor reasoning: the entire
-bounded UTF-8 JSONL prefix must end on a complete line, contain exactly one complete
-valid proposal, and contain no terminal, in-turn error or tool event. The parser's
-existing supported completed startup warnings before `turn.started` are permitted.
-A terminal in the same
-buffer, cancellation, truncation or expiry prevents a checkpoint. There may be no
-eligible window at all. A saved checkpoint does not change the final result or make
-unknown/cancelled/timed-out attempts eligible for continuation; the existing
-confirmed-failure and owner continuation checks still apply. There is no automatic
-resume or extra model call.
+On the development branch, `--checkpoint-completed-proposal` requests the fixed
+`amadeus-proposal-checkpoint-v1` contract, bound into the exact launch approval.
+It defaults to off. The producer must emit exactly two complete JSON messages:
+first a commentary `{"phase":"checkpoint","files":[...]}` containing a complete
+draft, then, after its own checks without tools, a final
+`{"phase":"final","files":[...]}`. Both must satisfy the same declared paths and
+byte limits. Only the final files proceed to staging. The published a122/r5 ZIP
+and wheel do **not** contain this development feature; no real-Codex evidence yet
+proves that the supported CLI emits these messages at separately observable times.
+
+The host saves the checkpoint as unverified Core context only if the entire live,
+bounded UTF-8 JSONL prefix ends on a complete line, contains just the checkpoint
+message and no terminal, in-turn error or tool event. Existing supported completed
+startup warnings before `turn.started` remain permitted. Partial token streams and
+reasoning are never assembled into a draft. Cancellation, truncation or expiry
+prevents publication. If both messages and the terminal arrive together, a valid
+final can still succeed, but no checkpoint is saved afterward.
+
+With the flag enabled, `ROOT/terminal-run/result.json` or `stopped.json` includes
+`producer_checkpoint`: `saved` means a saved checkpoint receipt, `not_observed`
+with `checkpoint_observed=false` comes only from an explicit successful terminal
+observation, and `unknown` means inspection could not establish either. Missing
+receipts after a crash never imply false. SDK hosts can read the same unverified
+metadata through `ControlledRelay.observe_codex_checkpoint(actor, task_id)`.
+A saved receipt is neither continuation authorization nor task verification.
+The existing confirmed-failure, Core publication witness and owner continuation
+checks still apply; unknown/cancelled/timed-out attempts do not become eligible.
+There is no automatic resume, extra model call or artificial delay to create a window.
 The running/deadline observation is checked immediately before calling Core's
 publication operation. Core then performs its own synchronous checks; this is
 not a guarantee that its database commit precedes the OS process exit or deadline.
