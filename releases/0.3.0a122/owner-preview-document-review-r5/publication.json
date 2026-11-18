@@ -1,0 +1,45 @@
+{
+  "scope": "Owner-authorized private GitHub prerelease; formal Release remains BLOCKED",
+  "id": 449539532,
+  "url": "https://github.com/JayChan697891/Amadeus/releases/tag/v0.3.0a122-preview-r5",
+  "tag": "v0.3.0a122-preview-r5",
+  "target_commit": "f1676a12342f659b5644729ca83bbd9cb5a594c8",
+  "published_at": "2026-11-18T04:53:01Z",
+  "draft": false,
+  "prerelease": true,
+  "private_repository": true,
+  "actions_enabled": false,
+  "native_publication_terminal": "a21a69 exit0",
+  "connector_readback_verified": true,
+  "assets": [
+    {
+      "id": 761961762,
+      "name": "Amadeus-owner-preview-a122.zip",
+      "size": 341993,
+      "sha256": "sha256:cf5c6125e56ec94ce12ff7a2aa36b4a97975240fcce1405569e3461ba1ee2e2c",
+      "url": "https://github.com/JayChan697891/Amadeus/releases/download/v0.3.0a122-preview-r5/Amadeus-owner-preview-a122.zip"
+    },
+    {
+      "id": 761962162,
+      "name": "package-review.json",
+      "size": 4470,
+      "sha256": "sha256:980124dc69efe448fed171668f2635f998bca8f9cb9e3602e321347b6c471480",
+      "url": "https://github.com/JayChan697891/Amadeus/releases/download/v0.3.0a122-preview-r5/package-review.json"
+    },
+    {
+      "id": 761962031,
+      "name": "README.md",
+      "size": 976,
+      "sha256": "sha256:acdfc960597714143ea09a8ca64a4169fa4b073d1e490a586a52a591e890f45e",
+      "url": "https://github.com/JayChan697891/Amadeus/releases/download/v0.3.0a122-preview-r5/README.md"
+    },
+    {
+      "id": 761961913,
+      "name": "SHA256SUMS",
+      "size": 97,
+      "sha256": "sha256:5da91269e643cfbbe72b5a755721be69f34adf09fc89979b8786ebe9ed34f69c",
+      "url": "https://github.com/JayChan697891/Amadeus/releases/download/v0.3.0a122-preview-r5/SHA256SUMS"
+    }
+  ],
+  "notes": "Asset URLs read again after publication; original local upload receipts retain temporary draft URLs. No visibility change or main merge."
+}

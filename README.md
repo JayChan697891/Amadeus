@@ -2,11 +2,12 @@
 
 # Amadeus
 
-**Try the packaged preview:** [download the a122 r5 ZIP](releases/0.3.0a122/owner-preview-document-review-r5/Amadeus-owner-preview-a122.zip)
+**Try the packaged preview:** [a122 r5 prerelease and downloads](https://github.com/JayChan697891/Amadeus/releases/tag/v0.3.0a122-preview-r5)
 and follow its short README. It includes the original frozen wheel and reviewed
 terminal examples; Python 3.12 is required for the Windows quick start. The default
 demo uses simulated Agents, with no model calls. Its Windows dependency constraints
 match the tested environment. Formal Release remains BLOCKED.
+The repository is private; existing repository access is required for downloads.
 
 R5 adds manual acceptance/rejection of the receiver's fixed `review.md` using a
 new independent Core reviewer. Eight local Core checks pass; document review

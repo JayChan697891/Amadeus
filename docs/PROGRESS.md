@@ -2,6 +2,19 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Owner-authorized GitHub preview publication completed2026-11-18T04:53:01Z:
+[v0.3.0a122-preview-r5](https://github.com/JayChan697891/Amadeus/releases/tag/v0.3.0a122-preview-r5),
+target f1676a12342f659b5644729ca83bbd9cb5a594c8. Draft=false, prerelease=true;
+all four uploaded assets have matching server SHA-256/size. A separate connector
+readback confirmed the final tag download URLs after publication. Repository
+remains private. Actions were disabled and read back before push/tag/publication;
+no hosted job was dispatched, main was not modified or merged. Formal Release
+remains BLOCKED. [Publication receipt](../releases/0.3.0a122/owner-preview-document-review-r5/publication.json).
+Next authorized local work: the already prepared311 sdist runner at
+D:/agentsync-debug/w122311d/run-sdist.py, using m122win311/d/Scripts/python.exe.
+It remains NOT RUN at this checkpoint; no full pytest is active. Preserve all
+completed suites and new-entry results; do not repeat them for this documentation.
+
 P1 receiver-document closure,2026-11-18: the new manual accept/reject entry uses
 a fresh independent Core reviewer, a fixed context v1/hash and task version,
 explicit confirmation and one review submission. Eight real Core integration
