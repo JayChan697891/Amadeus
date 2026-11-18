@@ -2,6 +2,11 @@
 
 ## Owner-trial priority — 2026-11-17
 
+The next P0 action is the [prepared post-repair terminal experiment](acceptance/evidence/core-preview-a122/terminal-repaired/execution-plan.md).
+It binds the initializer and corrected entry to a new real local project; actual
+preflight is complete, but fresh post-failure execution permission is still
+required. Preserve the earlier failed fixture and all original release gates.
+
 Keep a122/5232e9e frozen for the next limited owner trial. All four Windows/Linux
 wheel/sdist full suites now have scoped Root/Astra acceptance. The remaining
 source/formal matrix is C work, not a new precondition for the bounded local demo.

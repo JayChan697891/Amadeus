@@ -2,6 +2,22 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Next P0 terminal E2E is concretely prepared for the corrected entry at7085ec0,
+using the real initializer and a new dedicated project. Root observed a clean
+registered repository, zero tasks,0700/0600 protection and empty model-login home;
+97 frozen runtime members, CLI and image matched. No model account was read or
+copied. Native Windows/SSH PTY inspection additionally exposed CRLF becoming two
+LFs; the new bridge normalizes only that line ending, with actual pipe evidence.
+Root/Astra accepted the exact preparation and helper sources. The owned VM is
+normally stopped with no model/login mount; the fixture is preserved.
+[Concrete next plan](acceptance/evidence/core-preview-a122/terminal-repaired/execution-plan.md).
+
+This is a new post-repair experiment, not a replay of the earlier failed fixture.
+It requires fresh explicit permission for this attempt, its temporary login copy
+and conditional one-time candidate execution. Until then model/terminal/candidate
+execution remain NOT RUN. On permission, use the prepared local driver and exact
+ready/plan hashes; do not register another project or rebuild the frozen package.
+
 The terminal example now includes `examples/initialize_terminal_project.py` for
 its missing first-use preparation step. It creates only a new dedicated Linux
 root, clean Git repository and Core project, privately saving the owner credential.

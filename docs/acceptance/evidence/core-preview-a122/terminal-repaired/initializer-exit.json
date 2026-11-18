@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/root/amadeus-m122l/w/bin/python",
+    "-I",
+    "-B",
+    "/root/amadeus-terminal-repaired-a122-20261118-inputs/initialize_terminal_project.py",
+    "/root/amadeus-terminal-repaired-a122-20261118"
+  ],
+  "exit_code": 0
+}
