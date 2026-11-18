@@ -2,6 +2,13 @@
 
 ## Owner-trial priority — 2026-11-17
 
+The existing M9 license-material technical check is now complete for the unchanged
+a122 own wheel/source distribution. Root/Astra matched actual license texts,
+notices, platform line endings and the31-row dependency table. No artifacts or
+historical inventory statuses changed; final release review/publication remain
+separate. Reuse [this bound review](acceptance/evidence/core-preview-a122/license-material-review/summary.json)
+instead of repeating metadata collection for the same dependency bytes.
+
 P1 concrete trial repair,2026-11-18: task/case input now respects its existing
 memory-reading bounds before validation, with two retained reproductions and
 14 passing affected Windows checks (4 Linux-only skips). This checked entry is

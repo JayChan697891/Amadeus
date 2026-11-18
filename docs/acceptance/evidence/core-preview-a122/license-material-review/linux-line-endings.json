@@ -1,0 +1,21 @@
+{
+  "scope": "Windows bytes normalized to LF compared against already verified Linux inventory; Linux not restarted or reread",
+  "files": [
+    {
+      "package": "pydantic-core",
+      "linux_recorded_bytes": 1080,
+      "windows_crlf_count": 21,
+      "windows_lf_bytes": 1080,
+      "normalized_sha256": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a",
+      "matches_saved_linux_hash": true
+    },
+    {
+      "package": "rpds-py",
+      "linux_recorded_bytes": 1057,
+      "windows_crlf_count": 19,
+      "windows_lf_bytes": 1057,
+      "normalized_sha256": "314e4e91be3baa93c0fb4bccc9e4e97cd643eb839b065af921782c2175fe9909",
+      "matches_saved_linux_hash": true
+    }
+  ]
+}

@@ -1,5 +1,17 @@
 # Release Acceptance Report
 
+Current license-material disposition,2026-11-18: technical integrity/coverage
+checking is complete for frozen a122's own wheel/source archives. Root/Astra
+matched43 installed license files,31 table rows and the existing notices. Linux
+shared metadata agrees; both original hash differences reproduce exactly by
+Windows CRLF-to-LF conversion. Saved Linux evidence was reused without restarting
+the environment. The archives contain no dependency package/binary bundle; the
+source preserves the current notices. No rebuild/install/test/model call occurred.
+This is not legal suitability or formal M9/Release approval. Original inventory
+`license_review=pending` remains untouched; the final independent decision and
+publication authorization remain outstanding, alongside other recorded gates.
+[Bounded review and raw comparisons](evidence/core-preview-a122/license-material-review/summary.json).
+
 Current P1 input-reading repair: the terminal example now bounds file reads before
 the existing1000/32768-byte validation. Two failing real-file reproductions are
 retained; the affected Windows suite passes14 cases with4 Linux-only skips and no

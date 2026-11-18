@@ -2,6 +2,19 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Original M9 license-material gap,2026-11-18: Root/Astra completed the technical
+check for the unchanged a122 own wheel/source archives. All43 recorded Windows
+license files map to LICENSE or existing notices; all31 dependency version and
+declaration rows match. Shared Linux metadata matches; the two byte differences
+are exactly CRLF versus LF, reproducing saved Linux hashes after normalization.
+The wheel contains only this project and its metadata; the source archive retains
+the same notices, with no dependency binary bundle. No reinstall, VM, test, model
+call or package change was needed. [Bounded report](acceptance/evidence/core-preview-a122/license-material-review/summary.json).
+Original inventory `license_review=pending` is immutable metadata, not a missing
+file claim or an approval. Technical material coverage is complete for this scope;
+legal suitability, other distribution scopes and the independent formal release
+decision are not approved. Formal Release remains BLOCKED.
+
 P1 input-reading repair,2026-11-18: the terminal example previously read whole
 task/case files before enforcing1000/32768-byte limits. Two real1MiB files
 reproduced that unbounded read; both original failures are retained. The entry

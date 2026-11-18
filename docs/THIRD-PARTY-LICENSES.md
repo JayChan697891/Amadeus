@@ -1,12 +1,28 @@
 # Third-party runtime dependencies
 
-Inventory from installed package metadata and bundled license files. Generated 2026-10-19;
-version labels checked against installed 0.3.0a112 on 2026-11-13 UTC. All 31 runtime
-dependency versions, declarations and recorded license-file hashes match the retained
-[Windows inventory](acceptance/evidence/m9-sdist-regression/repair-windows-sdist-license-inventory.json).
-This metadata check does not change the pending final license/release review.
-This covers the runtime transitive dependency closure, including Windows-only pywin32.
-Project code is MIT; dependencies retain their own licenses. See THIRD-PARTY-NOTICES.txt.
+Originally generated2026-10-19. The current technical material check on2026-11-18
+binds frozen a122/5232e9e, its original wheel/source archive and the existing
+Windows3.12/Linux3.14 inventories. All31 dependency versions and declarations in
+this table match the current Windows inventory. Root rehashed43 recorded installed
+license files: the project file matches LICENSE, and every dependency file has a
+matching notice body after documented line-ending/outer-whitespace normalization.
+[Actual comparison and bounded review](acceptance/evidence/core-preview-a122/license-material-review/summary.json).
+
+The31 shared Linux distributions have the same versions/declarations. Of their35
+recorded license files, two have different original hashes: pydantic-core and
+rpds-py. Converting the Windows files from CRLF to LF reproduces both saved Linux
+hashes exactly. This compares previously verified Linux evidence, not a new Linux
+execution. Windows alone includes pywin32. The source archive contains the exact
+current notices; the wheel contains only this project's package and metadata.
+Neither archive bundles dependency wheels or native binaries.
+
+This completes material integrity/coverage checking for those specified archives;
+it does not resolve legal suitability or grant formal M9/Release acceptance.
+Original inventory `license_review=pending` declarations remain unchanged. The
+separate independent release decision and publication authorization are still
+required; untested platforms and future dependency bundles are outside this check.
+Project code is MIT; dependencies retain their own licenses. See
+[THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
 
 The table records upstream metadata, not a complete classification of every bundled
 component. In particular, pywin32's `PSF` label does not replace its component
@@ -17,7 +33,7 @@ Those texts are retained in THIRD-PARTY-NOTICES.txt. Cryptography's declared
 texts are retained. The current Amadeus wheel/sdist do not bundle third-party
 wheels, binaries or site-packages. Redistributing a dependency bundle would need
 its own scope review. The complete multi-platform license/release review remains
-pending; this clarification does not alter the frozen a114 artifacts under test.
+pending; no frozen package, dependency or historical evidence was changed.
 
 | Package | Version | Declared license |
 |---|---|---|

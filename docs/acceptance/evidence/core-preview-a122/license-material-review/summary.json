@@ -1,0 +1,44 @@
+{
+  "scope": "Frozen a122 own wheel/source license-material integrity and coverage only",
+  "status": "TECHNICAL MATERIAL CHECK COMPLETE - Root and Astra reviewed",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_commit": "ba623a1d329c574822715062acb506a18dc27c61",
+  "commands": [
+    "1c4f10 exit0: installed text / notices / archive comparison",
+    "b002da exit0: two line-ending differences resolved",
+    "83ab5d exit0: 31 version/declaration rows match"
+  ],
+  "windows_installed_license_files": 43,
+  "dependency_table_rows": 31,
+  "notice_sections": 49,
+  "missing_recorded_license_texts": 0,
+  "shared_linux_distributions": 31,
+  "linux_recorded_license_files": 35,
+  "linux_raw_hash_differences": [
+    "pydantic-core",
+    "rpds-py"
+  ],
+  "differences_resolved": "Windows CRLF to LF gives exact saved Linux hashes (21 and19 CRLF respectively)",
+  "linux_environment_restarted": false,
+  "linux_files_reread": false,
+  "scope_limit": "Linux comparison reuses previously verified inventory; no legal-suitability, other-platform or dependency-bundle decision",
+  "independent_review": "Astra independently rechecked43 files,5 input hashes, table and two newline conversions; accepted material technical check only",
+  "original_license_inventory_status": "pending - retained unchanged",
+  "formal_release": "BLOCKED",
+  "publication_authorized": false,
+  "package_modifications": 0,
+  "tests_run": 0,
+  "model_calls": 0,
+  "no_new_phase": true,
+  "remaining": [
+    "Independent formal M9/Release decision and publication authorization",
+    "Unavailable macOS/real-client gates remain separate",
+    "Review changed future dependencies or a redistributed dependency bundle within its own scope"
+  ],
+  "files_sha256": {
+    "comparison.json": "c941cb45c3df74eb74c946b1b48716eef9cabda7c4ccf36d543685e2900da7c0",
+    "inspect.py.txt": "4dd2cd30e146919638a868de52b403c6da8def70950cff60d103b70dcdf3d0d4",
+    "linux-line-endings.json": "b1241c9edbfacca957b5ff3642eaa2254fd3b2c9c7449e8a002d68c07867f7d3",
+    "table-comparison.json": "69868ede866d050678ec6027580615e3d7993b863836459d397476cf34ad58d0"
+  }
+}

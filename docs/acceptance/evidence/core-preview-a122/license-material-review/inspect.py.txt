@@ -1,0 +1,79 @@
+"""Compare saved license evidence and notice text; no licensing decision."""
+import hashlib
+import json
+import re
+import tarfile
+import zipfile
+from pathlib import Path
+
+repo = Path('F:/syuc/amadeus-m6-single')
+installed = Path('D:/agentsync-debug/m122p/w/Lib/site-packages')
+evidence = repo / 'docs/acceptance/evidence/core-preview-a122'
+win_path = evidence / 'windows-licenses/wheel-inventory.json'
+linux_path = evidence / 'linux-licenses/wheel-inventory.json'
+win, linux = [json.loads(p.read_bytes()) for p in (win_path,linux_path)]
+notice_path = repo / 'docs/THIRD-PARTY-NOTICES.txt'
+raw_notice = notice_path.read_bytes()
+notice = raw_notice.decode('utf8').replace('\r\n','\n')
+headers = list(re.finditer(r'^===== (\S+) (\S+) / (.+) =====\n', notice, re.M))
+blocks = []
+for i,h in enumerate(headers):
+    end = headers[i+1].start() if i+1<len(headers) else len(notice)
+    blocks.append({'package':h[1],'version':h[2],'basename':h[3],
+                   'text':notice[h.end():end].strip(),'header_index':i+1})
+sha = lambda raw: hashlib.sha256(raw).hexdigest()
+checked = []
+for name,dist in win['distributions'].items():
+    for item in dist['license_files']:
+        p = installed / item['member']
+        assert p.resolve(strict=True).is_relative_to(installed.resolve())
+        raw = p.read_bytes()
+        assert len(raw) == item['bytes'] and sha(raw) == item['sha256']
+        try:
+            text = raw.decode('utf8');encoding='utf8'
+        except UnicodeDecodeError:
+            text = raw.decode('cp1252');encoding='cp1252'
+        normalized = text.replace('\r\n','\n').strip()
+        matches = [b['header_index'] for b in blocks if b['package']==name
+                   and b['version']==dist['version'] and b['text']==normalized]
+        own_license = name=='agentsync-local' and raw==(repo/'LICENSE').read_bytes()
+        checked.append({'package':name,'version':dist['version'],'member':item['member'],
+            'sha256':sha(raw),'bytes':len(raw),'decoded_as':encoding,
+            'notice_header_matches':matches,'matches_project_license':own_license,
+            'covered':bool(matches) or own_license})
+shared=[]
+for name,dist in linux['distributions'].items():
+    wd=win['distributions'].get(name)
+    assert wd is not None
+    keys=('version','license_expression','legacy_license','license_classifiers')
+    identical_metadata=all(dist.get(k)==wd.get(k) for k in keys)
+    hashes={f['sha256'] for f in wd['license_files']}
+    shared.append({'package':name,'metadata_equal':identical_metadata,
+                   'linux_license_hashes_in_windows':all(f['sha256'] in hashes for f in dist['license_files'])})
+wheel=repo/'releases/0.3.0a122/preview-5232e9e/agentsync_local-0.3.0a122-py3-none-any.whl'
+sdist=wheel.with_name('agentsync_local-0.3.0a122.tar.gz')
+with zipfile.ZipFile(wheel) as z:
+    wheel_names=z.namelist()
+    assert z.read('agentsync_local-0.3.0a122.dist-info/licenses/LICENSE')==(repo/'LICENSE').read_bytes()
+    wheel_only_own=all(n.startswith(('agentsync/','agentsync_local-0.3.0a122.dist-info/')) for n in wheel_names)
+with tarfile.open(sdist,'r:gz') as t:
+    names=t.getnames()
+    license_names=[n for n in names if n.endswith('/docs/THIRD-PARTY-NOTICES.txt')]
+    notices_match=bool(license_names) and t.extractfile(license_names[0]).read()==raw_notice
+    binaries=[n for n in names if n.lower().endswith(('.whl','.dll','.so','.dylib','.exe'))]
+result={'scope':'a122 recorded license texts/notices and distribution contents, not legal clearance',
+    'source_commit':'ba623a1d329c574822715062acb506a18dc27c61',
+    'comparison':'Exact installed hashes first; then UTF8 (CP1252 only if UTF8 invalid), CRLF-to-LF and outer whitespace stripped for notice-body comparison',
+    'inputs_sha256':{str(p.relative_to(repo)):sha(p.read_bytes()) for p in (win_path,linux_path,notice_path,wheel,sdist)},
+    'notice_blocks':len(blocks),'windows_distributions':len(win['distributions']),
+    'windows_files_checked':len(checked),'notice_misses':[x for x in checked if not x['covered']],
+    'checked_files':checked,'shared_linux_metadata':shared,
+    'windows_only':sorted(set(win['distributions'])-set(linux['distributions'])),
+    'wheel_member_count':len(wheel_names),'wheel_only_project_package_and_metadata':wheel_only_own,
+    'sdist_notice_matches_repository':notices_match,'sdist_bundled_binary_members':binaries,
+    'license_review':'pending','formal_release':'BLOCKED','publication_authorized':False,
+    'no_install_build_test_or_model_call':True}
+with (Path(__file__).parent/'comparison.json').open('x',encoding='utf8') as f:
+    json.dump(result,f,indent=2)
+print(json.dumps({k:result[k] for k in ('notice_blocks','windows_files_checked','notice_misses','windows_only','wheel_only_project_package_and_metadata','sdist_notice_matches_repository','sdist_bundled_binary_members')}))
+print(json.dumps({'shared_linux_comparisons':len(shared),'differences':[x for x in shared if not x['metadata_equal'] or not x['linux_license_hashes_in_windows']]}))
