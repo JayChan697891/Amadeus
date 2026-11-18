@@ -37,11 +37,14 @@ The owned VM then shut down normally (e471dc exit0); PID22076 absent and no SSH/
 listeners (c60b44). No related workers or containers remained before shutdown.
 Both single-attempt fixtures are consumed; do not replay either.
 
-The owner preview r3 is available now: [download and short instructions](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md).
+The owner preview r4 is available now: [download and short instructions](../releases/0.3.0a122/owner-preview-input-bounds-r4/README.md).
 Its default Windows demo uses simulated Agents and stays unverified. The bundled
-Windows3.12 constraints resolve to the32 tested distributions. Frozen wheel,
-examples, ZIP and prior evidence are unchanged; no new version is needed solely
-to record the following completed validation.
+Windows3.12 constraints resolve to the32 tested distributions. The new ZIP changes
+only the input-reading example and documentation/manifests; the frozen wheel,
+constraints, initializer and recovery script match r3 byte for byte. Original r3
+and all prior evidence are preserved. Archive CRC/member hashes and extracted
+entry help pass; the package was not installed again. New ZIP SHA256:
+`8884519ea77978edf6d741a5d7b9f2fec2c52d491af43917e23155f697fa70f1`.
 
 The newly authorized repaired-terminal experiment completed once at
 2026-11-18T01:53:52Z, native44361/558580 exit0. Two real Codex subscription calls
@@ -74,7 +77,7 @@ All six selected a122 Windows/Linux source/wheel/sdist suites are complete.
 These are test suites, not six complete formal matrix rows; static/license/client
 and macOS gates remain separate. Formal Release BLOCKED.
 
-Immediate continuation: deliver the existing r3 preview and short instructions,
+Immediate continuation: deliver the r4 preview and short instructions,
 then address concrete owner-feedback defects. Current cancel/timeout observations
 are complete within their stated scope; do not repeat them. The remaining original
 formal gates include unavailable macOS/other-client evidence, pending license

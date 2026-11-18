@@ -2,7 +2,7 @@
 
 # Amadeus
 
-**Try the packaged preview:** [download the a122 ZIP](releases/0.3.0a122/owner-preview-7085ec0-r3/Amadeus-owner-preview-a122.zip)
+**Try the packaged preview:** [download the a122 ZIP](releases/0.3.0a122/owner-preview-input-bounds-r4/Amadeus-owner-preview-a122.zip)
 and follow its short README. It includes the original frozen wheel and reviewed
 terminal examples; Python 3.12 is required for the Windows quick start. The default
 demo uses simulated Agents, with no model calls. Its Windows dependency constraints
@@ -13,7 +13,10 @@ producer proposal, one approved Docker verification, independent producer
 completion and a second Codex receiving pinned context. The receiver's review
 stays unverified; each effect required approval. See the
 [usage and actual evidence](docs/VERIFIED-TASK-EXAMPLE.md), separate from the
-default simulated demo. The ZIP remains unchanged.
+default simulated demo. The r4 revision bounds task/case file reads before size
+validation;14 affected Windows checks pass, with4 Linux-only skips. The core wheel
+is unchanged. The recorded real run belongs to the earlier7085ec0 entry; this
+input-only revision does not claim a new live-client or Linux run.
 
 Current development continues under [AGENTS.md](AGENTS.md), [WORKFLOW.md](WORKFLOW.md)
 and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancelled.
@@ -161,7 +164,7 @@ For the frozen a122 owner trial, open PowerShell in this repository with Python
 
 ```powershell
 py -3.12 -m venv .venv-a122
-& .\.venv-a122\Scripts\python.exe -m pip install -c .\releases\0.3.0a122\owner-preview-7085ec0-r3\constraints-windows312.txt .\releases\0.3.0a122\preview-5232e9e\agentsync_local-0.3.0a122-py3-none-any.whl
+& .\.venv-a122\Scripts\python.exe -m pip install -c .\releases\0.3.0a122\owner-preview-input-bounds-r4\constraints-windows312.txt .\releases\0.3.0a122\preview-5232e9e\agentsync_local-0.3.0a122-py3-none-any.whl
 & .\.venv-a122\Scripts\amadeus.exe --data-dir "$PWD\local-data\amadeus-a122-01" demo --durable
 ```
 

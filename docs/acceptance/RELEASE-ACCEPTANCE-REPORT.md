@@ -1,5 +1,16 @@
 # Release Acceptance Report
 
+Current P1 input-reading repair: the terminal example now bounds file reads before
+the existing1000/32768-byte validation. Two failing real-file reproductions are
+retained; the affected Windows suite passes14 cases with4 Linux-only skips and no
+failures/errors. Root inspected the diff, actual XML/logs and tested-file hashes.
+Ruff/format checks pass for the changed two Python files; historical static FAIL
+is untouched. Frozen a122 runtime and wheel are unchanged. The r4 owner bundle
+contains the repaired example and retains exact original runtime/dependency bytes.
+No new Linux entry run, model call or complete suite is claimed; old real terminal
+evidence remains bound to7085ec0. Formal Release stays BLOCKED.
+[Repair evidence](evidence/core-preview-a122/terminal-input-bounds/summary.json).
+
 Current lifecycle update,2026-11-18: actual a122 `cancel_task(run_id)` has scoped
 Root/Astra acceptance. One real Codex call reached `turn.started`; cancellation
 was invoked with the owned parent alive and about84 seconds before its deadline.

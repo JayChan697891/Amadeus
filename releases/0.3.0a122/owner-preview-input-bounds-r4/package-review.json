@@ -1,0 +1,91 @@
+{
+  "archive": "Amadeus-owner-preview-a122.zip",
+  "sha256": "8884519ea77978edf6d741a5d7b9f2fec2c52d491af43917e23155f697fa70f1",
+  "bytes": 337863,
+  "archive_members": 10,
+  "crc_and_exact_payload_match": true,
+  "source_commit": "a4f17c34acbef531b189eae9d05688a8714ac1bb",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "original_wheel_unchanged": true,
+  "unchanged_payload_from_r3": [
+    "agentsync_local-0.3.0a122-py3-none-any.whl",
+    "LICENSE",
+    "examples/initialize_terminal_project.py",
+    "examples/recover_relay.py",
+    "constraints-windows312.txt"
+  ],
+  "entry_sha256": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d",
+  "extracted_entry_help": {
+    "argv": [
+      "D:/agentsync-debug/m122p/w/Scripts/python.exe",
+      "-I",
+      "-B",
+      "D:\\agentsync-debug\\preview-bundle-20261118-r4\\verified_codex_task.py",
+      "--help"
+    ],
+    "exit_code": 0,
+    "stdout_sha256": "aadad5137f79a0350c5711fb285d74733995f91959a4d43a77ed54861c14970c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "dependency_resolution_reused": "r3 package-review.json; constraints and wheel byte-identical",
+  "install_repeated": false,
+  "full_suites_repeated": false,
+  "real_model_calls": 0,
+  "candidate_executions": 0,
+  "new_linux_entry_run": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "manifest": {
+    "version": "0.3.0a122",
+    "scope": "limited owner preview",
+    "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+    "entry_commit": "a4f17c34acbef531b189eae9d05688a8714ac1bb",
+    "documentation_commit": "a4f17c34acbef531b189eae9d05688a8714ac1bb",
+    "formal_release": "BLOCKED",
+    "default_demo": "simulation_only/unverified",
+    "files": {
+      "LICENSE": {
+        "bytes": 1079,
+        "sha256": "a34848c085a0b1a5b161e4a1122002e054ff35970f92fb78c0a33e6fd385c1f3"
+      },
+      "README.md": {
+        "bytes": 2992,
+        "sha256": "52055353d2a5f88dad9b077644a8e7038924bd6ee6d312a5cfac4d4c89a23f33"
+      },
+      "agentsync_local-0.3.0a122-py3-none-any.whl": {
+        "bytes": 328435,
+        "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+      },
+      "constraints-windows312.txt": {
+        "bytes": 757,
+        "sha256": "23ab8373bc4c65f971fa0b477ea083c0fec5667a51048c7535fca50c08e6a8b1"
+      },
+      "docs/VERIFIED-TASK-EXAMPLE.md": {
+        "bytes": 8602,
+        "sha256": "2ac985ff862ef67ad11c3ab9303df385ae0381c07e717384363d79d697565cfb"
+      },
+      "examples/initialize_terminal_project.py": {
+        "bytes": 4528,
+        "sha256": "da71872eb948549ade59c2c24aeb0188b92dde65d127462330946dadab952a3d"
+      },
+      "examples/recover_relay.py": {
+        "bytes": 2979,
+        "sha256": "676351946093cf4402da8cbd644adc6e79c4328b339cff7a09d46f81b9bca4f9"
+      },
+      "examples/verified_codex_task.py": {
+        "bytes": 15545,
+        "sha256": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d"
+      }
+    },
+    "revision": "input-bounds-r4",
+    "previous_revision": "owner-preview-7085ec0-r3"
+  },
+  "root_review": {
+    "native_build": "622015 exit0",
+    "native_independent_archive_check": "013d4f exit0",
+    "checked": "CRC, all ten members, manifest byte lengths and hashes, tested entry SHA and original wheel SHA",
+    "powershell_quick_start_statements": 3,
+    "powershell_parse_errors": 0,
+    "static_receipt_sha256": "16f3d3b46d84b6785f6f8fb64365e7f257fe9fd956621280f4ba8209907aa1bb",
+    "scope": "Packaged input-bound repair; no new runtime, installation, Linux or real-model acceptance"
+  }
+}

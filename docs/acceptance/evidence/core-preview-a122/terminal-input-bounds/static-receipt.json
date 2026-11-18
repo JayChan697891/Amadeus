@@ -1,0 +1,19 @@
+{
+  "scope": "After-run text export of the observed native static-tool receipt; not an original output capture and not a rerun",
+  "native_chunk": "249cb3",
+  "native_exit_code": 0,
+  "native_wall_time_seconds": 0.1723565,
+  "cwd": "F:/syuc/amadeus-m6-single",
+  "commands": [
+    "D:/agentsync-debug/m122p/w/Scripts/ruff.exe check --no-cache examples/verified_codex_task.py tests/integration/test_verified_codex_terminal.py",
+    "D:/agentsync-debug/m122p/w/Scripts/ruff.exe format --check --no-cache examples/verified_codex_task.py tests/integration/test_verified_codex_terminal.py"
+  ],
+  "observed_output_text": "All checks passed!\n2 files already formatted\n",
+  "source_sha256": {
+    "F:\\syuc\\amadeus-m6-single\\examples\\verified_codex_task.py": "69463030055db317b88054fa13c16b340b1c85b19204612d88a002086ddebb9d",
+    "F:\\syuc\\amadeus-m6-single\\tests\\integration\\test_verified_codex_terminal.py": "a09eab2978ad410ec82c6e55faa94439f2ce5f59a0e1c97678e6e8ce95099bc9"
+  },
+  "earlier_wrong_cwd_chunk": "7780e1",
+  "earlier_wrong_cwd_exit_code": 1,
+  "earlier_wrong_cwd_diagnostic": "I001 on existing import grouping; no source reordering was performed; rerun from the actual project cwd passed"
+}

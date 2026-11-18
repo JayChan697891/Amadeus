@@ -4,18 +4,19 @@
 
 P1 concrete trial repair,2026-11-18: task/case input now respects its existing
 memory-reading bounds before validation, with two retained reproductions and
-14 passing affected Windows checks (4 Linux-only skips). Repackage this checked
-entry with the unchanged a122 wheel and tested dependency constraints; preserve
-the prior preview and real-run evidence. No new phase, runtime rebuild, live
+14 passing affected Windows checks (4 Linux-only skips). This checked entry is
+delivered in r4 with the unchanged a122 wheel and tested dependency constraints;
+prior previews and real-run evidence are preserved. No new phase, runtime rebuild, live
 experiment or complete regression repeat is needed for this narrow correction.
 
-Owner acceleration: deliver the [small owner preview ZIP](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md)
+Owner acceleration: deliver the [small owner preview ZIP](../releases/0.3.0a122/owner-preview-input-bounds-r4/README.md)
 now, reusing the frozen wheel and reviewed entry scripts. The three-command
 Windows quick start is a simulated durable demo, not real-Agent acceptance.
 The r3 installation now constrains all31 runtime dependencies to the tested
 Windows3.12 versions; offline resolution matches the saved32-distribution
-inventory including Amadeus. Core and entry scripts are unchanged; old packages
-and the historical repository constraints remain preserved.
+inventory including Amadeus. R4 retains that Core and constraint set, with only
+the input-reading entry repair above. Old packages and historical repository
+constraints remain preserved.
 Full source matrix work stays in C; do not repeat the four completed installed
 suites. The real-terminal result below retains its exact permission boundary.
 
@@ -25,7 +26,7 @@ producer completion, then a real Codex receiver returning an unverified review.
 [Actual result and limits](acceptance/evidence/core-preview-a122/terminal-repaired/result/summary.json).
 This closes the bounded terminal-entry E2E gap; it does not certify unattended,
 cross-vendor or M3 same-task handoff behavior. Preserve the earlier failed fixture.
-Use the existing r3 preview for owner experience/feedback. Both source suites now
+Use the r4 preview for owner experience/feedback. Both source suites now
 have independent scoped acceptance, completing all six selected Windows/Linux
 source/wheel/sdist suites for frozen a122. Keep
 remaining formal/cross-platform gates in C without making them new prerequisites
