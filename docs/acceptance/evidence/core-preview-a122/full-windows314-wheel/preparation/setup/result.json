@@ -1,0 +1,198 @@
+{
+  "started_at": "2026-11-18T03:30:17.700087+00:00",
+  "controller_pid": 3508,
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "base_interpreter": "D:\\agentsync-debug\\continuation-cc30ed21\\release-scratch\\.scratch-oxrs8db4\\wheel-hjm661v4\\Scripts\\python.exe",
+  "old_environment_scope": "a109 base interpreter only, not current acceptance evidence",
+  "fresh_install": "D:\\agentsync-debug\\m122win314\\w",
+  "version": "0.3.0a122",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_files": 3992,
+  "runtime_members": 97,
+  "driver_sha256": "bb731c7ab0929e9c86b75c3d771178191aaa021c59c501078ffadc37e86be144",
+  "setup_sha256": "a1ac62141d5d2f7c526b2a6f817e080fab4a5d13a6b1cd9bfc964bf1c417291e",
+  "inputs": {
+    "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl": {
+      "bytes": 328435,
+      "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\source-manifest.json": {
+      "bytes": 762297,
+      "sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"
+    },
+    "D:\\agentsync-debug\\m122p\\source.zip": {
+      "bytes": 18232229,
+      "sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"
+    }
+  },
+  "offline_wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\release-scratch\\.scratch-oxrs8db4\\offline-wheels",
+  "full_pytest": "NOT RUN",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "automatic_retry": false,
+  "formal_release": "BLOCKED",
+  "status": "pass",
+  "checks": [
+    {
+      "id": "venv",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\continuation-cc30ed21\\release-scratch\\.scratch-oxrs8db4\\wheel-hjm661v4\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "venv",
+        "D:\\agentsync-debug\\m122win314\\w"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+      "exit_code": 0,
+      "started_at": "2026-11-18T03:30:17.875987+00:00",
+      "finished_at": "2026-11-18T03:30:20.434077+00:00",
+      "log": "logs/venv.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "offline_dependencies",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+        "-I",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-index",
+        "--find-links",
+        "file:///D:/agentsync-debug/m122win314-preparation/setup/t/offline-wheels",
+        "--no-cache-dir",
+        "--only-binary=:all:",
+        "setuptools==82.0.1",
+        "wheel==0.46.3",
+        "mcp==2.3.0",
+        "fastapi==0.147.0",
+        "uvicorn==0.54.0",
+        "pydantic==2.14.1",
+        "httpx==0.28.1",
+        "pytest==9.1.1",
+        "pytest-asyncio==1.4.0",
+        "ruff==0.17.1",
+        "mypy==2.4.0",
+        "build==1.6.1",
+        "pip-licenses==5.5.5"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+      "exit_code": 0,
+      "started_at": "2026-11-18T03:30:20.435638+00:00",
+      "finished_at": "2026-11-18T03:30:29.065905+00:00",
+      "log": "logs/offline_dependencies.log",
+      "log_sha256": "9ebbe155ea5de227860a346d15c768e19636d4f516490d33bac2b69773234a2e",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "wheel_install",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+        "-I",
+        "-m",
+        "pip",
+        "--disable-pip-version-check",
+        "install",
+        "--no-index",
+        "--find-links",
+        "file:///D:/agentsync-debug/m122win314-preparation/setup/t/offline-wheels",
+        "--no-cache-dir",
+        "--no-deps",
+        "--",
+        "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+      "exit_code": 0,
+      "started_at": "2026-11-18T03:30:29.067383+00:00",
+      "finished_at": "2026-11-18T03:30:29.816488+00:00",
+      "log": "logs/wheel_install.log",
+      "log_sha256": "d1213e7f9f0457fd431502cefeaccb3f771303929fc7dad00504cadb408a0269",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "pip_check",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+      "exit_code": 0,
+      "started_at": "2026-11-18T03:30:29.817890+00:00",
+      "finished_at": "2026-11-18T03:30:30.176496+00:00",
+      "log": "logs/pip_check.log",
+      "log_sha256": "af53b0c9c8e73017dafbcbff44fce58574ae6537e30f7b2de7c84dd27ba7c97a",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "origin",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync, agentsync.cli\n\ninstall, wheel, members = map(Path, sys.argv[1:4])\nwheel_sha, version = sys.argv[4:]\nassert sys.version_info[:3] == (3, 14, 6)\nassert Path(sys.prefix).resolve() == install.resolve()\nsite = install.resolve() / \"Lib/site-packages\"\norigin = Path(agentsync.__file__).resolve()\nassert origin == site / \"agentsync/__init__.py\"\nassert Path(agentsync.cli.__file__).resolve() == site / \"agentsync/cli.py\"\ndist = md.distribution(\"agentsync-local\")\nassert dist.version == agentsync.__version__ == version\ndirect = json.loads(dist.read_text(\"direct_url.json\"))\nassert direct[\"url\"] == wheel.resolve(strict=True).as_uri() and \"dir_info\" not in direct\nassert direct[\"archive_info\"][\"hashes\"][\"sha256\"] == wheel_sha\nactual = {}\nfor path in (site / \"agentsync\").rglob(\"*\"):\n    if path.is_file() and \"__pycache__\" not in path.parts:\n        assert path.resolve(strict=True) == path\n        with path.open(\"rb\") as stream:\n            actual[path.relative_to(site).as_posix()] = hashlib.file_digest(stream, \"sha256\").hexdigest()\nassert actual == json.loads(members.read_bytes()) and len(actual) == 97\nprint(json.dumps({\"python\": sys.version, \"version\": version, \"origin\": str(origin),\n                  \"runtime_members\": len(actual), \"direct_url\": direct}))\n",
+        "D:\\agentsync-debug\\m122win314\\w",
+        "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl",
+        "D:\\agentsync-debug\\m122p\\run\\runtime-members.json",
+        "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+        "0.3.0a122"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+      "exit_code": 0,
+      "started_at": "2026-11-18T03:30:30.178117+00:00",
+      "finished_at": "2026-11-18T03:30:30.512058+00:00",
+      "log": "logs/origin.log",
+      "log_sha256": "1766e2692ae64cc214d70e667a779958b5dce892798216795e5c921734ddaeb1",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    },
+    {
+      "id": "package_inventory",
+      "status": "pass",
+      "command": [
+        "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+        "-I",
+        "-B",
+        "-c",
+        "import importlib.metadata as m,json;print(json.dumps(sorted((d.metadata['Name'],d.version) for d in m.distributions())))"
+      ],
+      "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+      "exit_code": 0,
+      "started_at": "2026-11-18T03:30:30.513447+00:00",
+      "finished_at": "2026-11-18T03:30:30.629441+00:00",
+      "log": "logs/package_inventory.log",
+      "log_sha256": "bb1a1ff12b8e9f0e604ab167c6348b0056e93e09b00020948ae841cdc3be95ea",
+      "credential_redactions": 0,
+      "log_truncated": false,
+      "provenance": "local_process"
+    }
+  ],
+  "old_runtime_files_unchanged": 85,
+  "inputs_unchanged": true,
+  "finished_at": "2026-11-18T03:30:30.662693+00:00"
+}

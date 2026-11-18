@@ -1,0 +1,79 @@
+{
+  "status": "READY_FOR_REVIEW_NOT_RUN",
+  "scope": "Frozen a122 Windows3.14.6 installed-wheel full suite preparation only; no pytest started",
+  "source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_files": 3992,
+  "runtime_members": 97,
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "fresh_env": "D:\\agentsync-debug\\m122win314\\w",
+  "old_base_env": "D:\\agentsync-debug\\continuation-cc30ed21\\release-scratch\\.scratch-oxrs8db4\\wheel-hjm661v4",
+  "old_agentsync_version": "0.3.0a109; interpreter only, never current acceptance evidence",
+  "old_runtime_files_unchanged": 85,
+  "offline_wheelhouse": "D:\\agentsync-debug\\continuation-cc30ed21\\release-scratch\\.scratch-oxrs8db4\\offline-wheels",
+  "offline_wheel_count": 60,
+  "installed_distribution_count": 56,
+  "origin": {
+    "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+    "version": "0.3.0a122",
+    "origin": "D:\\agentsync-debug\\m122win314\\w\\Lib\\site-packages\\agentsync\\__init__.py",
+    "runtime_members": 97,
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab",
+        "hashes": {
+          "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+        }
+      },
+      "url": "file:///D:/agentsync-debug/m122p/dist/agentsync_local-0.3.0a122-py3-none-any.whl"
+    }
+  },
+  "inputs": {
+    "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl": {
+      "bytes": 328435,
+      "sha256": "8fd24c89b8b21a0b9e1aa5564fe130846af7a9516bb2c7cd2faf114ccc2c08ab"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\runtime-members.json": {
+      "bytes": 10144,
+      "sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    },
+    "D:\\agentsync-debug\\m122p\\run\\source-manifest.json": {
+      "bytes": 762297,
+      "sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"
+    },
+    "D:\\agentsync-debug\\m122p\\source.zip": {
+      "bytes": 18232229,
+      "sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"
+    }
+  },
+  "setup_native": {
+    "initial_chunk": "bec596",
+    "session_id": 75724,
+    "terminal_chunk": "03308a",
+    "exit_code": 0,
+    "commands": 6
+  },
+  "setup_result": "D:\\agentsync-debug\\m122win314-preparation\\setup\\result.json",
+  "setup_result_sha256": "cc2a92243d733b3ef501ff61888cb11c8355554b8d7fb24521d60aeb21125297",
+  "setup_sha256": "a1ac62141d5d2f7c526b2a6f817e080fab4a5d13a6b1cd9bfc964bf1c417291e",
+  "driver": "D:\\agentsync-debug\\w122314\\run-wheel.py",
+  "driver_sha256": "bb731c7ab0929e9c86b75c3d771178191aaa021c59c501078ffadc37e86be144",
+  "argv": [
+    "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\w122314\\run-wheel.py"
+  ],
+  "full_pytest": "NOT RUN",
+  "full_timeout_seconds": 7200,
+  "full_native_checks": [
+    "wheel_origin_before",
+    "wheel_pytest",
+    "wheel_origin_after"
+  ],
+  "automatic_retry": false,
+  "driver_delta": "Only independent BASE/INSTALL, exact3.14.6 guards and scope. Setup additionally selects verified3.14.6 base and its60-wheel offline snapshot. Original97/3992/archive pins/collector and redaction retained.",
+  "windows311_running_suite": "Not modified/restarted/queried by this setup",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED"
+}

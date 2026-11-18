@@ -1,0 +1,58 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "wheel_install",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m122win314-preparation/setup/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--",
+      "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+    "started_at": "2026-11-18T03:30:29.067383+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "wheel_install",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m122win314\\w\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "--disable-pip-version-check",
+      "install",
+      "--no-index",
+      "--find-links",
+      "file:///D:/agentsync-debug/m122win314-preparation/setup/t/offline-wheels",
+      "--no-cache-dir",
+      "--no-deps",
+      "--",
+      "D:\\agentsync-debug\\m122p\\dist\\agentsync_local-0.3.0a122-py3-none-any.whl"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122win314-preparation\\setup",
+    "exit_code": 0,
+    "started_at": "2026-11-18T03:30:29.067383+00:00",
+    "finished_at": "2026-11-18T03:30:29.816488+00:00",
+    "log": "logs/wheel_install.log",
+    "log_sha256": "d1213e7f9f0457fd431502cefeaccb3f771303929fc7dad00504cadb408a0269",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}
