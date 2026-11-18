@@ -38,7 +38,7 @@ from agentsync.adapters.approved_launch import (
 )
 from agentsync.adapters.base import AdapterTask, _bounded_text, _identifier
 from agentsync.adapters.claude import ClaudeAdapter, ClaudeResult
-from agentsync.adapters.codex import CodexAdapter, CodexResult
+from agentsync.adapters.codex import CodexAdapter, CodexProgress, CodexResult
 from agentsync.adapters.cursor import CursorAdapter, CursorResult
 from agentsync.adapters.host_receipts import _ReceiptDirectory
 from agentsync.core.service import Core
@@ -187,6 +187,7 @@ class CodexProposalInput:
     timeout_seconds: int = 90
     submit_for_review: bool = False
     input_context: ProposalContextPin | None = None
+    checkpoint_completed_proposal: bool = False
 
     def __post_init__(self) -> None:
         _identifier(self.task_id)
@@ -198,7 +199,12 @@ class CodexProposalInput:
         object.__setattr__(self, "allowed_paths", proposal_paths(list(self.allowed_paths)))
         if type(self.timeout_seconds) is not int or not 1 <= self.timeout_seconds <= 180:
             _reject()
-        if type(self.submit_for_review) is not bool:
+        if (
+            type(self.submit_for_review) is not bool
+            or type(self.checkpoint_completed_proposal) is not bool
+            or self.checkpoint_completed_proposal
+            and type(self) is not CodexProposalInput
+        ):
             _reject()
         if self.input_context is not None and (
             type(self.input_context) is not ProposalContextPin
@@ -309,6 +315,7 @@ def _proposal_contract(
     review_client: ClientKind | None = None,
     continuation: ContinuationPin | None = None,
     continuation_client: ClientKind | None = None,
+    checkpoint_completed_proposal: bool = False,
 ) -> dict[str, Any]:
     # Preserve historical default contracts and their insertion-order digest.
     contract: dict[str, Any] = {
@@ -333,6 +340,8 @@ def _proposal_contract(
         contract["mode"] = "proposal_continuation"
         contract["client"] = continuation_client
         contract["continuation"] = asdict(continuation)
+    if checkpoint_completed_proposal:
+        contract["checkpoint_completed_proposal"] = True
     return contract
 
 
@@ -803,6 +812,7 @@ class ControlledRelay:
         proposal_json: str,
         allowed_paths: tuple[str, ...],
         request_id: str,
+        _before_publish: Callable[[], None] | None = None,
     ) -> dict[str, Any]:
         """Trusted host saves already-known inert progress under the live producer lease.
 
@@ -842,6 +852,8 @@ class ControlledRelay:
                 "request_id": f"relay:{key}:proposal:claim",
             }
         )
+        if _before_publish is not None:
+            _before_publish()
         return self._call(
             actor,
             "publish_task_proposal",
@@ -1140,6 +1152,7 @@ class ControlledRelay:
         allowed_proposal_paths: tuple[str, ...] | None = None,
         recheck_review: Callable[[dict[str, Any], str], None] | None = None,
         continuation: bool = False,
+        checkpoint_completed_proposal: bool = False,
     ) -> _AttemptOutcome:
         _check_execution_deadline(execution_deadline)
         prefix = f"relay:{key}:{stage}"
@@ -1210,7 +1223,76 @@ class ControlledRelay:
         )
         run = await adapter.start_task(task)
         try:
-            run = await adapter.wait_terminal(run.run_id, timeout_seconds=task.timeout_seconds + 2)
+            if checkpoint_completed_proposal:
+                assert isinstance(adapter, CodexAdapter) and allowed_proposal_paths is not None
+                checkpointed = False
+                seen_progress: CodexProgress | None = None
+                observation_deadline = asyncio.get_running_loop().time() + task.timeout_seconds + 2
+                while True:
+                    progress = None if checkpointed else adapter.get_progress(run.run_id)
+                    if progress is not None and progress != seen_progress:
+                        seen_progress = progress
+                        try:
+                            files = parse_proposal(progress.message, list(allowed_proposal_paths))
+                        except AgentSyncError:
+                            files = None
+                        if files is not None:
+                            proposal = json.dumps(
+                                {"files": files}, ensure_ascii=False, separators=(",", ":")
+                            )
+                            _check_execution_deadline(execution_deadline)
+                            # No yield from the final same-capture check to Core's
+                            # live lease/version check and atomic publication.
+                            if adapter.get_progress(run.run_id) == progress:
+
+                                def recheck_progress(expected: CodexProgress = progress) -> None:
+                                    _check_execution_deadline(execution_deadline)
+                                    if adapter.get_progress(expected.run.run_id) != expected:
+                                        _reject()
+
+                                try:
+                                    published = self.publish_progress_checkpoint(
+                                        actor,
+                                        task.task_id,
+                                        expected_version=active["version"],
+                                        proposal_json=proposal,
+                                        allowed_paths=allowed_proposal_paths,
+                                        request_id=prefix + ":completed-proposal-checkpoint",
+                                        _before_publish=recheck_progress,
+                                    )
+                                    checkpointed = True
+                                    self._record(
+                                        key,
+                                        "proposal-progress",
+                                        context_id=published["context_id"],
+                                        context_version=published["context_version"],
+                                        content_sha256=published["content_sha256"],
+                                        task_version=published["task_version"],
+                                        run_sha256=digest(run.run_id),
+                                        capture_sha256=digest(progress.capture_id),
+                                        stdout_sha256=progress.stdout_sha256,
+                                        launch_request_sha256=launch_request,
+                                    )
+                                except Exception:
+                                    # Publication/receipt uncertainty is not permission
+                                    # to continue or repeat a checkpoint effect.
+                                    await adapter.cancel_task(run.run_id)
+                                    raise
+                    remaining = observation_deadline - asyncio.get_running_loop().time()
+                    if remaining <= 0:
+                        raise TimeoutError
+                    try:
+                        run = await adapter.wait_terminal(
+                            run.run_id, timeout_seconds=min(0.05, remaining)
+                        )
+                        break
+                    except TimeoutError:
+                        # An observation timeout never cancels the actual run.
+                        continue
+            else:
+                run = await adapter.wait_terminal(
+                    run.run_id, timeout_seconds=task.timeout_seconds + 2
+                )
             if run.status != "succeeded" or run.exit_code != 0 or not run.parent_ended:
                 self._record(
                     key,
@@ -1391,6 +1473,7 @@ class ControlledRelay:
                 client if review else None,
                 spec.continuation if isinstance(spec, ContinuationInput) else None,
                 client if continuation else None,
+                spec.checkpoint_completed_proposal,
             )
             instruction = (
                 spec.instruction
@@ -1658,6 +1741,11 @@ class ControlledRelay:
             base_head=actor.expected_head,
             **({"submit_for_review": True} if spec.submit_for_review else {}),
             **({"input_context": asdict(spec.input_context)} if spec.input_context else {}),
+            **(
+                {"checkpoint_completed_proposal": True}
+                if spec.checkpoint_completed_proposal
+                else {}
+            ),
             **({"review_client": client_kind(actor.profile)} if review else {}),
             **(
                 {
@@ -1680,6 +1768,7 @@ class ControlledRelay:
             allowed_proposal_paths=spec.allowed_paths,
             recheck_review=recheck_review if review or continuation else None,
             continuation=continuation,
+            checkpoint_completed_proposal=spec.checkpoint_completed_proposal,
         )
         active = attempt.active
         if attempt.proposal_json is None:
@@ -1908,11 +1997,13 @@ class ControlledRelay:
         version = stored.get("task_version")
         wave = admission.get("wave_sha256")
         submit = admission.get("submit_for_review", False)
+        checkpoint = admission.get("checkpoint_completed_proposal", False)
         exact_launch = (
             wave is not None
             or pin is not None
             or expected_source is not None
             or continuation is not None
+            or checkpoint
         )
         if (
             context_id is None
@@ -1931,6 +2022,9 @@ class ControlledRelay:
             or type(admission.get("initial_task_version")) is not int
             or not 1 <= admission["initial_task_version"] < version
             or type(submit) is not bool
+            or type(checkpoint) is not bool
+            or checkpoint
+            and mode != "codex_proposal"
             or (
                 continuation is not None
                 and (
@@ -2068,6 +2162,7 @@ class ControlledRelay:
             cast(ClientKind | None, review_client),
             continuation,
             cast(ClientKind | None, observed.client if continuation is not None else None),
+            checkpoint,
         )
         request = _proposal_request_id(key, contract)
         expected_launch = digest([project_id, session_id, task_id, request])

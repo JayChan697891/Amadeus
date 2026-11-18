@@ -191,9 +191,21 @@ def test_prompt_refuses_insecure_terminal_without_fallback(terminal_host, monkey
 
 @pytest.mark.parametrize(
     "deny",
-    [None, "launch", "staging", "execution", "completion", "receiver-launch", "receiver-failed"],
+    [
+        None,
+        "checkpoint",
+        "launch",
+        "staging",
+        "execution",
+        "completion",
+        "receiver-launch",
+        "receiver-failed",
+    ],
 )
 async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host, monkeypatch, deny):
+    checkpoint = deny == "checkpoint"
+    if checkpoint:
+        deny = None
     core, owner, _, old_auth, _, _, source = world
     cancel_fixture_load(world)
     binary = source.parent / "fixture-codex"
@@ -207,6 +219,7 @@ async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host,
         codex_sha256=terminal_host["hashlib"].sha256(binary.read_bytes()).hexdigest(),
         codex_version="0.167.0-alpha.3.2",
         codex_home=home,
+        checkpoint_completed_proposal=checkpoint,
     )
     profile = terminal_host["DockerProfile"](
         "sha256:" + "b" * 64,
@@ -221,6 +234,9 @@ async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host,
             options["stdin_text"].split("Host contract: ", 1)[1]
         )
         (path,) = contract["allowed_paths"]
+        assert contract.get("checkpoint_completed_proposal", False) is (
+            checkpoint and path == "solution.py"
+        )
         launched.append(path)
         if path == "review.md" and deny == "receiver-failed":
             captured = await original(

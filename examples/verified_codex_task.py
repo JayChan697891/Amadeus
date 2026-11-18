@@ -323,7 +323,12 @@ async def run(args, owner_token, goal, cases, profile):
         result = await VerifiedProposalFlow(core, root, receipts).run_once(
             producer,
             CodexProposalInput(
-                task["id"], task["version"], instruction, ("solution.py",), submit_for_review=True
+                task["id"],
+                task["version"],
+                instruction,
+                ("solution.py",),
+                submit_for_review=True,
+                checkpoint_completed_proposal=args.checkpoint_completed_proposal,
             ),
             handoff,
             admin_token=owner_token,
@@ -381,6 +386,11 @@ def main():
         parser.add_argument("--" + name, required=True, type=Path)
     for name in ("project-id", "codex-sha256", "codex-version", "image-id"):
         parser.add_argument("--" + name, required=True)
+    parser.add_argument(
+        "--checkpoint-completed-proposal",
+        action="store_true",
+        help="Save one complete eligible producer proposal before observed terminal; no partial drafts.",
+    )
     args = parser.parse_args()
     if sys.platform != "linux" or not __debug__:
         parser.error("This example requires Linux and the existing local Docker verifier.")

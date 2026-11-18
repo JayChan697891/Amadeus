@@ -214,6 +214,9 @@ def _progress(
     admission = relay._read_receipt(key, "incomplete", durable=True)
     if admission is None:
         _reject()
+    checkpoint = admission.get("checkpoint_completed_proposal", False)
+    if type(checkpoint) is not bool or checkpoint and admission.get("mode") != "codex_proposal":
+        _reject()
     try:
         source_pin = (
             ProposalContextPin(**admission["input_context"])
@@ -236,6 +239,7 @@ def _progress(
             None,
             prior,
             admission.get("continuation_client") if prior is not None else None,
+            checkpoint,
         )
     except (TypeError, KeyError, ValueError):
         _reject()

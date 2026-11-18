@@ -179,6 +179,7 @@ class CapturedProcess:
         self._truncated: set[int] = set()
         self._reason: CaptureState | None = None
         self._error: str | None = None
+        self._progress_cache: CaptureResult | None = None
         self._capture_broken = False
         self._timer: asyncio.TimerHandle | None = None
         self._grace: asyncio.TimerHandle | None = None
@@ -325,6 +326,7 @@ class CapturedProcess:
         if self._done.done():
             return
         self._state, self._error = state, error
+        self._progress_cache = None
         self._finished = self._loop.time()
         for timer in (self._timer, self._grace, self._kill_confirmation):
             if timer is not None:
@@ -358,6 +360,43 @@ class CapturedProcess:
 
     async def snapshot(self) -> CaptureSnapshot:
         return self._view()
+
+    def progress_snapshot(self) -> CaptureResult | None:
+        """Copy bounded private buffers while the owned parent is observed running.
+
+        Same-loop observation only; it proves neither model success nor future
+        liveness. A stop request, expired deadline or observed exit is ineligible.
+        """
+        if asyncio.get_running_loop() is not self._loop:
+            raise AgentSyncError("validation_error", "Capture belongs to another event loop.")
+        snapshot = self._view()
+        if (
+            self._transport is None
+            or self._reason is not None
+            or self._capture_broken
+            or snapshot.state != "running"
+            or snapshot.exit_code is not None
+            or snapshot.parent_ended
+            or snapshot.error_code is not None
+            or snapshot.stdout_truncated
+            or snapshot.stderr_truncated
+            or self._loop.time() >= snapshot.deadline_at
+        ):
+            return None
+        cached = self._progress_cache
+        if cached is not None and cached.snapshot == snapshot:
+            return cached
+        result = CaptureResult(
+            snapshot,
+            cached.stdout
+            if cached and len(cached.stdout) == len(self._stdout)
+            else bytes(self._stdout),
+            cached.stderr
+            if cached and len(cached.stderr) == len(self._stderr)
+            else bytes(self._stderr),
+        )
+        self._progress_cache = result
+        return result
 
     async def wait(self) -> CaptureSnapshot:
         return await asyncio.shield(self._done)

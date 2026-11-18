@@ -96,6 +96,18 @@ async def proposal_wave(pilot, monkeypatch):
         if "Wait fixture" in stdin_text:
             program = "import time;time.sleep(60)"
             payload = ""
+        if "Checkpoint fixture" in stdin_text:
+            program = (
+                "import base64,sys,time,zlib;"
+                "lines=zlib.decompress(base64.b64decode(sys.stdin.buffer.read())).splitlines(True);"
+                "sys.stdout.buffer.write(b''.join(lines[:3]));sys.stdout.buffer.flush();"
+                "time.sleep(0.5);"
+                + (
+                    "sys.exit(17)"
+                    if "failed" in stdin_text
+                    else "sys.stdout.buffer.write(lines[3]);sys.stdout.buffer.flush()"
+                )
+            )
         capture = await original_start(
             (sys.executable, "-I", "-c", program),
             cwd=cwd,
@@ -139,6 +151,96 @@ async def proposal_wave(pilot, monkeypatch):
         for capture in captures:
             await capture.cancel()
             assert (await capture.snapshot()).parent_ended is True
+
+
+@pytest.mark.parametrize("enabled", [False, True])
+@pytest.mark.parametrize("failed", [False, True])
+async def test_live_completed_proposal_checkpoint(pilot, world, proposal_wave, enabled, failed):
+    from agentsync.continuation import OwnerContinuation
+
+    core, owner, _, auth, task, _, source, receipts, _ = pilot
+    relay, item, _, approvals, captures, _ = proposal_wave
+    cancel_fixture_load(world)
+    spec = replace(
+        item.task,
+        instruction="Checkpoint fixture" + (" failed" if failed else " succeeded"),
+    )
+    legacy = relay.preview_codex_proposal(item.first, spec, admin_token=owner["admin_token"])
+    spec = replace(spec, checkpoint_completed_proposal=enabled)
+    selected = replace(item, task=spec)
+    preview = relay.preview_codex_proposal(item.first, spec, admin_token=owner["admin_token"])
+    assert (preview.plan_sha256 == legacy.plan_sha256) is (not enabled)
+    queue = RelayQueue(relay)
+    assert (
+        queue.preview(
+            (replace(item, task=replace(spec, checkpoint_completed_proposal=False)),),
+            admin_token=owner["admin_token"],
+        ).selection_sha256
+        == queue.preview((selected,), admin_token=owner["admin_token"]).selection_sha256
+    ) is (not enabled)
+    outcome = await queue.run_ready_once(
+        (selected,), request_id="live-checkpoint", admin_token=owner["admin_token"]
+    )
+    assert outcome.state == ("incomplete" if failed else "resolved")
+    key = relay._key(item.first, task["id"])
+    checkpoint = relay._read_receipt(key, "proposal-progress", durable=True)
+    assert (checkpoint is not None) is enabled
+    if enabled:
+        context = core.execute(
+            "get_context", {**auth, "context_id": checkpoint["context_id"], "version": 1}
+        )
+        assert json.loads(context["content"])["files"] == [
+            {"path": "answer.py", "content": "# INERT_QUEUE_FIXTURE\n"}
+        ]
+        assert (
+            hashlib.sha256(context["content"].encode()).hexdigest() == checkpoint["content_sha256"]
+        )
+        if failed:
+            # Real preterminal publication, not post-failure stdout recovery.
+            pin = OwnerContinuation(core, source.parent, receipts).pin_failed_progress(
+                owner["project_id"],
+                task["id"],
+                context_id=checkpoint["context_id"],
+                context_version=1,
+                content_sha256=checkpoint["content_sha256"],
+                admin_token=owner["admin_token"],
+            )
+            assert pin.source_task_id == task["id"]
+    assert len(approvals) == len(captures) == 1
+    with pytest.raises(AgentSyncError) as replay:
+        await queue.run_ready_once(
+            (selected,), request_id="live-checkpoint", admin_token=owner["admin_token"]
+        )
+    assert replay.value.code == "attempt_already_reserved"
+    assert len(approvals) == len(captures) == 1
+    assert relay._read_receipt(key, "proposal-progress", durable=True) == checkpoint
+
+
+async def test_live_checkpoint_rechecks_producer_lease(pilot, proposal_wave, monkeypatch):
+    core, owner, _, _, task, _, _, _, _ = pilot
+    relay, item, _, _, captures, _ = proposal_wave
+    original = relay.publish_progress_checkpoint
+
+    def expired(*args, **kwargs):
+        with connect(core.db_path) as db:
+            db.execute("UPDATE tasks SET lease_expires_at=0 WHERE id=?", (task["id"],))
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(relay, "publish_progress_checkpoint", expired)
+    before = counts(core)
+    with pytest.raises(AgentSyncError):
+        await relay.run_codex_proposal_once(
+            item.first,
+            replace(
+                item.task,
+                instruction="Checkpoint fixture succeeded",
+                checkpoint_completed_proposal=True,
+            ),
+            admin_token=owner["admin_token"],
+        )
+    assert relay._read_receipt(relay._key(item.first, task["id"]), "proposal-progress") is None
+    assert len(captures) == 1 and (await captures[0].snapshot()).parent_ended
+    assert counts(core)["context_revisions"] == before["context_revisions"]
 
 
 def cancel_fixture_load(world):

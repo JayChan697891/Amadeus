@@ -4,7 +4,7 @@ import asyncio
 import hashlib
 import json
 import sys
-from dataclasses import FrozenInstanceError
+from dataclasses import FrozenInstanceError, replace
 
 import pytest
 
@@ -65,6 +65,129 @@ def factory_for(tmp_path, *, text=None, exit_code=0, delay=0, timeout=3, output_
         )
 
     return factory
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "case",
+    [
+        "valid",
+        "unicode",
+        "startup-warning",
+        "terminal",
+        "partial",
+        "malformed",
+        "utf8",
+        "tool",
+        "error",
+        "multiple",
+        "truncated",
+    ],
+)
+async def test_live_progress_requires_entire_eligible_prefix(tmp_path, monkeypatch, case):
+    import agentsync.adapters.codex as codex
+
+    message = "proposal\u2028\u0085界" if case == "unicode" else "proposal"
+    events = [
+        {"type": "thread.started", "thread_id": "live-fixture"},
+        {"type": "turn.started"},
+        {
+            "type": "item.completed",
+            "item": {"id": "m", "type": "agent_message", "text": message},
+        },
+    ]
+    if case == "startup-warning":
+        events.insert(
+            1,
+            {
+                "type": "item.completed",
+                "item": {"id": "warning", "type": "error", "message": "Supported pre-turn warning"},
+            },
+        )
+    if case == "terminal":
+        events.append({"type": "turn.completed"})
+    elif case in {"tool", "error"}:
+        events.append(
+            {
+                "type": "item.completed",
+                "item": {
+                    "id": "x",
+                    "type": "command_execution" if case == "tool" else "error",
+                    "message": "fixture",
+                },
+            }
+        )
+    elif case == "multiple":
+        events.append(
+            {
+                "type": "item.completed",
+                "item": {"id": "n", "type": "agent_message", "text": "second"},
+            }
+        )
+    prefix = ("\n".join(json.dumps(event, ensure_ascii=False) for event in events) + "\n").encode()
+    prefix += {"partial": b'{"type":"turn.comp', "malformed": b"bad\n", "utf8": b"\xff\n"}.get(
+        case, b""
+    )
+    processes = []
+
+    async def factory(_task):
+        capture = await CapturedProcess.start(
+            (
+                sys.executable,
+                "-I",
+                "-u",
+                "-c",
+                f"import sys,time;sys.stdout.buffer.write({prefix!r});sys.stdout.flush();time.sleep(10)",
+            ),
+            cwd=tmp_path,
+            stdin_text="",
+            timeout_seconds=3,
+            output_limit=32 if case == "truncated" else 1048576,
+        )
+        processes.append(capture)
+        return capture
+
+    adapter = CodexAdapter("p", "s", factory=factory)
+    run = await adapter.start_task(task(timeout_seconds=3))
+    try:
+        for _ in range(300):
+            if processes and (await processes[0].snapshot()).stdout_bytes >= min(
+                len(prefix), 32 if case == "truncated" else len(prefix)
+            ):
+                break
+            await asyncio.sleep(0.01)
+        else:
+            pytest.fail("Owned fixture did not emit its prefix")
+        calls = []
+        original = codex.parse_codex_jsonl
+
+        def parse(*args, **kwargs):
+            calls.append(None)
+            return original(*args, **kwargs)
+
+        monkeypatch.setattr(codex, "parse_codex_jsonl", parse)
+        progress = adapter.get_progress(run.run_id)
+        assert (progress is not None) is (case in {"valid", "unicode", "startup-warning"})
+        assert adapter.get_progress(run.run_id) == progress
+        assert len(calls) <= 1  # unchanged output is not reparsed on each poll
+        if progress:
+            assert progress.message == message and progress.run.run_id == run.run_id
+            assert progress.stdout_sha256 == hashlib.sha256(prefix).hexdigest()
+            assert "proposal" not in repr(progress)
+            # A deadline can pass before its queued timer callback is serviced.
+            original_deadline = processes[0]._deadline
+            processes[0]._deadline = asyncio.get_running_loop().time() - 1
+            assert adapter.get_progress(run.run_id) is None
+            processes[0]._deadline = original_deadline
+            entry = adapter._entry(run.run_id)
+            original_view = entry.view
+            entry.view = replace(entry.view, started_at=asyncio.get_running_loop().time() - 4)
+            assert adapter.get_progress(run.run_id) is None
+            entry.view = original_view
+    finally:
+        await adapter.cancel_task(run.run_id)
+        assert adapter.get_progress(run.run_id) is None
+        assert (await processes[0].snapshot()).parent_ended
 
 
 @pytest.mark.asyncio

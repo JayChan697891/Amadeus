@@ -9,6 +9,16 @@ explicitly authorized making the repository public. Anonymous preview download
 is verified; hosted Actions stays disabled and formal Release stays BLOCKED.
 The prepared311 sdist matrix is now RUNNING in original native6844 after delivery.
 
+Next P0 implementation: optional completed-proposal progress capture in the real
+producer path, bound to launch approval and the existing live Core lease. Its
+exit condition is affected regression plus an independently reviewed, bounded
+real-client observation; deterministic process fixtures alone cannot prove that
+Codex offers a checkpoint window. Partial drafts, terminal/unknown relaxation
+and unattended candidate execution are outside this increment. Development is
+a123, separate from published a122 r5. Complete the current311 sdist run without
+interruption, then prioritize a123 affected checks over more full platform runs.
+The remaining matrix stays in node C and is neither removed nor marked passed.
+
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source

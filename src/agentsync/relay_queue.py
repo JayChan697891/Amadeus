@@ -304,6 +304,11 @@ def _selection_pin(selected: tuple[_QueueItem, ...]) -> str:
                     item.first_capabilities,
                     *([asdict(item.task.input_context)] if item.task.input_context else []),
                     *(
+                        [{"checkpoint_completed_proposal": True}]
+                        if item.task.checkpoint_completed_proposal
+                        else []
+                    ),
+                    *(
                         [asdict(item.task.continuation)]
                         if isinstance(item, ContinuationQueueItem)
                         else []

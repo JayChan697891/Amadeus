@@ -2,6 +2,31 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+P0 next product increment is a123: an opt-in terminal/SDK producer checkpoint
+for one complete valid proposal observed before process terminal. It keeps the
+same owner approval, exact launch binding, worktree and live lease checks; it
+does not recover partial drafts or promote timeout/unknown results. Runtime,
+terminal wiring and17 new deterministic checks are implemented, but pytest and
+real-client validation are NOT RUN. Static checks passed for the frozen working
+files, and mypy passed all96 source files. Root/Astra accepted code preparation
+only; affected regression remains pending. The [preparation review](acceptance/evidence/core-preview-a123/completed-proposal-checkpoint/preparation-review.json)
+retains the initial static failure and exact static receipt. The subsequent
+[startup-warning compatibility repair](acceptance/evidence/core-preview-a123/completed-proposal-checkpoint/startup-warning-preparation.json)
+preserves supported pre-turn warnings while refusing in-turn errors. Revised
+static/type checks passed; Root matched282 frozen source files,97 installed
+members and three actual offline installation receipts. Published r5
+and its a122 evidence are unchanged. Finish the already-running native6844 first,
+then test this increment in D:/agentsync-debug/m123-progress; do not start another
+full platform matrix before the P0 affected checks. No new M5 substage is created.
+Prepared one-shot regression entry (NOT RUN):
+`D:/agentsync-debug/m123-progress/venv/Scripts/python.exe -I -B D:/agentsync-debug/m123-progress/run-affected.py`.
+It selects six affected files against installed a123, saves process receipts and
+sanitized JUnit, and refuses an existing run directory. The source snapshot and
+97 installed members are pinned; no F-drive checkout import is intended. The
+[driver text](acceptance/evidence/core-preview-a123/completed-proposal-checkpoint/run-affected.txt)
+is preserved for recovery. Actual installation fc26ae exit0 and Root hash review
+4c3a9e cover preparation only. Do not run it before6844 reaches observed terminal.
+
 Owner explicitly authorized public repository visibility after the private
 prerelease. The repository is now PUBLIC, confirmed by authenticated settings
 and anonymous repository/release requests; anonymous ZIP download is341993 bytes
@@ -17,8 +42,9 @@ Owner-authorized GitHub preview publication completed2026-11-18T04:53:01Z:
 [v0.3.0a122-preview-r5](https://github.com/JayChan697891/Amadeus/releases/tag/v0.3.0a122-preview-r5),
 target f1676a12342f659b5644729ca83bbd9cb5a594c8. Draft=false, prerelease=true;
 all four uploaded assets have matching server SHA-256/size. A separate connector
-readback confirmed the final tag download URLs after publication. Repository
-remains private. Actions were disabled and read back before push/tag/publication;
+readback confirmed the final tag download URLs after publication. At that point
+the repository was private; the later owner-authorized public change is above.
+Actions were disabled and read back before push/tag/publication;
 no hosted job was dispatched, main was not modified or merged. Formal Release
 remains BLOCKED. [Publication receipt](../releases/0.3.0a122/owner-preview-document-review-r5/publication.json).
 The already prepared311 sdist full suite has now started once, after preview

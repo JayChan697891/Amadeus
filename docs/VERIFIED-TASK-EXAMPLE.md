@@ -80,6 +80,25 @@ model launches also require a fresh cost/isolation confirmation. Inspect the
 actual candidate source before staging, the image and cases before execution,
 and the execution proof and reviewer before completion. There is no `--yes`.
 
+On the development branch, `--checkpoint-completed-proposal` optionally saves one
+complete producer proposal as unverified Core context while its owned Codex parent
+is still observed running, before any observed terminal event. The flag defaults
+to off and changes the exact launch approval. This requires the matching development
+runtime; it is **not included in the published a122/r5 ZIP or wheel** and has no new
+real-Codex validation yet. It saves neither partial drafts nor reasoning: the entire
+bounded UTF-8 JSONL prefix must end on a complete line, contain exactly one complete
+valid proposal, and contain no terminal, in-turn error or tool event. The parser's
+existing supported completed startup warnings before `turn.started` are permitted.
+A terminal in the same
+buffer, cancellation, truncation or expiry prevents a checkpoint. There may be no
+eligible window at all. A saved checkpoint does not change the final result or make
+unknown/cancelled/timed-out attempts eligible for continuation; the existing
+confirmed-failure and owner continuation checks still apply. There is no automatic
+resume or extra model call.
+The running/deadline observation is checked immediately before calling Core's
+publication operation. Core then performs its own synchronous checks; this is
+not a guarantee that its database commit precedes the OS process exit or deadline.
+
 Approval input is hidden and cancellable. Waiting for launch approval shares the
 existing 90-second task budget; the complete flow has a 600-second budget. If a
 deadline expires, the pending input is cancelled and terminal settings restored.
@@ -143,9 +162,9 @@ owner credentials; none are printed or saved by this helper. If interrupted or
 the outcome is unknown, inspect the task before another decision. There is no
 automatic retry or receiver restart.
 
-This document-review entry does not repair a failed model turn. The ordinary
-terminal publishes a proposal only after a successful model result; it does not
-publish an unfinished progress checkpoint. Earlier composed-recovery evidence
+This document-review entry does not repair a failed model turn. The published
+a122/r5 terminal publishes a proposal only after a successful model result; it
+does not publish an unfinished progress checkpoint. Earlier composed-recovery evidence
 used an explicitly host-authored checkpoint and does not establish automatic
 model-progress recovery for this example.
 
