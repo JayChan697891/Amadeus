@@ -2,6 +2,15 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The owner has now explicitly approved the new repaired-terminal experiment,
+including its temporary login copy/cleanup, at most2 subscription calls and one
+conditional exact149-byte candidate verification/completion. [Exact grant](acceptance/evidence/core-preview-a122/terminal-repaired/owner-grant-20261118.json).
+It is recorded against the existing reviewed ready hash; no new fixture or wider
+authority is inferred. Execution is queued until the running Linux source suite
+finishes and its results/workers/containers are checked. Do not interrupt that
+suite or copy model login while its tests run. Windows can continue separately.
+The experiment remains NOT RUN; preserve all one-attempt/no-retry conditions.
+
 The current [owner preview r3](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md)
 fixes an installation reproducibility gap: the quick start now passes a bundled
 Windows3.12 constraints file. Offline pip dry-run resolves32 distributions exactly
@@ -49,9 +58,9 @@ normally stopped with no model/login mount; the fixture is preserved.
 [Concrete next plan](acceptance/evidence/core-preview-a122/terminal-repaired/execution-plan.md).
 
 This is a new post-repair experiment, not a replay of the earlier failed fixture.
-It requires fresh explicit permission for this attempt, its temporary login copy
-and conditional one-time candidate execution. Until then model/terminal/candidate
-execution remain NOT RUN. On permission, use the prepared local driver and exact
+Its fresh explicit permission is now recorded above for this attempt, temporary
+login copy and conditional one-time candidate execution. Model/terminal/candidate
+execution remain NOT RUN while the Linux suite owns the environment. Use the prepared local driver and exact
 ready/plan hashes; do not register another project or rebuild the frozen package.
 
 The terminal example now includes `examples/initialize_terminal_project.py` for

@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-11-18T01:47:02.560754+00:00",
+  "authorized": true,
+  "temporary_auth_copy_authorized": true,
+  "ready_sha256": "dbbfcc1fb54a9c96a55fa389557a39f934038834af455836782634a7d0935da1",
+  "approved_plan_commit": "6dcad6f45530be72c220e0b9e402cc690a1d6c9d",
+  "project_id": "4b3c5f79-537a-4673-b3d5-325744f988b3",
+  "candidate_sha256": "8172bd124ebb1bb6a3b71170a7e40e0beab67145a24801e14e9c7887a55c8b44",
+  "max_subscription_calls": 2,
+  "max_candidate_executions": 1,
+  "paid_api_allowed": false,
+  "extra_fees_allowed": false,
+  "retry_after_failure_unknown_or_mismatch": false,
+  "owner_answer": "允许本次新的完整验证及临时复制清理",
+  "question_call_id": "call_9840c08086ae4c3587287a12878e85f3",
+  "execution_status": "NOT RUN; wait for the existing Linux source suite to end and inspect its terminal results first",
+  "model_auth_accessed": false,
+  "formal_release": "BLOCKED"
+}
