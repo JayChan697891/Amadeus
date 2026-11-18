@@ -40,6 +40,17 @@ fixture checkpoint is not real-Agent recovery, and a valid final response with n
 observed checkpoint must remain accurately reported as such. Published r5 stays
 unchanged while this opt-in a123 development capability gains real evidence.
 
+The same a123 runtime now also has a fresh Linux3.14.7 wheel installation and
+seven-file regression:217 pass/1 explicit Docker opt-in skip,218 identities
+matching the Windows joint result. The four native Linux terminal-input checks
+passed. Root/Astra accepted actual XML, seven process receipts,13 archived originals
+and unchanged97-member installed origin for this limited scope. The initial Windows ZIP-mode
+preparation failure is preserved alongside its successful, separately bound
+build repair. This adds no product stage and does not repeat the full matrix.
+Next prepare one producer-only, subscription-only checkpoint/final observation;
+the driver and true client result are still NOT RUN. Do not execute candidate
+code or launch a receiver under this observation's read-only scope.
+
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source

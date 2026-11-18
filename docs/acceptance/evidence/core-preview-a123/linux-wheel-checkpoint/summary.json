@@ -1,0 +1,64 @@
+{
+  "status": "pass",
+  "native": "51503 / 642c29 exit0",
+  "scope": "Linux 3.14.7 installed a123 wheel; seven affected files only",
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "process_receipts": 7,
+  "unique_cases": 218,
+  "pass": 217,
+  "skip": 1,
+  "failure": 0,
+  "error": 0,
+  "windows_joint_identity_match": true,
+  "platform_outcome_changes": [
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[cancel]",
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[line]",
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[eof]",
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[overlong]",
+      "windows": "skipped",
+      "linux": "pass"
+    }
+  ],
+  "junit_sha256": "87f538c55144ba793e3fe97e02dd28a46ab121655f6c252c975ca9f109f19533",
+  "wheel_sha256": "d1121821ed1f51714cab11f289fe6232c230ea31529331b3ab09274a511776c8",
+  "real_clients": "NOT RUN",
+  "candidate_execution": "NOT RUN",
+  "full_suite": "NOT RUN",
+  "formal_release": "BLOCKED",
+  "independent_review": {
+    "status": "accepted_scoped",
+    "reviewer": "Astra /root/astra_recovery_scope",
+    "basis": "Actual 218-case XML; same Windows joint identities and four platform differences; seven process receipts/log hashes; before/after origin; 282 source files and 97 runtime members; 13 exact Linux archive pairs; two successful build receipts and preserved original pre-build failure.",
+    "limits": "No full suite, real Codex checkpoint timing or formal Release acceptance."
+  },
+  "build": {
+    "native": "632177 exit0",
+    "root_review": "fb657c exit0",
+    "initial_attempt": "31a63c exit1 before build; preserved",
+    "repair": "Git regular blob modes validate Windows ZIP files without POSIX attributes; no product change"
+  },
+  "elapsed_pytest_seconds": 166.5,
+  "skip_reason": "Docker proposal case requires explicit pinned local image; opt-in environment intentionally absent",
+  "published_preview": "v0.3.0a122-preview-r5 unchanged",
+  "next_step": "Prepare and independently review at most one subscription-only read-only real Codex checkpoint/final observation, with no artificial output pacing, no candidate execution and no retry after failed/unknown/missing window. Not prepared or launched.",
+  "raw_output": "Private raw stdout and XML remain only in D-drive VM; sanitized allowlist archived.",
+  "vm": {
+    "pid": 4404,
+    "metadata": "D:/agentsync-debug/m123-live/vm-run/process.json",
+    "state": "running; guest targeted test completed; no model login copied"
+  }
+}

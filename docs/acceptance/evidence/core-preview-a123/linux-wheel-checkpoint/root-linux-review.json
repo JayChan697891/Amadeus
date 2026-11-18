@@ -1,0 +1,42 @@
+{
+  "status": "pass",
+  "native": "51503 / 642c29 exit0",
+  "scope": "Linux 3.14.7 installed a123 wheel; seven affected files only",
+  "source_commit": "a792b6e759aa1990391f8195ba97676a94713f85",
+  "runtime_commit": "bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7",
+  "process_receipts": 7,
+  "unique_cases": 218,
+  "pass": 217,
+  "skip": 1,
+  "failure": 0,
+  "error": 0,
+  "windows_joint_identity_match": true,
+  "platform_outcome_changes": [
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[cancel]",
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[line]",
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[eof]",
+      "windows": "skipped",
+      "linux": "pass"
+    },
+    {
+      "case": "tests.integration.test_verified_codex_terminal.test_real_hidden_terminal_input[overlong]",
+      "windows": "skipped",
+      "linux": "pass"
+    }
+  ],
+  "junit_sha256": "87f538c55144ba793e3fe97e02dd28a46ab121655f6c252c975ca9f109f19533",
+  "wheel_sha256": "d1121821ed1f51714cab11f289fe6232c230ea31529331b3ab09274a511776c8",
+  "real_clients": "NOT RUN",
+  "candidate_execution": "NOT RUN",
+  "full_suite": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

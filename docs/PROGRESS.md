@@ -2,6 +2,33 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+a123 Linux wheel follow-up completed once in51503/642c29 exit0:217 pass,
+one intentionally unconfigured Docker case skipped,218 unique cases,166.50s.
+Root/Astra matched the same218 Windows joint case identities; the four Linux
+native terminal-input cases now pass. Seven actual installation/test/origin
+receipts passed, and all97 installed runtime members remain unchanged. Scoped
+independent review accepted the actual XML/logs and13 archived Linux originals;
+this is neither a full suite nor real-client acceptance.
+The wheel was built from a792b6e759aa1990391f8195ba97676a94713f85,
+with runtime bytes matching bdd808b8e5cd1caa91ec94d69cb11de9aed4cee7.
+The first build preparation failed before building because Windows Git ZIP
+entries lack POSIX file attributes; its original failure remains saved. The
+separate repaired preparation validates Git regular-blob modes instead and
+built successfully in632177; Root independently checked its282 source files,
+97 wheel members and two process receipts in fb657c.
+[Actual Linux evidence](acceptance/evidence/core-preview-a123/linux-wheel-checkpoint/summary.json)
+and [development wheel](../releases/0.3.0a123/explicit-checkpoint/README.md).
+Published preview r5 is unchanged; formal Release stays BLOCKED.
+No test remains active from51503. The local VM remains available, with its
+current process metadata at D:/agentsync-debug/m123-live/vm-run/process.json;
+the older global vm/process.json is historical and must not be used blindly.
+No a123 model login has been copied and no real-client call has run.
+Resume with preparation/review of one read-only real checkpoint/final
+observation through RelayQueue.run_ready_once, without artificial pacing,
+candidate execution, a receiver call or retry after failed/unknown/no-window
+outcomes. Reuse the initializer and existing private-capture/cleanup helpers;
+do not launch the full VerifiedProposalFlow. This live driver is NOT PREPARED.
+
 Current a123 implementation: the explicit, version-bound checkpoint / final
 two-message contract is written and Root/Astra have accepted code preparation.
 It keeps strict proposal validation, default-off compatibility and all existing
