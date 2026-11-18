@@ -1,0 +1,204 @@
+{
+  "created_at": "2026-11-18T00:03:39.846877+00:00",
+  "example_commit": "13eb0759138de485e2ebba445e93369a28e3c916",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "runtime_version": "0.3.0a122",
+  "scope": "Advanced Linux terminal example; actual Core/Git/owned protocol processes, synthetic verifier and prompt decisions",
+  "files_sha256": {
+    "examples/verified_codex_task.py": "c4540ffda772877e4516b12b7673e256b70d4f9f90c6b39dc5638efcc5673ae9",
+    "tests/integration/test_verified_codex_terminal.py": "807ae6f02bde7ce395e408a20f1739499a13fd37bc5f8a6a48526357160e5d3a"
+  },
+  "runs": [
+    {
+      "file": "windows-junit.xml",
+      "scope": "Windows first fixture",
+      "host": "1642 initial host",
+      "tests": "05c2 initial test",
+      "native": "6261d7",
+      "exit_code": 1,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "f8f3e27358932b6cf538b0637d755ea34917ce7c9a721ac6eac3f6e2877b5cd2"
+    },
+    {
+      "file": "windows-fixed-junit.xml",
+      "scope": "Windows six baseline cases",
+      "host": "1642 initial host",
+      "tests": "f725 test before formatting",
+      "native": "a0910e",
+      "exit_code": 0,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "7feb7f01fedf68350d508f3ba126b6dcac898ee2676c68816fc8862d0c723045"
+    },
+    {
+      "file": "linux-junit.xml",
+      "scope": "Linux six baseline cases",
+      "host": "1642 initial host",
+      "tests": "e8d7 formatted test",
+      "native": "dfc922",
+      "exit_code": 0,
+      "passed": 6,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "23fcce98b32cfe5634f955b8819e75fcd5e00a5251f7abdde77ca15f9b15bd79"
+    },
+    {
+      "file": "regression-before-junit.xml",
+      "scope": "Original host launch refusal: did not reproduce bug",
+      "host": "1642 initial host",
+      "tests": "5179 receiver refusal test",
+      "native": "2f1812",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "219202f5156bd0cb752f04feb70bf9f19d5e5ef94b40e839f5ea03dc8499d37e"
+    },
+    {
+      "file": "failed-exit-before-junit.xml",
+      "scope": "Original host exit3: reproduced incorrect success",
+      "host": "1642 initial host",
+      "tests": "849c exit3 regression",
+      "native": "d9c9d6",
+      "exit_code": 1,
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "f4c8dcec6ce90406863de67092d32cc2567f648b18c4458aba5e901e77911f96"
+    },
+    {
+      "file": "windows-final-junit.xml",
+      "scope": "Windows affected cases: tuple/list assertion failure retained",
+      "host": "13eb075 final host",
+      "tests": "849c exit3 regression",
+      "native": "af74d1",
+      "exit_code": 1,
+      "passed": 2,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "52578f199c28d42ac7d690118f5c9f1b69cb81161956e7f3c8b979c1c794f75f"
+    },
+    {
+      "file": "linux-final-junit.xml",
+      "scope": "Linux affected cases: tuple/list assertion failure retained",
+      "host": "13eb075 final host",
+      "tests": "849c exit3 regression",
+      "native": "ee90ff child exit1; controller exit0",
+      "exit_code": 1,
+      "passed": 2,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "92382381371a73d66be4126cfb95ec982a6182fa9c0b2c4815be486bcf095128"
+    },
+    {
+      "file": "windows-exit-fixed-junit.xml",
+      "scope": "Windows corrected exit3 assertion only",
+      "host": "13eb075 final host",
+      "tests": "807a final test",
+      "native": "c4e80f",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "fc7313be105242bfa43173244e5e31a2de538f5917a5a1fddd2b225de8f8e85d"
+    },
+    {
+      "file": "linux-shape-junit.xml",
+      "scope": "Linux corrected exit3 assertion only",
+      "host": "13eb075 final host",
+      "tests": "807a final test",
+      "native": "1e8c43",
+      "exit_code": 0,
+      "passed": 1,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "0c0b0f953f4d1c09d338ed6d057efb1e40245a8a087c961d5a14803fcf96a152"
+    }
+  ],
+  "interpretation": {
+    "distinct_behaviors": 8,
+    "fresh_full_suite": false,
+    "unaffected_baseline_cases_reused": true,
+    "source_change": "Only final exit predicate added after baseline; no Core or installed runtime modification",
+    "bug_reproduced": "Receiver owned process exit3 produced resolved/confirmed_failed; original host incorrectly returned0",
+    "fix": "Require exact producer completed/verified and exact receiver review/unverified plus matching ready_for_review wave",
+    "receiver_core_state": "running/unverified after confirmed local process failure; process status is not Core task status",
+    "fixture_repairs": [
+      "Replace only codex_invocation.sys proxy, not global sys.platform",
+      "Normalize tuple/list representation without changing expected fields"
+    ],
+    "windows_format_only_delta_ast_equal": true,
+    "final_affected_outcomes": "Both platforms passed normal and receiver-refusal cases; corrected receiver-exit3 case separately passed on each. Earlier failures preserved."
+  },
+  "native_entry_checks": {
+    "Windows": "help exit0; unsupported platform exit2; no project created",
+    "Linux": "help exit0; non-terminal refusal exit1; no project created"
+  },
+  "static": {
+    "scope": [
+      "examples/verified_codex_task.py",
+      "tests/integration/test_verified_codex_terminal.py"
+    ],
+    "ruff_check_exit": 0,
+    "ruff_format_check_exit": 0,
+    "diff_check_exit": 0,
+    "native": "e248a8"
+  },
+  "independent_review": {
+    "reviewer": "Astra existing review agent",
+    "decision": "ACCEPT_SCOPED_OFFLINE_EXAMPLE",
+    "root_review": "Actual files, native results, XML, source hashes and original failure inspected"
+  },
+  "runtime": {
+    "installed_members_checked": 97,
+    "unchanged": true,
+    "vm_pid_6516_absent": true,
+    "ports_22222_22223_closed": true,
+    "owned_tests_ended": true,
+    "native_stop_check": "6667b4"
+  },
+  "not_run": [
+    "New terminal entry with real Codex",
+    "New terminal entry with actual Docker candidate execution",
+    "New whole release matrix"
+  ],
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "original_static_fail": "Preserved unchanged; this check covers only the two new Python files",
+  "local_private_artifacts": "D:/agentsync-debug/verified-terminal-20261117 (fixture databases, raw terminal plans and test input archive are not uploaded)",
+  "evidence_sha256": {
+    "exit3-regression-before-shape.py.txt": "849c8b38a82cd38f6c3253a8c4316c55598c32ca7a5c8b5ebeae37236074c81d",
+    "failed-exit-before-junit.xml": "f4c8dcec6ce90406863de67092d32cc2567f648b18c4458aba5e901e77911f96",
+    "initial-example.py.txt": "1642d6c6fdcae740e1f12c626614c314edc3633b64bcb98b96ea92a3cf383fc9",
+    "linux-final-junit.xml": "92382381371a73d66be4126cfb95ec982a6182fa9c0b2c4815be486bcf095128",
+    "linux-final-report.json": "a35e7982f34bcbc499669edbad6235430f01356a48f02357d612559add798ef4",
+    "linux-final.stdout.log": "80b501fb81ac6933c9722c5a84d1a96daa4255b3bc0e612198c18a149239490d",
+    "linux-junit.xml": "23fcce98b32cfe5634f955b8819e75fcd5e00a5251f7abdde77ca15f9b15bd79",
+    "linux-pytest.stdout.log": "434f8a7ba8508965a6814c8428e473fb7b82c7ab41e4757d48ca2be5c74ac2cb",
+    "linux-report.json": "e320836c7045e5312a1776f4f533439ee4ae54909999d03832b2c82b3f7ef401",
+    "linux-shape-junit.xml": "0c0b0f953f4d1c09d338ed6d057efb1e40245a8a087c961d5a14803fcf96a152",
+    "linux-shape-report.json": "46496cd0f12411a8f22a11248785b7cf6a08b7db4b1182be21449372d971e39a",
+    "linux-shape.stdout.log": "475f4caced3177022d08308dd17f383b1628718361e0ed058a6d6e6848c0be21",
+    "normal-shutdown.json": "05b758f6e57a97a401a0df3dc6ac0d6828f6eac373c05afcb562417556e69edf",
+    "old-exit-proof.json": "2e28d1bb550a72ea745ceee7160649a7f55c145436cd498c827652122e72de83",
+    "regression-before-junit.xml": "219202f5156bd0cb752f04feb70bf9f19d5e5ef94b40e839f5ea03dc8499d37e",
+    "windows-exit-fixed-junit.xml": "fc7313be105242bfa43173244e5e31a2de538f5917a5a1fddd2b225de8f8e85d",
+    "windows-final-junit.xml": "52578f199c28d42ac7d690118f5c9f1b69cb81161956e7f3c8b979c1c794f75f",
+    "windows-fixed-junit.xml": "7feb7f01fedf68350d508f3ba126b6dcac898ee2676c68816fc8862d0c723045",
+    "windows-junit.xml": "f8f3e27358932b6cf538b0637d755ea34917ce7c9a721ac6eac3f6e2877b5cd2",
+    "windows-report.json": "cad4d596704fcdabdf4aa345b9a77067d4126d6dc20ca84b77250c75ca1bcbd0"
+  }
+}

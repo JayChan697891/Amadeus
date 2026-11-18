@@ -2,6 +2,35 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The next concrete usability gap is now implemented at **13eb075**: an advanced
+Linux terminal host accepts an owner's task and JSON-lines cases, then uses the
+existing `VerifiedProposalFlow` for separately approved launches, staging,
+execution, independent completion and receiver handoff. It uses an existing
+isolated project and hidden owner-token input; no Core change, package rebuild,
+new model grant, credential copy or candidate execution occurred. The a122
+runtime remains frozen at5232e9e. [Usage](VERIFIED-TASK-EXAMPLE.md).
+
+Root found and reproduced an incorrect successful exit when the receiver's owned
+process exited3: a resolved wave can contain confirmed_failed. The example now
+requires the exact producer completed/verified, exact receiver review/unverified
+and its wave ready_for_review. The source task proof is retained after failure;
+the failed process does not itself change the Core receiver from running to failed.
+Windows3.12 and Linux3.14 each passed the initial6 targeted cases. After this fix,
+each affected3-case run had2 passes and1 tuple/list test assertion failure; only
+that assertion was corrected and the failing case passed on both platforms.
+The initial Windows platform-fixture failure and the non-reproducing launch-denial
+probe remain recorded. Root/Astra accept this limited offline example scope;
+8 distinct behaviors are covered across these runs, not a fresh full suite.
+[Exact runs and hashes](acceptance/evidence/core-preview-a122/terminal-host/summary.json).
+
+Actual script help and fail-closed platform/non-terminal checks also passed;
+97 installed runtime members remained unchanged. The owned VM shut down normally,
+and no project test/controller process remains. New-entry real model/Docker E2E
+is **NOT RUN**; historical real-client proof is separate. Next prepare one exact
+terminal-entry live plan using the standing subscription-only grant, retaining
+the separate candidate-execution authorization boundary. Do not repeat completed
+full suites, reopen M5 scope or call this formal Release acceptance.
+
 The first complete a122 installed-sdist suites have finished and received
 independent Root/Astra scoped acceptance: Windows3.12 **2539 pass/57 skip**,
 Linux3.14 **2589 pass/7 skip**, each2596 unique cases and zero failures/errors.
@@ -29,10 +58,9 @@ present the simulated trial as completion of real multi-Agent autonomous behavio
 That inspection found the reusable `VerifiedProposalFlow.run_once` host API,
 documented in M6-ADAPTERS.md, already composes the controlled real path. Existing
 CLI scripts are fixed acceptance/import fixtures, not a general owner task runner.
-The remaining usability choice is one complete thin terminal host example around
-that API, not another Core/orchestrator. Any such entry must retain exact staging,
-execution and completion decisions and must not start a receiver before verified
-producer completion; it is not implemented or claimed accepted here.
+That identified usability gap is now filled by the bounded terminal example above,
+without another Core/orchestrator. Its exact decisions and verified-producer gate
+are retained; its new-entry real-client validation remains NOT RUN.
 Remaining source matrices, unavailable clients/platforms, preserved static FAIL and license review
 remain in original C/Release scope; no gate is removed or historical evidence
 relabelled. No test queue is currently active.

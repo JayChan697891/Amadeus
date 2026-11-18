@@ -17,6 +17,15 @@ setup. This limited trial is available now; it does not complete the original
 real-Agent/independent-execution requirements. Continue the controlled real
 host/SDK usability path next, preserving every exact approval and source binding.
 
+That path now has a thin Linux terminal example at13eb075: owner-supplied task and
+cases, existing project, separate exact launch/staging/execution/completion gates,
+and truthful receiver failure status. Limited offline Windows/Linux checks and
+Root/Astra review cover the example; the frozen a122 runtime is unchanged.
+Next prepare a bounded real terminal-entry plan, reuse the standing subscription
+grant only within its existing limits, and obtain separate exact candidate
+execution consent if needed. New-entry real E2E remains NOT RUN. This is the
+existing A/B delivery work, not a new M5 stage or formal Release approval.
+
 ## Execution adjustment — 2026-11-15
 
 The previously deferred real collaboration/controller-recovery composition has

@@ -80,3 +80,9 @@ action. This example does not automatically resume a producer or verifier.
 Validation of this terminal example is separate from the earlier bounded real
 Codex experiments. Offline protocol/verifier fixtures do not establish real
 client acceptance. Formal Release gates remain unchanged and BLOCKED.
+
+[Recorded checks](acceptance/evidence/core-preview-a122/terminal-host/summary.json)
+cover both installed Windows/Linux runtimes, the exact approval refusals and
+the receiver's actual local process exit. A resolved wave alone is not success:
+the receiver must actually reach review with its matching ready-for-review result.
+This new entry's real model/Docker end-to-end run remains NOT RUN.

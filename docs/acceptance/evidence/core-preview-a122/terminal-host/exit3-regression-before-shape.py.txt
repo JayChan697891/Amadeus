@@ -1,0 +1,179 @@
+"""Terminal host boundaries with owned Python protocol and synthetic verification."""
+
+import getpass
+import json
+import runpy
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+from test_candidate_execution import synthetic_backend
+from test_codex_proposal_relay_queue import cancel_fixture_load
+from test_task_proposals import world as world
+from verified_flow_process_fixture import emit_proposal
+
+from agentsync.adapters import codex_invocation
+from agentsync.adapters.process_capture import CapturedProcess
+from agentsync.errors import AgentSyncError
+from agentsync.verification import candidate_executor
+
+
+@pytest.fixture
+def terminal_host():
+    path = Path(__file__).resolve().parents[2] / "examples/verified_codex_task.py"
+    return runpy.run_path(str(path))
+
+
+def test_prompt_refuses_insecure_terminal_without_fallback(terminal_host, monkeypatch):
+    monkeypatch.setattr(terminal_host["sys"].stdin, "isatty", lambda: False)
+    monkeypatch.setattr(getpass, "getpass", lambda _: pytest.fail("No fallback credential read"))
+    with pytest.raises(ValueError, match="secure_terminal_required"):
+        terminal_host["prompt"]("Private input")
+
+
+@pytest.mark.parametrize(
+    "deny",
+    [None, "launch", "staging", "execution", "completion", "receiver-launch", "receiver-failed"],
+)
+async def test_terminal_uses_real_core_and_exact_decisions(world, terminal_host, monkeypatch, deny):
+    core, owner, _, old_auth, _, _, source = world
+    cancel_fixture_load(world)
+    binary = source.parent / "fixture-codex"
+    binary.write_bytes(b"Known local Python boundary; never execute this file.")
+    home = source.parent / "private-home"
+    home.mkdir()
+    args = SimpleNamespace(
+        root=source.parent,
+        project_id=owner["project_id"],
+        codex=binary,
+        codex_sha256=terminal_host["hashlib"].sha256(binary.read_bytes()).hexdigest(),
+        codex_version="0.167.0-alpha.3.2",
+        codex_home=home,
+    )
+    profile = terminal_host["DockerProfile"](
+        "sha256:" + "b" * 64,
+        (terminal_host["JsonCase"]([2, 3], 5), terminal_host["JsonCase"]([-4, 1], -3)),
+    )
+    records, prompts, launched, verifications, failed_captures = [], [], [], [], []
+    original = CapturedProcess.start
+    content = "import json,sys\nfor line in sys.stdin:\n print(json.dumps(sum(json.loads(line))))\n"
+
+    async def process(_cls, argv, **options):
+        contract, _ = json.JSONDecoder().raw_decode(
+            options["stdin_text"].split("Host contract: ", 1)[1]
+        )
+        (path,) = contract["allowed_paths"]
+        launched.append(path)
+        if path == "review.md" and deny == "receiver-failed":
+            captured = await original(
+                (sys.executable, "-I", "-B", "-c", "raise SystemExit(3)"), **options
+            )
+            failed_captures.append(captured)
+            return captured
+        return await emit_proposal(
+            original,
+            path,
+            content if path == "solution.py" else "Review text.",
+            cwd=options["cwd"],
+            timeout_seconds=options["timeout_seconds"],
+            output_limit=options["output_limit"],
+            env={},
+        )
+
+    def answer(label):
+        prompts.append(label)
+        record = records[-1]
+        if label.startswith("Confirm subscription"):
+            return "CONFIRM"
+        if "launch" in label:
+            rejected = deny == "launch" or (deny == "receiver-launch" and len(launched) == 1)
+            return "wrong" if rejected else record["plan_sha256"]
+        value = record["value"]
+        if record["stage"] == "staging":
+            assert record["proposal_files"] == [{"path": "solution.py", "content": content}]
+            return "wrong" if deny == "staging" else value["plan_sha256"]
+        if record["stage"] == deny:
+            return "wrong"
+        return value["metadata_sha256" if record["stage"] == "execution" else "decision_sha256"]
+
+    def verify(source, **options):
+        verifications.append(source)
+        return synthetic_backend(source, **options)
+
+    # Only approved process/verifier and terminal-input boundaries are synthetic.
+    monkeypatch.setattr(codex_invocation, "sys", SimpleNamespace(platform="linux"))
+    monkeypatch.setattr(CapturedProcess, "start", classmethod(process))
+    monkeypatch.setattr(candidate_executor, "verify_python_json_lines", verify)
+    monkeypatch.setitem(terminal_host["run"].__globals__, "emit", records.append)
+    monkeypatch.setitem(terminal_host["run"].__globals__, "prompt", answer)
+    if deny == "launch":
+        with pytest.raises(AgentSyncError):
+            await terminal_host["run"](
+                args,
+                owner["admin_token"],
+                "Sum JSON arrays.",
+                [{"input": [2, 3], "expected": 5}],
+                profile,
+            )
+        assert launched == []
+        assert verifications == []
+        assert (args.root / "terminal-run/stopped.json").is_file()
+    else:
+        status = await terminal_host["run"](
+            args,
+            owner["admin_token"],
+            "Sum JSON arrays.",
+            [{"input": [2, 3], "expected": 5}],
+            profile,
+        )
+        assert status == int(deny is not None)
+        if deny == "receiver-failed":
+            assert launched == ["solution.py", "review.md"] and len(verifications) == 1
+            (capture,) = failed_captures
+            exited = await capture.get_result()
+            assert exited.snapshot.parent_ended is True and exited.snapshot.exit_code == 3
+            assert exited.stdout == exited.stderr == b""
+            handed = records[-1]["flow"]["handoff"]
+            assert handed["state"] == handed["wave"]["state"] == "resolved"
+            assert handed["wave"]["tasks"] == [
+                {"task_id": handed["task_id"], "state": "confirmed_failed", "failure_code": None}
+            ]
+            tasks = {row["id"]: row for row in records[-1]["tasks"]}
+            assert tasks[handed["pin"]["producer_task_id"]]["status"] == "completed"
+            assert tasks[handed["pin"]["producer_task_id"]]["task_verification"] == "verified"
+            assert tasks[handed["task_id"]]["status"] != "review"
+            assert tasks[handed["task_id"]]["task_verification"] == "unverified"
+        elif deny == "receiver-launch":
+            assert launched == ["solution.py"] and len(verifications) == 1
+            assert records[-1]["flow"]["state"] == "handoff"
+            handed = records[-1]["flow"]["handoff"]
+            tasks = {row["id"]: row for row in records[-1]["tasks"]}
+            assert tasks[handed["pin"]["producer_task_id"]]["status"] == "completed"
+            assert tasks[handed["pin"]["producer_task_id"]]["task_verification"] == "verified"
+            assert tasks[handed["task_id"]]["status"] != "review"
+            assert tasks[handed["task_id"]]["task_verification"] == "unverified"
+            assert not (args.root / "terminal-run/launch-2-approved.json").exists()
+        elif deny is not None:
+            assert launched == ["solution.py"]
+            assert records[-1]["flow"]["state"] == deny + "_denied"
+            assert len(verifications) == int(deny == "completion")
+            assert not (args.root / "terminal-run" / (deny + "-approved.json")).exists()
+            stages = [record["stage"] for record in records if "stage" in record]
+            assert stages == ["staging", "execution", "completion"][: len(stages)]
+            assert stages[-1] == deny
+        else:
+            assert launched == ["solution.py", "review.md"]
+            assert len(verifications) == 1
+            tasks = records[-1]["tasks"]
+            assert any(
+                t["status"] == "completed" and t["task_verification"] == "verified" for t in tasks
+            )
+            assert any(
+                t["status"] == "review" and t["task_verification"] == "unverified" for t in tasks
+            )
+    before = core.execute("list_tasks", old_auth)
+    with pytest.raises(FileExistsError):
+        await terminal_host["run"](args, owner["admin_token"], "Never retry", [], profile)
+    assert core.execute("list_tasks", old_auth) == before
+    assert owner["admin_token"] not in json.dumps(records)
