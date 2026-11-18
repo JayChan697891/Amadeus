@@ -1,0 +1,13 @@
+{
+  "exit_code": 0,
+  "actual_pty": true,
+  "stdin_stdout_stderr_isatty": [
+    true,
+    true,
+    true
+  ],
+  "hidden_input_echoed": false,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "native_output": "{\"tty\": [true, true, true]}\r\nProbe hidden input: \r\n{\"matched\": true}\r\n"
+}

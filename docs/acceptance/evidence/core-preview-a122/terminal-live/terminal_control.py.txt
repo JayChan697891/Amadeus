@@ -1,0 +1,201 @@
+"""One reviewed SSH PTY execution; subsequent approval text comes from local stdin."""
+
+import hashlib
+import json
+import os
+import queue
+import shlex
+import socket
+import stat
+import sys
+import threading
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+REMOTE = "/root/amadeus-terminal-live-a122-20261118"
+PYTHON = "/root/amadeus-m122l/w/bin/python"
+READY_SHA = "c68daf94483ae292749b2697ccf052747029ca05572f27b88caeff023b369f25"
+EXAMPLE_SHA = "c4540ffda772877e4516b12b7673e256b70d4f9f90c6b39dc5638efcc5673ae9"
+LIMIT = 1024 * 1024
+SECONDS = 650
+OWNER_PROMPT = b"Existing project owner token: "
+
+PRELUDE = r"""
+import hashlib,json,os,sys,termios
+from pathlib import Path
+root=Path('/root/amadeus-terminal-live-a122-20261118')
+raw=(root/'ready.json').read_bytes()
+assert hashlib.sha256(raw).hexdigest()==sys.argv[1]
+ready=json.loads(raw)
+argv=ready['command']
+assert argv[:4]==['/root/amadeus-m122l/w/bin/python','-I','-B',str(root/'verified_codex_task.py')]
+assert hashlib.sha256((root/'verified_codex_task.py').read_bytes()).hexdigest()==ready['example_sha256']
+tty=[os.isatty(fd) for fd in (0,1,2)]
+assert all(tty)
+mode=termios.tcgetattr(0)
+mode[3]&=~termios.ECHO
+termios.tcsetattr(0,termios.TCSANOW,mode)
+assert not termios.tcgetattr(0)[3]&termios.ECHO
+os.umask(0o077)
+print(json.dumps({'terminal_tty':tty,'echo':False}),flush=True)
+env={'PATH':'/usr/bin:/bin','HOME':str(root),'TERM':'dumb',
+     'PYTHONDONTWRITEBYTECODE':'1','PYTHONNOUSERSITE':'1',
+     'GIT_CONFIG_NOSYSTEM':'1','GIT_CONFIG_GLOBAL':'/dev/null','GIT_TERMINAL_PROMPT':'0',
+     'DOCKER_HOST':'unix:///var/run/docker.sock',
+     'DOCKER_CONFIG':str(root/'terminal-run/home/.docker')}
+os.execve(argv[0],argv,env)
+"""
+
+
+def save(name, record):
+    with (BASE / name).open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(record, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def timestamp():
+    return datetime.now(UTC).isoformat()
+
+
+def main():
+    if not __debug__ or not sys.flags.isolated or not sys.dont_write_bytecode:
+        raise SystemExit("Use the reviewed installed Python with -I -B.")
+    private = BASE / "private"
+    assert private.is_dir() and private.resolve(strict=True) == private
+    for name in ("terminal-intent.json", "terminal-result.json", "private/terminal.raw"):
+        assert not (BASE / name).exists(), "Existing attempt retained; do not execute again."
+    local_ready = (BASE / "ready.json").read_bytes()
+    assert hashlib.sha256(local_ready).hexdigest() == READY_SHA
+    ready = json.loads(local_ready)
+    assert ready["example_sha256"] == EXAMPLE_SHA
+    record = {
+        "started_at": timestamp(), "status": "unknown", "ready_sha256": READY_SHA,
+        "command": ready["command"], "project_id": ready["project_id"],
+        "exec_requested": False, "owner_input_attempted": False, "owner_input_sent": False,
+        "terminal_bytes": 0, "forwarded_manual_lines": 0, "automatic_approval": False,
+        "automatic_retry": False,
+    }
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    deadline = time.monotonic() + SECONDS
+    connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    try:
+        connection.settimeout(15)
+        connection.connect(("127.0.0.1", 22222))
+        client.connect(
+            "127.0.0.1", port=22222, username="root", sock=connection,
+            key_filename="D:/agentsync-debug/vm/debug_ed25519", look_for_keys=False,
+            allow_agent=False, timeout=15, banner_timeout=15, auth_timeout=15,
+        )
+        with client.open_sftp() as sftp:
+            assert sftp.stat(REMOTE + "/ready.json").st_size <= 65536
+            with sftp.open(REMOTE + "/ready.json", "rb") as stream:
+                assert stream.read() == local_ready
+            owner_path = REMOTE + "/private-owner.json"
+            info = sftp.lstat(owner_path)
+            assert stat.S_ISREG(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o600
+            assert info.st_uid == 0 and 0 < info.st_size <= 8192
+            with sftp.open(owner_path, "rb") as stream:
+                owner = json.loads(stream.read())
+        assert set(owner) == {"project_id", "admin_token"}
+        assert owner["project_id"] == ready["project_id"]
+        token = owner["admin_token"].encode("utf-8")
+        assert 0 < len(token) <= 4096 and b"\n" not in token and b"\r" not in token
+        assert token not in local_ready
+        command = " ".join(shlex.quote(part) for part in (
+            PYTHON, "-I", "-B", "-c", PRELUDE, READY_SHA,
+        ))
+        record["exec_requested"] = True
+        save("terminal-intent.json", record)
+        stdin, stdout, _ = client.exec_command(command, get_pty=True, timeout=15)
+        channel = stdout.channel
+        channel.settimeout(15)
+        lines = queue.Queue()
+
+        def read_manual():
+            try:
+                while line := sys.stdin.buffer.readline(4097):
+                    lines.put(line)
+                lines.put(None)
+            except (OSError, ValueError):
+                lines.put(None)
+
+        pending = b""
+        observed = b""
+        owner_sent = False
+        with (private / "terminal.raw").open("xb") as raw:
+            while True:
+                if time.monotonic() >= deadline and not record.get("observation_overdue"):
+                    record["observation_overdue"] = True
+                    print(json.dumps({"observation": "overdue; retaining the same live PTY"}), flush=True)
+                if channel.recv_ready():
+                    chunk = channel.recv(16384)
+                    record["terminal_bytes"] += len(chunk)
+                    if record["terminal_bytes"] > LIMIT:
+                        raise ValueError("terminal_output_limit")
+                    pending += chunk
+                    if token in pending:
+                        record["credential_echo_blocked"] = True
+                        raise ValueError("credential_echo")
+                    # Hold a possible token prefix across chunks before output or retention.
+                    held = next((size for size in range(min(len(token) - 1, len(pending)), 0, -1)
+                                 if pending.endswith(token[:size])), 0)
+                    public = pending[:-held] if held else pending
+                    pending = pending[-held:] if held else b""
+                    raw.write(public)
+                    raw.flush()
+                    sys.stdout.buffer.write(public)
+                    sys.stdout.buffer.flush()
+                    observed = (observed + public)[-8192:]
+                    if not owner_sent and OWNER_PROMPT in observed:
+                        assert b'"terminal_tty": [true, true, true], "echo": false' in observed
+                        record["owner_input_attempted"] = True
+                        channel.sendall(token + b"\n")
+                        record["owner_input_sent"] = True
+                        owner_sent = True
+                        threading.Thread(target=read_manual, daemon=True).start()
+                if owner_sent:
+                    try:
+                        line = lines.get_nowait()
+                    except queue.Empty:
+                        pass
+                    else:
+                        if line is None:
+                            record["local_stdin_eof"] = True
+                            channel.shutdown_write()
+                        else:
+                            assert len(line) <= 4096 and line.endswith(b"\n")
+                            assert token not in line
+                            channel.sendall(line)
+                            record["forwarded_manual_lines"] += 1
+                if channel.exit_status_ready() and not channel.recv_ready():
+                    code = channel.recv_exit_status()
+                    if code >= 0:
+                        record.update(status="terminal", exit_code=code)
+                    break
+                if channel.closed:
+                    break
+                time.sleep(0.02)
+            record["withheld_suffix_bytes"] = len(pending)
+    except (Exception, KeyboardInterrupt) as error:
+        record["error_type"] = type(error).__name__
+    finally:
+        client.close()
+        connection.close()
+        record["finished_at"] = timestamp()
+        save("terminal-result.json", record)
+    print(json.dumps({key: record[key] for key in ("status", "exec_requested", "owner_input_sent")}
+                     | {"exit_code": record.get("exit_code")}), flush=True)
+    return record.get("exit_code", 1) if record["status"] == "terminal" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
