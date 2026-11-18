@@ -1,0 +1,1 @@
+{"session_authenticated": true, "online": false, "heartbeat_age_seconds": 378.8, "session_remaining_seconds": 3221.2, "task_status": "pending", "version": 1, "attempts": "not_dispatched", "auth_home_empty": true, "model_calls": 0, "diagnosis": "Queue online filter is time-sensitive; authorized pilot refreshes heartbeat before preview."}

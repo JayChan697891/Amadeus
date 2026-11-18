@@ -1,0 +1,111 @@
+"""Guest-only, one owned pilot subprocess; host-exit is written only after real wait."""
+import hashlib
+import json
+import os
+import selectors
+import subprocess
+import sys
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+ROOT = Path("/root/amadeus-checkpoint-a123-20261118")
+PYTHON = "/root/amadeus-m123-live/w/bin/python"
+READY = "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc"
+PLAN = "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4"
+LIMIT = 65536
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+def save(name, value):
+    fd = os.open(ROOT / name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(fd, "w", encoding="utf8") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    fd = os.open(ROOT, os.O_RDONLY | os.O_DIRECTORY)
+    try: os.fsync(fd)
+    finally: os.close(fd)
+
+def main():
+    assert sys.platform == "linux" and os.geteuid() == 0 and __debug__
+    assert sys.flags.isolated and sys.dont_write_bytecode and Path(__file__).resolve() == ROOT / "native_host.py"
+    (expected_grant,) = sys.argv[1:]
+    assert sha(ROOT / "ready.json") == READY and sha(ROOT / "owner-grant.json") == expected_grant
+    ready = json.loads((ROOT / "ready.json").read_bytes())
+    grant = json.loads((ROOT / "owner-grant.json").read_bytes())
+    assert grant["authorized"] is True and grant["temporary_auth_copy_authorized"] is True
+    assert grant["confirmed_cost"] is True and grant["confirmed_isolation"] is True and grant["subscription_only"] is True
+    assert grant["ready_sha256"] == READY and grant["plan_sha256"] == PLAN and time.time() < grant["expires_at"]
+    assert type(grant["max_subscription_calls"]) is type(grant["max_candidate_executions"]) is int
+    assert grant["max_subscription_calls"] == 1 and grant["max_candidate_executions"] == 0
+    assert sha(Path(__file__)) == grant["host_helper_sha256"]["native_host.py"]
+    assert ready["plan_sha256"] == PLAN and grant["helper_sha256"] == ready["helper_sha256"]
+    assert all(sha(ROOT / name) == digest for name, digest in ready["helper_sha256"].items())
+    assert not (ROOT / "host-exit.json").exists() and not (ROOT / "terminal-run").exists()
+    command = [PYTHON, "-I", "-B", str(ROOT / "pilot.py"), "run", READY, PLAN]
+    save("native-host-intent.json", {"ready_sha256": READY, "plan_sha256": PLAN,
+                                    "owner_grant_sha256": expected_grant, "argv": command,
+                                    "wrapper_pid": os.getpid(), "recorded_at": datetime.now(UTC).isoformat(),
+                                    "automatic_retry": False, "status": "unknown"})
+    environment = {"PATH": "/usr/bin:/bin", "HOME": str(ROOT), "PYTHONDONTWRITEBYTECODE": "1",
+                   "PYTHONNOUSERSITE": "1", "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null",
+                   "GIT_TERMINAL_PROMPT": "0"}
+    os.umask(0o077)
+    process = subprocess.Popen(command, cwd=ROOT, env=environment, stdin=subprocess.DEVNULL,
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    selector = selectors.DefaultSelector()
+    selector.register(process.stdout, selectors.EVENT_READ, "stdout")
+    selector.register(process.stderr, selectors.EVENT_READ, "stderr")
+    hashes = {name: hashlib.sha256() for name in ("stdout", "stderr")}
+    counts = {name: 0 for name in hashes}
+    files = {name: (ROOT / ("native-host." + name + ".private")).open("xb") for name in hashes}
+    retained = 0
+    terminal_at = None
+    incomplete = False
+    try:
+        while selector.get_map() or process.poll() is None:
+            if process.poll() is not None:
+                terminal_at = terminal_at or time.monotonic()
+                if time.monotonic() - terminal_at > 2:
+                    incomplete = bool(selector.get_map())
+                    break  # Parent is already terminal; never infer descendants ended.
+            for key, _ in selector.select(0.2):
+                data = os.read(key.fd, 16384)
+                if not data:
+                    selector.unregister(key.fileobj)
+                    key.fileobj.close()
+                    continue
+                name = key.data
+                hashes[name].update(data)
+                counts[name] += len(data)
+                portion = data[:max(0, LIMIT - retained)]
+                files[name].write(portion)
+                retained += len(portion)
+        code = process.wait()  # No deadline/watchdog/kill; this actual owned return is authoritative.
+        result = {"status": "terminal", "exit_code": code, "ready_sha256": READY, "plan_sha256": PLAN,
+                  "owner_grant_sha256": expected_grant, "wrapper_pid": os.getpid(), "child_pid": process.pid,
+                  "argv": command, "observed_at": datetime.now(UTC).isoformat(),
+                  "scope": "Pilot subprocess terminal only; Codex termination is independently checked through Core",
+                  "output_bytes": counts, "output_sha256": {name: value.hexdigest() for name, value in hashes.items()},
+                  "logs_truncated": sum(counts.values()) > LIMIT, "pipe_eof_incomplete": incomplete,
+                  "automatic_retry": False}
+        save("host-exit.json", result)
+        print(json.dumps(result))  # Selected metadata only; no child/raw model stream is forwarded.
+        return code if code >= 0 else 128 - code
+    finally:
+        selector.close()
+        for stream in files.values():
+            stream.flush()
+            os.fsync(stream.fileno())
+            stream.close()
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as error:
+        print(json.dumps({"status": "unknown", "error_type": type(error).__name__, "automatic_retry": False}), file=sys.stderr)
+        raise SystemExit(1) from None

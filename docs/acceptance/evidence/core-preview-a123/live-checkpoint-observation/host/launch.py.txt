@@ -1,0 +1,94 @@
+"""One strict-SSH invocation; overdue observation retains the original handle."""
+import hashlib
+import json
+import shlex
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+REMOTE = "/root/amadeus-checkpoint-a123-20261118"
+PYTHON = "/root/amadeus-m123-live/w/bin/python"
+READY = "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc"
+PLAN = "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4"
+
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def save(name, value):
+    with (BASE / name).open("x", encoding="utf8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+def main():
+    raw_grant = (BASE / "owner-grant.json").read_bytes()
+    grant = json.loads(raw_grant)
+    assert grant["authorized"] is True and grant["ready_sha256"] == READY and grant["plan_sha256"] == PLAN
+    assert time.time() < grant["expires_at"]
+    assert all(sha((BASE / name).read_bytes()) == digest for name, digest in grant["host_helper_sha256"].items())
+    setup = json.loads((BASE / "setup-result.json").read_bytes())
+    assert setup["status"] == "pass" and setup["copied"] is True and setup["original_unchanged"] is True
+    assert setup["owner_grant_sha256"] == sha(raw_grant)
+    argv = [PYTHON, "-I", "-B", REMOTE + "/native_host.py", sha(raw_grant)]
+    command = " ".join(map(shlex.quote, argv))
+    save("launch-intent.json", {"status": "unknown", "ready_sha256": READY, "plan_sha256": PLAN,
+                                 "owner_grant_sha256": sha(raw_grant), "argv": argv,
+                                 "recorded_at": datetime.now(UTC).isoformat(), "automatic_retry": False})
+    result = {"status": "unknown", "exit_code": None, "ready_sha256": READY,
+              "plan_sha256": PLAN, "owner_grant_sha256": sha(raw_grant), "automatic_retry": False}
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    buffers = {name: bytearray() for name in ("stdout", "stderr")}
+    counts = {name: 0 for name in buffers}
+    hashes = {name: hashlib.sha256() for name in buffers}
+    retained = 0
+    try:
+        client.connect("127.0.0.1", port=22222, username="root", key_filename="D:/agentsync-debug/vm/debug_ed25519",
+                       look_for_keys=False, allow_agent=False, timeout=15)
+        with client.open_sftp() as sftp:
+            for name, expected in [("ready.json", READY), ("owner-grant.json", sha(raw_grant)),
+                                   ("native_host.py", grant["host_helper_sha256"]["native_host.py"])]:
+                with sftp.open(REMOTE + "/" + name, "rb") as stream: raw = stream.read(262145)
+                assert len(raw) <= 262144 and sha(raw) == expected
+        channel = client.get_transport().open_session(timeout=15)
+        channel.exec_command(command)
+        started = time.monotonic()
+        overdue = False
+        while True:
+            for name, ready, read in (("stdout", channel.recv_ready, channel.recv),
+                                      ("stderr", channel.recv_stderr_ready, channel.recv_stderr)):
+                if ready():
+                    data = read(16384)
+                    hashes[name].update(data)
+                    counts[name] += len(data)
+                    portion = data[:max(0, 65536 - retained)]
+                    buffers[name].extend(portion)
+                    retained += len(portion)
+            drained = not channel.recv_ready() and not channel.recv_stderr_ready()
+            if channel.exit_status_ready() and drained:
+                code = channel.recv_exit_status()
+                if code >= 0: result.update(status="terminal", exit_code=code)
+                break
+            if not client.get_transport().is_active() and drained:
+                result["error_type"] = "TransportClosed"
+                break
+            if not overdue and time.monotonic() - started > 180:
+                overdue = True
+                result["observation_overdue"] = True
+                print(json.dumps({"observation_overdue": True, "still_observing_original_handle": True}), flush=True)
+            time.sleep(0.05)
+    except (Exception, KeyboardInterrupt) as error:
+        result["error_type"] = type(error).__name__
+    finally:
+        result.update(output_bytes=counts, output_sha256={name: value.hexdigest() for name, value in hashes.items()},
+                      logs_truncated=sum(counts.values()) > 65536, observed_at=datetime.now(UTC).isoformat())
+        for name, data in buffers.items():
+            with (BASE / ("launch." + name + ".private")).open("xb") as stream: stream.write(data)
+        save("launch-result.json", result)
+        client.close()
+    print(json.dumps(result))
+    return result["exit_code"] if result["status"] == "terminal" else 1
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -17,14 +17,14 @@
   "retry_allowed": false,
   "independent_review": "Root/Astra accepted zero-model preparation only; actual bindings and five helper hashes matched. The receipt-directory cleanup defect was corrected before any execution.",
   "remaining": [
-    "Implement and review the bounded host credential-copy and actual-terminal wrapper.",
-    "Write an exact fresh grant under the existing standing owner authorization only after checking current fixture validity.",
-    "Only then perform one read-only observation and confirm temporary credential cleanup. No live task has started."
+    "Host controls, exact grant and ACL now prepared/reviewed; see host/review.json.",
+    "Within grant expiry, execute the reviewed setup/one-call/terminal cleanup sequence once, then inspect actual results. No live task has started."
   ],
   "resume": {
     "guest_root": "/root/amadeus-checkpoint-a123-20261118",
     "python": "/root/amadeus-m123-live/w/bin/python",
     "vm_metadata": "D:/agentsync-debug/m123-live/vm-run/process.json"
   },
-  "limits": "One producer, fixed 149-byte addition text, 90 seconds; no artificial pacing, receiver, candidate execution or continuation. saved/not_observed/unknown remain distinct. Failure or unknown outcome is not retried."
+  "limits": "One producer, fixed 149-byte addition text, 90 seconds; no artificial pacing, receiver, candidate execution or continuation. saved/not_observed/unknown remain distinct. Failure or unknown outcome is not retried.",
+  "host_preparation": "host/review.json"
 }

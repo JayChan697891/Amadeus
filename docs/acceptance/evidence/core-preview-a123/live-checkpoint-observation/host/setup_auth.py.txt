@@ -1,0 +1,138 @@
+"""Reviewed one-time RAM login copy; never starts a model or retries on uncertainty."""
+import hashlib
+import json
+import shlex
+import stat
+import time
+from datetime import UTC, datetime
+from pathlib import Path
+
+import paramiko
+
+BASE = Path(__file__).resolve().parent
+INPUTS = BASE.parent
+REMOTE = "/root/amadeus-checkpoint-a123-20261118"
+PYTHON = "/root/amadeus-m123-live/w/bin/python"
+READY = "eb4df0d5345b395698694b9de68e3ef5dbf794fd994c63ac2ed876a58d7de1fc"
+PLAN = "2d617cb1f71448436e4d67fc55c2f9d2492642d044a26e86256ff6482b8544b4"
+AUTH = Path("C:/Users/JayChan/.codex/auth.json")
+PREFLIGHT = r'''
+import hashlib,json,sys
+from pathlib import Path
+root=Path('/root/amadeus-checkpoint-a123-20261118')
+assert hashlib.sha256((root/'ready.json').read_bytes()).hexdigest()==sys.argv[1]
+sys.path.insert(0,str(root))
+import pilot
+ready=pilot.home.load('ready.json');member=pilot.home.load('private-producer.json');owner=pilot.home.load('private-owner.json')
+assert pilot.runtime()==ready['helper_sha256']
+assert not any((root/name).exists() for name in ('attempt.json','terminal-run','host-exit.json','auth-mount-intent.json'))
+core=pilot.Core(root/'core')
+core.execute('heartbeat',pilot.auth(member,ready['project_id']))
+task=next(v for v in core.execute('list_tasks',pilot.auth(member,ready['project_id']))['tasks'] if v['id']==ready['task']['id'])
+assert task['status']=='pending' and task['version']==ready['task']['version']==1
+relay,queue,item,review,selection=pilot.inputs(core,ready,member)
+assert review.plan_sha256==ready['plan_sha256']==sys.argv[2]
+assert pilot.public_plan(review)==pilot.home.load('plan.json') and selection==ready['selection_sha256']
+assert all(v.state=='not_dispatched' for v in relay.owner_inspect_attempts(ready['project_id'],task['id'],admin_token=owner['admin_token']))
+pilot.fixture(ready);pilot.home.no_codex_parent()
+value={'status':'pass','ready_sha256':sys.argv[1],'plan_sha256':sys.argv[2],'task_status':'pending','task_version':1,'both_not_dispatched':True,'heartbeat_refreshed':True,'model_calls':0}
+pilot.home.save('pre-auth-readiness.json',value)
+print(json.dumps(value))
+'''
+
+def sha(raw): return hashlib.sha256(raw).hexdigest()
+def save(path, value):
+    with path.open("x", encoding="utf8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+def main():
+    assert sha((INPUTS / "checkpoint-ready.json").read_bytes()) == READY
+    raw_grant = (BASE / "owner-grant.json").read_bytes()
+    grant = json.loads(raw_grant)
+    assert grant["authorized"] is True and grant["temporary_auth_copy_authorized"] is True
+    assert grant["ready_sha256"] == READY and grant["plan_sha256"] == PLAN and time.time() < grant["expires_at"]
+    assert grant["max_subscription_calls"] == 1 and grant["max_candidate_executions"] == 0
+    assert grant["confirmed_cost"] is True and grant["confirmed_isolation"] is True and grant["subscription_only"] is True
+    assert all(sha((BASE / name).read_bytes()) == digest for name, digest in grant["host_helper_sha256"].items())
+    private = BASE / "private"
+    assert private.is_dir() and not private.is_symlink()  # Root must first apply current-user/SYSTEM-only ACLs.
+    assert not (BASE / "launch-intent.json").exists()
+    save(BASE / "setup-intent.json", {"ready_sha256": READY, "owner_grant_sha256": sha(raw_grant), "model_calls": 0,
+                                      "recorded_at": datetime.now(UTC).isoformat(), "automatic_retry": False})
+    client = paramiko.SSHClient()
+    client.load_host_keys("D:/agentsync-debug/vm/known_hosts")
+    client.set_missing_host_key_policy(paramiko.RejectPolicy())
+    mounted = copied = False
+    original = None
+    record = {"status": "unknown", "ready_sha256": READY, "owner_grant_sha256": sha(raw_grant), "model_calls": 0}
+    def remote_read(sftp, name, limit=262144):
+        path = REMOTE + "/" + name
+        info = sftp.lstat(path)
+        assert stat.S_ISREG(info.st_mode) and info.st_uid == 0 and stat.S_IMODE(info.st_mode) == 0o600 and info.st_size <= limit
+        with sftp.open(path, "rb") as stream: data = stream.read(limit + 1)
+        assert len(data) == info.st_size
+        return data
+    def command(argv):
+        _, out, err = client.exec_command(" ".join(map(shlex.quote, argv)))
+        data, errors = out.read(65537), err.read(65537)
+        code = out.channel.recv_exit_status()
+        assert len(data) + len(errors) <= 65536 and code == 0
+        return json.loads(data)
+    try:
+        client.connect("127.0.0.1", port=22222, username="root", key_filename="D:/agentsync-debug/vm/debug_ed25519",
+                       look_for_keys=False, allow_agent=False, timeout=15)
+        with client.open_sftp() as sftp:
+            ready = json.loads(remote_read(sftp, "ready.json"))
+            assert sha(remote_read(sftp, "ready.json")) == READY and ready["plan_sha256"] == PLAN
+            assert grant["helper_sha256"] == ready["helper_sha256"]
+            for name, digest in ready["helper_sha256"].items(): assert sha(remote_read(sftp, name)) == digest
+            assert sha(remote_read(sftp, "native_host.py")) == grant["host_helper_sha256"]["native_host.py"]
+            try:
+                existing = remote_read(sftp, "owner-grant.json")
+            except FileNotFoundError:
+                with sftp.open(REMOTE + "/owner-grant.json", "x+b") as stream:
+                    sftp.chmod(REMOTE + "/owner-grant.json", 0o600)
+                    stream.write(raw_grant)
+                    stream.flush()
+            else: assert existing == raw_grant
+            assert remote_read(sftp, "owner-grant.json") == raw_grant
+        preflight = command([PYTHON, "-I", "-B", "-c", PREFLIGHT, READY, PLAN])
+        assert preflight["status"] == "pass"
+        save(BASE / "pre-auth-readiness.json", preflight)
+        result = command([PYTHON, "-I", "-B", REMOTE + "/auth_home.py", "mount", READY])
+        assert result["status"] == "mounted" and result["owner_grant_sha256"] == sha(raw_grant)
+        mounted = True
+        for path in (AUTH.parent, AUTH):
+            info = path.lstat()
+            assert not path.is_symlink() and not getattr(info, "st_file_attributes", 0) & 0x400
+        assert stat.S_ISREG(AUTH.lstat().st_mode) and 0 < AUTH.stat().st_size < 128 * 1024
+        raw = AUTH.read_bytes()  # Only Root's later explicitly authorized execution reaches this line.
+        value = json.loads(raw)
+        assert value.get("auth_mode") == "chatgpt" and not value.get("OPENAI_API_KEY")
+        original = sha(raw)
+        with client.open_sftp() as sftp:
+            assert not sftp.listdir(REMOTE + "/private-home")
+            with sftp.open(REMOTE + "/private-home/auth.json", "x+b") as stream:
+                sftp.chmod(REMOTE + "/private-home/auth.json", 0o600)
+                stream.write(raw)
+                stream.flush()
+            copied = True
+            assert sha(remote_read(sftp, "private-home/auth.json", 128 * 1024)) == original
+        assert sha(AUTH.read_bytes()) == original
+        record.update(status="pass", mounted=True, copied=True, original_unchanged=True, auth_mode="chatgpt")
+    except Exception as error:
+        record["error_type"] = type(error).__name__
+        raise
+    finally:
+        unchanged = sha(AUTH.read_bytes()) == original if original is not None else None
+        save(private / "auth-setup.json", {"original_sha256": original, "original_unchanged": unchanged,
+                                            "mounted": mounted, "copied": copied, "owner_grant_sha256": sha(raw_grant)})
+        save(BASE / "setup-result.json", {**record, "mounted": mounted, "copied": copied, "original_unchanged": unchanged})
+        client.close()
+    print(json.dumps(record))
+
+if __name__ == "__main__":
+    try: main()
+    except Exception as error:
+        raise SystemExit("Setup stopped: " + type(error).__name__ + "; inspect, do not retry or synthesize host-exit.") from None

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+  File "/root/amadeus-checkpoint-a123-20261118/pilot.py", line 101, in inputs
+    assert selected.state == "selected" and len(selected.tasks) == 1 and selected.selection_sha256
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

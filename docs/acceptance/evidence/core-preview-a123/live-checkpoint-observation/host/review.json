@@ -1,0 +1,24 @@
+{
+  "status": "READY_FOR_ONE_REVIEWED_ATTEMPT",
+  "model_calls": 0,
+  "auth_copies": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED",
+  "reviewers": [
+    "Root",
+    "Astra"
+  ],
+  "grant_sha256": "6e24b5f27c99ac9396cef7a776040dd2a98394e9c6e6a5127be5b98d1f5d43c6",
+  "grant_expires_utc": "2026-11-18T07:38:44Z",
+  "private_acl_native": "ddbd27 exit0; current user and SYSTEM only; protected inheritance, two explicit full-control rules",
+  "native_host_upload": "4dae86 exit0; exact SHA/0600/root ownership verified",
+  "static": "8530ac exit0; four host ASTs and embedded preflight; no imports/execution",
+  "scope": "Existing standing authorization, max one read-only subscription call, 90 seconds, zero candidate executions; no retry after failed/unknown/no-window outcome.",
+  "idle_preview": "Preserved assertion failure 9a0ded: worker heartbeat older than120s. Actual9e8416 confirms valid authenticated session/pendingv1/no dispatch/empty auth home. Setup refreshes ordinary Core heartbeat and rechecks exact selection before copy; no model attempt has occurred.",
+  "execution_order": [
+    "setup_auth.py: exact pins, heartbeat, tmpfs and temporary copy",
+    "launch.py: one existing SSH handle, authoritative child exit through native_host.py",
+    "finish-auth.py: only after real terminal including exit1; check Core/parent and cleanup; original account file unchanged"
+  ],
+  "remaining": "Actual setup, model observation, cleanup and result review NOT RUN."
+}
