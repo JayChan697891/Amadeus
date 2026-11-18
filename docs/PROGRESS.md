@@ -2,6 +2,17 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+The current [owner preview r3](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md)
+fixes an installation reproducibility gap: the quick start now passes a bundled
+Windows3.12 constraints file. Offline pip dry-run resolves32 distributions exactly
+matching the tested a122 runtime inventory. The historical repository constraints
+pin httpcore2/httpx2 to2.14.0 whereas the actual tested versions are2.15.1; that
+historical file is preserved. Only README/manifest/checksums and the31 dependency
+pins change in the ZIP. Original wheel/examples and r2 remain untouched; existing
+help checks are reused, no installation/model call/full suite is repeated.
+Root checked actual resolver output and archive delta; Astra accepted this
+Windows-only packaging correction, not cross-platform or formal acceptance.
+
 After delivering the owner ZIP at25b52e8, the two remaining frozen a122 source
 suites are now RUNNING, not accepted: Windows3.12 session22428/controller6064
 in D:/agentsync-debug/m122sourcew, and Linux3.14 session77417/controller2948 in
@@ -21,7 +32,7 @@ short Chinese quick start and file hashes. [Download and package checks](../rele
 Archive CRC, payload identity and all three extracted example --help commands
 passed; the Windows quick-start block parses as three commands with no errors.
 The first unpublished bundle had string-escape corruption in its README and was
-rejected and retained locally; the corrected r2 is the only delivery candidate.
+rejected and retained locally; the corrected r2 was accepted at that checkpoint.
 This is packaging of already-tested inputs, not a new install/full-suite or real
 model run. Default simulation/unverified output and formal Release BLOCKED are
 explicit. Remaining source matrix work is deferred behind usable preview delivery;

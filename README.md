@@ -2,10 +2,11 @@
 
 # Amadeus
 
-**Try the packaged preview:** [download the a122 ZIP](releases/0.3.0a122/owner-preview-7085ec0-r2/Amadeus-owner-preview-a122.zip)
+**Try the packaged preview:** [download the a122 ZIP](releases/0.3.0a122/owner-preview-7085ec0-r3/Amadeus-owner-preview-a122.zip)
 and follow its short README. It includes the original frozen wheel and reviewed
 terminal examples; Python 3.12 is required for the Windows quick start. The default
-demo uses simulated Agents, with no model calls. Formal Release remains BLOCKED.
+demo uses simulated Agents, with no model calls. Its Windows dependency constraints
+match the tested environment. Formal Release remains BLOCKED.
 
 Current development continues under [AGENTS.md](AGENTS.md), [WORKFLOW.md](WORKFLOW.md)
 and [progress](docs/PROGRESS.md). The previous Claude handoff package was cancelled.

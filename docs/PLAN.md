@@ -2,9 +2,13 @@
 
 ## Owner-trial priority — 2026-11-17
 
-Owner acceleration: deliver the [small owner preview ZIP](../releases/0.3.0a122/owner-preview-7085ec0-r2/README.md)
+Owner acceleration: deliver the [small owner preview ZIP](../releases/0.3.0a122/owner-preview-7085ec0-r3/README.md)
 now, reusing the frozen wheel and reviewed entry scripts. The three-command
 Windows quick start is a simulated durable demo, not real-Agent acceptance.
+The r3 installation now constrains all31 runtime dependencies to the tested
+Windows3.12 versions; offline resolution matches the saved32-distribution
+inventory including Amadeus. Core and entry scripts are unchanged; old packages
+and the historical repository constraints remain preserved.
 Full source matrix work stays in C; do not repeat the four completed installed
 suites. The next real-terminal experiment below retains its exact permission gate.
 

@@ -2,9 +2,10 @@
 
 # Amadeus
 
-**先下载体验：**[a122 精简体验包](releases/0.3.0a122/owner-preview-7085ec0-r2/Amadeus-owner-preview-a122.zip)。
+**先下载体验：**[a122 精简体验包](releases/0.3.0a122/owner-preview-7085ec0-r3/Amadeus-owner-preview-a122.zip)。
 解压后按包内 README 的三个命令安装和运行；Windows 需要 Python 3.12。
-内含原始冻结安装包及已检查的终端示例。默认演示使用模拟 Agent、不会调用模型；
+内含原始冻结安装包、匹配已测试 Windows 环境的依赖约束及已检查的终端示例。
+默认演示使用模拟 Agent、不会调用模型；
 真实任务入口另需准备和审批，正式 Release 仍为 BLOCKED。
 
 已有协作进程停止后，可按[恢复指南](docs/RELAY-RECOVERY.md)使用
