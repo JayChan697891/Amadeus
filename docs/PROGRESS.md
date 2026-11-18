@@ -2,6 +2,19 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+After delivering the owner ZIP at25b52e8, the two remaining frozen a122 source
+suites are now RUNNING, not accepted: Windows3.12 session22428/controller6064
+in D:/agentsync-debug/m122sourcew, and Linux3.14 session77417/controller2948 in
+the D-hosted VM at /root/amadeus-m122source (VM PID10040). Both were started once
+after Root/Astra preparation review.3992 input files and97 runtime members bind
+5232e9e; fresh editable environments and temporary projects are separate from
+the four completed installed suites, the delivered preview and pending terminal
+experiment. No model credentials or live models are used. Restore observation
+from the existing handles/result files; do not relaunch on observation timeout.
+[Windows start](acceptance/evidence/core-preview-a122/full-windows312-source/execution-start.json)
+and [Linux start](acceptance/evidence/core-preview-a122/full-linux314-source/execution-start.json)
+preserve exact commands and inputs. Formal Release remains BLOCKED.
+
 The owner preview is now assembled into one 336474-byte ZIP: the unchanged a122
 wheel, MIT license, three byte-identical reviewed examples, bounded terminal guide,
 short Chinese quick start and file hashes. [Download and package checks](../releases/0.3.0a122/owner-preview-7085ec0-r2/README.md).

@@ -1,0 +1,44 @@
+{
+  "prepared_at": "2026-11-18T01:23:40.526934+00:00",
+  "status": "PREPARED_NOT_RUN",
+  "scope": "First frozen a122 Windows 3.12.16 full editable-source pytest; no installed suite repeats",
+  "test_source_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "product_runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "source_files": 3992,
+  "runtime_members": 97,
+  "frozen_source": "D:\\agentsync-debug\\m122fullw\\s",
+  "frozen_source_files_verified": 3992,
+  "frozen_source_bytes": 54195715,
+  "frozen_source_strict_no_extra": true,
+  "inputs": {
+    "SNAPSHOT": {
+      "bytes": 18232229,
+      "sha256": "622d7d5878a5d7d2f62fae56916754fa9c869639a9cd6e2b32563a79a7171fd6"
+    },
+    "MANIFEST": {
+      "bytes": 762297,
+      "sha256": "5ed855d481379438b4e2a70576c8a8befe5ff1a193219b4e3fa0eb4c0b459c78"
+    },
+    "MEMBERS": {
+      "bytes": 10144,
+      "sha256": "cdc35d4b827a54bbe8e47e69e994216f1a1d401ae5ca522fc4f041162cf48e2c"
+    }
+  },
+  "existing_source_run_found": false,
+  "competing_project_workers_found": false,
+  "d_free_bytes": 362975342592,
+  "parent_driver": "F:\\syuc\\amadeus-m6-single\\docs\\acceptance\\evidence\\core-preview-a120\\full-windows312-source\\run-source.py.txt",
+  "parent_driver_sha256": "0d1c1ddc14fec462ab6c55bcf245457ede3e2f4bd03bdbf8bb58403df10f8f6a",
+  "argv": [
+    "D:/agentsync-debug/continuation-cc30ed21/windows-py312-venv/Scripts/python.exe",
+    "-I",
+    "-B",
+    "D:\\agentsync-debug\\m122sourcew\\run-source.py"
+  ],
+  "strict_copy": "All3992 original files unchanged before/install/after; any additional egg-info causes failure, no deletion",
+  "full_timeout_seconds": 7200,
+  "automatic_retry": false,
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "formal_release": "BLOCKED"
+}
