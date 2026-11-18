@@ -2,6 +2,14 @@
 
 ## Owner-trial priority — 2026-11-17
 
+The next executable original C gap is Windows3.11 for the unchanged a122 runtime.
+The actual3.11.15 interpreter and offline dependencies are available; a fresh wheel
+installation passed six setup checks, and its first full suite has now started.
+Reuse the frozen source/package bytes and successful drivers. Complete source and
+sdist sequentially in separate environments after the wheel result is inspected;
+do not duplicate the six completed3.12-Windows/3.14-Linux suites or call these
+selected test results complete formal matrix rows. No model/VM is needed here.
+
 The existing M9 license-material technical check is now complete for the unchanged
 a122 own wheel/source distribution. Root/Astra matched actual license texts,
 notices, platform line endings and the31-row dependency table. No artifacts or

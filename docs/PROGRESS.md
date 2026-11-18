@@ -2,6 +2,20 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+Current original M9 matrix work: the first frozen a122 Windows3.11 wheel full
+suite is RUNNING in native session66521 (initial464e30). Actual pytest started
+2026-11-18T03:14:33.527884Z; controller12980 and pytest15116 were observed live.
+Fresh D:/agentsync-debug/m122win311/w uses Python3.11.15 and the original a122
+wheel,97 exact members. Six offline installation/origin/dependency checks pass;
+Root/Astra accepted readiness, not the unfinished suite. Original source3992 files
+and all input pins are preserved. [Preparation and live launch](acceptance/evidence/core-preview-a122/full-windows311-wheel/preparation/root-review.json).
+Resume by polling original session66521; inspect D:/agentsync-debug/w122311/run
+only after actual terminal status. A polling timeout is not a failed process and
+does not permit a restart. Source/sdist for this combination are not running;
+independent preparation may proceed, with full suites later run sequentially.
+This is the existing minimum-Python matrix gap, not a new stage or repeat of the
+six completed Windows3.12/Linux3.14 suites. The r4 owner trial remains available.
+
 Original M9 license-material gap,2026-11-18: Root/Astra completed the technical
 check for the unchanged a122 own wheel/source archives. All43 recorded Windows
 license files map to LICENSE or existing notices; all31 dependency version and

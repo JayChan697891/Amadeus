@@ -22,6 +22,14 @@ M5 phase or release exception. Each row needs its own exact driver/fixture hashe
 readiness review and observed exit before its status changes. Execution order is
 the table order among ready rows; an unavailable row does not block unrelated work.
 
+Current matrix clarification: a122 has six completed suites across only two
+OS/Python combinations (Windows3.12 and Linux3.14). Windows3.11/3.14 and
+Linux3.11/3.12 still need their own current-candidate evidence. The first
+Windows3.11 wheel suite is now running after fresh offline installation and
+Root/Astra readiness review; source/sdist are not started. See
+[actual launch](evidence/core-preview-a122/full-windows311-wheel/preparation/root-review.json).
+These are the original three-Python-minor matrix requirements, not new gates.
+
 | Original requirements | Remaining bounded evidence | Readiness and stop conditions |
 | --- | --- | --- |
 | M2-05, M3-03/04 | **SCOPED PASS**, one actual a122 run: both actors, pinned context, old-lease/recipient/lock denials, owner audit and normal host reopen. See [exact plan and result](evidence/core-preview-a122/native-handoff/summary.json). | Five install bindings were reviewed before one new-fixture execution. Zero model calls, no account credentials or candidate execution. Root matched18 persisted audit records; both hosts ended by EOF and all10 recorded PIDs were absent. Task stays review/unverified, with no independent candidate acceptance. Do not repeat; original a121 exit1 remains BLOCKED. |
