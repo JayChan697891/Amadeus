@@ -1,0 +1,116 @@
+"""Run only the new document-review Core checks; no model or candidate execution."""
+
+import hashlib
+import json
+import os
+import sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+BASE = Path("D:/agentsync-debug/m122docreview")
+REPO = Path("F:/syuc/amadeus-m6-single")
+FROZEN = Path("D:/agentsync-debug/m122fullw/s")
+PYTHON = Path("D:/agentsync-debug/m122p/w/Scripts/python.exe")
+RUN, SCRATCH, HOME = (BASE / name for name in ("run", "t", "home"))
+FILES = {
+    "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+    "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21",
+}
+ORIGIN = r"""
+import hashlib, importlib.metadata as md, json, sys
+from pathlib import Path
+import agentsync
+assert sys.version_info[:3] == (3,12,16)
+site=Path('D:/agentsync-debug/m122p/w/Lib/site-packages')
+assert Path(agentsync.__file__).resolve() == site/'agentsync/__init__.py'
+assert md.version('agentsync-local') == agentsync.__version__ == '0.3.0a122'
+members=json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())
+actual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+assert actual == members and len(actual) == 97
+print(json.dumps({'python':sys.version,'origin':str(agentsync.__file__),'version':agentsync.__version__,'members':len(actual)}))
+"""
+
+
+def sha(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def save(path, value):
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, indent=2)
+        stream.write("\n")
+
+
+def main():
+    assert Path(sys.executable).resolve() == PYTHON and sys.flags.isolated and sys.dont_write_bytecode
+    assert set(p.name for p in BASE.iterdir()) == {"run.py"}
+    assert sha(FROZEN / "tools/release_acceptance.py") == "d942383c3a90b174149a9df5638440e5661f4279149c9bfd004c785d2cb680dd"
+    assert all(sha(REPO / name) == digest for name, digest in FILES.items())
+    for name in ("tests/conftest.py", "tests/integration/test_task_proposals.py", "tests/integration/test_m4b_workspaces.py"):
+        assert (REPO / name).read_bytes() == (FROZEN / name).read_bytes()
+    for path in (RUN, SCRATCH, HOME):
+        path.mkdir()
+    (RUN / "logs").mkdir()
+    for name in tuple(os.environ):
+        upper = name.upper()
+        if upper.startswith(("AGENTSYNC_", "ANTHROPIC_", "AWS_", "CLAUDE_", "CODEX_", "CURSOR_", "DOCKER_", "GIT_", "GITHUB_", "GOOGLE_", "OPENAI_", "PIP_", "PYTEST_", "PYTHON", "SSH_", "UV_")) or upper.endswith(("API_KEY", "ACCESS_TOKEN", "REFRESH_TOKEN")):
+            os.environ.pop(name)
+    os.environ.update(HOME=str(HOME), USERPROFILE=str(HOME), CODEX_HOME=str(HOME),
+                      APPDATA=str(HOME), LOCALAPPDATA=str(HOME), TMP=str(SCRATCH), TEMP=str(SCRATCH),
+                      PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1", GIT_CONFIG_NOSYSTEM="1",
+                      GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0", GCM_INTERACTIVE="Never")
+    sys.path.insert(0, str(FROZEN))
+    from tools import release_acceptance as collector
+
+    result = {"scope": "Eight new real Core document decisions; deterministic confirmation only",
+              "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+              "changed_files_sha256": FILES, "driver_sha256": sha(Path(__file__)),
+              "status": "unknown", "checks": [], "model_calls": 0, "candidate_executions": 0,
+              "native_terminal_interaction": "NOT RUN", "formal_release": "BLOCKED"}
+    save(RUN / "attempt.json", result)
+
+    def check(name, command, capture=None):
+        item = collector.execute(name, list(map(str, command)), RUN, RUN, SCRATCH,
+                                 capture_stdout=capture)
+        result["checks"].append(item)
+        return item
+
+    raw = SCRATCH / "junit.xml"
+    stdout = SCRATCH / "pytest-stdout.raw.log"
+    origin = [PYTHON, "-I", "-B", "-c", ORIGIN]
+    try:
+        before = check("origin_before", origin)
+        assert before["status"] == "pass"
+        tested = check("pytest_document_review", [PYTHON, "-I", "-B", "-m", "pytest",
+            REPO / "tests/integration/test_review_relay_document.py", "--junitxml", raw,
+            "--basetemp", SCRATCH / "p", "-o", f"cache_dir={SCRATCH / 'pytest-cache'}"], stdout)
+        after = check("origin_after", origin)
+        if raw.exists():
+            redactions = collector.persist_junit(raw, RUN / "junit.xml")
+            counts = collector.junit_counts(RUN / "junit.xml")
+            result["junit"] = {**counts, "sha256": sha(RUN / "junit.xml"), "redactions": redactions}
+            cases = [(n.get("classname"), n.get("name")) for n in ET.parse(RUN / "junit.xml").iter("testcase")]
+            assert len(cases) == len(set(cases)) == counts["tests"] == 8
+        if stdout.exists():
+            data = stdout.read_bytes()
+            assert len(data) <= collector.MAX_LOG_BYTES
+            clean, redactions = collector.redact_credentials(data.decode("utf-8", errors="replace"))
+            with (RUN / "pytest.log").open("x", encoding="utf-8", newline="\n") as stream:
+                stream.write(clean)
+            result["stdout"] = {"sha256": sha(RUN / "pytest.log"), "redactions": redactions}
+        result["status"] = "pass" if all(c["status"] == "pass" for c in result["checks"]) and result["junit"]["failures"] == result["junit"]["errors"] == 0 else "fail"
+    except Exception as error:
+        result.update(status="fail", error_type=type(error).__name__)
+    finally:
+        result["changed_files_unchanged"] = all(sha(REPO / name) == digest for name, digest in FILES.items())
+        if not result["changed_files_unchanged"]:
+            result["status"] = "fail"
+        save(RUN / "result.json", result)
+    print(result["status"] + ": " + str(RUN / "result.json"))
+    return 0 if result["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

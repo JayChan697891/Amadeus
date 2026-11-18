@@ -1,0 +1,16 @@
+{
+  "scope": "Eight new real Core document decisions; deterministic confirmation only",
+  "runtime_commit": "5232e9e8bd33a949f7ffdc68410cd614a297af66",
+  "changed_files_sha256": {
+    "examples/review_relay_document.py": "1bacb978ceeeac52616cdd9a0e69dacba40d4bb8315555c977f9f7c284c1d10b",
+    "tests/integration/test_review_relay_document.py": "1099cc912615096e8fc3e2e51b467004acb6a5896da5d0c3cdb553d27649d823",
+    "docs/VERIFIED-TASK-EXAMPLE.md": "8f94d2291a5e34782678e19d8449aba2df9b1eb5ce16a7c0056065c9c8067a21"
+  },
+  "driver_sha256": "c86b668e9fff7237ad409dee37f196db5bef5edc8124d0853b7033016c381406",
+  "status": "unknown",
+  "checks": [],
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "native_terminal_interaction": "NOT RUN",
+  "formal_release": "BLOCKED"
+}

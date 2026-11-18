@@ -2,6 +2,17 @@
 
 Owner resumed on2026-11-17, prioritizing a usable preview within weekly quota.
 
+P1 receiver-document closure,2026-11-18: the new manual accept/reject entry uses
+a fresh independent Core reviewer, a fixed context v1/hash and task version,
+explicit confirmation and one review submission. Eight real Core integration
+checks passed on the unchanged installed Windows3.12.16 a122 runtime, native
+aedc41 exit0; Root/Astra independently inspected all cases, three process receipts
+and file hashes and accepted this limited scope.
+Confirmation is a deterministic test input, not native terminal/live-client proof.
+No model, candidate execution or runtime change. Documents remain unverified.
+[Actual checks](acceptance/evidence/core-preview-a122/document-review/root-review.json).
+The r5 package is next; it is not yet built here.
+
 Current original M9 matrix work: the first a122 Windows3.11.15 wheel full
 suite completed once, native66521/6d442e exit0, at2026-11-18T03:58:59Z.
 Root inspected actual XML and all process receipts:2596 unique cases,2539 pass,
@@ -13,13 +24,16 @@ a full formal matrix row or Release pass. [Actual result and independent review]
 The independent311 editable-source full suite then actually started in original
 native session51949 (initial259b6d), at2026-11-18T04:00:08.063850Z. Controller14848
 and pytest7568 were observed live with matching commands; original wheel PIDs had
-ended. Five real setup/origin checks pass. This source suite is RUNNING, NOT
-ACCEPTED. Resume by polling51949; inspect D:/agentsync-debug/w122311s/run only
-after observed terminal. An observation timeout never authorizes a restart.
+ended. It completed at2026-11-18T04:44:43Z, native4669bf exit0. Root/Astra inspected
+the actual seven process receipts and20 archived originals:2596 unique cases,
+2539 pass/57 skip, zero failures/errors; every case matches311 wheel. Both3992-file
+source copies and97 runtime members are unchanged. This scope is accepted; do
+not restart51949. [Completed source result](acceptance/evidence/core-preview-a122/full-windows311-source/summary.json).
 [Actual source launch](acceptance/evidence/core-preview-a122/full-windows311-source/preparation/launch.json).
 The311 sdist environment is ready and its one comparison pin now binds the actual
 completed311 wheel XML409565B/cbf0e565; original unbound preparation is retained.
-Its full suite remains NOT RUN, awaiting source terminal review.
+Its full suite remains NOT RUN; finish the small document-review preview delivery
+before starting that already prepared runner. No full pytest is currently running.
 [Exact binding](acceptance/evidence/core-preview-a122/full-windows311-sdist/preparation/baseline-binding.json).
 
 The next original Windows3.14.6 combination is prepared for later sequential work:

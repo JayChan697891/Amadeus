@@ -6,9 +6,13 @@ outcomes match the current Windows3.12 wheel. Original native66521 ended once at
 2026-11-18T03:58:59Z (6d442e exit0). Actual11 archived originals, three process
 receipts, four input pins,3992 source files and97 installed members were checked.
 No model calls, input changes or retry. [Actual result and review](evidence/core-preview-a122/full-windows311-wheel/summary.json).
-This makes seven completed selected suites, not seven complete formal matrix rows.
-The independent311 source suite is now actually RUNNING in51949; sdist is bound to
-the real311 wheel baseline but NOT RUN. All Windows3.14 forms are prepared, NOT RUN.
+The independent311 source suite also completed in51949/4669bf exit0 at04:44:43Z:
+2539 pass/57 skip,2596 unique cases, same311 wheel outcomes. Root/Astra checked
+seven actual process receipts,20 originals, both3992-file source trees and97 runtime
+members. [Actual source result](evidence/core-preview-a122/full-windows311-source/summary.json).
+This makes eight completed selected suites, not eight complete formal matrix rows.
+311 sdist is bound to the real311 wheel baseline but NOT RUN. All Windows3.14
+forms are prepared, NOT RUN. No full suite is currently running.
 Historical static FAIL, other platform/client gaps and formal Release BLOCKED remain.
 
 Current license-material disposition,2026-11-18: technical integrity/coverage

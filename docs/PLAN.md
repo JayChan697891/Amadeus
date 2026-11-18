@@ -5,8 +5,10 @@
 The original Windows3.11 wheel gap now has an actual complete result:2539 pass,
 57 skip, zero failures/errors, with exact source/runtime provenance and matching
 Windows3.12 case outcomes. Root/Astra accepted this scope. Its separate source
-suite is actually RUNNING in51949; sdist is prepared and bound to the real311 wheel
-XML, still NOT RUN. Finish these sequentially. Windows3.14.6 preparations are also
+suite has also completed once in51949/4669bf exit0 with identical case outcomes,
+seven successful process receipts and scoped Root/Astra acceptance. Sdist is
+prepared and bound to the real311 wheel XML, still NOT RUN. Deliver the new
+document-review preview first, then resume the matrix sequentially. Windows3.14.6 preparations are also
 ready for later work, with all full suites NOT RUN. Reuse frozen bytes and avoid
 repeating completed3.12-Windows/3.14-Linux suites. Selected pytest results do not
 complete formal matrix non-test gates. No model/VM is needed for this queue.
@@ -486,9 +488,25 @@ suite or accepted M5 scope needs repetition for these isolated harness changes.
 
 | Delivery node | Deliverable and exit condition | Current boundary / effort estimate |
 | --- | --- | --- |
-| A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | The local engineering demo is now runnable: Windows/Linux durable CLI and Linux isolated verification plus proof handoff/reopen. The separate current117 two-Codex controlled path also passed with four exact host gates and zero-launch reopen. Limited demonstrations are available now; no full B/Release claim. |
-| B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | Current117 same-vendor generation, Docker verification, pinned context handoff, document review and zero-launch reopen passed. Actual live crash recovery, cross-vendor access and unattended policy remain unproven; no calendar promise for unavailable clients. |
-| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Frozen a116 matrix has six complete rows; macOS is unavailable. Both original queues and bounded Windows/Linux benchmarks finished. A/B cannot change this conclusion. |
+| A — minimum demonstrable product | One reproducible path through creation, execution, handoff, persisted recovery and independent verification, with explicit limits. | Available now as owner preview r4. Default Windows demo is simulated/unverified; the separately approved a122 Linux terminal path has two real Codex proposals and one independently verified producer. No public Release claim. |
+| B — differentiation | Actual independent Agent identities, authorized context handoff, reliable continuation, independent execution evidence and exact owner approval; preserve a failed/unverified example. | a122 has scoped real same-vendor relay and interrupted-controller recovery evidence, with an explicitly host-authored checkpoint and owner approvals. Ordinary terminal failure does not yet produce an eligible progress checkpoint. The reachable next usability task is independent receiver-document acceptance/rejection, reusing Core; cross-vendor access remains unavailable. |
+| C — formal release | All original M5–M9 requirements, current-candidate platform/install/security evidence and explicit release authorization. | BLOCKED. Eight selected a122 suites are complete; remaining Windows forms are prepared, not run. Full current matrix/non-test gates, unavailable macOS/clients and final release decision remain separate. Historical a116 results retain their own SHA. |
+
+Current P0 path check,2026-11-18: do not wrap OwnerContinuation as a general
+terminal recovery feature yet. Its existing public checkpoint must predate the
+failed parent and match the producer identity/lease and Core publication witness.
+The ordinary terminal only publishes after successful model completion; a failed
+attempt has no eligible checkpoint. The composed-recovery evidence explicitly
+uses a host-authored checkpoint, not interrupted model-generated progress.
+This is a product limitation, not a new M5 stage or added release gate. Do not
+fabricate progress, backfill timestamps or change the core failure boundary.
+The next narrow entry change is explicit independent acceptance/rejection of the
+already reachable receiver review.md result, preserving unverified document status.
+No Core rewrite or repeat of the accepted model experiments is required to write
+and locally check that entry. The frozen source suite has now ended normally.
+The manual document entry passed eight actual Core checks on Windows3.12, without
+models or candidate execution; finish independent review and package it for the
+owner before the next matrix run. Native interactive/Linux checks are NOT RUN.
 
 Already usable: SDK/CLI/MCP/HTTP share a persistent SQLite Core; durable Mock
 workflows, structured handoff, separate reviewer identities, exact candidate

@@ -1,0 +1,42 @@
+{
+  "schema": "agentsync.local-process-attempt.v1",
+  "scope": "Command attempt only; JUnit and final acceptance remain separate.",
+  "phase": "finished",
+  "outcome": "exited",
+  "check_id": "origin_before",
+  "formal_acceptance": false,
+  "junit_validated": false,
+  "request": {
+    "command": [
+      "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync\nassert sys.version_info[:3] == (3,12,16)\nsite=Path('D:/agentsync-debug/m122p/w/Lib/site-packages')\nassert Path(agentsync.__file__).resolve() == site/'agentsync/__init__.py'\nassert md.version('agentsync-local') == agentsync.__version__ == '0.3.0a122'\nmembers=json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual == members and len(actual) == 97\nprint(json.dumps({'python':sys.version,'origin':str(agentsync.__file__),'version':agentsync.__version__,'members':len(actual)}))\n"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+    "started_at": "2026-11-18T04:45:09.966511+00:00",
+    "timeout_seconds": 900
+  },
+  "error_type": null,
+  "result": {
+    "id": "origin_before",
+    "status": "pass",
+    "command": [
+      "D:\\agentsync-debug\\m122p\\w\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c",
+      "\nimport hashlib, importlib.metadata as md, json, sys\nfrom pathlib import Path\nimport agentsync\nassert sys.version_info[:3] == (3,12,16)\nsite=Path('D:/agentsync-debug/m122p/w/Lib/site-packages')\nassert Path(agentsync.__file__).resolve() == site/'agentsync/__init__.py'\nassert md.version('agentsync-local') == agentsync.__version__ == '0.3.0a122'\nmembers=json.loads(Path('D:/agentsync-debug/m122p/run/runtime-members.json').read_bytes())\nactual={p.relative_to(site).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in (site/'agentsync').rglob('*') if p.is_file() and '__pycache__' not in p.parts}\nassert actual == members and len(actual) == 97\nprint(json.dumps({'python':sys.version,'origin':str(agentsync.__file__),'version':agentsync.__version__,'members':len(actual)}))\n"
+    ],
+    "cwd": "D:\\agentsync-debug\\m122docreview\\run",
+    "exit_code": 0,
+    "started_at": "2026-11-18T04:45:09.966511+00:00",
+    "finished_at": "2026-11-18T04:45:10.076260+00:00",
+    "log": "logs/origin_before.log",
+    "log_sha256": "e30d4594544f2444840356476b384c7ba8bbfb9c8d8c4eb2c54a7debd2495447",
+    "credential_redactions": 0,
+    "log_truncated": false,
+    "provenance": "local_process"
+  }
+}

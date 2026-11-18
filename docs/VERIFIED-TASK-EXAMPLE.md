@@ -105,6 +105,50 @@ Use [recover_relay.py](../examples/recover_relay.py) for status/history with
 and the original project ID. Inspect existing owner services before any recovery
 action. This example does not automatically resume a producer or verifier.
 
+## Accept or reject the returned document
+
+Use `examples/review_relay_document.py` to close the receiver's `review.md` task
+with a new independent Core reviewer. This performs no model call, candidate
+execution or code verification. It does not resume or rerun the receiver.
+
+Take the receiver task ID from `ROOT/terminal-run/result.json` at
+`flow.handoff.task_id`. Select that receiver's `relay-*-proposal-stored.json`
+receipt in `ROOT/terminal-run/receipts` and use its `context_id` and
+`content_sha256`. Check that the selected context belongs to the receiver task;
+the producer proposal pin in `flow.handoff.pin` is a different document.
+Only the exact `review.md` publication at context version1 is supported.
+
+```sh
+/path/to/venv/bin/python -I -B /path/to/Amadeus/examples/review_relay_document.py \
+  --root /path/to/isolated-project --project-id PROJECT_ID \
+  --task-id RECEIVER_TASK_ID --context-id RECEIVER_CONTEXT_ID \
+  --content-sha256 RECEIVER_CONTENT_SHA256 --decision accept \
+  --evidence "I inspected this fixed document; this is not code verification."
+```
+
+Use `--decision reject` to reject it instead. Enter the existing owner token at
+the hidden prompt. Each invocation registers and authorizes a fresh reviewer;
+its credentials remain in memory, including when you decline confirmation.
+The preview shows the actual document, task version, fixed context hash,
+reviewer, decision and evidence. Type its exact SHA only to submit that decision.
+A mismatch submits no review. The helper rereads the same context version and
+current task before its single `review_task` call; unrelated newer context
+revisions do not replace the reviewed version.
+
+Acceptance changes the document task to `completed`; rejection returns it to
+`pending`. The output reports Core's actual `task_verification`, which remains
+`unverified` for ordinary document review. Code candidates, a different project,
+a stale task/publication or an incorrect content hash are refused. Keep the
+owner credentials; none are printed or saved by this helper. If interrupted or
+the outcome is unknown, inspect the task before another decision. There is no
+automatic retry or receiver restart.
+
+This document-review entry does not repair a failed model turn. The ordinary
+terminal publishes a proposal only after a successful model result; it does not
+publish an unfinished progress checkpoint. Earlier composed-recovery evidence
+used an explicitly host-authored checkpoint and does not establish automatic
+model-progress recovery for this example.
+
 The current entry adds bounded task/case reads, with14 passing affected Windows
 checks and4 Linux-only skips. No new Linux or real-model run accompanied that
 input-reading change. [Repair evidence](acceptance/evidence/core-preview-a122/terminal-input-bounds/summary.json).

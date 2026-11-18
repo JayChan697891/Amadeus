@@ -1,0 +1,14 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.16, pytest-9.1.1, pluggy-1.7.0
+cachedir: D:\agentsync-debug\m122docreview\t\pytest-cache
+rootdir: F:\syuc\amadeus-m6-single
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 8 items
+
+F:\syuc\amadeus-m6-single\tests\integration\test_review_relay_document.py . [ 12%]
+.......                                                                  [100%]
+
+------ generated xml file: D:\agentsync-debug\m122docreview\t\junit.xml -------
+============================== 8 passed in 8.68s ==============================
